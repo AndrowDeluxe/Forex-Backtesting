@@ -86,5 +86,5 @@ def run_pipeline(h4: pd.DataFrame, risk_pct=0.01, rr=2.0,
                                       breakeven_trigger_r=breakeven_trigger_r,
                                       trail_atr_mult=trail_atr_mult,
                                       adx_col=adx_col, adx_threshold=adx_threshold)
-    metrics = compute_metrics(trades, equity)
+    metrics = compute_metrics(trades, equity, price_series=h4["Close"])
     return signals, trades, equity, metrics, daily, weekly

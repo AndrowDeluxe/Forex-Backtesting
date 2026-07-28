@@ -117,9 +117,22 @@ def metric_row(metrics: dict) -> None:
         st.metric("Trefferquote", f"{metrics['Trefferquote %']:.1f}%", border=True)
         st.metric("Profit factor", f"{metrics['Profit Factor']:.2f}", border=True)
         st.metric("Ø R-Multiple", f"{metrics['Ø R-Multiple']:.2f}", border=True)
-        st.metric("Gesamtrendite", f"{metrics['Gesamtrendite %']:.1f}%", border=True)
+        st.metric(
+            "Gesamtrendite", f"{metrics['Gesamtrendite %']:.1f}%", border=True,
+            delta=(
+                f"{metrics['Alpha vs. Buy & Hold %']:+.1f}%pt vs. B&H"
+                if "Alpha vs. Buy & Hold %" in metrics and not pd.isna(metrics["Alpha vs. Buy & Hold %"])
+                else None
+            ),
+        )
         st.metric("Max drawdown", f"{metrics['Max Drawdown %']:.1f}%", border=True)
         st.metric("Sharpe (approx.)", f"{metrics['Sharpe (approx.)']:.2f}", border=True)
+    if "Buy & Hold %" in metrics and not pd.isna(metrics["Buy & Hold %"]):
+        st.caption(
+            f"Buy & hold over the same window: {metrics['Buy & Hold %']:+.1f}% — "
+            "a trend-following strategy's return should be judged against this, "
+            "not in isolation (see the ADX-VWAP research on beta vs. skill)."
+        )
 
 
 def price_entry_chart(daily: pd.DataFrame, trades: pd.DataFrame, window_start,

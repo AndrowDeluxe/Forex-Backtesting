@@ -1,0 +1,80 @@
+"""Multi-timeframe Dukascopy data for the combined strategy: the 6 FX majors
+from the ADX-VWAP paper plus Gold, Silver, S&P 500, Nasdaq-100, and Oil.
+
+H4 is the EMA S/R trigger timeframe; Daily/Weekly feed the EMA bias. Unlike
+the original EMA S/R project (yfinance, hourly capped at 730 days), Dukascopy
+gives the full ~10-year history at every timeframe, with real traded volume
+(needed for the VWAP-overextension filter) - a genuine upgrade, not just a
+re-plumbing exercise.
+"""
+
+from pathlib import Path
+
+import dukascopy_python
+import dukascopy_python.instruments as duka
+import pandas as pd
+
+CACHE_DIR = Path(__file__).resolve().parents[1] / "data_cache" / "combined"
+
+INSTRUMENTS = {
+    "EURUSD": duka.INSTRUMENT_FX_MAJORS_EUR_USD,
+    "GBPUSD": duka.INSTRUMENT_FX_MAJORS_GBP_USD,
+    "USDJPY": duka.INSTRUMENT_FX_MAJORS_USD_JPY,
+    "USDCHF": duka.INSTRUMENT_FX_MAJORS_USD_CHF,
+    "AUDUSD": duka.INSTRUMENT_FX_MAJORS_AUD_USD,
+    "USDCAD": duka.INSTRUMENT_FX_MAJORS_USD_CAD,
+    "GOLD": duka.INSTRUMENT_FX_METALS_XAU_USD,
+    "SILVER": duka.INSTRUMENT_FX_METALS_XAG_USD,
+    "SP500": duka.INSTRUMENT_IDX_AMERICA_E_SANDP_500,
+    "NASDAQ": duka.INSTRUMENT_IDX_AMERICA_E_NQ_100,
+    "OIL": duka.INSTRUMENT_CMD_ENERGY_E_LIGHT,
+}
+
+OFFER_SIDE = dukascopy_python.OFFER_SIDE_BID
+_TF_INTERVAL = {
+    "H4": dukascopy_python.INTERVAL_HOUR_4,
+    "D1": dukascopy_python.INTERVAL_DAY_1,
+    "W1": dukascopy_python.INTERVAL_WEEK_1,
+}
+
+
+def _cache_path(key: str, timeframe: str, start: pd.Timestamp, end: pd.Timestamp) -> Path:
+    return CACHE_DIR / f"{key}_{timeframe}_{start.date()}_{end.date()}.parquet"
+
+
+def fetch_timeframe(key: str, timeframe: str, start: str, end: str, force_refresh: bool = False) -> pd.DataFrame:
+    if key not in INSTRUMENTS:
+        raise ValueError(f"unknown instrument key {key!r}, expected one of {list(INSTRUMENTS)}")
+    if timeframe not in _TF_INTERVAL:
+        raise ValueError(f"unknown timeframe {timeframe!r}, expected one of {list(_TF_INTERVAL)}")
+
+    start_ts, end_ts = pd.Timestamp(start), pd.Timestamp(end)
+    path = _cache_path(key, timeframe, start_ts, end_ts)
+    if path.exists() and not force_refresh:
+        return pd.read_parquet(path)
+
+    df = dukascopy_python.fetch(
+        INSTRUMENTS[key], _TF_INTERVAL[timeframe], OFFER_SIDE,
+        start_ts.to_pydatetime(), end_ts.to_pydatetime(),
+    )
+    df = df.sort_index()
+    df.index.name = "timestamp"
+    # Match ema_strategy's OHLC column naming (capitalised) so the existing
+    # EMA/ADX indicator code can be reused unmodified.
+    df = df.rename(columns={"open": "Open", "high": "High", "low": "Low", "close": "Close", "volume": "Volume"})
+
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    df.to_parquet(path)
+    return df
+
+
+def fetch_multi_timeframe(key: str, start: str, end: str) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """Returns (h4, daily, weekly) OHLCV DataFrames for `key`."""
+    h4 = fetch_timeframe(key, "H4", start, end)
+    daily = fetch_timeframe(key, "D1", start, end)
+    weekly = fetch_timeframe(key, "W1", start, end)
+    return h4, daily, weekly
+
+
+def load_all(start: str, end: str, keys=tuple(INSTRUMENTS)) -> dict[str, tuple]:
+    return {key: fetch_multi_timeframe(key, start, end) for key in keys}

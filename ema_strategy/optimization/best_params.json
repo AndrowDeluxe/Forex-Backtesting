@@ -1,0 +1,9 @@
+{
+  "ema_length": 40,
+  "ema_smooth": 20,
+  "rr": 2.5,
+  "sl_buffer_atr": 0.1,
+  "min_rejection_atr": 0.0,
+  "require_htf_slope": true,
+  "invalidation_confirm_bars": 1
+}

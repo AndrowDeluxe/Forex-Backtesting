@@ -1,0 +1,16 @@
+{
+  "ema_length": 60,
+  "ema_smooth": 1,
+  "sl_mode": "atr_multiple",
+  "atr_multiplier": 1.5,
+  "exit_on_htf_bias_flip": true,
+  "htf_bias_col": "daily_bias",
+  "min_rejection_atr": 0.0,
+  "require_htf_slope": false,
+  "invalidation_confirm_bars": 1,
+  "use_trailing_stop": true,
+  "adx_col": "daily_adx",
+  "trail_atr_mult": 3.0,
+  "adx_threshold": 25.0,
+  "breakeven_trigger_r": 1.5
+}

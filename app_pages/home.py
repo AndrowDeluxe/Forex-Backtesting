@@ -13,13 +13,13 @@ st.set_page_config(
 
 Ein Ort für alle Backtests: jede Karte unten ist eine eigenständige,
 interaktive Strategie mit ihren eigenen Kennzahlen, Charts und
-Parameter-Reglern. Alle drei sind ehrlich dokumentiert — inklusive der
+Parameter-Reglern. Alle vier sind ehrlich dokumentiert — inklusive der
 Stellen, wo die Strategie **keinen** robusten Edge zeigt.
 """
 
 st.space("medium")
 
-col1, col2, col3 = st.columns(3, border=True)
+col1, col2, col3, col4 = st.columns(4, border=True)
 
 with col1:
     st.markdown("### :material/candlestick_chart: ADX-VWAP FX-Strategie")
@@ -80,8 +80,27 @@ with col3:
         )
     st.page_link("app_pages/ema_combined.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
 
+with col4:
+    st.markdown("### :material/schedule: CLS-Squeeze")
+    st.caption("CLS-Settlement-Cutoff + VWAP-Reversion/Momentum, London-Open")
+    st.markdown(
+        "Testet die Praktiker-Hypothese, dass CLS-Settlement-Orderflow vor "
+        "dem täglichen Cutoff (06:00-07:00 UTC) Preise mechanisch verdrängt, "
+        "die dann Richtung VWAP zurückkehren (oder weiterlaufen) sollen, "
+        "sobald London-Liquidität einsetzt. Reversion und Momentum wählbar."
+    )
+    with st.container(border=True):
+        st.markdown("**Ehrlicher Befund**")
+        st.caption(
+            "Keine etablierte akademische Grundlage (anders als beim ADX-VWAP-"
+            "Paper) — als Hypothese getestet. Reversion ist klar negativ "
+            "(Sharpe -0.84 bei EUR/USD, 863 Trades). Momentum ist deutlich "
+            "weniger schlecht (+0.21), aber kein robuster Edge."
+        )
+    st.page_link("app_pages/cls_squeeze.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
+
 st.space("medium")
 st.caption(
-    "Alle drei Strategien sind Forschungs-/Lernprojekte, keine Anlageberatung. "
+    "Alle vier Strategien sind Forschungs-/Lernprojekte, keine Anlageberatung. "
     "Backtests sind kein Beweis für zukünftige Performance."
 )

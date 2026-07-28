@@ -125,6 +125,33 @@ def compute_regime_filter(df: pd.DataFrame, adx_window: int = 20) -> pd.DataFram
     return df
 
 
+def compute_intraday_window_extremes(df: pd.DataFrame, window_start_hour: float, window_end_hour: float) -> pd.DataFrame:
+    """Attach the running high/low reached *within* a same-day intraday
+    window (e.g. a CLS settlement cutoff window, 06:00-07:00 UTC) to every
+    bar of that day, frozen at its final value once the window closes.
+
+    Unlike `compute_prev_session_extremes` (previous *session's* extreme,
+    used cross-day), this is a same-day, sub-session window: bars before
+    the window are NaN (nothing to reference yet), bars during it see the
+    running max/min so far, and bars after it see the window's final,
+    frozen high/low - exactly what a post-cutoff entry signal needs.
+    """
+    df = df.copy()
+    hour = df.index.hour + df.index.minute / 60.0
+    date = pd.Series(df.index.date, index=df.index)
+    in_window = (hour >= window_start_hour) & (hour < window_end_hour)
+
+    high_masked = df["high"].where(in_window)
+    low_masked = df["low"].where(in_window)
+
+    window_high = high_masked.groupby(date).cummax().groupby(date).ffill()
+    window_low = low_masked.groupby(date).cummin().groupby(date).ffill()
+
+    df["window_high"] = window_high
+    df["window_low"] = window_low
+    return df
+
+
 def compute_adaptive_theta(df: pd.DataFrame, window_bars: int, multiplier: float = 1.0) -> pd.Series:
     """Rolling std of D_t as a time-varying threshold (Sec. 6.2: 'theta as a
     function of the pair's intraday volatility regime'). Uses only current

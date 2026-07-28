@@ -10,7 +10,10 @@ of the paper's Appendix A signal column:
    matching the paper's implicit one-trade-per-setup framing (Sec. 5.3).
 3. Exit precedence, checked bar-by-bar from entry+1: session rollover (time
    exit, Sec 6.1) -> confirmed-close stop beyond the trigger extreme by a
-   multiple of ATR (Sec 5.3) -> VWAP-cross target (Sec 5.3). First hit wins.
+   multiple of ATR (Sec 5.3) -> VWAP-cross target (Sec 5.3) -> optional
+   `max_hold_bars` cap (for signals whose session concept is far longer than
+   a sane hold, e.g. cls_squeeze.py's day-long VWAP session against a
+   30-minute entry window). First hit wins.
 4. Costs are modelled as a half round-trip spread charged on both entry and
    exit, applied on the correct side of the market (short sells the bid,
    buys back the ask; long is the mirror) rather than netted as a single
@@ -28,6 +31,8 @@ class BacktestConfig:
     spread_bps: float = 0.3       # round-trip cost, basis points of price
     stop_atr_mult: float = 0.5    # stop = trigger level +/- this many ATRs
     min_atr: float = 1e-12        # guards against a degenerate (zero) stop
+    max_hold_bars: int | None = None  # optional cap, for signals whose "session" spans far longer than a sane hold (e.g. a full calendar day for a 30-min entry window)
+    use_vwap_target: bool = True  # False for momentum/continuation signals, where "price already crossed VWAP" describes the entry, not a sane exit
 
 
 def simulate_trades(df: pd.DataFrame, config: BacktestConfig = BacktestConfig()) -> pd.DataFrame:
@@ -84,11 +89,14 @@ def simulate_trades(df: pd.DataFrame, config: BacktestConfig = BacktestConfig())
             if direction == 1 and close[j] < stop_level:
                 exit_i, exit_reason = j, "stop"
                 break
-            if direction == -1 and close[j] <= vwap[j]:
+            if config.use_vwap_target and direction == -1 and close[j] <= vwap[j]:
                 exit_i, exit_reason = j, "target"
                 break
-            if direction == 1 and close[j] >= vwap[j]:
+            if config.use_vwap_target and direction == 1 and close[j] >= vwap[j]:
                 exit_i, exit_reason = j, "target"
+                break
+            if config.max_hold_bars is not None and (j - entry_i) >= config.max_hold_bars:
+                exit_i, exit_reason = j, "max_hold"
                 break
             j += 1
         if exit_i is None:

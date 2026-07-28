@@ -98,6 +98,44 @@ def test_position_forced_closed_at_session_rollover():
     assert trade["exit_time"] == df.index[1]  # last bar of the entry session
 
 
+def test_max_hold_bars_forces_time_exit_when_no_other_exit_fires():
+    df = _make_df(
+        open_=[1.000] * 6,
+        close_=[1.000] * 6,  # never hits stop or target
+        vwap_=[0.900] * 6,   # far away, never crossed
+        atr_=[0.01] * 6,
+        prev_high_=[0.999] * 6,
+        prev_low_=[0.90] * 6,
+        signal_=[-1, 0, 0, 0, 0, 0],
+        session_=["A"] * 6,  # single session, no rollover either
+    )
+    cfg = BacktestConfig(spread_bps=2.0, stop_atr_mult=0.5, max_hold_bars=2)
+    trades = simulate_trades(df, cfg)
+    assert len(trades) == 1
+    trade = trades.iloc[0]
+    assert trade["exit_reason"] == "max_hold"
+    assert trade["hold_bars"] == 2
+
+
+def test_vwap_target_disabled_lets_max_hold_bars_decide_instead():
+    df = _make_df(
+        open_=[1.000] * 6,
+        close_=[1.000, 1.000, 0.994, 0.994, 0.994, 0.994],  # crosses vwap at bar 2, would trigger "target" if enabled
+        vwap_=[0.995] * 6,
+        atr_=[0.01] * 6,
+        prev_high_=[0.999] * 6,
+        prev_low_=[0.90] * 6,
+        signal_=[-1, 0, 0, 0, 0, 0],
+        session_=["A"] * 6,
+    )
+    cfg = BacktestConfig(spread_bps=2.0, stop_atr_mult=0.5, max_hold_bars=3, use_vwap_target=False)
+    trades = simulate_trades(df, cfg)
+    assert len(trades) == 1
+    trade = trades.iloc[0]
+    assert trade["exit_reason"] == "max_hold"  # not "target", even though price crossed vwap
+    assert trade["hold_bars"] == 3
+
+
 def test_no_new_entry_while_position_is_open():
     df = _make_df(
         open_=[1.000, 1.000, 1.000, 1.000, 1.000],

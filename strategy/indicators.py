@@ -16,6 +16,20 @@ def assign_sessions(index: pd.DatetimeIndex, reset_hour: int = 22) -> pd.Series:
     return pd.Series(shifted.date, index=index)
 
 
+def filter_session_window(df: pd.DataFrame, start_hour: int, end_hour: int) -> pd.DataFrame:
+    """Restrict bars to a bounded intraday window (Sec. 6.1's named London
+    07:00-17:00 / NY 13:00-22:00 GMT options), instead of a 24h rolling VWAP.
+
+    Bars outside [start_hour, end_hour) UTC are dropped entirely, so each
+    remaining calendar day is exactly one session when paired with
+    `reset_hour=start_hour` downstream — VWAP resets at window open and
+    prior-session extremes are the prior day's *window* high/low, not the
+    full 24h range.
+    """
+    hour = df.index.hour
+    return df[(hour >= start_hour) & (hour < end_hour)].copy()
+
+
 def compute_vwap_and_deviation(df: pd.DataFrame, reset_hour: int = 22) -> pd.DataFrame:
     df = df.copy()
     df["session"] = assign_sessions(df.index, reset_hour)

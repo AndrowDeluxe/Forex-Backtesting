@@ -1,6 +1,8 @@
 """End-to-end run across all 6 pairs from the paper's planned empirical
-programme (Sec. 7): generate data -> indicators -> signal -> backtest ->
+programme (Sec. 7): load data -> indicators -> signal -> backtest ->
 metrics -> regime decomposition -> walk-forward stability -> breakeven spread.
+
+Usage: python scripts/run_backtest.py [synthetic|real]  (default: real)
 """
 
 import sys
@@ -11,8 +13,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import pandas as pd
 
 from strategy.backtest import BacktestConfig, simulate_trades
-from strategy.data import generate_all_pairs
+from strategy.data import PAIRS, generate_all_pairs
 from strategy.metrics import breakeven_spread_bps, regime_decomposition, summarize
+from strategy.real_data import load_all_pairs_real
 from strategy.signals import run_indicator_pipeline
 from strategy.walkforward import fold_performance, stability_summary
 
@@ -43,8 +46,16 @@ def run_pair(pair: str, df: pd.DataFrame, config: BacktestConfig) -> dict:
 
 
 def main():
+    source = sys.argv[1] if len(sys.argv) > 1 else "real"
     config = BacktestConfig(spread_bps=0.3, stop_atr_mult=0.5)
-    data = generate_all_pairs(start="2023-01-01", end="2026-01-01", freq_minutes=15, seed=42)
+
+    if source == "synthetic":
+        data = generate_all_pairs(start="2023-01-01", end="2026-01-01", freq_minutes=15, seed=42)
+    elif source == "real":
+        print("Loading real Dukascopy history for all pairs (cached after first run)...")
+        data = load_all_pairs_real("2016-07-28", "2026-07-28")
+    else:
+        raise SystemExit(f"unknown source '{source}', expected 'synthetic' or 'real'")
 
     results = {}
     for pair, df in data.items():

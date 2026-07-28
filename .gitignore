@@ -5,3 +5,4 @@ streamlit.log
 .streamlit/secrets.toml
 .venv/
 *.egg-info/
+data_cache/

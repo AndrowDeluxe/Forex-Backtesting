@@ -11,6 +11,7 @@ def generate_signal(
     theta_window_bars: int = 500,
     theta_multiplier: float = 1.0,
     adx_ceiling: float | None = None,
+    strict_adx_decay: bool = False,
 ) -> pd.DataFrame:
     """Evaluate the four joint conditions of Eq. 14 and emit S_t.
 
@@ -21,6 +22,11 @@ def generate_signal(
     showed the paper's own trending-regime condition still lets through
     genuinely strong (>=25) trends, which is exactly the "fade a live trend"
     risk the paper's Foundation 3 warns about.
+    `strict_adx_decay`: Remark 1 in the paper — Eq. 14 uses the weak
+    condition dADX_t <= 0 ("not increasing"). The paper explicitly flags the
+    strict version dADX_t < 0 ("actually decreasing") as a cleaner exhaustion
+    signal, at the cost of fewer trades, and leaves the choice as an open
+    empirical question. False (default) reproduces Eq. 14 exactly.
     """
     df = df.copy()
     if theta is None:
@@ -28,7 +34,7 @@ def generate_signal(
     df["theta"] = theta
 
     cond_adx_elevated = df["adx"] > df["adx_mean"]
-    cond_adx_decaying = df["delta_adx"] <= 0
+    cond_adx_decaying = df["delta_adx"] < 0 if strict_adx_decay else df["delta_adx"] <= 0
     cond_adx_ceiling = df["adx"] < adx_ceiling if adx_ceiling is not None else True
 
     cond_at_high = df["close"] >= df["prev_high"]
@@ -54,6 +60,7 @@ def run_indicator_pipeline(
     theta_window_bars: int = 500,
     theta_multiplier: float = 1.0,
     adx_ceiling: float | None = None,
+    strict_adx_decay: bool = False,
     session_start_hour: int | None = None,
     session_end_hour: int | None = None,
 ) -> pd.DataFrame:
@@ -79,6 +86,7 @@ def run_indicator_pipeline(
     out = compute_adx(out, n=adx_n)
     out = compute_regime_filter(out, adx_window=adx_window)
     out = generate_signal(
-        out, theta_window_bars=theta_window_bars, theta_multiplier=theta_multiplier, adx_ceiling=adx_ceiling
+        out, theta_window_bars=theta_window_bars, theta_multiplier=theta_multiplier,
+        adx_ceiling=adx_ceiling, strict_adx_decay=strict_adx_decay,
     )
     return out

@@ -8,6 +8,7 @@ per-pair drill-down.
 from dataclasses import replace
 
 import altair as alt
+import dukascopy_python
 import pandas as pd
 
 import streamlit as st
@@ -25,9 +26,19 @@ from strategy.walkforward import fold_performance, stability_summary
 
 SYNTHETIC_START, SYNTHETIC_END, FREQ_MINUTES, SEED_BASE = "2023-01-01", "2026-01-01", 15, 42
 REAL_DATA_START, REAL_DATA_END = "2016-07-28", "2026-07-28"
+REAL_DATA_INTERVAL = dukascopy_python.INTERVAL_HOUR_1
 
 SOURCE_SYNTHETIC = "Synthetic (validates pipeline mechanics only)"
-SOURCE_REAL = "Real (Dukascopy, 2016-2026)"
+SOURCE_REAL = "Real (Dukascopy, 2016-2026, H1)"
+
+# Refined configuration on top of the paper's literal Eq. 14, found via a
+# yearly walk-forward screen (scripts/research_adx_params.py) across all 6
+# pairs, 2017-2025: shorter ADX lookback (n=10 vs. the paper's standard 14),
+# an absolute ADX ceiling (paper Foundation 3's "don't fade a live trend"
+# taken to its logical conclusion), and a wider VWAP-deviation threshold.
+# This is the best of several candidates tried, not a confirmed edge - see
+# the warning banner below and MEMORY notes for the full honest history.
+REFINED_PARAMS = dict(adx_n=10, adx_window=20, adx_ceiling=25.0, theta_multiplier=1.5)
 
 st.set_page_config(
     page_title="ADX-VWAP FX strategy backtest",
@@ -39,13 +50,13 @@ st.set_page_config(
 @st.cache_data(ttl="1h", show_spinner="Loading data and running indicator pipeline...")
 def load_signaled(pair: str, source: str) -> pd.DataFrame:
     if source == SOURCE_REAL:
-        df = fetch_pair_history(pair, REAL_DATA_START, REAL_DATA_END)
-    else:
-        df = generate_synthetic_ohlcv(
-            pair, start=SYNTHETIC_START, end=SYNTHETIC_END, freq_minutes=FREQ_MINUTES,
-            seed=SEED_BASE + PAIRS.index(pair),
-        )
-    return run_indicator_pipeline(df)
+        df = fetch_pair_history(pair, REAL_DATA_START, REAL_DATA_END, interval=REAL_DATA_INTERVAL)
+        return run_indicator_pipeline(df, **REFINED_PARAMS)
+    df = generate_synthetic_ohlcv(
+        pair, start=SYNTHETIC_START, end=SYNTHETIC_END, freq_minutes=FREQ_MINUTES,
+        seed=SEED_BASE + PAIRS.index(pair),
+    )
+    return run_indicator_pipeline(df)  # literal Eq. 14 defaults - pipeline sanity check only
 
 
 @st.cache_data(ttl="1h", show_spinner="Simulating trades...")
@@ -94,7 +105,7 @@ with st.sidebar:
     )
     if source == SOURCE_REAL:
         st.caption(
-            "Real M15 bid-side bars from Dukascopy, 2016-2026, all 6 pairs. "
+            "Real H1 bid-side bars from Dukascopy, 2016-2026, all 6 pairs. "
             "Cached to disk after first fetch."
         )
     else:
@@ -112,6 +123,21 @@ config = BacktestConfig(spread_bps=spread_bps, stop_atr_mult=stop_atr_mult)
 ADX-conditioned VWAP mean-reversion strategy — backtest results across all
 six major pairs from the paper's planned empirical programme.
 """
+
+if source == SOURCE_REAL:
+    st.warning(
+        "**Refined configuration, not the paper's literal Eq. 14.** H1 bars, "
+        "ADX lookback n=10 (paper standard: 14), an absolute ADX ceiling of 25 "
+        "(not in the paper — added because trades during genuinely strong "
+        "trends were the main loss source), and a wider VWAP-deviation "
+        "threshold (θ×1.5). This is the best of several candidates found via "
+        "a yearly walk-forward screen (2017-2025, all 6 pairs) — **not a "
+        "confirmed edge**: sample sizes are thin (~2-7 trades/pair/year), and "
+        "each refinement step was chosen by picking the best of several tried "
+        "on the same historical data. Switch **Data source** to *Synthetic* "
+        "to see the literal, unmodified Eq. 14 signal instead.",
+        icon=":material/warning:",
+    )
 
 if view == "Portfolio overview":
     reports = {pair: load_pair_report(pair, source, spread_bps, stop_atr_mult) for pair in PAIRS}

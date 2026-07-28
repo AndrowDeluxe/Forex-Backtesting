@@ -51,3 +51,17 @@ def test_adx_not_elevated_suppresses_signal():
     df = _df([_row(adx=20.0, adx_mean=25.0)])
     out = generate_signal(df, theta=df["theta"])
     assert out["signal"].iloc[0] == 0
+
+
+def test_strict_adx_decay_rejects_flat_adx_but_weak_mode_accepts_it():
+    df = _df([_row(delta_adx=0.0)])  # ADX unchanged: not increasing, but not decreasing either
+    weak = generate_signal(df, theta=df["theta"], strict_adx_decay=False)
+    strict = generate_signal(df, theta=df["theta"], strict_adx_decay=True)
+    assert weak["signal"].iloc[0] == -1
+    assert strict["signal"].iloc[0] == 0
+
+
+def test_strict_adx_decay_accepts_genuinely_falling_adx():
+    df = _df([_row(delta_adx=-0.1)])
+    strict = generate_signal(df, theta=df["theta"], strict_adx_decay=True)
+    assert strict["signal"].iloc[0] == -1

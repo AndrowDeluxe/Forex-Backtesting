@@ -12,6 +12,7 @@ adx_vwap = st.Page(
     "app_pages/adx_vwap.py", title="ADX-VWAP FX-Strategie", icon=":material/candlestick_chart:"
 )
 ema_sr = st.Page("app_pages/ema_sr.py", title="EMA S/R-Strategie", icon=":material/show_chart:")
+ema_combined = st.Page("app_pages/ema_combined.py", title="EMA kombiniert", icon=":material/merge:")
 
-page = st.navigation({"": [home], "Backtests": [adx_vwap, ema_sr]})
+page = st.navigation({"": [home], "Backtests": [adx_vwap, ema_sr, ema_combined]})
 page.run()

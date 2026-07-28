@@ -13,13 +13,13 @@ st.set_page_config(
 
 Ein Ort für alle Backtests: jede Karte unten ist eine eigenständige,
 interaktive Strategie mit ihren eigenen Kennzahlen, Charts und
-Parameter-Reglern. Beide sind ehrlich dokumentiert — inklusive der Stellen,
-wo die Strategie **keinen** robusten Edge zeigt.
+Parameter-Reglern. Alle drei sind ehrlich dokumentiert — inklusive der
+Stellen, wo die Strategie **keinen** robusten Edge zeigt.
 """
 
 st.space("medium")
 
-col1, col2 = st.columns(2, border=True)
+col1, col2, col3 = st.columns(3, border=True)
 
 with col1:
     st.markdown("### :material/candlestick_chart: ADX-VWAP FX-Strategie")
@@ -61,8 +61,27 @@ with col2:
         )
     st.page_link("app_pages/ema_sr.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
 
+with col3:
+    st.markdown("### :material/merge: EMA kombiniert")
+    st.caption("EMA S/R + 3 Ideen aus dem ADX-VWAP-Paper, 11 Instrumente")
+    st.markdown(
+        "Testet drei aus dem ADX-VWAP-Paper übertragene Ideen (VWAP-"
+        "Überdehnungsfilter, Session-Extreme-Konfluenz, ADX-Erschöpfungs-Exit) "
+        "einzeln und kombiniert. Echte Dukascopy-Historie (H4/D1/W1, ~10 Jahre) "
+        "über die 6 FX-Paare plus Gold, Silber, S&P 500, Nasdaq-100 und Öl."
+    )
+    with st.container(border=True):
+        st.markdown("**Ehrlicher Befund**")
+        st.caption(
+            "Keine der drei Erweiterungen überzeugt einzeln Out-of-Sample. "
+            "Wichtiger: gegen Buy & Hold gerechnet liegt die Strategie auf "
+            "Gold/Silber/Indizes 40-125 Prozentpunkte zurück — die hohe "
+            "Rohrendite dort ist Beta (steigender Markt), nicht Skill."
+        )
+    st.page_link("app_pages/ema_combined.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
+
 st.space("medium")
 st.caption(
-    "Beide Strategien sind Forschungs-/Lernprojekte, keine Anlageberatung. "
+    "Alle drei Strategien sind Forschungs-/Lernprojekte, keine Anlageberatung. "
     "Backtests sind kein Beweis für zukünftige Performance."
 )

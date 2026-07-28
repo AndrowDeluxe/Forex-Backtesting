@@ -13,5 +13,5 @@ adx_vwap = st.Page(
 )
 ema_sr = st.Page("app_pages/ema_sr.py", title="EMA S/R-Strategie", icon=":material/show_chart:")
 
-page = st.navigation([home, adx_vwap, ema_sr])
+page = st.navigation({"": [home], "Backtests": [adx_vwap, ema_sr]})
 page.run()

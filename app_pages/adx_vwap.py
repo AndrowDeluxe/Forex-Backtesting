@@ -26,10 +26,12 @@ from strategy.walkforward import fold_performance, stability_summary
 
 SYNTHETIC_START, SYNTHETIC_END, FREQ_MINUTES, SEED_BASE = "2023-01-01", "2026-01-01", 15, 42
 REAL_DATA_START, REAL_DATA_END = "2016-07-28", "2026-07-28"
-REAL_DATA_INTERVAL = dukascopy_python.INTERVAL_HOUR_1
 
 SOURCE_SYNTHETIC = "Synthetic (validates pipeline mechanics only)"
-SOURCE_REAL = "Real (Dukascopy, 2016-2026, H1)"
+SOURCE_REAL = "Real (Dukascopy, 2016-2026)"
+
+CONFIG_PURE = "Pure paper thesis (Eq. 14)"
+CONFIG_REFINED = "Refined (H1, n=10, ADX ceiling, θ×1.5)"
 
 # Refined configuration on top of the paper's literal Eq. 14, found via a
 # yearly walk-forward screen (scripts/research_adx_params.py) across all 6
@@ -38,7 +40,12 @@ SOURCE_REAL = "Real (Dukascopy, 2016-2026, H1)"
 # taken to its logical conclusion), and a wider VWAP-deviation threshold.
 # This is the best of several candidates tried, not a confirmed edge - see
 # the warning banner below and MEMORY notes for the full honest history.
+# It was specifically found on H1 bars, so the refined path also switches
+# the fetched interval - unlike theta/adx_n/adx_window, bar frequency isn't
+# independently toggleable here.
 REFINED_PARAMS = dict(adx_n=10, adx_window=20, adx_ceiling=25.0, theta_multiplier=1.5)
+REFINED_INTERVAL = dukascopy_python.INTERVAL_HOUR_1
+PURE_INTERVAL = dukascopy_python.INTERVAL_MIN_15
 
 st.set_page_config(
     page_title="ADX-VWAP FX strategy backtest",
@@ -48,43 +55,45 @@ st.set_page_config(
 
 
 @st.cache_data(ttl="1h", show_spinner="Loading data and running indicator pipeline...")
-def load_signaled(pair: str, source: str) -> pd.DataFrame:
+def load_signaled(pair: str, source: str, signal_config: str) -> pd.DataFrame:
+    is_refined = signal_config == CONFIG_REFINED
     if source == SOURCE_REAL:
-        df = fetch_pair_history(pair, REAL_DATA_START, REAL_DATA_END, interval=REAL_DATA_INTERVAL)
-        return run_indicator_pipeline(df, **REFINED_PARAMS)
-    df = generate_synthetic_ohlcv(
-        pair, start=SYNTHETIC_START, end=SYNTHETIC_END, freq_minutes=FREQ_MINUTES,
-        seed=SEED_BASE + PAIRS.index(pair),
-    )
-    return run_indicator_pipeline(df)  # literal Eq. 14 defaults - pipeline sanity check only
+        interval = REFINED_INTERVAL if is_refined else PURE_INTERVAL
+        df = fetch_pair_history(pair, REAL_DATA_START, REAL_DATA_END, interval=interval)
+    else:
+        df = generate_synthetic_ohlcv(
+            pair, start=SYNTHETIC_START, end=SYNTHETIC_END, freq_minutes=FREQ_MINUTES,
+            seed=SEED_BASE + PAIRS.index(pair),
+        )
+    return run_indicator_pipeline(df, **REFINED_PARAMS) if is_refined else run_indicator_pipeline(df)
 
 
 @st.cache_data(ttl="1h", show_spinner="Simulating trades...")
-def load_trades(pair: str, source: str, spread_bps: float, stop_atr_mult: float) -> pd.DataFrame:
-    signaled = load_signaled(pair, source)
+def load_trades(pair: str, source: str, signal_config: str, spread_bps: float, stop_atr_mult: float) -> pd.DataFrame:
+    signaled = load_signaled(pair, source, signal_config)
     cfg = BacktestConfig(spread_bps=spread_bps, stop_atr_mult=stop_atr_mult)
     return simulate_trades(signaled, cfg)
 
 
 @st.cache_data(ttl="1h", show_spinner="Searching breakeven spread...")
-def load_breakeven(pair: str, source: str, stop_atr_mult: float) -> float:
-    signaled = load_signaled(pair, source)
+def load_breakeven(pair: str, source: str, signal_config: str, stop_atr_mult: float) -> float:
+    signaled = load_signaled(pair, source, signal_config)
     base_cfg = BacktestConfig(spread_bps=0.3, stop_atr_mult=stop_atr_mult)
-    trades = load_trades(pair, source, base_cfg.spread_bps, stop_atr_mult)
+    trades = load_trades(pair, source, signal_config, base_cfg.spread_bps, stop_atr_mult)
     if trades.empty:
         return 0.0
     return breakeven_spread_bps(signaled, base_cfg)
 
 
 @st.cache_data(ttl="1h")
-def load_pair_report(pair: str, source: str, spread_bps: float, stop_atr_mult: float) -> dict:
-    signaled = load_signaled(pair, source)
-    trades = load_trades(pair, source, spread_bps, stop_atr_mult)
+def load_pair_report(pair: str, source: str, signal_config: str, spread_bps: float, stop_atr_mult: float) -> dict:
+    signaled = load_signaled(pair, source, signal_config)
+    trades = load_trades(pair, source, signal_config, spread_bps, stop_atr_mult)
     summary = summarize(trades, signaled.index)
     folds = fold_performance(trades, signaled.index, fold="MS")
     stability = stability_summary(folds)
     regimes = regime_decomposition(trades)
-    breakeven = load_breakeven(pair, source, stop_atr_mult)
+    breakeven = load_breakeven(pair, source, signal_config, stop_atr_mult)
     return {
         "summary": summary, "folds": folds, "stability": stability,
         "regimes": regimes, "breakeven": breakeven,
@@ -94,6 +103,11 @@ def load_pair_report(pair: str, source: str, spread_bps: float, stop_atr_mult: f
 with st.sidebar:
     st.markdown("### Configuration")
     source = st.radio("Data source", [SOURCE_REAL, SOURCE_SYNTHETIC], index=0)
+    signal_config = st.radio(
+        "Signal configuration", [CONFIG_PURE, CONFIG_REFINED], index=0,
+        help="Pure = the paper's literal Eq. 14, unmodified. Refined = the "
+        "best candidate found so far, tested against the pure baseline.",
+    )
     view = st.selectbox("View", ["Portfolio overview", *PAIRS], index=0)
     spread_bps = st.slider(
         "Round-trip spread (bps)", 0.0, 3.0, 0.3, 0.1,
@@ -104,8 +118,9 @@ with st.sidebar:
         help="Sec. 5.3: stop = prior extreme +/- this many ATRs.",
     )
     if source == SOURCE_REAL:
+        bar = "H1" if signal_config == CONFIG_REFINED else "M15"
         st.caption(
-            "Real H1 bid-side bars from Dukascopy, 2016-2026, all 6 pairs. "
+            f"Real {bar} bid-side bars from Dukascopy, 2016-2026, all 6 pairs. "
             "Cached to disk after first fetch."
         )
     else:
@@ -124,7 +139,7 @@ ADX-conditioned VWAP mean-reversion strategy — backtest results across all
 six major pairs from the paper's planned empirical programme.
 """
 
-if source == SOURCE_REAL:
+if signal_config == CONFIG_REFINED:
     st.warning(
         "**Refined configuration, not the paper's literal Eq. 14.** H1 bars, "
         "ADX lookback n=10 (paper standard: 14), an absolute ADX ceiling of 25 "
@@ -134,13 +149,21 @@ if source == SOURCE_REAL:
         "a yearly walk-forward screen (2017-2025, all 6 pairs) — **not a "
         "confirmed edge**: sample sizes are thin (~2-7 trades/pair/year), and "
         "each refinement step was chosen by picking the best of several tried "
-        "on the same historical data. Switch **Data source** to *Synthetic* "
-        "to see the literal, unmodified Eq. 14 signal instead.",
+        "on the same historical data. Switch **Signal configuration** to "
+        "*Pure paper thesis* to see the literal, unmodified Eq. 14 signal — "
+        "and its negative result — for comparison.",
         icon=":material/warning:",
+    )
+elif source == SOURCE_REAL:
+    st.info(
+        "**Literal Eq. 14, unmodified.** On 10 years of real data this shows "
+        "negative Sharpe on all 6 pairs — the honest baseline the *Refined* "
+        "configuration is measured against.",
+        icon=":material/info:",
     )
 
 if view == "Portfolio overview":
-    reports = {pair: load_pair_report(pair, source, spread_bps, stop_atr_mult) for pair in PAIRS}
+    reports = {pair: load_pair_report(pair, source, signal_config, spread_bps, stop_atr_mult) for pair in PAIRS}
 
     summary_df = pd.DataFrame({pair: r["summary"] for pair, r in reports.items()}).T
     summary_df.index.name = "pair"
@@ -226,9 +249,9 @@ if view == "Portfolio overview":
 
 else:
     pair = view
-    signaled = load_signaled(pair, source)
-    trades = load_trades(pair, source, spread_bps, stop_atr_mult)
-    report = load_pair_report(pair, source, spread_bps, stop_atr_mult)
+    signaled = load_signaled(pair, source, signal_config)
+    trades = load_trades(pair, source, signal_config, spread_bps, stop_atr_mult)
+    report = load_pair_report(pair, source, signal_config, spread_bps, stop_atr_mult)
     summary, stability, regimes = report["summary"], report["stability"], report["regimes"]
 
     st.markdown(f"## {pair}")

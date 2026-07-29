@@ -1,0 +1,2 @@
+date,signals_scanned,orders_sent,orders_skipped,orders_error,symbols_sent,baseline_equity,current_equity,floating_pnl,daily_pnl_pct,open_positions,drawdown_halted,connection_error
+2026-07-29,24,0,17,0,,98146.49,98146.49,1043.32,0.0,CAH(+104.80); CAH(+530.50); LUV(+64.35); AMD(+51.38); UPS(-36.48); STX(+117.55); WDC(+174.72); FTNT(+36.50),False,

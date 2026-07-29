@@ -1,0 +1,69 @@
+===== run_20260729_010508.log =====
+2026-07-29 01:05:08,517 INFO run_once: === Lauf gestartet (DRY_RUN=True) - Log: logs\run_20260729_010508.log ===
+2026-07-29 01:05:52,670 ERROR run_once: Scan fehlgeschlagen: Keine Tabelle mit den erwarteten Spalten ['entry', 'sl', 'symbol', 'tp'] gefunden. Gefundene Tabellen-Header: [['Jahr', 'Return']]. _COLUMN_ALIASES in scanner.py ggf. anpassen.
+
+
+===== run_20260729_010718.log =====
+2026-07-29 01:07:18,388 INFO run_once: === Lauf gestartet (DRY_RUN=True) - Log: logs\run_20260729_010718.log ===
+2026-07-29 01:07:26,281 INFO run_once: 8 Signal(e) gescannt.
+2026-07-29 01:07:26,302 INFO executor: [DRY_RUN] Würde Order senden: {'symbol': 'AMD', 'volume': 4.0, 'type': 'BUY', 'entry': 458.2, 'sl': 397.56, 'tp': 540.22}
+2026-07-29 01:07:26,303 INFO run_once: Ergebnis: {'status': 'dry_run', 'order': {'symbol': 'AMD', 'volume': 4.0, 'type': 'BUY', 'entry': 458.2, 'sl': 397.56, 'tp': 540.22}, 'signal': {'symbol': 'AMD', 'direction': 'Long', 'entry': 454.62, 'sl': 397.56, 'tp': 540.22}}
+2026-07-29 01:07:26,306 WARNING executor: Symbol 'WMB' (MT5-Name 'WMB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 01:07:26,307 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'WMB', 'direction': 'Long', 'entry': 70.16, 'sl': 67.14, 'tp': 74.69}}
+2026-07-29 01:07:26,308 WARNING executor: Symbol 'PWR' (MT5-Name 'PWR') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 01:07:26,308 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PWR', 'direction': 'Long', 'entry': 588.36, 'sl': 527.02, 'tp': 680.37}}
+2026-07-29 01:07:26,309 WARNING executor: Symbol 'WST' (MT5-Name 'WST') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 01:07:26,309 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'WST', 'direction': 'Long', 'entry': 337.0, 'sl': 320.61, 'tp': 361.59}}
+2026-07-29 01:07:26,310 INFO executor: [DRY_RUN] Würde Order senden: {'symbol': 'UPS', 'volume': 36.0, 'type': 'BUY', 'entry': 106.03, 'sl': 99.26, 'tp': 114.94}
+2026-07-29 01:07:26,310 INFO run_once: Ergebnis: {'status': 'dry_run', 'order': {'symbol': 'UPS', 'volume': 36.0, 'type': 'BUY', 'entry': 106.03, 'sl': 99.26, 'tp': 114.94}, 'signal': {'symbol': 'UPS', 'direction': 'Long', 'entry': 105.53, 'sl': 99.26, 'tp': 114.94}}
+2026-07-29 01:07:26,311 WARNING executor: Symbol 'MCHP' (MT5-Name 'MCHP') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 01:07:26,311 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MCHP', 'direction': 'Long', 'entry': 75.71, 'sl': 67.62, 'tp': 87.85}}
+2026-07-29 01:07:26,312 WARNING executor: Symbol 'ETN' (MT5-Name 'ETN') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 01:07:26,312 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ETN', 'direction': 'Long', 'entry': 386.26, 'sl': 368.27, 'tp': 413.24}}
+2026-07-29 01:07:26,313 WARNING executor: mt5.symbol_info_tick('ADI') liefert None - Signal wird übersprungen.
+2026-07-29 01:07:26,313 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'no_tick', 'signal': {'symbol': 'ADI', 'direction': 'Long', 'entry': 365.83, 'sl': 348.46, 'tp': 391.88}}
+2026-07-29 01:07:26,313 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260729_011027.log =====
+2026-07-29 01:10:27,709 INFO run_once: === Lauf gestartet (DRY_RUN=True) - Log: logs\run_20260729_011027.log ===
+2026-07-29 01:10:35,117 INFO run_once: 8 Signal(e) gescannt.
+2026-07-29 01:10:35,130 INFO executor: [DRY_RUN] Würde Order senden: {'symbol': 'AMD', 'volume': 4.0, 'type': 'BUY', 'entry': 458.2, 'sl': 397.56, 'tp': 540.22}
+2026-07-29 01:10:35,130 INFO run_once: Ergebnis: {'status': 'dry_run', 'order': {'symbol': 'AMD', 'volume': 4.0, 'type': 'BUY', 'entry': 458.2, 'sl': 397.56, 'tp': 540.22}, 'signal': {'symbol': 'AMD', 'direction': 'Long', 'entry': 454.62, 'sl': 397.56, 'tp': 540.22}}
+2026-07-29 01:10:35,134 WARNING executor: Symbol 'WMB' (MT5-Name 'WMB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 01:10:35,134 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'WMB', 'direction': 'Long', 'entry': 70.16, 'sl': 67.14, 'tp': 74.69}}
+2026-07-29 01:10:35,135 WARNING executor: Symbol 'PWR' (MT5-Name 'PWR') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 01:10:35,135 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PWR', 'direction': 'Long', 'entry': 588.36, 'sl': 527.02, 'tp': 680.37}}
+2026-07-29 01:10:35,136 WARNING executor: Symbol 'WST' (MT5-Name 'WST') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 01:10:35,137 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'WST', 'direction': 'Long', 'entry': 337.0, 'sl': 320.61, 'tp': 361.59}}
+2026-07-29 01:10:35,138 INFO executor: [DRY_RUN] Würde Order senden: {'symbol': 'UPS', 'volume': 36.0, 'type': 'BUY', 'entry': 106.03, 'sl': 99.26, 'tp': 114.94}
+2026-07-29 01:10:35,138 INFO run_once: Ergebnis: {'status': 'dry_run', 'order': {'symbol': 'UPS', 'volume': 36.0, 'type': 'BUY', 'entry': 106.03, 'sl': 99.26, 'tp': 114.94}, 'signal': {'symbol': 'UPS', 'direction': 'Long', 'entry': 105.53, 'sl': 99.26, 'tp': 114.94}}
+2026-07-29 01:10:35,139 WARNING executor: Symbol 'MCHP' (MT5-Name 'MCHP') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 01:10:35,139 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MCHP', 'direction': 'Long', 'entry': 75.71, 'sl': 67.62, 'tp': 87.85}}
+2026-07-29 01:10:35,140 WARNING executor: Symbol 'ETN' (MT5-Name 'ETN') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 01:10:35,140 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ETN', 'direction': 'Long', 'entry': 386.26, 'sl': 368.27, 'tp': 413.24}}
+2026-07-29 01:10:35,141 WARNING executor: Aktueller Kurs 0.0000 für ADI weicht 365.8300 vom Website-Entry 365.8300 ab (Limit 7.3166 = 2.0%) - Signal wird übersprungen.
+2026-07-29 01:10:35,141 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'entry_price_moved_too_far', 'signal': {'symbol': 'ADI', 'direction': 'Long', 'entry': 365.83, 'sl': 348.46, 'tp': 391.88}}
+2026-07-29 01:10:35,141 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260729_011238.log =====
+2026-07-29 01:12:38,996 INFO run_once: === Lauf gestartet (DRY_RUN=True) - Log: logs\run_20260729_011238.log ===
+2026-07-29 01:12:46,171 INFO run_once: 8 Signal(e) gescannt.
+2026-07-29 01:12:46,183 INFO executor: [DRY_RUN] Würde Order senden: {'symbol': 'AMD', 'volume': 4.0, 'type': 'BUY', 'entry': 458.2, 'sl': 397.56, 'tp': 540.22}
+2026-07-29 01:12:46,184 INFO run_once: Ergebnis: {'status': 'dry_run', 'order': {'symbol': 'AMD', 'volume': 4.0, 'type': 'BUY', 'entry': 458.2, 'sl': 397.56, 'tp': 540.22}, 'signal': {'symbol': 'AMD', 'direction': 'Long', 'entry': 454.62, 'sl': 397.56, 'tp': 540.22}}
+2026-07-29 01:12:46,186 WARNING executor: Symbol 'WMB' (MT5-Name 'WMB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 01:12:46,186 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'WMB', 'direction': 'Long', 'entry': 70.16, 'sl': 67.14, 'tp': 74.69}}
+2026-07-29 01:12:46,188 WARNING executor: Symbol 'PWR' (MT5-Name 'PWR') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 01:12:46,188 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PWR', 'direction': 'Long', 'entry': 588.36, 'sl': 527.02, 'tp': 680.37}}
+2026-07-29 01:12:46,189 WARNING executor: Symbol 'WST' (MT5-Name 'WST') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 01:12:46,189 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'WST', 'direction': 'Long', 'entry': 337.0, 'sl': 320.61, 'tp': 361.59}}
+2026-07-29 01:12:46,190 INFO executor: [DRY_RUN] Würde Order senden: {'symbol': 'UPS', 'volume': 36.0, 'type': 'BUY', 'entry': 106.03, 'sl': 99.26, 'tp': 114.94}
+2026-07-29 01:12:46,190 INFO run_once: Ergebnis: {'status': 'dry_run', 'order': {'symbol': 'UPS', 'volume': 36.0, 'type': 'BUY', 'entry': 106.03, 'sl': 99.26, 'tp': 114.94}, 'signal': {'symbol': 'UPS', 'direction': 'Long', 'entry': 105.53, 'sl': 99.26, 'tp': 114.94}}
+2026-07-29 01:12:46,191 WARNING executor: Symbol 'MCHP' (MT5-Name 'MCHP') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 01:12:46,191 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MCHP', 'direction': 'Long', 'entry': 75.71, 'sl': 67.62, 'tp': 87.85}}
+2026-07-29 01:12:46,192 WARNING executor: Symbol 'ETN' (MT5-Name 'ETN') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 01:12:46,192 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ETN', 'direction': 'Long', 'entry': 386.26, 'sl': 368.27, 'tp': 413.24}}
+2026-07-29 01:12:46,193 INFO executor: [DRY_RUN] Würde Order senden: {'symbol': 'ADI', 'volume': 11.0, 'type': 'BUY', 'entry': 370.61, 'sl': 348.46, 'tp': 391.88}
+2026-07-29 01:12:46,193 INFO run_once: Ergebnis: {'status': 'dry_run', 'order': {'symbol': 'ADI', 'volume': 11.0, 'type': 'BUY', 'entry': 370.61, 'sl': 348.46, 'tp': 391.88}, 'signal': {'symbol': 'ADI', 'direction': 'Long', 'entry': 365.83, 'sl': 348.46, 'tp': 391.88}}
+2026-07-29 01:12:46,193 INFO run_once: === Lauf beendet ===

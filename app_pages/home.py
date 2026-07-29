@@ -13,13 +13,13 @@ st.set_page_config(
 
 Ein Ort für alle Backtests: jede Karte unten ist eine eigenständige,
 interaktive Strategie mit ihren eigenen Kennzahlen, Charts und
-Parameter-Reglern. Alle vier sind ehrlich dokumentiert — inklusive der
+Parameter-Reglern. Alle fünf sind ehrlich dokumentiert — inklusive der
 Stellen, wo die Strategie **keinen** robusten Edge zeigt.
 """
 
 st.space("medium")
 
-col1, col2, col3, col4 = st.columns(4, border=True)
+col1, col2, col3 = st.columns(3, border=True)
 
 with col1:
     st.markdown("### :material/candlestick_chart: ADX-VWAP FX-Strategie")
@@ -80,6 +80,9 @@ with col3:
         )
     st.page_link("app_pages/ema_combined.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
 
+st.space("small")
+col4, col5 = st.columns(2, border=True)
+
 with col4:
     st.markdown("### :material/schedule: CLS-Squeeze")
     st.caption("CLS-Settlement-Cutoff + VWAP-Reversion/Momentum, London-Open")
@@ -99,8 +102,27 @@ with col4:
         )
     st.page_link("app_pages/cls_squeeze.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
 
+with col5:
+    st.markdown("### :material/checklist: Checklist-Strategie")
+    st.caption("4-Indikator-Setup (Nutzer-Idee), EUR/USD M15")
+    st.markdown(
+        "Nadaraya-Watson Envelope (Durchbruch) → RSI Multi-Length [LuxAlgo] "
+        "(Bestätigung) → RSI(14)+SMA(14)-Kreuzung (Entry). ATR-Stop, festes "
+        "1:2 R:R, Breakeven bei 1:1. Erlaubt mehrere gleichzeitig offene "
+        "Positionen. Optionaler Regime-Filter (ADX/Volatilität)."
+    )
+    with st.container(border=True):
+        st.markdown("**Ehrlicher Befund**")
+        st.caption(
+            "Baseline: 1265 Trades, Sharpe -0.14, Win-Rate 24% (bräuchte ~33% "
+            "für Break-even). Regime-Filter \"ADX<25\" reduziert auf nur 30 "
+            "Trades — sieht gepoolt gut aus, ist aber zu dünn, um zu vertrauen "
+            "(Ø Jahres-Sharpe tatsächlich -0.09)."
+        )
+    st.page_link("app_pages/checklist.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
+
 st.space("medium")
 st.caption(
-    "Alle vier Strategien sind Forschungs-/Lernprojekte, keine Anlageberatung. "
+    "Alle fünf Strategien sind Forschungs-/Lernprojekte, keine Anlageberatung. "
     "Backtests sind kein Beweis für zukünftige Performance."
 )

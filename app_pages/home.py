@@ -81,7 +81,7 @@ with col3:
     st.page_link("app_pages/ema_combined.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
 
 st.space("small")
-col4, col5 = st.columns(2, border=True)
+col4, col5, col6 = st.columns(3, border=True)
 
 with col4:
     st.markdown("### :material/schedule: CLS-Squeeze")
@@ -103,6 +103,26 @@ with col4:
     st.page_link("app_pages/cls_squeeze.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
 
 with col5:
+    st.markdown("### :material/timeline: CLS Advanced")
+    st.caption("Settlement-Fenster-Entscheidungsbaum (06:00-12:00), Break-Hold-Test")
+    st.markdown(
+        "Multi-Fenster-Framework (Pre-Settle/Settle/Test/Post-Settle, deutsche Zeit): "
+        "haelt der 06:00-09:00-Move den 09:15-Test, bestaetigt durch eine breite "
+        "Dollar-Bewegung über die anderen 5 Majors? Zwei Modelle: Continuation "
+        "(gehaltener Break) und Reversal (Fade eines gescheiterten Breaks). Eigener "
+        "Tab \"Strategiebestandteile\" erklaert das Framework im Detail."
+    )
+    with st.container(border=True):
+        st.markdown("**Ehrlicher Befund**")
+        st.caption(
+            "Auf 10 Jahren/6 Paaren haelt die Kernthese: bestaetigte Breaks halten "
+            "konsistent oefter (~53-59%) als unbestaetigte (~40-53%). Als mechanische "
+            "Handelsregel aber kein Edge (Profit Factor 0.91-0.96, nach Kosten leicht "
+            "negativ) — der \"Rates\"-Teil der Quelle ist mangels Datenquelle nicht getestet."
+        )
+    st.page_link("app_pages/cls_advanced.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
+
+with col6:
     st.markdown("### :material/checklist: Checklist-Strategie")
     st.caption("4-Indikator-Setup (Nutzer-Idee), EUR/USD M15")
     st.markdown(

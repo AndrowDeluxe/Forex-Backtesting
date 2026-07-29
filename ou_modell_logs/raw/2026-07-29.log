@@ -67,3 +67,79 @@
 2026-07-29 01:12:46,193 INFO executor: [DRY_RUN] Würde Order senden: {'symbol': 'ADI', 'volume': 11.0, 'type': 'BUY', 'entry': 370.61, 'sl': 348.46, 'tp': 391.88}
 2026-07-29 01:12:46,193 INFO run_once: Ergebnis: {'status': 'dry_run', 'order': {'symbol': 'ADI', 'volume': 11.0, 'type': 'BUY', 'entry': 370.61, 'sl': 348.46, 'tp': 391.88}, 'signal': {'symbol': 'ADI', 'direction': 'Long', 'entry': 365.83, 'sl': 348.46, 'tp': 391.88}}
 2026-07-29 01:12:46,193 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260729_153502.log =====
+2026-07-29 15:35:02,178 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260729_153502.log ===
+2026-07-29 15:35:02,291 INFO executor: SL für CAH (Ticket 17436591) auf Break-Even (222.4200) gesetzt.
+2026-07-29 15:35:02,339 INFO executor: SL für CAH (Ticket 17436636) auf Break-Even (222.2900) gesetzt.
+2026-07-29 15:35:02,389 INFO executor: SL für STX (Ticket 17530603) auf Break-Even (721.5500) gesetzt.
+2026-07-29 15:35:02,437 INFO executor: SL für WDC (Ticket 17530621) auf Break-Even (432.6600) gesetzt.
+2026-07-29 15:35:02,439 INFO run_once: Break-Even-Management: [{'status': 'moved', 'ticket': 17436591, 'symbol': 'CAH', 'sl': 222.42}, {'status': 'moved', 'ticket': 17436636, 'symbol': 'CAH', 'sl': 222.29}, {'status': 'moved', 'ticket': 17530603, 'symbol': 'STX', 'sl': 721.55}, {'status': 'moved', 'ticket': 17530621, 'symbol': 'WDC', 'sl': 432.66}]
+2026-07-29 15:35:51,846 WARNING run_once: Scan-Versuch 1 fehlgeschlagen: Keine Tabelle mit den erwarteten Spalten ['entry', 'sl', 'symbol', 'tp'] gefunden. Gefundene Tabellen-Header: [['Jahr', 'Return']]. _COLUMN_ALIASES in scanner.py ggf. anpassen.
+2026-07-29 15:36:26,808 WARNING run_once: Scan-Versuch 2 fehlgeschlagen: Keine Tabelle mit den erwarteten Spalten ['entry', 'sl', 'symbol', 'tp'] gefunden. Gefundene Tabellen-Header: [['Jahr', 'Return']]. _COLUMN_ALIASES in scanner.py ggf. anpassen.
+2026-07-29 15:36:26,809 ERROR run_once: Scan endgültig fehlgeschlagen nach 2 Versuchen: Keine Tabelle mit den erwarteten Spalten ['entry', 'sl', 'symbol', 'tp'] gefunden. Gefundene Tabellen-Header: [['Jahr', 'Return']]. _COLUMN_ALIASES in scanner.py ggf. anpassen.
+
+
+===== run_20260729_183001.log =====
+2026-07-29 18:30:01,757 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260729_183001.log ===
+2026-07-29 18:30:20,959 INFO run_once: 11 Signal(e) gescannt.
+2026-07-29 18:30:20,962 INFO run_once: Tages-Drawdown-Check: Baseline-Equity 98146.49, aktueller Drawdown 0.34% (Limit 2.0%)
+2026-07-29 18:30:20,967 INFO executor: Für AMD ist bereits eine Position offen (Ticket 17530508) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-07-29 18:30:20,967 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'AMD', 'direction': 'Long', 'entry': 455.08, 'sl': 398.14, 'tp': 540.49}}
+2026-07-29 18:30:20,969 INFO executor: Für UPS ist bereits eine Position offen (Ticket 17530516) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-07-29 18:30:20,969 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'UPS', 'direction': 'Long', 'entry': 104.92, 'sl': 98.5, 'tp': 114.55}}
+2026-07-29 18:30:20,971 WARNING executor: Symbol 'PWR' (MT5-Name 'PWR') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 18:30:20,971 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PWR', 'direction': 'Long', 'entry': 589.11, 'sl': 527.94, 'tp': 680.86}}
+2026-07-29 18:30:20,972 WARNING executor: Symbol 'MAS' (MT5-Name 'MAS') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 18:30:20,972 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MAS', 'direction': 'Long', 'entry': 73.31, 'sl': 68.57, 'tp': 80.43}}
+2026-07-29 18:30:20,974 WARNING executor: Symbol 'WST' (MT5-Name 'WST') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 18:30:20,974 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'WST', 'direction': 'Long', 'entry': 337.02, 'sl': 320.63, 'tp': 361.6}}
+2026-07-29 18:30:20,975 WARNING executor: Symbol 'ETN' (MT5-Name 'ETN') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 18:30:20,975 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ETN', 'direction': 'Long', 'entry': 384.45, 'sl': 366.04, 'tp': 412.05}}
+2026-07-29 18:30:20,977 WARNING executor: Symbol 'MCHP' (MT5-Name 'MCHP') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 18:30:20,977 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MCHP', 'direction': 'Long', 'entry': 75.5, 'sl': 67.36, 'tp': 87.7}}
+2026-07-29 18:30:20,978 WARNING executor: Aktueller Kurs 354.7800 für ADI weicht 10.6500 vom Website-Entry 365.4300 ab (Limit 7.3086 = 2.0%) - Signal wird übersprungen.
+2026-07-29 18:30:20,979 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'entry_price_moved_too_far', 'signal': {'symbol': 'ADI', 'direction': 'Long', 'entry': 365.43, 'sl': 347.97, 'tp': 391.62}}
+2026-07-29 18:30:20,980 WARNING executor: Symbol 'WMB' (MT5-Name 'WMB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 18:30:20,980 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'WMB', 'direction': 'Long', 'entry': 71.02, 'sl': 68.21, 'tp': 75.23}}
+2026-07-29 18:30:20,981 WARNING executor: Symbol 'IFX.DE' (MT5-Name 'IFX.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 18:30:20,981 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'IFX.DE', 'direction': 'Long', 'entry': 56.05, 'sl': 44.06, 'tp': 74.04}}
+2026-07-29 18:30:20,983 WARNING executor: Symbol 'ON' (MT5-Name 'ON') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 18:30:20,983 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ON', 'direction': 'Long', 'entry': 84.24, 'sl': 77.17, 'tp': 94.83}}
+2026-07-29 18:30:20,983 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260729_213002.log =====
+2026-07-29 21:30:02,131 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260729_213002.log ===
+2026-07-29 21:30:02,198 INFO executor: SL für FTNT (Ticket 17530650) auf Break-Even (149.0800) gesetzt.
+2026-07-29 21:30:02,201 INFO executor: Position 17563565 (CMI) hat keine gespeicherten Metadaten (vermutlich manuell/vor der Automatisierung eröffnet) - aktueller SL 581.9400 wird als Referenz für den Risiko-Abstand übernommen.
+2026-07-29 21:30:02,208 INFO executor: Position 17569092 (MU) hat keine gespeicherten Metadaten (vermutlich manuell/vor der Automatisierung eröffnet) - aktueller SL 623.1600 wird als Referenz für den Risiko-Abstand übernommen.
+2026-07-29 21:30:02,214 INFO run_once: Break-Even-Management: [{'status': 'moved', 'ticket': 17530650, 'symbol': 'FTNT', 'sl': 149.08}]
+2026-07-29 21:30:22,379 INFO run_once: 12 Signal(e) gescannt.
+2026-07-29 21:30:22,382 INFO run_once: Tages-Drawdown-Check: Baseline-Equity 98146.49, aktueller Drawdown -0.19% (Limit 2.0%)
+2026-07-29 21:30:22,386 INFO executor: Für AMD ist bereits eine Position offen (Ticket 17530508) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-07-29 21:30:22,387 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'AMD', 'direction': 'Long', 'entry': 439.29, 'sl': 377.86, 'tp': 531.43}}
+2026-07-29 21:30:22,389 WARNING executor: Symbol 'HUM' (MT5-Name 'HUM') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 21:30:22,389 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'HUM', 'direction': 'Long', 'entry': 356.51, 'sl': 333.24, 'tp': 391.41}}
+2026-07-29 21:30:22,391 WARNING executor: Symbol 'PWR' (MT5-Name 'PWR') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 21:30:22,391 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PWR', 'direction': 'Long', 'entry': 561.78, 'sl': 493.54, 'tp': 664.13}}
+2026-07-29 21:30:22,392 WARNING executor: Symbol 'ON' (MT5-Name 'ON') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 21:30:22,393 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ON', 'direction': 'Long', 'entry': 80.97, 'sl': 73.12, 'tp': 92.76}}
+2026-07-29 21:30:22,394 INFO executor: Für MU ist bereits eine Position offen (Ticket 17569092) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-07-29 21:30:22,394 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'MU', 'direction': 'Long', 'entry': 765.71, 'sl': 605.42, 'tp': 1006.14}}
+2026-07-29 21:30:22,397 INFO executor: Für CMI ist bereits eine Position offen (Ticket 17563565) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-07-29 21:30:22,397 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CMI', 'direction': 'Long', 'entry': 609.3, 'sl': 567.73, 'tp': 671.65}}
+2026-07-29 21:30:22,399 WARNING executor: Symbol 'TT' (MT5-Name 'TT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 21:30:22,399 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'TT', 'direction': 'Long', 'entry': 448.48, 'sl': 430.44, 'tp': 475.53}}
+2026-07-29 21:30:22,401 WARNING executor: Symbol 'FIX' (MT5-Name 'FIX') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 21:30:22,401 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FIX', 'direction': 'Long', 'entry': 1526.19, 'sl': 1326.92, 'tp': 1825.09}}
+2026-07-29 21:30:22,403 WARNING executor: Symbol 'IFX.DE' (MT5-Name 'IFX.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 21:30:22,403 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'IFX.DE', 'direction': 'Long', 'entry': 54.48, 'sl': 42.14, 'tp': 72.99}}
+2026-07-29 21:30:22,405 WARNING executor: Symbol 'ETR' (MT5-Name 'ETR') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-07-29 21:30:22,405 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ETR', 'direction': 'Long', 'entry': 109.18, 'sl': 105.93, 'tp': 114.05}}
+2026-07-29 21:30:22,406 INFO executor: Für UPS ist bereits eine Position offen (Ticket 17530516) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-07-29 21:30:22,407 INFO run_once: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'UPS', 'direction': 'Long', 'entry': 104.32, 'sl': 97.75, 'tp': 114.18}}
+2026-07-29 21:30:22,603 INFO executor: Order gesendet: {'symbol': 'ADI', 'volume': 11.0, 'type': 'BUY', 'entry': 363.12, 'sl': 340.83, 'tp': 388.03} -> Ticket 17570943
+2026-07-29 21:30:22,608 INFO run_once: Ergebnis: {'status': 'sent', 'order': {'symbol': 'ADI', 'volume': 11.0, 'type': 'BUY', 'entry': 363.12, 'sl': 340.83, 'tp': 388.03}, 'signal': {'symbol': 'ADI', 'direction': 'Long', 'entry': 359.71, 'sl': 340.83, 'tp': 388.03}, 'ticket': 17570943}
+2026-07-29 21:30:22,613 INFO run_once: === Lauf beendet ===

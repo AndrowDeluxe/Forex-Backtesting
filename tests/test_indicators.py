@@ -3,7 +3,7 @@ import pandas as pd
 import pytest
 
 from strategy.indicators import (
-    _wilder_smooth,
+    wilder_smooth,
     compute_adx,
     compute_prev_session_extremes,
     compute_vwap_and_deviation,
@@ -74,12 +74,12 @@ def test_prev_session_extremes_has_no_lookahead_into_current_session():
     assert (out["prev_low"].iloc[2:4] == 0.90).all()
 
 
-def test_wilder_smooth_seed_is_mean_not_sum():
+def testwilder_smooth_seed_is_mean_not_sum():
     # A constant-input series must produce a constant smoothed output.
     # The paper's Appendix A code seeds with sum(first n) instead of
     # mean(first n), which would blow this up to n times the true value.
     series = pd.Series([2.0] * 40)
-    smoothed = _wilder_smooth(series, period=14)
+    smoothed = wilder_smooth(series, period=14)
     assert smoothed.iloc[14] == pytest.approx(2.0)
     assert smoothed.iloc[-1] == pytest.approx(2.0)
 

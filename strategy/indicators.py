@@ -62,7 +62,7 @@ def compute_prev_session_extremes(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def _wilder_smooth(series: pd.Series, period: int) -> pd.Series:
+def wilder_smooth(series: pd.Series, period: int) -> pd.Series:
     """Wilder smoothing (Eq. 6/7): X_t = ((n-1) X_{t-1} + x_t) / n.
 
     The paper's Appendix A listing seeds the recursion with
@@ -84,6 +84,16 @@ def _wilder_smooth(series: pd.Series, period: int) -> pd.Series:
     return pd.Series(out, index=series.index)
 
 
+def compute_atr(df: pd.DataFrame, n: int = 14) -> pd.Series:
+    """Wilder's ATR alone (Eq. 6), for strategies that need it without the
+    full ADX (e.g. an ATR-based stop-loss)."""
+    high, low, close = df["high"], df["low"], df["close"]
+    tr = pd.concat(
+        [high - low, (high - close.shift(1)).abs(), (low - close.shift(1)).abs()], axis=1
+    ).max(axis=1)
+    return wilder_smooth(tr, n)
+
+
 def compute_adx(df: pd.DataFrame, n: int = 14) -> pd.DataFrame:
     df = df.copy()
     high, low, close = df["high"], df["low"], df["close"]
@@ -98,9 +108,9 @@ def compute_adx(df: pd.DataFrame, n: int = 14) -> pd.DataFrame:
     plus_dm = pd.Series(np.where((up_move > down_move) & (up_move > 0), up_move, 0.0), index=df.index)
     minus_dm = pd.Series(np.where((down_move > up_move) & (down_move > 0), down_move, 0.0), index=df.index)
 
-    atr = _wilder_smooth(tr, n)
-    s_plus = _wilder_smooth(plus_dm, n)
-    s_minus = _wilder_smooth(minus_dm, n)
+    atr = wilder_smooth(tr, n)
+    s_plus = wilder_smooth(plus_dm, n)
+    s_minus = wilder_smooth(minus_dm, n)
 
     with np.errstate(divide="ignore", invalid="ignore"):
         plus_di = 100 * s_plus / atr
@@ -109,7 +119,7 @@ def compute_adx(df: pd.DataFrame, n: int = 14) -> pd.DataFrame:
         dx = 100 * (plus_di - minus_di).abs() / di_sum.where(di_sum != 0)
     dx = dx.fillna(0.0)
 
-    adx = _wilder_smooth(dx, n)
+    adx = wilder_smooth(dx, n)
 
     df["atr"] = atr
     df["plus_di"] = plus_di

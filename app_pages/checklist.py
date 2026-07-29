@@ -38,6 +38,14 @@ REGIME_ADX = "Nur ADX<25 (nicht stark trendend)"
 REGIME_VOL = "Nur Volatilität über eigenem Median"
 REGIME_BOTH = "Beide kombiniert"
 
+SESSION_NONE = "Kein Session-Filter"
+SESSION_LONDON_NY = "London+NY (07-22 UTC)"
+SESSION_BEST_HOURS = "Beste Stunden 2016-21 (⚠ scheitert Out-of-Sample)"
+BEST_HOURS_IS = {0, 3, 4, 5, 15, 16, 23}  # selected from 2016-2021 only, see MEMORY
+
+ENTRY_MA_CROSS = "RSI(14) kreuzt SMA(14) (Original)"
+ENTRY_LEVEL_CROSS = "RSI(14) durchbricht 70/30-Zone"
+
 
 @st.cache_data(ttl="1h", show_spinner="Lade Dukascopy-Historie...")
 def load_raw(pair: str, timeframe: str) -> pd.DataFrame:
@@ -45,22 +53,38 @@ def load_raw(pair: str, timeframe: str) -> pd.DataFrame:
 
 
 @st.cache_data(ttl="1h", show_spinner="Berechne Indikatoren & Checkliste...")
-def load_signaled(pair: str, timeframe: str, regime_choice: str) -> pd.DataFrame:
+def load_signaled(pair: str, timeframe: str, regime_choice: str, session_choice: str, entry_choice: str) -> pd.DataFrame:
     df = load_raw(pair, timeframe)
-    use_filter = regime_choice != REGIME_NONE
+    use_regime = regime_choice != REGIME_NONE
     require_trend = regime_choice in (REGIME_ADX, REGIME_BOTH)
     require_vol = regime_choice in (REGIME_VOL, REGIME_BOTH)
+
+    use_session = session_choice != SESSION_NONE
+    session_kwargs = {}
+    if session_choice == SESSION_LONDON_NY:
+        session_kwargs = dict(session_start_hour=7.0, session_end_hour=22.0)
+    elif session_choice == SESSION_BEST_HOURS:
+        session_kwargs = dict(session_allowed_hours=BEST_HOURS_IS)
+
+    entry_rule = "rsi_level_cross" if entry_choice == ENTRY_LEVEL_CROSS else "rsi_ma_cross"
+
     return run_checklist_pipeline(
         df,
-        use_regime_filter=use_filter,
+        use_regime_filter=use_regime,
         regime_require_not_trending=require_trend,
         regime_require_volatile=require_vol,
+        use_session_filter=use_session,
+        entry_rule=entry_rule,
+        **session_kwargs,
     )
 
 
 @st.cache_data(ttl="1h", show_spinner="Simuliere Trades...")
-def load_trades(pair: str, timeframe: str, regime_choice: str, spread_bps: float, stop_atr_mult: float) -> pd.DataFrame:
-    signaled = load_signaled(pair, timeframe, regime_choice)
+def load_trades(
+    pair: str, timeframe: str, regime_choice: str, session_choice: str, entry_choice: str,
+    spread_bps: float, stop_atr_mult: float,
+) -> pd.DataFrame:
+    signaled = load_signaled(pair, timeframe, regime_choice, session_choice, entry_choice)
     return simulate_checklist_trades(signaled, spread_bps=spread_bps, stop_atr_mult=stop_atr_mult)
 
 
@@ -69,32 +93,37 @@ with st.sidebar:
     pair = st.selectbox("Pair", PAIRS)
     timeframe = st.selectbox("Zeitrahmen", list(TIMEFRAMES), index=0)
     regime_choice = st.radio("Regime-Filter", [REGIME_NONE, REGIME_ADX, REGIME_VOL, REGIME_BOTH])
+    session_choice = st.radio("Session-Filter", [SESSION_NONE, SESSION_LONDON_NY, SESSION_BEST_HOURS])
+    entry_choice = st.radio("Entry-Regel", [ENTRY_MA_CROSS, ENTRY_LEVEL_CROSS])
     spread_bps = st.slider("Round-trip Spread (bps)", 0.0, 3.0, 0.3, 0.1)
     stop_atr_mult = st.slider("Stop-Distanz (x ATR(3))", 0.5, 5.0, 2.5, 0.25)
     st.caption(
         "Datenquelle: echte Dukascopy-Historie, 2016-2026, auf Festplatte "
-        "gecacht. Envelope-Fenster (500 Bars) ist eine Annahme, nicht aus "
-        "TradingView bestätigt - siehe Warnhinweis oben."
+        "gecacht. Envelope-Fenster (500 Bars, h=8, mult=3) ist vom Nutzer "
+        "gegen TradingView bestätigt."
     )
 
 st.warning(
     "**Erster systematischer Test dieser manuell gebackteten Strategie.** "
-    "Baseline (EUR/USD, M15, kein Filter): 1265 Trades über 10 Jahre, "
+    "Baseline (EUR/USD, M15, keine Filter): 1265 Trades über 10 Jahre, "
     "**Sharpe -0.14**, Win-Rate 24% (bräuchte ~33% für Break-even bei 1:2 R:R). "
-    "**Regime-Filter \"ADX<25\"** reduziert auf nur 30 Trades — sieht gepoolt "
-    "gut aus (Sharpe +0.33), aber der Mittelwert der Jahres-Sharpes ist "
-    "**-0.09** mit 4 von 9 Jahren bei 0% Trefferquote — zu dünn, um zu vertrauen. "
-    "Strukturgrund: die Checkliste feuert überproportional bei bereits "
-    "erhöhtem ADX, daher schließen sich \"Checkliste feuert\" und \"ADX niedrig\" "
-    "gegenseitig weitgehend aus. Details: MEMORY / `scripts/research_checklist_strategy.py`.",
+    "**Regime-Filter \"ADX<25\"**: nur 30 Trades, gepoolt gut (Sharpe +0.33), "
+    "aber Ø Jahres-Sharpe **-0.09** — zu dünn. **London+NY-Filter**: macht es "
+    "schlechter (Sharpe -0.35). **Beste-Stunden-Filter** (aus 2016-21 gewählt): "
+    "schlägt Out-of-Sample (2021-26) fehl (Sharpe -0.15 statt +0.15 ohne Filter) — "
+    "ein Lehrbuchbeispiel für In-Sample-Overfitting, nicht empfohlen, nur zur "
+    "Veranschaulichung enthalten. **Alternativer Entry (RSI-Zonen-Durchbruch)**: "
+    "2729 Trades, Sharpe -0.05, Profit-Factor 0.99 (näher an Break-even), aber "
+    "nur 3/9 Jahre positiv (weniger konsistent als Original). Details: MEMORY / "
+    "`scripts/research_checklist_*.py`.",
     icon=":material/warning:",
 )
 
-signaled = load_signaled(pair, timeframe, regime_choice)
-trades = load_trades(pair, timeframe, regime_choice, spread_bps, stop_atr_mult)
+signaled = load_signaled(pair, timeframe, regime_choice, session_choice, entry_choice)
+trades = load_trades(pair, timeframe, regime_choice, session_choice, entry_choice, spread_bps, stop_atr_mult)
 summary = summarize(trades, signaled.index)
 
-st.markdown(f"## :material/checklist: {pair} — {timeframe}, {regime_choice}")
+st.markdown(f"## :material/checklist: {pair} — {timeframe}, {regime_choice}, {session_choice}, {entry_choice}")
 
 with st.container(horizontal=True):
     st.metric("Sharpe (ann.)", f"{summary['sharpe']:.2f}", border=True)

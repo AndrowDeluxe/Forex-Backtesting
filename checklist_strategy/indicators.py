@@ -119,3 +119,21 @@ def compute_regime_ok(
     for cond in conditions[1:]:
         out = out & cond
     return out.fillna(False)
+
+
+def compute_session_ok(
+    index: pd.DatetimeIndex,
+    start_hour: float | None = None,
+    end_hour: float | None = None,
+    allowed_hours: set[int] | None = None,
+) -> pd.Series:
+    """Bar-level gate on UTC time-of-day. Either a contiguous window
+    [start_hour, end_hour) (e.g. London+NY combined ~07:00-22:00 UTC), or an
+    explicit, possibly non-contiguous set of hours via `allowed_hours` (e.g.
+    a hand-picked "best hours" set) - `allowed_hours` takes precedence when
+    given.
+    """
+    if allowed_hours is not None:
+        return pd.Series(index.hour.isin(allowed_hours), index=index)
+    hour = index.hour + index.minute / 60.0
+    return pd.Series((hour >= start_hour) & (hour < end_hour), index=index)

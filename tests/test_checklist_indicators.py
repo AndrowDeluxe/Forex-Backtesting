@@ -77,3 +77,19 @@ def test_regime_ok_lets_some_choppy_volatile_bars_through():
     # No sustained direction (low ADX) with real range (elevated ATR) should
     # pass at a materially higher rate than the clean-uptrend case above.
     assert reg.tail(150).mean() > 0.2
+
+
+def test_session_ok_range_gate():
+    from checklist_strategy.indicators import compute_session_ok
+
+    idx = pd.date_range("2024-01-01 05:00", periods=6, freq="h", tz="UTC")  # 05,06,07,08,09,10
+    out = compute_session_ok(idx, start_hour=7, end_hour=9)
+    assert list(out) == [False, False, True, True, False, False]
+
+
+def test_session_ok_explicit_hours_gate():
+    from checklist_strategy.indicators import compute_session_ok
+
+    idx = pd.date_range("2024-01-01 00:00", periods=5, freq="h", tz="UTC")  # 0,1,2,3,4
+    out = compute_session_ok(idx, allowed_hours={1, 3})
+    assert list(out) == [False, True, False, True, False]

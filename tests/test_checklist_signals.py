@@ -110,3 +110,54 @@ def test_regime_filter_allows_entry_when_regime_ok_is_true():
 
     out = generate_checklist_signals(df, require_regime_ok=True)
     assert out["signal"].iloc[7] == -1
+
+
+def test_session_filter_blocks_entry_outside_allowed_hours():
+    df = _base_df()
+    df["session_ok"] = True
+    df.loc[df.index[5], "close"] = 1.1020
+    df.loc[df.index[6], "avg_rsi"] = 75.0
+    df.loc[df.index[6], ["rsi", "rsi_ma"]] = [72.0, 60.0]
+    df.loc[df.index[7], ["rsi", "rsi_ma"]] = [58.0, 60.0]
+    df.loc[df.index[7], "session_ok"] = False  # outside the allowed session at the trigger bar
+
+    out = generate_checklist_signals(df, require_session_ok=True)
+    assert out["signal"].iloc[7] == 0
+
+
+def test_both_gates_must_pass_together():
+    df = _base_df()
+    df["regime_ok"] = True
+    df["session_ok"] = False  # session says no, regime says yes -> still blocked
+    df.loc[df.index[5], "close"] = 1.1020
+    df.loc[df.index[6], "avg_rsi"] = 75.0
+    df.loc[df.index[6], ["rsi", "rsi_ma"]] = [72.0, 60.0]
+    df.loc[df.index[7], ["rsi", "rsi_ma"]] = [58.0, 60.0]
+
+    out = generate_checklist_signals(df, require_regime_ok=True, require_session_ok=True)
+    assert out["signal"].iloc[7] == 0
+
+
+def test_rsi_level_cross_entry_fires_on_zone_breakout_without_ma_condition():
+    df = _base_df()
+    df.loc[df.index[5], "close"] = 1.1020  # short bias armed
+    df.loc[df.index[6], "avg_rsi"] = 75.0  # confirmed
+    # RSI crosses back down through 70 - note rsi_ma is set so an MA-cross
+    # would NOT fire (rsi stays above rsi_ma throughout), isolating the
+    # level-cross behaviour from the MA-cross behaviour.
+    df.loc[df.index[6], ["rsi", "rsi_ma"]] = [72.0, 50.0]
+    df.loc[df.index[7], ["rsi", "rsi_ma"]] = [68.0, 50.0]
+
+    level = generate_checklist_signals(df, entry_rule="rsi_level_cross")
+    ma = generate_checklist_signals(df, entry_rule="rsi_ma_cross")
+    assert level["signal"].iloc[7] == -1
+    assert ma["signal"].iloc[7] == 0  # rsi (68) never crossed below rsi_ma (50)
+
+
+def test_invalid_entry_rule_raises():
+    df = _base_df()
+    try:
+        generate_checklist_signals(df, entry_rule="something_else")
+        assert False, "expected ValueError"
+    except ValueError:
+        pass

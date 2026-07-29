@@ -4,6 +4,7 @@ import pandas as pd
 
 from checklist_strategy.indicators import (
     compute_regime_ok,
+    compute_session_ok,
     nadaraya_watson_envelope,
     rsi_multi_length,
     rsi_with_ma,
@@ -24,6 +25,11 @@ def run_checklist_pipeline(
     regime_vol_lookback: int = 200,
     regime_require_not_trending: bool = True,
     regime_require_volatile: bool = True,
+    use_session_filter: bool = False,
+    session_start_hour: float = 7.0,
+    session_end_hour: float = 22.0,
+    session_allowed_hours: set[int] | None = None,
+    entry_rule: str = "rsi_ma_cross",
 ) -> pd.DataFrame:
     """`use_regime_filter`: gate the final entry trigger on a market-state
     condition (see compute_regime_ok) - layered on top of the 4-indicator
@@ -31,6 +37,11 @@ def run_checklist_pipeline(
     (`regime_require_not_trending`) and volatility half
     (`regime_require_volatile`) can be tested individually - the combined
     filter can be too restrictive to sample from at all (see MEMORY).
+
+    `use_session_filter`: gate entries on time-of-day (default 07:00-22:00
+    UTC = London+NY combined). Indicators still run continuously on the
+    full 24h series (the envelope in particular needs a continuous causal
+    history) - only the entry trigger itself is time-restricted.
     """
     out = df.copy()
 
@@ -50,9 +61,13 @@ def run_checklist_pipeline(
         out, adx_threshold=regime_adx_threshold, vol_lookback=regime_vol_lookback,
         require_not_trending=regime_require_not_trending, require_volatile=regime_require_volatile,
     )
+    out["session_ok"] = compute_session_ok(
+        out.index, session_start_hour, session_end_hour, allowed_hours=session_allowed_hours
+    )
 
     out = generate_checklist_signals(
         out, confirm1_expiry_bars=confirm1_expiry_bars, confirm2_expiry_bars=confirm2_expiry_bars,
-        require_regime_ok=use_regime_filter,
+        require_regime_ok=use_regime_filter, require_session_ok=use_session_filter,
+        entry_rule=entry_rule,
     )
     return out

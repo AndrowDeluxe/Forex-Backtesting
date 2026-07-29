@@ -20,7 +20,7 @@ from strategy.metrics import equity_curve, trade_stats
 from strategy.real_data import fetch_pair_history
 
 st.set_page_config(
-    page_title="CLS Advanced",
+    page_title="CLS Strategie",
     page_icon=":material/timeline:",
     layout="wide",
 )
@@ -121,7 +121,7 @@ tab_components, tab_backtest = st.tabs(["Strategiebestandteile", "Backtest"])
 # Tab: Strategiebestandteile
 # =============================================================================
 with tab_components:
-    st.markdown("## :material/timeline: CLS Advanced -- Strategiebestandteile")
+    st.markdown("## :material/timeline: CLS Strategie -- Strategiebestandteile")
     st.caption("Quelle: \"CLS Advanced\" Call-Notizen, Smartmoneyhour / SMT Macro Desk, 27.07.2026")
 
     st.markdown(

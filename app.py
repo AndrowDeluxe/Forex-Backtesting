@@ -14,15 +14,16 @@ adx_vwap = st.Page(
 ema_sr = st.Page("app_pages/ema_sr.py", title="EMA S/R-Strategie", icon=":material/show_chart:")
 ema_combined = st.Page("app_pages/ema_combined.py", title="EMA kombiniert", icon=":material/merge:")
 cls_squeeze = st.Page("app_pages/cls_squeeze.py", title="CLS-Squeeze", icon=":material/schedule:")
-cls_advanced = st.Page("app_pages/cls_advanced.py", title="CLS Advanced", icon=":material/timeline:")
+cls_advanced = st.Page("app_pages/cls_advanced.py", title="CLS Strategie", icon=":material/timeline:")
 checklist = st.Page("app_pages/checklist.py", title="Checklist-Strategie", icon=":material/checklist:")
 ou_modell = st.Page("app_pages/ou_modell.py", title="OU-Modell", icon=":material/monitoring:")
 
 page = st.navigation(
     {
         "": [home],
-        "Backtests": [adx_vwap, ema_sr, ema_combined, cls_squeeze, cls_advanced, checklist],
         "Live Logs": [ou_modell],
+        "Backtests": [adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist],
+        "Strategie Bestandteile": [cls_advanced],
     }
 )
 page.run()

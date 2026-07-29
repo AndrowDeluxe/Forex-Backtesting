@@ -261,7 +261,9 @@ with tab_backtest:
                 raw = load_raw(pair)
                 sub_index = raw[(raw.index >= start_ts.tz_localize("UTC")) & (raw.index < end_ts.tz_localize("UTC"))].index
                 daily = trades_to_daily_returns(trades, sub_index)
-                curve = equity_curve(daily).rename("equity").reset_index(names="date")
+                curve = equity_curve(daily).rename("equity")
+                curve.index.name = "date"
+                curve = curve.reset_index()
                 chart = (
                     alt.Chart(curve)
                     .mark_line(color="#4c78a8")
@@ -280,7 +282,9 @@ with tab_backtest:
         with st.container(border=True):
             st.markdown("**Exit-Gruende**")
             if stats["n_trades"] > 0 and stats.get("exit_reason_counts"):
-                reason_df = pd.Series(stats["exit_reason_counts"]).rename("count").reset_index(names="reason")
+                reason_df = pd.Series(stats["exit_reason_counts"]).rename("count")
+                reason_df.index.name = "reason"
+                reason_df = reason_df.reset_index()
                 st.altair_chart(
                     alt.Chart(reason_df)
                     .mark_arc()

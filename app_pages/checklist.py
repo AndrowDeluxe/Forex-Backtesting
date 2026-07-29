@@ -16,6 +16,7 @@ import pandas as pd
 import streamlit as st
 from checklist_strategy.backtest import simulate_checklist_trades
 from checklist_strategy.pipeline import run_checklist_pipeline
+from combined_strategy.data import fetch_timeframe as fetch_other_asset
 from strategy.data import PAIRS
 from strategy.metrics import equity_curve, summarize
 from strategy.real_data import fetch_pair_history
@@ -32,6 +33,10 @@ TIMEFRAMES = {
     "H1": dukascopy_python.INTERVAL_HOUR_1,
     "H4": dukascopy_python.INTERVAL_HOUR_4,
 }
+# Gold/Oel/SP500/Nasdaq via combined_strategy's Dukascopy mapping (only M15
+# baseline has actually been honestly re-tested for these - see warning box).
+OTHER_ASSETS = ["GOLD", "OIL", "SP500", "NASDAQ"]
+ALL_ASSETS = PAIRS + OTHER_ASSETS
 
 REGIME_NONE = "Kein Regime-Filter (Baseline)"
 REGIME_ADX = "Nur ADX<25 (nicht stark trendend)"
@@ -49,6 +54,9 @@ ENTRY_LEVEL_CROSS = "RSI(14) durchbricht 70/30-Zone"
 
 @st.cache_data(ttl="1h", show_spinner="Lade Dukascopy-Historie...")
 def load_raw(pair: str, timeframe: str) -> pd.DataFrame:
+    if pair in OTHER_ASSETS:
+        df = fetch_other_asset(pair, timeframe, START, END)
+        return df.rename(columns={"Open": "open", "High": "high", "Low": "low", "Close": "close", "Volume": "volume"})
     return fetch_pair_history(pair, START, END, interval=TIMEFRAMES[timeframe])
 
 
@@ -90,7 +98,7 @@ def load_trades(
 
 with st.sidebar:
     st.markdown("### Konfiguration")
-    pair = st.selectbox("Pair", PAIRS)
+    pair = st.selectbox("Pair", ALL_ASSETS)
     timeframe = st.selectbox("Zeitrahmen", list(TIMEFRAMES), index=0)
     regime_choice = st.radio("Regime-Filter", [REGIME_NONE, REGIME_ADX, REGIME_VOL, REGIME_BOTH])
     session_choice = st.radio("Session-Filter", [SESSION_NONE, SESSION_LONDON_NY, SESSION_BEST_HOURS])
@@ -114,10 +122,23 @@ st.warning(
     "ein Lehrbuchbeispiel für In-Sample-Overfitting, nicht empfohlen, nur zur "
     "Veranschaulichung enthalten. **Alternativer Entry (RSI-Zonen-Durchbruch)**: "
     "2729 Trades, Sharpe -0.05, Profit-Factor 0.99 (näher an Break-even), aber "
-    "nur 3/9 Jahre positiv (weniger konsistent als Original). Details: MEMORY / "
-    "`scripts/research_checklist_*.py`.",
+    "nur 3/9 Jahre positiv (weniger konsistent als Original). **Andere Assets** "
+    "(M15, Baseline): Gold und Öl ähnlich flach/negativ wie EUR/USD, Nasdaq "
+    "klar schlechter (Sharpe -0.42), **S&P 500 auffällig besser** (Sharpe +0.23 "
+    "gepoolt, +0.34 im Jahresmittel, 6/10 Jahre positiv) — aber nur ein Asset, "
+    "kein bestätigter Edge. **Daily**: bei allen Assets nur 11-21 Trades über "
+    "9-10 Jahre — zu wenig, um überhaupt etwas zu sagen (nicht in dieser Ansicht "
+    "verfügbar). Details: MEMORY / `scripts/research_checklist_*.py`.",
     icon=":material/warning:",
 )
+
+if pair in OTHER_ASSETS and timeframe != "M15":
+    st.info(
+        f"{pair} wurde bisher nur auf M15 (Baseline) ehrlich getestet. "
+        f"{timeframe} für dieses Asset ist unerprobtes Terrain, kein "
+        "bestätigtes Ergebnis.",
+        icon=":material/science:",
+    )
 
 signaled = load_signaled(pair, timeframe, regime_choice, session_choice, entry_choice)
 trades = load_trades(pair, timeframe, regime_choice, session_choice, entry_choice, spread_bps, stop_atr_mult)

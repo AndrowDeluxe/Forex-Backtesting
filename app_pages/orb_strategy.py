@@ -119,7 +119,82 @@ if 0 < summary["n_trades"] < 100:
 
 st.space("medium")
 
-tab_overview, tab_robustness = st.tabs(["Uebersicht", "Robustheit (Jahre / IS-OOS / Kosten)"])
+tab_theory, tab_overview, tab_robustness = st.tabs(
+    ["Theorie & Vorgehensweise", "Uebersicht", "Robustheit (Jahre / IS-OOS / Kosten)"]
+)
+
+# =============================================================================
+# Tab: Theorie & Vorgehensweise
+# =============================================================================
+with tab_theory:
+    st.markdown("## :material/school: Theorie -- was macht das System?")
+    st.markdown(
+        "**Opening Range Breakout (ORB)** ist eine der aeltesten systematischen "
+        "Intraday-Ideen: jeder Handelstag hat einen Eroeffnungspreis, und wenn der "
+        "Kurs sich danach weit genug in eine Richtung bewegt, wird unterstellt, dass "
+        "diese Bewegung eher weitergeht als umkehrt (Momentum). Konkret spannt das "
+        "System pro Tag zwei Schwellen um den Open auf; durchbricht der Kurs die "
+        "obere Schwelle, wird Long gegangen (hier: nur Long, siehe unten), "
+        "durchbricht er die untere, waere es klassisch ein Short-Signal."
+    )
+    st.markdown(
+        "Die Idee dahinter (Crabels **Contraction-Expansion-Prinzip**): Maerkte "
+        "wechseln zwischen ruhigen Phasen und Ausbruchsphasen. Ein Ausbruch aus der "
+        "Open-Range soll genau den Beginn so einer Ausbruchsphase markieren."
+    )
+    st.page_link("app_pages/orb_writeup.py", label="Volle Herleitung aus dem Paper (Holmberg, Loennbark & Lundstroem, 2013)", icon=":material/menu_book:")
+
+    st.markdown("### Wie das System technisch funktioniert")
+    steps = [
+        (":material/looks_one: Schwelle berechnen", "Jeden Tag: obere/untere Schwelle = Tages-Open ± atr_mult × ATR(14) des VORTAGS (nie des laufenden Tages -- sonst waere das ein Blick in die Zukunft)."),
+        (":material/looks_two: Erster Durchbruch zaehlt", "Der erste M15-Bar des Tages, dessen High/Low eine Schwelle durchbricht, loest das Signal aus. Danach kein zweiter Einstieg mehr am selben Tag (klassische ORB-Konvention: ein Versuch pro Tag)."),
+        (":material/looks_3: Verzoegerte Ausfuehrung", "Um keinen Blick in die Zukunft zu haben, wird nicht auf dem Signal-Bar selbst gehandelt, sondern erst zur Eroeffnung des naechsten Bars -- ein realistischer, leicht konservativer Ausfuehrungs-Lag."),
+        (":material/looks_4: Stop & Exit", "Stop sitzt stop_atr_mult × M15-ATR(14) jenseits der durchbrochenen Schwelle. Ohne Stop-Treffer laeuft die Position bis zum Tagesschluss (session_end) -- klassisches ORB \"reite die Bewegung bis Handelsschluss\", kein festes Kursziel."),
+    ]
+    cols = st.columns(len(steps))
+    for col, (title, desc) in zip(cols, steps):
+        with col:
+            with st.container(border=True, height=230):
+                st.markdown(f"**{title}**")
+                st.markdown(desc)
+
+    st.markdown("### Vorgehensweise -- wie wir zu Long-only + ADX≥25 kamen")
+    st.markdown(
+        """
+1. **Baseline (Long+Short, kein Filter)** auf 5 Assets getestet (EUR/USD, Oel, Gold,
+   SP500, Nasdaq) -- durchweg flach bis leicht negativ, Nasdaq am staerksten (Sharpe
+   +0.59 gepoolt), aber noch nicht vertrauenswuerdig.
+2. **Stop-Bug gefunden:** der Stop nutzte dieselbe Tages-ATR wie die Schwelle selbst
+   und war dadurch fuer M15-Bewegungen viel zu weit -- griff in >99% der Trades nie.
+   Auf eine separate, M15-skalierte ATR fuer den Stop umgestellt (Schwelle bleibt
+   Tages-ATR-basiert).
+3. **Nasdaq-Deep-Dive:** Ergebnis nach Jahr, Tages-Volatilitaetsregime
+   (Contraction/Expansion), ADX-Bucket × ATR-Tercile, Long/Short, Wochentag und
+   Einstiegsstunde aufgeschluesselt. Zwei Muster sprangen heraus: (a) fast der
+   gesamte Edge kam von Long-Trades (Short nahe Break-even), (b) hohe ADX-Werte
+   (>=25, bereits trendender Markt) bei Entry zeigten deutlich bessere Profit
+   Factors als niedrige ADX-Werte -- staerker als der reine Volatilitaets-Effekt.
+4. **Filter abgeleitet und getestet:** Long-only allein hob Sharpe/Profit Factor
+   deutlich (10/10 Jahre im Schnitt positiv); ADX≥25 obendrauf verbesserte Profit
+   Factor nochmal, kostete aber ~22% der Trades.
+5. **Cross-Asset-Check:** derselbe Filter auf die anderen 4 Assets angewendet --
+   funktioniert nur auf Nasdaq und SP500 (beide US-Aktienindizes), nicht auf
+   EUR/USD, Oel oder Gold. Das spricht fuer einen Trendfortsetzungs-Effekt auf
+   strukturell steigenden Indizes, nicht fuer einen universellen Breakout-Edge.
+6. **Robustheits-Check:** Split in In-Sample (2016-2021, wo der Filter entdeckt
+   wurde) und Out-of-Sample (2021-2026). Beide Assets schwaechen sich OOS ab, aber
+   keiner kippt ins Negative -- Nasdaq robuster (PF 1.36 OOS) als SP500 (PF 1.16
+   OOS). Zusaetzlich ein Kosten-Stresstest (Breakeven-Spread) gerechnet.
+"""
+    )
+    st.warning(
+        "**Der Filter wurde am selben Datensatz entdeckt, auf dem er hier gezeigt "
+        "wird** -- deshalb ist der Out-of-Sample-Tab (nicht die volle Historie) der "
+        "ehrlichere Massstab, und der Stop greift weiterhin praktisch nie (siehe "
+        "Warnbox oben). Details, Zahlen und Code: `orb_strategy/pipeline.py`, "
+        "`scripts/research_orb_*.py`.",
+        icon=":material/warning:",
+    )
 
 with tab_overview:
     col1, col2 = st.columns([2, 1])

@@ -20,6 +20,9 @@ auction_playbook = st.Page("app_pages/auction_playbook.py", title="Auction Marke
 ou_modell = st.Page("app_pages/ou_modell.py", title="OU-Modell", icon=":material/monitoring:")
 orb_writeup = st.Page("app_pages/orb_writeup.py", title="Opening Range Breakout", icon=":material/bolt:")
 orb_strategy_page = st.Page("app_pages/orb_strategy.py", title="ORB Strategie", icon=":material/bolt:")
+paper_research = st.Page(
+    "app_pages/paper_research.py", title="Paper Research", icon=":material/travel_explore:"
+)
 
 page = st.navigation(
     {
@@ -27,6 +30,7 @@ page = st.navigation(
         "Live Logs": [ou_modell],
         "Backtests": [adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook, orb_strategy_page],
         "Strategie Bestandteile": [cls_advanced, orb_writeup],
+        "Paper Research": [paper_research],
     }
 )
 page.run()

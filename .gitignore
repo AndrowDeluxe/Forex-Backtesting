@@ -8,3 +8,7 @@ streamlit.log
 data_cache/
 data_cache_crypto/
 data_cache_futures/
+paper_cache/
+paper_research_cache/
+paper_dropbox/*
+!paper_dropbox/README.md

@@ -113,7 +113,7 @@ with tab_backtests:
         st.page_link("app_pages/ema_combined.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
 
     st.space("small")
-    col4, col5, _spacer = st.columns(3, border=True)
+    col4, col5, col6 = st.columns(3, border=True)
 
     with col4:
         st.markdown("### :material/schedule: CLS-Squeeze")
@@ -152,6 +152,25 @@ with tab_backtests:
                 "(Ø Jahres-Sharpe tatsächlich -0.09)."
             )
         st.page_link("app_pages/checklist.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
+
+    with col6:
+        st.markdown("### :material/gavel: Auction Market Playbook")
+        st.caption("Fabio Valentini Playbook: Trend Continuation + Mean Reversion, Krypto & Futures")
+        st.markdown(
+            "Eine vereinheitlichte State-Machine (Value-Area-Breakout haelt → Trend, "
+            "scheitert → Reversion) auf zwei Datenwelten: BTCUSDT/ETHUSDT (Binance, "
+            "echte Order-Flow-Aggression) und SP500/NASDAQ (Dukascopy E-mini-Proxy, "
+            "die tatsaechlich im Paper genannten Futures-Assets, Aggression genaehert)."
+        )
+        with st.container(border=True):
+            st.markdown("**Ehrlicher Befund**")
+            st.caption(
+                "Kein robuster Edge in keiner der drei getesteten Versionen. Median-R "
+                "ist fast ueberall -1.00, Profit Factor >1.0 verschwindet meist beim "
+                "Entfernen des einen besten Trades — Ausreisser-Effekt, keine Kante. "
+                "Futures-Assets (paper-treuer) sind tendenziell noch fragiler als Krypto."
+            )
+        st.page_link("app_pages/auction_playbook.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
 
 # =============================================================================
 # Strategie Bestandteile

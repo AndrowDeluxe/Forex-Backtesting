@@ -6,3 +6,5 @@ streamlit.log
 .venv/
 *.egg-info/
 data_cache/
+data_cache_crypto/
+data_cache_futures/

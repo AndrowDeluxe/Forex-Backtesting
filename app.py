@@ -16,13 +16,14 @@ ema_combined = st.Page("app_pages/ema_combined.py", title="EMA kombiniert", icon
 cls_squeeze = st.Page("app_pages/cls_squeeze.py", title="CLS-Squeeze", icon=":material/schedule:")
 cls_advanced = st.Page("app_pages/cls_advanced.py", title="CLS Strategie", icon=":material/timeline:")
 checklist = st.Page("app_pages/checklist.py", title="Checklist-Strategie", icon=":material/checklist:")
+auction_playbook = st.Page("app_pages/auction_playbook.py", title="Auction Market Playbook", icon=":material/gavel:")
 ou_modell = st.Page("app_pages/ou_modell.py", title="OU-Modell", icon=":material/monitoring:")
 
 page = st.navigation(
     {
         "": [home],
         "Live Logs": [ou_modell],
-        "Backtests": [adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist],
+        "Backtests": [adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook],
         "Strategie Bestandteile": [cls_advanced],
     }
 )

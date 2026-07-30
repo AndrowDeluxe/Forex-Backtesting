@@ -19,12 +19,13 @@ checklist = st.Page("app_pages/checklist.py", title="Checklist-Strategie", icon=
 auction_playbook = st.Page("app_pages/auction_playbook.py", title="Auction Market Playbook", icon=":material/gavel:")
 ou_modell = st.Page("app_pages/ou_modell.py", title="OU-Modell", icon=":material/monitoring:")
 orb_writeup = st.Page("app_pages/orb_writeup.py", title="Opening Range Breakout", icon=":material/bolt:")
+orb_strategy_page = st.Page("app_pages/orb_strategy.py", title="ORB Strategie", icon=":material/bolt:")
 
 page = st.navigation(
     {
         "": [home],
         "Live Logs": [ou_modell],
-        "Backtests": [adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook],
+        "Backtests": [adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook, orb_strategy_page],
         "Strategie Bestandteile": [cls_advanced, orb_writeup],
     }
 )

@@ -81,3 +81,31 @@
 2026-07-31 16:38:57,715 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EVRG', 'direction': 'Long', 'entry': 83.25, 'sl': 81.04, 'tp': 86.57}}
 2026-07-31 16:38:57,716 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'AEP', 'direction': 'Long', 'entry': 127.78, 'sl': 122.41, 'tp': 135.84}}
 2026-07-31 16:38:57,716 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260731_174131.log =====
+2026-07-31 17:41:31,785 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False) - Log: logs\konto1_ttp\run_20260731_174131.log ===
+2026-07-31 17:41:31,838 ERROR run_once.konto1_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+
+
+===== run_20260731_183513.log =====
+2026-07-31 18:35:13,009 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False) - Log: logs\konto1_ttp\run_20260731_183513.log ===
+2026-07-31 18:35:13,052 INFO run_once.konto1_ttp: 10 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-07-31 18:35:13,053 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 100754.58, aktueller Drawdown 0.31% (Limit 2.0%)
+2026-07-31 18:35:13,055 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ADS.DE', 'direction': 'Long', 'entry': 159.15, 'sl': 144.93, 'tp': 180.48}}
+2026-07-31 18:35:13,057 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'UDR', 'direction': 'Long', 'entry': 37.88, 'sl': 36.44, 'tp': 40.05}}
+2026-07-31 18:35:13,058 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MGM', 'direction': 'Long', 'entry': 44.43, 'sl': 42.99, 'tp': 46.59}}
+2026-07-31 18:35:13,059 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'LYV', 'direction': 'Long', 'entry': 173.26, 'sl': 167.41, 'tp': 182.04}}
+2026-07-31 18:35:13,060 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MAS', 'direction': 'Long', 'entry': 71.32, 'sl': 65.58, 'tp': 79.92}}
+2026-07-31 18:35:13,070 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'TROW', 'direction': 'Long', 'entry': 112.79, 'sl': 108.46, 'tp': 119.3}}
+2026-07-31 18:35:13,072 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ES', 'direction': 'Long', 'entry': 72.57, 'sl': 71.1, 'tp': 74.77}}
+2026-07-31 18:35:13,073 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PNW', 'direction': 'Long', 'entry': 101.42, 'sl': 96.75, 'tp': 108.43}}
+2026-07-31 18:35:13,613 INFO run_once.konto1_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'AAPL', 'volume': 12.0, 'type': 'BUY', 'entry': 300.43, 'sl': 280.87, 'tp': 334.37}, 'signal': {'symbol': 'AAPL', 'direction': 'Long', 'entry': 302.27, 'sl': 280.87, 'tp': 334.37}, 'ticket': 17627597}
+2026-07-31 18:35:13,622 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ESS', 'direction': 'Long', 'entry': 284.65, 'sl': 276.19, 'tp': 297.35}}
+2026-07-31 18:35:13,622 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260731_203717.log =====
+2026-07-31 20:37:17,539 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False) - Log: logs\konto1_ttp\run_20260731_203717.log ===
+2026-07-31 20:37:17,655 INFO run_once.konto1_ttp: Pending-Order-Management: [{'status': 'cancelled', 'ticket': 17594700, 'symbol': 'FLEX'}]
+2026-07-31 20:37:17,656 ERROR run_once.konto1_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.

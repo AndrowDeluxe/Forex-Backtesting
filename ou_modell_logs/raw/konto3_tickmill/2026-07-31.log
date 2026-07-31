@@ -77,3 +77,30 @@
 2026-07-31 16:38:58,268 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EVRG', 'direction': 'Long', 'entry': 83.25, 'sl': 81.04, 'tp': 86.57}}
 2026-07-31 16:38:58,269 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'AEP', 'direction': 'Long', 'entry': 127.78, 'sl': 122.41, 'tp': 135.84}}
 2026-07-31 16:38:58,269 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260731_174132.log =====
+2026-07-31 17:41:32,435 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False) - Log: logs\konto3_tickmill\run_20260731_174132.log ===
+2026-07-31 17:41:32,476 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+
+
+===== run_20260731_183514.log =====
+2026-07-31 18:35:14,278 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False) - Log: logs\konto3_tickmill\run_20260731_183514.log ===
+2026-07-31 18:35:14,328 INFO run_once.konto3_tickmill: 10 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-07-31 18:35:14,329 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3464.43, aktueller Drawdown 0.08% (Limit 20.0%)
+2026-07-31 18:35:14,331 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ADS.DE', 'direction': 'Long', 'entry': 159.15, 'sl': 144.93, 'tp': 180.48}}
+2026-07-31 18:35:14,333 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'UDR', 'direction': 'Long', 'entry': 37.88, 'sl': 36.44, 'tp': 40.05}}
+2026-07-31 18:35:14,334 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MGM', 'direction': 'Long', 'entry': 44.43, 'sl': 42.99, 'tp': 46.59}}
+2026-07-31 18:35:14,335 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'LYV', 'direction': 'Long', 'entry': 173.26, 'sl': 167.41, 'tp': 182.04}}
+2026-07-31 18:35:14,337 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MAS', 'direction': 'Long', 'entry': 71.32, 'sl': 65.58, 'tp': 79.92}}
+2026-07-31 18:35:14,348 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'TROW', 'direction': 'Long', 'entry': 112.79, 'sl': 108.46, 'tp': 119.3}}
+2026-07-31 18:35:14,349 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ES', 'direction': 'Long', 'entry': 72.57, 'sl': 71.1, 'tp': 74.77}}
+2026-07-31 18:35:14,350 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PNW', 'direction': 'Long', 'entry': 101.42, 'sl': 96.75, 'tp': 108.43}}
+2026-07-31 18:35:14,352 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'AAPL', 'direction': 'Long', 'entry': 302.27, 'sl': 280.87, 'tp': 334.37}}
+2026-07-31 18:35:14,353 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ESS', 'direction': 'Long', 'entry': 284.65, 'sl': 276.19, 'tp': 297.35}}
+2026-07-31 18:35:14,353 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260731_203718.log =====
+2026-07-31 20:37:18,444 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False) - Log: logs\konto3_tickmill\run_20260731_203718.log ===
+2026-07-31 20:37:18,455 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.

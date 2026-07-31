@@ -96,7 +96,10 @@ def generate_orb_signal(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
-def apply_orb_filters(df: pd.DataFrame, long_only: bool = False, adx_min: float | None = None) -> pd.DataFrame:
+def apply_orb_filters(
+    df: pd.DataFrame, long_only: bool = False, adx_min: float | None = None,
+    exclude_weekday: str | None = None,
+) -> pd.DataFrame:
     """Post-hoc entry filters, applied to an already-signaled frame (from
     generate_orb_signal). Deliberately does NOT re-trigger a long entry on a
     day whose only breakout was a short (or vice versa) - a filtered-out
@@ -112,22 +115,32 @@ def apply_orb_filters(df: pd.DataFrame, long_only: bool = False, adx_min: float 
     the deep-dive's regime_decomposition found the strongest buckets were
     ADX>=25 (PF 1.5-1.6) vs. ADX<25 being flat-to-losing (PF 0.45), a
     bigger effect than the volatility-tercile axis.
+    `exclude_weekday`: drop signals whose bar falls on this weekday (e.g.
+    "Thursday") - found by ranking weekdays on the In-Sample half
+    (2016-2021) and confirming the weakest one stayed a net loser on the
+    untouched Out-of-Sample half (2021-2026). Deliberately per-asset, not
+    a shared constant: Nasdaq's weakest day is Thursday, SP500's is Monday
+    - a shared "one filter fits all assets" search was abandoned after the
+    combined full-period view turned out to obscure this (see chat/MEMORY).
     """
     out = df.copy()
     if long_only:
         out.loc[out["signal"] == -1, "signal"] = 0
     if adx_min is not None:
         out.loc[out["adx"] < adx_min, "signal"] = 0
+    if exclude_weekday is not None:
+        out.loc[out.index.day_name() == exclude_weekday, "signal"] = 0
     return out
 
 
 def run_orb_pipeline(
     df: pd.DataFrame, atr_n: int = 14, atr_mult: float = 1.0,
     long_only: bool = False, adx_min: float | None = None,
+    exclude_weekday: str | None = None,
 ) -> pd.DataFrame:
     out = compute_orb_frame(df, atr_n=atr_n, atr_mult=atr_mult)
     out = generate_orb_signal(out)
-    out = apply_orb_filters(out, long_only=long_only, adx_min=adx_min)
+    out = apply_orb_filters(out, long_only=long_only, adx_min=adx_min, exclude_weekday=exclude_weekday)
     return out
 
 

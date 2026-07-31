@@ -25,6 +25,10 @@ START, END = "2016-07-28", "2026-07-28"
 SPLIT_DATE = "2021-07-28"
 ASSETS = ["NASDAQ", "SP500", "EURUSD", "GOLD", "OIL"]
 CONFIRMED_ASSETS = {"NASDAQ", "SP500"}
+# Per-asset weakest weekday, found by ranking on the In-Sample half (2016-2021)
+# and confirmed as a net loser on the untouched Out-of-Sample half (2021-2026)
+# - deliberately NOT a shared constant, see orb_strategy/pipeline.py docstring.
+WEEKDAY_FILTER = {"NASDAQ": "Thursday", "SP500": "Monday"}
 
 
 @st.cache_data(ttl="1h", show_spinner="Lade Historie (M15)...")
@@ -36,21 +40,21 @@ def load_raw(asset: str) -> pd.DataFrame:
 
 
 @st.cache_data(ttl="1h", show_spinner="Berechne ORB-Schwellen & Signale...")
-def load_signaled(asset: str, atr_mult: float, long_only: bool, adx_min: float | None) -> pd.DataFrame:
+def load_signaled(asset: str, atr_mult: float, long_only: bool, adx_min: float | None, exclude_weekday: str | None) -> pd.DataFrame:
     df = load_raw(asset)
-    return run_orb_pipeline(df, atr_n=14, atr_mult=atr_mult, long_only=long_only, adx_min=adx_min)
+    return run_orb_pipeline(df, atr_n=14, atr_mult=atr_mult, long_only=long_only, adx_min=adx_min, exclude_weekday=exclude_weekday)
 
 
 @st.cache_data(ttl="1h", show_spinner="Simuliere Trades...")
-def load_trades(asset: str, atr_mult: float, long_only: bool, adx_min: float | None, spread_bps: float, stop_atr_mult: float) -> pd.DataFrame:
-    signaled = load_signaled(asset, atr_mult, long_only, adx_min)
+def load_trades(asset: str, atr_mult: float, long_only: bool, adx_min: float | None, exclude_weekday: str | None, spread_bps: float, stop_atr_mult: float) -> pd.DataFrame:
+    signaled = load_signaled(asset, atr_mult, long_only, adx_min, exclude_weekday)
     cfg = BacktestConfig(spread_bps=spread_bps, stop_atr_mult=stop_atr_mult, use_vwap_target=False)
     return simulate_trades(signaled, cfg)
 
 
 @st.cache_data(ttl="1h", show_spinner="Berechne Breakeven-Spread...")
-def load_breakeven_spread(asset: str, atr_mult: float, long_only: bool, adx_min: float | None, stop_atr_mult: float) -> float:
-    signaled = load_signaled(asset, atr_mult, long_only, adx_min)
+def load_breakeven_spread(asset: str, atr_mult: float, long_only: bool, adx_min: float | None, exclude_weekday: str | None, stop_atr_mult: float) -> float:
+    signaled = load_signaled(asset, atr_mult, long_only, adx_min, exclude_weekday)
     cfg = BacktestConfig(spread_bps=0.3, stop_atr_mult=stop_atr_mult, use_vwap_target=False)
     return breakeven_spread_bps(signaled, cfg, lo=0.0, hi=30.0)
 
@@ -61,6 +65,13 @@ with st.sidebar:
     long_only = st.checkbox("Nur Long", value=True)
     use_adx_filter = st.checkbox("ADX-Filter (>=25 bei Entry)", value=True)
     adx_min = 25.0 if use_adx_filter else None
+    weekday_to_exclude = WEEKDAY_FILTER.get(asset)
+    if weekday_to_exclude:
+        use_weekday_filter = st.checkbox(f"Wochentag-Filter ({weekday_to_exclude} ausschliessen)", value=True)
+        exclude_weekday = weekday_to_exclude if use_weekday_filter else None
+    else:
+        exclude_weekday = None
+        st.caption(f"Kein Wochentag-Filter fuer {asset} bestaetigt (nur fuer Nasdaq/SP500 IS/OOS-validiert).")
     atr_mult = st.slider("Schwellen-Distanz (x Vortages-ATR)", 0.25, 3.0, 1.0, 0.25)
     stop_atr_mult = st.slider("Stop-Distanz (x M15-ATR)", 0.5, 5.0, 2.0, 0.5)
     spread_bps = st.slider("Round-trip Spread (bps)", 0.0, 5.0, 0.3, 0.1)
@@ -99,11 +110,16 @@ st.warning(
     icon=":material/report:",
 )
 
-trades = load_trades(asset, atr_mult, long_only, adx_min, spread_bps, stop_atr_mult)
-signaled = load_signaled(asset, atr_mult, long_only, adx_min)
+trades = load_trades(asset, atr_mult, long_only, adx_min, exclude_weekday, spread_bps, stop_atr_mult)
+signaled = load_signaled(asset, atr_mult, long_only, adx_min, exclude_weekday)
 summary = summarize(trades, signaled.index)
 
-st.markdown(f"## :material/bolt: {asset} -- ORB ({'Long-only' if long_only else 'Long+Short'}{' + ADX>=25' if use_adx_filter else ''})")
+config_label = (
+    ("Long-only" if long_only else "Long+Short")
+    + (" + ADX>=25" if use_adx_filter else "")
+    + (f" + ohne {exclude_weekday}" if exclude_weekday else "")
+)
+st.markdown(f"## :material/bolt: {asset} -- ORB ({config_label})")
 
 with st.container(horizontal=True):
     st.metric("Sharpe (ann.)", f"{summary['sharpe']:.2f}", border=True)
@@ -185,6 +201,22 @@ with tab_theory:
    wurde) und Out-of-Sample (2021-2026). Beide Assets schwaechen sich OOS ab, aber
    keiner kippt ins Negative -- Nasdaq robuster (PF 1.36 OOS) als SP500 (PF 1.16
    OOS). Zusaetzlich ein Kosten-Stresstest (Breakeven-Spread) gerechnet.
+7. **Stress-Test:** Parameter-Sensitivitaet (atr_mult/ADX-Schwelle nicht robust
+   in der Naehe der gewaehlten Werte), Monte-Carlo-Bootstrap der OOS-Trades
+   (~30% der Simulationen enden im Minus) und eine Kapital-Demo mit echtem
+   Position-Sizing (nur ~2%/Jahr CAGR, holprig statt gleichmaessig) - deutlich
+   nuechterner als die reine Sharpe-Zahl.
+8. **Breakeven & enger Stop getestet, beide wirkungslos:** ein Stop-auf-Einstieg-
+   Mechanismus greift kaum (die meisten Trades erreichen +0.5R gar nicht erst),
+   und selbst ein Stop bei nur 0.1x M15-ATR aendert den Exit-Mix praktisch nicht
+   -- das Risiko sitzt in von Anfang an falsch laufenden Trades, nicht in
+   Gewinn-Trades, die wieder zurueckfallen.
+9. **Wochentag-Filter, getrennt pro Asset:** In-Sample-Ranking (2016-2021) zeigt
+   fuer Nasdaq Donnerstag und fuer SP500 Montag als schwaechsten Wochentag -
+   beide auf der unberuehrten Out-of-Sample-Haelfte bestaetigt (die
+   Kontroll-Trades an genau diesem Tag sind dort tatsaechlich Verlust-Trades).
+   Bewusst **kein gemeinsamer Filter** fuer beide Assets - die Betrachtung als
+   ein Fall haette das verdeckt.
 """
     )
     st.warning(
@@ -372,7 +404,7 @@ with tab_robustness:
     st.space("medium")
 
     st.markdown("### Kosten-Sensitivitaet")
-    be_spread = load_breakeven_spread(asset, atr_mult, long_only, adx_min, stop_atr_mult)
+    be_spread = load_breakeven_spread(asset, atr_mult, long_only, adx_min, exclude_weekday, stop_atr_mult)
     st.metric("Breakeven Round-trip-Spread", f"{be_spread:.2f} bps", help="Ab diesem Spread (nur Spread, keine Slippage) wird der Ø-Trade-Return null.")
     st.caption(
         f"Aktuell modelliert: {spread_bps} bps. Solange der reale Round-trip-Spread "

@@ -74,3 +74,60 @@
 2026-07-31 21:43:24   connection_error: mt5.initialize failed: (-10005, 'IPC timeout')
 2026-07-31 21:43:24   hourly_breakdown: [{"time": "15:07", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "15:35", "signals_scanned": 12, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 12, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "15:40", "signals_scanned": 12, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 12, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "15:42", "signals_scanned": 12, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 12, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "16:38", "signals_scanned": 12, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 12, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "17:41", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "18:35", "signals_scanned": 10, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 10, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "20:37", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
 2026-07-31 21:43:24 
+2026-07-31 21:43:24 [main 98b3dff] OU-Modell: daily log 2026-07-31
+2026-07-31 21:43:24  5 files changed, 137 insertions(+), 3 deletions(-)
+2026-07-31 21:43:24 fatal: unable to access 'https://github.com/AndrowDeluxe/Forex-Backtesting.git/': Could not resolve host: github.com
+2026-07-31 21:43:24 WARNUNG: git push fehlgeschlagen (Exit 128) - Commit liegt lokal vor, aber Streamlit Cloud zeigt ihn NICHT bis zum naechsten erfolgreichen Push.
+2026-07-31 21:43:24 === Task beendet ===
+2026-08-01 21:40:02 === Task gestartet ===
+2026-08-01 21:43:21 OU-Modell Tages-Log erfasst (Konto 1 (TTP)):
+2026-08-01 21:43:21   date: 2026-08-01
+2026-08-01 21:43:21   account: Konto 1 (TTP)
+2026-08-01 21:43:21   signals_scanned: 0
+2026-08-01 21:43:21   orders_sent: 0
+2026-08-01 21:43:21   orders_skipped: 0
+2026-08-01 21:43:21   orders_error: 0
+2026-08-01 21:43:21   symbols_sent: 
+2026-08-01 21:43:21   baseline_equity: None
+2026-08-01 21:43:21   current_equity: None
+2026-08-01 21:43:21   floating_pnl: None
+2026-08-01 21:43:21   daily_pnl_pct: None
+2026-08-01 21:43:21   open_positions: None
+2026-08-01 21:43:21   drawdown_halted: False
+2026-08-01 21:43:21   connection_error: mt5.initialize failed: (-10005, 'IPC timeout')
+2026-08-01 21:43:21   hourly_breakdown: []
+2026-08-01 21:43:21 
+2026-08-01 21:43:21 OU-Modell Tages-Log erfasst (Konto 2 (TTP, Demo)):
+2026-08-01 21:43:21   date: 2026-08-01
+2026-08-01 21:43:21   account: Konto 2 (TTP, Demo)
+2026-08-01 21:43:21   signals_scanned: 0
+2026-08-01 21:43:21   orders_sent: 0
+2026-08-01 21:43:21   orders_skipped: 0
+2026-08-01 21:43:21   orders_error: 0
+2026-08-01 21:43:21   symbols_sent: 
+2026-08-01 21:43:21   baseline_equity: None
+2026-08-01 21:43:21   current_equity: None
+2026-08-01 21:43:21   floating_pnl: None
+2026-08-01 21:43:21   daily_pnl_pct: None
+2026-08-01 21:43:21   open_positions: None
+2026-08-01 21:43:21   drawdown_halted: False
+2026-08-01 21:43:21   connection_error: mt5.initialize failed: (-10005, 'IPC timeout')
+2026-08-01 21:43:21   hourly_breakdown: []
+2026-08-01 21:43:21 
+2026-08-01 21:43:21 OU-Modell Tages-Log erfasst (Konto 3 (Tickmill)):
+2026-08-01 21:43:21   date: 2026-08-01
+2026-08-01 21:43:21   account: Konto 3 (Tickmill)
+2026-08-01 21:43:21   signals_scanned: 0
+2026-08-01 21:43:21   orders_sent: 0
+2026-08-01 21:43:21   orders_skipped: 0
+2026-08-01 21:43:21   orders_error: 0
+2026-08-01 21:43:21   symbols_sent: 
+2026-08-01 21:43:21   baseline_equity: None
+2026-08-01 21:43:21   current_equity: None
+2026-08-01 21:43:21   floating_pnl: None
+2026-08-01 21:43:21   daily_pnl_pct: None
+2026-08-01 21:43:21   open_positions: None
+2026-08-01 21:43:21   drawdown_halted: False
+2026-08-01 21:43:21   connection_error: mt5.initialize failed: (-10005, 'IPC timeout')
+2026-08-01 21:43:21   hourly_breakdown: []
+2026-08-01 21:43:21 

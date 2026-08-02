@@ -1,0 +1,3 @@
+===== run_20260802_203733.log =====
+2026-08-02 20:37:33,733 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False) - Log: logs\konto3_tickmill\run_20260802_203733.log ===
+2026-08-02 20:37:33,749 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.

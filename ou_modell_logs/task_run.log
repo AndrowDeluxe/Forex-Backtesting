@@ -131,3 +131,60 @@
 2026-08-01 21:43:21   connection_error: mt5.initialize failed: (-10005, 'IPC timeout')
 2026-08-01 21:43:21   hourly_breakdown: []
 2026-08-01 21:43:21 
+2026-08-01 21:43:22 [main 52e13a2] OU-Modell: daily log 2026-08-01
+2026-08-01 21:43:22  2 files changed, 60 insertions(+)
+2026-08-01 21:43:22 fatal: unable to access 'https://github.com/AndrowDeluxe/Forex-Backtesting.git/': Could not resolve host: github.com
+2026-08-01 21:43:22 WARNUNG: git push fehlgeschlagen (Exit 128) - Commit liegt lokal vor, aber Streamlit Cloud zeigt ihn NICHT bis zum naechsten erfolgreichen Push.
+2026-08-01 21:43:22 === Task beendet ===
+2026-08-02 21:40:03 === Task gestartet ===
+2026-08-02 21:40:03 OU-Modell Tages-Log erfasst (Konto 1 (TTP)):
+2026-08-02 21:40:03   date: 2026-08-02
+2026-08-02 21:40:03   account: Konto 1 (TTP)
+2026-08-02 21:40:03   signals_scanned: 0
+2026-08-02 21:40:03   orders_sent: 0
+2026-08-02 21:40:03   orders_skipped: 0
+2026-08-02 21:40:03   orders_error: 0
+2026-08-02 21:40:03   symbols_sent: 
+2026-08-02 21:40:03   baseline_equity: None
+2026-08-02 21:40:03   current_equity: 100498.17
+2026-08-02 21:40:03   floating_pnl: 659.8199999999999
+2026-08-02 21:40:03   daily_pnl_pct: None
+2026-08-02 21:40:03   open_positions: CAH(+282.45); LUV(+4.95); AMD(+220.29); UPS(-67.92); MU(+111.52); ADI(+68.64); CAT(-11.68); WM(-18.63); TROW(-40.92); AAPL(+111.12)
+2026-08-02 21:40:03   drawdown_halted: False
+2026-08-02 21:40:03   connection_error: None
+2026-08-02 21:40:03   hourly_breakdown: [{"time": "20:37", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
+2026-08-02 21:40:03 
+2026-08-02 21:40:03 OU-Modell Tages-Log erfasst (Konto 2 (TTP, Demo)):
+2026-08-02 21:40:03   date: 2026-08-02
+2026-08-02 21:40:03   account: Konto 2 (TTP, Demo)
+2026-08-02 21:40:03   signals_scanned: 0
+2026-08-02 21:40:03   orders_sent: 0
+2026-08-02 21:40:03   orders_skipped: 0
+2026-08-02 21:40:03   orders_error: 0
+2026-08-02 21:40:03   symbols_sent: 
+2026-08-02 21:40:03   baseline_equity: None
+2026-08-02 21:40:04   current_equity: 99910.61
+2026-08-02 21:40:04   floating_pnl: -73.67
+2026-08-02 21:40:04   daily_pnl_pct: None
+2026-08-02 21:40:04   open_positions: ADI(-34.06); LUV(-28.52); UPS(-48.84); TROW(-44.64); AAPL(+82.39)
+2026-08-02 21:40:04   drawdown_halted: False
+2026-08-02 21:40:04   connection_error: None
+2026-08-02 21:40:04   hourly_breakdown: [{"time": "20:37", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
+2026-08-02 21:40:04 
+2026-08-02 21:40:04 OU-Modell Tages-Log erfasst (Konto 3 (Tickmill)):
+2026-08-02 21:40:04   date: 2026-08-02
+2026-08-02 21:40:04   account: Konto 3 (Tickmill)
+2026-08-02 21:40:04   signals_scanned: 0
+2026-08-02 21:40:04   orders_sent: 0
+2026-08-02 21:40:04   orders_skipped: 0
+2026-08-02 21:40:04   orders_error: 0
+2026-08-02 21:40:04   symbols_sent: 
+2026-08-02 21:40:04   baseline_equity: None
+2026-08-02 21:40:04   current_equity: 3470.96
+2026-08-02 21:40:04   floating_pnl: 7.42
+2026-08-02 21:40:04   daily_pnl_pct: None
+2026-08-02 21:40:04   open_positions: TROW(-5.83); AAPL(+13.25)
+2026-08-02 21:40:04   drawdown_halted: False
+2026-08-02 21:40:04   connection_error: None
+2026-08-02 21:40:04   hourly_breakdown: [{"time": "20:37", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
+2026-08-02 21:40:04 

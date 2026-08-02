@@ -1,0 +1,3 @@
+===== run_20260802_203727.log =====
+2026-08-02 20:37:27,445 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False) - Log: logs\konto2_ttp\run_20260802_203727.log ===
+2026-08-02 20:37:33,513 ERROR run_once.konto2_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.

@@ -35,6 +35,7 @@ class BacktestConfig:
     use_vwap_target: bool = True  # False for momentum/continuation signals, where "price already crossed VWAP" describes the entry, not a sane exit
     breakeven_trigger_r: float | None = None  # once confirmed-close profit >= this many R (R = initial entry-to-stop distance), move the stop to entry_price. None = disabled (default), matching every strategy that predates this field.
     trailing_atr_mult: float | None = None  # once enabled, the stop trails `trailing_atr_mult` ATRs behind the best confirmed-close seen so far in the trade's favour, ratcheting only (never loosens). Can combine with breakeven_trigger_r (breakeven simply becomes the trail's first, largest step). None = disabled (default).
+    take_profit_r: float | None = None  # exit (exit_reason="target") once confirmed-close profit >= this many R. None = disabled (default). Mutually sensible with use_vwap_target=False (ORB has no VWAP target of its own).
 
 
 def simulate_trades(df: pd.DataFrame, config: BacktestConfig = BacktestConfig()) -> pd.DataFrame:
@@ -81,6 +82,8 @@ def simulate_trades(df: pd.DataFrame, config: BacktestConfig = BacktestConfig())
         initial_risk = abs(entry_price - stop_level)
         be_moved = False
         best_favor_price = entry_price  # for trailing: best confirmed-close seen so far in the trade's favour
+        mfe = 0.0  # max favourable excursion seen so far, in price units (always tracked, regardless of TP config)
+        mae = 0.0  # max adverse excursion seen so far, in price units
 
         exit_i, exit_reason = None, None
         j = entry_i
@@ -89,8 +92,11 @@ def simulate_trades(df: pd.DataFrame, config: BacktestConfig = BacktestConfig())
                 exit_i, exit_reason = max(j - 1, entry_i), "session_end"
                 break
 
+            favor = (entry_price - close[j]) if direction == -1 else (close[j] - entry_price)
+            mfe = max(mfe, favor)
+            mae = min(mae, favor)
+
             if config.breakeven_trigger_r is not None and not be_moved and initial_risk > 0:
-                favor = (entry_price - close[j]) if direction == -1 else (close[j] - entry_price)
                 if favor >= config.breakeven_trigger_r * initial_risk:
                     stop_level = entry_price
                     be_moved = True
@@ -113,6 +119,9 @@ def simulate_trades(df: pd.DataFrame, config: BacktestConfig = BacktestConfig())
                 exit_i, exit_reason = j, "target"
                 break
             if config.use_vwap_target and direction == 1 and close[j] >= vwap[j]:
+                exit_i, exit_reason = j, "target"
+                break
+            if config.take_profit_r is not None and initial_risk > 0 and favor >= config.take_profit_r * initial_risk:
                 exit_i, exit_reason = j, "target"
                 break
             if config.max_hold_bars is not None and (j - entry_i) >= config.max_hold_bars:
@@ -141,6 +150,8 @@ def simulate_trades(df: pd.DataFrame, config: BacktestConfig = BacktestConfig())
                 "adx_at_entry": df["adx"].iloc[entry_i],
                 "atr_at_entry": atr[entry_i],
                 "moved_to_be": be_moved,
+                "mfe_r": (mfe / initial_risk) if initial_risk > 0 else float("nan"),
+                "mae_r": (mae / initial_risk) if initial_risk > 0 else float("nan"),
             }
         )
         i = exit_i + 1

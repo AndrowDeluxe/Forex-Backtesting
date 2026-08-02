@@ -40,10 +40,19 @@ from strategy.indicators import compute_adx, compute_atr
 
 
 def compute_orb_frame(
-    df: pd.DataFrame, atr_n: int = 14, atr_mult: float = 1.0, vol_regime_lookback: int = 60
+    df: pd.DataFrame, atr_n: int = 14, atr_mult: float = 1.0, vol_regime_lookback: int = 60,
+    volume_avg_n: int = 20,
 ) -> pd.DataFrame:
     out = df.copy()
     out["session"] = out.index.normalize()
+
+    if "volume" in out.columns:
+        # Shifted by 1 so the breakout bar's own volume never feeds into its
+        # own baseline (no lookahead) - a simple N-bar rolling average, not
+        # time-of-day-matched, so this is a blunt "busier than recent bars"
+        # measure, not a precise same-time-of-day seasonal baseline.
+        out["volume_avg"] = out["volume"].rolling(volume_avg_n, min_periods=volume_avg_n // 2).mean().shift(1)
+        out["volume_ratio"] = out["volume"] / out["volume_avg"]
 
     daily = out.resample("1D").agg({"open": "first", "high": "max", "low": "min", "close": "last"}).dropna()
     daily_atr = compute_atr(daily, n=atr_n).shift(1)  # prior day's ATR only - threshold calibration
@@ -98,7 +107,7 @@ def generate_orb_signal(df: pd.DataFrame) -> pd.DataFrame:
 
 def apply_orb_filters(
     df: pd.DataFrame, long_only: bool = False, adx_min: float | None = None,
-    exclude_weekday: str | None = None,
+    exclude_weekday: str | None = None, volume_min_ratio: float | None = None,
 ) -> pd.DataFrame:
     """Post-hoc entry filters, applied to an already-signaled frame (from
     generate_orb_signal). Deliberately does NOT re-trigger a long entry on a
@@ -122,6 +131,12 @@ def apply_orb_filters(
     a shared constant: Nasdaq's weakest day is Thursday, SP500's is Monday
     - a shared "one filter fits all assets" search was abandoned after the
     combined full-period view turned out to obscure this (see chat/MEMORY).
+    `volume_min_ratio`: drop signals where the breakout bar's volume is
+    below this multiple of its own trailing 20-bar average (`volume_ratio`
+    column) - an economically-motivated confirmation (a genuine breakout
+    should draw above-average participation, not just drift through on
+    thin volume), not another arbitrary numeric sweep. Requires a `volume`
+    column in the input data.
     """
     out = df.copy()
     if long_only:
@@ -130,17 +145,22 @@ def apply_orb_filters(
         out.loc[out["adx"] < adx_min, "signal"] = 0
     if exclude_weekday is not None:
         out.loc[out.index.day_name() == exclude_weekday, "signal"] = 0
+    if volume_min_ratio is not None:
+        out.loc[out["volume_ratio"] < volume_min_ratio, "signal"] = 0
     return out
 
 
 def run_orb_pipeline(
     df: pd.DataFrame, atr_n: int = 14, atr_mult: float = 1.0,
     long_only: bool = False, adx_min: float | None = None,
-    exclude_weekday: str | None = None,
+    exclude_weekday: str | None = None, volume_min_ratio: float | None = None,
 ) -> pd.DataFrame:
     out = compute_orb_frame(df, atr_n=atr_n, atr_mult=atr_mult)
     out = generate_orb_signal(out)
-    out = apply_orb_filters(out, long_only=long_only, adx_min=adx_min, exclude_weekday=exclude_weekday)
+    out = apply_orb_filters(
+        out, long_only=long_only, adx_min=adx_min, exclude_weekday=exclude_weekday,
+        volume_min_ratio=volume_min_ratio,
+    )
     return out
 
 

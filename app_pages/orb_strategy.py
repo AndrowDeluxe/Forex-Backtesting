@@ -217,6 +217,17 @@ with tab_theory:
    Kontroll-Trades an genau diesem Tag sind dort tatsaechlich Verlust-Trades).
    Bewusst **kein gemeinsamer Filter** fuer beide Assets - die Betrachtung als
    ein Fall haette das verdeckt.
+10. **MFE/MAE-Analyse:** 0% der Verlust-Trades standen jemals bei +1R im Plus,
+    bevor sie zum Verlust wurden - ein fester Take-Profit (1R bis 6R getestet)
+    aendert praktisch nichts, weil er nie erreicht wird. Kein weiterer Hebel
+    auf der Exit-Seite.
+11. **Volumen-Bestaetigung getestet und verworfen:** ein oekonomisch
+    plausibler Filter (Ausbruch nur bei ueberdurchschnittlichem Volumen) -
+    sah In-Sample immer besser aus, je strenger die Schwelle (Nasdaq Profit
+    Factor bis 8.25), brach aber Out-of-Sample fuer beide Assets komplett ein
+    (Sharpe auf 0.02-0.16) - ein Lehrbuchbeispiel fuer In-Sample-Overfitting,
+    bewusst nicht in den Filtern oben uebernommen, obwohl der wirtschaftliche
+    Gedanke dahinter plausibel war.
 """
     )
     st.warning(

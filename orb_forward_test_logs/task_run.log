@@ -11,3 +11,25 @@
 2026-08-03 23:07:05   floating_pnl: 0
 2026-08-03 23:07:05   open_positions: 
 2026-08-03 23:07:05   connection_error: None
+2026-08-03 23:07:06 [main 497db5e] ORB Forward-Test: daily log 2026-08-03
+2026-08-03 23:07:06  3 files changed, 34 insertions(+)
+2026-08-03 23:07:06  create mode 100644 orb_forward_test_logs/daily_log.csv
+2026-08-03 23:07:06  create mode 100644 orb_forward_test_logs/raw/2026-08-03.log
+2026-08-03 23:07:06  create mode 100644 orb_forward_test_logs/task_run.log
+2026-08-03 23:07:08 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-03 23:07:08    35fff84..497db5e  main -> main
+2026-08-03 23:07:08 Commit + Push erfolgreich.
+2026-08-03 23:07:08 === Task beendet ===
+2026-08-03 23:50:01 === Task gestartet ===
+2026-08-03 23:50:02 ORB-Forward-Test Tages-Log erfasst:
+2026-08-03 23:50:02   date: 2026-08-03
+2026-08-03 23:50:02   runs: 6
+2026-08-03 23:50:02   orders_sent: 0
+2026-08-03 23:50:02   orders_skipped: 0
+2026-08-03 23:50:02   orders_error: 0
+2026-08-03 23:50:02   session_end_closes: 0
+2026-08-03 23:50:02   symbols_traded: 
+2026-08-03 23:50:02   current_equity: 100000.0
+2026-08-03 23:50:02   floating_pnl: 0
+2026-08-03 23:50:02   open_positions: 
+2026-08-03 23:50:02   connection_error: None

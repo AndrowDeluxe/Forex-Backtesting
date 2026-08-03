@@ -1,0 +1,33 @@
+===== run_20260803_203520.log =====
+2026-08-03 20:35:20,939 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False) - Log: logs\konto1_ttp\run_20260803_203520.log ===
+2026-08-03 20:35:21,053 INFO run_once.konto1_ttp: 10 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-03 20:35:21,059 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 100556.08, aktueller Drawdown 0.00% (Limit 2.0%)
+2026-08-03 20:35:21,063 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'LIN.DE', 'direction': 'Long', 'entry': 418.6, 'sl': 395.51, 'tp': 453.23}}
+2026-08-03 20:35:21,606 INFO run_once.konto1_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'MAR', 'volume': 15.0, 'type': 'BUY', 'entry': 347.51, 'sl': 330.87, 'tp': 372.76}, 'signal': {'symbol': 'MAR', 'direction': 'Long', 'entry': 347.63, 'sl': 330.87, 'tp': 372.76}, 'ticket': 17656471}
+2026-08-03 20:35:21,613 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ADS.DE', 'direction': 'Long', 'entry': 165.75, 'sl': 153.28, 'tp': 184.46}}
+2026-08-03 20:35:21,615 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EIX', 'direction': 'Long', 'entry': 72.03, 'sl': 67.45, 'tp': 78.89}}
+2026-08-03 20:35:21,617 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ES', 'direction': 'Long', 'entry': 71.69, 'sl': 69.65, 'tp': 74.76}}
+2026-08-03 20:35:21,618 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ED', 'direction': 'Long', 'entry': 107.9, 'sl': 105.06, 'tp': 112.16}}
+2026-08-03 20:35:22,120 INFO run_once.konto1_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'LLY', 'volume': 4.0, 'type': 'BUY', 'entry': 1116.99, 'sl': 1055.43, 'tp': 1207.03}, 'signal': {'symbol': 'LLY', 'direction': 'Long', 'entry': 1116.07, 'sl': 1055.43, 'tp': 1207.03}, 'ticket': 17656472}
+2026-08-03 20:35:22,127 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MGM', 'direction': 'Long', 'entry': 44.38, 'sl': 42.8, 'tp': 46.75}}
+2026-08-03 20:35:22,628 INFO run_once.konto1_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'D', 'volume': 166.0, 'type': 'BUY', 'entry': 68.5, 'sl': 66.99, 'tp': 71.06}, 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.61, 'sl': 66.99, 'tp': 71.06}, 'ticket': 17656473}
+2026-08-03 20:35:22,638 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'OKE', 'direction': 'Long', 'entry': 87.47, 'sl': 83.98, 'tp': 92.7}}
+2026-08-03 20:35:22,638 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260803_213520.log =====
+2026-08-03 21:35:20,550 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False) - Log: logs\konto1_ttp\run_20260803_213520.log ===
+2026-08-03 21:35:20,663 INFO run_once.konto1_ttp: Break-Even-Management: [{'status': 'moved', 'ticket': 17466608, 'symbol': 'LUV', 'sl': 44.88}]
+2026-08-03 21:35:20,673 INFO run_once.konto1_ttp: 10 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-03 21:35:20,674 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 100556.08, aktueller Drawdown -0.05% (Limit 2.0%)
+2026-08-03 21:35:20,676 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'LIN.DE', 'direction': 'Long', 'entry': 418.6, 'sl': 395.51, 'tp': 453.23}}
+2026-08-03 21:35:20,677 INFO run_once.konto1_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'MAR', 'direction': 'Long', 'entry': 347.63, 'sl': 330.87, 'tp': 372.76}
+2026-08-03 21:35:20,678 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ADS.DE', 'direction': 'Long', 'entry': 165.75, 'sl': 153.28, 'tp': 184.46}}
+2026-08-03 21:35:20,680 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EIX', 'direction': 'Long', 'entry': 72.03, 'sl': 67.45, 'tp': 78.89}}
+2026-08-03 21:35:20,681 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ES', 'direction': 'Long', 'entry': 71.69, 'sl': 69.65, 'tp': 74.76}}
+2026-08-03 21:35:20,683 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ED', 'direction': 'Long', 'entry': 107.9, 'sl': 105.06, 'tp': 112.16}}
+2026-08-03 21:35:20,683 INFO run_once.konto1_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'LLY', 'direction': 'Long', 'entry': 1116.07, 'sl': 1055.43, 'tp': 1207.03}
+2026-08-03 21:35:20,685 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MGM', 'direction': 'Long', 'entry': 44.38, 'sl': 42.8, 'tp': 46.75}}
+2026-08-03 21:35:20,686 INFO run_once.konto1_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'D', 'direction': 'Long', 'entry': 68.61, 'sl': 66.99, 'tp': 71.06}
+2026-08-03 21:35:20,687 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'OKE', 'direction': 'Long', 'entry': 87.47, 'sl': 83.98, 'tp': 92.7}}
+2026-08-03 21:35:20,687 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===

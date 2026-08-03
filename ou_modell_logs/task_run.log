@@ -188,3 +188,60 @@
 2026-08-02 21:40:04   connection_error: None
 2026-08-02 21:40:04   hourly_breakdown: [{"time": "20:37", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
 2026-08-02 21:40:04 
+2026-08-02 21:40:04 [main 09dc602] OU-Modell: daily log 2026-08-02
+2026-08-02 21:40:04  5 files changed, 69 insertions(+)
+2026-08-02 21:40:04  create mode 100644 ou_modell_logs/raw/konto1_ttp/2026-08-02.log
+2026-08-02 21:40:04  create mode 100644 ou_modell_logs/raw/konto2_ttp/2026-08-02.log
+2026-08-02 21:40:04  create mode 100644 ou_modell_logs/raw/konto3_tickmill/2026-08-02.log
+2026-08-03 21:40:02 === Task gestartet ===
+2026-08-03 21:40:03 OU-Modell Tages-Log erfasst (Konto 1 (TTP)):
+2026-08-03 21:40:03   date: 2026-08-03
+2026-08-03 21:40:03   account: Konto 1 (TTP)
+2026-08-03 21:40:03   signals_scanned: 20
+2026-08-03 21:40:03   orders_sent: 3
+2026-08-03 21:40:03   orders_skipped: 14
+2026-08-03 21:40:03   orders_error: 0
+2026-08-03 21:40:03   symbols_sent: MAR;LLY;D
+2026-08-03 21:40:03   baseline_equity: 100556.08
+2026-08-03 21:40:03   current_equity: 100578.45
+2026-08-03 21:40:03   floating_pnl: 745.8199999999999
+2026-08-03 21:40:03   daily_pnl_pct: 0.0002224629281491019
+2026-08-03 21:40:03   open_positions: CAH(+412.65); LUV(+88.20); AMD(+234.29); UPS(-16.80); ADI(-12.54); CAT(+15.16); WM(-18.09); TROW(+32.24); AAPL(+54.36); MAR(+13.05); LLY(-1.92); D(-54.78)
+2026-08-03 21:40:03   drawdown_halted: False
+2026-08-03 21:40:03   connection_error: None
+2026-08-03 21:40:03   hourly_breakdown: [{"time": "20:35", "signals_scanned": 10, "sent": 3, "sent_symbols": ["MAR", "LLY", "D"], "pending_placed": 0, "pending_symbols": [], "skipped": 7, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "21:35", "signals_scanned": 10, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 7, "error": 0, "be_moved": 1, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
+2026-08-03 21:40:03 
+2026-08-03 21:40:03 OU-Modell Tages-Log erfasst (Konto 2 (TTP, Demo)):
+2026-08-03 21:40:03   date: 2026-08-03
+2026-08-03 21:40:03   account: Konto 2 (TTP, Demo)
+2026-08-03 21:40:03   signals_scanned: 20
+2026-08-03 21:40:03   orders_sent: 3
+2026-08-03 21:40:03   orders_skipped: 14
+2026-08-03 21:40:03   orders_error: 0
+2026-08-03 21:40:03   symbols_sent: MAR;LLY;D
+2026-08-03 21:40:03   baseline_equity: 100002.27
+2026-08-03 21:40:03   current_equity: 100002.23
+2026-08-03 21:40:03   floating_pnl: 17.95000000000001
+2026-08-03 21:40:03   daily_pnl_pct: -3.9999092028760016e-07
+2026-08-03 21:40:03   open_positions: ADI(-130.00); LUV(+86.18); UPS(+44.88); TROW(+28.52); AAPL(+30.36); MAR(+13.05); LLY(-1.92); D(-53.12)
+2026-08-03 21:40:03   drawdown_halted: False
+2026-08-03 21:40:03   connection_error: None
+2026-08-03 21:40:03   hourly_breakdown: [{"time": "20:35", "signals_scanned": 10, "sent": 3, "sent_symbols": ["MAR", "LLY", "D"], "pending_placed": 0, "pending_symbols": [], "skipped": 7, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "21:35", "signals_scanned": 10, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 7, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
+2026-08-03 21:40:03 
+2026-08-03 21:40:03 OU-Modell Tages-Log erfasst (Konto 3 (Tickmill)):
+2026-08-03 21:40:03   date: 2026-08-03
+2026-08-03 21:40:03   account: Konto 3 (Tickmill)
+2026-08-03 21:40:03   signals_scanned: 20
+2026-08-03 21:40:03   orders_sent: 2
+2026-08-03 21:40:03   orders_skipped: 15
+2026-08-03 21:40:03   orders_error: 1
+2026-08-03 21:40:03   symbols_sent: MAR;D
+2026-08-03 21:40:03   baseline_equity: 3471.46
+2026-08-03 21:40:03   current_equity: 3472.65
+2026-08-03 21:40:03   floating_pnl: 9.11
+2026-08-03 21:40:03   daily_pnl_pct: 0.00034279525041338644
+2026-08-03 21:40:03   open_positions: TROW(+6.46); AAPL(+5.06); MAR(+1.63); D(-5.39); LLY(+1.35)
+2026-08-03 21:40:03   drawdown_halted: False
+2026-08-03 21:40:03   connection_error: None
+2026-08-03 21:40:03   hourly_breakdown: [{"time": "20:35", "signals_scanned": 10, "sent": 2, "sent_symbols": ["MAR", "D"], "pending_placed": 0, "pending_symbols": [], "skipped": 7, "error": 1, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "21:35", "signals_scanned": 10, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 8, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
+2026-08-03 21:40:03 

@@ -1,0 +1,19 @@
+===== run_20260803_225627.log =====
+2026-08-03 22:56:27,616 INFO run_once: === Lauf gestartet (DRY_RUN=True) - Log: logs\run_20260803_225627.log ===
+2026-08-03 22:56:28,881 INFO run_once: USTEC: {'status': 'no_signal', 'symbol': 'USTEC'}
+2026-08-03 22:56:29,954 INFO run_once: US500: {'status': 'no_signal', 'symbol': 'US500'}
+2026-08-03 22:56:29,954 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260803_230040.log =====
+2026-08-03 23:00:40,015 INFO run_once: === Lauf gestartet (DRY_RUN=True) - Log: logs\run_20260803_230040.log ===
+2026-08-03 23:00:40,130 INFO run_once: USTEC: {'status': 'no_signal', 'symbol': 'USTEC'}
+2026-08-03 23:00:40,230 INFO run_once: US500: {'status': 'no_signal', 'symbol': 'US500'}
+2026-08-03 23:00:40,230 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260803_230405.log =====
+2026-08-03 23:04:05,181 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260803_230405.log ===
+2026-08-03 23:04:05,289 INFO run_once: USTEC: {'status': 'no_signal', 'symbol': 'USTEC'}
+2026-08-03 23:04:05,373 INFO run_once: US500: {'status': 'no_signal', 'symbol': 'US500'}
+2026-08-03 23:04:05,374 INFO run_once: === Lauf beendet ===

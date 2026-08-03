@@ -1,0 +1,13 @@
+2026-08-03 23:07:05 === Task gestartet ===
+2026-08-03 23:07:05 ORB-Forward-Test Tages-Log erfasst:
+2026-08-03 23:07:05   date: 2026-08-03
+2026-08-03 23:07:05   runs: 3
+2026-08-03 23:07:05   orders_sent: 0
+2026-08-03 23:07:05   orders_skipped: 0
+2026-08-03 23:07:05   orders_error: 0
+2026-08-03 23:07:05   session_end_closes: 0
+2026-08-03 23:07:05   symbols_traded: 
+2026-08-03 23:07:05   current_equity: 100000.0
+2026-08-03 23:07:05   floating_pnl: 0
+2026-08-03 23:07:05   open_positions: 
+2026-08-03 23:07:05   connection_error: None

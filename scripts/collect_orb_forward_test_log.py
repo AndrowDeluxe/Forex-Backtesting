@@ -30,7 +30,10 @@ BOT_STATE_DB = BOT_DIR / "state.sqlite3"
 REPO_DIR = Path(__file__).resolve().parents[1]
 OUT_DIR = REPO_DIR / "orb_forward_test_logs"
 OUT_CSV = OUT_DIR / "daily_log.csv"
+TRADES_CSV = OUT_DIR / "trades.csv"
 RAW_DIR = OUT_DIR / "raw"
+
+TRADE_FIELDS = ["trade_date", "symbol", "direction", "entry_price", "stop_price", "mt5_ticket", "executed_at", "dry_run"]
 
 # Mirrors config.py in the forward-test's own folder - kept as a plain
 # constant here rather than importing across repos.
@@ -88,6 +91,31 @@ def _executed_symbols_today(today: str) -> list[str]:
         conn.close()
 
 
+def _sync_trades_csv() -> None:
+    """Copies the full executed_signals table (every entry ever taken, not
+    just today's) into orb_forward_test_logs/trades.csv - the source of
+    truth for individual trade entries (symbol/direction/entry/stop),
+    which app_pages/orb_forward_test.py plots as markers on a candlestick
+    chart. Simpler and more reliable than regex-parsing log text for this,
+    since the state DB already has exactly these fields structured."""
+
+    if not BOT_STATE_DB.exists():
+        return
+    conn = sqlite3.connect(BOT_STATE_DB)
+    try:
+        rows = conn.execute(
+            "SELECT trade_date, symbol, direction, entry_price, stop_price, mt5_ticket, executed_at, dry_run "
+            "FROM executed_signals ORDER BY trade_date, symbol"
+        ).fetchall()
+    finally:
+        conn.close()
+
+    with open(TRADES_CSV, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(TRADE_FIELDS)
+        writer.writerows(rows)
+
+
 def _mt5_snapshot() -> dict:
     try:
         import MetaTrader5 as mt5
@@ -138,6 +166,7 @@ def collect(today: str | None = None) -> dict:
 
     OUT_DIR.mkdir(exist_ok=True)
     RAW_DIR.mkdir(exist_ok=True)
+    _sync_trades_csv()
 
     existing_rows = []
     if OUT_CSV.exists():

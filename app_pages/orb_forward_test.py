@@ -15,15 +15,31 @@ thin-sample discipline as everywhere else in this project.
 
 from pathlib import Path
 
+import altair as alt
 import pandas as pd
 
 import streamlit as st
+from combined_strategy.data import fetch_timeframe
 
 st.set_page_config(page_title="ORB Forward-Test -- Live Logs", page_icon=":material/bolt:", layout="wide")
 
 REPO_DIR = Path(__file__).resolve().parents[1]
 CSV_PATH = REPO_DIR / "orb_forward_test_logs" / "daily_log.csv"
+TRADES_CSV_PATH = REPO_DIR / "orb_forward_test_logs" / "trades.csv"
 RAW_DIR = REPO_DIR / "orb_forward_test_logs" / "raw"
+
+# MT5-Symbol (Demokonto) -> Dukascopy-Instrument-Key (combined_strategy.data),
+# fuer den Preis-Hintergrund des Kerzencharts - der Chart selbst kann nicht
+# live gegen MT5 gehen (siehe Modul-Docstring), nutzt also dieselbe
+# Dukascopy-Quelle wie der Rest des Dashboards.
+SYMBOL_TO_DUKASCOPY = {"USTEC": "NASDAQ", "US500": "SP500"}
+
+
+@st.cache_data(ttl="15m", show_spinner="Lade Kerzen-Daten...")
+def load_candles(mt5_symbol: str, start: str, end: str) -> pd.DataFrame:
+    duka_key = SYMBOL_TO_DUKASCOPY[mt5_symbol]
+    df = fetch_timeframe(duka_key, "M15", start, end)
+    return df.rename(columns={"Open": "open", "High": "high", "Low": "low", "Close": "close"})
 
 st.markdown("## :material/bolt: ORB Forward-Test -- Live-Log")
 
@@ -63,6 +79,56 @@ with st.container(horizontal=True):
 
 if isinstance(latest.get("connection_error"), str) and latest["connection_error"]:
     st.warning(f"MT5-Verbindung beim Erfassen dieses Tages fehlgeschlagen: {latest['connection_error']}", icon=":material/link_off:")
+
+st.space("medium")
+
+with st.container(border=True):
+    st.markdown("**Kerzenchart mit Einstiegen**")
+    symbol = st.selectbox("Symbol", list(SYMBOL_TO_DUKASCOPY), key="candle_symbol")
+
+    trades_df = pd.DataFrame()
+    if TRADES_CSV_PATH.exists():
+        all_trades = pd.read_csv(TRADES_CSV_PATH, parse_dates=["executed_at"])
+        trades_df = all_trades[all_trades["symbol"] == symbol]
+
+    today = pd.Timestamp.now("UTC").normalize()
+    if not trades_df.empty:
+        start = (trades_df["executed_at"].min().normalize() - pd.Timedelta(days=3)).strftime("%Y-%m-%d")
+        end = (max(trades_df["executed_at"].max().normalize(), today) + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
+    else:
+        start = (today - pd.Timedelta(days=10)).strftime("%Y-%m-%d")
+        end = (today + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
+
+    try:
+        candles = load_candles(symbol, start, end)
+    except Exception as e:  # Dukascopy kann fuer die juengsten Stunden noch keine Daten haben
+        candles = pd.DataFrame()
+        st.info(f"Kerzen-Daten (noch) nicht verfuegbar: {e}", icon=":material/info:")
+
+    if candles.empty:
+        st.info("Keine Kerzen-Daten fuer diesen Zeitraum.", icon=":material/info:")
+    else:
+        window = candles.reset_index(names="time")
+        base = alt.Chart(window).encode(x=alt.X("time:T", title="Zeit"))
+        bullish = alt.condition("datum.close >= datum.open", alt.value("#26a69a"), alt.value("#ef5350"))
+        wick = base.mark_rule().encode(y=alt.Y("low:Q", title="Preis", scale=alt.Scale(zero=False)), y2="high:Q", color=bullish)
+        body = base.mark_bar(size=3).encode(y="open:Q", y2="close:Q", color=bullish)
+        layers = [wick, body]
+
+        if not trades_df.empty:
+            marker_df = trades_df.copy()
+            marker_df["label"] = marker_df["direction"].map({"Long": "Long-Einstieg"}).fillna(marker_df["direction"])
+            layers.append(
+                alt.Chart(marker_df)
+                .mark_point(shape="triangle-up", size=220, filled=True, color="#2ca02c")
+                .encode(
+                    x="executed_at:T", y="entry_price:Q",
+                    tooltip=["executed_at:T", "symbol", alt.Tooltip("entry_price:Q", format=".2f"), alt.Tooltip("stop_price:Q", format=".2f"), "dry_run"],
+                )
+            )
+        st.altair_chart(alt.layer(*layers).properties(height=420).interactive())
+        if trades_df.empty:
+            st.caption("Noch keine Trades fuer dieses Symbol - Chart zeigt nur den Preisverlauf.")
 
 st.space("medium")
 

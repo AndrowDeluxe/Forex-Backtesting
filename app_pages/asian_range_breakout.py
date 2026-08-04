@@ -38,6 +38,19 @@ def load_data() -> pd.DataFrame:
     return fetch_gold_m15(START, END)
 
 
+@st.cache_data(ttl="1h", show_spinner="Lade aktuelle Gold M15-Daten...")
+def load_live_data() -> pd.DataFrame:
+    """Für den 'Live Entry-Signal'-Tab: bis HEUTE, nicht bis zum festen
+    Backtest-Enddatum (Bug behoben 2026-08-05 - vorher zeigte der Tab den
+    Stand vom Backtest-Ende, teils Tage/Wochen alt). Kürzeres TTL (1h statt
+    6h) und ein kürzeres Fenster (120 Tage reichen für den Chart), damit
+    der Cache öfter auffrischt und nicht unnötig die volle 10-Jahres-Historie
+    für einen reinen 'letzte paar Wochen'-Chart neu lädt."""
+    end = pd.Timestamp.now().strftime("%Y-%m-%d")
+    start = (pd.Timestamp.now() - pd.Timedelta(days=150)).strftime("%Y-%m-%d")
+    return fetch_gold_m15(start, end)
+
+
 @st.cache_data(ttl="6h", show_spinner="Simuliere Trades...")
 def load_trades(
     stop_frac: float,
@@ -353,9 +366,9 @@ with tab_backtest:
                 yearly_stats,
                 column_config={
                     "n_trades": st.column_config.NumberColumn("Trades"),
-                    "win_rate": st.column_config.NumberColumn("Win-Rate", format="%.1%%"),
+                    "win_rate": st.column_config.NumberColumn("Win-Rate", format="%.1f%%"),
                     "profit_factor": st.column_config.NumberColumn("Profit Factor", format="%.2f"),
-                    "total_return_pct": st.column_config.NumberColumn("Summe Return%", format="%.2%%"),
+                    "total_return_pct": st.column_config.NumberColumn("Summe Return%", format="%.2f%%"),
                 },
             )
 
@@ -373,7 +386,7 @@ with tab_backtest:
                     "entry_price": st.column_config.NumberColumn("Entry-Preis", format="%.2f"),
                     "exit_price": st.column_config.NumberColumn("Exit-Preis", format="%.2f"),
                     "sl": st.column_config.NumberColumn("SL", format="%.2f"),
-                    "return_pct": st.column_config.NumberColumn("Return", format="%.2%%"),
+                    "return_pct": st.column_config.NumberColumn("Return", format="%.2f%%"),
                 },
             )
     else:
@@ -387,11 +400,12 @@ with tab_live:
     st.caption(
         "Zeigt visuell, wo die Strategie ein-/ausgestiegen wäre - Range-Box (grau), "
         "Buy-Stop/Sell-Stop-Linien (gestrichelt), Entry (Dreieck, Farbe = Richtung), "
-        "Exit (Raute, Farbe = Exit-Grund). Basiert auf denselben gecachten Daten wie "
-        "der Backtest-Tab, kein Live-MT5-Zugriff."
+        "Exit (Raute, Farbe = Exit-Grund). Eigener, aktueller Datenabruf bis heute "
+        "(nicht die feste Backtest-Historie) - trotzdem Dukascopy-Cache, kein "
+        "Live-MT5-Zugriff auf ein echtes Konto."
     )
 
-    latest_df = load_data()
+    latest_df = load_live_data()
     setup = get_latest_setup(latest_df, stop_frac=stop_frac)
 
     if setup is None:
@@ -461,7 +475,7 @@ with tab_walkforward:
             "pf_unfiltered": st.column_config.NumberColumn("PF ungefiltert", format="%.3f"),
             "n_trades_walkforward": st.column_config.NumberColumn("Trades Walk-Forward"),
             "pf_walkforward": st.column_config.NumberColumn("PF Walk-Forward", format="%.3f"),
-            "win_rate_walkforward": st.column_config.NumberColumn("Win-Rate WF", format="%.1%%"),
+            "win_rate_walkforward": st.column_config.NumberColumn("Win-Rate WF", format="%.1f%%"),
         },
     )
 

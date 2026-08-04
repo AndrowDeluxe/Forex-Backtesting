@@ -1,0 +1,95 @@
+===== run_20260804_154437.log =====
+2026-08-04 15:44:37,837 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False) - Log: logs\konto2_ttp\run_20260804_154437.log ===
+2026-08-04 15:44:43,412 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'error', 'ticket': 17505917, 'symbol': 'LUV', 'reason': "OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))"}]
+2026-08-04 15:44:43,425 INFO run_once.konto2_ttp: 12 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-04 15:44:43,427 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100147.91, aktueller Drawdown -0.00% (Limit 2.0%)
+2026-08-04 15:44:43,430 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1280.99, 'sl': 1228.35, 'tp': 1359.97}}
+2026-08-04 15:44:43,432 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ADS.DE', 'direction': 'Long', 'entry': 161.95, 'sl': 148.52, 'tp': 182.09}}
+2026-08-04 15:44:43,434 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'OKE', 'direction': 'Long', 'entry': 83.92, 'sl': 79.74, 'tp': 90.2}}
+2026-08-04 15:44:43,738 INFO run_once.konto2_ttp: Ergebnis: {'status': 'error', 'reason': "OrderSendResult(retcode=10031, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Request rejected due to absence of network connection', request_id=0, retcode_external=0, request=TradeRequest(action=1, magic=0, order=0, symbol='CMI', volume=5.0, price=603.0, stoplimit=0.0, sl=555.82, tp=663.1, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='OU-Modell auto', position=0, position_by=0))", 'signal': {'symbol': 'CMI', 'direction': 'Long', 'entry': 598.73, 'sl': 555.82, 'tp': 663.1}, 'order': {'symbol': 'CMI', 'volume': 5.0, 'type': 'BUY', 'entry': 603.0, 'sl': 555.82, 'tp': 663.1}}
+2026-08-04 15:44:43,740 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'MAR', 'direction': 'Long', 'entry': 342.88, 'sl': 322.4, 'tp': 373.6}}
+2026-08-04 15:44:43,742 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ED', 'direction': 'Long', 'entry': 106.28, 'sl': 102.77, 'tp': 111.53}}
+2026-08-04 15:44:43,744 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ES', 'direction': 'Long', 'entry': 70.87, 'sl': 68.42, 'tp': 74.55}}
+2026-08-04 15:44:43,745 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ZAL.DE', 'direction': 'Long', 'entry': 25.3, 'sl': 23.02, 'tp': 28.72}}
+2026-08-04 15:44:43,747 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.06, 'sl': 66.16, 'tp': 70.91}}
+2026-08-04 15:44:43,748 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CNP', 'direction': 'Long', 'entry': 41.28, 'sl': 39.5, 'tp': 43.95}}
+2026-08-04 15:44:43,749 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EVRG', 'direction': 'Long', 'entry': 82.23, 'sl': 79.43, 'tp': 86.43}}
+2026-08-04 15:44:44,268 INFO run_once.konto2_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'APD', 'volume': 38.0, 'type': 'BUY', 'entry': 289.54, 'sl': 283.1, 'tp': 298.26}, 'signal': {'symbol': 'APD', 'direction': 'Long', 'entry': 289.17, 'sl': 283.1, 'tp': 298.26}, 'ticket': 17676831, 'risk': 244.7199999999999}
+2026-08-04 15:44:44,275 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260804_163526.log =====
+2026-08-04 16:35:26,291 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False) - Log: logs\konto2_ttp\run_20260804_163526.log ===
+2026-08-04 16:35:26,335 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'error', 'ticket': 17505917, 'symbol': 'LUV', 'reason': "OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))"}]
+2026-08-04 16:35:26,346 INFO run_once.konto2_ttp: 12 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-04 16:35:26,347 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100147.91, aktueller Drawdown -0.15% (Limit 2.0%)
+2026-08-04 16:35:26,351 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1280.99, 'sl': 1228.35, 'tp': 1359.97}}
+2026-08-04 16:35:26,353 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ADS.DE', 'direction': 'Long', 'entry': 161.95, 'sl': 148.52, 'tp': 182.09}}
+2026-08-04 16:35:26,355 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'OKE', 'direction': 'Long', 'entry': 83.92, 'sl': 79.74, 'tp': 90.2}}
+2026-08-04 16:35:26,641 INFO run_once.konto2_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'CMI', 'volume': 4.0, 'type': 'BUY', 'entry': 608.28, 'sl': 555.82, 'tp': 663.1}, 'signal': {'symbol': 'CMI', 'direction': 'Long', 'entry': 598.73, 'sl': 555.82, 'tp': 663.1}, 'ticket': 17679116, 'risk': 209.8399999999997}
+2026-08-04 16:35:26,672 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'MAR', 'direction': 'Long', 'entry': 342.88, 'sl': 322.4, 'tp': 373.6}}
+2026-08-04 16:35:26,675 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ED', 'direction': 'Long', 'entry': 106.28, 'sl': 102.77, 'tp': 111.53}}
+2026-08-04 16:35:26,677 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ES', 'direction': 'Long', 'entry': 70.87, 'sl': 68.42, 'tp': 74.55}}
+2026-08-04 16:35:26,679 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ZAL.DE', 'direction': 'Long', 'entry': 25.3, 'sl': 23.02, 'tp': 28.72}}
+2026-08-04 16:35:26,682 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.06, 'sl': 66.16, 'tp': 70.91}}
+2026-08-04 16:35:26,684 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CNP', 'direction': 'Long', 'entry': 41.28, 'sl': 39.5, 'tp': 43.95}}
+2026-08-04 16:35:26,687 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EVRG', 'direction': 'Long', 'entry': 82.23, 'sl': 79.43, 'tp': 86.43}}
+2026-08-04 16:35:26,689 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'APD', 'direction': 'Long', 'entry': 289.17, 'sl': 283.1, 'tp': 298.26}
+2026-08-04 16:35:26,690 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260804_173520.log =====
+2026-08-04 17:35:20,341 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False) - Log: logs\konto2_ttp\run_20260804_173520.log ===
+2026-08-04 17:35:20,441 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'error', 'ticket': 17505917, 'symbol': 'LUV', 'reason': "OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))"}, {'status': 'moved', 'ticket': 17676831, 'symbol': 'APD', 'sl': 289.57}]
+2026-08-04 17:35:20,452 INFO run_once.konto2_ttp: 12 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-04 17:35:20,454 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100147.91, aktueller Drawdown -0.42% (Limit 2.0%)
+2026-08-04 17:35:20,457 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1280.99, 'sl': 1228.35, 'tp': 1359.97}}
+2026-08-04 17:35:20,458 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ADS.DE', 'direction': 'Long', 'entry': 161.95, 'sl': 148.52, 'tp': 182.09}}
+2026-08-04 17:35:20,459 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'OKE', 'direction': 'Long', 'entry': 83.92, 'sl': 79.74, 'tp': 90.2}}
+2026-08-04 17:35:20,460 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'CMI', 'direction': 'Long', 'entry': 598.73, 'sl': 555.82, 'tp': 663.1}
+2026-08-04 17:35:20,462 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'MAR', 'direction': 'Long', 'entry': 342.88, 'sl': 322.4, 'tp': 373.6}}
+2026-08-04 17:35:20,464 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ED', 'direction': 'Long', 'entry': 106.28, 'sl': 102.77, 'tp': 111.53}}
+2026-08-04 17:35:20,466 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ES', 'direction': 'Long', 'entry': 70.87, 'sl': 68.42, 'tp': 74.55}}
+2026-08-04 17:35:20,467 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ZAL.DE', 'direction': 'Long', 'entry': 25.3, 'sl': 23.02, 'tp': 28.72}}
+2026-08-04 17:35:20,468 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.06, 'sl': 66.16, 'tp': 70.91}}
+2026-08-04 17:35:20,470 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CNP', 'direction': 'Long', 'entry': 41.28, 'sl': 39.5, 'tp': 43.95}}
+2026-08-04 17:35:20,472 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EVRG', 'direction': 'Long', 'entry': 82.23, 'sl': 79.43, 'tp': 86.43}}
+2026-08-04 17:35:20,473 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'APD', 'direction': 'Long', 'entry': 289.17, 'sl': 283.1, 'tp': 298.26}
+2026-08-04 17:35:20,473 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260804_203557.log =====
+2026-08-04 20:35:57,985 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False) - Log: logs\konto2_ttp\run_20260804_203557.log ===
+2026-08-04 20:35:58,008 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'error', 'ticket': 17505917, 'symbol': 'LUV', 'reason': "OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))"}]
+2026-08-04 20:35:58,022 INFO run_once.konto2_ttp: 7 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-04 20:35:58,023 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100147.91, aktueller Drawdown -0.67% (Limit 2.0%)
+2026-08-04 20:35:58,025 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ADS.DE', 'direction': 'Long', 'entry': 160.35, 'sl': 145.43, 'tp': 182.73}}
+2026-08-04 20:35:58,027 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1303.76, 'sl': 1258.82, 'tp': 1371.17}}
+2026-08-04 20:35:58,029 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'MAR', 'direction': 'Long', 'entry': 344.4, 'sl': 324.32, 'tp': 374.52}}
+2026-08-04 20:35:58,555 INFO run_once.konto2_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'ROK', 'volume': 15.0, 'type': 'BUY', 'entry': 444.52, 'sl': 427.81, 'tp': 468.7}, 'signal': {'symbol': 'ROK', 'direction': 'Long', 'entry': 444.17, 'sl': 427.81, 'tp': 468.7}, 'ticket': 17683814, 'risk': 250.6499999999997}
+2026-08-04 20:35:58,563 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ZAL.DE', 'direction': 'Long', 'entry': 25.46, 'sl': 23.16, 'tp': 28.91}}
+2026-08-04 20:35:58,866 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'total_risk_limit', 'signal': {'symbol': 'UNH', 'direction': 'Long', 'entry': 410.06, 'sl': 397.25, 'tp': 429.28}, 'open_risk': 2289.310000000001, 'prospective_risk': 251.56000000000017, 'limit': 2520.235}
+2026-08-04 20:35:58,871 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'LLY', 'direction': 'Long', 'entry': 1113.47, 'sl': 1052.59, 'tp': 1204.81}}
+2026-08-04 20:35:58,873 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260804_213739.log =====
+2026-08-04 21:37:39,878 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False) - Log: logs\konto2_ttp\run_20260804_213739.log ===
+2026-08-04 21:37:39,917 ERROR executor: BE-Move fehlgeschlagen für LUV (Ticket 17505917): OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))
+2026-08-04 21:37:40,009 INFO executor: SL für UPS (Ticket 17536534) auf Break-Even (105.7500) gesetzt.
+2026-08-04 21:37:40,114 INFO executor: SL für CMI (Ticket 17679116) auf Break-Even (608.2900) gesetzt.
+2026-08-04 21:37:40,118 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'error', 'ticket': 17505917, 'symbol': 'LUV', 'reason': "OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))"}, {'status': 'moved', 'ticket': 17536534, 'symbol': 'UPS', 'sl': 105.75}, {'status': 'moved', 'ticket': 17679116, 'symbol': 'CMI', 'sl': 608.29}]
+2026-08-04 21:37:40,135 INFO run_once.konto2_ttp: 6 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-04 21:37:40,137 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100147.91, aktueller Drawdown -0.81% (Limit 2.0%)
+2026-08-04 21:37:40,141 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-04 21:37:40,141 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1301.25, 'sl': 1255.51, 'tp': 1369.86}}
+2026-08-04 21:37:40,143 WARNING executor: Symbol 'ADS.DE' (MT5-Name 'ADS.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-04 21:37:40,143 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ADS.DE', 'direction': 'Long', 'entry': 160.35, 'sl': 145.43, 'tp': 182.73}}
+2026-08-04 21:37:40,146 INFO executor: Für MAR ist bereits eine Position offen (Ticket 17656474) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-04 21:37:40,146 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'MAR', 'direction': 'Long', 'entry': 344.52, 'sl': 324.48, 'tp': 374.6}}
+2026-08-04 21:37:40,148 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'ROK', 'direction': 'Long', 'entry': 446.56, 'sl': 430.83, 'tp': 470.16}
+2026-08-04 21:37:40,150 WARNING executor: Symbol 'ZAL.DE' (MT5-Name 'ZAL.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-04 21:37:40,150 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ZAL.DE', 'direction': 'Long', 'entry': 25.46, 'sl': 23.16, 'tp': 28.91}}
+2026-08-04 21:37:40,364 INFO executor: Order gesendet: {'symbol': 'UNH', 'volume': 19.0, 'type': 'BUY', 'entry': 409.58, 'sl': 396.46, 'tp': 428.85} -> Ticket 17684607
+2026-08-04 21:37:40,389 INFO run_once.konto2_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'UNH', 'volume': 19.0, 'type': 'BUY', 'entry': 409.58, 'sl': 396.46, 'tp': 428.85}, 'signal': {'symbol': 'UNH', 'direction': 'Long', 'entry': 409.42, 'sl': 396.46, 'tp': 428.85}, 'ticket': 17684607, 'risk': 249.2800000000001}
+2026-08-04 21:37:40,398 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===

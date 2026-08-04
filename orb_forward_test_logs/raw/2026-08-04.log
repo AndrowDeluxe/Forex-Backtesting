@@ -52,3 +52,156 @@
 2026-08-04 15:05:07,948 INFO run_once: USTEC: {'status': 'no_signal', 'symbol': 'USTEC'}
 2026-08-04 15:05:08,071 INFO run_once: US500: {'status': 'no_signal', 'symbol': 'US500'}
 2026-08-04 15:05:08,072 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260804_151502.log =====
+2026-08-04 15:15:02,734 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_151502.log ===
+2026-08-04 15:15:02,890 INFO run_once: USTEC: {'status': 'no_signal', 'symbol': 'USTEC'}
+2026-08-04 15:15:02,994 INFO run_once: US500: {'status': 'no_signal', 'symbol': 'US500'}
+2026-08-04 15:15:02,995 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260804_153002.log =====
+2026-08-04 15:30:02,825 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_153002.log ===
+2026-08-04 15:30:02,965 INFO run_once: USTEC: {'status': 'no_signal', 'symbol': 'USTEC'}
+2026-08-04 15:30:03,064 INFO run_once: US500: {'status': 'no_signal', 'symbol': 'US500'}
+2026-08-04 15:30:03,064 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260804_154503.log =====
+2026-08-04 15:45:03,545 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_154503.log ===
+2026-08-04 15:45:03,810 INFO run_once: USTEC: {'status': 'no_signal', 'symbol': 'USTEC'}
+2026-08-04 15:45:03,905 INFO run_once: US500: {'status': 'no_signal', 'symbol': 'US500'}
+2026-08-04 15:45:03,906 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260804_160003.log =====
+2026-08-04 16:00:03,466 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_160003.log ===
+2026-08-04 16:00:03,639 INFO run_once: USTEC: {'status': 'no_signal', 'symbol': 'USTEC'}
+2026-08-04 16:00:03,746 INFO run_once: US500: {'status': 'no_signal', 'symbol': 'US500'}
+2026-08-04 16:00:03,746 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260804_161503.log =====
+2026-08-04 16:15:03,667 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_161503.log ===
+2026-08-04 16:15:03,852 INFO run_once: USTEC: {'status': 'no_signal', 'symbol': 'USTEC'}
+2026-08-04 16:15:03,961 INFO run_once: US500: {'status': 'no_signal', 'symbol': 'US500'}
+2026-08-04 16:15:03,961 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260804_163003.log =====
+2026-08-04 16:30:03,022 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_163003.log ===
+2026-08-04 16:30:03,188 INFO run_once: USTEC: {'status': 'no_signal', 'symbol': 'USTEC'}
+2026-08-04 16:30:03,289 INFO run_once: US500: {'status': 'no_signal', 'symbol': 'US500'}
+2026-08-04 16:30:03,289 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260804_164503.log =====
+2026-08-04 16:45:03,245 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_164503.log ===
+2026-08-04 16:45:03,375 INFO run_once: USTEC: {'status': 'no_signal', 'symbol': 'USTEC'}
+2026-08-04 16:45:03,462 INFO run_once: US500: {'status': 'no_signal', 'symbol': 'US500'}
+2026-08-04 16:45:03,462 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260804_170002.log =====
+2026-08-04 17:00:02,976 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_170002.log ===
+2026-08-04 17:00:03,117 INFO run_once: USTEC: {'status': 'no_signal', 'symbol': 'USTEC'}
+2026-08-04 17:00:03,206 INFO run_once: US500: {'status': 'no_signal', 'symbol': 'US500'}
+2026-08-04 17:00:03,207 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260804_171502.log =====
+2026-08-04 17:15:02,909 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_171502.log ===
+2026-08-04 17:15:03,063 INFO run_once: USTEC: {'status': 'no_signal', 'symbol': 'USTEC'}
+2026-08-04 17:15:03,154 INFO run_once: US500: {'status': 'no_signal', 'symbol': 'US500'}
+2026-08-04 17:15:03,154 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260804_173003.log =====
+2026-08-04 17:30:03,841 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_173003.log ===
+2026-08-04 17:30:04,258 INFO run_once: USTEC: {'status': 'error', 'reason': "OrderSendResult(retcode=10017, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Trade disabled', request_id=0, retcode_external=0, request=TradeRequest(action=1, magic=0, order=0, symbol='USTEC', volume=0.7, price=29518.0, stoplimit=0.0, sl=27988.73353444708, tp=0.0, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='ORB-fwd-test', position=0, position_by=0))"}
+2026-08-04 17:30:04,369 INFO run_once: US500: {'status': 'no_signal', 'symbol': 'US500'}
+2026-08-04 17:30:04,370 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260804_174503.log =====
+2026-08-04 17:45:03,006 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_174503.log ===
+2026-08-04 17:45:03,168 INFO run_once: USTEC: {'status': 'no_signal', 'symbol': 'USTEC'}
+2026-08-04 17:45:03,272 INFO run_once: US500: {'status': 'error', 'reason': "OrderSendResult(retcode=10017, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Trade disabled', request_id=0, retcode_external=0, request=TradeRequest(action=1, magic=0, order=0, symbol='US500', volume=5.1, price=7708.9, stoplimit=0.0, sl=7485.890788199723, tp=0.0, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='ORB-fwd-test', position=0, position_by=0))"}
+2026-08-04 17:45:03,272 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260804_203305.log =====
+2026-08-04 20:33:05,221 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_203305.log ===
+2026-08-04 20:33:13,678 INFO run_once: USTEC: {'status': 'no_signal', 'symbol': 'USTEC'}
+2026-08-04 20:33:14,038 INFO run_once: US500: {'status': 'no_signal', 'symbol': 'US500'}
+2026-08-04 20:33:14,048 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260804_204504.log =====
+2026-08-04 20:45:04,342 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_204504.log ===
+2026-08-04 20:45:04,571 INFO run_once: USTEC: {'status': 'no_signal', 'symbol': 'USTEC'}
+2026-08-04 20:45:04,692 INFO run_once: US500: {'status': 'no_signal', 'symbol': 'US500'}
+2026-08-04 20:45:04,693 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260804_210003.log =====
+2026-08-04 21:00:03,452 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_210003.log ===
+2026-08-04 21:00:03,609 INFO run_once: USTEC: {'status': 'no_signal', 'symbol': 'USTEC'}
+2026-08-04 21:00:03,718 INFO run_once: US500: {'status': 'no_signal', 'symbol': 'US500'}
+2026-08-04 21:00:03,718 INFO run_once: === Lauf beendet ===
+
+
+===== run_20260804_211504.log =====
+2026-08-04 21:15:04,031 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_211504.log ===
+2026-08-04 21:15:04,062 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260804_213003.log =====
+2026-08-04 21:30:03,664 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_213003.log ===
+2026-08-04 21:30:03,669 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260804_214503.log =====
+2026-08-04 21:45:03,287 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_214503.log ===
+2026-08-04 21:45:03,290 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260804_220003.log =====
+2026-08-04 22:00:03,717 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_220003.log ===
+2026-08-04 22:00:03,759 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260804_221503.log =====
+2026-08-04 22:15:03,557 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_221503.log ===
+2026-08-04 22:15:03,573 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260804_223003.log =====
+2026-08-04 22:30:03,569 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_223003.log ===
+2026-08-04 22:30:03,574 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260804_224503.log =====
+2026-08-04 22:45:03,045 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_224503.log ===
+2026-08-04 22:45:03,124 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260804_230003.log =====
+2026-08-04 23:00:03,281 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_230003.log ===
+2026-08-04 23:00:03,289 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260804_231503.log =====
+2026-08-04 23:15:03,470 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_231503.log ===
+2026-08-04 23:15:03,480 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260804_233002.log =====
+2026-08-04 23:30:02,493 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_233002.log ===
+2026-08-04 23:30:02,498 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260804_234505.log =====
+2026-08-04 23:45:05,246 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260804_234505.log ===
+2026-08-04 23:45:05,384 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.

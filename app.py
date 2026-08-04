@@ -17,6 +17,9 @@ cls_squeeze = st.Page("app_pages/cls_squeeze.py", title="CLS-Squeeze", icon=":ma
 cls_advanced = st.Page("app_pages/cls_advanced.py", title="CLS Strategie", icon=":material/timeline:")
 checklist = st.Page("app_pages/checklist.py", title="Checklist-Strategie", icon=":material/checklist:")
 auction_playbook = st.Page("app_pages/auction_playbook.py", title="Auction Market Playbook", icon=":material/gavel:")
+asian_range_breakout = st.Page(
+    "app_pages/asian_range_breakout.py", title="Gold Asian-Range Breakout", icon=":material/wb_twilight:"
+)
 ou_modell = st.Page("app_pages/ou_modell.py", title="OU-Modell", icon=":material/monitoring:")
 orb_forward_test = st.Page("app_pages/orb_forward_test.py", title="ORB Forward-Test", icon=":material/bolt:")
 orb_writeup = st.Page("app_pages/orb_writeup.py", title="Opening Range Breakout", icon=":material/bolt:")
@@ -29,7 +32,10 @@ page = st.navigation(
     {
         "": [home],
         "Live Logs": [ou_modell, orb_forward_test],
-        "Backtests": [adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook, orb_strategy_page],
+        "Backtests": [
+            adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook,
+            asian_range_breakout, orb_strategy_page,
+        ],
         "Strategie Bestandteile": [cls_advanced, orb_writeup],
         "Paper Research": [paper_research],
     }

@@ -172,6 +172,27 @@ with tab_backtests:
             )
         st.page_link("app_pages/auction_playbook.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
 
+    col7, _spacer3, _spacer4 = st.columns(3, border=True)
+    with col7:
+        st.markdown("### :material/wb_twilight: Gold Asian-Range Breakout")
+        st.caption("XAUUSD: Range-Bruch der Asien-Session, geritten bis zum Zeit-Exit")
+        st.markdown(
+            "Asien-Range (21:00-01:00 NY) bilden, im Moment des Fenster-Schlusses "
+            "Buy-Stop/Sell-Stop OCO an den Raendern scharfschalten, kein Kursziel, "
+            "Flat-by-Time-Exit um 11:00 NY. Quelle: user-bereitgestellte "
+            "TradeStation-EasyLanguage-Spezifikation, kein akademisches Paper."
+        )
+        with st.container(border=True):
+            st.markdown("**Ehrlicher Befund**")
+            st.caption(
+                "Ohne Parameter-Fitting ueber 10,5 Jahre positiv (PF 1.09), 9/11 Jahre "
+                "netto positiv, haelt sich grob ueber beide Zeitraum-Haelften. Aber "
+                "duenn: Break-even-Spread liegt bei nur ~0.54 USD Round-Trip - genau "
+                "der Bereich realistischer Retail-Gold-Spreads, besonders da rund um "
+                "Sessionuebergaenge gehandelt wird."
+            )
+        st.page_link("app_pages/asian_range_breakout.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
+
 # =============================================================================
 # Strategie Bestandteile
 # =============================================================================

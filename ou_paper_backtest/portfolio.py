@@ -372,3 +372,109 @@ def simulate_bracket_portfolio(
         [e for _, e in equity_points], index=[d for d, _ in equity_points], name="equity"
     )
     return equity_series, trades
+
+
+def simulate_concentrated_book(
+    panel: pd.DataFrame,
+    tickers: list[str],
+    start: str,
+    end: str,
+    book_equity: float,
+    regime_filter: pd.Series | None = None,
+    lookback: int = config.BB_LOOKBACK,
+    k: float = config.BB_K,
+    max_hold: int = config.MAX_HOLDING_DAYS,
+    stop_sigma: float = config.STOP_LOSS_SIGMA,
+    be_trigger_r: float = 0.25,
+    max_position_frac: float = 0.125,
+) -> tuple[pd.Series, list[dict]]:
+    """Concentrated, equal-weight-among-today's-signals position sizing for a single
+    "book" (one market's capital pool) -- an alternative to simulate_bracket_portfolio's
+    risk-based sizing, requested as a comparison against an external reference's
+    scheme: today's book equity is split equally across however many NEW entry
+    signals fire on the same day in this book (1/N), capped at `max_position_frac`
+    (1/8 default) of the book's current equity per position. Same entry rule (band
+    breach + regime filter) and exit rule (3.0-sigma SL, no fixed TP, breakeven-move)
+    as the validated final config -- only the position-sizing mechanism differs, to
+    isolate its effect. Two independent books (e.g. one call per market) are meant to
+    be combined by the caller (e.g. summing two 50/50-split book equity curves).
+    """
+    ind = _precompute_indicators(panel, tickers, lookback, k)
+    all_dates = panel.loc[start:end].index
+
+    equity = book_equity
+    positions: dict[str, _BracketPosition] = {}
+    trades: list[dict] = []
+    equity_points = []
+
+    for date in all_dates:
+        for t in list(positions.keys()):
+            data = ind[t]
+            if date not in data["price"].index:
+                continue
+            pos = positions[t]
+            price_t = data["price"].loc[date]
+
+            equity += pos.shares * (price_t - pos.last_price)
+            pos.last_price = price_t
+            pos.days_held += 1
+
+            if not pos.be_moved:
+                trigger_dist = be_trigger_r * pos.stop_distance
+                if (price_t - pos.entry_price) >= trigger_dist:
+                    pos.stop_price = pos.entry_price
+                    pos.be_moved = True
+
+            exit_now, reason = False, None
+            if price_t <= pos.stop_price:
+                exit_now, reason = True, ("breakeven" if pos.be_moved else "stop_loss")
+            elif pos.days_held >= max_hold:
+                exit_now, reason = True, "max_holding"
+
+            if exit_now:
+                pnl_dollars = pos.shares * (price_t - pos.entry_price)
+                trades.append({
+                    "ticker": t, "direction": "long", "entry_date": pos.entry_date, "exit_date": date,
+                    "entry_price": pos.entry_price, "exit_price": price_t, "shares": pos.shares,
+                    "days_held": pos.days_held, "pnl_dollars": pnl_dollars,
+                    "pnl_pct": pnl_dollars / (pos.shares * pos.entry_price), "reason": reason,
+                })
+                del positions[t]
+
+        regime_ok = True if regime_filter is None else bool(regime_filter.get(date, False))
+
+        candidates = []
+        if regime_ok:
+            for t in tickers:
+                if t in positions or t not in ind:
+                    continue
+                data = ind[t]
+                if date not in data["price"].index:
+                    continue
+                price_t = data["price"].loc[date]
+                std_t, lower_t = data["std"].loc[date], data["lower"].loc[date]
+                if pd.isna(std_t) or std_t == 0 or pd.isna(lower_t):
+                    continue
+                if price_t < lower_t:
+                    candidates.append((t, price_t, std_t))
+
+        if candidates:
+            position_frac = min(1.0 / len(candidates), max_position_frac)
+            for t, price_t, std_t in candidates:
+                stop_distance = stop_sigma * std_t
+                position_value = equity * position_frac
+                shares = position_value / price_t
+                if shares <= 0:
+                    continue
+                positions[t] = _BracketPosition(
+                    ticker=t, direction=1, shares=shares, entry_price=price_t,
+                    entry_date=date, last_price=price_t, stop_price=price_t - stop_distance,
+                    tp_price=None, stop_distance=stop_distance, risk_dollars=0.0,
+                )
+
+        equity_points.append((date, equity))
+
+    equity_series = pd.Series(
+        [e for _, e in equity_points], index=[d for d, _ in equity_points], name="equity"
+    )
+    return equity_series, trades

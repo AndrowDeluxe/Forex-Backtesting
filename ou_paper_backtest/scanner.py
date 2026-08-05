@@ -100,6 +100,15 @@ def scan_market(market_key: str) -> pd.DataFrame:
                 "regime_ok": regime_ok,
                 "tradeable": regime_ok,
             })
+
+    # concentrated sizing: equal-weight among TODAY's candidates in this market,
+    # capped at 1/8 -- matches portfolio.simulate_concentrated_book. Needs the full
+    # candidate count first, so computed as a second pass over the collected rows.
+    if rows:
+        concentrated_frac = min(1.0 / len(rows), 0.125) * 100
+        for row in rows:
+            row["position_size_concentrated_pct"] = round(concentrated_frac, 2)
+
     print(f"[{market_key}] {len(rows)} raw signal(s) as of {last_date.date()}, regime_ok={regime_ok}")
     return pd.DataFrame(rows)
 

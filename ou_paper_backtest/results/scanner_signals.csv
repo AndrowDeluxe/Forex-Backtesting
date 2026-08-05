@@ -1,2 +1,2 @@
-market,ticker,scan_date,close,lower_band,entry,sl,tp,risk_pct_price,position_size_pct,regime_ok,tradeable
-"S&P 500 (Sample, 90 Ticker)",SRE,2026-08-04,86.65,86.76,86.65,79.24,kein TP (finale Config),8.55,11.7,True,True
+market,ticker,scan_date,close,lower_band,entry,sl,tp,risk_pct_price,position_size_pct,regime_ok,tradeable,position_size_concentrated_pct
+"S&P 500 (Sample, 90 Ticker)",SRE,2026-08-04,86.65,86.76,86.65,79.24,kein TP (finale Config),8.55,11.7,True,True,12.5

@@ -92,10 +92,20 @@ def load_panel_and_benchmark(market_key: str) -> tuple[pd.DataFrame, pd.Series] 
     return panel, benchmark
 
 
+SIZING_METHODS = {
+    "risk_based": "Risk-based (1% Equity/Trade, Standard)",
+    "concentrated": "Konzentriert (1/N Tages-Setups, gedeckelt 1/8)",
+}
+
+
 @st.cache_data(ttl="6h", show_spinner="Berechne finale Strategie...")
-def run_final_leg(market_key: str, initial_equity: float) -> tuple[pd.Series, list[dict], pd.Series] | None:
+def run_final_leg(
+    market_key: str, initial_equity: float, sizing_method: str = "risk_based"
+) -> tuple[pd.Series, list[dict], pd.Series] | None:
     """The single locked-in recipe: long-only, OU-selected universe, 3.0-sigma SL,
-    no TP, 0.25R breakeven, market-wide EMA200 regime filter."""
+    no TP, 0.25R breakeven, market-wide EMA200 regime filter. `sizing_method`
+    switches only the position-sizing mechanism (see portfolio.py) -- entry/exit
+    rules never change."""
     loaded = load_panel_and_benchmark(market_key)
     if loaded is None:
         return None
@@ -108,22 +118,28 @@ def run_final_leg(market_key: str, initial_equity: float) -> tuple[pd.Series, li
     tickers = sel.index.tolist()
     regime = (benchmark > benchmark.ewm(span=200).mean()).reindex(panel.index).fillna(False)
 
-    eq, trades = portfolio.simulate_bracket_portfolio(
-        panel, tickers, bt_config.OUT_SAMPLE_START, bt_config.OUT_SAMPLE_END,
-        initial_equity=initial_equity, risk_pct=0.01, max_hold=10,
-        stop_sigma=3.0, rr_ratio=None, be_trigger_r=0.25,
-        allowed_directions=(1,), regime_filter=regime,
-    )
+    if sizing_method == "concentrated":
+        eq, trades = portfolio.simulate_concentrated_book(
+            panel, tickers, bt_config.OUT_SAMPLE_START, bt_config.OUT_SAMPLE_END,
+            book_equity=initial_equity, regime_filter=regime,
+        )
+    else:
+        eq, trades = portfolio.simulate_bracket_portfolio(
+            panel, tickers, bt_config.OUT_SAMPLE_START, bt_config.OUT_SAMPLE_END,
+            initial_equity=initial_equity, risk_pct=0.01, max_hold=10,
+            stop_sigma=3.0, rr_ratio=None, be_trigger_r=0.25,
+            allowed_directions=(1,), regime_filter=regime,
+        )
     bench_window = benchmark.loc[bt_config.OUT_SAMPLE_START:bt_config.OUT_SAMPLE_END]
     equity_bench = initial_equity * (bench_window / bench_window.iloc[0])
     return eq, trades, equity_bench
 
 
 @st.cache_data(ttl="6h", show_spinner="Kombiniere Buecher...")
-def run_view(view_key: str) -> dict | None:
+def run_view(view_key: str, sizing_method: str = "risk_based") -> dict | None:
     markets = VIEWS[view_key]
     per_market_equity = initial_each = 100_000.0 / len(markets)
-    legs = [run_final_leg(m, per_market_equity) for m in markets]
+    legs = [run_final_leg(m, per_market_equity, sizing_method) for m in markets]
     if any(leg is None for leg in legs):
         return None
 
@@ -151,7 +167,17 @@ st.caption(
     "Bracket-Exit (interaktiv)*."
 )
 
-view_key = st.selectbox("Markt / Ansicht", list(VIEWS.keys()), format_func=lambda k: VIEW_LABELS[k])
+sel_col1, sel_col2 = st.columns([2, 1])
+with sel_col1:
+    view_key = st.selectbox("Markt / Ansicht", list(VIEWS.keys()), format_func=lambda k: VIEW_LABELS[k])
+with sel_col2:
+    sizing_method = st.selectbox(
+        "Sizing-Methode", list(SIZING_METHODS.keys()), format_func=lambda k: SIZING_METHODS[k],
+        help="Konzentriert (1/N heutiger Setups je Markt, gedeckelt auf 1/8) schlug Risk-based "
+             "im 2018-2024-Test auf S&P/Nasdaq/kombiniert deutlich, auf DAX solo leicht schlechter "
+             "(2026-08-05 Test). Siehe Out-of-Sample-Abschnitt unten, bevor du dich auf eine "
+             "Methode festlegst.",
+    )
 
 st.markdown(
     """
@@ -177,27 +203,41 @@ st.markdown(
 )
 st.markdown(
     """
+    <div class="fs-caveats" style="border-left: 3px solid #ff5555; padding-left: 0.8rem;">
+    <b>WICHTIG -- echter Out-of-Sample-Test (2025 bis heute, siehe Abschnitt unten):</b>
+    SL/TP/Breakeven/Regimefilter/Sizing wurden alle gegen das 2018-2024-Fenster
+    optimiert -- der DAX-Test prueft neue TICKER, aber nicht neue ZEIT. Auf echt
+    ungesehenen Daten (2025-heute, in keinem einzigen Sweep verwendet) faellt der
+    Sharpe auf allen drei Maerkten auf nahe Null bis leicht negativ, weit unter
+    Buy&amp;Hold. Das ist ein reales Overfitting-Warnsignal, kein Randdetail --
+    Details und Zahlen im Abschnitt "Out-of-Sample-Test" weiter unten, bevor du der
+    Config vertraust.
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+st.markdown(
+    """
     <div class="fs-caveats">
-    <b>Ehrliche Einschraenkungen:</b> Alle Zahlen unten sind brutto, ohne
+    <b>Weitere ehrliche Einschraenkungen:</b> Alle Zahlen unten sind brutto, ohne
     Handelskosten, Spread oder Slippage. Das Aktienuniversum ist in allen drei
     Maerkten ein reduziertes Sample (S&P: 90 von 503 Tickern; Nasdaq und DAX: alle
     aktuellen Konstituenten, nicht die historische Zusammensetzung ueber die Zeit).
-    SL/TP/Breakeven/Regimefilter wurden iterativ gegen das 2018-2024-Testfenster auf
-    S&P und Nasdaq gesucht -- der DAX-Test validiert die Robustheit auf einem
-    unabhaengigen dritten Markt, ersetzt aber keinen echten Walk-Forward-Test ueber
-    wechselnde Zeitfenster (naechster Schritt). Die "50/50"-Ansichten sind ein simpler
-    fixer Kapitalsplit zwischen zwei unabhaengig laufenden Teilbuechern, keine
-    gemeinsame Risikosteuerung -- das reduziert hier spuerbar den Drawdown, aber
-    <b>nicht</b> automatisch den Calmar oder die absolute Rendite, weil der
-    DAX-Zweig fuer sich genommen deutlich schwaecher ist als beide US-Maerkte. Und:
-    Entscheidungen fallen nur einmal taeglich am Schlusskurs -- ein echter
-    untertaegiger Schock oder ein Overnight-Gap wird vom Modell nicht abgefangen.
+    Ein Walk-Forward-Test (rollierende OU-Neuauswahl) zeigte KEINEN Vorteil
+    gegenueber der statischen Auswahl (siehe Walk-Forward-Abschnitt). Die
+    "50/50"-Ansichten sind ein simpler fixer Kapitalsplit zwischen zwei unabhaengig
+    laufenden Teilbuechern, keine gemeinsame Risikosteuerung -- das reduziert hier
+    spuerbar den Drawdown, aber <b>nicht</b> automatisch den Calmar oder die
+    absolute Rendite, weil der DAX-Zweig fuer sich genommen deutlich schwaecher ist
+    als beide US-Maerkte. Und: Entscheidungen fallen nur einmal taeglich am
+    Schlusskurs -- ein echter untertaegiger Schock oder ein Overnight-Gap wird vom
+    Modell nicht abgefangen.
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-result = run_view(view_key)
+result = run_view(view_key, sizing_method)
 if result is None:
     st.error(
         f"Kursdaten fuer '{VIEW_LABELS[view_key]}' nicht vollstaendig committed unter "
@@ -256,8 +296,93 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# --- Monte Carlo (block bootstrap on the realized daily-return series) ---
+# --- Out-of-Sample-Test: genuinely untouched 2025-today data, never used in any sweep ---
 markets_in_view = VIEWS[view_key]
+if len(markets_in_view) == 1:
+    oos_market = markets_in_view[0]
+    oos_rb_path = RESULTS_DIR / oos_market / "holdout_2025_equity_riskbased.csv"
+    oos_c_path = RESULTS_DIR / oos_market / "holdout_2025_equity_concentrated.csv"
+    oos_bench_path = RESULTS_DIR / oos_market / "holdout_2025_benchmark.csv"
+    if oos_rb_path.exists() and oos_c_path.exists() and oos_bench_path.exists():
+        st.markdown(
+            "<div class='fs-chart-title' style='color:#ff5555;'>Out-of-Sample-Test "
+            "(2025-heute, in KEINEM Sweep verwendet)</div>",
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            """
+            <div class="fs-caveats">
+            Alle bisherigen Tests auf dieser Seite (statisch, Monte Carlo, Walk-Forward)
+            liefen auf 2018-2024 -- demselben Fenster, gegen das SL/TP/Breakeven/Regimefilter/
+            Sizing gesucht wurden. Hier: frisch heruntergeladene Daten bis heute, getestet
+            NUR auf 2025 bis jetzt -- ein Zeitraum, der in keinem einzigen Parameter-Sweep
+            dieser gesamten Recherche vorkam. Das ist der ehrlichste verfuegbare
+            Overfitting-Check.
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        oos_rb = pd.read_csv(oos_rb_path, index_col=0, parse_dates=True).iloc[:, 0]
+        oos_c = pd.read_csv(oos_c_path, index_col=0, parse_dates=True).iloc[:, 0]
+        oos_bench = pd.read_csv(oos_bench_path, index_col=0, parse_dates=True).iloc[:, 0]
+        oos_bench_eq = 100_000.0 * (oos_bench / oos_bench.iloc[0])
+
+        oos_m_rb = bt_metrics.summarize(oos_rb.pct_change().fillna(0.0))
+        oos_m_c = bt_metrics.summarize(oos_c.pct_change().fillna(0.0))
+        oos_m_bench = bt_metrics.summarize(oos_bench_eq.pct_change().fillna(0.0))
+
+        oos_tiles = [
+            ("SHARPE RISK-BASED", f"{oos_m_rb['sharpe']:.2f}"),
+            ("SHARPE KONZENTRIERT", f"{oos_m_c['sharpe']:.2f}"),
+            ("SHARPE BUY&HOLD", f"{oos_m_bench['sharpe']:.2f}"),
+            ("RETURN RISK-BASED", f"{oos_m_rb['total_return_pct']:+.1f}%"),
+            ("RETURN KONZENTRIERT", f"{oos_m_c['total_return_pct']:+.1f}%"),
+            ("RETURN BUY&HOLD", f"{oos_m_bench['total_return_pct']:+.1f}%"),
+        ]
+        oos_tiles_html = "<div class='fs-tile-row'>" + "".join(
+            f"<div class='fs-tile'><div class='fs-tile-value'>{v}</div><div class='fs-tile-label'>{l}</div></div>"
+            for l, v in oos_tiles
+        ) + "</div>"
+        st.markdown(oos_tiles_html, unsafe_allow_html=True)
+
+        oos_rb_n = (oos_rb / oos_rb.iloc[0]).reset_index()
+        oos_rb_n.columns = ["date", "value"]
+        oos_rb_n["Serie"] = "Risk-based"
+        oos_c_n = (oos_c / oos_c.iloc[0]).reset_index()
+        oos_c_n.columns = ["date", "value"]
+        oos_c_n["Serie"] = "Konzentriert"
+        oos_bench_n = (oos_bench_eq / oos_bench_eq.iloc[0]).reset_index()
+        oos_bench_n.columns = ["date", "value"]
+        oos_bench_n["Serie"] = "Buy&Hold"
+        oos_curve = pd.concat([oos_rb_n, oos_c_n, oos_bench_n])
+
+        oos_base = alt.Chart(oos_curve).encode(
+            x=alt.X("date:T", title=None, axis=alt.Axis(labelColor="#8b949e", gridColor="#1c2128")),
+            y=alt.Y("value:Q", title=None, axis=alt.Axis(labelColor="#8b949e", gridColor="#1c2128")),
+            tooltip=["date:T", "Serie:N", alt.Tooltip("value:Q", format=".2f")],
+        )
+        oos_rb_line = oos_base.transform_filter(alt.datum.Serie == "Risk-based").mark_line(color="#ff8c42", size=2)
+        oos_c_line = oos_base.transform_filter(alt.datum.Serie == "Konzentriert").mark_line(color="#5ec8f8", size=2)
+        oos_bench_line = oos_base.transform_filter(alt.datum.Serie == "Buy&Hold").mark_line(
+            color="#8b949e", strokeDash=[5, 4], size=1.5
+        )
+        oos_chart = (
+            (oos_rb_line + oos_c_line + oos_bench_line)
+            .properties(height=380, background="#0a0e14")
+            .configure_view(strokeWidth=0)
+        )
+        st.altair_chart(oos_chart)
+        st.markdown(
+            "<span style='font-family:monospace;color:#ff8c42;'>--- Risk-based</span> "
+            "&nbsp;&nbsp; <span style='font-family:monospace;color:#5ec8f8;'>--- Konzentriert</span> "
+            "&nbsp;&nbsp; <span style='font-family:monospace;color:#8b949e;'>-·-·- Buy&amp;Hold</span>",
+            unsafe_allow_html=True,
+        )
+    else:
+        st.info(f"OOS-Holdout-Daten fuer {MARKET_LABEL[oos_market]} noch nicht committed.", icon=":material/info:")
+
+# --- Monte Carlo (block bootstrap on the realized daily-return series) ---
 if len(markets_in_view) != 1:
     st.info(
         "Monte-Carlo-Robustheitsanalyse ist aktuell nur fuer Einzelmaerkte verfuegbar, "

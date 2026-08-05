@@ -63,11 +63,12 @@ with st.container(horizontal=True):
     for market in signals["market"].unique():
         st.metric(market, int((signals["market"] == market).sum()), border=True)
 
+display_cols = [
+    "market", "ticker", "close", "entry", "sl", "tp", "risk_pct_price",
+    "position_size_pct", "position_size_concentrated_pct", "regime_ok",
+]
 st.dataframe(
-    signals[[
-        "market", "ticker", "close", "entry", "sl", "tp", "risk_pct_price",
-        "position_size_pct", "regime_ok",
-    ]].sort_values(["market", "ticker"]),
+    signals[[c for c in display_cols if c in signals.columns]].sort_values(["market", "ticker"]),
     hide_index=True,
     column_config={
         "market": st.column_config.TextColumn("Markt"),
@@ -77,14 +78,17 @@ st.dataframe(
         "sl": st.column_config.NumberColumn("Stop", format="%.2f"),
         "tp": st.column_config.TextColumn("Ziel"),
         "risk_pct_price": st.column_config.NumberColumn("SL-Abstand (%)", format="%.2f%%"),
-        "position_size_pct": st.column_config.NumberColumn("Positionsgroesse (%)", format="%.2f%%"),
+        "position_size_pct": st.column_config.NumberColumn("Groesse Risk-based (%)", format="%.2f%%"),
+        "position_size_concentrated_pct": st.column_config.NumberColumn("Groesse Konzentriert (%)", format="%.2f%%"),
         "regime_ok": st.column_config.CheckboxColumn("Regime offen"),
     },
 )
 st.caption(
-    "Positionsgroesse (%) = 1% Equity-Risiko / SL-Abstand, gedeckelt auf 20% Notional "
-    "je Position -- exakt die Sizing-Regel aus dem validierten Backtest "
-    "(`config.RISK_PCT_PER_TRADE` / `config.MAX_POSITION_PCT`), NICHT das "
-    "konzentrierte 50/50-Kapital-Bucketing-Schema anderer Referenz-Systeme (noch "
-    "nicht bei uns rueckgetestet)."
+    "Groesse Risk-based (%) = 1% Equity-Risiko / SL-Abstand, gedeckelt auf 20% "
+    "Notional. Groesse Konzentriert (%) = 1/(Anzahl heutiger Setups in diesem "
+    "Markt), gedeckelt auf 1/8 -- beide exakt wie im Backtest "
+    "(`portfolio.simulate_bracket_portfolio` bzw. `simulate_concentrated_book`). "
+    "**Wichtig:** im echten Out-of-Sample-Test (2025-heute, siehe *Fertige "
+    "Strategien*) lagen BEIDE Methoden weit unter Buy&Hold -- vor blindem Vertrauen "
+    "in diese Zahlen erst den OOS-Abschnitt dort lesen."
 )

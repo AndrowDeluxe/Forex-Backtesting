@@ -30,6 +30,9 @@ orb_strategy_page = st.Page("app_pages/orb_strategy.py", title="ORB Strategie", 
 paper_research = st.Page(
     "app_pages/paper_research.py", title="Paper Research", icon=":material/travel_explore:"
 )
+ou_paper_backtest = st.Page(
+    "app_pages/ou_paper_backtest.py", title="OU-Modell Paper-Backtest", icon=":material/science:"
+)
 
 page = st.navigation(
     {
@@ -37,7 +40,7 @@ page = st.navigation(
         "Live Logs": [ou_modell, orb_forward_test],
         "Backtests": [
             adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook,
-            asian_range_breakout, orb_strategy_page, triple_ma,
+            asian_range_breakout, orb_strategy_page, triple_ma, ou_paper_backtest,
         ],
         "Strategie Bestandteile": [cls_advanced, orb_writeup],
         "Paper Research": [paper_research],

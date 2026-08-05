@@ -40,9 +40,19 @@ sys.path.insert(0, str(REPO_DIR / "ou_paper_backtest"))
 import config as bt_config  # noqa: E402
 import metrics as bt_metrics  # noqa: E402
 import portfolio  # noqa: E402
+from kalman import kalman_smooth  # noqa: E402
 
 BENCHMARK_FILE = {"sp500": "IDX_GSPC.parquet", "nasdaq100": "IDX_NDX.parquet"}
 PANEL_FILE = {"sp500": "_panel.parquet", "nasdaq100": "_panel_nasdaq100.parquet"}
+VOLUME_FILE = {"sp500": "IDX_GSPC_VOLUME.parquet", "nasdaq100": "IDX_NDX_VOLUME.parquet"}
+
+REGIME_FILTER_TYPES = {
+    "ema200": "EMA 200 (empfohlen)",
+    "sma200": "SMA 200",
+    "vwap100": "VWAP 100 (Volumen-gewichtet)",
+    "kalman": "Kalman-Trend",
+    "off": "Kein Regime-Filter",
+}
 
 UNIVERSES = {
     "sp500": {"label": "S&P 500 (Sample, 90 Ticker)", "bench_label": "S&P 500"},
@@ -78,11 +88,45 @@ def load_panel_and_benchmark(universe_key: str) -> tuple[pd.DataFrame, pd.Series
     return panel, benchmark
 
 
+@st.cache_data(ttl="6h")
+def load_volume(universe_key: str) -> pd.Series | None:
+    vol_path = bt_config.DATA_CACHE / VOLUME_FILE[universe_key]
+    if not vol_path.exists():
+        return None
+    return pd.read_parquet(vol_path).iloc[:, 0]
+
+
+def _build_regime_filter(regime_type: str, universe_key: str, benchmark: pd.Series, panel_index) -> pd.Series | None:
+    """All candidates tested market-wide on the benchmark index itself (2026-08-05
+    sweep) -- a per-stock version of any of these was tried first and found to hurt
+    more than it helps (chops out good idiosyncratic dip-buys), see the page's
+    warning banner. EMA200 was the most robust winner across both universes;
+    SMA200/VWAP100/Kalman are kept selectable for comparison, not because they beat it."""
+    if regime_type == "off":
+        return None
+    if regime_type == "sma200":
+        signal = benchmark > benchmark.rolling(200).mean()
+    elif regime_type == "ema200":
+        signal = benchmark > benchmark.ewm(span=200).mean()
+    elif regime_type == "kalman":
+        signal = benchmark > kalman_smooth(benchmark)
+    elif regime_type == "vwap100":
+        volume = load_volume(universe_key)
+        if volume is None:
+            return None
+        pv = benchmark * volume
+        vwap = pv.rolling(100).sum() / volume.rolling(100).sum()
+        signal = benchmark > vwap
+    else:
+        raise ValueError(f"unknown regime_type {regime_type!r}")
+    return signal.reindex(panel_index).fillna(False)
+
+
 @st.cache_data(ttl="6h", show_spinner="Simuliere Bracket-Exit-Strategie...")
 def run_bracket_sim(
     universe_key: str, universe_variant: str, stop_sigma: float, rr_ratio: float | None,
     be_trigger_r: float, max_hold: int, risk_pct: float, initial_equity: float, long_only: bool,
-    regime_filter_on: bool,
+    regime_type: str,
 ):
     panel, benchmark = load_panel_and_benchmark(universe_key)
     ou_table = pd.read_csv(RESULTS_DIR / universe_key / "ou_parameters_in_sample.csv", index_col=0)
@@ -95,10 +139,7 @@ def run_bracket_sim(
     else:
         tickers = ou_table.index.tolist()
 
-    regime_filter = None
-    if regime_filter_on:
-        bench_sma200 = benchmark.rolling(200).mean()
-        regime_filter = (benchmark > bench_sma200).reindex(panel.index).fillna(False)
+    regime_filter = _build_regime_filter(regime_type, universe_key, benchmark, panel.index)
 
     directions = (1,) if long_only else (1, -1)
     eq, trades = portfolio.simulate_bracket_portfolio(
@@ -281,12 +322,15 @@ with tab_bracket:
                 format_func=lambda v: "Volles Universum" if v == "full" else "OU-gefiltert",
             )
             long_only = st.toggle("Nur Long (empfohlen -- siehe Warnhinweis oben)", value=True)
-            regime_filter_on = st.toggle(
-                "Markt-Regime-Filter (Index > 200-Tage-Linie)", value=True,
-                help="Sperrt ALLE Einstiege marktweit, wenn der Benchmark-Index unter seiner "
-                     "eigenen 200-Tage-Linie notiert -- gefunden als robuste Verbesserung "
-                     "(2026-08-05 Sweep), anders als ein Pro-Aktie-Trendfilter (der hat mehr "
-                     "geschadet als geholfen und wird hier bewusst nicht angeboten).",
+            regime_type = st.selectbox(
+                "Markt-Regime-Filter", list(REGIME_FILTER_TYPES.keys()),
+                format_func=lambda k: REGIME_FILTER_TYPES[k],
+                help="Sperrt ALLE Einstiege marktweit an Tagen, an denen der Benchmark-Index "
+                     "unter seinem eigenen Trendmass notiert -- EMA200 war im Sweep "
+                     "(2026-08-05) auf beiden Universen robust am staerksten, deutlich vor "
+                     "SMA200/VWAP/Kalman. Ein Pro-Aktie-Trendfilter (statt marktweit) wurde "
+                     "separat getestet und hat mehr geschadet als geholfen -- deshalb hier "
+                     "bewusst nicht angeboten.",
             )
         with col2:
             stop_sigma = st.slider("Stop-Loss (x Rolling-Sigma)", 1.0, 3.5, 3.0, 0.25)
@@ -304,7 +348,7 @@ with tab_bracket:
 
         eq_live, trades_live, m_live, eq_bench_live = run_bracket_sim(
             universe_key, variant_label, stop_sigma, rr_ratio, be_trigger_r,
-            max_hold, risk_pct, float(initial_equity), long_only, regime_filter_on,
+            max_hold, risk_pct, float(initial_equity), long_only, regime_type,
         )
 
         with st.container(horizontal=True):

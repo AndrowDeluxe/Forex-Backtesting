@@ -82,6 +82,7 @@ def load_panel_and_benchmark(universe_key: str) -> tuple[pd.DataFrame, pd.Series
 def run_bracket_sim(
     universe_key: str, universe_variant: str, stop_sigma: float, rr_ratio: float | None,
     be_trigger_r: float, max_hold: int, risk_pct: float, initial_equity: float, long_only: bool,
+    regime_filter_on: bool,
 ):
     panel, benchmark = load_panel_and_benchmark(universe_key)
     ou_table = pd.read_csv(RESULTS_DIR / universe_key / "ou_parameters_in_sample.csv", index_col=0)
@@ -94,12 +95,17 @@ def run_bracket_sim(
     else:
         tickers = ou_table.index.tolist()
 
+    regime_filter = None
+    if regime_filter_on:
+        bench_sma200 = benchmark.rolling(200).mean()
+        regime_filter = (benchmark > bench_sma200).reindex(panel.index).fillna(False)
+
     directions = (1,) if long_only else (1, -1)
     eq, trades = portfolio.simulate_bracket_portfolio(
         panel, tickers, bt_config.OUT_SAMPLE_START, bt_config.OUT_SAMPLE_END,
         initial_equity=initial_equity, risk_pct=risk_pct, max_hold=max_hold,
         stop_sigma=stop_sigma, rr_ratio=rr_ratio, be_trigger_r=be_trigger_r,
-        allowed_directions=directions,
+        allowed_directions=directions, regime_filter=regime_filter,
     )
     m = bt_metrics.summarize(eq.pct_change().fillna(0.0), trades)
     bench_window = benchmark.loc[bt_config.OUT_SAMPLE_START:bt_config.OUT_SAMPLE_END]
@@ -275,6 +281,13 @@ with tab_bracket:
                 format_func=lambda v: "Volles Universum" if v == "full" else "OU-gefiltert",
             )
             long_only = st.toggle("Nur Long (empfohlen -- siehe Warnhinweis oben)", value=True)
+            regime_filter_on = st.toggle(
+                "Markt-Regime-Filter (Index > 200-Tage-Linie)", value=True,
+                help="Sperrt ALLE Einstiege marktweit, wenn der Benchmark-Index unter seiner "
+                     "eigenen 200-Tage-Linie notiert -- gefunden als robuste Verbesserung "
+                     "(2026-08-05 Sweep), anders als ein Pro-Aktie-Trendfilter (der hat mehr "
+                     "geschadet als geholfen und wird hier bewusst nicht angeboten).",
+            )
         with col2:
             stop_sigma = st.slider("Stop-Loss (x Rolling-Sigma)", 1.0, 3.5, 3.0, 0.25)
             tp_choice = st.select_slider(
@@ -291,7 +304,7 @@ with tab_bracket:
 
         eq_live, trades_live, m_live, eq_bench_live = run_bracket_sim(
             universe_key, variant_label, stop_sigma, rr_ratio, be_trigger_r,
-            max_hold, risk_pct, float(initial_equity), long_only,
+            max_hold, risk_pct, float(initial_equity), long_only, regime_filter_on,
         )
 
         with st.container(horizontal=True):

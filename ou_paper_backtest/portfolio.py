@@ -216,6 +216,7 @@ def simulate_bracket_portfolio(
     be_trigger_r: float = 0.5,
     allowed_directions: tuple[int, ...] = (1,),
     trend_filter_window: int | None = None,
+    regime_filter: pd.Series | None = None,
 ) -> tuple[pd.Series, list[dict]]:
     """Fixed-CRV bracket exit -- mirrors the live OU-Modell-MT5-Bridge bot's actual
     mechanism (not the paper's own "exit at MA" rule used by simulate_portfolio):
@@ -228,9 +229,14 @@ def simulate_bracket_portfolio(
     warn-only signal (check_max_holding_period()), so this is slightly more
     conservative than the real bot. `rr_ratio=None` disables the TP entirely
     (only SL/breakeven/max_holding decide the exit). `trend_filter_window`, if
-    set (e.g. 200), is a pre-entry SL filter: a long signal is only taken when
-    price is above its N-day SMA, meant to skip dip-buys during a confirmed
-    downtrend (the 2022 failure mode found in the yearly PnL breakdown).
+    set (e.g. 200), is a PER-STOCK pre-entry filter: a long signal is only taken
+    when that stock's own price is above its N-day SMA -- found (2026-08-05) to
+    hurt more than it helps, since individual names routinely dip below their own
+    200d SMA during normal pullbacks in an otherwise healthy market. `regime_filter`,
+    if set, is a boolean pd.Series indexed by date (True = entries allowed that day)
+    applied MARKET-WIDE to every ticker alike (e.g. benchmark-index-trend or VIX-based)
+    -- meant to gate out only genuine broad bear/panic regimes without chopping away
+    good idiosyncratic single-stock dip-buys the way the per-stock filter did.
     """
     ind = _precompute_indicators(panel, tickers, lookback, k, trend_filter_window)
     all_dates = panel.loc[start:end].index
@@ -300,7 +306,13 @@ def simulate_bracket_portfolio(
                 open_risk -= pos.risk_dollars
                 del positions[t]
 
+        regime_ok = True
+        if regime_filter is not None:
+            regime_ok = bool(regime_filter.get(date, False))
+
         for t in tickers:
+            if not regime_ok:
+                break
             if t in positions or t not in ind:
                 continue
             data = ind[t]

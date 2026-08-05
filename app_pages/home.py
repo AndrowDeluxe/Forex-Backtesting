@@ -172,7 +172,7 @@ with tab_backtests:
             )
         st.page_link("app_pages/auction_playbook.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
 
-    col7, col8, _spacer4 = st.columns(3, border=True)
+    col7, _spacer3, _spacer4 = st.columns(3, border=True)
     with col7:
         st.markdown("### :material/wb_twilight: Gold Asian-Range Breakout")
         st.caption("XAUUSD: Range-Bruch der Asien-Session, geritten bis zum Zeit-Exit")
@@ -192,29 +192,6 @@ with tab_backtests:
                 "Sessionuebergaenge gehandelt wird."
             )
         st.page_link("app_pages/asian_range_breakout.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
-
-    with col8:
-        st.markdown("### :material/stacked_line_chart: Triple Moving Average")
-        st.caption("TEMA/TSMA long/flat + GMM-Markt-Regime-Cluster (Paper)")
-        st.markdown(
-            "Triple-nested EMA/SMA (n=252, \"12 Monate\") long/flat, plus eine "
-            "20/30/50-Tage \"Three Triple\"-Crossover-Variante. Gaussian-Mixture-"
-            "Modell teilt den Kurs zusätzlich in 4 Volatilitäts-Regime-Cluster, "
-            "wahlweise als Entry-Filter. Optionales ATR-Stop/Kursziel-"
-            "Risikomanagement statt der reinen Trend-Equity-Kurve. FX-Majors, "
-            "Gold/Silber/Indizes/Öl (Dukascopy) sowie BTC (Binance)."
-        )
-        with st.container(border=True):
-            st.markdown("**Ehrlicher Befund**")
-            st.caption(
-                "Auf S&P 500/Nasdaq/Gold vor Kosten durchweg profitabel (Profit "
-                "Factor 1.6-2.7), liegt aber deutlich hinter Buy & Hold zurück -- "
-                "ein Long/Flat-Trendfolger verpasst in einem fast durchgehenden "
-                "Bullenmarkt systematisch Aufwärtstage. Weder ein Regime-Entry-"
-                "Filter noch ein ATR-Stop/Kursziel verbessern das robust -- "
-                "risikobereinigt bleibt das Bild gemischt, nicht besser."
-            )
-        st.page_link("app_pages/triple_ma.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
 
 # =============================================================================
 # Strategie Bestandteile
@@ -241,6 +218,30 @@ with tab_components:
                     "negativ) — der \"Rates\"-Teil der Quelle ist mangels Datenquelle nicht getestet."
                 )
             st.page_link("app_pages/cls_advanced.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
+
+    col_tma, _spacer3, _spacer4 = st.columns(3, border=False)
+    with col_tma:
+        with st.container(border=True):
+            st.markdown("### :material/stacked_line_chart: Triple Moving Average")
+            st.caption("TEMA/TSMA + GMM-Regime-Cluster + ATR-SL/TP -- Bausteine, noch keine Kante")
+            st.markdown(
+                "Triple-nested EMA/SMA (n=252, \"12 Monate\") long/flat, plus eine "
+                "20/30/50-Tage \"Three Triple\"-Crossover-Variante. Gaussian-Mixture-"
+                "Regime-Cluster (wahlweise als Entry-Filter) und ein optionales "
+                "ATR-Stop/Kursziel-Risikomanagement stehen als eigenständige, "
+                "wiederverwendbare Bausteine bereit. FX-Majors, Gold/Silber/Indizes/"
+                "Öl (Dukascopy) sowie BTC (Binance)."
+            )
+            with st.container(border=True):
+                st.markdown("**Ehrlicher Befund**")
+                st.caption(
+                    "Alle Grundvarianten sind vor Kosten durchweg profitabel (Profit "
+                    "Factor 1.6-2.7), liegen aber deutlich hinter Buy & Hold zurück. "
+                    "Weder Regime-Entry-Filter noch ATR-Stop/Kursziel verbessern das "
+                    "robust -- noch keine eigenständige Kante, aber solide Bausteine "
+                    "(TEMA/TSMA, GMM-Regimes, Risiko-Engine) für die nächste Iteration."
+                )
+            st.page_link("app_pages/triple_ma.py", label="Bausteine ansehen", icon=":material/arrow_forward:")
 
 st.space("medium")
 st.caption(

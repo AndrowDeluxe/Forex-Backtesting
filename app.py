@@ -40,9 +40,9 @@ page = st.navigation(
         "Live Logs": [ou_modell, orb_forward_test],
         "Backtests": [
             adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook,
-            asian_range_breakout, orb_strategy_page, triple_ma, ou_paper_backtest,
+            asian_range_breakout, orb_strategy_page, ou_paper_backtest,
         ],
-        "Strategie Bestandteile": [cls_advanced, orb_writeup],
+        "Strategie Bestandteile": [cls_advanced, orb_writeup, triple_ma],
         "Paper Research": [paper_research],
     }
 )

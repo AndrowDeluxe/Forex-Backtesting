@@ -36,12 +36,15 @@ ou_paper_backtest = st.Page(
 fertige_strategien = st.Page(
     "app_pages/fertige_strategien.py", title="OU-Modell (finale Konfiguration)", icon=":material/military_tech:"
 )
+ou_scanner = st.Page(
+    "app_pages/ou_scanner.py", title="OU-Modell Live-Signale (Scanner)", icon=":material/radar:"
+)
 
 page = st.navigation(
     {
         "": [home],
         "Live Logs": [ou_modell, orb_forward_test],
-        "Fertige Strategien": [fertige_strategien],
+        "Fertige Strategien": [fertige_strategien, ou_scanner],
         "Backtests": [
             adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook,
             asian_range_breakout, orb_strategy_page, ou_paper_backtest,

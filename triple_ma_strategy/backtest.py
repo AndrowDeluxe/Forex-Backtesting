@@ -61,3 +61,90 @@ def simulate_trend_trades(
 
     trades_df = pd.DataFrame(trades)
     return trades_df, equity
+
+
+def simulate_trades_with_risk(
+    df: pd.DataFrame, position: pd.Series, initial_equity: float = 10_000.0,
+    risk_pct: float = 0.01, atr_window: int = 14, atr_mult_sl: float = 2.5,
+    rr: float | None = None, cost_bps: float = 0.0,
+) -> tuple[pd.DataFrame, pd.Series]:
+    """Bar-by-bar state machine, same shape as ema_strategy/backtest.py's
+    simulate_trades - fixed-risk sizing (risk_pct of equity per trade)
+    instead of simulate_trend_trades' 100%-equity compounding, so a real
+    ATR stop-loss (and optional take-profit) can be attached.
+
+    Entry: on the bar `position` flips 0 -> 1, fill at the *next* bar's
+    Open (matching this module's no-lookahead convention) with
+    SL = entry - atr_mult_sl * ATR(atr_window). Exit: whichever of
+    SL / TP (if `rr` is set, `rr` * initial risk above entry) / the
+    underlying trend signal flipping back to 0 (at that bar's Close)
+    happens first - so this still rides the same TEMA/TSMA trend, just
+    with a hard downside cut added on top instead of relying solely on
+    the (slower) signal-based exit.
+
+    Returns (trades, equity) with the same trades schema as
+    ema_strategy/backtest.py (entry_time/exit_time/direction/entry/exit/
+    sl/tp/pnl/reason + r_multiple) so ema_strategy.metrics.compute_metrics
+    can be reused as-is instead of re-deriving R-multiple stats here.
+    """
+    df = df.reindex(position.index)
+    n = len(df)
+    atr = (df["High"] - df["Low"]).rolling(atr_window).mean()
+
+    dates = position.index
+    pos_arr = position.to_numpy()
+    open_, high, low, close = (df[c].to_numpy() for c in ("Open", "High", "Low", "Close"))
+    atr_arr = atr.to_numpy()
+
+    equity = initial_equity
+    equity_curve = np.full(n, np.nan)
+    trades = []
+
+    in_pos = False
+    entry_price = sl = tp = entry_idx = None
+    pos_size = 0.0
+
+    for i in range(n):
+        equity_curve[i] = equity
+
+        if in_pos:
+            exit_price = reason = None
+            if low[i] <= sl:
+                exit_price, reason = sl, "SL"
+            elif tp is not None and high[i] >= tp:
+                exit_price, reason = tp, "TP"
+            elif pos_arr[i] == 0.0:
+                exit_price, reason = close[i], "Signal-Exit"
+
+            if exit_price is not None:
+                cost = pos_size * (entry_price + exit_price) * (cost_bps / 1e4)
+                pnl = pos_size * (exit_price - entry_price) - cost
+                equity += pnl
+                trades.append({
+                    "entry_time": dates[entry_idx], "exit_time": dates[i],
+                    "direction": "LONG", "entry": entry_price, "exit": exit_price,
+                    "sl": sl, "tp": tp, "pnl": pnl, "reason": reason,
+                })
+                in_pos = False
+            continue
+
+        if i < 1 or np.isnan(atr_arr[i]):
+            continue
+        if pos_arr[i] == 1.0 and pos_arr[i - 1] == 0.0:
+            entry_idx = i + 1
+            if entry_idx >= n:
+                continue
+            entry_price = open_[entry_idx]
+            sl = entry_price - atr_mult_sl * atr_arr[i]
+            risk_per_unit = entry_price - sl
+            if risk_per_unit <= 0:
+                continue
+            tp = entry_price + rr * risk_per_unit if rr else None
+            pos_size = (equity * risk_pct) / risk_per_unit
+            in_pos = True
+
+    trades_df = pd.DataFrame(trades)
+    if not trades_df.empty:
+        trades_df["r_multiple"] = trades_df["pnl"] / (initial_equity * risk_pct)
+    eq = pd.Series(equity_curve, index=dates, name="equity")
+    return trades_df, eq

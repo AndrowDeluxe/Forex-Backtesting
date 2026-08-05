@@ -199,18 +199,20 @@ with tab_backtests:
         st.markdown(
             "Triple-nested EMA/SMA (n=252, \"12 Monate\") long/flat, plus eine "
             "20/30/50-Tage \"Three Triple\"-Crossover-Variante. Gaussian-Mixture-"
-            "Modell teilt den Kurs zusätzlich in 4 Volatilitäts-Regime-Cluster. "
-            "Alle 11 Instrumente, echte Dukascopy-Tageshistorie."
+            "Modell teilt den Kurs zusätzlich in 4 Volatilitäts-Regime-Cluster, "
+            "wahlweise als Entry-Filter. Optionales ATR-Stop/Kursziel-"
+            "Risikomanagement statt der reinen Trend-Equity-Kurve. FX-Majors, "
+            "Gold/Silber/Indizes/Öl (Dukascopy) sowie BTC (Binance)."
         )
         with st.container(border=True):
             st.markdown("**Ehrlicher Befund**")
             st.caption(
-                "Auf S&P 500 (2016-2026) sind alle vier Varianten vor Kosten "
-                "profitabel (Profit Factor 1.6-2.7), liegen aber 145-209 "
-                "Prozentpunkte hinter Buy & Hold zurück -- ein Long/Flat-"
-                "Trendfolger verpasst in einem fast durchgehenden Bullenmarkt "
-                "systematisch Aufwärtstage. Deckt sich mit der eigenen "
-                "Schlussfolgerung des Papers."
+                "Auf S&P 500/Nasdaq/Gold vor Kosten durchweg profitabel (Profit "
+                "Factor 1.6-2.7), liegt aber deutlich hinter Buy & Hold zurück -- "
+                "ein Long/Flat-Trendfolger verpasst in einem fast durchgehenden "
+                "Bullenmarkt systematisch Aufwärtstage. Weder ein Regime-Entry-"
+                "Filter noch ein ATR-Stop/Kursziel verbessern das robust -- "
+                "risikobereinigt bleibt das Bild gemischt, nicht besser."
             )
         st.page_link("app_pages/triple_ma.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
 

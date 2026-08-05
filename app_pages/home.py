@@ -172,7 +172,7 @@ with tab_backtests:
             )
         st.page_link("app_pages/auction_playbook.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
 
-    col7, _spacer3, _spacer4 = st.columns(3, border=True)
+    col7, col8, _spacer4 = st.columns(3, border=True)
     with col7:
         st.markdown("### :material/wb_twilight: Gold Asian-Range Breakout")
         st.caption("XAUUSD: Range-Bruch der Asien-Session, geritten bis zum Zeit-Exit")
@@ -192,6 +192,27 @@ with tab_backtests:
                 "Sessionuebergaenge gehandelt wird."
             )
         st.page_link("app_pages/asian_range_breakout.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
+
+    with col8:
+        st.markdown("### :material/stacked_line_chart: Triple Moving Average")
+        st.caption("TEMA/TSMA long/flat + GMM-Markt-Regime-Cluster (Paper)")
+        st.markdown(
+            "Triple-nested EMA/SMA (n=252, \"12 Monate\") long/flat, plus eine "
+            "20/30/50-Tage \"Three Triple\"-Crossover-Variante. Gaussian-Mixture-"
+            "Modell teilt den Kurs zusätzlich in 4 Volatilitäts-Regime-Cluster. "
+            "Alle 11 Instrumente, echte Dukascopy-Tageshistorie."
+        )
+        with st.container(border=True):
+            st.markdown("**Ehrlicher Befund**")
+            st.caption(
+                "Auf S&P 500 (2016-2026) sind alle vier Varianten vor Kosten "
+                "profitabel (Profit Factor 1.6-2.7), liegen aber 145-209 "
+                "Prozentpunkte hinter Buy & Hold zurück -- ein Long/Flat-"
+                "Trendfolger verpasst in einem fast durchgehenden Bullenmarkt "
+                "systematisch Aufwärtstage. Deckt sich mit der eigenen "
+                "Schlussfolgerung des Papers."
+            )
+        st.page_link("app_pages/triple_ma.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
 
 # =============================================================================
 # Strategie Bestandteile

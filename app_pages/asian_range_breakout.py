@@ -19,7 +19,7 @@ import pandas as pd
 
 import streamlit as st
 from asian_range_breakout.chart import build_entry_chart
-from asian_range_breakout.data import fetch_gold_m15
+from asian_range_breakout.data import fetch_gold_m15, fetch_gold_m15_live
 from asian_range_breakout.engine import get_latest_setup, simulate_asian_breakout
 from asian_range_breakout.filters import apply_adx_filter
 from asian_range_breakout.montecarlo import run_monte_carlo, summarize_monte_carlo
@@ -38,17 +38,18 @@ def load_data() -> pd.DataFrame:
     return fetch_gold_m15(START, END)
 
 
-@st.cache_data(ttl="1h", show_spinner="Lade aktuelle Gold M15-Daten...")
+@st.cache_data(ttl="15m", show_spinner="Lade aktuelle Gold-Futures-Daten (yfinance)...")
 def load_live_data() -> pd.DataFrame:
-    """Für den 'Live Entry-Signal'-Tab: bis HEUTE, nicht bis zum festen
-    Backtest-Enddatum (Bug behoben 2026-08-05 - vorher zeigte der Tab den
-    Stand vom Backtest-Ende, teils Tage/Wochen alt). Kürzeres TTL (1h statt
-    6h) und ein kürzeres Fenster (120 Tage reichen für den Chart), damit
-    der Cache öfter auffrischt und nicht unnötig die volle 10-Jahres-Historie
-    für einen reinen 'letzte paar Wochen'-Chart neu lädt."""
-    end = pd.Timestamp.now().strftime("%Y-%m-%d")
-    start = (pd.Timestamp.now() - pd.Timedelta(days=150)).strftime("%Y-%m-%d")
-    return fetch_gold_m15(start, end)
+    """Für den 'Live Entry-Signal'-Tab: NICHT Dukascopy (Bug behoben
+    2026-08-05, erster Fix war nur "bis heute statt bis Backtest-Ende" -
+    zeigte sich als unzureichend, Dukascopys eigene Daten liefen selbst
+    frisch abgerufen >10h hinter der Realzeit her, ein Anbieter-seitiges
+    Limit, kein Cache-Problem). Jetzt yfinance GC=F (Gold-Future, ~19 Min.
+    Verzug beim Test) - andere Instrument-Definition als Spot-XAUUSD
+    (Cost-of-Carry-Aufschlag/-Abschlag, gelegentliche Rollover-Lücken),
+    für eine reine Anschauungsansicht aber deutlich aktueller als die
+    Backtest-Datenquelle. TTL 15 Min entsprechend kurz gehalten."""
+    return fetch_gold_m15_live(period="60d")
 
 
 @st.cache_data(ttl="6h", show_spinner="Simuliere Trades...")
@@ -400,9 +401,11 @@ with tab_live:
     st.caption(
         "Zeigt visuell, wo die Strategie ein-/ausgestiegen wäre - Range-Box (grau), "
         "Buy-Stop/Sell-Stop-Linien (gestrichelt), Entry (Dreieck, Farbe = Richtung), "
-        "Exit (Raute, Farbe = Exit-Grund). Eigener, aktueller Datenabruf bis heute "
-        "(nicht die feste Backtest-Historie) - trotzdem Dukascopy-Cache, kein "
-        "Live-MT5-Zugriff auf ein echtes Konto."
+        "Exit (Raute, Farbe = Exit-Grund). Datenquelle: **yfinance GC=F (Gold-Future)**, "
+        "NICHT Dukascopy wie im Backtest - Dukascopys eigene Daten liefen beim Test "
+        "(2026-08-05) selbst frisch abgerufen >10h hinter der Realzeit her, ein Anbieter-"
+        "Limit. GC=F ist der Future, nicht Spot-XAUUSD (kleine Preisabweichung durch "
+        "Cost-of-Carry möglich) - trotzdem kein Live-MT5-Zugriff auf ein echtes Konto."
     )
 
     latest_df = load_live_data()
@@ -427,8 +430,8 @@ with tab_live:
             icon=status_icon,
         )
         st.caption(
-            f"Letzter geladener Kurs: {setup['last_price']:.2f} um {setup['last_bar_time']:%Y-%m-%d %H:%M} NY. "
-            "Datenstand hängt vom Cache ab (oben 'Datenquelle'), das ist NICHT live/Echtzeit."
+            f"Letzter geladener Kurs: {setup['last_price']:.2f} um {setup['last_bar_time']:%Y-%m-%d %H:%M} NY "
+            f"(yfinance GC=F, üblicherweise ~15-20 Min. Verzug - kein Live-Tick-Feed)."
         )
 
     st.space("medium")

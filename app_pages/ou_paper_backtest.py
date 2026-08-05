@@ -19,6 +19,7 @@ Gesamt-Risiko-Cap) -- das Paper selbst spezifiziert kein Sizing/Kapital, das ist
 eine explizite eigene Annahme, angelehnt an das Risk-Management-Muster des
 tatsaechlich live laufenden OU-Modell-Bots (OU-Modell-MT5-Bridge)."""
 
+import sys
 from pathlib import Path
 
 import altair as alt
@@ -30,6 +31,18 @@ st.set_page_config(page_title="OU-Modell -- Paper-Backtest", page_icon=":materia
 
 REPO_DIR = Path(__file__).resolve().parents[1]
 RESULTS_DIR = REPO_DIR / "ou_paper_backtest" / "results"
+
+# ou_paper_backtest/ is a flat script module (no __init__.py, siblings import each
+# other as bare `import config`/`import portfolio`) -- put it on sys.path so the
+# "Bracket-Exit (interaktiv)" tab below can reuse portfolio.simulate_bracket_portfolio
+# directly instead of duplicating the simulation logic here.
+sys.path.insert(0, str(REPO_DIR / "ou_paper_backtest"))
+import config as bt_config  # noqa: E402
+import metrics as bt_metrics  # noqa: E402
+import portfolio  # noqa: E402
+
+BENCHMARK_FILE = {"sp500": "IDX_GSPC.parquet", "nasdaq100": "IDX_NDX.parquet"}
+PANEL_FILE = {"sp500": "_panel.parquet", "nasdaq100": "_panel_nasdaq100.parquet"}
 
 UNIVERSES = {
     "sp500": {"label": "S&P 500 (Sample, 90 Ticker)", "bench_label": "S&P 500"},
@@ -52,6 +65,46 @@ def load_universe_results(universe_key: str) -> dict | None:
         "equity": equity, "perf_100k": perf_100k, "perf_pct": perf_pct,
         "ou_params": ou_params, "trades_full": trades_full, "trades_ou": trades_ou,
     }
+
+
+@st.cache_data(ttl="6h", show_spinner="Lade Kursdaten...")
+def load_panel_and_benchmark(universe_key: str) -> tuple[pd.DataFrame, pd.Series] | None:
+    panel_path = bt_config.DATA_CACHE / PANEL_FILE[universe_key]
+    bench_path = bt_config.DATA_CACHE / BENCHMARK_FILE[universe_key]
+    if not panel_path.exists() or not bench_path.exists():
+        return None
+    panel = pd.read_parquet(panel_path)
+    benchmark = pd.read_parquet(bench_path).iloc[:, 0]
+    return panel, benchmark
+
+
+@st.cache_data(ttl="6h", show_spinner="Simuliere Bracket-Exit-Strategie...")
+def run_bracket_sim(
+    universe_key: str, universe_variant: str, stop_sigma: float, rr_ratio: float | None,
+    be_trigger_r: float, max_hold: int, risk_pct: float, initial_equity: float, long_only: bool,
+):
+    panel, benchmark = load_panel_and_benchmark(universe_key)
+    ou_table = pd.read_csv(RESULTS_DIR / universe_key / "ou_parameters_in_sample.csv", index_col=0)
+    if universe_variant == "ou":
+        sel = ou_table[
+            (ou_table["theta"] > bt_config.THETA_MIN) & (ou_table["p_value"] < bt_config.PVALUE_MAX)
+            & (ou_table["half_life"].between(bt_config.HALFLIFE_MIN, bt_config.HALFLIFE_MAX))
+        ]
+        tickers = sel.index.tolist()
+    else:
+        tickers = ou_table.index.tolist()
+
+    directions = (1,) if long_only else (1, -1)
+    eq, trades = portfolio.simulate_bracket_portfolio(
+        panel, tickers, bt_config.OUT_SAMPLE_START, bt_config.OUT_SAMPLE_END,
+        initial_equity=initial_equity, risk_pct=risk_pct, max_hold=max_hold,
+        stop_sigma=stop_sigma, rr_ratio=rr_ratio, be_trigger_r=be_trigger_r,
+        allowed_directions=directions,
+    )
+    m = bt_metrics.summarize(eq.pct_change().fillna(0.0), trades)
+    bench_window = benchmark.loc[bt_config.OUT_SAMPLE_START:bt_config.OUT_SAMPLE_END]
+    equity_bench = initial_equity * (bench_window / bench_window.iloc[0])
+    return eq, trades, m, equity_bench
 
 
 st.markdown("## :material/science: OU-Modell -- Paper-Backtest (Bollinger Bands + Ornstein-Uhlenbeck)")
@@ -78,7 +131,10 @@ st.warning(
     "komplett -- die $100k-Kurve unten nutzt Risk-basiertes Sizing (1% Equity-Risiko "
     "je Trade am 2-Sigma-Stop, 15% Gesamt-Risiko-Cap ueber alle offenen Positionen), "
     "analog zum Risk-Management-Muster des echten OU-Modell-Live-Bots auf diesem "
-    "System. (3) Alle Ergebnisse **vor Transaktionskosten** (wie im Paper selbst).",
+    "System. (3) Alle Ergebnisse **vor Transaktionskosten** (wie im Paper selbst). "
+    "Fuer den tatsaechlichen Fixed-CRV-Exit-Mechanismus des Live-Bots (statt des "
+    "Paper-eigenen MA-Exits) und interaktives SL/TP/Breakeven/Laufzeit/Risk-Tuning "
+    "siehe den Tab **\"Bracket-Exit (interaktiv)\"** unten.",
     icon=":material/warning:",
 )
 
@@ -110,9 +166,10 @@ with st.container(horizontal=True):
 
 st.space("medium")
 
-tab_equity, tab_metrics, tab_ou, tab_trades = st.tabs(
+tab_equity, tab_metrics, tab_ou, tab_trades, tab_bracket = st.tabs(
     [":material/show_chart: $100k Equity-Kurve", ":material/query_stats: Kennzahlen",
-     ":material/functions: OU-Parameter", ":material/list_alt: Trade-Log"]
+     ":material/functions: OU-Parameter", ":material/list_alt: Trade-Log",
+     ":material/tune: Bracket-Exit (interaktiv)"]
 )
 
 with tab_equity:
@@ -187,3 +244,91 @@ with tab_trades:
             )
         else:
             st.info("Keine Trades in dieser Variante.", icon=":material/info:")
+
+with tab_bracket:
+    st.info(
+        "Bildet den **tatsaechlichen** Exit-Mechanismus des Live-Bots (OU-Modell-MT5-Bridge) "
+        "nach -- fixer Stop-Loss + fixes Take-Profit-CRV + Breakeven-Move, statt des "
+        "Paper-eigenen \"Exit am gleitenden Durchschnitt\" in den anderen Tabs. Alles hier "
+        "wird **live im Browser neu simuliert** (nicht vorab aus CSV geladen) -- ein "
+        "Parameterwechsel dauert daher ein paar Sekunden. Voreinstellungen entsprechen dem "
+        "robustesten in einem Parameter-Sweep gefundenen Wert (auf beiden Universen "
+        "unabhaengig getestet): 3.0-Sigma-Stop, **kein festes Take-Profit** (Exit nur ueber "
+        "SL/Breakeven/Laufzeit-Ende), 0.25R-Breakeven-Trigger -- statt der Live-Werte "
+        "2.0-Sigma / 1:1.5-CRV / 0.5R.",
+        icon=":material/tune:",
+    )
+
+    panel_available = load_panel_and_benchmark(universe_key) is not None
+    if not panel_available:
+        st.error(
+            f"Kursdaten-Panel fuer '{UNIVERSES[universe_key]['label']}' nicht committed "
+            f"({PANEL_FILE[universe_key]} / {BENCHMARK_FILE[universe_key]} fehlen unter "
+            f"ou_paper_backtest/data_cache/). Live-Simulation hier nicht moeglich.",
+            icon=":material/error:",
+        )
+    else:
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            variant_label = st.radio(
+                "Universum-Variante", ["full", "ou"], horizontal=True,
+                format_func=lambda v: "Volles Universum" if v == "full" else "OU-gefiltert",
+            )
+            long_only = st.toggle("Nur Long (empfohlen -- siehe Warnhinweis oben)", value=True)
+        with col2:
+            stop_sigma = st.slider("Stop-Loss (x Rolling-Sigma)", 1.0, 3.5, 3.0, 0.25)
+            tp_choice = st.select_slider(
+                "Take-Profit (CRV)", options=[1.5, 2.0, 2.5, 3.0, 4.0, "Kein TP"], value="Kein TP"
+            )
+            rr_ratio = None if tp_choice == "Kein TP" else float(tp_choice)
+            be_trigger_r = st.slider("Breakeven-Trigger (R)", 0.0, 1.5, 0.25, 0.05)
+        with col3:
+            max_hold = st.slider("Laufzeit (max. Handelstage)", 3, 20, 10)
+            risk_pct = st.slider("Risiko pro Trade (%)", 0.25, 3.0, 1.0, 0.25) / 100
+            initial_equity = st.number_input(
+                "Start-Kapital ($)", min_value=1_000, value=100_000, step=10_000
+            )
+
+        eq_live, trades_live, m_live, eq_bench_live = run_bracket_sim(
+            universe_key, variant_label, stop_sigma, rr_ratio, be_trigger_r,
+            max_hold, risk_pct, float(initial_equity), long_only,
+        )
+
+        with st.container(horizontal=True):
+            st.metric("Endkapital", f"${eq_live.iloc[-1]:,.0f}", border=True)
+            st.metric("Sharpe", f"{m_live['sharpe']:.2f}", border=True)
+            st.metric("Calmar", f"{m_live['calmar']:.2f}", border=True)
+            st.metric("Max Drawdown", f"{m_live['max_drawdown_pct']:.1f}%", border=True)
+            st.metric("Trades", f"{m_live['n_trades']:.0f}", border=True)
+            st.metric("Trefferquote", f"{m_live['win_rate_pct']:.1f}%", border=True)
+
+        curve = pd.DataFrame({"Strategie": eq_live, bench_label: eq_bench_live}).reset_index(names="date")
+        curve = curve.melt("date", var_name="Serie", value_name="Equity")
+        chart = (
+            alt.Chart(curve)
+            .mark_line()
+            .encode(
+                x=alt.X("date:T", title="Datum"),
+                y=alt.Y("Equity:Q", title="Kontostand ($)", scale=alt.Scale(zero=False)),
+                color=alt.Color(
+                    "Serie:N", scale=alt.Scale(domain=["Strategie", bench_label], range=["#e45756", "#f58518"])
+                ),
+                tooltip=["date:T", "Serie:N", alt.Tooltip("Equity:Q", format=",.0f")],
+            )
+            .properties(height=420)
+        )
+        with st.container(border=True):
+            st.altair_chart(chart)
+
+        trades_df = pd.DataFrame(trades_live)
+        if not trades_df.empty:
+            with st.container(border=True):
+                st.markdown("#### Exit-Gruende")
+                st.dataframe(
+                    trades_df.groupby("reason").agg(
+                        n=("pnl_dollars", "size"),
+                        win_rate_pct=("pnl_dollars", lambda x: (x > 0).mean() * 100),
+                        avg_pnl=("pnl_dollars", "mean"),
+                        total_pnl=("pnl_dollars", "sum"),
+                    ).round(1),
+                )

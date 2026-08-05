@@ -33,7 +33,25 @@ class _Position:
     days_held: int = 0
 
 
-def _precompute_indicators(panel: pd.DataFrame, tickers: list[str], lookback: int, k: float) -> dict:
+@dataclass
+class _BracketPosition:
+    ticker: str
+    direction: int
+    shares: float
+    entry_price: float
+    entry_date: pd.Timestamp
+    last_price: float
+    stop_price: float
+    tp_price: float | None
+    stop_distance: float  # fixed at entry, used for the BE trigger (be_trigger_r * stop_distance)
+    risk_dollars: float
+    be_moved: bool = False
+    days_held: int = 0
+
+
+def _precompute_indicators(
+    panel: pd.DataFrame, tickers: list[str], lookback: int, k: float, trend_window: int | None = None
+) -> dict:
     ind = {}
     for t in tickers:
         if t not in panel.columns:
@@ -41,13 +59,16 @@ def _precompute_indicators(panel: pd.DataFrame, tickers: list[str], lookback: in
         price = panel[t].dropna()
         ma = price.rolling(lookback).mean()
         std = price.rolling(lookback).std()
-        ind[t] = {
+        entry = {
             "price": price,
             "ma": ma,
             "std": std,
             "upper": ma + k * std,
             "lower": ma - k * std,
         }
+        if trend_window:
+            entry["trend"] = price.rolling(trend_window).mean()
+        ind[t] = entry
     return ind
 
 
@@ -64,6 +85,7 @@ def simulate_portfolio(
     k: float = config.BB_K,
     max_hold: int = config.MAX_HOLDING_DAYS,
     stop_sigma: float = config.STOP_LOSS_SIGMA,
+    allowed_directions: tuple[int, ...] = (1, -1),
 ) -> tuple[pd.Series, list[dict]]:
     ind = _precompute_indicators(panel, tickers, lookback, k)
     all_dates = panel.loc[start:end].index
@@ -147,7 +169,7 @@ def simulate_portfolio(
                 direction = 1
             elif price_t > upper_t:
                 direction = -1
-            if direction == 0:
+            if direction == 0 or direction not in allowed_directions:
                 continue
 
             stop_distance = stop_sigma * std_t
@@ -166,6 +188,169 @@ def simulate_portfolio(
             positions[t] = _Position(
                 ticker=t, direction=direction, shares=shares, entry_price=price_t,
                 entry_date=date, last_price=price_t, stop_price=stop_price, risk_dollars=risk_dollars,
+            )
+            open_risk += risk_dollars
+
+        equity_points.append((date, equity))
+
+    equity_series = pd.Series(
+        [e for _, e in equity_points], index=[d for d, _ in equity_points], name="equity"
+    )
+    return equity_series, trades
+
+
+def simulate_bracket_portfolio(
+    panel: pd.DataFrame,
+    tickers: list[str],
+    start: str,
+    end: str,
+    initial_equity: float = config.INITIAL_EQUITY,
+    risk_pct: float = config.RISK_PCT_PER_TRADE,
+    max_total_risk_pct: float = config.MAX_TOTAL_RISK_PCT,
+    max_position_pct: float = config.MAX_POSITION_PCT,
+    lookback: int = config.BB_LOOKBACK,
+    k: float = config.BB_K,
+    max_hold: int = config.MAX_HOLDING_DAYS,
+    stop_sigma: float = config.STOP_LOSS_SIGMA,
+    rr_ratio: float | None = 1.5,
+    be_trigger_r: float = 0.5,
+    allowed_directions: tuple[int, ...] = (1,),
+    trend_filter_window: int | None = None,
+) -> tuple[pd.Series, list[dict]]:
+    """Fixed-CRV bracket exit -- mirrors the live OU-Modell-MT5-Bridge bot's actual
+    mechanism (not the paper's own "exit at MA" rule used by simulate_portfolio):
+    entry on a band breach, then a hard SL at `stop_sigma` * rolling std and a hard
+    TP at `rr_ratio` * that same distance (live default rr_ratio=1.5, i.e. the
+    website's "Ziel (1:1,5)"), with the SL moved to breakeven once price has moved
+    `be_trigger_r` * stop_distance in favor (live default 0.5, same as all 3
+    accounts' `be_trigger_r` in OU-Modell-MT5-Bridge/config.py). `max_hold` is a
+    hard forced exit here for backtest tractability -- live treats it as a
+    warn-only signal (check_max_holding_period()), so this is slightly more
+    conservative than the real bot. `rr_ratio=None` disables the TP entirely
+    (only SL/breakeven/max_holding decide the exit). `trend_filter_window`, if
+    set (e.g. 200), is a pre-entry SL filter: a long signal is only taken when
+    price is above its N-day SMA, meant to skip dip-buys during a confirmed
+    downtrend (the 2022 failure mode found in the yearly PnL breakdown).
+    """
+    ind = _precompute_indicators(panel, tickers, lookback, k, trend_filter_window)
+    all_dates = panel.loc[start:end].index
+
+    equity = initial_equity
+    open_risk = 0.0
+    positions: dict[str, _BracketPosition] = {}
+    trades: list[dict] = []
+    equity_points = []
+
+    for date in all_dates:
+        for t in list(positions.keys()):
+            data = ind[t]
+            if date not in data["price"].index:
+                continue
+            pos = positions[t]
+            price_t = data["price"].loc[date]
+
+            signed_change = (price_t - pos.last_price) if pos.direction == 1 else (pos.last_price - price_t)
+            equity += pos.shares * signed_change
+            pos.last_price = price_t
+            pos.days_held += 1
+
+            if not pos.be_moved and be_trigger_r > 0:
+                trigger_dist = be_trigger_r * pos.stop_distance
+                favorable = (price_t - pos.entry_price) if pos.direction == 1 else (pos.entry_price - price_t)
+                if favorable >= trigger_dist:
+                    pos.stop_price = pos.entry_price
+                    pos.be_moved = True
+
+            exit_now, reason = False, None
+            has_tp = pos.tp_price is not None
+            if pos.direction == 1:
+                if price_t <= pos.stop_price:
+                    exit_now, reason = True, ("breakeven" if pos.be_moved else "stop_loss")
+                elif has_tp and price_t >= pos.tp_price:
+                    exit_now, reason = True, "take_profit"
+                elif pos.days_held >= max_hold:
+                    exit_now, reason = True, "max_holding"
+            else:
+                if price_t >= pos.stop_price:
+                    exit_now, reason = True, ("breakeven" if pos.be_moved else "stop_loss")
+                elif has_tp and price_t <= pos.tp_price:
+                    exit_now, reason = True, "take_profit"
+                elif pos.days_held >= max_hold:
+                    exit_now, reason = True, "max_holding"
+
+            if exit_now:
+                pnl_dollars = pos.shares * (
+                    (price_t - pos.entry_price) if pos.direction == 1 else (pos.entry_price - price_t)
+                )
+                trades.append(
+                    {
+                        "ticker": t,
+                        "direction": "long" if pos.direction == 1 else "short",
+                        "entry_date": pos.entry_date,
+                        "exit_date": date,
+                        "entry_price": pos.entry_price,
+                        "exit_price": price_t,
+                        "shares": pos.shares,
+                        "days_held": pos.days_held,
+                        "pnl_dollars": pnl_dollars,
+                        "pnl_pct": pnl_dollars / (pos.shares * pos.entry_price),
+                        "reason": reason,
+                    }
+                )
+                open_risk -= pos.risk_dollars
+                del positions[t]
+
+        for t in tickers:
+            if t in positions or t not in ind:
+                continue
+            data = ind[t]
+            if date not in data["price"].index:
+                continue
+            price_t = data["price"].loc[date]
+            ma_t, std_t = data["ma"].loc[date], data["std"].loc[date]
+            upper_t, lower_t = data["upper"].loc[date], data["lower"].loc[date]
+            if pd.isna(ma_t) or pd.isna(std_t) or std_t == 0:
+                continue
+
+            direction = 0
+            if price_t < lower_t:
+                direction = 1
+            elif price_t > upper_t:
+                direction = -1
+            if direction == 0 or direction not in allowed_directions:
+                continue
+
+            if trend_filter_window:
+                trend_t = data["trend"].loc[date]
+                if pd.isna(trend_t):
+                    continue
+                # only take dip-buys (long) in a confirmed uptrend, mirror for shorts
+                if (direction == 1 and price_t < trend_t) or (direction == -1 and price_t > trend_t):
+                    continue
+
+            stop_distance = stop_sigma * std_t
+            risk_dollars = equity * risk_pct
+            if open_risk + risk_dollars > equity * max_total_risk_pct:
+                continue
+
+            shares = risk_dollars / stop_distance
+            max_shares_by_notional = (equity * max_position_pct) / price_t
+            shares = min(shares, max_shares_by_notional)
+            shares = float(np.floor(shares))
+            if shares <= 0:
+                continue
+
+            if direction == 1:
+                stop_price = price_t - stop_distance
+                tp_price = (price_t + rr_ratio * stop_distance) if rr_ratio else None
+            else:
+                stop_price = price_t + stop_distance
+                tp_price = (price_t - rr_ratio * stop_distance) if rr_ratio else None
+
+            positions[t] = _BracketPosition(
+                ticker=t, direction=direction, shares=shares, entry_price=price_t,
+                entry_date=date, last_price=price_t, stop_price=stop_price, tp_price=tp_price,
+                stop_distance=stop_distance, risk_dollars=risk_dollars,
             )
             open_risk += risk_dollars
 

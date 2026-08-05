@@ -1,0 +1,74 @@
+===== run_20260805_202130.log =====
+2026-08-05 20:21:30,192 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False) - Log: logs\konto2_ttp\run_20260805_202130.log ===
+2026-08-05 20:21:30,214 ERROR executor: BE-Move fehlgeschlagen für LUV (Ticket 17505917): OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))
+2026-08-05 20:21:30,286 INFO executor: SL für TROW (Ticket 17625106) auf Break-Even (112.5900) gesetzt.
+2026-08-05 20:21:30,341 INFO executor: SL für MAR (Ticket 17656474) auf Break-Even (347.5400) gesetzt.
+2026-08-05 20:21:30,402 INFO executor: SL für ROK (Ticket 17683814) auf Break-Even (444.5500) gesetzt.
+2026-08-05 20:21:30,406 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'error', 'ticket': 17505917, 'symbol': 'LUV', 'reason': "OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))"}, {'status': 'moved', 'ticket': 17625106, 'symbol': 'TROW', 'sl': 112.59}, {'status': 'moved', 'ticket': 17656474, 'symbol': 'MAR', 'sl': 347.54}, {'status': 'moved', 'ticket': 17683814, 'symbol': 'ROK', 'sl': 444.55}]
+2026-08-05 20:21:30,422 INFO run_once.konto2_ttp: 8 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-05 20:21:30,424 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 101754.02, aktueller Drawdown -0.00% (Limit 2.0%)
+2026-08-05 20:21:30,427 WARNING executor: Symbol 'DVA' (MT5-Name 'DVA') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-05 20:21:30,427 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DVA', 'direction': 'Long', 'entry': 187.8, 'sl': 165.65, 'tp': 221.03}}
+2026-08-05 20:21:30,947 INFO executor: Order gesendet: {'symbol': 'CVS', 'volume': 54.0, 'type': 'BUY', 'entry': 99.65, 'sl': 95.01, 'tp': 106.6} -> Ticket 17713582
+2026-08-05 20:21:31,255 INFO run_once.konto2_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'CVS', 'volume': 54.0, 'type': 'BUY', 'entry': 99.65, 'sl': 95.01, 'tp': 106.6}, 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 99.65, 'sl': 95.01, 'tp': 106.6}, 'ticket': 17713582, 'risk': 250.56000000000003}
+2026-08-05 20:21:31,262 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-05 20:21:31,262 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1293.18, 'sl': 1236.02, 'tp': 1378.93}}
+2026-08-05 20:21:31,265 WARNING executor: Symbol 'ZAL.DE' (MT5-Name 'ZAL.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-05 20:21:31,265 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ZAL.DE', 'direction': 'Long', 'entry': 24.66, 'sl': 21.91, 'tp': 28.78}}
+2026-08-05 20:21:31,266 WARNING executor: Symbol 'CON.DE' (MT5-Name 'CON.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-05 20:21:31,267 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CON.DE', 'direction': 'Long', 'entry': 68.42, 'sl': 66.05, 'tp': 71.98}}
+2026-08-05 20:21:31,268 WARNING executor: Symbol 'PUM.DE' (MT5-Name 'PUM.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-05 20:21:31,268 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PUM.DE', 'direction': 'Long', 'entry': 26.76, 'sl': 25.24, 'tp': 29.04}}
+2026-08-05 20:21:31,271 INFO executor: Für D ist bereits eine Position offen (Ticket 17656476) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-05 20:21:31,271 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.26, 'sl': 66.35, 'tp': 71.12}}
+2026-08-05 20:21:31,272 WARNING executor: Symbol 'ED' (MT5-Name 'ED') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-05 20:21:31,273 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ED', 'direction': 'Long', 'entry': 107.34, 'sl': 103.96, 'tp': 112.42}}
+2026-08-05 20:21:31,273 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260805_203519.log =====
+2026-08-05 20:35:19,797 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False) - Log: logs\konto2_ttp\run_20260805_203519.log ===
+2026-08-05 20:35:19,808 ERROR executor: BE-Move fehlgeschlagen für LUV (Ticket 17505917): OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))
+2026-08-05 20:35:19,819 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'error', 'ticket': 17505917, 'symbol': 'LUV', 'reason': "OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))"}]
+2026-08-05 20:35:19,831 INFO run_once.konto2_ttp: 8 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-05 20:35:19,833 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 101754.02, aktueller Drawdown -0.01% (Limit 2.0%)
+2026-08-05 20:35:19,834 WARNING executor: Symbol 'DVA' (MT5-Name 'DVA') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-05 20:35:19,834 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DVA', 'direction': 'Long', 'entry': 187.8, 'sl': 165.65, 'tp': 221.03}}
+2026-08-05 20:35:19,836 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'CVS', 'direction': 'Long', 'entry': 99.65, 'sl': 95.01, 'tp': 106.6}
+2026-08-05 20:35:19,837 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-05 20:35:19,837 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1293.18, 'sl': 1236.02, 'tp': 1378.93}}
+2026-08-05 20:35:19,838 WARNING executor: Symbol 'ZAL.DE' (MT5-Name 'ZAL.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-05 20:35:19,838 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ZAL.DE', 'direction': 'Long', 'entry': 24.66, 'sl': 21.91, 'tp': 28.78}}
+2026-08-05 20:35:19,840 WARNING executor: Symbol 'CON.DE' (MT5-Name 'CON.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-05 20:35:19,840 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CON.DE', 'direction': 'Long', 'entry': 68.42, 'sl': 66.05, 'tp': 71.98}}
+2026-08-05 20:35:19,841 WARNING executor: Symbol 'PUM.DE' (MT5-Name 'PUM.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-05 20:35:19,841 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PUM.DE', 'direction': 'Long', 'entry': 26.76, 'sl': 25.24, 'tp': 29.04}}
+2026-08-05 20:35:19,843 INFO executor: Für D ist bereits eine Position offen (Ticket 17656476) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-05 20:35:19,843 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.26, 'sl': 66.35, 'tp': 71.12}}
+2026-08-05 20:35:19,844 WARNING executor: Symbol 'ED' (MT5-Name 'ED') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-05 20:35:19,844 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ED', 'direction': 'Long', 'entry': 107.34, 'sl': 103.96, 'tp': 112.42}}
+2026-08-05 20:35:19,844 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260805_213520.log =====
+2026-08-05 21:35:20,344 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False) - Log: logs\konto2_ttp\run_20260805_213520.log ===
+2026-08-05 21:35:20,377 ERROR executor: BE-Move fehlgeschlagen für LUV (Ticket 17505917): OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))
+2026-08-05 21:35:20,386 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'error', 'ticket': 17505917, 'symbol': 'LUV', 'reason': "OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))"}]
+2026-08-05 21:35:20,398 INFO run_once.konto2_ttp: 8 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-05 21:35:20,399 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 101754.02, aktueller Drawdown -0.08% (Limit 2.0%)
+2026-08-05 21:35:20,400 WARNING executor: Symbol 'DVA' (MT5-Name 'DVA') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-05 21:35:20,400 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DVA', 'direction': 'Long', 'entry': 187.8, 'sl': 165.65, 'tp': 221.03}}
+2026-08-05 21:35:20,401 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'CVS', 'direction': 'Long', 'entry': 99.65, 'sl': 95.01, 'tp': 106.6}
+2026-08-05 21:35:20,402 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-05 21:35:20,402 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1293.18, 'sl': 1236.02, 'tp': 1378.93}}
+2026-08-05 21:35:20,404 WARNING executor: Symbol 'ZAL.DE' (MT5-Name 'ZAL.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-05 21:35:20,404 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ZAL.DE', 'direction': 'Long', 'entry': 24.66, 'sl': 21.91, 'tp': 28.78}}
+2026-08-05 21:35:20,405 WARNING executor: Symbol 'CON.DE' (MT5-Name 'CON.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-05 21:35:20,406 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CON.DE', 'direction': 'Long', 'entry': 68.42, 'sl': 66.05, 'tp': 71.98}}
+2026-08-05 21:35:20,407 WARNING executor: Symbol 'PUM.DE' (MT5-Name 'PUM.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-05 21:35:20,407 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PUM.DE', 'direction': 'Long', 'entry': 26.76, 'sl': 25.24, 'tp': 29.04}}
+2026-08-05 21:35:20,408 INFO executor: Für D ist bereits eine Position offen (Ticket 17656476) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-05 21:35:20,408 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.26, 'sl': 66.35, 'tp': 71.12}}
+2026-08-05 21:35:20,409 WARNING executor: Symbol 'ED' (MT5-Name 'ED') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-05 21:35:20,410 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'ED', 'direction': 'Long', 'entry': 107.34, 'sl': 103.96, 'tp': 112.42}}
+2026-08-05 21:35:20,410 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===

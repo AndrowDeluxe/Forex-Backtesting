@@ -13,9 +13,16 @@ stays solidly profitable. Keeping OU-selection on uniformly costs some absolute
 return on the (already strong) US legs in exchange for not failing on DAX -- an
 explicit robustness-over-optimality choice, not an oversight.
 
+CRITICAL: a genuine out-of-sample holdout (2025-today, never touched by any
+parameter sweep) shows Sharpe collapsing to near-zero/negative on all three
+markets, far below buy&hold -- see the "Out-of-Sample-Test" tab. Lead with that
+finding, don't just present the 2018-2024 numbers as validated.
+
 Dark/monospace presentation styling per user request (loosely modeled on a
 reference screenshot from an unrelated site -- visual language only, no content
-copied)."""
+copied). Refactored 2026-08-05 into tabs + shared render helpers to cut down the
+single long scroll and repeated HTML/Altair boilerplate the page had accumulated.
+"""
 
 import sys
 from pathlib import Path
@@ -52,35 +59,120 @@ VIEW_LABELS = {
     "sp500_dax": "S&P 500 + DAX (50/50 Diversifikation)",
     "nasdaq100_dax": "Nasdaq-100 + DAX (50/50 Diversifikation)",
 }
+SIZING_METHODS = {
+    "risk_based": "Risk-based (1% Equity/Trade, Standard)",
+    "concentrated": "Konzentriert (1/N Tages-Setups, gedeckelt 1/8)",
+}
+
+# --- color palette (single source of truth -- keep chart colors in sync with CSS) ---
+C_BG = "#0a0e14"
+C_CARD = "#11151c"
+C_BORDER = "#232936"
+C_GRID = "#1c2128"
+C_TEXT = "#f0f6fc"
+C_MUTED = "#8b949e"
+C_BODY = "#c9d1d9"
+C_ORANGE = "#ff8c42"
+C_ORANGE_SOFT = "#ffb37a"
+C_BLUE = "#5ec8f8"
+C_BLUE_SOFT = "#9db4e8"
+C_RED = "#ff5555"
 
 # --- dark / monospace terminal styling (this page only -- Streamlit re-renders the
 # whole DOM per page nav, so this doesn't leak onto other pages) ---
 st.markdown(
-    """
+    f"""
     <style>
-    .stApp { background-color: #0a0e14; }
-    .block-container { padding-top: 2rem; }
-    .fs-writeup { font-family: 'JetBrains Mono','Fira Code',Consolas,monospace; font-size: 0.92rem;
-                  line-height: 1.7; color: #9db4e8; margin-bottom: 1.2rem; }
-    .fs-caveats { font-family: 'JetBrains Mono','Fira Code',Consolas,monospace; font-size: 0.85rem;
-                  line-height: 1.7; color: #c9d1d9; margin-bottom: 1.5rem; }
-    .fs-caveats b { color: #f0f6fc; }
-    .fs-tile-row { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.5rem 0; }
-    .fs-tile { background: #11151c; border: 1px solid #232936; border-radius: 6px;
-               padding: 1rem 1.4rem; text-align: center; flex: 1; min-width: 150px; }
-    .fs-tile-value { font-family: 'JetBrains Mono',Consolas,monospace; font-size: 1.9rem;
-                     font-weight: 700; color: #f0f6fc; }
-    .fs-tile-label { font-family: 'JetBrains Mono',Consolas,monospace; font-size: 0.68rem;
-                     letter-spacing: 0.08em; color: #8b949e; margin-top: 0.35rem; text-transform: uppercase; }
-    .fs-chart-title { font-family: 'JetBrains Mono',Consolas,monospace; color: #ff8c42;
-                      letter-spacing: 0.05em; font-size: 0.82rem; text-transform: uppercase;
-                      margin: 1.6rem 0 0.6rem 0; }
+    .stApp {{ background-color: {C_BG}; }}
+    .block-container {{ padding-top: 2rem; max-width: 1200px; }}
+    .fs-writeup {{ font-family: 'JetBrains Mono','Fira Code',Consolas,monospace; font-size: 0.92rem;
+                  line-height: 1.7; color: {C_BLUE_SOFT}; margin-bottom: 1rem; }}
+    .fs-caveats {{ font-family: 'JetBrains Mono','Fira Code',Consolas,monospace; font-size: 0.85rem;
+                  line-height: 1.7; color: {C_BODY}; margin-bottom: 1.2rem; }}
+    .fs-caveats b {{ color: {C_TEXT}; }}
+    .fs-alert {{ background: rgba(255,85,85,0.08); border: 1px solid {C_RED};
+                border-radius: 8px; padding: 0.9rem 1.1rem; margin-bottom: 1.2rem; }}
+    .fs-tile-row {{ display: flex; gap: 0.9rem; flex-wrap: wrap; margin: 1.2rem 0; }}
+    .fs-tile {{ background: {C_CARD}; border: 1px solid {C_BORDER}; border-radius: 8px;
+               padding: 1rem 1.3rem; text-align: center; flex: 1; min-width: 148px;
+               transition: border-color 0.15s ease; }}
+    .fs-tile:hover {{ border-color: {C_ORANGE}; }}
+    .fs-tile-value {{ font-family: 'JetBrains Mono',Consolas,monospace; font-size: 1.75rem;
+                     font-weight: 700; color: {C_TEXT}; }}
+    .fs-tile-label {{ font-family: 'JetBrains Mono',Consolas,monospace; font-size: 0.66rem;
+                     letter-spacing: 0.08em; color: {C_MUTED}; margin-top: 0.35rem; text-transform: uppercase; }}
+    .fs-section-title {{ font-family: 'JetBrains Mono',Consolas,monospace; color: {C_ORANGE};
+                      letter-spacing: 0.05em; font-size: 0.8rem; text-transform: uppercase;
+                      margin: 0.2rem 0 0.7rem 0; font-weight: 600; }}
+    .fs-legend {{ font-family: 'JetBrains Mono',Consolas,monospace; font-size: 0.78rem; margin-top: 0.4rem; }}
+    .fs-legend span {{ margin-right: 1.4rem; }}
+    .stTabs [data-baseweb="tab-list"] {{ gap: 0.4rem; }}
+    .stTabs [data-baseweb="tab"] {{
+        font-family: 'JetBrains Mono',Consolas,monospace; font-size: 0.82rem;
+        background: {C_CARD}; border: 1px solid {C_BORDER}; border-radius: 6px 6px 0 0;
+    }}
     </style>
     """,
     unsafe_allow_html=True,
 )
 
 
+# ------------------------------------------------------------------ render helpers
+def section_title(text: str, color: str = C_ORANGE) -> None:
+    st.markdown(f"<div class='fs-section-title' style='color:{color};'>{text}</div>", unsafe_allow_html=True)
+
+
+def caveat_box(html: str, alert: bool = False) -> None:
+    cls = "fs-alert" if alert else "fs-caveats"
+    st.markdown(f"<div class='{cls}'>{html}</div>", unsafe_allow_html=True)
+
+
+def tile_row(tiles: list[tuple[str, str]]) -> None:
+    html = "<div class='fs-tile-row'>" + "".join(
+        f"<div class='fs-tile'><div class='fs-tile-value'>{v}</div><div class='fs-tile-label'>{l}</div></div>"
+        for l, v in tiles
+    ) + "</div>"
+    st.markdown(html, unsafe_allow_html=True)
+
+
+def legend(items: list[tuple[str, str]]) -> None:
+    """items: list of (label, color) -- always rendered as a solid dash marker."""
+    spans = "".join(
+        f"<span style='color:{color};'>&#9644;&#9644; {label}</span>" for label, color in items
+    )
+    st.markdown(f"<div class='fs-legend'>{spans}</div>", unsafe_allow_html=True)
+
+
+def line_chart(
+    df_long: pd.DataFrame, series_colors: dict[str, tuple[str, tuple[int, int] | None]], height: int = 380
+) -> alt.LayerChart:
+    """df_long must have columns date, Serie, value. series_colors maps Serie name ->
+    (hex color, dash pattern or None for solid)."""
+    base = alt.Chart(df_long).encode(
+        x=alt.X("date:T", title=None, axis=alt.Axis(labelColor=C_MUTED, gridColor=C_GRID, domainColor=C_BORDER)),
+        y=alt.Y("value:Q", title=None, axis=alt.Axis(labelColor=C_MUTED, gridColor=C_GRID, domainColor=C_BORDER)),
+        tooltip=["date:T", "Serie:N", alt.Tooltip("value:Q", format=".2f")],
+    )
+    layers = []
+    for serie, (color, dash) in series_colors.items():
+        mark_kwargs = {"color": color, "size": 2 if dash is None else 1.5}
+        if dash:
+            mark_kwargs["strokeDash"] = list(dash)
+        layers.append(base.transform_filter(alt.datum.Serie == serie).mark_line(**mark_kwargs))
+    chart = layers[0]
+    for l in layers[1:]:
+        chart = chart + l
+    return chart.properties(height=height, background=C_BG).configure_view(strokeWidth=0)
+
+
+def normalize(series: pd.Series, name: str) -> pd.DataFrame:
+    df = (series / series.iloc[0]).reset_index()
+    df.columns = ["date", "value"]
+    df["Serie"] = name
+    return df
+
+
+# ------------------------------------------------------------------ data / simulation
 @st.cache_data(ttl="6h")
 def load_panel_and_benchmark(market_key: str) -> tuple[pd.DataFrame, pd.Series] | None:
     panel_path = bt_config.DATA_CACHE / PANEL_FILE[market_key]
@@ -90,12 +182,6 @@ def load_panel_and_benchmark(market_key: str) -> tuple[pd.DataFrame, pd.Series] 
     panel = pd.read_parquet(panel_path)
     benchmark = pd.read_parquet(bench_path).iloc[:, 0]
     return panel, benchmark
-
-
-SIZING_METHODS = {
-    "risk_based": "Risk-based (1% Equity/Trade, Standard)",
-    "concentrated": "Konzentriert (1/N Tages-Setups, gedeckelt 1/8)",
-}
 
 
 @st.cache_data(ttl="6h", show_spinner="Berechne finale Strategie...")
@@ -160,6 +246,7 @@ def run_view(view_key: str, sizing_method: str = "risk_based") -> dict | None:
     return {"equity": total_eq, "benchmark": total_bench, "metrics": m, "bench_label": bench_label}
 
 
+# ------------------------------------------------------------------ header + controls
 st.markdown("## :material/military_tech: Fertige Strategien")
 st.caption(
     "Final validierte OU-Modell-Konfiguration -- keine Regler, keine Tuning-Optionen. "
@@ -174,68 +261,54 @@ with sel_col2:
     sizing_method = st.selectbox(
         "Sizing-Methode", list(SIZING_METHODS.keys()), format_func=lambda k: SIZING_METHODS[k],
         help="Konzentriert (1/N heutiger Setups je Markt, gedeckelt auf 1/8) schlug Risk-based "
-             "im 2018-2024-Test auf S&P/Nasdaq/kombiniert deutlich, auf DAX solo leicht schlechter "
-             "(2026-08-05 Test). Siehe Out-of-Sample-Abschnitt unten, bevor du dich auf eine "
-             "Methode festlegst.",
+             "im 2018-2024-Test auf S&P/Nasdaq/kombiniert deutlich, auf DAX solo leicht schlechter. "
+             "Siehe Tab \"Out-of-Sample-Test\", bevor du dich auf eine Methode festlegst.",
     )
 
-st.markdown(
-    """
-    <div class="fs-writeup">
-    Die finale OU-Modell-Konfiguration (Long-only, 3,0-Sigma-Stop, kein festes
-    Take-Profit, 0,25R-Breakeven, marktweiter EMA-200-Regimefilter auf dem Index
-    selbst) wurde ausschliesslich auf US-Aktien (S&P 500- und Nasdaq-100-Sample)
-    gesucht und optimiert. Als unabhaengiger Robustheits-Check haben wir dieselbe,
-    unveraenderte Konfiguration auf ein drittes, komplett separates Universum
-    losgelassen: den DAX. Ergebnis: mit dem vollen 33-Ticker-DAX-Universum -- der
-    Einstellung, die auf S&P/Nasdaq am staerksten performte -- waere die Strategie
-    leicht defizitaer gewesen. Der Ornstein-Uhlenbeck-Selektionsfilter, der auf den
-    US-Maerkten kaum noch Mehrwert brachte, erwies sich auf dem kleineren,
-    konzentrierteren DAX als notwendig statt optional: erst mit OU-Selektion (13 von
-    33 Titeln) wird der DAX-Zweig klar profitabel. Deshalb bleibt der OU-Filter Teil
-    der finalen, marktuebergreifend <b>einheitlichen</b> Konfiguration -- auf den
-    US-Maerkten kostet das etwas absolute Rendite (die dort auch ohne Filter
-    funktioniert haette), auf dem DAX macht er den Unterschied zwischen Gewinn und
-    Verlust.
-    </div>
-    """,
-    unsafe_allow_html=True,
+caveat_box(
+    "<b>&#9888; WICHTIG -- echter Out-of-Sample-Test (siehe gleichnamiger Tab unten):</b> "
+    "SL/TP/Breakeven/Regimefilter/Sizing wurden alle gegen das 2018-2024-Fenster optimiert -- "
+    "der DAX-Test prueft neue TICKER, aber nicht neue ZEIT. Auf echt ungesehenen Daten "
+    "(2025-heute, in keinem einzigen Sweep verwendet) faellt der Sharpe auf allen drei Maerkten "
+    "auf nahe Null bis leicht negativ, weit unter Buy&amp;Hold. Das ist ein reales "
+    "Overfitting-Warnsignal, kein Randdetail.",
+    alert=True,
 )
-st.markdown(
-    """
-    <div class="fs-caveats" style="border-left: 3px solid #ff5555; padding-left: 0.8rem;">
-    <b>WICHTIG -- echter Out-of-Sample-Test (2025 bis heute, siehe Abschnitt unten):</b>
-    SL/TP/Breakeven/Regimefilter/Sizing wurden alle gegen das 2018-2024-Fenster
-    optimiert -- der DAX-Test prueft neue TICKER, aber nicht neue ZEIT. Auf echt
-    ungesehenen Daten (2025-heute, in keinem einzigen Sweep verwendet) faellt der
-    Sharpe auf allen drei Maerkten auf nahe Null bis leicht negativ, weit unter
-    Buy&amp;Hold. Das ist ein reales Overfitting-Warnsignal, kein Randdetail --
-    Details und Zahlen im Abschnitt "Out-of-Sample-Test" weiter unten, bevor du der
-    Config vertraust.
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-st.markdown(
-    """
-    <div class="fs-caveats">
-    <b>Weitere ehrliche Einschraenkungen:</b> Alle Zahlen unten sind brutto, ohne
-    Handelskosten, Spread oder Slippage. Das Aktienuniversum ist in allen drei
-    Maerkten ein reduziertes Sample (S&P: 90 von 503 Tickern; Nasdaq und DAX: alle
-    aktuellen Konstituenten, nicht die historische Zusammensetzung ueber die Zeit).
-    Ein Walk-Forward-Test (rollierende OU-Neuauswahl) zeigte KEINEN Vorteil
-    gegenueber der statischen Auswahl (siehe Walk-Forward-Abschnitt). Die
-    "50/50"-Ansichten sind ein simpler fixer Kapitalsplit zwischen zwei unabhaengig
-    laufenden Teilbuechern, keine gemeinsame Risikosteuerung -- das reduziert hier
-    spuerbar den Drawdown, aber <b>nicht</b> automatisch den Calmar oder die
-    absolute Rendite, weil der DAX-Zweig fuer sich genommen deutlich schwaecher ist
-    als beide US-Maerkte. Und: Entscheidungen fallen nur einmal taeglich am
-    Schlusskurs -- ein echter untertaegiger Schock oder ein Overnight-Gap wird vom
-    Modell nicht abgefangen.
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+
+with st.expander(":material/menu_book: Methodik & weitere Einschraenkungen", expanded=False):
+    st.markdown(
+        """
+        <div class="fs-writeup">
+        Die finale OU-Modell-Konfiguration (Long-only, 3,0-Sigma-Stop, kein festes
+        Take-Profit, 0,25R-Breakeven, marktweiter EMA-200-Regimefilter auf dem Index
+        selbst) wurde ausschliesslich auf US-Aktien (S&P 500- und Nasdaq-100-Sample)
+        gesucht und optimiert. Als unabhaengiger Robustheits-Check haben wir dieselbe,
+        unveraenderte Konfiguration auf ein drittes, komplett separates Universum
+        losgelassen: den DAX. Ergebnis: mit dem vollen 33-Ticker-DAX-Universum -- der
+        Einstellung, die auf S&P/Nasdaq am staerksten performte -- waere die Strategie
+        leicht defizitaer gewesen. Der Ornstein-Uhlenbeck-Selektionsfilter, der auf den
+        US-Maerkten kaum noch Mehrwert brachte, erwies sich auf dem kleineren,
+        konzentrierteren DAX als notwendig statt optional: erst mit OU-Selektion (13 von
+        33 Titeln) wird der DAX-Zweig klar profitabel. Deshalb bleibt der OU-Filter Teil
+        der finalen, marktuebergreifend <b>einheitlichen</b> Konfiguration.
+        </div>
+        <div class="fs-caveats">
+        <b>Weitere ehrliche Einschraenkungen:</b> Alle Zahlen sind brutto, ohne
+        Handelskosten, Spread oder Slippage. Das Aktienuniversum ist in allen drei
+        Maerkten ein reduziertes Sample (S&P: 90 von 503 Tickern; Nasdaq und DAX: alle
+        aktuellen Konstituenten, nicht die historische Zusammensetzung ueber die Zeit).
+        Ein Walk-Forward-Test (rollierende OU-Neuauswahl) zeigte KEINEN Vorteil
+        gegenueber der statischen Auswahl (siehe Tab "Walk-Forward"). Die
+        "50/50"-Ansichten sind ein simpler fixer Kapitalsplit zwischen zwei unabhaengig
+        laufenden Teilbuechern, keine gemeinsame Risikosteuerung -- das reduziert
+        spuerbar den Drawdown, aber <b>nicht</b> automatisch den Calmar oder die
+        absolute Rendite. Und: Entscheidungen fallen nur einmal taeglich am
+        Schlusskurs -- ein echter untertaegiger Schock oder ein Overnight-Gap wird vom
+        Modell nicht abgefangen.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 result = run_view(view_key, sizing_method)
 if result is None:
@@ -246,322 +319,227 @@ if result is None:
     )
     st.stop()
 
-m = result["metrics"]
-tiles = [
-    ("SHARPE", f"{m['sharpe']:.2f}"),
-    ("SORTINO", f"{m['sortino']:.2f}"),
-    ("CALMAR", f"{m['calmar']:.2f}"),
-    ("MAX DRAWDOWN", f"{m['max_drawdown_pct']:.1f}%"),
-    ("WIN-RATE", f"{m['win_rate_pct']:.1f}%"),
-    ("GESAMT-RETURN", f"{m['total_return_pct']:+.1f}%"),
-]
-tiles_html = "<div class='fs-tile-row'>" + "".join(
-    f"<div class='fs-tile'><div class='fs-tile-value'>{v}</div><div class='fs-tile-label'>{l}</div></div>"
-    for l, v in tiles
-) + "</div>"
-st.markdown(tiles_html, unsafe_allow_html=True)
-
-bench_label = result["bench_label"]
-st.markdown(
-    f"<div class='fs-chart-title'>Equity Curve -- {VIEW_LABELS[view_key]} OU-Modell vs. {bench_label} (Buy&Hold)</div>",
-    unsafe_allow_html=True,
-)
-
-start_val = result["equity"].iloc[0]
-curve_df = pd.DataFrame({
-    "date": result["equity"].index,
-    "OU-Modell": result["equity"].values / start_val,
-    f"{bench_label} (Buy&Hold)": result["benchmark"].values / start_val,
-})
-curve_long = curve_df.melt("date", var_name="Serie", value_name="Multiple")
-
-base = alt.Chart(curve_long).encode(
-    x=alt.X("date:T", title=None, axis=alt.Axis(labelColor="#8b949e", gridColor="#1c2128", domainColor="#232936")),
-    y=alt.Y("Multiple:Q", title=None, axis=alt.Axis(labelColor="#8b949e", gridColor="#1c2128", domainColor="#232936")),
-    tooltip=["date:T", "Serie:N", alt.Tooltip("Multiple:Q", format=".2f")],
-)
-strat_line = base.transform_filter(alt.datum.Serie == "OU-Modell").mark_line(color="#ff8c42", size=2.2)
-bench_line = base.transform_filter(alt.datum.Serie != "OU-Modell").mark_line(
-    color="#8b949e", strokeDash=[5, 4], size=1.5
-)
-chart = (
-    (strat_line + bench_line)
-    .properties(height=440, background="#0a0e14")
-    .configure_view(strokeWidth=0)
-)
-st.altair_chart(chart)
-st.markdown(
-    f"<span style='font-family:monospace;color:#ff8c42;'>--- OU-Modell</span> "
-    f"&nbsp;&nbsp; <span style='font-family:monospace;color:#8b949e;'>-·-·- {bench_label} (Buy&Hold)</span>",
-    unsafe_allow_html=True,
-)
-
-# --- Out-of-Sample-Test: genuinely untouched 2025-today data, never used in any sweep ---
 markets_in_view = VIEWS[view_key]
-if len(markets_in_view) == 1:
-    oos_market = markets_in_view[0]
-    oos_rb_path = RESULTS_DIR / oos_market / "holdout_2025_equity_riskbased.csv"
-    oos_c_path = RESULTS_DIR / oos_market / "holdout_2025_equity_concentrated.csv"
-    oos_bench_path = RESULTS_DIR / oos_market / "holdout_2025_benchmark.csv"
-    if oos_rb_path.exists() and oos_c_path.exists() and oos_bench_path.exists():
-        st.markdown(
-            "<div class='fs-chart-title' style='color:#ff5555;'>Out-of-Sample-Test "
-            "(2025-heute, in KEINEM Sweep verwendet)</div>",
-            unsafe_allow_html=True,
-        )
-        st.markdown(
-            """
-            <div class="fs-caveats">
-            Alle bisherigen Tests auf dieser Seite (statisch, Monte Carlo, Walk-Forward)
-            liefen auf 2018-2024 -- demselben Fenster, gegen das SL/TP/Breakeven/Regimefilter/
-            Sizing gesucht wurden. Hier: frisch heruntergeladene Daten bis heute, getestet
-            NUR auf 2025 bis jetzt -- ein Zeitraum, der in keinem einzigen Parameter-Sweep
-            dieser gesamten Recherche vorkam. Das ist der ehrlichste verfuegbare
-            Overfitting-Check.
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+is_solo = len(markets_in_view) == 1
+solo_market = markets_in_view[0] if is_solo else None
 
-        oos_rb = pd.read_csv(oos_rb_path, index_col=0, parse_dates=True).iloc[:, 0]
-        oos_c = pd.read_csv(oos_c_path, index_col=0, parse_dates=True).iloc[:, 0]
-        oos_bench = pd.read_csv(oos_bench_path, index_col=0, parse_dates=True).iloc[:, 0]
-        oos_bench_eq = 100_000.0 * (oos_bench / oos_bench.iloc[0])
+tab_equity, tab_oos, tab_mc, tab_wf = st.tabs([
+    ":material/show_chart: Equity-Kurve",
+    ":material/warning: Out-of-Sample-Test",
+    ":material/casino: Monte Carlo",
+    ":material/history: Walk-Forward",
+])
 
-        oos_m_rb = bt_metrics.summarize(oos_rb.pct_change().fillna(0.0))
-        oos_m_c = bt_metrics.summarize(oos_c.pct_change().fillna(0.0))
-        oos_m_bench = bt_metrics.summarize(oos_bench_eq.pct_change().fillna(0.0))
+# ------------------------------------------------------------------ Tab: Equity curve
+with tab_equity:
+    m = result["metrics"]
+    tile_row([
+        ("SHARPE", f"{m['sharpe']:.2f}"),
+        ("SORTINO", f"{m['sortino']:.2f}"),
+        ("CALMAR", f"{m['calmar']:.2f}"),
+        ("MAX DRAWDOWN", f"{m['max_drawdown_pct']:.1f}%"),
+        ("WIN-RATE", f"{m['win_rate_pct']:.1f}%"),
+        ("GESAMT-RETURN", f"{m['total_return_pct']:+.1f}%"),
+    ])
 
-        oos_tiles = [
-            ("SHARPE RISK-BASED", f"{oos_m_rb['sharpe']:.2f}"),
-            ("SHARPE KONZENTRIERT", f"{oos_m_c['sharpe']:.2f}"),
-            ("SHARPE BUY&HOLD", f"{oos_m_bench['sharpe']:.2f}"),
-            ("RETURN RISK-BASED", f"{oos_m_rb['total_return_pct']:+.1f}%"),
-            ("RETURN KONZENTRIERT", f"{oos_m_c['total_return_pct']:+.1f}%"),
-            ("RETURN BUY&HOLD", f"{oos_m_bench['total_return_pct']:+.1f}%"),
-        ]
-        oos_tiles_html = "<div class='fs-tile-row'>" + "".join(
-            f"<div class='fs-tile'><div class='fs-tile-value'>{v}</div><div class='fs-tile-label'>{l}</div></div>"
-            for l, v in oos_tiles
-        ) + "</div>"
-        st.markdown(oos_tiles_html, unsafe_allow_html=True)
+    bench_label = result["bench_label"]
+    section_title(f"Equity Curve -- {VIEW_LABELS[view_key]} OU-Modell vs. {bench_label} (Buy&Hold)")
 
-        oos_rb_n = (oos_rb / oos_rb.iloc[0]).reset_index()
-        oos_rb_n.columns = ["date", "value"]
-        oos_rb_n["Serie"] = "Risk-based"
-        oos_c_n = (oos_c / oos_c.iloc[0]).reset_index()
-        oos_c_n.columns = ["date", "value"]
-        oos_c_n["Serie"] = "Konzentriert"
-        oos_bench_n = (oos_bench_eq / oos_bench_eq.iloc[0]).reset_index()
-        oos_bench_n.columns = ["date", "value"]
-        oos_bench_n["Serie"] = "Buy&Hold"
-        oos_curve = pd.concat([oos_rb_n, oos_c_n, oos_bench_n])
+    curve_long = pd.concat([
+        normalize(result["equity"], "OU-Modell"),
+        normalize(result["benchmark"], bench_label),
+    ])
+    st.altair_chart(line_chart(curve_long, {
+        "OU-Modell": (C_ORANGE, None),
+        bench_label: (C_MUTED, (5, 4)),
+    }))
+    legend([("OU-Modell", C_ORANGE), (f"{bench_label} (Buy&Hold)", C_MUTED)])
 
-        oos_base = alt.Chart(oos_curve).encode(
-            x=alt.X("date:T", title=None, axis=alt.Axis(labelColor="#8b949e", gridColor="#1c2128")),
-            y=alt.Y("value:Q", title=None, axis=alt.Axis(labelColor="#8b949e", gridColor="#1c2128")),
-            tooltip=["date:T", "Serie:N", alt.Tooltip("value:Q", format=".2f")],
-        )
-        oos_rb_line = oos_base.transform_filter(alt.datum.Serie == "Risk-based").mark_line(color="#ff8c42", size=2)
-        oos_c_line = oos_base.transform_filter(alt.datum.Serie == "Konzentriert").mark_line(color="#5ec8f8", size=2)
-        oos_bench_line = oos_base.transform_filter(alt.datum.Serie == "Buy&Hold").mark_line(
-            color="#8b949e", strokeDash=[5, 4], size=1.5
-        )
-        oos_chart = (
-            (oos_rb_line + oos_c_line + oos_bench_line)
-            .properties(height=380, background="#0a0e14")
-            .configure_view(strokeWidth=0)
-        )
-        st.altair_chart(oos_chart)
-        st.markdown(
-            "<span style='font-family:monospace;color:#ff8c42;'>--- Risk-based</span> "
-            "&nbsp;&nbsp; <span style='font-family:monospace;color:#5ec8f8;'>--- Konzentriert</span> "
-            "&nbsp;&nbsp; <span style='font-family:monospace;color:#8b949e;'>-·-·- Buy&amp;Hold</span>",
-            unsafe_allow_html=True,
+# ------------------------------------------------------------------ Tab: Out-of-Sample
+with tab_oos:
+    if not is_solo:
+        st.info(
+            "Out-of-Sample-Test ist aktuell nur fuer Einzelmaerkte verfuegbar, nicht "
+            "fuer die 50/50-Kombi-Ansichten.",
+            icon=":material/info:",
         )
     else:
-        st.info(f"OOS-Holdout-Daten fuer {MARKET_LABEL[oos_market]} noch nicht committed.", icon=":material/info:")
-
-# --- Monte Carlo (block bootstrap on the realized daily-return series) ---
-if len(markets_in_view) != 1:
-    st.info(
-        "Monte-Carlo-Robustheitsanalyse ist aktuell nur fuer Einzelmaerkte verfuegbar, "
-        "nicht fuer die 50/50-Kombi-Ansichten.",
-        icon=":material/info:",
-    )
-else:
-    mc_market = markets_in_view[0]
-    bands_path = RESULTS_DIR / mc_market / "monte_carlo_bands.csv"
-    sims_path = RESULTS_DIR / mc_market / "monte_carlo_sims.csv"
-    if bands_path.exists() and sims_path.exists():
-        st.markdown(
-            "<div class='fs-chart-title'>Monte-Carlo-Robustheit (2.000 Block-Bootstrap-Pfade)</div>",
-            unsafe_allow_html=True,
-        )
-        st.markdown(
-            """
-            <div class="fs-caveats">
-            Block-Bootstrap (20-Tage-Bloecke, zirkulaer) auf der REALISIERTEN taeglichen
-            Return-Serie derselben Konfiguration -- misst also <b>Sequenz-Risiko</b> (wie
-            stark haengt das Ergebnis davon ab, WANN gute/schlechte Phasen zufaellig
-            aufgetreten sind), nicht "wuerde das in einem komplett anderen, ungesehenen
-            Marktregime funktionieren" -- dieselbe Historie wird neu gemischt, nicht neu
-            erfunden. Ergaenzt den DAX-Markt-Check, ersetzt aber keinen echten
-            Walk-Forward-Test.
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-        sims = pd.read_csv(sims_path)
-        bands = pd.read_csv(bands_path, index_col=0, parse_dates=True)
-        p_loss = (sims["final_equity"] < 100_000.0).mean() * 100
-
-        mc_tiles = [
-            ("P(VERLUST)", f"{p_loss:.1f}%"),
-            ("SHARPE P5", f"{sims['sharpe'].quantile(0.05):.2f}"),
-            ("SHARPE P50", f"{sims['sharpe'].quantile(0.50):.2f}"),
-            ("SHARPE P95", f"{sims['sharpe'].quantile(0.95):.2f}"),
-            ("MAX-DD P5 (WORST)", f"{sims['max_drawdown_pct'].quantile(0.05):.1f}%"),
-            ("MAX-DD P95 (BEST)", f"{sims['max_drawdown_pct'].quantile(0.95):.1f}%"),
-        ]
-        mc_tiles_html = "<div class='fs-tile-row'>" + "".join(
-            f"<div class='fs-tile'><div class='fs-tile-value'>{v}</div><div class='fs-tile-label'>{l}</div></div>"
-            for l, v in mc_tiles
-        ) + "</div>"
-        st.markdown(mc_tiles_html, unsafe_allow_html=True)
-
-        bands_norm = bands / 100_000.0
-        realized_norm = result["equity"] / result["equity"].iloc[0]
-        band_df = bands_norm.reset_index(names="date")
-        fan_df = pd.concat([
-            band_df[["date", "p5", "p95"]].rename(columns={"p5": "lo", "p95": "hi"}).assign(band="p5-p95"),
-            band_df[["date", "p25", "p75"]].rename(columns={"p25": "lo", "p75": "hi"}).assign(band="p25-p75"),
-        ])
-        area = (
-            alt.Chart(fan_df)
-            .mark_area(opacity=0.18)
-            .encode(
-                x=alt.X("date:T", title=None, axis=alt.Axis(labelColor="#8b949e", gridColor="#1c2128")),
-                y=alt.Y("lo:Q", title=None, axis=alt.Axis(labelColor="#8b949e", gridColor="#1c2128")),
-                y2="hi:Q",
-                color=alt.Color("band:N", scale=alt.Scale(range=["#ff8c42", "#ffb37a"]), legend=None),
+        oos_rb_path = RESULTS_DIR / solo_market / "holdout_2025_equity_riskbased.csv"
+        oos_c_path = RESULTS_DIR / solo_market / "holdout_2025_equity_concentrated.csv"
+        oos_bench_path = RESULTS_DIR / solo_market / "holdout_2025_benchmark.csv"
+        if oos_rb_path.exists() and oos_c_path.exists() and oos_bench_path.exists():
+            caveat_box(
+                "Alle Tests in den anderen Tabs (Equity-Kurve, Monte Carlo, Walk-Forward) "
+                "liefen auf 2018-2024 -- demselben Fenster, gegen das SL/TP/Breakeven/"
+                "Regimefilter/Sizing gesucht wurden. Hier: frisch heruntergeladene Daten "
+                "bis heute, getestet NUR auf 2025 bis jetzt -- ein Zeitraum, der in keinem "
+                "einzigen Parameter-Sweep dieser gesamten Recherche vorkam. Das ist der "
+                "ehrlichste verfuegbare Overfitting-Check."
             )
-        )
-        median_line = (
-            alt.Chart(band_df)
-            .mark_line(color="#8b949e", strokeDash=[3, 3], size=1)
-            .encode(x="date:T", y=alt.Y("p50:Q", title=None))
-        )
-        realized_df = realized_norm.reset_index()
-        realized_df.columns = ["date", "value"]
-        realized_line = (
-            alt.Chart(realized_df)
-            .mark_line(color="#f0f6fc", size=1.8)
-            .encode(x="date:T", y=alt.Y("value:Q", title=None))
-        )
-        mc_chart = (
-            (area + median_line + realized_line)
-            .properties(height=380, background="#0a0e14")
-            .configure_view(strokeWidth=0)
-        )
-        st.altair_chart(mc_chart)
-        st.markdown(
-            "<span style='font-family:monospace;color:#f0f6fc;'>--- Realisierter Pfad</span> "
-            "&nbsp;&nbsp; <span style='font-family:monospace;color:#ff8c42;'>&#9608; 25-75. Perzentil</span> "
-            "&nbsp;&nbsp; <span style='font-family:monospace;color:#ffb37a;'>&#9608; 5-95. Perzentil</span>",
-            unsafe_allow_html=True,
+
+            oos_rb = pd.read_csv(oos_rb_path, index_col=0, parse_dates=True).iloc[:, 0]
+            oos_c = pd.read_csv(oos_c_path, index_col=0, parse_dates=True).iloc[:, 0]
+            oos_bench = pd.read_csv(oos_bench_path, index_col=0, parse_dates=True).iloc[:, 0]
+            oos_bench_eq = 100_000.0 * (oos_bench / oos_bench.iloc[0])
+
+            oos_m_rb = bt_metrics.summarize(oos_rb.pct_change().fillna(0.0))
+            oos_m_c = bt_metrics.summarize(oos_c.pct_change().fillna(0.0))
+            oos_m_bench = bt_metrics.summarize(oos_bench_eq.pct_change().fillna(0.0))
+
+            tile_row([
+                ("SHARPE RISK-BASED", f"{oos_m_rb['sharpe']:.2f}"),
+                ("SHARPE KONZENTRIERT", f"{oos_m_c['sharpe']:.2f}"),
+                ("SHARPE BUY&HOLD", f"{oos_m_bench['sharpe']:.2f}"),
+                ("RETURN RISK-BASED", f"{oos_m_rb['total_return_pct']:+.1f}%"),
+                ("RETURN KONZENTRIERT", f"{oos_m_c['total_return_pct']:+.1f}%"),
+                ("RETURN BUY&HOLD", f"{oos_m_bench['total_return_pct']:+.1f}%"),
+            ])
+
+            section_title("2025 - heute (nie in einem Sweep verwendet)", color=C_RED)
+            oos_curve = pd.concat([
+                normalize(oos_rb, "Risk-based"),
+                normalize(oos_c, "Konzentriert"),
+                normalize(oos_bench_eq, "Buy&Hold"),
+            ])
+            st.altair_chart(line_chart(oos_curve, {
+                "Risk-based": (C_ORANGE, None),
+                "Konzentriert": (C_BLUE, None),
+                "Buy&Hold": (C_MUTED, (5, 4)),
+            }))
+            legend([("Risk-based", C_ORANGE), ("Konzentriert", C_BLUE), ("Buy&Hold", C_MUTED)])
+        else:
+            st.info(f"OOS-Holdout-Daten fuer {MARKET_LABEL[solo_market]} noch nicht committed.", icon=":material/info:")
+
+# ------------------------------------------------------------------ Tab: Monte Carlo
+with tab_mc:
+    if not is_solo:
+        st.info(
+            "Monte-Carlo-Robustheitsanalyse ist aktuell nur fuer Einzelmaerkte verfuegbar, "
+            "nicht fuer die 50/50-Kombi-Ansichten.",
+            icon=":material/info:",
         )
     else:
-        st.info(f"Monte-Carlo-Daten fuer {MARKET_LABEL[mc_market]} noch nicht committed.", icon=":material/info:")
-
-# --- Walk-Forward: rolling OU re-selection vs. the static single-split universe ---
-if len(markets_in_view) == 1:
-    wf_market = markets_in_view[0]
-    wf_path = RESULTS_DIR / wf_market / "walk_forward_equity.csv"
-    static_path = RESULTS_DIR / wf_market / "walk_forward_static_equity.csv"
-    steps_path = RESULTS_DIR / wf_market / "walk_forward_steps.csv"
-    if wf_path.exists() and static_path.exists() and steps_path.exists():
-        st.markdown(
-            "<div class='fs-chart-title'>Walk-Forward: rollierende OU-Neuauswahl vs. statische Auswahl</div>",
-            unsafe_allow_html=True,
-        )
-        st.markdown(
-            """
-            <div class="fs-caveats">
-            Statt die OU-Selektion einmalig auf 2010-2017 zu fixieren (Standard auf dieser
-            Seite), wird hier jaehrlich neu geschaetzt: rollierendes 8-Jahres-Fenster,
-            Universum neu selektiert, jeweils nur das FOLGEJAHR ungesehen gehandelt --
-            SL/TP/Breakeven/Regimefilter bleiben unveraendert, nur das gehandelte
-            Ticker-Set aendert sich pro Jahr. <b>Befund:</b> die rollierende Neuauswahl
-            performt hier NICHT besser als die statische -- auf S&P und Nasdaq sogar
-            spuerbar schlechter (niedrigerer Sharpe/Calmar), auf DAX in etwa gleichauf.
-            Kein Beleg, dass haeufigere Neuauswahl automatisch robuster ist; das
-            urspruengliche 2010-2017-Sample scheint hier stabiler zu sein als kuerzere,
-            rollierende Fenster.
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-        wf_equity = pd.read_csv(wf_path, index_col=0, parse_dates=True).iloc[:, 0]
-        static_equity = pd.read_csv(static_path, index_col=0, parse_dates=True).iloc[:, 0]
-        steps = pd.read_csv(steps_path)
-
-        wf_final = wf_equity.iloc[-1]
-        static_final = static_equity.iloc[-1]
-        wf_tiles = [
-            ("STATISCH: ENDKAPITAL", f"${static_final:,.0f}"),
-            ("WALK-FORWARD: ENDKAPITAL", f"${wf_final:,.0f}"),
-            ("TICKER JAHR 1", f"{int(steps.iloc[0]['n_selected'])}"),
-            ("TICKER LETZTES JAHR", f"{int(steps.iloc[-1]['n_selected'])}"),
-        ]
-        wf_tiles_html = "<div class='fs-tile-row'>" + "".join(
-            f"<div class='fs-tile'><div class='fs-tile-value'>{v}</div><div class='fs-tile-label'>{l}</div></div>"
-            for l, v in wf_tiles
-        ) + "</div>"
-        st.markdown(wf_tiles_html, unsafe_allow_html=True)
-
-        wf_norm = (wf_equity / wf_equity.iloc[0]).reset_index()
-        wf_norm.columns = ["date", "value"]
-        wf_norm["Serie"] = "Walk-Forward"
-        static_norm = (static_equity / static_equity.iloc[0]).reset_index()
-        static_norm.columns = ["date", "value"]
-        static_norm["Serie"] = "Statisch (2010-2017)"
-        wf_curve = pd.concat([wf_norm, static_norm])
-
-        wf_base = alt.Chart(wf_curve).encode(
-            x=alt.X("date:T", title=None, axis=alt.Axis(labelColor="#8b949e", gridColor="#1c2128")),
-            y=alt.Y("value:Q", title=None, axis=alt.Axis(labelColor="#8b949e", gridColor="#1c2128")),
-            tooltip=["date:T", "Serie:N", alt.Tooltip("value:Q", format=".2f")],
-        )
-        wf_line = wf_base.transform_filter(alt.datum.Serie == "Walk-Forward").mark_line(color="#5ec8f8", size=2)
-        static_line = wf_base.transform_filter(alt.datum.Serie != "Walk-Forward").mark_line(
-            color="#8b949e", strokeDash=[5, 4], size=1.5
-        )
-        wf_chart = (
-            (wf_line + static_line)
-            .properties(height=380, background="#0a0e14")
-            .configure_view(strokeWidth=0)
-        )
-        st.altair_chart(wf_chart)
-        st.markdown(
-            "<span style='font-family:monospace;color:#5ec8f8;'>--- Walk-Forward (rollierend)</span> "
-            "&nbsp;&nbsp; <span style='font-family:monospace;color:#8b949e;'>-·-·- Statisch (2010-2017 fix)</span>",
-            unsafe_allow_html=True,
-        )
-
-        with st.expander("Universum-Groesse pro Jahr (Walk-Forward)"):
-            st.dataframe(
-                steps[["trade_year", "in_sample_start", "in_sample_end", "n_selected", "end_equity"]],
-                hide_index=True,
-                column_config={
-                    "trade_year": st.column_config.NumberColumn("Handelsjahr"),
-                    "in_sample_start": st.column_config.TextColumn("In-Sample ab"),
-                    "in_sample_end": st.column_config.TextColumn("In-Sample bis"),
-                    "n_selected": st.column_config.NumberColumn("Ticker selektiert"),
-                    "end_equity": st.column_config.NumberColumn("Equity Jahresende", format="%.0f"),
-                },
+        bands_path = RESULTS_DIR / solo_market / "monte_carlo_bands.csv"
+        sims_path = RESULTS_DIR / solo_market / "monte_carlo_sims.csv"
+        if bands_path.exists() and sims_path.exists():
+            caveat_box(
+                "Block-Bootstrap (20-Tage-Bloecke, zirkulaer) auf der REALISIERTEN taeglichen "
+                "Return-Serie derselben Konfiguration -- misst also <b>Sequenz-Risiko</b> (wie "
+                "stark haengt das Ergebnis davon ab, WANN gute/schlechte Phasen zufaellig "
+                "aufgetreten sind), nicht \"wuerde das in einem komplett anderen, ungesehenen "
+                "Marktregime funktionieren\" -- dieselbe Historie wird neu gemischt, nicht neu "
+                "erfunden."
             )
+
+            sims = pd.read_csv(sims_path)
+            bands = pd.read_csv(bands_path, index_col=0, parse_dates=True)
+            p_loss = (sims["final_equity"] < 100_000.0).mean() * 100
+
+            tile_row([
+                ("P(VERLUST)", f"{p_loss:.1f}%"),
+                ("SHARPE P5", f"{sims['sharpe'].quantile(0.05):.2f}"),
+                ("SHARPE P50", f"{sims['sharpe'].quantile(0.50):.2f}"),
+                ("SHARPE P95", f"{sims['sharpe'].quantile(0.95):.2f}"),
+                ("MAX-DD P5 (WORST)", f"{sims['max_drawdown_pct'].quantile(0.05):.1f}%"),
+                ("MAX-DD P95 (BEST)", f"{sims['max_drawdown_pct'].quantile(0.95):.1f}%"),
+            ])
+
+            section_title("2.000 Block-Bootstrap-Pfade")
+            bands_norm = bands / 100_000.0
+            band_df = bands_norm.reset_index(names="date")
+            fan_df = pd.concat([
+                band_df[["date", "p5", "p95"]].rename(columns={"p5": "lo", "p95": "hi"}).assign(band="p5-p95"),
+                band_df[["date", "p25", "p75"]].rename(columns={"p25": "lo", "p75": "hi"}).assign(band="p25-p75"),
+            ])
+            area = (
+                alt.Chart(fan_df)
+                .mark_area(opacity=0.18)
+                .encode(
+                    x=alt.X("date:T", title=None, axis=alt.Axis(labelColor=C_MUTED, gridColor=C_GRID)),
+                    y=alt.Y("lo:Q", title=None, axis=alt.Axis(labelColor=C_MUTED, gridColor=C_GRID)),
+                    y2="hi:Q",
+                    color=alt.Color("band:N", scale=alt.Scale(range=[C_ORANGE, C_ORANGE_SOFT]), legend=None),
+                )
+            )
+            median_line = (
+                alt.Chart(band_df)
+                .mark_line(color=C_MUTED, strokeDash=[3, 3], size=1)
+                .encode(x="date:T", y=alt.Y("p50:Q", title=None))
+            )
+            realized_norm = result["equity"] / result["equity"].iloc[0]
+            realized_df = realized_norm.reset_index()
+            realized_df.columns = ["date", "value"]
+            realized_line = (
+                alt.Chart(realized_df)
+                .mark_line(color=C_TEXT, size=1.8)
+                .encode(x="date:T", y=alt.Y("value:Q", title=None))
+            )
+            mc_chart = (
+                (area + median_line + realized_line)
+                .properties(height=380, background=C_BG)
+                .configure_view(strokeWidth=0)
+            )
+            st.altair_chart(mc_chart)
+            legend([("Realisierter Pfad", C_TEXT), ("25-75. Perzentil", C_ORANGE), ("5-95. Perzentil", C_ORANGE_SOFT)])
+        else:
+            st.info(f"Monte-Carlo-Daten fuer {MARKET_LABEL[solo_market]} noch nicht committed.", icon=":material/info:")
+
+# ------------------------------------------------------------------ Tab: Walk-Forward
+with tab_wf:
+    if not is_solo:
+        st.info(
+            "Walk-Forward-Vergleich ist aktuell nur fuer Einzelmaerkte verfuegbar, nicht "
+            "fuer die 50/50-Kombi-Ansichten.",
+            icon=":material/info:",
+        )
     else:
-        st.info(f"Walk-Forward-Daten fuer {MARKET_LABEL[wf_market]} noch nicht committed.", icon=":material/info:")
+        wf_path = RESULTS_DIR / solo_market / "walk_forward_equity.csv"
+        static_path = RESULTS_DIR / solo_market / "walk_forward_static_equity.csv"
+        steps_path = RESULTS_DIR / solo_market / "walk_forward_steps.csv"
+        if wf_path.exists() and static_path.exists() and steps_path.exists():
+            caveat_box(
+                "Statt die OU-Selektion einmalig auf 2010-2017 zu fixieren (Standard in den "
+                "anderen Tabs), wird hier jaehrlich neu geschaetzt: rollierendes 8-Jahres-Fenster, "
+                "Universum neu selektiert, jeweils nur das FOLGEJAHR ungesehen gehandelt -- "
+                "SL/TP/Breakeven/Regimefilter bleiben unveraendert, nur das gehandelte "
+                "Ticker-Set aendert sich pro Jahr. <b>Befund:</b> die rollierende Neuauswahl "
+                "performt hier NICHT besser als die statische -- auf S&P und Nasdaq sogar "
+                "spuerbar schlechter, auf DAX in etwa gleichauf."
+            )
+
+            wf_equity = pd.read_csv(wf_path, index_col=0, parse_dates=True).iloc[:, 0]
+            static_equity = pd.read_csv(static_path, index_col=0, parse_dates=True).iloc[:, 0]
+            steps = pd.read_csv(steps_path)
+
+            tile_row([
+                ("STATISCH: ENDKAPITAL", f"${static_equity.iloc[-1]:,.0f}"),
+                ("WALK-FORWARD: ENDKAPITAL", f"${wf_equity.iloc[-1]:,.0f}"),
+                ("TICKER JAHR 1", f"{int(steps.iloc[0]['n_selected'])}"),
+                ("TICKER LETZTES JAHR", f"{int(steps.iloc[-1]['n_selected'])}"),
+            ])
+
+            section_title("Walk-Forward (rollierend) vs. statische Auswahl")
+            wf_curve = pd.concat([
+                normalize(wf_equity, "Walk-Forward"),
+                normalize(static_equity, "Statisch (2010-2017)"),
+            ])
+            st.altair_chart(line_chart(wf_curve, {
+                "Walk-Forward": (C_BLUE, None),
+                "Statisch (2010-2017)": (C_MUTED, (5, 4)),
+            }))
+            legend([("Walk-Forward (rollierend)", C_BLUE), ("Statisch (2010-2017 fix)", C_MUTED)])
+
+            with st.expander("Universum-Groesse pro Jahr"):
+                st.dataframe(
+                    steps[["trade_year", "in_sample_start", "in_sample_end", "n_selected", "end_equity"]],
+                    hide_index=True,
+                    column_config={
+                        "trade_year": st.column_config.NumberColumn("Handelsjahr"),
+                        "in_sample_start": st.column_config.TextColumn("In-Sample ab"),
+                        "in_sample_end": st.column_config.TextColumn("In-Sample bis"),
+                        "n_selected": st.column_config.NumberColumn("Ticker selektiert"),
+                        "end_equity": st.column_config.NumberColumn("Equity Jahresende", format="%.0f"),
+                    },
+                )
+        else:
+            st.info(f"Walk-Forward-Daten fuer {MARKET_LABEL[solo_market]} noch nicht committed.", icon=":material/info:")

@@ -255,3 +255,97 @@ st.markdown(
     f"&nbsp;&nbsp; <span style='font-family:monospace;color:#8b949e;'>-·-·- {bench_label} (Buy&Hold)</span>",
     unsafe_allow_html=True,
 )
+
+# --- Monte Carlo (block bootstrap on the realized daily-return series) ---
+markets_in_view = VIEWS[view_key]
+if len(markets_in_view) != 1:
+    st.info(
+        "Monte-Carlo-Robustheitsanalyse ist aktuell nur fuer Einzelmaerkte verfuegbar, "
+        "nicht fuer die 50/50-Kombi-Ansichten.",
+        icon=":material/info:",
+    )
+else:
+    mc_market = markets_in_view[0]
+    bands_path = RESULTS_DIR / mc_market / "monte_carlo_bands.csv"
+    sims_path = RESULTS_DIR / mc_market / "monte_carlo_sims.csv"
+    if bands_path.exists() and sims_path.exists():
+        st.markdown(
+            "<div class='fs-chart-title'>Monte-Carlo-Robustheit (2.000 Block-Bootstrap-Pfade)</div>",
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            """
+            <div class="fs-caveats">
+            Block-Bootstrap (20-Tage-Bloecke, zirkulaer) auf der REALISIERTEN taeglichen
+            Return-Serie derselben Konfiguration -- misst also <b>Sequenz-Risiko</b> (wie
+            stark haengt das Ergebnis davon ab, WANN gute/schlechte Phasen zufaellig
+            aufgetreten sind), nicht "wuerde das in einem komplett anderen, ungesehenen
+            Marktregime funktionieren" -- dieselbe Historie wird neu gemischt, nicht neu
+            erfunden. Ergaenzt den DAX-Markt-Check, ersetzt aber keinen echten
+            Walk-Forward-Test.
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        sims = pd.read_csv(sims_path)
+        bands = pd.read_csv(bands_path, index_col=0, parse_dates=True)
+        p_loss = (sims["final_equity"] < 100_000.0).mean() * 100
+
+        mc_tiles = [
+            ("P(VERLUST)", f"{p_loss:.1f}%"),
+            ("SHARPE P5", f"{sims['sharpe'].quantile(0.05):.2f}"),
+            ("SHARPE P50", f"{sims['sharpe'].quantile(0.50):.2f}"),
+            ("SHARPE P95", f"{sims['sharpe'].quantile(0.95):.2f}"),
+            ("MAX-DD P5 (WORST)", f"{sims['max_drawdown_pct'].quantile(0.05):.1f}%"),
+            ("MAX-DD P95 (BEST)", f"{sims['max_drawdown_pct'].quantile(0.95):.1f}%"),
+        ]
+        mc_tiles_html = "<div class='fs-tile-row'>" + "".join(
+            f"<div class='fs-tile'><div class='fs-tile-value'>{v}</div><div class='fs-tile-label'>{l}</div></div>"
+            for l, v in mc_tiles
+        ) + "</div>"
+        st.markdown(mc_tiles_html, unsafe_allow_html=True)
+
+        bands_norm = bands / 100_000.0
+        realized_norm = result["equity"] / result["equity"].iloc[0]
+        band_df = bands_norm.reset_index(names="date")
+        fan_df = pd.concat([
+            band_df[["date", "p5", "p95"]].rename(columns={"p5": "lo", "p95": "hi"}).assign(band="p5-p95"),
+            band_df[["date", "p25", "p75"]].rename(columns={"p25": "lo", "p75": "hi"}).assign(band="p25-p75"),
+        ])
+        area = (
+            alt.Chart(fan_df)
+            .mark_area(opacity=0.18)
+            .encode(
+                x=alt.X("date:T", title=None, axis=alt.Axis(labelColor="#8b949e", gridColor="#1c2128")),
+                y=alt.Y("lo:Q", title=None, axis=alt.Axis(labelColor="#8b949e", gridColor="#1c2128")),
+                y2="hi:Q",
+                color=alt.Color("band:N", scale=alt.Scale(range=["#ff8c42", "#ffb37a"]), legend=None),
+            )
+        )
+        median_line = (
+            alt.Chart(band_df)
+            .mark_line(color="#8b949e", strokeDash=[3, 3], size=1)
+            .encode(x="date:T", y=alt.Y("p50:Q", title=None))
+        )
+        realized_df = realized_norm.reset_index()
+        realized_df.columns = ["date", "value"]
+        realized_line = (
+            alt.Chart(realized_df)
+            .mark_line(color="#f0f6fc", size=1.8)
+            .encode(x="date:T", y=alt.Y("value:Q", title=None))
+        )
+        mc_chart = (
+            (area + median_line + realized_line)
+            .properties(height=380, background="#0a0e14")
+            .configure_view(strokeWidth=0)
+        )
+        st.altair_chart(mc_chart)
+        st.markdown(
+            "<span style='font-family:monospace;color:#f0f6fc;'>--- Realisierter Pfad</span> "
+            "&nbsp;&nbsp; <span style='font-family:monospace;color:#ff8c42;'>&#9608; 25-75. Perzentil</span> "
+            "&nbsp;&nbsp; <span style='font-family:monospace;color:#ffb37a;'>&#9608; 5-95. Perzentil</span>",
+            unsafe_allow_html=True,
+        )
+    else:
+        st.info(f"Monte-Carlo-Daten fuer {MARKET_LABEL[mc_market]} noch nicht committed.", icon=":material/info:")

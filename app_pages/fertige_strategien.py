@@ -349,3 +349,94 @@ else:
         )
     else:
         st.info(f"Monte-Carlo-Daten fuer {MARKET_LABEL[mc_market]} noch nicht committed.", icon=":material/info:")
+
+# --- Walk-Forward: rolling OU re-selection vs. the static single-split universe ---
+if len(markets_in_view) == 1:
+    wf_market = markets_in_view[0]
+    wf_path = RESULTS_DIR / wf_market / "walk_forward_equity.csv"
+    static_path = RESULTS_DIR / wf_market / "walk_forward_static_equity.csv"
+    steps_path = RESULTS_DIR / wf_market / "walk_forward_steps.csv"
+    if wf_path.exists() and static_path.exists() and steps_path.exists():
+        st.markdown(
+            "<div class='fs-chart-title'>Walk-Forward: rollierende OU-Neuauswahl vs. statische Auswahl</div>",
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            """
+            <div class="fs-caveats">
+            Statt die OU-Selektion einmalig auf 2010-2017 zu fixieren (Standard auf dieser
+            Seite), wird hier jaehrlich neu geschaetzt: rollierendes 8-Jahres-Fenster,
+            Universum neu selektiert, jeweils nur das FOLGEJAHR ungesehen gehandelt --
+            SL/TP/Breakeven/Regimefilter bleiben unveraendert, nur das gehandelte
+            Ticker-Set aendert sich pro Jahr. <b>Befund:</b> die rollierende Neuauswahl
+            performt hier NICHT besser als die statische -- auf S&P und Nasdaq sogar
+            spuerbar schlechter (niedrigerer Sharpe/Calmar), auf DAX in etwa gleichauf.
+            Kein Beleg, dass haeufigere Neuauswahl automatisch robuster ist; das
+            urspruengliche 2010-2017-Sample scheint hier stabiler zu sein als kuerzere,
+            rollierende Fenster.
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        wf_equity = pd.read_csv(wf_path, index_col=0, parse_dates=True).iloc[:, 0]
+        static_equity = pd.read_csv(static_path, index_col=0, parse_dates=True).iloc[:, 0]
+        steps = pd.read_csv(steps_path)
+
+        wf_final = wf_equity.iloc[-1]
+        static_final = static_equity.iloc[-1]
+        wf_tiles = [
+            ("STATISCH: ENDKAPITAL", f"${static_final:,.0f}"),
+            ("WALK-FORWARD: ENDKAPITAL", f"${wf_final:,.0f}"),
+            ("TICKER JAHR 1", f"{int(steps.iloc[0]['n_selected'])}"),
+            ("TICKER LETZTES JAHR", f"{int(steps.iloc[-1]['n_selected'])}"),
+        ]
+        wf_tiles_html = "<div class='fs-tile-row'>" + "".join(
+            f"<div class='fs-tile'><div class='fs-tile-value'>{v}</div><div class='fs-tile-label'>{l}</div></div>"
+            for l, v in wf_tiles
+        ) + "</div>"
+        st.markdown(wf_tiles_html, unsafe_allow_html=True)
+
+        wf_norm = (wf_equity / wf_equity.iloc[0]).reset_index()
+        wf_norm.columns = ["date", "value"]
+        wf_norm["Serie"] = "Walk-Forward"
+        static_norm = (static_equity / static_equity.iloc[0]).reset_index()
+        static_norm.columns = ["date", "value"]
+        static_norm["Serie"] = "Statisch (2010-2017)"
+        wf_curve = pd.concat([wf_norm, static_norm])
+
+        wf_base = alt.Chart(wf_curve).encode(
+            x=alt.X("date:T", title=None, axis=alt.Axis(labelColor="#8b949e", gridColor="#1c2128")),
+            y=alt.Y("value:Q", title=None, axis=alt.Axis(labelColor="#8b949e", gridColor="#1c2128")),
+            tooltip=["date:T", "Serie:N", alt.Tooltip("value:Q", format=".2f")],
+        )
+        wf_line = wf_base.transform_filter(alt.datum.Serie == "Walk-Forward").mark_line(color="#5ec8f8", size=2)
+        static_line = wf_base.transform_filter(alt.datum.Serie != "Walk-Forward").mark_line(
+            color="#8b949e", strokeDash=[5, 4], size=1.5
+        )
+        wf_chart = (
+            (wf_line + static_line)
+            .properties(height=380, background="#0a0e14")
+            .configure_view(strokeWidth=0)
+        )
+        st.altair_chart(wf_chart)
+        st.markdown(
+            "<span style='font-family:monospace;color:#5ec8f8;'>--- Walk-Forward (rollierend)</span> "
+            "&nbsp;&nbsp; <span style='font-family:monospace;color:#8b949e;'>-·-·- Statisch (2010-2017 fix)</span>",
+            unsafe_allow_html=True,
+        )
+
+        with st.expander("Universum-Groesse pro Jahr (Walk-Forward)"):
+            st.dataframe(
+                steps[["trade_year", "in_sample_start", "in_sample_end", "n_selected", "end_equity"]],
+                hide_index=True,
+                column_config={
+                    "trade_year": st.column_config.NumberColumn("Handelsjahr"),
+                    "in_sample_start": st.column_config.TextColumn("In-Sample ab"),
+                    "in_sample_end": st.column_config.TextColumn("In-Sample bis"),
+                    "n_selected": st.column_config.NumberColumn("Ticker selektiert"),
+                    "end_equity": st.column_config.NumberColumn("Equity Jahresende", format="%.0f"),
+                },
+            )
+    else:
+        st.info(f"Walk-Forward-Daten fuer {MARKET_LABEL[wf_market]} noch nicht committed.", icon=":material/info:")

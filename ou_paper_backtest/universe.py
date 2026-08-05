@@ -39,6 +39,16 @@ def nasdaq100_universe() -> list[str]:
     return sorted(set(load_nasdaq100_symbols()))
 
 
+def load_dax_symbols() -> list[str]:
+    df = pd.read_csv(config.DAX_WIKI_CSV)
+    return df["Ticker"].tolist()  # already yfinance-format (.DE / Airbus .PA)
+
+
+def dax_universe() -> list[str]:
+    """Full current DAX-40 constituent list."""
+    return sorted(set(load_dax_symbols()))
+
+
 if __name__ == "__main__":
     tickers = sample_universe()
     print(len(tickers), "S&P sample tickers")

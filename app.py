@@ -33,11 +33,15 @@ paper_research = st.Page(
 ou_paper_backtest = st.Page(
     "app_pages/ou_paper_backtest.py", title="OU-Modell Paper-Backtest", icon=":material/science:"
 )
+fertige_strategien = st.Page(
+    "app_pages/fertige_strategien.py", title="OU-Modell (finale Konfiguration)", icon=":material/military_tech:"
+)
 
 page = st.navigation(
     {
         "": [home],
         "Live Logs": [ou_modell, orb_forward_test],
+        "Fertige Strategien": [fertige_strategien],
         "Backtests": [
             adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook,
             asian_range_breakout, orb_strategy_page, ou_paper_backtest,

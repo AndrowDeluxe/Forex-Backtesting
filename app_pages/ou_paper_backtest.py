@@ -42,9 +42,11 @@ import metrics as bt_metrics  # noqa: E402
 import portfolio  # noqa: E402
 from kalman import kalman_smooth  # noqa: E402
 
-BENCHMARK_FILE = {"sp500": "IDX_GSPC.parquet", "nasdaq100": "IDX_NDX.parquet"}
-PANEL_FILE = {"sp500": "_panel.parquet", "nasdaq100": "_panel_nasdaq100.parquet"}
-VOLUME_FILE = {"sp500": "IDX_GSPC_VOLUME.parquet", "nasdaq100": "IDX_NDX_VOLUME.parquet"}
+BENCHMARK_FILE = {"sp500": "IDX_GSPC.parquet", "nasdaq100": "IDX_NDX.parquet", "dax": "IDX_GDAXI.parquet"}
+PANEL_FILE = {"sp500": "_panel.parquet", "nasdaq100": "_panel_nasdaq100.parquet", "dax": "_panel_dax.parquet"}
+VOLUME_FILE = {
+    "sp500": "IDX_GSPC_VOLUME.parquet", "nasdaq100": "IDX_NDX_VOLUME.parquet", "dax": "IDX_GDAXI_VOLUME.parquet"
+}
 
 REGIME_FILTER_TYPES = {
     "ema200": "EMA 200 (empfohlen)",
@@ -57,6 +59,7 @@ REGIME_FILTER_TYPES = {
 UNIVERSES = {
     "sp500": {"label": "S&P 500 (Sample, 90 Ticker)", "bench_label": "S&P 500"},
     "nasdaq100": {"label": "Nasdaq-100 (alle ~103 Ticker)", "bench_label": "Nasdaq-100"},
+    "dax": {"label": "DAX (alle 40 Ticker)", "bench_label": "DAX"},
 }
 
 

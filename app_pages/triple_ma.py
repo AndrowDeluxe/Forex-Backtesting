@@ -14,9 +14,8 @@ import altair as alt
 import pandas as pd
 
 import streamlit as st
-from combined_strategy.data import INSTRUMENTS
 from triple_ma_strategy.backtest import simulate_trend_trades
-from triple_ma_strategy.data import fetch_daily
+from triple_ma_strategy.data import ALL_INSTRUMENTS, fetch_daily
 from triple_ma_strategy.metrics import compute_metrics
 from triple_ma_strategy.regime import REGIME_LABELS, compute_regimes
 from triple_ma_strategy.signals import generate_single_signal, generate_triple_crossover_signal
@@ -58,7 +57,7 @@ def load_backtest(key: str, variant: str, ma_type: str, cost_bps: float):
 
 with st.sidebar:
     st.markdown("### Konfiguration")
-    key = st.selectbox("Instrument", list(INSTRUMENTS), index=list(INSTRUMENTS).index("SP500"))
+    key = st.selectbox("Instrument", ALL_INSTRUMENTS, index=ALL_INSTRUMENTS.index("SP500"))
     variant = st.radio("Variante", [VARIANT_SINGLE, VARIANT_TRIPLE], index=0)
     ma_type_label = st.radio("MA-Typ", ["Exponentiell (TEMA)", "Simple (TSMA)"], index=0)
     ma_type = "tema" if ma_type_label.startswith("Exponentiell") else "tsma"
@@ -96,6 +95,18 @@ st.warning(
     "danach gefragt wird.",
     icon=":material/warning:",
 )
+
+if key == "BTC" and variant == VARIANT_SINGLE and ma_type == "tema":
+    st.info(
+        "**BTC-Befund, ehrlich eingeordnet:** die hohe Outperformance ggü. Buy & "
+        "Hold hier hängt fast vollständig an einem einzigen Trade (10.10.2020 - "
+        "25.03.2021, +354%, der 2020/21-Bullenlauf). Rechnet man diesen einen "
+        "Trade heraus, sinkt die Gesamtrendite von ~6700% auf ~1400% - fast exakt "
+        "auf Buy & Hold-Niveau. Real (kein Datenfehler), aber die Outperformance "
+        "selbst ist nicht robust über viele Trades verteilt, sondern hängt an "
+        "einem einzigen erwischten Trend.",
+        icon=":material/info:",
+    )
 
 df = load_daily(key)
 trades, equity, close = load_backtest(key, variant, ma_type, cost_bps)

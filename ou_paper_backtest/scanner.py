@@ -123,9 +123,24 @@ def main():
     for market_key in ["sp500", "nasdaq100", "dax"]:
         all_signals.append(scan_market(market_key))
     combined = pd.concat(all_signals, ignore_index=True) if all_signals else pd.DataFrame()
+
+    # Wall-clock run timestamp, separate from scan_date (the underlying trading
+    # day, which only advances once/day). Written unconditionally -- even with
+    # 0 signals -- as its own small file so app_pages/ou_scanner.py can show
+    # "last actually ran at HH:MM" and let the user tell an hourly re-run with
+    # unchanged data apart from a task that silently stopped firing.
+    scanned_at = dt.datetime.now().isoformat(timespec="seconds")
+    if not combined.empty:
+        combined["scanned_at"] = scanned_at
     out_path = config.RESULTS_DIR / "scanner_signals.csv"
     combined.to_csv(out_path, index=False)
-    print(f"\nSaved {len(combined)} total signal(s) to {out_path}")
+
+    meta_path = config.RESULTS_DIR / "scanner_last_run.json"
+    meta_path.write_text(
+        f'{{"scanned_at": "{scanned_at}", "signal_count": {len(combined)}}}', encoding="utf-8"
+    )
+
+    print(f"\nSaved {len(combined)} total signal(s) to {out_path} (scanned_at={scanned_at})")
     if not combined.empty:
         print(combined.to_string(index=False))
 

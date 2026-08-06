@@ -16,6 +16,7 @@ Dark/monospace styling matches app_pages/fertige_strategien.py (same palette, sa
 to a styled HTML table + summary tiles for visual consistency across the section."""
 
 import datetime as dt
+import json
 from pathlib import Path
 
 import pandas as pd
@@ -26,6 +27,7 @@ st.set_page_config(page_title="OU-Modell -- Live-Signale", page_icon=":material/
 
 REPO_DIR = Path(__file__).resolve().parents[1]
 SIGNALS_PATH = REPO_DIR / "ou_paper_backtest" / "results" / "scanner_signals.csv"
+LAST_RUN_PATH = REPO_DIR / "ou_paper_backtest" / "results" / "scanner_last_run.json"
 
 # --- same palette as fertige_strategien.py ---
 C_BG = "#0a0e14"
@@ -134,6 +136,26 @@ if SUMMARY_PATH.exists():
         "-- vor dem Handeln dort nachlesen, nicht nur auf diese Tabelle verlassen.</div>",
         unsafe_allow_html=True,
     )
+
+if LAST_RUN_PATH.exists():
+    last_run = json.loads(LAST_RUN_PATH.read_text(encoding="utf-8"))
+    scanned_at_dt = dt.datetime.fromisoformat(last_run["scanned_at"])
+    minutes_old = (dt.datetime.now() - scanned_at_dt).total_seconds() / 60
+    run_color = C_GREEN if minutes_old <= 90 else (C_ORANGE if minutes_old <= 240 else C_RED)
+    age_label = f"vor {int(minutes_old)} Min." if minutes_old < 120 else f"vor {minutes_old / 60:.1f} Std."
+    st.markdown(
+        f"<span style='font-family:monospace; color:{run_color};'>&#9679;</span> "
+        f"<span style='font-family:monospace; color:{C_MUTED};'>Scanner zuletzt gelaufen: "
+        f"<b style='color:{C_TEXT};'>{scanned_at_dt.strftime('%Y-%m-%d %H:%M')}</b> ({age_label}) "
+        f"-- {last_run['signal_count']} Signal(e) gefunden.</span>",
+        unsafe_allow_html=True,
+    )
+    if minutes_old > 240:
+        st.markdown(
+            "<div class='sc-alert'>&#9888; Der Scanner-Task lief seit ueber 4 Stunden nicht mehr -- "
+            "pruefen ob der stuendliche Task (Windows Task Scheduler) noch laeuft.</div>",
+            unsafe_allow_html=True,
+        )
 
 if not SIGNALS_PATH.exists():
     st.error(

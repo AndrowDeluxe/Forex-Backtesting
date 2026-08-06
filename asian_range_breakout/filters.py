@@ -20,28 +20,51 @@ def apply_adx_filter(
     return trades[mask]
 
 
-def attach_vix(trades: pd.DataFrame, vix_daily: pd.Series) -> pd.DataFrame:
-    """Attaches the most recent PRIOR trading day's VIX close (strictly
-    before the entry's calendar date) to each trade - entries happen
-    01:00-11:00 NY, always before that same day's 16:00 ET VIX print, so
-    using that day's own close would be lookahead. ffill via searchsorted,
-    not a plain date-equality join, so weekends/holidays (no VIX print)
-    correctly carry the last known prior value forward."""
+def _attach_prior_day_series(trades: pd.DataFrame, daily_series: pd.Series, colname: str) -> pd.DataFrame:
+    """Attaches the most recent PRIOR trading day's value of daily_series
+    (strictly before the entry's calendar date) to each trade - entries
+    happen 01:00-11:00 NY, always before that same day's close print, so
+    using that day's own value would be lookahead. ffill via searchsorted,
+    not a plain date-equality join, so weekends/holidays (no print) correctly
+    carry the last known prior value forward. Shared by attach_vix/attach_dxy/
+    attach_series_change - same alignment logic regardless of source series."""
 
     if trades.empty:
-        return trades.assign(vix_at_entry=pd.Series(dtype=float))
+        return trades.assign(**{colname: pd.Series(dtype=float)})
 
     out = trades.copy()
     entry_dates = out["entry_time"].dt.tz_localize(None).dt.normalize()
-    vix_sorted = vix_daily.sort_index()
+    s_sorted = daily_series.dropna().sort_index()
 
-    idx = vix_sorted.index.searchsorted(entry_dates.to_numpy(), side="left") - 1
+    idx = s_sorted.index.searchsorted(entry_dates.to_numpy(), side="left") - 1
     idx_clipped = idx.clip(min=0)
-    values = vix_sorted.to_numpy()[idx_clipped]
+    values = s_sorted.to_numpy()[idx_clipped]
     values = pd.Series(values, index=out.index, dtype=float)
-    values[idx < 0] = float("nan")  # entry predates all available VIX data
-    out["vix_at_entry"] = values
+    values[idx < 0] = float("nan")  # entry predates all available data for this series
+    out[colname] = values
     return out
+
+
+def attach_vix(trades: pd.DataFrame, vix_daily: pd.Series) -> pd.DataFrame:
+    return _attach_prior_day_series(trades, vix_daily, "vix_at_entry")
+
+
+def attach_dxy(trades: pd.DataFrame, dxy_daily: pd.Series) -> pd.DataFrame:
+    """Attaches the prior trading day's US Dollar Index (DXY) close - context
+    signal for the "151 Trading Strategies" cross-asset-confirmation idea
+    (Gold is USD-denominated; a trending dollar is a structural head-/
+    tailwind independent of Gold's own chart)."""
+    return _attach_prior_day_series(trades, dxy_daily, "dxy_at_entry")
+
+
+def attach_series_change(
+    trades: pd.DataFrame, daily_series: pd.Series, colname: str, window: int = 5
+) -> pd.DataFrame:
+    """Attaches the prior trading day's window-day percent change of
+    daily_series (e.g. VIX or DXY momentum instead of level) to each trade -
+    same no-lookahead alignment as attach_vix/attach_dxy."""
+    change = daily_series.sort_index().pct_change(window) * 100
+    return _attach_prior_day_series(trades, change, colname)
 
 
 def apply_vix_filter(

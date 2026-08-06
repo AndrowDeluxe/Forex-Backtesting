@@ -318,6 +318,42 @@ with tab_components:
                 "+ `filters.py::attach_vix`, falls später mit mehr Daten erneut geprüft werden soll."
             )
 
+    st.markdown("### Aus dem 151-Trading-Strategies-Paper abgeleitete Kontextfilter (getestet, 2026-08-07)")
+    st.caption(
+        "Zwei konkrete Hypothesen aus der Gold-Bausteine-Seite (`app_pages/paper151.py`) gegen "
+        "die ADX-gefilterte Produktionskonfiguration getestet - Fensterlängen-Sweep (3/5/10/20 "
+        "Tage) plus IS/OOS-Split, gleiche Disziplin wie beim VIX-Level-Test oben. Beide zeigen "
+        "**keine robuste, umsetzbare Kante** - siehe `scripts/research_gold_dxy_vix_change_filters.py`."
+    )
+    col_dxy, col_vixchg = st.columns(2)
+    with col_dxy:
+        with st.container(border=True):
+            st.markdown("**DXY-Alignment -- Hypothese nicht bestätigt**")
+            st.caption(
+                "These: Long-Trades bei fallendem Dollar (DXY) / Short-Trades bei steigendem "
+                "Dollar sollten besser halten als Trades gegen diesen Rückenwind. Ergebnis: "
+                "**genau umgekehrt** und über alle 4 getesteten Fenster (3/5/10/20 Tage) sowie "
+                "IS und OOS konsistent - \"misaligned\" Trades haben durchweg den höheren Profit "
+                "Factor (z.B. Fenster=5: PF 1.21 misaligned vs. 1.04 aligned, IS 1.14 vs. 0.95, "
+                "OOS 1.25 vs. 1.11). Konsistent im Vorzeichen, aber **nicht implementiert** - der "
+                "Mechanismus für ein *umgekehrtes* Signal ist nicht ökonomisch plausibel "
+                "hergeleitet, und dieses Repo hat schon mehrfach gesehen, wie ein zunächst "
+                "konsistent aussehendes Muster bei genauerer Prüfung Rauschen war. Als "
+                "Beobachtung festgehalten, nicht als Filter eingebaut."
+            )
+    with col_vixchg:
+        with st.container(border=True):
+            st.markdown("**VIX-Änderungsrate ('Spike') -- keine robuste Kante**")
+            st.caption(
+                "These: ein frischer Vola-Schub (VIX-Änderungsrate statt Level) sollte stärkere "
+                "Breakout-Fortsetzung anzeigen als ein einfacher Level-Filter (der schon oben als "
+                "Rauschen verworfen wurde). Ergebnis: **uneinheitlich über die Fensterlängen** - "
+                "bei 3/5/10 Tagen ist \"kein Spike\" durchweg leicht besser (Fenster=5: PF 1.15 "
+                "kein Spike vs. 1.06 Spike, IS 1.08 vs. 1.01, OOS 1.21 vs. 1.10), bei 20 Tagen "
+                "kippt es (PF 1.18 Spike vs. 1.09 kein Spike) - genau das Rauschmuster, das schon "
+                "beim VIX-Level-Test auftrat. **Nicht implementiert.**"
+            )
+
 # =============================================================================
 # Tab: Backtest
 # =============================================================================

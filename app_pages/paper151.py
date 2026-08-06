@@ -442,39 +442,47 @@ with tab_gold:
         "oder eigenstaendige neue Ideen fuer spaeteren Backtest."
     )
 
-    with st.expander(":material/looks_one: Vola-Risikopraemie / VIX-Kontext als Regime-Filter", icon=":material/looks_one:"):
+    with st.expander(":material/looks_one: Vola-Risikopraemie / VIX-Aenderungsrate -- getestet, verworfen", icon=":material/looks_one:"):
         st.markdown(
             """
 Gold gilt klassisch als "Safe Haven" -- steigt tendenziell, wenn Aktien-
-Vola (VIX) steigt. Der VIX-Filter wurde fuer den Asian-Range-Breakout
-bereits gebaut und getestet
-([[fx-vwap-adx-strategy-project]]: kein robuster Bucket-Edge gefunden,
-Dünn-Sample-Rauschen), **aber** nur als direkter Level-Filter. Eine noch
-nicht getestete Variante: **VIX-*Aenderung* relativ zum eigenen
-Regime** (z.B. VIX steigt >X% in den letzten 5 Tagen) statt eines
-statischen Levels -- naeher an der eigentlichen Safe-Haven-These
-("Gold reagiert auf Stress-*Schuebe*, nicht auf ein Vola-Niveau").
+Vola (VIX) steigt. Der statische VIX-Level-Filter war schon vorher getestet
+([[fx-vwap-adx-strategy-project]]: kein robuster Bucket-Edge, Dünn-Sample-
+Rauschen). **Update 2026-08-07:** die naeherliegende Variante -- VIX-
+*Aenderungsrate* ("frischer Vola-Schub" statt statisches Niveau) -- wurde
+jetzt ebenfalls getestet (`scripts/research_gold_dxy_vix_change_filters.py`,
+gegen die ADX-gefilterte Produktionskonfiguration, Fenstersweep 3/5/10/20
+Tage plus IS/OOS-Split).
 
-**Naechster Schritt (falls aufgegriffen):** `vix.py` erweitern um eine
-Aenderungsrate statt nur Level-Buckets, gegen dieselbe 10,5-Jahres-Historie
-des Asian-Range-Breakout testen.
+**Ergebnis: ebenfalls keine robuste Kante** -- bei 3/5/10 Tagen ist "kein
+Spike" durchweg leicht besser als "Spike" (Fenster=5: PF 1.15 vs. 1.06,
+konsistent in IS und OOS), bei 20 Tagen kippt das Vorzeichen -- dasselbe
+Rauschmuster wie beim Level-Filter. **Nicht implementiert**, siehe
+`app_pages/asian_range_breakout.py` (Tab "Strategiebestandteile") fuer die
+volle Tabelle.
 """
         )
 
-    with st.expander(":material/looks_two: Dollar-Index (DXY) als Cross-Asset-Kontext-Signal", icon=":material/looks_two:"):
+    with st.expander(":material/looks_two: Dollar-Index (DXY) als Cross-Asset-Kontext-Signal -- getestet, Gegenteil gefunden", icon=":material/looks_two:"):
         st.markdown(
             """
 Aus dem FX-Carry-/Cross-Asset-Kapitel: Gold ist in USD notiert, ein
 generell schwaecher/staerker werdender Dollar (DXY) ist ein struktureller
 Rueckenwind/Gegenwind fuer Gold, unabhaengig vom Gold-Chart selbst. Aehnlich
-zur bereits getesteten "Cross-Pair-Confirmation" in `cls_advanced.py`
-(prueft, ob eine Bewegung von einer breiten Dollar-Bewegung getragen wird)
--- dieselbe Idee, nur auf Gold statt auf FX-Paare angewendet.
+zur bereits getesteten "Cross-Pair-Confirmation" in `cls_advanced.py`.
 
-**Naechster Schritt (falls aufgegriffen):** DXY-Tagesdaten (yfinance `DX-Y.NYB`
-oder ein synthetischer DXY aus den 6 vorhandenen FX-Majors) als
-Kontext-Filter fuer `asian_range_breakout` oder `triple_ma` (Gold) testen --
-Hypothese: Trades *mit* dem DXY-Trend halten besser als Trades dagegen.
+**Update 2026-08-07, getestet:** Hypothese war "Trades *mit* dem DXY-Trend
+halten besser als Trades dagegen" (`asian_range_breakout/dxy.py` +
+`filters.py::attach_dxy`/`attach_series_change`, Fenstersweep 3/5/10/20
+Tage). **Ergebnis: das Gegenteil, und zwar konsistent** -- ueber alle 4
+Fenster sowie IS und OOS haben Trades GEGEN den DXY-Trend den hoeheren
+Profit Factor (Fenster=5: PF 1.21 "misaligned" vs. 1.04 "aligned", IS 1.14
+vs. 0.95, OOS 1.25 vs. 1.11). Konsistent im Vorzeichen, aber **nicht
+implementiert** -- kein ökonomisch plausibler Mechanismus fuer ein
+*umgekehrtes* Signal, und dieses Repo hat schon mehrfach erlebt, dass ein
+zunaechst konsistentes Muster bei genauerer Pruefung Rauschen war. Als
+Beobachtung dokumentiert (siehe Asian-Range-Breakout-Dashboard), nicht als
+Filter gebaut.
 """
         )
 
@@ -502,12 +510,17 @@ abbildet, kein neuer Arbeitsauftrag.
 """
         )
 
-    st.warning(
-        "**Ehrlich eingeordnet:** aus dem Paper selbst kommt kein fertiges neues "
-        "Gold-Signal -- die zwei konkret pruefbaren neuen Ideen sind die "
-        "VIX-Aenderungsrate und der DXY-Kontextfilter, beide als *Zusatzfilter* "
-        "fuer bereits bestehende Gold-Strategien gedacht, nicht als eigene neue "
-        "Strategie. Erst nach explizitem Zuruf backtesten.",
+    st.error(
+        "**Ehrlich eingeordnet (Update 2026-08-07):** beide konkret pruefbaren Ideen aus diesem "
+        "Paper -- VIX-Aenderungsrate und DXY-Kontextfilter -- wurden inzwischen gegen die "
+        "ADX-gefilterte Produktionskonfiguration des Asian-Range-Breakout getestet. **Keine "
+        "liefert eine implementierbare Kante**: die VIX-Aenderungsrate ist genauso Rauschen wie "
+        "der schon vorher verworfene Level-Filter, und der DXY-Filter zeigt zwar ein konsistentes "
+        "Muster, aber genau umgekehrt zur Hypothese (ohne plausiblen Mechanismus, daher nicht "
+        "eingebaut). Aus dem 151-Strategies-Paper kommt damit aktuell **kein** neuer, "
+        "umsetzbarer Gold-Baustein -- passt zum Grundmuster dieses Repos, dass woertlich "
+        "uebertragene Paper-Ideen selten ohne Weiteres tragen. Details: "
+        "`app_pages/asian_range_breakout.py` (Tab \"Strategiebestandteile\").",
         icon=":material/fact_check:",
     )
 
@@ -526,15 +539,15 @@ with tab_verknuepfung:
     st.markdown("#### Hoechste Prioritaet (direkt mit vorhandenen Daten/Code testbar)")
     st.markdown(
         """
-1. **DXY-Kontextfilter fuer Gold-Strategien** (`asian_range_breakout`,
-   `triple_ma`) -- neuer, kleiner Baustein, keine neue Datenquelle noetig
-   (aus vorhandenen 6 FX-Majors synthetisierbar).
+1. ~~**DXY-Kontextfilter fuer Gold-Strategien**~~ -- **getestet, 2026-08-07:**
+   konsistentes Muster, aber genau umgekehrt zur Hypothese (siehe
+   Gold-Bausteine-Tab) -- nicht implementiert, kein plausibler Mechanismus.
 2. **HP-Filter als A/B-Alternative zum Kalman-Filter** auf ADX-VWAP --
    derselbe Testaufbau wie `research_kalman_filter_adx_vwap.py` existiert
-   schon, nur die Glaettungsmethode tauschen.
-3. **VIX-Aenderungsrate statt Level** fuer den Asian-Range-Breakout-
-   Regimefilter -- `vix.py` existiert bereits, nur die Filterlogik
-   erweitern.
+   schon, nur die Glaettungsmethode tauschen. **Noch offen.**
+3. ~~**VIX-Aenderungsrate statt Level**~~ -- **getestet, 2026-08-07:**
+   genauso Rauschen wie der Level-Filter (siehe Gold-Bausteine-Tab) --
+   nicht implementiert.
 """
     )
 

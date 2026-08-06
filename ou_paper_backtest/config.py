@@ -15,7 +15,7 @@ N_SAMPLE_TICKERS = 90          # reduced sample (paper used 424 of 503)
 RANDOM_SEED = 42
 
 UNIVERSES = {
-    "sp500": {"label": "S&P 500 (Sample, 90 Ticker)", "benchmark": "^GSPC", "benchmark_label": "S&P 500"},
+    "sp500": {"label": "S&P 500 (volles Universum, 420 Ticker)", "benchmark": "^GSPC", "benchmark_label": "S&P 500"},
     "nasdaq100": {"label": "Nasdaq-100 (alle ~103 Ticker)", "benchmark": "^NDX", "benchmark_label": "Nasdaq-100"},
     "dax": {"label": "DAX (alle 40 Ticker)", "benchmark": "^GDAXI", "benchmark_label": "DAX"},
 }

@@ -40,6 +40,7 @@ ou_scanner = st.Page(
     "app_pages/ou_scanner.py", title="OU-Modell Live-Signale (Scanner)", icon=":material/radar:"
 )
 education = st.Page("app_pages/education.py", title="Education", icon=":material/school:")
+paper151 = st.Page("app_pages/paper151.py", title="151 Trading Strategies", icon=":material/auto_stories:")
 
 page = st.navigation(
     {
@@ -51,6 +52,7 @@ page = st.navigation(
             asian_range_breakout, orb_strategy_page, ou_paper_backtest,
         ],
         "Strategie Bestandteile": [cls_advanced, orb_writeup, triple_ma],
+        "150 Strategien Paper": [paper151],
         "Paper Research": [paper_research],
         "Education": [education],
     }

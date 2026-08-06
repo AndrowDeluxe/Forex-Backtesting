@@ -22,7 +22,9 @@ Stellen, wo eine Strategie **keinen** robusten Edge zeigt.
 
 st.space("medium")
 
-tab_live, tab_backtests, tab_components = st.tabs(["Live Logs", "Backtests", "Strategie Bestandteile"])
+tab_live, tab_backtests, tab_components, tab_paper151 = st.tabs(
+    ["Live Logs", "Backtests", "Strategie Bestandteile", "151 Trading Strategies"]
+)
 
 # =============================================================================
 # Live Logs
@@ -242,6 +244,29 @@ with tab_components:
                     "(TEMA/TSMA, GMM-Regimes, Risiko-Engine) für die nächste Iteration."
                 )
             st.page_link("app_pages/triple_ma.py", label="Bausteine ansehen", icon=":material/arrow_forward:")
+
+
+# =============================================================================
+# 151 Trading Strategies
+# =============================================================================
+with tab_paper151:
+    col_p151, _spacer5, _spacer6 = st.columns(3, border=True)
+    with col_p151:
+        st.markdown("### :material/auto_stories: 151 Trading Strategies")
+        st.caption("Kakushadze & Serur (2018) — Paper-Destillat, Sammelseite")
+        st.markdown(
+            "Eigenständig aus dem Paper destillierte Grundlagen, Strategiebausteine "
+            "je Asset-Klasse, ein Gold-fokussierter Auszug und priorisierte "
+            "Verknüpfungsideen mit bestehenden Strategien hier im Repo."
+        )
+        with st.container(border=True):
+            st.markdown("**Status**")
+            st.caption(
+                "Reine Sammelseite, noch kein Backtest — Sortierung und Verschieben "
+                "einzelner Bausteine nach \"Strategie Bestandteile\" bzw. in einen "
+                "Backtest folgt erst nach gemeinsamer Durchsicht."
+            )
+        st.page_link("app_pages/paper151.py", label="Seite öffnen", icon=":material/arrow_forward:")
 
 st.space("medium")
 st.caption(

@@ -12,3 +12,4 @@ paper_cache/
 paper_research_cache/
 paper_dropbox/*
 !paper_dropbox/README.md
+education_state/

@@ -1,0 +1,108 @@
+===== run_20260806_153838.log =====
+2026-08-06 15:38:38,484 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260806_153838.log ===
+2026-08-06 15:38:38,647 ERROR executor: Position CMI (Ticket 17676823) hat einen ungültigen gespeicherten Entry-Preis (0.0000) - BE-Check wird übersprungen, keine SL-Änderung. Metadaten in der State-DB prüfen/korrigieren.
+2026-08-06 15:38:38,671 INFO run_once.konto1_ttp: 4 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 15:38:38,673 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 101924.32, aktueller Drawdown 0.00% (Limit 2.0%)
+2026-08-06 15:38:38,678 WARNING executor: Symbol 'DVA' (MT5-Name 'DVA') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 15:38:38,679 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DVA', 'direction': 'Long', 'entry': 188.66, 'sl': 166.87, 'tp': 221.34}}
+2026-08-06 15:38:38,681 INFO executor: Für CVS ist bereits eine Position offen (Ticket 17713581) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 15:38:38,681 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 99.13, 'sl': 94.35, 'tp': 106.31}}
+2026-08-06 15:38:38,683 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 15:38:38,683 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1285.55, 'sl': 1226.21, 'tp': 1374.56}}
+2026-08-06 15:38:38,686 INFO executor: Für D ist bereits eine Position offen (Ticket 17656473) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 15:38:38,686 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.26, 'sl': 66.36, 'tp': 71.12}}
+2026-08-06 15:38:38,687 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260806_163759.log =====
+2026-08-06 16:37:59,067 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260806_163759.log ===
+2026-08-06 16:37:59,100 ERROR executor: Position CMI (Ticket 17676823) hat einen ungültigen gespeicherten Entry-Preis (0.0000) - BE-Check wird übersprungen, keine SL-Änderung. Metadaten in der State-DB prüfen/korrigieren.
+2026-08-06 16:37:59,117 INFO run_once.konto1_ttp: 4 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 16:37:59,120 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 101924.32, aktueller Drawdown -0.01% (Limit 2.0%)
+2026-08-06 16:37:59,123 WARNING executor: Symbol 'DVA' (MT5-Name 'DVA') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 16:37:59,123 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DVA', 'direction': 'Long', 'entry': 188.66, 'sl': 166.87, 'tp': 221.34}}
+2026-08-06 16:37:59,125 INFO executor: Für CVS ist bereits eine Position offen (Ticket 17713581) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 16:37:59,125 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 99.13, 'sl': 94.35, 'tp': 106.31}}
+2026-08-06 16:37:59,127 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 16:37:59,127 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1285.55, 'sl': 1226.21, 'tp': 1374.56}}
+2026-08-06 16:37:59,128 INFO executor: Für D ist bereits eine Position offen (Ticket 17656473) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 16:37:59,129 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.26, 'sl': 66.36, 'tp': 71.12}}
+2026-08-06 16:37:59,129 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260806_173800.log =====
+2026-08-06 17:38:00,954 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260806_173800.log ===
+2026-08-06 17:38:01,052 ERROR executor: Position CMI (Ticket 17676823) hat einen ungültigen gespeicherten Entry-Preis (0.0000) - BE-Check wird übersprungen, keine SL-Änderung. Metadaten in der State-DB prüfen/korrigieren.
+2026-08-06 17:38:01,071 INFO run_once.konto1_ttp: 4 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 17:38:01,074 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 101924.32, aktueller Drawdown 0.28% (Limit 2.0%)
+2026-08-06 17:38:01,076 WARNING executor: Symbol 'DVA' (MT5-Name 'DVA') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 17:38:01,077 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DVA', 'direction': 'Long', 'entry': 188.66, 'sl': 166.87, 'tp': 221.34}}
+2026-08-06 17:38:01,078 INFO executor: Für CVS ist bereits eine Position offen (Ticket 17713581) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 17:38:01,079 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 99.13, 'sl': 94.35, 'tp': 106.31}}
+2026-08-06 17:38:01,080 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 17:38:01,080 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1285.55, 'sl': 1226.21, 'tp': 1374.56}}
+2026-08-06 17:38:01,082 INFO executor: Für D ist bereits eine Position offen (Ticket 17656473) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 17:38:01,082 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.26, 'sl': 66.36, 'tp': 71.12}}
+2026-08-06 17:38:01,083 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260806_183527.log =====
+2026-08-06 18:35:27,827 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260806_183527.log ===
+2026-08-06 18:35:27,932 ERROR executor: Position CMI (Ticket 17676823) hat einen ungültigen gespeicherten Entry-Preis (0.0000) - BE-Check wird übersprungen, keine SL-Änderung. Metadaten in der State-DB prüfen/korrigieren.
+2026-08-06 18:35:27,948 INFO run_once.konto1_ttp: 4 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 18:35:27,950 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 101924.32, aktueller Drawdown 0.32% (Limit 2.0%)
+2026-08-06 18:35:27,952 WARNING executor: Symbol 'DVA' (MT5-Name 'DVA') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 18:35:27,953 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DVA', 'direction': 'Long', 'entry': 188.66, 'sl': 166.87, 'tp': 221.34}}
+2026-08-06 18:35:27,954 INFO executor: Für CVS ist bereits eine Position offen (Ticket 17713581) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 18:35:27,954 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 99.13, 'sl': 94.35, 'tp': 106.31}}
+2026-08-06 18:35:27,955 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 18:35:27,956 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1285.55, 'sl': 1226.21, 'tp': 1374.56}}
+2026-08-06 18:35:27,958 INFO executor: Für D ist bereits eine Position offen (Ticket 17656473) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 18:35:27,958 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.26, 'sl': 66.36, 'tp': 71.12}}
+2026-08-06 18:35:27,959 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260806_193524.log =====
+2026-08-06 19:35:24,900 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260806_193524.log ===
+2026-08-06 19:35:24,928 ERROR executor: Position CMI (Ticket 17676823) hat einen ungültigen gespeicherten Entry-Preis (0.0000) - BE-Check wird übersprungen, keine SL-Änderung. Metadaten in der State-DB prüfen/korrigieren.
+2026-08-06 19:35:24,942 INFO run_once.konto1_ttp: 4 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 19:35:24,943 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 101924.32, aktueller Drawdown 0.32% (Limit 2.0%)
+2026-08-06 19:35:24,945 WARNING executor: Symbol 'DVA' (MT5-Name 'DVA') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 19:35:24,945 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DVA', 'direction': 'Long', 'entry': 188.66, 'sl': 166.87, 'tp': 221.34}}
+2026-08-06 19:35:24,947 INFO executor: Für CVS ist bereits eine Position offen (Ticket 17713581) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 19:35:24,947 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 99.13, 'sl': 94.35, 'tp': 106.31}}
+2026-08-06 19:35:24,949 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 19:35:24,949 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1285.55, 'sl': 1226.21, 'tp': 1374.56}}
+2026-08-06 19:35:25,154 INFO executor: Order gesendet: {'symbol': 'D', 'volume': 907.0, 'type': 'BUY', 'entry': 66.64, 'sl': 66.36, 'tp': 71.12} -> Ticket 17742985
+2026-08-06 19:35:25,162 INFO run_once.konto1_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'D', 'volume': 907.0, 'type': 'BUY', 'entry': 66.64, 'sl': 66.36, 'tp': 71.12}, 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.26, 'sl': 66.36, 'tp': 71.12}, 'ticket': 17742985, 'risk': 253.96000000000103}
+2026-08-06 19:35:25,169 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260806_203523.log =====
+2026-08-06 20:35:23,209 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260806_203523.log ===
+2026-08-06 20:35:23,261 ERROR executor: Position CMI (Ticket 17676823) hat einen ungültigen gespeicherten Entry-Preis (0.0000) - BE-Check wird übersprungen, keine SL-Änderung. Metadaten in der State-DB prüfen/korrigieren.
+2026-08-06 20:35:23,276 INFO run_once.konto1_ttp: 4 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 20:35:23,279 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 101924.32, aktueller Drawdown 0.49% (Limit 2.0%)
+2026-08-06 20:35:23,281 WARNING executor: Symbol 'DVA' (MT5-Name 'DVA') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 20:35:23,281 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DVA', 'direction': 'Long', 'entry': 188.66, 'sl': 166.87, 'tp': 221.34}}
+2026-08-06 20:35:23,282 INFO executor: Für CVS ist bereits eine Position offen (Ticket 17713581) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 20:35:23,283 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 99.13, 'sl': 94.35, 'tp': 106.31}}
+2026-08-06 20:35:23,284 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 20:35:23,285 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1285.55, 'sl': 1226.21, 'tp': 1374.56}}
+2026-08-06 20:35:23,286 INFO run_once.konto1_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'D', 'direction': 'Long', 'entry': 68.26, 'sl': 66.36, 'tp': 71.12}
+2026-08-06 20:35:23,286 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260806_213523.log =====
+2026-08-06 21:35:23,022 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260806_213523.log ===
+2026-08-06 21:35:23,091 ERROR executor: Position CMI (Ticket 17676823) hat einen ungültigen gespeicherten Entry-Preis (0.0000) - BE-Check wird übersprungen, keine SL-Änderung. Metadaten in der State-DB prüfen/korrigieren.
+2026-08-06 21:35:23,109 INFO run_once.konto1_ttp: 4 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 21:35:23,111 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 101924.32, aktueller Drawdown 0.56% (Limit 2.0%)
+2026-08-06 21:35:23,114 WARNING executor: Symbol 'DVA' (MT5-Name 'DVA') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 21:35:23,115 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DVA', 'direction': 'Long', 'entry': 188.66, 'sl': 166.87, 'tp': 221.34}}
+2026-08-06 21:35:23,117 INFO executor: Für CVS ist bereits eine Position offen (Ticket 17713581) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 21:35:23,117 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 99.13, 'sl': 94.35, 'tp': 106.31}}
+2026-08-06 21:35:23,118 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 21:35:23,119 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1285.55, 'sl': 1226.21, 'tp': 1374.56}}
+2026-08-06 21:35:23,120 INFO run_once.konto1_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'D', 'direction': 'Long', 'entry': 68.26, 'sl': 66.36, 'tp': 71.12}
+2026-08-06 21:35:23,121 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===

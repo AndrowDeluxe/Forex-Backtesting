@@ -1,0 +1,106 @@
+===== run_20260806_153839.log =====
+2026-08-06 15:38:39,318 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260806_153839.log ===
+2026-08-06 15:38:39,464 INFO executor: SL für AAPL (Ticket 244597610) auf Break-Even (302.0900) gesetzt.
+2026-08-06 15:38:39,471 INFO run_once.konto3_tickmill: Break-Even-Management: [{'status': 'moved', 'ticket': 244597610, 'symbol': 'AAPL', 'sl': 302.09}]
+2026-08-06 15:38:39,479 INFO run_once.konto3_tickmill: 4 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 15:38:39,481 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3679.54, aktueller Drawdown -0.00% (Limit 20.0%)
+2026-08-06 15:38:39,483 WARNING executor: Symbol 'DVA' (MT5-Name 'DVA') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 15:38:39,483 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DVA', 'direction': 'Long', 'entry': 188.66, 'sl': 166.87, 'tp': 221.34}}
+2026-08-06 15:38:39,485 INFO executor: Für CVS ist bereits eine Position offen (Ticket 246913807) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 15:38:39,485 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 99.13, 'sl': 94.35, 'tp': 106.31}}
+2026-08-06 15:38:39,486 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 15:38:39,486 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1285.55, 'sl': 1226.21, 'tp': 1374.56}}
+2026-08-06 15:38:39,488 INFO executor: Für D ist bereits eine Position offen (Ticket 245491954) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 15:38:39,488 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.26, 'sl': 66.36, 'tp': 71.12}}
+2026-08-06 15:38:39,488 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260806_163759.log =====
+2026-08-06 16:37:59,703 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260806_163759.log ===
+2026-08-06 16:37:59,729 INFO run_once.konto3_tickmill: 4 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 16:37:59,730 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3679.54, aktueller Drawdown 0.43% (Limit 20.0%)
+2026-08-06 16:37:59,733 WARNING executor: Symbol 'DVA' (MT5-Name 'DVA') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 16:37:59,733 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DVA', 'direction': 'Long', 'entry': 188.66, 'sl': 166.87, 'tp': 221.34}}
+2026-08-06 16:37:59,736 INFO executor: Für CVS ist bereits eine Position offen (Ticket 246913807) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 16:37:59,736 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 99.13, 'sl': 94.35, 'tp': 106.31}}
+2026-08-06 16:37:59,737 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 16:37:59,737 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1285.55, 'sl': 1226.21, 'tp': 1374.56}}
+2026-08-06 16:37:59,738 INFO executor: Für D ist bereits eine Position offen (Ticket 245491954) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 16:37:59,739 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.26, 'sl': 66.36, 'tp': 71.12}}
+2026-08-06 16:37:59,739 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260806_173801.log =====
+2026-08-06 17:38:01,657 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260806_173801.log ===
+2026-08-06 17:38:01,719 INFO run_once.konto3_tickmill: 4 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 17:38:01,720 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3679.54, aktueller Drawdown 1.76% (Limit 20.0%)
+2026-08-06 17:38:01,723 WARNING executor: Symbol 'DVA' (MT5-Name 'DVA') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 17:38:01,723 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DVA', 'direction': 'Long', 'entry': 188.66, 'sl': 166.87, 'tp': 221.34}}
+2026-08-06 17:38:01,724 INFO executor: Für CVS ist bereits eine Position offen (Ticket 246913807) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 17:38:01,724 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 99.13, 'sl': 94.35, 'tp': 106.31}}
+2026-08-06 17:38:01,726 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 17:38:01,726 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1285.55, 'sl': 1226.21, 'tp': 1374.56}}
+2026-08-06 17:38:01,727 INFO executor: Für D ist bereits eine Position offen (Ticket 245491954) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 17:38:01,727 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.26, 'sl': 66.36, 'tp': 71.12}}
+2026-08-06 17:38:01,727 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260806_183528.log =====
+2026-08-06 18:35:28,674 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260806_183528.log ===
+2026-08-06 18:35:28,743 INFO run_once.konto3_tickmill: 4 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 18:35:28,744 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3679.54, aktueller Drawdown 1.70% (Limit 20.0%)
+2026-08-06 18:35:28,746 WARNING executor: Symbol 'DVA' (MT5-Name 'DVA') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 18:35:28,747 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DVA', 'direction': 'Long', 'entry': 188.66, 'sl': 166.87, 'tp': 221.34}}
+2026-08-06 18:35:28,749 INFO executor: Für CVS ist bereits eine Position offen (Ticket 246913807) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 18:35:28,749 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 99.13, 'sl': 94.35, 'tp': 106.31}}
+2026-08-06 18:35:28,751 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 18:35:28,751 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1285.55, 'sl': 1226.21, 'tp': 1374.56}}
+2026-08-06 18:35:28,752 INFO executor: Für D ist bereits eine Position offen (Ticket 245491954) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 18:35:28,752 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.26, 'sl': 66.36, 'tp': 71.12}}
+2026-08-06 18:35:28,753 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260806_193525.log =====
+2026-08-06 19:35:25,932 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260806_193525.log ===
+2026-08-06 19:35:25,951 INFO run_once.konto3_tickmill: 4 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 19:35:25,953 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3679.54, aktueller Drawdown 2.11% (Limit 20.0%)
+2026-08-06 19:35:25,955 WARNING executor: Symbol 'DVA' (MT5-Name 'DVA') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 19:35:25,956 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DVA', 'direction': 'Long', 'entry': 188.66, 'sl': 166.87, 'tp': 221.34}}
+2026-08-06 19:35:25,958 INFO executor: Für CVS ist bereits eine Position offen (Ticket 246913807) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 19:35:25,958 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 99.13, 'sl': 94.35, 'tp': 106.31}}
+2026-08-06 19:35:25,960 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 19:35:25,960 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1285.55, 'sl': 1226.21, 'tp': 1374.56}}
+2026-08-06 19:35:26,016 ERROR executor: Order fehlgeschlagen für D: OrderSendResult(retcode=10019, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No money', request_id=1283968701, retcode_external=0, request=TradeRequest(action=1, magic=0, order=0, symbol='D', volume=277.0, price=66.62, stoplimit=0.0, sl=66.36, tp=71.12, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='OU-Modell auto', position=0, position_by=0))
+2026-08-06 19:35:26,016 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'error', 'reason': "OrderSendResult(retcode=10019, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No money', request_id=1283968701, retcode_external=0, request=TradeRequest(action=1, magic=0, order=0, symbol='D', volume=277.0, price=66.62, stoplimit=0.0, sl=66.36, tp=71.12, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='OU-Modell auto', position=0, position_by=0))", 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.26, 'sl': 66.36, 'tp': 71.12}, 'order': {'symbol': 'D', 'volume': 277.0, 'type': 'BUY', 'entry': 66.62, 'sl': 66.36, 'tp': 71.12}}
+2026-08-06 19:35:26,017 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260806_203523.log =====
+2026-08-06 20:35:23,768 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260806_203523.log ===
+2026-08-06 20:35:23,781 INFO executor: Position 247591905 (D) hat keine gespeicherten Metadaten (vermutlich manuell/vor der Automatisierung eröffnet) - aktueller SL 65.6300 wird als Referenz für den Risiko-Abstand übernommen.
+2026-08-06 20:35:23,796 INFO run_once.konto3_tickmill: 4 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 20:35:23,797 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3679.54, aktueller Drawdown 1.34% (Limit 20.0%)
+2026-08-06 20:35:23,800 WARNING executor: Symbol 'DVA' (MT5-Name 'DVA') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 20:35:23,800 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DVA', 'direction': 'Long', 'entry': 188.66, 'sl': 166.87, 'tp': 221.34}}
+2026-08-06 20:35:23,801 INFO executor: Für CVS ist bereits eine Position offen (Ticket 246913807) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 20:35:23,801 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 99.13, 'sl': 94.35, 'tp': 106.31}}
+2026-08-06 20:35:23,803 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 20:35:23,803 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1285.55, 'sl': 1226.21, 'tp': 1374.56}}
+2026-08-06 20:35:23,804 INFO executor: Für D ist bereits eine Position offen (Ticket 247591905) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 20:35:23,804 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.26, 'sl': 66.36, 'tp': 71.12}}
+2026-08-06 20:35:23,805 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260806_213523.log =====
+2026-08-06 21:35:23,687 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260806_213523.log ===
+2026-08-06 21:35:23,709 INFO run_once.konto3_tickmill: 4 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 21:35:23,711 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3679.54, aktueller Drawdown 1.93% (Limit 20.0%)
+2026-08-06 21:35:23,712 WARNING executor: Symbol 'DVA' (MT5-Name 'DVA') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 21:35:23,713 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DVA', 'direction': 'Long', 'entry': 188.66, 'sl': 166.87, 'tp': 221.34}}
+2026-08-06 21:35:23,715 INFO executor: Für CVS ist bereits eine Position offen (Ticket 246913807) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 21:35:23,715 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 99.13, 'sl': 94.35, 'tp': 106.31}}
+2026-08-06 21:35:23,717 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 21:35:23,717 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1285.55, 'sl': 1226.21, 'tp': 1374.56}}
+2026-08-06 21:35:23,719 INFO executor: Für D ist bereits eine Position offen (Ticket 247591905) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 21:35:23,719 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.26, 'sl': 66.36, 'tp': 71.12}}
+2026-08-06 21:35:23,719 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===

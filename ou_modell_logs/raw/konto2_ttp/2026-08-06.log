@@ -1,0 +1,103 @@
+===== run_20260806_153838.log =====
+2026-08-06 15:38:38,986 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260806_153838.log ===
+2026-08-06 15:38:39,020 ERROR executor: BE-Move fehlgeschlagen für LUV (Ticket 17505917): OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))
+2026-08-06 15:38:39,078 INFO executor: SL für AAPL (Ticket 17625170) auf Break-Even (302.2200) gesetzt.
+2026-08-06 15:38:39,088 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'error', 'ticket': 17505917, 'symbol': 'LUV', 'reason': "OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))"}, {'status': 'moved', 'ticket': 17625170, 'symbol': 'AAPL', 'sl': 302.22}]
+2026-08-06 15:38:39,101 INFO run_once.konto2_ttp: 3 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 15:38:39,103 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 101174.65, aktueller Drawdown -0.00% (Limit 2.0%)
+2026-08-06 15:38:39,106 WARNING executor: Symbol 'CNP' (MT5-Name 'CNP') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 15:38:39,107 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CNP', 'direction': 'Long', 'entry': 40.65, 'sl': 37.62, 'tp': 0.0}}
+2026-08-06 15:38:39,109 INFO executor: Für D ist bereits eine Position offen (Ticket 17656476) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 15:38:39,109 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.27, 'sl': 65.41, 'tp': 0.0}}
+2026-08-06 15:38:39,111 WARNING executor: Symbol 'SRE' (MT5-Name 'SRE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 15:38:39,112 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'SRE', 'direction': 'Long', 'entry': 84.66, 'sl': 76.33, 'tp': 0.0}}
+2026-08-06 15:38:39,112 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260806_163759.log =====
+2026-08-06 16:37:59,414 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260806_163759.log ===
+2026-08-06 16:37:59,472 INFO executor: SL für ADI (Ticket 17505909) auf Break-Even (372.3500) gesetzt.
+2026-08-06 16:37:59,475 ERROR executor: BE-Move fehlgeschlagen für LUV (Ticket 17505917): OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))
+2026-08-06 16:37:59,485 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'moved', 'ticket': 17505909, 'symbol': 'ADI', 'sl': 372.35}, {'status': 'error', 'ticket': 17505917, 'symbol': 'LUV', 'reason': "OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))"}]
+2026-08-06 16:37:59,495 INFO run_once.konto2_ttp: 3 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 16:37:59,497 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 101174.65, aktueller Drawdown 0.01% (Limit 2.0%)
+2026-08-06 16:37:59,500 WARNING executor: Symbol 'CNP' (MT5-Name 'CNP') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 16:37:59,500 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CNP', 'direction': 'Long', 'entry': 40.65, 'sl': 37.62, 'tp': 0.0}}
+2026-08-06 16:37:59,502 INFO executor: Für D ist bereits eine Position offen (Ticket 17656476) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 16:37:59,502 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.27, 'sl': 65.41, 'tp': 0.0}}
+2026-08-06 16:37:59,504 WARNING executor: Symbol 'SRE' (MT5-Name 'SRE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 16:37:59,504 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'SRE', 'direction': 'Long', 'entry': 84.66, 'sl': 76.33, 'tp': 0.0}}
+2026-08-06 16:37:59,504 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260806_173801.log =====
+2026-08-06 17:38:01,413 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260806_173801.log ===
+2026-08-06 17:38:01,426 ERROR executor: BE-Move fehlgeschlagen für LUV (Ticket 17505917): OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))
+2026-08-06 17:38:01,439 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'error', 'ticket': 17505917, 'symbol': 'LUV', 'reason': "OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))"}]
+2026-08-06 17:38:01,449 INFO run_once.konto2_ttp: 3 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 17:38:01,451 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 101174.65, aktueller Drawdown 0.33% (Limit 2.0%)
+2026-08-06 17:38:01,454 WARNING executor: Symbol 'CNP' (MT5-Name 'CNP') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 17:38:01,454 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CNP', 'direction': 'Long', 'entry': 40.65, 'sl': 37.62, 'tp': 0.0}}
+2026-08-06 17:38:01,456 INFO executor: Für D ist bereits eine Position offen (Ticket 17656476) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 17:38:01,456 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.27, 'sl': 65.41, 'tp': 0.0}}
+2026-08-06 17:38:01,457 WARNING executor: Symbol 'SRE' (MT5-Name 'SRE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 17:38:01,457 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'SRE', 'direction': 'Long', 'entry': 84.66, 'sl': 76.33, 'tp': 0.0}}
+2026-08-06 17:38:01,458 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260806_183528.log =====
+2026-08-06 18:35:28,374 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260806_183528.log ===
+2026-08-06 18:35:28,427 ERROR executor: BE-Move fehlgeschlagen für LUV (Ticket 17505917): OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))
+2026-08-06 18:35:28,436 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'error', 'ticket': 17505917, 'symbol': 'LUV', 'reason': "OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))"}]
+2026-08-06 18:35:28,446 INFO run_once.konto2_ttp: 3 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 18:35:28,448 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 101174.65, aktueller Drawdown 0.40% (Limit 2.0%)
+2026-08-06 18:35:28,449 WARNING executor: Symbol 'CNP' (MT5-Name 'CNP') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 18:35:28,449 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CNP', 'direction': 'Long', 'entry': 40.65, 'sl': 37.62, 'tp': 0.0}}
+2026-08-06 18:35:28,451 INFO executor: Für D ist bereits eine Position offen (Ticket 17656476) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-06 18:35:28,451 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.27, 'sl': 65.41, 'tp': 0.0}}
+2026-08-06 18:35:28,453 WARNING executor: Symbol 'SRE' (MT5-Name 'SRE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 18:35:28,453 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'SRE', 'direction': 'Long', 'entry': 84.66, 'sl': 76.33, 'tp': 0.0}}
+2026-08-06 18:35:28,454 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260806_193525.log =====
+2026-08-06 19:35:25,462 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260806_193525.log ===
+2026-08-06 19:35:25,475 ERROR executor: BE-Move fehlgeschlagen für LUV (Ticket 17505917): OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))
+2026-08-06 19:35:25,484 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'error', 'ticket': 17505917, 'symbol': 'LUV', 'reason': "OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))"}]
+2026-08-06 19:35:25,495 INFO run_once.konto2_ttp: 3 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 19:35:25,496 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 101174.65, aktueller Drawdown 0.46% (Limit 2.0%)
+2026-08-06 19:35:25,498 WARNING executor: Symbol 'CNP' (MT5-Name 'CNP') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 19:35:25,498 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CNP', 'direction': 'Long', 'entry': 40.65, 'sl': 37.62, 'tp': 0.0}}
+2026-08-06 19:35:25,706 INFO executor: Order gesendet: {'symbol': 'D', 'volume': 409.0, 'type': 'BUY', 'entry': 66.64, 'sl': 65.41, 'tp': 0.0} -> Ticket 17742986
+2026-08-06 19:35:25,714 INFO run_once.konto2_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'D', 'volume': 409.0, 'type': 'BUY', 'entry': 66.64, 'sl': 65.41, 'tp': 0.0}, 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 68.27, 'sl': 65.41, 'tp': 0.0}, 'ticket': 17742986, 'risk': 503.07000000000164}
+2026-08-06 19:35:25,722 WARNING executor: Symbol 'SRE' (MT5-Name 'SRE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 19:35:25,722 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'SRE', 'direction': 'Long', 'entry': 84.66, 'sl': 76.33, 'tp': 0.0}}
+2026-08-06 19:35:25,723 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260806_203523.log =====
+2026-08-06 20:35:23,545 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260806_203523.log ===
+2026-08-06 20:35:23,556 ERROR executor: BE-Move fehlgeschlagen für LUV (Ticket 17505917): OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))
+2026-08-06 20:35:23,563 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'error', 'ticket': 17505917, 'symbol': 'LUV', 'reason': "OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))"}]
+2026-08-06 20:35:23,572 INFO run_once.konto2_ttp: 3 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 20:35:23,574 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 101174.65, aktueller Drawdown 0.32% (Limit 2.0%)
+2026-08-06 20:35:23,576 WARNING executor: Symbol 'CNP' (MT5-Name 'CNP') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 20:35:23,576 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CNP', 'direction': 'Long', 'entry': 40.65, 'sl': 37.62, 'tp': 0.0}}
+2026-08-06 20:35:23,577 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'D', 'direction': 'Long', 'entry': 68.27, 'sl': 65.41, 'tp': 0.0}
+2026-08-06 20:35:23,578 WARNING executor: Symbol 'SRE' (MT5-Name 'SRE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 20:35:23,578 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'SRE', 'direction': 'Long', 'entry': 84.66, 'sl': 76.33, 'tp': 0.0}}
+2026-08-06 20:35:23,579 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260806_213523.log =====
+2026-08-06 21:35:23,438 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260806_213523.log ===
+2026-08-06 21:35:23,449 ERROR executor: BE-Move fehlgeschlagen für LUV (Ticket 17505917): OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))
+2026-08-06 21:35:23,457 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'error', 'ticket': 17505917, 'symbol': 'LUV', 'reason': "OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))"}]
+2026-08-06 21:35:23,468 INFO run_once.konto2_ttp: 3 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-06 21:35:23,470 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 101174.65, aktueller Drawdown 0.48% (Limit 2.0%)
+2026-08-06 21:35:23,472 WARNING executor: Symbol 'CNP' (MT5-Name 'CNP') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 21:35:23,472 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CNP', 'direction': 'Long', 'entry': 40.65, 'sl': 37.62, 'tp': 0.0}}
+2026-08-06 21:35:23,473 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'D', 'direction': 'Long', 'entry': 68.27, 'sl': 65.41, 'tp': 0.0}
+2026-08-06 21:35:23,474 WARNING executor: Symbol 'SRE' (MT5-Name 'SRE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-06 21:35:23,474 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'SRE', 'direction': 'Long', 'entry': 84.66, 'sl': 76.33, 'tp': 0.0}}
+2026-08-06 21:35:23,475 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===

@@ -265,15 +265,38 @@ with sel_col2:
              "Siehe Tab \"Out-of-Sample-Test\", bevor du dich auf eine Methode festlegst.",
     )
 
-caveat_box(
-    "<b>&#9888; WICHTIG -- echter Out-of-Sample-Test (siehe gleichnamiger Tab unten):</b> "
-    "SL/TP/Breakeven/Regimefilter/Sizing wurden alle gegen das 2018-2024-Fenster optimiert -- "
-    "der DAX-Test prueft neue TICKER, aber nicht neue ZEIT. Auf echt ungesehenen Daten "
-    "(2025-heute, in keinem einzigen Sweep verwendet) faellt der Sharpe auf allen drei Maerkten "
-    "auf nahe Null bis leicht negativ, weit unter Buy&amp;Hold. Das ist ein reales "
-    "Overfitting-Warnsignal, kein Randdetail.",
-    alert=True,
-)
+_oos_markets = VIEWS[view_key]
+if "sp500" in _oos_markets and len(_oos_markets) == 1:
+    _oos_text = (
+        "<b>&#8505; Update (2026-08-06) -- echter Out-of-Sample-Test (siehe Tab unten):</b> "
+        "Nach Skalierung des S&amp;P-Universums von 90 auf alle 420 verfuegbaren Ticker "
+        "(OU-Selektion jetzt 147 statt 26 Ticker) hat sich der fruehere Alarmbefund fuer S&amp;P "
+        "umgekehrt: auf echt ungesehenen Daten (2025-heute) liegt der Sharpe jetzt bei "
+        "<b>1.59 und schlaegt Buy&amp;Hold (1.12)</b> -- statt vorher nahe Null. Der urspruengliche "
+        "Kollaps war vermutlich groesstenteils ein Artefakt der zu kleinen, verrauschten "
+        "26-Ticker-Stichprobe (nur 175 Trades), nicht zwingend echtes Overfitting. Sauber "
+        "bewiesen ist das nicht -- zwei Dinge aenderten sich gleichzeitig (Universumsgroesse "
+        "UND welche Ticker). Nasdaq-100/DAX sind bereits volle Indizes und zeigen weiterhin "
+        "die schwachen alten OOS-Werte, siehe Tab."
+    )
+elif "sp500" in _oos_markets:
+    _oos_text = (
+        "<b>&#9888; WICHTIG -- echter Out-of-Sample-Test (siehe Tab unten):</b> Fuer den "
+        "S&amp;P-Zweig (seit 2026-08-06 volles 420-Ticker-Universum statt 90) schlaegt der "
+        "OOS-Sharpe (2025-heute) inzwischen sogar Buy&amp;Hold. Der DAX-Zweig ist bereits "
+        "der volle offizielle Index und zeigt weiterhin einen schwachen OOS-Sharpe nahe Null "
+        "-- die Kombi-Ansicht mischt also einen jetzt starken mit einem weiterhin schwachen Zweig."
+    )
+else:
+    _oos_text = (
+        "<b>&#9888; WICHTIG -- echter Out-of-Sample-Test (siehe Tab unten):</b> "
+        f"{VIEW_LABELS[view_key]} ist bereits das volle offizielle Universum (kann nicht wie "
+        "S&amp;P weiter skaliert werden). Auf echt ungesehenen Daten (2025-heute, in keinem "
+        "Sweep verwendet) faellt der Sharpe hier weiterhin auf nahe Null bis leicht negativ, "
+        "weit unter Buy&amp;Hold -- anders als beim S&amp;P-Zweig (siehe dort) ist das (noch) "
+        "nicht durch eine Stichproben-Vergroesserung erklaerbar. Details im Tab."
+    )
+caveat_box(_oos_text, alert=True)
 
 with st.expander(":material/menu_book: Methodik & weitere Einschraenkungen", expanded=False):
     st.markdown(
@@ -281,16 +304,16 @@ with st.expander(":material/menu_book: Methodik & weitere Einschraenkungen", exp
         <div class="fs-writeup">
         Die finale OU-Modell-Konfiguration (Long-only, 3,0-Sigma-Stop, kein festes
         Take-Profit, 0,25R-Breakeven, marktweiter EMA-200-Regimefilter auf dem Index
-        selbst) wurde ausschliesslich auf US-Aktien (S&P 500- und Nasdaq-100-Sample)
-        gesucht und optimiert. Als unabhaengiger Robustheits-Check haben wir dieselbe,
-        unveraenderte Konfiguration auf ein drittes, komplett separates Universum
-        losgelassen: den DAX. Ergebnis: mit dem vollen 33-Ticker-DAX-Universum -- der
-        Einstellung, die auf S&P/Nasdaq am staerksten performte -- waere die Strategie
-        leicht defizitaer gewesen. Der Ornstein-Uhlenbeck-Selektionsfilter, der auf den
-        US-Maerkten kaum noch Mehrwert brachte, erwies sich auf dem kleineren,
-        konzentrierteren DAX als notwendig statt optional: erst mit OU-Selektion (13 von
-        33 Titeln) wird der DAX-Zweig klar profitabel. Deshalb bleibt der OU-Filter Teil
-        der finalen, marktuebergreifend <b>einheitlichen</b> Konfiguration.
+        selbst) wurde auf US-Aktien gesucht und optimiert, dann auf DAX als unabhaengigem
+        drittem Markt validiert. <b>Update 2026-08-06:</b> nach Skalierung des S&amp;P-Universums
+        auf alle 420 verfuegbaren Ticker zeigt sich ein konsistentes Bild ueber ZWEI
+        unabhaengige Zeitfenster (2018-2024 und der echte 2025-heute-Holdout): der
+        Ornstein-Uhlenbeck-Selektionsfilter <b>hilft klar bei S&amp;P</b> (OOS-Sharpe 1.59 mit
+        Filter vs. 0.50 ohne) <b>und bei DAX</b> (ohne Filter leicht defizitaer), <b>schadet aber
+        bei Nasdaq-100</b> (OOS-Sharpe -0.10 mit Filter vs. +0.49 ohne, auf beiden Fenstern
+        konsistent). Der Filter bleibt trotzdem markuebergreifend <b>einheitlich aktiv</b> --
+        eine bewusste Robustheit-vor-Optimalitaet-Entscheidung, kein Versehen. Fuer den reinen
+        Nasdaq-Ertrag waere ein Verzicht auf den Filter nachweislich besser.
         </div>
         <div class="fs-caveats">
         <b>Weitere ehrliche Einschraenkungen:</b> Alle Zahlen sind brutto, ohne
@@ -376,6 +399,18 @@ with tab_oos:
                 "einzigen Parameter-Sweep dieser gesamten Recherche vorkam. Das ist der "
                 "ehrlichste verfuegbare Overfitting-Check."
             )
+            if solo_market == "sp500":
+                caveat_box(
+                    "<b>Update 2026-08-06:</b> dieser Test lief urspruenglich mit nur 26 "
+                    "OU-selektierten Tickern (aus einem 90er-Zufalls-Sample) und zeigte einen "
+                    "Sharpe nahe Null -- ein Alarmsignal. Nach Skalierung auf das volle "
+                    "S&amp;P-Universum (147 OU-selektierte Ticker) und Neuberechnung mit frischen "
+                    "Daten zeigt sich ein deutlich anderes Bild (siehe Kacheln/Kurve unten). "
+                    "Mehr Ticker heisst mehr Trades (519 statt 175) und damit weniger "
+                    "Stichproben-Rauschen -- ob der fruehere schwache Wert also echtes "
+                    "Overfitting oder ueberwiegend Stichprobengroesse war, ist damit "
+                    "wahrscheinlicher (aber nicht bewiesen) Letzteres."
+                )
 
             oos_rb = pd.read_csv(oos_rb_path, index_col=0, parse_dates=True).iloc[:, 0]
             oos_c = pd.read_csv(oos_c_path, index_col=0, parse_dates=True).iloc[:, 0]

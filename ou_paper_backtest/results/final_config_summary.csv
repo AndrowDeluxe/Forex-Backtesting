@@ -1,0 +1,4 @@
+market,n_tickers,sharpe,sortino,calmar,win_rate_pct,max_drawdown_pct,total_return_pct,final_equity,n_trades
+"S&P 500 (volles Universum, 420 Ticker)",147,0.86,1.0,0.58,47.7,-37.6,295.2,395182.0,1834
+Nasdaq-100 (alle ~103 Ticker),16,0.79,0.77,0.55,48.0,-16.0,80.3,180263.0,479
+DAX (alle 40 Ticker),13,0.28,0.26,0.13,49.3,-16.0,15.4,115382.0,304

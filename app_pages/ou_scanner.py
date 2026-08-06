@@ -90,6 +90,51 @@ caveat_html = (
 )
 st.markdown(f"<div class='sc-caveats'>{caveat_html}</div>", unsafe_allow_html=True)
 
+# --- performance summary table: final locked config's actual track record (2018-2024,
+# same numbers as "Fertige Strategien"), so signals here aren't seen without context ---
+SUMMARY_PATH = REPO_DIR / "ou_paper_backtest" / "results" / "final_config_summary.csv"
+if SUMMARY_PATH.exists():
+    summary_df = pd.read_csv(SUMMARY_PATH)
+    st.markdown(
+        "<div class='sc-caveats' style='margin-top:0.3rem;'><b>Kennzahlen der finalen Konfiguration "
+        "(Out-of-Sample 2018-2024, OU-selektiertes Universum je Markt):</b></div>",
+        unsafe_allow_html=True,
+    )
+    summary_rows_html = []
+    for _, r in summary_df.iterrows():
+        summary_rows_html.append(
+            f"<tr>"
+            f"<td>{r['market']}</td>"
+            f"<td>{int(r['n_tickers'])}</td>"
+            f"<td>{r['sharpe']:.2f}</td>"
+            f"<td>{r['sortino']:.2f}</td>"
+            f"<td>{r['calmar']:.2f}</td>"
+            f"<td>{r['win_rate_pct']:.1f}%</td>"
+            f"<td style='color:{C_RED};'>{r['max_drawdown_pct']:.1f}%</td>"
+            f"<td style='color:{C_GREEN};'>{r['total_return_pct']:+.1f}%</td>"
+            f"<td>${r['final_equity']:,.0f}</td>"
+            f"<td>{int(r['n_trades'])}</td>"
+            f"</tr>"
+        )
+    summary_table_html = f"""
+    <table class="sc-table">
+      <thead><tr>
+        <th>Markt</th><th>Ticker</th><th>Sharpe</th><th>Sortino</th><th>Calmar</th>
+        <th>Win-Rate</th><th>Max Drawdown</th><th>Profit</th><th>Endkapital ($100k Start)</th><th>Trades</th>
+      </tr></thead>
+      <tbody>{''.join(summary_rows_html)}</tbody>
+    </table>
+    """
+    st.markdown(summary_table_html, unsafe_allow_html=True)
+    st.markdown(
+        "<div class='sc-alert'>&#9888; Diese Kennzahlen sind 2018-2024, das Fenster gegen das "
+        "SL/TP/Breakeven/Regimefilter optimiert wurden. Der echte Out-of-Sample-Test "
+        "(2025-heute) auf <i>Fertige Strategien</i> zeigt fuer S&amp;P inzwischen sogar bessere "
+        "Werte als hier (Sharpe 1.59 statt 0.86), fuer Nasdaq-100/DAX aber deutlich schwaechere "
+        "-- vor dem Handeln dort nachlesen, nicht nur auf diese Tabelle verlassen.</div>",
+        unsafe_allow_html=True,
+    )
+
 if not SIGNALS_PATH.exists():
     st.error(
         "Noch kein Scan committed. Lokal `python ou_paper_backtest/scanner.py` "
@@ -133,6 +178,56 @@ tiles_html = "<div class='sc-tile-row'>" + "".join(
     for l, v in tiles
 ) + "</div>"
 st.markdown(tiles_html, unsafe_allow_html=True)
+
+# --- Funded-Challenge risk overview: fixed 0.25% risk/trade, hard cap 8 concurrent
+# positions (typical prop-firm-style rule, e.g. FTMO-style challenges -- much more
+# conservative than the backtest's own 1% risk / 20% notional / 15% total-risk rules).
+FUNDED_RISK_PCT = 0.25  # percent of equity risked per trade
+FUNDED_MAX_POSITIONS = 8
+
+st.markdown(
+    "<div class='sc-caveats' style='margin-top:0.3rem;'><b>Risikomanagement -- Funded Challenge:</b> "
+    f"max. {FUNDED_MAX_POSITIONS} gleichzeitige Positionen, {FUNDED_RISK_PCT}% Risiko pro Trade "
+    "(deutlich konservativer als das 1%-Risk-based-Sizing aus dem Backtest). Bei "
+    f"{FUNDED_MAX_POSITIONS} vollen Positionen betraegt das gesamte offene Risiko "
+    f"{FUNDED_MAX_POSITIONS * FUNDED_RISK_PCT:.2f}% der Kontoequity. Sortiert nach engstem "
+    "SL-Abstand zuerst (mehr Positionsgroesse bei gleichem Risiko); bei mehr als "
+    f"{FUNDED_MAX_POSITIONS} Setups werden die uebrigen hier nicht mehr beruecksichtigt.</div>",
+    unsafe_allow_html=True,
+)
+
+funded_df = signals.sort_values("risk_pct_price").head(FUNDED_MAX_POSITIONS).copy()
+funded_df["funded_size_pct"] = (FUNDED_RISK_PCT / funded_df["risk_pct_price"] * 100).clip(upper=20.0)
+funded_rows_html = []
+for _, r in funded_df.iterrows():
+    funded_rows_html.append(
+        f"<tr>"
+        f"<td><span class='sc-badge sc-badge-market'>{r['market'].split(' ')[0]}</span></td>"
+        f"<td><b>{r['ticker']}</b></td>"
+        f"<td style='color:{C_ORANGE};'>{r['entry']:.2f}</td>"
+        f"<td style='color:{C_RED};'>{r['sl']:.2f}</td>"
+        f"<td>{r['risk_pct_price']:.2f}%</td>"
+        f"<td>{FUNDED_RISK_PCT:.2f}%</td>"
+        f"<td>{r['funded_size_pct']:.2f}%</td>"
+        f"</tr>"
+    )
+funded_table_html = f"""
+<table class="sc-table">
+  <thead><tr>
+    <th>Markt</th><th>Ticker</th><th>Entry</th><th>Stop</th><th>SL-Abstand</th>
+    <th>Risiko/Trade</th><th>Positionsgroesse</th>
+  </tr></thead>
+  <tbody>{''.join(funded_rows_html)}</tbody>
+</table>
+"""
+st.markdown(funded_table_html, unsafe_allow_html=True)
+n_skipped = max(0, len(signals) - FUNDED_MAX_POSITIONS)
+if n_skipped > 0:
+    st.caption(f"{n_skipped} weitere Setup(s) heute nicht beruecksichtigt (Limit {FUNDED_MAX_POSITIONS} Positionen erreicht).")
+n_taken = len(funded_df)
+st.caption(
+    f"Gesamtrisiko bei {n_taken} Position(en): {n_taken * FUNDED_RISK_PCT:.2f}% der Kontoequity."
+)
 
 rows_html = []
 for _, r in signals.sort_values(["market", "ticker"]).iterrows():
@@ -182,7 +277,10 @@ st.markdown(
 )
 st.markdown(
     "<div class='sc-alert'>&#9888; Im echten Out-of-Sample-Test (2025-heute, siehe "
-    "<i>Fertige Strategien</i>) lagen BEIDE Sizing-Methoden weit unter Buy&amp;Hold -- "
-    "vor blindem Vertrauen in diese Signale erst den OOS-Abschnitt dort lesen.</div>",
+    "<i>Fertige Strategien</i>) schlaegt Risk-based-Sizing fuer S&amp;P inzwischen sogar "
+    "Buy&amp;Hold (nach Skalierung auf das volle 420-Ticker-Universum) -- fuer Nasdaq-100 und "
+    "DAX (beide bereits volle Indizes) liegen weiterhin beide Sizing-Methoden deutlich unter "
+    "Buy&amp;Hold. Vor blindem Vertrauen in Nasdaq/DAX-Signale erst den OOS-Abschnitt dort "
+    "lesen.</div>",
     unsafe_allow_html=True,
 )

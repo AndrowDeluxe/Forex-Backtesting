@@ -95,6 +95,11 @@ def scan_market(market_key: str) -> pd.DataFrame:
                 "close": round(close_t, 2), "lower_band": round(lower, 2),
                 "entry": round(close_t, 2), "sl": round(sl_price, 2),
                 "tp": "kein TP (finale Config)",
+                # tp_price: numeric sentinel for downstream consumers (e.g. the
+                # OU-Modell-MT5-Bridge internal-signal-source reader) -- 0.0 is
+                # MT5's own "no take-profit set" convention (same sentinel this
+                # codebase already uses for "no stop-loss"), not just a display string.
+                "tp_price": 0.0,
                 "risk_pct_price": round(risk_pct_price, 2),
                 "position_size_pct": round(position_pct, 2),
                 "regime_ok": regime_ok,

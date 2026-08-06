@@ -1,0 +1,3 @@
+===== run_20260806_033159.log =====
+2026-08-06 03:32:00,085 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260806_033159.log ===
+2026-08-06 03:32:00,705 ERROR run_once: MT5-Verbindung fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-6, 'Terminal: Authorization failed')

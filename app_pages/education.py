@@ -114,22 +114,21 @@ PHASES: list[tuple[str, str, list[tuple[str, str]]]] = [
     ),
     (
         "phase2",
-        ":material/upload_file: Phase 2 -- Ingestion & Extraktion",
+        ":material/upload_file: Phase 2 -- Papers teilen & sichten",
         [
-            ("p2_1", "PDFs in `paper_dropbox/` ablegen"),
-            ("p2_2", "`ANTHROPIC_API_KEY` gesetzt pruefen (siehe Paper-Research-Seite)"),
-            ("p2_3", "`python scripts/research_paper_pipeline.py` laufen lassen"),
-            ("p2_4", "Paper-Research-Dashboard pruefen: welche Specs sind `simple_signal` vs. `stateful`?"),
+            ("p2_1", "Papers direkt im Chat teilen, pro Themenkategorie (PDF/Link/Textauszug)"),
+            ("p2_2", "Claude liest sie direkt in der Session -- keine `research_paper_pipeline.py`/API-Key noetig"),
+            ("p2_3", "Pro Paper: Kernthese, Regeln, Timeframe, behauptete Performance kurz zusammenfassen"),
         ],
     ),
     (
         "phase3",
         ":material/filter_alt: Phase 3 -- Erstes Screening",
         [
-            ("p3_1", "Auto-Backtest-Ergebnisse der `simple_signal`-Specs sichten"),
-            ("p3_2", "Achtung: Screening-Proxy ist aktuell EUR/USD M15 -- fuer Gold ggf. Proxy-Instrument anpassen"),
-            ("p3_3", "Vielversprechende Kandidaten markieren (kein Hype bei duennen Trade-Zahlen)"),
-            ("p3_4", "`stateful`-Papers identifizieren, die eine manuelle State-Machine brauchen"),
+            ("p3_1", "Pro Paper einordnen: einfaches Signal (AND-Bedingungen) vs. echte State-Machine"),
+            ("p3_2", "Plausibilitaet der Kernthese fuer Gold-Intraday grob abschaetzen (vor jedem Code)"),
+            ("p3_3", "Vielversprechendste 2-3 Kandidaten auswaehlen -- nicht alle parallel vertiefen"),
+            ("p3_4", "Duennes/unklares Extraktionsmaterial aussortieren, bevor Zeit in den Nachbau geht"),
         ],
     ),
     (

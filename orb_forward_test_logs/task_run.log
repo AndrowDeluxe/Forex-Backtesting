@@ -71,3 +71,23 @@
 2026-08-06 03:32:25   floating_pnl: None
 2026-08-06 03:32:25   open_positions: None
 2026-08-06 03:32:25   connection_error: connected to account 5053949028, expected 110209087
+2026-08-06 03:32:27 [main 2957169] ORB Forward-Test: daily log 2026-08-06
+2026-08-06 03:32:27  3 files changed, 23 insertions(+)
+2026-08-06 03:32:27  create mode 100644 orb_forward_test_logs/raw/2026-08-06.log
+2026-08-06 03:32:43 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-06 03:32:43    eeff4f4..2957169  main -> main
+2026-08-06 03:32:43 Commit + Push erfolgreich.
+2026-08-06 03:32:43 === Task beendet ===
+2026-08-06 23:50:03 === Task gestartet ===
+2026-08-06 23:50:04 ORB-Forward-Test Tages-Log erfasst:
+2026-08-06 23:50:04   date: 2026-08-06
+2026-08-06 23:50:04   runs: 54
+2026-08-06 23:50:04   orders_sent: 0
+2026-08-06 23:50:04   orders_skipped: 0
+2026-08-06 23:50:04   orders_error: 0
+2026-08-06 23:50:04   session_end_closes: 0
+2026-08-06 23:50:04   symbols_traded: 
+2026-08-06 23:50:04   current_equity: None
+2026-08-06 23:50:04   floating_pnl: None
+2026-08-06 23:50:04   open_positions: None
+2026-08-06 23:50:04   connection_error: connected to account 5053949028, expected 110209087

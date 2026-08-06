@@ -26,3 +26,22 @@
 2026-08-06 11:56:49 S&P 500 (volles Universum, 420 Ticker)    CNP 2026-08-05  40.65       41.05  40.65 37.62 kein TP (finale Config)       0.0            7.46              13.40       True       True                            12.5
 2026-08-06 11:56:49 S&P 500 (volles Universum, 420 Ticker)      D 2026-08-05  68.27       68.38  68.27 65.41 kein TP (finale Config)       0.0            4.18              20.00       True       True                            12.5
 2026-08-06 11:56:49 S&P 500 (volles Universum, 420 Ticker)    SRE 2026-08-05  84.66       85.61  84.66 76.33 kein TP (finale Config)       0.0            9.84              10.16       True       True                            12.5
+2026-08-06 11:56:50 [main 64d5aa6] OU-Modell Scanner: Snapshot 2026-08-06 11:56
+2026-08-06 11:56:50  1 file changed, 13 insertions(+)
+2026-08-06 11:56:53 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-06 11:56:53    c36b9ce..64d5aa6  main -> main
+2026-08-06 11:56:53 Commit + Push erfolgreich.
+2026-08-06 11:56:53 === Scanner-Task beendet ===
+2026-08-06 12:35:02 === Scanner-Task gestartet ===
+2026-08-06 12:37:37 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 147 OU-selected tickers...
+2026-08-06 12:37:37 [sp500] 3 raw signal(s) as of 2026-08-05, regime_ok=True
+2026-08-06 12:37:37 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 16 OU-selected tickers...
+2026-08-06 12:37:37 [nasdaq100] 0 raw signal(s) as of 2026-08-05, regime_ok=True
+2026-08-06 12:37:37 [dax] DAX (alle 40 Ticker): scanning 13 OU-selected tickers...
+2026-08-06 12:37:37 [dax] 0 raw signal(s) as of 2026-08-05, regime_ok=True
+2026-08-06 12:37:37 
+2026-08-06 12:37:37 Saved 3 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv
+2026-08-06 12:37:37                                 market ticker  scan_date  close  lower_band  entry    sl                      tp  tp_price  risk_pct_price  position_size_pct  regime_ok  tradeable  position_size_concentrated_pct
+2026-08-06 12:37:37 S&P 500 (volles Universum, 420 Ticker)    CNP 2026-08-05  40.65       41.05  40.65 37.62 kein TP (finale Config)       0.0            7.46              13.40       True       True                            12.5
+2026-08-06 12:37:37 S&P 500 (volles Universum, 420 Ticker)      D 2026-08-05  68.27       68.38  68.27 65.41 kein TP (finale Config)       0.0            4.18              20.00       True       True                            12.5
+2026-08-06 12:37:37 S&P 500 (volles Universum, 420 Ticker)    SRE 2026-08-05  84.66       85.61  84.66 76.33 kein TP (finale Config)       0.0            9.84              10.16       True       True                            12.5

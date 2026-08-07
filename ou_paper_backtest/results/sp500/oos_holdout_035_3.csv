@@ -1,0 +1,2 @@
+profile,risk_pct,max_total_risk_pct,total_return_pct,annualized_return_pct,annualized_vol_pct,sharpe,sortino,calmar,max_drawdown_pct,n_trades,win_rate_pct,avg_trade_pnl_pct,avg_days_held,final_equity,worst_single_day_pct,worst_day_date,breached_3pct_daily_rule,days_to_10pct_target
+candidate_0.35pct_3pct,0.0035,0.03,5.717660400390501,3.574078964433358,6.515557285693798,0.5485453979939613,0.7842898255093356,0.6753917660474903,-5.2918604343512925,307,41.042345276872965,0.12097612693501933,8.547231270358306,105717.66040039062,-1.4795422689812932,2025-10-10,False,

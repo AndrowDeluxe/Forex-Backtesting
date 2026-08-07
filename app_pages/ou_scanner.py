@@ -81,15 +81,15 @@ st.caption(
 )
 
 st.markdown(
-    "<div class='sc-alert' style='border-color:" + C_GREEN + ";'>&#128274; <b>Risk-Management "
-    "aktualisiert (2026-08-07):</b> ein echter 2025-heute-Out-of-Sample-Test von 7 Risiko-"
-    "Profilen gegen eine reale Funded-Challenge-Regel (max. 3% Tagesverlust, +10% Ziel) "
-    "bestaetigt <b>0,25% Risiko/Trade + 2,5% aggregiertes Risiko</b> als beste getestete "
-    "Kombination (Sharpe 1.21, Calmar 1.74, Max Drawdown -3.5%) -- besser als hoehere "
-    "Einzel-Trade-Risiken bei GLEICHEM Gesamtdeckel, und besser als eine S&amp;P+DAX-"
-    "Diversifikation. Der Funded-Challenge-Block unten wurde entsprechend aktualisiert; "
-    "der Live-Bot (Konto 2) laeuft seit 2026-08-07 ebenfalls auf dieser Einstellung. "
-    "Volle Herleitung auf der <i>Risk Management</i>-Seite.</div>",
+    "<div class='sc-alert' style='border-color:" + C_GREEN + ";'>&#128274; <b>Risk-Management + "
+    "TP final aktualisiert (2026-08-07):</b> nach einem vollen Kreuzprodukt-Test (13 Exit-"
+    "Varianten x 12 Risk-Profile, 156 Kombinationen) gegen eine echte Funded-Challenge-Regel "
+    "(max. 3% Tagesverlust, +10% Ziel) auf dem 2025-heute-S&amp;P-Holdout gewinnt "
+    "<b>festes 1:1,5-TP + 0,25% Risiko/Trade + 5% aggregiertes Risiko</b>: 10%-Ziel in "
+    "<b>369 statt 579 Tagen</b>, Sharpe 1.54 (statt 1.21 ohne TP), weiterhin komfortabler "
+    "Sicherheitsabstand zur 3%-Regel (schlechtester Tag -1,80%). Scanner-Signale zeigen jetzt "
+    "ein echtes TP statt \"kein TP\"; der Live-Bot (Konto 2) laeuft seit 2026-08-07 auf dieser "
+    "Einstellung. Volle Herleitung auf der <i>Risk Management</i>-Seite.</div>",
     unsafe_allow_html=True,
 )
 st.page_link("app_pages/risk_management.py", label="Zur Risk-Management-Seite", icon=":material/shield:")
@@ -215,26 +215,27 @@ tiles_html = "<div class='sc-tile-row'>" + "".join(
 ) + "</div>"
 st.markdown(tiles_html, unsafe_allow_html=True)
 
-# --- Funded-Challenge risk overview: 0.25% risk/trade + 2.5% aggregate risk cap --
-# OOS-validated (2026-08-07, genuine 2025+ holdout against a real funded-challenge
-# rule set) as the best of 7 tested risk_pct/max_total_risk_pct combinations, see
-# app_pages/risk_management.py. max_total_risk_pct=2.5% at risk_pct=0.25%/trade
-# implies at most 10 full-risk positions before the aggregate cap binds (2.5/0.25) --
-# replaces the earlier ad-hoc "8 positions" heuristic, which wasn't derived from any
-# backtest and wasn't consistent with the risk_pct chosen alongside it.
+# --- Funded-Challenge risk overview: 0.25% risk/trade + 5% aggregate risk cap + fixed
+# 1:1.5 TP -- final result (2026-08-07) of a full 156-combo cross-product grid (13
+# exit-logic variants x 12 risk_pct/max_total_risk_pct combos) on the genuine 2025+
+# S&P holdout against a real funded-challenge rule set, see app_pages/risk_management.py.
+# max_total_risk_pct=5% at risk_pct=0.25%/trade implies at most 20 full-risk positions
+# before the aggregate cap binds (5/0.25).
 FUNDED_RISK_PCT = 0.25  # percent of equity risked per trade
-FUNDED_MAX_TOTAL_RISK_PCT = 2.5  # aggregate cap across all concurrent positions
+FUNDED_MAX_TOTAL_RISK_PCT = 5.0  # aggregate cap across all concurrent positions
 FUNDED_MAX_POSITIONS = int(FUNDED_MAX_TOTAL_RISK_PCT / FUNDED_RISK_PCT)
+FUNDED_TP_RR = 1.5  # fixed take-profit, multiple of the SL distance
 
 st.markdown(
     "<div class='sc-caveats' style='margin-top:0.3rem;'><b>Risikomanagement -- Funded Challenge "
     "(OOS-validiert):</b> "
-    f"{FUNDED_RISK_PCT}% Risiko pro Trade, {FUNDED_MAX_TOTAL_RISK_PCT}% aggregiertes Risiko-Limit "
-    f"ueber alle offenen Positionen -- das entspricht max. {FUNDED_MAX_POSITIONS} gleichzeitigen "
-    "Positionen bei vollem Risiko/Trade. Diese Kombination schnitt im 2025-heute-Holdout gegen "
-    "eine reale Funded-Challenge-Regel (max. 3% Tagesverlust, +10% Ziel) am besten von 7 "
-    "getesteten Profilen ab (Sharpe 1.21, Calmar 1.74, MDD -3.5%) und ist seit 2026-08-07 auch "
-    "die Live-Bot-Einstellung auf Konto 2. Sortiert nach engstem SL-Abstand zuerst (mehr "
+    f"{FUNDED_RISK_PCT}% Risiko pro Trade, {FUNDED_MAX_TOTAL_RISK_PCT:.0f}% aggregiertes "
+    f"Risiko-Limit, festes 1:{FUNDED_TP_RR} Kursziel -- das entspricht max. {FUNDED_MAX_POSITIONS} "
+    "gleichzeitigen Positionen bei vollem Risiko/Trade. Diese Kombination schnitt im vollen "
+    "Kreuzprodukt-Test (156 Exit x Risk-Kombinationen) gegen eine reale Funded-Challenge-Regel "
+    "(max. 3% Tagesverlust, +10% Ziel) am besten ab: 10%-Ziel in 369 statt 579 Tagen, Sharpe "
+    "1.54, weiterhin komfortabler Sicherheitsabstand (schlechtester Tag -1,80%). Seit 2026-08-07 "
+    "auch die Live-Bot-Einstellung auf Konto 2. Sortiert nach engstem SL-Abstand zuerst (mehr "
     f"Positionsgroesse bei gleichem Risiko); bei mehr als {FUNDED_MAX_POSITIONS} Setups werden "
     "die uebrigen hier nicht mehr beruecksichtigt.</div>",
     unsafe_allow_html=True,
@@ -289,7 +290,7 @@ for _, r in signals.sort_values(["market", "ticker"]).iterrows():
         f"<td>{r['close']:.2f}</td>"
         f"<td style='color:{C_ORANGE};'>{r['entry']:.2f}</td>"
         f"<td style='color:{C_RED};'>{r['sl']:.2f}</td>"
-        f"<td class='sc-mono-muted'>{r['tp']}</td>"
+        f"<td style='color:{C_GREEN};'>{float(r['tp']):.2f}</td>"
         f"<td>{r['risk_pct_price']:.2f}%</td>"
         f"<td>{r['position_size_pct']:.2f}%</td>"
         f"<td>{conc_str}</td>"

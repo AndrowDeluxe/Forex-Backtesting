@@ -182,3 +182,69 @@ st.markdown(
     "aus Deckel-Hoehe UND Risiko/Trade muss gemeinsam geprueft werden, nicht "
     "unabhaengig voneinander."
 )
+st.caption(
+    "Nachtrag: Konto 2 lief zum Zeitpunkt dieser Tabelle auf 0,5%/2,5%, wurde "
+    "danach auf 0,25%/2,5% und schliesslich (siehe naechster Abschnitt) auf "
+    "0,25%/5% + festes 1:1,5-TP umgestellt."
+)
+
+# ------------------------------------------------------------------ Finale Kombination
+st.divider()
+st.markdown("### Finale Kombination: Exit-Logik x Risk-Management im vollen Kreuzprodukt (2026-08-07)")
+st.caption(
+    "Letzte Frage: macht die SL/TP/BE-Wahl noch einen grossen Unterschied, nachdem "
+    "Risk-Management (oben) als der staerkere Hebel identifiziert wurde? Antwort: "
+    "nein, keiner dominiert den anderen -- beide Hebel bewegen die Zeit bis zum "
+    "10%-Ziel um eine aehnlich grosse Spanne (~200+ Tage), wenn man sie einzeln "
+    "sweept. Ob es daruber hinaus eine SYNERGIE zwischen beiden gibt, wurde in "
+    "zwei Schritten geprueft."
+)
+
+st.markdown(
+    "**Schritt 1 -- sequenziell (Exit-Logik bei fixem Risiko, dann Risiko bei "
+    "fixer Exit-Logik):** bei 0,25%/2,5% schlaegt SL=2,0-Sigma (kein TP) mit "
+    "**377 Tagen** bis zum Ziel die Baseline (SL=3,0, kein TP: 579 Tage) deutlich. "
+    "Anschliessend auf dieser Exit-Logik den Risiko-Deckel geoeffnet: "
+    "0,35%/3% senkt weiter auf **372 Tage**, bei komfortablem Sicherheitsabstand "
+    "zur 3%-Tagesregel (schlechtester Tag -1,98%)."
+)
+st.success(
+    "**Schritt 2 -- volles Kreuzprodukt (13 Exit-Varianten x 12 Risk-Profile, 156 "
+    "Kombinationen), um eine Synergie zu finden, die die sequenzielle Suche "
+    "verpasst haben koennte:** ein festes **1:1,5-TP + 0,25% Risiko/Trade + 5% "
+    "aggregiert** schlaegt Schritt 1 auf praktisch jeder Dimension gleichzeitig -- "
+    "**369 Tage** bis zum Ziel (statt 372), Sharpe **1.54** (statt 1.07), Calmar "
+    "**2.03** (statt 1.69), und sogar MEHR Sicherheitsabstand zur 3%-Regel "
+    "(schlechtester Tag -1,80% statt -1,98%). Die sequenzielle Suche haette diese "
+    "Kombination nie gefunden, weil \"kein TP gewinnt\" bei ANDEREN Risiko-"
+    "Einstellungen (siehe Fund oben, urspruenglich bei 1%/15% ermittelt) nicht "
+    "automatisch fuer jede Risiko-Einstellung gilt -- ein festes TP setzt Kapital "
+    "schneller frei, was sich besonders bei einem lockereren Deckel auszahlt "
+    "(mehr Kapazitaet fuer neue Signale statt in einem laufenden Gewinner "
+    "gebunden zu sein).",
+    icon=":material/check_circle:",
+)
+
+st.markdown(
+    """
+| Kombination | Tage bis 10%-Ziel | Sharpe | Calmar | MDD | Schlechtester Tag |
+|---|---|---|---|---|---|
+| Baseline (SL 3,0, kein TP, 0,25%/2,5%) | 579 | 1.21 | 1.74 | -3,5% | -0,97% |
+| SL 2,0, kein TP, 0,25%/2,5% | 377 | 1.26 | 1.89 | -5,0% | -1,41% |
+| SL 2,0, kein TP, 0,35%/3% | 372 | 1.07 | 1.69 | -6,0% | -1,98% |
+| **TP 1:1,5, 0,25%/5% (final)** | **369** | **1.54** | **2.03** | -6,5% | **-1,80%** |
+"""
+)
+
+st.info(
+    "**Umgesetzt (2026-08-07):** `ou_paper_backtest/scanner.py` berechnet jetzt ein "
+    "echtes 1:1,5-TP statt \"kein TP\" (SL bleibt 3,0-Sigma, unveraendert). Konto 2 "
+    "im Live-Bot laeuft auf `risk_pct=0.25%`, `max_total_risk_pct=5%`. Nur auf S&amp;P "
+    "getestet (Konto 2 nutzt ohnehin nur die interne S&amp;P-Quelle) -- **keine "
+    "Aenderung an der allgemeinen \"finalen gesperrten Config\"** auf der "
+    "'OU-Modell (finale Konfiguration)'-Seite, die weiterhin markt-uebergreifend "
+    "(S&amp;P/Nasdaq/DAX) auf 2018-2024 + vollem OOS validiert ist und kein TP nutzt -- "
+    "diese Kombination ist eine gezielte Challenge-Optimierung, kein Ersatz fuer "
+    "den allgemeinen Forschungs-Befund.",
+    icon=":material/rocket_launch:",
+)

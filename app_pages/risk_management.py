@@ -10,6 +10,8 @@ eigenstaendiger Beleg fuer die Overfitting-Disziplin, die dieses ganze Projekt
 durchzieht, diesmal auf einen Sizing-/Risk-Parameter statt auf Entry-Regeln
 angewendet."""
 
+import pandas as pd
+
 import streamlit as st
 
 st.set_page_config(page_title="Risk Management -- Strategiebestandteile", page_icon=":material/shield:", layout="wide")
@@ -117,4 +119,66 @@ st.info(
     "(~2,5%, wie bereits auf Konto 2 im Live-Bot) ist aber eine geprueft robuste "
     "Option fuer alle, die den Drawdown bewusst gegen Wachstum eintauschen wollen.",
     icon=":material/hourglass_empty:",
+)
+
+# ------------------------------------------------------------------ Zusatz-Erkenntnisse
+st.divider()
+st.markdown("### Zusatz-Erkenntnisse: Funded-Challenge-Profile (2026-08-07)")
+st.caption(
+    "Sechs konkrete risk_pct/max_total_risk_pct-Kombinationen, alle auf demselben "
+    "echten 2025-heute-Holdout, 100k Startkapital, gegen eine reale Funded-Challenge-"
+    "Regel geprueft: **max. 3% Verlust an einem einzelnen Kalendertag**, Ziel **+10% "
+    "Gesamtrendite**. Locked Entry/Exit (3.0-Sigma-SL, kein TP, 0.25R-Breakeven, "
+    "EMA200-Regimefilter) durchgehend unveraendert -- nur Sizing variiert."
+)
+
+profile_rows = [
+    {"Profil": "Konservativ (S&P solo)", "Risiko/Trade": "0,25%", "Aggregiert": "2,5%",
+     "Sharpe": 1.21, "Calmar": 1.74, "Max Drawdown": "-3,5%", "Return": "+9,8%",
+     "Schlechtester Tag": "-0,97%", "3%-Regel": "eingehalten", "10%-Ziel nach": "579 Tage"},
+    {"Profil": "Mittelweg (S&P solo)", "Risiko/Trade": "0,5%", "Aggregiert": "4%",
+     "Sharpe": 1.03, "Calmar": 1.37, "Max Drawdown": "-6,5%", "Return": "+14,4%",
+     "Schlechtester Tag": "-1,87%", "3%-Regel": "eingehalten", "10%-Ziel nach": "526 Tage"},
+    {"Profil": "Live-Bot Konto 2 (S&P solo)", "Risiko/Trade": "0,5%", "Aggregiert": "2,5%",
+     "Sharpe": 0.96, "Calmar": 0.95, "Max Drawdown": "-6,2%", "Return": "+9,6%",
+     "Schlechtester Tag": "-1,86%", "3%-Regel": "eingehalten", "10%-Ziel nach": "nie erreicht"},
+    {"Profil": "60/40 S&P+DAX", "Risiko/Trade": "0,5%", "Aggregiert": "5%",
+     "Sharpe": 0.91, "Calmar": 1.31, "Max Drawdown": "-4,7%", "Return": "+10,4%",
+     "Schlechtester Tag": "-1,41%", "3%-Regel": "eingehalten", "10%-Ziel nach": "547 Tage"},
+    {"Profil": "50/50 S&P+DAX", "Risiko/Trade": "0,5%", "Aggregiert": "5%",
+     "Sharpe": 0.82, "Calmar": 1.12, "Max Drawdown": "-4,5%", "Return": "+8,4%",
+     "Schlechtester Tag": "-1,73%", "3%-Regel": "eingehalten", "10%-Ziel nach": "nie erreicht"},
+    {"Profil": "Aggressiv (S&P solo)", "Risiko/Trade": "1%", "Aggregiert": "10%",
+     "Sharpe": 1.03, "Calmar": 1.55, "Max Drawdown": "-12,3%", "Return": "+31,8%",
+     "Schlechtester Tag": "-3,74%", "3%-Regel": "VERLETZT (05.06.2025)", "10%-Ziel nach": "330 Tage (zaehlt nicht)"},
+]
+profile_df = pd.DataFrame(profile_rows)
+st.dataframe(
+    profile_df, hide_index=True, width="stretch",
+    column_config={
+        "Sharpe": st.column_config.NumberColumn(format="%.2f"),
+        "Calmar": st.column_config.NumberColumn(format="%.2f"),
+    },
+)
+
+st.warning(
+    "**Ueberraschung:** die aktuelle Live-Bot-Sizing auf Konto 2 (0,5%/2,5%) ist "
+    "NICHT die beste gepruefte Kombination -- sie schneidet schlechter ab als das "
+    "urspruengliche 0,25%/2,5%-Profil (Sharpe 0.96 vs. 1.21, Max Drawdown -6,2% vs. "
+    "-3,5%) und erreicht das 10%-Ziel im Testfenster gar nicht. Grund: bei "
+    "gleichem 2,5%-Deckel fuehrt hoeheres Risiko/Trade zu WENIGER, dafuer groesseren "
+    "Positionen (180 statt 365 Trades) -- weniger Streuung ueber Einzelwerte, "
+    "schlechteres risikoadjustiertes Ergebnis trotz identischem Aggregat-Deckel. "
+    "**S&P-DAX-Diversifikation half in keiner Gewichtung** -- DAX hat in diesem "
+    "Projekt durchgehend eine schwaechere eigene Kante als S&P, eine Beimischung "
+    "verduennt daher eher, als zu diversifizieren.",
+    icon=":material/priority_high:",
+)
+st.markdown(
+    "**Lehre Nr. 5 fuer den generalisierten Denkansatz oben:** bei gleichem "
+    "aggregierten Deckel ist ein NIEDRIGERES Risiko/Trade meist besser, nicht "
+    "neutral -- es erlaubt mehr gleichzeitige, kleinere Positionen und damit mehr "
+    "Streuung ueber Einzelwerte innerhalb desselben Risikobudgets. Die Kombination "
+    "aus Deckel-Hoehe UND Risiko/Trade muss gemeinsam geprueft werden, nicht "
+    "unabhaengig voneinander."
 )

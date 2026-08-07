@@ -297,27 +297,31 @@ Commercials verhalten). Position wird gehalten, bis das Gegensignal kommt.
 """
         )
 
-    st.info(
-        "**Machbarkeit: umsetzbar, neue Datenquelle noetig (aber kostenlos).** CFTC "
-        "veroeffentlicht COT-Berichte woechentlich (jeden Freitag, Stand Dienstag) kostenlos "
-        "unter cftc.gov als Volltext-/CSV-Historie zurueck bis 1986 (\"Legacy\"-Format) bzw. "
-        "seit 2009 im granulareren \"Disaggregated\"-Format. Fuer Gold/Silber (COMEX) direkt "
-        "verfuegbar. Erfordert einen neuen Fetch-/Cache-Baustein (`asian_range_breakout/cot.py` "
-        "o.ae.), aber keine Bezahl-Infrastruktur. **Wird direkt im Anschluss gebaut und gegen "
-        "den Gold Asian-Range Breakout getestet** -- mit dem klaren Vorbehalt aus dem Paper "
-        "selbst, dass die Vorhersagekraft laut Originalstudie schwach ist und die Profitabilitaet "
-        "eher aus der mechanischen Contrarian-Regel als aus echter Kausalitaet stammt.",
-        icon=":material/build:",
+    st.error(
+        "**Update 2026-08-08, getestet: keine robuste Kante, nicht implementiert.** COT-Daten "
+        "kostenlos ueber die CFTC-Socrata-API angebunden (`asian_range_breakout/cot.py`, "
+        "1996-2026 Historie, kein API-Key noetig). Als Richtungsfilter auf den Asian-Range-"
+        "Breakout getestet (`scripts/research_gold_cot_sentiment_filter.py`): die "
+        "Commercial-Konvention aus dem Paper sieht im vollen Zeitraum ueber alle drei getesteten "
+        "Fenster (2/3/4 Jahre) konsistent aus, **bricht aber Out-of-Sample vollstaendig "
+        "zusammen** (PF 1.24 vs. 1.25 -- ein Unentschieden; der gesamte scheinbare Vorteil steckt "
+        "nur im In-Sample-Teil, PF 1.72 vs. 1.11). Die gespiegelte Non-Commercial-Konvention "
+        "kippt das Vorzeichen schon im reinen Fenster-Sweep. Deckt sich mit dem eigenen ehrlichen "
+        "Befund des Original-Papers (Granger-Kausalitaet zeigt dort keine echte Vorhersagekraft, "
+        "nur eine gleichzeitige Korrelation) -- der historisch gezeigte Handelserfolg "
+        "(1999-2012, andere Instrumente/Konstruktion) repliziert sich nicht auf unserem System. "
+        "Details im Asian-Range-Breakout-Dashboard (Tab \"Strategiebestandteile\").",
+        icon=":material/fact_check:",
     )
 
 st.space("medium")
 st.warning(
-    "**Gesamtfazit ueber alle fuenf Papers:** Nur zwei der fuenf (Tab 3 Lead-Lag, Tab 5 "
-    "COT-Sentiment) liefern mit dem vorhandenen Datenbestand direkt testbare Bausteine. Tab 1 "
-    "(Korea-spezifisch) und Tab 2 (braucht Optionsdaten) sind konzeptionell dokumentiert, aber "
-    "nicht umsetzbar. Tab 4 ist keine Strategie-Quelle, sondern eine methodische Warnung. "
-    "Beide machbaren Bausteine werden im Anschluss an diese Seite implementiert und mit "
-    "derselben Disziplin wie jeder andere Filter in diesem Repo getestet (IS/OOS, "
-    "Walk-Forward, Ausreisser-Check) -- Ergebnis im Gold-Asian-Range-Breakout-Dashboard.",
+    "**Gesamtfazit ueber alle fuenf Papers (Update 2026-08-08):** Nur zwei der fuenf (Tab 3 "
+    "Lead-Lag, Tab 5 COT-Sentiment) liefern mit dem vorhandenen Datenbestand direkt testbare "
+    "Bausteine -- **COT-Sentiment ist inzwischen getestet und zeigt keine robuste Kante** "
+    "(bricht Out-of-Sample zusammen). Tab 1 (Korea-spezifisch) und Tab 2 (braucht Optionsdaten) "
+    "sind konzeptionell dokumentiert, aber nicht umsetzbar. Tab 4 ist keine Strategie-Quelle, "
+    "sondern eine methodische Warnung. Der Gold-Silber-BTC-Lead-Lag-Baustein (Tab 3) ist als "
+    "einziger noch offen.",
     icon=":material/summarize:",
 )

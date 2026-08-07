@@ -595,6 +595,26 @@ with tab_components:
             "**Nicht implementiert.**"
         )
 
+    with st.expander("Getestet, 2026-08-08: CFTC-COT-Sentiment-Filter (Zhang & Laws 2013) -- keine robuste Kante, nicht implementiert"):
+        st.markdown(
+            "Idee aus einem User-Upload (SSRN 2382299, siehe \"Neue Papers\"-Seite): "
+            "woechentlicher CFTC-COT-Bericht (kostenlos, CFTC-Socrata-API, keine Bezahl-Quelle "
+            "noetig) liefert eine \"Wang-Sentiment\"-Kennzahl je Trader-Gruppe (rollierendes "
+            "3-Jahres-Perzentil der Netto-Position). Zwei Konventionen getestet "
+            "(`scripts/research_gold_cot_sentiment_filter.py`): **Commercial-Konvention** "
+            "(Paper-Original: Long ausgerichtet auf bullishes Commercial-Sentiment) sieht im "
+            "Fenster-Sweep (2/3/4 Jahre) auf den ersten Blick konsistent aus (PF Aligned > "
+            "Counter in allen drei Fenstern), **bricht aber Out-of-Sample komplett zusammen** "
+            "(PF 1.24 Aligned vs. 1.25 Counter, praktisch ein Unentschieden -- der komplette "
+            "\"Vorteil\" steckt nur in der In-Sample-Haelfte, PF 1.72 vs. 1.11). Die gespiegelte "
+            "**Non-Commercial-Konvention** kippt das Vorzeichen schon im reinen Fenster-Sweep. "
+            "Passt zum eigenen ehrlichen Befund des Original-Papers: die Granger-Kausalitaet "
+            "zeigt dort *keine* Vorhersagekraft von Sentiment auf Rendite, nur eine gleichzeitige "
+            "Korrelation -- der im Paper gezeigte Handelserfolg (1999-2012, andere Instrumente/"
+            "Konstruktion) repliziert sich nicht als Filter auf unserem Asian-Range-Breakout. "
+            "**Nicht implementiert.**"
+        )
+
 # =============================================================================
 # Tab: Backtest
 # =============================================================================

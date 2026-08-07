@@ -154,6 +154,14 @@ def attach_pre_window_momentum(
     return out.dropna(subset=["momentum_r"])
 
 
+def attach_cot_sentiment(trades: pd.DataFrame, sentiment_series: pd.Series, colname: str = "cot_si") -> pd.DataFrame:
+    """Attaches a CFTC COT sentiment index (Wang 2001, see cot.py) to each
+    trade - `sentiment_series` must already be indexed by PUBLICATION date
+    (not report date, see cot.py's 3-day lag shift) so this is a plain
+    no-lookahead prior-value join, same as attach_vix/attach_dxy."""
+    return _attach_prior_day_series(trades, sentiment_series, colname)
+
+
 def apply_momentum_alignment_filter(
     trades: pd.DataFrame, df: pd.DataFrame, lookback_bars: int = 8, atr_n: int = 14
 ) -> pd.DataFrame:

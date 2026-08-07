@@ -110,3 +110,58 @@ def run_trend_bias_walk_forward(
             }
         )
     return pd.DataFrame(rows)
+
+
+_DELAY_BINS = [0, 3, 7, 999]
+_DELAY_LABELS = ["<=3", "4-7", "8+"]
+
+
+def _delay_filter_confirmed(train: pd.DataFrame, min_bucket_trades: int = 100) -> bool:
+    """True if, using ONLY `train`, the fast-fill bucket (<=3 bars) has
+    both enough trades to judge and a strictly higher profit factor than
+    the slower buckets. Same expanding-window discipline as the other two
+    _*_confirmed helpers."""
+    if train.empty or "delay_bars" not in train.columns:
+        return False
+    t = train.copy()
+    t["bucket"] = pd.cut(t["delay_bars"], bins=_DELAY_BINS, labels=_DELAY_LABELS, right=True)
+    stats_by_bucket = {str(b): trade_stats(g) for b, g in t.groupby("bucket", observed=True)}
+
+    fast = stats_by_bucket.get("<=3")
+    others = [s for label, s in stats_by_bucket.items() if label != "<=3"]
+    if fast is None or fast["n_trades"] < min_bucket_trades or not others:
+        return False
+    return all(fast["profit_factor"] > s["profit_factor"] for s in others if s["n_trades"] >= min_bucket_trades)
+
+
+def run_delay_filter_walk_forward(
+    trades_with_delay: pd.DataFrame, start_test_year: int, end_test_year: int, min_train_trades: int = 200
+) -> pd.DataFrame:
+    """Same expanding-window logic as run_walk_forward, but for the
+    entry-fill-delay filter instead of ADX. `trades_with_delay` must already
+    have a `delay_bars` column (see filters.py::attach_entry_delay)."""
+    rows = []
+    for year in range(start_test_year, end_test_year + 1):
+        train = trades_with_delay[trades_with_delay["entry_time"].dt.year < year]
+        test = trades_with_delay[trades_with_delay["entry_time"].dt.year == year]
+        if test.empty or len(train) < min_train_trades:
+            continue
+
+        confirmed = _delay_filter_confirmed(train)
+        base = trade_stats(test)
+        test_filtered = test[test["delay_bars"] <= 3] if confirmed else test
+        filtered = trade_stats(test_filtered)
+
+        rows.append(
+            {
+                "test_year": year,
+                "train_n_trades": len(train),
+                "filter_confirmed_on_train": confirmed,
+                "n_trades_unfiltered": base["n_trades"],
+                "pf_unfiltered": base["profit_factor"],
+                "n_trades_walkforward": filtered["n_trades"],
+                "pf_walkforward": filtered["profit_factor"],
+                "win_rate_walkforward": filtered["win_rate"],
+            }
+        )
+    return pd.DataFrame(rows)

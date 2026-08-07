@@ -21,10 +21,20 @@ import streamlit as st
 from asian_range_breakout.chart import build_entry_chart
 from asian_range_breakout.data import fetch_gold_m15, fetch_gold_m15_live
 from asian_range_breakout.engine import get_latest_setup, simulate_asian_breakout
-from asian_range_breakout.filters import apply_adx_filter, apply_trend_bias_filter, attach_trend_bias
+from asian_range_breakout.filters import (
+    apply_adx_filter,
+    apply_entry_delay_filter,
+    apply_trend_bias_filter,
+    attach_entry_delay,
+    attach_trend_bias,
+)
 from asian_range_breakout.montecarlo import run_monte_carlo, summarize_monte_carlo
 from asian_range_breakout.sizing import simulate_equity
-from asian_range_breakout.walkforward import run_trend_bias_walk_forward, run_walk_forward
+from asian_range_breakout.walkforward import (
+    run_delay_filter_walk_forward,
+    run_trend_bias_walk_forward,
+    run_walk_forward,
+)
 from strategy.metrics import summarize, trade_stats
 
 st.set_page_config(page_title="Gold Asian-Range Breakout", page_icon=":material/wb_twilight:", layout="wide")
@@ -110,6 +120,14 @@ with st.sidebar:
         "bestaetigt, 7/8 mit PF>1.0) und nicht Ausreisser-getrieben - siehe Strategiebestandteile. "
         "Halbiert die Trade-Zahl (weniger absolute Rendite), verbessert aber Profit Factor und "
         "senkt den Max Drawdown spuerbar.",
+    )
+    use_delay_filter = st.toggle(
+        "Fuellverzoegerungs-Filter aktivieren (max. 3 Bars Wartezeit)", value=True,
+        help="Aus der Bottleneck-Diagnose (2026-08-08): schnelle Fuellungen (Breakout direkt "
+        "nach Fenster-Schluss) sind durchweg besser als langsame - PF faellt monoton von 1.31 "
+        "(sofort) auf 1.02 (8+ Bars Wartezeit). Kein Lookahead: entspricht einer Order, die nach "
+        "3 Bars (45 Min.) automatisch verfaellt, statt bis 11:00 zu warten. Walk-Forward-"
+        "bestaetigt (7/8 Jahre), 10/11 Kalenderjahre netto positiv - siehe Strategiebestandteile.",
     )
     spread_price = st.slider(
         "Spread (USD, Round-Trip)", 0.0, 1.50, 0.30, 0.05,
@@ -465,6 +483,103 @@ with tab_components:
             "erkennbarer Erzählung wie bei Agrarrohstoffen. **Nicht implementiert.**"
         )
 
+    st.markdown("### Bottleneck-Diagnose: wo genau geht die Win-Rate verloren? (2026-08-08)")
+    st.caption(
+        "User-Anfrage: Bottleneck aufdecken und pruefen, ob sich die Win-Rate sinnvoll erhoehen "
+        "laesst - inkl. kurzer Internet-Recherche zu etablierten Breakout-Techniken. Siehe "
+        "`scripts/research_gold_bottleneck_diagnosis.py`."
+    )
+    st.info(
+        "**Kernbefund: die Win-Rate ist strukturell gedeckelt, nicht zufaellig niedrig.** "
+        "Stop-Exits sind per Konstruktion **immer** 100% Verlierer (45.5% aller Trades), "
+        "Zeit-Exits gewinnen zu 79.1%. Die Strategie lebt vom asymmetrischen Payoff (fixer "
+        "-1R-Stop, unbegrenzter Gewinn bis Zeit-Exit) - genau das macht sie trotz <44% "
+        "Win-Rate profitabel, und genau deshalb haben TP/BE (die diese Asymmetrie kappen) "
+        "das Ergebnis in frueheren Tests bereits verschlechtert. Eine hoehere Win-Rate ist "
+        "hier kein Selbstzweck - der Hebel ist, WELCHE Trades ueberhaupt genommen werden, "
+        "nicht wie sie gemanagt werden.",
+        icon=":material/insights:",
+    )
+
+    col_diag1, col_diag2 = st.columns(2)
+    with col_diag1:
+        with st.container(border=True):
+            st.markdown("**MFE-Analyse der Stop-Trades**")
+            st.caption(
+                "Wie nah kamen Verlierer an einen Gewinn, bevor sie umkehrten? 96% aller "
+                "Stop-Trades bewegten sich zwischenzeitlich ins Plus, aber nur 18.8% erreichten "
+                "je +1R (Median 0.40R). Das ist die Signatur eines echten Fehlausbruchs "
+                "(kurzer Vorstoss, dann volle Umkehr) - kein Fall von \"Stop zu eng\"."
+            )
+    with col_diag2:
+        with st.container(border=True):
+            st.markdown("**Long vs. Short**")
+            st.caption(
+                "Long WR 44.6% / PF 1.176, Short WR 39.2% / PF 1.174 - Shorts haben eine "
+                "niedrigere Win-Rate, aber im Schnitt groessere Gewinner, PF praktisch "
+                "identisch. Kein Hebel: ein reiner Long-only-Filter wuerde nur die Trade-Zahl "
+                "kappen, ohne den Profit Factor zu verbessern."
+            )
+
+    st.markdown("**Getestete Idee 1 (extern recherchiert): Close-Bestaetigung statt Docht-Beruehrung**")
+    st.error(
+        "Etablierte Breakout-Literatur empfiehlt, einen Ausbruch erst zu werten, wenn eine Kerze "
+        "GESCHLOSSEN jenseits des Levels liegt, nicht nur den Docht beruehrt - filtert klassische "
+        "Fehlausbrueche. Ein naiver Test (pruefen, ob die Fuellungs-Kerze selbst auch geschlossen "
+        "bestaetigt) sah zunaechst spektakulaer aus (PF 1.48 bestaetigt vs. 0.92 unbestaetigt) - "
+        "**das war aber ein Lookahead-Fehler**: der Kerzen-Schluss ist im Moment einer Stop-Order-"
+        "Fuellung intrabar noch gar nicht bekannt. Sauber nachgebaut (`engine.py`, neuer Parameter "
+        "`entry_mode=\"close\"` - wartet echt auf eine bestaetigende Kerze, Entry zum Schlusskurs "
+        "dieser Kerze statt am Level) bricht der Effekt komplett zusammen: PF faellt auf **~1.00** "
+        "(IS 0.87, OOS 1.07) - schlechter als die aktuelle Konfiguration. Grund: genau die "
+        "schnellen, sofortigen Fuellungen (siehe unten) sind die besten Trades - Bestaetigung "
+        "abwarten bedeutet, diese exakt zu verpassen und stattdessen zu einem schlechteren Preis "
+        "einzusteigen. **Nicht implementiert - eine wichtige Lektion, keinen Post-hoc-Filter mit "
+        "gleichzeitigem Signal und Fuellung zu verwechseln.**",
+        icon=":material/dangerous:",
+    )
+
+    st.markdown("**Getestete Idee 2 (eigene Diagnose): Fuellverzoegerungs-Filter -- funktioniert, jetzt Standard**")
+    st.success(
+        "Wie lange nach Fenster-Schluss braucht der Ausbruch, um zu fuellen? **Klar monotoner "
+        "Zusammenhang mit der Trade-Qualitaet**: sofortige Fuellung (0 Bars Wartezeit) PF 1.31, "
+        "8+ Bars Wartezeit nur noch PF 1.02 (praktisch Break-even). Kein Lookahead - entspricht "
+        "einer Order, die nach N Bars automatisch verfaellt, vollstaendig in Echtzeit umsetzbar. "
+        "Filter `max_delay_bars=3` (45 Minuten) auf der ADX+Trend-Konfiguration:",
+        icon=":material/check_circle:",
+    )
+    col_delay1, col_delay2 = st.columns(2)
+    with col_delay1:
+        with st.container(border=True):
+            st.markdown("**Kennzahlen: +Fuellverzoegerungs-Filter**")
+            st.caption(
+                "Profit Factor 1.176 → **1.242**, Max Drawdown -9.4% → **-5.0%** (nochmal "
+                "fast halbiert), Calmar-Ratio 0.238 → 0.330. Trades 1027 → 540, CAGR sinkt "
+                "entsprechend (2.25% → 1.65%) - derselbe Trade-off wie bei den anderen beiden "
+                "Filtern. Win-Rate bleibt praktisch unveraendert (43.1% → 43.1%) - dieser Filter "
+                "verbessert die Trade-QUALITAET, nicht die Trefferquote selbst, was zum "
+                "Kernbefund oben passt. Nicht Ausreisser-getrieben (PF ohne besten Trade: 1.21)."
+            )
+    with col_delay2:
+        with st.container(border=True):
+            st.markdown("**Walk-Forward + Jahresbilanz**")
+            st.caption(
+                "Expanding-Window-Walk-Forward: in 7/8 Testjahren (2019-2026) bestaetigt, 7/8 "
+                "mit PF>1.0 (2023 bleibt schwach, aber besser als ungefiltert). **10 von 11 "
+                "Kalenderjahren netto positiv** - mehr als jeder andere hier getestete Filter "
+                "einzeln. Reproduzierbar ueber `filters.py::attach_entry_delay`/"
+                "`apply_entry_delay_filter` + `walkforward.py::run_delay_filter_walk_forward`."
+            )
+    st.warning(
+        "**Kombiniert (ADX + Trend-Bias + Fuellverzoegerung) sinkt die Stichprobe auf 540 Trades** "
+        "- immer noch solide fuer die Gesamtaussage, aber pro Jahr teils nur 15-70 Trades. Wer "
+        "mehr Handelsgelegenheiten priorisiert, kann den Filter im Sidebar-Toggle deaktivieren. "
+        "Standardmaessig **AN**, aus denselben Gruenden wie die anderen beiden Filter: "
+        "monotoner Zusammenhang, IS/OOS konsistent, Walk-Forward bestaetigt, nicht "
+        "Ausreisser-getrieben.",
+        icon=":material/warning:",
+    )
+
 # =============================================================================
 # Tab: Backtest
 # =============================================================================
@@ -476,6 +591,8 @@ with tab_backtest:
         trades = apply_adx_filter(trades, adx_min=15)
     if use_trend_filter:
         trades = apply_trend_bias_filter(trades, load_daily_close(), sma_window=TREND_SMA_WINDOW)
+    if use_delay_filter:
+        trades = apply_entry_delay_filter(trades, max_delay_bars=3)
     df = load_data()
     stats = summarize(trades, df.index)
 
@@ -594,6 +711,8 @@ with tab_live:
         all_trades = apply_adx_filter(all_trades, adx_min=15)
     if use_trend_filter:
         all_trades = apply_trend_bias_filter(all_trades, load_daily_close(), sma_window=TREND_SMA_WINDOW)
+    if use_delay_filter:
+        all_trades = apply_entry_delay_filter(all_trades, max_delay_bars=3)
     trades_window = all_trades[
         (all_trades["entry_time"] >= window_start_ts) & (all_trades["entry_time"] <= window_end_ts)
     ]
@@ -661,6 +780,8 @@ with tab_walkforward:
         eq_trades = apply_adx_filter(eq_trades, adx_min=15)
     if use_trend_filter:
         eq_trades = apply_trend_bias_filter(eq_trades, load_daily_close(), sma_window=TREND_SMA_WINDOW)
+    if use_delay_filter:
+        eq_trades = apply_entry_delay_filter(eq_trades, max_delay_bars=3)
     equity_df = simulate_equity(eq_trades, starting_equity=starting_equity, risk_pct=risk_pct_input)
 
     if not equity_df.empty:

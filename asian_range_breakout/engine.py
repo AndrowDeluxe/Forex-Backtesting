@@ -66,6 +66,7 @@ def simulate_asian_breakout(
     be_trigger_r: float | None = None,
     spread_price: float = 0.30,
     slippage_price: float = 0.10,
+    entry_mode: str = "wick",
 ) -> pd.DataFrame:
     """tp_r_mult: optional take-profit, expressed as a multiple of the stop
     distance (R) - e.g. 1.5 means TP = entry +/- 1.5 x (stop distance). None
@@ -83,7 +84,21 @@ def simulate_asian_breakout(
     ambiguity (BE trigger reached, then price reverses hard within that
     same bar) is resolved conservatively: BE is checked/applied first, so
     such a bar scratches at breakeven rather than banking the wider
-    original stop distance - same convention as checklist_strategy."""
+    original stop distance - same convention as checklist_strategy.
+
+    entry_mode: "wick" (default) = literal source spec, resting Buy-Stop/
+    Sell-Stop fills the instant price touches the level intrabar - NOT part
+    of this parameter's addition, unchanged default behavior. "close" =
+    own addition (2026-08-08, bottleneck-diagnosis follow-up): instead of a
+    resting stop order, wait for a bar to CLOSE beyond the level (not just
+    wick through it) before entering, at that bar's close price - filters
+    same-bar wick-and-reverse fakeouts that a resting-stop fill can't avoid.
+    A naive post-hoc "did the wick-mode fill bar's own close also confirm"
+    check would be lookahead (that close isn't known at the moment a resting
+    order fills intrabar) - "close" mode avoids that by changing the actual
+    trigger/fill rule, not filtering after the fact. Stop distance (sd) stays
+    anchored to the original range width either way, only the entry
+    price/timing changes."""
     required = {"open", "high", "low", "close"}
     missing = required - set(df.columns)
     if missing:
@@ -136,20 +151,28 @@ def simulate_asian_breakout(
         while j < n:
             if minutes[j] >= exit_min:
                 break  # order expired unfilled this window
-            broke_up = high[j] >= r_hi
-            broke_down = low[j] <= r_lo
-            if broke_up and not broke_down:
-                entry_i, direction = j, 1
-                break
-            if broke_down and not broke_up:
-                entry_i, direction = j, -1
-                break
+            if entry_mode == "close":
+                if close[j] > r_hi:
+                    entry_i, direction = j, 1
+                    break
+                if close[j] < r_lo:
+                    entry_i, direction = j, -1
+                    break
+            else:
+                broke_up = high[j] >= r_hi
+                broke_down = low[j] <= r_lo
+                if broke_up and not broke_down:
+                    entry_i, direction = j, 1
+                    break
+                if broke_down and not broke_up:
+                    entry_i, direction = j, -1
+                    break
             j += 1
 
         if entry_i is None:
             continue  # no trade this window - order expired unfilled
 
-        raw_entry = r_hi if direction == 1 else r_lo
+        raw_entry = close[entry_i] if entry_mode == "close" else (r_hi if direction == 1 else r_lo)
         entry_price = raw_entry + half_spread if direction == 1 else raw_entry - half_spread
         sl = raw_entry - sd if direction == 1 else raw_entry + sd
         current_sl = sl

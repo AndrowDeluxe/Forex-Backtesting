@@ -99,6 +99,25 @@ def apply_trend_bias_filter(trades: pd.DataFrame, daily_close: pd.Series, sma_wi
     return out[out["aligned"]]
 
 
+def attach_entry_delay(trades: pd.DataFrame) -> pd.DataFrame:
+    """Attaches `delay_bars`: how many M15 bars passed between the Asian
+    range closing (window_end) and the breakout order actually filling
+    (entry_time). NOT lookahead - equivalent to "cancel the resting order if
+    unfilled after N bars", fully knowable in real time (bottleneck
+    diagnosis, 2026-08-08: fast fills are consistently higher-quality than
+    slow ones - see scripts/research_gold_bottleneck_diagnosis.py)."""
+    out = trades.copy()
+    out["delay_bars"] = ((out["entry_time"] - out["window_end"]).dt.total_seconds() / 900).round().astype(int)
+    return out
+
+
+def apply_entry_delay_filter(trades: pd.DataFrame, max_delay_bars: int = 3) -> pd.DataFrame:
+    """Drops trades whose breakout order took longer than max_delay_bars
+    M15 bars to fill (see attach_entry_delay)."""
+    out = attach_entry_delay(trades)
+    return out[out["delay_bars"] <= max_delay_bars]
+
+
 def apply_vix_filter(
     trades: pd.DataFrame, vix_min: float | None = None, vix_max: float | None = None
 ) -> pd.DataFrame:

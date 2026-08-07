@@ -1,8 +1,8 @@
 market,ticker,scan_date,close,lower_band,entry,sl,tp,tp_price,risk_pct_price,position_size_pct,regime_ok,tradeable,position_size_concentrated_pct,scanned_at
-"S&P 500 (volles Universum, 420 Ticker)",D,2026-08-06,66.8,67.71,66.8,63.14,kein TP (finale Config),0.0,5.48,18.23,True,True,12.5,2026-08-07T13:37:35
-"S&P 500 (volles Universum, 420 Ticker)",FRT,2026-08-06,117.91,119.4,117.91,111.08,kein TP (finale Config),0.0,5.79,17.26,True,True,12.5,2026-08-07T13:37:35
-"S&P 500 (volles Universum, 420 Ticker)",FE,2026-08-06,47.37,47.41,47.37,45.39,kein TP (finale Config),0.0,4.17,20.0,True,True,12.5,2026-08-07T13:37:35
-"S&P 500 (volles Universum, 420 Ticker)",DOC,2026-08-06,21.1,21.13,21.1,19.76,kein TP (finale Config),0.0,6.33,15.8,True,True,12.5,2026-08-07T13:37:35
-"S&P 500 (volles Universum, 420 Ticker)",PPL,2026-08-06,34.62,34.71,34.62,33.13,kein TP (finale Config),0.0,4.3,20.0,True,True,12.5,2026-08-07T13:37:35
-"S&P 500 (volles Universum, 420 Ticker)",REG,2026-08-06,76.96,77.9,76.96,72.65,kein TP (finale Config),0.0,5.61,17.84,True,True,12.5,2026-08-07T13:37:35
-"S&P 500 (volles Universum, 420 Ticker)",SRE,2026-08-06,84.35,84.57,84.35,75.23,kein TP (finale Config),0.0,10.82,9.24,True,True,12.5,2026-08-07T13:37:35
+"S&P 500 (volles Universum, 420 Ticker)",D,2026-08-06,66.8,67.71,66.8,63.14,kein TP (finale Config),0.0,5.48,18.23,True,True,12.5,2026-08-07T14:37:41
+"S&P 500 (volles Universum, 420 Ticker)",FRT,2026-08-06,117.91,119.4,117.91,111.08,kein TP (finale Config),0.0,5.79,17.26,True,True,12.5,2026-08-07T14:37:41
+"S&P 500 (volles Universum, 420 Ticker)",FE,2026-08-06,47.37,47.41,47.37,45.39,kein TP (finale Config),0.0,4.17,20.0,True,True,12.5,2026-08-07T14:37:41
+"S&P 500 (volles Universum, 420 Ticker)",DOC,2026-08-06,21.1,21.13,21.1,19.76,kein TP (finale Config),0.0,6.33,15.8,True,True,12.5,2026-08-07T14:37:41
+"S&P 500 (volles Universum, 420 Ticker)",PPL,2026-08-06,34.62,34.71,34.62,33.13,kein TP (finale Config),0.0,4.3,20.0,True,True,12.5,2026-08-07T14:37:41
+"S&P 500 (volles Universum, 420 Ticker)",REG,2026-08-06,76.96,77.9,76.96,72.65,kein TP (finale Config),0.0,5.61,17.84,True,True,12.5,2026-08-07T14:37:41
+"S&P 500 (volles Universum, 420 Ticker)",SRE,2026-08-06,84.35,84.57,84.35,75.23,kein TP (finale Config),0.0,10.82,9.24,True,True,12.5,2026-08-07T14:37:41

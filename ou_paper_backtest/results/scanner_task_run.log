@@ -337,3 +337,20 @@
 2026-08-07 16:37:50    9ba43bc..853f150  main -> main
 2026-08-07 16:37:50 Commit + Push erfolgreich.
 2026-08-07 16:37:50 === Scanner-Task beendet ===
+2026-08-07 17:35:04 === Scanner-Task gestartet ===
+2026-08-07 17:37:43 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 147 OU-selected tickers...
+2026-08-07 17:37:43 [sp500] 7 raw signal(s) as of 2026-08-06, regime_ok=True
+2026-08-07 17:37:43 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 16 OU-selected tickers...
+2026-08-07 17:37:43 [nasdaq100] 0 raw signal(s) as of 2026-08-06, regime_ok=True
+2026-08-07 17:37:43 [dax] DAX (alle 40 Ticker): scanning 13 OU-selected tickers...
+2026-08-07 17:37:43 [dax] 0 raw signal(s) as of 2026-08-06, regime_ok=True
+2026-08-07 17:37:43 
+2026-08-07 17:37:43 Saved 7 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-08-07T17:37:43)
+2026-08-07 17:37:43                                 market ticker  scan_date  close  lower_band  entry     sl     tp  tp_price  risk_pct_price  position_size_pct  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
+2026-08-07 17:37:43 S&P 500 (volles Universum, 420 Ticker)      D 2026-08-06  66.80       67.71  66.80  63.14  72.30     72.30            5.48              18.23       True       True                            12.5 2026-08-07T17:37:43
+2026-08-07 17:37:43 S&P 500 (volles Universum, 420 Ticker)    FRT 2026-08-06 117.91      119.40 117.91 111.08 128.16    128.16            5.79              17.26       True       True                            12.5 2026-08-07T17:37:43
+2026-08-07 17:37:43 S&P 500 (volles Universum, 420 Ticker)     FE 2026-08-06  47.37       47.41  47.37  45.39  50.34     50.34            4.17              20.00       True       True                            12.5 2026-08-07T17:37:43
+2026-08-07 17:37:43 S&P 500 (volles Universum, 420 Ticker)    DOC 2026-08-06  21.10       21.13  21.10  19.76  23.10     23.10            6.33              15.80       True       True                            12.5 2026-08-07T17:37:43
+2026-08-07 17:37:43 S&P 500 (volles Universum, 420 Ticker)    PPL 2026-08-06  34.62       34.71  34.62  33.13  36.85     36.85            4.30              20.00       True       True                            12.5 2026-08-07T17:37:43
+2026-08-07 17:37:43 S&P 500 (volles Universum, 420 Ticker)    REG 2026-08-06  76.96       77.90  76.96  72.65  83.43     83.43            5.61              17.84       True       True                            12.5 2026-08-07T17:37:43
+2026-08-07 17:37:43 S&P 500 (volles Universum, 420 Ticker)    SRE 2026-08-06  84.35       84.57  84.35  75.23  98.04     98.04           10.82               9.24       True       True                            12.5 2026-08-07T17:37:43

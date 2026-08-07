@@ -229,22 +229,36 @@ st.markdown(
     """
 | Kombination | Tage bis 10%-Ziel | Sharpe | Calmar | MDD | Schlechtester Tag |
 |---|---|---|---|---|---|
-| Baseline (SL 3,0, kein TP, 0,25%/2,5%) | 579 | 1.21 | 1.74 | -3,5% | -0,97% |
-| SL 2,0, kein TP, 0,25%/2,5% | 377 | 1.26 | 1.89 | -5,0% | -1,41% |
-| SL 2,0, kein TP, 0,35%/3% | 372 | 1.07 | 1.69 | -6,0% | -1,98% |
-| **TP 1:1,5, 0,25%/5% (final)** | **369** | **1.54** | **2.03** | -6,5% | **-1,80%** |
+| Baseline (SL 3,0, kein TP, 0,25%/2,5%, BE 0,25R) | 579 | 1.21 | 1.74 | -3,5% | -0,97% |
+| SL 2,0, kein TP, 0,25%/2,5%, BE 0,25R | 377 | 1.26 | 1.89 | -5,0% | -1,41% |
+| SL 2,0, kein TP, 0,35%/3%, BE 0,25R | 372 | 1.07 | 1.69 | -6,0% | -1,98% |
+| TP 1:1,5, 0,25%/5%, BE 0,25R | 369 | 1.54 | 2.03 | -6,5% | -1,80% |
+| **TP 1:1,5, 0,25%/5%, BE 0,35R (final)** | **361** | **1.64** | **2.17** | -6,6% | **-1,91%** |
 """
+)
+
+st.markdown(
+    "**Letzter Schritt -- BE-Trigger nachgesweept:** `be_trigger_r` war durch alle "
+    "bisherigen Runden bei 0,25R fixiert (Wert aus einem frueheren Fund bei ANDEREN "
+    "Risiko-Einstellungen, nie selbst neu geprueft). Sweep von 0 bis 1,0R auf der "
+    "TP/Risk-Kombination oben zeigt: **0,35R schlaegt 0,25R auf jeder Metrik** "
+    "gleichzeitig (Sharpe, Calmar, Geschwindigkeit) bei aehnlichem Sicherheitsabstand."
 )
 
 st.info(
     "**Umgesetzt (2026-08-07):** `ou_paper_backtest/scanner.py` berechnet jetzt ein "
-    "echtes 1:1,5-TP statt \"kein TP\" (SL bleibt 3,0-Sigma, unveraendert). Konto 2 "
-    "im Live-Bot laeuft auf `risk_pct=0.25%`, `max_total_risk_pct=5%`. Nur auf S&amp;P "
-    "getestet (Konto 2 nutzt ohnehin nur die interne S&amp;P-Quelle) -- **keine "
+    "echtes 1:1,5-TP statt \"kein TP\" -- **nur fuer S&amp;P** (SL bleibt 3,0-Sigma, "
+    "unveraendert; Nasdaq-100/DAX bleiben bewusst auf \"kein TP\", da "
+    "`internal_scanner.py` keinen Markt-Filter hat und ein Nasdaq/DAX-Signal sonst "
+    "ungeprueft dieselbe TP-Formel bekaeme). Konto 2 im Live-Bot laeuft auf "
+    "`risk_pct=0.25%`, `max_total_risk_pct=5%`, `be_trigger_r=0.35`. **Keine "
     "Aenderung an der allgemeinen \"finalen gesperrten Config\"** auf der "
     "'OU-Modell (finale Konfiguration)'-Seite, die weiterhin markt-uebergreifend "
     "(S&amp;P/Nasdaq/DAX) auf 2018-2024 + vollem OOS validiert ist und kein TP nutzt -- "
-    "diese Kombination ist eine gezielte Challenge-Optimierung, kein Ersatz fuer "
-    "den allgemeinen Forschungs-Befund.",
+    "diese Kombination ist eine gezielte, S&amp;P-only Challenge-Optimierung, kein "
+    "Ersatz fuer den allgemeinen Forschungs-Befund. Die S&amp;P-Zeile in der "
+    "Performance-Tabelle auf der Scanner-Seite wurde mit dieser neuen Config auf "
+    "2018-2024 neu berechnet (MDD -37,6% -> -14,8%, deutlich kleinere Positionen, "
+    "dadurch auch geringere absolute Rendite).",
     icon=":material/rocket_launch:",
 )

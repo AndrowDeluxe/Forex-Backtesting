@@ -82,13 +82,14 @@ st.caption(
 
 st.markdown(
     "<div class='sc-alert' style='border-color:" + C_GREEN + ";'>&#128274; <b>Risk-Management + "
-    "TP final aktualisiert (2026-08-07):</b> nach einem vollen Kreuzprodukt-Test (13 Exit-"
-    "Varianten x 12 Risk-Profile, 156 Kombinationen) gegen eine echte Funded-Challenge-Regel "
-    "(max. 3% Tagesverlust, +10% Ziel) auf dem 2025-heute-S&amp;P-Holdout gewinnt "
-    "<b>festes 1:1,5-TP + 0,25% Risiko/Trade + 5% aggregiertes Risiko</b>: 10%-Ziel in "
-    "<b>369 statt 579 Tagen</b>, Sharpe 1.54 (statt 1.21 ohne TP), weiterhin komfortabler "
-    "Sicherheitsabstand zur 3%-Regel (schlechtester Tag -1,80%). Scanner-Signale zeigen jetzt "
-    "ein echtes TP statt \"kein TP\"; der Live-Bot (Konto 2) laeuft seit 2026-08-07 auf dieser "
+    "TP + Breakeven final aktualisiert (2026-08-07):</b> nach einem vollen Kreuzprodukt-Test "
+    "(13 Exit-Varianten x 12 Risk-Profile, 156 Kombinationen) plus einem Breakeven-Nachsweep "
+    "gegen eine echte Funded-Challenge-Regel (max. 3% Tagesverlust, +10% Ziel) auf dem "
+    "2025-heute-S&amp;P-Holdout gewinnt <b>festes 1:1,5-TP + 0,25% Risiko/Trade + 5% "
+    "aggregiertes Risiko + 0,35R-Breakeven</b>: 10%-Ziel in <b>361 statt 579 Tagen</b>, "
+    "Sharpe 1.64 (statt 1.21 ohne TP), weiterhin komfortabler Sicherheitsabstand zur 3%-Regel "
+    "(schlechtester Tag -1,91%). Nur fuer S&amp;P validiert -- Nasdaq-100/DAX bleiben auf der "
+    "urspruenglichen Config (kein TP). Der Live-Bot (Konto 2) laeuft seit 2026-08-07 auf dieser "
     "Einstellung. Volle Herleitung auf der <i>Risk Management</i>-Seite.</div>",
     unsafe_allow_html=True,
 )
@@ -144,10 +145,16 @@ if SUMMARY_PATH.exists():
     st.markdown(summary_table_html, unsafe_allow_html=True)
     st.markdown(
         "<div class='sc-alert'>&#9888; Diese Kennzahlen sind 2018-2024, das Fenster gegen das "
-        "SL/TP/Breakeven/Regimefilter optimiert wurden. Der echte Out-of-Sample-Test "
-        "(2025-heute) auf <i>Fertige Strategien</i> zeigt fuer S&amp;P inzwischen sogar bessere "
-        "Werte als hier (Sharpe 1.59 statt 0.86), fuer Nasdaq-100/DAX aber deutlich schwaechere "
-        "-- vor dem Handeln dort nachlesen, nicht nur auf diese Tabelle verlassen.</div>",
+        "SL/TP/Breakeven/Regimefilter optimiert wurden. <b>Die S&amp;P-Zeile spiegelt seit "
+        "2026-08-07 die neue Challenge-Config wider</b> (festes 1:1,5-TP, 0,25%/5% Risiko, "
+        "0,35R-Breakeven) -- deutlich kleinerer Max Drawdown (-14,8% statt vorher -37,6%), "
+        "aber auch kleinere Positionen und dadurch geringere absolute Rendite. Nasdaq-100 und "
+        "DAX zeigen weiterhin die urspruengliche Config (kein TP), da die neue Kombination nur "
+        "fuer S&amp;P getestet wurde. Der echte 2025-heute-Out-of-Sample-Test auf "
+        "<i>Fertige Strategien</i> nutzt weiterhin die ALTE (kein-TP-)Config fuer alle drei "
+        "Maerkte -- die Zahlen dort sind also nicht direkt mit der S&amp;P-Zeile hier "
+        "vergleichbar. Volle Herleitung der neuen Config auf der "
+        "<i>Risk Management</i>-Seite.</div>",
         unsafe_allow_html=True,
     )
 
@@ -226,18 +233,21 @@ FUNDED_MAX_TOTAL_RISK_PCT = 5.0  # aggregate cap across all concurrent positions
 FUNDED_MAX_POSITIONS = int(FUNDED_MAX_TOTAL_RISK_PCT / FUNDED_RISK_PCT)
 FUNDED_TP_RR = 1.5  # fixed take-profit, multiple of the SL distance
 
+FUNDED_BE_TRIGGER_R = 0.35  # breakeven-move trigger, multiple of the SL distance
+
 st.markdown(
     "<div class='sc-caveats' style='margin-top:0.3rem;'><b>Risikomanagement -- Funded Challenge "
     "(OOS-validiert):</b> "
     f"{FUNDED_RISK_PCT}% Risiko pro Trade, {FUNDED_MAX_TOTAL_RISK_PCT:.0f}% aggregiertes "
-    f"Risiko-Limit, festes 1:{FUNDED_TP_RR} Kursziel -- das entspricht max. {FUNDED_MAX_POSITIONS} "
-    "gleichzeitigen Positionen bei vollem Risiko/Trade. Diese Kombination schnitt im vollen "
-    "Kreuzprodukt-Test (156 Exit x Risk-Kombinationen) gegen eine reale Funded-Challenge-Regel "
-    "(max. 3% Tagesverlust, +10% Ziel) am besten ab: 10%-Ziel in 369 statt 579 Tagen, Sharpe "
-    "1.54, weiterhin komfortabler Sicherheitsabstand (schlechtester Tag -1,80%). Seit 2026-08-07 "
-    "auch die Live-Bot-Einstellung auf Konto 2. Sortiert nach engstem SL-Abstand zuerst (mehr "
-    f"Positionsgroesse bei gleichem Risiko); bei mehr als {FUNDED_MAX_POSITIONS} Setups werden "
-    "die uebrigen hier nicht mehr beruecksichtigt.</div>",
+    f"Risiko-Limit, festes 1:{FUNDED_TP_RR} Kursziel, {FUNDED_BE_TRIGGER_R}R-Breakeven -- das "
+    f"entspricht max. {FUNDED_MAX_POSITIONS} gleichzeitigen Positionen bei vollem Risiko/Trade. "
+    "Diese Kombination schnitt im vollen Kreuzprodukt-Test (156 Exit x Risk-Kombinationen) plus "
+    "Breakeven-Nachsweep gegen eine reale Funded-Challenge-Regel (max. 3% Tagesverlust, +10% "
+    "Ziel) am besten ab: 10%-Ziel in 361 statt 579 Tagen, Sharpe 1.64, weiterhin komfortabler "
+    "Sicherheitsabstand (schlechtester Tag -1,91%). Seit 2026-08-07 auch die Live-Bot-"
+    "Einstellung auf Konto 2 -- nur fuer S&amp;P validiert. Sortiert nach engstem SL-Abstand "
+    f"zuerst (mehr Positionsgroesse bei gleichem Risiko); bei mehr als {FUNDED_MAX_POSITIONS} "
+    "Setups werden die uebrigen hier nicht mehr beruecksichtigt.</div>",
     unsafe_allow_html=True,
 )
 
@@ -283,6 +293,10 @@ for _, r in signals.sort_values(["market", "ticker"]).iterrows():
     )
     conc = r.get("position_size_concentrated_pct", None)
     conc_str = f"{conc:.2f}%" if pd.notna(conc) else "--"
+    try:
+        tp_str = f"<span style='color:{C_GREEN};'>{float(r['tp']):.2f}</span>"
+    except (ValueError, TypeError):
+        tp_str = f"<span class='sc-mono-muted'>{r['tp']}</span>"
     rows_html.append(
         f"<tr>"
         f"<td><span class='sc-badge sc-badge-market'>{r['market'].split(' ')[0]}</span></td>"
@@ -290,7 +304,7 @@ for _, r in signals.sort_values(["market", "ticker"]).iterrows():
         f"<td>{r['close']:.2f}</td>"
         f"<td style='color:{C_ORANGE};'>{r['entry']:.2f}</td>"
         f"<td style='color:{C_RED};'>{r['sl']:.2f}</td>"
-        f"<td style='color:{C_GREEN};'>{float(r['tp']):.2f}</td>"
+        f"<td>{tp_str}</td>"
         f"<td>{r['risk_pct_price']:.2f}%</td>"
         f"<td>{r['position_size_pct']:.2f}%</td>"
         f"<td>{conc_str}</td>"

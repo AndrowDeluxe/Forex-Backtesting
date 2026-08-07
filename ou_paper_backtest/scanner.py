@@ -84,15 +84,16 @@ def scan_market(market_key: str) -> pd.DataFrame:
             stop_distance = 3.0 * std_t  # stop_sigma from the final locked config
             sl_price = close_t - stop_distance
             # Fixed 1:1.5 TP -- challenge-optimization finding (2026-08-07, S&P-only,
-            # 2025+ OOS, at the tighter risk_pct=0.25%/max_total_risk_pct=5% sizing now
-            # live on Konto 2): beats the earlier "no TP" locked-config result on speed
-            # to a funded-challenge profit target AND Sharpe/Calmar, without giving up
-            # safety margin on the 3%-max-daily-loss rule. Distinct from the general
-            # "final locked config" shown in the performance-summary table above this
-            # scanner's live signals (that table is still the original no-TP/2018-2024
-            # numbers, evaluated market-wide, not re-run with this TP) -- see
-            # app_pages/risk_management.py for the full derivation.
-            tp_price = close_t + 1.5 * stop_distance
+            # 2025+ OOS, at the tighter risk_pct=0.25%/max_total_risk_pct=5%/be=0.35R
+            # sizing now live on Konto 2): beats the earlier "no TP" locked-config result
+            # on speed to a funded-challenge profit target AND Sharpe/Calmar, without
+            # giving up safety margin on the 3%-max-daily-loss rule. ONLY validated on
+            # S&P -- deliberately NOT applied to nasdaq100/dax (which stay on the
+            # original no-TP behavior) since internal_scanner.py has no per-market
+            # filter and would otherwise pass an untested TP through to whichever
+            # account reads this CSV the moment a Nasdaq/DAX signal ever appears.
+            # See app_pages/risk_management.py for the full derivation.
+            tp_price = (close_t + 1.5 * stop_distance) if market_key == "sp500" else None
             risk_pct_price = stop_distance / close_t * 100  # SL distance as % of entry (Kurs->Stop)
             # position size: same rule as portfolio.simulate_bracket_portfolio -- risk
             # RISK_PCT_PER_TRADE of equity against the stop distance, capped at
@@ -104,8 +105,8 @@ def scan_market(market_key: str) -> pd.DataFrame:
                 "market": label, "ticker": t, "scan_date": last_date.date().isoformat(),
                 "close": round(close_t, 2), "lower_band": round(lower, 2),
                 "entry": round(close_t, 2), "sl": round(sl_price, 2),
-                "tp": round(tp_price, 2),
-                "tp_price": round(tp_price, 2),
+                "tp": round(tp_price, 2) if tp_price is not None else "kein TP (finale Config)",
+                "tp_price": round(tp_price, 2) if tp_price is not None else 0.0,
                 "risk_pct_price": round(risk_pct_price, 2),
                 "position_size_pct": round(position_pct, 2),
                 "regime_ok": regime_ok,

@@ -80,6 +80,20 @@ st.caption(
     "finale gesperrte Konfiguration -- kein Tuning hier."
 )
 
+st.markdown(
+    "<div class='sc-alert' style='border-color:" + C_GREEN + ";'>&#128274; <b>Risk-Management "
+    "aktualisiert (2026-08-07):</b> ein echter 2025-heute-Out-of-Sample-Test von 7 Risiko-"
+    "Profilen gegen eine reale Funded-Challenge-Regel (max. 3% Tagesverlust, +10% Ziel) "
+    "bestaetigt <b>0,25% Risiko/Trade + 2,5% aggregiertes Risiko</b> als beste getestete "
+    "Kombination (Sharpe 1.21, Calmar 1.74, Max Drawdown -3.5%) -- besser als hoehere "
+    "Einzel-Trade-Risiken bei GLEICHEM Gesamtdeckel, und besser als eine S&amp;P+DAX-"
+    "Diversifikation. Der Funded-Challenge-Block unten wurde entsprechend aktualisiert; "
+    "der Live-Bot (Konto 2) laeuft seit 2026-08-07 ebenfalls auf dieser Einstellung. "
+    "Volle Herleitung auf der <i>Risk Management</i>-Seite.</div>",
+    unsafe_allow_html=True,
+)
+st.page_link("app_pages/risk_management.py", label="Zur Risk-Management-Seite", icon=":material/shield:")
+
 caveat_html = (
     "Zeigt, welche OU-selektierten Ticker beim letzten lokalen Scan unter ihrem unteren "
     "Bollinger-Band lagen UND der marktweite EMA200-Regimefilter offen war -- also unter "
@@ -201,20 +215,28 @@ tiles_html = "<div class='sc-tile-row'>" + "".join(
 ) + "</div>"
 st.markdown(tiles_html, unsafe_allow_html=True)
 
-# --- Funded-Challenge risk overview: fixed 0.25% risk/trade, hard cap 8 concurrent
-# positions (typical prop-firm-style rule, e.g. FTMO-style challenges -- much more
-# conservative than the backtest's own 1% risk / 20% notional / 15% total-risk rules).
+# --- Funded-Challenge risk overview: 0.25% risk/trade + 2.5% aggregate risk cap --
+# OOS-validated (2026-08-07, genuine 2025+ holdout against a real funded-challenge
+# rule set) as the best of 7 tested risk_pct/max_total_risk_pct combinations, see
+# app_pages/risk_management.py. max_total_risk_pct=2.5% at risk_pct=0.25%/trade
+# implies at most 10 full-risk positions before the aggregate cap binds (2.5/0.25) --
+# replaces the earlier ad-hoc "8 positions" heuristic, which wasn't derived from any
+# backtest and wasn't consistent with the risk_pct chosen alongside it.
 FUNDED_RISK_PCT = 0.25  # percent of equity risked per trade
-FUNDED_MAX_POSITIONS = 8
+FUNDED_MAX_TOTAL_RISK_PCT = 2.5  # aggregate cap across all concurrent positions
+FUNDED_MAX_POSITIONS = int(FUNDED_MAX_TOTAL_RISK_PCT / FUNDED_RISK_PCT)
 
 st.markdown(
-    "<div class='sc-caveats' style='margin-top:0.3rem;'><b>Risikomanagement -- Funded Challenge:</b> "
-    f"max. {FUNDED_MAX_POSITIONS} gleichzeitige Positionen, {FUNDED_RISK_PCT}% Risiko pro Trade "
-    "(deutlich konservativer als das 1%-Risk-based-Sizing aus dem Backtest). Bei "
-    f"{FUNDED_MAX_POSITIONS} vollen Positionen betraegt das gesamte offene Risiko "
-    f"{FUNDED_MAX_POSITIONS * FUNDED_RISK_PCT:.2f}% der Kontoequity. Sortiert nach engstem "
-    "SL-Abstand zuerst (mehr Positionsgroesse bei gleichem Risiko); bei mehr als "
-    f"{FUNDED_MAX_POSITIONS} Setups werden die uebrigen hier nicht mehr beruecksichtigt.</div>",
+    "<div class='sc-caveats' style='margin-top:0.3rem;'><b>Risikomanagement -- Funded Challenge "
+    "(OOS-validiert):</b> "
+    f"{FUNDED_RISK_PCT}% Risiko pro Trade, {FUNDED_MAX_TOTAL_RISK_PCT}% aggregiertes Risiko-Limit "
+    f"ueber alle offenen Positionen -- das entspricht max. {FUNDED_MAX_POSITIONS} gleichzeitigen "
+    "Positionen bei vollem Risiko/Trade. Diese Kombination schnitt im 2025-heute-Holdout gegen "
+    "eine reale Funded-Challenge-Regel (max. 3% Tagesverlust, +10% Ziel) am besten von 7 "
+    "getesteten Profilen ab (Sharpe 1.21, Calmar 1.74, MDD -3.5%) und ist seit 2026-08-07 auch "
+    "die Live-Bot-Einstellung auf Konto 2. Sortiert nach engstem SL-Abstand zuerst (mehr "
+    f"Positionsgroesse bei gleichem Risiko); bei mehr als {FUNDED_MAX_POSITIONS} Setups werden "
+    "die uebrigen hier nicht mehr beruecksichtigt.</div>",
     unsafe_allow_html=True,
 )
 

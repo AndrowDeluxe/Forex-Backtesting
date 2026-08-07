@@ -580,6 +580,21 @@ with tab_components:
         icon=":material/warning:",
     )
 
+    with st.expander("Getestet, 2026-08-08: Momentum-Thrust-Filter -- kein robustes Signal, nicht implementiert"):
+        st.markdown(
+            "Idee: ATR-normalisierte Kursbewegung der letzten N Bars VOR Fenster-Schluss "
+            "(\"war schon echter Schwung im Markt, bevor die Session ueberhaupt schloss\") - "
+            "kein Lookahead, anders konstruiert als ADX, Korrelation dazu nur 0.075 (echte "
+            "Zusatzinformation). Zwei Varianten getestet "
+            "(`scripts/research_gold_momentum_thrust_filter.py`): **Richtungs-Alignment** "
+            "(Long nach Aufwaerts-Schwung, Short nach Abwaerts-Schwung) und **reine Staerke** "
+            "(groesster Schwung unabhaengig von Richtung). **Beide kippen das Vorzeichen je "
+            "nach Lookback-Fenster** (4/8/16/24/48 Bars) - bei Alignment schlaegt "
+            "Gegen-Trend ab Fenster=8 sogar den Trend, bei Staerke dreht es bei Fenster=16 "
+            "komplett um. Dasselbe Rauschmuster wie beim DXY- und VIX-Aenderungsraten-Test. "
+            "**Nicht implementiert.**"
+        )
+
 # =============================================================================
 # Tab: Backtest
 # =============================================================================

@@ -4,7 +4,10 @@ orb_strategy.py::apply_orb_filters. Dropping a trade here is equivalent to
 never having entered it - each Asian-range window is an independent event,
 so filtering doesn't need to re-run the simulation."""
 
+import numpy as np
 import pandas as pd
+
+from strategy.indicators import compute_atr
 
 
 def apply_adx_filter(
@@ -116,6 +119,51 @@ def apply_entry_delay_filter(trades: pd.DataFrame, max_delay_bars: int = 3) -> p
     M15 bars to fill (see attach_entry_delay)."""
     out = attach_entry_delay(trades)
     return out[out["delay_bars"] <= max_delay_bars]
+
+
+def attach_pre_window_momentum(
+    trades: pd.DataFrame, df: pd.DataFrame, lookback_bars: int = 8, atr_n: int = 14
+) -> pd.DataFrame:
+    """Attaches `momentum_r`: Gold's own ATR-normalized net directional move
+    over the `lookback_bars` M15 bars immediately BEFORE the Asian range
+    closes (window_end) - "was there already real directional thrust heading
+    into the session, or was price just drifting/chopping". Fully known at
+    window_end, no lookahead (unlike a same-bar breakout-strength measure,
+    which isn't knowable until the fill bar closes - see engine.py's
+    entry_mode="close" dead end). Different timescale/signal than both the
+    SMA200 trend-bias filter (multi-month) and ADX-at-entry (smoothed trend
+    strength, measured the same moment but a different construction) -
+    momentum_r is a raw, short-horizon impulse measure.
+    `momentum_r` sign follows price direction (positive = up-move); use
+    together with the trade's own `direction` to test alignment, or take
+    `.abs()` to test raw thrust magnitude regardless of direction."""
+    atr = compute_atr(df, n=atr_n)
+    close = df["close"]
+    pos = df.index.get_indexer(trades["window_end"])
+    valid = pos >= lookback_bars  # need lookback_bars of history before window_end
+
+    momentum = np.full(len(trades), np.nan)
+    atr_at_window = np.full(len(trades), np.nan)
+    valid_pos = pos[valid]
+    momentum[valid] = close.to_numpy()[valid_pos] - close.to_numpy()[valid_pos - lookback_bars]
+    atr_at_window[valid] = atr.to_numpy()[valid_pos]
+
+    out = trades.copy()
+    with np.errstate(invalid="ignore", divide="ignore"):
+        out["momentum_r"] = momentum / atr_at_window
+    return out.dropna(subset=["momentum_r"])
+
+
+def apply_momentum_alignment_filter(
+    trades: pd.DataFrame, df: pd.DataFrame, lookback_bars: int = 8, atr_n: int = 14
+) -> pd.DataFrame:
+    """Keeps only trades where the breakout direction matches the pre-window
+    momentum direction (long after an up-thrust into the session, short
+    after a down-thrust) - see attach_pre_window_momentum."""
+    out = attach_pre_window_momentum(trades, df, lookback_bars=lookback_bars, atr_n=atr_n)
+    is_long = out["direction"] == "long"
+    aligned = (is_long & (out["momentum_r"] > 0)) | (~is_long & (out["momentum_r"] < 0))
+    return out[aligned]
 
 
 def apply_vix_filter(

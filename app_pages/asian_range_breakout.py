@@ -21,21 +21,29 @@ import streamlit as st
 from asian_range_breakout.chart import build_entry_chart
 from asian_range_breakout.data import fetch_gold_m15, fetch_gold_m15_live
 from asian_range_breakout.engine import get_latest_setup, simulate_asian_breakout
-from asian_range_breakout.filters import apply_adx_filter
+from asian_range_breakout.filters import apply_adx_filter, apply_trend_bias_filter, attach_trend_bias
 from asian_range_breakout.montecarlo import run_monte_carlo, summarize_monte_carlo
 from asian_range_breakout.sizing import simulate_equity
-from asian_range_breakout.walkforward import run_walk_forward
+from asian_range_breakout.walkforward import run_trend_bias_walk_forward, run_walk_forward
 from strategy.metrics import summarize, trade_stats
 
 st.set_page_config(page_title="Gold Asian-Range Breakout", page_icon=":material/wb_twilight:", layout="wide")
 
 START, END = "2016-01-01", "2026-07-29"
 SPLIT = "2021-01-01"
+TREND_SMA_WINDOW = 200
 
 
 @st.cache_data(ttl="6h", show_spinner="Lade Gold M15-Daten (Dukascopy, ~10 Jahre)...")
 def load_data() -> pd.DataFrame:
     return fetch_gold_m15(START, END)
+
+
+@st.cache_data(ttl="6h", show_spinner="Berechne Gold-Tagesschlusskurse...")
+def load_daily_close() -> pd.Series:
+    """Fuer den Trend-Bias-Filter (siehe Strategiebestandteile) - abgeleitet
+    aus derselben Dukascopy-M15-Reihe, keine zusaetzliche Datenquelle."""
+    return load_data()["close"].tz_localize(None).resample("D").last().dropna()
 
 
 @st.cache_data(ttl="15m", show_spinner="Lade aktuelle Gold-Futures-Daten (yfinance)...")
@@ -93,6 +101,15 @@ with st.sidebar:
         help="Eigener Test (2026-08-04): ADX<15-Trades enden zu 59% im Stop (vs. 47% sonst), "
         "in beiden Zeitraum-Haelften konsistent. Standardmaessig AN, da es die robusteste "
         "gefundene Verbesserung ist - siehe Strategiebestandteile.",
+    )
+    use_trend_filter = st.toggle(
+        "Trend-Bias-Filter aktivieren (nur mit Gold-SMA200 handeln)", value=True,
+        help="Aus dem 151-Trading-Strategies-Paper abgeleitet (Time-Series-Momentum, "
+        "2026-08-08): nur Breakouts IN Richtung von Golds eigenem Tages-Trend (Long ueber "
+        "SMA200, Short darunter). Robust ueber 4 SMA-Fenster, IS/OOS, Walk-Forward (8/8 Jahre "
+        "bestaetigt, 7/8 mit PF>1.0) und nicht Ausreisser-getrieben - siehe Strategiebestandteile. "
+        "Halbiert die Trade-Zahl (weniger absolute Rendite), verbessert aber Profit Factor und "
+        "senkt den Max Drawdown spuerbar.",
     )
     spread_price = st.slider(
         "Spread (USD, Round-Trip)", 0.0, 1.50, 0.30, 0.05,
@@ -354,6 +371,100 @@ with tab_components:
                 "beim VIX-Level-Test auftrat. **Nicht implementiert.**"
             )
 
+    st.markdown("### Trend-Bias-Filter (Time-Series Momentum, Kap. 10.4) -- getestet, jetzt Standard (2026-08-08)")
+    st.success(
+        "**Erster wirklich robuster Fund aus dem 151-Strategies-Paper für diese Strategie.** "
+        "These: Breakouts IN Richtung von Golds eigenem Tages-Trend (Long über SMA200 des "
+        "Vortages-Schlusskurses, Short darunter) sollten besser halten als Breakouts gegen den "
+        "Trend - dieselbe \"trade with the trend\"-Logik, die dem Paper-Kapitel zur Futures-"
+        "Trendfolge zugrunde liegt, hier als Zusatzfilter statt als eigene Strategie. "
+        "**Bestätigt sich über jeden getesteten Blickwinkel:**",
+        icon=":material/check_circle:",
+    )
+
+    daily_close_writeup = load_daily_close()
+    trend_base_trades = apply_adx_filter(load_trades(1.0, None, None, 0.30, 0.10), adx_min=15)
+    trend_tagged = attach_trend_bias(trend_base_trades, daily_close_writeup, sma_window=TREND_SMA_WINDOW)
+
+    col_tsweep, col_tmetrics = st.columns(2)
+    with col_tsweep:
+        with st.container(border=True):
+            st.markdown("**Fenster-Sweep (SMA 50/100/150/200), volle Historie**")
+            st.caption(
+                "Aligned schlägt Counter-Trend bei **jedem** getesteten Fenster - PF-Abstand wird "
+                "mit längerem Fenster sogar größer (SMA50: 1.13 vs. 1.10 → SMA200: 1.18 vs. 1.06). "
+                "SMA200 gewählt, weil hier IS UND OOS beide klar bestätigen (bei SMA100 kippt OOS "
+                "knapp: 1.15 vs. 1.19 - SMA200 ist der robustere Schnitt)."
+            )
+            st.caption(
+                f"IS ({START}-{SPLIT}): Aligned PF 1.093 / WR 42.4% vs. Counter PF **0.960** / WR 37.2% "
+                f"-- Counter-Trend liegt sogar unter Break-even.  \n"
+                f"OOS ({SPLIT}-{END}): Aligned PF 1.220 / WR 43.7% vs. Counter PF 1.123 / WR 38.2%."
+            )
+    with col_tmetrics:
+        with st.container(border=True):
+            st.markdown("**Volle Kennzahlen: ADX-only vs. ADX+Trend-Aligned**")
+            st.caption(
+                "Profit Factor 1.122 → **1.176**, Sharpe 0.498 → **0.513**, Max Drawdown **-14.9% → "
+                "-9.4%** (deutliche Verbesserung), aber Trades 2190 → 1027 und CAGR 3.48% → 2.25% "
+                "(weniger absolute Rendite bei weniger Gelegenheiten - der übliche Trade-off eines "
+                "schärferen Filters, wie schon beim ADX-Filter selbst). **Nicht Ausreißer-getrieben**: "
+                "PF ohne den einzigen besten Trade (+3.07%) fällt nur von 1.176 auf 1.160."
+            )
+
+    st.markdown("**Walk-Forward-Validierung (Expanding-Window, gleiche Methodik wie beim ADX-Filter)**")
+    trend_wf_table = run_trend_bias_walk_forward(trend_tagged, start_test_year=2019, end_test_year=2026)
+    st.dataframe(
+        trend_wf_table,
+        hide_index=True,
+        column_config={
+            "test_year": st.column_config.NumberColumn("Testjahr"),
+            "train_n_trades": st.column_config.NumberColumn("Trainings-Trades"),
+            "filter_confirmed_on_train": st.column_config.CheckboxColumn("Filter bestätigt (nur Training)"),
+            "n_trades_unfiltered": st.column_config.NumberColumn("Trades ungefiltert"),
+            "pf_unfiltered": st.column_config.NumberColumn("PF ungefiltert", format="%.3f"),
+            "n_trades_walkforward": st.column_config.NumberColumn("Trades Walk-Forward"),
+            "pf_walkforward": st.column_config.NumberColumn("PF Walk-Forward", format="%.3f"),
+            "win_rate_walkforward": st.column_config.NumberColumn("Win-Rate WF", format="%.1f%%"),
+        },
+    )
+    n_confirmed_trend = int(trend_wf_table["filter_confirmed_on_train"].sum())
+    n_positive_trend = int((trend_wf_table["pf_walkforward"] > 1.0).sum())
+    st.info(
+        f"Filter in **{n_confirmed_trend}/{len(trend_wf_table)}** Testjahren bereits aus den "
+        f"Trainingsdaten allein bestätigt (ab 2019, kein Blick auf die Zukunft), "
+        f"**{n_positive_trend}/{len(trend_wf_table)}** Testjahre mit PF>1.0 unter der Walk-Forward-"
+        "Regel. Einziger Ausreißer: 2023 (PF 0.71) - passt zur bereits beim ADX-Filter "
+        "dokumentierten echten OOS-Delle in diesem Jahr, kein Artefakt dieses neuen Filters.",
+        icon=":material/insights:",
+    )
+    st.warning(
+        "**Kombiniert mit ADX halbiert sich die Trade-Zahl gegenüber der reinen ADX-Konfiguration** "
+        "(2190 → 1027) - statistisch immer noch eine solide Stichprobe, aber der Rückgang bei CAGR "
+        "ist real, nicht nur ein Nebeneffekt. Wer absolute Rendite über Drawdown-Kontrolle "
+        "priorisiert, kann den Filter im Sidebar-Toggle deaktivieren. Standardmäßig **AN**, aus "
+        "denselben Gründen wie der ADX-Filter: konsistent über Fenster, IS/OOS und Walk-Forward, "
+        "nicht Ausreißer-getrieben.",
+        icon=":material/warning:",
+    )
+    st.caption(
+        "Reproduzierbar über `asian_range_breakout/filters.py::attach_trend_bias`/"
+        "`apply_trend_bias_filter` + `asian_range_breakout/walkforward.py::run_trend_bias_walk_forward` "
+        "+ `scripts/research_gold_trend_bias_seasonality.py`."
+    )
+
+    with st.expander("Nebenbei geprüft: Saisonalität (Wochentag/Monat) -- Rauschen, nicht implementiert"):
+        st.markdown(
+            "Aus demselben Skript (`research_gold_trend_bias_seasonality.py`), eher der "
+            "Vollständigkeit halber (Rohstoff-Kapitel des Papers) als mit plausiblem Mechanismus "
+            "für eine Session-Breakout-Strategie: Wochentag zeigt Freitag/Donnerstag stark (PF "
+            "1.41/1.30), Mittwoch schwach (PF 0.87) - bei n=395-470/Tag nicht dünn genug, um es "
+            "sofort zu verwerfen, aber ohne erkennbaren Mechanismus. Monat-Aufschlüsselung ist "
+            "deutlich unruhiger (Februar PF 0.81, März/Mai/Oktober >1.4, bei nur n=159-203/Monat) "
+            "- klassisches Muster für Rauschen bei 12 dünnen Buckets, kein Saisonmuster mit "
+            "erkennbarer Erzählung wie bei Agrarrohstoffen. **Nicht implementiert.**"
+        )
+
 # =============================================================================
 # Tab: Backtest
 # =============================================================================
@@ -363,6 +474,8 @@ with tab_backtest:
     trades = load_trades(stop_frac, tp_r_mult, be_trigger_r, spread_price, slippage_price)
     if use_adx_filter:
         trades = apply_adx_filter(trades, adx_min=15)
+    if use_trend_filter:
+        trades = apply_trend_bias_filter(trades, load_daily_close(), sma_window=TREND_SMA_WINDOW)
     df = load_data()
     stats = summarize(trades, df.index)
 
@@ -479,6 +592,8 @@ with tab_live:
     all_trades = load_trades(stop_frac, tp_r_mult, be_trigger_r, spread_price, slippage_price)
     if use_adx_filter:
         all_trades = apply_adx_filter(all_trades, adx_min=15)
+    if use_trend_filter:
+        all_trades = apply_trend_bias_filter(all_trades, load_daily_close(), sma_window=TREND_SMA_WINDOW)
     trades_window = all_trades[
         (all_trades["entry_time"] >= window_start_ts) & (all_trades["entry_time"] <= window_end_ts)
     ]
@@ -544,6 +659,8 @@ with tab_walkforward:
     eq_trades = load_trades(stop_frac, tp_r_mult, be_trigger_r, spread_price, slippage_price)
     if use_adx_filter:
         eq_trades = apply_adx_filter(eq_trades, adx_min=15)
+    if use_trend_filter:
+        eq_trades = apply_trend_bias_filter(eq_trades, load_daily_close(), sma_window=TREND_SMA_WINDOW)
     equity_df = simulate_equity(eq_trades, starting_equity=starting_equity, risk_pct=risk_pct_input)
 
     if not equity_df.empty:

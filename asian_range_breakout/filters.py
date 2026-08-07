@@ -67,6 +67,38 @@ def attach_series_change(
     return _attach_prior_day_series(trades, change, colname)
 
 
+def attach_series_level(trades: pd.DataFrame, daily_series: pd.Series, colname: str) -> pd.DataFrame:
+    """Generic level attachment (any daily series, any column name) - same
+    no-lookahead alignment as attach_vix/attach_dxy, without a fixed column
+    name. Used e.g. for Gold's own daily close/SMA (time-series-momentum
+    trend-bias filter)."""
+    return _attach_prior_day_series(trades, daily_series, colname)
+
+
+def attach_trend_bias(trades: pd.DataFrame, daily_close: pd.Series, sma_window: int = 200) -> pd.DataFrame:
+    """Attaches a `aligned` boolean column: True if the trade's direction
+    matches Gold's own prevailing daily trend (long while the prior day's
+    close was above its own SMA, short while below) - the "151 Trading
+    Strategies" time-series-momentum building block (chapter 10.4) used as a
+    directional bias on top of the Asian-Range Breakout, instead of as its
+    own standalone strategy (see triple_ma for that). Drops trades that
+    predate `sma_window` days of history (no SMA value yet available)."""
+    sma = daily_close.rolling(sma_window).mean()
+    out = attach_series_level(trades, daily_close, "gold_close_prior")
+    out = attach_series_level(out, sma, "gold_sma_prior")
+    out = out.dropna(subset=["gold_close_prior", "gold_sma_prior"])
+    bias_up = out["gold_close_prior"] > out["gold_sma_prior"]
+    is_long = out["direction"] == "long"
+    out["aligned"] = (is_long & bias_up) | (~is_long & ~bias_up)
+    return out
+
+
+def apply_trend_bias_filter(trades: pd.DataFrame, daily_close: pd.Series, sma_window: int = 200) -> pd.DataFrame:
+    """Drops counter-trend trades (see attach_trend_bias)."""
+    out = attach_trend_bias(trades, daily_close, sma_window=sma_window)
+    return out[out["aligned"]]
+
+
 def apply_vix_filter(
     trades: pd.DataFrame, vix_min: float | None = None, vix_max: float | None = None
 ) -> pd.DataFrame:

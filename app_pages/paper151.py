@@ -498,29 +498,51 @@ Bestand (Dukascopy liefert nur eine Kassa-/CFD-artige Reihe). Bewusst als
 """
         )
 
-    with st.expander(":material/looks_4: Time-Series-Momentum als eigenstaendiger Gold-Baustein", icon=":material/looks_4:"):
+    with st.expander(":material/looks_4: Time-Series-Momentum als Trend-Bias-Filter -- getestet, JETZT IMPLEMENTIERT", icon=":material/looks_4:"):
         st.markdown(
             """
-`triple_ma` deckt das fuer Gold technisch schon ab (n=252 EMA/SMA
-long/flat, bereits getestet: profitabel vor Kosten, aber hinter Buy & Hold
-zurueck). Aus dem Futures-Kapitel kommt keine neue Variante hinzu, die
-nicht schon abgedeckt waere -- eher eine Bestaetigung, dass der
-bestehende Baustein den Standard-Ansatz aus der Literatur korrekt
-abbildet, kein neuer Arbeitsauftrag.
+`triple_ma` deckt Time-Series-Momentum als **eigenstaendige** Strategie fuer
+Gold bereits ab (n=252 EMA/SMA long/flat, profitabel vor Kosten, aber hinter
+Buy & Hold zurueck). Die noch offene Variante war, dasselbe Prinzip stattdessen
+als **Richtungsfilter auf einer bestehenden Strategie** zu testen.
+
+**Update 2026-08-08, getestet -- erster echter Treffer aus diesem Paper:**
+Hypothese war "Asian-Range-Breakouts IN Richtung von Golds eigenem
+Tages-Trend (Long ueber SMA200 des Vortages-Schlusskurses, Short darunter)
+halten besser als Breakouts gegen den Trend". Gegen die ADX-gefilterte
+Produktionskonfiguration getestet (Fenstersweep 50/100/150/200 Tage, IS/OOS,
+Ausreisser-Check, Expanding-Window-Walk-Forward -- siehe
+`scripts/research_gold_trend_bias_seasonality.py`):
+
+- **Konsistent ueber alle 4 SMA-Fenster** -- Aligned schlaegt Counter-Trend
+  durchweg, Abstand waechst sogar mit laengerem Fenster.
+- **IS UND OOS bei SMA200 beide bestaetigt** (IS: PF 1.09 vs. 0.96, OOS: PF
+  1.22 vs. 1.12) -- bei SMA100 kippt OOS knapp, SMA200 ist der robustere Schnitt.
+- **Nicht Ausreisser-getrieben**: PF ohne den besten Einzeltrade faellt nur
+  von 1.176 auf 1.160.
+- **Walk-Forward bestaetigt in 8/8 Testjahren, PF>1.0 in 7/8** (2019-2026,
+  einzige Ausnahme 2023 -- dieselbe bereits vom ADX-Filter bekannte
+  OOS-Delle, kein neues Problem).
+- Kombiniert mit ADX: Profit Factor 1.122 → **1.176**, Max Drawdown
+  **-14.9% → -9.4%**, aber Trades 2190 → 1027 und CAGR 3.48% → 2.25%
+  (weniger absolute Rendite bei weniger Gelegenheiten, derselbe Trade-off
+  wie beim ADX-Filter selbst).
+
+**Jetzt standardmaessig aktiv** im Asian-Range-Breakout-Dashboard
+(abschaltbarer Sidebar-Toggle) -- siehe dort (Tab "Strategiebestandteile")
+fuer die volle Tabelle.
 """
         )
 
-    st.error(
-        "**Ehrlich eingeordnet (Update 2026-08-07):** beide konkret pruefbaren Ideen aus diesem "
-        "Paper -- VIX-Aenderungsrate und DXY-Kontextfilter -- wurden inzwischen gegen die "
-        "ADX-gefilterte Produktionskonfiguration des Asian-Range-Breakout getestet. **Keine "
-        "liefert eine implementierbare Kante**: die VIX-Aenderungsrate ist genauso Rauschen wie "
-        "der schon vorher verworfene Level-Filter, und der DXY-Filter zeigt zwar ein konsistentes "
-        "Muster, aber genau umgekehrt zur Hypothese (ohne plausiblen Mechanismus, daher nicht "
-        "eingebaut). Aus dem 151-Strategies-Paper kommt damit aktuell **kein** neuer, "
-        "umsetzbarer Gold-Baustein -- passt zum Grundmuster dieses Repos, dass woertlich "
-        "uebertragene Paper-Ideen selten ohne Weiteres tragen. Details: "
-        "`app_pages/asian_range_breakout.py` (Tab \"Strategiebestandteile\").",
+    st.success(
+        "**Ehrlich eingeordnet (Update 2026-08-08):** von drei konkret pruefbaren Ideen aus diesem "
+        "Paper liefert eine tatsaechlich eine implementierbare Kante. VIX-Aenderungsrate und "
+        "DXY-Kontextfilter bleiben verworfen (Rauschen bzw. Umkehr-Muster ohne Mechanismus), aber "
+        "der **Trend-Bias-Filter (Time-Series Momentum, Kap. 10.4) haelt jedem Test stand** -- "
+        "Fenstersweep, IS/OOS, Ausreisser-Check und Walk-Forward -- und ist jetzt Teil der "
+        "Produktionskonfiguration. Zeigt, dass sich das Durchtesten trotz zweier vorheriger "
+        "Fehlschlaege gelohnt hat. Details: `app_pages/asian_range_breakout.py` "
+        "(Tab \"Strategiebestandteile\").",
         icon=":material/fact_check:",
     )
 
@@ -548,18 +570,22 @@ with tab_verknuepfung:
 3. ~~**VIX-Aenderungsrate statt Level**~~ -- **getestet, 2026-08-07:**
    genauso Rauschen wie der Level-Filter (siehe Gold-Bausteine-Tab) --
    nicht implementiert.
+4. ~~**Trend-Bias-Filter (Time-Series Momentum) fuer den Asian-Range-
+   Breakout**~~ -- **getestet, 2026-08-08: implementiert, jetzt Standard.**
+   Robust ueber Fenster, IS/OOS, Ausreisser-Check und Walk-Forward (siehe
+   Gold-Bausteine-Tab). Der erste positive Fund aus diesem Paper.
 """
     )
 
     st.markdown("#### Mittlere Prioritaet (brauchen etwas neuen Code, keine neuen Daten)")
     st.markdown(
         """
-4. **Cross-Sectional-Relative-Staerke-Ranking** ueber alle 11 Instrumente
+5. **Cross-Sectional-Relative-Staerke-Ranking** ueber alle 11 Instrumente
    (FX-Majors + Gold/Silber/Oel/Indizes), monatlich neu sortiert, nur die
    Top-N traden -- uebertraegt die ETF-/Sektor-Rotations-Idee auf unser
    bestehendes Multi-Asset-Universum, komplementaer zu den Instrument-
    fuer-Instrument-Tests, die wir bisher ausschliesslich fahren.
-5. **EMA/EMSD/RSI-Feature-Filter fuer `auction_playbook`** (Krypto) --
+6. **EMA/EMSD/RSI-Feature-Filter fuer `auction_playbook`** (Krypto) --
    ergaenzt die bestehende State-Machine um ein einfaches Regime-Signal,
    ohne sie zu ersetzen.
 """
@@ -568,12 +594,12 @@ with tab_verknuepfung:
     st.markdown("#### Eher nicht weiterverfolgen (Daten-/Infrastruktur-Luecke)")
     st.markdown(
         """
-6. Roll-Yield/Terminstruktur-Strategien (Rohstoffe, VIX-Futures-Carry,
+7. Roll-Yield/Terminstruktur-Strategien (Rohstoffe, VIX-Futures-Carry,
    Calendar Spreads) -- brauchen Mehrfach-Faelligkeits-Daten, die aktuell
    in keiner Datenquelle des Repos vorhanden sind.
-7. Alles, was echte Optionsdaten braucht (Dispersion, Straddle/Strangle-
+8. Alles, was echte Optionsdaten braucht (Dispersion, Straddle/Strangle-
    Vola-Praemie, Convertible-Arbitrage) -- kein Optionsbuch im Repo.
-8. Sentiment-/Text-basierte Signale (Twitter-Krypto-Sentiment) -- keine
+9. Sentiment-/Text-basierte Signale (Twitter-Krypto-Sentiment) -- keine
    Textdatenquelle angebunden.
 """
     )

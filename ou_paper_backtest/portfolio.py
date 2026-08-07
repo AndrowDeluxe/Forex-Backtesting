@@ -49,6 +49,19 @@ class _BracketPosition:
     days_held: int = 0
 
 
+@dataclass
+class _TrailingPosition:
+    ticker: str
+    shares: float
+    entry_price: float
+    entry_date: pd.Timestamp
+    last_price: float
+    stop_price: float
+    highest_price: float  # highest close seen since entry (long-only), anchors the trail
+    risk_dollars: float
+    days_held: int = 0
+
+
 def _precompute_indicators(
     panel: pd.DataFrame, tickers: list[str], lookback: int, k: float, trend_window: int | None = None
 ) -> dict:
@@ -363,6 +376,149 @@ def simulate_bracket_portfolio(
                 ticker=t, direction=direction, shares=shares, entry_price=price_t,
                 entry_date=date, last_price=price_t, stop_price=stop_price, tp_price=tp_price,
                 stop_distance=stop_distance, risk_dollars=risk_dollars,
+            )
+            open_risk += risk_dollars
+
+        equity_points.append((date, equity))
+
+    equity_series = pd.Series(
+        [e for _, e in equity_points], index=[d for d, _ in equity_points], name="equity"
+    )
+    return equity_series, trades
+
+
+def simulate_trailing_bracket_portfolio(
+    panel: pd.DataFrame,
+    tickers: list[str],
+    start: str,
+    end: str,
+    initial_equity: float = config.INITIAL_EQUITY,
+    risk_pct: float = config.RISK_PCT_PER_TRADE,
+    max_total_risk_pct: float = config.MAX_TOTAL_RISK_PCT,
+    max_position_pct: float = config.MAX_POSITION_PCT,
+    lookback: int = config.BB_LOOKBACK,
+    k: float = config.BB_K,
+    max_hold: int = config.MAX_HOLDING_DAYS,
+    trail_type: str = "stddev",
+    trail_mult: float = 3.0,
+    trail_pct: float = 0.10,
+    atr_panel: pd.DataFrame | None = None,
+    regime_filter: pd.Series | None = None,
+) -> tuple[pd.Series, list[dict]]:
+    """Trailing-stop variant of simulate_bracket_portfolio, requested (2026-08-06) as a
+    "step back" from the fixed-CRV bracket to see whether letting winners run (instead of
+    a fixed 3-sigma SL + one-shot breakeven move + no TP) helps. Replaces the fixed
+    SL/breakeven/TP mechanism entirely -- a trailing stop already achieves "lock in gains
+    as price moves favorably" on its own, so layering the old be_trigger_r on top would be
+    redundant. Long-only (the only direction validated so far, see final_config_summary.csv).
+
+    `trail_type` selects how the trailing distance is computed, recalculated fresh each day
+    off the CURRENT day's volatility/price (not fixed at entry, unlike the fixed bracket's
+    stop_distance) -- so the stop can tighten in calm markets and widen in volatile ones:
+      - "stddev": trail_mult * rolling close-to-close std (same std already used for the
+        fixed-bracket SL, just re-applied every day instead of only at entry)
+      - "atr": trail_mult * Average True Range (needs real High/Low data -- see atr_data.py --
+        since the rest of this package only caches Close prices; pass `atr_panel`)
+      - "pct": trail_pct * highest close since entry (simplest, no volatility input at all)
+
+    The stop only ever ratchets UP (never back down) off the highest close since entry --
+    standard chandelier-exit behavior. Initial stop at entry uses the same formula as the
+    ongoing trail, so day-1 risk sizing is consistent with the exit rule that governs it.
+    """
+    if trail_type not in ("stddev", "atr", "pct"):
+        raise ValueError(f"unknown trail_type: {trail_type!r}")
+    if trail_type == "atr" and atr_panel is None:
+        raise ValueError("trail_type='atr' requires atr_panel (see atr_data.build_atr_panel)")
+
+    ind = _precompute_indicators(panel, tickers, lookback, k)
+    all_dates = panel.loc[start:end].index
+
+    def _trail_distance(t: str, date: pd.Timestamp, ref_price: float) -> float | None:
+        if trail_type == "pct":
+            return trail_pct * ref_price
+        if trail_type == "stddev":
+            std_t = ind[t]["std"].get(date)
+            return trail_mult * std_t if pd.notna(std_t) and std_t > 0 else None
+        atr_t = atr_panel[t].get(date) if t in atr_panel.columns else None
+        return trail_mult * atr_t if atr_t is not None and pd.notna(atr_t) and atr_t > 0 else None
+
+    equity = initial_equity
+    open_risk = 0.0
+    positions: dict[str, _TrailingPosition] = {}
+    trades: list[dict] = []
+    equity_points = []
+
+    for date in all_dates:
+        for t in list(positions.keys()):
+            data = ind[t]
+            if date not in data["price"].index:
+                continue
+            pos = positions[t]
+            price_t = data["price"].loc[date]
+
+            equity += pos.shares * (price_t - pos.last_price)
+            pos.last_price = price_t
+            pos.days_held += 1
+            pos.highest_price = max(pos.highest_price, price_t)
+
+            dist = _trail_distance(t, date, pos.highest_price)
+            if dist is not None:
+                candidate_stop = pos.highest_price - dist
+                pos.stop_price = max(pos.stop_price, candidate_stop)
+
+            exit_now, reason = False, None
+            if price_t <= pos.stop_price:
+                exit_now = True
+                reason = "trailing_stop" if pos.stop_price > pos.entry_price else "stop_loss"
+            elif pos.days_held >= max_hold:
+                exit_now, reason = True, "max_holding"
+
+            if exit_now:
+                pnl_dollars = pos.shares * (price_t - pos.entry_price)
+                trades.append({
+                    "ticker": t, "direction": "long", "entry_date": pos.entry_date, "exit_date": date,
+                    "entry_price": pos.entry_price, "exit_price": price_t, "shares": pos.shares,
+                    "days_held": pos.days_held, "pnl_dollars": pnl_dollars,
+                    "pnl_pct": pnl_dollars / (pos.shares * pos.entry_price), "reason": reason,
+                })
+                open_risk -= pos.risk_dollars
+                del positions[t]
+
+        regime_ok = True
+        if regime_filter is not None:
+            regime_ok = bool(regime_filter.get(date, False))
+
+        for t in tickers:
+            if not regime_ok:
+                break
+            if t in positions or t not in ind:
+                continue
+            data = ind[t]
+            if date not in data["price"].index:
+                continue
+            price_t = data["price"].loc[date]
+            ma_t, std_t, lower_t = data["ma"].loc[date], data["std"].loc[date], data["lower"].loc[date]
+            if pd.isna(ma_t) or pd.isna(std_t) or std_t == 0 or price_t >= lower_t:
+                continue
+
+            dist = _trail_distance(t, date, price_t)
+            if dist is None:
+                continue  # e.g. missing ATR for this ticker/date -- skip rather than mis-size
+
+            risk_dollars = equity * risk_pct
+            if open_risk + risk_dollars > equity * max_total_risk_pct:
+                continue
+
+            shares = risk_dollars / dist
+            max_shares_by_notional = (equity * max_position_pct) / price_t
+            shares = min(shares, max_shares_by_notional)
+            shares = float(np.floor(shares))
+            if shares <= 0:
+                continue
+
+            positions[t] = _TrailingPosition(
+                ticker=t, shares=shares, entry_price=price_t, entry_date=date, last_price=price_t,
+                stop_price=price_t - dist, highest_price=price_t, risk_dollars=risk_dollars,
             )
             open_risk += risk_dollars
 

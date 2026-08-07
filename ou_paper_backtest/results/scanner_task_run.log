@@ -285,3 +285,9 @@
 2026-08-07 14:37:42 S&P 500 (volles Universum, 420 Ticker)    PPL 2026-08-06  34.62       34.71  34.62  33.13 kein TP (finale Config)       0.0            4.30              20.00       True       True                            12.5 2026-08-07T14:37:41
 2026-08-07 14:37:42 S&P 500 (volles Universum, 420 Ticker)    REG 2026-08-06  76.96       77.90  76.96  72.65 kein TP (finale Config)       0.0            5.61              17.84       True       True                            12.5 2026-08-07T14:37:41
 2026-08-07 14:37:42 S&P 500 (volles Universum, 420 Ticker)    SRE 2026-08-06  84.35       84.57  84.35  75.23 kein TP (finale Config)       0.0           10.82               9.24       True       True                            12.5 2026-08-07T14:37:41
+2026-08-07 14:37:42 [main 507e851] OU-Modell Scanner: Snapshot 2026-08-07 14:37
+2026-08-07 14:37:42  2 files changed, 30 insertions(+), 7 deletions(-)
+2026-08-07 14:37:45 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-07 14:37:45    e8d5e6b..507e851  main -> main
+2026-08-07 14:37:45 Commit + Push erfolgreich.
+2026-08-07 14:37:45 === Scanner-Task beendet ===

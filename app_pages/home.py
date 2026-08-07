@@ -191,10 +191,11 @@ with tab_backtests:
                 "netto positiv, haelt sich grob ueber beide Zeitraum-Haelften. Aber "
                 "duenn: Break-even-Spread liegt bei nur ~0.54 USD Round-Trip - genau "
                 "der Bereich realistischer Retail-Gold-Spreads, besonders da rund um "
-                "Sessionuebergaenge gehandelt wird. Mit den mittlerweile drei "
+                "Sessionuebergaenge gehandelt wird. Mit den mittlerweile vier "
                 "walk-forward-validierten Filtern (ADX-Regime + Gold-Trend-Bias SMA200 + "
-                "Fuellverzoegerung max. 3 Bars) steigt PF auf 1.24 und Max Drawdown sinkt "
-                "von -18.5% auf -5.0%, bei rund der Haelfte der urspruenglichen Trade-Zahl."
+                "Fuellverzoegerung max. 3 Bars + Silber-Alignment) steigt PF auf 1.43, "
+                "Sharpe auf 0.61 und Max Drawdown sinkt von -18.5% auf -4.0%, bei knapp "
+                "60% weniger Trades als die urspruengliche Konfiguration."
             )
         st.page_link("app_pages/asian_range_breakout.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
 

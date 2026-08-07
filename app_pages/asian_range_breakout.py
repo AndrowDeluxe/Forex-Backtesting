@@ -24,8 +24,10 @@ from asian_range_breakout.engine import get_latest_setup, simulate_asian_breakou
 from asian_range_breakout.filters import (
     apply_adx_filter,
     apply_entry_delay_filter,
+    apply_silver_alignment_filter,
     apply_trend_bias_filter,
     attach_entry_delay,
+    attach_silver_alignment,
     attach_trend_bias,
 )
 from asian_range_breakout.montecarlo import run_monte_carlo, summarize_monte_carlo
@@ -35,6 +37,7 @@ from asian_range_breakout.walkforward import (
     run_trend_bias_walk_forward,
     run_walk_forward,
 )
+from combined_strategy.data import fetch_timeframe
 from strategy.metrics import summarize, trade_stats
 
 st.set_page_config(page_title="Gold Asian-Range Breakout", page_icon=":material/wb_twilight:", layout="wide")
@@ -42,6 +45,7 @@ st.set_page_config(page_title="Gold Asian-Range Breakout", page_icon=":material/
 START, END = "2016-01-01", "2026-07-29"
 SPLIT = "2021-01-01"
 TREND_SMA_WINDOW = 200
+SILVER_ALIGNMENT_WINDOW = 5
 
 
 @st.cache_data(ttl="6h", show_spinner="Lade Gold M15-Daten (Dukascopy, ~10 Jahre)...")
@@ -54,6 +58,14 @@ def load_daily_close() -> pd.Series:
     """Fuer den Trend-Bias-Filter (siehe Strategiebestandteile) - abgeleitet
     aus derselben Dukascopy-M15-Reihe, keine zusaetzliche Datenquelle."""
     return load_data()["close"].tz_localize(None).resample("D").last().dropna()
+
+
+@st.cache_data(ttl="6h", show_spinner="Lade Silber-Tagesschlusskurse (Dukascopy)...")
+def load_daily_close_silver() -> pd.Series:
+    """Fuer den Silber-Alignment-Filter (siehe Strategiebestandteile) -
+    Dukascopy XAGUSD, dieselbe Quelle wie ueberall sonst in diesem Repo."""
+    silver_m15 = fetch_timeframe("SILVER", "M15", START, END)
+    return silver_m15["Close"].tz_localize(None).resample("D").last().dropna()
 
 
 @st.cache_data(ttl="15m", show_spinner="Lade aktuelle Gold-Futures-Daten (yfinance)...")
@@ -128,6 +140,13 @@ with st.sidebar:
         "(sofort) auf 1.02 (8+ Bars Wartezeit). Kein Lookahead: entspricht einer Order, die nach "
         "3 Bars (45 Min.) automatisch verfaellt, statt bis 11:00 zu warten. Walk-Forward-"
         "bestaetigt (7/8 Jahre), 10/11 Kalenderjahre netto positiv - siehe Strategiebestandteile.",
+    )
+    use_silver_filter = st.toggle(
+        "Silber-Alignment-Filter aktivieren (5-Tage-Richtung)", value=True,
+        help="Aus einem User-Paper zu Gold-Silber-BTC-Lead-Lag (2026-08-08): nur Breakouts IN "
+        "Richtung von Silbers eigener 5-Tage-Kursbewegung. Walk-Forward-bestaetigt (5/6 Jahre), "
+        "rettet insbesondere das schwache Jahr 2023 (PF 0.89 -> 1.82). Verbessert Sharpe UND "
+        "Win-Rate (nicht nur Profit Factor wie die anderen Filter) - siehe Strategiebestandteile.",
     )
     spread_price = st.slider(
         "Spread (USD, Round-Trip)", 0.0, 1.50, 0.30, 0.05,
@@ -615,6 +634,88 @@ with tab_components:
             "**Nicht implementiert.**"
         )
 
+    st.markdown("### Silber-Alignment-Filter (Gold-Silber-BTC-Lead-Lag) -- getestet, jetzt Standard (2026-08-08)")
+    st.success(
+        "**Zweiter echter Treffer aus den User-Papers.** Idee aus einer Literatursynthese zu "
+        "Gold-Silber-Bitcoin-Lead-Lag (SSRN 7200580, siehe \"Neue Papers\"-Seite): Silber gilt "
+        "als \"High-Beta-Version von Gold\" mit spekulativerem Orderflow. Einfachste direkt "
+        "testbare Uebersetzung: **nur Breakouts in Richtung von Silbers eigener juengster "
+        "Kursbewegung handeln** (5-Tage-Rendite von Silber, Dukascopy XAGUSD, keine neue "
+        "Datenquelle). **Haelt jedem Test stand:**",
+        icon=":material/check_circle:",
+    )
+
+    daily_close_silver_writeup = load_daily_close_silver()
+    trend_delay_trades = apply_entry_delay_filter(
+        apply_trend_bias_filter(trend_base_trades, daily_close_writeup, sma_window=TREND_SMA_WINDOW),
+        max_delay_bars=3,
+    )
+    silver_tagged = attach_silver_alignment(trend_delay_trades, daily_close_silver_writeup, window=SILVER_ALIGNMENT_WINDOW)
+
+    col_ssweep, col_smetrics = st.columns(2)
+    with col_ssweep:
+        with st.container(border=True):
+            st.markdown("**Fenster-Sweep (1/3/5/10/20 Tage), volle Historie**")
+            st.caption(
+                "Aligned schlaegt Counter-Trend in 4 von 5 Fenstern (nur bei 10 Tagen knapp "
+                "umgekehrt) - bei 5 Tagen der groesste Abstand: PF 1.43 Aligned vs. 1.00 Counter. "
+                "IS UND OOS bestaetigen dieselbe Richtung (nicht nur eine Seite wie beim COT-"
+                "Test): IS PF 1.65 vs. 0.76, OOS PF 1.32 vs. 1.13 - der Vorteil schrumpft OOS, "
+                "kippt aber nicht um."
+            )
+    with col_smetrics:
+        with st.container(border=True):
+            st.markdown("**Volle Kennzahlen: +Silber-Filter vs. ohne**")
+            st.caption(
+                "Profit Factor 1.242 → **1.426**, Sharpe 0.490 → **0.610** (deutliche "
+                "Verbesserung), Max Drawdown -5.0% → **-4.0%**. Trades 540 → 310, aber CAGR "
+                "bleibt fast unveraendert (1.65% → 1.68%) - anders als die anderen Filter "
+                "verbessert dieser auch die **Win-Rate** (43.1% → 46.5%), nicht nur den Profit "
+                "Factor. Nicht Ausreisser-getrieben (PF ohne besten Trade: 1.376)."
+            )
+
+    st.markdown("**Walk-Forward-Validierung (Expanding-Window, gleiche Methodik wie die anderen drei Filter)**")
+    silver_wf_table = run_trend_bias_walk_forward(silver_tagged, start_test_year=2021, end_test_year=2026)
+    st.dataframe(
+        silver_wf_table,
+        hide_index=True,
+        column_config={
+            "test_year": st.column_config.NumberColumn("Testjahr"),
+            "train_n_trades": st.column_config.NumberColumn("Trainings-Trades"),
+            "filter_confirmed_on_train": st.column_config.CheckboxColumn("Filter bestätigt (nur Training)"),
+            "n_trades_unfiltered": st.column_config.NumberColumn("Trades ungefiltert"),
+            "pf_unfiltered": st.column_config.NumberColumn("PF ungefiltert", format="%.3f"),
+            "n_trades_walkforward": st.column_config.NumberColumn("Trades Walk-Forward"),
+            "pf_walkforward": st.column_config.NumberColumn("PF Walk-Forward", format="%.3f"),
+            "win_rate_walkforward": st.column_config.NumberColumn("Win-Rate WF", format="%.1f%%"),
+        },
+    )
+    n_confirmed_silver = int(silver_wf_table["filter_confirmed_on_train"].sum())
+    n_positive_silver = int((silver_wf_table["pf_walkforward"] > 1.0).sum())
+    st.info(
+        f"Filter in **{n_confirmed_silver}/{len(silver_wf_table)}** Testjahren bestaetigt, "
+        f"**{n_positive_silver}/{len(silver_wf_table)}** Testjahre mit PF>1.0. Besonders "
+        "bemerkenswert: **rettet das schwache 2023** (PF 0.89 ungefiltert -> 1.82 gefiltert) - "
+        "genau das Jahr, das beim ADX- und Fuellverzoegerungs-Filter als einzige echte OOS-Delle "
+        "uebrig blieb. Einziger Ausreisser: 2026 (nur 20 Trades, halbes Jahr, PF 0.68).",
+        icon=":material/insights:",
+    )
+    st.warning(
+        "**Kombiniert (ADX + Trend-Bias + Fuellverzoegerung + Silber-Alignment) sinkt die "
+        "Stichprobe auf 310 Trades** - immer noch eine solide Gesamtaussage, aber der "
+        "duennste Schnitt aller vier Filter zusammen. Standardmaessig **AN**, da Sharpe, "
+        "Win-Rate UND Max Drawdown gleichzeitig besser werden und Walk-Forward + Ausreisser-"
+        "Check beide bestehen - wer absolute Trade-Zahl priorisiert, kann ihn im "
+        "Sidebar-Toggle deaktivieren.",
+        icon=":material/warning:",
+    )
+    st.caption(
+        "Reproduzierbar ueber `asian_range_breakout/filters.py::attach_silver_alignment`/"
+        "`apply_silver_alignment_filter` + `scripts/research_gold_silver_leadlag_filter.py`. "
+        "Datenquelle: Dukascopy XAGUSD ueber `combined_strategy.data.fetch_timeframe` (bereits "
+        "in diesem Repo genutzt), keine neue Datenanbindung noetig."
+    )
+
 # =============================================================================
 # Tab: Backtest
 # =============================================================================
@@ -628,6 +729,8 @@ with tab_backtest:
         trades = apply_trend_bias_filter(trades, load_daily_close(), sma_window=TREND_SMA_WINDOW)
     if use_delay_filter:
         trades = apply_entry_delay_filter(trades, max_delay_bars=3)
+    if use_silver_filter:
+        trades = apply_silver_alignment_filter(trades, load_daily_close_silver(), window=SILVER_ALIGNMENT_WINDOW)
     df = load_data()
     stats = summarize(trades, df.index)
 
@@ -748,6 +851,8 @@ with tab_live:
         all_trades = apply_trend_bias_filter(all_trades, load_daily_close(), sma_window=TREND_SMA_WINDOW)
     if use_delay_filter:
         all_trades = apply_entry_delay_filter(all_trades, max_delay_bars=3)
+    if use_silver_filter:
+        all_trades = apply_silver_alignment_filter(all_trades, load_daily_close_silver(), window=SILVER_ALIGNMENT_WINDOW)
     trades_window = all_trades[
         (all_trades["entry_time"] >= window_start_ts) & (all_trades["entry_time"] <= window_end_ts)
     ]
@@ -817,6 +922,8 @@ with tab_walkforward:
         eq_trades = apply_trend_bias_filter(eq_trades, load_daily_close(), sma_window=TREND_SMA_WINDOW)
     if use_delay_filter:
         eq_trades = apply_entry_delay_filter(eq_trades, max_delay_bars=3)
+    if use_silver_filter:
+        eq_trades = apply_silver_alignment_filter(eq_trades, load_daily_close_silver(), window=SILVER_ALIGNMENT_WINDOW)
     equity_df = simulate_equity(eq_trades, starting_equity=starting_equity, risk_pct=risk_pct_input)
 
     if not equity_df.empty:

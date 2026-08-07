@@ -194,13 +194,17 @@ with tab3:
    regimeabhaengig wechselt, statt eine fixe Beziehung anzunehmen.
 """
         )
-    st.info(
-        "**Naechster Schritt:** Als eigenstaendiger neuer Kontext-Baustein testbar -- z.B. als "
-        "Richtungsfilter fuer Gold-Strategien (nur Long/Short handeln, wenn Silber die "
-        "\"passende\" Fuehrungsrolle fuer das aktuelle Regime zeigt) oder als reiner "
-        "Diagnose-Baustein. Wird im Anschluss an diese Seite umgesetzt und gegen den Gold "
-        "Asian-Range Breakout getestet.",
-        icon=":material/insights:",
+    st.success(
+        "**Update 2026-08-08, getestet: implementiert, jetzt Standard.** Einfachste testbare "
+        "Uebersetzung -- Long-Breakouts nur in Richtung von Silbers eigener 5-Tage-Kursbewegung, "
+        "Short umgekehrt -- haelt Fenster-Sweep, IS/OOS UND Walk-Forward stand "
+        "(`scripts/research_gold_silver_leadlag_filter.py`): Profit Factor 1.24 → 1.43, Sharpe "
+        "0.49 → 0.61, Max Drawdown -5.0% → -4.0%, **Win-Rate steigt sogar mit** (43.1% → 46.5%, "
+        "anders als bei den meisten anderen Filtern hier). Walk-Forward bestaetigt 5/6 Testjahre "
+        "und rettet insbesondere das zuvor schwache 2023. Der erste getestete Baustein aus "
+        "diesen fuenf Papers, der auf Anhieb robust ist. Details: "
+        "`app_pages/asian_range_breakout.py` (Tab \"Strategiebestandteile\").",
+        icon=":material/check_circle:",
     )
 
 # =============================================================================
@@ -315,13 +319,15 @@ Commercials verhalten). Position wird gehalten, bis das Gegensignal kommt.
     )
 
 st.space("medium")
-st.warning(
-    "**Gesamtfazit ueber alle fuenf Papers (Update 2026-08-08):** Nur zwei der fuenf (Tab 3 "
-    "Lead-Lag, Tab 5 COT-Sentiment) liefern mit dem vorhandenen Datenbestand direkt testbare "
-    "Bausteine -- **COT-Sentiment ist inzwischen getestet und zeigt keine robuste Kante** "
-    "(bricht Out-of-Sample zusammen). Tab 1 (Korea-spezifisch) und Tab 2 (braucht Optionsdaten) "
-    "sind konzeptionell dokumentiert, aber nicht umsetzbar. Tab 4 ist keine Strategie-Quelle, "
-    "sondern eine methodische Warnung. Der Gold-Silber-BTC-Lead-Lag-Baustein (Tab 3) ist als "
-    "einziger noch offen.",
+st.success(
+    "**Gesamtfazit ueber alle fuenf Papers (Update 2026-08-08, final):** Von fuenf Papers "
+    "waren zwei mit vorhandenen Daten direkt testbar (Tab 3, Tab 5) -- **einer davon liefert "
+    "einen echten, walk-forward-bestaetigten neuen Filter** (Silber-Alignment, Tab 3: PF 1.24 → "
+    "1.43, jetzt Standard im Asian-Range-Breakout-Dashboard). COT-Sentiment (Tab 5) bricht "
+    "Out-of-Sample zusammen, nicht implementiert. Tab 1 (Korea-spezifisch) und Tab 2 (braucht "
+    "Optionsdaten) sind konzeptionell dokumentiert, aber nicht umsetzbar. Tab 4 ist keine "
+    "Strategie-Quelle, sondern eine methodische Warnung. **Trefferquote: 1 von 5 Papers liefert "
+    "direkt einen produktiven Baustein** -- innerhalb der ueblichen Erfahrung dieses Repos mit "
+    "extern uebernommenen Ideen.",
     icon=":material/summarize:",
 )

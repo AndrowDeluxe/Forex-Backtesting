@@ -154,6 +154,29 @@ def attach_pre_window_momentum(
     return out.dropna(subset=["momentum_r"])
 
 
+def attach_silver_alignment(trades: pd.DataFrame, daily_close_silver: pd.Series, window: int = 5) -> pd.DataFrame:
+    """Attaches an `aligned` boolean column: True if the trade's direction
+    matches Silver's own recent price direction (long while Silver has been
+    rising over `window` days, short while falling) - a cross-asset
+    momentum-confirmation filter extracted from the Gold-Silver-BTC lead-lag
+    paper (paper151-style distillation, 2026-08-08 - see
+    app_pages/goldi_papers_202608.py tab 3). Structurally identical to
+    attach_trend_bias, just Silver's short-term change instead of Gold's own
+    SMA200. Drops trades that predate `window` days of Silver history."""
+    out = attach_series_change(trades, daily_close_silver, "silver_chg", window=window)
+    out = out.dropna(subset=["silver_chg"])
+    is_long = out["direction"] == "long"
+    out["aligned"] = (is_long & (out["silver_chg"] > 0)) | (~is_long & (out["silver_chg"] < 0))
+    return out
+
+
+def apply_silver_alignment_filter(trades: pd.DataFrame, daily_close_silver: pd.Series, window: int = 5) -> pd.DataFrame:
+    """Drops trades where the breakout direction disagrees with Silver's own
+    recent price direction (see attach_silver_alignment)."""
+    out = attach_silver_alignment(trades, daily_close_silver, window=window)
+    return out[out["aligned"]]
+
+
 def attach_cot_sentiment(trades: pd.DataFrame, sentiment_series: pd.Series, colname: str = "cot_si") -> pd.DataFrame:
     """Attaches a CFTC COT sentiment index (Wang 2001, see cot.py) to each
     trade - `sentiment_series` must already be indexed by PUBLICATION date

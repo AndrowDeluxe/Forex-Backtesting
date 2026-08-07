@@ -1,0 +1,149 @@
+===== run_20260807_153532.log =====
+2026-08-07 15:35:32,532 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260807_153532.log ===
+2026-08-07 15:35:32,629 ERROR executor: BE-Move fehlgeschlagen für LUV (Ticket 17505917): OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))
+2026-08-07 15:35:32,660 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'error', 'ticket': 17505917, 'symbol': 'LUV', 'reason': "OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))"}]
+2026-08-07 15:35:32,673 INFO run_once.konto2_ttp: 7 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-07 15:35:32,675 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100512.43, aktueller Drawdown 0.00% (Limit 2.0%)
+2026-08-07 15:35:32,683 INFO executor: Für D ist bereits eine Position offen (Ticket 17742986) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 15:35:32,683 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 66.8, 'sl': 63.14, 'tp': 0.0}}
+2026-08-07 15:35:32,686 WARNING executor: Symbol 'FRT' (MT5-Name 'FRT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 15:35:32,686 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FRT', 'direction': 'Long', 'entry': 117.91, 'sl': 111.08, 'tp': 0.0}}
+2026-08-07 15:35:32,688 WARNING executor: Symbol 'FE' (MT5-Name 'FE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 15:35:32,688 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FE', 'direction': 'Long', 'entry': 47.37, 'sl': 45.39, 'tp': 0.0}}
+2026-08-07 15:35:32,691 WARNING executor: Symbol 'DOC' (MT5-Name 'DOC') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 15:35:32,691 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DOC', 'direction': 'Long', 'entry': 21.1, 'sl': 19.76, 'tp': 0.0}}
+2026-08-07 15:35:32,693 WARNING executor: Symbol 'PPL' (MT5-Name 'PPL') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 15:35:32,693 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PPL', 'direction': 'Long', 'entry': 34.62, 'sl': 33.13, 'tp': 0.0}}
+2026-08-07 15:35:33,226 INFO executor: Order gesendet: {'symbol': 'REG', 'volume': 70.0, 'type': 'BUY', 'entry': 76.23, 'sl': 72.65, 'tp': 0.0} -> Ticket 17763558
+2026-08-07 15:35:33,233 INFO run_once.konto2_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'REG', 'volume': 70.0, 'type': 'BUY', 'entry': 76.23, 'sl': 72.65, 'tp': 0.0}, 'signal': {'symbol': 'REG', 'direction': 'Long', 'entry': 76.96, 'sl': 72.65, 'tp': 0.0}, 'ticket': 17763558, 'risk': 250.59999999999988}
+2026-08-07 15:35:33,240 WARNING executor: Symbol 'SRE' (MT5-Name 'SRE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 15:35:33,241 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'SRE', 'direction': 'Long', 'entry': 84.35, 'sl': 75.23, 'tp': 0.0}}
+2026-08-07 15:35:33,242 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260807_163526.log =====
+2026-08-07 16:35:26,332 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260807_163526.log ===
+2026-08-07 16:35:26,420 INFO run_once.konto2_ttp: 7 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-07 16:35:26,423 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100512.43, aktueller Drawdown -0.45% (Limit 2.0%)
+2026-08-07 16:35:26,428 INFO executor: Für D ist bereits eine Position offen (Ticket 17742986) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 16:35:26,428 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 66.8, 'sl': 63.14, 'tp': 0.0}}
+2026-08-07 16:35:26,430 WARNING executor: Symbol 'FRT' (MT5-Name 'FRT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 16:35:26,430 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FRT', 'direction': 'Long', 'entry': 117.91, 'sl': 111.08, 'tp': 0.0}}
+2026-08-07 16:35:26,432 WARNING executor: Symbol 'FE' (MT5-Name 'FE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 16:35:26,432 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FE', 'direction': 'Long', 'entry': 47.37, 'sl': 45.39, 'tp': 0.0}}
+2026-08-07 16:35:26,434 WARNING executor: Symbol 'DOC' (MT5-Name 'DOC') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 16:35:26,435 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DOC', 'direction': 'Long', 'entry': 21.1, 'sl': 19.76, 'tp': 0.0}}
+2026-08-07 16:35:26,436 WARNING executor: Symbol 'PPL' (MT5-Name 'PPL') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 16:35:26,436 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PPL', 'direction': 'Long', 'entry': 34.62, 'sl': 33.13, 'tp': 0.0}}
+2026-08-07 16:35:26,438 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'REG', 'direction': 'Long', 'entry': 76.96, 'sl': 72.65, 'tp': 0.0}
+2026-08-07 16:35:26,439 WARNING executor: Symbol 'SRE' (MT5-Name 'SRE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 16:35:26,439 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'SRE', 'direction': 'Long', 'entry': 84.35, 'sl': 75.23, 'tp': 0.0}}
+2026-08-07 16:35:26,440 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260807_173526.log =====
+2026-08-07 17:35:26,200 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260807_173526.log ===
+2026-08-07 17:35:26,314 INFO run_once.konto2_ttp: 7 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-07 17:35:26,316 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100512.43, aktueller Drawdown -0.46% (Limit 2.0%)
+2026-08-07 17:35:26,319 INFO executor: Für D ist bereits eine Position offen (Ticket 17742986) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 17:35:26,319 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 66.8, 'sl': 63.14, 'tp': 72.3}}
+2026-08-07 17:35:26,320 WARNING executor: Symbol 'FRT' (MT5-Name 'FRT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 17:35:26,320 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FRT', 'direction': 'Long', 'entry': 117.91, 'sl': 111.08, 'tp': 128.16}}
+2026-08-07 17:35:26,321 WARNING executor: Symbol 'FE' (MT5-Name 'FE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 17:35:26,321 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FE', 'direction': 'Long', 'entry': 47.37, 'sl': 45.39, 'tp': 50.34}}
+2026-08-07 17:35:26,322 WARNING executor: Symbol 'DOC' (MT5-Name 'DOC') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 17:35:26,322 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DOC', 'direction': 'Long', 'entry': 21.1, 'sl': 19.76, 'tp': 23.1}}
+2026-08-07 17:35:26,323 WARNING executor: Symbol 'PPL' (MT5-Name 'PPL') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 17:35:26,323 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PPL', 'direction': 'Long', 'entry': 34.62, 'sl': 33.13, 'tp': 36.85}}
+2026-08-07 17:35:26,324 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'REG', 'direction': 'Long', 'entry': 76.96, 'sl': 72.65, 'tp': 83.43}
+2026-08-07 17:35:26,325 WARNING executor: Symbol 'SRE' (MT5-Name 'SRE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 17:35:26,325 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'SRE', 'direction': 'Long', 'entry': 84.35, 'sl': 75.23, 'tp': 98.04}}
+2026-08-07 17:35:26,326 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260807_183524.log =====
+2026-08-07 18:35:24,062 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260807_183524.log ===
+2026-08-07 18:35:24,138 INFO executor: SL für D (Ticket 17742986) auf Break-Even (66.6700) gesetzt.
+2026-08-07 18:35:24,141 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'moved', 'ticket': 17742986, 'symbol': 'D', 'sl': 66.67}]
+2026-08-07 18:35:24,156 INFO run_once.konto2_ttp: 7 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-07 18:35:24,158 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100512.43, aktueller Drawdown -0.64% (Limit 2.0%)
+2026-08-07 18:35:24,162 INFO executor: Für D ist bereits eine Position offen (Ticket 17742986) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 18:35:24,162 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 66.8, 'sl': 63.14, 'tp': 72.3}}
+2026-08-07 18:35:24,164 WARNING executor: Symbol 'FRT' (MT5-Name 'FRT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 18:35:24,164 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FRT', 'direction': 'Long', 'entry': 117.91, 'sl': 111.08, 'tp': 128.16}}
+2026-08-07 18:35:24,166 WARNING executor: Symbol 'FE' (MT5-Name 'FE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 18:35:24,166 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FE', 'direction': 'Long', 'entry': 47.37, 'sl': 45.39, 'tp': 50.34}}
+2026-08-07 18:35:24,169 WARNING executor: Symbol 'DOC' (MT5-Name 'DOC') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 18:35:24,169 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DOC', 'direction': 'Long', 'entry': 21.1, 'sl': 19.76, 'tp': 23.1}}
+2026-08-07 18:35:24,171 WARNING executor: Symbol 'PPL' (MT5-Name 'PPL') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 18:35:24,171 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PPL', 'direction': 'Long', 'entry': 34.62, 'sl': 33.13, 'tp': 36.85}}
+2026-08-07 18:35:24,172 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'REG', 'direction': 'Long', 'entry': 76.96, 'sl': 72.65, 'tp': 83.43}
+2026-08-07 18:35:24,173 WARNING executor: Symbol 'SRE' (MT5-Name 'SRE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 18:35:24,174 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'SRE', 'direction': 'Long', 'entry': 84.35, 'sl': 75.23, 'tp': 98.04}}
+2026-08-07 18:35:24,174 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260807_193741.log =====
+2026-08-07 19:37:41,363 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260807_193741.log ===
+2026-08-07 19:37:41,378 ERROR executor: BE-Move fehlgeschlagen für LUV (Ticket 17505917): OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))
+2026-08-07 19:37:41,388 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'error', 'ticket': 17505917, 'symbol': 'LUV', 'reason': "OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))"}]
+2026-08-07 19:37:41,399 INFO run_once.konto2_ttp: 7 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-07 19:37:41,401 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100512.43, aktueller Drawdown -0.81% (Limit 2.0%)
+2026-08-07 19:37:41,403 INFO executor: Für D ist bereits eine Position offen (Ticket 17742986) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 19:37:41,403 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 66.8, 'sl': 63.14, 'tp': 72.3}}
+2026-08-07 19:37:41,404 WARNING executor: Symbol 'FRT' (MT5-Name 'FRT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 19:37:41,404 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FRT', 'direction': 'Long', 'entry': 117.91, 'sl': 111.08, 'tp': 128.16}}
+2026-08-07 19:37:41,406 WARNING executor: Symbol 'FE' (MT5-Name 'FE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 19:37:41,406 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FE', 'direction': 'Long', 'entry': 47.37, 'sl': 45.39, 'tp': 50.34}}
+2026-08-07 19:37:41,407 WARNING executor: Symbol 'DOC' (MT5-Name 'DOC') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 19:37:41,408 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DOC', 'direction': 'Long', 'entry': 21.1, 'sl': 19.76, 'tp': 23.1}}
+2026-08-07 19:37:41,409 WARNING executor: Symbol 'PPL' (MT5-Name 'PPL') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 19:37:41,409 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PPL', 'direction': 'Long', 'entry': 34.62, 'sl': 33.13, 'tp': 36.85}}
+2026-08-07 19:37:41,411 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'REG', 'direction': 'Long', 'entry': 76.96, 'sl': 72.65, 'tp': 83.43}
+2026-08-07 19:37:41,412 WARNING executor: Symbol 'SRE' (MT5-Name 'SRE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 19:37:41,412 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'SRE', 'direction': 'Long', 'entry': 84.35, 'sl': 75.23, 'tp': 98.04}}
+2026-08-07 19:37:41,413 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260807_203523.log =====
+2026-08-07 20:35:23,347 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260807_203523.log ===
+2026-08-07 20:35:23,358 ERROR executor: BE-Move fehlgeschlagen für LUV (Ticket 17505917): OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))
+2026-08-07 20:35:23,368 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'error', 'ticket': 17505917, 'symbol': 'LUV', 'reason': "OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))"}]
+2026-08-07 20:35:23,384 INFO run_once.konto2_ttp: 7 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-07 20:35:23,385 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100512.43, aktueller Drawdown -0.75% (Limit 2.0%)
+2026-08-07 20:35:23,388 INFO executor: Für D ist bereits eine Position offen (Ticket 17742986) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 20:35:23,388 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 66.8, 'sl': 63.14, 'tp': 72.3}}
+2026-08-07 20:35:23,389 WARNING executor: Symbol 'FRT' (MT5-Name 'FRT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 20:35:23,389 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FRT', 'direction': 'Long', 'entry': 117.91, 'sl': 111.08, 'tp': 128.16}}
+2026-08-07 20:35:23,391 WARNING executor: Symbol 'FE' (MT5-Name 'FE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 20:35:23,391 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FE', 'direction': 'Long', 'entry': 47.37, 'sl': 45.39, 'tp': 50.34}}
+2026-08-07 20:35:23,392 WARNING executor: Symbol 'DOC' (MT5-Name 'DOC') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 20:35:23,392 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DOC', 'direction': 'Long', 'entry': 21.1, 'sl': 19.76, 'tp': 23.1}}
+2026-08-07 20:35:23,394 WARNING executor: Symbol 'PPL' (MT5-Name 'PPL') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 20:35:23,394 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PPL', 'direction': 'Long', 'entry': 34.62, 'sl': 33.13, 'tp': 36.85}}
+2026-08-07 20:35:23,395 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'REG', 'direction': 'Long', 'entry': 76.96, 'sl': 72.65, 'tp': 83.43}
+2026-08-07 20:35:23,397 WARNING executor: Symbol 'SRE' (MT5-Name 'SRE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 20:35:23,397 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'SRE', 'direction': 'Long', 'entry': 84.35, 'sl': 75.23, 'tp': 98.04}}
+2026-08-07 20:35:23,397 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260807_213523.log =====
+2026-08-07 21:35:23,581 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260807_213523.log ===
+2026-08-07 21:35:23,591 ERROR executor: BE-Move fehlgeschlagen für LUV (Ticket 17505917): OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))
+2026-08-07 21:35:23,599 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'error', 'ticket': 17505917, 'symbol': 'LUV', 'reason': "OrderSendResult(retcode=10025, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='No changes', request_id=0, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='LUV', volume=0.0, price=0.0, stoplimit=0.0, sl=45.45, tp=50.18, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=17505917, position_by=0))"}]
+2026-08-07 21:35:23,609 INFO run_once.konto2_ttp: 7 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-07 21:35:23,610 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100512.43, aktueller Drawdown -0.81% (Limit 2.0%)
+2026-08-07 21:35:23,612 INFO executor: Für D ist bereits eine Position offen (Ticket 17742986) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 21:35:23,612 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 66.8, 'sl': 63.14, 'tp': 72.3}}
+2026-08-07 21:35:23,614 WARNING executor: Symbol 'FRT' (MT5-Name 'FRT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 21:35:23,614 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FRT', 'direction': 'Long', 'entry': 117.91, 'sl': 111.08, 'tp': 128.16}}
+2026-08-07 21:35:23,615 WARNING executor: Symbol 'FE' (MT5-Name 'FE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 21:35:23,616 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FE', 'direction': 'Long', 'entry': 47.37, 'sl': 45.39, 'tp': 50.34}}
+2026-08-07 21:35:23,617 WARNING executor: Symbol 'DOC' (MT5-Name 'DOC') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 21:35:23,617 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DOC', 'direction': 'Long', 'entry': 21.1, 'sl': 19.76, 'tp': 23.1}}
+2026-08-07 21:35:23,618 WARNING executor: Symbol 'PPL' (MT5-Name 'PPL') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 21:35:23,619 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PPL', 'direction': 'Long', 'entry': 34.62, 'sl': 33.13, 'tp': 36.85}}
+2026-08-07 21:35:23,620 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'REG', 'direction': 'Long', 'entry': 76.96, 'sl': 72.65, 'tp': 83.43}
+2026-08-07 21:35:23,621 WARNING executor: Symbol 'SRE' (MT5-Name 'SRE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 21:35:23,621 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'SRE', 'direction': 'Long', 'entry': 84.35, 'sl': 75.23, 'tp': 98.04}}
+2026-08-07 21:35:23,622 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===

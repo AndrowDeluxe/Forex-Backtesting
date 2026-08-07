@@ -1,0 +1,167 @@
+===== run_20260807_153533.log =====
+2026-08-07 15:35:33,562 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260807_153533.log ===
+2026-08-07 15:35:33,749 INFO run_once.konto3_tickmill: 12 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-07 15:35:33,751 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3519.33, aktueller Drawdown -0.02% (Limit 20.0%)
+2026-08-07 15:35:33,755 INFO executor: Für CVS ist bereits eine Position offen (Ticket 246913807) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 15:35:33,756 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 96.2, 'sl': 89.96, 'tp': 105.56}}
+2026-08-07 15:35:33,757 INFO executor: Für D ist bereits eine Position offen (Ticket 247591905) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 15:35:33,757 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 66.82, 'sl': 64.38, 'tp': 70.47}}
+2026-08-07 15:35:33,760 WARNING executor: Symbol 'FRT' (MT5-Name 'FRT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 15:35:33,760 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FRT', 'direction': 'Long', 'entry': 117.9, 'sl': 113.34, 'tp': 124.74}}
+2026-08-07 15:35:33,762 INFO executor: Für REG ist bereits eine Position offen (Ticket 247633647) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 15:35:33,762 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'REG', 'direction': 'Long', 'entry': 76.93, 'sl': 74.05, 'tp': 81.26}}
+2026-08-07 15:35:33,765 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 15:35:33,765 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1282.44, 'sl': 1211.69, 'tp': 1388.56}}
+2026-08-07 15:35:33,766 WARNING executor: Symbol 'BBY' (MT5-Name 'BBY') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 15:35:33,766 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'BBY', 'direction': 'Long', 'entry': 80.02, 'sl': 75.15, 'tp': 87.32}}
+2026-08-07 15:35:33,768 INFO executor: Für UNH ist bereits eine Position offen (Ticket 246172300) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 15:35:33,768 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'UNH', 'direction': 'Long', 'entry': 403.99, 'sl': 388.31, 'tp': 427.51}}
+2026-08-07 15:35:33,769 INFO executor: Für ROK ist bereits eine Position offen (Ticket 247635064) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 15:35:33,769 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'ROK', 'direction': 'Long', 'entry': 441.77, 'sl': 421.66, 'tp': 471.95}}
+2026-08-07 15:35:33,771 WARNING executor: Symbol 'KIM' (MT5-Name 'KIM') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 15:35:33,771 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'KIM', 'direction': 'Long', 'entry': 24.42, 'sl': 23.29, 'tp': 26.12}}
+2026-08-07 15:35:33,772 WARNING executor: Symbol 'DOC' (MT5-Name 'DOC') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 15:35:33,773 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DOC', 'direction': 'Long', 'entry': 21.09, 'sl': 20.2, 'tp': 22.43}}
+2026-08-07 15:35:33,774 WARNING executor: Symbol 'FE' (MT5-Name 'FE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 15:35:33,775 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FE', 'direction': 'Long', 'entry': 47.37, 'sl': 46.05, 'tp': 49.35}}
+2026-08-07 15:35:33,776 WARNING executor: Symbol 'CON.DE' (MT5-Name 'CON.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 15:35:33,776 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CON.DE', 'direction': 'Long', 'entry': 68.0, 'sl': 64.89, 'tp': 72.66}}
+2026-08-07 15:35:33,777 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260807_163526.log =====
+2026-08-07 16:35:26,721 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260807_163526.log ===
+2026-08-07 16:35:26,772 INFO run_once.konto3_tickmill: 12 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-07 16:35:26,774 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3519.33, aktueller Drawdown -3.06% (Limit 20.0%)
+2026-08-07 16:35:26,777 INFO executor: Für CVS ist bereits eine Position offen (Ticket 246913807) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 16:35:26,778 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 96.2, 'sl': 89.96, 'tp': 105.56}}
+2026-08-07 16:35:26,779 INFO executor: Für D ist bereits eine Position offen (Ticket 247591905) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 16:35:26,780 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 66.82, 'sl': 64.38, 'tp': 70.47}}
+2026-08-07 16:35:26,781 WARNING executor: Symbol 'FRT' (MT5-Name 'FRT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 16:35:26,782 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FRT', 'direction': 'Long', 'entry': 117.9, 'sl': 113.34, 'tp': 124.74}}
+2026-08-07 16:35:26,784 INFO executor: Für REG ist bereits eine Position offen (Ticket 247633647) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 16:35:26,784 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'REG', 'direction': 'Long', 'entry': 76.93, 'sl': 74.05, 'tp': 81.26}}
+2026-08-07 16:35:26,785 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 16:35:26,785 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1282.44, 'sl': 1211.69, 'tp': 1388.56}}
+2026-08-07 16:35:26,787 WARNING executor: Symbol 'BBY' (MT5-Name 'BBY') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 16:35:26,787 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'BBY', 'direction': 'Long', 'entry': 80.02, 'sl': 75.15, 'tp': 87.32}}
+2026-08-07 16:35:26,789 INFO executor: Für UNH ist bereits eine Position offen (Ticket 246172300) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 16:35:26,789 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'UNH', 'direction': 'Long', 'entry': 403.99, 'sl': 388.31, 'tp': 427.51}}
+2026-08-07 16:35:26,790 INFO executor: Für ROK ist bereits eine Position offen (Ticket 247635064) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 16:35:26,790 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'ROK', 'direction': 'Long', 'entry': 441.77, 'sl': 421.66, 'tp': 471.95}}
+2026-08-07 16:35:26,792 WARNING executor: Symbol 'KIM' (MT5-Name 'KIM') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 16:35:26,792 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'KIM', 'direction': 'Long', 'entry': 24.42, 'sl': 23.29, 'tp': 26.12}}
+2026-08-07 16:35:26,793 WARNING executor: Symbol 'DOC' (MT5-Name 'DOC') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 16:35:26,793 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DOC', 'direction': 'Long', 'entry': 21.09, 'sl': 20.2, 'tp': 22.43}}
+2026-08-07 16:35:26,794 WARNING executor: Symbol 'FE' (MT5-Name 'FE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 16:35:26,795 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FE', 'direction': 'Long', 'entry': 47.37, 'sl': 46.05, 'tp': 49.35}}
+2026-08-07 16:35:26,797 WARNING executor: Symbol 'CON.DE' (MT5-Name 'CON.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 16:35:26,797 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CON.DE', 'direction': 'Long', 'entry': 68.0, 'sl': 64.89, 'tp': 72.66}}
+2026-08-07 16:35:26,797 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260807_173526.log =====
+2026-08-07 17:35:26,536 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260807_173526.log ===
+2026-08-07 17:35:26,584 INFO run_once.konto3_tickmill: 12 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-07 17:35:26,586 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3519.33, aktueller Drawdown -2.84% (Limit 20.0%)
+2026-08-07 17:35:26,588 INFO executor: Für CVS ist bereits eine Position offen (Ticket 246913807) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 17:35:26,589 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 96.2, 'sl': 89.96, 'tp': 105.56}}
+2026-08-07 17:35:26,590 INFO executor: Für D ist bereits eine Position offen (Ticket 247591905) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 17:35:26,590 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 66.82, 'sl': 64.38, 'tp': 70.47}}
+2026-08-07 17:35:26,591 WARNING executor: Symbol 'FRT' (MT5-Name 'FRT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 17:35:26,591 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FRT', 'direction': 'Long', 'entry': 117.9, 'sl': 113.34, 'tp': 124.74}}
+2026-08-07 17:35:26,592 INFO executor: Für REG ist bereits eine Position offen (Ticket 247633647) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 17:35:26,592 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'REG', 'direction': 'Long', 'entry': 76.93, 'sl': 74.05, 'tp': 81.26}}
+2026-08-07 17:35:26,594 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 17:35:26,594 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1282.44, 'sl': 1211.69, 'tp': 1388.56}}
+2026-08-07 17:35:26,595 WARNING executor: Symbol 'BBY' (MT5-Name 'BBY') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 17:35:26,595 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'BBY', 'direction': 'Long', 'entry': 80.02, 'sl': 75.15, 'tp': 87.32}}
+2026-08-07 17:35:26,596 INFO executor: Für UNH ist bereits eine Position offen (Ticket 246172300) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 17:35:26,596 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'UNH', 'direction': 'Long', 'entry': 403.99, 'sl': 388.31, 'tp': 427.51}}
+2026-08-07 17:35:26,598 INFO executor: Für ROK ist bereits eine Position offen (Ticket 247635064) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 17:35:26,598 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'ROK', 'direction': 'Long', 'entry': 441.77, 'sl': 421.66, 'tp': 471.95}}
+2026-08-07 17:35:26,600 WARNING executor: Symbol 'KIM' (MT5-Name 'KIM') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 17:35:26,600 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'KIM', 'direction': 'Long', 'entry': 24.42, 'sl': 23.29, 'tp': 26.12}}
+2026-08-07 17:35:26,601 WARNING executor: Symbol 'DOC' (MT5-Name 'DOC') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 17:35:26,602 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DOC', 'direction': 'Long', 'entry': 21.09, 'sl': 20.2, 'tp': 22.43}}
+2026-08-07 17:35:26,603 WARNING executor: Symbol 'FE' (MT5-Name 'FE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 17:35:26,603 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FE', 'direction': 'Long', 'entry': 47.37, 'sl': 46.05, 'tp': 49.35}}
+2026-08-07 17:35:26,604 WARNING executor: Symbol 'CON.DE' (MT5-Name 'CON.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 17:35:26,604 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CON.DE', 'direction': 'Long', 'entry': 68.0, 'sl': 64.89, 'tp': 72.66}}
+2026-08-07 17:35:26,605 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260807_183524.log =====
+2026-08-07 18:35:24,393 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260807_183524.log ===
+2026-08-07 18:35:24,485 INFO executor: SL für D (Ticket 247591905) auf Break-Even (66.6400) gesetzt.
+2026-08-07 18:35:24,489 INFO run_once.konto3_tickmill: Break-Even-Management: [{'status': 'moved', 'ticket': 247591905, 'symbol': 'D', 'sl': 66.64}]
+2026-08-07 18:35:24,500 INFO run_once.konto3_tickmill: 12 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-07 18:35:24,502 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3519.33, aktueller Drawdown -3.56% (Limit 20.0%)
+2026-08-07 18:35:24,504 INFO executor: Für CVS ist bereits eine Position offen (Ticket 246913807) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 18:35:24,504 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 96.2, 'sl': 89.96, 'tp': 105.56}}
+2026-08-07 18:35:24,506 INFO executor: Für D ist bereits eine Position offen (Ticket 247591905) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 18:35:24,506 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'D', 'direction': 'Long', 'entry': 66.82, 'sl': 64.38, 'tp': 70.47}}
+2026-08-07 18:35:24,507 WARNING executor: Symbol 'FRT' (MT5-Name 'FRT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 18:35:24,507 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FRT', 'direction': 'Long', 'entry': 117.9, 'sl': 113.34, 'tp': 124.74}}
+2026-08-07 18:35:24,509 INFO executor: Für REG ist bereits eine Position offen (Ticket 247633647) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 18:35:24,509 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'REG', 'direction': 'Long', 'entry': 76.93, 'sl': 74.05, 'tp': 81.26}}
+2026-08-07 18:35:24,512 WARNING executor: Symbol 'GWW' (MT5-Name 'GWW') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 18:35:24,512 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'GWW', 'direction': 'Long', 'entry': 1282.44, 'sl': 1211.69, 'tp': 1388.56}}
+2026-08-07 18:35:24,514 WARNING executor: Symbol 'BBY' (MT5-Name 'BBY') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 18:35:24,514 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'BBY', 'direction': 'Long', 'entry': 80.02, 'sl': 75.15, 'tp': 87.32}}
+2026-08-07 18:35:24,515 INFO executor: Für UNH ist bereits eine Position offen (Ticket 246172300) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 18:35:24,516 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'UNH', 'direction': 'Long', 'entry': 403.99, 'sl': 388.31, 'tp': 427.51}}
+2026-08-07 18:35:24,517 INFO executor: Für ROK ist bereits eine Position offen (Ticket 247635064) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 18:35:24,517 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'ROK', 'direction': 'Long', 'entry': 441.77, 'sl': 421.66, 'tp': 471.95}}
+2026-08-07 18:35:24,519 WARNING executor: Symbol 'KIM' (MT5-Name 'KIM') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 18:35:24,519 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'KIM', 'direction': 'Long', 'entry': 24.42, 'sl': 23.29, 'tp': 26.12}}
+2026-08-07 18:35:24,520 WARNING executor: Symbol 'DOC' (MT5-Name 'DOC') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 18:35:24,521 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DOC', 'direction': 'Long', 'entry': 21.09, 'sl': 20.2, 'tp': 22.43}}
+2026-08-07 18:35:24,522 WARNING executor: Symbol 'FE' (MT5-Name 'FE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 18:35:24,522 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FE', 'direction': 'Long', 'entry': 47.37, 'sl': 46.05, 'tp': 49.35}}
+2026-08-07 18:35:24,524 WARNING executor: Symbol 'CON.DE' (MT5-Name 'CON.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 18:35:24,524 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CON.DE', 'direction': 'Long', 'entry': 68.0, 'sl': 64.89, 'tp': 72.66}}
+2026-08-07 18:35:24,524 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260807_193741.log =====
+2026-08-07 19:37:41,649 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260807_193741.log ===
+2026-08-07 19:37:41,685 INFO run_once.konto3_tickmill: 4 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-07 19:37:41,688 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3519.33, aktueller Drawdown -4.29% (Limit 20.0%)
+2026-08-07 19:37:41,690 INFO executor: Für CVS ist bereits eine Position offen (Ticket 246913807) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 19:37:41,691 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 95.62, 'sl': 88.03, 'tp': 107.01}}
+2026-08-07 19:37:41,967 INFO executor: Order gesendet: {'symbol': 'MNST', 'volume': 8.0, 'type': 'BUY', 'entry': 90.14, 'sl': 85.68, 'tp': 96.89} -> Ticket 248361809
+2026-08-07 19:37:41,973 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'sent', 'order': {'symbol': 'MNST', 'volume': 8.0, 'type': 'BUY', 'entry': 90.14, 'sl': 85.68, 'tp': 96.89}, 'signal': {'symbol': 'MNST', 'direction': 'Long', 'entry': 90.16, 'sl': 85.68, 'tp': 96.89}, 'ticket': 248361809, 'risk': 35.67999999999995}
+2026-08-07 19:37:41,981 INFO executor: Für REG ist bereits eine Position offen (Ticket 247633647) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 19:37:41,981 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'REG', 'direction': 'Long', 'entry': 77.1, 'sl': 73.82, 'tp': 82.02}}
+2026-08-07 19:37:41,984 WARNING executor: Symbol 'CON.DE' (MT5-Name 'CON.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 19:37:41,984 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CON.DE', 'direction': 'Long', 'entry': 68.0, 'sl': 64.89, 'tp': 72.66}}
+2026-08-07 19:37:41,985 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260807_203523.log =====
+2026-08-07 20:35:23,596 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260807_203523.log ===
+2026-08-07 20:35:23,639 INFO run_once.konto3_tickmill: 4 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-07 20:35:23,642 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3519.33, aktueller Drawdown -4.12% (Limit 20.0%)
+2026-08-07 20:35:23,645 INFO executor: Für CVS ist bereits eine Position offen (Ticket 246913807) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 20:35:23,646 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 95.62, 'sl': 88.03, 'tp': 107.01}}
+2026-08-07 20:35:23,648 INFO run_once.konto3_tickmill: Bereits heute ausgeführt, übersprungen: {'symbol': 'MNST', 'direction': 'Long', 'entry': 90.16, 'sl': 85.68, 'tp': 96.89}
+2026-08-07 20:35:23,649 INFO executor: Für REG ist bereits eine Position offen (Ticket 247633647) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 20:35:23,650 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'REG', 'direction': 'Long', 'entry': 77.1, 'sl': 73.82, 'tp': 82.02}}
+2026-08-07 20:35:23,651 WARNING executor: Symbol 'CON.DE' (MT5-Name 'CON.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 20:35:23,651 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CON.DE', 'direction': 'Long', 'entry': 68.0, 'sl': 64.89, 'tp': 72.66}}
+2026-08-07 20:35:23,652 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260807_213523.log =====
+2026-08-07 21:35:23,820 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260807_213523.log ===
+2026-08-07 21:35:23,846 INFO run_once.konto3_tickmill: 4 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-07 21:35:23,848 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3519.33, aktueller Drawdown -4.41% (Limit 20.0%)
+2026-08-07 21:35:23,850 INFO executor: Für CVS ist bereits eine Position offen (Ticket 246913807) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 21:35:23,850 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 95.62, 'sl': 88.03, 'tp': 107.01}}
+2026-08-07 21:35:23,851 INFO run_once.konto3_tickmill: Bereits heute ausgeführt, übersprungen: {'symbol': 'MNST', 'direction': 'Long', 'entry': 90.16, 'sl': 85.68, 'tp': 96.89}
+2026-08-07 21:35:23,853 INFO executor: Für REG ist bereits eine Position offen (Ticket 247633647) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-07 21:35:23,853 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'REG', 'direction': 'Long', 'entry': 77.1, 'sl': 73.82, 'tp': 82.02}}
+2026-08-07 21:35:23,854 WARNING executor: Symbol 'CON.DE' (MT5-Name 'CON.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-07 21:35:23,854 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CON.DE', 'direction': 'Long', 'entry': 68.0, 'sl': 64.89, 'tp': 72.66}}
+2026-08-07 21:35:23,854 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===

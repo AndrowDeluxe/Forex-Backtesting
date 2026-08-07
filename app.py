@@ -42,6 +42,9 @@ ou_scanner = st.Page(
 education = st.Page("app_pages/education.py", title="Education", icon=":material/school:")
 risk_management = st.Page("app_pages/risk_management.py", title="Risk Management", icon=":material/shield:")
 paper151 = st.Page("app_pages/paper151.py", title="151 Trading Strategies", icon=":material/auto_stories:")
+goldi_papers_202608 = st.Page(
+    "app_pages/goldi_papers_202608.py", title="Neue Papers (Aug. 2026)", icon=":material/library_books:"
+)
 
 page = st.navigation(
     {
@@ -54,6 +57,7 @@ page = st.navigation(
         ],
         "Strategie Bestandteile": [cls_advanced, orb_writeup, triple_ma, risk_management],
         "150 Strategien Paper": [paper151],
+        "Neue Papers": [goldi_papers_202608],
         "Paper Research": [paper_research],
         "Education": [education],
     }

@@ -22,8 +22,8 @@ Stellen, wo eine Strategie **keinen** robusten Edge zeigt.
 
 st.space("medium")
 
-tab_live, tab_backtests, tab_components, tab_paper151 = st.tabs(
-    ["Live Logs", "Backtests", "Strategie Bestandteile", "151 Trading Strategies"]
+tab_live, tab_backtests, tab_components, tab_paper151, tab_new_papers = st.tabs(
+    ["Live Logs", "Backtests", "Strategie Bestandteile", "151 Trading Strategies", "Neue Papers"]
 )
 
 # =============================================================================
@@ -270,6 +270,28 @@ with tab_paper151:
                 "Backtest folgt erst nach gemeinsamer Durchsicht."
             )
         st.page_link("app_pages/paper151.py", label="Seite öffnen", icon=":material/arrow_forward:")
+
+# =============================================================================
+# Neue Papers (Aug. 2026)
+# =============================================================================
+with tab_new_papers:
+    col_np, _spacer7, _spacer8 = st.columns(3, border=True)
+    with col_np:
+        st.markdown("### :material/library_books: Fünf neue Papers")
+        st.caption("User-Upload, 2026-08-08 — Foreign Flow, GEX, Lead-Lag, Forecaster-Grading, COT-Sentiment")
+        st.markdown(
+            "Fünf SSRN-Papers, ein Tab pro Paper: extrahierte Strategiebestandteile/Filter/Modelle "
+            "mit ehrlicher Machbarkeits-Einschätzung. Nur zwei der fünf sind mit vorhandenen Daten "
+            "direkt testbar (Gold-Silber-BTC-Lead-Lag, COT-Sentiment) — beide werden im Anschluss "
+            "gegen den Gold Asian-Range Breakout getestet."
+        )
+        with st.container(border=True):
+            st.markdown("**Status**")
+            st.caption(
+                "Sammelseite mit Machbarkeits-Verdikt pro Paper. GEX und Korea-Foreign-Flow sind "
+                "dokumentiert, aber ohne Optionsdaten bzw. Korea-Marktdaten nicht umsetzbar."
+            )
+        st.page_link("app_pages/goldi_papers_202608.py", label="Seite öffnen", icon=":material/arrow_forward:")
 
 st.space("medium")
 st.caption(

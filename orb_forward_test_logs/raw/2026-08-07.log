@@ -1,0 +1,238 @@
+===== run_20260807_000002.log =====
+2026-08-07 00:00:02,510 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_000002.log ===
+2026-08-07 00:00:02,521 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_012545.log =====
+2026-08-07 01:25:45,337 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_012545.log ===
+2026-08-07 01:25:45,366 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_123317.log =====
+2026-08-07 12:33:17,224 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_123317.log ===
+2026-08-07 12:33:17,433 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_124502.log =====
+2026-08-07 12:45:02,912 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_124502.log ===
+2026-08-07 12:45:02,948 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_130003.log =====
+2026-08-07 13:00:03,307 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_130003.log ===
+2026-08-07 13:00:03,344 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_131503.log =====
+2026-08-07 13:15:03,292 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_131503.log ===
+2026-08-07 13:15:03,299 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_133003.log =====
+2026-08-07 13:30:03,263 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_133003.log ===
+2026-08-07 13:30:03,301 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_134503.log =====
+2026-08-07 13:45:03,094 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_134503.log ===
+2026-08-07 13:45:03,104 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_140002.log =====
+2026-08-07 14:00:02,778 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_140002.log ===
+2026-08-07 14:00:02,788 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_141502.log =====
+2026-08-07 14:15:02,729 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_141502.log ===
+2026-08-07 14:15:02,766 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_143003.log =====
+2026-08-07 14:30:03,288 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_143003.log ===
+2026-08-07 14:30:03,324 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_144503.log =====
+2026-08-07 14:45:03,162 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_144503.log ===
+2026-08-07 14:45:03,223 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_150002.log =====
+2026-08-07 15:00:02,829 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_150002.log ===
+2026-08-07 15:00:02,858 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_151503.log =====
+2026-08-07 15:15:03,479 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_151503.log ===
+2026-08-07 15:15:03,512 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_153006.log =====
+2026-08-07 15:30:06,416 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_153006.log ===
+2026-08-07 15:30:06,589 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_154502.log =====
+2026-08-07 15:45:02,839 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_154502.log ===
+2026-08-07 15:45:02,876 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_160003.log =====
+2026-08-07 16:00:03,764 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_160003.log ===
+2026-08-07 16:00:03,842 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_161503.log =====
+2026-08-07 16:15:03,628 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_161503.log ===
+2026-08-07 16:15:03,665 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_163003.log =====
+2026-08-07 16:30:03,463 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_163003.log ===
+2026-08-07 16:30:03,501 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_164503.log =====
+2026-08-07 16:45:03,956 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_164503.log ===
+2026-08-07 16:45:03,993 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_170003.log =====
+2026-08-07 17:00:03,081 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_170003.log ===
+2026-08-07 17:00:03,140 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_171503.log =====
+2026-08-07 17:15:03,225 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_171503.log ===
+2026-08-07 17:15:03,260 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_173004.log =====
+2026-08-07 17:30:04,303 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_173004.log ===
+2026-08-07 17:30:04,311 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_174504.log =====
+2026-08-07 17:45:04,083 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_174504.log ===
+2026-08-07 17:45:04,091 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_180003.log =====
+2026-08-07 18:00:03,928 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_180003.log ===
+2026-08-07 18:00:03,954 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_181503.log =====
+2026-08-07 18:15:03,914 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_181503.log ===
+2026-08-07 18:15:03,921 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_183003.log =====
+2026-08-07 18:30:03,274 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_183003.log ===
+2026-08-07 18:30:03,279 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_184503.log =====
+2026-08-07 18:45:03,254 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_184503.log ===
+2026-08-07 18:45:03,260 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_190003.log =====
+2026-08-07 19:00:03,470 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_190003.log ===
+2026-08-07 19:00:03,474 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_191503.log =====
+2026-08-07 19:15:03,066 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_191503.log ===
+2026-08-07 19:15:03,071 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_193003.log =====
+2026-08-07 19:30:03,037 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_193003.log ===
+2026-08-07 19:30:03,041 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_194503.log =====
+2026-08-07 19:45:03,362 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_194503.log ===
+2026-08-07 19:45:03,366 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_200003.log =====
+2026-08-07 20:00:03,065 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_200003.log ===
+2026-08-07 20:00:03,070 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_201503.log =====
+2026-08-07 20:15:03,042 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_201503.log ===
+2026-08-07 20:15:03,045 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_203003.log =====
+2026-08-07 20:30:03,100 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_203003.log ===
+2026-08-07 20:30:03,105 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_204503.log =====
+2026-08-07 20:45:03,342 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_204503.log ===
+2026-08-07 20:45:03,347 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_210003.log =====
+2026-08-07 21:00:03,069 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_210003.log ===
+2026-08-07 21:00:03,074 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_211503.log =====
+2026-08-07 21:15:03,515 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_211503.log ===
+2026-08-07 21:15:03,521 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_213003.log =====
+2026-08-07 21:30:03,575 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_213003.log ===
+2026-08-07 21:30:03,581 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_214503.log =====
+2026-08-07 21:45:03,434 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_214503.log ===
+2026-08-07 21:45:03,439 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_220003.log =====
+2026-08-07 22:00:03,244 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_220003.log ===
+2026-08-07 22:00:03,248 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_221503.log =====
+2026-08-07 22:15:03,094 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_221503.log ===
+2026-08-07 22:15:03,098 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_223003.log =====
+2026-08-07 22:30:03,533 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_223003.log ===
+2026-08-07 22:30:03,537 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_224503.log =====
+2026-08-07 22:45:03,137 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_224503.log ===
+2026-08-07 22:45:03,142 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_230003.log =====
+2026-08-07 23:00:03,512 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_230003.log ===
+2026-08-07 23:00:03,517 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_231505.log =====
+2026-08-07 23:15:05,860 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_231505.log ===
+2026-08-07 23:15:05,946 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_233005.log =====
+2026-08-07 23:30:05,975 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_233005.log ===
+2026-08-07 23:30:06,035 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.
+
+
+===== run_20260807_234503.log =====
+2026-08-07 23:45:03,664 INFO run_once: === Lauf gestartet (DRY_RUN=False) - Log: logs\run_20260807_234503.log ===
+2026-08-07 23:45:03,671 ERROR run_once: MT5-Verbindung fehlgeschlagen: Terminal ist in Konto 5053949028 eingeloggt, erwartet wurde 110209087. Abbruch - keine Order wird gesendet.

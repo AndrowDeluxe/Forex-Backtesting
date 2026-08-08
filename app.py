@@ -45,6 +45,12 @@ paper151 = st.Page("app_pages/paper151.py", title="151 Trading Strategies", icon
 goldi_papers_202608 = st.Page(
     "app_pages/goldi_papers_202608.py", title="Neue Papers (Aug. 2026)", icon=":material/library_books:"
 )
+execution_overlay_writeup = st.Page(
+    "app_pages/execution_overlay_writeup.py", title="Execution-Overlay", icon=":material/timer:"
+)
+gap_fade_writeup = st.Page(
+    "app_pages/gap_fade_writeup.py", title="Gap-Fade EUR/USD", icon=":material/south_east:"
+)
 
 page = st.navigation(
     {
@@ -55,7 +61,10 @@ page = st.navigation(
             adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook,
             asian_range_breakout, orb_strategy_page, ou_paper_backtest,
         ],
-        "Strategie Bestandteile": [cls_advanced, orb_writeup, triple_ma, risk_management],
+        "Strategie Bestandteile": [
+            cls_advanced, orb_writeup, triple_ma, risk_management,
+            execution_overlay_writeup, gap_fade_writeup,
+        ],
         "150 Strategien Paper": [paper151],
         "Neue Papers": [goldi_papers_202608],
         "Paper Research": [paper_research],

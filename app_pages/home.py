@@ -203,51 +203,117 @@ with tab_backtests:
 # Strategie Bestandteile
 # =============================================================================
 with tab_components:
-    col_a, _spacer1, _spacer2 = st.columns(3, border=False)
+    col_a, col_b, col_c = st.columns(3, border=True)
     with col_a:
+        st.markdown("### :material/timeline: CLS Strategie")
+        st.caption("Settlement-Fenster-Entscheidungsbaum (06:00-12:00), Break-Hold-Test")
+        st.markdown(
+            "Multi-Fenster-Framework (Pre-Settle/Settle/Test/Post-Settle, deutsche Zeit): "
+            "haelt der 06:00-09:00-Move den 09:15-Test, bestaetigt durch eine breite "
+            "Dollar-Bewegung über die anderen 5 Majors? Zwei Modelle: Continuation "
+            "(gehaltener Break) und Reversal (Fade eines gescheiterten Breaks). Eigener "
+            "Tab \"Strategiebestandteile\" erklaert das Framework im Detail."
+        )
         with st.container(border=True):
-            st.markdown("### :material/timeline: CLS Strategie")
-            st.caption("Settlement-Fenster-Entscheidungsbaum (06:00-12:00), Break-Hold-Test")
-            st.markdown(
-                "Multi-Fenster-Framework (Pre-Settle/Settle/Test/Post-Settle, deutsche Zeit): "
-                "haelt der 06:00-09:00-Move den 09:15-Test, bestaetigt durch eine breite "
-                "Dollar-Bewegung über die anderen 5 Majors? Zwei Modelle: Continuation "
-                "(gehaltener Break) und Reversal (Fade eines gescheiterten Breaks). Eigener "
-                "Tab \"Strategiebestandteile\" erklaert das Framework im Detail."
+            st.markdown("**Ehrlicher Befund**")
+            st.caption(
+                "Auf 10 Jahren/6 Paaren haelt die Kernthese: bestaetigte Breaks halten "
+                "konsistent oefter (~53-59%) als unbestaetigte (~40-53%). Als mechanische "
+                "Handelsregel aber kein Edge (Profit Factor 0.91-0.96, nach Kosten leicht "
+                "negativ) — der \"Rates\"-Teil der Quelle ist mangels Datenquelle nicht getestet."
             )
-            with st.container(border=True):
-                st.markdown("**Ehrlicher Befund**")
-                st.caption(
-                    "Auf 10 Jahren/6 Paaren haelt die Kernthese: bestaetigte Breaks halten "
-                    "konsistent oefter (~53-59%) als unbestaetigte (~40-53%). Als mechanische "
-                    "Handelsregel aber kein Edge (Profit Factor 0.91-0.96, nach Kosten leicht "
-                    "negativ) — der \"Rates\"-Teil der Quelle ist mangels Datenquelle nicht getestet."
-                )
-            st.page_link("app_pages/cls_advanced.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
+        st.page_link("app_pages/cls_advanced.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
 
-    col_tma, _spacer3, _spacer4 = st.columns(3, border=False)
-    with col_tma:
+    with col_b:
+        st.markdown("### :material/filter_alt: Kalman-Filter")
+        st.caption("Signal-Processing-Baustein (fremdes Paper, Gold/XAU-USD-DRL)")
+        st.markdown(
+            "Kausaler Kalman-Smoother zur Rauschunterdrueckung plus rollierende "
+            "Z-Score-Normalisierung -- als eigenstaendiger, importierbarer Baustein "
+            "gehalten, bewusst getrennt von jeder konkreten Strategie (nicht mit "
+            "ADX-VWAP vermischt)."
+        )
         with st.container(border=True):
-            st.markdown("### :material/stacked_line_chart: Triple Moving Average")
-            st.caption("TEMA/TSMA + GMM-Regime-Cluster + ATR-SL/TP -- Bausteine, noch keine Kante")
-            st.markdown(
-                "Triple-nested EMA/SMA (n=252, \"12 Monate\") long/flat, plus eine "
-                "20/30/50-Tage \"Three Triple\"-Crossover-Variante. Gaussian-Mixture-"
-                "Regime-Cluster (wahlweise als Entry-Filter) und ein optionales "
-                "ATR-Stop/Kursziel-Risikomanagement stehen als eigenständige, "
-                "wiederverwendbare Bausteine bereit. FX-Majors, Gold/Silber/Indizes/"
-                "Öl (Dukascopy) sowie BTC (Binance)."
+            st.markdown("**Einordnung**")
+            st.caption(
+                "Das Quell-Paper behauptet Sharpe 10-13 bei <1,5% Max-Drawdown -- "
+                "unplausibel, nicht nachgebaut oder validiert. Hier nur der isolierte, "
+                "eigenstaendig pruefbare Filter-Baustein, kein Backtest."
             )
-            with st.container(border=True):
-                st.markdown("**Ehrlicher Befund**")
-                st.caption(
-                    "Alle Grundvarianten sind vor Kosten durchweg profitabel (Profit "
-                    "Factor 1.6-2.7), liegen aber deutlich hinter Buy & Hold zurück. "
-                    "Weder Regime-Entry-Filter noch ATR-Stop/Kursziel verbessern das "
-                    "robust -- noch keine eigenständige Kante, aber solide Bausteine "
-                    "(TEMA/TSMA, GMM-Regimes, Risiko-Engine) für die nächste Iteration."
-                )
-            st.page_link("app_pages/triple_ma.py", label="Bausteine ansehen", icon=":material/arrow_forward:")
+        st.page_link("app_pages/kalman_filter.py", label="Baustein ansehen", icon=":material/arrow_forward:")
+
+    with col_c:
+        st.markdown("### :material/candlestick_chart: ADX-VWAP Bausteine")
+        st.caption("Die vier Einzelbausteine hinter dem Composite-Signal (Eq. 14)")
+        st.markdown(
+            "Session-VWAP-Deviation, Vortages-Extreme, ADX-Momentum-Decay und "
+            "adaptive Theta-Schwelle -- einzeln erklaert und importierbar, getrennt "
+            "von den Backtest-Zahlen der ADX-VWAP FX-Strategie."
+        )
+        with st.container(border=True):
+            st.markdown("**Ehrlicher Befund**")
+            st.caption(
+                "Pure-These (Eq. 14 woertlich) ist auf 10 Jahren echten Daten auf allen "
+                "6 Paaren negativ. Verfeinerte Variante (Walk-Forward-Screen) ist bester "
+                "Kandidat, aber unbestaetigt -- duenne Stichprobe."
+            )
+        st.page_link("app_pages/adx_vwap_writeup.py", label="Bausteine ansehen", icon=":material/arrow_forward:")
+
+    col_tma, col_overlay, col_gap = st.columns(3, border=True)
+    with col_tma:
+        st.markdown("### :material/stacked_line_chart: Triple Moving Average")
+        st.caption("TEMA/TSMA + GMM-Regime-Cluster + ATR-SL/TP -- Bausteine, noch keine Kante")
+        st.markdown(
+            "Triple-nested EMA/SMA (n=252, \"12 Monate\") long/flat, plus eine "
+            "20/30/50-Tage \"Three Triple\"-Crossover-Variante. Gaussian-Mixture-"
+            "Regime-Cluster (wahlweise als Entry-Filter) und ein optionales "
+            "ATR-Stop/Kursziel-Risikomanagement stehen als eigenständige, "
+            "wiederverwendbare Bausteine bereit. FX-Majors, Gold/Silber/Indizes/"
+            "Öl (Dukascopy) sowie BTC (Binance)."
+        )
+        with st.container(border=True):
+            st.markdown("**Ehrlicher Befund**")
+            st.caption(
+                "Alle Grundvarianten sind vor Kosten durchweg profitabel (Profit "
+                "Factor 1.6-2.7), liegen aber deutlich hinter Buy & Hold zurück. "
+                "Weder Regime-Entry-Filter noch ATR-Stop/Kursziel verbessern das "
+                "robust -- noch keine eigenständige Kante, aber solide Bausteine "
+                "(TEMA/TSMA, GMM-Regimes, Risiko-Engine) für die nächste Iteration."
+            )
+        st.page_link("app_pages/triple_ma.py", label="Bausteine ansehen", icon=":material/arrow_forward:")
+
+    with col_overlay:
+        st.markdown("### :material/timer: Execution-Overlay")
+        st.caption("Fast Alpha als Timing-Filter (Zarattini & Pagani 2026) -- noch kein Backtest")
+        st.markdown(
+            "Ein 5-Min-Mean-Reversion-Signal, das als Solo-Strategie an Kosten stirbt "
+            "(netto CAGR -0,7%), aber als reiner Timing-Filter für eine ATR-Breakout-"
+            "Trendstrategie den Einstiegspreis verbessert -- verändert nie das Signal, "
+            "nur den Ausführungszeitpunkt."
+        )
+        with st.container(border=True):
+            st.markdown("**Im Original (SPY, netto)**")
+            st.caption(
+                "Ohne Overlay CAGR 13,2% / Sharpe 0,86 -> mit Overlay CAGR 15,3% / "
+                "Sharpe 0,99. Noch nicht auf FX getestet."
+            )
+        st.page_link("app_pages/execution_overlay_writeup.py", label="Baustein ansehen", icon=":material/arrow_forward:")
+
+    with col_gap:
+        st.markdown("### :material/south_east: Gap-Fade EUR/USD")
+        st.caption("Wochenend-Gap-Anomalie (Caporale & Plastun 2016) -- noch kein Backtest")
+        st.markdown(
+            "Von sechs getesteten Gap-Hypothesen über FX/Rohstoffe/Aktien bleibt nur in "
+            "EUR/USD und GBP/USD ein signifikanter, mechanisch handelbarer Effekt: "
+            "positive Montags-Gaps faden, EOD glattstellen."
+        )
+        with st.container(border=True):
+            st.markdown("**Im Original (2000-2015)**")
+            st.caption(
+                "EUR/USD 63,5% Trefferquote / 148 Trades, GBP/USD 60,0% / 221 Trades, "
+                "beide z>1,96. Sample endet 2015 -- Out-of-Sample-Nachweis noch offen."
+            )
+        st.page_link("app_pages/gap_fade_writeup.py", label="Baustein ansehen", icon=":material/arrow_forward:")
 
 
 # =============================================================================
@@ -276,9 +342,9 @@ with tab_paper151:
 # Neue Papers (Aug. 2026)
 # =============================================================================
 with tab_new_papers:
-    col_np, _spacer7, _spacer8 = st.columns(3, border=True)
+    col_np, col_np2, _spacer8 = st.columns(3, border=True)
     with col_np:
-        st.markdown("### :material/library_books: Fünf neue Papers")
+        st.markdown("### :material/library_books: Fünf neue Papers (Gold)")
         st.caption("User-Upload, 2026-08-08 — Foreign Flow, GEX, Lead-Lag, Forecaster-Grading, COT-Sentiment")
         st.markdown(
             "Fünf SSRN-Papers, ein Tab pro Paper: extrahierte Strategiebestandteile/Filter/Modelle "
@@ -293,6 +359,26 @@ with tab_new_papers:
                 "dokumentiert, aber ohne Optionsdaten bzw. Korea-Marktdaten nicht umsetzbar."
             )
         st.page_link("app_pages/goldi_papers_202608.py", label="Seite öffnen", icon=":material/arrow_forward:")
+    with col_np2:
+        st.markdown("### :material/currency_exchange: Fünf FX-Papers")
+        st.caption("User-Upload, 2026-08-09 — Marktstruktur, Fibonacci/VWAP-Theorie, Intraday-Momentum, WMR-Fix")
+        st.markdown(
+            "Fünf weitere Papers, gleiches Tab-pro-Paper-Muster, ausführlicher analysiert. "
+            "**Besonderer Fund:** ein Paper ist mit sehr hoher Wahrscheinlichkeit die bisher "
+            "nicht attributierte theoretische Quelle von `strategy/adx_vwap.py` selbst "
+            "(Formeln, Abschnittsnummern und ein Code-Docstring stimmen exakt überein). Zwei "
+            "weitere Papers (Intraday-Momentum London Open, WMR-Fix-Kollusion) wurden "
+            "inzwischen mit eigenen 14,5-Jahre-Backtests getestet."
+        )
+        with st.container(border=True):
+            st.markdown("**Status**")
+            st.caption(
+                "Sammelseite mit Quellenfund + Machbarkeits-Verdikt pro Paper. Intraday-Momentum "
+                "(Tab 3) repliziert NICHT auf eigenen Daten (JPY-Amplifikation und der "
+                "behauptete USD/JPY-Edge kehren sich sogar um). WMR-Fix-Sanity-Check (Tab 4) "
+                "gemischt: Monatsende-Effekt real, Reform-Erklärung nur bei 3/5 Paaren bestätigt."
+            )
+        st.page_link("app_pages/fx_papers_202608.py", label="Seite öffnen", icon=":material/arrow_forward:")
 
 st.space("medium")
 st.caption(

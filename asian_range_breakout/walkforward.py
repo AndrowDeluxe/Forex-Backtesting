@@ -112,6 +112,68 @@ def run_trend_bias_walk_forward(
     return pd.DataFrame(rows)
 
 
+def run_exit_time_walk_forward(
+    trades_by_exit_time: dict[str, pd.DataFrame],
+    default_exit: str,
+    start_test_year: int,
+    end_test_year: int,
+    min_train_trades: int = 30,
+) -> pd.DataFrame:
+    """Same expanding-window discipline as the other walk-forward helpers,
+    but choosing among ExitTime candidates instead of a fixed filter
+    threshold - each dict value is the full production-filter-stack trades
+    DataFrame simulated at that exit time (see
+    scripts/research_gold_exit_time_walk_forward.py). For each test year,
+    picks whichever candidate had the best profit factor on strictly-prior
+    years, then applies that choice forward - compared against always
+    keeping `default_exit` (the current production value)."""
+    rows = []
+    for year in range(start_test_year, end_test_year + 1):
+        best_et, best_pf = None, -float("inf")
+        for et, trades in trades_by_exit_time.items():
+            train = trades[trades["entry_time"].dt.year < year]
+            if len(train) < min_train_trades:
+                continue
+            pf = trade_stats(train)["profit_factor"]
+            if pf > best_pf:
+                best_et, best_pf = et, pf
+
+        default_test = trades_by_exit_time[default_exit]
+        default_test = default_test[default_test["entry_time"].dt.year == year]
+        base = trade_stats(default_test)
+
+        if best_et is None:
+            rows.append(
+                {
+                    "test_year": year,
+                    "chosen_exit": None,
+                    "train_pf": float("nan"),
+                    "n_trades_default": base["n_trades"],
+                    "pf_default": base["profit_factor"],
+                    "n_trades_walkforward": base["n_trades"],
+                    "pf_walkforward": base["profit_factor"],
+                }
+            )
+            continue
+
+        chosen_test = trades_by_exit_time[best_et]
+        chosen_test = chosen_test[chosen_test["entry_time"].dt.year == year]
+        wf = trade_stats(chosen_test)
+
+        rows.append(
+            {
+                "test_year": year,
+                "chosen_exit": best_et,
+                "train_pf": best_pf,
+                "n_trades_default": base["n_trades"],
+                "pf_default": base["profit_factor"],
+                "n_trades_walkforward": wf["n_trades"],
+                "pf_walkforward": wf["profit_factor"],
+            }
+        )
+    return pd.DataFrame(rows)
+
+
 _DELAY_BINS = [0, 3, 7, 999]
 _DELAY_LABELS = ["<=3", "4-7", "8+"]
 

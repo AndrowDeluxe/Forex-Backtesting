@@ -39,11 +39,17 @@ fertige_strategien = st.Page(
 ou_scanner = st.Page(
     "app_pages/ou_scanner.py", title="OU-Modell Live-Signale (Scanner)", icon=":material/radar:"
 )
+gold_bitcoin_dual_momentum = st.Page(
+    "app_pages/gold_bitcoin_dual_momentum.py", title="Gold-Bitcoin Dual Momentum", icon=":material/currency_bitcoin:"
+)
 education = st.Page("app_pages/education.py", title="Education", icon=":material/school:")
 risk_management = st.Page("app_pages/risk_management.py", title="Risk Management", icon=":material/shield:")
 paper151 = st.Page("app_pages/paper151.py", title="151 Trading Strategies", icon=":material/auto_stories:")
 goldi_papers_202608 = st.Page(
     "app_pages/goldi_papers_202608.py", title="Neue Papers (Aug. 2026)", icon=":material/library_books:"
+)
+fx_papers_202608 = st.Page(
+    "app_pages/fx_papers_202608.py", title="FX-Papers (Aug. 2026)", icon=":material/currency_exchange:"
 )
 execution_overlay_writeup = st.Page(
     "app_pages/execution_overlay_writeup.py", title="Execution-Overlay", icon=":material/timer:"
@@ -56,7 +62,7 @@ page = st.navigation(
     {
         "": [home],
         "Live Logs": [ou_modell, orb_forward_test],
-        "Fertige Strategien": [fertige_strategien, ou_scanner],
+        "Fertige Strategien": [fertige_strategien, ou_scanner, gold_bitcoin_dual_momentum],
         "Backtests": [
             adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook,
             asian_range_breakout, orb_strategy_page, ou_paper_backtest,
@@ -66,7 +72,7 @@ page = st.navigation(
             execution_overlay_writeup, gap_fade_writeup,
         ],
         "150 Strategien Paper": [paper151],
-        "Neue Papers": [goldi_papers_202608],
+        "Neue Papers": [goldi_papers_202608, fx_papers_202608],
         "Paper Research": [paper_research],
         "Education": [education],
     }

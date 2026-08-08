@@ -1,10 +1,11 @@
 """Strategie Bestandteile -- Gap-Fade EUR/USD & GBP/USD.
 
-Reine Wissens-/Referenzseite zum Paper Caporale & Plastun (2016), "Price
-Gaps: Another Market Anomaly?", Brunel University London / Sumy State
-University, Working Paper 16-16 (SSRN 2850057). Noch KEIN Backtest -- das
-ist bewusst ein separater, spaeterer Schritt (siehe Info-Box unten), gleiches
-Muster wie orb_writeup.py.
+Wissens-/Referenzseite zum Paper Caporale & Plastun (2016), "Price Gaps:
+Another Market Anomaly?", Brunel University London / Sumy State University,
+Working Paper 16-16 (SSRN 2850057), PLUS der eigene Out-of-Sample-Backtest
+(2016-2026, gap_fade/ + scripts/research_gap_fade.py) -- anders als die
+meisten "Strategiebestandteile"-Seiten hier bereits getestet: kein Edge auf
+keinem der beiden Paare, siehe Befund-Sektion unten.
 """
 
 import streamlit as st
@@ -130,20 +131,80 @@ st.markdown(
 )
 
 st.warning(
-    "**Ehrlicher Vorbehalt:** der 0,05-0,25%-Raster oben wurde in-sample optimiert, "
-    "bevor der finale Test lief -- ein kleines, aber reales Data-Snooping-Element, "
-    "gleiches Grundmuster wie schon mehrfach in diesem Projekt gefunden (z. B. "
-    "checklist_strategy's \"best hours\"-Filter, der OOS scheiterte, oder der "
-    "1-von-135-Combo-\"Gewinner\" bei `strategy/cls_london_breakout.py`). Fuenf "
-    "getestete Werte sind harmlos im Vergleich zu einem 135-Combo-Sweep, aber die "
-    "eigene Nachrechnung sollte den Schwellenwert entweder auf einem Trainingsfenster "
-    "fixieren und out-of-sample pruefen, oder die Sensitivitaet ueber das ganze "
-    "Raster zeigen statt nur den Gewinner.",
+    "**Ehrlicher Vorbehalt zum Paper selbst:** der 0,05-0,25%-Raster oben wurde "
+    "in-sample optimiert, bevor der finale Test lief -- ein kleines, aber reales "
+    "Data-Snooping-Element, gleiches Grundmuster wie schon mehrfach in diesem "
+    "Projekt gefunden (z. B. checklist_strategy's \"best hours\"-Filter, der OOS "
+    "scheiterte, oder der 1-von-135-Combo-\"Gewinner\" bei "
+    "`strategy/cls_london_breakout.py`). Wie unten zu sehen, war das am Ende "
+    "ohnehin nicht der entscheidende Schwachpunkt -- die Regel scheitert OOS "
+    "unabhaengig von der Schwellenwert-Feinabstimmung.",
     icon=":material/warning:",
 )
 
+st.markdown("### Eigener Out-of-Sample-Backtest (2016-2026)")
+st.caption(
+    "Code: `gap_fade/engine.py`, `gap_fade/data.py`, `scripts/research_gap_fade.py` "
+    "-- Dukascopy-Tagesdaten (dieselbe Cache-Infrastruktur wie `strategy/real_data.py`), "
+    "Schwellenwerte fix aus dem Paper uebernommen (EUR/USD 0,10%, GBP/USD 0,05%), "
+    "NICHT auf den eigenen Daten neu optimiert."
+)
+
+st.error(
+    "**Datenfund vor dem eigentlichen Test:** Dukascopys Tageskerzen setzen auf "
+    "Mitternacht-UTC-Grenzen statt der FX-Handelswoche -- der Markt oeffnet Sonntag "
+    "~21-22:00 UTC wieder, wodurch ein duenner \"Sonntagabend\"-Balken (wenige "
+    "Stunden, winziges Volumen) vor jedem Montag steht. Unbehandelt vergleicht die "
+    "Gap-Berechnung Montag mit diesem Sonntags-Splitter statt mit dem echten "
+    "Freitagsschluss -- zerteilt einen Wochenend-Gap in zwei kleinere und zaehlt "
+    "systematisch zu wenige qualifizierende Tage. Gefixt (Sonntags-Balken vor der "
+    "Berechnung verworfen): GBP/USD landet danach innerhalb ~5% von Tabelle 7 des "
+    "Papers (starkes Vertrauen in die Pipeline), EUR/USD bleibt bei ~2,5x mehr "
+    "Gap-Tagen als im Paper -- ungeklaert, aber nachweislich kein fruehes "
+    "Datenqualitaets-Artefakt (gleichmaessig ueber 2003-2015 verteilt).",
+    icon=":material/bug_report:",
+)
+
+st.markdown(
+    "**Der eigentliche Test -- fixe Paper-Schwellenwerte, 2016-2026, 1 Pip "
+    "Spread-Kosten (spread_bps=1.0):**"
+)
+st.markdown(
+    """
+| | EUR/USD (>= 0,10%) | GBP/USD (>= 0,05%) |
+|---|---|---|
+| Trades | 91 | 216 |
+| Trefferquote | 44,0% | 43,5% |
+| Netto (1 Pip Spread) | -0,13% total, t=-0,04, p=0,51 | **-15,63% total, t=-2,59, p=0,995** |
+| Sogar brutto (0 Kosten) | +0,78%, p=0,42 (insignifikant) | **-13,47%, p=0,987 (signifikant negativ)** |
+| Positive Jahre | 7/11 | 4/11 |
+"""
+)
+
+st.error(
+    "**Kein Edge auf keinem der beiden Paare.** EUR/USD ist selbst brutto "
+    "statistisch nicht von Null zu unterscheiden. GBP/USD ist nicht nur "
+    "insignifikant, sondern **signifikant negativ** -- schon vor Kosten. Die "
+    "Trefferquote faellt von ~60-65% (Paper, 2000-2015) auf ~44% (2016-2026): ein "
+    "klarer Regime-Bruch, keine Kosten-Frage.",
+    icon=":material/trending_down:",
+)
+
 st.info(
-    "**Naechster Schritt:** noch kein Backtest -- das ist bewusst ein separater, "
-    "spaeterer Schritt. Diese Seite haelt nur die Erkenntnisse aus dem Paper fest.",
-    icon=":material/hourglass_empty:",
+    "**Plausible Erklaerung, anschliessend an bereits vorhandenes Repo-Wissen:** "
+    "das Paper-Sample endet exakt 2015 -- genau wie beim WMR-Fix-Kollusions-Befund "
+    "(Evans 2017, siehe `app_pages/fx_papers_202608.py` Tab 4), dessen Anomalie "
+    "durch die 2015er FX-Global-Code-Reform vermutlich strukturell verschwand. "
+    "Naheliegende Hypothese: der Wochenend-Gap-Effekt war teilweise ein Artefakt "
+    "der duenneren, weniger algo-arbitrierten Vor-2015-Marktstruktur, kein "
+    "struktureller Mechanismus -- nicht unabhaengig verifiziert, aber konsistent "
+    "mit einem zweiten, unabhaengigen Negativbefund im selben Repo.",
+    icon=":material/lightbulb:",
+)
+
+st.markdown(
+    "**Wenn danach nochmal gefragt wird:** Gap-Fade EUR/USD & GBP/USD ist "
+    "getestet und verworfen -- kein eigenstaendiger Backtest-Strang, kein "
+    "Dashboard. Diese Seite bleibt als dokumentierter Negativbefund stehen, "
+    "gleiche Kultur wie bei `app_pages/orb_writeup.py`s Nachbarn im Repo."
 )

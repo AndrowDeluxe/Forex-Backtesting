@@ -30,6 +30,7 @@ OFFER_SIDE = dukascopy_python.OFFER_SIDE_BID
 _INTERVAL_LABELS = {
     dukascopy_python.INTERVAL_MIN_15: "M15",
     dukascopy_python.INTERVAL_HOUR_1: "H1",
+    dukascopy_python.INTERVAL_DAY_1: "D1",
 }
 
 

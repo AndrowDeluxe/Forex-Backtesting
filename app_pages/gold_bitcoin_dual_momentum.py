@@ -25,8 +25,9 @@ import numpy as np
 import pandas as pd
 
 import streamlit as st
-from gold_bitcoin_dual_momentum.data import fetch_weekly_gold_btc
+from gold_bitcoin_dual_momentum.data import fetch_daily_ohlc_gold_btc, fetch_weekly_gold_btc
 from gold_bitcoin_dual_momentum.engine import simulate_dual_momentum
+from gold_bitcoin_dual_momentum.risk_engine import composite_position, simulate_risk_based
 
 st.set_page_config(page_title="Gold-Bitcoin Dual Momentum", page_icon=":material/currency_bitcoin:", layout="wide")
 
@@ -42,6 +43,20 @@ COST_TIERS = {
     "Teuer (App-Broker)": {"gold": 20.0, "btc": 60.0},
 }
 RECOMMENDED_COST = "Realistisch (Retail)"
+
+TTP_MAX_DAILY_DD = 0.03
+TTP_MAX_TOTAL_DD = 0.07
+RISK_PCT_SWEEP = [0.0025, 0.005, 0.01, 0.015, 0.02, 0.025]
+RECOMMENDED_RISK_PCT = 0.01
+RECOMMENDED_ATR_MULT = 3.0
+TP_FILTER_SCENARIOS = [
+    {"label": "Basis: 3x ATR, Mehrheit, kein TP/BE", "min_agree": 2, "atr_mult": 3.0, "tp_r_mult": None, "be_trigger_r": None},
+    {"label": "+ Breakeven 0.5R", "min_agree": 2, "atr_mult": 3.0, "tp_r_mult": None, "be_trigger_r": 0.5},
+    {"label": "+ Take-Profit 1.5R", "min_agree": 2, "atr_mult": 3.0, "tp_r_mult": 1.5, "be_trigger_r": None},
+    {"label": "+ TP 1.5R + Breakeven 0.5R", "min_agree": 2, "atr_mult": 3.0, "tp_r_mult": 1.5, "be_trigger_r": 0.5},
+    {"label": "2x ATR (enger) + TP + BE", "min_agree": 2, "atr_mult": 2.0, "tp_r_mult": 1.5, "be_trigger_r": 0.5},
+    {"label": "2x ATR + TP + BE + Unanimous-Filter", "min_agree": 3, "atr_mult": 2.0, "tp_r_mult": 1.5, "be_trigger_r": 0.5},
+]
 
 # --- same palette as fertige_strategien.py / ou_scanner.py ---
 C_BG = "#0a0e14"
@@ -200,6 +215,68 @@ def fmt_num(x: float) -> str:
     return f"{x:.2f}" if pd.notna(x) else "n/a"
 
 
+# ------------------------------------------------------------------ cached: risk-based (TTP) engine
+@st.cache_data(ttl="6h", show_spinner="Lade Gold/Bitcoin-Tagesdaten (ATR)...")
+def load_daily() -> dict[str, pd.DataFrame]:
+    return fetch_daily_ohlc_gold_btc(START, END)
+
+
+def daily_metrics(daily_returns: pd.Series, equity: pd.Series) -> dict:
+    r = daily_returns.dropna()
+    if len(r) == 0:
+        return {"ann_return": np.nan, "sharpe": np.nan, "max_total_dd": np.nan, "max_daily_loss": np.nan}
+    n_years = len(r) / 252
+    growth = (1 + r).prod()
+    ann_return = growth ** (1 / n_years) - 1
+    ann_vol = r.std() * np.sqrt(252)
+    sharpe = ann_return / ann_vol if ann_vol > 0 else np.nan
+    dd = equity / equity.cummax() - 1
+    return {"ann_return": ann_return, "sharpe": sharpe, "max_total_dd": dd.min(), "max_daily_loss": r.min()}
+
+
+@st.cache_data(ttl="6h", show_spinner="Berechne TTP-Risiko-Sweep...")
+def run_risk_pct_sweep(_weekly: pd.DataFrame, _daily: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    decision = composite_position(_weekly, lookbacks=tuple(COMPOSITE_SET), min_agree=2).iloc[WARMUP_WEEKS:]
+    rows = []
+    for risk_pct in RISK_PCT_SWEEP:
+        sim = simulate_risk_based(_daily, decision, risk_pct=risk_pct, atr_mult=RECOMMENDED_ATR_MULT, starting_equity=100_000.0)
+        m = daily_metrics(sim["daily_return"], sim["equity"])
+        avg_notional = sim.loc[sim["asset"] != "cash", "notional_fraction"].mean()
+        daily_ok = m["max_daily_loss"] > -TTP_MAX_DAILY_DD
+        total_ok = m["max_total_dd"] > -TTP_MAX_TOTAL_DD
+        rows.append({
+            "Risiko/Trade": risk_pct, "Return p.a.": m["ann_return"], "Sharpe": m["sharpe"],
+            "Max Gesamt-DD": m["max_total_dd"], "Schlechtester Tag": m["max_daily_loss"],
+            "Oe. Positionsgroesse": avg_notional, "TTP-konform": "Ja" if (daily_ok and total_ok) else "NEIN",
+        })
+    return pd.DataFrame(rows)
+
+
+@st.cache_data(ttl="6h", show_spinner="Berechne TP/Breakeven/Filter-Vergleich...")
+def run_tp_filter_scenarios(_weekly: pd.DataFrame, _daily: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    rows = []
+    for sc in TP_FILTER_SCENARIOS:
+        decision = composite_position(_weekly, lookbacks=tuple(COMPOSITE_SET), min_agree=sc["min_agree"]).iloc[WARMUP_WEEKS:]
+        sim = simulate_risk_based(
+            _daily, decision, risk_pct=RECOMMENDED_RISK_PCT, atr_mult=sc["atr_mult"],
+            tp_r_mult=sc["tp_r_mult"], be_trigger_r=sc["be_trigger_r"], starting_equity=100_000.0,
+        )
+        m = daily_metrics(sim["daily_return"], sim["equity"])
+        rows.append({
+            "Variante": sc["label"], "Return p.a.": m["ann_return"], "Sharpe": m["sharpe"],
+            "Max Gesamt-DD": m["max_total_dd"], "Schlechtester Tag": m["max_daily_loss"],
+            "Stop-Outs": int(sim["stopped_out_today"].sum()), "TP-Treffer": int(sim["tp_hit_today"].sum()),
+        })
+    return pd.DataFrame(rows)
+
+
+@st.cache_data(ttl="6h", show_spinner="Berechne empfohlene Risiko-Variante...")
+def run_recommended_risk_equity(_weekly: pd.DataFrame, _daily: dict[str, pd.DataFrame]) -> pd.Series:
+    decision = composite_position(_weekly, lookbacks=tuple(COMPOSITE_SET), min_agree=2).iloc[WARMUP_WEEKS:]
+    sim = simulate_risk_based(_daily, decision, risk_pct=RECOMMENDED_RISK_PCT, atr_mult=RECOMMENDED_ATR_MULT, starting_equity=100_000.0)
+    return sim["equity"]
+
+
 # ------------------------------------------------------------------ header
 st.markdown("## :material/currency_bitcoin: Gold-Bitcoin Dual Momentum")
 st.caption(
@@ -254,11 +331,12 @@ sweep_pure = run_sweep(weekly, None, None)
 recommended = composite(sweep_no_cost)
 gold_bh, btc_bh = buy_hold_curves(weekly)
 
-tab_equity, tab_sweep, tab_costs, tab_oos = st.tabs([
+tab_equity, tab_sweep, tab_costs, tab_oos, tab_risk = st.tabs([
     ":material/show_chart: Equity-Kurve",
     ":material/tune: Parameter-Sweep",
     ":material/payments: Kosten-Sensitivitaet",
     ":material/warning: Out-of-Sample",
+    ":material/shield: TTP-Risikomanagement",
 ])
 
 # ------------------------------------------------------------------ Tab: Equity curve
@@ -409,3 +487,93 @@ with tab_oos:
         "Bitcoin lief in beiden Perioden strukturell nach oben, ein Teil der OOS-Staerke ist "
         "wahrscheinlich einfach \"mehr Bitcoin-Beta\", nicht nur die Switching-Regel selbst."
     )
+
+# ------------------------------------------------------------------ Tab: TTP risk management
+with tab_risk:
+    caveat_box(
+        "<b>&#9888; Die Vol-capped-Version (andere Tabs) hat KEINE untertaegige Risikokontrolle</b> -- "
+        "wird die Position am Mittwoch gesetzt, reagiert sie bis zum naechsten Mittwoch auf nichts, "
+        "egal wie stark Bitcoin zwischenzeitlich einbricht. Diese Variante hier ersetzt das durch <b>eine "
+        "einzelne kombinierte Wochenentscheidung</b> (Mehrheitsvotum der 4/8/12-Wochen-Lookbacks statt drei "
+        "Parallel-Buecher -- realistischer fuer ein echtes Konto), fixed-fractional Risiko auf einen "
+        "ATR-Stop, taeglich ueberwacht -- und prueft das Ergebnis gegen echte TTP-Regeln "
+        f"({TTP_MAX_DAILY_DD:.0%} max. Tages-Drawdown, {TTP_MAX_TOTAL_DD:.0%} max. Gesamt-Drawdown).",
+        alert=True,
+    )
+
+    daily = load_daily()
+    risk_sweep_df = run_risk_pct_sweep(weekly, daily)
+    rec_row = risk_sweep_df[risk_sweep_df["Risiko/Trade"] == RECOMMENDED_RISK_PCT].iloc[0]
+    tile_row([
+        ("EMPF. RISIKO/TRADE", f"{RECOMMENDED_RISK_PCT:.1%}"),
+        ("RETURN P.A.", fmt_pct(rec_row["Return p.a."])),
+        ("SHARPE", fmt_num(rec_row["Sharpe"])),
+        ("MAX GESAMT-DD", fmt_pct(rec_row["Max Gesamt-DD"])),
+        ("SCHLECHTESTER TAG", fmt_pct(rec_row["Schlechtester Tag"])),
+        ("TTP-KONFORM", rec_row["TTP-konform"]),
+    ])
+
+    section_title(f"Empfohlene Variante: {RECOMMENDED_RISK_PCT:.1%} Risiko/Trade, {RECOMMENDED_ATR_MULT:.0f}x ATR-Stop, kein TP/BE")
+    rec_equity = run_recommended_risk_equity(weekly, daily)
+    st.altair_chart(line_chart(normalize(rec_equity, "TTP-Risiko-Variante"), {"TTP-Risiko-Variante": (C_GREEN, None)}))
+
+    section_title("Risiko-Sweep (0.25% - 2.5% pro Trade)")
+    st.dataframe(
+        risk_sweep_df,
+        hide_index=True,
+        column_config={
+            "Risiko/Trade": st.column_config.NumberColumn(format=".2%"),
+            "Return p.a.": st.column_config.NumberColumn(format="+.1%"),
+            "Sharpe": st.column_config.NumberColumn(format="%.2f"),
+            "Max Gesamt-DD": st.column_config.NumberColumn(format="+.1%"),
+            "Schlechtester Tag": st.column_config.NumberColumn(format="+.1%"),
+            "Oe. Positionsgroesse": st.column_config.NumberColumn(format=".1%"),
+        },
+    )
+    st.caption(
+        "Ab ca. 2% Risiko/Trade werden die 3%/7%-TTP-Limits gebrochen. 1.5% liegt noch knapp innerhalb, "
+        "nutzt aber im Backtest schon fast den kompletten Spielraum aus -- 1.0% laesst spuerbaren "
+        "Sicherheitsabstand fuer Verluste, die schlimmer sind als in der Historie."
+    )
+
+    section_title("Kann ein Take-Profit / Breakeven / Konfidenz-Filter den Stop verkleinern?", color=C_RED)
+    tp_df = run_tp_filter_scenarios(weekly, daily)
+    st.dataframe(
+        tp_df,
+        hide_index=True,
+        column_config={
+            "Return p.a.": st.column_config.NumberColumn(format="+.1%"),
+            "Sharpe": st.column_config.NumberColumn(format="%.2f"),
+            "Max Gesamt-DD": st.column_config.NumberColumn(format="+.1%"),
+            "Schlechtester Tag": st.column_config.NumberColumn(format="+.1%"),
+        },
+    )
+    caveat_box(
+        "<b>Ehrlicher Befund -- gegen die Intuition:</b> Keine der getesteten Erweiterungen verbessert "
+        "die Basis-Variante. Ein <b>Take-Profit schadet</b> (kappt die grossen Gewinnwochen, die den Edge "
+        "dieser Momentum-Strategie ausmachen). Der <b>Unanimous-Filter</b> (nur handeln, wenn alle 3 "
+        "Lookback-Fenster uebereinstimmen) reduziert nur die Trade-Zahl, ohne zwischen guten und "
+        "schlechten Trades zu unterscheiden -- Sharpe faellt. Ein <b>engerer Stop</b> erlaubt zwar "
+        "groessere Positionen, bringt aber mehr Whipsaws (deutlich mehr Stop-Outs), was den Zugewinn "
+        "wieder auffrisst. Die einfache Basis-Variante (oben) bleibt die beste gefundene Konfiguration."
+    )
+
+    with st.expander(":material/info: Praktischer Ablauf auf einem Fremdkapitalkonto (z.B. TTP)", expanded=False):
+        st.markdown(
+            """
+            <div class="gb-caveats">
+            <b>Rhythmus:</b> Nur einmal pro Woche (Mittwoch-Schluss) wird das Signal berechnet. Bei einem
+            noetigen Wechsel: eine Marktorder platzieren + direkt einen Stop-Loss-Order beim Broker
+            anhaengen (kein TP, siehe Befund oben). Den Rest der Woche laeuft die Position automatisch auf
+            dem Broker-Stop.<br><br>
+            <b>Echte Broker-Stops sind sogar praeziser</b> als die Tagesschluss-Simulation hier, weil sie
+            auf echten Kursbewegungen ausloesen -- ausser ueber Markt-Schliesszeiten (Wochenende bei
+            Gold/FX), wo weiterhin eine echte Kurs-Luecke bleibt, die kein Stop verhindern kann.<br><br>
+            <b>Vor dem Start zu pruefen (nicht im Repo verifizierbar):</b> Bietet der Anbieter Bitcoin
+            ueberhaupt als handelbares Instrument an? Wochenend-Haltung erlaubt? Uebernacht-/Swap-Gebuehren
+            fuer mehrtaegige CFD-Positionen (hier nicht modelliert, nur Spread-Kosten pro Wechsel)?
+            Maximaler Hebel je Instrument (fuer die Umrechnung der Positionsgroesse in Lot-Groessen)?
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )

@@ -71,6 +71,36 @@ def run_monte_carlo(
     )
 
 
+def simulate_time_to_target(
+    trades: pd.DataFrame,
+    target_return: float = 0.10,
+    n_simulations: int = 3000,
+    risk_pct: float = 0.01,
+    max_trades: int = 400,
+    seed: int = 42,
+) -> pd.DataFrame:
+    """Same IID trade-resampling philosophy as run_monte_carlo, but answers a
+    different question: not "what's the return after a FIXED number of
+    trades", but "how many trades does it statistically take to FIRST reach
+    target_return" (first-passage time, not fixed-horizon). One row per
+    simulation: trades_to_target (NaN if not reached within max_trades - a
+    right-censored simulation, excluded from percentile stats downstream,
+    not treated as zero)."""
+    r = _r_multiples(trades)
+    if len(r) == 0:
+        return pd.DataFrame(columns=["trades_to_target"])
+
+    rng = np.random.default_rng(seed)
+    trades_to_target = np.full(n_simulations, np.nan)
+    for s in range(n_simulations):
+        sample = rng.choice(r, size=max_trades, replace=True)
+        equity_rel = np.cumprod(1 + sample * risk_pct)
+        hits = np.flatnonzero(equity_rel >= 1 + target_return)
+        if hits.size:
+            trades_to_target[s] = hits[0] + 1
+    return pd.DataFrame({"trades_to_target": trades_to_target})
+
+
 def summarize_monte_carlo(mc: pd.DataFrame, starting_equity: float) -> dict:
     if mc.empty:
         return {}

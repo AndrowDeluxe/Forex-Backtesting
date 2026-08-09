@@ -197,6 +197,24 @@ def apply_momentum_alignment_filter(
     return out[aligned]
 
 
+def attach_jump_activity(trades: pd.DataFrame, jump_ratio_daily: pd.Series) -> pd.DataFrame:
+    """Attaches the prior NY trading day's jump-activity ratio (see
+    asian_range_breakout/jump_activity.py::compute_daily_jump_ratio) - a
+    generic bipower-variation jump-ratio measure, not a replication of any
+    specific paper. No-lookahead prior-day join, same convention as
+    attach_vix/attach_dxy."""
+    return _attach_prior_day_series(trades, jump_ratio_daily, "jump_ratio_prior")
+
+
+def apply_jump_activity_filter(trades: pd.DataFrame, jump_ratio_daily: pd.Series, max_ratio: float) -> pd.DataFrame:
+    """Drops trades whose prior day's jump ratio exceeds max_ratio (see
+    attach_jump_activity) - empirically, a prior day dominated by a few
+    large jumps rather than smooth diffusion is associated with materially
+    weaker ASB follow-through the next session (2026-08-09 screening)."""
+    out = attach_jump_activity(trades, jump_ratio_daily)
+    return out[out["jump_ratio_prior"] <= max_ratio]
+
+
 def apply_vix_filter(
     trades: pd.DataFrame, vix_min: float | None = None, vix_max: float | None = None
 ) -> pd.DataFrame:

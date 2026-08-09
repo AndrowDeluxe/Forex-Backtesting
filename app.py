@@ -62,10 +62,10 @@ page = st.navigation(
     {
         "": [home],
         "Live Logs": [ou_modell, orb_forward_test],
-        "Fertige Strategien": [fertige_strategien, ou_scanner, gold_bitcoin_dual_momentum],
+        "Fertige Strategien": [fertige_strategien, ou_scanner, gold_bitcoin_dual_momentum, asian_range_breakout],
         "Backtests": [
             adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook,
-            asian_range_breakout, orb_strategy_page, ou_paper_backtest,
+            orb_strategy_page, ou_paper_backtest,
         ],
         "Strategie Bestandteile": [
             cls_advanced, orb_writeup, triple_ma, risk_management,

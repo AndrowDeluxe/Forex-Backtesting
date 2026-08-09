@@ -21,6 +21,7 @@ import streamlit as st
 from asian_range_breakout.chart import build_entry_chart
 from asian_range_breakout.data import fetch_gold_m15, fetch_gold_m15_live
 from asian_range_breakout.engine import get_latest_setup, simulate_asian_breakout
+from asian_range_breakout.execution_overlay import simulate_asian_breakout_overlay
 from asian_range_breakout.filters import (
     apply_adx_filter,
     apply_entry_delay_filter,
@@ -30,15 +31,17 @@ from asian_range_breakout.filters import (
     attach_silver_alignment,
     attach_trend_bias,
 )
-from asian_range_breakout.montecarlo import run_monte_carlo, summarize_monte_carlo
+from asian_range_breakout.montecarlo import run_monte_carlo, simulate_time_to_target, summarize_monte_carlo
 from asian_range_breakout.sizing import simulate_equity
 from asian_range_breakout.walkforward import (
     run_delay_filter_walk_forward,
+    run_execution_mode_walk_forward,
     run_trend_bias_walk_forward,
     run_walk_forward,
 )
 from combined_strategy.data import fetch_timeframe
-from strategy.metrics import summarize, trade_stats
+from strategy.backtest import trades_to_daily_returns
+from strategy.metrics import max_drawdown, summarize, trade_stats
 
 st.set_page_config(page_title="Gold Asian-Range Breakout", page_icon=":material/wb_twilight:", layout="wide")
 
@@ -46,6 +49,9 @@ START, END = "2016-01-01", "2026-07-29"
 SPLIT = "2021-01-01"
 TREND_SMA_WINDOW = 200
 SILVER_ALIGNMENT_WINDOW = 5
+TTP_MAX_DAILY_DD = 0.03
+TTP_MAX_TOTAL_DD = 0.07
+RECOMMENDED_RISK_PCT = 0.01
 
 
 @st.cache_data(ttl="6h", show_spinner="Lade Gold M15-Daten (Dukascopy, ~10 Jahre)...")
@@ -89,8 +95,23 @@ def load_trades(
     be_trigger_r: float | None,
     spread_price: float,
     slippage_price: float,
+    use_overlay: bool = False,
 ) -> pd.DataFrame:
+    """use_overlay=True: Execution-Overlay-Fuellung (siehe Strategiebestandteile,
+    Abschnitt "Execution-Overlay") statt sofortiger Wick-Fuellung - Signal
+    (welches Fenster ausbricht, welche Richtung) bleibt identisch, nur
+    Fuellzeitpunkt/-preis aendert sich. Separat gecacht von der Wick-Variante
+    (anderer Cache-Key durch den zusaetzlichen Parameter)."""
     df = load_data()
+    if use_overlay:
+        return simulate_asian_breakout_overlay(
+            df,
+            stop_frac=stop_frac,
+            tp_r_mult=tp_r_mult,
+            be_trigger_r=be_trigger_r,
+            spread_price=spread_price,
+            slippage_price=slippage_price,
+        )
     return simulate_asian_breakout(
         df,
         stop_frac=stop_frac,
@@ -147,6 +168,17 @@ with st.sidebar:
         "Richtung von Silbers eigener 5-Tage-Kursbewegung. Walk-Forward-bestaetigt (5/6 Jahre), "
         "rettet insbesondere das schwache Jahr 2023 (PF 0.89 -> 1.82). Verbessert Sharpe UND "
         "Win-Rate (nicht nur Profit Factor wie die anderen Filter) - siehe Strategiebestandteile.",
+    )
+    use_overlay_entry = st.toggle(
+        "Execution-Overlay-Fuellung aktivieren (statt sofortiger Wick-Fuellung)", value=True,
+        help="Aus dem Zarattini-&-Pagani-Fast-Alpha-Konzept (2026-08-09): statt sofort bei "
+        "Beruehrung des Range-Levels zu fuellen, wird auf die erste Gegenrichtungs-Kerze "
+        "(M15-Schlusskurs) nach dem Ausbruch gewartet und DANN gefuellt - gleiches Signal, "
+        "nur anderer Fuellzeitpunkt/-preis. Volle Kette (ADX+Trend+Delay+Silber): Profit "
+        "Factor 1.43 -> 1.80, IS/OOS beide verbessert, Ausreisser-robust, Walk-Forward "
+        "waehlt Overlay in 6 von 8 Testjahren (nur 2019/2020 zu wenig Daten) - siehe "
+        "Strategiebestandteile. Trade-off: manche Fenster liefern KEINEN Trade mehr (kein "
+        "Pullback vor Sessionende), also weniger absolute Trade-Zahl.",
     )
     spread_price = st.slider(
         "Spread (USD, Round-Trip)", 0.0, 1.50, 0.30, 0.05,
@@ -716,13 +748,164 @@ with tab_components:
         "in diesem Repo genutzt), keine neue Datenanbindung noetig."
     )
 
+    st.markdown("### Execution-Overlay (Fast-Alpha-Timing) -- getestet, jetzt Standard (2026-08-09)")
+    st.success(
+        "**Timing-Filter, kein Signal-Filter.** Konzept aus Zarattini & Pagani (2026), "
+        "\"Improving Performance with Fast Alphas\" (siehe eigene Seite \"Execution-Overlay\" "
+        "unter \"Strategie Bestandteile\"): ein Signal, das fuer sich allein nicht profitabel "
+        "genug fuer die Kosten ist, kann trotzdem echte kurzfristige Richtungsinformation "
+        "enthalten - nutzbar rein fuer den FUELLZEITPUNKT einer bereits entschiedenen Order, "
+        "nicht fuer die Entscheidung selbst. Uebersetzt auf die ASB: **welches Fenster ausbricht "
+        "und in welche Richtung bleibt exakt wie bisher** - nur WANN gefuellt wird, aendert sich. "
+        "Statt die resting Buy-/Sell-Stop-Order sofort bei Beruehrung des Levels zu fuellen, "
+        "wartet sie auf die erste M15-Kerze, die GEGEN die Ausbruchsrichtung schliesst (die "
+        "grobkoernige Entsprechung des Papers eigenem 5-Minuten-\"Streak-Reversal\"-Signals - "
+        "feinere Aufloesung als M15 steht hier nicht zur Verfuegung), und fuellt dort zum "
+        "Schlusskurs. Kommt keine solche Kerze vor dem Sessionende, verfaellt der Trade "
+        "komplett (kein Fallback auf die alte Wick-Fuellung).",
+        icon=":material/check_circle:",
+    )
+
+    col_ov1, col_ov2 = st.columns(2)
+    with col_ov1:
+        with st.container(border=True):
+            st.markdown("**Rohes Signal (ungefiltert) - reine Timing-Wirkung**")
+            st.caption(
+                "Wick PF 1.087 (n=2700) vs. Overlay PF 1.016 (n=2694, 99.8% Fuellrate, "
+                "Median-Wartezeit 1 Bar/~15 Min.) - der Overlay allein hilft dem rohen Signal "
+                "NICHT. Die Wirkung entsteht erst in Kombination mit dem Produktions-Filterstack."
+            )
+    with col_ov2:
+        with st.container(border=True):
+            st.markdown("**Voller Filterstack (ADX+Trend+Delay+Silber)**")
+            st.caption(
+                "Wick (heutige Produktion) PF **1.426** (n=310) vs. Overlay+Stack PF **1.804** "
+                "(n=178, WR=52.2%) - deutliche Verbesserung, aber auf kleinerer Stichprobe "
+                "(weniger Fuellungen). IS PF 1.744 (n=72) vs. OOS PF 1.840 (n=106) - OOS sogar "
+                "staerker als IS. Ausreisser-Check: PF 1.804 -> 1.735 ohne besten Trade (robust)."
+            )
+
+    st.markdown("**Beispiel-Trade: derselbe Ausbruch, Wick- vs. Overlay-Fuellung**")
+    st.caption(
+        "Graue Box = Range, gestrichelte Linien = Buy-/Sell-Stop-Level, Dreieck = tatsaechlicher "
+        "Entry (Farbe = Richtung), Raute = Exit (Farbe = Exit-Grund). Wick wuerde direkt an der "
+        "gestrichelten Linie fuellen - hier fuellt der Overlay erst einige Kerzen spaeter, nach "
+        "dem ersten Gegenschlag."
+    )
+    price_full_ov = load_data()
+    example_overlay_trades = load_trades(1.0, None, None, 0.30, 0.10, use_overlay=True)
+    if not example_overlay_trades.empty:
+        has_multi_bar_wait = (example_overlay_trades["wait_bars"] >= 2).any()
+        example_trade = (
+            example_overlay_trades[example_overlay_trades["wait_bars"] >= 2].iloc[-1:]
+            if has_multi_bar_wait
+            else example_overlay_trades.iloc[-1:]
+        )
+        ex_start = example_trade["window_start"].iloc[0] - timedelta(hours=6)
+        ex_end = example_trade["exit_time"].iloc[0] + timedelta(hours=6)
+        price_window_ex = price_full_ov.loc[ex_start:ex_end]
+        st.altair_chart(build_entry_chart(price_window_ex, example_trade), width="stretch")
+        st.caption(
+            f"Fenster {example_trade['window_start'].iloc[0]:%Y-%m-%d %H:%M} NY, Ausbruch-Trigger "
+            f"{example_trade['trigger_time'].iloc[0]:%H:%M}, tatsaechlicher Entry "
+            f"{example_trade['entry_time'].iloc[0]:%H:%M} ({int(example_trade['wait_bars'].iloc[0])} "
+            f"Bar(s)/{int(example_trade['wait_bars'].iloc[0]) * 15} Min. spaeter) - "
+            f"Exit-Grund: {example_trade['exit_reason'].iloc[0]}."
+        )
+    else:
+        st.info("Keine Overlay-Trades fuer die Standardparameter gefunden.", icon=":material/info:")
+
+    st.info(
+        "Walk-Forward-Validierung (waehlt Wick oder Overlay pro Jahr NUR anhand vorheriger "
+        "Jahre) und die daraus abgeleitete Risikosteuerung fuer Fremdkapitalkonten stehen im "
+        "Tab **Walk-Forward & Equity**.",
+        icon=":material/insights:",
+    )
+    st.warning(
+        "**Standardmaessig AN** (Sidebar-Toggle), da Walk-Forward das Overlay in 6 von 8 "
+        "Testjahren waehlt und nur die datenaermsten fruehen Jahre (2019/2020) bei Wick "
+        "bleiben. Trade-off: weniger absolute Trade-Zahl (manche Fenster liefern ohne "
+        "Pullback vor Sessionende gar keinen Trade mehr) - wer maximale Trade-Frequenz "
+        "priorisiert, kann im Sidebar-Toggle auf Wick zurueckschalten.",
+        icon=":material/warning:",
+    )
+    st.caption(
+        "Reproduzierbar ueber `asian_range_breakout/execution_overlay.py::simulate_asian_breakout_overlay` "
+        "+ `scripts/research_gold_execution_overlay.py` (Screening) + "
+        "`scripts/research_gold_overlay_walkforward_risk.py` (Walk-Forward + Risikosizing). "
+        "Der Overlay ist bewusst konservativ umgesetzt (M15-Bar-Close als Pullback-Proxy, kein "
+        "separates Fast-Alpha-Signal aus Tick-Daten) - eine Verschlechterung koennte an der "
+        "groben Aufloesung liegen, nicht zwingend am Konzept selbst."
+    )
+
+    st.markdown("### Drei weitere Kandidaten -- getestet, keiner uebernommen (2026-08-09)")
+    st.caption(
+        "Alle drei auf der aktuellen Produktionskonfiguration getestet (Overlay + ADX + Trend + "
+        "Delay + Silber). Bucket-Vergleich + IS/OOS + Ausreisser-Check, bei Jump-Activity "
+        "zusaetzlich ein volles Walk-Forward (gleiche Methodik wie beim ADX-Filter oben)."
+    )
+    st.warning(
+        "**Cross-Pair-Confirmation** (wiederverwendet aus `strategy/cls_advanced.py`, der "
+        "CLS-Advanced-Seite unter \"Strategie Bestandteile\" - dort real, aber nicht selbst "
+        "monetarisierbar): war der VORTAG's 06:00-09:00-Move der 6 FX-Majors ein breiter, "
+        "mehrheitlich bestaetigter Dollar-Move oder ein isolierter Einzelpaar-Move? Angehaengt "
+        "an Golds eigene Trades (kein Lookahead, nur der bereits geschlossene Vortag). Ergebnis: "
+        "**broad**-Tage PF 2.412 (n=116, robust auch ohne besten Trade: 2.292), **isolated**-Tage "
+        "PF nur 0.611 (n=19) - kollabiert ohne besten Trade auf 0.389. Richtung stimmt, aber "
+        "die Bucket ist mit nur 19 Trades (10.7% der Stichprobe) zu duenn fuer echtes Vertrauen - "
+        "**nicht uebernommen**, aber ein Kandidat, den man mit mehr Jahren/Daten nochmal pruefen "
+        "koennte.",
+        icon=":material/warning:",
+    )
+    st.warning(
+        "**Jump-Activity** (generische Bipower-Variation-Sprungquote, RJ=(RV-BV)/RV - **keine** "
+        "Nachbildung von \"Hizmeri et al.\", das Paper selbst liegt hier nicht vor, sondern die "
+        "Standard-Barndorff-Nielsen-&-Shephard-Zerlegung mit demselben Zweck): war der Vortag "
+        "von wenigen grossen Spruengen dominiert (hohe Sprungquote) statt glatter Diffusion? Ein "
+        "erster naiver Bucket-Vergleich sah stark aus (Tertile: PF 2.71 / 2.91 / **1.02** fuer "
+        "hohe Sprungquote), **haelt aber dem sauberen No-Lookahead-Walk-Forward NICHT stand**: "
+        "nur 5/8 Testjahre bestaetigen den Filter beim Training, davon nur 4/8 mit PF>1.0 im "
+        "Test - 2021 etwa wird auf Trainingsdaten bestaetigt, kollabiert dann aber selbst im Test "
+        "(PF 2.44 ungefiltert -> 0.71 gefiltert). Ein statischer Full-Sample-Filter macht die "
+        "Produktionsmetrik sogar **schlechter** (PF 1.804 -> 1.735). Mitursache: der erste, "
+        "schnelle Screening-Lauf hat den Vortag ueber exaktes Kalenderdatum gesucht statt (wie "
+        "ueberall sonst in diesem Repo, `filters.py::_attach_prior_day_series`) den letzten "
+        "echten Handelstag vorwaerts zu tragen - dadurch fielen alle Montags-Breakouts (Vortag "
+        "= Sonntag, keine Daten) unbemerkt ganz aus der Stichprobe. Reproduzierbar ueber "
+        "`asian_range_breakout/jump_activity.py` + `filters.py::attach_jump_activity` + "
+        "`walkforward.py::run_jump_activity_walk_forward` + "
+        "`scripts/research_gold_asb_new_filters.py` - **nicht uebernommen**.",
+        icon=":material/warning:",
+    )
+    st.warning(
+        "**LVN/HVN-Volumenprofil** (wiederverwendet aus `auction_playbook/indicators.py::"
+        "volume_profile`, Dukascopys eigenes Tick-Volumen als Proxy, kein echter Orderflow - "
+        "gleicher Vorbehalt wie beim Auction Playbook selbst): liegt der gerade gebrochene "
+        "Level (Fenster-eigenes Volumenprofil, kein Lookahead) neben einem duennen (LVN) oder "
+        "dicht gehandelten (HVN) Bereich? Ergebnis: **LVN** PF 2.032 (n=93, ohne besten Trade "
+        "1.886) vs. **Normal** PF 1.490 (n=82, ohne besten Trade 1.388) - Richtung passt zur "
+        "Hypothese (duenner Bereich = weniger Widerstand), aber der Effekt ist deutlich "
+        "schwaecher als bei den anderen beiden Kandidaten, und die dritte Kategorie **HVN** ist "
+        "mit nur 3 Trades praktisch unbrauchbar (am Fenster-Rand ist eine dichte Kongestionszone "
+        "strukturell selten). Deckt sich mit dem eigenen \"kein robuster Edge\"-Befund des "
+        "Auction Playbook fuer dieselbe Volumenprofil-Methode - **nicht uebernommen**.",
+        icon=":material/warning:",
+    )
+    st.caption(
+        "Alle drei Kandidaten stammten aus einer Bestandsaufnahme offener Ideen aus einer "
+        "frueheren Session (cls_advanced-Wiederverwendung, Auction-Playbook-Wiederverwendung, "
+        "generische Sprungquote statt einer nicht verfuegbaren Paper-Quelle) - konsequent "
+        "gegengeprueft statt uebernommen, weil keiner den etablierten Massstab (robust ueber "
+        "Ausreisser-Check UND Walk-Forward) erreicht hat."
+    )
+
 # =============================================================================
 # Tab: Backtest
 # =============================================================================
 with tab_backtest:
     st.markdown("## :material/wb_twilight: XAUUSD -- interaktiver Backtest")
 
-    trades = load_trades(stop_frac, tp_r_mult, be_trigger_r, spread_price, slippage_price)
+    trades = load_trades(stop_frac, tp_r_mult, be_trigger_r, spread_price, slippage_price, use_overlay_entry)
     if use_adx_filter:
         trades = apply_adx_filter(trades, adx_min=15)
     if use_trend_filter:
@@ -844,7 +1027,7 @@ with tab_live:
     window_start_ts = window_end_ts - timedelta(days=n_days)
     price_window = latest_df.loc[window_start_ts:window_end_ts]
 
-    all_trades = load_trades(stop_frac, tp_r_mult, be_trigger_r, spread_price, slippage_price)
+    all_trades = load_trades(stop_frac, tp_r_mult, be_trigger_r, spread_price, slippage_price, use_overlay_entry)
     if use_adx_filter:
         all_trades = apply_adx_filter(all_trades, adx_min=15)
     if use_trend_filter:
@@ -902,6 +1085,61 @@ with tab_walkforward:
         icon=":material/insights:",
     )
 
+    st.markdown("### Walk-Forward-Validierung: Wick vs. Execution-Overlay")
+    st.caption(
+        "Gleiche Expanding-Window-Logik, diesmal nicht für einen Filter-Schwellenwert sondern "
+        "für die Wahl der Füllregel: pro Testjahr wird NUR anhand des Profit Factor auf Jahren "
+        "VOR diesem Jahr entschieden, ob Wick oder Execution-Overlay eingesetzt wird - beide "
+        "Varianten laufen durch denselben Produktions-Filterstack (ADX+Trend+Delay+Silber)."
+    )
+    wf_wick_stack = apply_silver_alignment_filter(
+        apply_entry_delay_filter(
+            apply_trend_bias_filter(
+                apply_adx_filter(load_trades(1.0, None, None, 0.30, 0.10, use_overlay=False), adx_min=15),
+                load_daily_close(), sma_window=TREND_SMA_WINDOW,
+            ),
+            max_delay_bars=3,
+        ),
+        load_daily_close_silver(), window=SILVER_ALIGNMENT_WINDOW,
+    ).sort_values("entry_time").reset_index(drop=True)
+    wf_overlay_stack = apply_silver_alignment_filter(
+        apply_entry_delay_filter(
+            apply_trend_bias_filter(
+                apply_adx_filter(load_trades(1.0, None, None, 0.30, 0.10, use_overlay=True), adx_min=15),
+                load_daily_close(), sma_window=TREND_SMA_WINDOW,
+            ),
+            max_delay_bars=3,
+        ),
+        load_daily_close_silver(), window=SILVER_ALIGNMENT_WINDOW,
+    ).sort_values("entry_time").reset_index(drop=True)
+
+    mode_summary, wf_mode_trades = run_execution_mode_walk_forward(
+        {"wick": wf_wick_stack, "overlay": wf_overlay_stack},
+        default_mode="wick", start_test_year=2019, end_test_year=2026, min_train_trades=30,
+    )
+    st.dataframe(
+        mode_summary,
+        hide_index=True,
+        column_config={
+            "test_year": st.column_config.NumberColumn("Testjahr"),
+            "chosen_mode": st.column_config.TextColumn("Gewählter Modus"),
+            "train_pf": st.column_config.NumberColumn("Trainings-PF", format="%.3f"),
+            "n_trades_default": st.column_config.NumberColumn("Trades (Wick-Default)"),
+            "pf_default": st.column_config.NumberColumn("PF (Wick-Default)", format="%.3f"),
+            "n_trades_walkforward": st.column_config.NumberColumn("Trades Walk-Forward"),
+            "pf_walkforward": st.column_config.NumberColumn("PF Walk-Forward", format="%.3f"),
+        },
+    )
+    n_overlay_years = int((mode_summary["chosen_mode"] == "overlay").sum())
+    st.info(
+        f"Overlay wird in **{n_overlay_years}/{len(mode_summary)}** Testjahren gewählt (train-only, "
+        "kein Lookahead) - nur 2019/2020 bleiben bei Wick, weil dort noch zu wenige Trainings-"
+        "Trades vorliegen (< 30). Bestätigt, dass der Overlay-Vorteil kein reines "
+        "Gesamtsample-Artefakt ist. Diese gestitchte Walk-Forward-Sequenz (`wf_mode_trades`) ist "
+        "die Grundlage für den Risikomanagement-Abschnitt weiter unten.",
+        icon=":material/insights:",
+    )
+
     st.markdown("### Equity-Simulation")
     st.caption(
         "Fixes Bruchteil-Risiko pro Trade (wie beim OU-Modell-Bot: risk_amount = Equity x "
@@ -913,9 +1151,15 @@ with tab_walkforward:
     with col_eq1:
         starting_equity = st.number_input("Start-Kapital (USD)", 1_000.0, 10_000_000.0, 100_000.0, 1_000.0)
     with col_eq2:
-        risk_pct_input = st.slider("Risiko pro Trade (%)", 0.1, 3.0, 0.5, 0.1) / 100
+        risk_pct_input = st.slider(
+            "Risiko pro Trade (%)", 0.1, 3.0, 1.0, 0.1,
+            help="Standardwert 1.0% = empfohlene Obergrenze für ein TTP-Fremdkapitalkonto "
+            "(3% Tages-/7% Gesamt-Drawdown-Limit) - siehe Risikomanagement-Abschnitt unten. "
+            "Ungedeckeltes Fixed-Fractional-Sizing (kein 100%-Notional-Deckel), setzt "
+            "entsprechenden Hebel auf Gold voraus.",
+        ) / 100
 
-    eq_trades = load_trades(stop_frac, tp_r_mult, be_trigger_r, spread_price, slippage_price)
+    eq_trades = load_trades(stop_frac, tp_r_mult, be_trigger_r, spread_price, slippage_price, use_overlay_entry)
     if use_adx_filter:
         eq_trades = apply_adx_filter(eq_trades, adx_min=15)
     if use_trend_filter:
@@ -1017,5 +1261,139 @@ with tab_walkforward:
             f"Drawdown tendenziell eher günstig, nicht der typische Fall.",
             icon=":material/warning:",
         )
+
+        st.markdown("**Wie lange dauert es statistisch bis +10% Gesamtrendite?**")
+        st.caption(
+            "Nicht die Rendite NACH fester Trade-Zahl (das macht die Simulation oben), sondern "
+            "die umgekehrte Frage: wie viele Trades braucht dieselbe Bootstrap-Methode im "
+            "Schnitt, BIS zum ersten Mal +10% erreicht sind - dann über die historische "
+            "Trade-Frequenz in Kalenderzeit umgerechnet."
+        )
+        tt = simulate_time_to_target(
+            eq_trades, target_return=0.10, n_simulations=n_sims, risk_pct=risk_pct_input, max_trades=400
+        )
+        reached = tt["trades_to_target"].dropna()
+        years_span = (eq_trades["exit_time"].max() - eq_trades["exit_time"].min()).days / 365.25
+        trades_per_year = len(eq_trades) / years_span if years_span > 0 else float("nan")
+        if len(reached) and trades_per_year > 0:
+            median_trades = reached.median()
+            p25_trades = reached.quantile(0.25)
+            p75_trades = reached.quantile(0.75)
+            pct_reached = len(reached) / len(tt)
+            with st.container(horizontal=True):
+                st.metric("Median: Trades bis +10%", f"{median_trades:.0f}", border=True)
+                st.metric("Median: Kalenderzeit bis +10%", f"~{median_trades / trades_per_year * 12:.0f} Monate", border=True)
+                st.metric(
+                    "Spanne (25.-75. Perzentil)",
+                    f"{p25_trades / trades_per_year * 12:.0f}-{p75_trades / trades_per_year * 12:.0f} Monate",
+                    border=True,
+                )
+                st.metric("Erreicht innerhalb 400 Trades", f"{pct_reached:.0%}", border=True)
+            st.caption(
+                f"Basierend auf {trades_per_year:.0f} Trades/Jahr im historischen Schnitt "
+                f"({len(eq_trades)} Trades über {years_span:.1f} Jahre) bei {risk_pct_input:.1%} "
+                "Risiko/Trade. Kalenderzeit ist eine Näherung über die durchschnittliche "
+                "Trade-Frequenz (Trades sind nicht perfekt gleichmäßig übers Jahr verteilt, "
+                "siehe Jahresaufschlüsselung im Backtest-Tab) - keine eigene Zeitachsen-"
+                "Simulation."
+            )
+        else:
+            st.info(
+                f"In {n_sims} Simulationen wurde +10% innerhalb von 400 Trades in keinem Fall "
+                "erreicht - bei diesem Risiko/Trade zu langsam für eine sinnvolle Aussage.",
+                icon=":material/info:",
+            )
     else:
         st.info("Keine Trades für diese Parameterkombination.", icon=":material/info:")
+
+    st.markdown("### Risikomanagement für Fremdkapitalkonten (TTP: 3% Tages-/7% Gesamt-Drawdown)")
+    st.caption(
+        "Nutzt NICHT die Sidebar-Parameter, sondern die Walk-Forward-Sequenz von oben (Wick/"
+        "Overlay je Jahr wie tatsächlich vorher entscheidbar gewesen wäre) mit echtem, "
+        "ungedeckeltem Fixed-Fractional-Sizing (kein 100%-Notional-Deckel, setzt entsprechenden "
+        "Hebel auf Gold voraus - üblich bei CFD-Fremdkapitalkonten, aber vor echtem Einsatz "
+        "gegen die Margin-Regeln des jeweiligen Kontos zu prüfen)."
+    )
+    wf_sign = wf_mode_trades["direction"].map({"long": 1, "short": -1})
+    wf_r_multiple = wf_sign * (wf_mode_trades["exit_price"] - wf_mode_trades["entry_price"]) / wf_mode_trades["stop_distance"]
+    risk_trades = wf_mode_trades.copy()
+    risk_trades["return_pct"] = wf_r_multiple * RECOMMENDED_RISK_PCT
+    risk_index = load_data().index
+    risk_stats = summarize(risk_trades, risk_index)
+    daily_ret = trades_to_daily_returns(risk_trades, risk_index)
+    worst_day = daily_ret.min()
+    total_dd = max_drawdown(daily_ret)
+    n_breach_daily = int((daily_ret < -TTP_MAX_DAILY_DD).sum())
+    daily_ok = worst_day > -TTP_MAX_DAILY_DD
+    total_ok = total_dd > -TTP_MAX_TOTAL_DD
+
+    with st.container(horizontal=True):
+        st.metric(f"CAGR ({RECOMMENDED_RISK_PCT:.0%} Risiko/Trade)", f"{risk_stats['cagr']:+.2%}", border=True)
+        st.metric("Schlechtester Einzeltag", f"{worst_day:.2%}", border=True, help=f"TTP-Limit: -{TTP_MAX_DAILY_DD:.0%}")
+        st.metric("Max. Gesamt-Drawdown", f"{total_dd:.2%}", border=True, help=f"TTP-Limit: -{TTP_MAX_TOTAL_DD:.0%}")
+        st.metric("TTP-konform", "JA" if (daily_ok and total_ok) else "NEIN", border=True)
+
+    if daily_ok and total_ok:
+        st.success(
+            f"Bei {RECOMMENDED_RISK_PCT:.0%} Risiko/Trade bleibt die Walk-Forward-Sequenz mit "
+            f"deutlichem Abstand innerhalb beider TTP-Limits ({n_breach_daily} Tage mit "
+            "Tages-Grenzbruch) - CAGR und Sicherheitsabstand zu den Limits gleichzeitig im "
+            "Blick behalten, nicht nur die Renditeseite.",
+            icon=":material/check_circle:",
+        )
+    else:
+        st.error(
+            f"Bei {RECOMMENDED_RISK_PCT:.0%} Risiko/Trade verletzt die Walk-Forward-Sequenz "
+            "mindestens eines der beiden TTP-Limits - siehe Risiko-Sweep unten für eine "
+            "konforme Alternative.",
+            icon=":material/error:",
+        )
+
+    st.markdown("**Risiko-Sweep: wie viel Spielraum ist bis zu den TTP-Limits noch da?**")
+    sweep_rows = []
+    for rp in [0.005, 0.01, 0.015, 0.02, 0.025, 0.03, 0.04]:
+        rt = wf_mode_trades.copy()
+        rt["return_pct"] = wf_r_multiple * rp
+        s = summarize(rt, risk_index)
+        d = trades_to_daily_returns(rt, risk_index)
+        w = d.min()
+        t = max_drawdown(d)
+        sweep_rows.append(
+            {
+                "risiko_pct": rp,
+                "cagr": s["cagr"],
+                "sharpe": s["sharpe"],
+                "gesamt_dd": t,
+                "schlechtester_tag": w,
+                "ttp_konform": (w > -TTP_MAX_DAILY_DD) and (t > -TTP_MAX_TOTAL_DD),
+            }
+        )
+    sweep_df = pd.DataFrame(sweep_rows)
+    st.dataframe(
+        sweep_df,
+        hide_index=True,
+        column_config={
+            "risiko_pct": st.column_config.NumberColumn("Risiko/Trade", format=".1%"),
+            "cagr": st.column_config.NumberColumn("CAGR", format="+.2%"),
+            "sharpe": st.column_config.NumberColumn("Sharpe", format="%.2f"),
+            "gesamt_dd": st.column_config.NumberColumn("Gesamt-DD", format=".2%"),
+            "schlechtester_tag": st.column_config.NumberColumn("Schlechtester Tag", format=".2%"),
+            "ttp_konform": st.column_config.CheckboxColumn("TTP-konform"),
+        },
+    )
+    st.warning(
+        f"**Empfehlung: {RECOMMENDED_RISK_PCT:.0%} Risiko/Trade** als praktische Obergrenze - "
+        "spürbar mehr CAGR als bei 0.5%, aber noch mit echtem Sicherheitsabstand zu beiden "
+        "TTP-Limits. Ab 1.5% bricht der Gesamt-Drawdown das 7%-Limit. Der nötige Hebel steigt "
+        "mit dem Risiko-Prozentsatz ungefähr proportional mit (die ASB hat eine sehr enge "
+        "Stop-Distanz, im Schnitt ~0.45% des Einstiegspreises) - unbedingt gegen die "
+        "tatsächlichen Hebel-/Margin-Spezifikationen des jeweiligen Kontos für Gold prüfen, "
+        "bevor das eingesetzt wird.",
+        icon=":material/warning:",
+    )
+    st.caption(
+        "Reproduzierbar über `scripts/research_gold_overlay_walkforward_risk.py`. "
+        "`stop_distance` (Range-Breite x stop_frac) definiert hier direkt die Risikodistanz - "
+        "kein separater ATR-Stop nötig wie beim Gold-Bitcoin-Modell, die ASB hat schon einen "
+        "echten Preis-Stop im Regelwerk."
+    )

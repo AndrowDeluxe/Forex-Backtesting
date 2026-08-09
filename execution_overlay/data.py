@@ -33,6 +33,20 @@ def fetch_spy_5m_rth() -> pd.DataFrame:
     return _flatten_yf_columns(df)
 
 
+def fetch_spy_h1_rth(period: str = "730d") -> pd.DataFrame:
+    """SPY hourly bars, regular trading hours, ~last 730 days -- yfinance's
+    free-tier cap for 60m/1h data (vs. only 60 days for 5m/15m/30m: going
+    coarser than 30m is the only way this vendor gives more free history).
+    Bars land on :30 (09:30, 10:30, ... 15:30 ET), which already sits inside
+    engine.EXEC_MINUTES, so no engine changes are needed to run this through
+    the same simulate() -- the H1 bar just ends up standing in for both the
+    fast-alpha signal AND the execution grid at once (see
+    app_pages/execution_overlay_writeup.py's "Teil 1b" for what that changes
+    about the overlay's behaviour, not just its data depth)."""
+    df = yf.download("SPY", period=period, interval="1h", progress=False, auto_adjust=False)
+    return _flatten_yf_columns(df)
+
+
 def fetch_spy_daily(period: str = "2y") -> pd.DataFrame:
     """SPY daily bars, deep history (no 60-day cap on daily) -- used only to
     compute ATR(14) with proper warmup, so none of the scarce 5m intraday

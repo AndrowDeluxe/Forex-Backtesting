@@ -173,6 +173,53 @@ st.warning(
 )
 
 st.markdown(
+    "**Teil 1b -- SPY auf H1 statt M5 (yfinance, 730 Tage/~2 Jahre, 343 "
+    "Baseline-Trades, gut gepowert):**"
+)
+st.caption(
+    "yfinance deckelt 5m/15m/30m alle gleich bei 60 Tagen -- nur der Sprung "
+    "auf H1 (60m) bringt kostenlos wirklich mehr Historie (730 Tage). Da "
+    "H1-Bars beim Ausfuehrungsraster (:00/:15/:30/:45) ohnehin immer treffen, "
+    "braucht die Engine dafuer keine Aenderung -- der H1-Bar steht dann aber "
+    "fuer Signal UND Ausfuehrungsraster gleichzeitig, keine feinere Sub-"
+    "Aufloesung mehr darunter."
+)
+st.markdown(
+    """
+| | Baseline | Overlay |
+|---|---|---|
+| Trades | 343 | 238 |
+| Trefferquote (1 Pip) | 52,8% | 34,9% |
+| Profit Factor (1 Pip) | 1,10 | 0,89 |
+| Total P&L (1 Pip) | +6,24% | -3,14% |
+| Total P&L (0 Kosten, brutto) | +9,67% | -0,76% |
+"""
+)
+st.error(
+    "**Bei H1 kippt der Mechanismus von neutral/leicht hilfreich (M5) auf "
+    "eindeutig schaedlich.** Die Baseline selbst ist hier zum ersten Mal in "
+    "diesem Projekt ein transplantiertes Setup mit positiver Richtung (PF "
+    "1,10, +6,24% netto ueber 2 Jahre) -- statistisch noch nicht signifikant "
+    "(p=0,28), aber deutlich besser als jede andere Uebertragung bisher. Der "
+    "Overlay macht daraus PF 0,89 mit **18 Prozentpunkten niedrigerer "
+    "Trefferquote** (52,8% -> 34,9%). Mechanistisch plausibel: eine Session "
+    "hat bei H1 nur ~7 Bars -- \"warte auf einen Gegen-Bar\" kostet dort eine "
+    "ganze Handelsstunde von einem knappen Kontingent, bei M5 (78 Bars/"
+    "Session) ist derselbe Schritt fast kostenlos. Der Overlay ist also "
+    "keine aufloesungs-neutrale Verfeinerung, sondern seine Wirkung haengt "
+    "direkt daran, wie klein der \"Gegenimpuls\" im Verhaeltnis zur Session "
+    "ist -- ein eigener, uebertragbarer Fund unabhaengig vom Instrument.",
+    icon=":material/priority_high:",
+)
+st.info(
+    "Wichtig fuer die Einordnung: dieser H1-Test widerlegt NICHT den Paper-"
+    "Mechanismus bei M5-Aufloesung (Teil 1 oben) -- er testet eine andere, "
+    "grobere Konstruktion. \"Mehr kostenlose Historie\" und \"dieselbe "
+    "Konstruktion testen\" schliessen sich hier gegenseitig aus.",
+    icon=":material/info:",
+)
+
+st.markdown(
     "**Teil 2 -- EUR/USD (Dukascopy, 2016-2026, 1.990 Trades, gut gepowert, "
     "Paper-Konfiguration unveraendert):**"
 )

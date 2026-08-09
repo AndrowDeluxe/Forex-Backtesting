@@ -28,6 +28,7 @@ from execution_overlay.data import (
     fetch_eurusd_daily,
     fetch_spy_5m_rth,
     fetch_spy_daily,
+    fetch_spy_h1_rth,
 )
 from execution_overlay.engine import apply_cost, simulate, summarize
 
@@ -78,6 +79,16 @@ def run_spy():
     return _compare(intraday, daily, "SPY")
 
 
+def run_spy_h1():
+    _header("PART 1b: SPY on H1 instead of M5 (yfinance, 730 days -- the only free way to get "
+            "more than 60 days) -- a DIFFERENT construction, not a deeper replication of Part 1")
+    intraday = fetch_spy_h1_rth()
+    daily = fetch_spy_daily(period="3y")
+    print(f"H1 bars: {len(intraday)} ({intraday.index[0]} .. {intraday.index[-1]})")
+    print(f"daily bars for ATR: {len(daily)}")
+    return _compare(intraday, daily, "SPY (H1)")
+
+
 def run_eurusd():
     _header("PART 2: EUR/USD (Dukascopy, 2016-2026) -- 'session' = 1 calendar day, Sunday sliver dropped")
     intraday = fetch_eurusd_5m("2016-01-01", "2026-08-09")
@@ -92,4 +103,5 @@ def run_eurusd():
 if __name__ == "__main__":
     pd.set_option("display.width", 120)
     spy_baseline, spy_overlay = run_spy()
+    spy_h1_baseline, spy_h1_overlay = run_spy_h1()
     eur_baseline, eur_overlay = run_eurusd()

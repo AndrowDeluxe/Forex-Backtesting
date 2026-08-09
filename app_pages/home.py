@@ -284,34 +284,38 @@ with tab_components:
 
     with col_overlay:
         st.markdown("### :material/timer: Execution-Overlay")
-        st.caption("Fast Alpha als Timing-Filter (Zarattini & Pagani 2026) -- noch kein Backtest")
+        st.caption("Fast Alpha als Timing-Filter (Zarattini & Pagani 2026) -- getestet, gemischt")
         st.markdown(
-            "Ein 5-Min-Mean-Reversion-Signal, das als Solo-Strategie an Kosten stirbt "
-            "(netto CAGR -0,7%), aber als reiner Timing-Filter für eine ATR-Breakout-"
-            "Trendstrategie den Einstiegspreis verbessert -- verändert nie das Signal, "
-            "nur den Ausführungszeitpunkt."
+            "Ein 5-Min-Mean-Reversion-Signal, das als Solo-Strategie an Kosten stirbt, "
+            "aber als reiner Timing-Filter für eine ATR-Breakout-Trendstrategie den "
+            "Einstiegspreis verbessern soll -- verändert nie das Signal, nur den "
+            "Ausführungszeitpunkt."
         )
         with st.container(border=True):
-            st.markdown("**Im Original (SPY, netto)**")
+            st.markdown("**Ehrlicher Befund (eigener Backtest)**")
             st.caption(
-                "Ohne Overlay CAGR 13,2% / Sharpe 0,86 -> mit Overlay CAGR 15,3% / "
-                "Sharpe 0,99. Noch nicht auf FX getestet."
+                "SPY auf H1 (730 Tage, gut gepowert): Baseline zum ersten Mal in "
+                "diesem Projekt positiv (PF 1,10, +6,24% netto, n.s.) -- der Overlay "
+                "macht daraus PF 0,89 (Trefferquote -18 Pp). Auf EUR/USD (2016-2026, "
+                "1.990 Trades) kein Edge, weder mit noch ohne Overlay. Die Wirkung ist "
+                "auflösungsabhängig, keine neutrale Verfeinerung."
             )
         st.page_link("app_pages/execution_overlay_writeup.py", label="Baustein ansehen", icon=":material/arrow_forward:")
 
     with col_gap:
         st.markdown("### :material/south_east: Gap-Fade EUR/USD")
-        st.caption("Wochenend-Gap-Anomalie (Caporale & Plastun 2016) -- noch kein Backtest")
+        st.caption("Wochenend-Gap-Anomalie (Caporale & Plastun 2016) -- OOS getestet, kein Edge")
         st.markdown(
-            "Von sechs getesteten Gap-Hypothesen über FX/Rohstoffe/Aktien bleibt nur in "
-            "EUR/USD und GBP/USD ein signifikanter, mechanisch handelbarer Effekt: "
-            "positive Montags-Gaps faden, EOD glattstellen."
+            "Von sechs getesteten Gap-Hypothesen über FX/Rohstoffe/Aktien fand nur in "
+            "EUR/USD und GBP/USD ein im Paper signifikanter Effekt: positive Montags-"
+            "Gaps faden, EOD glattstellen."
         )
         with st.container(border=True):
-            st.markdown("**Im Original (2000-2015)**")
+            st.markdown("**Ehrlicher Befund (eigener OOS-Test 2016-2026)**")
             st.caption(
-                "EUR/USD 63,5% Trefferquote / 148 Trades, GBP/USD 60,0% / 221 Trades, "
-                "beide z>1,96. Sample endet 2015 -- Out-of-Sample-Nachweis noch offen."
+                "EUR/USD selbst brutto nicht von Null unterscheidbar (p=0,42). GBP/USD "
+                "signifikant NEGATIV, schon vor Kosten (p=0,995). Trefferquote fällt von "
+                "~60-65% (Paper) auf ~44% -- Regimebruch, keine Kostenfrage."
             )
         st.page_link("app_pages/gap_fade_writeup.py", label="Baustein ansehen", icon=":material/arrow_forward:")
 

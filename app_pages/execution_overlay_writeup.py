@@ -1,10 +1,12 @@
 """Strategie Bestandteile -- Execution-Overlay (Fast Alpha als Timing-Filter).
 
-Reine Wissens-/Referenzseite zum Paper Zarattini & Pagani (2026),
-"Improving Performance with Fast Alphas -- A Tactical Overlay for Intraday
-Trend Trading", Concretum Research, QuanTips #2. Noch KEIN Backtest -- das
-ist bewusst ein separater, spaeterer Schritt (siehe Info-Box unten), gleiches
-Muster wie orb_writeup.py.
+Wissens-/Referenzseite zum Paper Zarattini & Pagani (2026), "Improving
+Performance with Fast Alphas -- A Tactical Overlay for Intraday Trend
+Trading", Concretum Research, QuanTips #2, PLUS der eigene Backtest
+(execution_overlay/ + scripts/research_execution_overlay.py): SPY-Schnellblick
+(yfinance, nur ~60 Tage) und ein voll gepowerter EUR/USD-Test (Dukascopy,
+2016-2026). Befund: auf EUR/USD hat schon die Basisstrategie keine Kante --
+der Overlay hat dort nichts zu verfeinern. Siehe Befund-Sektion unten.
 """
 
 import streamlit as st
@@ -133,18 +135,82 @@ st.warning(
     icon=":material/warning:",
 )
 
-st.markdown("### Was das fuer unser Projekt bedeuten koennte")
-st.markdown(
-    "Als Timing-Layer denkbar ueber jede bereits unabhaengig getestete Trend-/"
-    "Breakout-Komponente in diesem Repo (z. B. `strategy/adx_vwap.py`'s Refined-"
-    "Konfiguration, `auction_playbook/`, `asian_range_breakout/`) -- veraendert "
-    "explizit NICHT das Signal, nur den Ausfuehrungszeitpunkt, und ist damit ein "
-    "risikoarmer Zusatz statt eines Ersatzes fuer eine bestehende Strategie. "
-    "Noch nicht gegen irgendeine dieser Komponenten getestet."
+st.markdown("### Eigener Backtest")
+st.caption(
+    "Code: `execution_overlay/data.py`, `execution_overlay/engine.py`, "
+    "`scripts/research_execution_overlay.py`. Basisstrategie 1:1 wie oben "
+    "spezifiziert (kein Vol-Targeting, feste 1-Stueck-/1-Lot-Positionsgroesse -- "
+    "vereinfacht, da CAGR/Sharpe bei den hier verfuegbaren Stichprobengroessen "
+    "ohnehin verrauscht sind; der direkte Baseline-vs-Overlay-Vergleich bei "
+    "identischer Groesse ist aussagekraeftiger als die absolute Rendite). "
+    "EUR/USD hat keinen Session-Open im SPY-Cash-Sinne (24h-Markt) -- als "
+    "\"Session\" dient ein Dukascopy-Kalendertag, der duenne Sonntags-Reopen-"
+    "Splitter wird vorher verworfen (gleicher Fund/Fix wie bei `gap_fade/`)."
 )
 
-st.info(
-    "**Naechster Schritt:** noch kein Backtest -- das ist bewusst ein separater, "
-    "spaeterer Schritt. Diese Seite haelt nur die Erkenntnisse aus dem Paper fest.",
-    icon=":material/hourglass_empty:",
+st.markdown(
+    "**Teil 1 -- SPY (yfinance, ~60 Tage, bewusst nur ein Schnellblick, keine "
+    "gepowerte Replikation):**"
+)
+st.markdown(
+    """
+| | Baseline | Overlay |
+|---|---|---|
+| Trades | 34 | 32 |
+| Profit Factor | 0,72 | 0,97 |
+| Total P&L (1 Pip) | -2,22% | -0,20% |
+| p-Wert (einseitig) | 0,76 | 0,53 |
+"""
+)
+st.warning(
+    "Richtung stimmt mit dem Paper ueberein (Overlay reduziert den Verlust "
+    "deutlich) -- aber bei nur 60 Tagen sind beide Werte statistisch "
+    "bedeutungslos (p >> 0,05). Weder Bestaetigung noch Widerlegung moeglich, "
+    "das ist die direkte Konsequenz aus der bewusst gewaehlten yfinance-"
+    "Datenquelle (siehe Adaptions-Punkt oben) -- braucht die tiefere SPY-"
+    "Historie fuer ein belastbares Urteil.",
+    icon=":material/hourglass_top:",
+)
+
+st.markdown(
+    "**Teil 2 -- EUR/USD (Dukascopy, 2016-2026, 1.990 Trades, gut gepowert, "
+    "Paper-Konfiguration unveraendert):**"
+)
+st.markdown(
+    """
+| | Baseline | Overlay |
+|---|---|---|
+| Trades | 1.990 | 1.986 |
+| Profit Factor | 0,89 | 0,88 |
+| Total P&L (1 Pip) | -27,74% | -28,76% |
+| Total P&L (0 Kosten, brutto) | -7,84% | -8,90% |
+| t-Stat / p-Wert | -1,91 / 0,972 | -2,06 / 0,980 |
+"""
+)
+
+st.error(
+    "**Der eigentliche Befund: die Basisstrategie hat auf EUR/USD schon fuer "
+    "sich genommen keine Kante -- signifikant negativ, sogar VOR Kosten "
+    "(brutto -7,84%, p=0,972 fuer H1: Mittelwert>0).** Damit ist die "
+    "Overlay-Frage auf FX im Grunde hinfaellig: man kann das Timing einer "
+    "Strategie nicht sinnvoll verbessern, die nichts zu timen hat. Der "
+    "Overlay macht es hier auf jedem Kostenniveau minimal SCHLECHTER statt "
+    "besser -- das direkte Gegenteil des Paper-Befunds. Gleiches Muster wie "
+    "praktisch jeder andere aus einem Paper transplantierte Ansatz in diesem "
+    "Repo: die Basisstrategie selbst (ATR-Baender um den Session-Open, "
+    "Wilder-Stop) ist eine SPY-spezifische Konstruktion und ueberlebt den "
+    "Transfer auf FX nicht.",
+    icon=":material/trending_down:",
+)
+
+st.markdown(
+    "**Wenn danach nochmal gefragt wird:** der Execution-Overlay-Mechanismus "
+    "selbst bleibt unbewertet auf FX -- getestet wurde nur \"Overlay ueber "
+    "genau diese eine Basisstrategie\", und die Basisstrategie ist das "
+    "Problem, nicht (notwendigerweise) der Overlay. Um den Overlay-Mechanismus "
+    "fair zu pruefen, braucht es entweder eine bereits validierte, "
+    "eigenstaendig profitable FX-Strategie als Traeger (aktuell keine im "
+    "Repo verfuegbar -- ADX-VWAP, Gap-Fade und die Checklist-Strategie sind "
+    "alle ebenfalls ohne Kante) oder die tiefe SPY-Historie, auf der das "
+    "Original-Paper tatsaechlich beweist."
 )

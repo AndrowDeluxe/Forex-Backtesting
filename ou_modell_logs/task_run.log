@@ -498,3 +498,55 @@
 2026-08-07 21:40:06    f0cc61c..c735048  main -> main
 2026-08-07 21:40:06 Commit + Push erfolgreich.
 2026-08-07 21:40:06 === Task beendet ===
+2026-08-09 21:40:02 === Task gestartet ===
+2026-08-09 21:40:25 OU-Modell Tages-Log erfasst (Konto 1 (TTP)):
+2026-08-09 21:40:25   date: 2026-08-09
+2026-08-09 21:40:25   account: Konto 1 (TTP)
+2026-08-09 21:40:25   signals_scanned: 0
+2026-08-09 21:40:25   orders_sent: 0
+2026-08-09 21:40:25   orders_skipped: 0
+2026-08-09 21:40:25   orders_error: 0
+2026-08-09 21:40:25   symbols_sent: 
+2026-08-09 21:40:25   baseline_equity: None
+2026-08-09 21:40:25   current_equity: 101283.95
+2026-08-09 21:40:25   floating_pnl: 573.55
+2026-08-09 21:40:25   daily_pnl_pct: None
+2026-08-09 21:40:25   open_positions: LUV(+100.35); AMD(+219.31); UPS(-70.56); CAT(+42.14); WM(+8.64); TROW(+75.02); AAPL(+153.00); MAR(+92.85); CMI(+200.00); UNH(-57.00); CVS(-237.05); REG(-75.84); ROK(-35.76); D(+134.93); MNST(+23.52)
+2026-08-09 21:40:25   drawdown_halted: False
+2026-08-09 21:40:25   connection_error: None
+2026-08-09 21:40:25   hourly_breakdown: []
+2026-08-09 21:40:25 
+2026-08-09 21:40:25 OU-Modell Tages-Log erfasst (Konto 2 (TTP, Demo)):
+2026-08-09 21:40:25   date: 2026-08-09
+2026-08-09 21:40:25   account: Konto 2 (TTP, Demo)
+2026-08-09 21:40:25   signals_scanned: 0
+2026-08-09 21:40:25   orders_sent: 0
+2026-08-09 21:40:25   orders_skipped: 0
+2026-08-09 21:40:25   orders_error: 0
+2026-08-09 21:40:25   symbols_sent: 
+2026-08-09 21:40:25   baseline_equity: None
+2026-08-09 21:40:25   current_equity: 101105.17
+2026-08-09 21:40:25   floating_pnl: 779.9399999999999
+2026-08-09 21:40:25   daily_pnl_pct: None
+2026-08-09 21:40:25   open_positions: ADI(+219.44); LUV(+102.92); TROW(+71.30); AAPL(+120.78); MAR(+92.85); CMI(+138.88); UNH(-57.00); CVS(-232.74); D(+282.21); REG(+41.30)
+2026-08-09 21:40:25   drawdown_halted: False
+2026-08-09 21:40:25   connection_error: None
+2026-08-09 21:40:25   hourly_breakdown: []
+2026-08-09 21:40:25 
+2026-08-09 21:40:25 OU-Modell Tages-Log erfasst (Konto 3 (Tickmill)):
+2026-08-09 21:40:25   date: 2026-08-09
+2026-08-09 21:40:25   account: Konto 3 (Tickmill)
+2026-08-09 21:40:25   signals_scanned: 0
+2026-08-09 21:40:25   orders_sent: 0
+2026-08-09 21:40:25   orders_skipped: 0
+2026-08-09 21:40:25   orders_error: 0
+2026-08-09 21:40:25   symbols_sent: 
+2026-08-09 21:40:25   baseline_equity: None
+2026-08-09 21:40:25   current_equity: 3624.06
+2026-08-09 21:40:25   floating_pnl: 2.3799999999999986
+2026-08-09 21:40:25   daily_pnl_pct: None
+2026-08-09 21:40:25   open_positions: TROW(+13.60); AAPL(+19.26); MAR(+10.83); UNH(-16.61); CVS(-58.84); D(+51.21); REG(-12.81); ROK(-7.58); MNST(+3.32)
+2026-08-09 21:40:25   drawdown_halted: False
+2026-08-09 21:40:25   connection_error: None
+2026-08-09 21:40:25   hourly_breakdown: []
+2026-08-09 21:40:25 

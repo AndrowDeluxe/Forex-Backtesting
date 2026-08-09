@@ -1,7 +1,12 @@
-"""Landing page: overview and entry point for all strategy dashboards,
-grouped into the same three top-level categories as app.py's navigation
-(Live Logs / Backtests / Strategie Bestandteile) so the overview mirrors
-the sidebar instead of listing every page flat."""
+"""Landing page: overview and entry point for all strategy dashboards.
+
+Sidebar (app.py) now shows only ONE visible page per Hauptthema (the rest
+are registered with visibility="hidden" -- still routable via st.page_link,
+just not listed in the nav menu); this page is where every individual
+Bestandteil/Backtest actually lives, as icon-cards grouped into tabs that
+mirror app.py's Hauptthemen 1:1: Live Logs / Fertige Strategien / Backtests
+/ Strategie Bestandteile / Erkenntnisse (merged 2026-08-09 from the former
+separate "151 Trading Strategies" and "Neue Papers" tabs)."""
 
 import streamlit as st
 
@@ -22,32 +27,135 @@ Stellen, wo eine Strategie **keinen** robusten Edge zeigt.
 
 st.space("medium")
 
-tab_live, tab_backtests, tab_components, tab_paper151, tab_new_papers = st.tabs(
-    ["Live Logs", "Backtests", "Strategie Bestandteile", "151 Trading Strategies", "Neue Papers"]
+tab_live, tab_fertige, tab_backtests, tab_components, tab_erkenntnisse = st.tabs(
+    ["Live Logs", "Fertige Strategien", "Backtests", "Strategie Bestandteile", "Erkenntnisse"]
 )
 
 # =============================================================================
 # Live Logs
 # =============================================================================
 with tab_live:
-    col_live, _spacer1, _spacer2 = st.columns(3, border=False)
+    col_live, col_orbfwd, _spacer1 = st.columns(3, border=True)
     with col_live:
+        st.markdown("### :material/monitoring: OU-Modell — Live-Trading-Log")
+        st.caption("Live-Konto, echtes Geld — read-only Log, kein Backtest")
+        st.markdown(
+            "Ein gehosteter OU-Modell-Signal-Scanner sendet Long-Setups automatisch "
+            "an ein MT5-Live-Konto (Windows Task Scheduler, drei Scans/Tag). Diese "
+            "Seite zeigt nur committete Tageswerte — kein Live-Zugriff auf MT5 von hier aus."
+        )
         with st.container(border=True):
-            st.markdown("### :material/monitoring: OU-Modell — Live-Trading-Log")
-            st.caption("Live-Konto, echtes Geld — read-only Log, kein Backtest")
-            st.markdown(
-                "Ein gehosteter OU-Modell-Signal-Scanner sendet Long-Setups automatisch "
-                "an ein MT5-Live-Konto (Windows Task Scheduler, drei Scans/Tag). Diese "
-                "Seite zeigt nur committete Tageswerte — kein Live-Zugriff auf MT5 von hier aus."
+            st.markdown("**Status**")
+            st.caption(
+                "Erster Live-Handelstag: 29.07.2026. Noch keine Auswertung/Verdict — "
+                "das kommt erst nach ~einem Monat gesammelter Tage, dieselbe Disziplin "
+                "wie bei jedem Backtest in diesem Projekt."
             )
-            with st.container(border=True):
-                st.markdown("**Status**")
-                st.caption(
-                    "Erster Live-Handelstag: 29.07.2026. Noch keine Auswertung/Verdict — "
-                    "das kommt erst nach ~einem Monat gesammelter Tage, dieselbe Disziplin "
-                    "wie bei jedem Backtest in diesem Projekt."
-                )
-            st.page_link("app_pages/ou_modell.py", label="Log öffnen", icon=":material/arrow_forward:")
+        st.page_link("app_pages/ou_modell.py", label="Log öffnen", icon=":material/arrow_forward:")
+
+    with col_orbfwd:
+        st.markdown("### :material/bolt: ORB Forward-Test")
+        st.caption("Demo-Konto, kein echtes Geld — read-only Log, kein Backtest")
+        st.markdown(
+            "ORB long-only + ADX≥25 + Wochentag-Filter läuft auf einem "
+            "MetaQuotes-Demo-Konto (110209087). Diese Seite liest nur die "
+            "committeten Logs — kein Live-MT5-Zugriff von hier aus."
+        )
+        with st.container(border=True):
+            st.markdown("**Status**")
+            st.caption(
+                "Erster Live-Tag: 03.08.2026. Bewusst kein Performance-Verdikt "
+                "hier — der Backtest (\"ORB Strategie\") ist die eigentliche "
+                "Evidenzbasis, das ist nur ein akkumulierender Sanity-Check."
+            )
+        st.page_link("app_pages/orb_forward_test.py", label="Log öffnen", icon=":material/arrow_forward:")
+
+# =============================================================================
+# Fertige Strategien
+# =============================================================================
+with tab_fertige:
+    col_fs, col_scanner, col_gbdm = st.columns(3, border=True)
+    with col_fs:
+        st.markdown("### :material/military_tech: OU-Modell (finale Konfiguration)")
+        st.caption("Long-only, OU-Selektion, 3.0σ-Stop, EMA200-Regimefilter — S&P 500/Nasdaq-100/DAX")
+        st.markdown(
+            "Die final festgelegte OU-Modell-Konfiguration ohne Tuning-Regler "
+            "(siehe \"OU-Modell Paper-Backtest\" für die interaktive Sweep-"
+            "Version). OU-Selektion bewusst überall aktiv, auch wo sie auf den "
+            "US-Universen nicht nötig war — Robustheit vor Optimalität."
+        )
+        with st.container(border=True):
+            st.markdown("**Ehrlicher Befund — zuerst lesen**")
+            st.caption(
+                "Ein echter Out-of-Sample-Holdout (2025-heute, von keinem Sweep "
+                "berührt) zeigt Sharpe nahe Null bis negativ auf allen drei "
+                "Märkten, deutlich unter Buy & Hold. Nicht nur die 2018-2024-"
+                "Zahlen zeigen, das wäre irreführend."
+            )
+        st.page_link("app_pages/fertige_strategien.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
+
+    with col_scanner:
+        st.markdown("### :material/radar: OU-Modell Live-Signale (Scanner)")
+        st.caption("Punktuelle Momentaufnahme, kein Live-Tracking offener Positionen")
+        st.markdown(
+            "Zeigt, welche OU-selektierten Ticker (S&P 500/Nasdaq-100/DAX) "
+            "aktuell unter dem unteren Bollinger-Band liegen und bei offenem "
+            "EMA200-Regimefilter einen Entry auslösen würden — Stand des "
+            "letzten lokalen Scans, liest nur committete Snapshots."
+        )
+        with st.container(border=True):
+            st.markdown("**Status**")
+            st.caption(
+                "Rein informativ, kein Trade-Tracking: verfolgt keine bereits "
+                "gehaltenen Positionen aus früheren Scans, Positionsgrößen "
+                "unterstellen je Signal die einzige offene Position."
+            )
+        st.page_link("app_pages/ou_scanner.py", label="Scanner öffnen", icon=":material/arrow_forward:")
+
+    with col_gbdm:
+        st.markdown("### :material/currency_bitcoin: Gold-Bitcoin Dual Momentum")
+        st.caption("Vojtko & Dujava (2026, Quantpedia) — wöchentliche Rotation")
+        st.markdown(
+            "Wöchentliche (Mittwoch-Schluss) Rotation zwischen Gold und "
+            "Bitcoin: long, was die höhere X-Wochen-Rendite hatte, nur wenn "
+            "die auch positiv ist, sonst Cash. Eigene, von der Asian-Range-"
+            "Breakout-Strategie unabhängige Idee."
+        )
+        with st.container(border=True):
+            st.markdown("**Datenabweichung (offengelegt)**")
+            st.caption(
+                "Paper handelt GLD/IBIT-ETFs; dieses Repo nutzt echte Spot-"
+                "Preise (Dukascopy XAUUSD, Binance BTCUSDT) statt ETF-Historie "
+                "— interaktives Dashboard mit Kosten-/Vol-Cap-Reglern, eigenes "
+                "Urteil direkt im Dashboard nachvollziehbar."
+            )
+        st.page_link("app_pages/gold_bitcoin_dual_momentum.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
+
+    col_asb, _spacer2, _spacer3 = st.columns(3, border=True)
+    with col_asb:
+        st.markdown("### :material/wb_twilight: Gold Asian-Range Breakout")
+        st.caption("XAUUSD: Range-Bruch der Asien-Session, geritten bis zum Zeit-Exit")
+        st.markdown(
+            "Asien-Range (21:00-01:00 NY) bilden, im Moment des Fenster-Schlusses "
+            "Buy-Stop/Sell-Stop OCO an den Rändern scharfschalten, kein Kursziel, "
+            "Flat-by-Time-Exit um 11:00 NY. Quelle: user-bereitgestellte "
+            "TradeStation-EasyLanguage-Spezifikation, kein akademisches Paper."
+        )
+        with st.container(border=True):
+            st.markdown("**Ehrlicher Befund**")
+            st.caption(
+                "Ohne Parameter-Fitting über 10,5 Jahre positiv (PF 1.09), 9/11 Jahre "
+                "netto positiv, hält sich grob über beide Zeitraum-Hälften. Aber "
+                "dünn: Break-even-Spread liegt bei nur ~0.54 USD Round-Trip — genau "
+                "der Bereich realistischer Retail-Gold-Spreads, besonders da rund um "
+                "Sessionübergänge gehandelt wird. Mit den mittlerweile vier "
+                "walk-forward-validierten Filtern (ADX-Regime + Gold-Trend-Bias SMA200 + "
+                "Füllverzögerung max. 3 Bars + Silber-Alignment) steigt PF auf 1.43, "
+                "Sharpe auf 0.61 und Max Drawdown sinkt von -18.5% auf -4.0%, bei knapp "
+                "60% weniger Trades als die ursprüngliche Konfiguration. Die einzige "
+                "Strategie in diesem Projekt mit einer validierten, robusten Kante."
+            )
+        st.page_link("app_pages/asian_range_breakout.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
 
 # =============================================================================
 # Backtests
@@ -174,30 +282,44 @@ with tab_backtests:
             )
         st.page_link("app_pages/auction_playbook.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
 
-    col7, _spacer3, _spacer4 = st.columns(3, border=True)
-    with col7:
-        st.markdown("### :material/wb_twilight: Gold Asian-Range Breakout")
-        st.caption("XAUUSD: Range-Bruch der Asien-Session, geritten bis zum Zeit-Exit")
+    st.space("small")
+    col_orbstrat, col_oupaper, _spacer4 = st.columns(3, border=True)
+
+    with col_orbstrat:
+        st.markdown("### :material/bolt: ORB Strategie")
+        st.caption("Opening Range Breakout — Backtest-Dashboard zum Paper")
         st.markdown(
-            "Asien-Range (21:00-01:00 NY) bilden, im Moment des Fenster-Schlusses "
-            "Buy-Stop/Sell-Stop OCO an den Raendern scharfschalten, kein Kursziel, "
-            "Flat-by-Time-Exit um 11:00 NY. Quelle: user-bereitgestellte "
-            "TradeStation-EasyLanguage-Spezifikation, kein akademisches Paper."
+            "Interaktives Dashboard zu `orb_strategy/`. Baseline (long+short) "
+            "ist überall flach bis Rauschen; long-only + ADX≥25 beim Entry "
+            "wird zu einer echten, OOS-haltbaren Kante — aber spezifisch auf "
+            "Nasdaq und S&P 500, nicht auf EUR/USD, Öl oder Gold."
         )
         with st.container(border=True):
             st.markdown("**Ehrlicher Befund**")
             st.caption(
-                "Ohne Parameter-Fitting ueber 10,5 Jahre positiv (PF 1.09), 9/11 Jahre "
-                "netto positiv, haelt sich grob ueber beide Zeitraum-Haelften. Aber "
-                "duenn: Break-even-Spread liegt bei nur ~0.54 USD Round-Trip - genau "
-                "der Bereich realistischer Retail-Gold-Spreads, besonders da rund um "
-                "Sessionuebergaenge gehandelt wird. Mit den mittlerweile vier "
-                "walk-forward-validierten Filtern (ADX-Regime + Gold-Trend-Bias SMA200 + "
-                "Fuellverzoegerung max. 3 Bars + Silber-Alignment) steigt PF auf 1.43, "
-                "Sharpe auf 0.61 und Max Drawdown sinkt von -18.5% auf -4.0%, bei knapp "
-                "60% weniger Trades als die urspruengliche Konfiguration."
+                "Trendfortsetzungseffekt auf US-Aktienindizes, keine "
+                "universelle Breakout-Kante — siehe \"Opening Range "
+                "Breakout\" für die Paper-Herleitung dahinter."
             )
-        st.page_link("app_pages/asian_range_breakout.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
+        st.page_link("app_pages/orb_strategy.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
+
+    with col_oupaper:
+        st.markdown("### :material/science: OU-Modell Paper-Backtest")
+        st.caption("Jashnani (Bollinger + Ornstein-Uhlenbeck) — interaktiver Sweep")
+        st.markdown(
+            "Reproduziert die Paper-Methodik (rollierende OU-Parameter per "
+            "OLS, 60/120/252-Tage-Fenster, In-Sample 2010-2017, Bollinger-"
+            "Band-Backtest OOS 2018-2024) auf S&P 500 (90-Ticker-Sample) und "
+            "Nasdaq-100 (alle ~103 Konstituenten)."
+        )
+        with st.container(border=True):
+            st.markdown("**Status**")
+            st.caption(
+                "Interaktive Sweep-Version mit Tuning-Reglern — die daraus "
+                "abgeleitete, fest verriegelte Konfiguration steht unter "
+                "\"Fertige Strategien\"."
+            )
+        st.page_link("app_pages/ou_paper_backtest.py", label="Dashboard öffnen", icon=":material/arrow_forward:")
 
 # =============================================================================
 # Strategie Bestandteile
@@ -319,12 +441,47 @@ with tab_components:
             )
         st.page_link("app_pages/gap_fade_writeup.py", label="Baustein ansehen", icon=":material/arrow_forward:")
 
+    col_orbwriteup, col_riskmgmt, _spacer5 = st.columns(3, border=True)
+    with col_orbwriteup:
+        st.markdown("### :material/bolt: Opening Range Breakout")
+        st.caption("Holmberg, Lönnbark & Lundström (2013) — Strategiebestandteil")
+        st.markdown(
+            "Contraction-Expansion-Prinzip (Crabel 1990): statistisch aus "
+            "täglichen OHLC-Daten kalibrierte Schwellen statt fixer "
+            "Prozentsätze, Bootstrap-Signifikanztest ohne echte Intraday-"
+            "Tickdaten."
+        )
+        with st.container(border=True):
+            st.markdown("**Einordnung**")
+            st.caption(
+                "Paper selbst warnt: Gesamtstichprobe-Erfolg wird von der "
+                "jüngsten, volatilsten Teilperiode getragen — nicht robust "
+                "über die Zeit. Nur die Methodik, kein eigener Backtest hier."
+            )
+        st.page_link("app_pages/orb_writeup.py", label="Baustein ansehen", icon=":material/arrow_forward:")
+
+    with col_riskmgmt:
+        st.markdown("### :material/shield: Risk Management")
+        st.caption("Drawdown-Reduktion ohne die Kante kaputtzumachen — OU-Modell-Experimente")
+        st.markdown(
+            "Generalisierter Denkansatz aus zwei Experimenten am OU-Modell "
+            "(sweep_risk_caps.py in-sample, oos_holdout_riskcap.py echter "
+            "2025+-Holdout)."
+        )
+        with st.container(border=True):
+            st.markdown("**Zentrale Lehre**")
+            st.caption(
+                "In-Sample- und Out-of-Sample-Antwort widersprachen sich — "
+                "eigenständiger Beleg für die Overfitting-Disziplin, "
+                "diesmal auf einen Sizing- statt Entry-Parameter angewendet."
+            )
+        st.page_link("app_pages/risk_management.py", label="Baustein ansehen", icon=":material/arrow_forward:")
 
 # =============================================================================
-# 151 Trading Strategies
+# Erkenntnisse (merged 2026-08-09: vormals "151 Trading Strategies" + "Neue Papers")
 # =============================================================================
-with tab_paper151:
-    col_p151, _spacer5, _spacer6 = st.columns(3, border=True)
+with tab_erkenntnisse:
+    col_p151, col_np, col_np2 = st.columns(3, border=True)
     with col_p151:
         st.markdown("### :material/auto_stories: 151 Trading Strategies")
         st.caption("Kakushadze & Serur (2018) — Paper-Destillat, Sammelseite")
@@ -342,11 +499,6 @@ with tab_paper151:
             )
         st.page_link("app_pages/paper151.py", label="Seite öffnen", icon=":material/arrow_forward:")
 
-# =============================================================================
-# Neue Papers (Aug. 2026)
-# =============================================================================
-with tab_new_papers:
-    col_np, col_np2, _spacer8 = st.columns(3, border=True)
     with col_np:
         st.markdown("### :material/library_books: Fünf neue Papers (Gold)")
         st.caption("User-Upload, 2026-08-08 — Foreign Flow, GEX, Lead-Lag, Forecaster-Grading, COT-Sentiment")
@@ -363,6 +515,7 @@ with tab_new_papers:
                 "dokumentiert, aber ohne Optionsdaten bzw. Korea-Marktdaten nicht umsetzbar."
             )
         st.page_link("app_pages/goldi_papers_202608.py", label="Seite öffnen", icon=":material/arrow_forward:")
+
     with col_np2:
         st.markdown("### :material/currency_exchange: Fünf FX-Papers")
         st.caption("User-Upload, 2026-08-09 — Marktstruktur, Fibonacci/VWAP-Theorie, Intraday-Momentum, WMR-Fix")

@@ -572,3 +572,21 @@
 2026-08-10 20:37:59                                 market ticker  scan_date  close  lower_band  entry     sl     tp  tp_price  risk_pct_price  position_size_pct  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
 2026-08-10 20:37:59 S&P 500 (volles Universum, 420 Ticker)    FRT 2026-08-07 118.69      118.88 118.69 111.25 129.85    129.85            6.27              15.95       True       True                            12.5 2026-08-10T20:37:58
 2026-08-10 20:37:59 S&P 500 (volles Universum, 420 Ticker)    REG 2026-08-07  77.12       77.38  77.12  72.20  84.49     84.49            6.37              15.69       True       True                            12.5 2026-08-10T20:37:58
+2026-08-10 20:37:59 [main 587183d] OU-Modell Scanner: Snapshot 2026-08-10 20:37
+2026-08-10 20:37:59  2 files changed, 20 insertions(+), 2 deletions(-)
+2026-08-10 20:38:02 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-10 20:38:02    453008e..587183d  main -> main
+2026-08-10 20:38:02 Commit + Push erfolgreich.
+2026-08-10 20:38:02 === Scanner-Task beendet ===
+2026-08-10 21:35:00 === Scanner-Task gestartet ===
+2026-08-10 21:37:42 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 147 OU-selected tickers...
+2026-08-10 21:37:42 [sp500] 2 raw signal(s) as of 2026-08-07, regime_ok=True
+2026-08-10 21:37:42 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 16 OU-selected tickers...
+2026-08-10 21:37:42 [nasdaq100] 0 raw signal(s) as of 2026-08-07, regime_ok=True
+2026-08-10 21:37:42 [dax] DAX (alle 40 Ticker): scanning 13 OU-selected tickers...
+2026-08-10 21:37:42 [dax] 0 raw signal(s) as of 2026-08-07, regime_ok=True
+2026-08-10 21:37:42 
+2026-08-10 21:37:42 Saved 2 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-08-10T21:37:42)
+2026-08-10 21:37:42                                 market ticker  scan_date  close  lower_band  entry     sl     tp  tp_price  risk_pct_price  position_size_pct  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
+2026-08-10 21:37:42 S&P 500 (volles Universum, 420 Ticker)    FRT 2026-08-07 118.69      118.88 118.69 111.25 129.85    129.85            6.27              15.95       True       True                            12.5 2026-08-10T21:37:42
+2026-08-10 21:37:42 S&P 500 (volles Universum, 420 Ticker)    REG 2026-08-07  77.12       77.38  77.12  72.20  84.49     84.49            6.37              15.69       True       True                            12.5 2026-08-10T21:37:42

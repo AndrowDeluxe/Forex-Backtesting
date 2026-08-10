@@ -1,0 +1,94 @@
+===== run_20260810_153828.log =====
+2026-08-10 15:38:28,648 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260810_153828.log ===
+2026-08-10 15:38:35,365 CRITICAL executor: HALTEDAUER-WARNUNG: Position ADI (Ticket 17505909) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 216.71.
+2026-08-10 15:38:35,367 CRITICAL executor: HALTEDAUER-WARNUNG: Position LUV (Ticket 17505917) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 29.76.
+2026-08-10 15:38:35,376 CRITICAL run_once.konto2_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17505909, 'symbol': 'ADI', 'holding_days': 10, 'profit': 216.71}, {'ticket': 17505917, 'symbol': 'LUV', 'holding_days': 10, 'profit': 29.76}]
+2026-08-10 15:38:35,566 INFO run_once.konto2_ttp: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-10 15:38:35,568 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100944.18, aktueller Drawdown 0.00% (Limit 2.0%)
+2026-08-10 15:38:35,572 WARNING executor: Symbol 'FRT' (MT5-Name 'FRT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-10 15:38:35,572 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FRT', 'direction': 'Long', 'entry': 118.69, 'sl': 111.25, 'tp': 129.85}}
+2026-08-10 15:38:35,575 INFO executor: Für REG ist bereits eine Position offen (Ticket 17763558) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-10 15:38:35,575 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'REG', 'direction': 'Long', 'entry': 77.12, 'sl': 72.2, 'tp': 84.49}}
+2026-08-10 15:38:35,576 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260810_163523.log =====
+2026-08-10 16:35:23,858 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260810_163523.log ===
+2026-08-10 16:35:23,904 CRITICAL executor: HALTEDAUER-WARNUNG: Position ADI (Ticket 17505909) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 208.78.
+2026-08-10 16:35:23,913 CRITICAL run_once.konto2_ttp: 1 Position(en) über Haltedauer-Limit: [{'ticket': 17505909, 'symbol': 'ADI', 'holding_days': 10, 'profit': 208.78}]
+2026-08-10 16:35:24,081 INFO run_once.konto2_ttp: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-10 16:35:24,084 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100944.18, aktueller Drawdown 0.44% (Limit 2.0%)
+2026-08-10 16:35:24,086 WARNING executor: Symbol 'FRT' (MT5-Name 'FRT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-10 16:35:24,087 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FRT', 'direction': 'Long', 'entry': 118.69, 'sl': 111.25, 'tp': 129.85}}
+2026-08-10 16:35:24,089 INFO executor: Für REG ist bereits eine Position offen (Ticket 17763558) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-10 16:35:24,089 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'REG', 'direction': 'Long', 'entry': 77.12, 'sl': 72.2, 'tp': 84.49}}
+2026-08-10 16:35:24,090 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260810_173523.log =====
+2026-08-10 17:35:23,412 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260810_173523.log ===
+2026-08-10 17:35:23,499 CRITICAL executor: HALTEDAUER-WARNUNG: Position ADI (Ticket 17505909) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 174.33.
+2026-08-10 17:35:23,505 CRITICAL run_once.konto2_ttp: 1 Position(en) über Haltedauer-Limit: [{'ticket': 17505909, 'symbol': 'ADI', 'holding_days': 10, 'profit': 174.33}]
+2026-08-10 17:35:23,705 INFO run_once.konto2_ttp: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-10 17:35:23,708 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100944.18, aktueller Drawdown 0.44% (Limit 2.0%)
+2026-08-10 17:35:23,710 WARNING executor: Symbol 'FRT' (MT5-Name 'FRT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-10 17:35:23,710 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FRT', 'direction': 'Long', 'entry': 118.69, 'sl': 111.25, 'tp': 129.85}}
+2026-08-10 17:35:23,712 INFO executor: Für REG ist bereits eine Position offen (Ticket 17763558) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-10 17:35:23,712 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'REG', 'direction': 'Long', 'entry': 77.12, 'sl': 72.2, 'tp': 84.49}}
+2026-08-10 17:35:23,713 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260810_183525.log =====
+2026-08-10 18:35:25,600 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260810_183525.log ===
+2026-08-10 18:35:25,720 CRITICAL executor: HALTEDAUER-WARNUNG: Position ADI (Ticket 17505909) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 185.77.
+2026-08-10 18:35:25,722 CRITICAL executor: HALTEDAUER-WARNUNG: Position TROW (Ticket 17625106) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 102.30.
+2026-08-10 18:35:25,723 CRITICAL executor: HALTEDAUER-WARNUNG: Position AAPL (Ticket 17625170) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 33.55.
+2026-08-10 18:35:25,727 CRITICAL run_once.konto2_ttp: 3 Position(en) über Haltedauer-Limit: [{'ticket': 17505909, 'symbol': 'ADI', 'holding_days': 10, 'profit': 185.77}, {'ticket': 17625106, 'symbol': 'TROW', 'holding_days': 10, 'profit': 102.3}, {'ticket': 17625170, 'symbol': 'AAPL', 'holding_days': 10, 'profit': 33.55}]
+2026-08-10 18:35:25,885 INFO run_once.konto2_ttp: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-10 18:35:25,887 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100944.18, aktueller Drawdown 0.44% (Limit 2.0%)
+2026-08-10 18:35:25,892 WARNING executor: Symbol 'FRT' (MT5-Name 'FRT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-10 18:35:25,892 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FRT', 'direction': 'Long', 'entry': 118.69, 'sl': 111.25, 'tp': 129.85}}
+2026-08-10 18:35:25,895 INFO executor: Für REG ist bereits eine Position offen (Ticket 17763558) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-10 18:35:25,895 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'REG', 'direction': 'Long', 'entry': 77.12, 'sl': 72.2, 'tp': 84.49}}
+2026-08-10 18:35:25,895 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260810_193524.log =====
+2026-08-10 19:35:24,927 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260810_193524.log ===
+2026-08-10 19:35:24,961 CRITICAL executor: HALTEDAUER-WARNUNG: Position ADI (Ticket 17505909) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 185.38.
+2026-08-10 19:35:24,963 CRITICAL executor: HALTEDAUER-WARNUNG: Position TROW (Ticket 17625106) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 84.94.
+2026-08-10 19:35:24,964 CRITICAL executor: HALTEDAUER-WARNUNG: Position AAPL (Ticket 17625170) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 46.86.
+2026-08-10 19:35:24,968 CRITICAL run_once.konto2_ttp: 3 Position(en) über Haltedauer-Limit: [{'ticket': 17505909, 'symbol': 'ADI', 'holding_days': 10, 'profit': 185.38}, {'ticket': 17625106, 'symbol': 'TROW', 'holding_days': 10, 'profit': 84.94}, {'ticket': 17625170, 'symbol': 'AAPL', 'holding_days': 10, 'profit': 46.86}]
+2026-08-10 19:35:25,130 INFO run_once.konto2_ttp: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-10 19:35:25,133 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100944.18, aktueller Drawdown 0.45% (Limit 2.0%)
+2026-08-10 19:35:25,137 WARNING executor: Symbol 'FRT' (MT5-Name 'FRT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-10 19:35:25,137 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FRT', 'direction': 'Long', 'entry': 118.69, 'sl': 111.25, 'tp': 129.85}}
+2026-08-10 19:35:25,139 INFO executor: Für REG ist bereits eine Position offen (Ticket 17763558) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-10 19:35:25,139 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'REG', 'direction': 'Long', 'entry': 77.12, 'sl': 72.2, 'tp': 84.49}}
+2026-08-10 19:35:25,140 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260810_203750.log =====
+2026-08-10 20:37:50,286 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260810_203750.log ===
+2026-08-10 20:37:50,439 CRITICAL executor: HALTEDAUER-WARNUNG: Position ADI (Ticket 17505909) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 187.46.
+2026-08-10 20:37:50,440 CRITICAL executor: HALTEDAUER-WARNUNG: Position TROW (Ticket 17625106) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 67.58.
+2026-08-10 20:37:50,443 CRITICAL executor: HALTEDAUER-WARNUNG: Position AAPL (Ticket 17625170) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 48.84.
+2026-08-10 20:37:50,449 CRITICAL run_once.konto2_ttp: 3 Position(en) über Haltedauer-Limit: [{'ticket': 17505909, 'symbol': 'ADI', 'holding_days': 10, 'profit': 187.46}, {'ticket': 17625106, 'symbol': 'TROW', 'holding_days': 10, 'profit': 67.58}, {'ticket': 17625170, 'symbol': 'AAPL', 'holding_days': 10, 'profit': 48.84}]
+2026-08-10 20:37:50,639 INFO run_once.konto2_ttp: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-10 20:37:50,641 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100944.18, aktueller Drawdown 0.47% (Limit 2.0%)
+2026-08-10 20:37:50,644 WARNING executor: Symbol 'FRT' (MT5-Name 'FRT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-10 20:37:50,645 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FRT', 'direction': 'Long', 'entry': 118.69, 'sl': 111.25, 'tp': 129.85}}
+2026-08-10 20:37:50,647 INFO executor: Für REG ist bereits eine Position offen (Ticket 17763558) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-10 20:37:50,648 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'REG', 'direction': 'Long', 'entry': 77.12, 'sl': 72.2, 'tp': 84.49}}
+2026-08-10 20:37:50,648 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260810_213522.log =====
+2026-08-10 21:35:22,435 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260810_213522.log ===
+2026-08-10 21:35:22,472 INFO run_once.konto2_ttp: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-10 21:35:22,475 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100944.18, aktueller Drawdown 0.48% (Limit 2.0%)
+2026-08-10 21:35:22,478 WARNING executor: Symbol 'FRT' (MT5-Name 'FRT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-10 21:35:22,479 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FRT', 'direction': 'Long', 'entry': 118.69, 'sl': 111.25, 'tp': 129.85}}
+2026-08-10 21:35:22,483 INFO executor: Für REG ist bereits eine Position offen (Ticket 17763558) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-10 21:35:22,483 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'REG', 'direction': 'Long', 'entry': 77.12, 'sl': 72.2, 'tp': 84.49}}
+2026-08-10 21:35:22,483 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===

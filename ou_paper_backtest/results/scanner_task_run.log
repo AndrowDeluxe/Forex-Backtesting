@@ -617,3 +617,30 @@
 2026-08-11 14:32:43 S&P 500 (volles Universum, 420 Ticker)    MGM 2026-08-10  43.36       43.63  43.36  40.53                   47.61     47.61            6.53              15.30       True       True                            10.0 2026-08-11T14:32:42
 2026-08-11 14:32:43 S&P 500 (volles Universum, 420 Ticker)    REG 2026-08-10  76.11       76.61  76.11  70.34                   84.77     84.77            7.59              13.18       True       True                            10.0 2026-08-11T14:32:42
 2026-08-11 14:32:43          Nasdaq-100 (alle ~103 Ticker)    EXC 2026-08-10  44.50       44.61  44.50  42.08 kein TP (finale Config)      0.00            5.45              18.35       True       True                            12.5 2026-08-11T14:32:42
+2026-08-11 14:32:43 [main c8205a0] OU-Modell Scanner: Snapshot 2026-08-11 14:32
+2026-08-11 14:32:43  2 files changed, 32 insertions(+), 2 deletions(-)
+2026-08-11 14:32:46 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-11 14:32:46    dbf10b1..c8205a0  main -> main
+2026-08-11 14:32:46 Commit + Push erfolgreich.
+2026-08-11 14:32:46 === Scanner-Task beendet ===
+2026-08-11 15:35:04 === Scanner-Task gestartet ===
+2026-08-11 15:37:46 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 147 OU-selected tickers...
+2026-08-11 15:37:46 [sp500] 10 raw signal(s) as of 2026-08-10, regime_ok=True
+2026-08-11 15:37:46 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 16 OU-selected tickers...
+2026-08-11 15:37:46 [nasdaq100] 1 raw signal(s) as of 2026-08-10, regime_ok=True
+2026-08-11 15:37:46 [dax] DAX (alle 40 Ticker): scanning 13 OU-selected tickers...
+2026-08-11 15:37:46 [dax] 0 raw signal(s) as of 2026-08-10, regime_ok=True
+2026-08-11 15:37:46 
+2026-08-11 15:37:46 Saved 11 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-08-11T15:37:45)
+2026-08-11 15:37:46                                 market ticker  scan_date  close  lower_band  entry     sl                      tp  tp_price  risk_pct_price  position_size_pct  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
+2026-08-11 15:37:46 S&P 500 (volles Universum, 420 Ticker)    AVB 2026-08-10 183.84      184.28 183.84 175.81                  195.88    195.88            4.37              20.00       True       True                            10.0 2026-08-11T15:37:45
+2026-08-11 15:37:46 S&P 500 (volles Universum, 420 Ticker)    CPT 2026-08-10 109.08      109.14 109.08 104.06                   116.6    116.60            4.60              20.00       True       True                            10.0 2026-08-11T15:37:45
+2026-08-11 15:37:46 S&P 500 (volles Universum, 420 Ticker)    DTE 2026-08-10 136.78      136.80 136.78 125.21                  154.14    154.14            8.46              11.82       True       True                            10.0 2026-08-11T15:37:45
+2026-08-11 15:37:46 S&P 500 (volles Universum, 420 Ticker)    EQR 2026-08-10  65.83       65.93  65.83  62.88                   70.25     70.25            4.48              20.00       True       True                            10.0 2026-08-11T15:37:45
+2026-08-11 15:37:46 S&P 500 (volles Universum, 420 Ticker)    EXC 2026-08-10  44.50       44.61  44.50  42.08                   48.14     48.14            5.45              18.35       True       True                            10.0 2026-08-11T15:37:45
+2026-08-11 15:37:46 S&P 500 (volles Universum, 420 Ticker)    FRT 2026-08-10 117.13      117.86 117.13 108.51                  130.06    130.06            7.36              13.59       True       True                            10.0 2026-08-11T15:37:45
+2026-08-11 15:37:46 S&P 500 (volles Universum, 420 Ticker)    DOC 2026-08-10  20.90       20.95  20.90  19.36                    23.2     23.20            7.35              13.61       True       True                            10.0 2026-08-11T15:37:45
+2026-08-11 15:37:46 S&P 500 (volles Universum, 420 Ticker)    HST 2026-08-10  22.67       22.71  22.67  20.21                   26.37     26.37           10.87               9.20       True       True                            10.0 2026-08-11T15:37:45
+2026-08-11 15:37:46 S&P 500 (volles Universum, 420 Ticker)    MGM 2026-08-10  43.36       43.63  43.36  40.53                   47.61     47.61            6.53              15.30       True       True                            10.0 2026-08-11T15:37:45
+2026-08-11 15:37:46 S&P 500 (volles Universum, 420 Ticker)    REG 2026-08-10  76.11       76.61  76.11  70.34                   84.77     84.77            7.59              13.18       True       True                            10.0 2026-08-11T15:37:45
+2026-08-11 15:37:46          Nasdaq-100 (alle ~103 Ticker)    EXC 2026-08-10  44.50       44.61  44.50  42.08 kein TP (finale Config)      0.00            5.45              18.35       True       True                            12.5 2026-08-11T15:37:45

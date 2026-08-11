@@ -617,3 +617,55 @@
 2026-08-10 21:40:06    5dc8f3e..65ba863  main -> main
 2026-08-10 21:40:06 Commit + Push erfolgreich.
 2026-08-10 21:40:06 === Task beendet ===
+2026-08-11 21:40:02 === Task gestartet ===
+2026-08-11 21:40:03 OU-Modell Tages-Log erfasst (Konto 1 (TTP)):
+2026-08-11 21:40:03   date: 2026-08-11
+2026-08-11 21:40:03   account: Konto 1 (TTP)
+2026-08-11 21:40:03   signals_scanned: 12
+2026-08-11 21:40:03   orders_sent: 1
+2026-08-11 21:40:03   orders_skipped: 8
+2026-08-11 21:40:03   orders_error: 0
+2026-08-11 21:40:03   symbols_sent: HRL
+2026-08-11 21:40:03   baseline_equity: 98460.76
+2026-08-11 21:40:03   current_equity: 98168.71
+2026-08-11 21:40:03   floating_pnl: -126.64999999999999
+2026-08-11 21:40:03   daily_pnl_pct: -0.0029661562636728415
+2026-08-11 21:40:03   open_positions: UPS(-75.60); CMI(+153.90); UNH(-126.73); REG(-155.52); ROK(+69.72); D(+199.12); CVS(-68.80); HRL(-122.74)
+2026-08-11 21:40:03   drawdown_halted: False
+2026-08-11 21:40:03   connection_error: None
+2026-08-11 21:40:03   hourly_breakdown: [{"time": "15:38", "signals_scanned": 2, "sent": 1, "sent_symbols": ["HRL"], "pending_placed": 0, "pending_symbols": [], "skipped": 1, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "16:35", "signals_scanned": 2, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 1, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "21:14", "signals_scanned": 4, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 3, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "21:35", "signals_scanned": 4, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 3, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
+2026-08-11 21:40:03 
+2026-08-11 21:40:03 OU-Modell Tages-Log erfasst (Konto 2 (TTP, Demo)):
+2026-08-11 21:40:03   date: 2026-08-11
+2026-08-11 21:40:03   account: Konto 2 (TTP, Demo)
+2026-08-11 21:40:03   signals_scanned: 14
+2026-08-11 21:40:03   orders_sent: 0
+2026-08-11 21:40:03   orders_skipped: 14
+2026-08-11 21:40:03   orders_error: 0
+2026-08-11 21:40:03   symbols_sent: 
+2026-08-11 21:40:03   baseline_equity: 100490.25
+2026-08-11 21:40:03   current_equity: 100328.25
+2026-08-11 21:40:03   floating_pnl: -42.34
+2026-08-11 21:40:03   daily_pnl_pct: -0.0016120966959481144
+2026-08-11 21:40:03   open_positions: CMI(+102.00); UNH(-126.54); REG(-16.80); MNST(-1.00)
+2026-08-11 21:40:03   drawdown_halted: False
+2026-08-11 21:40:03   connection_error: None
+2026-08-11 21:40:03   hourly_breakdown: [{"time": "15:38", "signals_scanned": 11, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 11, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "16:35", "signals_scanned": 1, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 1, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "21:14", "signals_scanned": 1, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 1, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "21:35", "signals_scanned": 1, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 1, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
+2026-08-11 21:40:03 
+2026-08-11 21:40:03 OU-Modell Tages-Log erfasst (Konto 3 (Tickmill)):
+2026-08-11 21:40:03   date: 2026-08-11
+2026-08-11 21:40:03   account: Konto 3 (Tickmill)
+2026-08-11 21:40:03   signals_scanned: 12
+2026-08-11 21:40:03   orders_sent: 1
+2026-08-11 21:40:03   orders_skipped: 8
+2026-08-11 21:40:03   orders_error: 0
+2026-08-11 21:40:03   symbols_sent: HRL
+2026-08-11 21:40:03   baseline_equity: 3552.15
+2026-08-11 21:40:03   current_equity: 3524.09
+2026-08-11 21:40:03   floating_pnl: -56.22
+2026-08-11 21:40:03   daily_pnl_pct: -0.007899441183508564
+2026-08-11 21:40:03   open_positions: UNH(-32.49); REG(-27.20); ROK(+15.26); MNST(+8.73); CVS(-7.21); HRL(-13.31)
+2026-08-11 21:40:03   drawdown_halted: False
+2026-08-11 21:40:03   connection_error: None
+2026-08-11 21:40:03   hourly_breakdown: [{"time": "15:38", "signals_scanned": 2, "sent": 1, "sent_symbols": ["HRL"], "pending_placed": 0, "pending_symbols": [], "skipped": 1, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "16:35", "signals_scanned": 2, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 1, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "21:14", "signals_scanned": 4, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 3, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "21:35", "signals_scanned": 4, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 3, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
+2026-08-11 21:40:03 

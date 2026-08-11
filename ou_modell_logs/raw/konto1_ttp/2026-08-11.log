@@ -1,0 +1,61 @@
+===== run_20260811_153818.log =====
+2026-08-11 15:38:18,085 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260811_153818.log ===
+2026-08-11 15:38:18,262 ERROR executor: Position CMI (Ticket 17676823) hat einen ungültigen gespeicherten Entry-Preis (0.0000) - BE-Check wird übersprungen, keine SL-Änderung. Metadaten in der State-DB prüfen/korrigieren.
+2026-08-11 15:38:18,272 CRITICAL executor: HALTEDAUER-WARNUNG: Position UPS (Ticket 17530516) ist seit 13 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -59.52.
+2026-08-11 15:38:18,273 CRITICAL executor: HALTEDAUER-WARNUNG: Position CAT (Ticket 17594699) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 61.78.
+2026-08-11 15:38:18,274 CRITICAL executor: HALTEDAUER-WARNUNG: Position AAPL (Ticket 17627597) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 72.96.
+2026-08-11 15:38:18,281 CRITICAL run_once.konto1_ttp: 3 Position(en) über Haltedauer-Limit: [{'ticket': 17530516, 'symbol': 'UPS', 'holding_days': 13, 'profit': -59.52}, {'ticket': 17594699, 'symbol': 'CAT', 'holding_days': 10, 'profit': 61.78}, {'ticket': 17627597, 'symbol': 'AAPL', 'holding_days': 10, 'profit': 72.96}]
+2026-08-11 15:38:18,504 INFO run_once.konto1_ttp: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-11 15:38:18,507 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 98460.76, aktueller Drawdown 0.00% (Limit 2.0%)
+2026-08-11 15:38:18,511 WARNING executor: Symbol 'DOC' (MT5-Name 'DOC') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-11 15:38:18,511 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DOC', 'direction': 'Long', 'entry': 20.77, 'sl': 19.63, 'tp': 22.49}}
+2026-08-11 15:38:19,042 INFO executor: Order gesendet: {'symbol': 'HRL', 'volume': 323.0, 'type': 'BUY', 'entry': 24.61, 'sl': 23.85, 'tp': 25.6} -> Ticket 17820582
+2026-08-11 15:38:19,050 INFO run_once.konto1_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'HRL', 'volume': 323.0, 'type': 'BUY', 'entry': 24.61, 'sl': 23.85, 'tp': 25.6}, 'signal': {'symbol': 'HRL', 'direction': 'Long', 'entry': 24.55, 'sl': 23.85, 'tp': 25.6}, 'ticket': 17820582, 'risk': 245.47999999999936}
+2026-08-11 15:38:19,058 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260811_163523.log =====
+2026-08-11 16:35:23,244 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260811_163523.log ===
+2026-08-11 16:35:23,300 ERROR executor: Position CMI (Ticket 17676823) hat einen ungültigen gespeicherten Entry-Preis (0.0000) - BE-Check wird übersprungen, keine SL-Änderung. Metadaten in der State-DB prüfen/korrigieren.
+2026-08-11 16:35:23,312 CRITICAL executor: HALTEDAUER-WARNUNG: Position UPS (Ticket 17530516) ist seit 13 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -72.00.
+2026-08-11 16:35:23,323 CRITICAL run_once.konto1_ttp: 1 Position(en) über Haltedauer-Limit: [{'ticket': 17530516, 'symbol': 'UPS', 'holding_days': 13, 'profit': -72.0}]
+2026-08-11 16:35:23,597 INFO run_once.konto1_ttp: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-11 16:35:23,600 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 98460.76, aktueller Drawdown 0.29% (Limit 2.0%)
+2026-08-11 16:35:23,619 INFO run_once.konto1_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'HRL', 'direction': 'Long', 'entry': 24.41, 'sl': 23.68, 'tp': 25.5}
+2026-08-11 16:35:23,622 WARNING executor: Symbol 'DOC' (MT5-Name 'DOC') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-11 16:35:23,622 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DOC', 'direction': 'Long', 'entry': 20.75, 'sl': 19.61, 'tp': 22.48}}
+2026-08-11 16:35:23,623 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260811_211423.log =====
+2026-08-11 21:14:23,138 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260811_211423.log ===
+2026-08-11 21:14:23,368 ERROR executor: Position CMI (Ticket 17676823) hat einen ungültigen gespeicherten Entry-Preis (0.0000) - BE-Check wird übersprungen, keine SL-Änderung. Metadaten in der State-DB prüfen/korrigieren.
+2026-08-11 21:14:23,388 CRITICAL executor: HALTEDAUER-WARNUNG: Position UPS (Ticket 17530516) ist seit 13 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -78.96.
+2026-08-11 21:14:23,400 CRITICAL run_once.konto1_ttp: 1 Position(en) über Haltedauer-Limit: [{'ticket': 17530516, 'symbol': 'UPS', 'holding_days': 13, 'profit': -78.96}]
+2026-08-11 21:14:23,717 INFO run_once.konto1_ttp: 4 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-11 21:14:23,719 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 98460.76, aktueller Drawdown 0.29% (Limit 2.0%)
+2026-08-11 21:14:23,723 INFO run_once.konto1_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'HRL', 'direction': 'Long', 'entry': 24.33, 'sl': 23.58, 'tp': 25.45}
+2026-08-11 21:14:23,728 INFO executor: Für CVS ist bereits eine Position offen (Ticket 17795619) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-11 21:14:23,728 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 93.33, 'sl': 83.36, 'tp': 108.29}}
+2026-08-11 21:14:23,737 WARNING executor: Symbol 'DOC' (MT5-Name 'DOC') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-11 21:14:23,737 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DOC', 'direction': 'Long', 'entry': 20.66, 'sl': 19.49, 'tp': 22.41}}
+2026-08-11 21:14:23,740 WARNING executor: Symbol 'AVB' (MT5-Name 'AVB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-11 21:14:23,740 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'AVB', 'direction': 'Long', 'entry': 183.05, 'sl': 177.05, 'tp': 192.05}}
+2026-08-11 21:14:23,741 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260811_213526.log =====
+2026-08-11 21:35:26,216 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260811_213526.log ===
+2026-08-11 21:35:26,252 ERROR executor: Position CMI (Ticket 17676823) hat einen ungültigen gespeicherten Entry-Preis (0.0000) - BE-Check wird übersprungen, keine SL-Änderung. Metadaten in der State-DB prüfen/korrigieren.
+2026-08-11 21:35:26,266 CRITICAL executor: HALTEDAUER-WARNUNG: Position UPS (Ticket 17530516) ist seit 13 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -74.88.
+2026-08-11 21:35:26,278 CRITICAL run_once.konto1_ttp: 1 Position(en) über Haltedauer-Limit: [{'ticket': 17530516, 'symbol': 'UPS', 'holding_days': 13, 'profit': -74.88}]
+2026-08-11 21:35:26,543 INFO run_once.konto1_ttp: 4 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-11 21:35:26,547 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 98460.76, aktueller Drawdown 0.30% (Limit 2.0%)
+2026-08-11 21:35:26,550 INFO run_once.konto1_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'HRL', 'direction': 'Long', 'entry': 24.33, 'sl': 23.58, 'tp': 25.45}
+2026-08-11 21:35:26,552 INFO executor: Für CVS ist bereits eine Position offen (Ticket 17795619) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-11 21:35:26,552 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CVS', 'direction': 'Long', 'entry': 93.33, 'sl': 83.36, 'tp': 108.29}}
+2026-08-11 21:35:26,554 WARNING executor: Symbol 'DOC' (MT5-Name 'DOC') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-11 21:35:26,554 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'DOC', 'direction': 'Long', 'entry': 20.66, 'sl': 19.49, 'tp': 22.41}}
+2026-08-11 21:35:26,555 WARNING executor: Symbol 'AVB' (MT5-Name 'AVB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-11 21:35:26,555 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'AVB', 'direction': 'Long', 'entry': 183.05, 'sl': 177.05, 'tp': 192.05}}
+2026-08-11 21:35:26,557 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===

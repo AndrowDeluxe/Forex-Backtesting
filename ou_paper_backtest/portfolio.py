@@ -230,6 +230,9 @@ def simulate_bracket_portfolio(
     allowed_directions: tuple[int, ...] = (1,),
     trend_filter_window: int | None = None,
     regime_filter: pd.Series | None = None,
+    portfolio_profit_lock_pct: float | None = None,
+    portfolio_profit_lock_close_frac: float = 1.0,
+    portfolio_profit_lock_n_best: int | None = None,
 ) -> tuple[pd.Series, list[dict]]:
     """Fixed-CRV bracket exit -- mirrors the live OU-Modell-MT5-Bridge bot's actual
     mechanism (not the paper's own "exit at MA" rule used by simulate_portfolio):
@@ -250,6 +253,42 @@ def simulate_bracket_portfolio(
     applied MARKET-WIDE to every ticker alike (e.g. benchmark-index-trend or VIX-based)
     -- meant to gate out only genuine broad bear/panic regimes without chopping away
     good idiosyncratic single-stock dip-buys the way the per-stock filter did.
+
+    `portfolio_profit_lock_pct`, if set (e.g. 0.02), is a PORTFOLIO-LEVEL circuit
+    breaker requested (2026-08-11) as an alternative to the per-trade TP: each day,
+    after individual SL/BE/TP/max-holding exits are processed, sum the unrealized
+    P&L of whatever positions are still open; if that aggregate floating profit is
+    >= `portfolio_profit_lock_pct` * current equity, flatten ALL remaining open
+    positions that same day (reason="portfolio_profit_lock") and skip new entries
+    for the rest of that day only (normal scanning resumes the next day). Motivated
+    by a real observation: individual positions can round-trip from a decent
+    floating gain back to breakeven before any one of them reaches its own
+    per-trade TP, even though the PORTFOLIO as a whole briefly sat on a locking-in
+    -worthy aggregate gain. Combine with `rr_ratio=None` to fully replace the
+    per-trade TP rather than stack on top of it (stacking is also valid -- whichever
+    fires first wins).
+
+    `portfolio_profit_lock_close_frac` (requested 2026-08-11 after the full-flatten
+    version underperformed the plain per-trade TP): fraction of EACH open position's
+    shares to close when the lock fires, default 1.0 (close everything, original
+    behavior). A value like 0.5 trims every open position down to half size instead
+    of fully flattening -- realizes part of the aggregate gain while leaving the
+    other half of each position running under its existing stop/BE/TP, so big
+    winners aren't cut off entirely. New entries are only paused for the rest of
+    that day when close_frac >= 1.0 (a genuine full flatten); a partial trim leaves
+    the book non-flat, so normal scanning simply continues alongside it. Ignored
+    when `portfolio_profit_lock_n_best` is set.
+
+    `portfolio_profit_lock_n_best` (requested 2026-08-11): instead of touching every
+    open position, close only the N positions with the highest unrealized $ P&L when
+    the lock fires (fully, not partially), leaving every other open position running
+    completely untouched under its normal SL/BE/TP -- explicitly meant to be an
+    ADDITIONAL exit stacked on top of the per-trade TP (keep rr_ratio as-is), NOT a
+    replacement for it: whichever fires first for a given position wins, and the
+    lock only ever skims off the current best performers instead of forcing an
+    early exit on positions that haven't earned it yet. Takes priority over
+    `portfolio_profit_lock_close_frac` when both are set. New entries are never
+    paused the same day this fires (the book stays open either way).
     """
     ind = _precompute_indicators(panel, tickers, lookback, k, trend_filter_window)
     all_dates = panel.loc[start:end].index
@@ -319,12 +358,65 @@ def simulate_bracket_portfolio(
                 open_risk -= pos.risk_dollars
                 del positions[t]
 
+        profit_locked_today = False
+        if portfolio_profit_lock_pct is not None and positions:
+            floating_pnl = sum(
+                pos.shares * ((pos.last_price - pos.entry_price) if pos.direction == 1 else (pos.entry_price - pos.last_price))
+                for pos in positions.values()
+            )
+            if floating_pnl >= equity * portfolio_profit_lock_pct:
+                if portfolio_profit_lock_n_best is not None:
+                    def _pos_pnl(pos: "_BracketPosition") -> float:
+                        return pos.shares * (
+                            (pos.last_price - pos.entry_price) if pos.direction == 1 else (pos.entry_price - pos.last_price)
+                        )
+                    targets = sorted(positions.keys(), key=lambda t: _pos_pnl(positions[t]), reverse=True)
+                    targets = targets[:portfolio_profit_lock_n_best]
+                    close_frac = 1.0
+                else:
+                    targets = list(positions.keys())
+                    close_frac = min(max(portfolio_profit_lock_close_frac, 0.0), 1.0)
+                profit_locked_today = portfolio_profit_lock_n_best is None and close_frac >= 1.0
+                for t in targets:
+                    pos = positions[t]
+                    full_shares = pos.shares
+                    close_shares = full_shares if close_frac >= 1.0 else float(np.floor(full_shares * close_frac))
+                    if close_shares <= 0:
+                        continue
+                    pnl_dollars = close_shares * (
+                        (pos.last_price - pos.entry_price) if pos.direction == 1 else (pos.entry_price - pos.last_price)
+                    )
+                    trades.append(
+                        {
+                            "ticker": t,
+                            "direction": "long" if pos.direction == 1 else "short",
+                            "entry_date": pos.entry_date,
+                            "exit_date": date,
+                            "entry_price": pos.entry_price,
+                            "exit_price": pos.last_price,
+                            "shares": close_shares,
+                            "days_held": pos.days_held,
+                            "pnl_dollars": pnl_dollars,
+                            "pnl_pct": pnl_dollars / (close_shares * pos.entry_price),
+                            "reason": "portfolio_profit_lock" if close_shares >= full_shares else "portfolio_profit_lock_partial",
+                        }
+                    )
+                    remaining_shares = full_shares - close_shares
+                    if remaining_shares <= 0:
+                        open_risk -= pos.risk_dollars
+                        del positions[t]
+                    else:
+                        closed_frac_of_position = close_shares / full_shares
+                        open_risk -= pos.risk_dollars * closed_frac_of_position
+                        pos.risk_dollars *= (1.0 - closed_frac_of_position)
+                        pos.shares = remaining_shares
+
         regime_ok = True
         if regime_filter is not None:
             regime_ok = bool(regime_filter.get(date, False))
 
         for t in tickers:
-            if not regime_ok:
+            if not regime_ok or profit_locked_today:
                 break
             if t in positions or t not in ind:
                 continue

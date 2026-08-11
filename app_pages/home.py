@@ -23,8 +23,9 @@ Alle sind ehrlich dokumentiert — inklusive der Stellen, wo eine Strategie
 **keinen** robusten Edge zeigt.
 
 Die einzige Strategie mit einer bisher validierten, robusten Kante:
-**Gold Asian-Range Breakout** (unter *Fertige Strategien*) — mit den vier
-walk-forward-validierten Filtern PF 1.43, Sharpe 0.61, Max Drawdown -4.0%.
+**Gold Asian-Range Breakout** (unter *Fertige Strategien*) — mit den fünf
+walk-forward-validierten Filtern (2026-08-11: Liquiditätsfilter ergänzt)
+PF 2.00, Sharpe 0.91, Max Drawdown -2.0%.
 
 Wähle links ein Hauptthema, um die zugehörigen Strategien zu sehen.
 """

@@ -43,7 +43,21 @@ CONFIG_REFINED = "Refined (H1, n=10, ADX ceiling, θ×1.5)"
 # It was specifically found on H1 bars, so the refined path also switches
 # the fetched interval - unlike theta/adx_n/adx_window, bar frequency isn't
 # independently toggleable here.
-REFINED_PARAMS = dict(adx_n=10, adx_window=20, adx_ceiling=25.0, theta_multiplier=1.5)
+#
+# adx_ceiling updated 2026-08-09 (25.0 -> 35.0, scripts/research_adx_vwap_joint_reopt.py):
+# adx_ceiling=25.0/theta_multiplier=1.5 were originally found BEFORE adx_n/
+# adx_window were even swept, then just held fixed while n=10/m=20 were
+# found later - the two halves of this dict were never jointly re-validated
+# until now. A joint theta_multiplier x adx_ceiling walk-forward with n=10/
+# m=20 held fixed found ceiling=35 clearly better-founded than the inherited
+# 25: higher mean Sharpe (0.272 vs. 0.235) AND much broader year-pair
+# coverage (53/54 cells vs. 38/54 - the old ceiling=25 config produced zero
+# trades in 16 of 54 year-pair cells). Honest caveat: median Sharpe is
+# slightly lower (0.621 vs. 0.763) - the usual broad-coverage-vs-few-great-
+# cells trade-off. stop_atr_mult was swept too (0.25-3.0): the existing
+# default of 0.5 turned out to already be at/near the top by both mean and
+# median Sharpe - confirmed, not changed.
+REFINED_PARAMS = dict(adx_n=10, adx_window=20, adx_ceiling=35.0, theta_multiplier=1.5)
 REFINED_INTERVAL = dukascopy_python.INTERVAL_HOUR_1
 PURE_INTERVAL = dukascopy_python.INTERVAL_MIN_15
 
@@ -142,16 +156,20 @@ six major pairs from the paper's planned empirical programme.
 if signal_config == CONFIG_REFINED:
     st.warning(
         "**Refined configuration, not the paper's literal Eq. 14.** H1 bars, "
-        "ADX lookback n=10 (paper standard: 14), an absolute ADX ceiling of 25 "
+        "ADX lookback n=10 (paper standard: 14), an absolute ADX ceiling of 35 "
         "(not in the paper — added because trades during genuinely strong "
-        "trends were the main loss source), and a wider VWAP-deviation "
-        "threshold (θ×1.5). This is the best of several candidates found via "
-        "a yearly walk-forward screen (2017-2025, all 6 pairs) — **not a "
-        "confirmed edge**: sample sizes are thin (~2-7 trades/pair/year), and "
-        "each refinement step was chosen by picking the best of several tried "
-        "on the same historical data. Switch **Signal configuration** to "
-        "*Pure paper thesis* to see the literal, unmodified Eq. 14 signal — "
-        "and its negative result — for comparison.",
+        "trends were the main loss source; updated 2026-08-09 from an earlier "
+        "ceiling of 25 once theta_multiplier and adx_ceiling were finally "
+        "re-validated *together* with n=10/window=20 — see code comment above "
+        "`REFINED_PARAMS`), and a wider VWAP-deviation threshold (θ×1.5, "
+        "separately confirmed near-optimal). This is the best of several "
+        "candidates found via a yearly walk-forward screen (2017-2025, all 6 "
+        "pairs) — **not a confirmed edge**: sample sizes, while broader than "
+        "earlier iterations (~350 trades across 53/54 year-pair cells), are "
+        "still modest, and each refinement step was chosen by picking the "
+        "best of several tried on the same historical data. Switch **Signal "
+        "configuration** to *Pure paper thesis* to see the literal, "
+        "unmodified Eq. 14 signal — and its negative result — for comparison.",
         icon=":material/warning:",
     )
 elif source == SOURCE_REAL:

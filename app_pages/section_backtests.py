@@ -56,5 +56,11 @@ render_section(
             "icon": ":material/science:",
             "tag": "BACKTEST",
         },
+        {
+            "page": "app_pages/presettle_breakout.py",
+            "title": "Pre-Settle Range Breakout",
+            "icon": ":material/wb_twilight:",
+            "tag": "BACKTEST",
+        },
     ],
 )

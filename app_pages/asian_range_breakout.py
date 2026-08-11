@@ -25,20 +25,25 @@ from asian_range_breakout.execution_overlay import simulate_asian_breakout_overl
 from asian_range_breakout.filters import (
     apply_adx_filter,
     apply_entry_delay_filter,
+    apply_gold_liquidity_filter_causal,
     apply_silver_alignment_filter,
     apply_trend_bias_filter,
     attach_entry_delay,
+    attach_gold_liquidity,
     attach_silver_alignment,
     attach_trend_bias,
+    rolling_liquidity_threshold,
 )
 from asian_range_breakout.montecarlo import run_monte_carlo, simulate_time_to_target, summarize_monte_carlo
 from asian_range_breakout.sizing import simulate_equity
 from asian_range_breakout.walkforward import (
     run_delay_filter_walk_forward,
     run_execution_mode_walk_forward,
+    run_liquidity_filter_walk_forward,
     run_trend_bias_walk_forward,
     run_walk_forward,
 )
+from bond_yield_indicator.friction import fetch_fx_friction
 from combined_strategy.data import fetch_timeframe
 from strategy.backtest import trades_to_daily_returns
 from strategy.metrics import max_drawdown, summarize, trade_stats
@@ -49,6 +54,8 @@ START, END = "2016-01-01", "2026-07-29"
 SPLIT = "2021-01-01"
 TREND_SMA_WINDOW = 200
 SILVER_ALIGNMENT_WINDOW = 5
+LIQUIDITY_QUANTILE = 2 / 3
+LIQUIDITY_MIN_PERIODS = 250
 TTP_MAX_DAILY_DD = 0.03
 TTP_MAX_TOTAL_DD = 0.07
 RECOMMENDED_RISK_PCT = 0.01
@@ -72,6 +79,15 @@ def load_daily_close_silver() -> pd.Series:
     Dukascopy XAGUSD, dieselbe Quelle wie ueberall sonst in diesem Repo."""
     silver_m15 = fetch_timeframe("SILVER", "M15", START, END)
     return silver_m15["Close"].tz_localize(None).resample("D").last().dropna()
+
+
+@st.cache_data(ttl="6h", show_spinner="Berechne Gold-Liquiditaetsproxy (Corwin-Schultz)...")
+def load_gold_friction() -> pd.Series:
+    """Fuer den Liquiditaetsfilter (siehe Strategiebestandteile) - Corwin-
+    Schultz Bid-Ask-Spread-Schaetzer aus Golds eigenen Daily-OHLC, wieder-
+    verwendet aus dem Bond-Yield-Spread-Indikator-Projekt
+    (bond_yield_indicator/friction.py). Keine neue Datenquelle."""
+    return fetch_fx_friction("GOLD", START, END)
 
 
 @st.cache_data(ttl="15m", show_spinner="Lade aktuelle Gold-Futures-Daten (yfinance)...")
@@ -168,6 +184,14 @@ with st.sidebar:
         "Richtung von Silbers eigener 5-Tage-Kursbewegung. Walk-Forward-bestaetigt (5/6 Jahre), "
         "rettet insbesondere das schwache Jahr 2023 (PF 0.89 -> 1.82). Verbessert Sharpe UND "
         "Win-Rate (nicht nur Profit Factor wie die anderen Filter) - siehe Strategiebestandteile.",
+    )
+    use_liquidity_filter = st.toggle(
+        "Liquiditaets-Filter aktivieren (Corwin-Schultz, unteres Zweidrittel)", value=True,
+        help="Aus dem Bond-Yield-Spread-Indikator-Projekt (2026-08-11): nur Breakouts an Tagen "
+        "mit normaler/guter Gold-Liquiditaet (Corwin-Schultz Bid-Ask-Proxy). Staerkster bisher "
+        "gefundener Filter - besteht Structure-Preserving-Randomisierung (p=0.000/0.001) UND "
+        "Walk-Forward (6/6 Testjahre bestaetigt), kausale (Lookahead-freie) rollierende Schwelle "
+        "- siehe Strategiebestandteile.",
     )
     use_overlay_entry = st.toggle(
         "Execution-Overlay-Fuellung aktivieren (statt sofortiger Wick-Fuellung)", value=True,
@@ -748,6 +772,97 @@ with tab_components:
         "in diesem Repo genutzt), keine neue Datenanbindung noetig."
     )
 
+    st.markdown("### Liquiditaets-Filter (Corwin-Schultz) -- getestet, jetzt Standard (2026-08-11)")
+    st.success(
+        "**Staerkster bisher gefundener Filter fuer diese Strategie.** Aus dem Bond-Yield-"
+        "Spread-Indikator-Projekt (siehe \"Strategie Bestandteile\" -> \"FX-Liquiditaetsfilter\"): "
+        "Corwin & Schultz (2012) schaetzen den Bid-Ask-Spread allein aus taeglichem High/Low - "
+        "hier auf Golds eigenen Kursen. Hypothese: Breakouts an Tagen mit ungewoehnlich schlechter "
+        "Liquiditaet (weiter geschaetzter Spread) sind unzuverlaessiger. **Getestet gegen den "
+        "vollen Stack (ADX+Trend+Delay+Silber) mit demselben zweistufigen Rigor wie die anderen "
+        "vier Filter:**",
+        icon=":material/check_circle:",
+    )
+
+    silver_filtered = apply_silver_alignment_filter(
+        trend_delay_trades, daily_close_silver_writeup, window=SILVER_ALIGNMENT_WINDOW
+    ).sort_values("entry_time").reset_index(drop=True)
+    friction_writeup = load_gold_friction()
+    liquidity_tagged = attach_gold_liquidity(silver_filtered, friction_writeup)
+
+    col_lsweep, col_lmetrics = st.columns(2)
+    with col_lsweep:
+        with st.container(border=True):
+            st.markdown("**Structure-Preserving-Randomisierung (Patel et al.)**")
+            st.caption(
+                "Gegen den vollen Produktions-Stack getestet (n=310): p=**0.000** unter Rotation "
+                "UND p=**0.001** unter Run-Permutation (je 1000 Shuffles) - das tatsaechliche "
+                "Behalten/Verwerfen-Muster schlaegt praktisch jede gleich-foermige Zufalls-"
+                "Platzierung mit demselben Fussabdruck. Deutlich staerker als die p≈0.16-0.23 "
+                "der schwaechsten beiden bestehenden Filter (Trend-Bias, Verzoegerung)."
+            )
+    with col_lmetrics:
+        with st.container(border=True):
+            st.markdown("**Kennzahlen: +Liquiditaetsfilter (kausale Schwelle)**")
+            liq_final = apply_gold_liquidity_filter_causal(
+                silver_filtered, friction_writeup, quantile=LIQUIDITY_QUANTILE, min_periods=LIQUIDITY_MIN_PERIODS
+            )
+            liq_final_stats = trade_stats(liq_final)
+            silver_stats_ref = trade_stats(silver_filtered)
+            st.caption(
+                f"Profit Factor {silver_stats_ref['profit_factor']:.3f} -> "
+                f"**{liq_final_stats['profit_factor']:.3f}**, Win-Rate "
+                f"{silver_stats_ref['win_rate']:.1%} -> **{liq_final_stats['win_rate']:.1%}**. "
+                f"Trades {silver_stats_ref['n_trades']} -> {liq_final_stats['n_trades']}. "
+                "Kausale (Lookahead-freie) rollierende Zweidrittel-Schwelle - nicht die volle-"
+                "Stichprobe-Schwelle des reinen Signifikanztests oben, sondern das, was live "
+                "tatsaechlich handelbar gewesen waere."
+            )
+
+    st.markdown("**Walk-Forward-Validierung (Expanding-Window, gleiche Methodik wie die anderen vier Filter)**")
+    liquidity_wf_table = run_liquidity_filter_walk_forward(
+        liquidity_tagged, start_test_year=2019, end_test_year=2026, min_train_trades=100
+    )
+    st.dataframe(
+        liquidity_wf_table,
+        hide_index=True,
+        column_config={
+            "test_year": st.column_config.NumberColumn("Testjahr"),
+            "train_n_trades": st.column_config.NumberColumn("Trainings-Trades"),
+            "filter_confirmed_on_train": st.column_config.CheckboxColumn("Filter bestätigt (nur Training)"),
+            "n_trades_unfiltered": st.column_config.NumberColumn("Trades ungefiltert"),
+            "pf_unfiltered": st.column_config.NumberColumn("PF ungefiltert", format="%.3f"),
+            "n_trades_walkforward": st.column_config.NumberColumn("Trades Walk-Forward"),
+            "pf_walkforward": st.column_config.NumberColumn("PF Walk-Forward", format="%.3f"),
+            "win_rate_walkforward": st.column_config.NumberColumn("Win-Rate WF", format="%.1f%%"),
+        },
+    )
+    n_confirmed_liq = int(liquidity_wf_table["filter_confirmed_on_train"].sum())
+    st.info(
+        f"Filter in **{n_confirmed_liq}/{len(liquidity_wf_table)}** Testjahren (2021-2026, "
+        "2019/2020 noch zu wenig Trainingsdaten) bereits aus den Trainingsdaten allein "
+        "bestaetigt - jedes einzelne Jahr, in dem eine Entscheidung ueberhaupt moeglich war. "
+        f"Mittlerer PF/Jahr: {liquidity_wf_table['pf_unfiltered'].mean():.3f} ungefiltert -> "
+        f"{liquidity_wf_table['pf_walkforward'].mean():.3f} walk-forward.",
+        icon=":material/insights:",
+    )
+    st.warning(
+        "**Kombiniert (ADX+Trend+Delay+Silber+Liquiditaet) sinkt die Stichprobe weiter** - "
+        "der duennste Schnitt aller fuenf Filter zusammen. Standardmaessig **AN**, da es der "
+        "am staerksten validierte Filter dieser gesamten Strategie ist (staerker als 2 der "
+        "4 vorherigen). FOMC-3-Tage-Fenster wurde im selben Projekt ebenfalls getestet und "
+        "**verworfen** (p=0.42-0.62, kein Edge) - nicht implementiert.",
+        icon=":material/warning:",
+    )
+    st.caption(
+        "Reproduzierbar ueber `asian_range_breakout/filters.py::attach_gold_liquidity`/"
+        "`apply_gold_liquidity_filter_causal` + `walkforward.py::run_liquidity_filter_walk_forward` + "
+        "`scripts/research_gold_liquidity_event_filters.py`. Datenquelle: "
+        "`bond_yield_indicator/friction.py` (Corwin-Schultz auf Golds Dukascopy-D1-Kursen, "
+        "wiederverwendet aus dem Bond-Yield-Spread-Indikator-Projekt, keine neue Datenanbindung "
+        "noetig)."
+    )
+
     st.markdown("### Execution-Overlay (Fast-Alpha-Timing) -- getestet, jetzt Standard (2026-08-09)")
     st.success(
         "**Timing-Filter, kein Signal-Filter.** Konzept aus Zarattini & Pagani (2026), "
@@ -777,12 +892,14 @@ with tab_components:
             )
     with col_ov2:
         with st.container(border=True):
-            st.markdown("**Voller Filterstack (ADX+Trend+Delay+Silber)**")
+            st.markdown("**Voller Filterstack (ADX+Trend+Delay+Silber+Liquiditaet)**")
             st.caption(
-                "Wick (heutige Produktion) PF **1.426** (n=310) vs. Overlay+Stack PF **1.804** "
-                "(n=178, WR=52.2%) - deutliche Verbesserung, aber auf kleinerer Stichprobe "
-                "(weniger Fuellungen). IS PF 1.744 (n=72) vs. OOS PF 1.840 (n=106) - OOS sogar "
-                "staerker als IS. Ausreisser-Check: PF 1.804 -> 1.735 ohne besten Trade (robust)."
+                "Aktualisiert 2026-08-11 nach Aufnahme des Liquiditaetsfilters (vorher PF 1.426 "
+                "auf n=310, s. Liquiditaets-Abschnitt oben). Wick (heutige Produktion) PF "
+                "**1.999** (n=187) vs. Overlay+Stack PF **2.310** (n=110, WR=53.6%) - weiterhin "
+                "deutliche Verbesserung, auf kleinerer Stichprobe (weniger Fuellungen, 5 statt 4 "
+                "Filter). IS PF 1.734 (n=51) vs. OOS PF 2.820 (n=59) - OOS weiterhin staerker als "
+                "IS. Ausreisser-Check: PF 2.310 -> 2.160 ohne besten Trade (robust)."
             )
 
     st.markdown("**Beispiel-Trade: derselbe Ausbruch, Wick- vs. Overlay-Fuellung**")
@@ -914,6 +1031,10 @@ with tab_backtest:
         trades = apply_entry_delay_filter(trades, max_delay_bars=3)
     if use_silver_filter:
         trades = apply_silver_alignment_filter(trades, load_daily_close_silver(), window=SILVER_ALIGNMENT_WINDOW)
+    if use_liquidity_filter:
+        trades = apply_gold_liquidity_filter_causal(
+            trades, load_gold_friction(), quantile=LIQUIDITY_QUANTILE, min_periods=LIQUIDITY_MIN_PERIODS
+        )
     df = load_data()
     stats = summarize(trades, df.index)
 
@@ -1036,6 +1157,10 @@ with tab_live:
         all_trades = apply_entry_delay_filter(all_trades, max_delay_bars=3)
     if use_silver_filter:
         all_trades = apply_silver_alignment_filter(all_trades, load_daily_close_silver(), window=SILVER_ALIGNMENT_WINDOW)
+    if use_liquidity_filter:
+        all_trades = apply_gold_liquidity_filter_causal(
+            all_trades, load_gold_friction(), quantile=LIQUIDITY_QUANTILE, min_periods=LIQUIDITY_MIN_PERIODS
+        )
     trades_window = all_trades[
         (all_trades["entry_time"] >= window_start_ts) & (all_trades["entry_time"] <= window_end_ts)
     ]
@@ -1090,28 +1215,21 @@ with tab_walkforward:
         "Gleiche Expanding-Window-Logik, diesmal nicht für einen Filter-Schwellenwert sondern "
         "für die Wahl der Füllregel: pro Testjahr wird NUR anhand des Profit Factor auf Jahren "
         "VOR diesem Jahr entschieden, ob Wick oder Execution-Overlay eingesetzt wird - beide "
-        "Varianten laufen durch denselben Produktions-Filterstack (ADX+Trend+Delay+Silber)."
+        "Varianten laufen durch denselben Produktions-Filterstack (ADX+Trend+Delay+Silber+Liquidität)."
     )
-    wf_wick_stack = apply_silver_alignment_filter(
-        apply_entry_delay_filter(
-            apply_trend_bias_filter(
-                apply_adx_filter(load_trades(1.0, None, None, 0.30, 0.10, use_overlay=False), adx_min=15),
-                load_daily_close(), sma_window=TREND_SMA_WINDOW,
-            ),
-            max_delay_bars=3,
-        ),
-        load_daily_close_silver(), window=SILVER_ALIGNMENT_WINDOW,
-    ).sort_values("entry_time").reset_index(drop=True)
-    wf_overlay_stack = apply_silver_alignment_filter(
-        apply_entry_delay_filter(
-            apply_trend_bias_filter(
-                apply_adx_filter(load_trades(1.0, None, None, 0.30, 0.10, use_overlay=True), adx_min=15),
-                load_daily_close(), sma_window=TREND_SMA_WINDOW,
-            ),
-            max_delay_bars=3,
-        ),
-        load_daily_close_silver(), window=SILVER_ALIGNMENT_WINDOW,
-    ).sort_values("entry_time").reset_index(drop=True)
+
+    def _apply_production_stack(base_trades: pd.DataFrame) -> pd.DataFrame:
+        t = apply_adx_filter(base_trades, adx_min=15)
+        t = apply_trend_bias_filter(t, load_daily_close(), sma_window=TREND_SMA_WINDOW)
+        t = apply_entry_delay_filter(t, max_delay_bars=3)
+        t = apply_silver_alignment_filter(t, load_daily_close_silver(), window=SILVER_ALIGNMENT_WINDOW)
+        t = apply_gold_liquidity_filter_causal(
+            t, load_gold_friction(), quantile=LIQUIDITY_QUANTILE, min_periods=LIQUIDITY_MIN_PERIODS
+        )
+        return t.sort_values("entry_time").reset_index(drop=True)
+
+    wf_wick_stack = _apply_production_stack(load_trades(1.0, None, None, 0.30, 0.10, use_overlay=False))
+    wf_overlay_stack = _apply_production_stack(load_trades(1.0, None, None, 0.30, 0.10, use_overlay=True))
 
     mode_summary, wf_mode_trades = run_execution_mode_walk_forward(
         {"wick": wf_wick_stack, "overlay": wf_overlay_stack},
@@ -1168,6 +1286,10 @@ with tab_walkforward:
         eq_trades = apply_entry_delay_filter(eq_trades, max_delay_bars=3)
     if use_silver_filter:
         eq_trades = apply_silver_alignment_filter(eq_trades, load_daily_close_silver(), window=SILVER_ALIGNMENT_WINDOW)
+    if use_liquidity_filter:
+        eq_trades = apply_gold_liquidity_filter_causal(
+            eq_trades, load_gold_friction(), quantile=LIQUIDITY_QUANTILE, min_periods=LIQUIDITY_MIN_PERIODS
+        )
     equity_df = simulate_equity(eq_trades, starting_equity=starting_equity, risk_pct=risk_pct_input)
 
     if not equity_df.empty:

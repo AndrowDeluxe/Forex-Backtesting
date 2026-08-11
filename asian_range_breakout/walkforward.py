@@ -311,6 +311,62 @@ def _delay_filter_confirmed(train: pd.DataFrame, min_bucket_trades: int = 100) -
     return all(fast["profit_factor"] > s["profit_factor"] for s in others if s["n_trades"] >= min_bucket_trades)
 
 
+def _liquidity_filter_confirmed(train: pd.DataFrame, threshold: float, min_bucket_trades: int = 40) -> bool:
+    """True if, using ONLY `train` and a threshold computed ONLY from
+    `train`, the normal/good-liquidity bucket (friction_prior <= threshold)
+    has both enough trades to judge and a strictly higher profit factor
+    than the poor-liquidity bucket. Same expanding-window discipline as the
+    other _*_confirmed helpers - see scripts/research_gold_liquidity_
+    event_filters.py for how `friction_prior` is attached (Corwin-Schultz
+    bid-ask-spread estimate, prior day, no lookahead)."""
+    if train.empty or "friction_prior" not in train.columns:
+        return False
+    good = train[train["friction_prior"] <= threshold]
+    poor = train[train["friction_prior"] > threshold]
+    good_stats, poor_stats = trade_stats(good), trade_stats(poor)
+    if good_stats["n_trades"] < min_bucket_trades or poor_stats["n_trades"] < min_bucket_trades:
+        return False
+    return good_stats["profit_factor"] > poor_stats["profit_factor"]
+
+
+def run_liquidity_filter_walk_forward(
+    trades_with_friction: pd.DataFrame, start_test_year: int, end_test_year: int, min_train_trades: int = 100
+) -> pd.DataFrame:
+    """Same expanding-window logic as run_jump_activity_walk_forward, but
+    for the Corwin-Schultz GOLD-liquidity gate instead of the jump-ratio
+    regime filter. `trades_with_friction` must already have a
+    `friction_prior` column. The bottom-two-thirds threshold is recomputed
+    each test year from TRAIN-ONLY data (no lookahead into the test year's
+    own friction distribution), then only applied if the training-only
+    bucket comparison confirms it."""
+    rows = []
+    for year in range(start_test_year, end_test_year + 1):
+        train = trades_with_friction[trades_with_friction["entry_time"].dt.year < year]
+        test = trades_with_friction[trades_with_friction["entry_time"].dt.year == year]
+        if test.empty or len(train) < min_train_trades:
+            continue
+
+        threshold = train["friction_prior"].quantile(2 / 3)
+        confirmed = _liquidity_filter_confirmed(train, threshold)
+        base = trade_stats(test)
+        test_filtered = test[test["friction_prior"] <= threshold] if confirmed else test
+        filtered = trade_stats(test_filtered)
+
+        rows.append(
+            {
+                "test_year": year,
+                "train_n_trades": len(train),
+                "filter_confirmed_on_train": confirmed,
+                "n_trades_unfiltered": base["n_trades"],
+                "pf_unfiltered": base["profit_factor"],
+                "n_trades_walkforward": filtered["n_trades"],
+                "pf_walkforward": filtered["profit_factor"],
+                "win_rate_walkforward": filtered["win_rate"],
+            }
+        )
+    return pd.DataFrame(rows)
+
+
 def run_delay_filter_walk_forward(
     trades_with_delay: pd.DataFrame, start_test_year: int, end_test_year: int, min_train_trades: int = 200
 ) -> pd.DataFrame:

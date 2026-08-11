@@ -56,5 +56,17 @@ render_section(
             "icon": ":material/shield:",
             "tag": "BAUSTEIN",
         },
+        {
+            "page": "app_pages/fx_liquidity_filter.py",
+            "title": "FX-Liquiditaetsfilter",
+            "icon": ":material/water_drop:",
+            "tag": "FILTER",
+        },
+        {
+            "page": "app_pages/cb_event_window_filter.py",
+            "title": "Notenbank-Event-Window",
+            "icon": ":material/event:",
+            "tag": "FILTER",
+        },
     ],
 )

@@ -215,6 +215,70 @@ def apply_jump_activity_filter(trades: pd.DataFrame, jump_ratio_daily: pd.Series
     return out[out["jump_ratio_prior"] <= max_ratio]
 
 
+def attach_gold_liquidity(trades: pd.DataFrame, friction_daily: pd.Series) -> pd.DataFrame:
+    """Attaches the prior day's Corwin-Schultz estimated bid-ask spread for
+    Gold (see bond_yield_indicator.friction.fetch_fx_friction, reused as-is
+    from the Bond-Yield-Spread-Indikator project) - no-lookahead prior-day
+    join, same convention as attach_vix/attach_dxy/attach_jump_activity.
+    2026-08-11 finding: on the full ADX+Trend+Delay+Silver production
+    stack, keeping only the bottom-two-thirds (normal-to-good liquidity)
+    trades clears BOTH the structure-preserving randomization null
+    (p=0.000, both rotation and run_permutation, n=1000 shuffles - see
+    asian_range_breakout/randomization.py) AND expanding-window walk-
+    forward confirmation in every test year 2021-2026 (see
+    asian_range_breakout/walkforward.py::run_liquidity_filter_walk_forward,
+    scripts/research_gold_liquidity_event_filters.py for the full run) -
+    the strongest-validated candidate filter found for this strategy to
+    date, stronger than 2 of the 4 filters currently in the production
+    stack. Not yet wired into the production stack itself pending an
+    explicit decision - see knowledge/projects/bond-yield-spread-
+    indikator.md, Cross-Check section."""
+    return _attach_prior_day_series(trades, friction_daily, "friction_prior")
+
+
+def apply_gold_liquidity_filter(trades: pd.DataFrame, friction_daily: pd.Series, max_friction: float) -> pd.DataFrame:
+    """Drops trades whose prior day's Corwin-Schultz Gold friction estimate
+    exceeds max_friction (see attach_gold_liquidity for the validation
+    evidence). Caller supplies max_friction (e.g. a full-sample or
+    train-only bottom-two-thirds quantile of friction_daily) - same
+    threshold-external convention as apply_jump_activity_filter."""
+    out = attach_gold_liquidity(trades, friction_daily)
+    return out[out["friction_prior"] <= max_friction]
+
+
+def rolling_liquidity_threshold(friction_daily: pd.Series, quantile: float = 2 / 3, min_periods: int = 250) -> pd.Series:
+    """Expanding (all history up to that point) `quantile` of
+    friction_daily, shifted by one day so day t's threshold only uses data
+    strictly BEFORE t - the fixed full-sample quantile used in the
+    2026-08-11 validation run (scripts/research_gold_liquidity_event_
+    filters.py) is fine for a one-off historical significance test, but
+    would be a live lookahead violation if used for actual trading (it
+    "knows" the friction distribution of years not yet lived through).
+    This is the production-safe version - same causal discipline as every
+    other prior-day-only signal in this file. min_periods=250 (~1 trading
+    year) before the threshold is considered reliable enough to gate on;
+    apply_gold_liquidity_filter_causal below passes trades through
+    unfiltered before that point rather than dropping them."""
+    return friction_daily.expanding(min_periods=min_periods).quantile(quantile).shift(1)
+
+
+def apply_gold_liquidity_filter_causal(
+    trades: pd.DataFrame, friction_daily: pd.Series, quantile: float = 2 / 3, min_periods: int = 250
+) -> pd.DataFrame:
+    """Production-safe version of apply_gold_liquidity_filter: threshold is
+    an expanding, prior-day-only quantile (see rolling_liquidity_threshold)
+    instead of a fixed full-sample number - what actually gets deployed
+    live, and what the backtest numbers shown in the dashboard use, so the
+    displayed metrics match what the strategy could really have achieved
+    trading forward in real time, not a number computed with hindsight
+    about post-2026 friction levels."""
+    threshold = rolling_liquidity_threshold(friction_daily, quantile=quantile, min_periods=min_periods)
+    out = attach_gold_liquidity(trades, friction_daily)
+    out = attach_series_level(out, threshold, "friction_threshold_prior")
+    out = out.dropna(subset=["friction_threshold_prior"])
+    return out[out["friction_prior"] <= out["friction_threshold_prior"]]
+
+
 def apply_vix_filter(
     trades: pd.DataFrame, vix_min: float | None = None, vix_max: float | None = None
 ) -> pd.DataFrame:

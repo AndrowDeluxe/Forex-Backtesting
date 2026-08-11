@@ -35,6 +35,15 @@ paper_research = st.Page(
 )
 education = st.Page("app_pages/education.py", title="Education", icon=":material/school:")
 
+education_gold_intraday = st.Page(
+    "app_pages/education_gold_intraday.py", title="Gold-Intraday-Strategie",
+    icon=":material/candlestick_chart:", visibility="hidden",
+)
+education_book_chan = st.Page(
+    "app_pages/education_book_chan.py", title="Quantitative Trading (Chan)",
+    icon=":material/menu_book:", visibility="hidden",
+)
+
 # Individual strategy/Baustein pages -- hidden from the sidebar, reachable
 # only via the tiles on their section_*.py page.
 ou_modell = st.Page(
@@ -57,6 +66,10 @@ gold_bitcoin_dual_momentum = st.Page(
 )
 asian_range_breakout = st.Page(
     "app_pages/asian_range_breakout.py", title="Gold Asian-Range Breakout", icon=":material/wb_twilight:",
+    visibility="hidden",
+)
+presettle_breakout = st.Page(
+    "app_pages/presettle_breakout.py", title="Pre-Settle Range Breakout", icon=":material/wb_twilight:",
     visibility="hidden",
 )
 adx_vwap = st.Page(
@@ -126,6 +139,14 @@ fx_papers_202608 = st.Page(
     "app_pages/fx_papers_202608.py", title="FX-Papers (Aug. 2026)", icon=":material/currency_exchange:",
     visibility="hidden",
 )
+fx_liquidity_filter = st.Page(
+    "app_pages/fx_liquidity_filter.py", title="FX-Liquiditaetsfilter", icon=":material/water_drop:",
+    visibility="hidden",
+)
+cb_event_window_filter = st.Page(
+    "app_pages/cb_event_window_filter.py", title="Notenbank-Event-Window", icon=":material/event:",
+    visibility="hidden",
+)
 
 page = st.navigation(
     [
@@ -138,13 +159,16 @@ page = st.navigation(
         paper_research,
         education,
         # hidden pages -- must still be registered so they stay routable
+        education_gold_intraday, education_book_chan,
         ou_modell, orb_forward_test,
         fertige_strategien, ou_scanner, gold_bitcoin_dual_momentum, asian_range_breakout,
+        presettle_breakout,
         adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook,
         orb_strategy_page, ou_paper_backtest,
         cls_advanced, kalman_filter, adx_vwap_writeup, triple_ma, risk_management,
         execution_overlay_writeup, gap_fade_writeup, orb_writeup,
         paper151, goldi_papers_202608, fx_papers_202608,
+        fx_liquidity_filter, cb_event_window_filter,
     ]
 )
 page.run()

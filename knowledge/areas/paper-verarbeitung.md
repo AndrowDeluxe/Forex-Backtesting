@@ -31,3 +31,4 @@ Datenhalde) -- lieber seltener, aber vollständig verarbeiten.
 
 **Aktive Projects, die aus dieser Area gespeist werden**:
 - [[gold-ssrn-strategie-auswertung]]
+- [[bond-yield-spread-indikator]]

@@ -185,8 +185,11 @@ liegt uns nicht vor, es ist nur eine Behauptung ueber eine externe Quelle.
     st.success(
         "**Der eine echte, uebertragbare Baustein: eine mathematische Erklaerung fuer einen "
         "bereits empirisch gefundenen Fix.** `strategy/adx_vwap.py`'s Refined-Konfiguration "
-        "hat einen `adx_ceiling=25` eingefuehrt, *weil* die Verluste des reinen Paper-Signals "
-        "sich in echten starken Trends konzentrierten (siehe Projekt-Memory). Dieses Paper "
+        "hat einen `adx_ceiling` eingefuehrt (aktuell 35, urspruenglich 25 -- am 2026-08-09 "
+        "gemeinsam mit `theta_multiplier` neu validiert, siehe Tab 5), *weil* die Verluste "
+        "des reinen Paper-Signals sich in echten starken Trends konzentrierten (siehe "
+        "Projekt-Memory). Der konkrete Zahlenwert hat sich seither geaendert, das Prinzip "
+        "(ein Deckel gegen das Faden echter, starker Trends) nicht. Dieses Paper "
         "liefert dafuer jetzt eine strukturelle Begruendung: in einem echten Trend waechst das "
         "Volumen typischerweise mit dem Preis (Momentum-Chasing/FOMO-Zufluesse), wodurch VWAP "
         "selbst Richtung Hoch/Tief gezogen wird (CPR_G-Regime) -- die gemessene Abweichung D_t "
@@ -531,8 +534,9 @@ UND die VWAP-Abweichung ueberdehnt ist UND ADX erhoeht, aber nicht mehr steigend
 Da das Paper explizit **keine eigenen Backtest-Zahlen** enthaelt ("Formal backtesting and
 performance attribution are left to future work"), gibt es nichts, wogegen die im Repo bereits
 durchgefuehrten Backtests (negativer Sharpe auf dem woertlichen Eq.-14-Signal ueber 10 Jahre
-echte Dukascopy-Daten; die verfeinerte Konfiguration mit `adx_ceiling=25`, H1-Timeframe, `theta`
-x1.5 als bestbekannter, aber duenn belegter Kandidat) abgeglichen werden muessten. **Das
+echte Dukascopy-Daten; die verfeinerte Konfiguration mit `adx_ceiling=35` (Stand 2026-08-09,
+gemeinsam mit theta neu validiert -- siehe unten), H1-Timeframe, `theta` x1.5 als bestbekannter,
+aber weiterhin nicht bestaetigter Kandidat) abgeglichen werden muessten. **Das
 gesamte empirische Fundament dieser Strategie im Repo ist eigene, originaere Arbeit** -- keine
 Reproduktion behaupteter Paper-Ergebnisse, weil keine existieren.
 """
@@ -549,7 +553,7 @@ Reproduktion behaupteter Paper-Ergebnisse, weil keine existieren.
         icon=":material/code:",
     )
 
-    st.markdown("**Empfohlene naechste Schritte (Dokumentation, kein neuer Code-Pfad noetig)**")
+    st.markdown("**Naechste Schritte -- Punkt 4 inzwischen erledigt (2026-08-09)**")
     st.markdown(
         """
 1. `app_pages/adx_vwap_writeup.py` und `strategy/backtest.py`/`strategy/indicators.py` mit
@@ -558,12 +562,23 @@ Reproduktion behaupteter Paper-Ergebnisse, weil keine existieren.
 2. Optionaler Cross-Check: Paper-Appendix-Python gegen `strategy/indicators.py::wilder_smooth`
    auf identischen Testdaten laufen lassen (analog zum bereits erfolgreich durchgefuehrten
    Cross-Check beim GoldASB-Bot-Portieren) -- rein zur Verifikation, kein erwarteter Fund.
-3. Session-Definition ist bereits aufgeloest, nicht mehr offen: das Paper nennt in Sec. 6.1 drei
-   moegliche Konventionen (London 07:00-17:00 GMT / NY 13:00-22:00 GMT / 24h-rollierend, Reset um
-   Mitternacht NY-Zeit) -- der Repo-Code implementiert mit `reset_hour=22` (UTC) exakt Option
-   (iii), plus zusaetzlich (nicht im Paper vorgegeben) `filter_session_window` fuer die ersten
-   beiden benannten Fenster. Nur noch im Writeup explizit als "Paper-Option (iii)" benennen,
-   kein offener Rechercheschritt mehr.
+3. Session-Definition, KORRIGIERT (2026-08-09 -- eine frühere Version dieses Tabs behauptete
+   hier faelschlich eine exakte Uebereinstimmung): das Paper nennt in Sec. 6.1 drei moegliche
+   Konventionen (London 07:00-17:00 GMT / NY 13:00-22:00 GMT / 24h-rollierend mit Reset um
+   Mitternacht NY-Zeit). Der Repo-Code (`reset_hour=22` UTC) resettet aber laut eigenem
+   Docstring um **17:00 NY-Zeit** (Standard-Forex-Handelstagsgrenze, unabhaengig auch von
+   Chaboud et al. 2023 bestaetigt, Fn. 36: "the value date... changes... at 5 p.m. ET") --
+   das ist **keine** der drei Paper-Optionen woertlich, sondern eine vierte, marktueblich
+   besser begruendete Wahl. `filter_session_window` deckt die ersten beiden benannten Fenster
+   (London/NY) bereits ab; die woertliche Paper-Option (iii) (Reset um NY-Mitternacht statt
+   NY-17:00) ist NICHT getestet -- echter, aber vermutlich niedrigwertiger Kandidat.
+4. **Erledigt (2026-08-09):** die zwei bis dahin ungetesteten freien Parameter aus Sec. 5.3/6.2
+   des Papers -- `theta_multiplier`/`adx_ceiling` gemeinsam (statt nacheinander in getrennten
+   Runden) neu validiert, plus `stop_atr_mult` erstmals systematisch gesweept. Ergebnis:
+   `adx_ceiling` 25 -> 35 (breitere, robustere Stichprobe bei hoeherem Sharpe), `stop_atr_mult`
+   bei 0.5 bestaetigt (kein Aenderungsbedarf). `REFINED_PARAMS` in `app_pages/adx_vwap.py`
+   aktualisiert. Details: `scripts/research_adx_vwap_joint_reopt.py`,
+   `scripts/research_adx_vwap_stop_sweep.py`.
 """
     )
 
@@ -595,9 +610,11 @@ with tab6:
         st.caption("Kein eigener Test möglich -- reine Mathematik, keine empirische Behauptung im Paper.")
         st.info(
             "Unabhängige Einordnung: liefert eine plausible *nachträgliche* theoretische "
-            "Begründung für den bereits vor diesem Paper empirisch gefundenen "
-            "`adx_ceiling=25`-Fix in `strategy/adx_vwap.py` -- Theorie bestätigt Praxis, "
-            "keine neue, selbst prüfbare Vorhersage.",
+            "Begründung für den `adx_ceiling`-Fix in `strategy/adx_vwap.py` -- Theorie "
+            "bestätigt Praxis, keine neue, selbst prüfbare Vorhersage. Update 2026-08-09: "
+            "der konkrete Wert wurde inzwischen im gemeinsamen `theta_multiplier`x"
+            "`adx_ceiling`-Walk-Forward neu bestimmt (25 → 35, siehe Tab 5) -- das "
+            "Prinzip, das dieses Paper erklärt, bleibt dasselbe.",
             icon=":material/functions:",
         )
 

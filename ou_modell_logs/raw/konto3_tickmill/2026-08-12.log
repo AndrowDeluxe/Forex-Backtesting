@@ -1,0 +1,94 @@
+===== run_20260812_153836.log =====
+2026-08-12 15:38:36,850 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260812_153836.log ===
+2026-08-12 15:38:44,621 INFO run_once.konto3_tickmill: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-12 15:38:44,624 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3508.85, aktueller Drawdown 0.00% (Limit 20.0%)
+2026-08-12 15:38:44,628 INFO executor: Für HRL ist bereits eine Position offen (Ticket 249589986) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-12 15:38:44,628 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'HRL', 'direction': 'Long', 'entry': 23.98, 'sl': 23.03, 'tp': 25.4}}
+2026-08-12 15:38:44,629 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260812_163809.log =====
+2026-08-12 16:38:09,925 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260812_163809.log ===
+2026-08-12 16:38:09,976 INFO run_once.konto3_tickmill: 5 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-12 16:38:09,979 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3508.85, aktueller Drawdown 0.05% (Limit 20.0%)
+2026-08-12 16:38:09,986 INFO executor: Für HRL ist bereits eine Position offen (Ticket 249589986) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-12 16:38:09,986 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'HRL', 'direction': 'Long', 'entry': 24.07, 'sl': 23.15, 'tp': 25.45}}
+2026-08-12 16:38:10,338 INFO executor: Order gesendet: {'symbol': 'EBAY', 'volume': 5.0, 'type': 'BUY', 'entry': 103.73, 'sl': 97.19, 'tp': 113.71} -> Ticket 250373528
+2026-08-12 16:38:10,344 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'sent', 'order': {'symbol': 'EBAY', 'volume': 5.0, 'type': 'BUY', 'entry': 103.73, 'sl': 97.19, 'tp': 113.71}, 'signal': {'symbol': 'EBAY', 'direction': 'Long', 'entry': 103.8, 'sl': 97.19, 'tp': 113.71}, 'ticket': 250373528, 'risk': 32.70000000000003}
+2026-08-12 16:38:10,353 WARNING executor: Symbol 'AVB' (MT5-Name 'AVB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-12 16:38:10,353 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'AVB', 'direction': 'Long', 'entry': 180.2, 'sl': 172.77, 'tp': 191.33}}
+2026-08-12 16:38:10,356 WARNING executor: Symbol 'EQR' (MT5-Name 'EQR') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-12 16:38:10,356 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EQR', 'direction': 'Long', 'entry': 64.5, 'sl': 61.82, 'tp': 68.52}}
+2026-08-12 16:38:10,358 WARNING executor: Symbol 'CPT' (MT5-Name 'CPT') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-12 16:38:10,358 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'CPT', 'direction': 'Long', 'entry': 107.71, 'sl': 103.38, 'tp': 114.2}}
+2026-08-12 16:38:10,359 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260812_173750.log =====
+2026-08-12 17:37:50,927 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260812_173750.log ===
+2026-08-12 17:37:51,027 INFO run_once.konto3_tickmill: 5 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-12 17:37:51,030 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3508.85, aktueller Drawdown -0.35% (Limit 20.0%)
+2026-08-12 17:37:51,033 INFO run_once.konto3_tickmill: Bereits heute ausgeführt, übersprungen: {'symbol': 'EBAY', 'direction': 'Long', 'entry': 103.19, 'sl': 96.44, 'tp': 113.32}
+2026-08-12 17:37:51,035 INFO executor: Für HRL ist bereits eine Position offen (Ticket 249589986) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-12 17:37:51,036 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'HRL', 'direction': 'Long', 'entry': 24.19, 'sl': 23.3, 'tp': 25.53}}
+2026-08-12 17:37:51,038 WARNING executor: Symbol 'EOAN.DE' (MT5-Name 'EOAN.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-12 17:37:51,038 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EOAN.DE', 'direction': 'Long', 'entry': 18.36, 'sl': 17.74, 'tp': 19.31}}
+2026-08-12 17:37:51,040 WARNING executor: Symbol 'AVB' (MT5-Name 'AVB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-12 17:37:51,040 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'AVB', 'direction': 'Long', 'entry': 180.94, 'sl': 173.69, 'tp': 191.82}}
+2026-08-12 17:37:51,042 WARNING executor: Symbol 'EQR' (MT5-Name 'EQR') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-12 17:37:51,042 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EQR', 'direction': 'Long', 'entry': 64.75, 'sl': 62.13, 'tp': 68.69}}
+2026-08-12 17:37:51,043 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260812_183747.log =====
+2026-08-12 18:37:47,788 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260812_183747.log ===
+2026-08-12 18:37:47,827 INFO run_once.konto3_tickmill: 5 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-12 18:37:47,829 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3508.85, aktueller Drawdown -0.45% (Limit 20.0%)
+2026-08-12 18:37:47,832 INFO run_once.konto3_tickmill: Bereits heute ausgeführt, übersprungen: {'symbol': 'EBAY', 'direction': 'Long', 'entry': 102.79, 'sl': 95.93, 'tp': 113.06}
+2026-08-12 18:37:47,834 WARNING executor: Symbol 'AVB' (MT5-Name 'AVB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-12 18:37:47,834 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'AVB', 'direction': 'Long', 'entry': 180.62, 'sl': 173.3, 'tp': 191.61}}
+2026-08-12 18:37:47,835 WARNING executor: Symbol 'EQR' (MT5-Name 'EQR') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-12 18:37:47,836 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EQR', 'direction': 'Long', 'entry': 64.67, 'sl': 62.02, 'tp': 68.63}}
+2026-08-12 18:37:47,837 INFO executor: Für HRL ist bereits eine Position offen (Ticket 249589986) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-12 18:37:47,838 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'HRL', 'direction': 'Long', 'entry': 24.24, 'sl': 23.36, 'tp': 25.56}}
+2026-08-12 18:37:47,839 WARNING executor: Symbol 'EOAN.DE' (MT5-Name 'EOAN.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-12 18:37:47,839 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EOAN.DE', 'direction': 'Long', 'entry': 18.4, 'sl': 17.78, 'tp': 19.33}}
+2026-08-12 18:37:47,840 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260812_193737.log =====
+2026-08-12 19:37:37,655 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260812_193737.log ===
+2026-08-12 19:37:37,761 INFO run_once.konto3_tickmill: 5 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-12 19:37:37,762 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3508.85, aktueller Drawdown -0.53% (Limit 20.0%)
+2026-08-12 19:37:37,764 INFO run_once.konto3_tickmill: Bereits heute ausgeführt, übersprungen: {'symbol': 'EBAY', 'direction': 'Long', 'entry': 102.8, 'sl': 95.95, 'tp': 113.07}
+2026-08-12 19:37:37,766 WARNING executor: Symbol 'AVB' (MT5-Name 'AVB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-12 19:37:37,766 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'AVB', 'direction': 'Long', 'entry': 180.74, 'sl': 173.44, 'tp': 191.69}}
+2026-08-12 19:37:37,768 WARNING executor: Symbol 'EQR' (MT5-Name 'EQR') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-12 19:37:37,768 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EQR', 'direction': 'Long', 'entry': 64.68, 'sl': 62.04, 'tp': 68.64}}
+2026-08-12 19:37:37,770 WARNING executor: Symbol 'EOAN.DE' (MT5-Name 'EOAN.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-12 19:37:37,770 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EOAN.DE', 'direction': 'Long', 'entry': 18.4, 'sl': 17.78, 'tp': 19.33}}
+2026-08-12 19:37:37,771 INFO executor: Für HRL ist bereits eine Position offen (Ticket 249589986) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-12 19:37:37,771 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'HRL', 'direction': 'Long', 'entry': 24.26, 'sl': 23.39, 'tp': 25.58}}
+2026-08-12 19:37:37,772 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260812_203743.log =====
+2026-08-12 20:37:43,365 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260812_203743.log ===
+2026-08-12 20:37:43,460 INFO run_once.konto3_tickmill: 5 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-12 20:37:43,461 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3508.85, aktueller Drawdown -0.64% (Limit 20.0%)
+2026-08-12 20:37:43,464 INFO run_once.konto3_tickmill: Bereits heute ausgeführt, übersprungen: {'symbol': 'EBAY', 'direction': 'Long', 'entry': 102.18, 'sl': 95.18, 'tp': 112.69}
+2026-08-12 20:37:43,466 WARNING executor: Symbol 'AVB' (MT5-Name 'AVB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-12 20:37:43,466 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'AVB', 'direction': 'Long', 'entry': 180.78, 'sl': 173.49, 'tp': 191.72}}
+2026-08-12 20:37:43,468 INFO executor: Für HRL ist bereits eine Position offen (Ticket 249589986) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-12 20:37:43,468 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'HRL', 'direction': 'Long', 'entry': 24.25, 'sl': 23.37, 'tp': 25.56}}
+2026-08-12 20:37:43,469 WARNING executor: Symbol 'EOAN.DE' (MT5-Name 'EOAN.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-12 20:37:43,470 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EOAN.DE', 'direction': 'Long', 'entry': 18.4, 'sl': 17.78, 'tp': 19.33}}
+2026-08-12 20:37:43,471 WARNING executor: Symbol 'EQR' (MT5-Name 'EQR') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-12 20:37:43,471 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EQR', 'direction': 'Long', 'entry': 64.74, 'sl': 62.11, 'tp': 68.68}}
+2026-08-12 20:37:43,471 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260812_213937.log =====
+2026-08-12 21:39:37,385 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260812_213937.log ===
+2026-08-12 21:39:37,651 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-12 21:39:37,653 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===

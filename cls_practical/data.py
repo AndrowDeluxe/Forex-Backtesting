@@ -54,3 +54,47 @@ def fetch_major_m15_berlin(key: str, start: str, end: str, force_refresh: bool =
     df = df.rename(columns={"Open": "open", "High": "high", "Low": "low", "Close": "close", "Volume": "volume"})
     df.index = df.index.tz_convert("Europe/Berlin")
     return df
+
+
+_EURUSD_NATIVE_INTERVALS = {
+    "M1": dukascopy_python.INTERVAL_MIN_1,
+    "M5": dukascopy_python.INTERVAL_MIN_5,
+    "M15": dukascopy_python.INTERVAL_MIN_15,
+}
+
+
+def fetch_eurusd_entry_tf_berlin(timeframe: str, start: str, end: str, force_refresh: bool = False) -> pd.DataFrame:
+    """EUR/USD at an arbitrary entry timeframe (Berlin tz, lowercase OHLC
+    cols) for the fractal-trigger mechanics to run on. M1/M5/M15 are native
+    Dukascopy intervals; Dukascopy has no M3 interval, so "M3" is built by
+    resampling real M1 bars to 3-minute buckets (label=left, i.e. a bucket
+    stamped 09:30 covers 09:30:00-09:32:59) - genuine M1 ticks, not a
+    synthetic approximation, just re-bucketed."""
+    if timeframe == "M3":
+        m1 = fetch_eurusd_entry_tf_berlin("M1", start, end, force_refresh=force_refresh)
+        resampled = m1.resample("3min", label="left", closed="left").agg(
+            {"open": "first", "high": "max", "low": "min", "close": "last", "volume": "sum"}
+        ).dropna()
+        return resampled
+
+    if timeframe not in _EURUSD_NATIVE_INTERVALS:
+        raise ValueError(f"unknown timeframe {timeframe!r}, expected one of {list(_EURUSD_NATIVE_INTERVALS) + ['M3']}")
+
+    start_ts, end_ts = pd.Timestamp(start), pd.Timestamp(end)
+    path = CACHE_DIR / f"EURUSD_{timeframe}_{start_ts.date()}_{end_ts.date()}.parquet"
+    if path.exists() and not force_refresh:
+        df = pd.read_parquet(path)
+    else:
+        from combined_strategy.data import INSTRUMENTS
+
+        df = dukascopy_python.fetch(
+            INSTRUMENTS["EURUSD"], _EURUSD_NATIVE_INTERVALS[timeframe], OFFER_SIDE,
+            start_ts.to_pydatetime(), end_ts.to_pydatetime(),
+        )
+        df = df.sort_index()
+        df.index.name = "timestamp"
+        CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        df.to_parquet(path)
+
+    df.index = df.index.tz_convert("Europe/Berlin")
+    return df

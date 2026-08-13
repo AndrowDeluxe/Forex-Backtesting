@@ -16,8 +16,11 @@ module reuses for the structural half of the decision):
 - Acceptance/quality check: 09:15 close (TEST_HOUR) -> holds_0915
 - Post-settle/entry window: 09:30 (ENTRY_HOUR) through entry_cutoff (12:00)
 
-Three filters, ALL must agree (AND, not majority - "kein Trade bei nicht
-eindeutigen Regeln, Trend oder Filter-Ergebnissen", per the user):
+Three filters (filter_mode="and", Default: ALL must agree - "kein Trade bei
+nicht eindeutigen Regeln, Trend oder Filter-Ergebnissen", the user's original
+spec; filter_mode="majority", added 2026-08-12 per the user's own request
+after the funnel diagnosis found the AND-gate to be the dominant bottleneck
+on trade count: at least 2 of 3 must agree):
 - Trend: daily SMA(sma_window) on EUR/USD's own close (exact Gold-ASB
   convention), prior-day value only, no lookahead.
 - Crosses: strategy.cls_advanced.compute_cross_confirmation - EUR/USD's
@@ -81,7 +84,7 @@ from strategy.cls_advanced import (
     compute_daily_features,
     to_berlin,
 )
-from strategy.indicators import compute_atr
+from strategy.indicators import compute_adx, compute_atr
 
 
 def _minutes_of(hhmm: str) -> int:
@@ -89,19 +92,45 @@ def _minutes_of(hhmm: str) -> int:
     return t.hour * 60 + t.minute
 
 
-def trend_bias(daily_close: pd.Series, sma_window: int = 200) -> pd.Series:
-    """+1/-1 per day: prior day's close above/below its own prior SMA(sma_window)
-    - exact Gold-ASB convention (asian_range_breakout/filters.py::attach_trend_bias),
+def trend_bias(daily_close: pd.Series, sma_window: int = 200, ma_type: str = "sma") -> pd.Series:
+    """+1/-1 per day: prior day's close above/below its own prior moving
+    average (sma_window) - exact Gold-ASB convention
+    (asian_range_breakout/filters.py::attach_trend_bias) for ma_type="sma",
     ported here since that helper filters an existing trades frame post-hoc,
-    while this needs to gate the entry DECISION itself. NaN before sma_window
-    days of history exist."""
-    sma = daily_close.rolling(sma_window).mean()
+    while this needs to gate the entry DECISION itself. ma_type="ema" uses
+    an exponential average instead (more responsive, added 2026-08-12 per
+    the user's own request to explore trend-filter alternatives). NaN
+    before sma_window days of history exist."""
+    if ma_type not in ("sma", "ema"):
+        raise ValueError(f"ma_type must be 'sma' or 'ema', got {ma_type!r}")
+    ma = daily_close.rolling(sma_window).mean() if ma_type == "sma" else daily_close.ewm(span=sma_window, adjust=False).mean()
     prior_close = daily_close.shift(1)
-    prior_sma = sma.shift(1)
+    prior_ma = ma.shift(1)
     bias = pd.Series(np.nan, index=daily_close.index)
-    bias[prior_close > prior_sma] = 1
-    bias[prior_close <= prior_sma] = -1
+    bias[prior_close > prior_ma] = 1
+    bias[prior_close <= prior_ma] = -1
     return bias
+
+
+def weekly_trend_bias(daily_close: pd.Series, weekly_window: int = 20) -> pd.Series:
+    """+1/-1 per day, from a SLOWER, weekly-resolution trend read: last
+    FULLY CLOSED week's close vs. its own SMA(weekly_window) of weekly
+    closes, forward-filled onto the daily index (no lookahead - shifted one
+    week before broadcasting). A stronger/slower confirmation layer to
+    combine with trend_bias's daily read, added 2026-08-12 per the user's
+    request to explore whether a slower trend filter improves Sharpe/PnL
+    without materially worsening max drawdown."""
+    dt_index = pd.to_datetime(daily_close.index.astype(str))
+    s = pd.Series(daily_close.to_numpy(), index=dt_index)
+    weekly_close = s.resample("W").last()
+    weekly_sma = weekly_close.rolling(weekly_window).mean()
+    weekly_bias = pd.Series(np.nan, index=weekly_close.index)
+    weekly_bias[weekly_close > weekly_sma] = 1
+    weekly_bias[weekly_close <= weekly_sma] = -1
+    weekly_bias_prior = weekly_bias.shift(1)  # only a fully-closed prior week counts
+    daily_bias = weekly_bias_prior.reindex(s.index, method="ffill")
+    daily_bias.index = daily_close.index  # restore the original date-object index
+    return daily_bias
 
 
 def _day_segments(dates_arr: np.ndarray) -> list[tuple[object, int, int]]:
@@ -222,6 +251,16 @@ def simulate_cls_practical(
     min_sl_atr_mult: float = 1.0,
     be_trigger_r: float | None = None,
     allowed_setups: tuple[str, ...] = ("continuation", "reversal"),
+    use_execution_overlay: bool = False,
+    use_trend_filter: bool = True,
+    trend_ma_type: str = "sma",
+    require_weekly_trend: bool = False,
+    weekly_window: int = 20,
+    min_adx: float | None = 15.0,
+    adx_period: int = 14,
+    use_rates_filter: bool = False,
+    use_cross_filter: bool = True,
+    filter_mode: str = "and",
 ) -> pd.DataFrame:
     """Defaults updated 2026-08-11 after the threshold sweep + SL/TP
     diagnosis (scripts/research_cls_practical_threshold_sweep.py,
@@ -246,9 +285,69 @@ def simulate_cls_practical(
     breakeven, doesn't bank the wider original stop).
     allowed_setups: restrict which of "continuation"/"reversal" actually
     trade - e.g. ("reversal",) for the Reversal-only variant the user asked
-    to test (diagnosis found reversal's win-rate ~2x continuation's)."""
+    to test (diagnosis found reversal's win-rate ~2x continuation's).
+    use_trend_filter: False drops the Trend condition from the setup AND
+    entirely (Rates + Crosses still apply) - added 2026-08-12 per the user's
+    own request to see the trend filter's isolated contribution. Diagnosis
+    (2026-08-12): with the filter off, the 112 EXTRA trades it lets through
+    have a 24.1% win-rate / 0.84 PF (net -11,729$) vs. the 121 kept trades'
+    37.2%/1.36 (+13,257$) - the filter is cutting a genuinely losing trade
+    population, not just reducing sample size.
+    trend_ma_type: "sma" (default) or "ema" for trend_bias's moving average.
+    require_weekly_trend: additionally require the last fully-closed WEEK's
+    close vs. its own SMA(weekly_window) to agree with the daily trend
+    signal (weekly_trend_bias) - a slower, stronger confirmation layer.
+    min_adx: additionally require daily ADX(adx_period), prior day, >= this
+    threshold (trend STRENGTH, not just direction) - None disables this
+    gate. Default changed None -> 15.0 on 2026-08-12 after the trend-filter
+    extension sweep (scripts/research_cls_practical_threshold_sweep.py-style
+    run, ad hoc): on the Voll (Cont.+Rev.) variant, ADX>=15 improved EVERY
+    metric vs. the plain SMA100 trend filter simultaneously - Sharpe
+    0.414->0.465, Calmar 0.221->0.281, max_drawdown -0.92%->-0.78%
+    (SMALLER, not worse), total PnL 13,257$->16,839$ - and held up on both
+    the IS (2018-12/2022-06) and OOS (2022-06/2026-08) halves individually,
+    not just in aggregate. On Reversal-Only alone the ADX gate did NOT help
+    (worse Sharpe than plain SMA100) - the improvement is specific to the
+    Continuation side, where a live trending regime matters more.
+    require_weekly_trend / ma_type="ema" / other sma_window values were also
+    swept and did NOT beat SMA100+ADX>=15 on Sharpe - not adopted.
+    use_execution_overlay: Zarattini & Pagani "Fast Alpha" execution-timing
+    filter, ported from asian_range_breakout/execution_overlay.py - instead
+    of filling the instant the stop-order trigger fires, wait for the first
+    subsequent bar that CLOSES against the entry direction, then fill at
+    that bar's close (stop distance stays anchored to the same structural
+    sl_dist, just re-based at the new entry price). If no such bar appears
+    before entry_cutoff, the trade is skipped entirely - same disclosed
+    trade-off as the ASB overlay (can miss pullback-free runners).
+
+    use_rates_filter / use_cross_filter (2026-08-12, user request): same
+    leave-one-out pattern as use_trend_filter - False drops that condition
+    from the setup gate entirely (always counts as "erfuellt"), the other
+    two still apply as before. use_rates_filter DEFAULT CHANGED True ->
+    False on 2026-08-13, after IS/OOS verification
+    (scripts/research_cls_practical_norates_oos.py, min_adx pinned to None
+    for that specific test to isolate the question from the ADX addition
+    below): dropping the Rates ("Ampel") gate nearly DOUBLES trade count in
+    BOTH halves (IS 45->99, OOS 76->135) while average R per trade IMPROVES
+    in-sample (0.008R->0.133R, the baseline was near-flat there) and stays
+    essentially unchanged out-of-sample (0.344R->0.346R) - not an in-sample
+    artefact, holds on the genuine holdout too. Consistent with the Rates
+    signal being a disclosed weak proxy (BUND/USTBOND CFD duration, not the
+    source deck's actual front-end/2y rate) that appears to add mostly
+    noise rather than information. use_cross_filter stays True (removing it
+    clearly hurt both trade quality and total return in the same sweep).
+    filter_mode (2026-08-12, user request): "and" (default, unchanged
+    behaviour - all ACTIVE filters must agree) or "majority" - at least 2 of
+    the 3 filters (trend/rates/cross) must agree, not all 3. A filter
+    disabled via use_X_filter=False always counts as agreeing in either
+    mode, so combining filter_mode="majority" with a disabled filter
+    effectively requires only 1 of the 2 remaining active filters -
+    intentional (a disabled filter was explicitly asked to never block),
+    but worth knowing before reading results at face value."""
     if tp_mode not in ("adr", "fixed_r"):
         raise ValueError(f"tp_mode must be 'adr' or 'fixed_r', got {tp_mode!r}")
+    if filter_mode not in ("and", "majority"):
+        raise ValueError(f"filter_mode must be 'and' or 'majority', got {filter_mode!r}")
 
     # --- daily decision layer ---
     daily = compute_daily_features(eurusd_m5)
@@ -260,7 +359,15 @@ def simulate_cls_practical(
     berlin_idx = to_berlin(eurusd_m5.index)
     date_series = pd.Series(berlin_idx.date, index=eurusd_m5.index)
     daily_close = eurusd_m5["close"].groupby(date_series).last()
-    trend = trend_bias(daily_close, sma_window=sma_window)
+    trend = trend_bias(daily_close, sma_window=sma_window, ma_type=trend_ma_type)
+    weekly_trend = weekly_trend_bias(daily_close, weekly_window=weekly_window) if require_weekly_trend else None
+
+    daily_adx = None
+    if min_adx is not None:
+        daily_ohlc = eurusd_m5[["open", "high", "low", "close"]].groupby(date_series).agg(
+            {"open": "first", "high": "max", "low": "min", "close": "last"}
+        )
+        daily_adx = compute_adx(daily_ohlc, n=adx_period)["adx"].shift(1)  # prior day only, no lookahead
 
     rate_score = compute_rate_support_score(bund_m5, ustbond_m5)
     rates_ampel = classify_rates_ampel(rate_score, daily["direction"], z_window=rates_z_window, z_threshold=rates_z_threshold)
@@ -295,13 +402,40 @@ def simulate_cls_practical(
         t_val = trend.get(day, np.nan)
         r_flag = rates_ampel.get(day, "gelb")
         c_val = cross_confirm.get(day, np.nan)
-        if pd.isna(t_val) or pd.isna(c_val):
+        if pd.isna(c_val) or (use_trend_filter and pd.isna(t_val)):
             continue
 
+        if use_trend_filter and require_weekly_trend:
+            w_val = weekly_trend.get(day, np.nan)
+            if pd.isna(w_val) or w_val != t_val:
+                continue  # weekly trend unavailable or disagrees with the daily read
+
+        if use_trend_filter and min_adx is not None:
+            adx_val = daily_adx.get(day, np.nan) if daily_adx is not None else np.nan
+            if pd.isna(adx_val) or adx_val < min_adx:
+                continue  # trend too weak/no clear regime
+
+        trend_ok_cont = (t_val == direction) if use_trend_filter else True
+        trend_ok_rev = (t_val == -direction) if use_trend_filter else True
+        rates_ok_cont = (r_flag == "grün") if use_rates_filter else True
+        rates_ok_rev = (r_flag == "rot") if use_rates_filter else True
+        cross_ok_cont = bool(c_val) if use_cross_filter else True
+        cross_ok_rev = (not bool(c_val)) if use_cross_filter else True
+
+        if filter_mode == "and":
+            cont_pass = trend_ok_cont and rates_ok_cont and cross_ok_cont
+            rev_pass = trend_ok_rev and rates_ok_rev and cross_ok_rev
+        else:  # "majority" -- mind. 2 von 3; ein per use_X_filter=False deaktivierter
+            # Filter zaehlt immer als "erfuellt" mit (er soll ja nicht blockieren),
+            # verschiebt die effektive Schwelle also automatisch auf die
+            # verbleibenden aktiven Filter.
+            cont_pass = sum([trend_ok_cont, rates_ok_cont, cross_ok_cont]) >= 2
+            rev_pass = sum([trend_ok_rev, rates_ok_rev, cross_ok_rev]) >= 2
+
         setup, setup_direction = None, 0
-        if holds and t_val == direction and r_flag == "grün" and bool(c_val):
+        if holds and cont_pass:
             setup, setup_direction = "continuation", direction
-        elif (not holds) and t_val == -direction and r_flag == "rot" and not bool(c_val):
+        elif (not holds) and rev_pass:
             setup, setup_direction = "reversal", -direction
         if setup is None or setup not in allowed_setups:
             continue
@@ -341,6 +475,21 @@ def simulate_cls_practical(
         entry_i, trigger_level, sl_level, pivot_i, return_i = result
         d = setup_direction
         sl_dist = abs(trigger_level - sl_level)
+
+        if use_execution_overlay:
+            overlay_i = None
+            k = entry_i + 1
+            while k < day_end and minutes[k] < cutoff_min:
+                is_counter = (close[k] < close[k - 1]) if d == 1 else (close[k] > close[k - 1])
+                if is_counter:
+                    overlay_i = k
+                    break
+                k += 1
+            if overlay_i is None:
+                continue  # no confirming counter-close before cutoff - overlay skips this trade
+            entry_i = overlay_i
+            trigger_level = close[entry_i]  # re-anchor entry price; sl_dist (structure) stays fixed
+
         atr_val_at_entry = m5_atr[entry_i] if entry_i < len(m5_atr) else np.nan
         min_sl_dist = min_sl_atr_mult * atr_val_at_entry if pd.notna(atr_val_at_entry) else np.nan
         if sl_dist <= 0 or pd.isna(min_sl_dist) or sl_dist < min_sl_dist:

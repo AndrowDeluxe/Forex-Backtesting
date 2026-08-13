@@ -3,6 +3,23 @@ die 6 FX-Majors (jeweils als Primaer-Paar, Cross-Confirmation gegen die
 jeweils anderen 5 -- exakt dieselbe Mechanik wie bei EUR/USD), sowie Gold,
 S&P 500 und BTC.
 
+BUGFIX 2026-08-14 (User-Anfrage: GBP/USD-Ergebnis nochmal sauber nachrechnen):
+engine.py labelt das Primaer-Paar intern IMMER als "EURUSD" im
+daily_by_pair-Dict (der Parametername ist eurusd_m5, unabhaengig davon, was
+tatsaechlich uebergeben wird) und compute_cross_confirmation() liest dafuer
+_USD_IS_QUOTE["EURUSD"] (=True, USD ist Quote-Waehrung). Fuer GBP/USD und
+AUD/USD (ebenfalls USD-als-Quote) ist das zufaellig richtig -- fuer USD/JPY,
+USD/CHF, USD/CAD (USD ist dort die BASIS-Waehrung, _USD_IS_QUOTE=False) kippt
+dadurch das Vorzeichen der eigenen "USD-Staerke" in der Cross-Confirmation-
+Berechnung. engine.py selbst bleibt unveraendert (das waere ein Eingriff in
+den validierten Live-Pfad fuer einen Bug, der nur dieses Mehrinstrumenten-
+Diagnose-Skript betrifft) -- stattdessen wird _USD_IS_QUOTE["EURUSD"] hier,
+NUR fuer die Dauer jedes einzelnen Primaer-Paar-Laufs, per Monkeypatch auf den
+tatsaechlich richtigen Wert fuer dieses Paar gesetzt (siehe
+_run_fx_major_with_correct_quote_convention()) und danach wieder
+zurueckgesetzt. GBP/USD selbst war NICHT betroffen (schon vorher korrekt),
+nur USD/JPY, USD/CHF, USD/CAD aendern sich durch diesen Fix.
+
 WICHTIGE EINSCHRAENKUNG (disclosed, nicht stillschweigend uebernommen): fuer
 Gold/S&P/BTC ergibt der Cross-Confirmation-Filter (EUR/USD vs. die anderen 5
 FX-Majors, "breiter Dollar-Move vs. isolierter Move") konzeptionell keinen
@@ -28,6 +45,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import dukascopy_python
 import pandas as pd
 
+import strategy.cls_advanced as cls_advanced
 from auction_playbook.data import fetch_klines
 from cls_practical.data import fetch_major_m15_berlin, fetch_rate_instrument_m5_berlin
 from cls_practical.engine import simulate_cls_practical
@@ -88,7 +106,18 @@ def main():
         print(f"Lade {primary} M5...")
         primary_m5 = fetch_m5_berlin_generic(primary, START, END)
         other_majors = {p: df for p, df in majors_m15.items() if p != primary}
-        trades = simulate_cls_practical(primary_m5, other_majors, bund_m5, ustbond_m5)
+
+        # Bugfix 2026-08-14 (siehe Modul-Docstring): engine.py labelt das
+        # Primaer-Paar intern immer als "EURUSD" und liest dafuer
+        # _USD_IS_QUOTE["EURUSD"] -- nur fuer die Dauer dieses einen Laufs auf
+        # den fuer `primary` tatsaechlich richtigen Wert setzen, danach
+        # zurueck auf den echten EUR/USD-Wert (True).
+        cls_advanced._USD_IS_QUOTE["EURUSD"] = cls_advanced._USD_IS_QUOTE[primary]
+        try:
+            trades = simulate_cls_practical(primary_m5, other_majors, bund_m5, ustbond_m5)
+        finally:
+            cls_advanced._USD_IS_QUOTE["EURUSD"] = True
+
         rows.append({**stats(trades, primary), "group": "fx_major"})
 
     print("\n=== Gold / S&P 500 / BTC (Trend+ADX, kein Cross-Filter) ===")

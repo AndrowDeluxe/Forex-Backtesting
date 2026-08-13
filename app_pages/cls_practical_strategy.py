@@ -395,16 +395,25 @@ with tabs[3]:
 """
     )
 
-    section_title("Multi-Instrument-Test (2026-08-13)")
+    section_title("Multi-Instrument-Test (2026-08-13, USD-Basis-Paare korrigiert 2026-08-14)")
     st.caption("Fuer die 6 FX-Majors mit vollem Cross-Confirmation-Mechanismus, fuer Gold/S&P 500/BTC "
                "vereinfacht (nur Trend+ADX, kein Cross-Filter -- konzeptionell kein '5 andere Majors'-Set).")
+    caveat_box(
+        "<b>Bugfix 2026-08-14</b> (User-Anfrage, GBP/USD-Ergebnis nachrechnen): die Cross-Confirmation-"
+        "Berechnung im Mehrinstrumenten-Test hatte fuer USD/JPY, USD/CHF, USD/CAD (USD als Basiswaehrung) "
+        "faelschlich die USD-als-Quote-Konvention von EUR/USD uebernommen, wodurch das Vorzeichen der "
+        "eigenen \"USD-Staerke\" kippte. EUR/USD, GBP/USD und AUD/USD (ebenfalls USD-als-Quote) waren "
+        "NICHT betroffen. Nach dem Fix (<code>scripts/research_cls_practical_multi_instrument.py</code>) "
+        "aendern sich nur die drei USD-Basis-Zeilen unten -- USD/JPY sah vorher noch nach der zweitbesten "
+        "Kante hinter EUR/USD aus (Ø R +0,248), ist korrekt gerechnet klar negativ."
+    )
     multi_df = pd.DataFrame([
         {"Instrument": "EUR/USD", "Ø R gesamt": "+0,296", "Ø R In-Sample": "+0,155", "Ø R Out-of-Sample": "+0,397"},
         {"Instrument": "GBP/USD", "Ø R gesamt": "-0,111", "Ø R In-Sample": "-0,327", "Ø R Out-of-Sample": "+0,028"},
-        {"Instrument": "USD/JPY", "Ø R gesamt": "+0,248", "Ø R In-Sample": "+0,639", "Ø R Out-of-Sample": "-0,033"},
-        {"Instrument": "USD/CHF", "Ø R gesamt": "+0,001", "Ø R In-Sample": "+0,010", "Ø R Out-of-Sample": "-0,006"},
+        {"Instrument": "USD/JPY", "Ø R gesamt": "-0,182", "Ø R In-Sample": "-0,059", "Ø R Out-of-Sample": "-0,258"},
+        {"Instrument": "USD/CHF", "Ø R gesamt": "-0,024", "Ø R In-Sample": "-0,033", "Ø R Out-of-Sample": "-0,016"},
         {"Instrument": "AUD/USD", "Ø R gesamt": "+0,052", "Ø R In-Sample": "+0,228", "Ø R Out-of-Sample": "-0,093"},
-        {"Instrument": "USD/CAD", "Ø R gesamt": "-0,076", "Ø R In-Sample": "-0,217", "Ø R Out-of-Sample": "+0,020"},
+        {"Instrument": "USD/CAD", "Ø R gesamt": "-0,132", "Ø R In-Sample": "-0,377", "Ø R Out-of-Sample": "+0,028"},
         {"Instrument": "Gold", "Ø R gesamt": "+0,019", "Ø R In-Sample": "-0,010", "Ø R Out-of-Sample": "+0,041"},
         {"Instrument": "S&P 500", "Ø R gesamt": "-0,027", "Ø R In-Sample": "-0,076", "Ø R Out-of-Sample": "+0,008"},
         {"Instrument": "BTC", "Ø R gesamt": "-0,078", "Ø R In-Sample": "-0,075", "Ø R Out-of-Sample": "-0,082"},

@@ -15,6 +15,12 @@ render_section(
             "tag": "STRATEGIE",
         },
         {
+            "page": "app_pages/cls_practical_strategy.py",
+            "title": "CLS Practical (EUR/USD)",
+            "icon": ":material/military_tech:",
+            "tag": "STRATEGIE",
+        },
+        {
             "page": "app_pages/ou_scanner.py",
             "title": "OU-Modell Live-Signale (Scanner)",
             "icon": ":material/radar:",

@@ -43,6 +43,10 @@ education_book_chan = st.Page(
     "app_pages/education_book_chan.py", title="Quantitative Trading (Chan)",
     icon=":material/menu_book:", visibility="hidden",
 )
+education_kelly = st.Page(
+    "app_pages/education_kelly.py", title="Kelly-Formel & Risk Management",
+    icon=":material/calculate:", visibility="hidden",
+)
 
 # Individual strategy/Baustein pages -- hidden from the sidebar, reachable
 # only via the tiles on their section_*.py page.
@@ -54,6 +58,10 @@ orb_forward_test = st.Page(
 )
 fertige_strategien = st.Page(
     "app_pages/fertige_strategien.py", title="OU-Modell (finale Konfiguration)",
+    icon=":material/military_tech:", visibility="hidden",
+)
+cls_practical_strategy = st.Page(
+    "app_pages/cls_practical_strategy.py", title="CLS Practical (EUR/USD)",
     icon=":material/military_tech:", visibility="hidden",
 )
 ou_scanner = st.Page(
@@ -159,9 +167,9 @@ page = st.navigation(
         paper_research,
         education,
         # hidden pages -- must still be registered so they stay routable
-        education_gold_intraday, education_book_chan,
+        education_gold_intraday, education_book_chan, education_kelly,
         ou_modell, orb_forward_test,
-        fertige_strategien, ou_scanner, gold_bitcoin_dual_momentum, asian_range_breakout,
+        fertige_strategien, cls_practical_strategy, ou_scanner, gold_bitcoin_dual_momentum, asian_range_breakout,
         presettle_breakout,
         adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook,
         orb_strategy_page, ou_paper_backtest,

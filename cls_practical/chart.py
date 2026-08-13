@@ -5,8 +5,16 @@ only), entry/SL/TP/exit - so the fractal-trigger mechanics can actually be
 SEEN on a real day, not just trusted from a trades table. Matplotlib (not
 Altair, unlike the rest of this repo's *.chart modules) because this is a
 one-off diagnostic PNG, not a Streamlit page, and vl-convert (needed to
-rasterize Altair outside Streamlit) isn't installed."""
+rasterize Altair outside Streamlit) isn't installed.
 
+build_entry_chart() below (added 2026-08-13) is the Streamlit-embeddable
+counterpart -- an interactive Altair multi-day candlestick chart with SL/TP
+lines and entry/exit markers for the strategy page's chart-verification tab,
+same pattern as presettle_breakout/chart.py's build_entry_chart(). Kept in
+this module (not a separate file) since both serve the same "see a CLS trade
+on a real chart" purpose, just static-single-trade vs. interactive-multi-day."""
+
+import altair as alt
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -78,3 +86,113 @@ def plot_trade_example(eurusd_m5: pd.DataFrame, trade: pd.Series, asia_high: flo
     fig.tight_layout()
     fig.savefig(out_path, dpi=130)
     plt.close(fig)
+
+
+_CANDLE_UP, _CANDLE_DOWN = "#26a69a", "#ef5350"
+_LONG_COLOR, _SHORT_COLOR = "#2e7d32", "#e65100"
+_EXIT_COLORS_ALT = {"take_profit": "#2e7d32", "stop": "#c62828", "breakeven": "#607d8b", "data_end": "#757575"}
+
+
+def build_entry_chart(price: pd.DataFrame, trades: pd.DataFrame) -> alt.LayerChart:
+    """Interactive multi-day M5 candlestick chart + SL/TP levels + entry/exit
+    markers, for the Streamlit chart-verification tab. price: OHLC frame
+    (lower-case columns, Berlin-tz index), already sliced to the window to
+    display. trades: output of simulate_cls_practical, already sliced to
+    trades whose entry_time falls within (roughly) that same window."""
+
+    p = price.reset_index().rename(columns={price.index.name or "index": "time"})
+    p["direction"] = (p["close"] >= p["open"]).map({True: "up", False: "down"})
+
+    candle_body = (
+        alt.Chart(p)
+        .mark_bar(width=3)
+        .encode(
+            x=alt.X("time:T", title="Zeit (Berlin)"),
+            y=alt.Y("open:Q", title="Preis", scale=alt.Scale(zero=False)),
+            y2="close:Q",
+            color=alt.Color(
+                "direction:N",
+                scale=alt.Scale(domain=["up", "down"], range=[_CANDLE_UP, _CANDLE_DOWN]),
+                legend=alt.Legend(title="Kerze"),
+            ),
+            tooltip=[
+                alt.Tooltip("time:T", title="Zeit"),
+                alt.Tooltip("open:Q", format=".5f"),
+                alt.Tooltip("high:Q", format=".5f"),
+                alt.Tooltip("low:Q", format=".5f"),
+                alt.Tooltip("close:Q", format=".5f"),
+            ],
+        )
+    )
+    candle_wick = (
+        alt.Chart(p)
+        .mark_rule(strokeWidth=1)
+        .encode(
+            x="time:T", y="low:Q", y2="high:Q",
+            color=alt.Color("direction:N", scale=alt.Scale(domain=["up", "down"], range=[_CANDLE_UP, _CANDLE_DOWN]), legend=None),
+        )
+    )
+    layers = [candle_wick, candle_body]
+
+    if not trades.empty:
+        t = trades.copy()
+        t["exit_time_line"] = t["exit_time"].fillna(p["time"].max())
+
+        sl_lines = (
+            alt.Chart(t)
+            .mark_rule(strokeDash=[2, 2], strokeWidth=1, color="#c62828")
+            .encode(x="entry_time:T", x2="exit_time_line:T", y="sl:Q", tooltip=[alt.Tooltip("sl:Q", format=".5f", title="Stop-Loss")])
+        )
+        tp_lines = (
+            alt.Chart(t)
+            .mark_rule(strokeDash=[2, 2], strokeWidth=1, color="#2e7d32")
+            .encode(x="entry_time:T", x2="exit_time_line:T", y="tp:Q", tooltip=[alt.Tooltip("tp:Q", format=".5f", title="Take-Profit")])
+        )
+        layers.extend([sl_lines, tp_lines])
+
+        entries = (
+            alt.Chart(t)
+            .mark_point(shape="triangle-up", size=160, filled=True)
+            .encode(
+                x="entry_time:T",
+                y="entry_price:Q",
+                color=alt.Color(
+                    "direction:N",
+                    scale=alt.Scale(domain=["long", "short"], range=[_LONG_COLOR, _SHORT_COLOR]),
+                    legend=alt.Legend(title="Entry-Richtung"),
+                ),
+                angle=alt.condition("datum.direction == 'short'", alt.value(180), alt.value(0)),
+                tooltip=[
+                    alt.Tooltip("entry_time:T", title="Entry"),
+                    alt.Tooltip("entry_price:Q", format=".5f"),
+                    alt.Tooltip("setup:N", title="Setup"),
+                    alt.Tooltip("direction:N"),
+                    alt.Tooltip("sl:Q", format=".5f", title="Stop"),
+                    alt.Tooltip("tp:Q", format=".5f", title="Ziel"),
+                ],
+            )
+        )
+        layers.append(entries)
+
+        exits = (
+            alt.Chart(t.dropna(subset=["exit_price"]))
+            .mark_point(shape="diamond", size=120, filled=True)
+            .encode(
+                x="exit_time:T",
+                y="exit_price:Q",
+                color=alt.Color(
+                    "exit_reason:N",
+                    scale=alt.Scale(domain=list(_EXIT_COLORS_ALT), range=list(_EXIT_COLORS_ALT.values())),
+                    legend=alt.Legend(title="Exit-Grund"),
+                ),
+                tooltip=[
+                    alt.Tooltip("exit_time:T", title="Exit"),
+                    alt.Tooltip("exit_price:Q", format=".5f"),
+                    alt.Tooltip("exit_reason:N"),
+                    alt.Tooltip("pnl_usd:Q", format="+.0f", title="PnL ($)"),
+                ],
+            )
+        )
+        layers.append(exits)
+
+    return alt.layer(*layers).properties(height=520).interactive(bind_y=False)

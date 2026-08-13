@@ -31,6 +31,7 @@ REPO_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_DIR / "cls_practical"))
 sys.path.insert(0, str(REPO_DIR))
 
+from cls_practical.chart import build_entry_chart  # noqa: E402
 from cls_practical.data import fetch_eurusd_entry_tf_berlin, fetch_major_m15_berlin, fetch_rate_instrument_m5_berlin  # noqa: E402
 from cls_practical.engine import simulate_cls_practical  # noqa: E402
 from strategy.cls_advanced import PAIRS  # noqa: E402
@@ -246,6 +247,42 @@ with tabs[1]:
         ("Endkapital", f"${m['final_equity']:,.0f}"), ("Gesamt-Return", f"{m['total_return_pct']:+.1f}%"),
         ("Max Drawdown", f"{m['max_drawdown_pct']:.2f}%"), ("Sharpe", f"{m['sharpe']:.2f}"),
     ])
+
+    section_title(":material/candlestick_chart: Chart-Verifikation -- einzelne Trades auf dem echten Kurs")
+    caveat_box(
+        "Bisher nur aggregierte Kennzahlen -- hier ein echter historischer Trade auf dem M5-Chart, "
+        "inkl. Entry-Pfeil, SL/TP-Linien und Exit-Marker, damit die Fractal/CHOCH-Entry-Logik nicht nur "
+        "behauptet, sondern tatsaechlich SICHTBAR ist."
+    )
+    if trades.empty:
+        st.info("Keine Trades bei diesem Risiko-Setting.", icon=":material/info:")
+    else:
+        trades_sorted = trades.sort_values("entry_time").reset_index(drop=True)
+        trade_labels = [
+            f"{r['entry_time']:%Y-%m-%d %H:%M} -- {r['setup']} {r['direction']} "
+            f"({r['exit_reason']}, {r['pnl_usd']:+.0f}$)"
+            for _, r in trades_sorted.iterrows()
+        ]
+        default_idx = len(trade_labels) - 1
+        picked_idx = st.selectbox(
+            "Trade auswaehlen (chronologisch, neuester zuerst unten)", options=range(len(trade_labels)),
+            format_func=lambda i: trade_labels[i], index=default_idx,
+        )
+        picked = trades_sorted.iloc[picked_idx]
+
+        eurusd_m5, *_ = load_data()
+        window_start = picked["entry_time"] - pd.Timedelta(hours=20)
+        window_end = max(picked["exit_time"], picked["entry_time"]) + pd.Timedelta(hours=6) if pd.notna(picked["exit_time"]) else picked["entry_time"] + pd.Timedelta(hours=12)
+        chart_price = eurusd_m5.loc[window_start:window_end]
+        chart_trades = trades_sorted[(trades_sorted["entry_time"] >= window_start) & (trades_sorted["entry_time"] <= window_end)]
+        if chart_price.empty:
+            st.warning("Keine Kursdaten fuer dieses Fenster geladen.", icon=":material/warning:")
+        else:
+            st.altair_chart(build_entry_chart(chart_price, chart_trades), width="stretch")
+        st.caption(
+            "Gestrichelt rot/gruen = SL/TP. Dreieck = Entry (Richtung zeigt long/short), Raute = Exit "
+            "(Farbe = Exit-Grund). Chart ist zoom-/pan-faehig (Mausrad/Ziehen)."
+        )
 
     daily_is = daily_pnl.loc[:SPLIT]
     daily_oos = daily_pnl.loc[SPLIT:]

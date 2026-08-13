@@ -64,6 +64,10 @@ cls_practical_strategy = st.Page(
     "app_pages/cls_practical_strategy.py", title="CLS Practical (EUR/USD)",
     icon=":material/military_tech:", visibility="hidden",
 )
+cls_practical_live_log = st.Page(
+    "app_pages/cls_practical_live_log.py", title="CLS Practical -- Live Log",
+    icon=":material/rss_feed:", visibility="hidden",
+)
 ou_scanner = st.Page(
     "app_pages/ou_scanner.py", title="OU-Modell Live-Signale (Scanner)", icon=":material/radar:",
     visibility="hidden",
@@ -169,7 +173,7 @@ page = st.navigation(
         # hidden pages -- must still be registered so they stay routable
         education_gold_intraday, education_book_chan, education_kelly,
         ou_modell, orb_forward_test,
-        fertige_strategien, cls_practical_strategy, ou_scanner, gold_bitcoin_dual_momentum, asian_range_breakout,
+        fertige_strategien, cls_practical_strategy, cls_practical_live_log, ou_scanner, gold_bitcoin_dual_momentum, asian_range_breakout,
         presettle_breakout,
         adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook,
         orb_strategy_page, ou_paper_backtest,

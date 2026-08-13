@@ -20,5 +20,11 @@ render_section(
             "icon": ":material/bolt:",
             "tag": "LIVE",
         },
+        {
+            "page": "app_pages/cls_practical_live_log.py",
+            "title": "CLS Practical -- Live Log",
+            "icon": ":material/rss_feed:",
+            "tag": "LIVE",
+        },
     ],
 )

@@ -730,3 +730,64 @@
 2026-08-12 21:40:02   connection_error: None
 2026-08-12 21:40:02   hourly_breakdown: [{"time": "15:38", "signals_scanned": 1, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 1, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "16:38", "signals_scanned": 5, "sent": 1, "sent_symbols": ["EBAY"], "pending_placed": 0, "pending_symbols": [], "skipped": 4, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "17:37", "signals_scanned": 5, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 4, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "18:37", "signals_scanned": 5, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 4, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "19:37", "signals_scanned": 5, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 4, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "20:37", "signals_scanned": 5, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 4, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "21:39", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
 2026-08-12 21:40:02 
+2026-08-12 21:40:02 [main eaf283c] OU-Modell: daily log 2026-08-12
+2026-08-12 21:40:02  5 files changed, 334 insertions(+)
+2026-08-12 21:40:02  create mode 100644 ou_modell_logs/raw/konto1_ttp/2026-08-12.log
+2026-08-12 21:40:02  create mode 100644 ou_modell_logs/raw/konto2_ttp/2026-08-12.log
+2026-08-12 21:40:02  create mode 100644 ou_modell_logs/raw/konto3_tickmill/2026-08-12.log
+2026-08-12 21:40:05 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-12 21:40:05    57821ca..eaf283c  main -> main
+2026-08-12 21:40:05 Commit + Push erfolgreich.
+2026-08-12 21:40:05 === Task beendet ===
+2026-08-13 22:43:15 === Task gestartet ===
+2026-08-13 22:43:32 OU-Modell Tages-Log erfasst (Konto 1 (TTP)):
+2026-08-13 22:43:32   date: 2026-08-13
+2026-08-13 22:43:32   account: Konto 1 (TTP)
+2026-08-13 22:43:32   signals_scanned: 1
+2026-08-13 22:43:32   orders_sent: 0
+2026-08-13 22:43:32   orders_skipped: 1
+2026-08-13 22:43:32   orders_error: 0
+2026-08-13 22:43:32   symbols_sent: 
+2026-08-13 22:43:32   baseline_equity: 98361.14
+2026-08-13 22:43:32   current_equity: 98346.27
+2026-08-13 22:43:32   floating_pnl: 84.62999999999997
+2026-08-13 22:43:32   daily_pnl_pct: -0.00015117758903562264
+2026-08-13 22:43:32   open_positions: UPS(-42.96); CMI(+133.50); UNH(-201.02); REG(-84.48); ROK(+36.00); D(+280.34); CVS(-14.40); HRL(-54.91); EBAY(+32.56)
+2026-08-13 22:43:32   drawdown_halted: False
+2026-08-13 22:43:33   connection_error: None
+2026-08-13 22:43:33   hourly_breakdown: [{"time": "15:38", "signals_scanned": 1, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 1, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
+2026-08-13 22:43:33 
+2026-08-13 22:43:33 OU-Modell Tages-Log erfasst (Konto 2 (TTP, Demo)):
+2026-08-13 22:43:33   date: 2026-08-13
+2026-08-13 22:43:33   account: Konto 2 (TTP, Demo)
+2026-08-13 22:43:33   signals_scanned: 2
+2026-08-13 22:43:33   orders_sent: 2
+2026-08-13 22:43:33   orders_skipped: 0
+2026-08-13 22:43:33   orders_error: 0
+2026-08-13 22:43:33   symbols_sent: AIG;EBAY
+2026-08-13 22:43:33   baseline_equity: 100403.63
+2026-08-13 22:43:33   current_equity: 100330.74
+2026-08-13 22:43:33   floating_pnl: -27.500000000000007
+2026-08-13 22:43:33   daily_pnl_pct: -0.0007259697682245095
+2026-08-13 22:43:33   open_positions: CMI(+85.68); UNH(-201.02); REG(+35.00); MNST(+53.50); AIG(-38.28); EBAY(+37.62)
+2026-08-13 22:43:33   drawdown_halted: False
+2026-08-13 22:43:33   connection_error: None
+2026-08-13 22:43:33   hourly_breakdown: [{"time": "15:38", "signals_scanned": 2, "sent": 2, "sent_symbols": ["AIG", "EBAY"], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
+2026-08-13 22:43:33 
+2026-08-13 22:43:33 OU-Modell Tages-Log erfasst (Konto 3 (Tickmill)):
+2026-08-13 22:43:33   date: 2026-08-13
+2026-08-13 22:43:33   account: Konto 3 (Tickmill)
+2026-08-13 22:43:33   signals_scanned: 1
+2026-08-13 22:43:33   orders_sent: 0
+2026-08-13 22:43:33   orders_skipped: 1
+2026-08-13 22:43:33   orders_error: 0
+2026-08-13 22:43:33   symbols_sent: 
+2026-08-13 22:43:33   baseline_equity: 3556.86
+2026-08-13 22:43:33   current_equity: 3543.73
+2026-08-13 22:43:33   floating_pnl: -34.34
+2026-08-13 22:43:33   daily_pnl_pct: -0.0036914581962742723
+2026-08-13 22:43:33   open_positions: UNH(-49.52); REG(-14.40); ROK(+7.96); MNST(+23.86); CVS(-1.32); HRL(-5.00); EBAY(+4.08)
+2026-08-13 22:43:33   drawdown_halted: False
+2026-08-13 22:43:33   connection_error: None
+2026-08-13 22:43:33   hourly_breakdown: [{"time": "15:38", "signals_scanned": 1, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 1, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
+2026-08-13 22:43:33 

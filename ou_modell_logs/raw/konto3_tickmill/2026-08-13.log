@@ -1,0 +1,7 @@
+===== run_20260813_153829.log =====
+2026-08-13 15:38:29,458 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260813_153829.log ===
+2026-08-13 15:38:36,814 INFO run_once.konto3_tickmill: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-13 15:38:36,816 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3556.86, aktueller Drawdown 0.00% (Limit 20.0%)
+2026-08-13 15:38:36,820 WARNING executor: Symbol 'EOAN.DE' (MT5-Name 'EOAN.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-13 15:38:36,820 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EOAN.DE', 'direction': 'Long', 'entry': 18.24, 'sl': 17.53, 'tp': 19.3}}
+2026-08-13 15:38:36,821 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===

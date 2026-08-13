@@ -1,0 +1,9 @@
+===== run_20260813_153828.log =====
+2026-08-13 15:38:28,098 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260813_153828.log ===
+2026-08-13 15:38:28,153 INFO run_once.konto2_ttp: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-13 15:38:28,154 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100403.63, aktueller Drawdown 0.00% (Limit 2.0%)
+2026-08-13 15:38:28,696 INFO executor: Order gesendet: {'symbol': 'AIG', 'volume': 58.0, 'type': 'BUY', 'entry': 76.73, 'sl': 72.41, 'tp': 81.74} -> Ticket 17874757
+2026-08-13 15:38:28,721 INFO run_once.konto2_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'AIG', 'volume': 58.0, 'type': 'BUY', 'entry': 76.73, 'sl': 72.41, 'tp': 81.74}, 'signal': {'symbol': 'AIG', 'direction': 'Long', 'entry': 76.14, 'sl': 72.41, 'tp': 81.74}, 'ticket': 17874757, 'risk': 250.56000000000043}
+2026-08-13 15:38:29,244 INFO executor: Order gesendet: {'symbol': 'EBAY', 'volume': 22.0, 'type': 'BUY', 'entry': 102.87, 'sl': 91.78, 'tp': 118.1} -> Ticket 17874758
+2026-08-13 15:38:29,249 INFO run_once.konto2_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'EBAY', 'volume': 22.0, 'type': 'BUY', 'entry': 102.87, 'sl': 91.78, 'tp': 118.1}, 'signal': {'symbol': 'EBAY', 'direction': 'Long', 'entry': 102.31, 'sl': 91.78, 'tp': 118.1}, 'ticket': 17874758, 'risk': 243.98000000000005}
+2026-08-13 15:38:29,254 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===

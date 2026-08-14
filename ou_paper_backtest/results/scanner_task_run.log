@@ -985,3 +985,22 @@
 2026-08-14 17:36:02 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
 2026-08-14 17:36:02 
 2026-08-14 17:36:02 Saved 0 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-08-14T17:36:02)
+2026-08-14 17:36:03 [main 3e013cc] OU-Modell Scanner: Snapshot 2026-08-14 17:36
+2026-08-14 17:36:03  2 files changed, 18 insertions(+), 2 deletions(-)
+2026-08-14 17:36:05 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-14 17:36:05    bdefdd1..3e013cc  main -> main
+2026-08-14 17:36:05 Commit + Push erfolgreich.
+2026-08-14 17:36:05 === Scanner-Task beendet ===
+2026-08-14 18:35:03 === Scanner-Task gestartet ===
+2026-08-14 18:36:03 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-08-14 18:36:03 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-08-14 18:36:03 [sp500] 1 raw signal(s) as of 2026-08-13, regime_ok=True
+2026-08-14 18:36:03 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-08-14 18:36:03 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-08-14 18:36:03 [nasdaq100] 0 raw signal(s) as of 2026-08-13, regime_ok=True
+2026-08-14 18:36:03 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-08-14 18:36:03 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-08-14 18:36:03 
+2026-08-14 18:36:03 Saved 1 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-08-14T18:36:03)
+2026-08-14 18:36:03                                 market ticker  scan_date  close  lower_band  entry    sl   tp  tp_price  risk_pct_price  position_size_pct  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
+2026-08-14 18:36:03 S&P 500 (volles Universum, 420 Ticker)    AIG 2026-08-13  76.03       76.19  76.03 71.98 82.1      82.1            5.33              18.77       True       True                            12.5 2026-08-14T18:36:03

@@ -39,6 +39,8 @@ from mt5_trend_pullback.pipeline import (
     ATR_LEN, ATR_STOP_MULT, RR_RATIO, RSI_LEN, RSI_OVERSOLD, TREND_LEN, run_pipeline,
 )
 from mt5_trend_pullback.account_simulation import account_stats, simulate_account
+from mt5_trend_pullback.execution_overlay import simulate_trades_overlay
+from mt5_trend_pullback.filters import alignment_filter
 from strategy.backtest import BacktestConfig, simulate_trades, trades_to_daily_returns
 from strategy.metrics import breakeven_spread_bps, regime_decomposition, summarize
 
@@ -65,6 +67,16 @@ STOP_ATR_CANDIDATES = [1.0, 1.5, 2.0, 2.5, 3.0]
 TP_R_CANDIDATES = [1.0, 1.5, 2.0, 2.5, 3.0, 4.0]
 BE_TRIGGER_CANDIDATES = [None, 0.5, 1.0, 1.5]
 MIN_IS_TRADES_TPSL = 30
+
+# --- current standard recommendation (2026-08-14): Platinum dropped, Gold
+# confirms Silver via alignment filter (see scripts/research_mt5_trend_
+# pullback_market_dropout.py) -- regime-shifted window, not the full 2016
+# history, since that's what motivated dropping Platinum in the first place.
+STANDARD_MARKET_LABELS = ["XAUUSD", "XAGUSD", "CHFJPY", "USDJPY"]
+NEW_IS_START = pd.Timestamp("2023-01-01", tz="UTC")
+NEW_SPLIT = pd.Timestamp("2024-07-01", tz="UTC")
+NEW_OOS_END = pd.Timestamp("2026-08-01", tz="UTC")
+OVERLAY_WAIT_BARS = 5
 
 # --- same palette as gold_bitcoin_dual_momentum.py / fertige_strategien.py ---
 C_BG = "#0a0e14"
@@ -435,6 +447,69 @@ def run_tp_sl_be_sweep(_data: dict[str, pd.DataFrame]) -> dict:
     }
 
 
+@st.cache_data(ttl="6h", show_spinner="Lade Gold-Tagesschlusskurse (fuer den Silber-Alignment-Filter)...")
+def load_gold_daily_close() -> pd.Series:
+    d1 = fetch_timeframe("GOLD", "D1", START, END)
+    close = d1["Close"]
+    if close.index.tz is not None:
+        close.index = close.index.tz_localize(None)
+    return close
+
+
+@st.cache_data(ttl="6h", show_spinner="Berechne die empfohlene Standard-Konfiguration (ohne Platin, Silber-aligned)...")
+def run_standard_recommendation(_data: dict[str, pd.DataFrame], _gold_daily_close: pd.Series) -> dict:
+    def build(label: str, use_overlay: bool) -> pd.DataFrame:
+        df = _data[label]
+        spread_bps = next(s for k, tf, lab, s in MARKETS if lab == label)
+        signaled = run_pipeline(df)
+        cfg = BacktestConfig(spread_bps=spread_bps, stop_atr_mult=ATR_STOP_MULT, use_vwap_target=False, take_profit_r=RR_RATIO)
+        trades = simulate_trades_overlay(signaled, cfg, max_wait_bars=OVERLAY_WAIT_BARS) if use_overlay else simulate_trades(signaled, cfg)
+        if label == "XAGUSD":
+            trades = alignment_filter(trades, _gold_daily_close)
+        return trades, signaled.index
+
+    def period_trades(trades: pd.DataFrame, idx: pd.DatetimeIndex, start, end):
+        t = trades[(trades["entry_time"] >= start) & (trades["entry_time"] < end)] if end is not None else trades[trades["entry_time"] >= start]
+        i = idx[(idx >= start) & (idx < end)] if end is not None else idx[idx >= start]
+        return t, i
+
+    base_full, overlay_full = {}, {}
+    base_idx = {}
+    for label in STANDARD_MARKET_LABELS:
+        t_base, idx = build(label, use_overlay=False)
+        t_overlay, _ = build(label, use_overlay=True)
+        base_full[label], overlay_full[label] = t_base, t_overlay
+        base_idx[label] = idx
+
+    per_market_oos = {}
+    base_oos_tbm, base_oos_idx = {}, {}
+    for label in STANDARD_MARKET_LABELS:
+        t_oos, i_oos = period_trades(base_full[label], base_idx[label], NEW_SPLIT, NEW_OOS_END)
+        base_oos_tbm[label], base_oos_idx[label] = t_oos, i_oos
+        per_market_oos[label] = summarize(t_oos, i_oos)
+
+    comb_oos, fi_oos = _combined(base_oos_tbm, base_oos_idx)
+
+    overlay_oos_tbm, overlay_oos_idx = {}, {}
+    for label in STANDARD_MARKET_LABELS:
+        t_oos, i_oos = period_trades(overlay_full[label], base_idx[label], NEW_SPLIT, NEW_OOS_END)
+        overlay_oos_tbm[label], overlay_oos_idx[label] = t_oos, i_oos
+    comb_overlay_oos, fi_overlay_oos = _combined(overlay_oos_tbm, overlay_oos_idx)
+
+    account_by_risk = {}
+    for risk_pct in [0.005, 0.01, 0.015, 0.02]:
+        sim = simulate_account(base_oos_tbm, starting_equity=STARTING_EQUITY, risk_pct=risk_pct, max_concurrent=3)
+        account_by_risk[risk_pct] = account_stats(sim, starting_equity=STARTING_EQUITY)
+
+    return {
+        "per_market_oos": per_market_oos,
+        "combined_oos": summarize(comb_oos, fi_oos),
+        "combined_overlay_oos": summarize(comb_overlay_oos, fi_overlay_oos),
+        "trades_oos": comb_oos, "index_oos": fi_oos,
+        "account_by_risk": account_by_risk,
+    }
+
+
 # ------------------------------------------------------------------ header
 st.markdown("## :material/smart_toy: Trend Pullback")
 st.caption(
@@ -453,6 +528,16 @@ caveat_box(
     "keine automatisierte Ausfuehrung (die laeuft ausschliesslich im separaten Bot-Ordner, auf einem "
     "Demo-Konto).",
     kind="alert",
+)
+
+caveat_box(
+    "<b>&#11088; Aktuelle Standard-Empfehlung (Stand 2026-08-14):</b> <b>Platin raus, Silber gefiltert "
+    "durch Gold-Alignment</b> (Gold/Silber/CHFJPY/USDJPY, getestet auf dem regime-verengten Fenster "
+    "2023-2024 IS / 2024-2026 OOS) -- siehe Tab <b>\"Empfehlung (Standard)\"</b>. Verbessert OOS-Sharpe "
+    "0.78&rarr;0.87 und OOS-MaxDD -19.7%&rarr;-15.1% gegenueber der vollen 5-Markt-Basiskonfiguration, "
+    "bei aehnlichem Dollar-Ergebnis. Die uebrigen Tabs zeigen weiterhin den vollen Forschungsweg "
+    "dorthin (5 Maerkte, alte 2016-2022/2023-2026-Aufteilung) und bleiben als Dokumentation stehen.",
+    kind="good",
 )
 
 with st.expander(":material/menu_book: Strategie-Regeln (1:1 aus dem Live-Bot)", expanded=False):
@@ -477,19 +562,101 @@ with st.expander(":material/menu_book: Strategie-Regeln (1:1 aus dem Live-Bot)",
     )
 
 data = load_markets()
+gold_daily_close = load_gold_daily_close()
+standard_result = run_standard_recommendation(data, gold_daily_close)
 baseline = run_baseline(data)
 adx_result = run_adx_sweep(data)
 spread_result = run_spread_sensitivity(data)
 account_result = run_account_sim(data)
 tpsl_result = run_tp_sl_be_sweep(data)
 
-tab_overview, tab_adx, tab_spread, tab_account, tab_tpsl = st.tabs([
+tab_standard, tab_overview, tab_adx, tab_spread, tab_account, tab_tpsl = st.tabs([
+    ":material/star: Empfehlung (Standard)",
     ":material/show_chart: Baseline (Bot wie er ist)",
     ":material/tune: ADX-Filter",
     ":material/payments: Spread-Sensitivitaet",
     ":material/account_balance: Konto-Simulation ($100k)",
     ":material/target: TP/SL & Breakeven",
 ])
+
+# ------------------------------------------------------------------ Tab: Standard recommendation
+with tab_standard:
+    caveat_box(
+        "<b>Standard-Konfiguration:</b> Gold, Silber (gefiltert -- nur Trades, bei denen Golds eigener "
+        "5-Tage-Trend positiv war), CHFJPY, USDJPY. Platin komplett entfernt. Bot-Default-Parameter "
+        "unveraendert (EMA150/RSI14&gt;35/ATR14&times;2.0/RR2.0, kein ADX-Filter). Getestet auf dem "
+        "regime-verengten Fenster: IS 2023-01 bis 2024-07, OOS 2024-07 bis 2026-08 -- nicht die volle "
+        "10-Jahres-Historie, siehe Baseline-Tab fuer den Grund."
+    )
+
+    r = standard_result
+    c_oos = r["combined_oos"]
+    tile_row([
+        ("PF (OOS)", fmt_num(c_oos["profit_factor"])),
+        ("SHARPE (OOS)", fmt_num(c_oos["sharpe"])),
+        ("CAGR (OOS)", fmt_pct(c_oos["cagr"])),
+        ("MAXDD (OOS)", fmt_pct(c_oos["max_drawdown"])),
+        ("TRADES (OOS)", str(c_oos["n_trades"])),
+        ("MAERKTE", "4 (ohne Platin)"),
+    ])
+
+    section_title("Pro Markt (Out-of-Sample, Standard-Konfiguration)")
+    rows = [{"Markt": label, **fmt_row(s)} for label, s in r["per_market_oos"].items()]
+    st.dataframe(
+        pd.DataFrame(rows), hide_index=True,
+        column_config={
+            "Trefferquote": st.column_config.NumberColumn(format=".1%"),
+            "Profit-Faktor": st.column_config.NumberColumn(format="%.3f"),
+            "Sharpe": st.column_config.NumberColumn(format="%.2f"),
+            "CAGR": st.column_config.NumberColumn(format="+.1%"),
+            "MaxDD": st.column_config.NumberColumn(format="+.1%"),
+        },
+    )
+
+    section_title(f"$100k-Konto bei verschiedenen Risikostufen (OOS, max. 3 gleichzeitige Positionen)")
+    acc_rows = []
+    for risk_pct, s in r["account_by_risk"].items():
+        acc_rows.append({
+            "Risiko/Trade": risk_pct, "n genommen": s["n_trades"], "uebersprungen": s["n_skipped"],
+            "Endkapital": s["final_equity"], "Gesamt-Return": s["total_return"],
+            "MaxDD": s["max_drawdown_pct"], "MaxDD ($)": s["max_drawdown_usd"],
+        })
+    st.dataframe(
+        pd.DataFrame(acc_rows), hide_index=True,
+        column_config={
+            "Risiko/Trade": st.column_config.NumberColumn(format=".2%"),
+            "Endkapital": st.column_config.NumberColumn(format="$%.0f"),
+            "Gesamt-Return": st.column_config.NumberColumn(format="+.1%"),
+            "MaxDD": st.column_config.NumberColumn(format="+.1%"),
+            "MaxDD ($)": st.column_config.NumberColumn(format="$%.0f"),
+        },
+    )
+
+    section_title("Execution-Overlay-Test (Entry verzoegert bis zur ersten Gegenbewegung)", color=C_ORANGE)
+    ov = r["combined_overlay_oos"]
+    tile_row([
+        ("PF OHNE OVERLAY", fmt_num(c_oos["profit_factor"])),
+        ("PF MIT OVERLAY", fmt_num(ov["profit_factor"])),
+        ("SHARPE OHNE OVERLAY", fmt_num(c_oos["sharpe"])),
+        ("SHARPE MIT OVERLAY", fmt_num(ov["sharpe"])),
+        ("MAXDD OHNE OVERLAY", fmt_pct(c_oos["max_drawdown"])),
+        ("MAXDD MIT OVERLAY", fmt_pct(ov["max_drawdown"])),
+    ])
+    caveat_box(
+        "<b>Ergebnis: neutral, keine Empfehlung.</b> Der Execution-Overlay (Entry erst bei der ersten "
+        "Gegen-Kerze nach dem Signal, sonst nach 5 Baren verworfen -- Idee aus Zarattini &amp; Pagani "
+        "2026, bereits erfolgreich bei Gold Asian-Range-Breakout eingesetzt) verschiebt hier nur das "
+        "Profil (Sharpe/PF praktisch gleich, CAGR etwas niedriger, MaxDD etwas besser) -- pro Markt "
+        "gemischt (hilft Gold/USDJPY, schadet dem bereits gefilterten Silber). Eine 3-Werte-"
+        "Sensitivitaetspruefung (3/5/10 Baren Wartezeit) zeigte grosse Ausschlaege in beide Richtungen "
+        "-- ohne vorherige IS-Auswahl waere jede Wahl reines Data-Snooping. <b>Nicht Teil der "
+        "Standard-Empfehlung.</b>"
+    )
+
+    section_title("Portfolio-Equity, Standard-Konfiguration (OOS)")
+    daily_std = trades_to_daily_returns(r["trades_oos"], r["index_oos"])
+    equity_std = (1 + daily_std).cumprod()
+    st.altair_chart(line_chart(normalize(equity_std, "Standard (4 Maerkte)"), {"Standard (4 Maerkte)": (C_GREEN, None)}))
 
 # ------------------------------------------------------------------ Tab: Baseline
 with tab_overview:

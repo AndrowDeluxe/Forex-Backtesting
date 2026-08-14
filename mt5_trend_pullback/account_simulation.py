@@ -38,12 +38,21 @@ def simulate_account(
     starting_equity: float = 100_000.0,
     risk_pct: float = 0.01,
     max_concurrent: int = 3,
+    risk_weight_by_market: dict[str, float] | None = None,
 ) -> dict:
+    """`risk_weight_by_market`: optional per-market multiplier on `risk_pct`
+    (e.g. {"XAUUSD": 1.2, "USDCAD": 0.5}) for testing an uneven risk split
+    across markets instead of the uniform default (every market implicitly
+    weight 1.0). Applied at the point risk_dollars is computed, so it stays
+    inside the compounding chain rather than being a post-hoc rescale."""
+    risk_weight_by_market = risk_weight_by_market or {}
     all_trades = []
     for market, df in trades_by_market.items():
         if df.empty:
             continue
-        d = df[["entry_time", "exit_time", "r_multiple", "exit_reason"]].copy()
+        cols = ["entry_time", "exit_time", "r_multiple", "exit_reason"]
+        optional_cols = [c for c in ("initial_risk", "entry_price") if c in df.columns]
+        d = df[cols + optional_cols].copy()
         d["market"] = market
         d = d.dropna(subset=["r_multiple"])  # guards a degenerate (zero) initial_risk, mirrors BacktestConfig.min_atr's intent
         all_trades.append(d)
@@ -86,14 +95,18 @@ def simulate_account(
             n_skipped += 1  # bot: "Max. offene Positionen erreicht -- uebersprungen"
             continue
 
-        risk_dollars = equity * risk_pct
+        risk_dollars = equity * risk_pct * risk_weight_by_market.get(row["market"], 1.0)
         open_by_market[row["market"]] = (row["exit_time"], risk_dollars, row["r_multiple"])
         heapq.heappush(exit_heap, (row["exit_time"], row["market"]))
-        accepted_rows.append({
+        accepted_row = {
             "market": row["market"], "entry_time": t_entry, "exit_time": row["exit_time"],
             "exit_reason": row["exit_reason"], "r_multiple": row["r_multiple"],
             "risk_dollars": risk_dollars, "equity_at_entry": equity,
-        })
+        }
+        for c in ("initial_risk", "entry_price"):
+            if c in row.index:
+                accepted_row[c] = row[c]
+        accepted_rows.append(accepted_row)
 
     settle_up_to(pd.Timestamp.max.tz_localize("UTC"))  # flush every still-open position at the end
 

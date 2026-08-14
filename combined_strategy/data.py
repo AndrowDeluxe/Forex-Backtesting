@@ -35,7 +35,9 @@ INSTRUMENTS = {
 OFFER_SIDE = dukascopy_python.OFFER_SIDE_BID
 _TF_INTERVAL = {
     "M1": dukascopy_python.INTERVAL_MIN_1,
+    "M5": dukascopy_python.INTERVAL_MIN_5,
     "M15": dukascopy_python.INTERVAL_MIN_15,
+    "M30": dukascopy_python.INTERVAL_MIN_30,
     "H1": dukascopy_python.INTERVAL_HOUR_1,
     "H4": dukascopy_python.INTERVAL_HOUR_4,
     "D1": dukascopy_python.INTERVAL_DAY_1,

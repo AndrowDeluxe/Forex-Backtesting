@@ -1,0 +1,83 @@
+===== run_20260814_153812.log =====
+2026-08-14 15:38:12,224 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260814_153812.log ===
+2026-08-14 15:38:12,552 ERROR executor: Position CMI (Ticket 17676823) hat einen ungültigen gespeicherten Entry-Preis (0.0000) - BE-Check wird übersprungen, keine SL-Änderung. Metadaten in der State-DB prüfen/korrigieren.
+2026-08-14 15:38:12,562 CRITICAL executor: HALTEDAUER-WARNUNG: Position UPS (Ticket 17530516) ist seit 16 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -48.96.
+2026-08-14 15:38:12,572 CRITICAL run_once.konto1_ttp: 1 Position(en) über Haltedauer-Limit: [{'ticket': 17530516, 'symbol': 'UPS', 'holding_days': 16, 'profit': -48.96}]
+2026-08-14 15:38:12,876 INFO run_once.konto1_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-14 15:38:12,879 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 98357.58, aktueller Drawdown 0.00% (Limit 2.0%)
+2026-08-14 15:38:12,883 WARNING executor: Symbol 'EOAN.DE' (MT5-Name 'EOAN.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-14 15:38:12,883 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EOAN.DE', 'direction': 'Long', 'entry': 17.58, 'sl': 16.63, 'tp': 19.01}}
+2026-08-14 15:38:12,884 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260814_163521.log =====
+2026-08-14 16:35:21,843 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260814_163521.log ===
+2026-08-14 16:35:21,876 ERROR executor: Position CMI (Ticket 17676823) hat einen ungültigen gespeicherten Entry-Preis (0.0000) - BE-Check wird übersprungen, keine SL-Änderung. Metadaten in der State-DB prüfen/korrigieren.
+2026-08-14 16:35:21,887 CRITICAL executor: HALTEDAUER-WARNUNG: Position UPS (Ticket 17530516) ist seit 16 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -51.84.
+2026-08-14 16:35:21,888 CRITICAL executor: HALTEDAUER-WARNUNG: Position CMI (Ticket 17676823) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 168.30.
+2026-08-14 16:35:21,896 CRITICAL run_once.konto1_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17530516, 'symbol': 'UPS', 'holding_days': 16, 'profit': -51.84}, {'ticket': 17676823, 'symbol': 'CMI', 'holding_days': 10, 'profit': 168.3}]
+2026-08-14 16:35:22,120 INFO run_once.konto1_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-14 16:35:22,123 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 98357.58, aktueller Drawdown 0.01% (Limit 2.0%)
+2026-08-14 16:35:22,128 WARNING executor: Symbol 'EOAN.DE' (MT5-Name 'EOAN.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-14 16:35:22,128 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EOAN.DE', 'direction': 'Long', 'entry': 17.58, 'sl': 16.63, 'tp': 19.01}}
+2026-08-14 16:35:22,129 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260814_173524.log =====
+2026-08-14 17:35:24,182 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260814_173524.log ===
+2026-08-14 17:35:24,350 ERROR executor: Position CMI (Ticket 17676823) hat einen ungültigen gespeicherten Entry-Preis (0.0000) - BE-Check wird übersprungen, keine SL-Änderung. Metadaten in der State-DB prüfen/korrigieren.
+2026-08-14 17:35:24,359 CRITICAL executor: HALTEDAUER-WARNUNG: Position UPS (Ticket 17530516) ist seit 16 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -58.56.
+2026-08-14 17:35:24,361 CRITICAL executor: HALTEDAUER-WARNUNG: Position CMI (Ticket 17676823) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 159.35.
+2026-08-14 17:35:24,367 CRITICAL run_once.konto1_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17530516, 'symbol': 'UPS', 'holding_days': 16, 'profit': -58.56}, {'ticket': 17676823, 'symbol': 'CMI', 'holding_days': 10, 'profit': 159.35}]
+2026-08-14 17:35:24,606 INFO run_once.konto1_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-14 17:35:24,609 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 98357.58, aktueller Drawdown -0.07% (Limit 2.0%)
+2026-08-14 17:35:24,613 WARNING executor: Symbol 'EOAN.DE' (MT5-Name 'EOAN.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-14 17:35:24,613 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EOAN.DE', 'direction': 'Long', 'entry': 17.58, 'sl': 16.63, 'tp': 19.01}}
+2026-08-14 17:35:24,614 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260814_183523.log =====
+2026-08-14 18:35:23,966 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260814_183523.log ===
+2026-08-14 18:35:24,039 ERROR executor: Position CMI (Ticket 17676823) hat einen ungültigen gespeicherten Entry-Preis (0.0000) - BE-Check wird übersprungen, keine SL-Änderung. Metadaten in der State-DB prüfen/korrigieren.
+2026-08-14 18:35:24,048 CRITICAL executor: HALTEDAUER-WARNUNG: Position UPS (Ticket 17530516) ist seit 16 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -63.84.
+2026-08-14 18:35:24,050 CRITICAL executor: HALTEDAUER-WARNUNG: Position CMI (Ticket 17676823) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 162.25.
+2026-08-14 18:35:24,056 CRITICAL run_once.konto1_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17530516, 'symbol': 'UPS', 'holding_days': 16, 'profit': -63.84}, {'ticket': 17676823, 'symbol': 'CMI', 'holding_days': 10, 'profit': 162.25}]
+2026-08-14 18:35:24,336 INFO run_once.konto1_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-14 18:35:24,338 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 98357.58, aktueller Drawdown -0.13% (Limit 2.0%)
+2026-08-14 18:35:24,342 WARNING executor: Symbol 'EOAN.DE' (MT5-Name 'EOAN.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-14 18:35:24,342 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EOAN.DE', 'direction': 'Long', 'entry': 17.58, 'sl': 16.63, 'tp': 19.01}}
+2026-08-14 18:35:24,344 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260814_193522.log =====
+2026-08-14 19:35:22,659 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260814_193522.log ===
+2026-08-14 19:35:22,814 ERROR executor: Position CMI (Ticket 17676823) hat einen ungültigen gespeicherten Entry-Preis (0.0000) - BE-Check wird übersprungen, keine SL-Änderung. Metadaten in der State-DB prüfen/korrigieren.
+2026-08-14 19:35:22,824 CRITICAL executor: HALTEDAUER-WARNUNG: Position UPS (Ticket 17530516) ist seit 16 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -70.08.
+2026-08-14 19:35:22,825 CRITICAL executor: HALTEDAUER-WARNUNG: Position CMI (Ticket 17676823) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 151.80.
+2026-08-14 19:35:22,831 CRITICAL run_once.konto1_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17530516, 'symbol': 'UPS', 'holding_days': 16, 'profit': -70.08}, {'ticket': 17676823, 'symbol': 'CMI', 'holding_days': 10, 'profit': 151.8}]
+2026-08-14 19:35:23,173 INFO run_once.konto1_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-14 19:35:23,176 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 98357.58, aktueller Drawdown -0.05% (Limit 2.0%)
+2026-08-14 19:35:23,180 WARNING executor: Symbol 'EOAN.DE' (MT5-Name 'EOAN.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-14 19:35:23,180 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EOAN.DE', 'direction': 'Long', 'entry': 17.58, 'sl': 16.63, 'tp': 19.01}}
+2026-08-14 19:35:23,181 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260814_203927.log =====
+2026-08-14 20:39:27,892 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260814_203927.log ===
+2026-08-14 20:39:28,063 ERROR executor: Position CMI (Ticket 17676823) hat einen ungültigen gespeicherten Entry-Preis (0.0000) - BE-Check wird übersprungen, keine SL-Änderung. Metadaten in der State-DB prüfen/korrigieren.
+2026-08-14 20:39:28,071 CRITICAL executor: HALTEDAUER-WARNUNG: Position UPS (Ticket 17530516) ist seit 16 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -64.80.
+2026-08-14 20:39:28,073 CRITICAL executor: HALTEDAUER-WARNUNG: Position CMI (Ticket 17676823) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 148.50.
+2026-08-14 20:39:28,079 CRITICAL run_once.konto1_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17530516, 'symbol': 'UPS', 'holding_days': 16, 'profit': -64.8}, {'ticket': 17676823, 'symbol': 'CMI', 'holding_days': 10, 'profit': 148.5}]
+2026-08-14 20:39:28,335 ERROR run_once.konto1_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-14 20:39:28,355 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260814_213928.log =====
+2026-08-14 21:39:28,455 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260814_213928.log ===
+2026-08-14 21:39:28,630 ERROR executor: Position CMI (Ticket 17676823) hat einen ungültigen gespeicherten Entry-Preis (0.0000) - BE-Check wird übersprungen, keine SL-Änderung. Metadaten in der State-DB prüfen/korrigieren.
+2026-08-14 21:39:28,638 CRITICAL executor: HALTEDAUER-WARNUNG: Position UPS (Ticket 17530516) ist seit 16 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -64.56.
+2026-08-14 21:39:28,641 CRITICAL executor: HALTEDAUER-WARNUNG: Position CMI (Ticket 17676823) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 145.30.
+2026-08-14 21:39:28,642 CRITICAL executor: HALTEDAUER-WARNUNG: Position UNH (Ticket 17684606) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -142.50.
+2026-08-14 21:39:28,647 CRITICAL run_once.konto1_ttp: 3 Position(en) über Haltedauer-Limit: [{'ticket': 17530516, 'symbol': 'UPS', 'holding_days': 16, 'profit': -64.56}, {'ticket': 17676823, 'symbol': 'CMI', 'holding_days': 10, 'profit': 145.3}, {'ticket': 17684606, 'symbol': 'UNH', 'holding_days': 10, 'profit': -142.5}]
+2026-08-14 21:39:28,884 ERROR run_once.konto1_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-14 21:39:28,886 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===

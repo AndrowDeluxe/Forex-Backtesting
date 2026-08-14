@@ -1,0 +1,63 @@
+===== run_20260814_153813.log =====
+2026-08-14 15:38:13,096 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260814_153813.log ===
+2026-08-14 15:38:13,206 ERROR run_once.konto2_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-14 15:38:13,209 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260814_163522.log =====
+2026-08-14 16:35:22,390 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260814_163522.log ===
+2026-08-14 16:35:22,411 ERROR run_once.konto2_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-14 16:35:22,412 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260814_173524.log =====
+2026-08-14 17:35:24,839 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260814_173524.log ===
+2026-08-14 17:35:24,854 CRITICAL executor: HALTEDAUER-WARNUNG: Position CMI (Ticket 17679116) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 106.36.
+2026-08-14 17:35:24,858 CRITICAL run_once.konto2_ttp: 1 Position(en) über Haltedauer-Limit: [{'ticket': 17679116, 'symbol': 'CMI', 'holding_days': 10, 'profit': 106.36}]
+2026-08-14 17:35:25,013 INFO run_once.konto2_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-14 17:35:25,015 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100349.46, aktueller Drawdown -0.08% (Limit 2.0%)
+2026-08-14 17:35:25,021 INFO executor: Für AIG ist bereits eine Position offen (Ticket 17874757) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-14 17:35:25,021 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'AIG', 'direction': 'Long', 'entry': 76.03, 'sl': 71.98, 'tp': 82.1}}
+2026-08-14 17:35:25,022 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260814_183524.log =====
+2026-08-14 18:35:24,577 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260814_183524.log ===
+2026-08-14 18:35:24,596 CRITICAL executor: HALTEDAUER-WARNUNG: Position CMI (Ticket 17679116) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 108.68.
+2026-08-14 18:35:24,602 CRITICAL run_once.konto2_ttp: 1 Position(en) über Haltedauer-Limit: [{'ticket': 17679116, 'symbol': 'CMI', 'holding_days': 10, 'profit': 108.68}]
+2026-08-14 18:35:24,776 ERROR run_once.konto2_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-14 18:35:24,778 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260814_193523.log =====
+2026-08-14 19:35:23,426 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260814_193523.log ===
+2026-08-14 19:35:23,444 CRITICAL executor: HALTEDAUER-WARNUNG: Position CMI (Ticket 17679116) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 100.32.
+2026-08-14 19:35:23,450 CRITICAL run_once.konto2_ttp: 1 Position(en) über Haltedauer-Limit: [{'ticket': 17679116, 'symbol': 'CMI', 'holding_days': 10, 'profit': 100.32}]
+2026-08-14 19:35:23,669 INFO run_once.konto2_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-14 19:35:23,673 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100349.46, aktueller Drawdown -0.07% (Limit 2.0%)
+2026-08-14 19:35:23,676 INFO executor: Für AIG ist bereits eine Position offen (Ticket 17874757) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-14 19:35:23,676 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'AIG', 'direction': 'Long', 'entry': 76.03, 'sl': 71.98, 'tp': 82.1}}
+2026-08-14 19:35:23,676 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260814_203928.log =====
+2026-08-14 20:39:28,557 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260814_203928.log ===
+2026-08-14 20:39:28,575 CRITICAL executor: HALTEDAUER-WARNUNG: Position CMI (Ticket 17679116) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 97.68.
+2026-08-14 20:39:28,581 CRITICAL run_once.konto2_ttp: 1 Position(en) über Haltedauer-Limit: [{'ticket': 17679116, 'symbol': 'CMI', 'holding_days': 10, 'profit': 97.68}]
+2026-08-14 20:39:28,744 INFO run_once.konto2_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-14 20:39:28,748 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100349.46, aktueller Drawdown -0.06% (Limit 2.0%)
+2026-08-14 20:39:28,753 INFO executor: Für AIG ist bereits eine Position offen (Ticket 17874757) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-14 20:39:28,753 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'AIG', 'direction': 'Long', 'entry': 76.03, 'sl': 71.98, 'tp': 82.1}}
+2026-08-14 20:39:28,755 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260814_213929.log =====
+2026-08-14 21:39:29,186 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260814_213929.log ===
+2026-08-14 21:39:29,229 CRITICAL executor: HALTEDAUER-WARNUNG: Position CMI (Ticket 17679116) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 95.08.
+2026-08-14 21:39:29,231 CRITICAL executor: HALTEDAUER-WARNUNG: Position UNH (Ticket 17684607) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -142.50.
+2026-08-14 21:39:29,236 CRITICAL run_once.konto2_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17679116, 'symbol': 'CMI', 'holding_days': 10, 'profit': 95.08}, {'ticket': 17684607, 'symbol': 'UNH', 'holding_days': 10, 'profit': -142.5}]
+2026-08-14 21:39:29,491 INFO run_once.konto2_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-14 21:39:29,494 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100349.46, aktueller Drawdown -0.03% (Limit 2.0%)
+2026-08-14 21:39:29,497 INFO executor: Für AIG ist bereits eine Position offen (Ticket 17874757) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-14 21:39:29,497 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'AIG', 'direction': 'Long', 'entry': 76.03, 'sl': 71.98, 'tp': 82.1}}
+2026-08-14 21:39:29,498 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===

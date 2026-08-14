@@ -1,0 +1,59 @@
+===== run_20260814_153813.log =====
+2026-08-14 15:38:13,446 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260814_153813.log ===
+2026-08-14 15:38:13,762 INFO run_once.konto3_tickmill: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-14 15:38:13,764 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3545.89, aktueller Drawdown 0.00% (Limit 20.0%)
+2026-08-14 15:38:13,769 WARNING executor: Symbol 'EOAN.DE' (MT5-Name 'EOAN.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-14 15:38:13,769 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EOAN.DE', 'direction': 'Long', 'entry': 17.58, 'sl': 16.63, 'tp': 19.01}}
+2026-08-14 15:38:13,770 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260814_163522.log =====
+2026-08-14 16:35:22,717 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260814_163522.log ===
+2026-08-14 16:35:22,756 INFO run_once.konto3_tickmill: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-14 16:35:22,758 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3545.89, aktueller Drawdown -0.37% (Limit 20.0%)
+2026-08-14 16:35:22,761 WARNING executor: Symbol 'EOAN.DE' (MT5-Name 'EOAN.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-14 16:35:22,761 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EOAN.DE', 'direction': 'Long', 'entry': 17.58, 'sl': 16.63, 'tp': 19.01}}
+2026-08-14 16:35:22,762 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260814_173525.log =====
+2026-08-14 17:35:25,239 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260814_173525.log ===
+2026-08-14 17:35:25,449 INFO run_once.konto3_tickmill: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-14 17:35:25,451 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3545.89, aktueller Drawdown -0.54% (Limit 20.0%)
+2026-08-14 17:35:25,453 WARNING executor: Symbol 'EOAN.DE' (MT5-Name 'EOAN.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-14 17:35:25,454 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EOAN.DE', 'direction': 'Long', 'entry': 17.58, 'sl': 16.63, 'tp': 19.01}}
+2026-08-14 17:35:25,454 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260814_183524.log =====
+2026-08-14 18:35:24,997 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260814_183524.log ===
+2026-08-14 18:35:25,043 INFO run_once.konto3_tickmill: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-14 18:35:25,044 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3545.89, aktueller Drawdown -0.71% (Limit 20.0%)
+2026-08-14 18:35:25,047 WARNING executor: Symbol 'EOAN.DE' (MT5-Name 'EOAN.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-14 18:35:25,047 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EOAN.DE', 'direction': 'Long', 'entry': 17.58, 'sl': 16.63, 'tp': 19.01}}
+2026-08-14 18:35:25,048 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260814_193523.log =====
+2026-08-14 19:35:23,904 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260814_193523.log ===
+2026-08-14 19:35:24,158 INFO run_once.konto3_tickmill: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-14 19:35:24,160 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3545.89, aktueller Drawdown -0.49% (Limit 20.0%)
+2026-08-14 19:35:24,162 WARNING executor: Symbol 'EOAN.DE' (MT5-Name 'EOAN.DE') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-14 19:35:24,162 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EOAN.DE', 'direction': 'Long', 'entry': 17.58, 'sl': 16.63, 'tp': 19.01}}
+2026-08-14 19:35:24,163 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260814_203928.log =====
+2026-08-14 20:39:28,966 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260814_203928.log ===
+2026-08-14 20:39:29,159 CRITICAL executor: HALTEDAUER-WARNUNG: Position UNH (Ticket 246172300) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -32.99.
+2026-08-14 20:39:29,166 CRITICAL run_once.konto3_tickmill: 1 Position(en) über Haltedauer-Limit: [{'ticket': 246172300, 'symbol': 'UNH', 'holding_days': 10, 'profit': -32.99}]
+2026-08-14 20:39:29,313 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-14 20:39:29,315 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260814_213929.log =====
+2026-08-14 21:39:29,817 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260814_213929.log ===
+2026-08-14 21:39:29,945 CRITICAL executor: HALTEDAUER-WARNUNG: Position UNH (Ticket 246172300) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -36.06.
+2026-08-14 21:39:29,951 CRITICAL run_once.konto3_tickmill: 1 Position(en) über Haltedauer-Limit: [{'ticket': 246172300, 'symbol': 'UNH', 'holding_days': 10, 'profit': -36.06}]
+2026-08-14 21:39:30,151 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-14 21:39:30,153 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===

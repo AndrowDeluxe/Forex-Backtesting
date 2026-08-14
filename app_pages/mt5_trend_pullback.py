@@ -72,7 +72,13 @@ MIN_IS_TRADES_TPSL = 30
 # confirms Silver via alignment filter (see scripts/research_mt5_trend_
 # pullback_market_dropout.py) -- regime-shifted window, not the full 2016
 # history, since that's what motivated dropping Platinum in the first place.
-STANDARD_MARKET_LABELS = ["XAUUSD", "XAGUSD", "CHFJPY", "USDJPY"]
+# USDCAD added 2026-08-14 as a trial addition (scripts/research_mt5_trend_
+# pullback_fx_majors.py: only 7 OOS trades, thin sample, but improved the
+# pooled OOS Sharpe 0.87->0.90 when added) - NOT part of the original 5-
+# market MARKETS list above (that list stays the historical-record set used
+# by the other tabs), only added here for the standard-recommendation tab.
+STANDARD_MARKET_LABELS = ["XAUUSD", "XAGUSD", "CHFJPY", "USDJPY", "USDCAD"]
+STANDARD_EXTRA_MARKETS = [("USDCAD", "H4", "USDCAD", 1.5)]
 NEW_IS_START = pd.Timestamp("2023-01-01", tz="UTC")
 NEW_SPLIT = pd.Timestamp("2024-07-01", tz="UTC")
 NEW_OOS_END = pd.Timestamp("2026-08-01", tz="UTC")
@@ -206,6 +212,16 @@ def fmt_row(s: dict) -> dict:
 def load_markets() -> dict[str, pd.DataFrame]:
     data = {}
     for key, tf, label, _spread in MARKETS:
+        df = fetch_timeframe(key, tf, START, END)
+        df = df.rename(columns={"Open": "open", "High": "high", "Low": "low", "Close": "close", "Volume": "volume"})
+        data[label] = df
+    return data
+
+
+@st.cache_data(ttl="6h", show_spinner="Lade USDCAD (Testkandidat fuer die Standard-Konfiguration)...")
+def load_extra_markets() -> dict[str, pd.DataFrame]:
+    data = {}
+    for key, tf, label, _spread in STANDARD_EXTRA_MARKETS:
         df = fetch_timeframe(key, tf, START, END)
         df = df.rename(columns={"Open": "open", "High": "high", "Low": "low", "Close": "close", "Volume": "volume"})
         data[label] = df
@@ -456,11 +472,14 @@ def load_gold_daily_close() -> pd.Series:
     return close
 
 
-@st.cache_data(ttl="6h", show_spinner="Berechne die empfohlene Standard-Konfiguration (ohne Platin, Silber-aligned)...")
-def run_standard_recommendation(_data: dict[str, pd.DataFrame], _gold_daily_close: pd.Series) -> dict:
+@st.cache_data(ttl="6h", show_spinner="Berechne die empfohlene Standard-Konfiguration (ohne Platin, Silber-aligned, +USDCAD)...")
+def run_standard_recommendation(_data: dict[str, pd.DataFrame], _extra_data: dict[str, pd.DataFrame], _gold_daily_close: pd.Series) -> dict:
+    all_data = {**_data, **_extra_data}
+    all_market_info = MARKETS + STANDARD_EXTRA_MARKETS
+
     def build(label: str, use_overlay: bool) -> pd.DataFrame:
-        df = _data[label]
-        spread_bps = next(s for k, tf, lab, s in MARKETS if lab == label)
+        df = all_data[label]
+        spread_bps = next(s for k, tf, lab, s in all_market_info if lab == label)
         signaled = run_pipeline(df)
         cfg = BacktestConfig(spread_bps=spread_bps, stop_atr_mult=ATR_STOP_MULT, use_vwap_target=False, take_profit_r=RR_RATIO)
         trades = simulate_trades_overlay(signaled, cfg, max_wait_bars=OVERLAY_WAIT_BARS) if use_overlay else simulate_trades(signaled, cfg)
@@ -532,11 +551,11 @@ caveat_box(
 
 caveat_box(
     "<b>&#11088; Aktuelle Standard-Empfehlung (Stand 2026-08-14):</b> <b>Platin raus, Silber gefiltert "
-    "durch Gold-Alignment</b> (Gold/Silber/CHFJPY/USDJPY, getestet auf dem regime-verengten Fenster "
-    "2023-2024 IS / 2024-2026 OOS) -- siehe Tab <b>\"Empfehlung (Standard)\"</b>. Verbessert OOS-Sharpe "
-    "0.78&rarr;0.87 und OOS-MaxDD -19.7%&rarr;-15.1% gegenueber der vollen 5-Markt-Basiskonfiguration, "
-    "bei aehnlichem Dollar-Ergebnis. Die uebrigen Tabs zeigen weiterhin den vollen Forschungsweg "
-    "dorthin (5 Maerkte, alte 2016-2022/2023-2026-Aufteilung) und bleiben als Dokumentation stehen.",
+    "durch Gold-Alignment, USDCAD testweise dazu</b> (Gold/Silber/CHFJPY/USDJPY/USDCAD, getestet auf dem "
+    "regime-verengten Fenster 2023-2024 IS / 2024-2026 OOS) -- siehe Tab <b>\"Empfehlung (Standard)\"</b>. "
+    "USDCAD hat nur 7 OOS-Trades (duenne Stichprobe) -- als Testkandidat markiert, nicht als endgueltig "
+    "validiert. Die uebrigen Tabs zeigen weiterhin den vollen Forschungsweg dorthin (5 Maerkte inkl. "
+    "Platin, alte 2016-2022/2023-2026-Aufteilung) und bleiben als Dokumentation stehen.",
     kind="good",
 )
 
@@ -562,8 +581,9 @@ with st.expander(":material/menu_book: Strategie-Regeln (1:1 aus dem Live-Bot)",
     )
 
 data = load_markets()
+extra_data = load_extra_markets()
 gold_daily_close = load_gold_daily_close()
-standard_result = run_standard_recommendation(data, gold_daily_close)
+standard_result = run_standard_recommendation(data, extra_data, gold_daily_close)
 baseline = run_baseline(data)
 adx_result = run_adx_sweep(data)
 spread_result = run_spread_sensitivity(data)
@@ -583,10 +603,12 @@ tab_standard, tab_overview, tab_adx, tab_spread, tab_account, tab_tpsl = st.tabs
 with tab_standard:
     caveat_box(
         "<b>Standard-Konfiguration:</b> Gold, Silber (gefiltert -- nur Trades, bei denen Golds eigener "
-        "5-Tage-Trend positiv war), CHFJPY, USDJPY. Platin komplett entfernt. Bot-Default-Parameter "
-        "unveraendert (EMA150/RSI14&gt;35/ATR14&times;2.0/RR2.0, kein ADX-Filter). Getestet auf dem "
-        "regime-verengten Fenster: IS 2023-01 bis 2024-07, OOS 2024-07 bis 2026-08 -- nicht die volle "
-        "10-Jahres-Historie, siehe Baseline-Tab fuer den Grund."
+        "5-Tage-Trend positiv war), CHFJPY, USDJPY, <b>USDCAD (testweise, 2026-08-14 hinzugefuegt)</b>. "
+        "Platin komplett entfernt. Bot-Default-Parameter unveraendert (EMA150/RSI14&gt;35/ATR14&times;2.0/"
+        "RR2.0, kein ADX-Filter). Getestet auf dem regime-verengten Fenster: IS 2023-01 bis 2024-07, "
+        "OOS 2024-07 bis 2026-08 -- nicht die volle 10-Jahres-Historie, siehe Baseline-Tab fuer den Grund. "
+        "USDCAD hat in dieser Periode nur 7 OOS-Trades -- deutlich duenner besetzt als die anderen 4 "
+        "Maerkte, Ergebnis entsprechend vorsichtig zu interpretieren."
     )
 
     r = standard_result
@@ -597,7 +619,7 @@ with tab_standard:
         ("CAGR (OOS)", fmt_pct(c_oos["cagr"])),
         ("MAXDD (OOS)", fmt_pct(c_oos["max_drawdown"])),
         ("TRADES (OOS)", str(c_oos["n_trades"])),
-        ("MAERKTE", "4 (ohne Platin)"),
+        ("MAERKTE", "5 (ohne Platin, +USDCAD testweise)"),
     ])
 
     section_title("Pro Markt (Out-of-Sample, Standard-Konfiguration)")

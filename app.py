@@ -159,6 +159,10 @@ cb_event_window_filter = st.Page(
     "app_pages/cb_event_window_filter.py", title="Notenbank-Event-Window", icon=":material/event:",
     visibility="hidden",
 )
+mt5_trend_pullback = st.Page(
+    "app_pages/mt5_trend_pullback.py", title="Trend Pullback", icon=":material/smart_toy:",
+    visibility="hidden",
+)
 
 page = st.navigation(
     [
@@ -180,7 +184,7 @@ page = st.navigation(
         cls_advanced, kalman_filter, adx_vwap_writeup, triple_ma, risk_management,
         execution_overlay_writeup, gap_fade_writeup, orb_writeup,
         paper151, goldi_papers_202608, fx_papers_202608,
-        fx_liquidity_filter, cb_event_window_filter,
+        fx_liquidity_filter, cb_event_window_filter, mt5_trend_pullback,
     ]
 )
 page.run()

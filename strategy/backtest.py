@@ -152,6 +152,8 @@ def simulate_trades(df: pd.DataFrame, config: BacktestConfig = BacktestConfig())
                 "moved_to_be": be_moved,
                 "mfe_r": (mfe / initial_risk) if initial_risk > 0 else float("nan"),
                 "mae_r": (mae / initial_risk) if initial_risk > 0 else float("nan"),
+                "initial_risk": initial_risk,  # price-unit distance entry->stop at entry time; lets callers convert return_pct into R-multiples / fixed-fractional-risk dollar P&L
+                "r_multiple": (direction * (exit_price - entry_price) / initial_risk) if initial_risk > 0 else float("nan"),
             }
         )
         i = exit_i + 1

@@ -38,5 +38,11 @@ render_section(
             "icon": ":material/wb_twilight:",
             "tag": "STRATEGIE",
         },
+        {
+            "page": "app_pages/mt5_trend_pullback.py",
+            "title": "Trend Pullback",
+            "icon": ":material/smart_toy:",
+            "tag": "STRATEGIE",
+        },
     ],
 )

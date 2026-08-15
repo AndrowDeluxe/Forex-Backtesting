@@ -246,5 +246,5 @@ def simulate_risk_sized(df: pd.DataFrame, fast: int, slow: int, capital: float,
         "end_equity": equity.iloc[-1], "avg_r": avg_r, "n_stopped": n_stopped,
         "n_capped": capped_count, "worst_day_pct": worst_day_pct,
         "worst_day_date": worst_day_date, "breached_3pct_daily_rule": worst_day_pct < -3.0,
-        "days_to_10pct_target": days_to_10pct, "equity": equity,
+        "days_to_10pct_target": days_to_10pct, "equity": equity, "trades": trades,
     }

@@ -24,6 +24,7 @@ from btc_ema_cross.engine import (
     simulate_ema_cross_ls,
     simulate_risk_sized,
 )
+from btc_ema_cross.optimization import kelly_from_trades, simulate_dynamic_vol_scaled, simulate_with_tp_and_filters
 
 st.set_page_config(page_title="BTC EMA9/21 Crossover", page_icon=":material/currency_bitcoin:", layout="wide")
 
@@ -248,6 +249,62 @@ with tab_risk:
             icon=":material/insights:",
         )
 
+    st.divider()
+    st.markdown("### :material/calculate: Kelly-Formel (auf den echten 1%-Risiko-Trades)")
+    st.caption(
+        "Gleiche Methodik wie 'Kelly-Formel & Risk Management' (Education-Track, OU-Modell): "
+        "f* = WinRate - (1-WinRate)/PayoffRatio, aus den tatsächlichen R-Multiples der Baseline-Trades."
+    )
+    kelly_is_m = simulate_risk_sized(is_df, 9, 21, 100_000.0, 0.01, ATR_PERIOD, ATR_STOP_MULT, sim_from=None)
+    kelly_oos_m = simulate_risk_sized(full, 9, 21, 100_000.0, 0.01, ATR_PERIOD, ATR_STOP_MULT, sim_from=oos_split_date)
+    col_kis, col_koos = st.columns(2)
+    for col, (klabel, kdata) in zip([col_kis, col_koos], [("IS", kelly_is_m), ("OOS", kelly_oos_m)]):
+        k = kelly_from_trades(kdata["trades"], klabel)
+        with col:
+            with st.container(border=True):
+                st.markdown(f"**{klabel}**")
+                st.markdown(
+                    f"- n={k['n_trades']}, WinRate {k['win_rate']:.1%}\n"
+                    f"- AvgWinR {k['avg_win_r']:+.2f}, AvgLossR {k['avg_loss_r']:+.2f}, Payoff-Ratio b={k['payoff_ratio_b']:.2f}\n"
+                    f"- **Kelly f\\* = {k['kelly_f']:.1%}**, Half-Kelly {k['half_kelly_f']:.1%}, "
+                    f"Quarter-Kelly {k['quarter_kelly_f']:.1%}"
+                )
+    st.warning(
+        "Kelly sagt 16-23% Risiko/Trade wäre \"optimal\" - **kein Freibrief**. Anders als beim "
+        "OU-Modell ist hier nicht die Korrelations-Annahme das Problem (BTC hält immer nur eine "
+        "Position) - sondern die dünne Stichprobe (n=27-49) und der zwischen IS und OOS stark "
+        "schwankende Payoff-Schätzer (8.93 vs. 3.88) - ein einzelner Riesen-Trade kann das kippen. "
+        "Volles Kelly bedeutet trotzdem 50-90% Drawdown-Risiko selbst bei echter Kante. "
+        "Quarter-Kelly (~4-5.7%) liegt leicht über dem robusten 1-3%-Bereich oben - eine leichte "
+        "Anhebung auf ~2-3% wäre Kelly-kompatibel, mehr nicht auf dieser Datenbasis vertretbar.",
+        icon=":material/warning:",
+    )
+
+    with st.expander(":material/tune: Dynamisches/Vol-skaliertes Risk-Sizing -- getestet, kein klarer Gewinn"):
+        st.caption(
+            "Risiko skaliert mit median(ATR60)/aktuellem ATR, gedeckelt [0.5x, 1.5x] - weniger "
+            "Risiko bei erhöhter Vol, mehr bei ungewöhnlich ruhigem Markt."
+        )
+        rows_dyn = []
+        for dlabel, dsim in [("IS", None), ("OOS", oos_split_date)]:
+            dpart = full if dsim is not None else is_df
+            m_static = simulate_risk_sized(dpart, 9, 21, 100_000.0, 0.01, ATR_PERIOD, ATR_STOP_MULT, sim_from=dsim)
+            m_dyn = simulate_dynamic_vol_scaled(dpart, 100_000.0, 0.01, ATR_PERIOD, ATR_STOP_MULT,
+                                                 vol_lookback=60, scale_min=0.5, scale_max=1.5, sim_from=dsim)
+            rows_dyn.append({"Fenster": dlabel, "Variante": "Statisch 1%", "PF": f"{m_static['profit_factor']:.2f}",
+                              "CAGR": f"{m_static['cagr']:+.1%}", "MaxDD": f"{m_static['max_dd']:.1%}",
+                              "WorstDay": f"{m_static['worst_day_pct']:+.2f}%"})
+            rows_dyn.append({"Fenster": dlabel, "Variante": "Vol-skaliert", "PF": f"{m_dyn['profit_factor']:.2f}",
+                              "CAGR": f"{m_dyn['cagr']:+.1%}", "MaxDD": f"{m_dyn['max_dd']:.1%}",
+                              "WorstDay": f"{m_dyn['worst_day_pct']:+.2f}%"})
+        st.dataframe(pd.DataFrame(rows_dyn), hide_index=True, width="stretch")
+        st.caption(
+            "Leicht besser bei PF/CAGR, leicht schlechter bei MaxDD/WorstDay - im Wesentlichen ein "
+            "Unentschieden. Der ATR-Stop selbst skaliert Positionsgröße bereits implizit mit "
+            "Volatilität (weiterer Stop bei hoher Vol → kleinere Position); dieser Test ist ein "
+            "zusätzlicher Hebel oben drauf, kein grundlegend neues Konzept. **Nicht übernommen.**"
+        )
+
 # =============================================================================
 # Tab: Getestet, nicht uebernommen
 # =============================================================================
@@ -288,6 +345,67 @@ with tab_tested:
         "Vorhersagekraft (bedingte vs. unbedingte Tail-Verteilung praktisch identisch). Passt zur "
         "Marktstruktur - Liquidationskaskaden laufen in Stunden/Minuten ab, kein Tages-Bar kann "
         "das einen Tag im Voraus erkennen.",
+        icon=":material/dangerous:",
+    )
+
+    st.markdown("### ATR-Stop-Multiplikator-Sweep (1.0x - 3.5x)")
+    rows_sl = []
+    for slabel, ssim in [("IS", None), ("OOS", oos_split_date)]:
+        spart = full if ssim is not None else is_df
+        for mult in [1.0, 1.5, 2.0, 2.5, 3.0, 3.5]:
+            sm = simulate_risk_sized(spart, 9, 21, 100_000.0, 0.01, ATR_PERIOD, mult, sim_from=ssim)
+            rows_sl.append({
+                "Fenster": slabel, "ATR-Mult": f"{mult}x", "n": sm["n_trades"],
+                "PF": f"{sm['profit_factor']:.2f}", "CAGR": f"{sm['cagr']:+.1%}", "MaxDD": f"{sm['max_dd']:.1%}",
+            })
+    st.dataframe(pd.DataFrame(rows_sl), hide_index=True, width="stretch")
+    st.warning(
+        "PF bleibt über den ganzen Bereich in einem Plateau (IS 3.11-3.44, OOS 1.75-2.16) - kein "
+        "einzelner Wert sticht heraus. Engere Stops erhöhen CAGR deutlich (mehr Positionsgröße pro "
+        "$-Risiko), aber auch den Drawdown - reiner Risiko-Dial, kein Free Lunch. Der 2.0x-Standard "
+        "ist vertretbar, aber auf dieser Datenbasis nicht nachweisbar optimal.",
+        icon=":material/warning:",
+    )
+
+    st.markdown("### Take-Profit-Test (0.5R - 4R vs. kein TP)")
+    rows_tp = []
+    for tlabel, tsim in [("IS", None), ("OOS", oos_split_date)]:
+        tpart = full if tsim is not None else is_df
+        m_notp = simulate_with_tp_and_filters(tpart, 100_000.0, 0.01, ATR_PERIOD, ATR_STOP_MULT, sim_from=tsim)
+        rows_tp.append({"Fenster": tlabel, "Variante": "Kein TP", "PF": f"{m_notp['profit_factor']:.2f}",
+                         "CAGR": f"{m_notp['cagr']:+.1%}"})
+        for tp in [0.5, 1.0, 1.5, 2.0, 3.0, 4.0]:
+            m_tp = simulate_with_tp_and_filters(tpart, 100_000.0, 0.01, ATR_PERIOD, ATR_STOP_MULT, tp_r_mult=tp, sim_from=tsim)
+            rows_tp.append({"Fenster": tlabel, "Variante": f"TP={tp}R", "PF": f"{m_tp['profit_factor']:.2f}",
+                             "CAGR": f"{m_tp['cagr']:+.1%}"})
+    st.dataframe(pd.DataFrame(rows_tp), hide_index=True, width="stretch")
+    st.error(
+        "**Robust bestätigt schädlich** - jedes getestete TP-Level verschlechtert PF gegenüber "
+        "\"kein TP\", sowohl IS als auch OOS. Erklärung passt zur Kelly-Analyse oben: die Kante lebt "
+        "von seltenen großen Gewinnern (AvgWinR 2.3-6.3R) - ein TP kappt genau das. Identisches "
+        "Muster wie bei Gold Asian-Range-Breakout. **Kein TP bleibt richtig.**",
+        icon=":material/dangerous:",
+    )
+
+    st.markdown("### Regimefilter (ADX-Mindestwert, SMA200-Trend)")
+    rows_f = []
+    for flabel, fsim in [("IS", None), ("OOS", oos_split_date)]:
+        fpart = full if fsim is not None else is_df
+        m_nofilt = simulate_with_tp_and_filters(fpart, 100_000.0, 0.01, ATR_PERIOD, ATR_STOP_MULT, sim_from=fsim)
+        rows_f.append({"Fenster": flabel, "Filter": "Kein Filter", "n": m_nofilt["n_trades"], "PF": f"{m_nofilt['profit_factor']:.2f}"})
+        for adx_min in [15, 20, 25]:
+            m_f = simulate_with_tp_and_filters(fpart, 100_000.0, 0.01, ATR_PERIOD, ATR_STOP_MULT, adx_min=adx_min, sim_from=fsim)
+            rows_f.append({"Fenster": flabel, "Filter": f"ADX>={adx_min}", "n": m_f["n_trades"], "PF": f"{m_f['profit_factor']:.2f}"})
+        m_trend = simulate_with_tp_and_filters(fpart, 100_000.0, 0.01, ATR_PERIOD, ATR_STOP_MULT, trend_sma=200, sim_from=fsim)
+        rows_f.append({"Fenster": flabel, "Filter": "SMA200-Trend", "n": m_trend["n_trades"], "PF": f"{m_trend['profit_factor']:.2f}"})
+    st.dataframe(pd.DataFrame(rows_f), hide_index=True, width="stretch")
+    st.error(
+        "**Nicht robust genug, um zu übernehmen.** ADX>=25 sieht IS spektakulär aus (PF 6.74), aber "
+        "ADX>=20 bricht OOS zunächst ein (PF 1.33 vs. 1.84 Baseline) und die Erholung bei ADX>=25 "
+        "steht auf nur n=13 OOS-Trades - zu dünn. SMA200-Trend ähnlich (IS PF 5.77, OOS PF 1.73, "
+        "unter Baseline). Anders als bei Gold (Tausende Trades, ADX-Filter sauber IS UND OOS "
+        "bestätigt) hat BTC bei ~1 Trade/Monat schlicht nicht genug Stichprobe, um einen Filter "
+        "verlässlich zu validieren.",
         icon=":material/dangerous:",
     )
 

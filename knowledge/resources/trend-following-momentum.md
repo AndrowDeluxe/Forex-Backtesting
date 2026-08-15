@@ -204,6 +204,62 @@ Holdout"-Konvention dieses Repos):
   `triple_ma_strategy`) besser zum Zeitlimit der Challenge passt als eine
   einzelne BTC-Trendfolge.
 
+**Nachtrag 2026-08-15 (2) -- Kelly, dynamisches Sizing, SL/TP-Sweep,
+Regimefilter (`scripts/research_ema_9_21_cross_optimization.py`)**
+
+Nutzerfrage: wie wuerde Kelly/dynamisches Risikomanagement funktionieren,
+wurde mit anderen Filtern optimiert, wurde bei SL/TP in die Tiefe gegangen?
+Antwort vorher: nein zu allen drei -- hier nachgeholt, gleiche Methodik wie
+`education_kelly.py` (OU-Modell) bzw. der SL/TP/ADX-Sweep auf der
+Gold-Asian-Range-Breakout-Seite.
+
+- **Kelly** (auf den echten 1%-Risiko-Trades): IS Kelly f*=22.8% (n=49,
+  WinRate 30.6%, Payoff-Ratio b=8.93), OOS Kelly f*=16.2% (n=27, WinRate
+  33.3%, b=3.88), Quarter-Kelly 4.0-5.7%. Anders als beim OU-Modell ist
+  NICHT die Korrelations-Annahme das Problem (BTC haelt immer nur eine
+  Position) -- sondern die duenne Stichprobe und der zwischen IS/OOS stark
+  schwankende Payoff-Schaetzer (8.93 vs. 3.88, ein einzelner Riesen-Trade
+  kann das kippen). Volles Kelly bedeutet trotzdem 50-90%
+  Drawdown-Risiko selbst bei echter Kante. Quarter-Kelly (~4-5.7%) liegt
+  leicht ueber dem in Nachtrag (3)/(4) gefundenen robusten Bereich (1-3%,
+  flacher OOS-Calmar) -- eine leichte Anhebung auf ~2-3% waere mit Kelly
+  vereinbar, mehr nicht auf dieser Datenbasis vertretbar.
+- **Dynamisches/Vol-skaliertes Sizing** (risk_pct * median(ATR60)/aktueller
+  ATR, gedeckelt [0.5x,1.5x]): OOS PF 1.84->1.90, CAGR +3.6%->+4.1%, aber
+  MaxDD -6.5%->-7.4% und WorstDay -1.67%->-1.74% -- im Wesentlichen ein
+  Unentschieden, kein klarer Gewinn. Der ATR-Stop selbst skaliert
+  Positionsgroesse bereits implizit mit Volatilitaet (weiterer Stop bei
+  hoher Vol -> kleinere Position bei gleichem $-Risiko); dieser Test ist
+  ein zusaetzlicher Hebel oben drauf, kein grundlegend neues Konzept.
+- **ATR-Stop-Multiplikator-Sweep** (1.0x-3.5x): PF bleibt ueber den ganzen
+  Bereich in einem Plateau (IS 3.11-3.44, OOS 1.75-2.16) -- kein einzelner
+  Wert sticht heraus. Engere Stops erhoehen CAGR deutlich (IS 23.3% bei
+  1.0x vs. 6.8% bei 3.5x), aber auch den Drawdown (IS MaxDD -24.3% vs.
+  -8.8%) -- reiner Risiko-Dial, kein Free Lunch. Der 2.0x-Standard ist
+  vertretbar, aber nicht nachweisbar optimal.
+- **Take-Profit-Test** (0.5R-4R vs. kein TP): **robust bestaetigt
+  schaedlich**, IS und OOS, bei JEDEM getesteten Level (OOS PF 1.84 ohne TP
+  vs. 0.97-1.69 mit TP). Erklaerung passt zur Kelly-Analyse oben: die Kante
+  lebt von seltenen grossen Gewinnern (AvgWinR 2.3-6.3R je nach Fenster) --
+  ein TP kappt genau das. Identisches Muster wie bei
+  `asian_range_breakout` (Gold). Kein TP bleibt richtig.
+- **Regimefilter (ADX-Mindestwert, SMA200-Trend)**: NICHT robust genug, um
+  zu uebernehmen. ADX>=25 sieht IS spektakulaer aus (PF 6.74, n=24), aber
+  ADX>=20 bricht OOS zunaechst ein (PF 1.33, Baseline 1.84) und die
+  Erholung bei ADX>=25 (PF 2.06) steht auf nur n=13 OOS-Trades -- zu duenn.
+  SMA200-Trend aehnlich (IS PF 5.77 n=23, OOS PF 1.73 n=20, unter
+  Baseline). Anders als bei Gold (Tausende Trades, ADX-Filter sauber IS
+  UND OOS bestaetigt) hat BTC bei ~1 Trade/Monat schlicht nicht genug
+  Stichprobe, um einen Filter verlaesslich zu validieren -- ein
+  IS-only-gut-aussehendes Muster ohne OOS-Bestaetigung ist genau die Falle,
+  vor der dieses Repo an anderer Stelle bereits gewarnt hat (12,5%-Cap-Fund
+  in `app_pages/risk_management.py`).
+- **Ergebnis**: keiner der fuenf getesteten Hebel wird uebernommen. Einzige
+  vertretbare Anpassung waere eine leichte Risiko-Erhoehung auf ~2-3%
+  (Kelly-kompatibel, im bereits robusten Bereich) -- kein neuer
+  Automatismus, reine Parameterwahl innerhalb des bereits getesteten
+  Sizing-Modells.
+
 **Nachtrag 2026-08-14 (4) -- Bugfix (EMA/ATR-Warmup an der IS/OOS-Grenze),
 Multi-Asset-Diversifikation (BTC+ETH+SOL) und Eigenkapital-Konto ohne Limits**
 

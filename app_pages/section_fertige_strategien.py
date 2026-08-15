@@ -15,6 +15,12 @@ render_section(
             "tag": "STRATEGIE",
         },
         {
+            "page": "app_pages/btc_ema_cross.py",
+            "title": "BTC EMA9/21 Crossover",
+            "icon": ":material/currency_bitcoin:",
+            "tag": "STRATEGIE",
+        },
+        {
             "page": "app_pages/cls_practical_strategy.py",
             "title": "CLS Practical (EUR/USD)",
             "icon": ":material/military_tech:",

@@ -39,6 +39,7 @@ from mt5_trend_pullback.pipeline import (
     ATR_LEN, ATR_STOP_MULT, RR_RATIO, RSI_LEN, RSI_OVERSOLD, TREND_LEN, run_pipeline,
 )
 from mt5_trend_pullback.account_simulation import account_stats, simulate_account
+from mt5_trend_pullback.daily_risk_engine import simulate_open_risk_daily, sweep_risk_pct
 from mt5_trend_pullback.execution_overlay import simulate_trades_overlay
 from mt5_trend_pullback.filters import alignment_filter
 from strategy.backtest import BacktestConfig, simulate_trades, trades_to_daily_returns
@@ -83,6 +84,16 @@ NEW_IS_START = pd.Timestamp("2023-01-01", tz="UTC")
 NEW_SPLIT = pd.Timestamp("2024-07-01", tz="UTC")
 NEW_OOS_END = pd.Timestamp("2026-08-01", tz="UTC")
 OVERLAY_WAIT_BARS = 5
+
+# --- risk management: FK (funded/prop) and EK (personal) profiles (2026-08-15) ---
+RISK_PROFILES = {
+    "FK1 (TTP-Stil: 3% daily / 7% total)": {"daily": 0.03, "total": 0.07},
+    "FK2 (IQ Markets: 1% daily / 8% total)": {"daily": 0.01, "total": 0.08},
+    "EK (Eigenkapital: kein daily / 20% total)": {"daily": None, "total": 0.20},
+}
+RISK_PCT_CANDIDATES = [0.001, 0.002, 0.003, 0.004, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.02, 0.025, 0.03]
+OU_RISK_PCT = 0.005
+OU_MAX_TOTAL_RISK_PCT = 0.02
 
 # --- same palette as gold_bitcoin_dual_momentum.py / fertige_strategien.py ---
 C_BG = "#0a0e14"
@@ -529,6 +540,51 @@ def run_standard_recommendation(_data: dict[str, pd.DataFrame], _extra_data: dic
     }
 
 
+@st.cache_data(ttl="6h", show_spinner="Kalibriere Risiko-Parameter (FK1/FK2/EK, volle Historie + 2023-2026)...")
+def run_risk_management(_data: dict[str, pd.DataFrame], _extra_data: dict[str, pd.DataFrame], _gold_daily_close: pd.Series) -> dict:
+    all_data = {**_data, **_extra_data}
+    all_market_info = MARKETS + STANDARD_EXTRA_MARKETS
+
+    trades_by_market, daily_low_by_market = {}, {}
+    for label in STANDARD_MARKET_LABELS:
+        df = all_data[label]
+        spread_bps = next(s for k, tf, lab, s in all_market_info if lab == label)
+        signaled = run_pipeline(df)
+        cfg = BacktestConfig(spread_bps=spread_bps, stop_atr_mult=ATR_STOP_MULT, use_vwap_target=False, take_profit_r=RR_RATIO)
+        trades = simulate_trades(signaled, cfg)
+        if label == "XAGUSD":
+            trades = alignment_filter(trades, _gold_daily_close)
+        trades_by_market[label] = trades
+        daily_low_by_market[label] = df["low"].resample("1D").min().dropna()
+
+    trades_2023 = {m: t[t["entry_time"] >= NEW_IS_START] for m, t in trades_by_market.items()}
+
+    sweeps, chosen = {}, {}
+    for period_name, tbm in [("Volle Historie (2016-2026)", trades_by_market), ("Nur 2023-2026", trades_2023)]:
+        sweeps[period_name], chosen[period_name] = {}, {}
+        for profile_name, limits in RISK_PROFILES.items():
+            sweep = sweep_risk_pct(
+                tbm, daily_low_by_market, RISK_PCT_CANDIDATES,
+                max_daily_dd_limit=limits["daily"], max_total_dd_limit=limits["total"],
+                starting_equity=STARTING_EQUITY, max_concurrent=3,
+            )
+            sweeps[period_name][profile_name] = sweep
+            compliant = sweep[sweep["compliant"]]
+            chosen[period_name][profile_name] = compliant.loc[compliant["risk_pct"].idxmax()] if not compliant.empty else None
+
+    ou_results = {}
+    for period_name, tbm in [("Volle Historie (2016-2026)", trades_by_market), ("Nur 2023-2026", trades_2023)]:
+        res = simulate_open_risk_daily(tbm, daily_low_by_market, risk_pct=OU_RISK_PCT, max_total_risk_pct=OU_MAX_TOTAL_RISK_PCT, starting_equity=STARTING_EQUITY)
+        compliance = {}
+        for profile_name, limits in RISK_PROFILES.items():
+            daily_ok = limits["daily"] is None or abs(res.max_daily_dd_pct) <= limits["daily"]
+            total_ok = abs(res.max_total_dd_pct) <= limits["total"]
+            compliance[profile_name] = daily_ok and total_ok
+        ou_results[period_name] = {"result": res, "compliance": compliance}
+
+    return {"sweeps": sweeps, "chosen": chosen, "ou_results": ou_results}
+
+
 # ------------------------------------------------------------------ header
 st.markdown("## :material/smart_toy: Trend Pullback")
 st.caption(
@@ -589,14 +645,16 @@ adx_result = run_adx_sweep(data)
 spread_result = run_spread_sensitivity(data)
 account_result = run_account_sim(data)
 tpsl_result = run_tp_sl_be_sweep(data)
+risk_result = run_risk_management(data, extra_data, gold_daily_close)
 
-tab_standard, tab_overview, tab_adx, tab_spread, tab_account, tab_tpsl = st.tabs([
+tab_standard, tab_overview, tab_adx, tab_spread, tab_account, tab_tpsl, tab_risk = st.tabs([
     ":material/star: Empfehlung (Standard)",
     ":material/show_chart: Baseline (Bot wie er ist)",
     ":material/tune: ADX-Filter",
     ":material/payments: Spread-Sensitivitaet",
     ":material/account_balance: Konto-Simulation ($100k)",
     ":material/target: TP/SL & Breakeven",
+    ":material/shield: Risk Management (FK & EK)",
 ])
 
 # ------------------------------------------------------------------ Tab: Standard recommendation
@@ -1064,4 +1122,98 @@ with tab_tpsl:
         "Serie, der die OOS-Sharpe robust verbessert. TP/SL-Optimierung und Breakeven verschieben nur das "
         "Profil (weniger, groessere Trades; glatteres oder raueres Drawdown), ohne einen zusaetzlichen "
         "echten Edge zu liefern -- der Bot-Default ist keine schlechte Wahl."
+    )
+
+# ------------------------------------------------------------------ Tab: Risk management
+with tab_risk:
+    caveat_box(
+        "<b>Zwei Fremdkapital-Profile + Eigenkapital, kalibriert per taeglichem Mark-to-Market</b> "
+        "(Standard-Portfolio: Gold/Silber-aligned/CHFJPY/USDJPY/USDCAD, Bot-Default-Parameter, kein "
+        "ADX-Filter). Offene Positionen werden jeden Tag am Tages-<b>Tief</b> bewertet (konservativ, "
+        "nicht am Schlusskurs) -- \"Daily-DD\" = Verlust vom Vortages-Endstand zum heutigen Tief, "
+        "\"Total-DD\" = Peak-to-Trough der gesamten Kurve. <b>Kalibrierung nutzt bewusst die volle "
+        "10-Jahres-Historie</b>, nicht nur die guenstige 2023-2026-Phase -- die 2023-2026-Zahlen stehen "
+        "unten nur als Vergleichspunkt, nicht als Empfehlung.",
+        kind="alert",
+    )
+
+    period_choice = st.radio(
+        "Zeitraum", ["Volle Historie (2016-2026) -- empfohlene Basis", "Nur 2023-2026 -- nur zum Vergleich"],
+        horizontal=True, label_visibility="collapsed",
+    )
+    period_key = "Volle Historie (2016-2026)" if period_choice.startswith("Volle") else "Nur 2023-2026"
+
+    section_title("Optimales Risiko/Trade je Profil (groesster konformer Wert, max. 3 gleichzeitige Positionen)")
+    rows = []
+    for profile_name in RISK_PROFILES:
+        best = risk_result["chosen"][period_key][profile_name]
+        if best is None:
+            rows.append({"Profil": profile_name, "Risiko/Trade": None, "Endkapital": None, "Return": None, "Max Daily-DD": None, "Max Total-DD": None})
+        else:
+            rows.append({
+                "Profil": profile_name, "Risiko/Trade": best["risk_pct"], "Endkapital": best["final_equity"],
+                "Return": best["total_return"], "Max Daily-DD": best["max_daily_dd"], "Max Total-DD": best["max_total_dd"],
+            })
+    st.dataframe(
+        pd.DataFrame(rows), hide_index=True,
+        column_config={
+            "Risiko/Trade": st.column_config.NumberColumn(format=".2%"),
+            "Endkapital": st.column_config.NumberColumn(format="$%.0f"),
+            "Return": st.column_config.NumberColumn(format="+.1%"),
+            "Max Daily-DD": st.column_config.NumberColumn(format="+.2%"),
+            "Max Total-DD": st.column_config.NumberColumn(format="+.2%"),
+        },
+    )
+
+    with st.expander(":material/table_chart: Voller Sweep (alle getesteten Risiko/Trade-Werte)", expanded=False):
+        for profile_name in RISK_PROFILES:
+            st.caption(profile_name)
+            sweep = risk_result["sweeps"][period_key][profile_name].copy()
+            st.dataframe(
+                sweep[["risk_pct", "max_daily_dd", "max_total_dd", "final_equity", "total_return", "n_trades", "compliant"]],
+                hide_index=True,
+                column_config={
+                    "risk_pct": st.column_config.NumberColumn("Risiko/Trade", format=".2%"),
+                    "max_daily_dd": st.column_config.NumberColumn("Max Daily-DD", format="+.2%"),
+                    "max_total_dd": st.column_config.NumberColumn("Max Total-DD", format="+.2%"),
+                    "final_equity": st.column_config.NumberColumn("Endkapital", format="$%.0f"),
+                    "total_return": st.column_config.NumberColumn("Return", format="+.1%"),
+                    "n_trades": "n",
+                    "compliant": "Konform",
+                },
+            )
+
+    section_title(f"OU-Modell-Stil Open-Risk-Engine: {OU_RISK_PCT:.1%} Risiko/Trade, {OU_MAX_TOTAL_RISK_PCT:.0%} max. offenes Risiko, kein Breakeven", color=C_GREEN)
+    caveat_box(
+        "<b>Breakeven-Trigger getestet und bewusst NICHT eingebaut:</b> ein Sweep (0.25R/0.5R/0.75R/1.0R/1.5R) "
+        "auf reiner Trade-Ebene zeigte keinen klaren Vorteil (Sharpe 0.38 ohne BE vs. 0.25-0.40 mit BE, je "
+        "nach Trigger). Im Portfolio-Kontext macht ein BE-Trigger es sogar SCHLECHTER: freigewordenes "
+        "Risiko-Budget fliesst sofort in neue Trades, was die Gesamt-Exposure erhoeht statt senkt "
+        "(Volle Historie: Total-DD -18.3% ohne BE vs. -23.1% mit BE=0.75 bei sonst gleichen Parametern).",
+    )
+    ou = risk_result["ou_results"][period_key]
+    res = ou["result"]
+    tile_row([
+        ("ENDKAPITAL", f"${res.final_equity:,.0f}"),
+        ("RETURN", fmt_pct(res.total_return)),
+        ("MAX DAILY-DD", fmt_pct(res.max_daily_dd_pct)),
+        ("MAX TOTAL-DD", fmt_pct(res.max_total_dd_pct)),
+        ("TRADES GENOMMEN", str(res.n_trades_taken)),
+        ("UEBERSPRUNGEN", str(res.n_trades_skipped)),
+    ])
+    compliance_rows = [{"Profil": name, "Konform": "Ja" if ok else "Nein"} for name, ok in ou["compliance"].items()]
+    st.dataframe(pd.DataFrame(compliance_rows), hide_index=True)
+    st.caption(
+        f"{OU_RISK_PCT:.1%}/{OU_MAX_TOTAL_RISK_PCT:.0%} ist auf der vollen Historie nur fuer EK tragbar "
+        "(knapp unter 20% Total-DD) -- fuer FK1/FK2 muesste es kleiner skaliert werden, aehnlich der "
+        "Sweep-Tabelle oben."
+    )
+
+    section_title("Sharpe-gewichteter Risiko-Split (statt gleichverteilt ueber alle 5 Maerkte)")
+    st.caption(
+        "Mehr Risiko auf staerkere Maerkte (CHFJPY, Silber), weniger auf schwaechere (Gold, USDJPY) -- "
+        "bei FK2 und EK muss die Gewichtung auf ca. 70% ihrer urspruenglichen Staerke skaliert werden, um "
+        "konform zu bleiben, bringt dann aber echten Mehrertrag: FK2 +15.5%->+17.9%, EK +41.6%->+49.4% "
+        "(volle Historie, gleiches Risikobudget). Details siehe scripts/research_mt5_trend_pullback_"
+        "risk_management_v2.py."
     )

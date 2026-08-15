@@ -45,18 +45,14 @@ class DailyRiskResult:
     n_trades_skipped: int
 
 
-def simulate_daily_marked(
-    trades_by_market: dict[str, pd.DataFrame],
-    daily_low_by_market: dict[str, pd.Series],
-    risk_pct: float,
-    starting_equity: float = 100_000.0,
-    max_concurrent: int = 3,
-    risk_weight_by_market: dict[str, float] | None = None,
-) -> DailyRiskResult:
-    sim = simulate_account(
-        trades_by_market, starting_equity=starting_equity, risk_pct=risk_pct,
-        max_concurrent=max_concurrent, risk_weight_by_market=risk_weight_by_market,
-    )
+def mark_daily(sim: dict, daily_low_by_market: dict[str, pd.Series], starting_equity: float = 100_000.0) -> DailyRiskResult:
+    """Daily mark-to-market pass on top of an ALREADY-BUILT acceptance sim
+    (anything with the account_simulation.simulate_account output shape:
+    `sim["trades"]` carrying entry_time/exit_time/market/entry_price/
+    initial_risk/risk_dollars/r_multiple/pnl, plus n_taken/n_skipped) -
+    decoupled from account_simulation specifically so callers can also use
+    mt5_trend_pullback.open_risk_engine's aggregate-open-risk acceptance
+    engine here instead, without duplicating this marking logic."""
     accepted = sim["trades"]
     if accepted.empty or "initial_risk" not in accepted.columns:
         empty = pd.DataFrame({"equity": [starting_equity]}, index=[pd.Timestamp.now()])
@@ -75,30 +71,31 @@ def simulate_daily_marked(
     end = accepted["exit_time_naive"].max().normalize()
     calendar = pd.date_range(start, end, freq="D")
 
-    realized_pnl_cum = 0.0
-    rows = []
-    for day in calendar:
-        open_mask = (accepted["entry_time_naive"] <= day) & (accepted["exit_time_naive"] >= day)
-        closing_today_mask = accepted["exit_time_naive"].dt.normalize() == day
+    # Vectorized per-TRADE pass (not per-day): for each accepted trade, mark
+    # its own open days (entry day through the day before exit) against that
+    # market's daily low in one vectorised reindex/ffill, instead of
+    # re-filtering the whole trade list on every one of ~3500 calendar days
+    # (the previous per-day/iterrows version) - same numbers, much faster.
+    floating_by_day = pd.Series(0.0, index=calendar)
+    realized_by_day = pd.Series(0.0, index=calendar)
+    for pos in accepted.itertuples(index=False):
+        entry_day = pos.entry_time_naive.normalize()
+        exit_day = pos.exit_time_naive.normalize()
+        realized_by_day.loc[exit_day] += pos.pnl
 
-        realized_pnl_cum += accepted.loc[closing_today_mask, "pnl"].sum()
+        low_series = daily_low_naive.get(pos.market)
+        initial_risk = getattr(pos, "initial_risk", np.nan)
+        if low_series is None or low_series.empty or pd.isna(initial_risk) or exit_day <= entry_day:
+            continue
+        open_days = pd.date_range(entry_day, exit_day, freq="D")[:-1]  # exit day itself is realized, not marked
+        if len(open_days) == 0:
+            continue
+        lows = low_series.reindex(open_days, method="ffill")
+        r_at_low = (lows - pos.entry_price) / initial_risk
+        floating_by_day.loc[open_days] += pos.risk_dollars * r_at_low.fillna(0.0).to_numpy()
 
-        floating_pnl = 0.0
-        for _, pos in accepted.loc[open_mask & ~closing_today_mask].iterrows():
-            low_series = daily_low_naive.get(pos["market"])
-            if low_series is None or low_series.empty or pd.isna(pos.get("initial_risk")):
-                continue
-            pos_before = low_series.index.searchsorted(day, side="right") - 1
-            if pos_before < 0:
-                continue
-            day_low = low_series.iloc[pos_before]
-            r_at_low = (day_low - pos["entry_price"]) / pos["initial_risk"]
-            floating_pnl += pos["risk_dollars"] * r_at_low
-
-        equity_today = starting_equity + realized_pnl_cum + floating_pnl
-        rows.append({"date": day, "equity": equity_today})
-
-    curve = pd.DataFrame(rows).set_index("date")
+    equity_series = starting_equity + realized_by_day.cumsum() + floating_by_day
+    curve = pd.DataFrame({"equity": equity_series})
     curve["running_peak"] = curve["equity"].cummax()
     curve["total_dd_pct"] = curve["equity"] / curve["running_peak"] - 1.0
     curve["prev_equity"] = curve["equity"].shift(1).fillna(starting_equity)
@@ -114,6 +111,44 @@ def simulate_daily_marked(
         n_trades_taken=sim["n_taken"],
         n_trades_skipped=sim["n_skipped"],
     )
+
+
+def simulate_daily_marked(
+    trades_by_market: dict[str, pd.DataFrame],
+    daily_low_by_market: dict[str, pd.Series],
+    risk_pct: float,
+    starting_equity: float = 100_000.0,
+    max_concurrent: int = 3,
+    risk_weight_by_market: dict[str, float] | None = None,
+) -> DailyRiskResult:
+    """Position-count-cap variant (max `max_concurrent` positions across all
+    markets) - see mt5_trend_pullback.open_risk_engine.simulate_open_risk_daily
+    for the OU-Modell-style aggregate-dollar-open-risk-cap-with-breakeven-
+    exclusion variant instead."""
+    sim = simulate_account(
+        trades_by_market, starting_equity=starting_equity, risk_pct=risk_pct,
+        max_concurrent=max_concurrent, risk_weight_by_market=risk_weight_by_market,
+    )
+    return mark_daily(sim, daily_low_by_market, starting_equity)
+
+
+def simulate_open_risk_daily(
+    trades_by_market: dict[str, pd.DataFrame],
+    daily_low_by_market: dict[str, pd.Series],
+    risk_pct: float,
+    max_total_risk_pct: float,
+    starting_equity: float = 100_000.0,
+    risk_weight_by_market: dict[str, float] | None = None,
+) -> DailyRiskResult:
+    """OU-Modell-style aggregate-open-risk-cap-with-breakeven-exclusion
+    variant - see mt5_trend_pullback.open_risk_engine.simulate_open_risk_account."""
+    from mt5_trend_pullback.open_risk_engine import simulate_open_risk_account
+
+    sim = simulate_open_risk_account(
+        trades_by_market, starting_equity=starting_equity, risk_pct=risk_pct,
+        max_total_risk_pct=max_total_risk_pct, risk_weight_by_market=risk_weight_by_market,
+    )
+    return mark_daily(sim, daily_low_by_market, starting_equity)
 
 
 def sweep_risk_pct(

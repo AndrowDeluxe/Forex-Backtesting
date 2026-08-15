@@ -81,6 +81,7 @@ def simulate_trades(df: pd.DataFrame, config: BacktestConfig = BacktestConfig())
         )
         initial_risk = abs(entry_price - stop_level)
         be_moved = False
+        be_time = None  # bar timestamp the stop first moved to breakeven, if ever - lets a portfolio-level open-risk cap exclude this position once it can no longer lose money
         best_favor_price = entry_price  # for trailing: best confirmed-close seen so far in the trade's favour
         mfe = 0.0  # max favourable excursion seen so far, in price units (always tracked, regardless of TP config)
         mae = 0.0  # max adverse excursion seen so far, in price units
@@ -100,6 +101,7 @@ def simulate_trades(df: pd.DataFrame, config: BacktestConfig = BacktestConfig())
                 if favor >= config.breakeven_trigger_r * initial_risk:
                     stop_level = entry_price
                     be_moved = True
+                    be_time = times[j]
 
             if config.trailing_atr_mult is not None:
                 if direction == -1:
@@ -150,6 +152,7 @@ def simulate_trades(df: pd.DataFrame, config: BacktestConfig = BacktestConfig())
                 "adx_at_entry": df["adx"].iloc[entry_i],
                 "atr_at_entry": atr[entry_i],
                 "moved_to_be": be_moved,
+                "be_time": be_time,
                 "mfe_r": (mfe / initial_risk) if initial_risk > 0 else float("nan"),
                 "mae_r": (mae / initial_risk) if initial_risk > 0 else float("nan"),
                 "initial_risk": initial_risk,  # price-unit distance entry->stop at entry time; lets callers convert return_pct into R-multiples / fixed-fractional-risk dollar P&L

@@ -87,10 +87,11 @@ OVERLAY_WAIT_BARS = 5
 
 # --- risk management: FK (funded/prop) and EK (personal) profiles (2026-08-15) ---
 RISK_PROFILES = {
-    "FK1 (TTP-Stil: 3% daily / 7% total)": {"daily": 0.03, "total": 0.07},
-    "FK2 (IQ Markets: 1% daily / 8% total)": {"daily": 0.01, "total": 0.08},
-    "EK (Eigenkapital: kein daily / 20% total)": {"daily": None, "total": 0.20},
+    "FK1 (TTP-Stil: 3% daily / 7% total)": {"daily": 0.03, "total": 0.07, "per_position_cap": None},
+    "FK2 (IQ Markets: max 1% pro Position, 6% Trailing-Total, kein Daily)": {"daily": None, "total": 0.06, "per_position_cap": 0.01},
+    "EK (Eigenkapital: kein daily / 20% total)": {"daily": None, "total": 0.20, "per_position_cap": None},
 }
+FK2_PROFIT_TARGET = 0.08  # context only, not a hard constraint on risk_pct
 RISK_PCT_CANDIDATES = [0.001, 0.002, 0.003, 0.004, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.02, 0.025, 0.03]
 OU_RISK_PCT = 0.005
 OU_MAX_TOTAL_RISK_PCT = 0.02
@@ -563,8 +564,10 @@ def run_risk_management(_data: dict[str, pd.DataFrame], _extra_data: dict[str, p
     for period_name, tbm in [("Volle Historie (2016-2026)", trades_by_market), ("Nur 2023-2026", trades_2023)]:
         sweeps[period_name], chosen[period_name] = {}, {}
         for profile_name, limits in RISK_PROFILES.items():
+            cap = limits.get("per_position_cap")
+            candidates = [r for r in RISK_PCT_CANDIDATES if cap is None or r <= cap]
             sweep = sweep_risk_pct(
-                tbm, daily_low_by_market, RISK_PCT_CANDIDATES,
+                tbm, daily_low_by_market, candidates,
                 max_daily_dd_limit=limits["daily"], max_total_dd_limit=limits["total"],
                 starting_equity=STARTING_EQUITY, max_concurrent=3,
             )
@@ -1212,8 +1215,9 @@ with tab_risk:
     section_title("Sharpe-gewichteter Risiko-Split (statt gleichverteilt ueber alle 5 Maerkte)")
     st.caption(
         "Mehr Risiko auf staerkere Maerkte (CHFJPY, Silber), weniger auf schwaechere (Gold, USDJPY) -- "
-        "bei FK2 und EK muss die Gewichtung auf ca. 70% ihrer urspruenglichen Staerke skaliert werden, um "
-        "konform zu bleiben, bringt dann aber echten Mehrertrag: FK2 +15.5%->+17.9%, EK +41.6%->+49.4% "
-        "(volle Historie, gleiches Risikobudget). Details siehe scripts/research_mt5_trend_pullback_"
-        "risk_management_v2.py."
+        "bringt bei EK auf voller Historie einen echten Mehrertrag (+41.6%->+49.4% bei gleichem "
+        "Risikobudget, Gewichtung auf ca. 70% skaliert, um konform zu bleiben). Fuer FK2 mit der "
+        "korrigierten Regel (1%-Positions-Deckel, 6% Trailing-Total) noch nicht neu durchgerechnet -- "
+        "Zahlen aus scripts/research_mt5_trend_pullback_risk_management_v2.py stammen von der frueheren "
+        "FK2-Definition (1% daily/8% total) und sind hier nicht mehr direkt uebertragbar."
     )

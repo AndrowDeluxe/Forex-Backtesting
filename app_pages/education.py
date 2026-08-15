@@ -29,5 +29,11 @@ render_section(
             "icon": ":material/menu_book:",
             "tag": "BUCH",
         },
+        {
+            "page": "app_pages/education_kelly.py",
+            "title": "Kelly-Formel & Risk Management",
+            "icon": ":material/calculate:",
+            "tag": "TRACK",
+        },
     ],
 )

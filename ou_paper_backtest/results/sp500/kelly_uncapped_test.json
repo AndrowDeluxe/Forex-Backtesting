@@ -1,0 +1,160 @@
+{
+  "kelly_f_used": 0.12665510400904645,
+  "variants": {
+    "baseline_1pct_15cap": {
+      "risk_pct": 0.01,
+      "max_total_risk_pct": 0.15
+    },
+    "full_kelly_15cap": {
+      "risk_pct": 0.12665510400904645,
+      "max_total_risk_pct": 0.15
+    },
+    "full_kelly_no_cap": {
+      "risk_pct": 0.12665510400904645,
+      "max_total_risk_pct": 10.0
+    },
+    "half_kelly_no_cap": {
+      "risk_pct": 0.06332755200452322,
+      "max_total_risk_pct": 10.0
+    },
+    "quarter_kelly_no_cap": {
+      "risk_pct": 0.03166377600226161,
+      "max_total_risk_pct": 10.0
+    }
+  },
+  "in_sample": {
+    "baseline_1pct_15cap": {
+      "risk_pct": 0.01,
+      "max_total_risk_pct": 0.15,
+      "n_trades": 1834,
+      "final_equity": 395182.1786532402,
+      "min_equity": 87809.28199005127,
+      "went_negative": false,
+      "total_return_pct": 295.1821786532413,
+      "sharpe": 0.8613932816273541,
+      "calmar": 0.5781151955561507,
+      "max_drawdown_pct": -37.613317891983996,
+      "max_concurrent_positions": 16
+    },
+    "full_kelly_15cap": {
+      "risk_pct": 0.12665510400904645,
+      "max_total_risk_pct": 0.15,
+      "n_trades": 158,
+      "final_equity": 94095.07472896576,
+      "min_equity": 88431.06886005402,
+      "went_negative": false,
+      "total_return_pct": -5.904925271034179,
+      "sharpe": -0.16805609985740166,
+      "calmar": -0.04859757673586995,
+      "max_drawdown_pct": -17.854438225704804,
+      "max_concurrent_positions": 1
+    },
+    "full_kelly_no_cap": {
+      "risk_pct": 0.12665510400904645,
+      "max_total_risk_pct": 10.0,
+      "n_trades": 1473,
+      "final_equity": -16663.33489370346,
+      "min_equity": -16663.33489370346,
+      "went_negative": true,
+      "total_return_pct": -116.6633348937034,
+      "sharpe": NaN,
+      "calmar": NaN,
+      "max_drawdown_pct": -109.01660056902224,
+      "max_concurrent_positions": 82
+    },
+    "half_kelly_no_cap": {
+      "risk_pct": 0.06332755200452322,
+      "max_total_risk_pct": 10.0,
+      "n_trades": 1580,
+      "final_equity": -54699.109337329865,
+      "min_equity": -56445.79615068436,
+      "went_negative": true,
+      "total_return_pct": -154.69910933733004,
+      "sharpe": NaN,
+      "calmar": NaN,
+      "max_drawdown_pct": -127.04799833946576,
+      "max_concurrent_positions": 100
+    },
+    "quarter_kelly_no_cap": {
+      "risk_pct": 0.03166377600226161,
+      "max_total_risk_pct": 10.0,
+      "n_trades": 1624,
+      "final_equity": -63499.05031585693,
+      "min_equity": -65541.45084762573,
+      "went_negative": true,
+      "total_return_pct": -163.49905031585726,
+      "sharpe": NaN,
+      "calmar": NaN,
+      "max_drawdown_pct": -127.08142146279052,
+      "max_concurrent_positions": 121
+    }
+  },
+  "holdout": {
+    "baseline_1pct_15cap": {
+      "risk_pct": 0.01,
+      "max_total_risk_pct": 0.15,
+      "n_trades": 525,
+      "final_equity": 169513.7688407898,
+      "min_equity": 91262.37766933441,
+      "went_negative": false,
+      "total_return_pct": 69.51376884078975,
+      "sharpe": 1.5411124364089466,
+      "calmar": 2.21456318520572,
+      "max_drawdown_pct": -17.70701415426419,
+      "max_concurrent_positions": 16
+    },
+    "full_kelly_15cap": {
+      "risk_pct": 0.12665510400904645,
+      "max_total_risk_pct": 0.15,
+      "n_trades": 37,
+      "final_equity": 109314.86901378632,
+      "min_equity": 95985.01964569092,
+      "went_negative": false,
+      "total_return_pct": 9.314869013786309,
+      "sharpe": 0.9132420766077624,
+      "calmar": 0.846367871114218,
+      "max_drawdown_pct": -6.784044239566556,
+      "max_concurrent_positions": 1
+    },
+    "full_kelly_no_cap": {
+      "risk_pct": 0.12665510400904645,
+      "max_total_risk_pct": 10.0,
+      "n_trades": 991,
+      "final_equity": 114400.48539924622,
+      "min_equity": 53009.77463531494,
+      "went_negative": false,
+      "total_return_pct": 14.4004853992463,
+      "sharpe": 0.09852048781630886,
+      "calmar": 0.12058035134742075,
+      "max_drawdown_pct": -72.97524698662777,
+      "max_concurrent_positions": 65
+    },
+    "half_kelly_no_cap": {
+      "risk_pct": 0.06332755200452322,
+      "max_total_risk_pct": 10.0,
+      "n_trades": 1013,
+      "final_equity": 112227.55132865906,
+      "min_equity": 47424.98553276062,
+      "went_negative": false,
+      "total_return_pct": 12.227551328659224,
+      "sharpe": 0.08167148575320952,
+      "calmar": 0.0989029799821832,
+      "max_drawdown_pct": -75.82484450309124,
+      "max_concurrent_positions": 70
+    },
+    "quarter_kelly_no_cap": {
+      "risk_pct": 0.03166377600226161,
+      "max_total_risk_pct": 10.0,
+      "n_trades": 1013,
+      "final_equity": 109525.04192447662,
+      "min_equity": 48824.60968208313,
+      "went_negative": false,
+      "total_return_pct": 9.525041924476628,
+      "sharpe": 0.06560982208507286,
+      "calmar": 0.07805762500655096,
+      "max_drawdown_pct": -75.19054282029948,
+      "max_concurrent_positions": 70
+    }
+  },
+  "holdout_period": "2025-01-01 .. 2026-08-11"
+}

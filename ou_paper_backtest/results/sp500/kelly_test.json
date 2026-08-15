@@ -1,0 +1,28 @@
+{
+  "in_sample": {
+    "n_trades": 1834,
+    "win_rate": 0.4770992366412214,
+    "avg_win_r": 0.6925533590677945,
+    "avg_loss_r": -0.46414401780761505,
+    "payoff_ratio_b": 1.4921087690391255,
+    "kelly_f": 0.12665510400904645,
+    "half_kelly_f": 0.06332755200452322,
+    "quarter_kelly_f": 0.03166377600226161,
+    "used_risk_pct": 0.01,
+    "period": "2018-01-01 .. 2024-12-31 (in-sample)",
+    "final_equity": 395182.1786532402
+  },
+  "holdout": {
+    "n_trades": 523,
+    "win_rate": 0.47609942638623326,
+    "avg_win_r": 0.7013111781890433,
+    "avg_loss_r": -0.44072893225989507,
+    "payoff_ratio_b": 1.5912528696334476,
+    "kelly_f": 0.14686163922393913,
+    "half_kelly_f": 0.07343081961196957,
+    "quarter_kelly_f": 0.03671540980598478,
+    "used_risk_pct": 0.01,
+    "period": "2025-01-01 .. 2026-08-11 (echter Out-of-Sample-Holdout)",
+    "final_equity": 169557.06971263885
+  }
+}

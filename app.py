@@ -21,6 +21,9 @@ section_live_logs = st.Page(
 section_fertige_strategien = st.Page(
     "app_pages/section_fertige_strategien.py", title="Fertige Strategien", icon=":material/military_tech:"
 )
+section_portfolio_management = st.Page(
+    "app_pages/section_portfolio_management.py", title="Portfolio Management", icon=":material/account_balance_wallet:"
+)
 section_backtests = st.Page(
     "app_pages/section_backtests.py", title="Backtests", icon=":material/bar_chart:"
 )
@@ -169,6 +172,7 @@ page = st.navigation(
         home,
         section_live_logs,
         section_fertige_strategien,
+        section_portfolio_management,
         section_backtests,
         section_components,
         section_erkenntnisse,

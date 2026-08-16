@@ -215,3 +215,61 @@ def scan_today(as_of: pd.Timestamp | None = None, state_override: dict | None = 
     if not dry_run:
         save_state(state)
     return row, state
+
+
+def current_signal(as_of: pd.Timestamp | None = None) -> dict:
+    """Pure, stateless signal read - no paper-account state, no file writes.
+    For real execution bridges (private, outside this repo): the broker
+    account itself IS the position state (mt5.positions_get()), so a bridge
+    doesn't need/want this module's paper-state bookkeeping - it only needs
+    "does the rule say long today, and what are entry/stop". Same warmup/
+    fill-timing contract as scan_today(): go_long/go_flat are evaluated on
+    the most recently CLOSED bar, raw_entry_open is the still-forming
+    bar's open (today's fill reference price, matching "decide on
+    yesterday's close, fill at today's open").
+
+    Returns: {date, go_long, go_flat, above, raw_entry_open, atr_yesterday,
+    yesterday_low, yesterday_close, stop_price_if_entering} or
+    {date, status: "..."} if data isn't ready (too early/insufficient
+    history/API error) - callers must check for "status" before using the
+    other fields."""
+    today = (as_of if as_of is not None else pd.Timestamp.now("UTC")).normalize()
+    start = (today - pd.Timedelta(days=LOOKBACK_DAYS)).strftime("%Y-%m-%d")
+    end = (today + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
+    df = fetch_klines("BTCUSDT", "1d", start, end, force_refresh=True)
+
+    if df.empty:
+        return {"date": today.date().isoformat(), "status": "keine Daten (Binance-API-Fehler?)"}
+    if df.index[-1] < today:
+        return {"date": today.date().isoformat(), "status": "Daten noch nicht aktuell (zu frueh?)"}
+
+    forming = df.loc[df.index == today].iloc[0] if today in df.index else df.iloc[-1]
+    closed = df.loc[df.index < today] if today in df.index else df.iloc[:-1]
+    if len(closed) < 30:
+        return {"date": today.date().isoformat(), "status": "nicht genug Historie fuer Warmup"}
+
+    close = closed["close"]
+    ema_fast = close.ewm(span=9, adjust=False).mean()
+    ema_slow = close.ewm(span=21, adjust=False).mean()
+    above = ema_fast > ema_slow
+    atr = compute_atr(closed, ATR_PERIOD)
+
+    yesterday_above = bool(above.iloc[-1])
+    day_before_above = bool(above.iloc[-2])
+    go_long = yesterday_above and not day_before_above
+    go_flat = (not yesterday_above) and day_before_above
+    raw_entry_open = float(forming["open"])
+    atr_yesterday = float(atr.iloc[-1])
+    stop_dist = ATR_STOP_MULT * atr_yesterday
+
+    return {
+        "date": today.date().isoformat(),
+        "go_long": go_long,
+        "go_flat": go_flat,
+        "above": yesterday_above,
+        "raw_entry_open": raw_entry_open,
+        "atr_yesterday": atr_yesterday,
+        "yesterday_low": float(closed["low"].iloc[-1]),
+        "yesterday_close": float(close.iloc[-1]),
+        "stop_price_if_entering": raw_entry_open - stop_dist if stop_dist > 0 else None,
+    }

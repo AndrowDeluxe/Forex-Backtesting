@@ -59,6 +59,73 @@ else:
     cols[3].metric("Stop", "--")
 
 st.divider()
+st.markdown("### :material/candlestick_chart: Live-Chart (BTCUSDT, Binance) -- zum Abgleich von Entry/Stop")
+st.caption(
+    "Oeffentliches TradingView-Standard-Widget, kein Login noetig -- zeigt den echten Live-Kurs. "
+    "Entry/Stop der aktuellen Position (falls offen) werden als horizontale Linien direkt im Chart "
+    "eingezeichnet (TradingView-\"Studies\"-Overlay), damit man sofort sieht, wo genau eingestiegen "
+    "wurde und wo der Stop liegt -- gleiches Prinzip wie beim CLS-Practical-Live-Log."
+)
+
+_entry_line = ""
+if state["in_position"]:
+    _entry_line = f"""
+      chart.onChartReady(function() {{
+        var w = chart.chart();
+        w.createShape(
+          {{ time: Math.floor(Date.now()/1000), price: {state['raw_entry_price']} }},
+          {{ shape: "horizontal_line", lock: true, disableSelection: true, disableSave: true,
+             overrides: {{ linecolor: "#5ecb8c", linewidth: 2, linestyle: 2,
+                          showLabel: true, textcolor: "#5ecb8c", fontsize: 12,
+                          text: "Entry {state['raw_entry_price']:,.0f}" }} }}
+        );
+        w.createShape(
+          {{ time: Math.floor(Date.now()/1000), price: {state['stop_price']} }},
+          {{ shape: "horizontal_line", lock: true, disableSelection: true, disableSave: true,
+             overrides: {{ linecolor: "#ff5555", linewidth: 2, linestyle: 2,
+                          showLabel: true, textcolor: "#ff5555", fontsize: 12,
+                          text: "Stop {state['stop_price']:,.0f}" }} }}
+        );
+      }});
+    """
+
+st.iframe(
+    f"""
+    <div class="tradingview-widget-container" style="height:610px;">
+      <div id="btc_live_chart"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+      <script type="text/javascript">
+      var chart = new TradingView.widget({{
+        "width": "100%",
+        "height": 610,
+        "symbol": "BINANCE:BTCUSDT",
+        "interval": "D",
+        "timezone": "Europe/Berlin",
+        "theme": "dark",
+        "style": "1",
+        "locale": "de_DE",
+        "toolbar_bg": "#0a0e14",
+        "enable_publishing": false,
+        "hide_top_toolbar": false,
+        "hide_legend": false,
+        "save_image": false,
+        "container_id": "btc_live_chart"
+      }});
+      {_entry_line}
+      </script>
+    </div>
+    """,
+    height=630,
+)
+if state["in_position"]:
+    st.caption(
+        "Hinweis: die eingezeichneten Linien werden bei jedem Seiten-Reload neu (auf 'jetzt') "
+        "gesetzt, da das kostenlose TradingView-Widget keine feste Zeitachsen-Verankerung fuer "
+        "Zeichnungen unterstuetzt -- Preis-Level sind exakt, die horizontale Position/Laenge der "
+        "Linie ist rein optisch."
+    )
+
+st.divider()
 st.markdown("### Taegliches Log")
 if DAILY_LOG.exists():
     daily = pd.read_csv(DAILY_LOG)

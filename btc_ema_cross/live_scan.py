@@ -38,6 +38,7 @@ import pandas as pd
 
 from auction_playbook.data import fetch_klines
 from btc_ema_cross.engine import ATR_PERIOD, ATR_STOP_MULT, COMMISSION
+from btc_ema_cross.telegram_notify import send_telegram_message
 from strategy.indicators import compute_atr
 
 REPO_DIR = Path(__file__).resolve().parents[1]
@@ -172,6 +173,13 @@ def scan_today(as_of: pd.Timestamp | None = None, state_override: dict | None = 
             }
             if not dry_run:
                 _log_trade(trade_row)
+                icon = "\U0001F7E2" if pnl > 0 else "\U0001F534"
+                send_telegram_message(
+                    f"[BTC EMA9/21 Paper] {icon} EXIT ({exit_reason}) @ ${exit_fill:,.2f}\n"
+                    f"Entry {state['entry_date']} @ ${state['raw_entry_price']:,.2f} -> "
+                    f"heute {row['date']}\n"
+                    f"PnL: ${pnl:+,.2f} ({r_multiple:+.2f}R)  |  Cash: ${new_cash:,.2f}"
+                )
             row["action"] = f"exit ({exit_reason}), pnl=${pnl:+,.2f} ({r_multiple:+.2f}R)"
             row["_trade"] = trade_row
             state = _default_state()
@@ -192,6 +200,12 @@ def scan_today(as_of: pd.Timestamp | None = None, state_override: dict | None = 
         })
         state["cash"] -= qty * entry_fill
         row["action"] = f"entry long @ {entry_fill:,.2f}, stop @ {state['stop_price']:,.2f}, qty={qty:.6f}"
+        if not dry_run:
+            send_telegram_message(
+                f"[BTC EMA9/21 Paper] \U0001F7E2 ENTRY long @ ${entry_fill:,.2f}\n"
+                f"Stop: ${state['stop_price']:,.2f}  |  Groesse: {qty:.6f} BTC  |  "
+                f"Risiko: ${state['trade_risk_dollar']:,.2f} (1% von ${equity_now:,.2f})"
+            )
 
     row["in_position"] = state["in_position"]
     row["equity_mark_to_market"] = round(

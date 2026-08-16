@@ -3,6 +3,8 @@ __pycache__/
 .pytest_cache/
 streamlit.log
 .streamlit/secrets.toml
+.streamlit/tradingview_session.json
+.tradingview_edge_profile/
 .venv/
 *.egg-info/
 data_cache/
@@ -13,3 +15,4 @@ paper_research_cache/
 paper_dropbox/*
 !paper_dropbox/README.md
 education_state/
+btc_ema_cross/telegram_config.py

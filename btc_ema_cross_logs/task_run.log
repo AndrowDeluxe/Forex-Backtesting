@@ -1,0 +1,14 @@
+2026-08-16 20:09:03 === BTC-EMA-Cross-Scan-Task gestartet ===
+2026-08-16 20:09:05 BTC-EMA9/21 Tages-Scan (PAPIER, keine echten Orders):
+2026-08-16 20:09:05   date: 2026-08-16
+2026-08-16 20:09:05   yesterday_close: 63086.01
+2026-08-16 20:09:05   ema9: 63638.7
+2026-08-16 20:09:05   ema21: 63898.91
+2026-08-16 20:09:05   above: False
+2026-08-16 20:09:05   go_long_signal: False
+2026-08-16 20:09:05   go_flat_signal: False
+2026-08-16 20:09:05   action: none
+2026-08-16 20:09:05   in_position: False
+2026-08-16 20:09:05   equity_mark_to_market: 100000.0
+2026-08-16 20:09:05 
+2026-08-16 20:09:05 Gespeichert: C:\Users\andre\Forex-Backtesting\btc_ema_cross_logs\daily_log.csv

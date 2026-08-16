@@ -1,0 +1,2 @@
+date,yesterday_close,ema9,ema21,above,go_long_signal,go_flat_signal,action,in_position,equity_mark_to_market,status
+2026-08-16,63086.01,63638.7,63898.91,False,False,False,none,False,100000.0,

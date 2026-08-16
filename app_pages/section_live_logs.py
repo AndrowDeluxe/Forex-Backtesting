@@ -26,5 +26,11 @@ render_section(
             "icon": ":material/rss_feed:",
             "tag": "LIVE",
         },
+        {
+            "page": "app_pages/btc_ema_cross_live_log.py",
+            "title": "BTC EMA9/21 -- Paper-Forward-Test",
+            "icon": ":material/rss_feed:",
+            "tag": "PAPIER",
+        },
     ],
 )

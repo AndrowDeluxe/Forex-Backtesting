@@ -63,9 +63,9 @@ with st.sidebar:
     ) / 100
     use_be = st.toggle(
         "Breakeven-Stop aktivieren (ab 1R)", value=False,
-        help="Eigener Test (2026-08-14): bewegt CAGR kaum (+3.0%→+3.4% im OOS-Beispiel), halbiert "
-        "aber die Win-Rate (33%→23%), weil viele Trades, die sich später erholt hätten, vorzeitig "
-        "auf Breakeven gestoppt werden. Standardmäßig AUS.",
+        help="Eigener Sweep (2026-08-15, 0.25R-2.0R): BE@0.75-1.0R ist leicht POSITIV "
+        "(OOS PF 1.84→2.06, CAGR +3.6%→+4.0%), obwohl die Win-Rate sinkt (33%→27%) - kein "
+        "starker Hebel, aber vertretbar. Standardmäßig AUS, da kein klarer Pflicht-Baustein.",
     )
     st.caption(f"Datenquelle: Binance BTCUSDT Daily, {FULL_START} bis {END} (gecacht).")
 

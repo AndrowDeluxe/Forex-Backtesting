@@ -67,6 +67,10 @@ btc_ema_cross = st.Page(
     "app_pages/btc_ema_cross.py", title="BTC EMA9/21 Crossover",
     icon=":material/currency_bitcoin:", visibility="hidden",
 )
+btc_ema_cross_live_log = st.Page(
+    "app_pages/btc_ema_cross_live_log.py", title="BTC EMA9/21 -- Paper-Forward-Test",
+    icon=":material/rss_feed:", visibility="hidden",
+)
 cls_practical_strategy = st.Page(
     "app_pages/cls_practical_strategy.py", title="CLS Practical (EUR/USD)",
     icon=":material/military_tech:", visibility="hidden",
@@ -185,7 +189,7 @@ page = st.navigation(
         # hidden pages -- must still be registered so they stay routable
         education_gold_intraday, education_book_chan, education_kelly,
         ou_modell, orb_forward_test,
-        fertige_strategien, btc_ema_cross, cls_practical_strategy, cls_practical_live_log, ou_scanner, gold_bitcoin_dual_momentum, asian_range_breakout,
+        fertige_strategien, btc_ema_cross, btc_ema_cross_live_log, cls_practical_strategy, cls_practical_live_log, ou_scanner, gold_bitcoin_dual_momentum, asian_range_breakout,
         presettle_breakout,
         adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook,
         orb_strategy_page, ou_paper_backtest,

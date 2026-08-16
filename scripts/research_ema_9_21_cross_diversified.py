@@ -58,8 +58,11 @@ def simulate_risk_sized(df: pd.DataFrame, capital: float, risk_pct: float,
     ema_fast = close.ewm(span=9, adjust=False).mean()
     ema_slow = close.ewm(span=21, adjust=False).mean()
     above = ema_fast > ema_slow
-    go_long = (above & ~above.shift(1).fillna(False)).to_numpy()
-    go_flat = (~above & above.shift(1).fillna(False)).to_numpy()
+    above_prev = above.shift(1, fill_value=False)
+
+    go_long = (above & ~above_prev).to_numpy()
+
+    go_flat = (~above & above_prev).to_numpy()
     atr = compute_atr(df, ATR_PERIOD)
 
     start_i = max(df.index.searchsorted(sim_from) if sim_from is not None else 1, 1)

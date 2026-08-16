@@ -12,3 +12,12 @@
 2026-08-16 20:09:05   equity_mark_to_market: 100000.0
 2026-08-16 20:09:05 
 2026-08-16 20:09:05 Gespeichert: C:\Users\andre\Forex-Backtesting\btc_ema_cross_logs\daily_log.csv
+2026-08-16 20:09:06 [main f17b5fb] BTC EMA9/21 Paper-Forward-Test: Snapshot 2026-08-16 20:09
+2026-08-16 20:09:06  3 files changed, 26 insertions(+)
+2026-08-16 20:09:06  create mode 100644 btc_ema_cross_logs/daily_log.csv
+2026-08-16 20:09:06  create mode 100644 btc_ema_cross_logs/paper_state.json
+2026-08-16 20:09:06  create mode 100644 btc_ema_cross_logs/task_run.log
+2026-08-16 20:09:08 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-16 20:09:08    2eeb5b1..f17b5fb  main -> main
+2026-08-16 20:09:08 Commit + Push erfolgreich.
+2026-08-16 20:09:08 === BTC-EMA-Cross-Scan-Task beendet ===

@@ -52,8 +52,9 @@ def prep_asset(sym: str) -> dict:
     ema_fast = close.ewm(span=9, adjust=False).mean()
     ema_slow = close.ewm(span=21, adjust=False).mean()
     above = ema_fast > ema_slow
-    go_long = above & ~above.shift(1).fillna(False)
-    go_flat = ~above & above.shift(1).fillna(False)
+    above_prev = above.shift(1, fill_value=False)
+    go_long = above & ~above_prev
+    go_flat = ~above & above_prev
     atr = compute_atr(df, ATR_PERIOD)
     return {"df": df, "go_long": go_long, "go_flat": go_flat, "atr": atr}
 

@@ -260,6 +260,100 @@ Gold-Asian-Range-Breakout-Seite.
   Automatismus, reine Parameterwahl innerhalb des bereits getesteten
   Sizing-Modells.
 
+**Nachtrag 2026-08-15 (3) -- Rendite-Verschenkt-Quantifizierung, BE-Sweep
+(Korrektur), Chandelier-Trailing-Stop, Volumen-Exhaustion-Exit,
+ETF-Inflow-Exit (nicht testbar)**
+
+Nutzerfragen: wie sieht ein ATR-basierter TP oder ein Exit nach Volumen/
+ETF-Inflows aus, wie viel Rendite verschenkt man mit TP-Logik, wie
+performen verschiedene BE-Werte, wie eine Trailing-SL?
+
+- **Rendite-verschenkt-Tabelle (TP vs. kein TP, % vom Kein-TP-Endkapital)**:
+  IS verschenkt massiv (TP=0.5R nur 51%, TP=4.0R 78% vom Endkapital) --
+  aber **OOS ist der Unterschied viel kleiner und bei manchen Levels sogar
+  leicht positiv** (TP=1.5R/4.0R: 101%). Der IS-Effekt wird von wenigen
+  sehr grossen Trades getrieben, die IS ueberrepraesentiert sind. Fazit
+  "kein TP" bleibt Standard, aber die Begruendung ist auf OOS-Basis
+  schwaecher als der reine IS-Blick suggeriert -- Korrektur der vorherigen
+  Darstellung, die nur die IS-lastige Gesamtzahl zeigte.
+- **Breakeven-Sweep (Korrektur des vorherigen Einzelwert-Tests)**: mit
+  echtem Sweep (0.25R-2.0R statt nur 1.0R) zeigt sich BE@0.75-1.0R als
+  **leicht POSITIV** (OOS PF 1.84->2.06, CAGR +3.6%->+4.0%), nicht klar
+  schaedlich wie der fruehere Einzelwert-Test nahelegte. Win-Rate sinkt
+  real (33.3%->25-27%), aber PF/CAGR verbessern sich leicht. Kein starker
+  Hebel, aber vertretbar als psychologisches Sicherheitsnetz.
+- **Chandelier-Trailing-Stop** (hoechster Close seit Entry - Multiplikator
+  x ATR, nur nachziehend, ersetzt den Fix-Stop sobald enger): **durchgehend
+  schlechter als die Baseline** ueber alle getesteten Multiplikatoren
+  (2.0x-4.0x), beide Fenster (bester OOS-Wert 3.0x: PF 1.75/CAGR +3.1% vs.
+  Baseline PF 1.84/CAGR +3.6%). Gleicher Mechanismus wie beim TP -- sichert
+  Gewinne vor dem eigentlichen Crossunder, kappt die grossen Trend-Trades.
+- **Volumen-Exhaustion-Exit** (Exit wenn Tagesvolumen < X% des 20-Tage-
+  Schnitts UND unrealisiert >= Y R): bei engem Schwellenwert (<30%)
+  praktisch neutral (loest kaum aus), bei lockereren Schwellen (50-70%)
+  klar schaedlich (OOS PF 1.84->1.22-1.50). Selbes Muster: jeder
+  Gewinnsicherungs-Mechanismus vor dem Crossunder schneidet die grossen
+  Trend-Trades ab, die die Kante ausmachen.
+- **ETF-Inflow-Exit**: NICHT testbar -- nur eine Literatur-Notiz
+  ([[crypto-etf-flows]]), keine echte Datenquelle fuer taegliche IBIT/
+  FBTC-Netto-Flows im Repo. Muesste neu angebunden werden (z.B. Farside
+  Investors, SoSoValue oder CoinGlass ETF-Flow-APIs, alle mit kostenlosen
+  Stufen) -- nicht umgesetzt, kein Automatismus.
+- **Gesamtmuster ueber alle vier Session-Nachtraege zu Exit-Varianten**:
+  JEDER getestete "Gewinne frueher sichern"-Mechanismus (TP, Chandelier,
+  Volumen-Exit) schadet -- ausser moderatem Breakeven (0.75-1.0R), das
+  leicht positiv ist. Die Kante dieser Strategie liegt fast vollstaendig
+  darin, Gewinner bis zum tatsaechlichen Trendumkehr-Signal (Crossunder)
+  laufen zu lassen; jeder zusaetzliche vorzeitige Exit-Mechanismus
+  reduziert genau das.
+- **WICHTIGER BUGFIX (2026-08-16), betrifft alle obigen OOS-Zahlen dieser
+  Session**: beim Bauen des Live-Scanners (`btc_ema_cross/live_scan.py`)
+  und dessen Verifikation gegen den Batch-Backtest
+  (`scripts/verify_btc_ema_cross_live_scan.py`) wurde ein echter Dtype-Bug
+  in `go_long = above & ~above.shift(1).fillna(False)` gefunden:
+  `above.shift(1)` wird durch den eingefuegten NaN bei Pandas zu
+  `object`-Dtype, `.fillna(False)` stellt den `bool`-Dtype NICHT wieder
+  her, und `~` auf einer `object`-Series mit echten Python-Bools invertiert
+  NICHT boolesch, sondern bitweise (`~True`=-2, `~False`=-1, beide
+  "truthy") -- dadurch wird `go_long` faktisch identisch zu `above` selbst
+  (immer True, wenn `above` True ist, nicht nur am echten Fresh-Cross-Tag).
+  In einem DURCHGEHENDEN Backtest ab dem echten Datenbeginn ist das
+  folgenlos (die `position==0`-Guard verhindert Doppel-Eintritte). Aber
+  **jedes `sim_from`-Fenster, das mitten in einem bereits laufenden
+  "above"-Zustand startet** (z.B. der 2023-12-02-OOS-Split, der seit
+  mindestens 2023-11-27 durchgehend "above" war), erzeugt einen Phantom-
+  Trade am allerersten Tag des Fensters. Betroffen: JEDER OOS-Test dieser
+  Session (Funded-Challenge-Check, Kelly-Analyse, SL/TP-Sweep, Regime-
+  filter, Vol-skaliertes Sizing, BE-Sweep, Rendite-verschenkt-Tabelle,
+  Chandelier, Volumen-Exit, Gegenposition). Full/IS-Zahlen sind NICHT
+  betroffen (die starten am echten Datenbeginn, kein Mid-Stream-Effekt).
+  Fix: `above_prev = above.shift(1, fill_value=False)` (kein NaN-Umweg,
+  bleibt `bool`-Dtype) in allen betroffenen Dateien
+  (`btc_ema_cross/engine.py`, `btc_ema_cross/optimization.py`,
+  `scripts/research_ema_9_21_cross_diversified.py`,
+  `scripts/research_ema_9_21_cross_multi_asset.py`).
+  **Tatsaechliche Auswirkung (OOS, 1% Risiko)**: n=27->22 Trades, PF
+  1.84->1.81, CAGR +3.6%->+3.2%, MaxDD -6.5%->-6.0%, EndEquity
+  $109.994->$108.814 -- klein in der Groessenordnung, KEINE der
+  qualitativen Session-Schlussfolgerungen kippt (kein TP, kein Hebel
+  noetig, 1-3%-Risikobereich, Multi-Asset schlechter, Crash-Filter
+  wirkungslos, kleine Gegenposition hilft nicht bleiben alle gueltig) --
+  aber die exakten Dezimalzahlen aus den Kelly-/SL-TP-/Filter-/Vol-Sizing-
+  Nachtraegen oben wurden mit dem Bug gerechnet und sind leicht ungenau.
+  Nicht komplett neu gerechnet (Aufwand/Nutzen), da keine qualitative
+  Schlussfolgerung betroffen ist.
+- **Kleine Gegenposition am Crossunder statt Flat** (Nutzerfrage): getestet
+  mit `simulate_asymmetric_short` bei Groessen 0.1x-1.0x des normalen
+  Risikos. Der Short-Leg ist bei JEDER Groesse negativ (IS: -$252 bis
+  -$2.556, OOS: -$189 bis -$1.880), kein Vorzeichenwechsel ueber den
+  gesamten Bereich -- keine Small-Sample-Fluktuation, sondern ein
+  gleichmaessig skalierender Schaden. Flat bleibt strikt besser als jede
+  Short-Beimischung. Gleicher Grund wie beim vollen Long/Short-Test: der
+  Crossunder zeigt nur "Momentum abgekuehlt", nicht zuverlaessig "jetzt
+  beginnt ein Abwaertstrend" -- BTCs struktureller Aufwaerts-Drift macht
+  das Shorten dieses Signals zu einer Negativ-Erwartungswert-Wette,
+  unabhaengig von der Positionsgroesse.
+
 **Nachtrag 2026-08-14 (4) -- Bugfix (EMA/ATR-Warmup an der IS/OOS-Grenze),
 Multi-Asset-Diversifikation (BTC+ETH+SOL) und Eigenkapital-Konto ohne Limits**
 

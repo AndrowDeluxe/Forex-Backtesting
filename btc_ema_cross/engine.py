@@ -35,8 +35,11 @@ def simulate_ema_cross(df: pd.DataFrame, fast: int, slow: int, sim_from: pd.Time
     ema_fast = close.ewm(span=fast, adjust=False).mean()
     ema_slow = close.ewm(span=slow, adjust=False).mean()
     above = ema_fast > ema_slow
-    go_long = (above & ~above.shift(1).fillna(False)).to_numpy()
-    go_flat = (~above & above.shift(1).fillna(False)).to_numpy()
+    above_prev = above.shift(1, fill_value=False)
+
+    go_long = (above & ~above_prev).to_numpy()
+
+    go_flat = (~above & above_prev).to_numpy()
 
     start_i = max(df.index.searchsorted(sim_from) if sim_from is not None else 1, 1)
 
@@ -154,8 +157,11 @@ def simulate_risk_sized(df: pd.DataFrame, fast: int, slow: int, capital: float,
     ema_fast = close.ewm(span=fast, adjust=False).mean()
     ema_slow = close.ewm(span=slow, adjust=False).mean()
     above = ema_fast > ema_slow
-    go_long = (above & ~above.shift(1).fillna(False)).to_numpy()
-    go_flat = (~above & above.shift(1).fillna(False)).to_numpy()
+    above_prev = above.shift(1, fill_value=False)
+
+    go_long = (above & ~above_prev).to_numpy()
+
+    go_flat = (~above & above_prev).to_numpy()
     atr = compute_atr(df, atr_period)
 
     start_i = max(df.index.searchsorted(sim_from) if sim_from is not None else 1, 1)
@@ -164,6 +170,7 @@ def simulate_risk_sized(df: pd.DataFrame, fast: int, slow: int, capital: float,
     qty = 0.0
     entry_price = None
     raw_entry_price = None
+    entry_date = None
     stop_price = None
     stop_dist_at_entry = None
     trade_risk_dollar = None
@@ -186,13 +193,15 @@ def simulate_risk_sized(df: pd.DataFrame, fast: int, slow: int, capital: float,
         if in_pos and go_flat[i - 1]:
             exit_fill = open_.iloc[i] * (1 - COMMISSION)
             pnl = qty * (exit_fill - entry_price)
-            trades.append({"pnl": pnl, "r": pnl / trade_risk_dollar, "stopped_out": False})
+            trades.append({"pnl": pnl, "r": pnl / trade_risk_dollar, "stopped_out": False,
+                            "entry_date": entry_date, "exit_date": df.index[i]})
             cash += qty * exit_fill
             qty, in_pos, exited_today = 0.0, False, True
         elif in_pos and low.iloc[i] <= stop_price:
             exit_fill = stop_price * (1 - COMMISSION)
             pnl = qty * (exit_fill - entry_price)
-            trades.append({"pnl": pnl, "r": pnl / trade_risk_dollar, "stopped_out": True})
+            trades.append({"pnl": pnl, "r": pnl / trade_risk_dollar, "stopped_out": True,
+                            "entry_date": entry_date, "exit_date": df.index[i]})
             cash += qty * exit_fill
             qty, in_pos, exited_today = 0.0, False, True
 
@@ -213,6 +222,7 @@ def simulate_risk_sized(df: pd.DataFrame, fast: int, slow: int, capital: float,
                 stop_dist_at_entry = stop_dist
                 trade_risk_dollar = qty * stop_dist
                 be_moved = False
+                entry_date = df.index[i]
                 cash -= qty * entry_fill
                 in_pos = True
 

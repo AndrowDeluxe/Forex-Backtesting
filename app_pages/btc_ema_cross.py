@@ -12,6 +12,8 @@ and a BTC+ETH+SOL diversification test (tested, not adopted - see
 knowledge/resources/trend-following-momentum.md for the full research log).
 """
 
+from pathlib import Path
+
 import pandas as pd
 
 import streamlit as st
@@ -41,9 +43,19 @@ SHEET_START = "2023-07-01"  # the sheet's own tester window
 IS_FRACTION = 0.7
 PARAM_GRID = [(8, 20), (9, 21), (10, 22)]
 
+# Committeter Snapshot statt Live-Binance-Fetch (Fix 2026-08-17): Streamlit
+# Cloud hat nie den lokalen data_cache_crypto/-Cache (gitignored, frischer
+# Checkout pro Deploy) und Binance.com blockiert viele Cloud-IP-Bereiche
+# (HTTP 451/403) - siehe scripts/refresh_btc_ema_cross_data_snapshot.py fuer
+# die volle Begruendung. Live-Fetch bleibt Fallback fuer lokale Entwicklung,
+# falls der Snapshot mal fehlt.
+DATA_SNAPSHOT_PATH = Path(__file__).resolve().parents[1] / "btc_ema_cross" / "data" / "btcusdt_1d_snapshot.parquet"
 
-@st.cache_data(ttl="6h", show_spinner="Lade BTCUSDT Daily-Daten (Binance)...")
+
+@st.cache_data(ttl="6h", show_spinner="Lade BTCUSDT Daily-Daten...")
 def load_data() -> pd.DataFrame:
+    if DATA_SNAPSHOT_PATH.exists():
+        return pd.read_parquet(DATA_SNAPSHOT_PATH)
     return fetch_klines("BTCUSDT", "1d", FULL_START, END)
 
 

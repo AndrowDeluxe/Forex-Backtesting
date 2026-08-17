@@ -33,7 +33,18 @@ try {
     Log "Collector-Fehler: $_"
 }
 
-& git add btc_ema_cross_logs\ 2>&1 | ForEach-Object { Log $_ }
+try {
+    # Haelt btc_ema_cross/data/btcusdt_1d_snapshot.parquet aktuell - der
+    # Streamlit-Cloud-Dashboard-Seite (app_pages/btc_ema_cross.py) fehlt
+    # sonst jede Datenquelle, da Binance.com Cloud-IPs blockiert (siehe
+    # scripts/refresh_btc_ema_cross_data_snapshot.py).
+    $out2 = & python scripts\refresh_btc_ema_cross_data_snapshot.py 2>&1
+    $out2 | ForEach-Object { Log $_ }
+} catch {
+    Log "Snapshot-Refresh-Fehler: $_"
+}
+
+& git add btc_ema_cross_logs\ btc_ema_cross\data\ 2>&1 | ForEach-Object { Log $_ }
 
 & git diff --cached --quiet
 if ($LASTEXITCODE -eq 0) {

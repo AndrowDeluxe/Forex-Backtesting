@@ -24,7 +24,14 @@ from btc_ema_cross.engine import (
     simulate_ema_cross_ls,
     simulate_risk_sized,
 )
-from btc_ema_cross.optimization import kelly_from_trades, simulate_dynamic_vol_scaled, simulate_with_tp_and_filters
+from btc_ema_cross.optimization import (
+    kelly_from_trades,
+    simulate_asymmetric_short,
+    simulate_chandelier_exit,
+    simulate_dynamic_vol_scaled,
+    simulate_volume_exhaustion_exit,
+    simulate_with_tp_and_filters,
+)
 
 st.set_page_config(page_title="BTC EMA9/21 Crossover", page_icon=":material/currency_bitcoin:", layout="wide")
 
@@ -313,7 +320,8 @@ with tab_tested:
     st.caption(
         "Vollständiger Forschungsverlauf: `knowledge/resources/trend-following-momentum.md`. "
         "Reproduzierbar über `scripts/research_ema_9_21_cross_diversified.py`, "
-        "`scripts/research_ema_9_21_cross_multi_asset.py`."
+        "`scripts/research_ema_9_21_cross_multi_asset.py`, "
+        "`scripts/research_ema_9_21_cross_exits.py`."
     )
 
     st.markdown("### EMA9/21 unverändert auf Gold/EURUSD/S&P 500")
@@ -384,6 +392,103 @@ with tab_tested:
         "\"kein TP\", sowohl IS als auch OOS. Erklärung passt zur Kelly-Analyse oben: die Kante lebt "
         "von seltenen großen Gewinnern (AvgWinR 2.3-6.3R) - ein TP kappt genau das. Identisches "
         "Muster wie bei Gold Asian-Range-Breakout. **Kein TP bleibt richtig.**",
+        icon=":material/dangerous:",
+    )
+
+    st.markdown("### Breakeven-Sweep (0.25R - 2.0R)")
+    rows_be = []
+    for belabel, besim in [("IS", None), ("OOS", oos_split_date)]:
+        bepart = full if besim is not None else is_df
+        m0 = simulate_risk_sized(bepart, 9, 21, 100_000.0, 0.01, ATR_PERIOD, ATR_STOP_MULT, be_trigger_r=None, sim_from=besim)
+        rows_be.append({
+            "Fenster": belabel, "BE-Trigger": "Kein BE", "n": m0["n_trades"], "WinRate": f"{m0['win_rate']:.1%}",
+            "PF": f"{m0['profit_factor']:.2f}", "CAGR": f"{m0['cagr']:+.1%}", "MaxDD": f"{m0['max_dd']:.1%}",
+        })
+        for be in [0.25, 0.5, 0.75, 1.0, 1.5, 2.0]:
+            m = simulate_risk_sized(bepart, 9, 21, 100_000.0, 0.01, ATR_PERIOD, ATR_STOP_MULT, be_trigger_r=be, sim_from=besim)
+            rows_be.append({
+                "Fenster": belabel, "BE-Trigger": f"@{be}R", "n": m["n_trades"], "WinRate": f"{m['win_rate']:.1%}",
+                "PF": f"{m['profit_factor']:.2f}", "CAGR": f"{m['cagr']:+.1%}", "MaxDD": f"{m['max_dd']:.1%}",
+            })
+    st.dataframe(pd.DataFrame(rows_be), hide_index=True, width="stretch")
+    st.success(
+        "**Einzige Ausnahme vom Muster \"jeder frühere Exit schadet\"**: BE@0.75-1.0R ist OOS leicht "
+        "POSITIV (PF 1.84→2.06, CAGR +3.6%→+4.0%), obwohl die Win-Rate real sinkt (33%→25-27% - mehr "
+        "Trades werden am Breakeven statt mit Gewinn oder mit vollem Verlust beendet). Kein starker "
+        "Hebel, aber vertretbar als psychologisches Sicherheitsnetz gegen den Fall \"Gewinn wird "
+        "wieder zu Verlust\". **Nicht als Standard übernommen** (Effekt zu klein, um die zusätzliche "
+        "Logik-Komplexität im Live-Scanner zu rechtfertigen), aber die einzige der hier getesteten "
+        "Exit-Varianten, die es wert wäre, bei Bedarf nachzurüsten.",
+        icon=":material/check_circle:",
+    )
+
+    st.markdown("### Chandelier-Trailing-Stop (2.0x - 4.0x ATR)")
+    rows_ch = []
+    for chlabel, chsim in [("IS", None), ("OOS", oos_split_date)]:
+        chpart = full if chsim is not None else is_df
+        for mult in [2.0, 2.5, 3.0, 3.5, 4.0]:
+            m = simulate_chandelier_exit(chpart, 100_000.0, 0.01, ATR_PERIOD, ATR_STOP_MULT, mult, sim_from=chsim)
+            rows_ch.append({
+                "Fenster": chlabel, "Chandelier": f"{mult}x", "n": m["n_trades"], "WinRate": f"{m['win_rate']:.1%}",
+                "PF": f"{m['profit_factor']:.2f}", "CAGR": f"{m['cagr']:+.1%}", "MaxDD": f"{m['max_dd']:.1%}",
+            })
+    st.dataframe(pd.DataFrame(rows_ch), hide_index=True, width="stretch")
+    st.error(
+        "Trailing-Stop auf Basis des höchsten Close seit Entry minus Vielfaches des ATR - zieht den "
+        "Stop nur nach, gibt aber nie mehr Puffer. **Durchgehend schlechter als die feste-Stop-"
+        "Baseline** über jeden getesteten Multiplikator, beide Fenster (bester OOS-Wert 3.0x: PF "
+        "1.75/CAGR +3.1% vs. Baseline PF 1.84/CAGR +3.6%). Gleicher Mechanismus wie beim TP: sichert "
+        "Gewinne vor dem eigentlichen Crossunder und kappt genau die großen Trend-Trades, die die "
+        "Kante ausmachen. **Nicht übernommen.**",
+        icon=":material/dangerous:",
+    )
+
+    st.markdown("### Volumen-Exhaustion-Exit (Tagesvolumen < X% des 20-Tage-Schnitts, ab Y R Gewinn)")
+    rows_ve = []
+    for velabel, vesim in [("IS", None), ("OOS", oos_split_date)]:
+        vepart = full if vesim is not None else is_df
+        for thresh in [0.3, 0.5, 0.7]:
+            for minr in [0.5, 1.0]:
+                m = simulate_volume_exhaustion_exit(vepart, 100_000.0, 0.01, ATR_PERIOD, ATR_STOP_MULT, 20, thresh, minr, sim_from=vesim)
+                rows_ve.append({
+                    "Fenster": velabel, "Vol-Schwelle": f"<{thresh:.0%}", "ab R": f"{minr}R", "n": m["n_trades"],
+                    "PF": f"{m['profit_factor']:.2f}", "CAGR": f"{m['cagr']:+.1%}",
+                })
+    st.dataframe(pd.DataFrame(rows_ve), hide_index=True, width="stretch")
+    st.error(
+        "Exit am nächsten Open, wenn das Tagesvolumen unter die Schwelle fällt UND der Trade "
+        "mindestens Y R im Gewinn ist (\"Teilnahme trocknet aus, Gewinn mitnehmen\"). Bei enger "
+        "Schwelle (<30%) praktisch neutral, weil es kaum auslöst - bei lockereren Schwellen (50-70%) "
+        "klar schädlich (OOS PF 1.84→1.22-1.50). Gleiches Muster wie TP/Chandelier: jeder "
+        "Gewinnsicherungs-Mechanismus vor dem Crossunder schneidet die großen Trend-Trades ab. "
+        "**Nicht übernommen.**",
+        icon=":material/dangerous:",
+    )
+
+    st.markdown("### Kleine Gegenposition am Crossunder statt Flat (0.1x - 1.0x Risiko)")
+    rows_short = []
+    for slabel2, ssim2 in [("IS", None), ("OOS", oos_split_date)]:
+        spart2 = full if ssim2 is not None else is_df
+        m0 = simulate_asymmetric_short(spart2, 100_000.0, 0.01, 0.0, ATR_PERIOD, ATR_STOP_MULT, sim_from=ssim2)
+        rows_short.append({
+            "Fenster": slabel2, "Short-Größe": "Flat (Baseline)", "Short-PnL": "-",
+            "PF": f"{m0['profit_factor']:.2f}", "CAGR": f"{m0['cagr']:+.1%}",
+        })
+        for frac in [0.1, 0.25, 0.5, 0.75, 1.0]:
+            m = simulate_asymmetric_short(spart2, 100_000.0, 0.01, frac, ATR_PERIOD, ATR_STOP_MULT, sim_from=ssim2)
+            rows_short.append({
+                "Fenster": slabel2, "Short-Größe": f"{frac}x", "Short-PnL": f"${m['short_pnl']:+,.0f}",
+                "PF": f"{m['profit_factor']:.2f}", "CAGR": f"{m['cagr']:+.1%}",
+            })
+    st.dataframe(pd.DataFrame(rows_short), hide_index=True, width="stretch")
+    st.error(
+        "Statt am Crossunder flat zu gehen, eine kleine Short-Position eröffnen (analog zur Long-"
+        "Logik, eigener ATR-Stop). Der Short-Leg ist bei **jeder** getesteten Größe negativ, beide "
+        "Fenster, ohne Vorzeichenwechsel über den gesamten Bereich - kein Small-Sample-Zufall, "
+        "sondern ein gleichmäßig mit der Größe skalierender Schaden. Grund: ein Crossunder zeigt nur "
+        "\"Momentum abgekühlt\", nicht zuverlässig \"jetzt beginnt ein Abwärtstrend\" - BTCs "
+        "struktureller Aufwärts-Drift macht das Shorten dieses Signals zu einer Negativ-Erwartungswert"
+        "-Wette. **Flat bleibt strikt besser. Nicht übernommen.**",
         icon=":material/dangerous:",
     )
 

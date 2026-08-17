@@ -1,0 +1,61 @@
+===== run_20260817_155042.log =====
+2026-08-17 15:50:42,651 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260817_155042.log ===
+2026-08-17 15:50:42,707 CRITICAL executor: HALTEDAUER-WARNUNG: Position CMI (Ticket 17679116) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 113.96.
+2026-08-17 15:50:42,708 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 17763558) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -7.00.
+2026-08-17 15:50:42,711 CRITICAL run_once.konto2_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17679116, 'symbol': 'CMI', 'holding_days': 12, 'profit': 113.96}, {'ticket': 17763558, 'symbol': 'REG', 'holding_days': 10, 'profit': -7.0}]
+2026-08-17 15:50:42,869 ERROR run_once.konto2_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-17 15:50:42,874 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260817_163932.log =====
+2026-08-17 16:39:32,967 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260817_163932.log ===
+2026-08-17 16:39:32,994 CRITICAL executor: HALTEDAUER-WARNUNG: Position CMI (Ticket 17679116) ist seit 13 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 111.00.
+2026-08-17 16:39:32,995 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 17763558) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -18.90.
+2026-08-17 16:39:32,998 CRITICAL run_once.konto2_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17679116, 'symbol': 'CMI', 'holding_days': 13, 'profit': 111.0}, {'ticket': 17763558, 'symbol': 'REG', 'holding_days': 10, 'profit': -18.9}]
+2026-08-17 16:39:33,185 ERROR run_once.konto2_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-17 16:39:33,186 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260817_173933.log =====
+2026-08-17 17:39:33,737 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260817_173933.log ===
+2026-08-17 17:39:33,809 CRITICAL executor: HALTEDAUER-WARNUNG: Position CMI (Ticket 17679116) ist seit 13 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 120.40.
+2026-08-17 17:39:33,811 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 17763558) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -16.10.
+2026-08-17 17:39:33,814 CRITICAL run_once.konto2_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17679116, 'symbol': 'CMI', 'holding_days': 13, 'profit': 120.4}, {'ticket': 17763558, 'symbol': 'REG', 'holding_days': 10, 'profit': -16.1}]
+2026-08-17 17:39:33,973 ERROR run_once.konto2_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-17 17:39:33,975 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260817_183932.log =====
+2026-08-17 18:39:32,365 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260817_183932.log ===
+2026-08-17 18:39:32,420 CRITICAL executor: HALTEDAUER-WARNUNG: Position CMI (Ticket 17679116) ist seit 13 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 131.84.
+2026-08-17 18:39:32,422 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 17763558) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -2.10.
+2026-08-17 18:39:32,425 CRITICAL run_once.konto2_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17679116, 'symbol': 'CMI', 'holding_days': 13, 'profit': 131.84}, {'ticket': 17763558, 'symbol': 'REG', 'holding_days': 10, 'profit': -2.1}]
+2026-08-17 18:39:32,673 ERROR run_once.konto2_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-17 18:39:32,675 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260817_193936.log =====
+2026-08-17 19:39:36,630 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260817_193936.log ===
+2026-08-17 19:39:36,648 CRITICAL executor: HALTEDAUER-WARNUNG: Position CMI (Ticket 17679116) ist seit 13 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 136.16.
+2026-08-17 19:39:36,649 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 17763558) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -9.80.
+2026-08-17 19:39:36,651 CRITICAL run_once.konto2_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17679116, 'symbol': 'CMI', 'holding_days': 13, 'profit': 136.16}, {'ticket': 17763558, 'symbol': 'REG', 'holding_days': 10, 'profit': -9.8}]
+2026-08-17 19:39:36,819 ERROR run_once.konto2_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-17 19:39:36,821 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260817_203938.log =====
+2026-08-17 20:39:39,023 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260817_203938.log ===
+2026-08-17 20:39:39,083 CRITICAL executor: HALTEDAUER-WARNUNG: Position CMI (Ticket 17679116) ist seit 13 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 143.96.
+2026-08-17 20:39:39,085 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 17763558) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -11.90.
+2026-08-17 20:39:39,088 CRITICAL run_once.konto2_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17679116, 'symbol': 'CMI', 'holding_days': 13, 'profit': 143.96}, {'ticket': 17763558, 'symbol': 'REG', 'holding_days': 10, 'profit': -11.9}]
+2026-08-17 20:39:39,250 ERROR run_once.konto2_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-17 20:39:39,251 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260817_213934.log =====
+2026-08-17 21:39:34,480 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260817_213934.log ===
+2026-08-17 21:39:34,493 CRITICAL executor: HALTEDAUER-WARNUNG: Position CMI (Ticket 17679116) ist seit 13 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 136.12.
+2026-08-17 21:39:34,495 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 17763558) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 2.10.
+2026-08-17 21:39:34,498 CRITICAL run_once.konto2_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17679116, 'symbol': 'CMI', 'holding_days': 13, 'profit': 136.12}, {'ticket': 17763558, 'symbol': 'REG', 'holding_days': 10, 'profit': 2.1}]
+2026-08-17 21:39:34,671 ERROR run_once.konto2_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-17 21:39:34,672 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===

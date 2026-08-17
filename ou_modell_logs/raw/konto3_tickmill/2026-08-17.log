@@ -1,0 +1,66 @@
+===== run_20260817_155043.log =====
+2026-08-17 15:50:43,076 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260817_155043.log ===
+2026-08-17 15:50:50,481 INFO executor: SL für ROK (Ticket 247635064) auf Break-Even (442.6200) gesetzt.
+2026-08-17 15:50:50,492 INFO run_once.konto3_tickmill: Break-Even-Management: [{'status': 'moved', 'ticket': 247635064, 'symbol': 'ROK', 'sl': 442.62}]
+2026-08-17 15:50:50,494 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -24.67.
+2026-08-17 15:50:50,496 CRITICAL executor: HALTEDAUER-WARNUNG: Position ROK (Ticket 247635064) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 29.42.
+2026-08-17 15:50:50,503 CRITICAL run_once.konto3_tickmill: 2 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 10, 'profit': -24.67}, {'ticket': 247635064, 'symbol': 'ROK', 'holding_days': 10, 'profit': 29.42}]
+2026-08-17 15:50:50,808 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-17 15:50:50,840 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260817_163933.log =====
+2026-08-17 16:39:33,455 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260817_163933.log ===
+2026-08-17 16:39:33,504 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -27.62.
+2026-08-17 16:39:33,505 CRITICAL executor: HALTEDAUER-WARNUNG: Position ROK (Ticket 247635064) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 19.18.
+2026-08-17 16:39:33,510 CRITICAL run_once.konto3_tickmill: 2 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 10, 'profit': -27.62}, {'ticket': 247635064, 'symbol': 'ROK', 'holding_days': 10, 'profit': 19.18}]
+2026-08-17 16:39:33,686 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-17 16:39:33,690 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260817_173934.log =====
+2026-08-17 17:39:34,192 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260817_173934.log ===
+2026-08-17 17:39:34,277 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -26.94.
+2026-08-17 17:39:34,279 CRITICAL executor: HALTEDAUER-WARNUNG: Position ROK (Ticket 247635064) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 13.52.
+2026-08-17 17:39:34,284 CRITICAL run_once.konto3_tickmill: 2 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 10, 'profit': -26.94}, {'ticket': 247635064, 'symbol': 'ROK', 'holding_days': 10, 'profit': 13.52}]
+2026-08-17 17:39:34,453 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-17 17:39:34,455 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260817_183932.log =====
+2026-08-17 18:39:32,950 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260817_183932.log ===
+2026-08-17 18:39:33,022 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -23.47.
+2026-08-17 18:39:33,024 CRITICAL executor: HALTEDAUER-WARNUNG: Position ROK (Ticket 247635064) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 10.64.
+2026-08-17 18:39:33,028 CRITICAL run_once.konto3_tickmill: 2 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 10, 'profit': -23.47}, {'ticket': 247635064, 'symbol': 'ROK', 'holding_days': 10, 'profit': 10.64}]
+2026-08-17 18:39:33,185 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-17 18:39:33,188 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260817_193937.log =====
+2026-08-17 19:39:37,049 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260817_193937.log ===
+2026-08-17 19:39:37,165 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -25.40.
+2026-08-17 19:39:37,166 CRITICAL executor: HALTEDAUER-WARNUNG: Position ROK (Ticket 247635064) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 9.53.
+2026-08-17 19:39:37,168 CRITICAL executor: HALTEDAUER-WARNUNG: Position MNST (Ticket 248361809) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 7.88.
+2026-08-17 19:39:37,171 CRITICAL run_once.konto3_tickmill: 3 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 10, 'profit': -25.4}, {'ticket': 247635064, 'symbol': 'ROK', 'holding_days': 10, 'profit': 9.53}, {'ticket': 248361809, 'symbol': 'MNST', 'holding_days': 10, 'profit': 7.88}]
+2026-08-17 19:39:37,330 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-17 19:39:37,333 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260817_203939.log =====
+2026-08-17 20:39:39,463 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260817_203939.log ===
+2026-08-17 20:39:39,602 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -25.93.
+2026-08-17 20:39:39,603 CRITICAL executor: HALTEDAUER-WARNUNG: Position ROK (Ticket 247635064) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 6.09.
+2026-08-17 20:39:39,605 CRITICAL executor: HALTEDAUER-WARNUNG: Position MNST (Ticket 248361809) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 7.05.
+2026-08-17 20:39:39,608 CRITICAL run_once.konto3_tickmill: 3 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 10, 'profit': -25.93}, {'ticket': 247635064, 'symbol': 'ROK', 'holding_days': 10, 'profit': 6.09}, {'ticket': 248361809, 'symbol': 'MNST', 'holding_days': 10, 'profit': 7.05}]
+2026-08-17 20:39:39,770 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-17 20:39:39,772 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260817_213934.log =====
+2026-08-17 21:39:34,906 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260817_213934.log ===
+2026-08-17 21:39:34,958 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -22.46.
+2026-08-17 21:39:34,960 CRITICAL executor: HALTEDAUER-WARNUNG: Position ROK (Ticket 247635064) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 11.06.
+2026-08-17 21:39:34,961 CRITICAL executor: HALTEDAUER-WARNUNG: Position MNST (Ticket 248361809) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 4.01.
+2026-08-17 21:39:34,965 CRITICAL run_once.konto3_tickmill: 3 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 10, 'profit': -22.46}, {'ticket': 247635064, 'symbol': 'ROK', 'holding_days': 10, 'profit': 11.06}, {'ticket': 248361809, 'symbol': 'MNST', 'holding_days': 10, 'profit': 4.01}]
+2026-08-17 21:39:35,124 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-17 21:39:35,126 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===

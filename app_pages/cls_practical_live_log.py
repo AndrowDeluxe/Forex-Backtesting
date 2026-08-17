@@ -157,15 +157,49 @@ section_title(":material/candlestick_chart: Live-Chart (EUR/USD, M5) -- zum taeg
 st.caption(
     "Oeffentliches TradingView-Standard-Widget, kein Login noetig -- zeigt den echten Live-Kurs. "
     "Dient dem visuellen Abgleich: passt der obige Scan-Status (Break-Richtung, Fractal-Trigger) "
-    "zu dem, was gerade tatsaechlich auf dem Chart passiert?"
+    "zu dem, was gerade tatsaechlich auf dem Chart passiert? Ist heute ein Signal getriggert, "
+    "werden Entry/SL/TP als horizontale Linien direkt im Chart eingezeichnet."
 )
+
+_today_triggered = latest.get("triggered") in (True, "True")
+_lines_js = ""
+if _today_triggered:
+    _entry = latest.get("entry_price")
+    _sl = latest.get("sl")
+    _tp = latest.get("tp")
+    _levels = []
+    if pd.notna(_entry):
+        _levels.append((float(_entry), C_GREEN, f"Entry {float(_entry):.5f}"))
+    if pd.notna(_sl):
+        _levels.append((float(_sl), C_RED, f"SL {float(_sl):.5f}"))
+    if pd.notna(_tp):
+        _levels.append((float(_tp), C_BLUE, f"TP {float(_tp):.5f}"))
+    _shapes_js = "\n".join(
+        f"""
+        w.createShape(
+          {{ time: Math.floor(Date.now()/1000), price: {price} }},
+          {{ shape: "horizontal_line", lock: true, disableSelection: true, disableSave: true,
+             overrides: {{ linecolor: "{color}", linewidth: 2, linestyle: 2,
+                          showLabel: true, textcolor: "{color}", fontsize: 12,
+                          text: "{label}" }} }}
+        );"""
+        for price, color, label in _levels
+    )
+    if _shapes_js:
+        _lines_js = f"""
+      chart.onChartReady(function() {{
+        var w = chart.chart();
+        {_shapes_js}
+      }});
+        """
+
 st.iframe(
-    """
+    f"""
     <div class="tradingview-widget-container" style="height:610px;">
       <div id="cls_live_chart"></div>
       <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
       <script type="text/javascript">
-      new TradingView.widget({
+      var chart = new TradingView.widget({{
         "width": "100%",
         "height": 610,
         "symbol": "OANDA:EURUSD",
@@ -180,12 +214,20 @@ st.iframe(
         "hide_legend": false,
         "save_image": false,
         "container_id": "cls_live_chart"
-      });
+      }});
+      {_lines_js}
       </script>
     </div>
     """,
     height=630,
 )
+if _today_triggered:
+    st.caption(
+        "Hinweis: die eingezeichneten Linien werden bei jedem Seiten-Reload neu (auf 'jetzt') "
+        "gesetzt, da das kostenlose TradingView-Widget keine feste Zeitachsen-Verankerung fuer "
+        "Zeichnungen unterstuetzt -- Preis-Level sind exakt, die horizontale Position/Laenge der "
+        "Linie ist rein optisch."
+    )
 
 section_title("Historie")
 display_log = log.sort_values("date", ascending=False).copy()

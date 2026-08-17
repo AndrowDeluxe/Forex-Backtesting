@@ -1115,6 +1115,11 @@ with tab_live:
         "Limit. GC=F ist der Future, nicht Spot-XAUUSD (kleine Preisabweichung durch "
         "Cost-of-Carry möglich) - trotzdem kein Live-MT5-Zugriff auf ein echtes Konto."
     )
+    st.page_link(
+        "app_pages/gold_asb_live_log.py",
+        label="Zum Gold ASB Live Log (echter Bot-State + TradingView-Chart mit Entry/SL)",
+        icon=":material/rss_feed:",
+    )
 
     latest_df = load_live_data()
     setup = get_latest_setup(latest_df, stop_frac=stop_frac)

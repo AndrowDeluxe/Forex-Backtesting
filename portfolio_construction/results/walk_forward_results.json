@@ -1,0 +1,162 @@
+{
+  "ek": {
+    "split_date": "2023-07-06",
+    "is_range": [
+      "2018-12-04",
+      "2023-07-05"
+    ],
+    "oos_range": [
+      "2023-07-06",
+      "2026-07-27"
+    ],
+    "results": {
+      "maxsharpe_is_fit": {
+        "weights": {
+          "ou_modell": 0.0477,
+          "cls_practical": 0.0986,
+          "btc_ema_cross": 0.1618,
+          "gold_asb": 0.1999,
+          "trend_pullback": 0.0496,
+          "gold_bitcoin_dual_momentum": 0.1092,
+          "orb_strategy": 0.3332
+        },
+        "is_metrics": {
+          "final_equity": 167191.66,
+          "cagr_pct": 11.87,
+          "sharpe": 2.561,
+          "max_dd_pct": -3.06,
+          "calmar": 3.884
+        },
+        "oos_metrics": {
+          "final_equity": 137813.25,
+          "cagr_pct": 11.04,
+          "sharpe": 2.195,
+          "max_dd_pct": -4.84,
+          "calmar": 2.282
+        }
+      },
+      "equal": {
+        "weights": {
+          "ou_modell": 0.1429,
+          "cls_practical": 0.1429,
+          "btc_ema_cross": 0.1429,
+          "gold_asb": 0.1429,
+          "trend_pullback": 0.1429,
+          "gold_bitcoin_dual_momentum": 0.1429,
+          "orb_strategy": 0.1429
+        },
+        "is_metrics": {
+          "final_equity": 177956.25,
+          "cagr_pct": 13.41,
+          "sharpe": 2.204,
+          "max_dd_pct": -7.46,
+          "calmar": 1.798
+        },
+        "oos_metrics": {
+          "final_equity": 164955.11,
+          "cagr_pct": 17.68,
+          "sharpe": 2.833,
+          "max_dd_pct": -4.48,
+          "calmar": 3.949
+        }
+      },
+      "maxsharpe_full_sample": {
+        "weights": {
+          "ou_modell": 0.0602,
+          "cls_practical": 0.1604,
+          "btc_ema_cross": 0.1624,
+          "gold_asb": 0.2433,
+          "trend_pullback": 0.117,
+          "gold_bitcoin_dual_momentum": 0.1195,
+          "orb_strategy": 0.1371
+        },
+        "is_metrics": {
+          "final_equity": 165051.16,
+          "cagr_pct": 11.56,
+          "sharpe": 2.385,
+          "max_dd_pct": -4.38,
+          "calmar": 2.638
+        },
+        "oos_metrics": {
+          "final_equity": 151953.14,
+          "cagr_pct": 14.59,
+          "sharpe": 3.039,
+          "max_dd_pct": -3.25,
+          "calmar": 4.49
+        }
+      }
+    }
+  },
+  "fk": {
+    "split_date": "2022-07-26",
+    "is_range": [
+      "2018-12-01",
+      "2022-07-25"
+    ],
+    "oos_range": [
+      "2022-07-26",
+      "2024-12-31"
+    ],
+    "is_chosen_ttp_combo": {
+      "gold_asb": "2.0%",
+      "cls_practical": "1.5%",
+      "btc_ema_cross": "1.0%",
+      "ou_modell": "1.5%",
+      "trend_pullback": "0.10%"
+    },
+    "is_chosen_ttp_is_perf": {
+      "breach": 0.023666666666666666,
+      "target": 0.901,
+      "days": 235.0
+    },
+    "is_chosen_ttp_oos_perf": {
+      "breach": 0.006333333333333333,
+      "target": 0.8103333333333333,
+      "days": 289.0
+    },
+    "is_chosen_iq_combo": {
+      "gold_asb": "2.0%",
+      "cls_practical": "1.0%",
+      "btc_ema_cross": "1.0%",
+      "ou_modell": "1.5%",
+      "trend_pullback": "0.10%"
+    },
+    "is_chosen_iq_is_perf": {
+      "breach": 0.046,
+      "target": 0.918,
+      "days": 196.0
+    },
+    "is_chosen_iq_oos_perf": {
+      "breach": 0.011,
+      "target": 0.8806666666666667,
+      "days": 254.0
+    },
+    "full_sample_combo": {
+      "gold_asb": "2.0%",
+      "cls_practical": "1.5%",
+      "btc_ema_cross": "2.0%",
+      "ou_modell": "1.5%",
+      "trend_pullback": "0.50%"
+    },
+    "full_sample_combo_oos_ttp": {
+      "breach": 0.005,
+      "target": 0.946,
+      "days": 228.0
+    },
+    "full_sample_combo_oos_iq": {
+      "breach": 0.013,
+      "target": 0.966,
+      "days": 183.0
+    },
+    "equal_reference_combo_oos_ttp": {
+      "breach": 0.008666666666666666,
+      "target": 0.6906666666666667,
+      "days": 324.0
+    },
+    "equal_reference_combo_oos_iq": {
+      "breach": 0.022,
+      "target": 0.8116666666666666,
+      "days": 276.0
+    }
+  }
+}

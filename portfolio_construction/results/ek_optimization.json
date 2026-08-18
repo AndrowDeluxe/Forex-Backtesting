@@ -10,7 +10,7 @@
   },
   "results": {
     "equal": {
-      "label": "Equal-Weight (Baseline)",
+      "label": "Equal-Weight (empfohlen)",
       "weights": {
         "ou_modell": 0.1429,
         "cls_practical": 0.1429,
@@ -67,7 +67,7 @@
       "calmar": 2.667
     },
     "maxsharpe": {
-      "label": "Max-Sharpe (empfohlen)",
+      "label": "Max-Sharpe",
       "weights": {
         "ou_modell": 0.0602,
         "cls_practical": 0.1604,

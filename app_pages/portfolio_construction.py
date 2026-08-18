@@ -242,12 +242,13 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-tab_combined, tab_overlap, tab_ek, tab_fk, tab_ekfast, tab_caveats = st.tabs([
+tab_combined, tab_overlap, tab_ek, tab_fk, tab_ekfast, tab_wf, tab_caveats = st.tabs([
     ":material/query_stats: Kombinierter Backtest",
     ":material/calendar_view_week: Trade-Overlap",
     ":material/savings: EK-Portfolio",
     ":material/shield: FK-Portfolio",
     ":material/bolt: EK-Schnellkonto",
+    ":material/verified: Walk-Forward",
     ":material/report: Einordnung & Vorbehalte",
 ])
 
@@ -435,35 +436,43 @@ with tab_overlap:
 
 # ============================================================ Tab: EK
 with tab_ek:
-    st.caption("Alle 7 Strategien, Mean-Variance/Max-Sharpe-optimiert (long-only, Gewichte summieren zu 100%). Einzige Grenze: 30% Gesamt-Drawdown (psychologisch, kein hartes Limit).")
+    st.caption("Alle 7 Strategien, long-only, Gewichte summieren zu 100%. Einzige Grenze: 30% Gesamt-Drawdown (psychologisch, kein hartes Limit).")
+    st.warning(
+        "**Empfehlung nach Walk-Forward-Test (siehe eigener Tab) umgestellt:** Max-Sharpe schlaegt Equal-Weight "
+        "im echten Out-of-Sample-Test NICHT -- im Gegenteil, Equal-Weight gewinnt auf CAGR, Sharpe und Calmar. "
+        "Klares Ueberanpassungs-Signal der Mean-Variance-Optimierung an verrauschte In-Sample-Kovarianzen. "
+        "**Equal-Weight ist daher jetzt die empfohlene Gewichtung**, Max-Sharpe bleibt als Referenz sichtbar.",
+        icon=":material/verified:",
+    )
+    eq = ek["results"]["equal"]
     msh = ek["results"]["maxsharpe"]
     tile_row([
-        ("CAGR", f"{msh['cagr_pct']:+.1f}%", "good"),
-        ("Sharpe", f"{msh['sharpe']:.2f}", ""),
-        ("Sortino", f"{msh['sortino']:.2f}", ""),
-        ("Calmar", f"{msh['calmar']:.2f}", ""),
-        ("Max Drawdown", f"{msh['max_dd_pct']:.1f}%", "bad"),
-        ("Endkapital", f"${msh['final_equity']:,.0f}", "good"),
+        ("CAGR", f"{eq['cagr_pct']:+.1f}%", "good"),
+        ("Sharpe", f"{eq['sharpe']:.2f}", ""),
+        ("Sortino", f"{eq['sortino']:.2f}", ""),
+        ("Calmar", f"{eq['calmar']:.2f}", ""),
+        ("Max Drawdown", f"{eq['max_dd_pct']:.1f}%", "bad"),
+        ("Endkapital", f"${eq['final_equity']:,.0f}", "good"),
     ])
 
     col1, col2 = st.columns([3, 2])
     with col1:
-        section_title("Max-Sharpe vs. Equal-Weight")
-        eq_curve = combine_rebalanced(ek["results"]["equal"]["weights"], EK_KEYS).resample("W-FRI").last().dropna()
+        section_title("Equal-Weight (empfohlen) vs. Max-Sharpe")
+        eq_curve = combine_rebalanced(eq["weights"], EK_KEYS).resample("W-FRI").last().dropna()
         msh_curve = combine_rebalanced(msh["weights"], EK_KEYS).resample("W-FRI").last().dropna()
-        df1 = msh_curve.rename("value").rename_axis("date").reset_index(); df1["Serie"] = "Max-Sharpe"
-        df2 = eq_curve.rename("value").rename_axis("date").reset_index(); df2["Serie"] = "Equal-Weight"
+        df1 = eq_curve.rename("value").rename_axis("date").reset_index(); df1["Serie"] = "Equal-Weight"
+        df2 = msh_curve.rename("value").rename_axis("date").reset_index(); df2["Serie"] = "Max-Sharpe"
         df_ek = pd.concat([df1, df2])
-        st.altair_chart(line_chart(df_ek, {"Max-Sharpe": (C_BLUE, None), "Equal-Weight": (C_MUTED, (4, 3))}), use_container_width=True)
+        st.altair_chart(line_chart(df_ek, {"Equal-Weight": (C_BLUE, None), "Max-Sharpe": (C_MUTED, (4, 3))}), use_container_width=True)
     with col2:
-        section_title("Kapitalverteilung (Max-Sharpe)")
-        weight_bars(msh["weights"], ek["ek_leg_labels"], color=C_BLUE)
+        section_title("Kapitalverteilung (Equal-Weight)")
+        weight_bars(eq["weights"], ek["ek_leg_labels"], color=C_BLUE)
 
-    section_title("Alternative Gewichtungen im Vergleich")
+    section_title("Alternative Gewichtungen im Vergleich (voller Sample, siehe Walk-Forward-Tab fuer OOS-Test)")
     alt_rows = ""
     for key in ["equal", "riskparity", "minvar", "maxsharpe"]:
         r = ek["results"][key]
-        marker = " &#9733;" if key == "maxsharpe" else ""
+        marker = " &#9733;" if key == "equal" else ""
         alt_rows += (
             f"<tr><td>{r['label']}{marker}</td><td class='pos'>{r['cagr_pct']:+.1f}%</td><td>{r['sharpe']:.2f}</td>"
             f"<td>{r['sortino']:.2f}</td><td class='neg'>{r['max_dd_pct']:.1f}%</td><td>{r['calmar']:.2f}</td>"
@@ -571,9 +580,15 @@ with tab_ekfast:
         unsafe_allow_html=True,
     )
 
-    EKFAST_TITLES = {"maxsharpe": "Max-Sharpe (empfohlen)", "riskparity": "Risk-Parity (ultra-sicher)"}
+    st.warning(
+        "**Empfehlung nach Walk-Forward-Test umgestellt:** im blinden Out-of-Sample-Test schlaegt Equal-Weight "
+        "sowohl Max-Sharpe als auch Risk-Parity (99,0% Zielerreichung, 136 Tage Median, 0,8% Bruch-Risiko) -- "
+        "siehe Walk-Forward-Tab fuer Details.",
+        icon=":material/verified:",
+    )
+    EKFAST_TITLES = {"equal": "Equal-Weight (empfohlen)", "riskparity": "Risk-Parity (ultra-sicher)"}
     col1, col2 = st.columns(2)
-    for col, cand_key, tag, tag_label in [(col1, "maxsharpe", "fast", "empfohlen"), (col2, "riskparity", "safe", "ultra-sicher")]:
+    for col, cand_key, tag, tag_label in [(col1, "equal", "fast", "empfohlen"), (col2, "riskparity", "safe", "ultra-sicher")]:
         mc = ekfast["monte_carlo"][cand_key]
         hist = ekfast["historical_metrics"][cand_key]
         with col:
@@ -591,24 +606,123 @@ with tab_ekfast:
             weight_bars(mc["weights"], ekfast["ek_leg_labels"], color=C_ORANGE if tag == "fast" else C_GREEN)
 
     section_title("Equity-Kurven")
-    ekfast_curves = {}
-    for key in ["maxsharpe", "riskparity"]:
-        if key == "riskparity":
-            w = ekfast["monte_carlo"]["riskparity"]["weights"]
-            curve = combine_rebalanced(w, EK_KEYS).resample("W-FRI").last().dropna()
-        else:
-            pts = load_json("ek_fast_maxsharpe_curve.json")
-            curve = pd.Series({pd.Timestamp(d): v for d, v in pts})
-        ekfast_curves[key] = curve
-    df1 = ekfast_curves["maxsharpe"].rename("value").rename_axis("date").reset_index(); df1["Serie"] = "Max-Sharpe"
-    df2 = ekfast_curves["riskparity"].rename("value").rename_axis("date").reset_index(); df2["Serie"] = "Risk-Parity"
+    pts_equal = load_json("ek_fast_equal_curve.json")
+    curve_equal = pd.Series({pd.Timestamp(d): v for d, v in pts_equal})
+    w_rp = ekfast["monte_carlo"]["riskparity"]["weights"]
+    curve_rp = combine_rebalanced(w_rp, EK_KEYS).resample("W-FRI").last().dropna()
+    df1 = curve_equal.rename("value").rename_axis("date").reset_index(); df1["Serie"] = "Equal-Weight"
+    df2 = curve_rp.rename("value").rename_axis("date").reset_index(); df2["Serie"] = "Risk-Parity"
     df_ekfast = pd.concat([df1, df2])
-    st.altair_chart(line_chart(df_ekfast, {"Max-Sharpe": (C_BLUE, None), "Risk-Parity": (C_GREEN, None)}), use_container_width=True)
+    st.altair_chart(line_chart(df_ekfast, {"Equal-Weight": (C_BLUE, None), "Risk-Parity": (C_GREEN, None)}), use_container_width=True)
     st.caption(
-        "Max-Sharpe erreicht bei diesem strengeren 7%/7%-Ziel eine hoehere Zielerreichungsrate (96,5% vs. 96,0%) "
-        "und ist deutlich schneller (Median 187 vs. 200 Tage) bei nur minimal hoeherer Bruch-Wahrscheinlichkeit "
-        "(0,33% vs. 0,33% -- praktisch identisch) -- klare Empfehlung fuer dieses Szenario."
+        "Equal-Weight erreicht bei diesem strengeren 7%/7%-Ziel die hoechste Zielerreichungsrate (99,0% im "
+        "Out-of-Sample-Test) und ist am schnellsten (Median 136 Tage) bei niedrigem Bruch-Risiko (0,8%) -- "
+        "siehe Walk-Forward-Tab fuer den vollen Vergleich."
     )
+
+# ============================================================ Tab: Walk-Forward
+with tab_wf:
+    wf = load_json("walk_forward_results.json")
+    wf_ekfast = load_json("walk_forward_ekfast.json")
+    st.caption(
+        "Alle Gewichte/Risikostufen wurden bisher auf der KOMPLETTEN Historie optimiert -- klassisches "
+        "Ueberanpassungs-Risiko fuer die Kombinations-Ebene, nicht nur fuer die Einzelstrategien. Test: "
+        "60% der Historie zum Fitten (In-Sample), 40% nie angefasst zum Pruefen (Out-of-Sample)."
+    )
+
+    section_title("EK: Max-Sharpe vs. Equal-Weight vs. Risk-Parity, Out-of-Sample")
+    st.markdown(
+        f"In-Sample: {wf['ek']['is_range'][0]} &ndash; {wf['ek']['is_range'][1]} &middot; "
+        f"Out-of-Sample: {wf['ek']['oos_range'][0]} &ndash; {wf['ek']['oos_range'][1]} (nie beim Fitten verwendet)"
+    )
+    ek_wf_rows = ""
+    for key, label in [("maxsharpe_is_fit", "Max-Sharpe (IS-gefittet)"), ("equal", "Equal-Weight (ungefittet)")]:
+        m = wf["ek"]["results"][key]["oos_metrics"]
+        marker = " &#9733;" if key == "equal" else ""
+        ek_wf_rows += (
+            f"<tr><td>{label}{marker}</td><td class='{'pos' if m['cagr_pct']>=0 else 'neg'}'>{m['cagr_pct']:+.1f}%</td>"
+            f"<td>{m['sharpe']:.2f}</td><td class='neg'>{m['max_dd_pct']:.1f}%</td><td>{m['calmar']:.2f}</td>"
+            f"<td>${m['final_equity']:,.0f}</td></tr>"
+        )
+    st.markdown(
+        f"<table class='pc-table'><thead><tr><th>Gewichtung (Out-of-Sample-Ergebnis)</th><th>CAGR</th>"
+        f"<th>Sharpe</th><th>MaxDD</th><th>Calmar</th><th>Endkapital</th></tr></thead>"
+        f"<tbody>{ek_wf_rows}</tbody></table>",
+        unsafe_allow_html=True,
+    )
+    st.error(
+        "**Max-Sharpe verliert den Out-of-Sample-Test klar** -- Equal-Weight gewinnt auf CAGR, Sharpe und "
+        "Calmar, obwohl (oder gerade weil) es keinerlei In-Sample-Information nutzt. Signatur einer "
+        "ueberangepassten Mean-Variance-Optimierung: die IS-Kovarianzmatrix ist verrauscht, der Optimierer "
+        "gewichtet Strategien hoch, die IS zufaellig gut liefen. Deshalb ist die EK-Empfehlung jetzt "
+        "Equal-Weight statt Max-Sharpe.",
+        icon=":material/report:",
+    )
+
+    section_title("EK-Schnellkonto: gleicher Test unter der 7%/7%-Regel")
+    ekfast_wf_rows = ""
+    for key, label in [("maxsharpe_is_fit", "Max-Sharpe (IS-gefittet)"), ("equal", "Equal-Weight (ungefittet)"), ("riskparity_is_fit", "Risk-Parity (IS-gefittet)")]:
+        m = wf_ekfast[key]
+        marker = " &#9733;" if key == "equal" else ""
+        ekfast_wf_rows += (
+            f"<tr><td>{label}{marker}</td><td class='pos'>{m['p_target']*100:.1f}%</td>"
+            f"<td class='neg'>{m['p_breach']*100:.1f}%</td><td>{m['median_days'] or '—'}</td></tr>"
+        )
+    st.markdown(
+        f"<table class='pc-table'><thead><tr><th>Gewichtung (OOS Monte-Carlo, 7%/7%-Regel)</th>"
+        f"<th>P(Ziel erreicht)</th><th>P(Regel gebrochen)</th><th>Median Tage</th></tr></thead>"
+        f"<tbody>{ekfast_wf_rows}</tbody></table>",
+        unsafe_allow_html=True,
+    )
+    st.caption("Gleiches Muster: Equal-Weight schlaegt Max-Sharpe klar (99,0% vs. 93,9% Zielerreichung), Risk-Parity liegt dazwischen.")
+
+    section_title("FK: risikostufen-optimierte Kombination, In-Sample-Wahl auf Out-of-Sample getestet")
+    st.markdown(
+        f"In-Sample: {wf['fk']['is_range'][0]} &ndash; {wf['fk']['is_range'][1]} &middot; "
+        f"Out-of-Sample: {wf['fk']['oos_range'][0]} &ndash; {wf['fk']['oos_range'][1]}"
+    )
+    fk_wf_rows = [
+        ("IS-gewaehlte Kombo (nur IS-Daten gesehen), auf OOS getestet", wf["fk"]["is_chosen_ttp_oos_perf"]),
+        ("Referenz (alle Strategien beim Ausgangs-Risiko), auf OOS getestet", wf["fk"]["equal_reference_combo_oos_ttp"]),
+        ("Voller-Sample-Kombo (bereits live geschaltet), auf OOS-Fenster getestet", wf["fk"]["full_sample_combo_oos_ttp"]),
+    ]
+    fk_rows_html = ""
+    for label, m in fk_wf_rows:
+        fk_rows_html += (
+            f"<tr><td>{label}</td><td class='pos'>{m['target']*100:.1f}%</td>"
+            f"<td class='neg'>{m['breach']*100:.1f}%</td><td>{m['days'] or '—'}</td></tr>"
+        )
+    st.markdown(
+        f"<table class='pc-table'><thead><tr><th>TTP-Regel (Monte-Carlo auf OOS-Tagen)</th>"
+        f"<th>P(Ziel erreicht)</th><th>P(Regel gebrochen)</th><th>Median Tage</th></tr></thead>"
+        f"<tbody>{fk_rows_html}</tbody></table>",
+        unsafe_allow_html=True,
+    )
+    st.success(
+        "**Anders als bei EK generalisiert die FK-Risikostufen-Suche brauchbar:** die rein auf In-Sample-Daten "
+        "gewaehlte Kombination schlaegt die unoptimierte Referenz auch auf komplett ungesehenen Out-of-Sample-"
+        "Daten deutlich (Zielerreichung 81% vs. 69%, schneller UND sicherer). Es gibt eine gewisse Abschwaechung "
+        "gegenueber der IS-gemessenen Leistung (90%->81% Zielerreichung) -- gesund, kein Kollaps. Vermutliche "
+        "Erklaerung: die FK-Suche waehlt nur zwischen 2 Risikostufen je Strategie (32 grobe Kombinationen), "
+        "waehrend Mean-Variance 7 kontinuierliche Gewichte aus einer verrauschten Kovarianzmatrix schaetzt -- "
+        "grobere, niedriger-dimensionale Entscheidungen ueberpassen sich schwerer an Rauschen.",
+        icon=":material/verified:",
+    )
+
+    section_title("Fazit")
+    st.markdown(
+        """
+- **EK-Portfolio & EK-Schnellkonto**: Empfehlung auf **Equal-Weight** umgestellt (siehe jeweilige Tabs) --
+  Mean-Variance/Max-Sharpe hat den Out-of-Sample-Test klar verloren.
+- **FK-Portfolio**: "Risiko-optimiert" bleibt die Empfehlung -- die Risikostufen-Wahl generalisiert
+  brauchbar, auch wenn die Out-of-Sample-Zahlen etwas schwaecher sind als die In-Sample-Zahlen suggerieren.
+- **Allgemeine Lehre**: grobere, diskrete Optimierungsentscheidungen (wenige Risikostufen-Kandidaten) scheinen
+  robuster als feingranulare kontinuierliche Optimierung (Mean-Variance-Gewichte) auf dieser Datenbasis --
+  passt zur Faustregel, dass Optimierung mit wenigen Freiheitsgraden auf verrauschten Finanzdaten meist
+  besser generalisiert.
+        """
+    )
+
 
 # ============================================================ Tab: Caveats
 with tab_caveats:

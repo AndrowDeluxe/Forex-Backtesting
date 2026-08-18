@@ -1,0 +1,7 @@
+===== run_20260818_155823.log =====
+2026-08-18 15:58:23,482 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260818_155823.log ===
+2026-08-18 15:58:23,755 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 11 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -16.76.
+2026-08-18 15:58:23,761 CRITICAL executor: HALTEDAUER-WARNUNG: Position MNST (Ticket 248361809) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 23.49.
+2026-08-18 15:58:23,771 CRITICAL run_once.konto3_tickmill: 2 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 11, 'profit': -16.76}, {'ticket': 248361809, 'symbol': 'MNST', 'holding_days': 10, 'profit': 23.49}]
+2026-08-18 15:58:24,091 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-18 15:58:24,118 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===

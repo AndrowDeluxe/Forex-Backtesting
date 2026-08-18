@@ -1,0 +1,10 @@
+===== run_20260818_155820.log =====
+2026-08-18 15:58:20,123 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260818_155820.log ===
+2026-08-18 15:58:20,943 ERROR executor: Position CMI (Ticket 17676823) hat einen ungültigen gespeicherten Entry-Preis (0.0000) - BE-Check wird übersprungen, keine SL-Änderung. Metadaten in der State-DB prüfen/korrigieren.
+2026-08-18 15:58:20,971 CRITICAL executor: HALTEDAUER-WARNUNG: Position UPS (Ticket 17530516) ist seit 20 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -129.60.
+2026-08-18 15:58:20,980 CRITICAL executor: HALTEDAUER-WARNUNG: Position CMI (Ticket 17676823) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 113.25.
+2026-08-18 15:58:20,985 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 17744149) ist seit 11 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -98.88.
+2026-08-18 15:58:20,995 CRITICAL executor: HALTEDAUER-WARNUNG: Position D (Ticket 17763555) ist seit 11 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 378.59.
+2026-08-18 15:58:21,007 CRITICAL run_once.konto1_ttp: 4 Position(en) über Haltedauer-Limit: [{'ticket': 17530516, 'symbol': 'UPS', 'holding_days': 20, 'profit': -129.6}, {'ticket': 17676823, 'symbol': 'CMI', 'holding_days': 14, 'profit': 113.25}, {'ticket': 17744149, 'symbol': 'REG', 'holding_days': 11, 'profit': -98.88}, {'ticket': 17763555, 'symbol': 'D', 'holding_days': 11, 'profit': 378.59}]
+2026-08-18 15:58:21,821 ERROR run_once.konto1_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-18 15:58:21,832 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===

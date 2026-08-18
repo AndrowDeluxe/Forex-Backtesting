@@ -1,0 +1,120 @@
+{
+  "ek_leg_labels": {
+    "ou_modell": "OU-Modell",
+    "cls_practical": "CLS Practical",
+    "btc_ema_cross": "BTC EMA9/21",
+    "gold_asb": "Gold ASB",
+    "trend_pullback": "Trend Pullback",
+    "gold_bitcoin_dual_momentum": "Gold-Bitcoin Dual Mom.",
+    "orb_strategy": "ORB (long+ADX)"
+  },
+  "rule": {
+    "daily_loss_cap": null,
+    "total_dd_cap": 0.07,
+    "target_gain": 0.07
+  },
+  "common_window": {
+    "start": "2018-12-01",
+    "end": "2026-07-27"
+  },
+  "monte_carlo": {
+    "equal": {
+      "weights": {
+        "ou_modell": 0.1429,
+        "cls_practical": 0.1429,
+        "btc_ema_cross": 0.1429,
+        "gold_asb": 0.1429,
+        "trend_pullback": 0.1429,
+        "gold_bitcoin_dual_momentum": 0.1429,
+        "orb_strategy": 0.1429
+      },
+      "p_breach": 0.0343,
+      "p_target": 0.9543,
+      "p_neither": 0.0113,
+      "median_days_to_target": 154.0,
+      "p25_days_to_target": 102.0,
+      "p75_days_to_target": 224.5
+    },
+    "riskparity": {
+      "weights": {
+        "ou_modell": 0.0628,
+        "cls_practical": 0.175,
+        "btc_ema_cross": 0.1636,
+        "gold_asb": 0.2125,
+        "trend_pullback": 0.1133,
+        "gold_bitcoin_dual_momentum": 0.0807,
+        "orb_strategy": 0.1921
+      },
+      "p_breach": 0.0033,
+      "p_target": 0.96,
+      "p_neither": 0.0367,
+      "median_days_to_target": 200.0,
+      "p25_days_to_target": 141.0,
+      "p75_days_to_target": 273.0
+    },
+    "minvar": {
+      "weights": {
+        "ou_modell": 0.015,
+        "cls_practical": 0.2151,
+        "btc_ema_cross": 0.1739,
+        "gold_asb": 0.264,
+        "trend_pullback": 0.0748,
+        "gold_bitcoin_dual_momentum": 0.0284,
+        "orb_strategy": 0.2289
+      },
+      "p_breach": 0.0007,
+      "p_target": 0.9127,
+      "p_neither": 0.0867,
+      "median_days_to_target": 244.0,
+      "p25_days_to_target": 176.25,
+      "p75_days_to_target": 320.75
+    },
+    "maxsharpe": {
+      "weights": {
+        "ou_modell": 0.0602,
+        "cls_practical": 0.1604,
+        "btc_ema_cross": 0.1624,
+        "gold_asb": 0.2433,
+        "trend_pullback": 0.117,
+        "gold_bitcoin_dual_momentum": 0.1195,
+        "orb_strategy": 0.1371
+      },
+      "p_breach": 0.0033,
+      "p_target": 0.9653,
+      "p_neither": 0.0313,
+      "median_days_to_target": 187.0,
+      "p25_days_to_target": 128.0,
+      "p75_days_to_target": 261.0
+    }
+  },
+  "historical_metrics": {
+    "equal": {
+      "final_equity": 293547.92,
+      "cagr_pct": 15.13,
+      "sharpe": 2.457,
+      "max_dd_pct": -7.46,
+      "calmar": 2.028
+    },
+    "riskparity": {
+      "final_equity": 234297.23,
+      "cagr_pct": 11.78,
+      "sharpe": 2.593,
+      "max_dd_pct": -3.8,
+      "calmar": 3.098
+    },
+    "minvar": {
+      "final_equity": 196762.89,
+      "cagr_pct": 9.26,
+      "sharpe": 2.264,
+      "max_dd_pct": -3.47,
+      "calmar": 2.667
+    },
+    "maxsharpe": {
+      "final_equity": 250800.43,
+      "cagr_pct": 12.78,
+      "sharpe": 2.643,
+      "max_dd_pct": -4.38,
+      "calmar": 2.917
+    }
+  }
+}

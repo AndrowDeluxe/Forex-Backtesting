@@ -233,17 +233,21 @@ fk = load_json("fk_optimization.json")
 
 st.markdown("## :material/account_balance_wallet: Portfolio-Konstruktion -- EK/FK")
 st.markdown(
-    "<div class='pc-lede'>Aus allen bisher validierten Strategien werden zwei getrennte Portfolios gebaut: "
-    "<b>EK</b> (Eigenkapital, alle 7 Strategien, Rendite-optimiert) und <b>FK</b> (Fremdkapital/Prop-Firm, nur "
-    "die 5 realistisch handelbaren Strategien, auf Regelkonformitaet statt Rendite optimiert). Unten zuerst der "
-    "Ausgangspunkt -- der kombinierte Backtest aller 7 -- dann die beiden abgeleiteten Portfolios.</div>",
+    "<div class='pc-lede'>Aus allen bisher validierten Strategien werden mehrere Portfolios gebaut: "
+    "<b>EK</b> (Eigenkapital, alle 7 Strategien, Rendite-optimiert), <b>FK</b> (Fremdkapital/Prop-Firm, nur "
+    "die 5 realistisch handelbaren Strategien, auf Regelkonformitaet statt Rendite optimiert) und ein "
+    "<b>EK-Schnellkonto</b>-Sonderfall (kleines Konto, Ziel +7% so schnell wie moeglich bei max. 7% Drawdown). "
+    "Unten zuerst der Ausgangspunkt -- der kombinierte Backtest aller 7 -- dann eine Trade-Overlap-Analyse, "
+    "danach die drei abgeleiteten Portfolios.</div>",
     unsafe_allow_html=True,
 )
 
-tab_combined, tab_ek, tab_fk, tab_caveats = st.tabs([
+tab_combined, tab_overlap, tab_ek, tab_fk, tab_ekfast, tab_caveats = st.tabs([
     ":material/query_stats: Kombinierter Backtest",
+    ":material/calendar_view_week: Trade-Overlap",
     ":material/savings: EK-Portfolio",
     ":material/shield: FK-Portfolio",
+    ":material/bolt: EK-Schnellkonto",
     ":material/report: Einordnung & Vorbehalte",
 ])
 
@@ -341,6 +345,94 @@ with tab_combined:
         unsafe_allow_html=True,
     )
 
+# ============================================================ Tab: Trade-Overlap
+with tab_overlap:
+    ov = load_json("overlap_analysis.json")
+    st.caption(
+        "Zeigt, wie oft welche Strategien wirklich gleichzeitig eine Position offen haben -- "
+        "Grundlage fuer die These, dass selten tradende Strategien sich kaum ueberschneiden."
+    )
+    tile_row([
+        ("Ø gleichzeitig aktiv (FK-5)", f"{ov['avg_simultaneous_fk5']:.2f} / 5", ""),
+        ("Tage mit 0 aktiv (FK-5)", f"{ov['dist_simultaneous_fk5'].get('0', 0) / sum(ov['dist_simultaneous_fk5'].values()) * 100:.1f}%", ""),
+        ("Ø aktiv an Verlust-Tagen", f"{ov['loss_day_avg_active_fk5']:.2f}", ""),
+        ("Ø aktiv an Gewinn-Tagen", f"{ov['nonloss_day_avg_active_fk5']:.2f}", ""),
+        ("Korr. Aktivitaet<->Verlusthoehe", f"{ov['corr_activity_vs_loss_magnitude']:.3f}", ""),
+    ])
+    st.info(
+        "**Ehrlicher Befund:** die Korrelation zwischen \"Anzahl gleichzeitig aktiver Strategien\" und der "
+        "Verlusthoehe an einem Tag liegt praktisch bei Null. Mehr gleichzeitige Aktivitaet allein macht einen "
+        "Tag NICHT verlusttraechtiger -- was zaehlt, ist die (bereits an anderer Stelle gezeigte) fast "
+        "nicht vorhandene *Korrelation der Renditen* zwischen den Strategien, nicht wie oft sie gleichzeitig "
+        "im Markt sind. Die geringe Ueberschneidungshaeufigkeit (Ø nur 1,5 von 5 FK-Strategien gleichzeitig "
+        "aktiv, 17% der Tage komplett flach) ist trotzdem ein Grund, warum das Portfolio insgesamt ruhiger "
+        "wirkt als jede Einzelstrategie -- nur eben nicht der Hauptgrund fuer den kleineren Drawdown.",
+        icon=":material/lightbulb:",
+    )
+
+    section_title("Wie viele Strategien sind gleichzeitig aktiv? (woechentlich)")
+    weekly_counts_df = pd.DataFrame(ov["weekly_counts"])
+    weekly_counts_df["date"] = pd.to_datetime(weekly_counts_df["date"])
+    area = alt.Chart(weekly_counts_df).mark_area(color=C_BLUE, opacity=0.35, line={"color": C_BLUE, "strokeWidth": 1.5}).encode(
+        x=alt.X("date:T", title=None, axis=alt.Axis(labelColor=C_MUTED, gridColor=C_GRID, domainColor=C_BORDER)),
+        y=alt.Y("n_active_fk:Q", title=None, axis=alt.Axis(labelColor=C_MUTED, gridColor=C_GRID, domainColor=C_BORDER)),
+        tooltip=["date:T", "n_active_fk:Q", "n_active_all:Q"],
+    ).properties(height=220, background=C_BG).configure_view(strokeWidth=0)
+    st.altair_chart(area, use_container_width=True)
+    st.caption("Anzahl der 5 FK-Strategien mit gleichzeitig offener Position, pro Kalenderwoche (Maximalwert der Woche).")
+
+    section_title("Aktivitaets-Zeitleiste je Strategie (woechentlich)")
+    ribbon_df = pd.read_csv(RESULTS_DIR / "weekly_activity_ribbon.csv", parse_dates=["date"])
+    ribbon_df["Strategie"] = ribbon_df["strategy"].map(ek["ek_leg_labels"])
+    ribbon_df["Aktiv"] = ribbon_df["active"].map({True: "aktiv", False: "inaktiv"})
+    ribbon_chart = alt.Chart(ribbon_df).mark_rect().encode(
+        x=alt.X("date:T", title=None, timeUnit="yearmonth", axis=alt.Axis(labelColor=C_MUTED, domainColor=C_BORDER)),
+        y=alt.Y("Strategie:N", title=None, axis=alt.Axis(labelColor=C_MUTED, domainColor=C_BORDER)),
+        color=alt.Color("active:Q", scale=alt.Scale(range=[C_BG, C_BLUE]), legend=None),
+        tooltip=["date:T", "Strategie:N", "Aktiv:N"],
+    ).properties(height=220, background=C_BG).configure_view(strokeWidth=0)
+    st.altair_chart(ribbon_chart, use_container_width=True)
+    st.caption("Blau = mindestens eine offene Position irgendwo in dieser Strategie in diesem Monat.")
+
+    section_title("Paarweise Ueberschneidung (% der Tage, an denen Zeile UND Spalte aktiv sind, bezogen auf die Zeile)")
+    overlap_matrix = ov["overlap_pct_matrix"]
+    ov_rows = []
+    for a in ek["ek_leg_labels"]:
+        for b in ek["ek_leg_labels"]:
+            ov_rows.append({"A": ek["ek_leg_labels"][a], "B": ek["ek_leg_labels"][b], "pct": overlap_matrix[a][b]})
+    ov_df = pd.DataFrame(ov_rows)
+    ov_heat = alt.Chart(ov_df).mark_rect().encode(
+        x=alt.X("B:N", title=None, axis=alt.Axis(labelColor=C_MUTED, domainColor=C_BORDER, labelAngle=-40)),
+        y=alt.Y("A:N", title=None, axis=alt.Axis(labelColor=C_MUTED, domainColor=C_BORDER)),
+        color=alt.Color("pct:Q", scale=alt.Scale(scheme="blues"), legend=None),
+        tooltip=["A", "B", alt.Tooltip("pct:Q", format=".1f")],
+    )
+    ov_text = alt.Chart(ov_df).mark_text(fontSize=9).encode(
+        x="B:N", y="A:N", text=alt.Text("pct:Q", format=".0f"),
+        color=alt.condition("datum.pct > 40", alt.value("white"), alt.value(C_MUTED)),
+    )
+    st.altair_chart((ov_heat + ov_text).properties(height=340, background=C_BG).configure_view(strokeWidth=0), use_container_width=True)
+    st.caption(
+        "Zeile lesen: \"An X% der Tage, an denen [Zeile] aktiv ist, ist auch [Spalte] aktiv.\" Nicht "
+        "symmetrisch -- eine selten aktive Strategie (z.B. Gold ASB, 2,8% der Tage) hat niedrige Werte in "
+        "beide Richtungen einfach weil sie so selten laeuft."
+    )
+
+    section_title("Aktivitaets-Anteil je Strategie")
+    act_rows = ""
+    for key, label in ek["ek_leg_labels"].items():
+        pct = ov["active_day_pct"][key]
+        n_trades = ov["trade_counts"][key]
+        flag = " &#9733; FK" if key in fk["fk_leg_labels"] else ""
+        act_rows += f"<tr><td>{label}{flag}</td><td>{n_trades}</td><td>{pct:.1f}%</td></tr>"
+    st.markdown(
+        f"<table class='pc-table'><thead><tr><th>Strategie</th><th>Trades</th><th>% der Tage aktiv</th></tr></thead>"
+        f"<tbody>{act_rows}</tbody></table>",
+        unsafe_allow_html=True,
+    )
+    st.caption("Zeitraum 2016-01-01 bis 2026-08-17 (voller Datenbereich aller Strategien).")
+
+
 # ============================================================ Tab: EK
 with tab_ek:
     st.caption("Alle 7 Strategien, Mean-Variance/Max-Sharpe-optimiert (long-only, Gewichte summieren zu 100%). Einzige Grenze: 30% Gesamt-Drawdown (psychologisch, kein hartes Limit).")
@@ -408,11 +500,20 @@ with tab_fk:
             unsafe_allow_html=True,
         )
 
-    CAND_TITLES = {"equal": "Equal-Weight", "equal_ex_trendpullback": "Equal-Weight ohne Trend Pullback"}
-    col1, col2 = st.columns(2)
-    for col, cand_key, tag, tag_label in [(col1, "equal", "safe", "sicher"), (col2, "equal_ex_trendpullback", "fast", "schnell")]:
-        mc = fk["monte_carlo"][rule_key][cand_key]
-        hist = fk["historical_metrics"][cand_key]
+    fk_riskopt = load_json("fk_risk_optimized.json")
+    CAND_TITLES = {"equal": "Equal-Weight", "equal_ex_trendpullback": "Ohne Trend Pullback", "riskopt": "Risiko-optimiert"}
+    col1, col2, col3 = st.columns(3)
+    for col, cand_key, tag, tag_label in [
+        (col1, "equal", "safe", "sicher"), (col2, "equal_ex_trendpullback", "fast", "schnell"), (col3, "riskopt", "fast", "empfohlen"),
+    ]:
+        if cand_key == "riskopt":
+            mc = fk_riskopt["monte_carlo"][rule_key]
+            hist = fk_riskopt["historical_metrics"]
+            weights_for_bars = fk_riskopt["combo"]
+        else:
+            mc = fk["monte_carlo"][rule_key][cand_key]
+            hist = fk["historical_metrics"][cand_key]
+            weights_for_bars = None
         with col:
             st.markdown(
                 f"<div class='pc-candidate'><div class='pc-candidate-head'>"
@@ -421,28 +522,105 @@ with tab_fk:
                 unsafe_allow_html=True,
             )
             outcome_bar(mc["p_target"], mc["p_neither"], mc["p_breach"])
-            c1, c2, c3 = st.columns(3)
+            c1, c2, c3m = st.columns(3)
             c1.metric("Median Tage bis Ziel", f"{mc['median_days_to_target']:.0f}" if mc["median_days_to_target"] else "—")
             c2.metric("Sharpe (historisch)", f"{hist['sharpe']:.2f}")
-            c3.metric("MaxDD (historisch)", f"{hist['max_dd_pct']:.1f}%")
-            weight_bars(mc["weights"], fk["fk_leg_labels"], color=C_GREEN if tag == "safe" else C_ORANGE)
+            c3m.metric("MaxDD (historisch)", f"{hist['max_dd_pct']:.1f}%")
+            if cand_key == "riskopt":
+                st.caption("Eigenes Risiko je Strategie hochgesetzt (siehe unten) statt Gewicht verschoben -- gleiche 20%-Kapitalverteilung wie Equal-Weight.")
+                rows_html = ""
+                for leg_key, risk_label in weights_for_bars.items():
+                    rows_html += (
+                        f"<div class='pc-weight-row' style='grid-template-columns:1fr 60px;'>"
+                        f"<div class='pc-weight-name'>{fk['fk_leg_labels'][leg_key]}</div>"
+                        f"<div class='pc-weight-pct'>{risk_label}</div></div>"
+                    )
+                st.markdown(rows_html, unsafe_allow_html=True)
+                st.caption("Risiko/Trade je Strategie (nicht Kapitalanteil -- der ist bei allen 3 Kandidaten gleich 20%).")
+            else:
+                weight_bars(mc["weights"], fk["fk_leg_labels"], color=C_GREEN if tag == "safe" else C_ORANGE)
 
     section_title("Equity-Kurven der FK-Kandidaten (historischer Zeitraum)")
     eq_fk = combine_rebalanced(fk["monte_carlo"][rule_key]["equal"]["weights"], FK_KEYS).resample("W-FRI").last().dropna()
     gr_fk = combine_rebalanced(fk["monte_carlo"][rule_key]["equal_ex_trendpullback"]["weights"], FK_KEYS).resample("W-FRI").last().dropna()
+    ro_fk = pd.Series(
+        {pd.Timestamp(d): v for d, v in fk_riskopt["weekly_curve"]}
+    ).rename("value").rename_axis("date").reset_index()
     df1 = eq_fk.rename("value").rename_axis("date").reset_index(); df1["Serie"] = "Equal-Weight"
     df2 = gr_fk.rename("value").rename_axis("date").reset_index(); df2["Serie"] = "Ohne Trend Pullback"
-    df_fk = pd.concat([df1, df2])
-    st.altair_chart(line_chart(df_fk, {"Equal-Weight": (C_GREEN, None), "Ohne Trend Pullback": (C_ORANGE, None)}), use_container_width=True)
+    ro_fk["Serie"] = "Risiko-optimiert"
+    df_fk = pd.concat([df1, df2, ro_fk])
+    st.altair_chart(
+        line_chart(df_fk, {"Equal-Weight": (C_GREEN, None), "Ohne Trend Pullback": (C_ORANGE, None), "Risiko-optimiert": (C_BLUE, None)}),
+        use_container_width=True,
+    )
     st.caption(
         f"Historischer Verlauf {fk['common_window']['start']} bis {fk['common_window']['end']} (Zeitraum, in dem OU-Modell-FK-Daten "
         "vorliegen) -- die Monte-Carlo-Werte oben simulieren daraus 500 Handelstage in die Zukunft, nicht diesen Chart direkt."
+    )
+
+# ============================================================ Tab: EK-Schnellkonto
+with tab_ekfast:
+    ekfast = load_json("ek_fast_account.json")
+    st.caption("Sonderfall: kleines EK-Konto, Ziel moeglichst schnell +7% bei max. 7% Gesamt-Drawdown -- alle 7 EK-Strategien, kein Tageslimit.")
+    st.markdown(
+        "<span class='pc-rule-badge'>Gesamt-Drawdown <b>7%</b></span>"
+        "<span class='pc-rule-badge'>Gewinnziel <b>7%</b></span>"
+        "<span class='pc-rule-badge'>Kein Tageslimit</span> "
+        "&mdash; gleiche Monte-Carlo-Methodik wie beim FK-Portfolio, aber auf die volle 7-Strategien-EK-Palette angewandt.",
+        unsafe_allow_html=True,
+    )
+
+    EKFAST_TITLES = {"maxsharpe": "Max-Sharpe (empfohlen)", "riskparity": "Risk-Parity (ultra-sicher)"}
+    col1, col2 = st.columns(2)
+    for col, cand_key, tag, tag_label in [(col1, "maxsharpe", "fast", "empfohlen"), (col2, "riskparity", "safe", "ultra-sicher")]:
+        mc = ekfast["monte_carlo"][cand_key]
+        hist = ekfast["historical_metrics"][cand_key]
+        with col:
+            st.markdown(
+                f"<div class='pc-candidate'><div class='pc-candidate-head'>"
+                f"<span class='pc-candidate-title'>{EKFAST_TITLES[cand_key]}</span>"
+                f"<span class='pc-candidate-tag {tag}'>{tag_label}</span></div></div>",
+                unsafe_allow_html=True,
+            )
+            outcome_bar(mc["p_target"], mc["p_neither"], mc["p_breach"])
+            c1, c2, c3 = st.columns(3)
+            c1.metric("Median Tage bis Ziel", f"{mc['median_days_to_target']:.0f}" if mc["median_days_to_target"] else "—")
+            c2.metric("Sharpe (historisch)", f"{hist['sharpe']:.2f}")
+            c3.metric("MaxDD (historisch)", f"{hist['max_dd_pct']:.1f}%")
+            weight_bars(mc["weights"], ekfast["ek_leg_labels"], color=C_ORANGE if tag == "fast" else C_GREEN)
+
+    section_title("Equity-Kurven")
+    ekfast_curves = {}
+    for key in ["maxsharpe", "riskparity"]:
+        if key == "riskparity":
+            w = ekfast["monte_carlo"]["riskparity"]["weights"]
+            curve = combine_rebalanced(w, EK_KEYS).resample("W-FRI").last().dropna()
+        else:
+            pts = load_json("ek_fast_maxsharpe_curve.json")
+            curve = pd.Series({pd.Timestamp(d): v for d, v in pts})
+        ekfast_curves[key] = curve
+    df1 = ekfast_curves["maxsharpe"].rename("value").rename_axis("date").reset_index(); df1["Serie"] = "Max-Sharpe"
+    df2 = ekfast_curves["riskparity"].rename("value").rename_axis("date").reset_index(); df2["Serie"] = "Risk-Parity"
+    df_ekfast = pd.concat([df1, df2])
+    st.altair_chart(line_chart(df_ekfast, {"Max-Sharpe": (C_BLUE, None), "Risk-Parity": (C_GREEN, None)}), use_container_width=True)
+    st.caption(
+        "Max-Sharpe erreicht bei diesem strengeren 7%/7%-Ziel eine hoehere Zielerreichungsrate (96,5% vs. 96,0%) "
+        "und ist deutlich schneller (Median 187 vs. 200 Tage) bei nur minimal hoeherer Bruch-Wahrscheinlichkeit "
+        "(0,33% vs. 0,33% -- praktisch identisch) -- klare Empfehlung fuer dieses Szenario."
     )
 
 # ============================================================ Tab: Caveats
 with tab_caveats:
     st.markdown(
         """
+- **"Risiko-optimiert" (FK-Tab) erhoeht das Risiko/Trade JE STRATEGIE** (Gold ASB 1%->2%, BTC 1%->2%,
+  OU-Modell 1%->1,5%, CLS Practical 1%->1,5%, Trend Pullback 0,10%->0,50%), nicht den Kapitalanteil --
+  Ergebnis eines gemeinsamen Suchlaufs (Gewicht x Risikostufe je Strategie) ueber 32 Kombinationen mit
+  geteiltem Monte-Carlo-Bootstrap. Bei praktisch gleicher Bruch-Wahrscheinlichkeit (TTP 3,5% vs. 3,4% Referenz)
+  steigt die Zielerreichung von 77%->93% und die Zeit bis zum Ziel sinkt um ~30%. Bestaetigt die These, dass
+  einzelne Strategien wegen der geringen Trade-Ueberschneidung (siehe Trade-Overlap-Tab) mehr Risiko vertragen
+  als ihre jeweils fuer sich genommen "sichere" Kalibrierung nahelegt.
 - **OU-Modell wird durchgaengig NUR mit S&P500 betrachtet** (Nasdaq-100/DAX raus, deren echter Out-of-Sample-
   Sharpe liegt nahe Null/negativ -- nur S&P500 hat einen echten OOS-Edge). Dadurch ist die Einzelkurve
   volatiler/drawdown-staerker als eine ueber 3 Maerkte diversifizierte Version waere (solo MaxDD -37,6% EK,

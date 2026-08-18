@@ -1,0 +1,264 @@
+{
+  "fk_leg_labels": {
+    "gold_asb": "Gold ASB",
+    "ou_modell_fk": "OU-Modell (TTP-Teilmenge)",
+    "cls_practical": "CLS Practical",
+    "btc_ema_cross": "BTC EMA9/21",
+    "trend_pullback_fk": "Trend Pullback (FK1 0.10%)"
+  },
+  "common_window": {
+    "start": "2018-12-01",
+    "end": "2024-12-30"
+  },
+  "rules": {
+    "ttp": {
+      "daily_loss_cap": 0.03,
+      "total_dd_cap": 0.07,
+      "target_gain": 0.1,
+      "label": "TTP (3%/Tag, 7% gesamt, Ziel 10%)"
+    },
+    "iqmarkets": {
+      "daily_loss_cap": null,
+      "total_dd_cap": 0.06,
+      "target_gain": 0.08,
+      "label": "IQ Markets (6% gesamt, Ziel 8%, kein Tageslimit)"
+    }
+  },
+  "monte_carlo": {
+    "ttp": {
+      "equal": {
+        "weights": {
+          "gold_asb": 0.2,
+          "ou_modell_fk": 0.2,
+          "cls_practical": 0.2,
+          "btc_ema_cross": 0.2,
+          "trend_pullback_fk": 0.2
+        },
+        "p_breach": 0.0373,
+        "p_target": 0.7507,
+        "p_neither": 0.212,
+        "median_days_to_target": 291.5,
+        "p25_days_to_target": 214.0,
+        "p75_days_to_target": 375.0
+      },
+      "riskparity": {
+        "weights": {
+          "gold_asb": 0.1116,
+          "ou_modell_fk": 0.0418,
+          "cls_practical": 0.0978,
+          "btc_ema_cross": 0.0825,
+          "trend_pullback_fk": 0.6663
+        },
+        "p_breach": 0.0,
+        "p_target": 0.0513,
+        "p_neither": 0.9487,
+        "median_days_to_target": 438.5,
+        "p25_days_to_target": 410.25,
+        "p75_days_to_target": 470.0
+      },
+      "lowdd": {
+        "weights": {
+          "gold_asb": 0.2922,
+          "ou_modell_fk": 0.0617,
+          "cls_practical": 0.1295,
+          "btc_ema_cross": 0.1129,
+          "trend_pullback_fk": 0.4037
+        },
+        "p_breach": 0.0,
+        "p_target": 0.3987,
+        "p_neither": 0.6013,
+        "median_days_to_target": 390.0,
+        "p25_days_to_target": 320.0,
+        "p75_days_to_target": 447.0
+      },
+      "maxsharpe": {
+        "weights": {
+          "gold_asb": 0.1325,
+          "ou_modell_fk": 0.0436,
+          "cls_practical": 0.057,
+          "btc_ema_cross": 0.1268,
+          "trend_pullback_fk": 0.6402
+        },
+        "p_breach": 0.0,
+        "p_target": 0.1427,
+        "p_neither": 0.8573,
+        "median_days_to_target": 425.5,
+        "p25_days_to_target": 369.75,
+        "p75_days_to_target": 467.0
+      },
+      "growth": {
+        "weights": {
+          "gold_asb": 0.2158,
+          "ou_modell_fk": 0.3299,
+          "cls_practical": 0.1693,
+          "btc_ema_cross": 0.2661,
+          "trend_pullback_fk": 0.019
+        },
+        "p_breach": 0.1577,
+        "p_target": 0.7963,
+        "p_neither": 0.046,
+        "median_days_to_target": 208.0,
+        "p25_days_to_target": 140.0,
+        "p75_days_to_target": 297.0
+      },
+      "equal_ex_trendpullback": {
+        "weights": {
+          "gold_asb": 0.25,
+          "ou_modell_fk": 0.25,
+          "cls_practical": 0.25,
+          "btc_ema_cross": 0.25,
+          "trend_pullback_fk": 0.05
+        },
+        "p_breach": 0.082,
+        "p_target": 0.8157,
+        "p_neither": 0.1023,
+        "median_days_to_target": 242.0,
+        "p25_days_to_target": 170.0,
+        "p75_days_to_target": 330.0
+      }
+    },
+    "iqmarkets": {
+      "equal": {
+        "weights": {
+          "gold_asb": 0.2,
+          "ou_modell_fk": 0.2,
+          "cls_practical": 0.2,
+          "btc_ema_cross": 0.2,
+          "trend_pullback_fk": 0.2
+        },
+        "p_breach": 0.0617,
+        "p_target": 0.831,
+        "p_neither": 0.1073,
+        "median_days_to_target": 243.0,
+        "p25_days_to_target": 171.0,
+        "p75_days_to_target": 329.0
+      },
+      "riskparity": {
+        "weights": {
+          "gold_asb": 0.1116,
+          "ou_modell_fk": 0.0418,
+          "cls_practical": 0.0978,
+          "btc_ema_cross": 0.0825,
+          "trend_pullback_fk": 0.6663
+        },
+        "p_breach": 0.0,
+        "p_target": 0.192,
+        "p_neither": 0.808,
+        "median_days_to_target": 424.0,
+        "p25_days_to_target": 370.0,
+        "p75_days_to_target": 467.0
+      },
+      "lowdd": {
+        "weights": {
+          "gold_asb": 0.2922,
+          "ou_modell_fk": 0.0617,
+          "cls_practical": 0.1295,
+          "btc_ema_cross": 0.1129,
+          "trend_pullback_fk": 0.4037
+        },
+        "p_breach": 0.0,
+        "p_target": 0.5977,
+        "p_neither": 0.4023,
+        "median_days_to_target": 348.0,
+        "p25_days_to_target": 276.0,
+        "p75_days_to_target": 418.0
+      },
+      "maxsharpe": {
+        "weights": {
+          "gold_asb": 0.1325,
+          "ou_modell_fk": 0.0436,
+          "cls_practical": 0.057,
+          "btc_ema_cross": 0.1268,
+          "trend_pullback_fk": 0.6402
+        },
+        "p_breach": 0.0,
+        "p_target": 0.3363,
+        "p_neither": 0.6637,
+        "median_days_to_target": 400.0,
+        "p25_days_to_target": 332.0,
+        "p75_days_to_target": 455.0
+      },
+      "growth": {
+        "weights": {
+          "gold_asb": 0.2158,
+          "ou_modell_fk": 0.3299,
+          "cls_practical": 0.1693,
+          "btc_ema_cross": 0.2661,
+          "trend_pullback_fk": 0.019
+        },
+        "p_breach": 0.1733,
+        "p_target": 0.8087,
+        "p_neither": 0.018,
+        "median_days_to_target": 165.0,
+        "p25_days_to_target": 107.0,
+        "p75_days_to_target": 243.0
+      },
+      "equal_ex_trendpullback": {
+        "weights": {
+          "gold_asb": 0.25,
+          "ou_modell_fk": 0.25,
+          "cls_practical": 0.25,
+          "btc_ema_cross": 0.25,
+          "trend_pullback_fk": 0.05
+        },
+        "p_breach": 0.114,
+        "p_target": 0.8467,
+        "p_neither": 0.0393,
+        "median_days_to_target": 195.0,
+        "p25_days_to_target": 129.0,
+        "p75_days_to_target": 276.25
+      }
+    }
+  },
+  "historical_metrics": {
+    "equal": {
+      "final_equity": 172850.71,
+      "cagr_pct": 9.43,
+      "sharpe": 1.767,
+      "max_dd_pct": -5.27,
+      "calmar": 1.79
+    },
+    "riskparity": {
+      "final_equity": 126642.05,
+      "cagr_pct": 3.97,
+      "sharpe": 2.036,
+      "max_dd_pct": -1.57,
+      "calmar": 2.521
+    },
+    "lowdd": {
+      "final_equity": 143138.52,
+      "cagr_pct": 6.08,
+      "sharpe": 1.918,
+      "max_dd_pct": -2.0,
+      "calmar": 3.041
+    },
+    "maxsharpe": {
+      "final_equity": 131716.31,
+      "cagr_pct": 4.64,
+      "sharpe": 2.12,
+      "max_dd_pct": -1.88,
+      "calmar": 2.471
+    },
+    "growth": {
+      "final_equity": 208328.62,
+      "cagr_pct": 12.85,
+      "sharpe": 1.604,
+      "max_dd_pct": -8.15,
+      "calmar": 1.576
+    },
+    "equal_ex_trendpullback": {
+      "final_equity": 195109.72,
+      "cagr_pct": 11.64,
+      "sharpe": 1.736,
+      "max_dd_pct": -6.46,
+      "calmar": 1.802
+    }
+  },
+  "own_max_dd": {
+    "gold_asb": -5.64,
+    "ou_modell_fk": -26.7,
+    "cls_practical": -12.72,
+    "btc_ema_cross": -14.59,
+    "trend_pullback_fk": -4.08
+  }
+}

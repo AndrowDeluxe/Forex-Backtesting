@@ -91,6 +91,10 @@ asian_range_breakout = st.Page(
     "app_pages/asian_range_breakout.py", title="Gold Asian-Range Breakout", icon=":material/wb_twilight:",
     visibility="hidden",
 )
+portfolio_construction = st.Page(
+    "app_pages/portfolio_construction.py", title="Portfolio-Konstruktion -- EK/FK",
+    icon=":material/account_balance_wallet:", visibility="hidden",
+)
 gold_asb_live_log = st.Page(
     "app_pages/gold_asb_live_log.py", title="Gold ASB -- Live Log", icon=":material/rss_feed:",
     visibility="hidden",
@@ -193,7 +197,7 @@ page = st.navigation(
         # hidden pages -- must still be registered so they stay routable
         education_gold_intraday, education_book_chan, education_kelly,
         ou_modell, orb_forward_test,
-        fertige_strategien, btc_ema_cross, btc_ema_cross_live_log, cls_practical_strategy, cls_practical_live_log, ou_scanner, gold_bitcoin_dual_momentum, asian_range_breakout, gold_asb_live_log,
+        fertige_strategien, btc_ema_cross, btc_ema_cross_live_log, cls_practical_strategy, cls_practical_live_log, ou_scanner, gold_bitcoin_dual_momentum, asian_range_breakout, gold_asb_live_log, portfolio_construction,
         presettle_breakout,
         adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook,
         orb_strategy_page, ou_paper_backtest,

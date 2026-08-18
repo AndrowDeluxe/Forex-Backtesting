@@ -1,37 +1,38 @@
-"""Portfolio Management -- Hauptthema-Seite (Platzhalter).
+"""Portfolio Management -- Hauptthema-Seite.
 
-Sammelt spaeter die Kombination aller Einzelstrategien (BTC-EMA9/21,
-Gold Asian-Range Breakout, CLS Practical/EURUSD, OU-Modell/S&P 500, plus
-zwei noch offene Strategien) zu einem Portfolio mit gemeinsamer
-Kapitalallokation. Architektur-Entscheidung (siehe
-knowledge/resources/trend-following-momentum.md, Nachtrag 2026-08-15):
-Kapital-Allokation statt Risiko-Verwebung -- jede Strategie behaelt ihre
-eigene validierte, unveraenderte Logik auf einem festen Kapitalanteil,
-die $-Equity-Kurven werden summiert. Kein Eingriff in die live laufende
-OU-Modell-Engine.
-
-Pausiert bis die zwei weiteren Strategien feststehen -- noch keine
-Unterseiten/Kacheln, daher kein render_section-Grid, sondern ein reiner
-Status-Hinweis.
+Sammelt die Kombination aller validierten Einzelstrategien (BTC-EMA9/21,
+Gold Asian-Range Breakout, CLS Practical/EURUSD, OU-Modell/S&P 500,
+Trend Pullback, Gold-Bitcoin Dual Momentum, ORB) zu drei Portfolios: der
+kombinierte Backtest aller 7, ein EK-Portfolio (Eigenkapital, Max-Sharpe)
+und ein FK-Portfolio (Fremdkapital/Prop-Firm, Monte-Carlo-optimiert auf
+Regelkonformitaet) -- siehe app_pages/portfolio_construction.py.
+Architektur-Entscheidung (siehe knowledge/resources/
+trend-following-momentum.md, Nachtrag 2026-08-15): Kapital-Allokation
+statt Risiko-Verwebung -- jede Strategie behaelt ihre eigene validierte,
+unveraenderte Logik auf einem festen Kapitalanteil, die $-Equity-Kurven
+werden kombiniert. Kein Eingriff in die live laufenden Bots.
 """
 
 import streamlit as st
 
+from app_pages._section_ui import render_section
+
 st.set_page_config(page_title="Portfolio Management -- Übersicht", page_icon=":material/account_balance_wallet:", layout="wide")
 
-st.caption("SECTION")
-st.markdown("## :material/account_balance_wallet: Portfolio Management")
-st.caption("Kombination aller fertigen Einzelstrategien zu einem gemeinsamen Portfolio")
-st.divider()
-
-st.info(
-    "**Noch im Aufbau.** Hier entsteht die Kombination der bisherigen Einzelstrategien "
-    "(BTC-EMA9/21, Gold Asian-Range Breakout, CLS Practical/EUR-USD, OU-Modell/S&P 500) "
-    "plus zwei weiterer, noch offener Strategien zu einem gemeinsamen Portfolio. "
-    "Pausiert, bis die zwei zusaetzlichen Strategien feststehen.",
-    icon=":material/hourglass_empty:",
+render_section(
+    icon=":material/account_balance_wallet:",
+    title="Portfolio Management",
+    items=[
+        {
+            "page": "app_pages/portfolio_construction.py",
+            "title": "Portfolio-Konstruktion -- EK/FK",
+            "icon": ":material/account_balance_wallet:",
+            "tag": "PORTFOLIO",
+        },
+    ],
 )
 
+st.divider()
 st.markdown("### Architektur-Entscheidung (bereits getroffen)")
 st.markdown(
     """
@@ -49,17 +50,24 @@ Details und Zwischenstand: `knowledge/resources/trend-following-momentum.md`
 """
 )
 
-st.markdown("### Bisher identifizierte Bausteine")
+st.markdown("### Die 7 Bausteine (Stand 2026-08-18)")
 cols = st.columns(2)
 with cols[0]:
     st.markdown(
-        "- **BTC-EMA9/21** (Krypto, Daily) -- getestet, noch keine Streamlit-Seite\n"
-        "- **Gold Asian-Range Breakout** + ADX>=15-Filter -- bereits als eigene "
-        "Fertige-Strategie-Seite vorhanden\n"
+        "- **OU-Modell (S&P 500 only)** -- laeuft live (TTP + Tickmill)\n"
+        "- **CLS Practical (EUR/USD)** -- Demo-Bot (CLS-Practical-Bridge)\n"
+        "- **BTC EMA9/21** -- Dry-Run-Bot, Symbol auf Prop-Konto verifiziert\n"
+        "- **Gold Asian-Range Breakout** -- laeuft live (GoldASB-MT5-Bridge)\n"
     )
 with cols[1]:
     st.markdown(
-        "- **CLS Practical (EUR/USD)** -- bereits als eigene Fertige-Strategie-Seite vorhanden\n"
-        "- **OU-Modell (S&P 500)** -- laeuft live, eigene Fertige-Strategie-Seite vorhanden\n"
-        "- *(zwei weitere Strategien offen)*\n"
+        "- **Trend Pullback** (5 Maerkte) -- Demo-Bots FK1/FK2\n"
+        "- **Gold-Bitcoin Dual Momentum** -- nur EK, Backtest-only (Konzentrationsrisiko)\n"
+        "- **ORB** (long+ADX, NDX/SP500) -- nur EK, Demo-Forward-Test\n"
     )
+st.caption(
+    "FK-Portfolio nutzt nur 5 der 7 (OU-Modell S&P500-only mit TTP-handelbarer Teilmenge, "
+    "CLS Practical, BTC EMA9/21, Gold ASB, Trend Pullback bei FK1-Risikostufe) -- ORB und "
+    "Gold-Bitcoin Dual Momentum sind nicht realistisch FK-tauglich, siehe Vorbehalte-Tab "
+    "auf der Portfolio-Konstruktion-Seite."
+)

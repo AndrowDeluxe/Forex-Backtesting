@@ -1,0 +1,195 @@
+{
+  "per_leg": [
+    {
+      "label": "OU-Modell (SP500 only)",
+      "start": "2018-01-02",
+      "end": "2026-08-14",
+      "years": 8.61,
+      "final_equity": 672261.96,
+      "total_return_pct": 572.26,
+      "cagr_pct": 24.76,
+      "sharpe": 1.211,
+      "sortino": 1.465,
+      "max_dd_pct": -37.61,
+      "calmar": 0.658
+    },
+    {
+      "label": "CLS Practical (EURUSD)",
+      "start": "2018-12-01",
+      "end": "2026-08-11",
+      "years": 7.69,
+      "final_equity": 160393.55,
+      "total_return_pct": 60.39,
+      "cagr_pct": 6.33,
+      "sharpe": 0.736,
+      "sortino": 2.873,
+      "max_dd_pct": -12.72,
+      "calmar": 0.498
+    },
+    {
+      "label": "BTC EMA9/21",
+      "start": "2017-08-17",
+      "end": "2026-08-16",
+      "years": 9.0,
+      "final_equity": 234880.3,
+      "total_return_pct": 134.88,
+      "cagr_pct": 9.96,
+      "sharpe": 1.068,
+      "sortino": 0.98,
+      "max_dd_pct": -14.59,
+      "calmar": 0.682
+    },
+    {
+      "label": "Gold Asian-Range Breakout",
+      "start": "2016-01-03",
+      "end": "2026-07-28",
+      "years": 10.57,
+      "final_equity": 227154.67,
+      "total_return_pct": 127.15,
+      "cagr_pct": 8.08,
+      "sharpe": 1.029,
+      "sortino": 1.115,
+      "max_dd_pct": -5.64,
+      "calmar": 1.433
+    },
+    {
+      "label": "Trend Pullback (5 Maerkte)",
+      "start": "2016-01-01",
+      "end": "2026-08-01",
+      "years": 10.58,
+      "final_equity": 194948.41,
+      "total_return_pct": 94.95,
+      "cagr_pct": 6.51,
+      "sharpe": 0.551,
+      "sortino": 0.637,
+      "max_dd_pct": -35.29,
+      "calmar": 0.185
+    },
+    {
+      "label": "Gold-Bitcoin Dual Momentum",
+      "start": "2018-05-23",
+      "end": "2026-07-29",
+      "years": 8.18,
+      "final_equity": 742301.99,
+      "total_return_pct": 642.3,
+      "cagr_pct": 27.76,
+      "sharpe": 1.396,
+      "sortino": 1.052,
+      "max_dd_pct": -18.45,
+      "calmar": 1.504
+    },
+    {
+      "label": "ORB (long+ADX, NDX/SP500)",
+      "start": "2016-07-28",
+      "end": "2026-07-27",
+      "years": 10.0,
+      "final_equity": 181088.31,
+      "total_return_pct": 81.09,
+      "cagr_pct": 6.12,
+      "sharpe": 0.8,
+      "sortino": 0.303,
+      "max_dd_pct": -12.2,
+      "calmar": 0.502
+    }
+  ],
+  "combined_common_window": {
+    "label": "PORTFOLIO (gemeinsamer Zeitraum, alle 7 aktiv)",
+    "start": "2018-12-01",
+    "end": "2026-07-27",
+    "years": 7.65,
+    "final_equity": 342474.03,
+    "total_return_pct": 286.89,
+    "cagr_pct": 19.34,
+    "sharpe": 1.789,
+    "sortino": 3.08,
+    "max_dd_pct": -8.81,
+    "calmar": 2.195
+  },
+  "combined_union_window": {
+    "label": "PORTFOLIO (volle Historie, gestaffelter Start)",
+    "start": "2016-01-01",
+    "end": "2026-08-16",
+    "years": 10.62,
+    "final_equity": 344718.46,
+    "total_return_pct": 244.72,
+    "cagr_pct": 12.36,
+    "sharpe": 1.75,
+    "sortino": 2.12,
+    "max_dd_pct": -8.81,
+    "calmar": 1.403
+  },
+  "correlation_matrix": {
+    "ou_modell": {
+      "ou_modell": 1.0,
+      "cls_practical": -0.038,
+      "btc_ema_cross": 0.082,
+      "gold_asb": -0.005,
+      "trend_pullback": 0.024,
+      "gold_bitcoin_dual_momentum": 0.046,
+      "orb_strategy": 0.096
+    },
+    "cls_practical": {
+      "ou_modell": -0.038,
+      "cls_practical": 1.0,
+      "btc_ema_cross": -0.015,
+      "gold_asb": 0.013,
+      "trend_pullback": -0.014,
+      "gold_bitcoin_dual_momentum": -0.013,
+      "orb_strategy": 0.001
+    },
+    "btc_ema_cross": {
+      "ou_modell": 0.082,
+      "cls_practical": -0.015,
+      "btc_ema_cross": 1.0,
+      "gold_asb": -0.006,
+      "trend_pullback": 0.016,
+      "gold_bitcoin_dual_momentum": 0.146,
+      "orb_strategy": 0.014
+    },
+    "gold_asb": {
+      "ou_modell": -0.005,
+      "cls_practical": 0.013,
+      "btc_ema_cross": -0.006,
+      "gold_asb": 1.0,
+      "trend_pullback": -0.002,
+      "gold_bitcoin_dual_momentum": -0.01,
+      "orb_strategy": -0.0
+    },
+    "trend_pullback": {
+      "ou_modell": 0.024,
+      "cls_practical": -0.014,
+      "btc_ema_cross": 0.016,
+      "gold_asb": -0.002,
+      "trend_pullback": 1.0,
+      "gold_bitcoin_dual_momentum": 0.039,
+      "orb_strategy": 0.002
+    },
+    "gold_bitcoin_dual_momentum": {
+      "ou_modell": 0.046,
+      "cls_practical": -0.013,
+      "btc_ema_cross": 0.146,
+      "gold_asb": -0.01,
+      "trend_pullback": 0.039,
+      "gold_bitcoin_dual_momentum": 1.0,
+      "orb_strategy": 0.006
+    },
+    "orb_strategy": {
+      "ou_modell": 0.096,
+      "cls_practical": 0.001,
+      "btc_ema_cross": 0.014,
+      "gold_asb": -0.0,
+      "trend_pullback": 0.002,
+      "gold_bitcoin_dual_momentum": 0.006,
+      "orb_strategy": 1.0
+    }
+  },
+  "leg_labels": {
+    "ou_modell": "OU-Modell (SP500 only)",
+    "cls_practical": "CLS Practical (EURUSD)",
+    "btc_ema_cross": "BTC EMA9/21",
+    "gold_asb": "Gold Asian-Range Breakout",
+    "trend_pullback": "Trend Pullback (5 Maerkte)",
+    "gold_bitcoin_dual_momentum": "Gold-Bitcoin Dual Momentum",
+    "orb_strategy": "ORB (long+ADX, NDX/SP500)"
+  }
+}

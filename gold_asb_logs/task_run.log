@@ -110,3 +110,8 @@
 2026-08-17 23:00:07    b912129..c5af113  main -> main
 2026-08-17 23:00:07 Commit + Push erfolgreich.
 2026-08-17 23:00:07 === Gold-ASB-Scan-Task beendet ===
+2026-08-18 11:29:54 === Gold-ASB-Scan-Task gestartet ===
+2026-08-18 11:30:27 Gold ASB (BeyondIQCapital Demo/Eval): 6 Fenster gelesen (C:\Users\andre\GoldASB-MT5-Bridge\state\goldasb_beyondiq.sqlite3).
+2026-08-18 11:30:27 
+2026-08-18 11:30:27 Aktuellstes Fenster: 2026-08-18T01:00:00-04:00 -- Trend/Silber uneinig
+2026-08-18 11:30:27 Gespeichert: C:\Users\andre\Forex-Backtesting\gold_asb_logs\daily_log.csv

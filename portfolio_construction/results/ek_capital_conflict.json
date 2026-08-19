@@ -1,0 +1,274 @@
+{
+  "leg_labels": {
+    "gold_asb": "Gold ASB",
+    "cls_practical": "CLS Practical",
+    "btc_ema_cross": "BTC EMA9/21",
+    "ou_modell": "OU-Modell (voll)",
+    "trend_pullback": "Trend Pullback",
+    "gold_bitcoin_dual_momentum": "Gold-Bitcoin Dual Mom.",
+    "orb_strategy": "ORB (long+ADX)"
+  },
+  "capital_weight_per_leg": 0.14285714285714285,
+  "scenarios": {
+    "reference": {
+      "risk_pcts": {
+        "gold_asb": 0.01,
+        "cls_practical": 0.01,
+        "btc_ema_cross": 0.01,
+        "ou_modell": 0.01,
+        "trend_pullback": 0.001,
+        "gold_bitcoin_dual_momentum": 0.01,
+        "orb_strategy": 0.01
+      },
+      "max_pct": 3.71,
+      "p95_pct": 2.57,
+      "median_active_pct": 1.29,
+      "days_gt5pct": 0,
+      "days_gt10pct": 0,
+      "active_days": 3379,
+      "total_days": 3867,
+      "top10_days": [
+        {
+          "date": "2021-11-26",
+          "open_risk_pct": 3.71,
+          "active_legs": [
+            "OU-Modell (voll)",
+            "Gold-Bitcoin Dual Mom."
+          ]
+        },
+        {
+          "date": "2024-11-06",
+          "open_risk_pct": 3.57,
+          "active_legs": [
+            "BTC EMA9/21",
+            "OU-Modell (voll)",
+            "Gold-Bitcoin Dual Mom.",
+            "ORB (long+ADX)"
+          ]
+        },
+        {
+          "date": "2018-02-05",
+          "open_risk_pct": 3.57,
+          "active_legs": [
+            "OU-Modell (voll)"
+          ]
+        },
+        {
+          "date": "2018-10-10",
+          "open_risk_pct": 3.44,
+          "active_legs": [
+            "BTC EMA9/21",
+            "OU-Modell (voll)",
+            "Trend Pullback",
+            "Gold-Bitcoin Dual Mom."
+          ]
+        },
+        {
+          "date": "2021-05-12",
+          "open_risk_pct": 3.33,
+          "active_legs": [
+            "BTC EMA9/21",
+            "OU-Modell (voll)",
+            "Trend Pullback",
+            "Gold-Bitcoin Dual Mom."
+          ]
+        },
+        {
+          "date": "2024-09-19",
+          "open_risk_pct": 3.33,
+          "active_legs": [
+            "CLS Practical",
+            "BTC EMA9/21",
+            "OU-Modell (voll)",
+            "Trend Pullback",
+            "Gold-Bitcoin Dual Mom.",
+            "ORB (long+ADX)"
+          ]
+        },
+        {
+          "date": "2021-06-17",
+          "open_risk_pct": 3.29,
+          "active_legs": [
+            "CLS Practical",
+            "OU-Modell (voll)",
+            "Gold-Bitcoin Dual Mom."
+          ]
+        },
+        {
+          "date": "2021-08-18",
+          "open_risk_pct": 3.29,
+          "active_legs": [
+            "BTC EMA9/21",
+            "OU-Modell (voll)",
+            "Gold-Bitcoin Dual Mom."
+          ]
+        },
+        {
+          "date": "2020-02-04",
+          "open_risk_pct": 3.29,
+          "active_legs": [
+            "BTC EMA9/21",
+            "OU-Modell (voll)",
+            "Gold-Bitcoin Dual Mom.",
+            "ORB (long+ADX)"
+          ]
+        },
+        {
+          "date": "2020-02-25",
+          "open_risk_pct": 3.17,
+          "active_legs": [
+            "BTC EMA9/21",
+            "OU-Modell (voll)",
+            "Trend Pullback",
+            "Gold-Bitcoin Dual Mom."
+          ]
+        }
+      ],
+      "histogram": {
+        "0-1%": 1528,
+        "1-2%": 666,
+        "2-3%": 1155,
+        "3-5%": 30,
+        "5-7%": 0,
+        "7-10%": 0,
+        "10-15%": 0,
+        ">15%": 0
+      }
+    },
+    "risk_optimized": {
+      "risk_pcts": {
+        "gold_asb": 0.02,
+        "cls_practical": 0.015,
+        "btc_ema_cross": 0.02,
+        "ou_modell": 0.005,
+        "trend_pullback": 0.001,
+        "gold_bitcoin_dual_momentum": 0.02,
+        "orb_strategy": 0.015
+      },
+      "max_pct": 2.5,
+      "p95_pct": 1.71,
+      "median_active_pct": 0.93,
+      "days_gt5pct": 0,
+      "days_gt10pct": 0,
+      "active_days": 3379,
+      "total_days": 3867,
+      "top10_days": [
+        {
+          "date": "2024-11-06",
+          "open_risk_pct": 2.5,
+          "active_legs": [
+            "BTC EMA9/21",
+            "OU-Modell (voll)",
+            "Gold-Bitcoin Dual Mom.",
+            "ORB (long+ADX)"
+          ]
+        },
+        {
+          "date": "2024-09-19",
+          "open_risk_pct": 2.4,
+          "active_legs": [
+            "CLS Practical",
+            "BTC EMA9/21",
+            "OU-Modell (voll)",
+            "Trend Pullback",
+            "Gold-Bitcoin Dual Mom.",
+            "ORB (long+ADX)"
+          ]
+        },
+        {
+          "date": "2020-02-04",
+          "open_risk_pct": 2.36,
+          "active_legs": [
+            "BTC EMA9/21",
+            "OU-Modell (voll)",
+            "Gold-Bitcoin Dual Mom.",
+            "ORB (long+ADX)"
+          ]
+        },
+        {
+          "date": "2019-09-11",
+          "open_risk_pct": 2.29,
+          "active_legs": [
+            "BTC EMA9/21",
+            "OU-Modell (voll)",
+            "Gold-Bitcoin Dual Mom.",
+            "ORB (long+ADX)"
+          ]
+        },
+        {
+          "date": "2019-05-03",
+          "open_risk_pct": 2.21,
+          "active_legs": [
+            "BTC EMA9/21",
+            "OU-Modell (voll)",
+            "Gold-Bitcoin Dual Mom.",
+            "ORB (long+ADX)"
+          ]
+        },
+        {
+          "date": "2024-11-05",
+          "open_risk_pct": 2.21,
+          "active_legs": [
+            "BTC EMA9/21",
+            "OU-Modell (voll)",
+            "Gold-Bitcoin Dual Mom.",
+            "ORB (long+ADX)"
+          ]
+        },
+        {
+          "date": "2024-11-01",
+          "open_risk_pct": 2.21,
+          "active_legs": [
+            "CLS Practical",
+            "BTC EMA9/21",
+            "OU-Modell (voll)",
+            "Gold-Bitcoin Dual Mom.",
+            "ORB (long+ADX)"
+          ]
+        },
+        {
+          "date": "2024-06-12",
+          "open_risk_pct": 2.21,
+          "active_legs": [
+            "BTC EMA9/21",
+            "OU-Modell (voll)",
+            "Gold-Bitcoin Dual Mom.",
+            "ORB (long+ADX)"
+          ]
+        },
+        {
+          "date": "2023-05-05",
+          "open_risk_pct": 2.19,
+          "active_legs": [
+            "BTC EMA9/21",
+            "OU-Modell (voll)",
+            "Trend Pullback",
+            "Gold-Bitcoin Dual Mom.",
+            "ORB (long+ADX)"
+          ]
+        },
+        {
+          "date": "2019-03-20",
+          "open_risk_pct": 2.17,
+          "active_legs": [
+            "BTC EMA9/21",
+            "OU-Modell (voll)",
+            "Trend Pullback",
+            "Gold-Bitcoin Dual Mom.",
+            "ORB (long+ADX)"
+          ]
+        }
+      ],
+      "histogram": {
+        "0-1%": 1785,
+        "1-2%": 1556,
+        "2-3%": 38,
+        "3-5%": 0,
+        "5-7%": 0,
+        "7-10%": 0,
+        "10-15%": 0,
+        ">15%": 0
+      }
+    }
+  }
+}

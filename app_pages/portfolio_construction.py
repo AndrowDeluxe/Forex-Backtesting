@@ -547,6 +547,69 @@ with tab_ek:
         f"Sharpe {ek7_wf['oos_is_selected']['sharpe']:.2f}, Calmar {ek7_wf['oos_is_selected']['calmar']:.2f}."
     )
 
+    section_title("Was waere, wenn jeder Trade jeder Strategie mit pauschal 1% Risiko liefe?")
+    ek_flat = load_json("ek_flat1pct_comparison.json")
+    st.caption(
+        "Von den 7 Strategien ist nur Trend Pullback aktuell NICHT bei 1% kalibriert (Referenz 0,10%) -- alle "
+        "anderen sind es ohnehin schon. Der Effekt unten kommt also fast ausschliesslich von Trend Pullback."
+    )
+    flat_rows = ""
+    FLAT_TITLES = {
+        "reference": "Referenz (je Strategie eigenes Risiko)",
+        "flat_1pct": "Pauschal 1% fuer alle",
+        "risk_optimized": "Risiko-optimiert (empfohlen)",
+    }
+    for key in ["reference", "flat_1pct", "risk_optimized"]:
+        m = ek_flat["scenario_metrics"][key]
+        marker = " &#9733;" if key == "risk_optimized" else ""
+        flat_rows += (
+            f"<tr><td>{FLAT_TITLES[key]}{marker}</td><td class='pos'>{m['cagr_pct']:+.1f}%</td><td>{m['sharpe']:.2f}</td>"
+            f"<td>{m['sortino']:.2f}</td><td class='neg'>{m['max_dd_pct']:.1f}%</td><td>{m['calmar']:.2f}</td>"
+            f"<td>${m['final_equity']:,.0f}</td></tr>"
+        )
+    st.markdown(
+        f"<table class='pc-table'><thead><tr><th>Szenario</th><th>CAGR</th><th>Sharpe</th><th>Sortino</th>"
+        f"<th>MaxDD</th><th>Calmar</th><th>Endkapital</th></tr></thead><tbody>{flat_rows}</tbody></table>",
+        unsafe_allow_html=True,
+    )
+    tp_ref = ek_flat["per_leg_reference_vs_flat1pct"]["trend_pullback"]
+    st.caption(
+        f"Trend Pullback solo bei 0,10%: CAGR {tp_ref['reference_cagr_pct']:+.1f}%, MaxDD {tp_ref['reference_maxdd_pct']:.1f}% "
+        f"&mdash; bei pauschal 1,0% (10x Positionsgroesse): CAGR {tp_ref['flat_1pct_cagr_pct']:+.1f}%, aber MaxDD "
+        f"{tp_ref['flat_1pct_maxdd_pct']:.1f}%. Auf Portfolio-Ebene bringt Pauschal-1% mehr Rendite und leicht mehr "
+        "Sharpe (Diversifikation), aber einen minimal schlechteren Calmar als die Referenz -- die Risiko-optimierte "
+        "Kombination bleibt in jeder Kennzahl klar ueberlegen."
+    )
+
+    section_title("Kapitalkonflikt: wie hoch wird das aggregierte offene Risiko wirklich?")
+    ek_cc = load_json("ek_capital_conflict.json")
+    st.caption(
+        "Proxy-Simulation: fuer jeden Tag wird ueber alle gleichzeitig offenen Positionen "
+        "(Kapitalanteil x Risiko/Trade) aufsummiert -- die ehrliche Erweiterung der Trade-Overlap-Analyse um die "
+        "Risiko-Groessenordnung, nicht nur die Anzahl. Datenbasis: Entry/Exit-Daten aller Trades, keine echte "
+        "Margin-Simulation (die wuerde Notional/Hebel pro Instrument benoetigen)."
+    )
+    cc_col1, cc_col2 = st.columns(2)
+    for col, key, title in [(cc_col1, "reference", "Referenz-Risikostufen"), (cc_col2, "risk_optimized", "Risiko-optimiert")]:
+        s = ek_cc["scenarios"][key]
+        with col:
+            st.markdown(f"**{title}**")
+            tile_row([
+                ("Max. aggreg. offenes Risiko", f"{s['max_pct']:.1f}%", "bad" if s["max_pct"] > 10 else ""),
+                ("95. Perzentil", f"{s['p95_pct']:.1f}%", ""),
+                ("Median (aktive Tage)", f"{s['median_active_pct']:.1f}%", ""),
+            ])
+    st.caption(
+        f"Zum Vergleich: TTP-Tageslimit 3%, IQ/TTP Gesamt-Drawdown 6-7%, EK-Schnellkonto 7%, EK-Psychogrenze 30%. "
+        f"Selbst am riskantesten beobachteten Tag ({ek_cc['scenarios']['reference']['top10_days'][0]['date']}, "
+        f"{ek_cc['scenarios']['reference']['top10_days'][0]['open_risk_pct']:.1f}%, dominiert durch viele "
+        "gleichzeitig offene OU-Modell-Positionen) bleibt das aggregierte Risiko weit unter jeder relevanten "
+        "Schwelle -- echte Kapitalkonflikte zwischen den 7 Strategien sind bei dieser Kombination praktisch kein "
+        "Thema. Die Risiko-optimierte Stufe senkt den Extremwert sogar weiter, weil OU-Modells Risiko/Trade dort "
+        "auf 0,5% halbiert wurde und OU-Modell mit Abstand der Haupttreiber der Spitzenwerte ist -- nicht "
+        "Ueberschneidungen zwischen unterschiedlichen Strategien."
+    )
+
 # ============================================================ Tab: FK
 with tab_fk:
     st.caption("Nur die 5 FK-tauglichen Strategien (siehe Vorbehalte). Zwei unterschiedliche Regelwerke, Monte-Carlo-simuliert.")

@@ -1,0 +1,636 @@
+{
+  "ek": {
+    "leg_labels": {
+      "ou_modell": "OU-Modell",
+      "cls_practical": "CLS Practical",
+      "btc_ema_cross": "BTC EMA9/21",
+      "gold_asb": "Gold ASB",
+      "trend_pullback": "Trend Pullback",
+      "gold_bitcoin_dual_momentum": "Gold-Bitcoin Dual Mom.",
+      "orb_strategy": "ORB (long+ADX)"
+    },
+    "full_sample_avg_corr": 0.018,
+    "crises": {
+      "covid_crash": {
+        "label": "COVID-Crash",
+        "start": "2020-02-20",
+        "end": "2020-04-07",
+        "n_days": 48,
+        "avg_corr": 0.062,
+        "full_sample_avg_corr": 0.018,
+        "delta_corr": 0.044,
+        "portfolio_dd_pct": -7.14
+      },
+      "bear_2022": {
+        "label": "2022 Baerenmarkt/Zinswende",
+        "start": "2022-01-03",
+        "end": "2022-10-15",
+        "n_days": 286,
+        "avg_corr": 0.007,
+        "full_sample_avg_corr": 0.018,
+        "delta_corr": -0.012,
+        "portfolio_dd_pct": -2.52
+      },
+      "svb_crisis": {
+        "label": "SVB-Bankenkrise",
+        "start": "2023-03-08",
+        "end": "2023-03-20",
+        "n_days": 13,
+        "avg_corr": NaN,
+        "full_sample_avg_corr": 0.018,
+        "delta_corr": NaN,
+        "portfolio_dd_pct": -0.2
+      },
+      "yen_unwind": {
+        "label": "Yen-Carry-Unwind",
+        "start": "2024-08-01",
+        "end": "2024-08-09",
+        "n_days": 9,
+        "avg_corr": NaN,
+        "full_sample_avg_corr": 0.018,
+        "delta_corr": NaN,
+        "portfolio_dd_pct": -1.8
+      }
+    },
+    "regime_test": {
+      "calm_avg_corr": -0.001,
+      "stress_avg_corr": 0.027,
+      "delta": 0.028,
+      "n_calm": 694,
+      "n_stress": 694
+    },
+    "crisis_matrices": {
+      "covid_crash": {
+        "ou_modell": {
+          "ou_modell": 1.0,
+          "cls_practical": 0.059,
+          "btc_ema_cross": 0.497,
+          "gold_asb": -0.036,
+          "trend_pullback": 0.15,
+          "gold_bitcoin_dual_momentum": 0.024,
+          "orb_strategy": 0.081
+        },
+        "cls_practical": {
+          "ou_modell": 0.059,
+          "cls_practical": 1.0,
+          "btc_ema_cross": 0.029,
+          "gold_asb": -0.025,
+          "trend_pullback": -0.258,
+          "gold_bitcoin_dual_momentum": -0.014,
+          "orb_strategy": 0.022
+        },
+        "btc_ema_cross": {
+          "ou_modell": 0.497,
+          "cls_practical": 0.029,
+          "btc_ema_cross": 1.0,
+          "gold_asb": 0.134,
+          "trend_pullback": 0.162,
+          "gold_bitcoin_dual_momentum": 0.255,
+          "orb_strategy": 0.021
+        },
+        "gold_asb": {
+          "ou_modell": -0.036,
+          "cls_practical": -0.025,
+          "btc_ema_cross": 0.134,
+          "gold_asb": 1.0,
+          "trend_pullback": 0.025,
+          "gold_bitcoin_dual_momentum": 0.035,
+          "orb_strategy": -0.018
+        },
+        "trend_pullback": {
+          "ou_modell": 0.15,
+          "cls_practical": -0.258,
+          "btc_ema_cross": 0.162,
+          "gold_asb": 0.025,
+          "trend_pullback": 1.0,
+          "gold_bitcoin_dual_momentum": 0.12,
+          "orb_strategy": 0.021
+        },
+        "gold_bitcoin_dual_momentum": {
+          "ou_modell": 0.024,
+          "cls_practical": -0.014,
+          "btc_ema_cross": 0.255,
+          "gold_asb": 0.035,
+          "trend_pullback": 0.12,
+          "gold_bitcoin_dual_momentum": 1.0,
+          "orb_strategy": 0.02
+        },
+        "orb_strategy": {
+          "ou_modell": 0.081,
+          "cls_practical": 0.022,
+          "btc_ema_cross": 0.021,
+          "gold_asb": -0.018,
+          "trend_pullback": 0.021,
+          "gold_bitcoin_dual_momentum": 0.02,
+          "orb_strategy": 1.0
+        }
+      },
+      "bear_2022": {
+        "ou_modell": {
+          "ou_modell": 1.0,
+          "cls_practical": -0.035,
+          "btc_ema_cross": 0.068,
+          "gold_asb": -0.007,
+          "trend_pullback": 0.018,
+          "gold_bitcoin_dual_momentum": 0.055,
+          "orb_strategy": 0.054
+        },
+        "cls_practical": {
+          "ou_modell": -0.035,
+          "cls_practical": 1.0,
+          "btc_ema_cross": 0.051,
+          "gold_asb": -0.021,
+          "trend_pullback": 0.145,
+          "gold_bitcoin_dual_momentum": -0.097,
+          "orb_strategy": -0.004
+        },
+        "btc_ema_cross": {
+          "ou_modell": 0.068,
+          "cls_practical": 0.051,
+          "btc_ema_cross": 1.0,
+          "gold_asb": -0.116,
+          "trend_pullback": -0.011,
+          "gold_bitcoin_dual_momentum": 0.052,
+          "orb_strategy": 0.007
+        },
+        "gold_asb": {
+          "ou_modell": -0.007,
+          "cls_practical": -0.021,
+          "btc_ema_cross": -0.116,
+          "gold_asb": 1.0,
+          "trend_pullback": -0.041,
+          "gold_bitcoin_dual_momentum": 0.003,
+          "orb_strategy": -0.002
+        },
+        "trend_pullback": {
+          "ou_modell": 0.018,
+          "cls_practical": 0.145,
+          "btc_ema_cross": -0.011,
+          "gold_asb": -0.041,
+          "trend_pullback": 1.0,
+          "gold_bitcoin_dual_momentum": 0.046,
+          "orb_strategy": -0.014
+        },
+        "gold_bitcoin_dual_momentum": {
+          "ou_modell": 0.055,
+          "cls_practical": -0.097,
+          "btc_ema_cross": 0.052,
+          "gold_asb": 0.003,
+          "trend_pullback": 0.046,
+          "gold_bitcoin_dual_momentum": 1.0,
+          "orb_strategy": -0.014
+        },
+        "orb_strategy": {
+          "ou_modell": 0.054,
+          "cls_practical": -0.004,
+          "btc_ema_cross": 0.007,
+          "gold_asb": -0.002,
+          "trend_pullback": -0.014,
+          "gold_bitcoin_dual_momentum": -0.014,
+          "orb_strategy": 1.0
+        }
+      },
+      "svb_crisis": {
+        "ou_modell": {
+          "ou_modell": 1.0,
+          "cls_practical": 0.088,
+          "btc_ema_cross": 0.111,
+          "gold_asb": NaN,
+          "trend_pullback": 0.129,
+          "gold_bitcoin_dual_momentum": 0.047,
+          "orb_strategy": 0.088
+        },
+        "cls_practical": {
+          "ou_modell": 0.088,
+          "cls_practical": 1.0,
+          "btc_ema_cross": -0.105,
+          "gold_asb": NaN,
+          "trend_pullback": -0.123,
+          "gold_bitcoin_dual_momentum": -0.015,
+          "orb_strategy": -0.083
+        },
+        "btc_ema_cross": {
+          "ou_modell": 0.111,
+          "cls_practical": -0.105,
+          "btc_ema_cross": 1.0,
+          "gold_asb": NaN,
+          "trend_pullback": 0.048,
+          "gold_bitcoin_dual_momentum": -0.019,
+          "orb_strategy": 0.172
+        },
+        "gold_asb": {
+          "ou_modell": NaN,
+          "cls_practical": NaN,
+          "btc_ema_cross": NaN,
+          "gold_asb": NaN,
+          "trend_pullback": NaN,
+          "gold_bitcoin_dual_momentum": NaN,
+          "orb_strategy": NaN
+        },
+        "trend_pullback": {
+          "ou_modell": 0.129,
+          "cls_practical": -0.123,
+          "btc_ema_cross": 0.048,
+          "gold_asb": NaN,
+          "trend_pullback": 1.0,
+          "gold_bitcoin_dual_momentum": -0.022,
+          "orb_strategy": 0.674
+        },
+        "gold_bitcoin_dual_momentum": {
+          "ou_modell": 0.047,
+          "cls_practical": -0.015,
+          "btc_ema_cross": -0.019,
+          "gold_asb": NaN,
+          "trend_pullback": -0.022,
+          "gold_bitcoin_dual_momentum": 1.0,
+          "orb_strategy": -0.015
+        },
+        "orb_strategy": {
+          "ou_modell": 0.088,
+          "cls_practical": -0.083,
+          "btc_ema_cross": 0.172,
+          "gold_asb": NaN,
+          "trend_pullback": 0.674,
+          "gold_bitcoin_dual_momentum": -0.015,
+          "orb_strategy": 1.0
+        }
+      },
+      "yen_unwind": {
+        "ou_modell": {
+          "ou_modell": 1.0,
+          "cls_practical": -0.733,
+          "btc_ema_cross": 0.433,
+          "gold_asb": NaN,
+          "trend_pullback": 0.358,
+          "gold_bitcoin_dual_momentum": 0.042,
+          "orb_strategy": 0.701
+        },
+        "cls_practical": {
+          "ou_modell": -0.733,
+          "cls_practical": 1.0,
+          "btc_ema_cross": -0.84,
+          "gold_asb": NaN,
+          "trend_pullback": 0.088,
+          "gold_bitcoin_dual_momentum": 0.058,
+          "orb_strategy": -0.509
+        },
+        "btc_ema_cross": {
+          "ou_modell": 0.433,
+          "cls_practical": -0.84,
+          "btc_ema_cross": 1.0,
+          "gold_asb": NaN,
+          "trend_pullback": 0.073,
+          "gold_bitcoin_dual_momentum": -0.14,
+          "orb_strategy": 0.14
+        },
+        "gold_asb": {
+          "ou_modell": NaN,
+          "cls_practical": NaN,
+          "btc_ema_cross": NaN,
+          "gold_asb": NaN,
+          "trend_pullback": NaN,
+          "gold_bitcoin_dual_momentum": NaN,
+          "orb_strategy": NaN
+        },
+        "trend_pullback": {
+          "ou_modell": 0.358,
+          "cls_practical": 0.088,
+          "btc_ema_cross": 0.073,
+          "gold_asb": NaN,
+          "trend_pullback": 1.0,
+          "gold_bitcoin_dual_momentum": -0.188,
+          "orb_strategy": 0.188
+        },
+        "gold_bitcoin_dual_momentum": {
+          "ou_modell": 0.042,
+          "cls_practical": 0.058,
+          "btc_ema_cross": -0.14,
+          "gold_asb": NaN,
+          "trend_pullback": -0.188,
+          "gold_bitcoin_dual_momentum": 1.0,
+          "orb_strategy": 0.125
+        },
+        "orb_strategy": {
+          "ou_modell": 0.701,
+          "cls_practical": -0.509,
+          "btc_ema_cross": 0.14,
+          "gold_asb": NaN,
+          "trend_pullback": 0.188,
+          "gold_bitcoin_dual_momentum": 0.125,
+          "orb_strategy": 1.0
+        }
+      }
+    },
+    "full_corr_matrix": {
+      "ou_modell": {
+        "ou_modell": 1.0,
+        "cls_practical": -0.038,
+        "btc_ema_cross": 0.082,
+        "gold_asb": -0.005,
+        "trend_pullback": 0.024,
+        "gold_bitcoin_dual_momentum": 0.046,
+        "orb_strategy": 0.096
+      },
+      "cls_practical": {
+        "ou_modell": -0.038,
+        "cls_practical": 1.0,
+        "btc_ema_cross": -0.015,
+        "gold_asb": 0.013,
+        "trend_pullback": -0.014,
+        "gold_bitcoin_dual_momentum": -0.013,
+        "orb_strategy": 0.001
+      },
+      "btc_ema_cross": {
+        "ou_modell": 0.082,
+        "cls_practical": -0.015,
+        "btc_ema_cross": 1.0,
+        "gold_asb": -0.006,
+        "trend_pullback": 0.016,
+        "gold_bitcoin_dual_momentum": 0.146,
+        "orb_strategy": 0.014
+      },
+      "gold_asb": {
+        "ou_modell": -0.005,
+        "cls_practical": 0.013,
+        "btc_ema_cross": -0.006,
+        "gold_asb": 1.0,
+        "trend_pullback": -0.002,
+        "gold_bitcoin_dual_momentum": -0.01,
+        "orb_strategy": -0.0
+      },
+      "trend_pullback": {
+        "ou_modell": 0.024,
+        "cls_practical": -0.014,
+        "btc_ema_cross": 0.016,
+        "gold_asb": -0.002,
+        "trend_pullback": 1.0,
+        "gold_bitcoin_dual_momentum": 0.039,
+        "orb_strategy": 0.002
+      },
+      "gold_bitcoin_dual_momentum": {
+        "ou_modell": 0.046,
+        "cls_practical": -0.013,
+        "btc_ema_cross": 0.146,
+        "gold_asb": -0.01,
+        "trend_pullback": 0.039,
+        "gold_bitcoin_dual_momentum": 1.0,
+        "orb_strategy": 0.006
+      },
+      "orb_strategy": {
+        "ou_modell": 0.096,
+        "cls_practical": 0.001,
+        "btc_ema_cross": 0.014,
+        "gold_asb": -0.0,
+        "trend_pullback": 0.002,
+        "gold_bitcoin_dual_momentum": 0.006,
+        "orb_strategy": 1.0
+      }
+    }
+  },
+  "fk": {
+    "leg_labels": {
+      "gold_asb": "Gold ASB",
+      "cls_practical": "CLS Practical",
+      "btc_ema_cross": "BTC EMA9/21",
+      "ou_modell": "OU-Modell (TTP)",
+      "trend_pullback": "Trend Pullback"
+    },
+    "full_sample_avg_corr": 0.008,
+    "crises": {
+      "covid_crash": {
+        "label": "COVID-Crash",
+        "start": "2020-02-20",
+        "end": "2020-04-07",
+        "n_days": 48,
+        "avg_corr": 0.121,
+        "full_sample_avg_corr": 0.008,
+        "delta_corr": 0.113,
+        "portfolio_dd_pct": -5.82
+      },
+      "bear_2022": {
+        "label": "2022 Baerenmarkt/Zinswende",
+        "start": "2022-01-03",
+        "end": "2022-10-15",
+        "n_days": 286,
+        "avg_corr": -0.028,
+        "full_sample_avg_corr": 0.008,
+        "delta_corr": -0.036,
+        "portfolio_dd_pct": -2.41
+      },
+      "svb_crisis": {
+        "label": "SVB-Bankenkrise",
+        "start": "2023-03-08",
+        "end": "2023-03-20",
+        "n_days": 13,
+        "avg_corr": NaN,
+        "full_sample_avg_corr": 0.008,
+        "delta_corr": NaN,
+        "portfolio_dd_pct": -0.2
+      },
+      "yen_unwind": {
+        "label": "Yen-Carry-Unwind",
+        "start": "2024-08-01",
+        "end": "2024-08-09",
+        "n_days": 9,
+        "avg_corr": NaN,
+        "full_sample_avg_corr": 0.008,
+        "delta_corr": NaN,
+        "portfolio_dd_pct": -1.36
+      }
+    },
+    "regime_test": {
+      "calm_avg_corr": -0.033,
+      "stress_avg_corr": 0.038,
+      "delta": 0.071,
+      "n_calm": 551,
+      "n_stress": 551
+    },
+    "crisis_matrices": {
+      "covid_crash": {
+        "gold_asb": {
+          "gold_asb": 1.0,
+          "cls_practical": -0.024,
+          "btc_ema_cross": 0.134,
+          "ou_modell": 0.006,
+          "trend_pullback": 0.022
+        },
+        "cls_practical": {
+          "gold_asb": -0.024,
+          "cls_practical": 1.0,
+          "btc_ema_cross": 0.029,
+          "ou_modell": 0.055,
+          "trend_pullback": 0.161
+        },
+        "btc_ema_cross": {
+          "gold_asb": 0.134,
+          "cls_practical": 0.029,
+          "btc_ema_cross": 1.0,
+          "ou_modell": 0.446,
+          "trend_pullback": 0.11
+        },
+        "ou_modell": {
+          "gold_asb": 0.006,
+          "cls_practical": 0.055,
+          "btc_ema_cross": 0.446,
+          "ou_modell": 1.0,
+          "trend_pullback": 0.268
+        },
+        "trend_pullback": {
+          "gold_asb": 0.022,
+          "cls_practical": 0.161,
+          "btc_ema_cross": 0.11,
+          "ou_modell": 0.268,
+          "trend_pullback": 1.0
+        }
+      },
+      "bear_2022": {
+        "gold_asb": {
+          "gold_asb": 1.0,
+          "cls_practical": -0.02,
+          "btc_ema_cross": -0.116,
+          "ou_modell": -0.045,
+          "trend_pullback": -0.009
+        },
+        "cls_practical": {
+          "gold_asb": -0.02,
+          "cls_practical": 1.0,
+          "btc_ema_cross": 0.05,
+          "ou_modell": -0.067,
+          "trend_pullback": 0.064
+        },
+        "btc_ema_cross": {
+          "gold_asb": -0.116,
+          "cls_practical": 0.05,
+          "btc_ema_cross": 1.0,
+          "ou_modell": 0.074,
+          "trend_pullback": -0.068
+        },
+        "ou_modell": {
+          "gold_asb": -0.045,
+          "cls_practical": -0.067,
+          "btc_ema_cross": 0.074,
+          "ou_modell": 1.0,
+          "trend_pullback": -0.148
+        },
+        "trend_pullback": {
+          "gold_asb": -0.009,
+          "cls_practical": 0.064,
+          "btc_ema_cross": -0.068,
+          "ou_modell": -0.148,
+          "trend_pullback": 1.0
+        }
+      },
+      "svb_crisis": {
+        "gold_asb": {
+          "gold_asb": NaN,
+          "cls_practical": NaN,
+          "btc_ema_cross": NaN,
+          "ou_modell": NaN,
+          "trend_pullback": NaN
+        },
+        "cls_practical": {
+          "gold_asb": NaN,
+          "cls_practical": 1.0,
+          "btc_ema_cross": -0.105,
+          "ou_modell": 0.068,
+          "trend_pullback": -0.123
+        },
+        "btc_ema_cross": {
+          "gold_asb": NaN,
+          "cls_practical": -0.105,
+          "btc_ema_cross": 1.0,
+          "ou_modell": 0.086,
+          "trend_pullback": -0.156
+        },
+        "ou_modell": {
+          "gold_asb": NaN,
+          "cls_practical": 0.068,
+          "btc_ema_cross": 0.086,
+          "ou_modell": 1.0,
+          "trend_pullback": 0.1
+        },
+        "trend_pullback": {
+          "gold_asb": NaN,
+          "cls_practical": -0.123,
+          "btc_ema_cross": -0.156,
+          "ou_modell": 0.1,
+          "trend_pullback": 1.0
+        }
+      },
+      "yen_unwind": {
+        "gold_asb": {
+          "gold_asb": NaN,
+          "cls_practical": NaN,
+          "btc_ema_cross": NaN,
+          "ou_modell": NaN,
+          "trend_pullback": NaN
+        },
+        "cls_practical": {
+          "gold_asb": NaN,
+          "cls_practical": 1.0,
+          "btc_ema_cross": -0.84,
+          "ou_modell": -0.653,
+          "trend_pullback": -0.578
+        },
+        "btc_ema_cross": {
+          "gold_asb": NaN,
+          "cls_practical": -0.84,
+          "btc_ema_cross": 1.0,
+          "ou_modell": 0.371,
+          "trend_pullback": 0.5
+        },
+        "ou_modell": {
+          "gold_asb": NaN,
+          "cls_practical": -0.653,
+          "btc_ema_cross": 0.371,
+          "ou_modell": 1.0,
+          "trend_pullback": 0.762
+        },
+        "trend_pullback": {
+          "gold_asb": NaN,
+          "cls_practical": -0.578,
+          "btc_ema_cross": 0.5,
+          "ou_modell": 0.762,
+          "trend_pullback": 1.0
+        }
+      }
+    },
+    "full_corr_matrix": {
+      "gold_asb": {
+        "gold_asb": 1.0,
+        "cls_practical": 0.008,
+        "btc_ema_cross": -0.005,
+        "ou_modell": -0.001,
+        "trend_pullback": 0.066
+      },
+      "cls_practical": {
+        "gold_asb": 0.008,
+        "cls_practical": 1.0,
+        "btc_ema_cross": -0.017,
+        "ou_modell": -0.055,
+        "trend_pullback": 0.013
+      },
+      "btc_ema_cross": {
+        "gold_asb": -0.005,
+        "cls_practical": -0.017,
+        "btc_ema_cross": 1.0,
+        "ou_modell": 0.062,
+        "trend_pullback": 0.004
+      },
+      "ou_modell": {
+        "gold_asb": -0.001,
+        "cls_practical": -0.055,
+        "btc_ema_cross": 0.062,
+        "ou_modell": 1.0,
+        "trend_pullback": 0.005
+      },
+      "trend_pullback": {
+        "gold_asb": 0.066,
+        "cls_practical": 0.013,
+        "btc_ema_cross": 0.004,
+        "ou_modell": 0.005,
+        "trend_pullback": 1.0
+      }
+    }
+  }
+}

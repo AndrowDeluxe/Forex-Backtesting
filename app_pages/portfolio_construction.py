@@ -242,13 +242,14 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-tab_combined, tab_overlap, tab_ek, tab_fk, tab_ekfast, tab_wf, tab_caveats = st.tabs([
+tab_combined, tab_overlap, tab_ek, tab_fk, tab_ekfast, tab_wf, tab_crisis, tab_caveats = st.tabs([
     ":material/query_stats: Kombinierter Backtest",
     ":material/calendar_view_week: Trade-Overlap",
     ":material/savings: EK-Portfolio",
     ":material/shield: FK-Portfolio",
     ":material/bolt: EK-Schnellkonto",
     ":material/verified: Walk-Forward",
+    ":material/thunderstorm: Krisen-Test",
     ":material/report: Einordnung & Vorbehalte",
 ])
 
@@ -720,6 +721,111 @@ with tab_wf:
   robuster als feingranulare kontinuierliche Optimierung (Mean-Variance-Gewichte) auf dieser Datenbasis --
   passt zur Faustregel, dass Optimierung mit wenigen Freiheitsgraden auf verrauschten Finanzdaten meist
   besser generalisiert.
+        """
+    )
+
+
+# ============================================================ Tab: Krisen-Test
+with tab_crisis:
+    crisis = load_json("crisis_correlation.json")
+    st.caption(
+        "Die bisher gezeigte Nahe-Null-Korrelation ist ueber die GESAMTE Historie gemittelt. Klassisches "
+        "Risiko: Korrelationen schnellen genau in Crash-Phasen hoch, wenn Diversifikation am dringendsten "
+        "gebraucht wird. Test an vier echten Stress-Fenstern plus ein systematischer Vola-Regime-Vergleich."
+    )
+
+    universe_choice = st.radio("Portfolio", ["EK (Equal-Weight)", "FK (Risiko-optimiert)"], horizontal=True, label_visibility="collapsed")
+    uni_key = "ek" if universe_choice.startswith("EK") else "fk"
+    uni = crisis[uni_key]
+
+    tile_row([
+        ("Korrelation (Vollhistorie)", f"{uni['full_sample_avg_corr']:.3f}", ""),
+        ("Korrelation (ruhige Phasen)", f"{uni['regime_test']['calm_avg_corr']:.3f}", ""),
+        ("Korrelation (Stress-Phasen)", f"{uni['regime_test']['stress_avg_corr']:.3f}", "bad"),
+        ("Delta Stress vs. ruhig", f"{uni['regime_test']['delta']:+.3f}", "bad"),
+    ])
+    st.warning(
+        f"**Ehrlicher Befund:** Korrelationen steigen in Stress-Phasen wirklich -- systematisch ueber die "
+        f"gesamte Historie (oberstes vs. unterstes Vola-Quartil, je {uni['regime_test']['n_stress']} Tage), "
+        f"nicht nur anekdotisch. Der Effekt bleibt aber moderat (Korrelation bleibt selbst im Stress-Quartil "
+        f"deutlich unter 0,1) -- kein Kollaps der Diversifikation, aber die Vollhistorie-Zahl ist fuer echte "
+        f"Krisen etwas zu optimistisch.",
+        icon=":material/warning:",
+    )
+
+    section_title("Vier konkrete Krisen-Fenster")
+    crisis_rows = ""
+    for key, c in uni["crises"].items():
+        corr_display = f"{c['avg_corr']:.3f}" if c["avg_corr"] == c["avg_corr"] else "n/a (Fenster zu kurz)"
+        delta_display = f"{c['delta_corr']:+.3f}" if c["delta_corr"] == c["delta_corr"] else "—"
+        dd_display = f"{c['portfolio_dd_pct']:.2f}%" if c["portfolio_dd_pct"] is not None else "—"
+        crisis_rows += (
+            f"<tr><td>{c['label']}</td><td>{c['start']} &ndash; {c['end']}</td><td>{c['n_days']}</td>"
+            f"<td>{corr_display}</td><td>{delta_display}</td><td class='neg'>{dd_display}</td></tr>"
+        )
+    st.markdown(
+        f"<table class='pc-table'><thead><tr><th>Krise</th><th>Zeitraum</th><th>Tage</th>"
+        f"<th>Korrelation im Fenster</th><th>Delta ggue. Vollhistorie</th><th>Portfolio-Drawdown im Fenster</th></tr></thead>"
+        f"<tbody>{crisis_rows}</tbody></table>",
+        unsafe_allow_html=True,
+    )
+    st.caption(
+        "SVB-Bankenkrise und Yen-Carry-Unwind sind zu kurz (9-13 Tage) fuer eine belastbare Korrelationszahl -- "
+        "die Portfolio-Drawdowns in diesen Fenstern sind trotzdem aussagekraeftig und waren beide winzig (<2%)."
+    )
+
+    if uni_key == "fk":
+        st.error(
+            "**Der COVID-Crash ist der ernsteste Fall:** FK-Korrelation sprang von 0,008 auf 0,121 (>15x) -- "
+            "und der Portfolio-Drawdown von -5,82% kam der IQ-Markets-Grenze (6% gesamt) gefaehrlich nahe. "
+            "Kein Regelbruch, aber deutlich weniger Puffer als die Vollhistorie-Zahlen suggerieren. Die "
+            "Monte-Carlo-Simulation zieht ihre Bloecke aus genau dieser Historie (inkl. COVID-Fenster), "
+            "sollte dieses Risiko also schon anteilig einpreisen -- trotzdem ein Grund, die Bruch-"
+            "Wahrscheinlichkeiten nicht als harte Obergrenze zu lesen.",
+            icon=":material/report:",
+        )
+    else:
+        st.info(
+            "**Der COVID-Crash ist auch hier der ernsteste Fall:** Korrelation sprang von 0,018 auf 0,062 "
+            "(>3x), Portfolio-Drawdown -7,14% -- bei EK's lockerer 30%-Grenze unkritisch, zeigt aber densel"
+            "ben Effekt wie beim FK-Portfolio.",
+            icon=":material/info:",
+        )
+
+    section_title("Korrelationsmatrix waehrend COVID-Crash (2020-02-20 bis 2020-04-07)")
+    covid_matrix = uni["crisis_matrices"].get("covid_crash")
+    if covid_matrix:
+        labels = uni["leg_labels"]
+        rows = []
+        for a in labels:
+            for b in labels:
+                rows.append({"A": labels[a], "B": labels[b], "pct": covid_matrix[a][b]})
+        cdf = pd.DataFrame(rows)
+        heat = alt.Chart(cdf).mark_rect().encode(
+            x=alt.X("B:N", title=None, axis=alt.Axis(labelColor=C_MUTED, domainColor=C_BORDER, labelAngle=-40)),
+            y=alt.Y("A:N", title=None, axis=alt.Axis(labelColor=C_MUTED, domainColor=C_BORDER)),
+            color=alt.Color("pct:Q", scale=alt.Scale(scheme="redblue", domainMid=0, reverse=True), legend=None),
+        )
+        text = alt.Chart(cdf).mark_text(fontSize=9).encode(
+            x="B:N", y="A:N", text=alt.Text("pct:Q", format=".2f"),
+            color=alt.condition("abs(datum.pct) > 0.15", alt.value("white"), alt.value(C_MUTED)),
+        )
+        st.altair_chart((heat + text).properties(height=320, background=C_BG).configure_view(strokeWidth=0), use_container_width=True)
+
+    section_title("Fazit")
+    st.markdown(
+        """
+- Diversifikation **haelt auch in Krisen**, aber nicht so perfekt wie die Vollhistorie-Durchschnittszahl
+  suggeriert -- Korrelationen steigen messbar in Stress-Phasen, sowohl anekdotisch (COVID) als auch
+  systematisch (Vola-Quartile).
+- Der COVID-Crash ist mit Abstand das ernsteste Szenario in der verfuegbaren Historie -- beim FK-Portfolio
+  kam der Drawdown der striktesten Regel (IQ Markets, 6%) nahe genug, dass ein etwas schlimmerer Crash die
+  Grenze reissen koennte.
+- Die 2022er Baerenmarkt-Phase zeigt das Gegenteil (Korrelation sinkt sogar) -- nicht jede Stress-Phase ist
+  eine Liquiditaetskrise mit Korrelations-Kollaps, das COVID-Muster ist eher der Sonderfall als die Regel.
+- Praktische Konsequenz: die Monte-Carlo-Bruch-Wahrscheinlichkeiten aus den anderen Tabs sind real, aber
+  eher eine untere Schranke als eine harte Obergrenze -- ein neuer, COVID-aehnlicher Liquiditaets-Schock
+  koennte staerker treffen als der historische Durchschnitt.
         """
     )
 

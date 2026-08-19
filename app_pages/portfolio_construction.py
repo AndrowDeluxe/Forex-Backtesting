@@ -571,54 +571,71 @@ with tab_fk:
 
 # ============================================================ Tab: EK-Schnellkonto
 with tab_ekfast:
-    ekfast = load_json("ek_fast_account.json")
-    st.caption("Sonderfall: kleines EK-Konto, Ziel moeglichst schnell +7% bei max. 7% Gesamt-Drawdown -- alle 7 EK-Strategien, kein Tageslimit.")
+    ekfast5 = load_json("ekfast_5leg_risk_optimized.json")
+    st.caption(
+        "Sonderfall: kleines EK-Konto, Ziel moeglichst schnell +7% bei max. 7% Gesamt-Drawdown. Nutzt bewusst "
+        "dieselben 5 Strategien wie das FK-Portfolio (Broker/Instrument-Verfuegbarkeit aehnlich), aber mit "
+        "eigenem Regelwerk statt TTP/IQ Markets."
+    )
     st.markdown(
         "<span class='pc-rule-badge'>Gesamt-Drawdown <b>7%</b></span>"
         "<span class='pc-rule-badge'>Gewinnziel <b>7%</b></span>"
-        "<span class='pc-rule-badge'>Kein Tageslimit</span> "
-        "&mdash; gleiche Monte-Carlo-Methodik wie beim FK-Portfolio, aber auf die volle 7-Strategien-EK-Palette angewandt.",
+        "<span class='pc-rule-badge'>Kein Tageslimit</span>",
         unsafe_allow_html=True,
     )
-
-    st.warning(
-        "**Empfehlung nach Walk-Forward-Test umgestellt:** im blinden Out-of-Sample-Test schlaegt Equal-Weight "
-        "sowohl Max-Sharpe als auch Risk-Parity (99,0% Zielerreichung, 136 Tage Median, 0,8% Bruch-Risiko) -- "
-        "siehe Walk-Forward-Tab fuer Details.",
+    st.success(
+        "**Risikostufen-Optimierung (gleiche Methodik wie beim FK-Portfolio):** Kapitalanteil bleibt gleichgewichtet "
+        "(20% je Strategie), aber Risiko/Trade je Strategie wird individuell angepasst. Ergebnis: die "
+        "optimierte Kombination schlaegt die Referenz-Risikostufen auf **allen drei Achsen gleichzeitig** -- "
+        "sicherer, schneller UND hoehere Zielerreichung, kein Trade-off noetig.",
         icon=":material/verified:",
     )
-    EKFAST_TITLES = {"equal": "Equal-Weight (empfohlen)", "riskparity": "Risk-Parity (ultra-sicher)"}
+
+    EKFAST5_TITLES = {"reference": "Referenz-Risikostufen", "riskopt": "Risiko-optimiert (empfohlen)"}
     col1, col2 = st.columns(2)
-    for col, cand_key, tag, tag_label in [(col1, "equal", "fast", "empfohlen"), (col2, "riskparity", "safe", "ultra-sicher")]:
-        mc = ekfast["monte_carlo"][cand_key]
-        hist = ekfast["historical_metrics"][cand_key]
+    for col, cand_key, tag, tag_label in [(col1, "reference", "safe", "referenz"), (col2, "riskopt", "fast", "empfohlen")]:
+        cand = ekfast5[cand_key]
+        hist = cand["historical_metrics"]
+        p_neither = 1 - cand["p_breach"] - cand["p_target"]
         with col:
             st.markdown(
                 f"<div class='pc-candidate'><div class='pc-candidate-head'>"
-                f"<span class='pc-candidate-title'>{EKFAST_TITLES[cand_key]}</span>"
+                f"<span class='pc-candidate-title'>{EKFAST5_TITLES[cand_key]}</span>"
                 f"<span class='pc-candidate-tag {tag}'>{tag_label}</span></div></div>",
                 unsafe_allow_html=True,
             )
-            outcome_bar(mc["p_target"], mc["p_neither"], mc["p_breach"])
+            outcome_bar(cand["p_target"], p_neither, cand["p_breach"])
             c1, c2, c3 = st.columns(3)
-            c1.metric("Median Tage bis Ziel", f"{mc['median_days_to_target']:.0f}" if mc["median_days_to_target"] else "—")
+            c1.metric("Median Tage bis Ziel", f"{cand['median_days']:.0f}" if cand["median_days"] else "—")
             c2.metric("Sharpe (historisch)", f"{hist['sharpe']:.2f}")
             c3.metric("MaxDD (historisch)", f"{hist['max_dd_pct']:.1f}%")
-            weight_bars(mc["weights"], ekfast["ek_leg_labels"], color=C_ORANGE if tag == "fast" else C_GREEN)
+            rows_html = ""
+            for leg_key, risk_label in cand["combo"].items():
+                rows_html += (
+                    f"<div class='pc-weight-row' style='grid-template-columns:1fr 60px;'>"
+                    f"<div class='pc-weight-name'>{ekfast5['leg_labels'][leg_key]}</div>"
+                    f"<div class='pc-weight-pct'>{risk_label}</div></div>"
+                )
+            st.markdown(rows_html, unsafe_allow_html=True)
+            st.caption("Risiko/Trade je Strategie (Kapitalanteil bei beiden Kandidaten gleich 20%).")
 
     section_title("Equity-Kurven")
-    pts_equal = load_json("ek_fast_equal_curve.json")
-    curve_equal = pd.Series({pd.Timestamp(d): v for d, v in pts_equal})
-    w_rp = ekfast["monte_carlo"]["riskparity"]["weights"]
-    curve_rp = combine_rebalanced(w_rp, EK_KEYS).resample("W-FRI").last().dropna()
-    df1 = curve_equal.rename("value").rename_axis("date").reset_index(); df1["Serie"] = "Equal-Weight"
-    df2 = curve_rp.rename("value").rename_axis("date").reset_index(); df2["Serie"] = "Risk-Parity"
-    df_ekfast = pd.concat([df1, df2])
-    st.altair_chart(line_chart(df_ekfast, {"Equal-Weight": (C_BLUE, None), "Risk-Parity": (C_GREEN, None)}), use_container_width=True)
+    curve_ref = pd.Series({pd.Timestamp(d): v for d, v in ekfast5["reference_curve"]})
+    curve_ro = pd.Series({pd.Timestamp(d): v for d, v in ekfast5["riskopt_curve"]})
+    df1 = curve_ref.rename("value").rename_axis("date").reset_index(); df1["Serie"] = "Referenz"
+    df2 = curve_ro.rename("value").rename_axis("date").reset_index(); df2["Serie"] = "Risiko-optimiert"
+    df_ekfast5 = pd.concat([df1, df2])
+    st.altair_chart(line_chart(df_ekfast5, {"Referenz": (C_MUTED, (4, 3)), "Risiko-optimiert": (C_BLUE, None)}), use_container_width=True)
     st.caption(
-        "Equal-Weight erreicht bei diesem strengeren 7%/7%-Ziel die hoechste Zielerreichungsrate (99,0% im "
-        "Out-of-Sample-Test) und ist am schnellsten (Median 136 Tage) bei niedrigem Bruch-Risiko (0,8%) -- "
-        "siehe Walk-Forward-Tab fuer den vollen Vergleich."
+        f"Historischer Zeitraum {ekfast5['common_window']['start']} bis {ekfast5['common_window']['end']} "
+        "(Zeitraum, in dem alle 5 Strategien Daten liefern) -- die Monte-Carlo-Werte oben simulieren daraus "
+        "500 Handelstage in die Zukunft, nicht diesen Chart direkt."
+    )
+    st.caption(
+        "Hinweis: der Walk-Forward-Tab zeigt noch die AELTERE 7-Strategien-Version dieses Szenarios (vor der "
+        "Umstellung auf die 5 FK-Strategien) -- die dortige methodische Lehre (grobe Risikostufen-Wahl schlaegt "
+        "kontinuierliche Mean-Variance-Optimierung im Out-of-Sample-Test) hat genau zu diesem Ansatz gefuehrt, "
+        "wurde aber noch nicht erneut auf dieser neuen 5-Strategien-Kombination validiert."
     )
 
 # ============================================================ Tab: Walk-Forward

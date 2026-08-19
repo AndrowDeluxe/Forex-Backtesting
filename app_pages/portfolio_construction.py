@@ -1007,7 +1007,22 @@ with tab_caveats:
 - **Monte-Carlo-Methodik:** Block-Bootstrap (Blockgroesse 20 Handelstage) der historischen Tagesrenditen,
   3.000 simulierte Pfade x 500 Handelstage je Gewichtung/Regelwerk -- keine Garantie fuer die Zukunft, nur
   eine Wahrscheinlichkeitsabschaetzung auf Basis der Vergangenheit.
-- **Keine Kapitalkonflikte zwischen gleichzeitig offenen Positionen modelliert** -- jede Strategie simuliert
-  mit eigenem $-Buch; ein reales Konto muesste Margin/Kapital zwischen Strategien teilen.
+- **Kapitalkonflikte inzwischen geprueft (EK-Tab):** Proxy-Simulation des aggregierten offenen Risikos ueber
+  alle 7 Strategien zeigt selbst am riskantesten beobachteten Tag nur 3,7% (Referenz) bzw. 2,5%
+  (risiko-optimiert) der Portfolio-Equity gleichzeitig im Markt -- weit unter jeder relevanten Schwelle. Bleibt
+  trotzdem ein Proxy: echte Margin-Anforderungen pro Instrument/Hebel wurden nicht simuliert, jede Strategie
+  rechnet weiterhin mit ihrem eigenen $-Buch.
+- **Kelly-Kriterium bestaetigt eher den konservativen Ansatz, als dass es hoehere Risikostufen nahelegt:**
+  Full-Kelly liegt fuer alle berechenbaren Strategien bei 12-37% Risiko/Trade -- weit ueber allem, was wir je
+  getestet haben (0,1-2%). Zwei konkrete Gegenproben aus diesem Repo zeigen, warum das keine Empfehlung ist:
+  beim ORB fuehrt In-Sample-Kelly (selbst nur Half-Kelly) auf der echten Out-of-Sample-Handelsreihenfolge
+  weitergehandelt zum Totalverlust (-99,8%), waehrend das aktuell genutzte feste 1% moderat waechst
+  (CAGR +3,3-3,5%). Beim OU-Modell macht ungedeckeltes Kelly-Sizing das Konto sogar in-sample negativ, weil die
+  Formel sequenzielle Einzelwetten annimmt, das Modell aber viele gleichzeitig offene, korrelierte Positionen
+  haelt. Kelly ignoriert damit sowohl In-Sample-Schaetzfehler als auch Portfolio-Korrelation -- die empirische,
+  walk-forward-validierte Risikostufen-Suche (Ergebnis: max. ~2%) bleibt die verlaesslichere Methode. Bei
+  Trend Pullback kommt erschwerend hinzu, dass die Strategie erst seit 2023 profitabel ist -- ihr Kelly-Wert
+  (~13,7%) steht auf einem kurzen, moeglicherweise regimespezifischen Fenster. Bei Gold-Bitcoin Dual Momentum
+  ist Kelly gar nicht sauber berechenbar (Rotationsstrategie ohne diskrete R-Trades).
         """
     )

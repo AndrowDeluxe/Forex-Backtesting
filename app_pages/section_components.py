@@ -68,5 +68,11 @@ render_section(
             "icon": ":material/event:",
             "tag": "FILTER",
         },
+        {
+            "page": "app_pages/mtf_ema_ribbon_filter.py",
+            "title": "MTF EMA Ribbon",
+            "icon": ":material/multiline_chart:",
+            "tag": "FILTER",
+        },
     ],
 )

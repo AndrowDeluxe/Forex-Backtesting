@@ -30,6 +30,24 @@ INSTRUMENTS = {
     "SP500": duka.INSTRUMENT_IDX_AMERICA_E_SANDP_500,
     "NASDAQ": duka.INSTRUMENT_IDX_AMERICA_E_NQ_100,
     "OIL": duka.INSTRUMENT_CMD_ENERGY_E_LIGHT,
+    # --- Zusaetzliche Kreuze fuer die paar-spezifische Waehrungsstaerke
+    # (cls_practical/currency_strength.py, 2026-08-18) -- EUR/JPY selbst als
+    # Handelspaar, der Rest als Referenzkreuze fuer die EUR-/JPY-/CAD-/AUD-
+    # Staerke-Baskets (EUR/USD, GBP/USD, USD/JPY, USD/CHF, AUD/USD, USD/CAD,
+    # CHF/JPY sind oben bereits vorhanden).
+    "EURJPY": duka.INSTRUMENT_FX_CROSSES_EUR_JPY,
+    "EURGBP": duka.INSTRUMENT_FX_CROSSES_EUR_GBP,
+    "EURCHF": duka.INSTRUMENT_FX_CROSSES_EUR_CHF,
+    "EURCAD": duka.INSTRUMENT_FX_CROSSES_EUR_CAD,
+    "EURAUD": duka.INSTRUMENT_FX_CROSSES_EUR_AUD,
+    "GBPJPY": duka.INSTRUMENT_FX_CROSSES_GBP_JPY,
+    "GBPCAD": duka.INSTRUMENT_FX_CROSSES_GBP_CAD,
+    "GBPAUD": duka.INSTRUMENT_FX_CROSSES_GBP_AUD,
+    "CADJPY": duka.INSTRUMENT_FX_CROSSES_CAD_JPY,
+    "CADCHF": duka.INSTRUMENT_FX_CROSSES_CAD_CHF,
+    "AUDJPY": duka.INSTRUMENT_FX_CROSSES_AUD_JPY,
+    "AUDCAD": duka.INSTRUMENT_FX_CROSSES_AUD_CAD,
+    "AUDCHF": duka.INSTRUMENT_FX_CROSSES_AUD_CHF,
 }
 
 OFFER_SIDE = dukascopy_python.OFFER_SIDE_BID

@@ -49,6 +49,41 @@ def compute_rate_support_score(bund: pd.DataFrame, ustbond: pd.DataFrame) -> pd.
     return (joined["ustbond"] - joined["bund"]).rename("rate_support_score")
 
 
+def compute_daily_rate_score(bund: pd.DataFrame, ustbond: pd.DataFrame, lag_days: int = 1) -> pd.Series:
+    """Daily-candle (not Settle-window) analogue of compute_rate_support_score
+    (2026-08-19, user request: "wir hatten den Zinsfilter auf Tagesbasis
+    schoneinmal gebaut" - referring to bond_yield_indicator/, which used
+    FRED 10y yields and failed because 6 of 7 countries are only MONTHLY on
+    FRED, see knowledge/projects/bond-yield-spread-indikator.md. Re-verified
+    2026-08-19: DE's FRED series is still monthly, latest print 2026-06-01 -
+    a "last daily candle" read is meaningless on a series that only moves
+    once a month. BUND/USTBOND CFDs (already used by compute_rate_support_score
+    above) update daily, so this reuses THAT data source instead of FRED,
+    just over the FULL calendar day (00:00-24:00 Berlin open-to-close)
+    instead of only the 06:00-09:00 Settle window.
+
+    Same sign convention as compute_rate_support_score (ustbond_return -
+    bund_return, positive = USD yields falling relative to EUR yields ->
+    supports EUR/USD long). `lag_days` (default 1, "die Richtung der letzten
+    Tageskerze") shifts the score forward so today's read only ever uses
+    fully-closed PRIOR-day candle(s) - the whole point of a daily-candle
+    validation is that it's a leading/independent read, not the same-day
+    window compute_rate_support_score already provides."""
+    rows = {}
+    for label, df in (("bund", bund), ("ustbond", ustbond)):
+        berlin = to_berlin(df.index)
+        date = pd.Series(berlin.date, index=df.index)
+        d = pd.DataFrame({"date": date, "close": df["close"].to_numpy(), "open": df["open"].to_numpy()})
+        by_day = d.groupby("date").agg(open_=("open", "first"), close_=("close", "last"))
+        ret = (by_day["close_"] / by_day["open_"] - 1).rename(label)
+        rows[label] = ret
+
+    joined = pd.concat(rows.values(), axis=1, join="outer")
+    joined.columns = list(rows.keys())
+    score = (joined["ustbond"] - joined["bund"]).rename("daily_rate_score")
+    return score.shift(lag_days)
+
+
 def classify_rates_ampel(
     rate_support_score: pd.Series, direction: pd.Series, z_window: int = 60, z_threshold: float = 0.5
 ) -> pd.Series:
@@ -74,3 +109,44 @@ def classify_rates_ampel(
     out[contradicted.fillna(False)] = "rot"
     out[z_al.isna()] = "gelb"
     return out
+
+
+def compute_daily_rate_risk_multiplier(
+    bund: pd.DataFrame,
+    ustbond: pd.DataFrame,
+    direction: pd.Series,
+    lag_days: int = 2,
+    z_window: int = 60,
+    z_threshold: float = 0.5,
+    confirmed_mult: float = 1.75,
+    base_mult: float = 1.0,
+) -> pd.Series:
+    """ADOPTED 2026-08-19 (user: "sehr gut so uebernehmen wir das! Gerne die
+    1,75x Variante") - the risk-SCALING use of the daily-candle rates score
+    (compute_daily_rate_score), as opposed to using it as a hard trade gate.
+    Promoted out of scripts/research_cls_practical_daily_rate_risk_scaling.py
+    into a reusable function once validated: at a flat 1% base risk_pct, all
+    203 EUR/USD baseline trades kept (n unchanged - unlike the AND-gate
+    variant, this does NOT shrink the sample), scaling risk to `confirmed_mult`
+    (1.75x) on days classify_rates_ampel reads "grün" at z_threshold=0.5
+    (lag=2 calendar days) improved EVERY equity-curve metric simultaneously,
+    on Gesamt/IS/OOS all three: Sharpe 0.75->0.84, Calmar 0.38->0.48, total
+    PnL $73,559->$115,585 - at the cost of a somewhat deeper max drawdown
+    (-13.37%->-14.70%, expected: literally bigger positions on ~24% of days).
+    The whole 9-cell (z_threshold x multiplier) grid tested moved monotonically
+    in the same direction, which is why this was adopted rather than treated
+    as a lucky single cell.
+
+    Returns a date-indexed float Series: `confirmed_mult` where the daily
+    rate score (BUND/USTBOND CFD, full prior trading day, lagged `lag_days`)
+    agrees with the day's break `direction` beyond `z_threshold` rolling
+    standard deviations, `base_mult` (1.0, i.e. no change) everywhere else -
+    feed straight into simulate_cls_practical(risk_multiplier=...). Does NOT
+    touch use_rates_filter/filter gating at all (that stays False, i.e. no
+    trades are dropped) - this is purely a position-size overlay on top of
+    the existing, unchanged trade-selection logic."""
+    score = compute_daily_rate_score(bund, ustbond, lag_days=lag_days)
+    ampel = classify_rates_ampel(score, direction, z_window=z_window, z_threshold=z_threshold)
+    mult = pd.Series(base_mult, index=ampel.index)
+    mult[ampel == "grün"] = confirmed_mult
+    return mult

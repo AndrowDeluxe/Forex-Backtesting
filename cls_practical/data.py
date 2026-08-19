@@ -20,6 +20,7 @@ CACHE_DIR = Path(__file__).resolve().parents[1] / "data_cache" / "cls_practical"
 _RATE_INSTRUMENTS = {
     "BUND": duka.INSTRUMENT_BND_CFD_BUND_TR_EUR,      # ~10y German Bund future CFD
     "USTBOND": duka.INSTRUMENT_BND_CFD_USTBOND_TR_USD,  # ~15-25y US Treasury Bond future CFD
+    "UKGILT": duka.INSTRUMENT_BND_CFD_UKGILT_TR_GBP,  # UK Gilt future CFD (2026-08-19, GBP/USD rates-filter robustness check)
 }
 
 

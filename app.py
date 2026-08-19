@@ -182,6 +182,10 @@ mtf_ema_ribbon_filter = st.Page(
     "app_pages/mtf_ema_ribbon_filter.py", title="MTF EMA Ribbon", icon=":material/multiline_chart:",
     visibility="hidden",
 )
+cls_cross_filter = st.Page(
+    "app_pages/cls_cross_filter.py", title="Cross-Filter (Waehrungsvotum)", icon=":material/hub:",
+    visibility="hidden",
+)
 mt5_trend_pullback = st.Page(
     "app_pages/mt5_trend_pullback.py", title="Trend Pullback", icon=":material/smart_toy:",
     visibility="hidden",
@@ -212,7 +216,7 @@ page = st.navigation(
         cls_advanced, kalman_filter, adx_vwap_writeup, triple_ma, risk_management,
         execution_overlay_writeup, gap_fade_writeup, orb_writeup,
         paper151, goldi_papers_202608, fx_papers_202608,
-        fx_liquidity_filter, cb_event_window_filter, mtf_ema_ribbon_filter, mt5_trend_pullback,
+        fx_liquidity_filter, cb_event_window_filter, mtf_ema_ribbon_filter, cls_cross_filter, mt5_trend_pullback,
         gold_ctnl_edge,
     ]
 )

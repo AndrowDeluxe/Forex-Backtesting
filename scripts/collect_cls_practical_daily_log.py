@@ -26,7 +26,7 @@ OUT_DIR = REPO_DIR / "cls_practical_logs"
 OUT_CSV = OUT_DIR / "daily_log.csv"
 
 FIELDS = [
-    "date", "break_direction", "holds_0915", "cross_confirmed",
+    "date", "break_direction", "holds_0915", "cross_confirmed", "rate_risk_multiplier",
     "triggered", "setup", "direction", "entry_time", "entry_price", "sl", "tp", "status",
 ]
 

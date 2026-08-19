@@ -60,11 +60,61 @@ def to_berlin(index: pd.DatetimeIndex) -> pd.DatetimeIndex:
     return idx.tz_convert("Europe/Berlin")
 
 
-def compute_daily_features(df: pd.DataFrame) -> pd.DataFrame:
+def compute_daily_features(
+    df: pd.DataFrame,
+    test_hour: float = 9.0,
+    test_window_end: float | None = None,
+    asia_start: float = ASIA_START,
+    asia_end: float = ASIA_END,
+) -> pd.DataFrame:
     """One row per Berlin calendar day: Asia range, the 06:00-09:00 move and
     whether it breaks the Asia range, whether that break still holds at the
-    09:15 test checkpoint, and the realised 09:00-12:00 post-settle outcome.
-    """
+    acceptance test checkpoint, and the realised 09:00-12:00 post-settle
+    outcome.
+
+    asia_start / asia_end (2026-08-20, user request: re-test AUD/USD with an
+    Asia range shifted/shortened to 04:00-08:00 instead of the standard
+    00:00-06:00 - AUD/USD's own relevant Asia-session hours differ from
+    EUR/USD's): default to the module constants (unchanged behaviour). The
+    Settle window is still `[asia_end, SETTLE_END)` - moving asia_end
+    mechanically narrows or widens the Settle window too (e.g. asia_end=8.0
+    -> an 08:00-09:00 Settle window, not the usual 3h), SETTLE_END/TEST_HOUR/
+    ENTRY_HOUR/FUNDING_END are NOT touched by these two params - a deliberate
+    minimal-change choice (isolate the Asia-range definition only) rather
+    than shifting the whole day's structure, disclosed since it's a real
+    interpretation choice, not the only possible one.
+
+    test_hour default changed TEST_HOUR (9.25, 09:15) -> 9.0 (09:00) on
+    2026-08-19, after scripts/research_cls_practical_holdtest_timing_finegrid.py
+    (15-min point grid + 30-min range grid, 08:30-10:30, IS-then-OOS) found
+    point_09:00 was the only one of 19 configurations to beat the 09:15
+    baseline on BOTH IS and OOS simultaneously, then re-confirmed end-to-end
+    on Continuation AND Reversal separately in
+    scripts/research_cls_practical_point0900_full_verification.py (every
+    slice improved: overall PnL $30,197->$36,779, IS avg_R +0.155->+0.236,
+    OOS avg_R +0.397->+0.452; Continuation IS flips from roughly breakeven
+    -0.025R to +0.090R; Reversal OOS +0.099R->+0.148R). Trade-off disclosed:
+    max drawdown widens slightly (overall -6.68%->-7.36%, Continuation
+    -8.06%->-9.25%) - Sharpe/Calmar still improve because PnL grows faster
+    than the drawdown, but it is a real cost, not a free win. Kept as a
+    literal here (not the module-level TEST_HOUR constant) because TEST_HOUR
+    is still used unchanged by the unrelated legacy signal_bar path further
+    down in this file (build_backtest_frame, feeding
+    app_pages/cls_advanced.py) - only the cls_practical hold-test checkpoint
+    moves.
+
+    test_hour / test_window_end (2026-08-18, user request: sweep the
+    acceptance-checkpoint timing - 09:00 vs 09:15 vs 09:30, or a
+    persistence check across a whole range instead of one snapshot):
+    - test_window_end=None (default, unchanged behaviour): "point" mode -
+      holds_0915 reads the close of the single 15-min bar starting at
+      test_hour (test_hour=9.25 -> the 09:15 bar, i.e. exactly the original
+      behaviour).
+    - test_window_end given: "range" mode - holds_0915 instead requires the
+      break to stay beyond the broken Asia-range boundary for the ENTIRE
+      [test_hour, test_window_end) window (low never dips back inside for
+      an up-break / high never pokes back inside for a down-break), a
+      strictly harder bar than any single-point snapshot check."""
     berlin = to_berlin(df.index)
     hour = berlin.hour + berlin.minute / 60.0
     date = berlin.date
@@ -79,8 +129,8 @@ def compute_daily_features(df: pd.DataFrame) -> pd.DataFrame:
 
     rows = []
     for day, g in d.groupby("date"):
-        asia = g[(g["hour"] >= ASIA_START) & (g["hour"] < ASIA_END)]
-        settle = g[(g["hour"] >= ASIA_END) & (g["hour"] < SETTLE_END)]
+        asia = g[(g["hour"] >= asia_start) & (g["hour"] < asia_end)]
+        settle = g[(g["hour"] >= asia_end) & (g["hour"] < SETTLE_END)]
         if asia.empty or settle.empty:
             continue
 
@@ -102,11 +152,17 @@ def compute_daily_features(df: pd.DataFrame) -> pd.DataFrame:
 
         move_06_09 = settle_close / settle_open - 1
 
-        test_bar = g[(g["hour"] >= TEST_HOUR) & (g["hour"] < ENTRY_HOUR)]
         holds = np.nan
-        if direction != 0 and not test_bar.empty:
-            test_close = test_bar["close"].iloc[-1]
-            holds = bool(test_close > asia_high) if direction == 1 else bool(test_close < asia_low)
+        if test_window_end is None:
+            test_bar = g[(g["hour"] >= test_hour) & (g["hour"] < test_hour + 0.25)]
+            if direction != 0 and not test_bar.empty:
+                test_close = test_bar["close"].iloc[-1]
+                holds = bool(test_close > asia_high) if direction == 1 else bool(test_close < asia_low)
+        else:
+            window = g[(g["hour"] >= test_hour) & (g["hour"] < test_window_end)]
+            if direction != 0 and not window.empty:
+                holds = (bool(window["low"].min() > asia_high) if direction == 1
+                          else bool(window["high"].max() < asia_low))
 
         post = g[(g["hour"] >= SETTLE_END) & (g["hour"] < FUNDING_END)]
         post_settle_return, realized_continuation = np.nan, np.nan

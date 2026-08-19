@@ -74,5 +74,11 @@ render_section(
             "icon": ":material/multiline_chart:",
             "tag": "FILTER",
         },
+        {
+            "page": "app_pages/cls_cross_filter.py",
+            "title": "Cross-Filter (Waehrungsvotum)",
+            "icon": ":material/hub:",
+            "tag": "FILTER",
+        },
     ],
 )

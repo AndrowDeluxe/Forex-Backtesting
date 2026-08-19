@@ -78,6 +78,7 @@ from asian_range_breakout.cls_settle import compute_adr
 from cls_practical.rates import classify_rates_ampel, compute_rate_support_score
 from strategy.cls_advanced import (
     ASIA_END,
+    ASIA_START,
     ENTRY_HOUR,
     SETTLE_END,
     compute_cross_confirmation,
@@ -261,6 +262,14 @@ def simulate_cls_practical(
     use_rates_filter: bool = False,
     use_cross_filter: bool = True,
     filter_mode: str = "and",
+    cross_confirm_override: pd.Series | None = None,
+    rates_score_override: pd.Series | None = None,
+    continuation_entry_mode: str = "fractal",
+    risk_multiplier: pd.Series | None = None,
+    test_hour: float = 9.0,
+    test_window_end: float | None = None,
+    asia_start: float = ASIA_START,
+    asia_end: float = ASIA_END,
 ) -> pd.DataFrame:
     """Defaults updated 2026-08-11 after the threshold sweep + SL/TP
     diagnosis (scripts/research_cls_practical_threshold_sweep.py,
@@ -343,18 +352,92 @@ def simulate_cls_practical(
     mode, so combining filter_mode="majority" with a disabled filter
     effectively requires only 1 of the 2 remaining active filters -
     intentional (a disabled filter was explicitly asked to never block),
-    but worth knowing before reading results at face value."""
+    but worth knowing before reading results at face value.
+
+    cross_confirm_override / risk_multiplier (2026-08-18, user request: test
+    cls_practical.currency_strength's pair-specific confirmation, which
+    can't be computed INSIDE this function for a non-EUR/USD primary pair -
+    compute_cross_confirmation() here is hard-wired to key off "EURUSD"
+    regardless of what's actually passed as eurusd_m5, same bug the
+    multi-instrument script works around externally). Both None by default
+    - behaviour is byte-for-byte unchanged unless a caller supplies them.
+    cross_confirm_override: date-indexed bool/float Series, used in place of
+    the internally computed cross_confirm when given (still gated by
+    use_cross_filter/filter_mode exactly as before - only the SOURCE of the
+    confirmation changes, not how it's applied).
+
+    rates_score_override (2026-08-19, user request: re-test the Rates filter
+    on a DAILY-candle basis instead of the same-day Settle-window score) -
+    date-indexed float Series, used in place of the internally computed
+    compute_rate_support_score(bund_m5, ustbond_m5) before classify_rates_ampel()
+    runs - still gated by use_rates_filter/rates_z_window/rates_z_threshold/
+    filter_mode exactly as before, only the SOURCE of the score changes. See
+    cls_practical/rates.py::compute_daily_rate_score for the lagged-daily-
+    candle variant this is intended for (caller must also pass
+    use_rates_filter=True to actually engage the gate - False by default).
+
+    risk_multiplier:
+    date-indexed float Series; if given, each trade's risk_amount is
+    risk_pct-of-account times risk_multiplier.get(that day, 1.0) instead of
+    the flat amount - lets position size vary with confirmation strength
+    without touching the flat-risk default path at all.
+
+    continuation_entry_mode (2026-08-19, user's mentor's idea: a stop entry
+    right at the break level instead of waiting for a pullback fractal)
+    - "fractal" (default, unchanged): the existing _continuation_trigger
+    pullback-fractal search from entry_start_i onward.
+    - "breakout_stop": enter immediately at entry_start_i (the earliest
+    lookahead-safe bar - already pushed back past the hold-test checkpoint's
+    own resolution time, see test_hour's docstring note) at that bar's
+    close, no fractal wait at all. There is no pivot to derive a structural
+    SL from in this mode, so sl_dist falls back to exactly min_sl_atr_mult x
+    ATR(M5) at entry (the same floor the fractal mode only uses as a MINIMUM
+    - here it IS the stop), TP stays the normal adr_mult x ADR(14) mechanism.
+    Entry price is deliberately the checkpoint-bar close, NOT the original
+    Asia-range break level touched earlier in the Settle window - filling at
+    that earlier level while only deciding to trade at the checkpoint would
+    silently skip any SL/TP hit that occurred in between, the same class of
+    lookahead this file's test_hour fix already guards against elsewhere.
+    Reversal setups are unaffected (still _reversal_trigger unchanged) -
+    "enter at the original breakout level" is specific to continuation, a
+    reversal by definition fades that level rather than extending it.
+
+    test_hour / test_window_end (2026-08-18, user request: sweep the
+    acceptance-checkpoint timing): passed straight through to
+    strategy.cls_advanced.compute_daily_features - see its docstring for the
+    full rationale/numbers behind the default. Default test_hour changed
+    9.25 (09:15) -> 9.0 (09:00) on 2026-08-19 - point mode, same as before,
+    just a different checkpoint bar. Pass test_hour=9.25 explicitly to
+    reproduce the pre-2026-08-19 baseline. If the checkpoint resolves
+    at/after ENTRY_HOUR (09:30) - e.g. test_hour=9.5+ or
+    test_window_end>=9.5 - entry search is pushed back to start only once
+    the checkpoint is actually known, not at the fixed 09:30, to avoid using
+    the checkpoint's own future bars to decide the continuation-vs-reversal
+    setup before they've happened (2026-08-19).
+
+    asia_start / asia_end (2026-08-20, user request: re-test AUD/USD with an
+    Asia range of 04:00-08:00 instead of the standard 00:00-06:00): passed
+    straight through to compute_daily_features - see its docstring. Also
+    narrows/widens the Settle window used for the reversal setup's sweep-
+    level computation below (still `[asia_end, SETTLE_END)`), consistent
+    with compute_daily_features' own Settle window."""
     if tp_mode not in ("adr", "fixed_r"):
         raise ValueError(f"tp_mode must be 'adr' or 'fixed_r', got {tp_mode!r}")
     if filter_mode not in ("and", "majority"):
         raise ValueError(f"filter_mode must be 'and' or 'majority', got {filter_mode!r}")
+    if continuation_entry_mode not in ("fractal", "breakout_stop"):
+        raise ValueError(f"continuation_entry_mode must be 'fractal' or 'breakout_stop', got {continuation_entry_mode!r}")
 
     # --- daily decision layer ---
-    daily = compute_daily_features(eurusd_m5)
+    daily = compute_daily_features(eurusd_m5, test_hour=test_hour, test_window_end=test_window_end,
+                                    asia_start=asia_start, asia_end=asia_end)
     daily_by_pair = {"EURUSD": daily}
     for pair, df in other_majors_m15.items():
         daily_by_pair[pair] = compute_daily_features(df)
-    cross_confirm = compute_cross_confirmation(daily_by_pair)["EURUSD"]
+    cross_confirm = (
+        cross_confirm_override if cross_confirm_override is not None
+        else compute_cross_confirmation(daily_by_pair)["EURUSD"]
+    )
 
     berlin_idx = to_berlin(eurusd_m5.index)
     date_series = pd.Series(berlin_idx.date, index=eurusd_m5.index)
@@ -369,7 +452,10 @@ def simulate_cls_practical(
         )
         daily_adx = compute_adx(daily_ohlc, n=adx_period)["adx"].shift(1)  # prior day only, no lookahead
 
-    rate_score = compute_rate_support_score(bund_m5, ustbond_m5)
+    rate_score = (
+        rates_score_override if rates_score_override is not None
+        else compute_rate_support_score(bund_m5, ustbond_m5)
+    )
     rates_ampel = classify_rates_ampel(rate_score, daily["direction"], z_window=rates_z_window, z_threshold=rates_z_threshold)
 
     adr = compute_adr(eurusd_m5, n=adr_period)
@@ -384,10 +470,19 @@ def simulate_cls_practical(
     times = eurusd_m5.index
     n = len(eurusd_m5)
     cutoff_min = _minutes_of(entry_cutoff)
-    entry_hour_min = int(ENTRY_HOUR * 60)
+    # entry search must never start before the hold-test checkpoint itself
+    # resolves - otherwise a checkpoint at/after ENTRY_HOUR would classify
+    # continuation-vs-reversal using price info from bars the entry search
+    # has already scanned (lookahead). No-op for the default/point<=09:30
+    # configs (checkpoint resolves at or before ENTRY_HOUR there), so the
+    # validated baseline path is unaffected; only matters for test_hour /
+    # test_window_end values >= ENTRY_HOUR (2026-08-19, user request to
+    # sweep checkpoints up to 10:30).
+    checkpoint_resolves_hour = test_window_end if test_window_end is not None else (test_hour + 0.25)
+    entry_hour_min = max(int(ENTRY_HOUR * 60), int(round(checkpoint_resolves_hour * 60)))
 
     risk_amount = account_size * risk_pct
-    half_asia_end_min, half_settle_end_min = int(ASIA_END * 60), int(SETTLE_END * 60)
+    half_asia_end_min, half_settle_end_min = int(asia_end * 60), int(SETTLE_END * 60)
 
     trades = []
     for day, day_start, day_end in _day_segments(dates_arr):
@@ -446,7 +541,14 @@ def simulate_cls_practical(
         if entry_start_i >= day_end:
             continue
 
-        if setup == "continuation":
+        if setup == "continuation" and continuation_entry_mode == "breakout_stop":
+            atr_at_entry_start = m5_atr[entry_start_i] if entry_start_i < len(m5_atr) else np.nan
+            if pd.isna(atr_at_entry_start) or atr_at_entry_start <= 0:
+                continue
+            trigger_level_bs = close[entry_start_i]
+            sl_level_bs = trigger_level_bs - setup_direction * min_sl_atr_mult * atr_at_entry_start
+            result = (entry_start_i, trigger_level_bs, sl_level_bs, entry_start_i, None)
+        elif setup == "continuation":
             result = _continuation_trigger(
                 high, low, minutes, entry_start_i, day_end, cutoff_min, setup_direction,
                 row["asia_high"], row["asia_low"],
@@ -546,7 +648,8 @@ def simulate_cls_practical(
         return_pct = (
             (exit_price - entry_price) / entry_price if d == 1 else (entry_price - exit_price) / entry_price
         )
-        units = risk_amount / sl_dist
+        day_risk_amount = risk_amount * risk_multiplier.get(day, 1.0) if risk_multiplier is not None else risk_amount
+        units = day_risk_amount / sl_dist
         pnl_usd = units * d * (exit_price - entry_price)
 
         trades.append(
@@ -570,7 +673,7 @@ def simulate_cls_practical(
                 "rates_ampel": r_flag,
                 "cross_confirmed": bool(c_val),
                 "units_eur": units,
-                "risk_amount_usd": risk_amount,
+                "risk_amount_usd": day_risk_amount,
                 "pnl_usd": pnl_usd,
                 "return_pct": return_pct,
                 "hold_bars": exit_i - entry_i,

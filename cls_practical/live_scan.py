@@ -22,6 +22,7 @@ from strategy.indicators import compute_adx, compute_atr
 
 from .data import fetch_eurusd_entry_tf_berlin, fetch_major_m15_berlin, fetch_rate_instrument_m5_berlin
 from .engine import _first_fractal, _minutes_of, simulate_cls_practical, trend_bias
+from .rates import compute_daily_rate_risk_multiplier
 
 OTHER_MAJORS = [p for p in PAIRS if p != "EURUSD"]
 LOOKBACK_DAYS = 400
@@ -57,11 +58,22 @@ def scan_today() -> dict:
         direction = d["direction"]
         holds = d["holds_0915"]
         c_val = cross_confirm.get(berlin_today.date(), None)
+
+        # Zins-Risiko-Skalierung (2026-08-19, uebernommen aus
+        # scripts/research_cls_practical_daily_rate_risk_scaling.py) -- rein
+        # informativ hier, aendert NICHTS an Trigger/Entry/SL/TP unten (die
+        # haengen nur an use_rates_filter, das bleibt False); zeigt nur an,
+        # ob die empfohlene Positionsgroesse heute ueber dem 1.0x-Standard
+        # liegt (lag=2 Handelstage BUND/USTBOND, z>=0.5 -> 1.75x).
+        rate_mult_series = compute_daily_rate_risk_multiplier(bund_m5, ustbond_m5, daily["direction"])
+        rate_mult_today = rate_mult_series.get(berlin_today.date(), None)
+
         row = {
             "date": today.isoformat(),
             "break_direction": {1: "long", -1: "short", 0: "kein Break"}.get(direction, "n/a"),
             "holds_0915": bool(holds) if pd.notna(holds) else None,
             "cross_confirmed": bool(c_val) if c_val is not None else None,
+            "rate_risk_multiplier": float(rate_mult_today) if rate_mult_today is not None and pd.notna(rate_mult_today) else None,
         }
 
     # 2) Tatsaechlicher Trigger heute? -- simulate_cls_practical() auf dem

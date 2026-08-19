@@ -198,9 +198,17 @@ with tabs[0]:
 |---|---|---|
 | Asia Range | 00:00-06:00 | Referenz-Range |
 | Settle-Fenster | 06:00-09:00 | Break aus der Asia-Range entsteht hier |
-| Test | 09:15-Close | Haelt der Break? |
+| Test | 09:00-Close | Haelt der Break? |
 | Entry-Fenster | 09:30-12:00 | Fractal/CHOCH-Trigger |
 """
+    )
+    caveat_box(
+        "<b>2026-08-19 aktualisiert:</b> Halte-Test-Checkpoint 09:15 &rarr; <b>09:00</b> verschoben -- "
+        "Feinraster-Sweep (15-Min-Punkte + 30-Min-Ranges, 08:30-10:30) fand 09:00 als einzige Konfiguration, "
+        "die die 09:15-Baseline gleichzeitig auf IS UND OOS schlaegt, nachverifiziert getrennt nach "
+        "Continuation/Reversal (Gesamt-PnL $30.197&rarr;$36.779). Details: "
+        "<code>scripts/research_cls_practical_holdtest_timing_finegrid.py</code> / "
+        "<code>scripts/research_cls_practical_point0900_full_verification.py</code>."
     )
     section_title("Drei Tagesfilter")
     st.markdown(
@@ -209,17 +217,25 @@ with tabs[0]:
    Session uebernommen, 2026-08-13 -- verbessert alle Metriken IS und OOS konsistent).
 2. **Crosses**: EUR/USD-Move 06:00-09:00 vs. Durchschnitt der anderen 5 Majors -- breiter Dollar-Move
    oder isolierte Bewegung?
-3. ~~**Rates**: BUND/USTBOND-CFD-"Ampel"~~ -- **deaktiviert** (2026-08-13, IS/OOS-verifiziert: ohne
-   diesen Filter fast doppelte Trade-Zahl bei besserem/gleichbleibendem Ø R in beiden Fenstern).
+3. ~~**Rates**: BUND/USTBOND-CFD-"Ampel"~~ -- **als Trade-Gate deaktiviert** (2026-08-13, IS/OOS-verifiziert:
+   ohne diesen Filter fast doppelte Trade-Zahl bei besserem/gleichbleibendem Ø R in beiden Fenstern).
 
 Verknuepfung: **UND** (alle aktiven Filter muessen zustimmen) -- ein 2-von-3-Mehrheitsmodus wurde
 getestet und wieder verworfen (mehr Trades, aber netto schlechterer Ertrag).
 """
     )
+    caveat_box(
+        "<b>2026-08-19 neu (nicht oben, weil kein Trade-Gate):</b> der Zinsfilter kehrt als "
+        "<b>Risiko-Skalierung</b> zurueck -- BUND/USTBOND-Tageskerzen der letzten 2 Handelstage, bei starker "
+        "Bestaetigung (z&ge;0.5) 1.75x Positionsgroesse statt der deaktivierten Gate-Variante oben. Verbessert "
+        "Sharpe/Calmar/Gesamt-PnL auf Gesamt/IS/OOS gleichzeitig, robust ueber 5 Split-Punkte und alle "
+        "Kalenderjahre. Siehe <code>cls_practical/rates.py::compute_daily_rate_risk_multiplier</code>, informativ "
+        "im Live Log als \"ZINS-RISIKO\"-Kachel angezeigt."
+    )
     section_title("Setups")
     st.markdown(
         """
-- **Continuation**: Break haelt beim 09:15-Test + Filter stimmen mit dem Break ueberein -> Resting-Stop-Order
+- **Continuation**: Break haelt beim 09:00-Test + Filter stimmen mit dem Break ueberein -> Resting-Stop-Order
   am ersten Fractal GEGEN die Break-Richtung (Pullback).
 - **Reversal**: Break haelt NICHT + Filter dagegen -> Rueckkehr in die Asia-Range, dann Fractal gegen den
   urspruenglichen Break (Structure Shift), Stop-Order weiter in Reversal-Richtung.

@@ -974,3 +974,64 @@
 2026-08-18 22:00:48   connection_error: None
 2026-08-18 22:00:48   hourly_breakdown: [{"time": "15:58", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
 2026-08-18 22:00:48 
+2026-08-18 22:00:52 [main 225ff15] OU-Modell: daily log 2026-08-18
+2026-08-18 22:00:52  5 files changed, 88 insertions(+)
+2026-08-18 22:00:52  create mode 100644 ou_modell_logs/raw/konto1_ttp/2026-08-18.log
+2026-08-18 22:00:52  create mode 100644 ou_modell_logs/raw/konto2_ttp/2026-08-18.log
+2026-08-18 22:00:52  create mode 100644 ou_modell_logs/raw/konto3_tickmill/2026-08-18.log
+2026-08-18 22:01:04 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-18 22:01:04    8e6671e..225ff15  main -> main
+2026-08-18 22:01:04 Commit + Push erfolgreich.
+2026-08-18 22:01:04 === Task beendet ===
+2026-08-19 21:40:01 === Task gestartet ===
+2026-08-19 21:40:02 OU-Modell Tages-Log erfasst (Konto 1 (TTP)):
+2026-08-19 21:40:02   date: 2026-08-19
+2026-08-19 21:40:02   account: Konto 1 (TTP)
+2026-08-19 21:40:02   signals_scanned: 5
+2026-08-19 21:40:02   orders_sent: 1
+2026-08-19 21:40:02   orders_skipped: 4
+2026-08-19 21:40:02   orders_error: 0
+2026-08-19 21:40:02   symbols_sent: CMI
+2026-08-19 21:40:02   baseline_equity: 97958.32
+2026-08-19 21:40:02   current_equity: 97855.89
+2026-08-19 21:40:02   floating_pnl: -113.43000000000004
+2026-08-19 21:40:02   daily_pnl_pct: -0.0010456488024703523
+2026-08-19 21:40:02   open_positions: UPS(-116.40); REG(-127.68); D(+279.03); CVS(-53.44); HRL(-67.83); EBAY(-15.91); CMI(-11.20)
+2026-08-19 21:40:02   drawdown_halted: False
+2026-08-19 21:40:02   connection_error: None
+2026-08-19 21:40:02   hourly_breakdown: [{"time": "20:45", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "21:35", "signals_scanned": 5, "sent": 1, "sent_symbols": ["CMI"], "pending_placed": 0, "pending_symbols": [], "skipped": 4, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
+2026-08-19 21:40:02 
+2026-08-19 21:40:02 OU-Modell Tages-Log erfasst (Konto 2 (TTP, Demo)):
+2026-08-19 21:40:02   date: 2026-08-19
+2026-08-19 21:40:02   account: Konto 2 (TTP, Demo)
+2026-08-19 21:40:02   signals_scanned: 0
+2026-08-19 21:40:02   orders_sent: 0
+2026-08-19 21:40:02   orders_skipped: 0
+2026-08-19 21:40:02   orders_error: 0
+2026-08-19 21:40:02   symbols_sent: 
+2026-08-19 21:40:02   baseline_equity: 100069.98
+2026-08-19 21:40:02   current_equity: 100047.28
+2026-08-19 21:40:02   floating_pnl: -49.760000000000005
+2026-08-19 21:40:02   daily_pnl_pct: -0.00022684125648868013
+2026-08-19 21:40:02   open_positions: REG(+3.50); AIG(-62.06); EBAY(+8.80)
+2026-08-19 21:40:02   drawdown_halted: False
+2026-08-19 21:40:02   connection_error: None
+2026-08-19 21:40:02   hourly_breakdown: [{"time": "20:45", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "21:35", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
+2026-08-19 21:40:02 
+2026-08-19 21:40:02 OU-Modell Tages-Log erfasst (Konto 3 (Tickmill)):
+2026-08-19 21:40:02   date: 2026-08-19
+2026-08-19 21:40:02   account: Konto 3 (Tickmill)
+2026-08-19 21:40:02   signals_scanned: 5
+2026-08-19 21:40:02   orders_sent: 1
+2026-08-19 21:40:02   orders_skipped: 4
+2026-08-19 21:40:02   orders_error: 0
+2026-08-19 21:40:02   symbols_sent: CMI
+2026-08-19 21:40:02   baseline_equity: 3519.24
+2026-08-19 21:40:02   current_equity: 3504.51
+2026-08-19 21:40:02   floating_pnl: -4.539999999999997
+2026-08-19 21:40:02   daily_pnl_pct: -0.0041855627919663236
+2026-08-19 21:40:02   open_positions: REG(-21.93); MNST(+32.34); CVS(-5.48); HRL(-6.58); EBAY(-1.58); CMI(-1.31)
+2026-08-19 21:40:02   drawdown_halted: False
+2026-08-19 21:40:02   connection_error: None
+2026-08-19 21:40:02   hourly_breakdown: [{"time": "20:45", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "21:35", "signals_scanned": 5, "sent": 1, "sent_symbols": ["CMI"], "pending_placed": 0, "pending_symbols": [], "skipped": 4, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
+2026-08-19 21:40:02 

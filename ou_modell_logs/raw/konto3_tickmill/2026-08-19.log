@@ -1,0 +1,27 @@
+===== run_20260819_204555.log =====
+2026-08-19 20:45:55,824 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260819_204555.log ===
+2026-08-19 20:46:06,480 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -22.25.
+2026-08-19 20:46:06,482 CRITICAL executor: HALTEDAUER-WARNUNG: Position MNST (Ticket 248361809) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 35.87.
+2026-08-19 20:46:06,487 CRITICAL run_once.konto3_tickmill: 2 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 12, 'profit': -22.25}, {'ticket': 248361809, 'symbol': 'MNST', 'holding_days': 12, 'profit': 35.87}]
+2026-08-19 20:46:06,723 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-19 20:46:06,725 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260819_213525.log =====
+2026-08-19 21:35:25,127 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260819_213525.log ===
+2026-08-19 21:35:25,183 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -23.13.
+2026-08-19 21:35:25,184 CRITICAL executor: HALTEDAUER-WARNUNG: Position MNST (Ticket 248361809) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 31.51.
+2026-08-19 21:35:25,188 CRITICAL run_once.konto3_tickmill: 2 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 12, 'profit': -23.13}, {'ticket': 248361809, 'symbol': 'MNST', 'holding_days': 12, 'profit': 31.51}]
+2026-08-19 21:35:25,426 INFO run_once.konto3_tickmill: 5 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-19 21:35:25,429 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3519.24, aktueller Drawdown 0.41% (Limit 20.0%)
+2026-08-19 21:35:25,435 WARNING executor: Symbol 'STLD' (MT5-Name 'STLD') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-19 21:35:25,435 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'STLD', 'direction': 'Long', 'entry': 227.6, 'sl': 208.08, 'tp': 256.88}}
+2026-08-19 21:35:25,438 WARNING executor: Symbol 'FITB' (MT5-Name 'FITB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-19 21:35:25,438 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FITB', 'direction': 'Long', 'entry': 55.46, 'sl': 54.18, 'tp': 57.36}}
+2026-08-19 21:35:25,440 WARNING executor: Symbol 'EQR' (MT5-Name 'EQR') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-19 21:35:25,440 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'EQR', 'direction': 'Long', 'entry': 63.66, 'sl': 59.66, 'tp': 69.66}}
+2026-08-19 21:35:25,441 WARNING executor: Symbol 'KEY' (MT5-Name 'KEY') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-19 21:35:25,442 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'KEY', 'direction': 'Long', 'entry': 22.1, 'sl': 21.52, 'tp': 22.98}}
+2026-08-19 21:35:25,731 INFO executor: Order gesendet: {'symbol': 'CMI', 'volume': 1.0, 'type': 'BUY', 'entry': 608.14, 'sl': 574.73, 'tp': 654.42} -> Ticket 253851026
+2026-08-19 21:35:25,736 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'sent', 'order': {'symbol': 'CMI', 'volume': 1.0, 'type': 'BUY', 'entry': 608.14, 'sl': 574.73, 'tp': 654.42}, 'signal': {'symbol': 'CMI', 'direction': 'Long', 'entry': 606.61, 'sl': 574.73, 'tp': 654.42}, 'ticket': 253851026, 'risk': 33.40999999999997}
+2026-08-19 21:35:25,743 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===

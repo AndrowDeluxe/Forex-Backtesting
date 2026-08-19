@@ -50,5 +50,11 @@ render_section(
             "icon": ":material/smart_toy:",
             "tag": "STRATEGIE",
         },
+        {
+            "page": "app_pages/gold_ctnl_edge.py",
+            "title": "CTNL Edge Strategie",
+            "icon": ":material/military_tech:",
+            "tag": "STRATEGIE",
+        },
     ],
 )

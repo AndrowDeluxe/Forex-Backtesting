@@ -485,6 +485,68 @@ with tab_ek:
         unsafe_allow_html=True,
     )
 
+    ek7_riskopt = load_json("ek_7leg_risk_optimized.json")
+    ek7_wf = load_json("ek_riskopt_walkforward.json")
+    section_title("Risikostufen-Optimierung (alle 7 Strategien, gleiche Methodik wie bei FK/EK-Schnellkonto)")
+    st.success(
+        "**Walk-Forward-validiert:** Kapitalanteil bleibt bei allen 7 Strategien gleichgewichtet (~14,3% je Bein), "
+        "aber das Risiko/Trade wird je Strategie individuell angepasst -- hochgesetzt bei Strategien, die sauber "
+        "linear skalieren (Gold ASB, BTC EMA9/21, Gold-Bitcoin Dual Mom., ORB), leicht GESENKT beim OU-Modell "
+        "(dessen 15%-Risikodeckel bei mehr Risiko/Trade zu weniger, groesseren Trades fuehrt -- kontraproduktiv). "
+        "Anders als bei der Gewichts-Optimierung oben (die im Out-of-Sample-Test versagt hat) wurde diese grobe, "
+        "diskrete Risikostufen-Wahl explizit per Walk-Forward geprueft: die auf den ersten 60% der Historie "
+        "gewaehlte Kombination ist **identisch** mit der auf der vollen Historie gewaehlten -- und schlaegt die "
+        "Referenz-Risikostufen auch out-of-sample auf allen Achsen (CAGR, Sharpe, Calmar).",
+        icon=":material/verified:",
+    )
+    EK7_TITLES = {"reference": "Referenz-Risikostufen", "riskopt": "Risiko-optimiert (empfohlen)"}
+    col1, col2 = st.columns(2)
+    for col, cand_key, tag, tag_label in [(col1, "reference", "safe", "referenz"), (col2, "riskopt", "fast", "empfohlen")]:
+        cand = ek7_riskopt[cand_key]
+        hist = cand["historical_metrics"]
+        with col:
+            st.markdown(
+                f"<div class='pc-candidate'><div class='pc-candidate-head'>"
+                f"<span class='pc-candidate-title'>{EK7_TITLES[cand_key]}</span>"
+                f"<span class='pc-candidate-tag {tag}'>{tag_label}</span></div></div>",
+                unsafe_allow_html=True,
+            )
+            r1c1, r1c2 = st.columns(2)
+            r1c1.metric("CAGR", f"{hist['cagr_pct']:+.1f}%")
+            r1c2.metric("Sharpe", f"{hist['sharpe']:.2f}")
+            r2c1, r2c2 = st.columns(2)
+            r2c1.metric("MaxDD", f"{hist['max_dd_pct']:.1f}%")
+            r2c2.metric("Calmar", f"{hist['calmar']:.2f}")
+            rows_html = ""
+            for leg_key, risk_label in cand["combo"].items():
+                rows_html += (
+                    f"<div class='pc-weight-row' style='grid-template-columns:1fr 60px;'>"
+                    f"<div class='pc-weight-name'>{ek7_riskopt['leg_labels'][leg_key]}</div>"
+                    f"<div class='pc-weight-pct'>{risk_label}</div></div>"
+                )
+            st.markdown(rows_html, unsafe_allow_html=True)
+            st.caption("Risiko/Trade je Strategie (Kapitalanteil bei beiden Kandidaten gleich ~14,3%).")
+
+    curve_ref7 = pd.Series({pd.Timestamp(d): v for d, v in ek7_riskopt["reference_curve"]})
+    curve_ro7 = pd.Series({pd.Timestamp(d): v for d, v in ek7_riskopt["riskopt_curve"]})
+    df1 = curve_ref7.rename("value").rename_axis("date").reset_index(); df1["Serie"] = "Referenz"
+    df2 = curve_ro7.rename("value").rename_axis("date").reset_index(); df2["Serie"] = "Risiko-optimiert"
+    df_ek7 = pd.concat([df1, df2])
+    st.altair_chart(line_chart(df_ek7, {"Referenz": (C_MUTED, (4, 3)), "Risiko-optimiert": (C_BLUE, None)}), use_container_width=True)
+    st.caption(
+        f"Historischer Zeitraum {ek7_riskopt['common_window']['start']} bis {ek7_riskopt['common_window']['end']} "
+        "(Zeitraum, in dem alle 7 Strategien inkl. der neuen Risikostufen-Sweeps Daten liefern -- kuerzer als das "
+        "Hauptdiagramm oben, da OU-Modell (volles Universum) und ORB derzeit nur bis Ende 2024 vorliegen)."
+    )
+    st.caption(
+        f"Walk-Forward-Check: In-Sample {ek7_wf['is_window']['start']} bis {ek7_wf['is_window']['end']}, "
+        f"Out-of-Sample {ek7_wf['oos_window']['start']} bis {ek7_wf['oos_window']['end']} (nie beim Waehlen der "
+        f"Risikostufen verwendet). Referenz OOS: CAGR {ek7_wf['oos_reference']['cagr_pct']:+.1f}%, "
+        f"Sharpe {ek7_wf['oos_reference']['sharpe']:.2f}, Calmar {ek7_wf['oos_reference']['calmar']:.2f}. "
+        f"Risiko-optimiert OOS: CAGR {ek7_wf['oos_is_selected']['cagr_pct']:+.1f}%, "
+        f"Sharpe {ek7_wf['oos_is_selected']['sharpe']:.2f}, Calmar {ek7_wf['oos_is_selected']['calmar']:.2f}."
+    )
+
 # ============================================================ Tab: FK
 with tab_fk:
     st.caption("Nur die 5 FK-tauglichen Strategien (siehe Vorbehalte). Zwei unterschiedliche Regelwerke, Monte-Carlo-simuliert.")

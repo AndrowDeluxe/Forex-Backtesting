@@ -1,0 +1,55 @@
+{
+  "is_window": {
+    "start": "2018-12-01",
+    "end": "2022-07-25"
+  },
+  "oos_window": {
+    "start": "2022-07-26",
+    "end": "2024-12-30"
+  },
+  "is_selected_combo": {
+    "gold_asb": "2.0%",
+    "cls_practical": "1.5%",
+    "btc_ema_cross": "2.0%",
+    "ou_modell": "0.5%",
+    "trend_pullback": "0.10%",
+    "gold_bitcoin_dual_momentum": "2.0%",
+    "orb_strategy": "1.5%"
+  },
+  "reference_combo": {
+    "gold_asb": "1.0%",
+    "cls_practical": "1.0%",
+    "btc_ema_cross": "1.0%",
+    "ou_modell": "1.0%",
+    "trend_pullback": "0.10%",
+    "gold_bitcoin_dual_momentum": "1.0%",
+    "orb_strategy": "1.0%"
+  },
+  "full_sample_combo": {
+    "gold_asb": "2.0%",
+    "cls_practical": "1.5%",
+    "btc_ema_cross": "2.0%",
+    "ou_modell": "0.5%",
+    "trend_pullback": "0.10%",
+    "gold_bitcoin_dual_momentum": "2.0%",
+    "orb_strategy": "1.5%"
+  },
+  "oos_reference": {
+    "cagr_pct": 7.62,
+    "sharpe": 1.894,
+    "max_dd_pct": -3.08,
+    "calmar": 2.472
+  },
+  "oos_is_selected": {
+    "cagr_pct": 13.33,
+    "sharpe": 2.375,
+    "max_dd_pct": -3.81,
+    "calmar": 3.5
+  },
+  "oos_full_sample_selected": {
+    "cagr_pct": 13.33,
+    "sharpe": 2.375,
+    "max_dd_pct": -3.81,
+    "calmar": 3.5
+  }
+}

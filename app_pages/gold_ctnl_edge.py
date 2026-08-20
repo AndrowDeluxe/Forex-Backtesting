@@ -289,10 +289,10 @@ tab_cont, tab_rev, tab_history = st.tabs([
     ":material/trending_up: Continuation",
     ":material/sync_alt: Reversal-Kaskade",
     ":material/history: Weg dorthin",
-])
+], on_change="rerun")
 
 # -------------------------------------------------------------- Tab 1: Continuation
-with tab_cont:
+def _render_tab_tab_cont():
     with st.expander(":material/menu_book: Strategie-Regeln", expanded=False):
         st.markdown(
             """
@@ -348,7 +348,7 @@ with tab_cont:
     render_exit_breakdown(cont_oos_trades, bar_minutes=5)
 
 # -------------------------------------------------------------- Tab 2: Reversal-Kaskade
-with tab_rev:
+def _render_tab_tab_rev():
     with st.expander(":material/menu_book: Strategie-Regeln", expanded=False):
         st.markdown(
             """
@@ -410,7 +410,7 @@ with tab_rev:
     render_exit_breakdown(rev_oos_trades, bar_minutes=15)
 
 # -------------------------------------------------------------- Tab 3: Weg dorthin
-with tab_history:
+def _render_tab_tab_history():
     section_title("Kritischer Fund: Stop-Loss-Bug (2026-08-19)")
     caveat_box(
         "Beim Bauen der Trade-Charts fiel auf: die Stop-Loss-Referenz landete in der Pipeline eine Bar "
@@ -456,3 +456,14 @@ with tab_history:
         "funktioniert nur in der Reversal-Kaskade nicht -- fuer Continuation ist der reine Sweep-and-"
         "Reject bislang durch nichts geschlagen worden."
     )
+
+
+# ============================================================ Lazy dispatch
+# st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
+# on_change="rerun" above makes tab.open reflect the actually-selected tab; only
+# that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
+# see app_pages/portfolio_construction.py for the original instance of this fix).
+for _tab, _render in [(tab_cont, _render_tab_tab_cont), (tab_rev, _render_tab_tab_rev), (tab_history, _render_tab_tab_history)]:
+    if _tab.open:
+        with _tab:
+            _render()

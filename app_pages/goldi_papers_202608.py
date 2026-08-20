@@ -43,12 +43,12 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs(
         "4. Grading the Graders",
         "5. COT-Sentiment (Praezisionsmetalle)",
     ]
-)
+, on_change="rerun")
 
 # =============================================================================
 # Tab 1: Short-selling feasibility & foreign investor trading (Korea)
 # =============================================================================
-with tab1:
+def _render_tab_tab1():
     st.markdown("### An & Ryu (2026) -- Short-selling feasibility and the price impact of foreign investor trading")
     st.caption("SSRN 7244128 -- Koreanischer Aktienmarkt (KOSPI), 2017-2024, unveroeffentlicht/Preprint")
 
@@ -90,7 +90,7 @@ Liquiditaet, keine strukturellen Handelsbeschraenkungen).
 # =============================================================================
 # Tab 2: Gamma Exposure (GEX)
 # =============================================================================
-with tab2:
+def _render_tab_tab2():
     st.markdown("### Sen (2026) -- Gamma Exposure (GEX) Without the Paywall")
     st.caption(
         "Eigenpublikation (nicht peer-reviewed), Methodik-Paper -- Dealer-Gamma-Engine fuer "
@@ -154,7 +154,7 @@ with tab2:
 # =============================================================================
 # Tab 3: Gold-Silver-BTC Lead-Lag
 # =============================================================================
-with tab3:
+def _render_tab_tab3():
     st.markdown("### Sulistyardi (2026) -- Regime-Conditional Rolling Correlation & Lead-Lag: XAUUSD, XAGUSD, BTCUSD")
     st.caption("SSRN 7200580 -- Literatursynthese + vorgeschlagenes Rahmenwerk (nicht selbst empirisch getestet)")
 
@@ -210,7 +210,7 @@ with tab3:
 # =============================================================================
 # Tab 4: Grading the Graders
 # =============================================================================
-with tab4:
+def _render_tab_tab4():
     st.markdown("### Mouynes (2026) -- Grading the Graders: institutionelle Jahres-Ausblicke")
     st.caption("Working Paper -- Bewertung von 15 Institutionen (Banken, Political-Risk-Häuser, IWF, Einzelpersonen), 2016-2026")
 
@@ -247,7 +247,7 @@ with tab4:
 # =============================================================================
 # Tab 5: COT Sentiment (Precious Metals)
 # =============================================================================
-with tab5:
+def _render_tab_tab5():
     st.markdown("### Zhang & Laws (2013) -- Investor Sentiment and Forecasting Ability: Evidence from COT Reports in Precious Metal Futures Markets")
     st.caption("SSRN 2382299 -- Gold/Silber/Platin-Futures (CME), woechentliche CFTC-COT-Daten, Januar 1996 - Dezember 2012")
 
@@ -331,3 +331,14 @@ st.success(
     "extern uebernommenen Ideen.",
     icon=":material/summarize:",
 )
+
+
+# ============================================================ Lazy dispatch
+# st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
+# on_change="rerun" above makes tab.open reflect the actually-selected tab; only
+# that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
+# see app_pages/portfolio_construction.py for the original instance of this fix).
+for _tab, _render in [(tab1, _render_tab_tab1), (tab2, _render_tab_tab2), (tab3, _render_tab_tab3), (tab4, _render_tab_tab4), (tab5, _render_tab_tab5)]:
+    if _tab.open:
+        with _tab:
+            _render()

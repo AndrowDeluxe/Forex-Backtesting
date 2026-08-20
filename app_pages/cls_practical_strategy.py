@@ -187,10 +187,10 @@ caveat_box(
     "seither ueber mehrere Sessions verfeinert und mehrfach out-of-sample verifiziert."
 )
 
-tabs = st.tabs(["Mechanik", "Backtest-Ergebnis", "Risk Management", "Weg dorthin"])
+tabs = st.tabs(["Mechanik", "Backtest-Ergebnis", "Risk Management", "Weg dorthin"], on_change="rerun")
 
 # -------------------------------------------------------------- Tab 1: Mechanik
-with tabs[0]:
+def _render_tab_tabs_0_():
     section_title("Tagesablauf (Europe/Berlin)")
     st.markdown(
         """
@@ -247,7 +247,7 @@ TP = 0,35 × ADR(14) (Average Daily Range). SL = Fractal-Extrem, mit einem Floor
     )
 
 # -------------------------------------------------------------- Tab 2: Backtest-Ergebnis
-with tabs[1]:
+def _render_tab_tabs_1_():
     risk_pct = st.select_slider(
         "Risiko pro Trade", options=[0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.02],
         value=0.01, format_func=lambda x: f"{x*100:.2f}%",
@@ -340,7 +340,7 @@ with tabs[1]:
                "wie beim OU-Modell. Das tatsaechlich genutzte Risiko liegt deutlich unter Quarter-Kelly.")
 
 # -------------------------------------------------------------- Tab 3: Risk Management
-with tabs[2]:
+def _render_tab_tabs_2_():
     st.markdown(
         "Zwei Ziel-Konten, unterschiedliche Risikoaufnahme -- siehe "
         "[Risk Management](risk_management) fuers generalisierte Prinzip beim OU-Modell."
@@ -394,7 +394,7 @@ with tabs[2]:
     )
 
 # -------------------------------------------------------------- Tab 4: Weg dorthin
-with tabs[3]:
+def _render_tab_tabs_3_():
     section_title("Verworfen")
     st.markdown(
         """
@@ -449,3 +449,14 @@ Spread-/Slippage-Stresstest (Kante kippt ab ~1,5 bps Spread) -- alle einzeln dur
 `scripts/research_cls_practical_full_param_sweep.py` fuer die Rohzahlen.
 """
     )
+
+
+# ============================================================ Lazy dispatch
+# st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
+# on_change="rerun" above makes tab.open reflect the actually-selected tab; only
+# that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
+# see app_pages/portfolio_construction.py for the original instance of this fix).
+for _tab, _render in [(tabs[0], _render_tab_tabs_0_), (tabs[1], _render_tab_tabs_1_), (tabs[2], _render_tab_tabs_2_), (tabs[3], _render_tab_tabs_3_)]:
+    if _tab.open:
+        with _tab:
+            _render()

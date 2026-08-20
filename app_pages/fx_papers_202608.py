@@ -52,12 +52,12 @@ tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
         "5. ADX-VWAP-Quelle (Fund)",
         "6. Unabhängige Erkenntnisse",
     ]
-)
+, on_change="rerun")
 
 # =============================================================================
 # Tab 1: Chaboud, Rime, Sushko -- The Foreign Exchange Market
 # =============================================================================
-with tab1:
+def _render_tab_tab1():
     st.markdown("### Chaboud, Rime, Sushko (2023) -- The Foreign Exchange Market")
     st.caption(
         "BIS / Federal Reserve Board, fuer *The Research Handbook of Financial Markets* -- "
@@ -124,7 +124,7 @@ schnellen, messbaren Verhaltensaenderung (Banken beendeten "additional hold time
 # =============================================================================
 # Tab 2: Lu Jialong -- Fibonacci Ratios Are Weighted Averages
 # =============================================================================
-with tab2:
+def _render_tab_tab2():
     st.markdown("### Lu Jialong (2026) -- Fibonacci Ratios Are Weighted Averages")
     st.caption(
         "Working Paper (2026), reine Mathematik -- \"foundational paper\" eines angekuendigten "
@@ -209,7 +209,7 @@ liegt uns nicht vor, es ist nur eine Behauptung ueber eine externe Quelle.
 # =============================================================================
 # Tab 3: Seeck -- Intraday Momentum in Spot FX and Currency Futures
 # =============================================================================
-with tab3:
+def _render_tab_tab3():
     st.markdown("### Leander Seeck (2026) -- Intraday Momentum in Spot FX and Currency Futures")
     st.caption(
         "Limes Technologies, Independent Research, SSRN Working Paper (Juni 2026) -- "
@@ -345,7 +345,7 @@ von **0.56x statt der behaupteten ~3.8x**.
 # =============================================================================
 # Tab 4: Evans -- Forex Trading and the WMR Fix
 # =============================================================================
-with tab4:
+def _render_tab_tab4():
     st.markdown("### Martin D.D. Evans (2017) -- Forex Trading and the WMR Fix")
     st.caption(
         "Georgetown University, *Journal of Banking and Finance* (peer-reviewed, published) -- "
@@ -463,7 +463,7 @@ Monatsenden) -- zu wenig, um einer einzelnen Zahl viel Gewicht zu geben.
 # =============================================================================
 # Tab 5: Bhatti / Osmanoglu -- ADX-Conditioned VWAP (probable source)
 # =============================================================================
-with tab5:
+def _render_tab_tab5():
     st.markdown(
         "### Amaanullah Bhatti (Hafzan Osmanoglu) (2026) -- Momentum Exhaustion and "
         "Fair Value Reversion: An ADX-Conditioned VWAP Strategy in FX Markets"
@@ -586,7 +586,7 @@ Reproduktion behaupteter Paper-Ergebnisse, weil keine existieren.
 # Tab 6: Unabhaengige Erkenntnisse -- our own verdict per paper, separate
 # from each paper's own claims (Tabs 1-5 above)
 # =============================================================================
-with tab6:
+def _render_tab_tab6():
     st.markdown("### Unabhängige Erkenntnisse -- eigener Verdikt je Paper")
     st.caption(
         "Nicht die Behauptungen der Papers (die stehen in Tabs 1-5), sondern das, was "
@@ -687,3 +687,14 @@ st.success(
     "produktiver Handelsbaustein, aber mehr Klarheit als vorher.**",
     icon=":material/summarize:",
 )
+
+
+# ============================================================ Lazy dispatch
+# st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
+# on_change="rerun" above makes tab.open reflect the actually-selected tab; only
+# that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
+# see app_pages/portfolio_construction.py for the original instance of this fix).
+for _tab, _render in [(tab1, _render_tab_tab1), (tab2, _render_tab_tab2), (tab3, _render_tab_tab3), (tab4, _render_tab_tab4), (tab5, _render_tab_tab5), (tab6, _render_tab_tab6)]:
+    if _tab.open:
+        with _tab:
+            _render()

@@ -60,6 +60,7 @@ def _default_state() -> dict:
     return {
         "in_position": False, "entry_date": None, "entry_price": None, "raw_entry_price": None,
         "stop_price": None, "qty": None, "trade_risk_dollar": None, "cash": PAPER_CAPITAL,
+        "last_scan_date": None,
     }
 
 
@@ -141,71 +142,89 @@ def scan_today(as_of: pd.Timestamp | None = None, state_override: dict | None = 
         "action": "none",
     }
 
-    # 1) Exit check (on a position carried over from a prior run) - always
-    # before any new entry, exactly the backtest's per-bar order. STOP
-    # checked first here, unlike the backtest's go_flat-first order: a daily
-    # scan only learns about yesterday's stop breach AND yesterday's
-    # crossunder confirmation in the same call, but the stop (an intrabar
-    # price event) can only have happened no LATER than the crossunder
-    # (which needs yesterday's full close to confirm) - so if both look
-    # true from a single once-daily scan, the stop chronologically came
-    # first and must take priority. Verified 2026-08-16 against
-    # scripts/verify_btc_ema_cross_live_scan.py - this ordering was
-    # required to match the batch backtest on a real stop+crossunder
-    # same-day case (2025-09-25).
-    if state["in_position"]:
-        exit_reason, exit_raw = None, None
-        if yesterday_low <= state["stop_price"]:
-            exit_reason, exit_raw = "stop", state["stop_price"]
-        elif go_flat:
-            exit_reason, exit_raw = "crossunder", today_open
+    # Guard against multiple same-day runs (Task Scheduler repetition,
+    # manual re-runs, etc.): yesterday_low/go_flat are derived from the last
+    # CLOSED bar, which does not change again until the next UTC daily
+    # candle closes - re-running exit/entry logic later the same day would
+    # re-check a freshly-entered position's stop against a low that occurred
+    # BEFORE the entry even existed (that low was already known and baked
+    # into the entry decision itself), which can spuriously "hit" the stop
+    # immediately with zero real price movement since entry. Found
+    # 2026-08-20: the position opened at 03:26 UTC was "stopped" at 05:16
+    # and again at 09:56 by exactly this, both times against 2026-08-19's
+    # low (64,166) which predates the entry - two fictitious round-trip
+    # trades, no such move ever happened on the real chart. Each calendar
+    # date is now only ever evaluated once; later runs just report status.
+    if state.get("last_scan_date") == row["date"]:
+        row["action"] = "bereits heute gescannt (kein erneuter Exit/Entry-Check)"
+    else:
+        # 1) Exit check (on a position carried over from a prior run) - always
+        # before any new entry, exactly the backtest's per-bar order. STOP
+        # checked first here, unlike the backtest's go_flat-first order: a daily
+        # scan only learns about yesterday's stop breach AND yesterday's
+        # crossunder confirmation in the same call, but the stop (an intrabar
+        # price event) can only have happened no LATER than the crossunder
+        # (which needs yesterday's full close to confirm) - so if both look
+        # true from a single once-daily scan, the stop chronologically came
+        # first and must take priority. Verified 2026-08-16 against
+        # scripts/verify_btc_ema_cross_live_scan.py - this ordering was
+        # required to match the batch backtest on a real stop+crossunder
+        # same-day case (2025-09-25).
+        if state["in_position"]:
+            exit_reason, exit_raw = None, None
+            if yesterday_low <= state["stop_price"]:
+                exit_reason, exit_raw = "stop", state["stop_price"]
+            elif go_flat:
+                exit_reason, exit_raw = "crossunder", today_open
 
-        if exit_reason:
-            exit_fill = exit_raw * (1 - COMMISSION)
-            pnl = state["qty"] * (exit_fill - state["entry_price"])
-            r_multiple = pnl / state["trade_risk_dollar"]
-            new_cash = state["cash"] + state["qty"] * exit_fill
-            trade_row = {
-                "entry_date": state["entry_date"], "exit_date": row["date"], "exit_reason": exit_reason,
-                "raw_entry_price": state["raw_entry_price"], "entry_price_filled": state["entry_price"],
-                "exit_price_filled": exit_fill, "qty": state["qty"], "pnl_dollar": pnl,
-                "r_multiple": r_multiple, "cash_after": new_cash,
-            }
+            if exit_reason:
+                exit_fill = exit_raw * (1 - COMMISSION)
+                pnl = state["qty"] * (exit_fill - state["entry_price"])
+                r_multiple = pnl / state["trade_risk_dollar"]
+                new_cash = state["cash"] + state["qty"] * exit_fill
+                trade_row = {
+                    "entry_date": state["entry_date"], "exit_date": row["date"], "exit_reason": exit_reason,
+                    "raw_entry_price": state["raw_entry_price"], "entry_price_filled": state["entry_price"],
+                    "exit_price_filled": exit_fill, "qty": state["qty"], "pnl_dollar": pnl,
+                    "r_multiple": r_multiple, "cash_after": new_cash,
+                }
+                if not dry_run:
+                    _log_trade(trade_row)
+                    icon = "\U0001F7E2" if pnl > 0 else "\U0001F534"
+                    send_telegram_message(
+                        f"[BTC EMA9/21 Paper] {icon} EXIT ({exit_reason}) @ ${exit_fill:,.2f}\n"
+                        f"Entry {state['entry_date']} @ ${state['raw_entry_price']:,.2f} -> "
+                        f"heute {row['date']}\n"
+                        f"PnL: ${pnl:+,.2f} ({r_multiple:+.2f}R)  |  Cash: ${new_cash:,.2f}"
+                    )
+                row["action"] = f"exit ({exit_reason}), pnl=${pnl:+,.2f} ({r_multiple:+.2f}R)"
+                row["_trade"] = trade_row
+                state = _default_state()
+                state["cash"] = new_cash
+
+        # 2) Entry check - only if flat after the exit check above.
+        if not state["in_position"] and go_long and atr_yesterday > 0:
+            stop_dist = ATR_STOP_MULT * atr_yesterday
+            entry_fill = today_open * (1 + COMMISSION)
+            equity_now = state["cash"]
+            target_qty = (equity_now * PAPER_RISK_PCT) / stop_dist
+            max_qty = equity_now / entry_fill
+            qty = min(target_qty, max_qty)
+            state.update({
+                "in_position": True, "entry_date": row["date"], "entry_price": entry_fill,
+                "raw_entry_price": today_open, "stop_price": today_open - stop_dist,
+                "qty": qty, "trade_risk_dollar": qty * stop_dist,
+            })
+            state["cash"] -= qty * entry_fill
+            row["action"] = f"entry long @ {entry_fill:,.2f}, stop @ {state['stop_price']:,.2f}, qty={qty:.6f}"
             if not dry_run:
-                _log_trade(trade_row)
-                icon = "\U0001F7E2" if pnl > 0 else "\U0001F534"
                 send_telegram_message(
-                    f"[BTC EMA9/21 Paper] {icon} EXIT ({exit_reason}) @ ${exit_fill:,.2f}\n"
-                    f"Entry {state['entry_date']} @ ${state['raw_entry_price']:,.2f} -> "
-                    f"heute {row['date']}\n"
-                    f"PnL: ${pnl:+,.2f} ({r_multiple:+.2f}R)  |  Cash: ${new_cash:,.2f}"
+                    f"[BTC EMA9/21 Paper] \U0001F7E2 ENTRY long @ ${entry_fill:,.2f}\n"
+                    f"Stop: ${state['stop_price']:,.2f}  |  Groesse: {qty:.6f} BTC  |  "
+                    f"Risiko: ${state['trade_risk_dollar']:,.2f} (1% von ${equity_now:,.2f})"
                 )
-            row["action"] = f"exit ({exit_reason}), pnl=${pnl:+,.2f} ({r_multiple:+.2f}R)"
-            row["_trade"] = trade_row
-            state = _default_state()
-            state["cash"] = new_cash
 
-    # 2) Entry check - only if flat after the exit check above.
-    if not state["in_position"] and go_long and atr_yesterday > 0:
-        stop_dist = ATR_STOP_MULT * atr_yesterday
-        entry_fill = today_open * (1 + COMMISSION)
-        equity_now = state["cash"]
-        target_qty = (equity_now * PAPER_RISK_PCT) / stop_dist
-        max_qty = equity_now / entry_fill
-        qty = min(target_qty, max_qty)
-        state.update({
-            "in_position": True, "entry_date": row["date"], "entry_price": entry_fill,
-            "raw_entry_price": today_open, "stop_price": today_open - stop_dist,
-            "qty": qty, "trade_risk_dollar": qty * stop_dist,
-        })
-        state["cash"] -= qty * entry_fill
-        row["action"] = f"entry long @ {entry_fill:,.2f}, stop @ {state['stop_price']:,.2f}, qty={qty:.6f}"
-        if not dry_run:
-            send_telegram_message(
-                f"[BTC EMA9/21 Paper] \U0001F7E2 ENTRY long @ ${entry_fill:,.2f}\n"
-                f"Stop: ${state['stop_price']:,.2f}  |  Groesse: {qty:.6f} BTC  |  "
-                f"Risiko: ${state['trade_risk_dollar']:,.2f} (1% von ${equity_now:,.2f})"
-            )
+        state["last_scan_date"] = row["date"]
 
     row["in_position"] = state["in_position"]
     row["equity_mark_to_market"] = round(

@@ -337,10 +337,10 @@ tab_equity, tab_sweep, tab_costs, tab_oos, tab_risk = st.tabs([
     ":material/payments: Kosten-Sensitivitaet",
     ":material/warning: Out-of-Sample",
     ":material/shield: TTP-Risikomanagement",
-])
+], on_change="rerun")
 
 # ------------------------------------------------------------------ Tab: Equity curve
-with tab_equity:
+def _render_tab_tab_equity():
     m = perf_metrics(recommended)
     m_gold = perf_metrics(gold_bh)
     m_btc = perf_metrics(btc_bh)
@@ -375,7 +375,7 @@ with tab_equity:
     )
 
 # ------------------------------------------------------------------ Tab: Parameter sweep
-with tab_sweep:
+def _render_tab_tab_sweep():
     caveat_box(
         "X = Lookback-Fenster in Wochen fuer die Momentum-Berechnung. \"Pur\" = ohne Vol-Kappung, "
         "\"Vol-capped\" = mit 20%-Vol-Deckel. Composite (4/8/12w gemittelt) ist die empfohlene, "
@@ -415,7 +415,7 @@ with tab_sweep:
     )
 
 # ------------------------------------------------------------------ Tab: Cost sensitivity
-with tab_costs:
+def _render_tab_tab_costs():
     caveat_box(
         "Kosten werden nur bei tatsaechlichem Assetwechsel (Cash&harr;Gold&harr;Bitcoin) angesetzt, "
         "nicht bei jeder woechentlichen Vol-Cap-Neugewichtung. Schaetzwerte, keine konkreten "
@@ -451,7 +451,7 @@ with tab_costs:
     )
 
 # ------------------------------------------------------------------ Tab: Out-of-sample
-with tab_oos:
+def _render_tab_tab_oos():
     caveat_box(
         f"Split-Datum {SPLIT_DATE} (nicht im Original-Paper enthalten, sondern eine zusaetzliche "
         "Ehrlichkeits-Pruefung nach diesem Repo-Standard) -- IS = alles davor, OOS = alles danach. "
@@ -489,7 +489,7 @@ with tab_oos:
     )
 
 # ------------------------------------------------------------------ Tab: TTP risk management
-with tab_risk:
+def _render_tab_tab_risk():
     caveat_box(
         "<b>&#9888; Die Vol-capped-Version (andere Tabs) hat KEINE untertaegige Risikokontrolle</b> -- "
         "wird die Position am Mittwoch gesetzt, reagiert sie bis zum naechsten Mittwoch auf nichts, "
@@ -577,3 +577,14 @@ with tab_risk:
             """,
             unsafe_allow_html=True,
         )
+
+
+# ============================================================ Lazy dispatch
+# st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
+# on_change="rerun" above makes tab.open reflect the actually-selected tab; only
+# that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
+# see app_pages/portfolio_construction.py for the original instance of this fix).
+for _tab, _render in [(tab_equity, _render_tab_tab_equity), (tab_sweep, _render_tab_tab_sweep), (tab_costs, _render_tab_tab_costs), (tab_oos, _render_tab_tab_oos), (tab_risk, _render_tab_tab_risk)]:
+    if _tab.open:
+        with _tab:
+            _render()

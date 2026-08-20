@@ -35,12 +35,12 @@ st.space("medium")
 
 tab_grundlagen, tab_bausteine, tab_gold, tab_verknuepfung = st.tabs(
     ["Grundlagen", "Strategiebausteine nach Asset-Klasse", "Gold-Bausteine", "Verknuepfungsideen"]
-)
+, on_change="rerun")
 
 # =============================================================================
 # Tab 1: Grundlagen
 # =============================================================================
-with tab_grundlagen:
+def _render_tab_tab_grundlagen():
     st.markdown("### Was das Paper eigentlich ist")
     st.markdown(
         "Kein einzelnes Modell, sondern ein **breiter Katalog**: ~150 Strategie-"
@@ -123,7 +123,7 @@ with tab_grundlagen:
 # =============================================================================
 # Tab 2: Strategiebausteine nach Asset-Klasse
 # =============================================================================
-with tab_bausteine:
+def _render_tab_tab_bausteine():
     st.caption(
         "Breite statt Tiefe (auf Wunsch): jeder Baustein ist eigenstaendig "
         "formuliert (keine Paper-Zitate), knapp gehalten, mit einem Bezug "
@@ -430,7 +430,7 @@ einen eigenstaendigen, testbaren Baustein.
 # =============================================================================
 # Tab 3: Gold-Bausteine
 # =============================================================================
-with tab_gold:
+def _render_tab_tab_gold():
     st.markdown("### Auf Gold zugeschnitten -- welche Bausteine aus dem Paper wirklich passen")
     st.markdown(
         "Gold ist im Repo bereits gut abgedeckt (`asian_range_breakout` als "
@@ -549,7 +549,7 @@ fuer die volle Tabelle.
 # =============================================================================
 # Tab 4: Verknuepfungsideen
 # =============================================================================
-with tab_verknuepfung:
+def _render_tab_tab_verknuepfung():
     st.markdown("### Wie neue Bausteine mit Bestehendem zusammenspielen koennten")
     st.markdown(
         "Konkrete, priorisierte Hypothesen, die aus den obigen Bausteinen und "
@@ -611,3 +611,14 @@ with tab_verknuepfung:
         "Backtest bekommt und was hier als Ideen-Pool bleibt.",
         icon=":material/hourglass_empty:",
     )
+
+
+# ============================================================ Lazy dispatch
+# st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
+# on_change="rerun" above makes tab.open reflect the actually-selected tab; only
+# that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
+# see app_pages/portfolio_construction.py for the original instance of this fix).
+for _tab, _render in [(tab_grundlagen, _render_tab_tab_grundlagen), (tab_bausteine, _render_tab_tab_bausteine), (tab_gold, _render_tab_tab_gold), (tab_verknuepfung, _render_tab_tab_verknuepfung)]:
+    if _tab.open:
+        with _tab:
+            _render()

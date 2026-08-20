@@ -251,13 +251,13 @@ tab_combined, tab_overlap, tab_ek, tab_fk, tab_ekfast, tab_wf, tab_crisis, tab_c
     ":material/verified: Walk-Forward",
     ":material/thunderstorm: Krisen-Test",
     ":material/report: Einordnung & Vorbehalte",
-])
+], on_change="rerun")
 
 EK_KEYS = tuple(ek["ek_leg_labels"].keys())
 FK_KEYS = tuple(fk["fk_leg_labels"].keys())
 
 # ============================================================ Tab: Kombinierter Backtest
-with tab_combined:
+def _render_tab_combined():
     cw = metrics["combined_common_window"]
     st.caption(
         f"Alle 7 Strategien gleichgewichtet (1/7), Zeitraum in dem wirklich alle aktiv liefen: "
@@ -348,7 +348,7 @@ with tab_combined:
     )
 
 # ============================================================ Tab: Trade-Overlap
-with tab_overlap:
+def _render_tab_overlap():
     ov = load_json("overlap_analysis.json")
     st.caption(
         "Zeigt, wie oft welche Strategien wirklich gleichzeitig eine Position offen haben -- "
@@ -436,7 +436,7 @@ with tab_overlap:
 
 
 # ============================================================ Tab: EK
-with tab_ek:
+def _render_tab_ek():
     st.caption("Alle 7 Strategien, long-only, Gewichte summieren zu 100%. Einzige Grenze: 30% Gesamt-Drawdown (psychologisch, kein hartes Limit).")
     st.warning(
         "**Empfehlung nach Walk-Forward-Test (siehe eigener Tab) umgestellt:** Max-Sharpe schlaegt Equal-Weight "
@@ -611,7 +611,7 @@ with tab_ek:
     )
 
 # ============================================================ Tab: FK
-with tab_fk:
+def _render_tab_fk():
     st.caption("Nur die 5 FK-tauglichen Strategien (siehe Vorbehalte). Zwei unterschiedliche Regelwerke, Monte-Carlo-simuliert.")
     rule_choice = st.radio("Zielfirma", ["TTP", "IQ Markets"], horizontal=True, label_visibility="collapsed")
     rule_key = "ttp" if rule_choice == "TTP" else "iqmarkets"
@@ -695,7 +695,7 @@ with tab_fk:
     )
 
 # ============================================================ Tab: EK-Schnellkonto
-with tab_ekfast:
+def _render_tab_ekfast():
     ekfast5 = load_json("ekfast_5leg_risk_optimized.json")
     st.caption(
         "Sonderfall: kleines EK-Konto, Ziel moeglichst schnell +7% bei max. 7% Gesamt-Drawdown. Nutzt bewusst "
@@ -764,7 +764,7 @@ with tab_ekfast:
     )
 
 # ============================================================ Tab: Walk-Forward
-with tab_wf:
+def _render_tab_wf():
     wf = load_json("walk_forward_results.json")
     wf_ekfast = load_json("walk_forward_ekfast.json")
     st.caption(
@@ -868,7 +868,7 @@ with tab_wf:
 
 
 # ============================================================ Tab: Krisen-Test
-with tab_crisis:
+def _render_tab_crisis():
     crisis = load_json("crisis_correlation.json")
     st.caption(
         "Die bisher gezeigte Nahe-Null-Korrelation ist ueber die GESAMTE Historie gemittelt. Klassisches "
@@ -973,7 +973,7 @@ with tab_crisis:
 
 
 # ============================================================ Tab: Caveats
-with tab_caveats:
+def _render_tab_caveats():
     st.markdown(
         """
 - **"Risiko-optimiert" (FK-Tab) erhoeht das Risiko/Trade JE STRATEGIE** (Gold ASB 1%->2%, BTC 1%->2%,
@@ -1026,3 +1026,21 @@ with tab_caveats:
   ist Kelly gar nicht sauber berechenbar (Rotationsstrategie ohne diskrete R-Trades).
         """
     )
+
+
+# ============================================================ Lazy dispatch
+# st.tabs() renders ALL tab bodies on every rerun by default, even hidden
+# ones - with 8 tabs each rendering full backtest charts/tables across up to
+# 7 strategies, that meant every single page view of this page did up to 8x
+# the work/memory of what was actually visible. on_change="rerun" above
+# makes tab.open reflect the actually-selected tab; only that one's render
+# function runs now (found 2026-08-20 while tracking down the Streamlit
+# Cloud memory-limit suspension).
+for _tab, _render in [
+    (tab_combined, _render_tab_combined), (tab_overlap, _render_tab_overlap),
+    (tab_ek, _render_tab_ek), (tab_fk, _render_tab_fk), (tab_ekfast, _render_tab_ekfast),
+    (tab_wf, _render_tab_wf), (tab_crisis, _render_tab_crisis), (tab_caveats, _render_tab_caveats),
+]:
+    if _tab.open:
+        with _tab:
+            _render()

@@ -402,6 +402,130 @@ def simulate_volume_exhaustion_exit(df: pd.DataFrame, capital: float, risk_pct: 
     }
 
 
+def simulate_pullback_entry(df: pd.DataFrame, capital: float, risk_pct: float,
+                             atr_period: int, atr_stop_mult: float, pullback_window: int,
+                             sim_from: pd.Timestamp | None = None) -> dict:
+    """Alternate entry rule (requested 2026-08-20, inspired by the
+    OU-Modell-MT5-Bridge's pending-order fallback: buy a retracement on a
+    resting limit instead of chasing the breakout with a market order).
+    Baseline simulate_risk_sized buys at the open right after the EMA9/21
+    crossover confirms, no matter how far price has already run; this
+    variant instead places a resting buy-limit at EMA9 (recomputed daily off
+    the prior close - same no-lookahead convention as the rest of this
+    engine) and waits up to pullback_window bars for that day's LOW to touch
+    it. If the crossover invalidates itself (EMA9 drops back below EMA21)
+    or the window expires before a pullback fill, the signal is abandoned -
+    no trade taken at all, tracked in n_missed. Same 'daily low touched ->
+    filled exactly there, no gap-through' simplification as the ATR stop
+    check. Once filled, the ATR stop uses the ATR as of the fill day, not
+    the original breakout day.
+
+    Finding (2026-08-20): does NOT improve the strategy - same root cause
+    as every other entry/exit timing filter tested in this module (TP,
+    Chandelier, volume-exhaustion, ADX/SMA regime filters). IS (n=42
+    baseline, large sample): win rate collapses 33%->5-20%, CAGR/PF fall
+    monotonically as the window shortens (20d: CAGR +9.7% vs +13.1%
+    baseline, still worse; 3d: CAGR -1.4%, PF 0.03). The trades a pullback
+    wait excludes/delays are disproportionately the strongest trend
+    breakouts that never look back - exactly the large winners this
+    momentum strategy's edge depends on. OOS (n=22 baseline) shows short
+    windows (3d: PF 6.89, 5d: PF 3.56) beating baseline, but on n=8/n=16
+    trades - too small to trust, and directly contradicted by the much
+    larger IS sample. Not adopted. The separate, valid idea from the same
+    2026-08-20 discussion - anchoring a pending order's LIMIT/STOP choice
+    to the original signal price instead of the live price when EXECUTING
+    an already-decided signal late - is an execution-quality fix, kept in
+    BTC-EMA-Cross-Bridge/executor_mt5.py; this function tested making that
+    same wait-for-pullback idea part of the entry SIGNAL itself, which is
+    the part that doesn't hold up."""
+    close, open_, low = df["close"], df["open"], df["low"]
+    ema_fast = close.ewm(span=9, adjust=False).mean()
+    ema_slow = close.ewm(span=21, adjust=False).mean()
+    above = ema_fast > ema_slow
+    above_prev = above.shift(1, fill_value=False)
+
+    go_long = (above & ~above_prev).to_numpy()
+    go_flat = (~above & above_prev).to_numpy()
+    atr = compute_atr(df, atr_period)
+
+    start_i = max(df.index.searchsorted(sim_from) if sim_from is not None else 1, 1)
+
+    cash = capital
+    qty = 0.0
+    entry_price = None
+    stop_price = None
+    trade_risk_dollar = None
+    in_pos = False
+    waiting_until = None
+    n_missed = 0
+    trades = []
+    equity_curve = [capital]
+    equity_dates = [df.index[start_i - 1]]
+
+    for i in range(start_i, len(df)):
+        exited_today = False
+        if in_pos and go_flat[i - 1]:
+            exit_fill = open_.iloc[i] * (1 - COMMISSION)
+            pnl = qty * (exit_fill - entry_price)
+            trades.append({"pnl": pnl, "r": pnl / trade_risk_dollar})
+            cash += qty * exit_fill
+            qty, in_pos, exited_today = 0.0, False, True
+        elif in_pos and low.iloc[i] <= stop_price:
+            exit_fill = stop_price * (1 - COMMISSION)
+            pnl = qty * (exit_fill - entry_price)
+            trades.append({"pnl": pnl, "r": pnl / trade_risk_dollar})
+            cash += qty * exit_fill
+            qty, in_pos, exited_today = 0.0, False, True
+
+        if not in_pos and not exited_today:
+            if waiting_until is None and go_long[i - 1]:
+                waiting_until = i + pullback_window
+
+            if waiting_until is not None:
+                if not above.iloc[i - 1]:
+                    waiting_until = None
+                    n_missed += 1
+                elif i >= waiting_until:
+                    waiting_until = None
+                    n_missed += 1
+                else:
+                    target = ema_fast.iloc[i - 1]
+                    if low.iloc[i] <= target and pd.notna(atr.iloc[i - 1]):
+                        raw_entry = target
+                        entry_fill = raw_entry * (1 + COMMISSION)
+                        stop_dist = atr_stop_mult * atr.iloc[i - 1]
+                        if stop_dist > 0:
+                            target_qty = (cash * risk_pct) / stop_dist
+                            max_qty = cash / entry_fill
+                            qty = min(target_qty, max_qty)
+                            entry_price = entry_fill
+                            stop_price = raw_entry - stop_dist
+                            trade_risk_dollar = qty * stop_dist
+                            cash -= qty * entry_fill
+                            in_pos = True
+                        waiting_until = None
+
+        equity_curve.append(cash + (qty * close.iloc[i] if in_pos else 0.0))
+        equity_dates.append(df.index[i])
+
+    equity = pd.Series(equity_curve, index=equity_dates)
+    n_years = (equity_dates[-1] - equity_dates[0]).days / 365.25
+    cagr = (equity.iloc[-1] / capital) ** (1 / n_years) - 1 if n_years > 0 else float("nan")
+    max_dd = (equity / equity.cummax() - 1).min()
+    pnls = [t["pnl"] for t in trades]
+    wins = [p for p in pnls if p > 0]
+    losses = [p for p in pnls if p <= 0]
+    win_rate = len(wins) / len(trades) if trades else float("nan")
+    profit_factor = (sum(wins) / abs(sum(losses))) if losses and sum(losses) != 0 else float("nan")
+    daily_ret = equity.pct_change().fillna(0.0)
+    return {
+        "n_trades": len(trades), "n_missed": n_missed, "win_rate": win_rate,
+        "profit_factor": profit_factor, "cagr": cagr, "max_dd": max_dd,
+        "end_equity": equity.iloc[-1], "worst_day_pct": daily_ret.min() * 100,
+        "trades": trades,
+    }
+
+
 def simulate_asymmetric_short(df: pd.DataFrame, capital: float, risk_pct: float, short_frac: float,
                                atr_period: int, atr_stop_mult: float,
                                sim_from: pd.Timestamp | None = None) -> dict:

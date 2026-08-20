@@ -49,9 +49,9 @@ ACCOUNT_STATE_IDS = {
 
 st.markdown("## :material/monitoring: OU-Modell -- Live-Trading-Log")
 
-tab_log, tab_migration = st.tabs([":material/monitoring: Live-Trading-Log", ":material/dns: NAS-Migration"])
+tab_log, tab_migration = st.tabs([":material/monitoring: Live-Trading-Log", ":material/dns: NAS-Migration"], on_change="rerun")
 
-with tab_log:
+def _render_tab_tab_log():
     st.info(
         "Ein gehosteter OU-Modell-Signal-Scanner sendet Long-Setups automatisch an "
         "MT5-Konten (Windows Task Scheduler, stündliche Scans 15:35-21:35, Mo-Fr). Seit "
@@ -204,7 +204,7 @@ with tab_log:
         with st.expander(f"Rohes Bot-Log vom {latest['date'].date()}"):
             st.code(latest_raw.read_text(encoding="utf-8"), language="text")
 
-with tab_migration:
+def _render_tab_tab_migration():
     st.markdown("### Geplante Migration: Windows-PC -> Windows-VM auf NAS")
     st.caption(
         "Stand 2026-08-04 -- Diskussionsstand, NICHT umgesetzt. RAM-Upgrade und "
@@ -377,3 +377,14 @@ with tab_migration:
         "Nächster Schritt laut letztem Gespräch: User klärt Windows-Lizenz "
         "(ggf. vorhandene alte Lizenz wiederverwenden) -- danach Phase 0 starten."
     )
+
+
+# ============================================================ Lazy dispatch
+# st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
+# on_change="rerun" above makes tab.open reflect the actually-selected tab; only
+# that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
+# see app_pages/portfolio_construction.py for the original instance of this fix).
+for _tab, _render in [(tab_log, _render_tab_tab_log), (tab_migration, _render_tab_tab_migration)]:
+    if _tab.open:
+        with _tab:
+            _render()

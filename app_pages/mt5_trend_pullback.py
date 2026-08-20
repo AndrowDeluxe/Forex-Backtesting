@@ -27,6 +27,7 @@ Dark/monospace styling matches app_pages/gold_bitcoin_dual_momentum.py (same
 palette, prefixed mtp- instead of gb- per that page's established
 per-page-CSS convention)."""
 
+import json
 from pathlib import Path
 
 import altair as alt
@@ -538,6 +539,10 @@ def run_standard_recommendation(_data: dict[str, pd.DataFrame], _extra_data: dic
         "combined_overlay_oos": summarize(comb_overlay_oos, fi_overlay_oos),
         "trades_oos": comb_oos, "index_oos": fi_oos,
         "account_by_risk": account_by_risk,
+        # full-history, per-market trades (incl. the XAGUSD alignment filter)
+        # for the "Chart & Entries" tab -- not sliced to OOS, since the chart
+        # lets the user pick their own date window.
+        "trades_by_market_full": base_full,
     }
 
 
@@ -650,18 +655,19 @@ account_result = run_account_sim(data)
 tpsl_result = run_tp_sl_be_sweep(data)
 risk_result = run_risk_management(data, extra_data, gold_daily_close)
 
-tab_standard, tab_overview, tab_adx, tab_spread, tab_account, tab_tpsl, tab_risk = st.tabs([
+tab_standard, tab_chart, tab_overview, tab_adx, tab_spread, tab_account, tab_tpsl, tab_risk = st.tabs([
     ":material/star: Empfehlung (Standard)",
+    ":material/candlestick_chart: Chart & Entries",
     ":material/show_chart: Baseline (Bot wie er ist)",
     ":material/tune: ADX-Filter",
     ":material/payments: Spread-Sensitivitaet",
     ":material/account_balance: Konto-Simulation ($100k)",
     ":material/target: TP/SL & Breakeven",
     ":material/shield: Risk Management (FK & EK)",
-])
+], on_change="rerun")
 
 # ------------------------------------------------------------------ Tab: Standard recommendation
-with tab_standard:
+def _render_tab_tab_standard():
     caveat_box(
         "<b>Standard-Konfiguration:</b> Gold, Silber (gefiltert -- nur Trades, bei denen Golds eigener "
         "5-Tage-Trend positiv war), CHFJPY, USDJPY, <b>USDCAD (testweise, 2026-08-14 hinzugefuegt)</b>. "
@@ -741,8 +747,115 @@ with tab_standard:
     equity_std = (1 + daily_std).cumprod()
     st.altair_chart(line_chart(normalize(equity_std, "Standard (4 Maerkte)"), {"Standard (4 Maerkte)": (C_GREEN, None)}))
 
+# ------------------------------------------------------------------ Tab: Chart & Entries
+def _render_tab_tab_chart():
+    caveat_box(
+        "Interaktiver Kerzenchart (TradingView Lightweight Charts) mit den tatsaechlichen Backtest-"
+        "Entries/Exits der Standard-Konfiguration ueberlagert -- blaue Pfeile nach oben = Long-Entry, "
+        "Pfeile nach unten am Exit farbcodiert nach Ausstiegsgrund (gruen = Take-Profit, rot = Stop-Loss, "
+        "orange = Breakeven). Reine Backtest-Simulation -- keine Live-Trades des laufenden Demo-Bots."
+    )
+
+    trades_by_market_full = standard_result["trades_by_market_full"]
+    all_chart_data = {**data, **extra_data}
+
+    c1, c2 = st.columns([1, 3])
+    with c1:
+        chart_market = st.selectbox("Markt", STANDARD_MARKET_LABELS, index=0, key="chart_market")
+
+    chart_df_full = all_chart_data[chart_market]
+    idx = chart_df_full.index
+    tz = idx.tz
+    idx_naive = idx.tz_localize(None) if tz is not None else idx
+    min_dt, max_dt = idx_naive.min().to_pydatetime(), idx_naive.max().to_pydatetime()
+    default_start = max(min_dt, max_dt - pd.Timedelta(days=120))
+
+    with c2:
+        date_range = st.slider(
+            "Zeitraum", min_value=min_dt, max_value=max_dt,
+            value=(default_start, max_dt), key="chart_range",
+        )
+
+    win_start, win_end = pd.Timestamp(date_range[0]), pd.Timestamp(date_range[1])
+    if tz is not None:
+        win_start, win_end = win_start.tz_localize(tz), win_end.tz_localize(tz)
+
+    windowed = chart_df_full[(chart_df_full.index >= win_start) & (chart_df_full.index <= win_end)]
+    MAX_BARS = 3000
+    if len(windowed) > MAX_BARS:
+        st.warning(f"Zeitraum zu lang fuer eine fluessige Darstellung ({len(windowed)} Kerzen) -- zeige die letzten {MAX_BARS}.")
+        windowed = windowed.iloc[-MAX_BARS:]
+
+    trades_market = trades_by_market_full.get(chart_market, pd.DataFrame())
+    if not trades_market.empty and len(windowed):
+        trades_window = trades_market[
+            (trades_market["entry_time"] >= windowed.index.min()) & (trades_market["entry_time"] <= windowed.index.max())
+        ]
+    else:
+        trades_window = trades_market
+
+    if windowed.empty:
+        st.info("Keine Kerzen im gewaehlten Zeitraum.")
+    else:
+        candles = [
+            {"time": int(ts.timestamp()), "open": float(o), "high": float(h), "low": float(lo), "close": float(cl)}
+            for ts, o, h, lo, cl in zip(windowed.index, windowed["open"], windowed["high"], windowed["low"], windowed["close"])
+        ]
+
+        EXIT_COLORS = {"target": C_GREEN, "stop": C_RED, "breakeven": C_ORANGE, "data_end": C_MUTED, "max_hold": C_MUTED}
+        EXIT_LABELS = {"target": "TP", "stop": "SL", "breakeven": "BE", "data_end": "ENDE", "max_hold": "ZEIT"}
+        markers = []
+        for _, t in trades_window.iterrows():
+            markers.append({
+                "time": int(t["entry_time"].timestamp()), "position": "belowBar",
+                "color": C_BLUE, "shape": "arrowUp", "text": "BUY",
+            })
+            reason = t["exit_reason"]
+            markers.append({
+                "time": int(t["exit_time"].timestamp()), "position": "aboveBar",
+                "color": EXIT_COLORS.get(reason, C_MUTED), "shape": "arrowDown",
+                "text": EXIT_LABELS.get(reason, reason),
+            })
+        markers.sort(key=lambda m: m["time"])
+
+        n_wins = int((trades_window["exit_reason"] == "target").sum()) if not trades_window.empty else 0
+        n_losses = int((trades_window["exit_reason"] == "stop").sum()) if not trades_window.empty else 0
+        n_other = len(trades_window) - n_wins - n_losses
+        st.caption(
+            f"{len(windowed)} Kerzen | {len(trades_window)} Trades im Fenster "
+            f"({n_wins} Take-Profit, {n_losses} Stop-Loss, {n_other} sonstige)"
+        )
+
+        chart_html = f"""
+        <div id="tpchart" style="width:100%;height:560px;"></div>
+        <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+        <script>
+          const el = document.getElementById('tpchart');
+          const chart = LightweightCharts.createChart(el, {{
+            width: el.clientWidth,
+            height: 560,
+            layout: {{ background: {{ color: '{C_BG}' }}, textColor: '{C_BODY}' }},
+            grid: {{ vertLines: {{ color: '{C_GRID}' }}, horzLines: {{ color: '{C_GRID}' }} }},
+            timeScale: {{ timeVisible: true, secondsVisible: false, borderColor: '{C_BORDER}' }},
+            rightPriceScale: {{ borderColor: '{C_BORDER}' }},
+          }});
+          const series = chart.addCandlestickSeries({{
+            upColor: '{C_GREEN}', downColor: '{C_RED}',
+            borderUpColor: '{C_GREEN}', borderDownColor: '{C_RED}',
+            wickUpColor: '{C_GREEN}', wickDownColor: '{C_RED}',
+          }});
+          series.setData({json.dumps(candles)});
+          series.setMarkers({json.dumps(markers)});
+          chart.timeScale().fitContent();
+          new ResizeObserver(() => {{
+            chart.applyOptions({{ width: el.clientWidth }});
+          }}).observe(el);
+        </script>
+        """
+        st.iframe(chart_html, height=580)
+
 # ------------------------------------------------------------------ Tab: Baseline
-with tab_overview:
+def _render_tab_tab_overview():
     cf, cis, coos = baseline["combined_full"], baseline["combined_is"], baseline["combined_oos"]
     tile_row([
         ("N TRADES (FULL)", str(cf["n_trades"])),
@@ -811,7 +924,7 @@ with tab_overview:
     )
 
 # ------------------------------------------------------------------ Tab: ADX filter
-with tab_adx:
+def _render_tab_tab_adx():
     caveat_box(
         f"Disziplin wie bei den anderen Research-Skripten in diesem Repo: EIN adx_min wird "
         f"<b>ausschliesslich auf der In-Sample-Periode (2016-2022)</b> gewaehlt (gepoolt ueber alle "
@@ -892,7 +1005,7 @@ with tab_adx:
             st.caption(":material/warning: PF faellt ohne den besten Trade unter 1.0 -- Ergebnis haengt stark an einem Einzeltrade.")
 
 # ------------------------------------------------------------------ Tab: Spread sensitivity
-with tab_spread:
+def _render_tab_tab_spread():
     caveat_box(
         "Dieses Repo hat keine echte historische Geld-/Brief-Spread-Historie -- alle bisherigen "
         "Ergebnisse nutzen eine <b>angenommene</b> Round-Trip-Spanne (10bp Metalle / 3bp CHFJPY / 1.5bp "
@@ -944,7 +1057,7 @@ with tab_spread:
     )
 
 # ------------------------------------------------------------------ Tab: Account simulation
-with tab_account:
+def _render_tab_tab_account():
     caveat_box(
         f"<b>Backtest-Parameter dieser Simulation:</b> Startkapital {STARTING_EQUITY:,.0f} USD &middot; "
         f"Risiko/Trade {RISK_PCT:.1%} des aktuellen Kontostands (fixed-fractional, compounding, auf realisiertem "
@@ -1018,7 +1131,7 @@ with tab_account:
     )
 
 # ------------------------------------------------------------------ Tab: TP/SL & breakeven
-with tab_tpsl:
+def _render_tab_tab_tpsl():
     caveat_box(
         f"Disziplin wie ueberall in dieser Serie: ADX&gt;={CHOSEN_ADX_MIN:.0f}-Filter bleibt FEST (nicht neu "
         f"gesweept -- 3 gleichzeitige freie Parameter auf ~180 gepoolten IS-Trades wuerden die Stichprobe je "
@@ -1128,7 +1241,7 @@ with tab_tpsl:
     )
 
 # ------------------------------------------------------------------ Tab: Risk management
-with tab_risk:
+def _render_tab_tab_risk():
     caveat_box(
         "<b>Zwei Fremdkapital-Profile + Eigenkapital, kalibriert per taeglichem Mark-to-Market</b> "
         "(Standard-Portfolio: Gold/Silber-aligned/CHFJPY/USDJPY/USDCAD, Bot-Default-Parameter, kein "
@@ -1221,3 +1334,14 @@ with tab_risk:
         "Zahlen aus scripts/research_mt5_trend_pullback_risk_management_v2.py stammen von der frueheren "
         "FK2-Definition (1% daily/8% total) und sind hier nicht mehr direkt uebertragbar."
     )
+
+
+# ============================================================ Lazy dispatch
+# st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
+# on_change="rerun" above makes tab.open reflect the actually-selected tab; only
+# that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
+# see app_pages/portfolio_construction.py for the original instance of this fix).
+for _tab, _render in [(tab_standard, _render_tab_tab_standard), (tab_chart, _render_tab_tab_chart), (tab_overview, _render_tab_tab_overview), (tab_adx, _render_tab_tab_adx), (tab_spread, _render_tab_tab_spread), (tab_account, _render_tab_tab_account), (tab_tpsl, _render_tab_tab_tpsl), (tab_risk, _render_tab_tab_risk)]:
+    if _tab.open:
+        with _tab:
+            _render()

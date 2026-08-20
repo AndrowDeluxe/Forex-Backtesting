@@ -220,9 +220,9 @@ tab_equity, tab_metrics, tab_ou, tab_trades, tab_bracket = st.tabs(
     [":material/show_chart: $100k Equity-Kurve", ":material/query_stats: Kennzahlen",
      ":material/functions: OU-Parameter", ":material/list_alt: Trade-Log",
      ":material/tune: Bracket-Exit (interaktiv)"]
-)
+, on_change="rerun")
 
-with tab_equity:
+def _render_tab_tab_equity():
     with st.container(border=True):
         curve = equity.reset_index(names="date").melt("date", var_name="Strategie", value_name="Equity")
         chart = (
@@ -247,7 +247,7 @@ with tab_equity:
             "bleibt das Kapital unveraendert (kein Cash-Ertrag modelliert)."
         )
 
-with tab_metrics:
+def _render_tab_tab_metrics():
     with st.container(border=True):
         st.markdown("#### $100k-Konto (Risk-basiertes Sizing)")
         st.dataframe(perf_100k.round(2))
@@ -255,7 +255,7 @@ with tab_metrics:
         st.markdown("#### %-Return-Portfolio (paper-naeher: Equal-Weight ueber aktive Positionen)")
         st.dataframe(data["perf_pct"].round(3))
 
-with tab_ou:
+def _render_tab_tab_ou():
     with st.container(border=True):
         ou_params = data["ou_params"]
         st.dataframe(
@@ -273,7 +273,7 @@ with tab_ou:
             f"(theta > 0.03, p < 0.2, Half-Life in [5, 200] Tagen) -> bilden das BBOU-Universum."
         )
 
-with tab_trades:
+def _render_tab_tab_trades():
     variant = st.radio("Trades von", ["BBOU", "BBfull"], horizontal=True)
     trades = data["trades_ou"] if variant == "BBOU" else data["trades_full"]
     with st.container(border=True):
@@ -295,7 +295,7 @@ with tab_trades:
         else:
             st.info("Keine Trades in dieser Variante.", icon=":material/info:")
 
-with tab_bracket:
+def _render_tab_tab_bracket():
     st.info(
         "Bildet den **tatsaechlichen** Exit-Mechanismus des Live-Bots (OU-Modell-MT5-Bridge) "
         "nach -- fixer Stop-Loss + fixes Take-Profit-CRV + Breakeven-Move, statt des "
@@ -392,3 +392,14 @@ with tab_bracket:
                         total_pnl=("pnl_dollars", "sum"),
                     ).round(1),
                 )
+
+
+# ============================================================ Lazy dispatch
+# st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
+# on_change="rerun" above makes tab.open reflect the actually-selected tab; only
+# that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
+# see app_pages/portfolio_construction.py for the original instance of this fix).
+for _tab, _render in [(tab_equity, _render_tab_tab_equity), (tab_metrics, _render_tab_tab_metrics), (tab_ou, _render_tab_tab_ou), (tab_trades, _render_tab_tab_trades), (tab_bracket, _render_tab_tab_bracket)]:
+    if _tab.open:
+        with _tab:
+            _render()

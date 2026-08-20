@@ -530,3 +530,44 @@ sollen, bevor der Kombinations-Layer gebaut wird (statt ihn fuer 4 zu bauen
 und kurz danach nochmal zu erweitern). Naechster Schritt bei Wiederaufnahme:
 die zwei weiteren Strategien identifizieren/klaeren, dann den Kapital-
 Allokations-Combiner fuer alle N Strategien in einem Zug bauen.
+
+**Nachtrag 2026-08-20 -- Pullback-Entry getestet (auf Signal-Ebene), nicht
+uebernommen (`scripts/research_ema_9_21_cross_pullback_entry.py`)**
+
+Ausloeser: Bug in `BTC-EMA-Cross-Bridge/executor_mt5.py` gefunden -- der
+Pending-Order-Fallback (greift, wenn der Live-Kurs beim Bot-Lauf schon zu
+weit vom Signal-Preis weggelaufen ist) verankerte die Order faelschlich am
+AKTUELLEN Kurs statt am urspruenglichen Signal-Preis, wurde dadurch IMMER
+zum Buy Stop (jagt dem Kurs hinterher) statt korrekt dynamisch Buy Limit
+(Pullback abwarten) vs. Buy Stop zu waehlen -- exakt wie
+`OU-Modell-MT5-Bridge/executor.py::_place_pending_entry` es vormacht. Fix
+angewendet (Anker jetzt `expected_entry` statt `entry_price`). Nutzerfrage
+im Anschluss: laesst sich dasselbe "auf Pullback warten"-Prinzip nicht nur
+als Exekutions-Fallback nutzen, sondern direkt in die Entry-SIGNAL-Logik
+einbauen -- statt sofort beim Crossover zu kaufen, auf einen Ruecksetzer
+zum EMA9 warten?
+
+`simulate_pullback_entry` (`btc_ema_cross/optimization.py`): Buy-Limit auf
+EMA9 (taeglich neu, prior-close-basiert, gleiche No-Lookahead-Konvention
+wie der Rest der Engine) statt Market-Entry beim Breakout-Open, Fenster
+3/5/10/15/20 Tage, danach verfaellt das Signal (kein Trade).
+
+- **IS (n=42 Baseline, grosse Stichprobe)**: WinRate bricht von 33% auf
+  5-20% ein, CAGR/PF fallen monoton mit kuerzerem Fenster (20d: CAGR +9.7%
+  vs. +13.1% Baseline, immer noch schlechter; 3d: CAGR -1.4%, PF 0.03).
+- **OOS (n=22 Baseline)**: kurze Fenster sehen zunaechst besser aus (3d: PF
+  6.89 auf n=8; 5d: PF 3.56 auf n=16), aber bei so duenner Stichprobe nicht
+  vertrauenswuerdig und im direkten Widerspruch zur groesseren IS-Stichprobe
+  -- dieselbe Falle wie beim Regimefilter-Nachtrag oben (IS/OOS-Divergenz
+  bei kleinem n).
+- **Erklaerung**: identisches Muster wie TP/Chandelier/Volumen-Exhaustion/
+  Regimefilter oben -- die Trades, die ein Pullback-Warten ausschliesst
+  oder verzoegert, sind ueberproportional genau die staerksten Breakouts,
+  die nie zurueckkommen. Diese Momentum-Strategie lebt von seltenen
+  grossen Gewinnern; ein Pullback-Filter handelt sich die eigene Kante weg.
+- **Nicht uebernommen.** Die separate, weiterhin gueltige Erkenntnis aus
+  demselben Anlass -- eine Pending-Order beim SPAETEN Ausfuehren eines
+  bereits entschiedenen Signals am urspruenglichen Signal-Preis zu
+  verankern, nicht am aktuellen Kurs -- bleibt als Exekutions-Fix in
+  `BTC-EMA-Cross-Bridge/executor_mt5.py` bestehen; das ist eine
+  Ausfuehrungsqualitaets-Frage, keine Aenderung am Entry-Signal selbst.

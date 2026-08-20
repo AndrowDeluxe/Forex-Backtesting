@@ -492,8 +492,18 @@ def _render_tab_tab_rev():
         "4725-Combo-Sweep bestätigt), waehrend Continuations Sharpe mit mehr Concurrency monoton faellt."
     )
 
-    st.markdown("#### :material/candlestick_chart: Chart & Entries (M15, OOS-Trades, alle Kandidaten)")
-    render_chart(m15[m15.index >= SPLIT], rev_conc_oos, "rev")
+    # Anzeigefehler behoben (chat 2026-08-20, Nutzer-Screenshot): vorher wurden
+    # hier alle 1447 rohen Kandidaten-Signale geplottet statt nur der 81
+    # Trades, die unter max_concurrent=3 tatsaechlich angenommen werden -
+    # ergab ein unlesbares Cluster ueberlappender SHORT-Marker. Filtert jetzt
+    # auf die von simulate_account_reentry akzeptierten entry_times (jede
+    # Signal-Bar erzeugt hoechstens einen Kandidaten, entry_time ist daher
+    # ein eindeutiger Join-Key).
+    accepted_entry_times = set(rev_sim["trades"]["entry_time"]) if not rev_sim["trades"].empty else set()
+    rev_accepted_oos = rev_conc_oos[rev_conc_oos["entry_time"].isin(accepted_entry_times)]
+
+    st.markdown("#### :material/candlestick_chart: Chart & Entries (M15, OOS-Trades, angenommen unter max_concurrent=3)")
+    render_chart(m15[m15.index >= SPLIT], rev_accepted_oos, "rev")
 
     section_title("Exit-Grund-Aufschlüsselung (OOS, Einzelposition)")
     render_exit_breakdown(rev_oos_trades, bar_minutes=15)

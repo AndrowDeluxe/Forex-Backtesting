@@ -139,3 +139,15 @@ Page, auf finale Configs aktualisiert 2026-08-20).
   einen normalen Broker-Bracket (festes 5R-Ziel).
 - **EK/MT4**: noch nicht begonnen - kein bestehendes Repo-Muster fuer
   MQL4-EAs, eigene Baustelle.
+
+**Update 2026-08-21**: FK-Bridge scharfgestellt (`DRY_RUN=False`) auf
+expliziten Nutzer-Auftrag ("Stelle scharf"), Task Scheduler laeuft alle
+5 Min. Terminal-Setup brauchte laengere Fehlersuche: ein einzelner
+`mt5.initialize(login=..., password=..., server=...)`-Aufruf blieb
+zuverlaessig im IPC-Timeout haengen (Terminal versuchte intern den
+FALSCHEN Server); Fix war ein zweistufiger Connect (`initialize()` dann
+separat `login()`, mit Retry) - jetzt in `executor.py::connect()`
+verankert. Terminal heisst "MT5 Terminal - GoldFKBot" (nicht "...CTNLEdge...",
+dieser Pfadname blieb nach vielen fehlgeschlagenen Versuchen dauerhaft
+blockiert). Konto: BeyondIQCapital Demo-Challenge IQCEV100K-130835,
+Login 16054, Symbol XAUUSD.gbe.

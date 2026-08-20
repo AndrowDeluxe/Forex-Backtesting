@@ -137,6 +137,33 @@ def reversal_signal(as_of: pd.Timestamp | None = None, lookback_days: int = LOOK
     }
 
 
+def continuation_market_state(as_of: pd.Timestamp | None = None, lookback_days: int = LOOKBACK_DAYS, force_refresh: bool = True) -> dict:
+    """For a bridge managing an ALREADY-OPEN Continuation position: the
+    target (h1_target/vwap) is DYNAMIC (re-read fresh every bar, per
+    continuation.py's module docstring - it is NOT a static broker-side TP
+    the backtest sets once at entry), so an open position must be re-
+    checked against the CURRENT target on every poll, independent of
+    whether a fresh entry signal exists this bar. Returns {date, close,
+    target} - target is None if h1_target has gone stale/NaN (H4 context
+    expired) - a bridge seeing that should flatten defensively rather than
+    hold with no exit reference."""
+    end = as_of if as_of is not None else pd.Timestamp.now(tz="America/New_York")
+    h4, h1, m15, m5 = _fetch_window(end, lookback_days, force_refresh)
+    if m5.empty or h1.empty or h4.empty:
+        return {"date": str(end), "status": "keine Daten"}
+
+    merged = run_continuation(h4, h1, m5, trend_df=m15, **CONT_KWARGS)
+    merged = merged[merged.index <= end]
+    if merged.empty:
+        return {"date": str(end), "status": "keine Bars im Fenster"}
+
+    last = merged.iloc[-1]
+    return {
+        "date": str(merged.index[-1]), "close": float(last["close"]),
+        "target": float(last["vwap"]) if pd.notna(last["vwap"]) else None,
+    }
+
+
 def current_signal(as_of: pd.Timestamp | None = None) -> dict:
     """Combined read for both strategies - one Dukascopy fetch, both
     pipelines. Convenience wrapper for a bridge/scanner that wants both in

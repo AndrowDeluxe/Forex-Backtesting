@@ -117,4 +117,25 @@ Vorab-Filters, der nachweislich nicht funktioniert.
 
 **Verknuepfung**: [[paper-verarbeitung]] (verwandter Prozess, hier aber
 Chart-Ursprung statt Paper), `app_pages/gold_ctnl_edge.py` (Streamlit-
-Page, Update auf diese finalen Configs steht noch aus).
+Page, auf finale Configs aktualisiert 2026-08-20).
+
+## Live-Infrastruktur (chat 2026-08-20)
+
+- `gold_smc_htf_ltf/live_signal.py` (dieses Repo): reine Signal-Funktionen,
+  90-Tage-Trailing-Fenster, gegen Vollhistorie verifiziert (`scripts/
+  verify_gold_ctnl_edge_live_signal.py`, 151/151 Treffer je Strategie).
+- `gold_smc_htf_ltf/paper_bot.py` (dieses Repo): FK-Paper-Forward-Test,
+  Telegram, stuendlicher Heartbeat, Kill-Switch gegen die Phase-6-Monte-
+  Carlo-P5-Schwelle. Scheduled-Task-Wrapper: `scripts/gold_ctnl_edge_fk_
+  scan_task.ps1` (noch nicht in Task Scheduler eingerichtet).
+- `C:\Users\andre\CTNL-Edge-MT5-Bridge\` (separates, eigenstaendiges
+  Projekt, KEIN Git-Repo - gleiches Muster wie GoldASB-MT5-Bridge/
+  OU-Modell-MT5-Bridge): die echte Order-Ausfuehrung fuer die FK-Challenge.
+  `DRY_RUN=True` per Default. Config-Platzhalter noch NICHT ausgefuellt
+  (Terminal FK1 vs. FK2, echter Login/Passwort/Server, Telegram) - siehe
+  dortige README.md fuer die vollstaendige Go-Live-Checkliste. Continuation
+  bekommt bewusst KEINEN Broker-TP (Ziel ist dynamisch, wird pro Poll
+  gegen den aktuellen H1-Target-Wert geprueft); Reversal-Kaskade nutzt
+  einen normalen Broker-Bracket (festes 5R-Ziel).
+- **EK/MT4**: noch nicht begonnen - kein bestehendes Repo-Muster fuer
+  MQL4-EAs, eigene Baustelle.

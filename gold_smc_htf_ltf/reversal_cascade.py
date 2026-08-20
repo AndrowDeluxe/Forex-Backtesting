@@ -47,7 +47,7 @@ from ema_strategy.indicators import double_ema
 from gold_smc_htf_ltf.ema_ribbon import compute_ribbon, detect_ribbon_reversal_zone
 from gold_smc_htf_ltf.mean_reversion import compute_double_bos_count
 from gold_smc_htf_ltf.structure import compute_market_structure
-from gold_smc_htf_ltf.trend import trend_ema_cross
+from gold_smc_htf_ltf.trend import TREND_INDICATORS, trend_ema_cross
 from gold_smc_htf_ltf.volume import compute_rolling_pressure_zscore
 from strategy.indicators import compute_atr
 
@@ -209,6 +209,7 @@ def compute_h4_exhaustion(
     w1_df: pd.DataFrame | None = None,
     ribbon_extension_atr_min: float = 3.0,
     require_h4_trend_confirm: bool = False,
+    trend_confirm_indicator: str = "ema_cross",
     trend_fast: int = 20,
     trend_slow: int = 50,
     require_magnitude: bool = False,
@@ -283,7 +284,15 @@ def compute_h4_exhaustion(
         double_swept_high = double_swept_high & (h4["close"] < ema)
 
     if require_h4_trend_confirm:
-        h4_trend = trend_ema_cross(h4, fast=trend_fast, slow=trend_slow)
+        # trend_confirm_indicator (chat 2026-08-20, mirroring continuation.
+        # py's own ema_adx_combo win): "ema_cross" (default, unchanged) is a
+        # pure direction read - always picks a side. "ema_adx_combo" (trend.
+        # py) additionally requires ADX strength, withholding an opinion (0)
+        # in choppy H4 conditions instead of forcing a direction - tested
+        # here since the SAME "selectivity, not direction" hypothesis that
+        # improved continuation.py might also help this H4 confirmation gate.
+        trend_fn = TREND_INDICATORS[trend_confirm_indicator]
+        h4_trend = trend_fn(h4, fast=trend_fast, slow=trend_slow)
         # fading erl_high (bearish fade) needs a prior UPtrend; fading erl_low needs a prior DOWNtrend
         double_swept_high = double_swept_high & (h4_trend == 1)
         double_swept_low = double_swept_low & (h4_trend == -1)
@@ -476,6 +485,7 @@ def run_pipeline(
     w1_df: pd.DataFrame | None = None,
     ribbon_extension_atr_min: float = 3.0,
     require_h4_trend_confirm: bool = False,
+    trend_confirm_indicator: str = "ema_cross",
     trend_fast: int = 20,
     trend_slow: int = 50,
     require_magnitude: bool = False,
@@ -512,7 +522,7 @@ def run_pipeline(
         require_level_age=require_level_age, min_level_age_bars=min_level_age_bars,
         require_ema_reject=require_ema_reject, ema_length=ema_length, ema_smooth=ema_smooth,
         require_ribbon_stretch=require_ribbon_stretch, d1_df=d1_df, w1_df=w1_df, ribbon_extension_atr_min=ribbon_extension_atr_min,
-        require_h4_trend_confirm=require_h4_trend_confirm, trend_fast=trend_fast, trend_slow=trend_slow,
+        require_h4_trend_confirm=require_h4_trend_confirm, trend_confirm_indicator=trend_confirm_indicator, trend_fast=trend_fast, trend_slow=trend_slow,
     )
     h1_shifted = h1[["h1_bias", "h1_target", "h1_ref_level"]].copy()
     h1_shifted.index = h1_shifted.index + _bar_length(h1.index)

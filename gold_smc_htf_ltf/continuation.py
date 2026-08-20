@@ -48,6 +48,7 @@ justified it.
 import numpy as np
 import pandas as pd
 
+from gold_smc_htf_ltf.mean_reversion import compute_double_bos_count
 from gold_smc_htf_ltf.structure import compute_market_structure
 from gold_smc_htf_ltf.trend import TREND_INDICATORS
 from strategy.indicators import compute_adx
@@ -160,6 +161,9 @@ def compute_h1_context(
     trend_kwargs: dict | None = None,
     k: int = 2,
     htf_valid_bars: int = 24,
+    h1_bos_min: int = 1,
+    require_h4_manipulation: bool = False,
+    h4_manip_confirm_bars: int = 20,
 ) -> pd.DataFrame:
     """H1-level structure + trend-aligned BOS -> h1_bias/h1_target/
     h1_ref_level, expiring either when the target is reached or when H4's
@@ -171,7 +175,19 @@ def compute_h1_context(
     JUST broken, now behind price), so it cannot double as a forward
     target - the real, still-unreached target one level up is H4's own
     (still-unbroken) erl_high/erl_low, carried onto the H1 index the same
-    no-lookahead way h4_bias already is."""
+    no-lookahead way h4_bias already is.
+
+    `require_h4_manipulation` (chat 2026-08-20, from the user's own real
+    trade chart: "Entry durch H4 Manipulation bestaetigt im H4" - a
+    formal H4-level confirmation step that was missing here, unlike
+    reversal_cascade.py's H4 exhaustion phase): additionally requires a
+    RECENT (within h4_manip_confirm_bars) H4 sweep-and-reject in the
+    SAME direction as the trend being continued - a bullish continuation
+    needs a sweep-and-reject of H4's erl_low (a stop-hunt shakeout below
+    support, liquidity grabbed, then rejected back up before resuming the
+    uptrend), a bearish one needs erl_high swept the same way. Mirrors
+    reversal_cascade's sweep mechanic exactly, just read as confirmation
+    of the EXISTING trend instead of a fade trigger."""
     trend_kwargs = trend_kwargs or {}
     h1 = compute_market_structure(h1_df, k=k).sort_index()
 
@@ -187,7 +203,24 @@ def compute_h1_context(
     h4_erl_high_broken_on_h1 = _merge_asof_shifted(h1.index, h4["erl_high_broken"], h4_shift, "h4_ehb").astype(bool)
     h4_erl_low_broken_on_h1 = _merge_asof_shifted(h1.index, h4["erl_low_broken"], h4_shift, "h4_elb").astype(bool)
 
-    is_bos_aligned = h1["is_bos"].to_numpy() & (h1["bias"].to_numpy() == ext_trend)
+    # h1_bos_min (chat 2026-08-19, mirroring reversal_cascade.py's own
+    # h1_bos_min investigation): default 1 preserves the original single-
+    # BOS behaviour exactly (bos_count is already >=1 at the instant
+    # is_bos fires); >1 additionally requires this to be at least the
+    # Nth consecutive same-direction BOS since the last CHoCH - a
+    # stronger, rarer continuation confirmation.
+    h1["bos_count"] = compute_double_bos_count(h1)
+    is_bos_aligned = h1["is_bos"].to_numpy() & (h1["bias"].to_numpy() == ext_trend) & (h1["bos_count"].to_numpy() >= h1_bos_min)
+
+    if require_h4_manipulation:
+        swept_low_h4, swept_high_h4 = _sweep_and_reject(h4)
+        recent_swept_low_h4 = swept_low_h4.rolling(h4_manip_confirm_bars, min_periods=1).max().astype(bool)
+        recent_swept_high_h4 = swept_high_h4.rolling(h4_manip_confirm_bars, min_periods=1).max().astype(bool)
+        h4_manip_bull_on_h1 = _merge_asof_shifted(h1.index, recent_swept_low_h4, h4_shift, "h4mb").astype(bool)
+        h4_manip_bear_on_h1 = _merge_asof_shifted(h1.index, recent_swept_high_h4, h4_shift, "h4ms").astype(bool)
+        bias_np_pre = h1["bias"].to_numpy()
+        manip_ok = np.where(bias_np_pre == 1, h4_manip_bull_on_h1, np.where(bias_np_pre == -1, h4_manip_bear_on_h1, False))
+        is_bos_aligned = is_bos_aligned & manip_ok
     bias_np = h1["bias"].to_numpy()
     signal = np.where(is_bos_aligned & (bias_np == 1), 1, np.where(is_bos_aligned & (bias_np == -1), -1, 0))
 
@@ -232,6 +265,9 @@ def run_pipeline(
     trend_kwargs: dict | None = None,
     k: int = 2,
     htf_valid_bars: int = 24,
+    h1_bos_min: int = 1,
+    require_h4_manipulation: bool = False,
+    h4_manip_confirm_bars: int = 20,
     entry_variant: str = "direct",
     m5_confirm_bars: int = 20,
     atr_n: int = 30,
@@ -260,7 +296,7 @@ def run_pipeline(
     if entry_variant not in ("direct", "double", "zone", "repeat_sweep", "trendline"):
         raise ValueError(f"entry_variant must be 'direct', 'double', 'zone', 'repeat_sweep' or 'trendline', got {entry_variant!r}")
 
-    h1 = compute_h1_context(h1_df, h4_df, trend_df, trend_indicator, trend_kwargs, k=k, htf_valid_bars=htf_valid_bars)
+    h1 = compute_h1_context(h1_df, h4_df, trend_df, trend_indicator, trend_kwargs, k=k, htf_valid_bars=htf_valid_bars, h1_bos_min=h1_bos_min, require_h4_manipulation=require_h4_manipulation, h4_manip_confirm_bars=h4_manip_confirm_bars)
     h1_shifted = h1[["h1_bias", "h1_target", "h1_ref_level"]].copy()
     h1_shifted.index = h1_shifted.index + _bar_length(h1.index)
 

@@ -43,8 +43,27 @@ def trend_donchian(df: pd.DataFrame, window: int = 20) -> pd.Series:
     return pd.Series(np.where(df["close"] > mid, 1, -1), index=df.index)
 
 
+def trend_ema_adx_combo(df: pd.DataFrame, fast: int = 20, slow: int = 50, adx_n: int = 14, adx_min: float = 20.0) -> pd.Series:
+    """Direction from EMA(fast)/EMA(slow) (trend_ema_cross's own, smoother
+    read - not adx_di's +DI/-DI comparison), STRENGTH-gated by ADX: 0
+    (withhold opinion) whenever ADX < adx_min (chat 2026-08-20: "kannst du
+    ADX und Ema kombinieren um Trend und Staerke zu bestimmen"). Isolates
+    a specific hypothesis about why trend_adx_di outperformed trend_ema_
+    cross/trend_donchian in the continuation trend-indicator sweep: is it
+    the DI-based direction itself, or just the ability to say "no clear
+    trend" that ema_cross/donchian lack (both always pick a side)? This
+    keeps ema_cross's direction but adds adx_di's own selectivity."""
+    ema_fast = df["close"].ewm(span=fast, adjust=False).mean()
+    ema_slow = df["close"].ewm(span=slow, adjust=False).mean()
+    direction = np.where(ema_fast > ema_slow, 1, -1)
+    adx = compute_adx(df, n=adx_n)["adx"].to_numpy()
+    trend = np.where(adx >= adx_min, direction, 0)
+    return pd.Series(trend, index=df.index)
+
+
 TREND_INDICATORS = {
     "ema_cross": trend_ema_cross,
     "adx_di": trend_adx_di,
     "donchian": trend_donchian,
+    "ema_adx_combo": trend_ema_adx_combo,
 }

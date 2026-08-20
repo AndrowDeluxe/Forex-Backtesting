@@ -1,10 +1,10 @@
 {
-  "in_position": false,
-  "entry_date": null,
-  "entry_price": null,
-  "raw_entry_price": null,
-  "stop_price": null,
-  "qty": null,
-  "trade_risk_dollar": null,
-  "cash": 100000.0
+  "in_position": true,
+  "entry_date": "2026-08-20",
+  "entry_price": 69404.11477999999,
+  "raw_entry_price": 69334.78,
+  "stop_price": 66172.03955381871,
+  "qty": 0.3161814941872342,
+  "trade_risk_dollar": 1000.0000000000001,
+  "cash": 78055.70328611729
 }

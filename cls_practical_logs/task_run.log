@@ -1409,3 +1409,105 @@
 2026-08-19 12:35:59   triggered: False
 2026-08-19 12:35:59 
 2026-08-19 12:35:59 Gespeichert: C:\Users\andre\Forex-Backtesting\cls_practical_logs\daily_log.csv
+2026-08-19 12:35:59 [main 5c9d410] CLS Practical Scan: Snapshot 2026-08-19 12:35
+2026-08-19 12:35:59  1 file changed, 101 insertions(+)
+2026-08-19 12:36:02 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-19 12:36:02    3c55ac3..5c9d410  main -> main
+2026-08-19 12:36:02 Commit + Push erfolgreich.
+2026-08-19 12:36:02 === CLS-Practical-Scan-Task beendet ===
+2026-08-20 09:56:28 === CLS-Practical-Scan-Task gestartet ===
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-08-13T21:05:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-09-11T19:05:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-10-10T16:55:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-11-10T14:30:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-12-09T12:35:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-01-09T06:55:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-02-09T04:00:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-03-10T00:30:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-04-07T23:05:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-05-06T20:50:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-06-04T19:05:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-07-03T17:35:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-08-03T15:55:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-08-13T22:15:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-09-11T21:30:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-10-10T20:45:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-11-10T19:30:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-12-09T18:30:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-01-09T12:45:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-02-09T10:30:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-03-10T07:00:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-04-08T05:45:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-05-07T04:00:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-06-05T02:45:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-07-06T00:45:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-08-03T22:45:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-08-13T22:00:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-09-11T20:00:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-10-10T17:30:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-11-10T15:15:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-12-09T12:00:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-01-09T03:00:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-02-09T00:00:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-03-09T20:00:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-04-07T19:30:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-05-06T17:30:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-06-04T16:15:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-07-03T14:45:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-08-03T12:15:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-08-13T21:30:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-09-11T20:00:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-10-10T18:45:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-11-10T17:00:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-12-09T16:00:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-01-09T09:00:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-02-09T07:00:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-03-10T04:00:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-04-08T03:30:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-05-07T02:30:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-06-05T01:45:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-07-06T00:30:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-08-03T23:45:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-08-13T22:30:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-09-11T22:00:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-10-10T21:00:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-11-10T18:30:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-12-09T16:15:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-01-09T09:45:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-02-09T07:30:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-03-10T04:00:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-04-08T02:30:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-05-07T00:15:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-06-04T22:45:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-07-03T20:45:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2026-08-03T19:30:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-08-13T21:15:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-09-11T18:15:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-10-10T15:00:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-11-10T11:30:00
+2026-08-20 09:57:26 INFO:DUKASCRIPT:current timestamp :2025-12-09T08:15:00
+2026-08-20 09:57:26 Traceback (most recent call last):
+2026-08-20 09:57:26   File "C:\Users\andre\Forex-Backtesting\scripts\collect_cls_practical_daily_log.py", line 59, in <module>
+2026-08-20 09:57:26     main()
+2026-08-20 09:57:26     ~~~~^^
+2026-08-20 09:57:26   File "C:\Users\andre\Forex-Backtesting\scripts\collect_cls_practical_daily_log.py", line 35, in main
+2026-08-20 09:57:26     row = scan_today()
+2026-08-20 09:57:26   File "C:\Users\andre\Forex-Backtesting\cls_practical\live_scan.py", line 37, in scan_today
+2026-08-20 09:57:26     other_majors_m15 = {p: fetch_major_m15_berlin(p, start, end, force_refresh=True) for p in OTHER_MAJORS}
+2026-08-20 09:57:26                            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-20 09:57:26   File "C:\Users\andre\Forex-Backtesting\cls_practical\data.py", line 54, in fetch_major_m15_berlin
+2026-08-20 09:57:26     df = fetch_timeframe(key, "M15", start, end, force_refresh=force_refresh)
+2026-08-20 09:57:26   File "C:\Users\andre\Forex-Backtesting\combined_strategy\data.py", line 81, in fetch_timeframe
+2026-08-20 09:57:26     df = dukascopy_python.fetch(
+2026-08-20 09:57:26         INSTRUMENTS[key], _TF_INTERVAL[timeframe], OFFER_SIDE,
+2026-08-20 09:57:26         start_ts.to_pydatetime(), end_ts.to_pydatetime(),
+2026-08-20 09:57:26     )
+2026-08-20 09:57:26   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\dukascopy_python\__init__.py", line 278, in fetch
+2026-08-20 09:57:26     for row in datafeed:
+2026-08-20 09:57:26                ^^^^^^^^
+2026-08-20 09:57:26   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\dukascopy_python\__init__.py", line 242, in _stream
+2026-08-20 09:57:26     raise e
+2026-08-20 09:57:26   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\dukascopy_python\__init__.py", line 209, in _stream
+2026-08-20 09:57:26     if not is_first_iteration and lastUpdates[0][0] == cursor:
+2026-08-20 09:57:26                                   ~~~~~~~~~~~^^^
+2026-08-20 09:57:26 KeyError: 0

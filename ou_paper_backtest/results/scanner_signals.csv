@@ -1,4 +1,4 @@
 market,ticker,scan_date,close,lower_band,entry,sl,tp,tp_price,risk_pct_price,position_size_pct,regime_ok,tradeable,position_size_concentrated_pct,scanned_at
-"S&P 500 (volles Universum, 420 Ticker)",AFL,2026-08-19,116.51,117.09,116.51,106.75,131.15,131.15,8.38,11.94,True,True,12.5,2026-08-20T19:36:00
-"S&P 500 (volles Universum, 420 Ticker)",DE,2026-08-19,580.63,581.56,580.63,537.44,645.41,645.41,7.44,13.44,True,True,12.5,2026-08-20T19:36:00
-"S&P 500 (volles Universum, 420 Ticker)",TJX,2026-08-19,144.5,146.97,144.5,131.46,164.07,164.07,9.03,11.08,True,True,12.5,2026-08-20T19:36:00
+"S&P 500 (volles Universum, 420 Ticker)",AFL,2026-08-19,116.51,117.09,116.51,106.75,131.15,131.15,8.38,11.94,True,True,12.5,2026-08-20T20:36:01
+"S&P 500 (volles Universum, 420 Ticker)",DE,2026-08-19,580.63,581.56,580.63,537.44,645.41,645.41,7.44,13.44,True,True,12.5,2026-08-20T20:36:01
+"S&P 500 (volles Universum, 420 Ticker)",TJX,2026-08-19,144.5,146.97,144.5,131.46,164.07,164.07,9.03,11.08,True,True,12.5,2026-08-20T20:36:01

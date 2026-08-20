@@ -610,6 +610,62 @@ def _render_tab_ek():
         "Ueberschneidungen zwischen unterschiedlichen Strategien."
     )
 
+    section_title("Erweiterung: CTNL Edge (Gold SMC) als 8. Strategie")
+    ctnl_ek = load_json("ctnl_ek_extension.json")
+    st.error(
+        "**Wichtiger Vorbehalt:** CTNL Edge ist nur auf 2024-08 bis 2026-08 entwickelt/getestet (~2 Jahre) -- "
+        "ein Walk-Forward-Test auf 2016-2024 (nie gesehen) zeigt NEGATIVE Performance in allen vier "
+        "Sub-Perioden, und zwei Runden Regime-Filter-Suche fanden keinen Filter, der die verlierenden von der "
+        "gewinnenden Periode trennt. Das 2024-26-Fenster fiel mit einem aussergewoehnlich starken Gold-Bullenlauf "
+        "zusammen. Auf Nutzerentscheid trotzdem gleichberechtigt mit den anderen 7 Strategien aufgenommen -- "
+        "Details auf der eigenen Seite \"CTNL Edge Strategie\" (Fertige Strategien) und in "
+        "`knowledge/projects/gold-ctnl-edge-portfolio.md`.",
+        icon=":material/report:",
+    )
+    st.caption(
+        f"Gemeinsames Fenster aller 8 Beine (CTNL setzt die Untergrenze): {ctnl_ek['common_window']['start']} bis "
+        f"{ctnl_ek['common_window']['end']} -- kuerzer als die Vollhistorie oben, daher als eigene Erweiterung "
+        "gezeigt statt in die Hauptzahlen eingerechnet. OU-Modell nutzt hier die Referenz-Risikostufe (1,0%) "
+        "statt der risiko-optimierten 0,5%-Sweep-Datei, die nur bis Ende 2024 reicht -- beide waren bereits "
+        "nahezu gleich gut, siehe Risikostufen-Optimierung oben."
+    )
+
+    base7 = ctnl_ek["baseline_7leg_same_window"]
+    ctnl_rows = ""
+    CTNL_EK_TITLES = {"fk_risk": "CTNL bei konservativem Risiko (0,50%/0,15%, empfohlen)", "ek_risk": "CTNL bei aggressivem Risiko (2,00%/1,50%)"}
+    ctnl_rows += (
+        f"<tr><td>7 Beine ohne CTNL (gleiches Fenster) &#9733;</td><td class='pos'>{base7['cagr_pct']:+.1f}%</td>"
+        f"<td>{base7['sharpe']:.2f}</td><td class='neg'>{base7['max_dd_pct']:.1f}%</td><td>{base7['calmar']:.2f}</td>"
+        f"<td>${base7['final_equity']:,.0f}</td></tr>"
+    )
+    for key in ["fk_risk", "ek_risk"]:
+        m = ctnl_ek["with_ctnl"][key]["metrics"]
+        ctnl_rows += (
+            f"<tr><td>8 Beine mit {CTNL_EK_TITLES[key]}</td><td class='pos'>{m['cagr_pct']:+.1f}%</td>"
+            f"<td>{m['sharpe']:.2f}</td><td class='neg'>{m['max_dd_pct']:.1f}%</td><td>{m['calmar']:.2f}</td>"
+            f"<td>${m['final_equity']:,.0f}</td></tr>"
+        )
+    st.markdown(
+        f"<table class='pc-table'><thead><tr><th>Kombination (je 1/n gleichgewichtet)</th><th>CAGR</th><th>Sharpe</th>"
+        f"<th>MaxDD</th><th>Calmar</th><th>Endkapital</th></tr></thead><tbody>{ctnl_rows}</tbody></table>",
+        unsafe_allow_html=True,
+    )
+    ek_risk_standalone = ctnl_ek["ctnl_standalone_this_window"]["ek_risk"]
+    st.success(
+        f"**Konservative CTNL-Risikostufe gewinnt sogar auf Sharpe** (2,84 vs. 2,65 bei aggressiv) UND bleibt "
+        f"deutlich naeher an der 7-Bein-Basis (MaxDD -3,4% statt -6,6%) -- CTNL solo bei aggressivem Risiko hat "
+        f"einen extremen Standalone-MaxDD von {ek_risk_standalone['max_dd_pct']:.1f}%, der die 30%-Psychogrenze "
+        "fuer sich genommen schon fast reissen wuerde. Da CTNL zudem die einzige der 8 Strategien ohne "
+        "bestandenen Walk-Forward-Test ist, wird hier bewusst die konservative Stufe empfohlen -- nicht nur aus "
+        "Vorsicht, sondern weil sie auch das bessere risikoadjustierte Ergebnis liefert.",
+        icon=":material/verified:",
+    )
+    st.caption(
+        "Korrelation CTNL vs. die 7 bestehenden Strategien in diesem Fenster: " +
+        ", ".join(f"{ctnl_ek['leg_labels'][k]} {v:+.3f}" for k, v in ctnl_ek["ctnl_vs_existing_correlation"].items()) +
+        " -- durchgehend nahe null, daher der Diversifikationsgewinn trotz kurzer Historie."
+    )
+
 # ============================================================ Tab: FK
 def _render_tab_fk():
     st.caption("Nur die 5 FK-tauglichen Strategien (siehe Vorbehalte). Zwei unterschiedliche Regelwerke, Monte-Carlo-simuliert.")
@@ -692,6 +748,56 @@ def _render_tab_fk():
     st.caption(
         f"Historischer Verlauf {fk['common_window']['start']} bis {fk['common_window']['end']} (Zeitraum, in dem OU-Modell-FK-Daten "
         "vorliegen) -- die Monte-Carlo-Werte oben simulieren daraus 500 Handelstage in die Zukunft, nicht diesen Chart direkt."
+    )
+
+    section_title("Erweiterung: CTNL Edge (Gold SMC) als 6. Strategie")
+    ctnl_fk = load_json("ctnl_fk_extension.json")
+    st.error(
+        "**Wichtiger Vorbehalt:** CTNL Edge ist nur auf 2024-08 bis 2026-08 entwickelt/getestet (~2 Jahre) -- "
+        "ein Walk-Forward-Test auf 2016-2024 (nie gesehen) zeigt NEGATIVE Performance in allen vier "
+        "Sub-Perioden. Fuer eine echte Challenge mit Regelbruch-Risiko ist das ein deutlich groesseres Gewicht "
+        "als im EK-Track. Auf Nutzerentscheid trotzdem gleichberechtigt aufgenommen -- Details auf der eigenen "
+        "Seite \"CTNL Edge Strategie\" (Fertige Strategien).",
+        icon=":material/report:",
+    )
+    st.caption(
+        f"Gemeinsames Fenster aller 6 Beine: {ctnl_fk['common_window']['start']} bis {ctnl_fk['common_window']['end']} "
+        "-- OU-Modell nutzt hier den vollen 147-Ticker-Universum-Ersatz (Referenz-Risiko) statt der "
+        "TTP-58-Ticker-Teilmenge, die nur bis Ende 2024 reicht (bekannter, bereits dokumentierter Kompromiss "
+        "fuer diesen Vergleich)."
+    )
+
+    mc_base = ctnl_fk["monte_carlo_baseline"][rule_key]
+    mc_ctnl_safe = ctnl_fk["monte_carlo_with_ctnl"][rule_key]["fk_risk"]
+    mc_ctnl_fast = ctnl_fk["monte_carlo_with_ctnl"][rule_key]["ek_risk"]
+    ctnl_fk_col1, ctnl_fk_col2, ctnl_fk_col3 = st.columns(3)
+    CTNL_FK_TITLES = [
+        (ctnl_fk_col1, "5 Beine ohne CTNL", mc_base, "safe", "basis"),
+        (ctnl_fk_col2, "6 Beine, CTNL konservativ (empfohlen)", mc_ctnl_safe, "fast", "empfohlen"),
+        (ctnl_fk_col3, "6 Beine, CTNL aggressiv", mc_ctnl_fast, "bad", "riskanter"),
+    ]
+    for col, title, mc, tag, tag_label in CTNL_FK_TITLES:
+        with col:
+            st.markdown(
+                f"<div class='pc-candidate'><div class='pc-candidate-head'>"
+                f"<span class='pc-candidate-title'>{title}</span>"
+                f"<span class='pc-candidate-tag {tag}'>{tag_label}</span></div></div>",
+                unsafe_allow_html=True,
+            )
+            outcome_bar(mc["p_target"], mc["p_neither"], mc["p_breach"])
+            st.metric("Median Tage bis Ziel", f"{mc['median_days']:.0f}" if mc["median_days"] else "—")
+    st.success(
+        f"**CTNL bei konservativem Risiko verbessert das FK-Ergebnis auf beiden Regelwerken klar:** TTP-Bruch-"
+        f"Wahrscheinlichkeit {ctnl_fk['monte_carlo_baseline']['ttp']['p_breach']*100:.1f}% -> "
+        f"{ctnl_fk['monte_carlo_with_ctnl']['ttp']['fk_risk']['p_breach']*100:.1f}%, IQ-Markets "
+        f"{ctnl_fk['monte_carlo_baseline']['iqmarkets']['p_breach']*100:.1f}% -> "
+        f"{ctnl_fk['monte_carlo_with_ctnl']['iqmarkets']['fk_risk']['p_breach']*100:.1f}% -- dank fast null "
+        "Korrelation zu den 5 bestehenden Strategien. Die aggressive CTNL-Stufe kippt das Bild: Bruch-"
+        f"Wahrscheinlichkeit steigt auf {ctnl_fk['monte_carlo_with_ctnl']['ttp']['ek_risk']['p_breach']*100:.1f}% "
+        "(TTP) bzw. "
+        f"{ctnl_fk['monte_carlo_with_ctnl']['iqmarkets']['ek_risk']['p_breach']*100:.1f}% (IQ Markets) -- fuer den "
+        "FK-Track mit hartem Regelbruch-Risiko ist die konservative Stufe klar die richtige Wahl.",
+        icon=":material/verified:",
     )
 
 # ============================================================ Tab: EK-Schnellkonto
@@ -1024,6 +1130,12 @@ def _render_tab_caveats():
   Trend Pullback kommt erschwerend hinzu, dass die Strategie erst seit 2023 profitabel ist -- ihr Kelly-Wert
   (~13,7%) steht auf einem kurzen, moeglicherweise regimespezifischen Fenster. Bei Gold-Bitcoin Dual Momentum
   ist Kelly gar nicht sauber berechenbar (Rotationsstrategie ohne diskrete R-Trades).
+- **CTNL Edge (Gold SMC, 8./6. Strategie) ist die einzige der Strategien OHNE bestandenen Walk-Forward-Test:**
+  nur auf 2024-08/2026-08 validiert, negativ auf 2016-2024 (nie gesehen), kein trennender Regime-Filter
+  gefunden. Auf Nutzerentscheid trotzdem gleichberechtigt in EK und FK aufgenommen (siehe EK-/FK-Tab fuer die
+  Erweiterungs-Zahlen) -- mit der konservativen Risikostufe (0,50%/0,15%), die in beiden Tracks empirisch auch
+  das bessere risikoadjustierte Ergebnis liefert, nicht nur die vorsichtigere Wahl ist. Kill-Switch (Realized-
+  Performance gegen Monte-Carlo-P5-Baender) ist als Design dokumentiert, aber noch nicht live operationalisiert.
         """
     )
 

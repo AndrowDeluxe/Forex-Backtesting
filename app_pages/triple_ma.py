@@ -1,4 +1,4 @@
-"""Triple Moving Average -- interactive dashboard for triple_ma_strategy/.
+"""Triple Moving Average -- static findings page for triple_ma_strategy/.
 
 Reproduces "Evaluating Triple Moving Average Strategy Profitability Under
 Different Market Regimes" (Walugembe & Stoica, SSRN 4185701): a long/flat
@@ -9,7 +9,18 @@ filters}.py for the exact, explicitly-flagged places where the paper's own
 text is ambiguous and what was assumed to make it runnable, plus the
 regime-filter experiment's honest (negative) result.
 
-Two backtest engines, selectable in the sidebar:
+VERWORFEN (2026-08-20): alle vier Grundvarianten liegen 145-209 Prozentpunkte
+hinter Buy & Hold, und beide nachtraeglich getesteten Verfeinerungen
+(Regime-Filter, SL/TP) verbessern das Ergebnis nicht robust - als Baustein
+deshalb auf eine statische Erkenntnis-Seite mit der Paper-Original-
+Konfiguration (SP500, Single TEMA, kein Filter, kein Risk-Overlay) reduziert
+(Streamlit-Cloud-Memory-Aufraeumung). Der vorher hier vorhandene Sidebar-
+Regler (Instrument/Variante/MA-Typ/Kosten/Regime-Filter/SL-TP, macht
+`load_backtest` zu einem praktisch unbegrenzten Cache-Key-Raum) ist entfernt.
+Fuer die interaktive Version: `git log -- app_pages/triple_ma.py` vor
+diesem Commit.
+
+Zwei Backtest-Engines (beide im Repo erhalten, siehe triple_ma_strategy/backtest.py):
 - simulate_trend_trades: the paper's own approach - 100%-equity compounding
   while long, no stop-loss/take-profit.
 - simulate_trades_with_risk: fixed-risk (risk_pct of equity) sizing with an
@@ -86,60 +97,24 @@ def load_backtest(
     return trades, equity, close, metrics
 
 
-with st.sidebar:
-    st.markdown("### Konfiguration")
-    key = st.selectbox("Instrument", ALL_INSTRUMENTS, index=ALL_INSTRUMENTS.index("SP500"))
-    variant = st.radio("Variante", [VARIANT_SINGLE, VARIANT_TRIPLE], index=0)
-    ma_type_label = st.radio("MA-Typ", ["Exponentiell (TEMA)", "Simple (TSMA)"], index=0)
-    ma_type = "tema" if ma_type_label.startswith("Exponentiell") else "tsma"
-    cost_bps = st.slider(
-        "Kosten je Positionswechsel (bps)", 0.0, 10.0, 1.0, 0.5,
-        help="Belastet auf jeden 0->1/1->0 Positionswechsel, nicht pro Kalendertag.",
-    )
-    show_regimes = st.toggle("Regime-Overlay anzeigen (GMM, 4 Cluster)", value=True)
+st.info(
+    "**Verworfen** -- alle Grundvarianten liegen deutlich hinter Buy & Hold, keine "
+    "getestete Verfeinerung (Regime-Filter, SL/TP) behebt das robust. Feste "
+    "Paper-Original-Konfiguration unten (SP500, Single TEMA, kein Filter, kein "
+    "Risk-Overlay), kein Regler mehr -- Details siehe Warnbox.",
+    icon=":material/block:",
+)
 
-    st.markdown("### Regime-Filter (Experiment)")
-    st.caption(
-        "Ehrlicher Befund: **keine der beiden Varianten unten verbessert das "
-        "Ergebnis robust** (siehe Warnbox). Standardmäßig aus, hier nur zum "
-        "Nachvollziehen."
-    )
-    filter_mode = st.selectbox("Filter-Modus", [FILTER_OFF, FILTER_CONTINUOUS, FILTER_ENTRY_ONLY], index=0)
-    exclude_regimes = ()
-    if filter_mode != FILTER_OFF:
-        exclude_regimes = tuple(
-            st.multiselect(
-                "Ausgeschlossene Regimes", [0, 1, 2, 3],
-                default=[1, 3], format_func=lambda r: REGIME_LABELS[r],
-            )
-        )
+key, variant, ma_type = "SP500", VARIANT_SINGLE, "tema"
+cost_bps, show_regimes = 1.0, True
+filter_mode, exclude_regimes = FILTER_OFF, ()
+use_risk_mgmt, risk_pct, atr_mult_sl, use_tp, tp_rr = False, 0.0, 0.0, False, 0.0
 
-    st.markdown("### Risikomanagement")
-    use_risk_mgmt = st.toggle(
-        "SL/TP statt reiner Trend-Equity-Kurve", value=False,
-        help="Aus = Paper-Original (100%-Equity-Kompoundierung, kein Stop). "
-        "An = fixes Risiko/Trade + ATR-Stop (+ optionales Kursziel).",
-    )
-    risk_pct = atr_mult_sl = tp_rr = 0.0
-    use_tp = False
-    if use_risk_mgmt:
-        risk_pct = st.slider("Risiko je Trade (%)", 0.25, 3.0, 1.0, 0.25) / 100
-        atr_mult_sl = st.slider("Stop-Distanz (x ATR-14)", 0.5, 5.0, 2.5, 0.5)
-        use_tp = st.toggle("Kursziel (Take-Profit) aktivieren", value=False)
-        if use_tp:
-            tp_rr = st.slider("Kursziel (x Anfangsrisiko, \"R\")", 0.5, 5.0, 2.0, 0.5)
-        st.caption(
-            "Ehrlicher Befund: Stop-Loss reduziert Max-Drawdown drastisch (fixe "
-            "Risiko-Sizing statt 100%-Exposure), aber Sharpe/Profit-Factor sind "
-            "gegenüber der Original-Trend-Kurve gemischt (mal minimal besser, "
-            "mal schlechter) -- kein klarer Gewinn, kein klarer Verlust."
-        )
-
-    st.caption(
-        "Datenquelle: echte Tageshistorie (D1, Dukascopy bzw. Binance für BTC), "
-        "~2016-2026 (10 Jahre) -- nicht der Paper-Zeitraum 1997-2020 (Yahoo "
-        "Finance), da die verfügbare Historie nicht so weit zurückreicht."
-    )
+st.caption(
+    "Datenquelle: echte Tageshistorie (D1, Dukascopy bzw. Binance für BTC), "
+    "~2016-2026 (10 Jahre) -- nicht der Paper-Zeitraum 1997-2020 (Yahoo "
+    "Finance), da die verfügbare Historie nicht so weit zurückreicht."
+)
 
 st.warning(
     "**Was das Paper nicht eindeutig spezifiziert, wurde hier explizit "
@@ -172,17 +147,16 @@ st.warning(
     icon=":material/warning:",
 )
 
-if key == "BTC" and variant == VARIANT_SINGLE and ma_type == "tema" and not use_risk_mgmt and filter_mode == FILTER_OFF:
-    st.info(
-        "**BTC-Befund, ehrlich eingeordnet:** die hohe Outperformance ggü. Buy & "
-        "Hold hier hängt fast vollständig an einem einzigen Trade (10.10.2020 - "
-        "25.03.2021, +354%, der 2020/21-Bullenlauf). Rechnet man diesen einen "
-        "Trade heraus, sinkt die Gesamtrendite von ~6700% auf ~1400% - fast exakt "
-        "auf Buy & Hold-Niveau. Real (kein Datenfehler), aber die Outperformance "
-        "selbst ist nicht robust über viele Trades verteilt, sondern hängt an "
-        "einem einzigen erwischten Trend.",
-        icon=":material/info:",
-    )
+st.info(
+    "**BTC-Befund (separat, nicht Teil der Konfiguration unten), ehrlich "
+    "eingeordnet:** die hohe Outperformance ggü. Buy & Hold hängt dort fast "
+    "vollständig an einem einzigen Trade (10.10.2020 - 25.03.2021, +354%, der "
+    "2020/21-Bullenlauf). Rechnet man diesen einen Trade heraus, sinkt die "
+    "Gesamtrendite von ~6700% auf ~1400% - fast exakt auf Buy & Hold-Niveau. "
+    "Real (kein Datenfehler), aber die Outperformance selbst ist nicht robust "
+    "über viele Trades verteilt, sondern hängt an einem einzigen erwischten Trend.",
+    icon=":material/info:",
+)
 
 trades, equity, close, metrics = load_backtest(
     key, variant, ma_type, cost_bps, filter_mode, exclude_regimes,

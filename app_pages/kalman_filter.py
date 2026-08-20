@@ -6,6 +6,12 @@ stammt aus einem komplett anderen Paper als die ADX-VWAP-These und soll
 nicht mit ihr vermischt werden. Zeigt den Baustein isoliert an echten/
 synthetischen Kursen, kein Backtest, keine Performance-Behauptung.
 
+VERWORFEN (2026-08-20): einzige konkrete Anwendung (ADX-VWAP, siehe unten)
+zeigte keine Verbesserung - als Baustein deshalb auf eine statische Demo
+mit fester Konfiguration reduziert (Streamlit-Cloud-Memory-Aufraeumung),
+kein Pair-/Noise-/Zeitraum-Regler mehr. Fuer die interaktive Version:
+`git log -- app_pages/kalman_filter.py` vor diesem Commit.
+
 Quelle: Kili, Raouyane, Rachdi, Bellafkih (2025), "Kalman-Enhanced Deep
 Reinforcement Learning for Noise-Resilient Algorithmic Trading in Volatile
 Gold Markets", IJACSA Vol. 16, No. 11. Volle Einordnung inkl. Kritik an den
@@ -101,18 +107,14 @@ st.info(
     icon=":material/info:",
 )
 
-st.markdown("### Live-Demo: Rohkurs vs. gefilterter Kurs")
+st.markdown("### Demo: Rohkurs vs. gefilterter Kurs")
+st.caption(
+    "Feste Beispiel-Konfiguration (EUR/USD, echte Dukascopy-Daten, "
+    "measurement_noise_fraction=0.5, letzte 30 Tage) -- kein Regler mehr, "
+    "siehe Modul-Docstring."
+)
 
-with st.sidebar:
-    st.markdown("### Konfiguration")
-    source = st.radio("Datenquelle", [SOURCE_REAL, SOURCE_SYNTHETIC], index=0)
-    pair = st.selectbox("Pair", PAIRS, index=0)
-    noise_fraction = st.slider(
-        "Measurement-noise-fraction", 0.05, 0.95, 0.5, 0.05,
-        help="Nahe 1 -> aggressive Glaettung (fast alle Varianz gilt als Rauschen). "
-        "Nahe 0 -> Filter glaettet kaum.",
-    )
-    n_days = st.slider("Anzuzeigende Tage (Chart)", 5, 180, 30)
+source, pair, noise_fraction, n_days = SOURCE_REAL, "EURUSD", 0.5, 30
 
 filtered = load_filtered(pair, source, noise_fraction)
 

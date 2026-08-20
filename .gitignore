@@ -16,3 +16,4 @@ paper_dropbox/*
 !paper_dropbox/README.md
 education_state/
 btc_ema_cross/telegram_config.py
+gold_smc_htf_ltf/telegram_config.py

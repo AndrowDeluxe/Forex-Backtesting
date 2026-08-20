@@ -97,6 +97,23 @@ Inflows (World Gold Council) nicht ueber FRED verfuegbar -- Datenluecke.
 gefunden. Weitere Variablen suchen, bis zufaellig eine "passt", waere
 selbst eine Form von Overfitting -- Suche hier bewusst beendet.
 
+**Cross-Market-Check (chat 2026-08-21)**: finale, gesperrte Configs
+unveraendert auf die G8-Majors (EURUSD, GBPUSD, USDJPY, USDCHF, AUDUSD,
+USDCAD) angewendet, selber Zeitraum wie Gold (2024-08/2026-08), inkl.
+IS/OOS-Split. Ergebnis EINDEUTIG NEGATIV: Continuation Sharpe negativ in
+allen 6 Paaren x 3 Fenstern (Voll/IS/OOS) ohne Ausnahme (-1.24 bis -3.38).
+Reversal-Kaskade in 10 von 12 IS/OOS-Faellen negativ, nur EURUSD-IS
+(+0.44) und USDCAD-OOS (+0.46) schwach positiv, keins davon in beiden
+Fenstern desselben Paares bestaetigt. Das ist ein STAERKERES Warnsignal
+als der reine Walk-Forward-Befund: waere der Edge ein echter struktureller
+Mechanismus, sollte er auf mindestens einigen FX-Paaren im SELBEN Zeitraum
+zumindest schwach durchschlagen. Stattdessen durchgehend negativ ueberall.
+Zusammen mit dem Walk-Forward-Befund spricht das dafuer, dass der Edge
+nicht "Gold als Asset" und nicht "dieses SMC-Muster generell" ist, sondern
+spezifisch an Golds aussergewoehnlichen 2024-26-Lauf gebunden - eine enge
+Kombination, keine breite/robuste Eigenschaft. Skript: `scripts/
+research_gold_smc_g8_majors_crossmarket.py`.
+
 **Entscheidung** (Nutzer, 2026-08-20): Strategie NICHT verwerfen -- "die
 Vergangenheit ist vergangen, aber die Zukunft kommt noch". Da kein
 prognostischer Regimefilter gefunden wurde, stattdessen ein

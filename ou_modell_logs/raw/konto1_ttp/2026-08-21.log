@@ -1,0 +1,111 @@
+===== run_20260821_153818.log =====
+2026-08-21 15:38:18,779 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260821_153818.log ===
+2026-08-21 15:38:18,988 CRITICAL executor: HALTEDAUER-WARNUNG: Position UPS (Ticket 17530516) ist seit 23 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -113.04.
+2026-08-21 15:38:18,990 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 17744149) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -120.00.
+2026-08-21 15:38:18,992 CRITICAL executor: HALTEDAUER-WARNUNG: Position D (Ticket 17763555) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 140.17.
+2026-08-21 15:38:18,993 CRITICAL executor: HALTEDAUER-WARNUNG: Position CVS (Ticket 17795619) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -38.72.
+2026-08-21 15:38:19,000 CRITICAL run_once.konto1_ttp: 4 Position(en) über Haltedauer-Limit: [{'ticket': 17530516, 'symbol': 'UPS', 'holding_days': 23, 'profit': -113.04}, {'ticket': 17744149, 'symbol': 'REG', 'holding_days': 14, 'profit': -120.0}, {'ticket': 17763555, 'symbol': 'D', 'holding_days': 14, 'profit': 140.17}, {'ticket': 17795619, 'symbol': 'CVS', 'holding_days': 10, 'profit': -38.72}]
+2026-08-21 15:38:19,213 INFO run_once.konto1_ttp: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 15:38:19,216 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 97645.24, aktueller Drawdown 0.00% (Limit 2.0%)
+2026-08-21 15:38:19,220 WARNING executor: Symbol 'MTB' (MT5-Name 'MTB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-21 15:38:19,221 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MTB', 'direction': 'Long', 'entry': 240.44, 'sl': 231.76, 'tp': 253.46}}
+2026-08-21 15:38:19,223 INFO executor: Für CMI ist bereits eine Position offen (Ticket 17980385) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-21 15:38:19,223 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CMI', 'direction': 'Long', 'entry': 594.54, 'sl': 558.13, 'tp': 649.16}}
+2026-08-21 15:38:19,223 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260821_163519.log =====
+2026-08-21 16:35:19,540 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260821_163519.log ===
+2026-08-21 16:35:19,578 CRITICAL executor: HALTEDAUER-WARNUNG: Position UPS (Ticket 17530516) ist seit 23 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -125.04.
+2026-08-21 16:35:19,580 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 17744149) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -178.56.
+2026-08-21 16:35:19,581 CRITICAL executor: HALTEDAUER-WARNUNG: Position D (Ticket 17763555) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 119.21.
+2026-08-21 16:35:19,582 CRITICAL executor: HALTEDAUER-WARNUNG: Position CVS (Ticket 17795619) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -58.56.
+2026-08-21 16:35:19,584 CRITICAL executor: HALTEDAUER-WARNUNG: Position HRL (Ticket 17820582) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -209.95.
+2026-08-21 16:35:19,589 CRITICAL run_once.konto1_ttp: 5 Position(en) über Haltedauer-Limit: [{'ticket': 17530516, 'symbol': 'UPS', 'holding_days': 23, 'profit': -125.04}, {'ticket': 17744149, 'symbol': 'REG', 'holding_days': 14, 'profit': -178.56}, {'ticket': 17763555, 'symbol': 'D', 'holding_days': 14, 'profit': 119.21}, {'ticket': 17795619, 'symbol': 'CVS', 'holding_days': 10, 'profit': -58.56}, {'ticket': 17820582, 'symbol': 'HRL', 'holding_days': 10, 'profit': -209.95}]
+2026-08-21 16:35:19,866 INFO run_once.konto1_ttp: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 16:35:19,868 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 97645.24, aktueller Drawdown 0.11% (Limit 2.0%)
+2026-08-21 16:35:19,872 WARNING executor: Symbol 'MTB' (MT5-Name 'MTB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-21 16:35:19,872 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MTB', 'direction': 'Long', 'entry': 240.44, 'sl': 231.76, 'tp': 253.46}}
+2026-08-21 16:35:19,875 INFO executor: Für CMI ist bereits eine Position offen (Ticket 17980385) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-21 16:35:19,875 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CMI', 'direction': 'Long', 'entry': 594.54, 'sl': 558.13, 'tp': 649.16}}
+2026-08-21 16:35:19,875 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260821_173520.log =====
+2026-08-21 17:35:20,225 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260821_173520.log ===
+2026-08-21 17:35:20,361 CRITICAL executor: HALTEDAUER-WARNUNG: Position UPS (Ticket 17530516) ist seit 23 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -124.08.
+2026-08-21 17:35:20,363 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 17744149) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -173.76.
+2026-08-21 17:35:20,365 CRITICAL executor: HALTEDAUER-WARNUNG: Position D (Ticket 17763555) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 94.32.
+2026-08-21 17:35:20,366 CRITICAL executor: HALTEDAUER-WARNUNG: Position CVS (Ticket 17795619) ist seit 11 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -57.60.
+2026-08-21 17:35:20,367 CRITICAL executor: HALTEDAUER-WARNUNG: Position HRL (Ticket 17820582) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -235.79.
+2026-08-21 17:35:20,373 CRITICAL run_once.konto1_ttp: 5 Position(en) über Haltedauer-Limit: [{'ticket': 17530516, 'symbol': 'UPS', 'holding_days': 23, 'profit': -124.08}, {'ticket': 17744149, 'symbol': 'REG', 'holding_days': 14, 'profit': -173.76}, {'ticket': 17763555, 'symbol': 'D', 'holding_days': 14, 'profit': 94.32}, {'ticket': 17795619, 'symbol': 'CVS', 'holding_days': 11, 'profit': -57.6}, {'ticket': 17820582, 'symbol': 'HRL', 'holding_days': 10, 'profit': -235.79}]
+2026-08-21 17:35:20,586 INFO run_once.konto1_ttp: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 17:35:20,588 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 97645.24, aktueller Drawdown 0.14% (Limit 2.0%)
+2026-08-21 17:35:20,592 WARNING executor: Symbol 'MTB' (MT5-Name 'MTB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-21 17:35:20,592 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MTB', 'direction': 'Long', 'entry': 240.44, 'sl': 231.76, 'tp': 253.46}}
+2026-08-21 17:35:20,594 INFO executor: Für CMI ist bereits eine Position offen (Ticket 17980385) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-21 17:35:20,594 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CMI', 'direction': 'Long', 'entry': 594.54, 'sl': 558.13, 'tp': 649.16}}
+2026-08-21 17:35:20,595 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260821_183519.log =====
+2026-08-21 18:35:19,638 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260821_183519.log ===
+2026-08-21 18:35:19,700 CRITICAL executor: HALTEDAUER-WARNUNG: Position UPS (Ticket 17530516) ist seit 23 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -128.16.
+2026-08-21 18:35:19,702 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 17744149) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -160.32.
+2026-08-21 18:35:19,703 CRITICAL executor: HALTEDAUER-WARNUNG: Position D (Ticket 17763555) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 112.66.
+2026-08-21 18:35:19,705 CRITICAL executor: HALTEDAUER-WARNUNG: Position CVS (Ticket 17795619) ist seit 11 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -71.36.
+2026-08-21 18:35:19,710 CRITICAL run_once.konto1_ttp: 4 Position(en) über Haltedauer-Limit: [{'ticket': 17530516, 'symbol': 'UPS', 'holding_days': 23, 'profit': -128.16}, {'ticket': 17744149, 'symbol': 'REG', 'holding_days': 14, 'profit': -160.32}, {'ticket': 17763555, 'symbol': 'D', 'holding_days': 14, 'profit': 112.66}, {'ticket': 17795619, 'symbol': 'CVS', 'holding_days': 11, 'profit': -71.36}]
+2026-08-21 18:35:19,917 INFO run_once.konto1_ttp: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 18:35:19,920 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 97645.24, aktueller Drawdown 0.22% (Limit 2.0%)
+2026-08-21 18:35:19,924 WARNING executor: Symbol 'MTB' (MT5-Name 'MTB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-21 18:35:19,925 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MTB', 'direction': 'Long', 'entry': 240.44, 'sl': 231.76, 'tp': 253.46}}
+2026-08-21 18:35:19,928 INFO executor: Für CMI ist bereits eine Position offen (Ticket 17980385) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-21 18:35:19,928 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CMI', 'direction': 'Long', 'entry': 594.54, 'sl': 558.13, 'tp': 649.16}}
+2026-08-21 18:35:19,929 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260821_193520.log =====
+2026-08-21 19:35:20,226 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260821_193520.log ===
+2026-08-21 19:35:20,356 CRITICAL executor: HALTEDAUER-WARNUNG: Position UPS (Ticket 17530516) ist seit 23 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -129.36.
+2026-08-21 19:35:20,358 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 17744149) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -171.84.
+2026-08-21 19:35:20,359 CRITICAL executor: HALTEDAUER-WARNUNG: Position D (Ticket 17763555) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 61.57.
+2026-08-21 19:35:20,360 CRITICAL executor: HALTEDAUER-WARNUNG: Position CVS (Ticket 17795619) ist seit 11 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -75.20.
+2026-08-21 19:35:20,366 CRITICAL run_once.konto1_ttp: 4 Position(en) über Haltedauer-Limit: [{'ticket': 17530516, 'symbol': 'UPS', 'holding_days': 23, 'profit': -129.36}, {'ticket': 17744149, 'symbol': 'REG', 'holding_days': 14, 'profit': -171.84}, {'ticket': 17763555, 'symbol': 'D', 'holding_days': 14, 'profit': 61.57}, {'ticket': 17795619, 'symbol': 'CVS', 'holding_days': 11, 'profit': -75.2}]
+2026-08-21 19:35:20,568 INFO run_once.konto1_ttp: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 19:35:20,570 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 97645.24, aktueller Drawdown 0.29% (Limit 2.0%)
+2026-08-21 19:35:20,573 WARNING executor: Symbol 'MTB' (MT5-Name 'MTB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-21 19:35:20,574 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MTB', 'direction': 'Long', 'entry': 240.44, 'sl': 231.76, 'tp': 253.46}}
+2026-08-21 19:35:20,576 INFO executor: Für CMI ist bereits eine Position offen (Ticket 17980385) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-21 19:35:20,576 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CMI', 'direction': 'Long', 'entry': 594.54, 'sl': 558.13, 'tp': 649.16}}
+2026-08-21 19:35:20,576 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260821_203520.log =====
+2026-08-21 20:35:20,549 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260821_203520.log ===
+2026-08-21 20:35:20,699 CRITICAL executor: HALTEDAUER-WARNUNG: Position D (Ticket 17763555) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 74.67.
+2026-08-21 20:35:20,701 CRITICAL executor: HALTEDAUER-WARNUNG: Position CVS (Ticket 17795619) ist seit 11 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -65.92.
+2026-08-21 20:35:20,708 CRITICAL run_once.konto1_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17763555, 'symbol': 'D', 'holding_days': 14, 'profit': 74.67}, {'ticket': 17795619, 'symbol': 'CVS', 'holding_days': 11, 'profit': -65.92}]
+2026-08-21 20:35:20,930 INFO run_once.konto1_ttp: 3 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 20:35:20,932 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 97645.24, aktueller Drawdown 0.26% (Limit 2.0%)
+2026-08-21 20:35:20,954 WARNING executor: Symbol 'FITB' (MT5-Name 'FITB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-21 20:35:20,955 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FITB', 'direction': 'Long', 'entry': 54.71, 'sl': 52.57, 'tp': 57.91}}
+2026-08-21 20:35:20,958 WARNING executor: Symbol 'PNC' (MT5-Name 'PNC') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-21 20:35:20,958 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PNC', 'direction': 'Long', 'entry': 242.92, 'sl': 234.61, 'tp': 255.38}}
+2026-08-21 20:35:21,507 INFO executor: Order gesendet: {'symbol': 'RTX', 'volume': 27.0, 'type': 'BUY', 'entry': 210.74, 'sl': 201.88, 'tp': 223.19} -> Ticket 18030060
+2026-08-21 20:35:21,512 INFO run_once.konto1_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'RTX', 'volume': 27.0, 'type': 'BUY', 'entry': 210.74, 'sl': 201.88, 'tp': 223.19}, 'signal': {'symbol': 'RTX', 'direction': 'Long', 'entry': 210.4, 'sl': 201.88, 'tp': 223.19}, 'ticket': 18030060, 'risk': 239.22000000000037}
+2026-08-21 20:35:21,519 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260821_213520.log =====
+2026-08-21 21:35:20,789 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260821_213520.log ===
+2026-08-21 21:35:20,972 CRITICAL executor: HALTEDAUER-WARNUNG: Position D (Ticket 17763555) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 34.06.
+2026-08-21 21:35:20,973 CRITICAL executor: HALTEDAUER-WARNUNG: Position CVS (Ticket 17795619) ist seit 11 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -74.56.
+2026-08-21 21:35:20,979 CRITICAL run_once.konto1_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17763555, 'symbol': 'D', 'holding_days': 14, 'profit': 34.06}, {'ticket': 17795619, 'symbol': 'CVS', 'holding_days': 11, 'profit': -74.56}]
+2026-08-21 21:35:21,210 INFO run_once.konto1_ttp: 3 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 21:35:21,213 INFO run_once.konto1_ttp: Tages-Drawdown-Check: Baseline-Equity 97645.24, aktueller Drawdown 0.28% (Limit 2.0%)
+2026-08-21 21:35:21,218 WARNING executor: Symbol 'FITB' (MT5-Name 'FITB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-21 21:35:21,218 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FITB', 'direction': 'Long', 'entry': 54.71, 'sl': 52.57, 'tp': 57.91}}
+2026-08-21 21:35:21,220 WARNING executor: Symbol 'PNC' (MT5-Name 'PNC') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-21 21:35:21,220 INFO run_once.konto1_ttp: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PNC', 'direction': 'Long', 'entry': 242.92, 'sl': 234.61, 'tp': 255.38}}
+2026-08-21 21:35:21,221 INFO run_once.konto1_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'RTX', 'direction': 'Long', 'entry': 210.4, 'sl': 201.88, 'tp': 223.19}
+2026-08-21 21:35:21,223 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===

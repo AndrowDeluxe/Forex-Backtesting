@@ -1,0 +1,103 @@
+===== run_20260821_153819.log =====
+2026-08-21 15:38:19,428 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260821_153819.log ===
+2026-08-21 15:38:19,669 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 17763558) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 9.10.
+2026-08-21 15:38:19,674 CRITICAL run_once.konto2_ttp: 1 Position(en) über Haltedauer-Limit: [{'ticket': 17763558, 'symbol': 'REG', 'holding_days': 14, 'profit': 9.1}]
+2026-08-21 15:38:19,829 INFO run_once.konto2_ttp: 5 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 15:38:19,832 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100124.47, aktueller Drawdown 0.00% (Limit 2.0%)
+2026-08-21 15:38:20,377 INFO executor: Order gesendet: {'symbol': 'CCL', 'volume': 75.0, 'type': 'BUY', 'entry': 25.62, 'sl': 22.32, 'tp': 29.95} -> Ticket 18024038
+2026-08-21 15:38:20,383 INFO run_once.konto2_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'CCL', 'volume': 75.0, 'type': 'BUY', 'entry': 25.62, 'sl': 22.32, 'tp': 29.95}, 'signal': {'symbol': 'CCL', 'direction': 'Long', 'entry': 25.37, 'sl': 22.32, 'tp': 29.95}, 'ticket': 18024038, 'risk': 247.50000000000006}
+2026-08-21 15:38:20,927 INFO executor: Order gesendet: {'symbol': 'NUE', 'volume': 6.0, 'type': 'BUY', 'entry': 247.49, 'sl': 207.9, 'tp': 289.34} -> Ticket 18024039
+2026-08-21 15:38:21,238 INFO run_once.konto2_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'NUE', 'volume': 6.0, 'type': 'BUY', 'entry': 247.49, 'sl': 207.9, 'tp': 289.34}, 'signal': {'symbol': 'NUE', 'direction': 'Long', 'entry': 240.48, 'sl': 207.9, 'tp': 289.34}, 'ticket': 18024039, 'risk': 237.54000000000002}
+2026-08-21 15:38:21,248 INFO executor: Für TJX ist bereits eine Position offen (Ticket 17997117) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-21 15:38:21,248 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'TJX', 'direction': 'Long', 'entry': 140.69, 'sl': 124.27, 'tp': 165.31}}
+2026-08-21 15:38:21,804 INFO executor: Order gesendet: {'symbol': 'UAL', 'volume': 13.0, 'type': 'BUY', 'entry': 113.58, 'sl': 95.39, 'tp': 136.19} -> Ticket 18024040
+2026-08-21 15:38:22,111 INFO run_once.konto2_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'UAL', 'volume': 13.0, 'type': 'BUY', 'entry': 113.58, 'sl': 95.39, 'tp': 136.19}, 'signal': {'symbol': 'UAL', 'direction': 'Long', 'entry': 111.71, 'sl': 95.39, 'tp': 136.19}, 'ticket': 18024040, 'risk': 236.46999999999997}
+2026-08-21 15:38:22,675 INFO executor: Order gesendet: {'symbol': 'WFC', 'volume': 47.0, 'type': 'BUY', 'entry': 84.4, 'sl': 79.1, 'tp': 90.6} -> Ticket 18024041
+2026-08-21 15:38:22,683 INFO run_once.konto2_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'WFC', 'volume': 47.0, 'type': 'BUY', 'entry': 84.4, 'sl': 79.1, 'tp': 90.6}, 'signal': {'symbol': 'WFC', 'direction': 'Long', 'entry': 83.7, 'sl': 79.1, 'tp': 90.6}, 'ticket': 18024041, 'risk': 249.10000000000053}
+2026-08-21 15:38:22,690 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260821_163520.log =====
+2026-08-21 16:35:20,082 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260821_163520.log ===
+2026-08-21 16:35:20,115 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 17763558) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -34.30.
+2026-08-21 16:35:20,124 CRITICAL run_once.konto2_ttp: 1 Position(en) über Haltedauer-Limit: [{'ticket': 17763558, 'symbol': 'REG', 'holding_days': 14, 'profit': -34.3}]
+2026-08-21 16:35:20,273 INFO run_once.konto2_ttp: 5 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 16:35:20,276 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100124.47, aktueller Drawdown 0.04% (Limit 2.0%)
+2026-08-21 16:35:20,279 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'CCL', 'direction': 'Long', 'entry': 25.37, 'sl': 22.32, 'tp': 29.95}
+2026-08-21 16:35:20,281 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'NUE', 'direction': 'Long', 'entry': 240.48, 'sl': 207.9, 'tp': 289.34}
+2026-08-21 16:35:20,283 INFO executor: Für TJX ist bereits eine Position offen (Ticket 17997117) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-21 16:35:20,283 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'TJX', 'direction': 'Long', 'entry': 140.69, 'sl': 124.27, 'tp': 165.31}}
+2026-08-21 16:35:20,284 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'UAL', 'direction': 'Long', 'entry': 111.71, 'sl': 95.39, 'tp': 136.19}
+2026-08-21 16:35:20,286 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'WFC', 'direction': 'Long', 'entry': 83.7, 'sl': 79.1, 'tp': 90.6}
+2026-08-21 16:35:20,287 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260821_173520.log =====
+2026-08-21 17:35:20,804 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260821_173520.log ===
+2026-08-21 17:35:20,874 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 17763558) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -30.10.
+2026-08-21 17:35:20,882 CRITICAL run_once.konto2_ttp: 1 Position(en) über Haltedauer-Limit: [{'ticket': 17763558, 'symbol': 'REG', 'holding_days': 14, 'profit': -30.1}]
+2026-08-21 17:35:21,034 INFO run_once.konto2_ttp: 5 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 17:35:21,036 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100124.47, aktueller Drawdown 0.04% (Limit 2.0%)
+2026-08-21 17:35:21,039 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'CCL', 'direction': 'Long', 'entry': 25.37, 'sl': 22.32, 'tp': 29.95}
+2026-08-21 17:35:21,040 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'NUE', 'direction': 'Long', 'entry': 240.48, 'sl': 207.9, 'tp': 289.34}
+2026-08-21 17:35:21,042 INFO executor: Für TJX ist bereits eine Position offen (Ticket 17997117) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-21 17:35:21,042 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'TJX', 'direction': 'Long', 'entry': 140.69, 'sl': 124.27, 'tp': 165.31}}
+2026-08-21 17:35:21,043 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'UAL', 'direction': 'Long', 'entry': 111.71, 'sl': 95.39, 'tp': 136.19}
+2026-08-21 17:35:21,045 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'WFC', 'direction': 'Long', 'entry': 83.7, 'sl': 79.1, 'tp': 90.6}
+2026-08-21 17:35:21,045 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260821_183520.log =====
+2026-08-21 18:35:20,155 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260821_183520.log ===
+2026-08-21 18:35:20,233 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 17763558) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -20.30.
+2026-08-21 18:35:20,242 CRITICAL run_once.konto2_ttp: 1 Position(en) über Haltedauer-Limit: [{'ticket': 17763558, 'symbol': 'REG', 'holding_days': 14, 'profit': -20.3}]
+2026-08-21 18:35:20,400 INFO run_once.konto2_ttp: 5 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 18:35:20,403 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100124.47, aktueller Drawdown 0.01% (Limit 2.0%)
+2026-08-21 18:35:20,406 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'CCL', 'direction': 'Long', 'entry': 25.37, 'sl': 22.32, 'tp': 29.95}
+2026-08-21 18:35:20,408 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'NUE', 'direction': 'Long', 'entry': 240.48, 'sl': 207.9, 'tp': 289.34}
+2026-08-21 18:35:20,410 INFO executor: Für TJX ist bereits eine Position offen (Ticket 17997117) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-21 18:35:20,411 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'TJX', 'direction': 'Long', 'entry': 140.69, 'sl': 124.27, 'tp': 165.31}}
+2026-08-21 18:35:20,412 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'UAL', 'direction': 'Long', 'entry': 111.71, 'sl': 95.39, 'tp': 136.19}
+2026-08-21 18:35:20,413 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'WFC', 'direction': 'Long', 'entry': 83.7, 'sl': 79.1, 'tp': 90.6}
+2026-08-21 18:35:20,414 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260821_193520.log =====
+2026-08-21 19:35:20,779 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260821_193520.log ===
+2026-08-21 19:35:20,851 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 17763558) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -28.70.
+2026-08-21 19:35:20,862 CRITICAL run_once.konto2_ttp: 1 Position(en) über Haltedauer-Limit: [{'ticket': 17763558, 'symbol': 'REG', 'holding_days': 14, 'profit': -28.7}]
+2026-08-21 19:35:21,033 INFO run_once.konto2_ttp: 5 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 19:35:21,036 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100124.47, aktueller Drawdown 0.03% (Limit 2.0%)
+2026-08-21 19:35:21,039 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'CCL', 'direction': 'Long', 'entry': 25.37, 'sl': 22.32, 'tp': 29.95}
+2026-08-21 19:35:21,041 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'NUE', 'direction': 'Long', 'entry': 240.48, 'sl': 207.9, 'tp': 289.34}
+2026-08-21 19:35:21,042 INFO executor: Für TJX ist bereits eine Position offen (Ticket 17997117) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-21 19:35:21,042 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'TJX', 'direction': 'Long', 'entry': 140.69, 'sl': 124.27, 'tp': 165.31}}
+2026-08-21 19:35:21,044 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'UAL', 'direction': 'Long', 'entry': 111.71, 'sl': 95.39, 'tp': 136.19}
+2026-08-21 19:35:21,045 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'WFC', 'direction': 'Long', 'entry': 83.7, 'sl': 79.1, 'tp': 90.6}
+2026-08-21 19:35:21,046 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260821_203521.log =====
+2026-08-21 20:35:21,742 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260821_203521.log ===
+2026-08-21 20:35:21,911 INFO run_once.konto2_ttp: 5 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 20:35:21,913 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100124.47, aktueller Drawdown -0.03% (Limit 2.0%)
+2026-08-21 20:35:21,917 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'CCL', 'direction': 'Long', 'entry': 25.37, 'sl': 22.32, 'tp': 29.95}
+2026-08-21 20:35:21,918 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'NUE', 'direction': 'Long', 'entry': 240.48, 'sl': 207.9, 'tp': 289.34}
+2026-08-21 20:35:21,920 INFO executor: Für TJX ist bereits eine Position offen (Ticket 17997117) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-21 20:35:21,920 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'TJX', 'direction': 'Long', 'entry': 140.69, 'sl': 124.27, 'tp': 165.31}}
+2026-08-21 20:35:21,922 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'UAL', 'direction': 'Long', 'entry': 111.71, 'sl': 95.39, 'tp': 136.19}
+2026-08-21 20:35:21,924 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'WFC', 'direction': 'Long', 'entry': 83.7, 'sl': 79.1, 'tp': 90.6}
+2026-08-21 20:35:21,924 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260821_213521.log =====
+2026-08-21 21:35:21,463 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260821_213521.log ===
+2026-08-21 21:35:21,504 INFO run_once.konto2_ttp: 5 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 21:35:21,505 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100124.47, aktueller Drawdown -0.01% (Limit 2.0%)
+2026-08-21 21:35:21,507 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'CCL', 'direction': 'Long', 'entry': 25.37, 'sl': 22.32, 'tp': 29.95}
+2026-08-21 21:35:21,508 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'NUE', 'direction': 'Long', 'entry': 240.48, 'sl': 207.9, 'tp': 289.34}
+2026-08-21 21:35:21,511 INFO executor: Für TJX ist bereits eine Position offen (Ticket 17997117) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-21 21:35:21,511 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'TJX', 'direction': 'Long', 'entry': 140.69, 'sl': 124.27, 'tp': 165.31}}
+2026-08-21 21:35:21,512 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'UAL', 'direction': 'Long', 'entry': 111.71, 'sl': 95.39, 'tp': 136.19}
+2026-08-21 21:35:21,513 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'WFC', 'direction': 'Long', 'entry': 83.7, 'sl': 79.1, 'tp': 90.6}
+2026-08-21 21:35:21,514 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===

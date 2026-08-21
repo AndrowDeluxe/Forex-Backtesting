@@ -1,0 +1,106 @@
+===== run_20260821_153822.log =====
+2026-08-21 15:38:22,918 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260821_153822.log ===
+2026-08-21 15:38:23,093 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -20.72.
+2026-08-21 15:38:23,095 CRITICAL executor: HALTEDAUER-WARNUNG: Position MNST (Ticket 248361809) ist seit 13 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 32.73.
+2026-08-21 15:38:23,096 CRITICAL executor: HALTEDAUER-WARNUNG: Position CVS (Ticket 248974027) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -3.90.
+2026-08-21 15:38:23,098 CRITICAL executor: HALTEDAUER-WARNUNG: Position HRL (Ticket 249589986) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -23.01.
+2026-08-21 15:38:23,106 CRITICAL run_once.konto3_tickmill: 4 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 14, 'profit': -20.72}, {'ticket': 248361809, 'symbol': 'MNST', 'holding_days': 13, 'profit': 32.73}, {'ticket': 248974027, 'symbol': 'CVS', 'holding_days': 10, 'profit': -3.9}, {'ticket': 249589986, 'symbol': 'HRL', 'holding_days': 10, 'profit': -23.01}]
+2026-08-21 15:38:23,277 INFO run_once.konto3_tickmill: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 15:38:23,280 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3495.70, aktueller Drawdown 0.00% (Limit 20.0%)
+2026-08-21 15:38:23,285 WARNING executor: Symbol 'MTB' (MT5-Name 'MTB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-21 15:38:23,285 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MTB', 'direction': 'Long', 'entry': 240.44, 'sl': 231.76, 'tp': 253.46}}
+2026-08-21 15:38:23,288 INFO executor: Für CMI ist bereits eine Position offen (Ticket 253851026) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-21 15:38:23,288 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CMI', 'direction': 'Long', 'entry': 594.54, 'sl': 558.13, 'tp': 649.16}}
+2026-08-21 15:38:23,290 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260821_163520.log =====
+2026-08-21 16:35:20,524 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260821_163520.log ===
+2026-08-21 16:35:20,561 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -31.19.
+2026-08-21 16:35:20,563 CRITICAL executor: HALTEDAUER-WARNUNG: Position MNST (Ticket 248361809) ist seit 13 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 34.13.
+2026-08-21 16:35:20,566 CRITICAL executor: HALTEDAUER-WARNUNG: Position CVS (Ticket 248974027) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -6.00.
+2026-08-21 16:35:20,568 CRITICAL executor: HALTEDAUER-WARNUNG: Position HRL (Ticket 249589986) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -24.26.
+2026-08-21 16:35:20,575 CRITICAL run_once.konto3_tickmill: 4 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 14, 'profit': -31.19}, {'ticket': 248361809, 'symbol': 'MNST', 'holding_days': 13, 'profit': 34.13}, {'ticket': 248974027, 'symbol': 'CVS', 'holding_days': 10, 'profit': -6.0}, {'ticket': 249589986, 'symbol': 'HRL', 'holding_days': 10, 'profit': -24.26}]
+2026-08-21 16:35:20,744 INFO run_once.konto3_tickmill: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 16:35:20,745 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3495.70, aktueller Drawdown 0.37% (Limit 20.0%)
+2026-08-21 16:35:20,749 WARNING executor: Symbol 'MTB' (MT5-Name 'MTB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-21 16:35:20,749 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MTB', 'direction': 'Long', 'entry': 240.44, 'sl': 231.76, 'tp': 253.46}}
+2026-08-21 16:35:20,751 INFO executor: Für CMI ist bereits eine Position offen (Ticket 253851026) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-21 16:35:20,751 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CMI', 'direction': 'Long', 'entry': 594.54, 'sl': 558.13, 'tp': 649.16}}
+2026-08-21 16:35:20,752 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260821_173521.log =====
+2026-08-21 17:35:21,267 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260821_173521.log ===
+2026-08-21 17:35:21,395 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -29.97.
+2026-08-21 17:35:21,396 CRITICAL executor: HALTEDAUER-WARNUNG: Position MNST (Ticket 248361809) ist seit 13 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 36.17.
+2026-08-21 17:35:21,398 CRITICAL executor: HALTEDAUER-WARNUNG: Position CVS (Ticket 248974027) ist seit 11 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -5.93.
+2026-08-21 17:35:21,399 CRITICAL executor: HALTEDAUER-WARNUNG: Position HRL (Ticket 249589986) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -27.95.
+2026-08-21 17:35:21,405 CRITICAL run_once.konto3_tickmill: 4 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 14, 'profit': -29.97}, {'ticket': 248361809, 'symbol': 'MNST', 'holding_days': 13, 'profit': 36.17}, {'ticket': 248974027, 'symbol': 'CVS', 'holding_days': 11, 'profit': -5.93}, {'ticket': 249589986, 'symbol': 'HRL', 'holding_days': 10, 'profit': -27.95}]
+2026-08-21 17:35:21,555 INFO run_once.konto3_tickmill: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 17:35:21,558 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3495.70, aktueller Drawdown 0.33% (Limit 20.0%)
+2026-08-21 17:35:21,561 WARNING executor: Symbol 'MTB' (MT5-Name 'MTB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-21 17:35:21,561 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MTB', 'direction': 'Long', 'entry': 240.44, 'sl': 231.76, 'tp': 253.46}}
+2026-08-21 17:35:21,563 INFO executor: Für CMI ist bereits eine Position offen (Ticket 253851026) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-21 17:35:21,563 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CMI', 'direction': 'Long', 'entry': 594.54, 'sl': 558.13, 'tp': 649.16}}
+2026-08-21 17:35:21,564 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260821_183520.log =====
+2026-08-21 18:35:20,633 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260821_183520.log ===
+2026-08-21 18:35:20,671 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -27.74.
+2026-08-21 18:35:20,672 CRITICAL executor: HALTEDAUER-WARNUNG: Position MNST (Ticket 248361809) ist seit 13 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 36.43.
+2026-08-21 18:35:20,674 CRITICAL executor: HALTEDAUER-WARNUNG: Position CVS (Ticket 248974027) ist seit 11 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -7.40.
+2026-08-21 18:35:20,675 CRITICAL executor: HALTEDAUER-WARNUNG: Position HRL (Ticket 249589986) ist seit 10 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -29.58.
+2026-08-21 18:35:20,682 CRITICAL run_once.konto3_tickmill: 4 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 14, 'profit': -27.74}, {'ticket': 248361809, 'symbol': 'MNST', 'holding_days': 13, 'profit': 36.43}, {'ticket': 248974027, 'symbol': 'CVS', 'holding_days': 11, 'profit': -7.4}, {'ticket': 249589986, 'symbol': 'HRL', 'holding_days': 10, 'profit': -29.58}]
+2026-08-21 18:35:20,846 INFO run_once.konto3_tickmill: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 18:35:20,849 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3495.70, aktueller Drawdown 0.52% (Limit 20.0%)
+2026-08-21 18:35:20,854 WARNING executor: Symbol 'MTB' (MT5-Name 'MTB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-21 18:35:20,854 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MTB', 'direction': 'Long', 'entry': 240.44, 'sl': 231.76, 'tp': 253.46}}
+2026-08-21 18:35:20,856 INFO executor: Für CMI ist bereits eine Position offen (Ticket 253851026) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-21 18:35:20,857 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CMI', 'direction': 'Long', 'entry': 594.54, 'sl': 558.13, 'tp': 649.16}}
+2026-08-21 18:35:20,858 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260821_193521.log =====
+2026-08-21 19:35:21,258 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260821_193521.log ===
+2026-08-21 19:35:21,397 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -29.79.
+2026-08-21 19:35:21,399 CRITICAL executor: HALTEDAUER-WARNUNG: Position MNST (Ticket 248361809) ist seit 13 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 40.26.
+2026-08-21 19:35:21,400 CRITICAL executor: HALTEDAUER-WARNUNG: Position CVS (Ticket 248974027) ist seit 11 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -7.81.
+2026-08-21 19:35:21,406 CRITICAL run_once.konto3_tickmill: 3 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 14, 'profit': -29.79}, {'ticket': 248361809, 'symbol': 'MNST', 'holding_days': 13, 'profit': 40.26}, {'ticket': 248974027, 'symbol': 'CVS', 'holding_days': 11, 'profit': -7.8100000000000005}]
+2026-08-21 19:35:21,561 INFO run_once.konto3_tickmill: 2 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 19:35:21,564 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3495.70, aktueller Drawdown 0.53% (Limit 20.0%)
+2026-08-21 19:35:21,567 WARNING executor: Symbol 'MTB' (MT5-Name 'MTB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-21 19:35:21,568 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'MTB', 'direction': 'Long', 'entry': 240.44, 'sl': 231.76, 'tp': 253.46}}
+2026-08-21 19:35:21,570 INFO executor: Für CMI ist bereits eine Position offen (Ticket 253851026) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-21 19:35:21,570 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'CMI', 'direction': 'Long', 'entry': 594.54, 'sl': 558.13, 'tp': 649.16}}
+2026-08-21 19:35:21,570 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260821_203522.log =====
+2026-08-21 20:35:22,146 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260821_203522.log ===
+2026-08-21 20:35:22,352 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -28.42.
+2026-08-21 20:35:22,359 CRITICAL run_once.konto3_tickmill: 1 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 14, 'profit': -28.42}]
+2026-08-21 20:35:22,521 INFO run_once.konto3_tickmill: 3 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 20:35:22,523 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3495.70, aktueller Drawdown 0.55% (Limit 20.0%)
+2026-08-21 20:35:22,527 WARNING executor: Symbol 'FITB' (MT5-Name 'FITB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-21 20:35:22,527 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FITB', 'direction': 'Long', 'entry': 54.71, 'sl': 52.57, 'tp': 57.91}}
+2026-08-21 20:35:22,529 WARNING executor: Symbol 'PNC' (MT5-Name 'PNC') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-21 20:35:22,529 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PNC', 'direction': 'Long', 'entry': 242.92, 'sl': 234.61, 'tp': 255.38}}
+2026-08-21 20:35:22,797 INFO executor: Order gesendet: {'symbol': 'RTX', 'volume': 3.0, 'type': 'BUY', 'entry': 210.72, 'sl': 201.88, 'tp': 223.19} -> Ticket 255139802
+2026-08-21 20:35:22,801 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'sent', 'order': {'symbol': 'RTX', 'volume': 3.0, 'type': 'BUY', 'entry': 210.72, 'sl': 201.88, 'tp': 223.19}, 'signal': {'symbol': 'RTX', 'direction': 'Long', 'entry': 210.4, 'sl': 201.88, 'tp': 223.19}, 'ticket': 255139802, 'risk': 26.52000000000001}
+2026-08-21 20:35:22,807 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260821_213521.log =====
+2026-08-21 21:35:21,713 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260821_213521.log ===
+2026-08-21 21:35:21,750 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -27.75.
+2026-08-21 21:35:21,757 CRITICAL run_once.konto3_tickmill: 1 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 14, 'profit': -27.75}]
+2026-08-21 21:35:21,926 INFO run_once.konto3_tickmill: 3 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-21 21:35:21,929 INFO run_once.konto3_tickmill: Tages-Drawdown-Check: Baseline-Equity 3495.70, aktueller Drawdown 0.46% (Limit 20.0%)
+2026-08-21 21:35:21,931 WARNING executor: Symbol 'FITB' (MT5-Name 'FITB') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-21 21:35:21,931 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'FITB', 'direction': 'Long', 'entry': 54.71, 'sl': 52.57, 'tp': 57.91}}
+2026-08-21 21:35:21,933 WARNING executor: Symbol 'PNC' (MT5-Name 'PNC') ist auf diesem Konto nicht handelbar - Signal wird übersprungen.
+2026-08-21 21:35:21,933 INFO run_once.konto3_tickmill: Ergebnis: {'status': 'skipped', 'reason': 'unmapped_symbol', 'signal': {'symbol': 'PNC', 'direction': 'Long', 'entry': 242.92, 'sl': 234.61, 'tp': 255.38}}
+2026-08-21 21:35:21,934 INFO run_once.konto3_tickmill: Bereits heute ausgeführt, übersprungen: {'symbol': 'RTX', 'direction': 'Long', 'entry': 210.4, 'sl': 201.88, 'tp': 223.19}
+2026-08-21 21:35:21,935 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===

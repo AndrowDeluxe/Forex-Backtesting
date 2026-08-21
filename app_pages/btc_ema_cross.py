@@ -94,13 +94,14 @@ tab_components, tab_backtest, tab_risk, tab_tested = st.tabs(
         ":material/query_stats: Backtest",
         ":material/shield: Risk Management",
         ":material/science: Getestet, nicht übernommen",
-    ]
+    ],
+    on_change="rerun",
 )
 
 # =============================================================================
 # Tab: Strategiebestandteile
 # =============================================================================
-with tab_components:
+def _render_tab_components():
     st.markdown("## :material/school: Regeln")
     st.markdown(
         "1. **Long**, wenn EMA9 auf Schlusskursbasis über EMA21 kreuzt.\n"
@@ -134,7 +135,7 @@ with tab_components:
 # =============================================================================
 # Tab: Backtest
 # =============================================================================
-with tab_backtest:
+def _render_tab_backtest():
     st.markdown("## :material/query_stats: Backtest (100%-of-Equity, wie im Sheet)")
 
     sheet_start_ts = pd.Timestamp(SHEET_START, tz="UTC")
@@ -197,7 +198,7 @@ with tab_backtest:
 # =============================================================================
 # Tab: Risk Management
 # =============================================================================
-with tab_risk:
+def _render_tab_risk():
     st.markdown("## :material/shield: Risiko-basiertes Sizing")
     st.caption(
         f"ATR({ATR_PERIOD})x{ATR_STOP_MULT}-Stop (eigene Erweiterung, siehe Strategiebestandteile), "
@@ -327,7 +328,7 @@ with tab_risk:
 # =============================================================================
 # Tab: Getestet, nicht uebernommen
 # =============================================================================
-with tab_tested:
+def _render_tab_tested():
     st.markdown("## :material/science: Getestet, nicht übernommen")
     st.caption(
         "Vollständiger Forschungsverlauf: `knowledge/resources/trend-following-momentum.md`. "
@@ -532,3 +533,21 @@ with tab_tested:
         "Asset-Klassen statt mehrerer Krypto-Paare - siehe \"Portfolio Management\".",
         icon=":material/lightbulb:",
     )
+
+
+# ============================================================ Lazy dispatch
+# st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
+# on_change="rerun" above makes tab.open reflect the actually-selected tab; only
+# that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
+# see app_pages/portfolio_construction.py for the original instance of this fix).
+# Sidebar widgets (capital, risk_pct, use_be) execute unconditionally above,
+# outside any tab, so tab_risk can read them regardless of which tab is open.
+for _tab, _render in [
+    (tab_components, _render_tab_components),
+    (tab_backtest, _render_tab_backtest),
+    (tab_risk, _render_tab_risk),
+    (tab_tested, _render_tab_tested),
+]:
+    if _tab.open:
+        with _tab:
+            _render()

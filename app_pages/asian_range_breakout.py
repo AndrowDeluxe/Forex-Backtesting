@@ -220,13 +220,14 @@ tab_components, tab_backtest, tab_live, tab_walkforward = st.tabs(
         ":material/query_stats: Backtest",
         ":material/candlestick_chart: Live Entry-Signal",
         ":material/timeline: Walk-Forward & Equity",
-    ]
+    ],
+    on_change="rerun",
 )
 
 # =============================================================================
 # Tab: Strategiebestandteile
 # =============================================================================
-with tab_components:
+def _render_tab_components():
     st.markdown("## :material/wb_twilight: Gold Asian-Range Breakout -- Strategiebestandteile")
     st.caption("Quelle: user-bereitgestellte TradeStation-EasyLanguage-Spezifikation, 2026-08-04")
 
@@ -1019,7 +1020,7 @@ with tab_components:
 # =============================================================================
 # Tab: Backtest
 # =============================================================================
-with tab_backtest:
+def _render_tab_backtest():
     st.markdown("## :material/wb_twilight: XAUUSD -- interaktiver Backtest")
 
     trades = load_trades(stop_frac, tp_r_mult, be_trigger_r, spread_price, slippage_price, use_overlay_entry)
@@ -1104,7 +1105,7 @@ with tab_backtest:
 # =============================================================================
 # Tab: Live Entry-Signal
 # =============================================================================
-with tab_live:
+def _render_tab_live():
     st.markdown("## :material/candlestick_chart: Live Entry-Signal")
     st.caption(
         "Zeigt visuell, wo die Strategie ein-/ausgestiegen wäre - Range-Box (grau), "
@@ -1176,7 +1177,7 @@ with tab_live:
 # =============================================================================
 # Tab: Walk-Forward & Equity
 # =============================================================================
-with tab_walkforward:
+def _render_tab_walkforward():
     st.markdown("## :material/timeline: Walk-Forward-Test & Equity-Simulation")
 
     st.markdown("### Walk-Forward-Validierung des ADX-Filters")
@@ -1524,3 +1525,22 @@ with tab_walkforward:
         "kein separater ATR-Stop nötig wie beim Gold-Bitcoin-Modell, die ASB hat schon einen "
         "echten Preis-Stop im Regelwerk."
     )
+
+
+# ============================================================ Lazy dispatch
+# st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
+# on_change="rerun" above makes tab.open reflect the actually-selected tab; only
+# that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
+# see app_pages/portfolio_construction.py for the original instance of this fix).
+# Sidebar widgets (stop_frac, use_adx_filter, ...) execute unconditionally above,
+# outside any tab, so all four render functions can read them regardless of which
+# tab is open.
+for _tab, _render in [
+    (tab_components, _render_tab_components),
+    (tab_backtest, _render_tab_backtest),
+    (tab_live, _render_tab_live),
+    (tab_walkforward, _render_tab_walkforward),
+]:
+    if _tab.open:
+        with _tab:
+            _render()

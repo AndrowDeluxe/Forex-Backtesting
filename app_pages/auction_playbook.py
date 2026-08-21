@@ -70,12 +70,12 @@ with st.sidebar:
 
 cfg_kwargs = {"aggression_z": aggression_z, "reclaim_window": reclaim_window}
 
-tab_components, tab_backtest = st.tabs(["Strategiebestandteile", "Backtest"])
+tab_components, tab_backtest = st.tabs(["Strategiebestandteile", "Backtest"], on_change="rerun")
 
 # =============================================================================
 # Tab: Strategiebestandteile
 # =============================================================================
-with tab_components:
+def _render_tab_components():
     st.markdown("## :material/gavel: Auction Market Playbook -- Strategiebestandteile")
     st.caption("Quelle: Fabio Valentini's Playbook, ChartFanatics / Tradezella, April 2025 (Futures, Scalping)")
 
@@ -183,7 +183,7 @@ with tab_components:
 # =============================================================================
 # Tab: Backtest
 # =============================================================================
-with tab_backtest:
+def _render_tab_backtest():
     st.markdown(f"## :material/gavel: {symbol} — {timeframe_label}")
     if not _is_crypto(symbol):
         st.caption("Dukascopy E-mini-Proxy, Aggression aus Kerzenform genaehert (kein echter Taker-Split verfuegbar).")
@@ -292,3 +292,17 @@ with tab_backtest:
             )
         else:
             st.info("Keine Trades bei dieser Konfiguration.", icon=":material/info:")
+
+
+# ============================================================ Lazy dispatch
+# st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
+# on_change="rerun" above makes tab.open reflect the actually-selected tab; only
+# that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
+# see app_pages/portfolio_construction.py for the original instance of this fix).
+# Sidebar widgets (symbol, timeframe_label, setup_filter, cfg_kwargs) execute
+# unconditionally above, outside any tab, so tab_backtest can read them
+# regardless of which tab is open.
+for _tab, _render in [(tab_components, _render_tab_components), (tab_backtest, _render_tab_backtest)]:
+    if _tab.open:
+        with _tab:
+            _render()

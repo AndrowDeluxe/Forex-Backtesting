@@ -288,9 +288,9 @@ elif param_choice == "V2-Trail":
 # Tabs
 # =============================================================================
 
-tab_backtest, tab_optimization = st.tabs(["Backtest", "Optimierung"])
+tab_backtest, tab_optimization = st.tabs(["Backtest", "Optimierung"], on_change="rerun")
 
-with tab_backtest:
+def _render_tab_backtest():
     st.markdown(f"## :material/candlestick_chart: {asset} — {param_choice}, {split_label}")
 
     signals, trades, equity, metrics, daily, win_start, win_end = run_for(asset, split, params)
@@ -310,7 +310,7 @@ with tab_backtest:
 
     trades_table(trades, asset)
 
-with tab_optimization:
+def _render_tab_optimization():
     st.markdown("## :material/tune: Parameteroptimierung")
     st.warning(
         "**Kernbefund:** Die In-Sample-Grid-Suche fand ein Setup (EMA 40/20, RR 2.5, "
@@ -363,3 +363,15 @@ with tab_optimization:
             if os.path.exists(stage_b_path):
                 st.dataframe(pd.read_csv(stage_b_path).sort_values("score_R", ascending=False),
                              hide_index=True, height=300)
+
+
+# ============================================================ Lazy dispatch
+# st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
+# on_change="rerun" above makes tab.open reflect the actually-selected tab; only
+# that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
+# see app_pages/portfolio_construction.py for the original instance of this fix).
+# tab_optimization alone runs run_for() 12x (3 assets x 2 param sets x 2 splits).
+for _tab, _render in [(tab_backtest, _render_tab_backtest), (tab_optimization, _render_tab_optimization)]:
+    if _tab.open:
+        with _tab:
+            _render()

@@ -351,10 +351,10 @@ tab_equity, tab_oos, tab_mc, tab_wf = st.tabs([
     ":material/warning: Out-of-Sample-Test",
     ":material/casino: Monte Carlo",
     ":material/history: Walk-Forward",
-])
+], on_change="rerun")
 
 # ------------------------------------------------------------------ Tab: Equity curve
-with tab_equity:
+def _render_tab_equity():
     m = result["metrics"]
     tile_row([
         ("SHARPE", f"{m['sharpe']:.2f}"),
@@ -379,7 +379,7 @@ with tab_equity:
     legend([("OU-Modell", C_ORANGE), (f"{bench_label} (Buy&Hold)", C_MUTED)])
 
 # ------------------------------------------------------------------ Tab: Out-of-Sample
-with tab_oos:
+def _render_tab_oos():
     if not is_solo:
         st.info(
             "Out-of-Sample-Test ist aktuell nur fuer Einzelmaerkte verfuegbar, nicht "
@@ -446,7 +446,7 @@ with tab_oos:
             st.info(f"OOS-Holdout-Daten fuer {MARKET_LABEL[solo_market]} noch nicht committed.", icon=":material/info:")
 
 # ------------------------------------------------------------------ Tab: Monte Carlo
-with tab_mc:
+def _render_tab_mc():
     if not is_solo:
         st.info(
             "Monte-Carlo-Robustheitsanalyse ist aktuell nur fuer Einzelmaerkte verfuegbar, "
@@ -520,7 +520,7 @@ with tab_mc:
             st.info(f"Monte-Carlo-Daten fuer {MARKET_LABEL[solo_market]} noch nicht committed.", icon=":material/info:")
 
 # ------------------------------------------------------------------ Tab: Walk-Forward
-with tab_wf:
+def _render_tab_wf():
     if not is_solo:
         st.info(
             "Walk-Forward-Vergleich ist aktuell nur fuer Einzelmaerkte verfuegbar, nicht "
@@ -578,3 +578,21 @@ with tab_wf:
                 )
         else:
             st.info(f"Walk-Forward-Daten fuer {MARKET_LABEL[solo_market]} noch nicht committed.", icon=":material/info:")
+
+
+# ============================================================ Lazy dispatch
+# st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
+# on_change="rerun" above makes tab.open reflect the actually-selected tab; only
+# that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
+# see app_pages/portfolio_construction.py for the original instance of this fix).
+# result/markets_in_view/is_solo/solo_market are computed above, outside any
+# tab, so all four render functions can read them regardless of which tab is open.
+for _tab, _render in [
+    (tab_equity, _render_tab_equity),
+    (tab_oos, _render_tab_oos),
+    (tab_mc, _render_tab_mc),
+    (tab_wf, _render_tab_wf),
+]:
+    if _tab.open:
+        with _tab:
+            _render()

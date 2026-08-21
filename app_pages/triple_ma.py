@@ -176,9 +176,9 @@ with st.container(horizontal=True):
 
 st.space("medium")
 
-tab_equity, tab_regime, tab_trades = st.tabs(["Equity vs. Buy & Hold", "Regime-Cluster", "Trade-Log"])
+tab_equity, tab_regime, tab_trades = st.tabs(["Equity vs. Buy & Hold", "Regime-Cluster", "Trade-Log"], on_change="rerun")
 
-with tab_equity:
+def _render_tab_tab_equity():
     with st.container(border=True):
         bh = (close / close.iloc[0] * equity.iloc[0]).rename("Buy & Hold")
         curve = pd.DataFrame({"Strategie": equity, "Buy & Hold": bh}).reset_index(names="date")
@@ -196,7 +196,7 @@ with tab_equity:
         )
         st.altair_chart(chart)
 
-with tab_regime:
+def _render_tab_tab_regime():
     with st.container(border=True):
         st.markdown(
             "Cluster nach Rolling-21-Tage-Volatilität sortiert (0 = ruhigste, "
@@ -221,7 +221,7 @@ with tab_regime:
         else:
             st.info("Regime-Overlay in der Sidebar aktivieren.", icon=":material/info:")
 
-with tab_trades:
+def _render_tab_tab_trades():
     with st.container(border=True):
         if trades.empty:
             st.info("Keine Trades bei dieser Konfiguration.", icon=":material/info:")
@@ -258,3 +258,14 @@ with tab_trades:
                     "pnl_pct": st.column_config.NumberColumn("Return (%)", format="%.2f"),
                 },
             )
+
+
+# ============================================================ Lazy dispatch
+# st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
+# on_change="rerun" above makes tab.open reflect the actually-selected tab; only
+# that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
+# see app_pages/portfolio_construction.py for the original instance of this fix).
+for _tab, _render in [(tab_equity, _render_tab_tab_equity), (tab_regime, _render_tab_tab_regime), (tab_trades, _render_tab_tab_trades)]:
+    if _tab.open:
+        with _tab:
+            _render()

@@ -136,13 +136,14 @@ if 0 < summary["n_trades"] < 100:
 st.space("medium")
 
 tab_theory, tab_overview, tab_robustness = st.tabs(
-    ["Theorie & Vorgehensweise", "Uebersicht", "Robustheit (Jahre / IS-OOS / Kosten)"]
+    ["Theorie & Vorgehensweise", "Uebersicht", "Robustheit (Jahre / IS-OOS / Kosten)"],
+    on_change="rerun",
 )
 
 # =============================================================================
 # Tab: Theorie & Vorgehensweise
 # =============================================================================
-with tab_theory:
+def _render_tab_theory():
     st.markdown("## :material/school: Theorie -- was macht das System?")
     st.markdown(
         "**Opening Range Breakout (ORB)** ist eine der aeltesten systematischen "
@@ -239,7 +240,7 @@ with tab_theory:
         icon=":material/warning:",
     )
 
-with tab_overview:
+def _render_tab_overview():
     col1, col2 = st.columns([2, 1])
     with col1:
         with st.container(border=True):
@@ -345,7 +346,7 @@ with tab_overview:
         else:
             st.info("Keine Trades bei dieser Konfiguration.", icon=":material/info:")
 
-with tab_robustness:
+def _render_tab_robustness():
     st.markdown("### Jahres-Walk-Forward")
     if not trades.empty:
         rows = []
@@ -423,3 +424,20 @@ with tab_robustness:
         "-- bei einem echten Breakout-Fill ist aber Slippage realistisch, die hier "
         "nicht mit eingerechnet ist."
     )
+
+
+# ============================================================ Lazy dispatch
+# st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
+# on_change="rerun" above makes tab.open reflect the actually-selected tab; only
+# that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
+# see app_pages/portfolio_construction.py for the original instance of this fix).
+# trades/signaled/summary are computed above, outside any tab, so all three
+# render functions can read them regardless of which tab is open.
+for _tab, _render in [
+    (tab_theory, _render_tab_theory),
+    (tab_overview, _render_tab_overview),
+    (tab_robustness, _render_tab_robustness),
+]:
+    if _tab.open:
+        with _tab:
+            _render()

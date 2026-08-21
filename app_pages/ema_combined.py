@@ -228,9 +228,9 @@ if config_name != "Baseline (unveränderte EMA S/R)":
 # Tabs
 # =============================================================================
 
-tab_backtest, tab_comparison = st.tabs(["Backtest", "Vergleich"])
+tab_backtest, tab_comparison = st.tabs(["Backtest", "Vergleich"], on_change="rerun")
 
-with tab_backtest:
+def _render_tab_backtest():
     st.markdown(f"## :material/merge: {instrument} — {config_name}, {split_label}")
 
     signals, trades, equity, metrics, daily, win_start, win_end = run_cached(instrument, split, config_name)
@@ -247,7 +247,7 @@ with tab_backtest:
 
     trades_table(trades)
 
-with tab_comparison:
+def _render_tab_comparison():
     st.markdown("## :material/table_chart: Alle Konfigurationen × alle Instrumente")
     st.warning(
         "**Kernbefund:** Auf trendstarken Instrumenten (Gold, Silber, S&P 500, Nasdaq) "
@@ -290,3 +290,16 @@ with tab_comparison:
         "Ø_R_Multiple": st.column_config.NumberColumn(format="%.2f"),
         "Ø_Alpha": st.column_config.NumberColumn(format="%.1f%%"),
     })
+
+
+# ============================================================ Lazy dispatch
+# st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
+# on_change="rerun" above makes tab.open reflect the actually-selected tab; only
+# that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
+# see app_pages/portfolio_construction.py for the original instance of this fix).
+# tab_comparison alone runs run_cached() across all configs x all instruments -
+# the single biggest win of this conversion.
+for _tab, _render in [(tab_backtest, _render_tab_backtest), (tab_comparison, _render_tab_comparison)]:
+    if _tab.open:
+        with _tab:
+            _render()

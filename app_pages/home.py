@@ -22,15 +22,29 @@ und interaktiv, mit eigenen Kennzahlen, Charts und Parameter-Reglern.
 Alle sind ehrlich dokumentiert — inklusive der Stellen, wo eine Strategie
 **keinen** robusten Edge zeigt.
 
-Die einzige Strategie mit einer bisher validierten, robusten Kante:
-**Gold Asian-Range Breakout** (unter *Fertige Strategien*) — mit den fünf
-walk-forward-validierten Filtern (2026-08-11: Liquiditätsfilter ergänzt)
-PF 2.00, Sharpe 0.91, Max Drawdown -2.0%.
-
 Wähle links ein Hauptthema, um die zugehörigen Strategien zu sehen.
 """
 
-st.divider()
+st.space("small")
+with st.container(border=True):
+    st.markdown(":material/verified: **Bisher validiert, mit robuster Kante:**")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("**Gold Asian-Range Breakout**")
+        st.caption(
+            "Fünf walk-forward-validierte Filter (2026-08-11: Liquiditätsfilter ergänzt) — "
+            "PF 2,00, Sharpe 0,91, Max Drawdown -2,0%."
+        )
+        st.page_link("app_pages/asian_range_breakout.py", label="Öffnen", icon=":material/arrow_forward:")
+    with col2:
+        st.markdown("**CLS Practical (EUR/USD)**")
+        st.caption(
+            "09:00-Haltetest + zwei unabhängige Zins-Risiko-Skalierer (Long-End- und "
+            "Front-End-2Y-Proxy) — robust über 5 IS/OOS-Split-Punkte und alle Kalenderjahre."
+        )
+        st.page_link("app_pages/cls_practical_strategy.py", label="Öffnen", icon=":material/arrow_forward:")
+
+st.space("medium")
 st.caption("HAUPTTHEMEN")
 
 sections = [
@@ -86,7 +100,7 @@ for i, s in enumerate(sections):
             st.caption(s["desc"])
             st.page_link(s["page"], label="Öffnen", icon=":material/arrow_forward:")
 
-st.divider()
+st.space("medium")
 st.caption(
     "Alle Backtest-Strategien sind Forschungs-/Lernprojekte, keine Anlageberatung. "
     "Backtests sind kein Beweis für zukünftige Performance."

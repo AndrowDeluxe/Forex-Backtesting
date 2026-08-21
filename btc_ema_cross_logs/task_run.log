@@ -88,3 +88,19 @@
 2026-08-20 09:56:41    c991381..2a0fd43  main -> main
 2026-08-20 09:56:41 Commit + Push erfolgreich.
 2026-08-20 09:56:41 === BTC-EMA-Cross-Scan-Task beendet ===
+2026-08-21 03:28:57 === BTC-EMA-Cross-Scan-Task gestartet ===
+2026-08-21 03:29:10 BTC-EMA9/21 Tages-Scan (PAPIER, keine echten Orders):
+2026-08-21 03:29:10   date: 2026-08-21
+2026-08-21 03:29:10   yesterday_close: 73025.15
+2026-08-21 03:29:10   ema9: 66597.43
+2026-08-21 03:29:10   ema21: 65221.04
+2026-08-21 03:29:10   above: True
+2026-08-21 03:29:10   go_long_signal: False
+2026-08-21 03:29:10   go_flat_signal: False
+2026-08-21 03:29:10   action: none
+2026-08-21 03:29:10   in_position: True
+2026-08-21 03:29:10   equity_mark_to_market: 101144.9
+2026-08-21 03:29:10 
+2026-08-21 03:29:10 Gespeichert: C:\Users\andre\Forex-Backtesting\btc_ema_cross_logs\daily_log.csv
+2026-08-21 03:29:21 Fetching BTCUSDT daily 2017-08-17 -> 2026-08-21 (force_refresh) ...
+2026-08-21 03:29:21 Snapshot geschrieben: C:\Users\andre\Forex-Backtesting\btc_ema_cross\data\btcusdt_1d_snapshot.parquet (3292 Zeilen, bis 2026-08-21 00:00:00+00:00).

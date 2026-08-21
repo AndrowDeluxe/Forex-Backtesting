@@ -124,11 +124,22 @@ mit konsistentem Signal ueber alle drei Fenster, wenn auch bescheiden
 IS-basiert gar nicht gewaehlt werden koennen, OOS-Wert zaehlt nicht ohne
 IS-Bestaetigung). Plausible Erklaerung: BTCs OOS-Fenster war ein starker
 Abwaertstrend (Buy&Hold Sharpe -1.02, CAGR -33.6%) - genau das Umfeld, in
-dem eine Fade-/Erschoepfungs-Strategie relativ gut dasteht. Golds Parameter
-unveraendert auf BTC angewendet, keine eigene Optimierung - ein moeglicher
-Ansatzpunkt fuer eine eigene Validierungsrunde, falls gewuenscht, aber
-noch kein bestaetigter Fund. Skript: `scripts/research_gold_smc_spx_btc_
-crossmarket.py`.
+dem eine Fade-/Erschoepfungs-Strategie relativ gut dasteht. Skript:
+`scripts/research_gold_smc_spx_btc_crossmarket.py`.
+
+**KORREKTUR nach eigener BTC-Optimierung (chat 2026-08-21)**: der obige
+Fund war VORSCHNELL - nie outlier-geprueft. Eigene Optimierungsrunde
+(3000 Kombinationen, 5 Entry-Modi x Exit-Sweep, `scripts/research_gold_
+smc_btc_reversal_optimize.py`) fand als IS-Standout "trendline" (IS
+Sharpe 2.28!), OOS Sharpe 0.32 - aber Outlier-Check zeigt: OHNE den
+besten Trade faellt Sharpe auf 0.00, PF auf 1.001. Nachtraeglich auch
+repeat_sweep (0.40->0.11->-0.19 ohne 1/2 beste Trades), ema_cross
+(0.33->-0.02->-0.40) UND die urspruengliche "Gold-Parameter auf BTC"-Zahl
+selbst (0.32->-0.05->-0.46) geprueft - ALLE kollabieren auf ~0 oder
+negativ. Bei n=59-102 Trades und WR 17-46% steht der komplette scheinbare
+Edge auf 1-2 Einzeltrades, kein breites Fundament. FAZIT: kein brauchbarer
+BTC-Edge, weder mit Golds Parametern noch eigenstaendig optimiert. Angebot
+an den Nutzer zurueckgezogen.
 
 **Entscheidung** (Nutzer, 2026-08-20): Strategie NICHT verwerfen -- "die
 Vergangenheit ist vergangen, aber die Zukunft kommt noch". Da kein

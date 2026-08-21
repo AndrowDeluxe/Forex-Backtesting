@@ -104,3 +104,25 @@
 2026-08-21 03:29:10 Gespeichert: C:\Users\andre\Forex-Backtesting\btc_ema_cross_logs\daily_log.csv
 2026-08-21 03:29:21 Fetching BTCUSDT daily 2017-08-17 -> 2026-08-21 (force_refresh) ...
 2026-08-21 03:29:21 Snapshot geschrieben: C:\Users\andre\Forex-Backtesting\btc_ema_cross\data\btcusdt_1d_snapshot.parquet (3292 Zeilen, bis 2026-08-21 00:00:00+00:00).
+2026-08-21 03:29:22 [main 35a659d] BTC EMA9/21 Paper-Forward-Test: Snapshot 2026-08-21 03:29
+2026-08-21 03:29:22  4 files changed, 18 insertions(+), 1 deletion(-)
+2026-08-21 03:29:27 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-21 03:29:27    7e90578..35a659d  main -> main
+2026-08-21 03:29:27 Commit + Push erfolgreich.
+2026-08-21 03:29:27 === BTC-EMA-Cross-Scan-Task beendet ===
+2026-08-21 09:18:28 === BTC-EMA-Cross-Scan-Task gestartet ===
+2026-08-21 09:18:35 BTC-EMA9/21 Tages-Scan (PAPIER, keine echten Orders):
+2026-08-21 09:18:35   date: 2026-08-21
+2026-08-21 09:18:35   yesterday_close: 73025.15
+2026-08-21 09:18:35   ema9: 66597.43
+2026-08-21 09:18:35   ema21: 65221.04
+2026-08-21 09:18:35   above: True
+2026-08-21 09:18:35   go_long_signal: False
+2026-08-21 09:18:35   go_flat_signal: False
+2026-08-21 09:18:35   action: bereits heute gescannt (kein erneuter Exit/Entry-Check)
+2026-08-21 09:18:35   in_position: True
+2026-08-21 09:18:35   equity_mark_to_market: 101144.9
+2026-08-21 09:18:35 
+2026-08-21 09:18:35 Gespeichert: C:\Users\andre\Forex-Backtesting\btc_ema_cross_logs\daily_log.csv
+2026-08-21 09:18:40 Fetching BTCUSDT daily 2017-08-17 -> 2026-08-21 (force_refresh) ...
+2026-08-21 09:18:40 Snapshot geschrieben: C:\Users\andre\Forex-Backtesting\btc_ema_cross\data\btcusdt_1d_snapshot.parquet (3292 Zeilen, bis 2026-08-21 00:00:00+00:00).

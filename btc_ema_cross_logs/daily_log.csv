@@ -1,4 +1,4 @@
 date,yesterday_close,ema9,ema21,above,go_long_signal,go_flat_signal,action,in_position,equity_mark_to_market,status
 2026-08-16,63086.01,63638.7,63898.91,False,False,False,none,False,100000.0,
 2026-08-20,69334.79,64990.51,64440.73,True,True,False,"entry long @ 69,404.11, stop @ 66,172.04, qty=0.316181",True,99978.08,
-2026-08-21,73025.15,66597.43,65221.04,True,False,False,none,True,101144.9,
+2026-08-21,73025.15,66597.43,65221.04,True,False,False,bereits heute gescannt (kein erneuter Exit/Entry-Check),True,101144.9,

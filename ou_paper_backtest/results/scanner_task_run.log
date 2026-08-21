@@ -1611,3 +1611,26 @@
 2026-08-21 20:36:01 S&P 500 (volles Universum, 420 Ticker)    TJX 2026-08-20 140.69      144.11 140.69 124.27 165.31    165.31           11.67               8.57       True       True                            12.5 2026-08-21T20:36:01
 2026-08-21 20:36:01 S&P 500 (volles Universum, 420 Ticker)    UAL 2026-08-20 111.71      112.85 111.71  95.39 136.19    136.19           14.61               6.84       True       True                            12.5 2026-08-21T20:36:01
 2026-08-21 20:36:01 S&P 500 (volles Universum, 420 Ticker)    WFC 2026-08-20  83.70       83.78  83.70  79.10  90.60     90.60            5.50              18.19       True       True                            12.5 2026-08-21T20:36:01
+2026-08-21 20:36:01 [main db43c32] OU-Modell Scanner: Snapshot 2026-08-21 20:36
+2026-08-21 20:36:01  2 files changed, 28 insertions(+), 5 deletions(-)
+2026-08-21 20:36:04 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-21 20:36:04    1c38d56..db43c32  main -> main
+2026-08-21 20:36:04 Commit + Push erfolgreich.
+2026-08-21 20:36:04 === Scanner-Task beendet ===
+2026-08-21 21:35:02 === Scanner-Task gestartet ===
+2026-08-21 21:36:00 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-08-21 21:36:00 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-08-21 21:36:00 [sp500] 5 raw signal(s) as of 2026-08-20, regime_ok=True
+2026-08-21 21:36:00 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-08-21 21:36:00 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-08-21 21:36:00 [nasdaq100] 0 raw signal(s) as of 2026-08-20, regime_ok=True
+2026-08-21 21:36:00 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-08-21 21:36:00 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-08-21 21:36:00 
+2026-08-21 21:36:00 Saved 5 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-08-21T21:36:00)
+2026-08-21 21:36:00                                 market ticker  scan_date  close  lower_band  entry     sl     tp  tp_price  risk_pct_price  position_size_pct  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
+2026-08-21 21:36:00 S&P 500 (volles Universum, 420 Ticker)    CCL 2026-08-20  25.37       25.77  25.37  22.32  29.95     29.95           12.04               8.30       True       True                            12.5 2026-08-21T21:36:00
+2026-08-21 21:36:00 S&P 500 (volles Universum, 420 Ticker)    NUE 2026-08-20 240.48      241.87 240.48 207.90 289.34    289.34           13.55               7.38       True       True                            12.5 2026-08-21T21:36:00
+2026-08-21 21:36:00 S&P 500 (volles Universum, 420 Ticker)    TJX 2026-08-20 140.69      144.11 140.69 124.27 165.31    165.31           11.67               8.57       True       True                            12.5 2026-08-21T21:36:00
+2026-08-21 21:36:00 S&P 500 (volles Universum, 420 Ticker)    UAL 2026-08-20 111.71      112.85 111.71  95.39 136.19    136.19           14.61               6.84       True       True                            12.5 2026-08-21T21:36:00
+2026-08-21 21:36:00 S&P 500 (volles Universum, 420 Ticker)    WFC 2026-08-20  83.70       83.78  83.70  79.10  90.60     90.60            5.50              18.19       True       True                            12.5 2026-08-21T21:36:00

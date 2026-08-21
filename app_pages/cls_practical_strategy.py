@@ -390,41 +390,52 @@ def _render_tab_tabs_2_():
         "[Risk Management](risk_management) fuers generalisierte Prinzip beim OU-Modell."
     )
     caveat_box(
-        "Die drei Szenarien unten nutzen bewusst weiterhin FLACHES Sizing, nicht die seit 2026-08-21 "
-        "standardmaessige Zins-Risiko-Skalierung von Tab 2 -- die hier dokumentierten Sicherheitspuffer "
-        "(z.B. 0,50% statt 0,53% fuer das 7%-Challenge-Limit) wurden nie gegen eine zusaetzliche "
-        "Skalierung durchgerechnet, die an manchen Tagen bis 3,06x Positionsgroesse erreicht."
+        "<b>Korrigiert 2026-08-21</b> (User-Anfrage \"Teste die Skalierung auf den Funded-Konten\"): Szenario 1 "
+        "und 2 unten nutzen jetzt die seit heute standardmaessige Zins-Risiko-Skalierung von Tab 2, mit neu "
+        "kalibrierten Basisrisiken. Der Nebeneffekt beim Nachrechnen: das bisherige 0,50%-Basisrisiko fuer "
+        "Szenario 1 verletzte das 7%-Limit bereits VOR der Skalierung (MaxDD -7,36%, ein Kalibrierungs-Drift seit "
+        "spaeteren Strategie-Aenderungen wie dem 09:00-Checkpoint) -- unten also nicht nur um die Skalierung "
+        "ergaenzt, sondern auch neu kalibriert. Szenario 2's altes Sizing (Cont. 0,4%/Rev. 1,0%) haette mit "
+        "Skalierung sowohl das Gesamt- (MaxDD -7,98%) als auch das Tages-Limit (-3,12%) gerissen -- die "
+        "Tagesregel WAR hier also kurzzeitig der Engpass, nicht mehr nur der Gesamt-Drawdown, bis zur Neu-"
+        "Kalibrierung unten. Szenario 3 (Winning-Streak-Boost) bleibt bewusst flach -- das ist explizit "
+        "fuers EK-Konto gedacht, nicht fuer eine Challenge mit harten Limits."
     )
 
     section_title(":material/shield: 1. Statisch fuer eine Funded Challenge (max 3%/Tag, max 7% gesamt)")
-    trades_challenge = run_variant(0.005)
+    trades_challenge = run_variant(0.0028, use_rate_scaling=True)
     daily_challenge = daily_pnl_from_trades(trades_challenge)
     m_challenge = equity_metrics(daily_challenge)
     tile_row([
-        ("Risiko/Trade", "0,50%"), ("Max Drawdown", f"{m_challenge['max_drawdown_pct']:.2f}% (Limit 7%)"),
+        ("Risiko/Trade", "0,28%"), ("Max Drawdown", f"{m_challenge['max_drawdown_pct']:.2f}% (Limit 7%)"),
         ("Schlechtester Tag", f"{m_challenge['worst_day_pct']:.2f}% (Limit 3%)"),
         ("Endkapital", f"${m_challenge['final_equity']:,.0f}"), ("Return", f"{m_challenge['total_return_pct']:+.1f}%"),
     ])
-    st.caption("0,50% statt des rechnerisch exakten Limits (0,53%) -- bewusst mit Sicherheitspuffer, da die "
-               "Skalierung wegen der festen 100k-Basis im Drawdown-Nenner nicht perfekt linear ist. "
-               "Die Tagesregel ist bei dieser Strategie nie der Engpass, bindend ist der Gesamt-Drawdown.")
+    st.caption("0,28% statt des rechnerisch exakten Limits (~0,295%, MaxDD -6,99%) -- bewusst mit Sicherheitspuffer, "
+               "da die Skalierung wegen der festen 100k-Basis im Drawdown-Nenner nicht perfekt linear ist. Mit "
+               "Zins-Risiko-Skalierung (1,0x-3,06x) statt der zuvor flachen 0,50% -- bei gleichem Sizing haette die "
+               "Skalierung MaxDD auf -10,87% getrieben. Die Tagesregel bleibt bei dieser Kalibrierung nicht der "
+               "Engpass, bindend ist weiterhin der Gesamt-Drawdown.")
 
     section_title(":material/tune: 2. Continuation/Reversal getrennt gesizt (Kelly-informiert)")
-    trades_cont = run_variant(0.004, allowed_setups=("continuation",))
-    trades_rev = run_variant(0.01, allowed_setups=("reversal",))
+    trades_cont = run_variant(0.003, allowed_setups=("continuation",), use_rate_scaling=True)
+    trades_rev = run_variant(0.0075, allowed_setups=("reversal",), use_rate_scaling=True)
     combined = pd.concat([trades_cont, trades_rev], ignore_index=True)
     m_combined = equity_metrics(daily_pnl_from_trades(combined))
-    m_uniform = equity_metrics(daily_pnl_from_trades(run_variant(0.01)))
+    m_uniform = equity_metrics(daily_pnl_from_trades(run_variant(0.01, use_rate_scaling=True)))
     sep_df = pd.DataFrame([
         {"Variante": "Einheitlich (beide 1%)", "MaxDD": f"{m_uniform['max_drawdown_pct']:.2f}%",
          "Sharpe": f"{m_uniform['sharpe']:.2f}", "Return": f"{m_uniform['total_return_pct']:+.1f}%"},
-        {"Variante": "Getrennt (Cont. 0,4% / Rev. 1,0%)", "MaxDD": f"{m_combined['max_drawdown_pct']:.2f}%",
+        {"Variante": "Getrennt (Cont. 0,30% / Rev. 0,75%)", "MaxDD": f"{m_combined['max_drawdown_pct']:.2f}%",
          "Sharpe": f"{m_combined['sharpe']:.2f}", "Return": f"{m_combined['total_return_pct']:+.1f}%"},
     ])
     st.dataframe(sep_df, hide_index=True, width="stretch")
-    st.caption("Getrenntes Sizing nach Kelly-Verhaeltnis (Continuation f*=8,3% vs. Reversal f*=20,8%) "
-               "verbessert Sharpe und halbiert fast den Drawdown -- kostet aber absolute Rendite. Fuer eine "
-               "drawdown-limitierte Challenge vermutlich die bessere Wahl als einheitliches Sizing.")
+    st.caption("Getrenntes Sizing nach demselben Kelly-Verhaeltnis wie zuvor (Continuation f*=8,3% vs. Reversal "
+               "f*=20,8%, skaleninvariant -- unveraendert durch die Zins-Skalierung), jetzt mit Zins-Risiko-"
+               "Skalierung und auf 0,30%/0,75% neu kalibriert (vorher 0,4%/1,0%, das haette mit Skalierung "
+               "sowohl Gesamt- als auch Tages-Limit gerissen -- siehe Hinweis oben). Verbessert Sharpe und haelt "
+               "den Drawdown deutlich niedriger als einheitliches Sizing -- kostet aber absolute Rendite. Fuer "
+               "eine drawdown-limitierte Challenge weiterhin die bessere Wahl als einheitliches Sizing.")
 
     section_title(":material/trending_up: 3. Dynamisch nach Winning-Streak (fuers EK-Konto)")
     st.markdown(

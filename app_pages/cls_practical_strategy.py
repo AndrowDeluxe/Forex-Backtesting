@@ -32,9 +32,10 @@ sys.path.insert(0, str(REPO_DIR / "cls_practical"))
 sys.path.insert(0, str(REPO_DIR))
 
 from cls_practical.chart import build_entry_chart  # noqa: E402
-from cls_practical.data import fetch_eurusd_entry_tf_berlin, fetch_major_m15_berlin, fetch_rate_instrument_m5_berlin  # noqa: E402
+from cls_practical.data import fetch_2y_yield_daily, fetch_eurusd_entry_tf_berlin, fetch_major_m15_berlin, fetch_rate_instrument_m5_berlin  # noqa: E402
 from cls_practical.engine import simulate_cls_practical  # noqa: E402
-from strategy.cls_advanced import PAIRS  # noqa: E402
+from cls_practical.rates import compute_combined_rate_risk_multiplier  # noqa: E402
+from strategy.cls_advanced import PAIRS, compute_daily_features  # noqa: E402
 
 st.set_page_config(page_title="CLS Practical (EUR/USD)", page_icon=":material/military_tech:", layout="wide")
 
@@ -118,7 +119,24 @@ def load_data():
     other_majors_m15 = {p: fetch_major_m15_berlin(p, START, END) for p in OTHER_MAJORS}
     bund_m5 = fetch_rate_instrument_m5_berlin("BUND", START, END)
     ustbond_m5 = fetch_rate_instrument_m5_berlin("USTBOND", START, END)
-    return eurusd_m5, other_majors_m15, bund_m5, ustbond_m5
+    de02y = fetch_2y_yield_daily("DE02Y")
+    us02y = fetch_2y_yield_daily("US02Y")
+    return eurusd_m5, other_majors_m15, bund_m5, ustbond_m5, de02y, us02y
+
+
+@st.cache_data(ttl="6h")
+def standard_risk_multiplier() -> pd.Series:
+    """Die seit 2026-08-21 STANDARD-Positionsgroessen-Skalierung (Long-End x
+    Front-End-2Y, siehe cls_practical/rates.py::compute_combined_rate_risk_multiplier)
+    -- fuer den Haupt-Backtest oben per Default angewendet (Checkbox zum
+    Vergleich abschaltbar). Die Risk-Management-Szenarien in Tab 3 (Funded-
+    Challenge-Limits, Continuation/Reversal-getrenntes Sizing, Winning-
+    Streak-Boost) nutzen bewusst weiterhin FLACHES Sizing -- die dort
+    dokumentierten Sicherheitspuffer/Limits (z.B. 7%-Gesamt-Drawdown-Limit)
+    wurden nie gegen eine zusaetzliche Zins-Skalierung getestet."""
+    eurusd_m5, _, bund_m5, ustbond_m5, de02y, us02y = load_data()
+    daily = compute_daily_features(eurusd_m5)
+    return compute_combined_rate_risk_multiplier(bund_m5, ustbond_m5, de02y, us02y, daily["direction"])
 
 
 def daily_pnl_from_trades(trades: pd.DataFrame) -> pd.Series:
@@ -145,9 +163,20 @@ def equity_metrics(daily_pnl: pd.Series) -> dict:
 
 
 @st.cache_data(ttl="6h", show_spinner="Berechne CLS-practical-Trades...")
-def run_variant(risk_pct: float, allowed_setups: tuple[str, ...] = ("continuation", "reversal")) -> pd.DataFrame:
-    eurusd_m5, other_majors_m15, bund_m5, ustbond_m5 = load_data()
-    return simulate_cls_practical(eurusd_m5, other_majors_m15, bund_m5, ustbond_m5, risk_pct=risk_pct, allowed_setups=allowed_setups)
+def run_variant(
+    risk_pct: float, allowed_setups: tuple[str, ...] = ("continuation", "reversal"), use_rate_scaling: bool = False
+) -> pd.DataFrame:
+    """use_rate_scaling: False (default here) keeps every EXISTING call site's
+    behaviour byte-for-byte unchanged (flat sizing) -- the Tab-3 Risk-
+    Management scenarios rely on that. The main Tab-2 headline result below
+    explicitly passes True, since 2026-08-21 the STANDARD default for the
+    page's own primary number (see standard_risk_multiplier() above)."""
+    eurusd_m5, other_majors_m15, bund_m5, ustbond_m5, de02y, us02y = load_data()
+    risk_multiplier = standard_risk_multiplier() if use_rate_scaling else None
+    return simulate_cls_practical(
+        eurusd_m5, other_majors_m15, bund_m5, ustbond_m5,
+        risk_pct=risk_pct, allowed_setups=allowed_setups, risk_multiplier=risk_multiplier,
+    )
 
 
 @st.cache_data(ttl="6h")
@@ -225,12 +254,15 @@ getestet und wieder verworfen (mehr Trades, aber netto schlechterer Ertrag).
 """
     )
     caveat_box(
-        "<b>2026-08-19 neu (nicht oben, weil kein Trade-Gate):</b> der Zinsfilter kehrt als "
-        "<b>Risiko-Skalierung</b> zurueck -- BUND/USTBOND-Tageskerzen der letzten 2 Handelstage, bei starker "
-        "Bestaetigung (z&ge;0.5) 1.75x Positionsgroesse statt der deaktivierten Gate-Variante oben. Verbessert "
-        "Sharpe/Calmar/Gesamt-PnL auf Gesamt/IS/OOS gleichzeitig, robust ueber 5 Split-Punkte und alle "
-        "Kalenderjahre. Siehe <code>cls_practical/rates.py::compute_daily_rate_risk_multiplier</code>, informativ "
-        "im Live Log als \"ZINS-RISIKO\"-Kachel angezeigt."
+        "<b>2026-08-19/21, seit 2026-08-21 STANDARD (nicht oben, weil kein Trade-Gate):</b> zwei "
+        "<b>Risiko-Skalierungs</b>-Signale statt der deaktivierten Gate-Variante oben, beide auf denselben "
+        "Sharpe/Calmar/Gesamt-PnL-Metriken auf Gesamt/IS/OOS gleichzeitig getestet, robust ueber 5 Split-Punkte "
+        "und alle Kalenderjahre: <b>Long-End</b> (BUND/USTBOND-Tageskerzen, letzte 2 Handelstage, z&ge;0.5 -> "
+        "1.75x) und <b>Front-End-2Y</b> (echte TVC:DE02Y/US02Y-Renditen, letzter Handelstag, z&ge;0.5 -> 1.75x). "
+        "Multiplikativ gestapelt schlagen sie jede Einzelversion (Gesamt-PnL $115.585/$98.546 einzeln -> "
+        "$141.353 kombiniert, Sharpe 0.84/0.83 -> 0.89) -- das ist der oben per Default aktive Multiplikator. "
+        "Siehe <code>cls_practical/rates.py::compute_combined_rate_risk_multiplier</code>, auch im Live Log "
+        "(3 Kacheln: Long-End/2Y/kombiniert) und in <code>find_pending_setup()</code> fuer die Live-Bots verdrahtet."
     )
     section_title("Setups")
     st.markdown(
@@ -249,20 +281,32 @@ TP = 0,35 × ADR(14) (Average Daily Range). SL = Fractal-Extrem, mit einem Floor
 # -------------------------------------------------------------- Tab 2: Backtest-Ergebnis
 def _render_tab_tabs_1_():
     risk_pct = st.select_slider(
-        "Risiko pro Trade", options=[0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.02],
+        "Risiko pro Trade (Basis, vor Zins-Skalierung)", options=[0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.02],
         value=0.01, format_func=lambda x: f"{x*100:.2f}%",
     )
-    trades = run_variant(risk_pct)
+    use_rate_scaling = st.checkbox(
+        "Zins-Risiko-Skalierung anwenden (Standard)", value=True,
+        help="Long-End (BUND/USTBOND) x Front-End-2Y (DE02Y/US02Y) Multiplikator, siehe Hinweis unten. "
+        "Abschalten zeigt die reine, flach gesizte Trade-Auswahl zum Vergleich.",
+    )
+    trades = run_variant(risk_pct, use_rate_scaling=use_rate_scaling)
     daily_pnl = daily_pnl_from_trades(trades)
     m = equity_metrics(daily_pnl)
     bh = buy_and_hold_metrics()
 
-    section_title(f"Ergebnis bei {risk_pct*100:.2f}% Risiko/Trade (100k-Konto, {START} bis {END})")
+    section_title(f"Ergebnis bei {risk_pct*100:.2f}% Basis-Risiko/Trade (100k-Konto, {START} bis {END})"
+                  + (", mit Zins-Risiko-Skalierung" if use_rate_scaling else ", ohne Skalierung"))
     tile_row([
         ("Trades", str(len(trades))), ("Win-Rate", f"{(trades['pnl_usd']>0).mean()*100:.1f}%"),
         ("Endkapital", f"${m['final_equity']:,.0f}"), ("Gesamt-Return", f"{m['total_return_pct']:+.1f}%"),
         ("Max Drawdown", f"{m['max_drawdown_pct']:.2f}%"), ("Sharpe", f"{m['sharpe']:.2f}"),
     ])
+    if use_rate_scaling:
+        st.caption(
+            "Positionsgroesse wird taeglich mit dem kombinierten Zins-Multiplikator skaliert (1.0x-3.06x, "
+            "siehe cls_practical/rates.py::compute_combined_rate_risk_multiplier) -- Trade-Auswahl selbst "
+            "(welche/wie viele Trades) ist davon unberuehrt, nur die $-Positionsgroesse aendert sich."
+        )
 
     section_title(":material/candlestick_chart: Chart-Verifikation -- einzelne Trades auf dem echten Kurs")
     caveat_box(
@@ -344,6 +388,12 @@ def _render_tab_tabs_2_():
     st.markdown(
         "Zwei Ziel-Konten, unterschiedliche Risikoaufnahme -- siehe "
         "[Risk Management](risk_management) fuers generalisierte Prinzip beim OU-Modell."
+    )
+    caveat_box(
+        "Die drei Szenarien unten nutzen bewusst weiterhin FLACHES Sizing, nicht die seit 2026-08-21 "
+        "standardmaessige Zins-Risiko-Skalierung von Tab 2 -- die hier dokumentierten Sicherheitspuffer "
+        "(z.B. 0,50% statt 0,53% fuer das 7%-Challenge-Limit) wurden nie gegen eine zusaetzliche "
+        "Skalierung durchgerechnet, die an manchen Tagen bis 3,06x Positionsgroesse erreicht."
     )
 
     section_title(":material/shield: 1. Statisch fuer eine Funded Challenge (max 3%/Tag, max 7% gesamt)")

@@ -22,7 +22,7 @@ from strategy.indicators import compute_adx, compute_atr
 
 from .data import fetch_2y_yield_daily, fetch_eurusd_entry_tf_berlin, fetch_major_m15_berlin, fetch_rate_instrument_m5_berlin
 from .engine import _first_fractal, _minutes_of, simulate_cls_practical, trend_bias
-from .rates import compute_daily_rate_risk_multiplier, compute_frontend_2y_risk_multiplier
+from .rates import compute_combined_rate_risk_multiplier, compute_daily_rate_risk_multiplier, compute_frontend_2y_risk_multiplier
 
 OTHER_MAJORS = [p for p in PAIRS if p != "EURUSD"]
 LOOKBACK_DAYS = 400
@@ -52,6 +52,21 @@ def scan_today() -> dict:
             daily_by_pair[pair] = compute_daily_features(df)
     cross_confirm = compute_cross_confirmation(daily_by_pair)["EURUSD"]
 
+    # Zins-Risiko-Skalierung -- seit 2026-08-21 STANDARD (nicht mehr nur
+    # informativ): der kombinierte Multiplikator geht unten direkt in
+    # simulate_cls_practical(risk_multiplier=...), aendert also tatsaechlich
+    # die geloggte Positionsgroesse/pnl_usd eines heute gefeuerten Trades.
+    # Gate-Logik (use_rates_filter) bleibt weiter deaktiviert -- kein Trade
+    # wird dadurch ausgeschlossen. Zwei SEPARATE Signale (2026-08-19 Long-End
+    # BUND/USTBOND, 2026-08-21 echtes Front-End 2Y DE02Y/US02Y) plus ihr
+    # Produkt als Standard-Empfehlung -- siehe
+    # cls_practical/rates.py::compute_combined_rate_risk_multiplier. Vor dem
+    # if/else berechnet (nicht nur im "heute vollstaendig"-Zweig), damit der
+    # simulate_cls_practical()-Aufruf unten immer denselben Multiplikator hat.
+    rate_mult_series = compute_daily_rate_risk_multiplier(bund_m5, ustbond_m5, daily["direction"])
+    rate_mult_2y_series = compute_frontend_2y_risk_multiplier(de02y, us02y, daily["direction"])
+    combined_mult_series = compute_combined_rate_risk_multiplier(bund_m5, ustbond_m5, de02y, us02y, daily["direction"])
+
     berlin_today = pd.Timestamp(today)
     if berlin_today.date() not in daily.index:
         row = {"date": today.isoformat(), "status": "heute noch keine vollstaendige Settle-Range (vor 09:00 Berlin?)"}
@@ -60,25 +75,9 @@ def scan_today() -> dict:
         direction = d["direction"]
         holds = d["holds_0915"]
         c_val = cross_confirm.get(berlin_today.date(), None)
-
-        # Zins-Risiko-Skalierung -- rein informativ hier, aendert NICHTS an
-        # Trigger/Entry/SL/TP unten (die haengen nur an use_rates_filter, das
-        # bleibt False); zeigt nur an, ob die empfohlene Positionsgroesse
-        # heute ueber dem 1.0x-Standard liegt. Zwei SEPARATE Signale (2026-08-
-        # 19 Long-End BUND/USTBOND, 2026-08-21 echtes Front-End 2Y DE02Y/
-        # US02Y), plus ihr Produkt als kombinierte Empfehlung -- beide
-        # bewaehrten sich unabhaengig voneinander und additiv kombiniert
-        # (siehe cls_practical/rates.py-Modul-Docstring).
-        rate_mult_series = compute_daily_rate_risk_multiplier(bund_m5, ustbond_m5, daily["direction"])
         rate_mult_today = rate_mult_series.get(berlin_today.date(), None)
-        rate_mult_2y_series = compute_frontend_2y_risk_multiplier(de02y, us02y, daily["direction"])
         rate_mult_2y_today = rate_mult_2y_series.get(berlin_today.date(), None)
-        rate_mult_combined_today = (
-            rate_mult_today * rate_mult_2y_today
-            if rate_mult_today is not None and rate_mult_2y_today is not None
-            and pd.notna(rate_mult_today) and pd.notna(rate_mult_2y_today)
-            else None
-        )
+        rate_mult_combined_today = combined_mult_series.get(berlin_today.date(), None)
 
         row = {
             "date": today.isoformat(),
@@ -91,9 +90,10 @@ def scan_today() -> dict:
         }
 
     # 2) Tatsaechlicher Trigger heute? -- simulate_cls_practical() auf dem
-    # Trailing-Fenster laufen lassen (identische Regeln wie Backtest), dann
+    # Trailing-Fenster laufen lassen (identische Regeln wie Backtest,
+    # inkl. der jetzt standardmaessigen Zins-Risiko-Skalierung), dann
     # prüfen ob ein Trade HEUTE entered hat.
-    trades = simulate_cls_practical(eurusd_m5, other_majors_m15, bund_m5, ustbond_m5)
+    trades = simulate_cls_practical(eurusd_m5, other_majors_m15, bund_m5, ustbond_m5, risk_multiplier=combined_mult_series)
     if not trades.empty:
         today_trades = trades[trades["entry_time"].dt.date == today]
     else:
@@ -124,6 +124,10 @@ def find_pending_setup(
     adx_period: int = 14,
     use_cross_filter: bool = True,
     as_of_date: dt.date | None = None,
+    bund_m5: pd.DataFrame | None = None,
+    ustbond_m5: pd.DataFrame | None = None,
+    de02y: pd.DataFrame | None = None,
+    us02y: pd.DataFrame | None = None,
 ) -> dict | None:
     """Built 2026-08-13 for the live execution bots (CLS-Practical-Bridge,
     separate private project) -- NOT used by the Live-Log page (scan_today()
@@ -170,7 +174,20 @@ def find_pending_setup(
     as_of_date: defaults to today (live use) -- overridable so this can be
     tested against a known historical day (compare against
     simulate_cls_practical()'s own trades for that date: entry/sl must match
-    exactly, since both paths compute trigger_level/sl_level identically)."""
+    exactly, since both paths compute trigger_level/sl_level identically).
+
+    bund_m5/ustbond_m5/de02y/us02y (2026-08-21, User: "ergaenze das ganze
+    auch im Bot"): OPTIONAL, all four caller-supplied like eurusd_m5/
+    other_majors_m15 above (this function never fetches its own data).
+    When all four are given, the return dict gains a "risk_multiplier" key
+    (cls_practical.rates.compute_combined_rate_risk_multiplier's value for
+    `today`, the same STANDARD long-end x front-end-2Y product used by
+    scan_today()/the default backtest) plus "risk_multiplier_longend"/
+    "risk_multiplier_2y" for transparency into the two components. When any
+    of the four is omitted (e.g. the bot hasn't been updated to fetch them
+    yet), risk_multiplier defaults to 1.0 (unscaled) rather than erroring -
+    backward compatible with callers that only pass the original two
+    arguments."""
 
     today = as_of_date if as_of_date is not None else dt.date.today()
 
@@ -312,6 +329,15 @@ def find_pending_setup(
     tp = trigger_level + tp_dist if d == 1 else trigger_level - tp_dist
     sl = trigger_level - sl_dist if d == 1 else trigger_level + sl_dist
 
+    risk_mult_longend, risk_mult_2y, risk_mult_combined = 1.0, 1.0, 1.0
+    if bund_m5 is not None and ustbond_m5 is not None and de02y is not None and us02y is not None:
+        longend_series = compute_daily_rate_risk_multiplier(bund_m5, ustbond_m5, daily["direction"])
+        frontend_series = compute_frontend_2y_risk_multiplier(de02y, us02y, daily["direction"])
+        combined_series = compute_combined_rate_risk_multiplier(bund_m5, ustbond_m5, de02y, us02y, daily["direction"])
+        risk_mult_longend = float(longend_series.get(today, 1.0))
+        risk_mult_2y = float(frontend_series.get(today, 1.0))
+        risk_mult_combined = float(combined_series.get(today, 1.0))
+
     return {
         "date": today.isoformat(),
         "setup": setup,
@@ -320,4 +346,7 @@ def find_pending_setup(
         "sl": float(sl),
         "tp": float(tp),
         "pivot_time": str(times[pivot_i]),
+        "risk_multiplier": risk_mult_combined,
+        "risk_multiplier_longend": risk_mult_longend,
+        "risk_multiplier_2y": risk_mult_2y,
     }

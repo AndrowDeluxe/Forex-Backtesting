@@ -42,7 +42,26 @@ cls_practical/results/2y_frontend_rate_*.csv /
 combination results. Both filters are kept as SEPARATE functions (not
 merged into one) since they are genuinely different signals (long-end
 duration vs. front-end rate-expectations) that turned out to be additive,
-not redundant.
+not redundant. See compute_combined_rate_risk_multiplier below for the
+stacked (long-end x front-end) product - the reference "standard"
+combination.
+
+Also tested 2026-08-21 as a TRADE GATE (confirmation, the source
+material's original "Rates-Bestätigung" role) instead of risk scaling:
+only 2 of 18 swept configs beat baseline on IS+OOS simultaneously, both at
+very thin samples (n_is=19-25 out of 84 IS baseline trades) - the same
+multiple-comparisons pattern that already ruled out gating for the
+long-end filter. Gate mode is NOT used anywhere; risk scaling (below)
+remains the only adopted mechanism for either rates signal.
+
+STANDARD as of 2026-08-21 (User: "Mache die Risikoskalierung zum
+Standard"): the combined multiplier (compute_combined_rate_risk_multiplier)
+is now the DEFAULT position sizing used by app_pages/cls_practical_strategy.py's
+displayed backtest, cls_practical/live_scan.py's scan_today(), and
+find_pending_setup() (the live execution bots' interface) - no longer
+purely informational. Still never gates trades (use_rates_filter stays
+False everywhere); it only scales position size on top of the unchanged
+trade-selection logic.
 """
 
 import numpy as np
@@ -242,3 +261,38 @@ def compute_frontend_2y_risk_multiplier(
     mult = pd.Series(base_mult, index=ampel.index)
     mult[ampel == "grün"] = confirmed_mult
     return mult
+
+
+def compute_combined_rate_risk_multiplier(
+    bund: pd.DataFrame,
+    ustbond: pd.DataFrame,
+    de02y: pd.DataFrame,
+    us02y: pd.DataFrame,
+    direction: pd.Series,
+) -> pd.Series:
+    """STANDARD as of 2026-08-21 (User: "Mache die Risikoskalierung zum
+    Standard") - the elementwise PRODUCT of compute_daily_rate_risk_multiplier
+    (long-end) and compute_frontend_2y_risk_multiplier (front-end 2Y), both
+    at their validated default configs. This is the config that beat both
+    individual filters in testing (Gesamt PnL $115,585/$98,546 individually
+    -> $141,353 combined, Sharpe 0.84/0.83 -> 0.89, see module docstring) -
+    the reference implementation for "the recommended position-size
+    multiplier" wherever this repo needs one (cls_practical_strategy.py's
+    default backtest, live_scan.py's scan_today()/find_pending_setup()).
+    Centralised here instead of each caller re-multiplying the two Series
+    itself, so the "standard" combination only has one definition to keep in
+    sync.
+
+    direction.index is the reference calendar (from
+    strategy.cls_advanced.compute_daily_features) - both input multipliers
+    are reindexed onto it with fill_value=1.0 (base_mult) before multiplying,
+    since the BUND/USTBOND and DE02Y/US02Y data sources don't necessarily
+    share the exact same trading-day calendar (different CFD/exchange
+    holiday quirks)."""
+    longend = compute_daily_rate_risk_multiplier(bund, ustbond, direction)
+    frontend = compute_frontend_2y_risk_multiplier(de02y, us02y, direction)
+    return pd.Series(
+        longend.reindex(direction.index, fill_value=1.0).to_numpy()
+        * frontend.reindex(direction.index, fill_value=1.0).to_numpy(),
+        index=direction.index,
+    )

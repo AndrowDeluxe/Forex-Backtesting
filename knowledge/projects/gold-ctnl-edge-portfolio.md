@@ -114,6 +114,22 @@ spezifisch an Golds aussergewoehnlichen 2024-26-Lauf gebunden - eine enge
 Kombination, keine breite/robuste Eigenschaft. Skript: `scripts/
 research_gold_smc_g8_majors_crossmarket.py`.
 
+**Cross-Market Teil 2 - SPX + BTC (chat 2026-08-21)**: SPX bestaetigt das
+FX-Muster (durchgehend negativ, Cont -1.11/-1.88/-0.24, Rev -0.49/-0.74/
+-0.21 ueber Voll/IS/OOS). BTC differenziert: Reversal-Kaskade DURCHGEHEND
+positiv (Voll +0.40, IS +0.48, OOS +0.32) - erstes Instrument ausser Gold
+mit konsistentem Signal ueber alle drei Fenster, wenn auch bescheiden
+(weit unter Golds eigenen 1.2-1.95). Continuation auf BTC NICHT validiert
+(IS -0.66 negativ, OOS +0.67 positiv - haette nach eigener Auswahlregel
+IS-basiert gar nicht gewaehlt werden koennen, OOS-Wert zaehlt nicht ohne
+IS-Bestaetigung). Plausible Erklaerung: BTCs OOS-Fenster war ein starker
+Abwaertstrend (Buy&Hold Sharpe -1.02, CAGR -33.6%) - genau das Umfeld, in
+dem eine Fade-/Erschoepfungs-Strategie relativ gut dasteht. Golds Parameter
+unveraendert auf BTC angewendet, keine eigene Optimierung - ein moeglicher
+Ansatzpunkt fuer eine eigene Validierungsrunde, falls gewuenscht, aber
+noch kein bestaetigter Fund. Skript: `scripts/research_gold_smc_spx_btc_
+crossmarket.py`.
+
 **Entscheidung** (Nutzer, 2026-08-20): Strategie NICHT verwerfen -- "die
 Vergangenheit ist vergangen, aber die Zukunft kommt noch". Da kein
 prognostischer Regimefilter gefunden wurde, stattdessen ein

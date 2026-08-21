@@ -1,11 +1,12 @@
 """Data fetch for the CLS Practical Playbook rebuild (cls_practical/) - see
 scripts/research_cls_practical.py. Reuses presettle_breakout.data (EUR/USD
-and the other FX majors, Dukascopy M5/M15, Berlin tz) and adds the one new
-feed this strategy needs: BUND/USTBOND CFD prices, as the best freely
-available intraday rates proxy (see engine.py module docstring for why this
-is a LONG-END duration proxy, not the front-end/2Y signal the source
-material actually describes - a disclosed data-source substitution, same
-discipline as every other paper/playbook rebuild in this repo)."""
+and the other FX majors, Dukascopy M5/M15, Berlin tz) and adds the new feeds
+this strategy needs: BUND/USTBOND CFD prices (a LONG-END duration proxy, see
+engine.py module docstring) and, since 2026-08-20, the genuine front-end 2Y
+government yields (TVC:DE02Y/TVC:US02Y via tradingview/data.py's tvDatafeed
+bridge - the source material's actual "Front End Rates" signal, previously
+believed unavailable from any free source, see cls_practical/rates.py for
+the filter built on top of this)."""
 
 from pathlib import Path
 
@@ -22,6 +23,8 @@ _RATE_INSTRUMENTS = {
     "USTBOND": duka.INSTRUMENT_BND_CFD_USTBOND_TR_USD,  # ~15-25y US Treasury Bond future CFD
     "UKGILT": duka.INSTRUMENT_BND_CFD_UKGILT_TR_GBP,  # UK Gilt future CFD (2026-08-19, GBP/USD rates-filter robustness check)
 }
+
+_TVC_2Y_SYMBOLS = {"DE02Y": "DE02Y", "US02Y": "US02Y"}  # TradingView TVC exchange, daily 2Y govt yield index
 
 
 def fetch_rate_instrument_m5_berlin(key: str, start: str, end: str, force_refresh: bool = False) -> pd.DataFrame:
@@ -43,6 +46,33 @@ def fetch_rate_instrument_m5_berlin(key: str, start: str, end: str, force_refres
         df.to_parquet(path)
 
     df.index = df.index.tz_convert("Europe/Berlin")
+    return df
+
+
+def fetch_2y_yield_daily(key: str, n_bars: int = 3650, force_refresh: bool = False) -> pd.DataFrame:
+    """Daily 2Y government yield (TVC:DE02Y / TVC:US02Y, tradingview/data.py's
+    tvDatafeed bridge - works anonymously, no TradingView login needed).
+    Verified 2026-08-20 against FRED's DGS2 (official US 2Y daily series):
+    TVC:US02Y close 4.177% vs. FRED 4.19% on the same day - matches closely.
+    No start/end params (tvDatafeed only supports "last n_bars", not a date
+    range) - n_bars=3650 (~10y of weekdays) comfortably covers this repo's
+    2018-12-01 backtest start. Cached as one file per symbol (not per date
+    range, unlike the Dukascopy fetchers above) - pass force_refresh=True to
+    pull the latest bar (used by live_scan.py)."""
+    if key not in _TVC_2Y_SYMBOLS:
+        raise ValueError(f"unknown 2Y symbol {key!r}, expected one of {list(_TVC_2Y_SYMBOLS)}")
+
+    path = CACHE_DIR / f"{key}_1d_tvc.parquet"
+    if path.exists() and not force_refresh:
+        return pd.read_parquet(path)
+
+    from tradingview.data import fetch_ohlcv
+
+    df = fetch_ohlcv(_TVC_2Y_SYMBOLS[key], "TVC", interval="1d", n_bars=n_bars)
+    df = df.sort_index()
+    df = df[~df.index.duplicated(keep="last")]
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    df.to_parquet(path)
     return df
 
 

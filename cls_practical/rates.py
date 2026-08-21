@@ -20,6 +20,29 @@ RISES. Both support EUR/USD LONG. So:
 is positive when USTBOND outperforms BUND in price (USD yields falling
 relative to EUR yields) -> supports EUR/USD long; negative -> supports
 EUR/USD short.
+
+ADOPTED 2026-08-21: a second, GENUINE front-end signal alongside the
+long-end proxy above - see compute_daily_rate_score_2y /
+compute_frontend_2y_risk_multiplier below. Feasibility spike 2026-08-20
+found that TVC:DE02Y/TVC:US02Y (daily 2Y govt yields, via the tvDatafeed
+bridge already used elsewhere in this repo, tradingview/data.py) ARE
+fetchable back to 2014 without a login - the "no free source" conclusion
+above was correct for INTRADAY data, but daily-resolution front-end yields
+turn out to be available after all. Tested 2026-08-21 as risk scaling
+(same pattern as the long-end filter): lag=1 trading day, z>=0.5 -> 1.75x
+beat flat-risk baseline on Gesamt Sharpe (0.75->0.83) and beat it on IS+OOS
+simultaneously at 5/5 tested split points (2020/21/22/23/24-06-01) - the
+same robustness bar the long-end filter cleared. Stacking BOTH filters
+multiplicatively (long-end mult x front-end mult) beats either alone: Gesamt
+PnL $115,585->$141,353, Sharpe 0.84->0.89, OOS Sharpe 0.99->1.07 (203 EUR/USD
+baseline trades, 2018-12-01..2026-08-11, 1% flat base risk). See
+scripts/research_cls_practical_2y_frontend_rate_filter.py and
+cls_practical/results/2y_frontend_rate_*.csv /
+2y_frontend_vs_longend_comparison.csv for the full sweep/robustness/
+combination results. Both filters are kept as SEPARATE functions (not
+merged into one) since they are genuinely different signals (long-end
+duration vs. front-end rate-expectations) that turned out to be additive,
+not redundant.
 """
 
 import numpy as np
@@ -146,6 +169,75 @@ def compute_daily_rate_risk_multiplier(
     trades are dropped) - this is purely a position-size overlay on top of
     the existing, unchanged trade-selection logic."""
     score = compute_daily_rate_score(bund, ustbond, lag_days=lag_days)
+    ampel = classify_rates_ampel(score, direction, z_window=z_window, z_threshold=z_threshold)
+    mult = pd.Series(base_mult, index=ampel.index)
+    mult[ampel == "grün"] = confirmed_mult
+    return mult
+
+
+def compute_daily_rate_score_2y(de02y: pd.DataFrame, us02y: pd.DataFrame, lag_days: int = 1) -> pd.Series:
+    """The genuine front-end analogue of compute_daily_rate_score, built on
+    TVC:DE02Y/TVC:US02Y (real 2Y government YIELDS, cls_practical.data.
+    fetch_2y_yield_daily) instead of BUND/USTBOND CFD PRICES. Two disclosed
+    methodological differences from the long-end version, both forced by
+    working with yields instead of prices:
+
+    1. Absolute day-over-day change in yield POINTS (close-open), not a
+       relative %-return - EUR front-end yields were negative for stretches
+       of 2020-2022, and a "%-return" of a negative yield is meaningless.
+    2. NO price-inversion sign flip needed. compute_daily_rate_score uses
+       ustbond_return - bund_return because a bond's PRICE moves inversely
+       to its yield (see module docstring). A yield series has no such
+       inversion: a RISING yield directly means "that currency's rates are
+       strengthening", so the sign convention here is simply
+
+           daily_rate_score_2y = de02y_change - us02y_change
+
+       positive when DE yields rise relative to US yields (EUR strength,
+       supports EUR/USD long) - the same economic statement as the long-end
+       version's sign convention, just without the price/yield detour.
+
+    lag_days (default 1, not 2 as in the long-end version - the sweep in
+    scripts/research_cls_practical_2y_frontend_rate_filter.py found lag=1
+    the strongest of {1,2,3} for this signal) shifts the score forward so
+    today's read only ever uses fully-closed prior trading day(s) - no
+    lookahead."""
+    de_chg = (de02y["close"] - de02y["open"]).copy()
+    us_chg = (us02y["close"] - us02y["open"]).copy()
+    de_chg.index = pd.Index(de02y.index.date, name="date")
+    us_chg.index = pd.Index(us02y.index.date, name="date")
+    joined = pd.concat({"de": de_chg, "us": us_chg}, axis=1, join="outer").sort_index()
+    score = (joined["de"] - joined["us"]).rename("daily_rate_score_2y")
+    return score.shift(lag_days)
+
+
+def compute_frontend_2y_risk_multiplier(
+    de02y: pd.DataFrame,
+    us02y: pd.DataFrame,
+    direction: pd.Series,
+    lag_days: int = 1,
+    z_window: int = 60,
+    z_threshold: float = 0.5,
+    confirmed_mult: float = 1.75,
+    base_mult: float = 1.0,
+) -> pd.Series:
+    """ADOPTED 2026-08-21 (User: "Baue den Zinsfilter") - the front-end/2Y
+    counterpart to compute_daily_rate_risk_multiplier, same risk-SCALING
+    pattern (not a trade gate). At a flat 1% base risk_pct, beat flat-risk
+    baseline on Gesamt Sharpe (0.75->0.83) and held up on IS+OOS
+    simultaneously at 5/5 tested split points - see module docstring for the
+    full result and scripts/research_cls_practical_2y_frontend_rate_filter.py
+    for the sweep this default config (lag=1d, z>=0.5, 1.75x) was chosen
+    from. Meant to be STACKED with compute_daily_rate_risk_multiplier
+    (multiply the two returned Series elementwise), not used as a
+    replacement - combining both beat either alone in testing (Gesamt PnL
+    $115,585->$141,353, Sharpe 0.84->0.89 vs. the long-end filter alone).
+
+    Returns a date-indexed float Series, same shape/convention as
+    compute_daily_rate_risk_multiplier - feed into
+    simulate_cls_practical(risk_multiplier=...) directly, or multiply with
+    the long-end multiplier first."""
+    score = compute_daily_rate_score_2y(de02y, us02y, lag_days=lag_days)
     ampel = classify_rates_ampel(score, direction, z_window=z_window, z_threshold=z_threshold)
     mult = pd.Series(base_mult, index=ampel.index)
     mult[ampel == "grün"] = confirmed_mult

@@ -20,9 +20,9 @@ from asian_range_breakout.cls_settle import compute_adr
 from strategy.cls_advanced import ASIA_END, ENTRY_HOUR, PAIRS, SETTLE_END, compute_cross_confirmation, compute_daily_features, to_berlin
 from strategy.indicators import compute_adx, compute_atr
 
-from .data import fetch_eurusd_entry_tf_berlin, fetch_major_m15_berlin, fetch_rate_instrument_m5_berlin
+from .data import fetch_2y_yield_daily, fetch_eurusd_entry_tf_berlin, fetch_major_m15_berlin, fetch_rate_instrument_m5_berlin
 from .engine import _first_fractal, _minutes_of, simulate_cls_practical, trend_bias
-from .rates import compute_daily_rate_risk_multiplier
+from .rates import compute_daily_rate_risk_multiplier, compute_frontend_2y_risk_multiplier
 
 OTHER_MAJORS = [p for p in PAIRS if p != "EURUSD"]
 LOOKBACK_DAYS = 400
@@ -37,6 +37,8 @@ def scan_today() -> dict:
     other_majors_m15 = {p: fetch_major_m15_berlin(p, start, end, force_refresh=True) for p in OTHER_MAJORS}
     bund_m5 = fetch_rate_instrument_m5_berlin("BUND", start, end, force_refresh=True)
     ustbond_m5 = fetch_rate_instrument_m5_berlin("USTBOND", start, end, force_refresh=True)
+    de02y = fetch_2y_yield_daily("DE02Y", force_refresh=True)
+    us02y = fetch_2y_yield_daily("US02Y", force_refresh=True)
 
     if eurusd_m5.empty:
         return {"date": today.isoformat(), "status": "keine Daten (Wochenende/Feiertag/Fehler)"}
@@ -59,14 +61,24 @@ def scan_today() -> dict:
         holds = d["holds_0915"]
         c_val = cross_confirm.get(berlin_today.date(), None)
 
-        # Zins-Risiko-Skalierung (2026-08-19, uebernommen aus
-        # scripts/research_cls_practical_daily_rate_risk_scaling.py) -- rein
-        # informativ hier, aendert NICHTS an Trigger/Entry/SL/TP unten (die
-        # haengen nur an use_rates_filter, das bleibt False); zeigt nur an,
-        # ob die empfohlene Positionsgroesse heute ueber dem 1.0x-Standard
-        # liegt (lag=2 Handelstage BUND/USTBOND, z>=0.5 -> 1.75x).
+        # Zins-Risiko-Skalierung -- rein informativ hier, aendert NICHTS an
+        # Trigger/Entry/SL/TP unten (die haengen nur an use_rates_filter, das
+        # bleibt False); zeigt nur an, ob die empfohlene Positionsgroesse
+        # heute ueber dem 1.0x-Standard liegt. Zwei SEPARATE Signale (2026-08-
+        # 19 Long-End BUND/USTBOND, 2026-08-21 echtes Front-End 2Y DE02Y/
+        # US02Y), plus ihr Produkt als kombinierte Empfehlung -- beide
+        # bewaehrten sich unabhaengig voneinander und additiv kombiniert
+        # (siehe cls_practical/rates.py-Modul-Docstring).
         rate_mult_series = compute_daily_rate_risk_multiplier(bund_m5, ustbond_m5, daily["direction"])
         rate_mult_today = rate_mult_series.get(berlin_today.date(), None)
+        rate_mult_2y_series = compute_frontend_2y_risk_multiplier(de02y, us02y, daily["direction"])
+        rate_mult_2y_today = rate_mult_2y_series.get(berlin_today.date(), None)
+        rate_mult_combined_today = (
+            rate_mult_today * rate_mult_2y_today
+            if rate_mult_today is not None and rate_mult_2y_today is not None
+            and pd.notna(rate_mult_today) and pd.notna(rate_mult_2y_today)
+            else None
+        )
 
         row = {
             "date": today.isoformat(),
@@ -74,6 +86,8 @@ def scan_today() -> dict:
             "holds_0915": bool(holds) if pd.notna(holds) else None,
             "cross_confirmed": bool(c_val) if c_val is not None else None,
             "rate_risk_multiplier": float(rate_mult_today) if rate_mult_today is not None and pd.notna(rate_mult_today) else None,
+            "rate_risk_multiplier_2y": float(rate_mult_2y_today) if rate_mult_2y_today is not None and pd.notna(rate_mult_2y_today) else None,
+            "rate_risk_multiplier_combined": float(rate_mult_combined_today) if rate_mult_combined_today is not None else None,
         }
 
     # 2) Tatsaechlicher Trigger heute? -- simulate_cls_practical() auf dem

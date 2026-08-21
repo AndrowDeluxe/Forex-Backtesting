@@ -27,6 +27,7 @@ OUT_CSV = OUT_DIR / "daily_log.csv"
 
 FIELDS = [
     "date", "break_direction", "holds_0915", "cross_confirmed", "rate_risk_multiplier",
+    "rate_risk_multiplier_2y", "rate_risk_multiplier_combined",
     "triggered", "setup", "direction", "entry_time", "entry_price", "sl", "tp", "status",
 ]
 

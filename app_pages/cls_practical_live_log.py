@@ -134,21 +134,28 @@ section_title(f"Heutiger Status ({latest_date})")
 if latest.get("status") and pd.notna(latest.get("status")) and str(latest.get("status")).strip():
     st.markdown(f"<div class='cls-alert'>{latest['status']}</div>", unsafe_allow_html=True)
 else:
-    rate_mult = latest.get("rate_risk_multiplier")
-    rate_mult_label = f"{float(rate_mult):.2f}x" if pd.notna(rate_mult) and str(rate_mult) != "" else "n/a"
+    def _mult_label(field: str) -> str:
+        v = latest.get(field)
+        return f"{float(v):.2f}x" if pd.notna(v) and str(v) != "" else "n/a"
+
     tiles = [
         ("BREAK-RICHTUNG", str(latest.get("break_direction", "n/a"))),
         ("HAELT 09:15", "ja" if latest.get("holds_0915") in (True, "True") else ("nein" if latest.get("holds_0915") in (False, "False") else "n/a")),
         ("CROSS-CONFIRMED", "ja" if latest.get("cross_confirmed") in (True, "True") else ("nein" if latest.get("cross_confirmed") in (False, "False") else "n/a")),
-        ("ZINS-RISIKO", rate_mult_label),
+        ("ZINS-RISIKO (Long-End)", _mult_label("rate_risk_multiplier")),
+        ("ZINS-RISIKO (2Y)", _mult_label("rate_risk_multiplier_2y")),
+        ("ZINS-RISIKO (kombiniert)", _mult_label("rate_risk_multiplier_combined")),
         ("GETRIGGERT", "JA" if latest.get("triggered") in (True, "True") else "nein"),
     ]
     tile_row(tiles)
     st.caption(
-        "ZINS-RISIKO: empfohlene Positionsgroessen-Skalierung relativ zum Standard-Risiko "
-        "(1.0x = normal, 1.75x = BUND/USTBOND-Tageskerzen der letzten 2 Handelstage bestaetigen "
-        "die heutige Break-Richtung klar) - siehe cls_practical.rates.compute_daily_rate_risk_multiplier. "
-        "Rein informativ, aendert nichts an Entry/SL/TP oben, nur an der empfohlenen Groesse."
+        "ZINS-RISIKO: empfohlene Positionsgroessen-Skalierung relativ zum Standard-Risiko (1.0x = "
+        "normal). Zwei unabhaengige Signale: Long-End (BUND/USTBOND-CFD-Tageskerzen der letzten 2 "
+        "Handelstage, siehe cls_practical.rates.compute_daily_rate_risk_multiplier) und das seit "
+        "2026-08-21 echte Front-End-2Y-Signal (TVC:DE02Y/US02Y-Renditen des letzten Handelstags, "
+        "compute_frontend_2y_risk_multiplier). Kombiniert = Produkt beider Multiplikatoren, in "
+        "Tests staerker als jedes Signal allein. Rein informativ, aendert nichts an Entry/SL/TP "
+        "oben, nur an der empfohlenen Groesse."
     )
 
     if latest.get("triggered") in (True, "True"):

@@ -1,7 +1,8 @@
-date,break_direction,holds_0915,cross_confirmed,rate_risk_multiplier,triggered,setup,direction,entry_time,entry_price,sl,tp,status
-2026-08-13,,,,,False,,,,,,,heute noch keine vollstaendige Settle-Range (vor 09:00 Berlin?)
-2026-08-14,,,,,False,,,,,,,heute noch keine vollstaendige Settle-Range (vor 09:00 Berlin?)
-2026-08-17,,,,,False,,,,,,,heute noch keine vollstaendige Settle-Range (vor 09:00 Berlin?)
-2026-08-18,,,,,False,,,,,,,heute noch keine vollstaendige Settle-Range (vor 09:00 Berlin?)
-2026-08-19,,,,,False,,,,,,,heute noch keine vollstaendige Settle-Range (vor 09:00 Berlin?)
-2026-08-20,,,,,False,,,,,,,heute noch keine vollstaendige Settle-Range (vor 09:00 Berlin?)
+date,break_direction,holds_0915,cross_confirmed,rate_risk_multiplier,rate_risk_multiplier_2y,rate_risk_multiplier_combined,triggered,setup,direction,entry_time,entry_price,sl,tp,status
+2026-08-13,,,,,,,False,,,,,,,heute noch keine vollstaendige Settle-Range (vor 09:00 Berlin?)
+2026-08-14,,,,,,,False,,,,,,,heute noch keine vollstaendige Settle-Range (vor 09:00 Berlin?)
+2026-08-17,,,,,,,False,,,,,,,heute noch keine vollstaendige Settle-Range (vor 09:00 Berlin?)
+2026-08-18,,,,,,,False,,,,,,,heute noch keine vollstaendige Settle-Range (vor 09:00 Berlin?)
+2026-08-19,,,,,,,False,,,,,,,heute noch keine vollstaendige Settle-Range (vor 09:00 Berlin?)
+2026-08-20,,,,,,,False,,,,,,,heute noch keine vollstaendige Settle-Range (vor 09:00 Berlin?)
+2026-08-21,,,,,,,False,,,,,,,heute noch keine vollstaendige Settle-Range (vor 09:00 Berlin?)

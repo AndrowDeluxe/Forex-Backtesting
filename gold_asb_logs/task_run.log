@@ -708,3 +708,14 @@
 2026-08-23 22:00:03 
 2026-08-23 22:00:03 Aktuellstes Fenster: 2026-08-21T01:00:00-04:00 -- Fenster bereits ueberlaufen
 2026-08-23 22:00:03 Gespeichert: C:\Users\andre\Forex-Backtesting\gold_asb_logs\daily_log.csv
+2026-08-23 22:00:04 [main f13a505] Gold ASB Scan: Snapshot 2026-08-23 22:00
+2026-08-23 22:00:04  1 file changed, 10 insertions(+)
+2026-08-23 22:00:06 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-23 22:00:06    0ab7b67..f13a505  main -> main
+2026-08-23 22:00:06 Commit + Push erfolgreich.
+2026-08-23 22:00:06 === Gold-ASB-Scan-Task beendet ===
+2026-08-23 23:00:02 === Gold-ASB-Scan-Task gestartet ===
+2026-08-23 23:00:03 Gold ASB (BeyondIQCapital Demo/Eval): 9 Fenster gelesen (C:\Users\andre\GoldASB-MT5-Bridge\state\goldasb_beyondiq.sqlite3).
+2026-08-23 23:00:03 
+2026-08-23 23:00:04 Aktuellstes Fenster: 2026-08-21T01:00:00-04:00 -- Fenster bereits ueberlaufen
+2026-08-23 23:00:04 Gespeichert: C:\Users\andre\Forex-Backtesting\gold_asb_logs\daily_log.csv

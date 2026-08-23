@@ -698,3 +698,13 @@
 2026-08-23 21:30:45 
 2026-08-23 21:30:45 Aktuellstes Fenster: 2026-08-21T01:00:00-04:00 -- Fenster bereits ueberlaufen
 2026-08-23 21:30:45 Gespeichert: C:\Users\andre\Forex-Backtesting\gold_asb_logs\daily_log.csv
+2026-08-23 21:30:45 [main a48c6dc] Gold ASB Scan: Snapshot 2026-08-23 21:30
+2026-08-23 21:30:45  1 file changed, 11 insertions(+)
+2026-08-23 21:30:46 fatal: unable to access 'https://github.com/AndrowDeluxe/Forex-Backtesting.git/': Could not resolve host: github.com
+2026-08-23 21:30:46 WARNUNG: git push fehlgeschlagen (Exit 128) - Commit liegt lokal vor, aber Streamlit Cloud zeigt ihn NICHT bis zum naechsten erfolgreichen Push.
+2026-08-23 21:30:46 === Gold-ASB-Scan-Task beendet ===
+2026-08-23 22:00:02 === Gold-ASB-Scan-Task gestartet ===
+2026-08-23 22:00:03 Gold ASB (BeyondIQCapital Demo/Eval): 9 Fenster gelesen (C:\Users\andre\GoldASB-MT5-Bridge\state\goldasb_beyondiq.sqlite3).
+2026-08-23 22:00:03 
+2026-08-23 22:00:03 Aktuellstes Fenster: 2026-08-21T01:00:00-04:00 -- Fenster bereits ueberlaufen
+2026-08-23 22:00:03 Gespeichert: C:\Users\andre\Forex-Backtesting\gold_asb_logs\daily_log.csv

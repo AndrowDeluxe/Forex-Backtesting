@@ -1,2 +1,2 @@
 market,ticker,scan_date,close,lower_band,entry,sl,tp,tp_price,risk_pct_price,position_size_pct,regime_ok,tradeable,position_size_concentrated_pct,scanned_at
-"S&P 500 (volles Universum, 420 Ticker)",TJX,2026-08-21,140.53,141.67,140.53,121.44,169.16,169.16,13.58,7.36,True,True,12.5,2026-08-24T20:35:20
+"S&P 500 (volles Universum, 420 Ticker)",TJX,2026-08-21,140.53,141.67,140.53,121.44,169.16,169.16,13.58,7.36,True,True,12.5,2026-08-24T21:35:22

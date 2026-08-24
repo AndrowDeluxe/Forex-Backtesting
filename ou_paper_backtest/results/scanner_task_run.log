@@ -1634,3 +1634,43 @@
 2026-08-21 21:36:00 S&P 500 (volles Universum, 420 Ticker)    TJX 2026-08-20 140.69      144.11 140.69 124.27 165.31    165.31           11.67               8.57       True       True                            12.5 2026-08-21T21:36:00
 2026-08-21 21:36:00 S&P 500 (volles Universum, 420 Ticker)    UAL 2026-08-20 111.71      112.85 111.71  95.39 136.19    136.19           14.61               6.84       True       True                            12.5 2026-08-21T21:36:00
 2026-08-21 21:36:00 S&P 500 (volles Universum, 420 Ticker)    WFC 2026-08-20  83.70       83.78  83.70  79.10  90.60     90.60            5.50              18.19       True       True                            12.5 2026-08-21T21:36:00
+2026-08-21 21:36:00 [main 418f81b] OU-Modell Scanner: Snapshot 2026-08-21 21:36
+2026-08-21 21:36:00  2 files changed, 28 insertions(+), 5 deletions(-)
+2026-08-21 21:36:03 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-21 21:36:03    6ab3329..418f81b  main -> main
+2026-08-21 21:36:03 Commit + Push erfolgreich.
+2026-08-21 21:36:03 === Scanner-Task beendet ===
+2026-08-24 14:58:32 === Scanner-Task gestartet ===
+2026-08-24 14:59:29 $RL: possibly delisted; no price data found  (1d 2025-07-20 -> 2026-08-24)
+2026-08-24 14:59:29 System.Management.Automation.RemoteException
+2026-08-24 14:59:29 1 Failed download:
+2026-08-24 14:59:29 ['RL']: possibly delisted; no price data found  (1d 2025-07-20 -> 2026-08-24)
+2026-08-24 14:59:29 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-08-24 14:59:29 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-08-24 14:59:29 Traceback (most recent call last):
+2026-08-24 14:59:29   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+2026-08-24 14:59:29     return self._engine.get_loc(casted_key)
+2026-08-24 14:59:29            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+2026-08-24 14:59:29   File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+2026-08-24 14:59:29   File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+2026-08-24 14:59:29   File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+2026-08-24 14:59:29   File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+2026-08-24 14:59:29 KeyError: 'RL'
+2026-08-24 14:59:29 System.Management.Automation.RemoteException
+2026-08-24 14:59:29 The above exception was the direct cause of the following exception:
+2026-08-24 14:59:29 System.Management.Automation.RemoteException
+2026-08-24 14:59:29 Traceback (most recent call last):
+2026-08-24 14:59:29   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 195, in <module>
+2026-08-24 14:59:29     main()
+2026-08-24 14:59:29     ~~~~^^
+2026-08-24 14:59:29   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 170, in main
+2026-08-24 14:59:29     all_signals.append(scan_market(market_key))
+2026-08-24 14:59:29                        ~~~~~~~~~~~^^^^^^^^^^^^
+2026-08-24 14:59:29   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 112, in scan_market
+2026-08-24 14:59:29     price = panel[t].dropna()
+2026-08-24 14:59:30             ~~~~~^^^
+2026-08-24 14:59:30   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+2026-08-24 14:59:30     indexer = self.columns.get_loc(key)
+2026-08-24 14:59:30   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+2026-08-24 14:59:30     raise KeyError(key) from err
+2026-08-24 14:59:30 KeyError: 'RL'

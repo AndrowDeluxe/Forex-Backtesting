@@ -1,0 +1,27 @@
+===== run_20260824_201901.log =====
+2026-08-24 20:19:01,814 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260824_201901.log ===
+2026-08-24 20:19:09,781 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 17 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -17.30.
+2026-08-24 20:19:09,783 CRITICAL executor: HALTEDAUER-WARNUNG: Position EBAY (Ticket 250373528) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 12.59.
+2026-08-24 20:19:09,791 CRITICAL run_once.konto3_tickmill: 2 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 17, 'profit': -17.3}, {'ticket': 250373528, 'symbol': 'EBAY', 'holding_days': 12, 'profit': 12.59}]
+2026-08-24 20:19:10,305 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-24 20:19:10,308 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260824_203556.log =====
+2026-08-24 20:35:56,959 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260824_203556.log ===
+2026-08-24 20:35:57,001 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 17 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -17.66.
+2026-08-24 20:35:57,003 CRITICAL executor: HALTEDAUER-WARNUNG: Position EBAY (Ticket 250373528) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 12.77.
+2026-08-24 20:35:57,009 CRITICAL run_once.konto3_tickmill: 2 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 17, 'profit': -17.66}, {'ticket': 250373528, 'symbol': 'EBAY', 'holding_days': 12, 'profit': 12.77}]
+2026-08-24 20:35:57,201 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-24 20:35:57,204 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260824_213558.log =====
+2026-08-24 21:35:58,482 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260824_213558.log ===
+2026-08-24 21:35:58,718 INFO executor: SL für EBAY (Ticket 250373528) auf Break-Even (103.7300) gesetzt.
+2026-08-24 21:35:58,726 INFO run_once.konto3_tickmill: Break-Even-Management: [{'status': 'moved', 'ticket': 250373528, 'symbol': 'EBAY', 'sl': 103.73}]
+2026-08-24 21:35:58,727 CRITICAL executor: HALTEDAUER-WARNUNG: Position REG (Ticket 247633647) ist seit 17 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -19.21.
+2026-08-24 21:35:58,729 CRITICAL executor: HALTEDAUER-WARNUNG: Position EBAY (Ticket 250373528) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 14.49.
+2026-08-24 21:35:58,736 CRITICAL run_once.konto3_tickmill: 2 Position(en) über Haltedauer-Limit: [{'ticket': 247633647, 'symbol': 'REG', 'holding_days': 17, 'profit': -19.21}, {'ticket': 250373528, 'symbol': 'EBAY', 'holding_days': 12, 'profit': 14.49}]
+2026-08-24 21:35:58,882 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-24 21:35:58,884 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===

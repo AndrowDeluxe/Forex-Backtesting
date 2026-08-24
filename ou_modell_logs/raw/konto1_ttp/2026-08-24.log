@@ -1,0 +1,27 @@
+===== run_20260824_201843.log =====
+2026-08-24 20:18:43,434 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260824_201843.log ===
+2026-08-24 20:18:52,842 CRITICAL executor: HALTEDAUER-WARNUNG: Position CVS (Ticket 17795619) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -69.44.
+2026-08-24 20:18:52,846 CRITICAL executor: HALTEDAUER-WARNUNG: Position EBAY (Ticket 17850072) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 105.45.
+2026-08-24 20:18:52,855 CRITICAL run_once.konto1_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17795619, 'symbol': 'CVS', 'holding_days': 14, 'profit': -69.44}, {'ticket': 17850072, 'symbol': 'EBAY', 'holding_days': 12, 'profit': 105.45}]
+2026-08-24 20:18:53,120 ERROR run_once.konto1_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-24 20:18:53,123 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260824_203556.log =====
+2026-08-24 20:35:56,088 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260824_203556.log ===
+2026-08-24 20:35:56,133 CRITICAL executor: HALTEDAUER-WARNUNG: Position CVS (Ticket 17795619) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -69.12.
+2026-08-24 20:35:56,135 CRITICAL executor: HALTEDAUER-WARNUNG: Position EBAY (Ticket 17850072) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 108.04.
+2026-08-24 20:35:56,141 CRITICAL run_once.konto1_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17795619, 'symbol': 'CVS', 'holding_days': 14, 'profit': -69.12}, {'ticket': 17850072, 'symbol': 'EBAY', 'holding_days': 12, 'profit': 108.04}]
+2026-08-24 20:35:56,328 ERROR run_once.konto1_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-24 20:35:56,329 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260824_213557.log =====
+2026-08-24 21:35:57,253 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260824_213557.log ===
+2026-08-24 21:35:57,478 INFO executor: SL für EBAY (Ticket 17850072) auf Break-Even (103.7700) gesetzt.
+2026-08-24 21:35:57,487 INFO run_once.konto1_ttp: Break-Even-Management: [{'status': 'moved', 'ticket': 17850072, 'symbol': 'EBAY', 'sl': 103.77}]
+2026-08-24 21:35:57,489 CRITICAL executor: HALTEDAUER-WARNUNG: Position CVS (Ticket 17795619) ist seit 14 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -60.16.
+2026-08-24 21:35:57,491 CRITICAL executor: HALTEDAUER-WARNUNG: Position EBAY (Ticket 17850072) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 122.47.
+2026-08-24 21:35:57,496 CRITICAL run_once.konto1_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17795619, 'symbol': 'CVS', 'holding_days': 14, 'profit': -60.16}, {'ticket': 17850072, 'symbol': 'EBAY', 'holding_days': 12, 'profit': 122.47}]
+2026-08-24 21:35:57,736 ERROR run_once.konto1_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-24 21:35:57,739 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===

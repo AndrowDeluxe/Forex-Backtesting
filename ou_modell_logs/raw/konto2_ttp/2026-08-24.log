@@ -1,0 +1,36 @@
+===== run_20260824_201853.log =====
+2026-08-24 20:18:53,308 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260824_201853.log ===
+2026-08-24 20:19:01,155 CRITICAL executor: HALTEDAUER-WARNUNG: Position AIG (Ticket 17874757) ist seit 11 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 28.42.
+2026-08-24 20:19:01,157 CRITICAL executor: HALTEDAUER-WARNUNG: Position EBAY (Ticket 17874758) ist seit 11 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 80.96.
+2026-08-24 20:19:01,166 CRITICAL run_once.konto2_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17874757, 'symbol': 'AIG', 'holding_days': 11, 'profit': 28.42}, {'ticket': 17874758, 'symbol': 'EBAY', 'holding_days': 11, 'profit': 80.96}]
+2026-08-24 20:19:01,439 INFO run_once.konto2_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-24 20:19:01,444 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100339.71, aktueller Drawdown 0.00% (Limit 2.0%)
+2026-08-24 20:19:01,453 INFO executor: Für TJX ist bereits eine Position offen (Ticket 17997117) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-24 20:19:01,454 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'TJX', 'direction': 'Long', 'entry': 140.53, 'sl': 121.44, 'tp': 169.16}}
+2026-08-24 20:19:01,455 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260824_203556.log =====
+2026-08-24 20:35:56,525 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260824_203556.log ===
+2026-08-24 20:35:56,566 CRITICAL executor: HALTEDAUER-WARNUNG: Position AIG (Ticket 17874757) ist seit 11 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 24.36.
+2026-08-24 20:35:56,568 CRITICAL executor: HALTEDAUER-WARNUNG: Position EBAY (Ticket 17874758) ist seit 11 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 82.50.
+2026-08-24 20:35:56,575 CRITICAL run_once.konto2_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17874757, 'symbol': 'AIG', 'holding_days': 11, 'profit': 24.36}, {'ticket': 17874758, 'symbol': 'EBAY', 'holding_days': 11, 'profit': 82.5}]
+2026-08-24 20:35:56,729 INFO run_once.konto2_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-24 20:35:56,732 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100339.71, aktueller Drawdown 0.00% (Limit 2.0%)
+2026-08-24 20:35:56,738 INFO executor: Für TJX ist bereits eine Position offen (Ticket 17997117) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-24 20:35:56,738 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'TJX', 'direction': 'Long', 'entry': 140.53, 'sl': 121.44, 'tp': 169.16}}
+2026-08-24 20:35:56,739 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260824_213557.log =====
+2026-08-24 21:35:57,956 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260824_213557.log ===
+2026-08-24 21:35:58,129 INFO executor: SL für EBAY (Ticket 17874758) auf Break-Even (102.9400) gesetzt.
+2026-08-24 21:35:58,140 INFO run_once.konto2_ttp: Break-Even-Management: [{'status': 'moved', 'ticket': 17874758, 'symbol': 'EBAY', 'sl': 102.94}]
+2026-08-24 21:35:58,143 CRITICAL executor: HALTEDAUER-WARNUNG: Position AIG (Ticket 17874757) ist seit 11 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 34.22.
+2026-08-24 21:35:58,145 CRITICAL executor: HALTEDAUER-WARNUNG: Position EBAY (Ticket 17874758) ist seit 11 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 91.30.
+2026-08-24 21:35:58,153 CRITICAL run_once.konto2_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17874757, 'symbol': 'AIG', 'holding_days': 11, 'profit': 34.22}, {'ticket': 17874758, 'symbol': 'EBAY', 'holding_days': 11, 'profit': 91.3}]
+2026-08-24 21:35:58,283 INFO run_once.konto2_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-24 21:35:58,286 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100339.71, aktueller Drawdown -0.02% (Limit 2.0%)
+2026-08-24 21:35:58,303 INFO executor: Für TJX ist bereits eine Position offen (Ticket 17997117) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-24 21:35:58,303 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'TJX', 'direction': 'Long', 'entry': 140.53, 'sl': 121.44, 'tp': 169.16}}
+2026-08-24 21:35:58,304 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===

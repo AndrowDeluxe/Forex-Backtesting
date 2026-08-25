@@ -101,10 +101,21 @@ def generate_signal(
     trade_long: bool = TRADE_LONG,
     trade_short: bool = TRADE_SHORT,
     adx_min: float | None = None,
+    vol_window: int | None = None,
+    vol_quantile: float | None = None,
 ) -> pd.DataFrame:
     """`adx_min` is an optional, off-by-default research-only trend-strength
     floor (not part of the live bot), same pattern as
-    `mt5_trend_pullback.pipeline.generate_signal`."""
+    `mt5_trend_pullback.pipeline.generate_signal`.
+
+    `vol_window`+`vol_quantile`: a causal, NORMALIZED volatility floor --
+    ATR as a fraction of price (atr/close, not raw dollar-ATR) must be >= its
+    own trailing `vol_window`-bar rolling `vol_quantile` quantile. Normalized
+    deliberately: an earlier raw-dollar-ATR version of this idea on the
+    Gold/Silber-Divergenz bot turned out to be an artifact of gold's own
+    secular price rise (see knowledge/projects/mt5-gold-silber-divergenz.md)
+    -- FX majors don't drift that much, but normalizing costs nothing and
+    avoids repeating the same mistake."""
     df = compute_adx(df, n=atr_len)  # populates df["adx"] for simulate_trades' per-trade record; df["atr"] overwritten below by the bot-exact one
 
     df["ema_trend"] = _ema(df["close"], trend_len)
@@ -131,6 +142,12 @@ def generate_signal(
     if adx_min is not None:
         long_sig &= df["adx"] >= adx_min
         short_sig &= df["adx"] >= adx_min
+    if vol_window is not None and vol_quantile is not None:
+        atr_pct = df["atr"] / df["close"]
+        atr_pct_threshold = atr_pct.rolling(vol_window, min_periods=max(vol_window // 2, 1)).quantile(vol_quantile)
+        vol_ok = atr_pct >= atr_pct_threshold
+        long_sig &= vol_ok
+        short_sig &= vol_ok
     if not trade_long:
         long_sig = long_sig & False
     if not trade_short:
@@ -159,9 +176,12 @@ def run_pipeline(
     trade_long: bool = TRADE_LONG,
     trade_short: bool = TRADE_SHORT,
     adx_min: float | None = None,
+    vol_window: int | None = None,
+    vol_quantile: float | None = None,
 ) -> pd.DataFrame:
     return generate_signal(
         df, trend_len=trend_len, rsi_len=rsi_len, rsi_oversold=rsi_oversold,
         trend_buffer_atr=trend_buffer_atr, atr_len=atr_len,
         trade_long=trade_long, trade_short=trade_short, adx_min=adx_min,
+        vol_window=vol_window, vol_quantile=vol_quantile,
     )

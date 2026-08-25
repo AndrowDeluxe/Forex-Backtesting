@@ -95,3 +95,72 @@ strukturellen Edge, wo keiner ist.
 
 **Verknuepfung**: [[mt5-haupt-bot-trend-pullback]], [[mt5-gold-silber-divergenz]]
 (die anderen beiden Bots desselben Pakets), [[backtest-standard-process]].
+
+## Nachtrag 2026-08-25 -- Phase 5 (Optimierung), 9 Hebel getestet, NICHT integriert
+
+Auf Nutzer-Wunsch ("gehe alle Optimierungsfaktoren durch") systematisch alle
+Standard-Bausteine + strategie-eigenen Parameter durchgetestet, gleiche
+Disziplin wie bei [[mt5-gold-silber-divergenz]] (nur auf IS 2016-2022
+gewaehlt, unveraendert auf OOS 2023-2026 geprueft). Code:
+`scripts/research_mt5_david_v2_optimization.py` (Pass 1-3),
+`scripts/research_mt5_david_v2_final_phase6.py` (volle Phase-6-Runde auf der
+finalen Kombi). Neuer optionaler `vol_window`/`vol_quantile`-Parameter in
+`mt5_david_v2/pipeline.py` (Default `None`/aus -- Bot-Original-Signal-
+Paritaet bleibt unveraendert erhalten).
+
+**Bottleneck-Diagnose vorab** (gepoolt ueber alle 4 Maerkte, IS): ADX-Regime
+zeigt KEINEN Unterschied (high_adx PF=0.85 == low_adx PF=0.85, anders als
+beim Haupt-Bot). Long schlaegt Short in 3 von 4 Maerkten. Eine NORMIERTE
+Volatilitaets-Zerlegung (ATR/Preis, nicht roher Dollar-ATR -- Lektion aus
+dem verworfenen Bot-3-Artefakt) zeigt einen echten Effekt: Hoch-Vol-Tertile
+PF~1.10-1.13 vs. Niedrig/Mittel-Vol PF~0.53-0.88.
+
+**9 getestete Hebel**:
+
+| # | Hebel | Ergebnis |
+|---|---|---|
+| 1 | ADX-Filter | kein Effekt -- nicht weiterverfolgt |
+| 2 | Vol-Filter (`vol_window=1000, vol_quantile=0.7`, normiert) | **haelt IS->OOS** (Sharpe -0.19->+0.11 OOS, MaxDD -30.3%->-14.3%) |
+| 3 | Stop/RR-Sweep (auf Vol-Filter-Config) | **Overfitting**: IS-Sharpe 0.59 (stop=1.5/rr=1.0), OOS faellt auf ~0.00 (PF<1.0) -- VERWORFEN |
+| 4 | RSI_OVERSOLD x TREND_LEN-Sweep | Top-1 (rsi=45/trend_len=50) **Overfitting**: IS 0.58->OOS -0.90 -- VERWORFEN. Naechstbeste mit unveraendertem trend_len=200 (rsi_oversold=30 statt 35) **haelt IS->OOS** (0.43->0.29) -- UEBERNOMMEN |
+| 5 | Session-/Zeitfenster-Filter (Entry-Stunde/Session-Bucket) | Beste IS-Session (Asien) **Overfitting**: IS-PF 1.10 -> OOS-PF 0.60 (schlechter als gar kein Filter) -- VERWORFEN |
+| 6 | Kalman-Denoised-Slope-Bestaetigung (`strategy/kalman_filter.py`) | Stichprobe zu duenn (n=3-14 IS nach Kombination mit Vol-Filter) -- nicht beurteilbar, VERWORFEN |
+| 7 | MTF-EMA-Ribbon-Filter (`strategy/mtf_ema_ribbon.py`, 4H/1D/1W/1D-Stack) | **Overfitting**: IS 0.41 (kaum Aenderung) -> OOS -0.89 -- VERWORFEN |
+| 8 | CB-Event-Window-Filter (`bond_yield_indicator/calendar.py`, FOMC/ECB/BOE/BOJ +-1 Tag) | Scheitert schon auf IS selbst (Sharpe -0.11, schlechter als ohne Filter) -- VERWORFEN |
+| 9 | Cross-Vote-Filter (`cls_cross_filter.py`) | Nicht getestet -- war fuer eine ANDERE Strategie (CLS Practical) bereits ohne Mehrwert getestet, niedrige Prioritaet |
+
+**Finale gechainte Config** (Hebel 2 + 4): `trade_short=True` (unveraendert),
+`vol_window=1000, vol_quantile=0.7, rsi_oversold=30.0, trend_len=200`
+(unveraendert), Stop/RR unveraendert (1.5/2.0).
+
+**Trade-Ebene** (gepoolt, Walk-Forward): **erstmals alle 3 Perioden
+positiv** -- 2016-2019 Sharpe +0.55, 2019-2022 +0.61, 2022-2026 +0.22.
+
+**Aber Portfolio-Ebene bleibt negativ** -- der entscheidende Befund dieser
+gesamten Runde: Monte-Carlo-Simulation mit echten Positionsgroessen (0.5%
+Risiko, max. 3 gleichzeitige Positionen ueber die 4 Maerkte, letzte
+Sub-Periode 2022-2026): realer Pfad endet bei $90.857 (Verlust von
+$100.000), **Median-Sharpe -0.39** (sogar schlechter als beim Vol-Filter
+allein, -0.13), P(MaxDD>10%)=78%. Kosten-Sensitivitaet bestaetigt: GBPUSD/
+USDJPY bereits unter der angenommenen Kostenannahme unprofitabel (Sicherheits-
+faktor 0.5x/0.7x), nur EURUSD (0.7x, besser als vorher aber immer noch <1)
+und Gold (n=12, zu duenn) zeigen ueberhaupt einen Puffer.
+
+**Interpretation**: anders als bei [[mt5-gold-silber-divergenz]] (1 Markt, 1
+Position, Trade-Ebene = Portfolio-Ebene) laufen bei David-V2 Trade-Ebene und
+Portfolio-Ebene systematisch auseinander -- ein Hinweis, dass das Problem
+weniger an der Entry-Signal-Qualitaet liegt als an der Portfolio-Konstruktion
+selbst (4 korrelierte Maerkte teilen sich 3 Slots; welche Trades durch die
+Concurrency-Kappe fallen, haengt von der Eintreffensreihenfolge ab, nicht
+von der Signal-Qualitaet). Das waere eine andere Art Folgearbeit
+(Portfolio-Konstruktion, nicht Signal-Sweep) -- auf Nutzer-Entscheidung
+NICHT weiterverfolgt (2026-08-25: "Gut wir lassen das und integrieren nur
+Bot 3").
+
+**Endgueltiges Fazit**: David-V2 bleibt NICHT fuer Live-/Demo-Betrieb
+empfohlen, auch nach erschoepfender Phase-5-Optimierung (9 Hebel, davon 2
+mit echtem, validiertem Trade-Level-Edge). Kein Dashboard-Tab, keine
+Aenderung an den Pipeline-Defaults -- `mt5_david_v2/pipeline.py`s neue
+`vol_window`/`vol_quantile`-Parameter bleiben als dokumentierter, aber nicht
+aktivierter Baustein im Code (Default `None`), fuer den Fall, dass der
+Portfolio-Konstruktions-Winkel spaeter aufgegriffen wird.

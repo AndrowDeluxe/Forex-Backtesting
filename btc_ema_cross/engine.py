@@ -139,7 +139,8 @@ def simulate_ema_cross_ls(df: pd.DataFrame, fast: int, slow: int, allow_short: b
 
 def simulate_risk_sized(df: pd.DataFrame, fast: int, slow: int, capital: float,
                          risk_pct: float, atr_period: int = ATR_PERIOD, atr_stop_mult: float = ATR_STOP_MULT,
-                         be_trigger_r: float | None = None, sim_from: pd.Timestamp | None = None) -> dict:
+                         be_trigger_r: float | None = None, sim_from: pd.Timestamp | None = None,
+                         extra_cost_bps: float = 0.0) -> dict:
     """Long/flat EMA crossover with dollar position sizing: each entry risks
     `risk_pct` of CURRENT equity against an ATR(atr_period)*atr_stop_mult
     stop, one position at a time, no leverage (position notional capped at
@@ -152,7 +153,17 @@ def simulate_risk_sized(df: pd.DataFrame, fast: int, slow: int, capital: float,
     (measured off the PRIOR bar's close) reaches be_trigger_r * initial stop
     distance, the stop moves to raw entry price. Finding (2026-08-14): barely
     moves CAGR but cuts win rate hard (many trades that would have recovered
-    get stopped at breakeven first) - not recommended as a default."""
+    get stopped at breakeven first) - not recommended as a default.
+
+    `extra_cost_bps` (added 2026-08-22, Phase-6-Audit p6_3 gap): the ONLY cost
+    modeled anywhere in this engine was the fixed COMMISSION=0.1%/side above -
+    no slippage/spread sweep ever existed, despite the page's own text saying
+    "Slippage: nicht modelliert". This adds an ADDITIONAL round-trip cost in
+    basis points on top of that already-baked-in commission, applied the same
+    way (multiplicatively on entry/exit fill price). Default 0.0 reproduces
+    the exact prior behavior (regression-verified) - use it to sweep how much
+    slippage margin exists beyond the realistic 20bps/round-trip commission
+    already assumed by default."""
     close, open_, low = df["close"], df["open"], df["low"]
     ema_fast = close.ewm(span=fast, adjust=False).mean()
     ema_slow = close.ewm(span=slow, adjust=False).mean()
@@ -190,15 +201,17 @@ def simulate_risk_sized(df: pd.DataFrame, fast: int, slow: int, capital: float,
                 stop_price = raw_entry_price
                 be_moved = True
 
+        extra_frac = extra_cost_bps / 10_000
+
         if in_pos and go_flat[i - 1]:
-            exit_fill = open_.iloc[i] * (1 - COMMISSION)
+            exit_fill = open_.iloc[i] * (1 - COMMISSION - extra_frac)
             pnl = qty * (exit_fill - entry_price)
             trades.append({"pnl": pnl, "r": pnl / trade_risk_dollar, "stopped_out": False,
                             "entry_date": entry_date, "exit_date": df.index[i]})
             cash += qty * exit_fill
             qty, in_pos, exited_today = 0.0, False, True
         elif in_pos and low.iloc[i] <= stop_price:
-            exit_fill = stop_price * (1 - COMMISSION)
+            exit_fill = stop_price * (1 - COMMISSION - extra_frac)
             pnl = qty * (exit_fill - entry_price)
             trades.append({"pnl": pnl, "r": pnl / trade_risk_dollar, "stopped_out": True,
                             "entry_date": entry_date, "exit_date": df.index[i]})
@@ -207,7 +220,7 @@ def simulate_risk_sized(df: pd.DataFrame, fast: int, slow: int, capital: float,
 
         if not in_pos and not exited_today and go_long[i - 1] and pd.notna(atr.iloc[i - 1]):
             raw_entry = open_.iloc[i]
-            entry_fill = raw_entry * (1 + COMMISSION)
+            entry_fill = raw_entry * (1 + COMMISSION + extra_frac)
             stop_dist = atr_stop_mult * atr.iloc[i - 1]
             if stop_dist > 0:
                 target_qty = (cash * risk_pct) / stop_dist

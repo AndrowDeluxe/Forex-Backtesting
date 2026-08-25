@@ -1,0 +1,93 @@
+{
+  "config": {
+    "fast": 9,
+    "slow": 21,
+    "capital": 100000.0,
+    "risk_pct": 0.01,
+    "atr_period": 14,
+    "atr_stop_mult": 2.0,
+    "oos_split": "2023-12-10",
+    "data_end": "2026-08-24",
+    "baked_in_commission_bps_round_trip": 20.0
+  },
+  "baseline_oos": {
+    "end_equity": 112026.48044726563,
+    "cagr_pct": 4.2832949892346095,
+    "max_dd_pct": -5.988332050375844,
+    "n_trades": 22
+  },
+  "sweep": [
+    {
+      "extra_cost_bps": 0,
+      "total_cost_bps": 20,
+      "end_equity": 112026.48,
+      "cagr_pct": 4.28,
+      "max_dd_pct": -5.99
+    },
+    {
+      "extra_cost_bps": 10,
+      "total_cost_bps": 30,
+      "end_equity": 111244.07,
+      "cagr_pct": 4.01,
+      "max_dd_pct": -6.39
+    },
+    {
+      "extra_cost_bps": 20,
+      "total_cost_bps": 40,
+      "end_equity": 110466.87,
+      "cagr_pct": 3.74,
+      "max_dd_pct": -6.79
+    },
+    {
+      "extra_cost_bps": 30,
+      "total_cost_bps": 50,
+      "end_equity": 109694.85,
+      "cagr_pct": 3.48,
+      "max_dd_pct": -7.18
+    },
+    {
+      "extra_cost_bps": 40,
+      "total_cost_bps": 60,
+      "end_equity": 108927.97,
+      "cagr_pct": 3.21,
+      "max_dd_pct": -7.62
+    },
+    {
+      "extra_cost_bps": 50,
+      "total_cost_bps": 70,
+      "end_equity": 108166.21,
+      "cagr_pct": 2.94,
+      "max_dd_pct": -8.09
+    },
+    {
+      "extra_cost_bps": 75,
+      "total_cost_bps": 95,
+      "end_equity": 106283.98,
+      "cagr_pct": 2.28,
+      "max_dd_pct": -9.27
+    },
+    {
+      "extra_cost_bps": 100,
+      "total_cost_bps": 120,
+      "end_equity": 104433.01,
+      "cagr_pct": 1.61,
+      "max_dd_pct": -10.43
+    },
+    {
+      "extra_cost_bps": 150,
+      "total_cost_bps": 170,
+      "end_equity": 100822.87,
+      "cagr_pct": 0.3,
+      "max_dd_pct": -12.71
+    },
+    {
+      "extra_cost_bps": 200,
+      "total_cost_bps": 220,
+      "end_equity": 97331.95,
+      "cagr_pct": -0.99,
+      "max_dd_pct": -14.93
+    }
+  ],
+  "breakeven_extra_bps": 161.7,
+  "breakeven_total_bps": 181.7
+}

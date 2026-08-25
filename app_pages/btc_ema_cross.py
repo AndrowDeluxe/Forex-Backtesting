@@ -12,6 +12,7 @@ and a BTC+ETH+SOL diversification test (tested, not adopted - see
 knowledge/resources/trend-following-momentum.md for the full research log).
 """
 
+import json
 from pathlib import Path
 
 import pandas as pd
@@ -88,12 +89,13 @@ with st.sidebar:
     )
     st.caption(f"Datenquelle: Binance BTCUSDT Daily, {FULL_START} bis {END} (gecacht).")
 
-tab_components, tab_backtest, tab_risk, tab_tested = st.tabs(
+tab_components, tab_backtest, tab_risk, tab_tested, tab_cost = st.tabs(
     [
         ":material/school: Strategiebestandteile",
         ":material/query_stats: Backtest",
         ":material/shield: Risk Management",
         ":material/science: Getestet, nicht übernommen",
+        ":material/payments: Kosten-Sensitivität",
     ],
     on_change="rerun",
 )
@@ -121,7 +123,8 @@ def _render_tab_components():
     st.markdown("### Kosten & Annahmen")
     st.markdown(
         f"- Kommission: **{COMMISSION:.2%} pro Seite** (Ein- und Ausstieg), matched das Sheet\n"
-        "- Slippage: nicht modelliert\n"
+        "- Slippage: nicht modelliert -- Kosten-Sensitivitaets-Sweep siehe Tab \"Kosten-Sensitivität\" "
+        "(Breakeven ~182bps Round-Trip gesamt, nachgeholt 2026-08-22)\n"
         "- Datenquelle: Binance Spot-Klines (`auction_playbook.data.fetch_klines`), UTC\n"
         f"- Volle Historie: {FULL_START} (Binance-Listing) bis {END}"
     )
@@ -534,6 +537,61 @@ def _render_tab_tested():
         icon=":material/lightbulb:",
     )
 
+# =============================================================================
+# Tab: Kosten-Sensitivität
+# =============================================================================
+def _render_tab_cost():
+    st.markdown("## :material/payments: Kosten-Sensitivität")
+    cost_path = Path(__file__).resolve().parents[1] / "btc_ema_cross" / "results" / "cost_sensitivity.json"
+    if not cost_path.exists():
+        st.info("Kosten-Sensitivitätsdaten noch nicht committed.", icon=":material/info:")
+        return
+    data = json.loads(cost_path.read_text(encoding="utf-8"))
+    base = data["baseline_oos"]
+
+    st.error(
+        "**Phase-6-Audit-Fund (2026-08-22):** bis zu diesem Nachtrag war die einzige je modellierte "
+        f"Kostengröße die feste {COMMISSION:.1%}/Seite-Kommission (={data['config']['baked_in_commission_bps_round_trip']:.0f}bps "
+        "Round-Trip) - Slippage stand explizit als \"nicht modelliert\" auf der Seite, ohne dass je "
+        "getestet wurde, wie viel Puffer bis zum Breakeven-Punkt tatsächlich besteht. Nachgeholt: ein "
+        "optionaler `extra_cost_bps`-Parameter in `simulate_risk_sized` (Default 0, byte-identisch zum "
+        "bisherigen Verhalten, regressionsgeprüft), der zusätzliche Kosten oben auf die bestehende "
+        "Kommission draufschlägt.",
+        icon=":material/report:",
+    )
+
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("CAGR (nur Kommission)", f"{base['cagr_pct']:+.2f}%")
+    c2.metric("MaxDD (nur Kommission)", f"{base['max_dd_pct']:.2f}%")
+    c3.metric("N Trades (OOS)", base["n_trades"])
+    c4.metric("Breakeven (Extra-Kosten)", f"~{data['breakeven_extra_bps']:.0f} bps" if data["breakeven_extra_bps"] else "> 300bps")
+
+    st.markdown("### Zusätzliche Kosten oben auf die bestehende 20bps-Kommission (OOS-Fenster)")
+    sweep_df = pd.DataFrame(data["sweep"])[["extra_cost_bps", "total_cost_bps", "end_equity", "cagr_pct", "max_dd_pct"]]
+    st.dataframe(
+        sweep_df.rename(columns={"extra_cost_bps": "Extra-Kosten (bps)", "total_cost_bps": "Kosten gesamt (bps)",
+                                  "end_equity": "Endkapital", "cagr_pct": "CAGR %", "max_dd_pct": "MaxDD %"}),
+        hide_index=True, use_container_width=True, height=(len(sweep_df) + 1) * 36,
+        column_config={"Endkapital": st.column_config.NumberColumn(format="$%.0f")},
+    )
+    st.success(
+        f"**Bestanden mit komfortablem, aber relativierten Puffer:** Breakeven liegt bei ca. "
+        f"{data['breakeven_extra_bps']:.0f}bps zusätzlichen Kosten (~{data['breakeven_total_bps']:.0f}bps Round-Trip "
+        "insgesamt) - deutlich über realistischen Krypto-Börsenkosten (meist 10-30bps Round-Trip auf "
+        "liquiden BTC-Spot-/Futures-Maerkten). Der relativierende Faktor ist nicht die Kosten-Marge "
+        f"selbst, sondern die duenne Basis: nur {base['n_trades']} Trades im OOS-Fenster bei "
+        f"{base['cagr_pct']:+.1f}% CAGR - dieselbe kleine Stichprobe, die schon die Kelly-Schaetzung "
+        "fuer diese Strategie als instabil markiert hat (siehe Vorbehalte-Tab Portfolio-Konstruktion). "
+        "Der Kosten-Puffer ist real, aber auf einer duennen Datenbasis gemessen.",
+        icon=":material/verified:",
+    )
+    st.caption(
+        f"Konfiguration: EMA{data['config']['fast']}/{data['config']['slow']}, "
+        f"ATR({data['config']['atr_period']})x{data['config']['atr_stop_mult']}-Stop, "
+        f"{data['config']['risk_pct']*100:.0f}% Risiko/Trade, OOS-Split {data['config']['oos_split']} "
+        f"bis {data['config']['data_end']}."
+    )
+
 
 # ============================================================ Lazy dispatch
 # st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
@@ -547,6 +605,7 @@ for _tab, _render in [
     (tab_backtest, _render_tab_backtest),
     (tab_risk, _render_tab_risk),
     (tab_tested, _render_tab_tested),
+    (tab_cost, _render_tab_cost),
 ]:
     if _tab.open:
         with _tab:

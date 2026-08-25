@@ -1053,9 +1053,10 @@ def _render_tab_ekv2():
     ref, ro = d["reference"], d["riskopt_20dd"]
 
     st.caption(
-        "Realistische EK-Neubewertung: ORB und Gold-Bitcoin Dual Momentum entfernt (siehe Begruendung unten), "
-        "einzige Regel ein hartes 20%-Drawdown-Limit statt der bisherigen 30%-Psychogrenze. Frage: wie viel "
-        "Rendite laesst sich innerhalb dieser 20%-Grenze wirklich herausholen?"
+        "Realistische EK-Neubewertung: ORB und Gold-Bitcoin Dual Momentum entfernt, Gold-Silber-Divergenz als "
+        "volles Kern-Bein ergaenzt (siehe Begruendung unten), einzige Regel ein hartes 20%-Drawdown-Limit statt "
+        "der bisherigen 30%-Psychogrenze. Frage: wie viel Rendite laesst sich innerhalb dieser 20%-Grenze "
+        "wirklich herausholen?"
     )
     st.markdown("<span class='pc-rule-badge'>Max. Drawdown <b>20%</b></span>", unsafe_allow_html=True)
     st.warning(
@@ -1063,6 +1064,7 @@ def _render_tab_ekv2():
         f"{d['removed_strategies']['orb_strategy']}. {d['removed_reason']}",
         icon=":material/report:",
     )
+    st.info(d["added_strategy_note"], icon=":material/add_circle:")
 
     section_title("Referenz (bisherige 2%-Risikostufen) vs. moderat-aggressiv (Monte-Carlo-validiert)")
     col1, col2 = st.columns(2)
@@ -1094,7 +1096,8 @@ def _render_tab_ekv2():
                     f"<div class='pc-weight-pct'>{risk_label}</div></div>"
                 )
             st.markdown(rows_html, unsafe_allow_html=True)
-            st.caption("Risiko/Trade je Strategie, Kapitalanteil bei beiden gleich 20% je Bein.")
+            n_legs_cand = len(cand["combo"])
+            st.caption(f"Risiko/Trade je Strategie, Kapitalanteil bei beiden gleich {100/n_legs_cand:.1f}% je Bein.")
 
     curve_ref = pd.Series({pd.Timestamp(dt): v for dt, v in d["reference_curve"]})
     curve_ro = pd.Series({pd.Timestamp(dt): v for dt, v in d["riskopt_curve"]})
@@ -1105,7 +1108,8 @@ def _render_tab_ekv2():
         line_chart(df_ekv2, {"Referenz": (C_MUTED, (4, 3)), "Moderat-aggressiv": (C_BLUE, None)}),
         use_container_width=True,
     )
-    st.caption(f"Historischer Zeitraum {cw['start']} bis {cw['end']} (gemeinsames Fenster der 5 Beine).")
+    n_core_legs = len(ro["combo"])
+    st.caption(f"Historischer Zeitraum {cw['start']} bis {cw['end']} (gemeinsames Fenster der {n_core_legs} Kern-Beine).")
 
     section_title("Overfitting-Falle: das rechnerische Maximum bei 20% historischem Drawdown")
     tm = d["theoretical_max_overfit_example"]
@@ -1134,28 +1138,31 @@ def _render_tab_ekv2():
         f"</tr></thead><tbody>{sa_rows}</tbody></table>",
         unsafe_allow_html=True,
     )
+    worst_leg_key = min(d["per_leg_standalone"], key=lambda k: d["per_leg_standalone"][k]["max_dd_pct"])
+    worst_leg_dd = d["per_leg_standalone"][worst_leg_key]["max_dd_pct"]
     st.caption(
-        "Jede Einzelstrategie hat bei diesen Risikostufen solo einen erheblich groesseren Drawdown (bis zu -78,9% "
-        "bei BTC EMA9/21) als das Portfolio (-19,2%) -- die fast nicht vorhandene Korrelation zwischen den "
+        f"Jede Einzelstrategie hat bei diesen Risikostufen solo einen erheblich groesseren Drawdown (bis zu "
+        f"{worst_leg_dd:.1f}% bei {labels[worst_leg_key]}) als das Portfolio ({ro['historical_metrics']['max_dd_pct']:.1f}%) "
+        "-- die fast nicht vorhandene Korrelation zwischen den "
         "Strategien traegt hier den Loewenanteil der Risikoreduktion. Bricht diese Korrelationsannahme in einer "
         "echten Krise zusammen, waere der reale Drawdown deutlich naeher an den Einzelwerten."
     )
 
-    section_title("Erweiterung: CTNL Edge als 6. Strategie")
+    section_title(f"Erweiterung: CTNL Edge als {n_core_legs + 1}. Strategie")
     ctnl = d["ctnl_extension"]
     st.info(
-        f"Gemeinsames Fenster aller 6 Beine: {ctnl['common_window']['start']} bis {ctnl['common_window']['end']} "
+        f"Gemeinsames Fenster aller {n_core_legs + 1} Beine: {ctnl['common_window']['start']} bis {ctnl['common_window']['end']} "
         "-- kurz (durch OU-Modells Datenstand Ende 2024 UND CTNLs Start Mitte 2024 auf ~5 Monate begrenzt), "
         "daher nur als Richtungs-Hinweis, nicht als belastbare Kennzahl.",
         icon=":material/info:",
     )
     ctnl_rows = (
-        f"<tr><td>5 Beine ohne CTNL (gleiches Fenster)</td><td class='pos'>{ctnl['baseline_5leg_same_window']['cagr_pct']:+.1f}%</td>"
-        f"<td>{ctnl['baseline_5leg_same_window']['sharpe']:.2f}</td><td class='neg'>{ctnl['baseline_5leg_same_window']['max_dd_pct']:.1f}%</td>"
-        f"<td>{ctnl['baseline_5leg_same_window']['calmar']:.2f}</td></tr>"
-        f"<tr><td>6 Beine mit CTNL Edge (konservatives Risiko)</td><td class='pos'>{ctnl['with_ctnl_6leg']['cagr_pct']:+.1f}%</td>"
-        f"<td>{ctnl['with_ctnl_6leg']['sharpe']:.2f}</td><td class='neg'>{ctnl['with_ctnl_6leg']['max_dd_pct']:.1f}%</td>"
-        f"<td>{ctnl['with_ctnl_6leg']['calmar']:.2f}</td></tr>"
+        f"<tr><td>{n_core_legs} Beine ohne CTNL (gleiches Fenster)</td><td class='pos'>{ctnl['baseline_6leg_same_window']['cagr_pct']:+.1f}%</td>"
+        f"<td>{ctnl['baseline_6leg_same_window']['sharpe']:.2f}</td><td class='neg'>{ctnl['baseline_6leg_same_window']['max_dd_pct']:.1f}%</td>"
+        f"<td>{ctnl['baseline_6leg_same_window']['calmar']:.2f}</td></tr>"
+        f"<tr><td>{n_core_legs + 1} Beine mit CTNL Edge (konservatives Risiko)</td><td class='pos'>{ctnl['with_ctnl_7leg']['cagr_pct']:+.1f}%</td>"
+        f"<td>{ctnl['with_ctnl_7leg']['sharpe']:.2f}</td><td class='neg'>{ctnl['with_ctnl_7leg']['max_dd_pct']:.1f}%</td>"
+        f"<td>{ctnl['with_ctnl_7leg']['calmar']:.2f}</td></tr>"
     )
     st.markdown(
         f"<table class='pc-table'><thead><tr><th>Kombination</th><th>CAGR</th><th>Sharpe</th><th>MaxDD</th>"
@@ -1163,7 +1170,7 @@ def _render_tab_ekv2():
         unsafe_allow_html=True,
     )
     st.caption(
-        "Korrelation CTNL vs. die 5 Beine in diesem Fenster: " +
+        f"Korrelation CTNL vs. die {n_core_legs} Beine in diesem Fenster: " +
         ", ".join(f"{labels[k]} {v:+.3f}" for k, v in ctnl["ctnl_correlation"].items()) +
         " -- durchgehend nahe null, CTNL bleibt auch hier ein sauberer Diversifikator trotz kurzer Historie und "
         "eigenem Walk-Forward-Vorbehalt (siehe Einordnung & Vorbehalte)."

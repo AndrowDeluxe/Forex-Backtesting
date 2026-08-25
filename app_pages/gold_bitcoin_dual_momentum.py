@@ -332,12 +332,13 @@ sweep_pure = run_sweep(weekly, None, None)
 recommended = composite(sweep_no_cost)
 gold_bh, btc_bh = buy_hold_curves(weekly)
 
-tab_equity, tab_sweep, tab_costs, tab_oos, tab_risk = st.tabs([
+tab_equity, tab_sweep, tab_costs, tab_oos, tab_risk, tab_mc = st.tabs([
     ":material/show_chart: Equity-Kurve",
     ":material/tune: Parameter-Sweep",
     ":material/payments: Kosten-Sensitivitaet",
     ":material/warning: Out-of-Sample",
     ":material/shield: TTP-Risikomanagement",
+    ":material/casino: Monte Carlo",
 ], on_change="rerun")
 
 # ------------------------------------------------------------------ Tab: Equity curve
@@ -614,13 +615,53 @@ def _render_tab_tab_risk():
             unsafe_allow_html=True,
         )
 
+# ------------------------------------------------------------------ Tab: Monte Carlo
+def _render_tab_tab_mc():
+    mc_path = Path(__file__).resolve().parents[1] / "gold_bitcoin_dual_momentum" / "results" / "monte_carlo.json"
+    if not mc_path.exists():
+        st.info("Monte-Carlo-Daten noch nicht committed.", icon=":material/info:")
+        return
+    data = json.loads(mc_path.read_text(encoding="utf-8"))
+    mc, real, cfg = data["monte_carlo"], data["realized_oos"], data["config"]
+
+    caveat_box(
+        "<b>Phase-6-Audit-Nachtrag (2026-08-22):</b> Monte-Carlo-Bootstrap fehlte bislang komplett. "
+        f"Nachgeholt mit demselben zirkulaeren Block-Bootstrap-Verfahren wie ueberall im Repo "
+        f"({cfg['n_sims']} Simulationen), aber mit an die "
+        f"woechentliche Rebalancierung angepasster Jahresbasis ({cfg['periods_per_year']} statt 252 "
+        f"Perioden/Jahr) und Blockgroesse ({cfg['block_size_weeks']} Wochen statt 20 Handelstage -- "
+        "gleiche 'ca. 1 Monat pro Block'-Absicht, korrekte Einheit fuer wöchentliche Daten). Getestet "
+        f"auf den {cfg['n_oos_weeks']} Out-of-Sample-Wochen ({cfg['oos_split']} bis {cfg['data_end']}) "
+        "unter der 'Realistic'-Kostenstufe (Gold 10bp/Bitcoin 30bp Round-Trip)."
+    )
+
+    tile_row([
+        ("P(Verlust)", f"{mc['p_loss']*100:.1f}%"),
+        ("Sharpe P50", f"{mc['sharpe_p50']:.2f}"),
+        ("MaxDD P5 (worst)", f"{mc['max_dd_p5']:.1f}%"),
+        ("Realisiertes MaxDD", f"{real['max_dd_pct']:.1f}%"),
+    ])
+    st.markdown(
+        f"Sharpe-Spanne (P5-P95): **{mc['sharpe_p5']:.2f}** bis **{mc['sharpe_p95']:.2f}** &middot; "
+        f"MaxDD-Spanne: **{mc['max_dd_p95']:.1f}%** (best) bis **{mc['max_dd_p5']:.1f}%** (worst) &middot; "
+        f"Gesamtrendite-Spanne: **{mc['total_return_p5']:+.1f}%** bis **{mc['total_return_p95']:+.1f}%**"
+    )
+    caveat_box(
+        f"<b>Staerkster Monte-Carlo-Befund aller 8 Portfolio-Strategien:</b> P(Verlust) nur "
+        f"{mc['p_loss']*100:.1f}%, und selbst das 5. Perzentil des Sharpe bleibt mit {mc['sharpe_p5']:.2f} "
+        "deutlich positiv -- konsistent mit dem bereits bekannten hohen historischen Sharpe und der "
+        "niedrigen Korrelation zu allen anderen Portfolio-Strategien. Wie immer: misst Sequenz-Risiko "
+        "(Reihenfolge-Abhaengigkeit der bekannten Historie), nicht Robustheit gegen ein komplett neues "
+        "Marktregime."
+    )
+
 
 # ============================================================ Lazy dispatch
 # st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
 # on_change="rerun" above makes tab.open reflect the actually-selected tab; only
 # that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
 # see app_pages/portfolio_construction.py for the original instance of this fix).
-for _tab, _render in [(tab_equity, _render_tab_tab_equity), (tab_sweep, _render_tab_tab_sweep), (tab_costs, _render_tab_tab_costs), (tab_oos, _render_tab_tab_oos), (tab_risk, _render_tab_tab_risk)]:
+for _tab, _render in [(tab_equity, _render_tab_tab_equity), (tab_sweep, _render_tab_tab_sweep), (tab_costs, _render_tab_tab_costs), (tab_oos, _render_tab_tab_oos), (tab_risk, _render_tab_tab_risk), (tab_mc, _render_tab_tab_mc)]:
     if _tab.open:
         with _tab:
             _render()

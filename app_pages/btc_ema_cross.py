@@ -89,13 +89,14 @@ with st.sidebar:
     )
     st.caption(f"Datenquelle: Binance BTCUSDT Daily, {FULL_START} bis {END} (gecacht).")
 
-tab_components, tab_backtest, tab_risk, tab_tested, tab_cost = st.tabs(
+tab_components, tab_backtest, tab_risk, tab_tested, tab_cost, tab_mc = st.tabs(
     [
         ":material/school: Strategiebestandteile",
         ":material/query_stats: Backtest",
         ":material/shield: Risk Management",
         ":material/science: Getestet, nicht übernommen",
         ":material/payments: Kosten-Sensitivität",
+        ":material/casino: Monte Carlo",
     ],
     on_change="rerun",
 )
@@ -592,6 +593,46 @@ def _render_tab_cost():
         f"bis {data['config']['data_end']}."
     )
 
+# =============================================================================
+# Tab: Monte Carlo
+# =============================================================================
+def _render_tab_mc():
+    st.markdown("## :material/casino: Monte Carlo")
+    mc_path = Path(__file__).resolve().parents[1] / "btc_ema_cross" / "results" / "monte_carlo.json"
+    if not mc_path.exists():
+        st.info("Monte-Carlo-Daten noch nicht committed.", icon=":material/info:")
+        return
+    data = json.loads(mc_path.read_text(encoding="utf-8"))
+    mc, real = data["monte_carlo"], data["realized_oos"]
+
+    st.error(
+        "**Phase-6-Audit-Nachtrag (2026-08-22):** Monte-Carlo-Bootstrap fehlte bislang komplett. "
+        "Nachgeholt mit dem im Repo etablierten Muster (`ou_paper_backtest/monte_carlo.py`, "
+        f"zirkulaerer Block-Bootstrap, Blockgroesse 20 Tage, {data['config']['n_oos_trades']} "
+        f"OOS-Trades, OOS-Split {data['config']['oos_split']} bis {data['config']['data_end']}).",
+        icon=":material/report:",
+    )
+
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("P(Verlust)", f"{mc['p_loss']*100:.1f}%")
+    c2.metric("Sharpe P50", f"{mc['sharpe_p50']:.2f}")
+    c3.metric("MaxDD P5 (worst)", f"{mc['max_dd_p5']:.1f}%")
+    c4.metric("Realisiertes MaxDD", f"{real['max_dd_pct']:.1f}%")
+    st.markdown(
+        f"Sharpe-Spanne (P5-P95): **{mc['sharpe_p5']:.2f}** bis **{mc['sharpe_p95']:.2f}** &middot; "
+        f"MaxDD-Spanne: **{mc['max_dd_p95']:.1f}%** (best) bis **{mc['max_dd_p5']:.1f}%** (worst) &middot; "
+        f"Gesamtrendite-Spanne: **{mc['total_return_p5']:+.1f}%** bis **{mc['total_return_p95']:+.1f}%**"
+    )
+    st.warning(
+        f"**Deutlich schwaecher als die anderen Strategien im selben Test:** P(Verlust)={mc['p_loss']*100:.0f}% "
+        f"ist das hoechste aller 8 Portfolio-Strategien, und das 5. Perzentil des Sharpe faellt auf "
+        f"{mc['sharpe_p5']:.2f} -- **negativ**. Konsistent mit der bereits bekannten duennen Datenbasis "
+        f"({data['config']['n_oos_trades']} OOS-Trades) und der instabilen Kelly-Schaetzung fuer diese "
+        "Strategie (siehe Vorbehalte-Tab Portfolio-Konstruktion). Kein Grund zum Ausschluss, aber ein "
+        "klares Signal, hier konservativ zu bleiben.",
+        icon=":material/warning:",
+    )
+
 
 # ============================================================ Lazy dispatch
 # st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
@@ -606,6 +647,7 @@ for _tab, _render in [
     (tab_risk, _render_tab_risk),
     (tab_tested, _render_tab_tested),
     (tab_cost, _render_tab_cost),
+    (tab_mc, _render_tab_mc),
 ]:
     if _tab.open:
         with _tab:

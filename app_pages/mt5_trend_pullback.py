@@ -655,7 +655,7 @@ account_result = run_account_sim(data)
 tpsl_result = run_tp_sl_be_sweep(data)
 risk_result = run_risk_management(data, extra_data, gold_daily_close)
 
-tab_standard, tab_chart, tab_overview, tab_adx, tab_spread, tab_account, tab_tpsl, tab_risk = st.tabs([
+tab_standard, tab_chart, tab_overview, tab_adx, tab_spread, tab_account, tab_tpsl, tab_risk, tab_mc = st.tabs([
     ":material/star: Empfehlung (Standard)",
     ":material/candlestick_chart: Chart & Entries",
     ":material/show_chart: Baseline (Bot wie er ist)",
@@ -664,6 +664,7 @@ tab_standard, tab_chart, tab_overview, tab_adx, tab_spread, tab_account, tab_tps
     ":material/account_balance: Konto-Simulation ($100k)",
     ":material/target: TP/SL & Breakeven",
     ":material/shield: Risk Management (FK & EK)",
+    ":material/casino: Monte Carlo",
 ], on_change="rerun")
 
 # ------------------------------------------------------------------ Tab: Standard recommendation
@@ -1335,13 +1336,52 @@ def _render_tab_tab_risk():
         "FK2-Definition (1% daily/8% total) und sind hier nicht mehr direkt uebertragbar."
     )
 
+# ------------------------------------------------------------------ Tab: Monte Carlo
+def _render_tab_tab_mc():
+    mc_path = Path(__file__).resolve().parents[1] / "mt5_trend_pullback" / "results" / "monte_carlo.json"
+    if not mc_path.exists():
+        st.info("Monte-Carlo-Daten noch nicht committed.", icon=":material/info:")
+        return
+    data = json.loads(mc_path.read_text(encoding="utf-8"))
+    mc, real, cfg = data["monte_carlo"], data["realized_oos"], data["config"]
+
+    caveat_box(
+        "<b>Phase-6-Audit-Nachtrag (2026-08-22):</b> Monte-Carlo-Bootstrap fehlte bislang komplett. "
+        "Nachgeholt mit dem im Repo etablierten Muster (<code>ou_paper_backtest/monte_carlo.py</code>, "
+        f"zirkulaerer Block-Bootstrap, Blockgroesse 20 Tage, {mc['n_sims']} Simulationen) auf der "
+        f"Standard-Empfehlung ({', '.join(cfg['markets'])}, {cfg['risk_pct']*100:.0f}% Risiko/Trade, "
+        f"max. {cfg['max_concurrent']} gleichzeitige Positionen), OOS-Fenster {cfg['oos_start']} bis "
+        f"{cfg['oos_end']} -- also innerhalb des seit 2023 profitablen Regimes, NICHT rueckwirkend auf "
+        "die verlustreiche 2016-2022-Phase (die bleibt der bekannte, unveraenderte Vorbehalt)."
+    )
+
+    tile_row([
+        ("P(Verlust)", f"{mc['p_loss']*100:.1f}%"),
+        ("Sharpe P50", f"{mc['sharpe_p50']:.2f}"),
+        ("MaxDD P5 (worst)", f"{mc['max_dd_p5']:.1f}%"),
+        ("Realisiertes MaxDD", f"{real['max_dd_pct']:.1f}%"),
+    ])
+    st.markdown(
+        f"Sharpe-Spanne (P5-P95): **{mc['sharpe_p5']:.2f}** bis **{mc['sharpe_p95']:.2f}** &middot; "
+        f"MaxDD-Spanne: **{mc['max_dd_p95']:.1f}%** (best) bis **{mc['max_dd_p5']:.1f}%** (worst) &middot; "
+        f"Gesamtrendite-Spanne: **{mc['total_return_p5']:+.1f}%** bis **{mc['total_return_p95']:+.1f}%**"
+    )
+    caveat_box(
+        f"<b>Solide innerhalb des bekannten guten Regimes:</b> P(Verlust)={mc['p_loss']*100:.1f}% ueber "
+        f"2000 zirkulaere Bootstrap-Pfade, Sharpe bleibt auch im 5. Perzentil mit {mc['sharpe_p5']:.2f} "
+        "positiv. Wichtig: dieser Test bootstrapt NUR aus der bereits profitablen 2024-2026-Historie -- "
+        "er kann die bekannte Schwaeche vor 2023 nicht heilen oder widerlegen, sondern zeigt nur, wie "
+        "stabil das Ergebnis INNERHALB des aktuell guten Fensters gegen Sequenz-Risiko ist.",
+        kind="good",
+    )
+
 
 # ============================================================ Lazy dispatch
 # st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
 # on_change="rerun" above makes tab.open reflect the actually-selected tab; only
 # that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
 # see app_pages/portfolio_construction.py for the original instance of this fix).
-for _tab, _render in [(tab_standard, _render_tab_tab_standard), (tab_chart, _render_tab_tab_chart), (tab_overview, _render_tab_tab_overview), (tab_adx, _render_tab_tab_adx), (tab_spread, _render_tab_tab_spread), (tab_account, _render_tab_tab_account), (tab_tpsl, _render_tab_tab_tpsl), (tab_risk, _render_tab_tab_risk)]:
+for _tab, _render in [(tab_standard, _render_tab_tab_standard), (tab_chart, _render_tab_tab_chart), (tab_overview, _render_tab_tab_overview), (tab_adx, _render_tab_tab_adx), (tab_spread, _render_tab_tab_spread), (tab_account, _render_tab_tab_account), (tab_tpsl, _render_tab_tab_tpsl), (tab_risk, _render_tab_tab_risk), (tab_mc, _render_tab_tab_mc)]:
     if _tab.open:
         with _tab:
             _render()

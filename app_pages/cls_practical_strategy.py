@@ -19,6 +19,7 @@ teuer fuer jeden Seitenaufruf neu zu rechnen).
 Dark/monospace-Styling matcht app_pages/fertige_strategien.py /
 gold_bitcoin_dual_momentum.py (gleiche Palette, "cls-"-Praefix)."""
 
+import json
 import sys
 from pathlib import Path
 
@@ -216,7 +217,7 @@ caveat_box(
     "seither ueber mehrere Sessions verfeinert und mehrfach out-of-sample verifiziert."
 )
 
-tabs = st.tabs(["Mechanik", "Backtest-Ergebnis", "Risk Management", "Weg dorthin"], on_change="rerun")
+tabs = st.tabs(["Mechanik", "Backtest-Ergebnis", "Risk Management", "Weg dorthin", "Monte Carlo"], on_change="rerun")
 
 # -------------------------------------------------------------- Tab 1: Mechanik
 def _render_tab_tabs_0_():
@@ -511,13 +512,52 @@ Spread-/Slippage-Stresstest (Kante kippt ab ~1,5 bps Spread) -- alle einzeln dur
 """
     )
 
+# -------------------------------------------------------------- Tab 5: Monte Carlo
+def _render_tab_tabs_4_():
+    mc_path = Path(__file__).resolve().parents[1] / "cls_practical" / "results" / "monte_carlo.json"
+    if not mc_path.exists():
+        st.info("Monte-Carlo-Daten noch nicht committed.", icon=":material/info:")
+        return
+    data = json.loads(mc_path.read_text(encoding="utf-8"))
+    mc, real = data["monte_carlo"], data["realized_oos"]
+
+    caveat_box(
+        "<b>Phase-6-Audit-Nachtrag (2026-08-22):</b> Monte-Carlo-Bootstrap fehlte bislang komplett fuer "
+        "CLS Practical. Nachgeholt mit dem im Repo etablierten Muster "
+        "(<code>ou_paper_backtest/monte_carlo.py</code>, zirkulaerer Block-Bootstrap, Blockgroesse 20 "
+        f"Handelstage, {mc['n_sims']} Simulationen) auf den {data['config']['n_oos_trades']} "
+        f"Out-of-Sample-Trades ({data['config']['oos_split']} bis {data['config']['data_end']}), mit dem "
+        "seit 2026-08-21 STANDARD aktiven Zins-Risiko-Skalierungs-Multiplikator."
+    )
+
+    tile_row([
+        ("P(Verlust)", f"{mc['p_loss']*100:.1f}%"),
+        ("Sharpe P50", f"{mc['sharpe_p50']:.2f}"),
+        ("MaxDD P5 (worst)", f"{mc['max_dd_p5']:.1f}%"),
+        ("Realisiertes MaxDD", f"{real['max_dd_pct']:.1f}%"),
+    ])
+    st.markdown(
+        f"Sharpe-Spanne (P5-P95): **{mc['sharpe_p5']:.2f}** bis **{mc['sharpe_p95']:.2f}** &middot; "
+        f"MaxDD-Spanne (P95 best - P5 worst): **{mc['max_dd_p95']:.1f}%** bis **{mc['max_dd_p5']:.1f}%** &middot; "
+        f"Gesamtrendite-Spanne: **{mc['total_return_p5']:+.1f}%** bis **{mc['total_return_p95']:+.1f}%**"
+    )
+    caveat_box(
+        "<b>Deutlich robuster als BTC EMA9/21 oder ORB im selben Test:</b> P(Verlust) von nur "
+        f"{mc['p_loss']*100:.1f}% ueber 2000 zirkulaere Bootstrap-Pfade -- selbst das 5. Perzentil "
+        f"des Sharpe bleibt mit {mc['sharpe_p5']:.2f} klar positiv. Wie immer bei diesem Testverfahren: "
+        "es misst Sequenz-Risiko (haengt das Ergebnis von der zufaelligen Reihenfolge guter/schlechter "
+        "Phasen ab?), nicht ob die Strategie in einem komplett neuen, ungesehenen Marktregime "
+        "funktionieren wuerde -- dieselbe Historie wird neu gemischt, nicht neu erfunden.",
+        alert=False,
+    )
+
 
 # ============================================================ Lazy dispatch
 # st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
 # on_change="rerun" above makes tab.open reflect the actually-selected tab; only
 # that one's render function runs now (2026-08-20 Streamlit Cloud memory-limit fix,
 # see app_pages/portfolio_construction.py for the original instance of this fix).
-for _tab, _render in [(tabs[0], _render_tab_tabs_0_), (tabs[1], _render_tab_tabs_1_), (tabs[2], _render_tab_tabs_2_), (tabs[3], _render_tab_tabs_3_)]:
+for _tab, _render in [(tabs[0], _render_tab_tabs_0_), (tabs[1], _render_tab_tabs_1_), (tabs[2], _render_tab_tabs_2_), (tabs[3], _render_tab_tabs_3_), (tabs[4], _render_tab_tabs_4_)]:
     if _tab.open:
         with _tab:
             _render()

@@ -117,6 +117,33 @@ einzeln nachvollzogen fuer diese Notiz; bei Bedarf dort nachlesen, bevor eine
 bereits mit demselben IS/OOS-Ergebnis (ueberoptimiert) probiert wie der
 `regime_shift`-Fund oben.
 
+## Nachtrag 2026-08-25 -- 3 weitere Bausteine getestet, keiner uebernommen
+
+Auf Nutzer-Wunsch die 3 Bausteine getestet, die bei [[mt5-david-v2-pullback]]s
+Phase-5-Runde ebenfalls durchprobiert wurden und fuer den Haupt-Bot noch
+offen waren (ADX, Corwin-Schultz-Liquiditaet und Cross-Asset-Metall-
+Alignment waren hier schon laenger abgedeckt, siehe oben). Getestet auf der
+bestehenden Standard-Empfehlung (Gold/Silber-aligned/CHFJPY/USDJPY/USDCAD,
+kein ADX-Filter), gleiches regime-verengtes Fenster (neue-IS 2023-01/
+2024-07, neue-OOS 2024-07/2026-08). Code:
+`scripts/research_mt5_trend_pullback_remaining_filters.py`.
+
+| Baustein | IS Sharpe | OOS Sharpe | Ergebnis |
+|---|---|---|---|
+| Referenz (Standard-Empfehlung) | **1.92** | 0.90 | -- |
+| MTF-EMA-Ribbon (`strategy/mtf_ema_ribbon.py`) | 0.95 | 0.60 | verschlechtert BEIDES |
+| Kalman-Slope-Bestaetigung (`strategy/kalman_filter.py`) | n=2 (18 Mon. x 5 Maerkte) | n=0 | Stichprobe kollabiert, unbrauchbar |
+| CB-Event-Window (`bond_yield_indicator/calendar.py`) | 1.70 | 1.31 | IS leicht schlechter, OOS deutlich besser |
+
+Keiner verbessert die In-Sample-Sharpe gegenueber der Referenz -- nach der
+IS-only-Auswahlregel wird keiner uebernommen. Der CB-Event-Window-Fall ist
+bewusst NICHT trotzdem uebernommen worden, obwohl seine OOS-Zahl besser
+aussieht (0.90->1.31): das erst nach Blick auf OOS zu waehlen waere genau
+das Data-Snooping, vor dem [[backtest-standard-process]] schuetzen soll --
+bleibt als interessante, aber nicht validierte Beobachtung stehen, falls
+spaeter mit einem FRISCHEN IS-Fenster (nicht dem hier schon "verbrauchten")
+erneut geprueft wird.
+
 ## Fazit
 
 Kein Blocker gefunden. Bot-Default-Config ist die robustere Wahl gegenueber
@@ -124,7 +151,9 @@ jeder bisher versuchten "Optimierung" -- konsistent mit dem, was `config.py`
 des Live-Bots selbst schon sagt ("die NEUTRALEN Werte aus dem
 Robustheitstest, NICHT die pro Markt ueberoptimierten"). Live-Demo-Betrieb
 (`TrendPullback-Bot/`) ist entsprechend bereits die richtige Config; keine
-Aenderung an `config.py` empfohlen.
+Aenderung an `config.py` empfohlen. Nach dem Nachtrag oben gilt das auch fuer
+die Standard-Empfehlung selbst -- alle bekannten Bausteine dieses Repos sind
+jetzt durchprobiert.
 
 **Verknuepfung**: [[mt5-bot-deployment]] (Live-Aufsetzung), [[mt5-david-v2-pullback]],
 [[mt5-gold-silber-divergenz]] (die beiden anderen Bots desselben

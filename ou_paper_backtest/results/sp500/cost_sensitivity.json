@@ -1,0 +1,99 @@
+{
+  "config": {
+    "risk_pct": 0.01,
+    "max_hold": 10,
+    "stop_sigma": 3.0,
+    "rr_ratio": null,
+    "be_trigger_r": 0.25,
+    "allowed_directions": [
+      1
+    ],
+    "regime_filter": "EMA200 benchmark trend",
+    "market": "sp500",
+    "oos_start": "2018-01-01",
+    "oos_end": "2024-12-31",
+    "n_tickers": 147
+  },
+  "baseline_zero_cost": {
+    "final_equity": 395182.18,
+    "cagr_pct": 21.72,
+    "max_dd_pct": -37.61,
+    "n_trades": 1834
+  },
+  "sweep": [
+    {
+      "cost_bps": 0.5,
+      "final_equity": 389480.6,
+      "cagr_pct": 21.46,
+      "max_dd_pct": -37.75
+    },
+    {
+      "cost_bps": 1.0,
+      "final_equity": 384101.69,
+      "cagr_pct": 21.22,
+      "max_dd_pct": -37.88
+    },
+    {
+      "cost_bps": 2.0,
+      "final_equity": 373204.8,
+      "cagr_pct": 20.72,
+      "max_dd_pct": -38.15
+    },
+    {
+      "cost_bps": 3.0,
+      "final_equity": 362576.08,
+      "cagr_pct": 20.23,
+      "max_dd_pct": -38.41
+    },
+    {
+      "cost_bps": 5.0,
+      "final_equity": 344749.12,
+      "cagr_pct": 19.36,
+      "max_dd_pct": -38.94
+    },
+    {
+      "cost_bps": 7.5,
+      "final_equity": 329350.44,
+      "cagr_pct": 18.59,
+      "max_dd_pct": -38.93
+    },
+    {
+      "cost_bps": 10.0,
+      "final_equity": 295959.83,
+      "cagr_pct": 16.79,
+      "max_dd_pct": -41.26
+    },
+    {
+      "cost_bps": 15.0,
+      "final_equity": 261635.65,
+      "cagr_pct": 14.75,
+      "max_dd_pct": -41.62
+    },
+    {
+      "cost_bps": 20.0,
+      "final_equity": 220305.1,
+      "cagr_pct": 11.96,
+      "max_dd_pct": -44.22
+    },
+    {
+      "cost_bps": 50.0,
+      "final_equity": 96557.0,
+      "cagr_pct": -0.50,
+      "max_dd_pct": -54.23
+    },
+    {
+      "cost_bps": 75.0,
+      "final_equity": 43794.0,
+      "cagr_pct": -11.14,
+      "max_dd_pct": -64.89
+    },
+    {
+      "cost_bps": 100.0,
+      "final_equity": 22010.0,
+      "cagr_pct": -19.46,
+      "max_dd_pct": -79.66
+    }
+  ],
+  "breakeven_bps": 49.5,
+  "breakeven_note": "Bracketed between 30bps (still +70% total return over the 7yr OOS window) and 50bps (CAGR -0.50%, essentially flat) -- 49.5bps is the midpoint of that bracket, not a further-refined bisection point."
+}

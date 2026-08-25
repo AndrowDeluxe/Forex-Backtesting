@@ -233,6 +233,7 @@ def simulate_bracket_portfolio(
     portfolio_profit_lock_pct: float | None = None,
     portfolio_profit_lock_close_frac: float = 1.0,
     portfolio_profit_lock_n_best: int | None = None,
+    cost_bps: float = 0.0,
 ) -> tuple[pd.Series, list[dict]]:
     """Fixed-CRV bracket exit -- mirrors the live OU-Modell-MT5-Bridge bot's actual
     mechanism (not the paper's own "exit at MA" rule used by simulate_portfolio):
@@ -289,6 +290,16 @@ def simulate_bracket_portfolio(
     early exit on positions that haven't earned it yet. Takes priority over
     `portfolio_profit_lock_close_frac` when both are set. New entries are never
     paused the same day this fires (the book stays open either way).
+
+    `cost_bps` (added 2026-08-22, Phase-6-Audit p6_3 gap -- every prior version of
+    this engine was frictionless, no spread/slippage/commission anywhere): a flat
+    round-trip transaction cost in basis points of NOTIONAL (shares * price), split
+    half on entry and half on exit, deducted directly from `equity` as a cash cost
+    at the moment each half-turn happens (does not touch entry_price/exit_price/
+    pnl_dollars/stop or TP levels, so the trade log's own P&L numbers stay
+    cost-FREE for comparability with every existing call site -- only the equity
+    curve reflects cost). Default 0.0 preserves prior behavior exactly for every
+    existing caller.
     """
     ind = _precompute_indicators(panel, tickers, lookback, k, trend_filter_window)
     all_dates = panel.loc[start:end].index
@@ -357,6 +368,8 @@ def simulate_bracket_portfolio(
                 )
                 open_risk -= pos.risk_dollars
                 del positions[t]
+                if cost_bps:
+                    equity -= (cost_bps / 2 / 10_000) * pos.shares * price_t
 
         profit_locked_today = False
         if portfolio_profit_lock_pct is not None and positions:
@@ -401,6 +414,8 @@ def simulate_bracket_portfolio(
                             "reason": "portfolio_profit_lock" if close_shares >= full_shares else "portfolio_profit_lock_partial",
                         }
                     )
+                    if cost_bps:
+                        equity -= (cost_bps / 2 / 10_000) * close_shares * pos.last_price
                     remaining_shares = full_shares - close_shares
                     if remaining_shares <= 0:
                         open_risk -= pos.risk_dollars
@@ -470,6 +485,8 @@ def simulate_bracket_portfolio(
                 stop_distance=stop_distance, risk_dollars=risk_dollars,
             )
             open_risk += risk_dollars
+            if cost_bps:
+                equity -= (cost_bps / 2 / 10_000) * shares * price_t
 
         equity_points.append((date, equity))
 

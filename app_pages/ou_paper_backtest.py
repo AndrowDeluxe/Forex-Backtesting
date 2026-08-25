@@ -181,10 +181,11 @@ st.warning(
     "komplett -- die $100k-Kurve unten nutzt Risk-basiertes Sizing (1% Equity-Risiko "
     "je Trade am 2-Sigma-Stop, 15% Gesamt-Risiko-Cap ueber alle offenen Positionen), "
     "analog zum Risk-Management-Muster des echten OU-Modell-Live-Bots auf diesem "
-    "System. (3) Alle Ergebnisse **vor Transaktionskosten** (wie im Paper selbst). "
-    "Fuer den tatsaechlichen Fixed-CRV-Exit-Mechanismus des Live-Bots (statt des "
-    "Paper-eigenen MA-Exits) und interaktives SL/TP/Breakeven/Laufzeit/Risk-Tuning "
-    "siehe den Tab **\"Bracket-Exit (interaktiv)\"** unten.",
+    "System. (3) Alle Ergebnisse auf DIESER Seite **vor Transaktionskosten** (wie im "
+    "Paper selbst) -- fuer den tatsaechlichen Fixed-CRV-Exit-Mechanismus des Live-Bots "
+    "(statt des Paper-eigenen MA-Exits) inkl. **Kosten-Sensitivitaets-Sweep** "
+    "(Breakeven ~50bps Round-Trip, nachgeholt 2026-08-22 im Phase-6-Audit) siehe "
+    "**\"Fertige Strategien\"** -> Tab \"Kosten-Sensitivitaet\".",
     icon=":material/warning:",
 )
 

@@ -24,6 +24,7 @@ copied). Refactored 2026-08-05 into tabs + shared render helpers to cut down the
 single long scroll and repeated HTML/Altair boilerplate the page had accumulated.
 """
 
+import json
 import sys
 from pathlib import Path
 
@@ -346,11 +347,12 @@ markets_in_view = VIEWS[view_key]
 is_solo = len(markets_in_view) == 1
 solo_market = markets_in_view[0] if is_solo else None
 
-tab_equity, tab_oos, tab_mc, tab_wf = st.tabs([
+tab_equity, tab_oos, tab_mc, tab_wf, tab_cost = st.tabs([
     ":material/show_chart: Equity-Kurve",
     ":material/warning: Out-of-Sample-Test",
     ":material/casino: Monte Carlo",
     ":material/history: Walk-Forward",
+    ":material/payments: Kosten-Sensitivitaet",
 ], on_change="rerun")
 
 # ------------------------------------------------------------------ Tab: Equity curve
@@ -579,6 +581,70 @@ def _render_tab_wf():
         else:
             st.info(f"Walk-Forward-Daten fuer {MARKET_LABEL[solo_market]} noch nicht committed.", icon=":material/info:")
 
+# ------------------------------------------------------------------ Tab: Kosten-Sensitivitaet
+def _render_tab_cost():
+    if not is_solo:
+        st.info(
+            "Kosten-Sensitivitaet ist aktuell nur fuer Einzelmaerkte verfuegbar, nicht "
+            "fuer die 50/50-Kombi-Ansichten.",
+            icon=":material/info:",
+        )
+        return
+    cost_path = RESULTS_DIR / solo_market / "cost_sensitivity.json"
+    if not cost_path.exists():
+        st.info(f"Kosten-Sensitivitaet fuer {MARKET_LABEL[solo_market]} noch nicht committed.", icon=":material/info:")
+        return
+
+    data = json.loads(cost_path.read_text(encoding="utf-8"))
+    base = data["baseline_zero_cost"]
+
+    st.error(
+        "**Phase-6-Audit-Fund (2026-08-22):** bis zu diesem Nachtrag liefen ALLE OU-Modell-"
+        "Zahlen auf dieser Seite (und im Live-Bot auf zwei Echtgeld-Konten, TTP + Tickmill, "
+        "seit 2026-07-29) komplett kostenfrei -- keine Spread/Slippage/Kommission irgendwo im "
+        "Backtest-Motor. Nachgeholt: ein optionaler `cost_bps`-Parameter in "
+        "`portfolio.simulate_bracket_portfolio` (Default 0, byte-identisch zum bisherigen "
+        "Verhalten, per Regressionstest verifiziert), der einen pauschalen Round-Trip-"
+        "Transaktionskosten-Satz je Trade abzieht.",
+        icon=":material/report:",
+    )
+
+    tile_row([
+        ("CAGR (0bps)", f"{base['cagr_pct']:+.1f}%"),
+        ("MaxDD (0bps)", f"{base['max_dd_pct']:.1f}%"),
+        ("N Trades", f"{base['n_trades']:,}"),
+        ("Breakeven-Kosten", f"~{data['breakeven_bps']:.0f} bps"),
+    ])
+
+    section_title("CAGR/MaxDD gegen Round-Trip-Kosten (Basispunkte vom Notional)")
+    sweep_df = pd.DataFrame(data["sweep"])[["cost_bps", "final_equity", "cagr_pct", "max_dd_pct"]]
+    st.dataframe(
+        sweep_df.rename(columns={"cost_bps": "Kosten (bps, Round-Trip)", "final_equity": "Endkapital",
+                                  "cagr_pct": "CAGR %", "max_dd_pct": "MaxDD %"}),
+        hide_index=True, use_container_width=True, height=(len(sweep_df) + 1) * 36,
+        column_config={"Endkapital": st.column_config.NumberColumn(format="$%.0f")},
+    )
+    st.success(
+        f"**Bestanden mit ordentlichem, aber nicht riesigem Puffer:** Breakeven liegt bei "
+        f"ca. {data['breakeven_bps']:.0f}bps Round-Trip-Kosten -- bei 30bps ist die Strategie "
+        "noch klar profitabel (+70% Gesamtrendite ueber die 7 OOS-Jahre), bei 50bps praktisch "
+        "bei Null. Realistische Kosten fuer ein $100k-Konto auf liquiden S&P500-Large-Caps "
+        "(Spread + Slippage, kaum Kommission bei den meisten Brokern) duerften im "
+        "einstelligen bis niedrigen zweistelligen Bereich liegen -- ein 3-10x-Puffer, "
+        "spuerbar knapper als bei Gold ASB/ORB/CTNL, aber ein klarer Bestanden-Befund. "
+        "Wichtig: MaxDD verschlechtert sich mit steigenden Kosten deutlich schneller als "
+        "CAGR (-37,6% bei 0bps -> -44,2% bereits bei 20bps) -- auch bei weiterhin positiver "
+        "Rendite lohnt es, die tatsaechlich beim Broker gezahlten Kosten im Blick zu behalten.",
+        icon=":material/verified:",
+    )
+    st.caption(
+        f"Konfiguration: risk_pct={data['config']['risk_pct']*100:.0f}%, "
+        f"stop_sigma={data['config']['stop_sigma']}, max_hold={data['config']['max_hold']} Tage, "
+        f"{data['config']['n_tickers']} Ticker, OOS {data['config']['oos_start']} bis "
+        f"{data['config']['oos_end']} -- identische Konfiguration wie im Live-Bot "
+        "(Fixed-CRV-Bracket-Exit)."
+    )
+
 
 # ============================================================ Lazy dispatch
 # st.tabs() renders ALL tab bodies on every rerun by default, even hidden ones.
@@ -592,6 +658,7 @@ for _tab, _render in [
     (tab_oos, _render_tab_oos),
     (tab_mc, _render_tab_mc),
     (tab_wf, _render_tab_wf),
+    (tab_cost, _render_tab_cost),
 ]:
     if _tab.open:
         with _tab:

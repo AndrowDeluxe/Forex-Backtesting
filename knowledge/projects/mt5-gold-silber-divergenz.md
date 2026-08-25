@@ -178,3 +178,24 @@ zum Live-Bot bleibt bei `confirm_len=None` exakt erhalten).
 `app_pages/mt5_gold_silver_divergenz.py` (neuer erster Tab "Empfehlung
 (Optimiert)", alle anderen Tabs zeigen weiterhin unveraendert das
 Bot-Original zur Dokumentation).
+
+**Nebenfrage geprueft, negativ**: Breakeven-Trigger (`breakeven_trigger_r`
+in `strategy.backtest.BacktestConfig`) auf der finalen Config, NUR
+In-Sample: kein BE liefert Sharpe 0.80; jeder engere Trigger ist schlechter
+(0.25R: Sharpe 0.34, Winrate stuerzt von 51.8% auf 24.7% -- zu viele
+Trades, die zum 2R-Ziel gelaufen waeren, werden vorzeitig am Breakeven
+rausgeworfen). 1.5R (nah am eigenen 2R-Ziel) naehert sich mit Sharpe 0.85
+wieder an, schlaegt "kein BE" aber nicht klar -- im Rauschen. **Kein BE
+hinzugefuegt.** Gleiches Muster wie beim Haupt-Bot
+(`research_mt5_trend_pullback_tp_sl_be_sweep.py`).
+
+**Bugfix 2026-08-25 (Nutzer-Meldung, Screenshot)**: Dashboard zeigte im
+Monte-Carlo-Vergleich (Empfehlung-Tab) fuer "Original" und "Optimiert"
+identische Zahlen. Ursache: `run_monte_carlo_tab()` hatte ausschliesslich
+unterstrichprefixte Parameter (`_trades`, `_index`, ...) -- Streamlit hasht
+die fuer den `@st.cache_data`-Key nicht, wodurch beide Aufrufe (Original-
+und Optimiert-Trades) auf denselben Cache-Eintrag trafen und der zweite
+Aufruf einfach das Ergebnis des ersten zurueckbekam. Fix: explizites,
+gehashtes `variant: str`-Argument ("baseline"/"optimized") ergaenzt. Nach
+dem Fix stimmen die Dashboard-Zahlen mit dem Skript-Output ueberein (Sharpe
+0.68 vs. 0.97, P(MaxDD&gt;20%) 5.1% vs. 0.4%).

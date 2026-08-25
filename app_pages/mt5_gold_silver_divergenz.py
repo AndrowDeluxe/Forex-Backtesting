@@ -290,7 +290,13 @@ def run_optimized(_data: dict[str, pd.DataFrame]) -> dict:
 
 
 @st.cache_data(ttl="6h", show_spinner="Monte-Carlo-Bootstrap (ou_paper_backtest/monte_carlo.py, 2000 Pfade)...")
-def run_monte_carlo_tab(_trades: pd.DataFrame, _index: pd.DatetimeIndex, _oos_trades: pd.DataFrame, _oos_index: pd.DatetimeIndex) -> dict:
+def run_monte_carlo_tab(_trades: pd.DataFrame, _index: pd.DatetimeIndex, _oos_trades: pd.DataFrame, _oos_index: pd.DatetimeIndex, variant: str) -> dict:
+    # `variant` is the ONLY hashed argument here (the others are underscore-
+    # prefixed so Streamlit doesn't try to hash the DataFrames) -- without it,
+    # calling this twice with different trade sets (baseline vs. optimized)
+    # would collide on the same cache key and silently return the first
+    # call's result for both (exactly the bug this fixes: the "Optimiert"
+    # column showed identical numbers to "Original" on the dashboard).
     import sys
     repo_root = Path(__file__).resolve().parents[1]
     if str(repo_root / "ou_paper_backtest") not in sys.path:
@@ -393,8 +399,8 @@ data = load_markets()
 baseline = run_baseline(data)
 optimized = run_optimized(data)
 walkforward = run_walkforward(baseline["signaled"], baseline["trades"])
-mc_result = run_monte_carlo_tab(baseline["trades"], baseline["signaled"].index, baseline["trades_oos"], baseline["index_oos"])
-mc_result_opt = run_monte_carlo_tab(optimized["trades"], optimized["signaled"].index, optimized["trades_oos"], optimized["index_oos"])
+mc_result = run_monte_carlo_tab(baseline["trades"], baseline["signaled"].index, baseline["trades_oos"], baseline["index_oos"], variant="baseline")
+mc_result_opt = run_monte_carlo_tab(optimized["trades"], optimized["signaled"].index, optimized["trades_oos"], optimized["index_oos"], variant="optimized")
 oos_signaled = baseline["signaled"][baseline["signaled"].index >= SPLIT]
 cost_result = run_cost_sensitivity(oos_signaled)
 

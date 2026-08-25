@@ -242,12 +242,13 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-tab_combined, tab_overlap, tab_ek, tab_fk, tab_ekfast, tab_wf, tab_crisis, tab_caveats = st.tabs([
+tab_combined, tab_overlap, tab_ek, tab_fk, tab_ekfast, tab_ifund, tab_wf, tab_crisis, tab_caveats = st.tabs([
     ":material/query_stats: Kombinierter Backtest",
     ":material/calendar_view_week: Trade-Overlap",
     ":material/savings: EK-Portfolio",
     ":material/shield: FK-Portfolio",
     ":material/bolt: EK-Schnellkonto",
+    ":material/account_balance: FK Instant Funding",
     ":material/verified: Walk-Forward",
     ":material/thunderstorm: Krisen-Test",
     ":material/report: Einordnung & Vorbehalte",
@@ -905,6 +906,122 @@ def _render_tab_ekfast():
         "wurde aber noch nicht erneut auf dieser aktuellen Kombination validiert."
     )
 
+# ============================================================ Tab: FK Instant Funding
+def _render_tab_ifund():
+    data = load_json("fk_instant_funding_final.json")
+    m, cw = data["portfolio_metrics"], data["common_window"]
+    rules, comp = data["instant_funding_rules"], data["rule_compliance"]
+
+    st.caption(
+        "Eigenes Regelwerk fuer ein 100k-Instant-Funding-Konto (keine Challenge-Phase, direkt Funding-Regeln "
+        "aktiv): max. 0,5% Verlust/Trade vom Startkapital, 5% Trailing-Drawdown (End-of-Day, gegen den "
+        "Vortages-Hoechststand), max. 30% des Gesamtgewinns an einem einzelnen Tag (Konsistenzregel)."
+    )
+    st.markdown(
+        f"<span class='pc-rule-badge'>Max. Verlust/Trade <b>{rules['max_position_loss_pct']:.1f}%</b></span>"
+        f"<span class='pc-rule-badge'>Trailing-DD <b>{rules['trailing_dd_pct']:.0f}%</b></span>"
+        f"<span class='pc-rule-badge'>Konsistenz <b>&le;{rules['consistency_cap_pct']:.0f}%</b></span>",
+        unsafe_allow_html=True,
+    )
+
+    section_title("Empfohlenes Portfolio (5 Strategien, ohne OU-Modell)")
+    tile_row([
+        ("CAGR", f"{m['cagr_pct']:+.1f}%", "good"),
+        ("Sharpe", f"{m['sharpe']:.2f}", ""),
+        ("Calmar", f"{m['calmar']:.2f}", ""),
+        ("Max Drawdown", f"{m['max_dd_pct']:.1f}%", "bad"),
+        ("Endkapital", f"${m['final_equity']:,.0f}", "good"),
+    ])
+
+    section_title("Positionsgroessen-Formel (verbindlich fuer den Bot)")
+    st.code("Order-Risiko = Kapitalanteil (20%) x internes Risiko/Trade x aktueller Kontostand", language=None)
+    st.caption(
+        "Nicht `internes Risiko/Trade x Kontostand` allein -- ohne die Kapitalanteil-Verduennung wuerde jede "
+        "Strategie unabhaengig bis zu ihr eigenes internes Risiko-% vom VOLLEN Konto riskieren und die "
+        "0,5%-Grenze sofort reissen."
+    )
+
+    rows_html = ""
+    for leg, info in data["legs"].items():
+        real_risk = comp["real_risk_per_trade_pct_of_account"]
+        if leg == "ctnl_edge":
+            risk_label = f"Cont. {data['ctnl_edge_breakdown']['continuation_risk_pct']*100:.2f}% / Rev. {data['ctnl_edge_breakdown']['reversal_risk_pct']*100:.2f}%"
+            real_label = f"{real_risk['ctnl_continuation']:.3f}% / {real_risk['ctnl_reversal']:.3f}%"
+        else:
+            risk_label = f"{info['internal_risk_pct']*100:.2f}%"
+            real_label = f"{real_risk.get(leg, 0):.3f}%"
+        rows_html += (
+            f"<tr><td>{info['label']}</td><td>{data['capital_weight']*100:.0f}%</td>"
+            f"<td>{risk_label}</td><td class='pos'>{real_label} vom Konto</td></tr>"
+        )
+    st.markdown(
+        f"<table class='pc-table'><thead><tr><th>Strategie</th><th>Kapitalanteil</th>"
+        f"<th>Internes Risiko/Trade</th><th>Reales Risiko/Trade</th></tr></thead><tbody>{rows_html}</tbody></table>",
+        unsafe_allow_html=True,
+    )
+
+    section_title("Einzelstrategie-Beitraege (historisch, gleiches Fenster)")
+    leg_rows = ""
+    for leg, pl in data["per_leg_standalone"].items():
+        leg_rows += (
+            f"<tr><td>{pl['label']}</td><td class='pos'>{pl['cagr_pct']:+.1f}%</td>"
+            f"<td>{pl['sharpe']:.2f}</td><td class='neg'>{pl['max_dd_pct']:.1f}%</td></tr>"
+        )
+    st.markdown(
+        f"<table class='pc-table'><thead><tr><th>Strategie</th><th>CAGR</th><th>Sharpe</th>"
+        f"<th>MaxDD</th></tr></thead><tbody>{leg_rows}</tbody></table>",
+        unsafe_allow_html=True,
+    )
+
+    curve_df = pd.Series({pd.Timestamp(d): v for d, v in data["curve"]}).rename("value").rename_axis("date").reset_index()
+    curve_df["Serie"] = "Empfohlenes Portfolio"
+    st.altair_chart(line_chart(curve_df, {"Empfohlenes Portfolio": (C_BLUE, None)}), use_container_width=True)
+    st.caption(f"Historischer Zeitraum {cw['start']} bis {cw['end']} ({cw['days']} Tage, gemeinsames Fenster aller 5 Strategien).")
+
+    section_title("Warum OU-Modell hier NICHT dabei ist")
+    st.warning(
+        comp["ou_modell_excluded_reason"] + " Bleibt weiterhin die empfohlene Wahl fuer den normalen "
+        "FK-Track (TTP/IQ Markets, siehe FK-Portfolio-Tab) -- der Ausschluss gilt nur fuer dieses spezielle "
+        f"0,5%/5%/{rules['consistency_cap_pct']:.0f}%-Regelwerk.",
+        icon=":material/report:",
+    )
+
+    section_title("5%-Trailing-Drawdown: Regel-Konformitaet")
+    st.success(
+        f"P(Bruch) = {comp['trailing_dd_breach_prob']*100:.1f}% ueber 3.000 Block-Bootstrap-Pfade -- "
+        "das Weglassen von OU-Modell (viele gleichzeitig offene Positionen erzeugen die groessten "
+        "Drawdown-Spitzen) ist hierfuer der entscheidende Hebel.",
+        icon=":material/verified:",
+    )
+
+    section_title("30%-Konsistenzregel: der eigentliche Befund")
+    st.error(
+        comp["conclusion"],
+        icon=":material/report:",
+    )
+    age_rows = ""
+    for age, p in comp["consistency_breach_by_account_age_days"].items():
+        age_rows += f"<tr><td>{age} Tage</td><td class='{'neg' if p > 0.3 else 'pos'}'>{p*100:.1f}%</td></tr>"
+    st.markdown(
+        f"<table class='pc-table'><thead><tr><th>Kontoalter (Karenzzeit)</th>"
+        f"<th>Bruch-Wahrscheinlichkeit danach</th></tr></thead><tbody>{age_rows}</tbody></table>",
+        unsafe_allow_html=True,
+    )
+    st.caption(
+        "Gemessen auf demselben Portfolio/derselben Renditeserie -- nur der Zeitpunkt, ab dem geprueft wird, "
+        "aendert sich. Zeigt: die Regel ist im Kern eine Funktion des Kontoalters (kumulierte Gewinnbasis), "
+        "nicht des Strategie-Mix."
+    )
+
+    section_title("Getestete, aber verworfene Loesungsansaetze fuer die Konsistenzregel")
+    for fix in comp["tested_and_rejected_fixes"]:
+        st.markdown(f"- **{fix['name']}:** {fix['result']}")
+    st.caption(
+        "Fazit: kein Backtest-Trick loest die Konsistenzregel in den ersten Monaten -- das groesste Risiko "
+        "liegt strukturell im ersten Jahr des Kontos, unabhaengig vom Portfolio-Aufbau."
+    )
+
+
 # ============================================================ Tab: Walk-Forward
 def _render_tab_wf():
     wf = load_json("walk_forward_results.json")
@@ -1187,6 +1304,7 @@ def _render_tab_caveats():
 for _tab, _render in [
     (tab_combined, _render_tab_combined), (tab_overlap, _render_tab_overlap),
     (tab_ek, _render_tab_ek), (tab_fk, _render_tab_fk), (tab_ekfast, _render_tab_ekfast),
+    (tab_ifund, _render_tab_ifund),
     (tab_wf, _render_tab_wf), (tab_crisis, _render_tab_crisis), (tab_caveats, _render_tab_caveats),
 ]:
     if _tab.open:

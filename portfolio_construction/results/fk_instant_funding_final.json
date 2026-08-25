@@ -1,0 +1,541 @@
+{
+  "legs": {
+    "gold_asb": {
+      "label": "Gold ASB",
+      "internal_risk_pct": 0.02
+    },
+    "cls_practical": {
+      "label": "CLS Practical",
+      "internal_risk_pct": 0.015
+    },
+    "trend_pullback": {
+      "label": "Trend Pullback",
+      "internal_risk_pct": 0.005
+    },
+    "ctnl_edge": {
+      "label": "CTNL Edge (Gold SMC)",
+      "internal_risk_pct": null
+    },
+    "gold_silver": {
+      "label": "Gold-Silber-Divergenz",
+      "internal_risk_pct": 0.01
+    }
+  },
+  "ctnl_edge_breakdown": {
+    "continuation_risk_pct": 0.005,
+    "reversal_risk_pct": 0.0015
+  },
+  "capital_weight": 0.2,
+  "common_window": {
+    "start": "2024-08-01",
+    "end": "2026-07-29",
+    "days": 728
+  },
+  "portfolio_metrics": {
+    "final_equity": 133441.43,
+    "cagr_pct": 15.6,
+    "sharpe": 2.941,
+    "max_dd_pct": -2.04,
+    "calmar": 7.653
+  },
+  "per_leg_standalone": {
+    "gold_asb": {
+      "label": "Gold ASB",
+      "cagr_pct": 12.85,
+      "sharpe": 1.135,
+      "max_dd_pct": -8.31
+    },
+    "cls_practical": {
+      "label": "CLS Practical",
+      "cagr_pct": 20.33,
+      "sharpe": 1.787,
+      "max_dd_pct": -5.7
+    },
+    "trend_pullback": {
+      "label": "Trend Pullback",
+      "cagr_pct": 9.83,
+      "sharpe": 1.185,
+      "max_dd_pct": -4.8
+    },
+    "ctnl_edge": {
+      "label": "CTNL Edge (Gold SMC)",
+      "cagr_pct": 21.69,
+      "sharpe": 1.822,
+      "max_dd_pct": -7.95
+    },
+    "gold_silver": {
+      "label": "Gold-Silber-Divergenz",
+      "cagr_pct": 11.67,
+      "sharpe": 1.373,
+      "max_dd_pct": -6.59
+    }
+  },
+  "curve": [
+    [
+      "2024-08-02",
+      100906.41
+    ],
+    [
+      "2024-08-09",
+      100241.14
+    ],
+    [
+      "2024-08-16",
+      102072.75
+    ],
+    [
+      "2024-08-23",
+      102072.75
+    ],
+    [
+      "2024-08-30",
+      102347.59
+    ],
+    [
+      "2024-09-06",
+      102573.53
+    ],
+    [
+      "2024-09-13",
+      103523.94
+    ],
+    [
+      "2024-09-20",
+      103995.26
+    ],
+    [
+      "2024-09-27",
+      104197.89
+    ],
+    [
+      "2024-10-04",
+      103506.15
+    ],
+    [
+      "2024-10-11",
+      102318.16
+    ],
+    [
+      "2024-10-18",
+      102816.24
+    ],
+    [
+      "2024-10-25",
+      102413.05
+    ],
+    [
+      "2024-11-01",
+      102961.26
+    ],
+    [
+      "2024-11-08",
+      102971.59
+    ],
+    [
+      "2024-11-15",
+      103926.95
+    ],
+    [
+      "2024-11-22",
+      105885.12
+    ],
+    [
+      "2024-11-29",
+      105756.15
+    ],
+    [
+      "2024-12-06",
+      106772.19
+    ],
+    [
+      "2024-12-13",
+      106456.23
+    ],
+    [
+      "2024-12-20",
+      106624.37
+    ],
+    [
+      "2024-12-27",
+      105848.09
+    ],
+    [
+      "2025-01-03",
+      105342.32
+    ],
+    [
+      "2025-01-10",
+      105658.78
+    ],
+    [
+      "2025-01-17",
+      105980.15
+    ],
+    [
+      "2025-01-24",
+      105157.89
+    ],
+    [
+      "2025-01-31",
+      106020.49
+    ],
+    [
+      "2025-02-07",
+      106674.14
+    ],
+    [
+      "2025-02-14",
+      108503.5
+    ],
+    [
+      "2025-02-21",
+      108717.99
+    ],
+    [
+      "2025-02-28",
+      108250.12
+    ],
+    [
+      "2025-03-07",
+      108003.99
+    ],
+    [
+      "2025-03-14",
+      109104.35
+    ],
+    [
+      "2025-03-21",
+      108885.92
+    ],
+    [
+      "2025-03-28",
+      108855.42
+    ],
+    [
+      "2025-04-04",
+      109509.0
+    ],
+    [
+      "2025-04-11",
+      109396.26
+    ],
+    [
+      "2025-04-18",
+      109552.49
+    ],
+    [
+      "2025-04-25",
+      110827.68
+    ],
+    [
+      "2025-05-02",
+      112514.65
+    ],
+    [
+      "2025-05-09",
+      113028.99
+    ],
+    [
+      "2025-05-16",
+      112447.93
+    ],
+    [
+      "2025-05-23",
+      112888.02
+    ],
+    [
+      "2025-05-30",
+      112297.34
+    ],
+    [
+      "2025-06-06",
+      112017.98
+    ],
+    [
+      "2025-06-13",
+      112768.63
+    ],
+    [
+      "2025-06-20",
+      113175.94
+    ],
+    [
+      "2025-06-27",
+      112908.61
+    ],
+    [
+      "2025-07-04",
+      113762.48
+    ],
+    [
+      "2025-07-11",
+      114356.58
+    ],
+    [
+      "2025-07-18",
+      114211.36
+    ],
+    [
+      "2025-07-25",
+      114776.03
+    ],
+    [
+      "2025-08-01",
+      114730.72
+    ],
+    [
+      "2025-08-08",
+      114076.99
+    ],
+    [
+      "2025-08-15",
+      113766.11
+    ],
+    [
+      "2025-08-22",
+      113726.99
+    ],
+    [
+      "2025-08-29",
+      113954.09
+    ],
+    [
+      "2025-09-05",
+      114798.01
+    ],
+    [
+      "2025-09-12",
+      114387.75
+    ],
+    [
+      "2025-09-19",
+      114785.53
+    ],
+    [
+      "2025-09-26",
+      116398.01
+    ],
+    [
+      "2025-10-03",
+      118132.77
+    ],
+    [
+      "2025-10-10",
+      118902.74
+    ],
+    [
+      "2025-10-17",
+      119814.68
+    ],
+    [
+      "2025-10-24",
+      120461.94
+    ],
+    [
+      "2025-10-31",
+      120644.98
+    ],
+    [
+      "2025-11-07",
+      120729.42
+    ],
+    [
+      "2025-11-14",
+      121510.47
+    ],
+    [
+      "2025-11-21",
+      121466.96
+    ],
+    [
+      "2025-11-28",
+      121667.69
+    ],
+    [
+      "2025-12-05",
+      120674.19
+    ],
+    [
+      "2025-12-12",
+      122231.43
+    ],
+    [
+      "2025-12-19",
+      123154.26
+    ],
+    [
+      "2025-12-26",
+      125633.65
+    ],
+    [
+      "2026-01-02",
+      124604.1
+    ],
+    [
+      "2026-01-09",
+      124942.32
+    ],
+    [
+      "2026-01-16",
+      126375.48
+    ],
+    [
+      "2026-01-23",
+      127006.59
+    ],
+    [
+      "2026-01-30",
+      127546.92
+    ],
+    [
+      "2026-02-06",
+      127808.52
+    ],
+    [
+      "2026-02-13",
+      128338.33
+    ],
+    [
+      "2026-02-20",
+      128209.74
+    ],
+    [
+      "2026-02-27",
+      128786.75
+    ],
+    [
+      "2026-03-06",
+      129450.85
+    ],
+    [
+      "2026-03-13",
+      128858.51
+    ],
+    [
+      "2026-03-20",
+      129504.63
+    ],
+    [
+      "2026-03-27",
+      129493.65
+    ],
+    [
+      "2026-04-03",
+      129493.65
+    ],
+    [
+      "2026-04-10",
+      129759.45
+    ],
+    [
+      "2026-04-17",
+      130710.06
+    ],
+    [
+      "2026-04-24",
+      130036.48
+    ],
+    [
+      "2026-05-01",
+      130095.59
+    ],
+    [
+      "2026-05-08",
+      131854.78
+    ],
+    [
+      "2026-05-15",
+      131222.47
+    ],
+    [
+      "2026-05-22",
+      131094.97
+    ],
+    [
+      "2026-05-29",
+      132450.82
+    ],
+    [
+      "2026-06-05",
+      132101.81
+    ],
+    [
+      "2026-06-12",
+      132101.81
+    ],
+    [
+      "2026-06-19",
+      133230.82
+    ],
+    [
+      "2026-06-26",
+      133230.82
+    ],
+    [
+      "2026-07-03",
+      133230.82
+    ],
+    [
+      "2026-07-10",
+      132520.51
+    ],
+    [
+      "2026-07-17",
+      133225.92
+    ],
+    [
+      "2026-07-24",
+      133472.28
+    ],
+    [
+      "2026-07-31",
+      133441.43
+    ]
+  ],
+  "instant_funding_rules": {
+    "max_position_loss_pct": 0.5,
+    "trailing_dd_pct": 5.0,
+    "consistency_cap_pct": 30.0
+  },
+  "rule_compliance": {
+    "position_sizing_formula": "risk_dollars = capital_weight * internal_risk_pct * current_account_equity",
+    "real_risk_per_trade_pct_of_account": {
+      "gold_asb": 0.4,
+      "cls_practical": 0.3,
+      "trend_pullback": 0.1,
+      "ctnl_continuation": 0.1,
+      "ctnl_reversal": 0.03,
+      "gold_silver": 0.2
+    },
+    "trailing_dd_breach_prob": 0.002,
+    "consistency_breach_by_account_age_days": {
+      "20": 0.996,
+      "60": 0.901,
+      "120": 0.535,
+      "180": 0.238,
+      "250": 0.086,
+      "350": 0.021,
+      "450": 0.004
+    },
+    "ou_modell_excluded_reason": "Treiber des Drawdown-Bruchs (viele gleichzeitig offene Positionen erzeugen die groessten Drawdown-Spitzen); das Weglassen senkte den Trailing-DD-Bruch von 14,4% auf 0,2%.",
+    "tested_and_rejected_fixes": [
+      {
+        "name": "Profit-Lock (OU-Modells portfolio_profit_lock_pct)",
+        "result": "machte den Konsistenz-Bruch SCHLECHTER (91,9%->98,9%), senkte zusaetzlich den CAGR."
+      },
+      {
+        "name": "Breakeven-Lock + weiter Trailing-Stop + kein fester TP/Zeit-Exit",
+        "result": "zerstoerte die Gesamtrendite (-40%+ bei den betroffenen Strategien), durchschnittliche R-Multiple brach ein."
+      },
+      {
+        "name": "Ramp-up-Schedule (niedriges Risiko die ersten N Tage)",
+        "result": "keine nennenswerte Verbesserung (Bruch blieb bei ~99-100%) -- skaliert Zaehler und Nenner gleichzeitig."
+      },
+      {
+        "name": "Gewichts-Tilt Richtung Strategien mit niedrigster Einzel-Konzentration",
+        "result": "keine nennenswerte Verbesserung (Bruch blieb bei ~99,4-100%)."
+      }
+    ],
+    "conclusion": "Die Konsistenzregel-Bruch-Wahrscheinlichkeit ist eine Funktion des KONTOALTERS (kumulierte Gewinnbasis), nicht der Strategie-Zusammensetzung oder von Risiko-Timing-Tricks. Sinkt von 99,6% (20-Tage-Karenz) auf 0,4% (450-Tage-Karenz) auf demselben Portfolio/derselben Renditeserie, bestaetigt per Karenzzeit-Sweep."
+  }
+}

@@ -994,24 +994,46 @@ def _render_tab_ifund():
         icon=":material/verified:",
     )
 
-    section_title("30%-Konsistenzregel: der eigentliche Befund")
+    section_title("30%-Konsistenzregel: Auszahlungs-Zeitpunkt statt Konto-Risiko")
+    st.info(comp["consistency_note_payout_only"], icon=":material/info:")
     st.error(
         comp["conclusion"],
         icon=":material/report:",
     )
-    age_rows = ""
-    for age, p in comp["consistency_breach_by_account_age_days"].items():
-        age_rows += f"<tr><td>{age} Tage</td><td class='{'neg' if p > 0.3 else 'pos'}'>{p*100:.1f}%</td></tr>"
+    ms = comp["consistency_payout_milestones_days"]
+    tile_row([
+        ("90% Sicherheit ab", f"Tag {ms['p90']}", ""),
+        ("95% Sicherheit ab", f"Tag {ms['p95']}", ""),
+        ("99% Sicherheit ab", f"Tag {ms['p99']}", "good"),
+    ])
+    pit_rows = ""
+    for age, p in comp["consistency_compliant_point_in_time_by_account_age_days"].items():
+        pit_rows += f"<tr><td>{age} Tage</td><td class='{'pos' if p >= 0.9 else 'neg'}'>{p*100:.1f}%</td></tr>"
     st.markdown(
-        f"<table class='pc-table'><thead><tr><th>Kontoalter (Karenzzeit)</th>"
-        f"<th>Bruch-Wahrscheinlichkeit danach</th></tr></thead><tbody>{age_rows}</tbody></table>",
+        f"<table class='pc-table'><thead><tr><th>Kontoalter</th>"
+        f"<th>P(Verhaeltnis an diesem Tag &lt;= 30%, Auszahlung waere zulaessig)</th></tr></thead>"
+        f"<tbody>{pit_rows}</tbody></table>",
         unsafe_allow_html=True,
     )
     st.caption(
-        "Gemessen auf demselben Portfolio/derselben Renditeserie -- nur der Zeitpunkt, ab dem geprueft wird, "
-        "aendert sich. Zeigt: die Regel ist im Kern eine Funktion des Kontoalters (kumulierte Gewinnbasis), "
-        "nicht des Strategie-Mix."
+        "Punkt-in-Zeit-Wahrscheinlichkeit (nicht kumulativ) -- ob eine Auszahlung an genau diesem Tag "
+        "zulaessig waere. In den ersten ~6 Wochen ist die Bruchwahrscheinlichkeit sogar am hoechsten "
+        "(mathematisch unvermeidlicher Kontoalter-Effekt), erholt sich danach monoton."
     )
+    with st.expander("Alte Worst-Case-Annahme (Konto-Schliessung statt Auszahlungssperre)"):
+        legacy_rows = ""
+        for age, p in comp["consistency_breach_by_account_age_days_LEGACY_worst_case"].items():
+            legacy_rows += f"<tr><td>{age} Tage</td><td class='{'neg' if p > 0.3 else 'pos'}'>{p*100:.1f}%</td></tr>"
+        st.markdown(
+            f"<table class='pc-table'><thead><tr><th>Kontoalter (Karenzzeit)</th>"
+            f"<th>Jemals-gebrochen-Wahrscheinlichkeit danach</th></tr></thead><tbody>{legacy_rows}</tbody></table>",
+            unsafe_allow_html=True,
+        )
+        st.caption(
+            "Diese Tabelle nahm an, ein Bruch schliesst das Konto (wie die DD-Regel) und zaehlte daher "
+            "jeden je aufgetretenen Bruch dauerhaft mit. Nach Klarstellung, dass ein Bruch nur die naechste "
+            "Auszahlung verweigert, ist die Tabelle oben die entscheidungsrelevante."
+        )
 
     section_title("Getestete, aber verworfene Loesungsansaetze fuer die Konsistenzregel")
     for fix in comp["tested_and_rejected_fixes"]:

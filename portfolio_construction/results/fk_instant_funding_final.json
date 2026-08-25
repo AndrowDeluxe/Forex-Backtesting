@@ -508,15 +508,6 @@
       "gold_silver": 0.2
     },
     "trailing_dd_breach_prob": 0.002,
-    "consistency_breach_by_account_age_days": {
-      "20": 0.996,
-      "60": 0.901,
-      "120": 0.535,
-      "180": 0.238,
-      "250": 0.086,
-      "350": 0.021,
-      "450": 0.004
-    },
     "ou_modell_excluded_reason": "Treiber des Drawdown-Bruchs (viele gleichzeitig offene Positionen erzeugen die groessten Drawdown-Spitzen); das Weglassen senkte den Trailing-DD-Bruch von 14,4% auf 0,2%.",
     "tested_and_rejected_fixes": [
       {
@@ -536,6 +527,45 @@
         "result": "keine nennenswerte Verbesserung (Bruch blieb bei ~99,4-100%)."
       }
     ],
-    "conclusion": "Die Konsistenzregel-Bruch-Wahrscheinlichkeit ist eine Funktion des KONTOALTERS (kumulierte Gewinnbasis), nicht der Strategie-Zusammensetzung oder von Risiko-Timing-Tricks. Sinkt von 99,6% (20-Tage-Karenz) auf 0,4% (450-Tage-Karenz) auf demselben Portfolio/derselben Renditeserie, bestaetigt per Karenzzeit-Sweep."
+    "conclusion": "Neu bewertet (Payout-Sperre statt Konto-Schliessung): Die Wahrscheinlichkeit, dass das Verhaeltnis AN EINEM GEGEBENEN TAG <= 30% liegt (= Auszahlung an diesem Tag waere zulaessig), steigt mit dem Kontoalter monoton von praktisch 0% in den ersten Wochen auf 90% nach ca. 217 Tagen (~7 Monate), 95% nach ca. 261 Tagen (~9 Monate) und 99% nach ca. 368 Tagen (~12 Monate). Der fruehe Einbruch (Tag 20-45: Bruch-Wahrscheinlichkeit steigt sogar zunaechst auf ueber 78%) ist der mathematisch unvermeidliche Konto-Alter-Effekt: der erste grosse Einzeltag dominiert die noch kleine Gewinnbasis. Praktische Konsequenz: in den ersten ~6-7 Monaten Auszahlungen eher meiden/zuruckstellen und erst beantragen, wenn das Verhaeltnis aktuell unter 30% liegt -- das Konto bleibt in der Zwischenzeit unter der Trailing-DD-Regel weiter regelkonform (0,2% Bruchwahrscheinlichkeit, siehe oben) und handelbar, nur Auszahlungen sollten zeitlich gezielt beantragt werden.",
+    "consistency_note_payout_only": "Ein Bruch der 30%-Regel verweigert laut Nutzer-Recherche nur die naechste Auszahlung, schliesst das Konto NICHT wie die DD-Regel. Die ENTSCHEIDENDE Frage ist daher nicht mehr die alte kumulierte Jemals-gebrochen-Wahrscheinlichkeit (Worst-Case-Annahme, siehe unten), sondern: Wie wahrscheinlich ist das Verhaeltnis GENAU AN EINEM GEGEBENEN TAG (z.B. beim Auszahlungsantrag) <= 30%?",
+    "consistency_compliant_point_in_time_by_account_age_days": {
+      "10": 0.002,
+      "20": 0.0423,
+      "30": 0.0467,
+      "45": 0.1003,
+      "60": 0.1733,
+      "90": 0.3993,
+      "120": 0.587,
+      "150": 0.7253,
+      "180": 0.8187,
+      "210": 0.8897,
+      "240": 0.9337,
+      "270": 0.957,
+      "300": 0.9713,
+      "350": 0.9867,
+      "400": 0.996,
+      "450": 0.9993,
+      "500": 0.9997,
+      "550": 1.0,
+      "600": 0.9997,
+      "650": 1.0
+    },
+    "consistency_payout_milestones_days": {
+      "p50": 106,
+      "p80": 174,
+      "p90": 217,
+      "p95": 261,
+      "p99": 368
+    },
+    "consistency_breach_by_account_age_days_LEGACY_worst_case": {
+      "20": 0.996,
+      "60": 0.901,
+      "120": 0.535,
+      "180": 0.238,
+      "250": 0.086,
+      "350": 0.021,
+      "450": 0.004
+    }
   }
 }

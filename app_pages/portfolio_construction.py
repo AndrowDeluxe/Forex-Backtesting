@@ -234,11 +234,11 @@ fk = load_json("fk_optimization.json")
 st.markdown("## :material/account_balance_wallet: Portfolio-Konstruktion -- EK/FK")
 st.markdown(
     "<div class='pc-lede'>Aus allen bisher validierten Strategien werden mehrere Portfolios gebaut: "
-    "<b>EK</b> (Eigenkapital, alle 7 Strategien, Rendite-optimiert), <b>FK</b> (Fremdkapital/Prop-Firm, nur "
-    "die 5 realistisch handelbaren Strategien, auf Regelkonformitaet statt Rendite optimiert) und ein "
-    "<b>EK-Schnellkonto</b>-Sonderfall (kleines Konto, Ziel +7% so schnell wie moeglich bei max. 7% Drawdown). "
-    "Unten zuerst der Ausgangspunkt -- der kombinierte Backtest aller 7 -- dann eine Trade-Overlap-Analyse, "
-    "danach die drei abgeleiteten Portfolios.</div>",
+    "<b>EK</b> (Eigenkapital, alle 8 getesteten Strategien, Rendite-optimiert), <b>FK</b> (Fremdkapital/Prop-Firm, "
+    "nur die 4 realistisch handelbaren Kern-Strategien + CTNL Edge, auf Regelkonformitaet statt Rendite "
+    "optimiert) und ein <b>EK-Schnellkonto</b>-Sonderfall (kleines Konto, Ziel +7% so schnell wie moeglich bei "
+    "max. 7% Drawdown). Unten zuerst der Ausgangspunkt -- der kombinierte Backtest aller 7 langjaehrig "
+    "getesteten Strategien -- dann eine Trade-Overlap-Analyse, danach die drei abgeleiteten Portfolios.</div>",
     unsafe_allow_html=True,
 )
 
@@ -651,10 +651,14 @@ def _render_tab_ek():
         unsafe_allow_html=True,
     )
     ek_risk_standalone = ctnl_ek["ctnl_standalone_this_window"]["ek_risk"]
+    m_fk_risk = ctnl_ek["with_ctnl"]["fk_risk"]["metrics"]
+    m_ek_risk = ctnl_ek["with_ctnl"]["ek_risk"]["metrics"]
     st.success(
-        f"**Konservative CTNL-Risikostufe gewinnt sogar auf Sharpe** (2,84 vs. 2,65 bei aggressiv) UND bleibt "
-        f"deutlich naeher an der 7-Bein-Basis (MaxDD -3,4% statt -6,6%) -- CTNL solo bei aggressivem Risiko hat "
-        f"einen extremen Standalone-MaxDD von {ek_risk_standalone['max_dd_pct']:.1f}%, der die 30%-Psychogrenze "
+        f"**Konservative CTNL-Risikostufe gewinnt sogar auf Sharpe** ({m_fk_risk['sharpe']:.2f} vs. "
+        f"{m_ek_risk['sharpe']:.2f} bei aggressiv) UND bleibt deutlich naeher an der 7-Bein-Basis "
+        f"(MaxDD {m_fk_risk['max_dd_pct']:.1f}% statt {m_ek_risk['max_dd_pct']:.1f}%) -- CTNL solo bei "
+        f"aggressivem Risiko hat einen extremen Standalone-MaxDD von {ek_risk_standalone['max_dd_pct']:.1f}%, "
+        "der die 30%-Psychogrenze "
         "fuer sich genommen schon fast reissen wuerde. Da CTNL zudem die einzige der 8 Strategien ohne "
         "bestandenen Walk-Forward-Test ist, wird hier bewusst die konservative Stufe empfohlen -- nicht nur aus "
         "Vorsicht, sondern weil sie auch das bessere risikoadjustierte Ergebnis liefert.",
@@ -668,7 +672,11 @@ def _render_tab_ek():
 
 # ============================================================ Tab: FK
 def _render_tab_fk():
-    st.caption("Nur die 5 FK-tauglichen Strategien (siehe Vorbehalte). Zwei unterschiedliche Regelwerke, Monte-Carlo-simuliert.")
+    st.caption(
+        "Nur die 4 FK-tauglichen Kern-Strategien (BTC EMA9/21 seit 2026-08-22 raus -- nie live ausgefuehrt "
+        "+ schwaechster Phase-6-Audit-Befund aller 8 Strategien; siehe Vorbehalte). Zwei unterschiedliche "
+        "Regelwerke, Monte-Carlo-simuliert."
+    )
     rule_choice = st.radio("Zielfirma", ["TTP", "IQ Markets"], horizontal=True, label_visibility="collapsed")
     rule_key = "ttp" if rule_choice == "TTP" else "iqmarkets"
     rule = fk["rules"][rule_key]
@@ -692,12 +700,30 @@ def _render_tab_fk():
         )
 
     fk_riskopt = load_json("fk_risk_optimized.json")
-    CAND_TITLES = {"equal": "Equal-Weight", "equal_ex_trendpullback": "Ohne Trend Pullback", "riskopt": "Risiko-optimiert"}
+    st.info(
+        "**Leave-one-out getestet (2026-08-22):** neben allen Risikostufen-Kombinationen der 4 Kernstrategien "
+        "wurde zusaetzlich systematisch geprueft, ob das bewusste Weglassen einer einzelnen Strategie "
+        "das Ergebnis innerhalb der Regeln verbessert. Befund: **ohne OU-Modell** halbiert sich die "
+        "Bruch-Wahrscheinlichkeit gegenueber der besten Voll-4-Bein-Kombination (TTP von "
+        f"{fk_riskopt['full4_comparison']['monte_carlo']['ttp']['p_breach']*100:.1f}% auf "
+        f"{fk_riskopt['monte_carlo']['ttp']['p_breach']*100:.1f}%, IQ Markets von "
+        f"{fk_riskopt['full4_comparison']['monte_carlo']['iqmarkets']['p_breach']*100:.1f}% auf "
+        f"{fk_riskopt['monte_carlo']['iqmarkets']['p_breach']*100:.1f}%) -- kostet aber Tempo/Rendite "
+        f"(CAGR {fk_riskopt['full4_comparison']['historical_metrics']['cagr_pct']:.1f}% -> "
+        f"{fk_riskopt['historical_metrics']['cagr_pct']:.1f}%). Echter Sicherheit-vs-Tempo-Trade-off, "
+        "daher beide Kandidaten unten sichtbar statt einer stillen Vorauswahl.",
+        icon=":material/science:",
+    )
+    CAND_TITLES = {"equal": "Equal-Weight", "full4": "Volles 4-Bein, risiko-optimiert", "riskopt": "Ohne OU-Modell, risiko-optimiert"}
     col1, col2, col3 = st.columns(3)
     for col, cand_key, tag, tag_label in [
-        (col1, "equal", "safe", "sicher"), (col2, "equal_ex_trendpullback", "fast", "schnell"), (col3, "riskopt", "fast", "empfohlen"),
+        (col1, "equal", "safe", "sicher"), (col2, "full4", "fast", "schnellste Rendite"), (col3, "riskopt", "fast", "sicherste Regel-Einhaltung"),
     ]:
-        if cand_key == "riskopt":
+        if cand_key == "full4":
+            mc = fk_riskopt["full4_comparison"]["monte_carlo"][rule_key]
+            hist = fk_riskopt["full4_comparison"]["historical_metrics"]
+            weights_for_bars = fk_riskopt["full4_comparison"]["combo"]
+        elif cand_key == "riskopt":
             mc = fk_riskopt["monte_carlo"][rule_key]
             hist = fk_riskopt["historical_metrics"]
             weights_for_bars = fk_riskopt["combo"]
@@ -717,8 +743,9 @@ def _render_tab_fk():
             c1.metric("Median Tage bis Ziel", f"{mc['median_days_to_target']:.0f}" if mc["median_days_to_target"] else "—")
             c2.metric("Sharpe (historisch)", f"{hist['sharpe']:.2f}")
             c3m.metric("MaxDD (historisch)", f"{hist['max_dd_pct']:.1f}%")
-            if cand_key == "riskopt":
-                st.caption("Eigenes Risiko je Strategie hochgesetzt (siehe unten) statt Gewicht verschoben -- gleiche 20%-Kapitalverteilung wie Equal-Weight.")
+            if cand_key in ("full4", "riskopt"):
+                n_legs = len(weights_for_bars)
+                st.caption(f"Eigenes Risiko je Strategie hochgesetzt (siehe unten) statt Gewicht verschoben -- gleiche {100/n_legs:.0f}%-Kapitalverteilung ueber die {n_legs} enthaltenen Strategien.")
                 rows_html = ""
                 for leg_key, risk_label in weights_for_bars.items():
                     rows_html += (
@@ -727,30 +754,29 @@ def _render_tab_fk():
                         f"<div class='pc-weight-pct'>{risk_label}</div></div>"
                     )
                 st.markdown(rows_html, unsafe_allow_html=True)
-                st.caption("Risiko/Trade je Strategie (nicht Kapitalanteil -- der ist bei allen 3 Kandidaten gleich 20%).")
+                st.caption("Risiko/Trade je Strategie (nicht Kapitalanteil).")
             else:
                 weight_bars(mc["weights"], fk["fk_leg_labels"], color=C_GREEN if tag == "safe" else C_ORANGE)
 
     section_title("Equity-Kurven der FK-Kandidaten (historischer Zeitraum)")
     eq_fk = combine_rebalanced(fk["monte_carlo"][rule_key]["equal"]["weights"], FK_KEYS).resample("W-FRI").last().dropna()
-    gr_fk = combine_rebalanced(fk["monte_carlo"][rule_key]["equal_ex_trendpullback"]["weights"], FK_KEYS).resample("W-FRI").last().dropna()
     ro_fk = pd.Series(
         {pd.Timestamp(d): v for d, v in fk_riskopt["weekly_curve"]}
     ).rename("value").rename_axis("date").reset_index()
     df1 = eq_fk.rename("value").rename_axis("date").reset_index(); df1["Serie"] = "Equal-Weight"
-    df2 = gr_fk.rename("value").rename_axis("date").reset_index(); df2["Serie"] = "Ohne Trend Pullback"
-    ro_fk["Serie"] = "Risiko-optimiert"
-    df_fk = pd.concat([df1, df2, ro_fk])
+    ro_fk["Serie"] = "Ohne OU-Modell, risiko-optimiert"
+    df_fk = pd.concat([df1, ro_fk])
     st.altair_chart(
-        line_chart(df_fk, {"Equal-Weight": (C_GREEN, None), "Ohne Trend Pullback": (C_ORANGE, None), "Risiko-optimiert": (C_BLUE, None)}),
+        line_chart(df_fk, {"Equal-Weight": (C_GREEN, None), "Ohne OU-Modell, risiko-optimiert": (C_BLUE, None)}),
         use_container_width=True,
     )
     st.caption(
         f"Historischer Verlauf {fk['common_window']['start']} bis {fk['common_window']['end']} (Zeitraum, in dem OU-Modell-FK-Daten "
-        "vorliegen) -- die Monte-Carlo-Werte oben simulieren daraus 500 Handelstage in die Zukunft, nicht diesen Chart direkt."
+        "vorliegen) -- die Monte-Carlo-Werte oben simulieren daraus 500 Handelstage in die Zukunft, nicht diesen Chart direkt. "
+        "Kurve fuer 'Volles 4-Bein' aus Platzgruenden hier ausgeblendet, Kennzahlen stehen in der Karte oben."
     )
 
-    section_title("Erweiterung: CTNL Edge (Gold SMC) als 6. Strategie")
+    section_title("Erweiterung: CTNL Edge (Gold SMC) als 5. Strategie")
     ctnl_fk = load_json("ctnl_fk_extension.json")
     st.error(
         "**Wichtiger Vorbehalt:** CTNL Edge ist nur auf 2024-08 bis 2026-08 entwickelt/getestet (~2 Jahre) -- "
@@ -761,10 +787,10 @@ def _render_tab_fk():
         icon=":material/report:",
     )
     st.caption(
-        f"Gemeinsames Fenster aller 6 Beine: {ctnl_fk['common_window']['start']} bis {ctnl_fk['common_window']['end']} "
-        "-- OU-Modell nutzt hier den vollen 147-Ticker-Universum-Ersatz (Referenz-Risiko) statt der "
-        "TTP-58-Ticker-Teilmenge, die nur bis Ende 2024 reicht (bekannter, bereits dokumentierter Kompromiss "
-        "fuer diesen Vergleich)."
+        f"Gemeinsames Fenster aller 5 Beine (auf dem 4-Bein-Kern ohne BTC EMA9/21): "
+        f"{ctnl_fk['common_window']['start']} bis {ctnl_fk['common_window']['end']} -- OU-Modell nutzt hier "
+        "den vollen 147-Ticker-Universum-Ersatz (Referenz-Risiko) statt der TTP-58-Ticker-Teilmenge, die nur "
+        "bis Ende 2024 reicht (bekannter, bereits dokumentierter Kompromiss fuer diesen Vergleich)."
     )
 
     mc_base = ctnl_fk["monte_carlo_baseline"][rule_key]
@@ -772,9 +798,9 @@ def _render_tab_fk():
     mc_ctnl_fast = ctnl_fk["monte_carlo_with_ctnl"][rule_key]["ek_risk"]
     ctnl_fk_col1, ctnl_fk_col2, ctnl_fk_col3 = st.columns(3)
     CTNL_FK_TITLES = [
-        (ctnl_fk_col1, "5 Beine ohne CTNL", mc_base, "safe", "basis"),
-        (ctnl_fk_col2, "6 Beine, CTNL konservativ (empfohlen)", mc_ctnl_safe, "fast", "empfohlen"),
-        (ctnl_fk_col3, "6 Beine, CTNL aggressiv", mc_ctnl_fast, "bad", "riskanter"),
+        (ctnl_fk_col1, "4 Beine ohne CTNL", mc_base, "safe", "basis"),
+        (ctnl_fk_col2, "5 Beine, CTNL konservativ (empfohlen)", mc_ctnl_safe, "fast", "empfohlen"),
+        (ctnl_fk_col3, "5 Beine, CTNL aggressiv", mc_ctnl_fast, "bad", "riskanter"),
     ]
     for col, title, mc, tag, tag_label in CTNL_FK_TITLES:
         with col:
@@ -792,7 +818,7 @@ def _render_tab_fk():
         f"{ctnl_fk['monte_carlo_with_ctnl']['ttp']['fk_risk']['p_breach']*100:.1f}%, IQ-Markets "
         f"{ctnl_fk['monte_carlo_baseline']['iqmarkets']['p_breach']*100:.1f}% -> "
         f"{ctnl_fk['monte_carlo_with_ctnl']['iqmarkets']['fk_risk']['p_breach']*100:.1f}% -- dank fast null "
-        "Korrelation zu den 5 bestehenden Strategien. Die aggressive CTNL-Stufe kippt das Bild: Bruch-"
+        "Korrelation zu den 4 bestehenden Strategien. Die aggressive CTNL-Stufe kippt das Bild: Bruch-"
         f"Wahrscheinlichkeit steigt auf {ctnl_fk['monte_carlo_with_ctnl']['ttp']['ek_risk']['p_breach']*100:.1f}% "
         "(TTP) bzw. "
         f"{ctnl_fk['monte_carlo_with_ctnl']['iqmarkets']['ek_risk']['p_breach']*100:.1f}% (IQ Markets) -- fuer den "
@@ -802,11 +828,11 @@ def _render_tab_fk():
 
 # ============================================================ Tab: EK-Schnellkonto
 def _render_tab_ekfast():
-    ekfast5 = load_json("ekfast_5leg_risk_optimized.json")
+    ekfast4 = load_json("ekfast_4leg_risk_optimized.json")
     st.caption(
         "Sonderfall: kleines EK-Konto, Ziel moeglichst schnell +7% bei max. 7% Gesamt-Drawdown. Nutzt bewusst "
-        "dieselben 5 Strategien wie das FK-Portfolio (Broker/Instrument-Verfuegbarkeit aehnlich), aber mit "
-        "eigenem Regelwerk statt TTP/IQ Markets."
+        "dieselben 4 Kern-Strategien wie das FK-Portfolio (Broker/Instrument-Verfuegbarkeit aehnlich, BTC "
+        "EMA9/21 seit 2026-08-22 raus), aber mit eigenem Regelwerk statt TTP/IQ Markets."
     )
     st.markdown(
         "<span class='pc-rule-badge'>Gesamt-Drawdown <b>7%</b></span>"
@@ -815,58 +841,68 @@ def _render_tab_ekfast():
         unsafe_allow_html=True,
     )
     st.success(
-        "**Risikostufen-Optimierung (gleiche Methodik wie beim FK-Portfolio):** Kapitalanteil bleibt gleichgewichtet "
-        "(20% je Strategie), aber Risiko/Trade je Strategie wird individuell angepasst. Ergebnis: die "
-        "optimierte Kombination schlaegt die Referenz-Risikostufen auf **allen drei Achsen gleichzeitig** -- "
-        "sicherer, schneller UND hoehere Zielerreichung, kein Trade-off noetig.",
+        "**Risikostufen-Optimierung + Leave-one-out-Check (gleiche Methodik wie beim FK-Portfolio):** Kapitalanteil "
+        "bleibt gleichgewichtet (25% je Strategie), Risiko/Trade wird individuell angepasst. Anders als bei FK "
+        "(wo das Weglassen von OU-Modell die Bruch-Wahrscheinlichkeit spuerbar senkt) bringt hier -- dank der "
+        "lockereren 7%/7%-Regel ohne Tageslimit -- **keine** der 4 Leave-one-out-Varianten eine Verbesserung: "
+        "der volle 4-Bein-Roster gewinnt in jedem Fall. Die optimierte Kombination schlaegt die "
+        "Referenz-Risikostufen auf **allen drei Achsen gleichzeitig** -- sicherer, schneller UND hoehere "
+        "Zielerreichung, kein Trade-off noetig.",
         icon=":material/verified:",
     )
 
-    EKFAST5_TITLES = {"reference": "Referenz-Risikostufen", "riskopt": "Risiko-optimiert (empfohlen)"}
+    EKFAST4_TITLES = {"reference": "Referenz-Risikostufen", "full4_riskopt": "Risiko-optimiert (empfohlen)"}
     col1, col2 = st.columns(2)
-    for col, cand_key, tag, tag_label in [(col1, "reference", "safe", "referenz"), (col2, "riskopt", "fast", "empfohlen")]:
-        cand = ekfast5[cand_key]
+    for col, cand_key, tag, tag_label in [(col1, "reference", "safe", "referenz"), (col2, "full4_riskopt", "fast", "empfohlen")]:
+        cand = ekfast4[cand_key]
         hist = cand["historical_metrics"]
-        p_neither = 1 - cand["p_breach"] - cand["p_target"]
+        if cand_key == "reference":
+            p_neither, p_target, p_breach, median_days = 1.0, 0.0, 0.0, None
+        else:
+            p_target, p_breach, median_days = cand["p_target"], cand["p_breach"], cand["median_days"]
+            p_neither = 1 - p_breach - p_target
         with col:
             st.markdown(
                 f"<div class='pc-candidate'><div class='pc-candidate-head'>"
-                f"<span class='pc-candidate-title'>{EKFAST5_TITLES[cand_key]}</span>"
+                f"<span class='pc-candidate-title'>{EKFAST4_TITLES[cand_key]}</span>"
                 f"<span class='pc-candidate-tag {tag}'>{tag_label}</span></div></div>",
                 unsafe_allow_html=True,
             )
-            outcome_bar(cand["p_target"], p_neither, cand["p_breach"])
+            if cand_key == "reference":
+                st.caption("(Referenzkurve zeigt nur die historische Entwicklung, kein eigener Monte-Carlo-Lauf.)")
+            else:
+                outcome_bar(p_target, p_neither, p_breach)
             c1, c2, c3 = st.columns(3)
-            c1.metric("Median Tage bis Ziel", f"{cand['median_days']:.0f}" if cand["median_days"] else "—")
+            c1.metric("Median Tage bis Ziel", f"{median_days:.0f}" if median_days else "—")
             c2.metric("Sharpe (historisch)", f"{hist['sharpe']:.2f}")
             c3.metric("MaxDD (historisch)", f"{hist['max_dd_pct']:.1f}%")
             rows_html = ""
             for leg_key, risk_label in cand["combo"].items():
                 rows_html += (
                     f"<div class='pc-weight-row' style='grid-template-columns:1fr 60px;'>"
-                    f"<div class='pc-weight-name'>{ekfast5['leg_labels'][leg_key]}</div>"
+                    f"<div class='pc-weight-name'>{ekfast4['leg_labels'][leg_key]}</div>"
                     f"<div class='pc-weight-pct'>{risk_label}</div></div>"
                 )
             st.markdown(rows_html, unsafe_allow_html=True)
-            st.caption("Risiko/Trade je Strategie (Kapitalanteil bei beiden Kandidaten gleich 20%).")
+            st.caption("Risiko/Trade je Strategie (Kapitalanteil bei beiden Kandidaten gleich 25%).")
 
     section_title("Equity-Kurven")
-    curve_ref = pd.Series({pd.Timestamp(d): v for d, v in ekfast5["reference_curve"]})
-    curve_ro = pd.Series({pd.Timestamp(d): v for d, v in ekfast5["riskopt_curve"]})
+    curve_ref = pd.Series({pd.Timestamp(d): v for d, v in ekfast4["reference_curve"]})
+    curve_ro = pd.Series({pd.Timestamp(d): v for d, v in ekfast4["full4_curve"]})
     df1 = curve_ref.rename("value").rename_axis("date").reset_index(); df1["Serie"] = "Referenz"
     df2 = curve_ro.rename("value").rename_axis("date").reset_index(); df2["Serie"] = "Risiko-optimiert"
-    df_ekfast5 = pd.concat([df1, df2])
-    st.altair_chart(line_chart(df_ekfast5, {"Referenz": (C_MUTED, (4, 3)), "Risiko-optimiert": (C_BLUE, None)}), use_container_width=True)
+    df_ekfast4 = pd.concat([df1, df2])
+    st.altair_chart(line_chart(df_ekfast4, {"Referenz": (C_MUTED, (4, 3)), "Risiko-optimiert": (C_BLUE, None)}), use_container_width=True)
     st.caption(
-        f"Historischer Zeitraum {ekfast5['common_window']['start']} bis {ekfast5['common_window']['end']} "
-        "(Zeitraum, in dem alle 5 Strategien Daten liefern) -- die Monte-Carlo-Werte oben simulieren daraus "
+        f"Historischer Zeitraum {ekfast4['common_window']['start']} bis {ekfast4['common_window']['end']} "
+        "(Zeitraum, in dem alle 4 Strategien Daten liefern) -- die Monte-Carlo-Werte oben simulieren daraus "
         "500 Handelstage in die Zukunft, nicht diesen Chart direkt."
     )
     st.caption(
-        "Hinweis: der Walk-Forward-Tab zeigt noch die AELTERE 7-Strategien-Version dieses Szenarios (vor der "
-        "Umstellung auf die 5 FK-Strategien) -- die dortige methodische Lehre (grobe Risikostufen-Wahl schlaegt "
+        "Hinweis: der Walk-Forward-Tab zeigt noch eine AELTERE Version dieses Szenarios (vor der Umstellung auf "
+        "die 4 FK-Kern-Strategien) -- die dortige methodische Lehre (grobe Risikostufen-Wahl schlaegt "
         "kontinuierliche Mean-Variance-Optimierung im Out-of-Sample-Test) hat genau zu diesem Ansatz gefuehrt, "
-        "wurde aber noch nicht erneut auf dieser neuen 5-Strategien-Kombination validiert."
+        "wurde aber noch nicht erneut auf dieser aktuellen Kombination validiert."
     )
 
 # ============================================================ Tab: Walk-Forward
@@ -1082,25 +1118,25 @@ def _render_tab_crisis():
 def _render_tab_caveats():
     st.markdown(
         """
-- **"Risiko-optimiert" (FK-Tab) erhoeht das Risiko/Trade JE STRATEGIE** (Gold ASB 1%->2%, BTC 1%->2%,
-  OU-Modell 1%->1,5%, CLS Practical 1%->1,5%, Trend Pullback 0,10%->0,50%), nicht den Kapitalanteil --
-  Ergebnis eines gemeinsamen Suchlaufs (Gewicht x Risikostufe je Strategie) ueber 32 Kombinationen mit
-  geteiltem Monte-Carlo-Bootstrap. Bei praktisch gleicher Bruch-Wahrscheinlichkeit (TTP 3,5% vs. 3,4% Referenz)
-  steigt die Zielerreichung von 77%->93% und die Zeit bis zum Ziel sinkt um ~30%. Bestaetigt die These, dass
-  einzelne Strategien wegen der geringen Trade-Ueberschneidung (siehe Trade-Overlap-Tab) mehr Risiko vertragen
-  als ihre jeweils fuer sich genommen "sichere" Kalibrierung nahelegt.
+- **BTC EMA9/21 seit 2026-08-22 komplett aus dem FK-Track entfernt** (bleibt EK-Strategie): schwaechster
+  Phase-6-Audit-Befund aller 8 Portfolio-Strategien (Monte-Carlo P(Verlust)=12%, Sharpe-P5 negativ, duennste
+  Datenbasis mit nur 22 OOS-Trades) UND nie live ausgefuehrt (Bot stand auf Dry-Run) -- beide Gruende zusammen
+  gaben den Ausschlag, nicht nur einer allein.
+- **FK-Kern-Roster jetzt 4 Strategien** (Gold ASB, CLS Practical, OU-Modell, Trend Pullback). "Risiko-optimiert"
+  erhoeht weiterhin das Risiko/Trade JE STRATEGIE statt den Kapitalanteil zu verschieben, jetzt zusaetzlich mit
+  einem **Leave-one-out-Suchlauf** (2026-08-22): neben allen Risikostufen-Kombinationen des vollen 4-Bein-Rosters
+  wurde auch systematisch geprueft, ob das Weglassen einer einzelnen Strategie das Ergebnis innerhalb der Regeln
+  verbessert. Befund: **ohne OU-Modell halbiert sich die Bruch-Wahrscheinlichkeit** gegenueber der besten
+  Voll-4-Bein-Kombination, kostet aber CAGR/Tempo -- ein echter Sicherheit-vs-Tempo-Trade-off, deshalb im FK-Tab
+  BEIDE Kandidaten sichtbar (nicht nur einer). Bei EK-Schnellkonto (lockere 7%/7%-Regel ohne Tageslimit) bringt
+  dieselbe Leave-one-out-Suche dagegen KEINE Verbesserung -- der volle 4-Bein-Roster gewinnt dort in jedem Fall,
+  auch das ein bestaetigter, nicht nur behaupteter Befund.
 - **OU-Modell wird durchgaengig NUR mit S&P500 betrachtet** (Nasdaq-100/DAX raus, deren echter Out-of-Sample-
   Sharpe liegt nahe Null/negativ -- nur S&P500 hat einen echten OOS-Edge). Dadurch ist die Einzelkurve
   volatiler/drawdown-staerker als eine ueber 3 Maerkte diversifizierte Version waere (solo MaxDD -37,6% EK,
-  -26,7% FK-Teilmenge) -- die Portfolio-Korrelation faengt das aber weitgehend auf. Im FK-Track zusaetzlich nur
-  die TTP-handelbare Ticker-Teilmenge (58 von 147 OU-selektierten S&P500-Tickern).
-- **Trend Pullback traegt bei FK1's tatsaechlichem 0,10%-Risiko kaum noch messbar zum Portfolio bei**
-  (CAGR nur 0,71% solo) -- sein Diversifikations-Nutzen (sehr niedrige Korrelation) waere bei einer etwas
-  hoeheren, aber immer noch FK-konformen Risikostufe vermutlich groesser. Deshalb schneidet "ohne Trend
-  Pullback" (Kapital auf die uebrigen 4 verteilt) im FK-Vergleich sogar besser ab als eine reine
-  Rendite-Kippung -- offene Stellschraube fuer die naechste Iteration.
-- **BTC EMA9/21 ist im FK-Track enthalten, aber noch nie live ausgefuehrt** (Bot steht auf Dry-Run) -- Symbol-
-  Verfuegbarkeit auf dem Prop-Konto ist verifiziert, echte Order-Ausfuehrung nicht.
+  -26,7% FK-Teilmenge) -- die Portfolio-Korrelation faengt das aber weitgehend auf, und die neue Leave-one-out-
+  Erkenntnis oben zeigt direkt, wie stark OU-Modells Risikoprofil das FK-Ergebnis noch dominiert. Im FK-Track
+  zusaetzlich nur die TTP-handelbare Ticker-Teilmenge (58 von 147 OU-selektierten S&P500-Tickern).
 - **Trend-Pullback-Bots (FK1/FK2) laufen aktuell auf einem generischen MetaQuotes-Demo-Server**, nicht auf der
   echten TTP-/IQ-Markets-Plattform -- Broker-Kompatibilitaet ist plausibel, aber nicht live verifiziert.
 - **ORB und die rohe Gold-Bitcoin-Dual-Momentum-Variante bleiben komplett draussen** -- keine Evidenz, dass

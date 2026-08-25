@@ -35,21 +35,21 @@
     "orb_strategy": "1.5%"
   },
   "oos_reference": {
-    "cagr_pct": 7.62,
-    "sharpe": 1.894,
-    "max_dd_pct": -3.08,
-    "calmar": 2.472
+    "cagr_pct": 8.53,
+    "sharpe": 2.057,
+    "max_dd_pct": -3.32,
+    "calmar": 2.566
   },
   "oos_is_selected": {
-    "cagr_pct": 13.33,
-    "sharpe": 2.375,
-    "max_dd_pct": -3.81,
-    "calmar": 3.5
+    "cagr_pct": 14.43,
+    "sharpe": 2.521,
+    "max_dd_pct": -3.77,
+    "calmar": 3.829
   },
   "oos_full_sample_selected": {
-    "cagr_pct": 13.33,
-    "sharpe": 2.375,
-    "max_dd_pct": -3.81,
-    "calmar": 3.5
+    "cagr_pct": 14.43,
+    "sharpe": 2.521,
+    "max_dd_pct": -3.77,
+    "calmar": 3.829
   }
 }

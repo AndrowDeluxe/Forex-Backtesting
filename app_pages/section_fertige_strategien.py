@@ -51,6 +51,12 @@ render_section(
             "tag": "STRATEGIE",
         },
         {
+            "page": "app_pages/mt5_gold_silver_divergenz.py",
+            "title": "Gold/Silber-Divergenz",
+            "icon": ":material/compare_arrows:",
+            "tag": "STRATEGIE",
+        },
+        {
             "page": "app_pages/gold_ctnl_edge.py",
             "title": "CTNL Edge Strategie",
             "icon": ":material/military_tech:",

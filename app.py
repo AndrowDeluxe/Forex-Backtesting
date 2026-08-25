@@ -190,6 +190,10 @@ mt5_trend_pullback = st.Page(
     "app_pages/mt5_trend_pullback.py", title="Trend Pullback", icon=":material/smart_toy:",
     visibility="hidden",
 )
+mt5_gold_silver_divergenz = st.Page(
+    "app_pages/mt5_gold_silver_divergenz.py", title="Gold/Silber-Divergenz", icon=":material/compare_arrows:",
+    visibility="hidden",
+)
 gold_ctnl_edge = st.Page(
     "app_pages/gold_ctnl_edge.py", title="CTNL Edge Strategie", icon=":material/military_tech:",
     visibility="hidden",
@@ -217,6 +221,7 @@ page = st.navigation(
         execution_overlay_writeup, gap_fade_writeup, orb_writeup,
         paper151, goldi_papers_202608, fx_papers_202608,
         fx_liquidity_filter, cb_event_window_filter, mtf_ema_ribbon_filter, cls_cross_filter, mt5_trend_pullback,
+        mt5_gold_silver_divergenz,
         gold_ctnl_edge,
     ]
 )

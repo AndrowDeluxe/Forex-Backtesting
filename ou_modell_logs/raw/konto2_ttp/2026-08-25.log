@@ -1,0 +1,76 @@
+===== run_20260825_153601.log =====
+2026-08-25 15:36:01,976 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260825_153601.log ===
+2026-08-25 15:36:02,503 CRITICAL executor: HALTEDAUER-WARNUNG: Position AIG (Ticket 17874757) ist seit 11 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 13.92.
+2026-08-25 15:36:02,504 CRITICAL executor: HALTEDAUER-WARNUNG: Position EBAY (Ticket 17874758) ist seit 11 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 65.34.
+2026-08-25 15:36:02,510 CRITICAL run_once.konto2_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17874757, 'symbol': 'AIG', 'holding_days': 11, 'profit': 13.92}, {'ticket': 17874758, 'symbol': 'EBAY', 'holding_days': 11, 'profit': 65.34}]
+2026-08-25 15:36:02,649 INFO run_once.konto2_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-25 15:36:02,651 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100361.17, aktueller Drawdown 0.00% (Limit 2.0%)
+2026-08-25 15:36:03,212 INFO executor: Order gesendet: {'symbol': 'TXT', 'volume': 35.0, 'type': 'BUY', 'entry': 82.71, 'sl': 75.61, 'tp': 91.91} -> Ticket 18077241
+2026-08-25 15:36:03,244 INFO run_once.konto2_ttp: Ergebnis: {'status': 'sent', 'order': {'symbol': 'TXT', 'volume': 35.0, 'type': 'BUY', 'entry': 82.71, 'sl': 75.61, 'tp': 91.91}, 'signal': {'symbol': 'TXT', 'direction': 'Long', 'entry': 82.13, 'sl': 75.61, 'tp': 91.91}, 'ticket': 18077241, 'risk': 248.4999999999998}
+2026-08-25 15:36:03,249 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260825_163558.log =====
+2026-08-25 16:35:58,471 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260825_163558.log ===
+2026-08-25 16:35:58,541 CRITICAL executor: HALTEDAUER-WARNUNG: Position AIG (Ticket 17874757) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -4.64.
+2026-08-25 16:35:58,542 CRITICAL executor: HALTEDAUER-WARNUNG: Position EBAY (Ticket 17874758) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 80.74.
+2026-08-25 16:35:58,549 CRITICAL run_once.konto2_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17874757, 'symbol': 'AIG', 'holding_days': 12, 'profit': -4.64}, {'ticket': 17874758, 'symbol': 'EBAY', 'holding_days': 12, 'profit': 80.74}]
+2026-08-25 16:35:58,725 INFO run_once.konto2_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-25 16:35:58,728 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100361.17, aktueller Drawdown 0.10% (Limit 2.0%)
+2026-08-25 16:35:58,732 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'TXT', 'direction': 'Long', 'entry': 82.13, 'sl': 75.61, 'tp': 91.91}
+2026-08-25 16:35:58,733 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260825_173559.log =====
+2026-08-25 17:35:59,768 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260825_173559.log ===
+2026-08-25 17:35:59,945 CRITICAL executor: HALTEDAUER-WARNUNG: Position AIG (Ticket 17874757) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -12.76.
+2026-08-25 17:35:59,947 CRITICAL executor: HALTEDAUER-WARNUNG: Position EBAY (Ticket 17874758) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 76.78.
+2026-08-25 17:35:59,954 CRITICAL run_once.konto2_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17874757, 'symbol': 'AIG', 'holding_days': 12, 'profit': -12.76}, {'ticket': 17874758, 'symbol': 'EBAY', 'holding_days': 12, 'profit': 76.78}]
+2026-08-25 17:36:00,156 INFO run_once.konto2_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-25 17:36:00,159 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100361.17, aktueller Drawdown 0.11% (Limit 2.0%)
+2026-08-25 17:36:00,161 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'TXT', 'direction': 'Long', 'entry': 82.13, 'sl': 75.61, 'tp': 91.91}
+2026-08-25 17:36:00,162 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260825_183558.log =====
+2026-08-25 18:35:58,576 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260825_183558.log ===
+2026-08-25 18:35:58,617 CRITICAL executor: HALTEDAUER-WARNUNG: Position AIG (Ticket 17874757) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -12.76.
+2026-08-25 18:35:58,618 CRITICAL executor: HALTEDAUER-WARNUNG: Position EBAY (Ticket 17874758) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 73.26.
+2026-08-25 18:35:58,626 CRITICAL run_once.konto2_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17874757, 'symbol': 'AIG', 'holding_days': 12, 'profit': -12.76}, {'ticket': 17874758, 'symbol': 'EBAY', 'holding_days': 12, 'profit': 73.26}]
+2026-08-25 18:35:58,762 INFO run_once.konto2_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-25 18:35:58,765 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100361.17, aktueller Drawdown 0.10% (Limit 2.0%)
+2026-08-25 18:35:58,768 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'TXT', 'direction': 'Long', 'entry': 82.13, 'sl': 75.61, 'tp': 91.91}
+2026-08-25 18:35:58,769 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260825_193600.log =====
+2026-08-25 19:36:00,953 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260825_193600.log ===
+2026-08-25 19:36:01,152 CRITICAL executor: HALTEDAUER-WARNUNG: Position AIG (Ticket 17874757) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -11.60.
+2026-08-25 19:36:01,154 CRITICAL executor: HALTEDAUER-WARNUNG: Position EBAY (Ticket 17874758) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 57.20.
+2026-08-25 19:36:01,160 CRITICAL run_once.konto2_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17874757, 'symbol': 'AIG', 'holding_days': 12, 'profit': -11.6}, {'ticket': 17874758, 'symbol': 'EBAY', 'holding_days': 12, 'profit': 57.2}]
+2026-08-25 19:36:01,446 INFO run_once.konto2_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-25 19:36:01,449 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100361.17, aktueller Drawdown 0.14% (Limit 2.0%)
+2026-08-25 19:36:01,453 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'TXT', 'direction': 'Long', 'entry': 82.13, 'sl': 75.61, 'tp': 91.91}
+2026-08-25 19:36:01,454 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260825_203600.log =====
+2026-08-25 20:36:00,747 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260825_203600.log ===
+2026-08-25 20:36:00,784 CRITICAL executor: HALTEDAUER-WARNUNG: Position AIG (Ticket 17874757) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -5.80.
+2026-08-25 20:36:00,785 CRITICAL executor: HALTEDAUER-WARNUNG: Position EBAY (Ticket 17874758) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 62.70.
+2026-08-25 20:36:00,791 CRITICAL run_once.konto2_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17874757, 'symbol': 'AIG', 'holding_days': 12, 'profit': -5.8}, {'ticket': 17874758, 'symbol': 'EBAY', 'holding_days': 12, 'profit': 62.7}]
+2026-08-25 20:36:00,939 INFO run_once.konto2_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-25 20:36:00,943 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100361.17, aktueller Drawdown 0.10% (Limit 2.0%)
+2026-08-25 20:36:00,950 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'TXT', 'direction': 'Long', 'entry': 82.13, 'sl': 75.61, 'tp': 91.91}
+2026-08-25 20:36:00,951 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260825_213558.log =====
+2026-08-25 21:35:58,358 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260825_213558.log ===
+2026-08-25 21:35:58,470 CRITICAL executor: HALTEDAUER-WARNUNG: Position AIG (Ticket 17874757) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L -8.70.
+2026-08-25 21:35:58,472 CRITICAL executor: HALTEDAUER-WARNUNG: Position EBAY (Ticket 17874758) ist seit 12 Tagen offen (Limit 10 Tage) - manuell prüfen/schließen. Aktueller P/L 63.36.
+2026-08-25 21:35:58,482 CRITICAL run_once.konto2_ttp: 2 Position(en) über Haltedauer-Limit: [{'ticket': 17874757, 'symbol': 'AIG', 'holding_days': 12, 'profit': -8.7}, {'ticket': 17874758, 'symbol': 'EBAY', 'holding_days': 12, 'profit': 63.36}]
+2026-08-25 21:35:58,640 INFO run_once.konto2_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-25 21:35:58,643 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100361.17, aktueller Drawdown 0.12% (Limit 2.0%)
+2026-08-25 21:35:58,646 INFO run_once.konto2_ttp: Bereits heute ausgeführt, übersprungen: {'symbol': 'TXT', 'direction': 'Long', 'entry': 82.13, 'sl': 75.61, 'tp': 91.91}
+2026-08-25 21:35:58,647 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===

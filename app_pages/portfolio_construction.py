@@ -242,10 +242,11 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-tab_combined, tab_overlap, tab_ek, tab_fk, tab_ekfast, tab_ifund, tab_wf, tab_crisis, tab_caveats = st.tabs([
+tab_combined, tab_overlap, tab_ek, tab_ekv2, tab_fk, tab_ekfast, tab_ifund, tab_wf, tab_crisis, tab_caveats = st.tabs([
     ":material/query_stats: Kombinierter Backtest",
     ":material/calendar_view_week: Trade-Overlap",
     ":material/savings: EK-Portfolio",
+    ":material/percent: EK 20%-Drawdown",
     ":material/shield: FK-Portfolio",
     ":material/bolt: EK-Schnellkonto",
     ":material/account_balance: FK Instant Funding",
@@ -1044,6 +1045,131 @@ def _render_tab_ifund():
     )
 
 
+# ============================================================ Tab: EK realistisch (20% DD)
+def _render_tab_ekv2():
+    d = load_json("ek_v2_realistic_final.json")
+    labels = d["leg_labels"]
+    cw = d["common_window"]
+    ref, ro = d["reference"], d["riskopt_20dd"]
+
+    st.caption(
+        "Realistische EK-Neubewertung: ORB und Gold-Bitcoin Dual Momentum entfernt (siehe Begruendung unten), "
+        "einzige Regel ein hartes 20%-Drawdown-Limit statt der bisherigen 30%-Psychogrenze. Frage: wie viel "
+        "Rendite laesst sich innerhalb dieser 20%-Grenze wirklich herausholen?"
+    )
+    st.markdown("<span class='pc-rule-badge'>Max. Drawdown <b>20%</b></span>", unsafe_allow_html=True)
+    st.warning(
+        f"**Entfernt:** {d['removed_strategies']['gold_bitcoin_dual_momentum']} und "
+        f"{d['removed_strategies']['orb_strategy']}. {d['removed_reason']}",
+        icon=":material/report:",
+    )
+
+    section_title("Referenz (bisherige 2%-Risikostufen) vs. moderat-aggressiv (Monte-Carlo-validiert)")
+    col1, col2 = st.columns(2)
+    for col, cand, tag, tag_label, title in [
+        (col1, ref, "safe", "sicher, viel Spielraum ungenutzt", "Referenz (max. 2%/Trade, wie bisher ueberall)"),
+        (col2, ro, "fast", "empfohlen", "Moderat-aggressiv (max. 8%/Trade, MC-validiert)"),
+    ]:
+        hist, mc = cand["historical_metrics"], cand["monte_carlo_check"]
+        with col:
+            st.markdown(
+                f"<div class='pc-candidate'><div class='pc-candidate-head'>"
+                f"<span class='pc-candidate-title'>{title}</span>"
+                f"<span class='pc-candidate-tag {tag}'>{tag_label}</span></div></div>",
+                unsafe_allow_html=True,
+            )
+            r1c1, r1c2 = st.columns(2)
+            r1c1.metric("CAGR", f"{hist['cagr_pct']:+.1f}%")
+            r1c2.metric("Sharpe", f"{hist['sharpe']:.2f}")
+            r2c1, r2c2 = st.columns(2)
+            r2c1.metric("Hist. MaxDD", f"{hist['max_dd_pct']:.1f}%")
+            r2c2.metric("Calmar", f"{hist['calmar']:.2f}")
+            st.caption(f"Monte-Carlo (2.000 Bootstrap-Pfade, 500 Tage): P(MaxDD&gt;20%) = {mc['p_maxdd_gt_20pct']*100:.1f}%, "
+                       f"Median simulierter MaxDD = {mc['median_simulated_maxdd_pct']:.1f}%.")
+            rows_html = ""
+            for leg_key, risk_label in cand["combo"].items():
+                rows_html += (
+                    f"<div class='pc-weight-row' style='grid-template-columns:1fr 60px;'>"
+                    f"<div class='pc-weight-name'>{labels[leg_key]}</div>"
+                    f"<div class='pc-weight-pct'>{risk_label}</div></div>"
+                )
+            st.markdown(rows_html, unsafe_allow_html=True)
+            st.caption("Risiko/Trade je Strategie, Kapitalanteil bei beiden gleich 20% je Bein.")
+
+    curve_ref = pd.Series({pd.Timestamp(dt): v for dt, v in d["reference_curve"]})
+    curve_ro = pd.Series({pd.Timestamp(dt): v for dt, v in d["riskopt_curve"]})
+    df1 = curve_ref.rename("value").rename_axis("date").reset_index(); df1["Serie"] = "Referenz"
+    df2 = curve_ro.rename("value").rename_axis("date").reset_index(); df2["Serie"] = "Moderat-aggressiv"
+    df_ekv2 = pd.concat([df1, df2])
+    st.altair_chart(
+        line_chart(df_ekv2, {"Referenz": (C_MUTED, (4, 3)), "Moderat-aggressiv": (C_BLUE, None)}),
+        use_container_width=True,
+    )
+    st.caption(f"Historischer Zeitraum {cw['start']} bis {cw['end']} (gemeinsames Fenster der 5 Beine).")
+
+    section_title("Overfitting-Falle: das rechnerische Maximum bei 20% historischem Drawdown")
+    tm = d["theoretical_max_overfit_example"]
+    st.error(tm["warning"], icon=":material/report:")
+    tm_rows = "".join(
+        f"<div class='pc-weight-row' style='grid-template-columns:1fr 60px;'>"
+        f"<div class='pc-weight-name'>{labels[k]}</div><div class='pc-weight-pct'>{v}</div></div>"
+        for k, v in tm["combo"].items()
+    )
+    st.markdown(tm_rows, unsafe_allow_html=True)
+    st.caption(
+        f"CAGR {tm['historical_metrics']['cagr_pct']:.1f}%, historischer MaxDD {tm['historical_metrics']['max_dd_pct']:.1f}% -- "
+        f"aber Monte-Carlo P(MaxDD&gt;20%) = {tm['monte_carlo_check']['p_maxdd_gt_20pct']*100:.0f}%. Zeigt: die exakte historische "
+        "Drawdown-Grenze anzupeilen ist eine Wette auf die EINE beobachtete Trade-Reihenfolge, keine robuste Kennzahl."
+    )
+
+    section_title("Einzelstrategie-Beitraege bei den neuen Risikostufen (historisch, gleiches Fenster)")
+    sa_rows = ""
+    for key, m in d["per_leg_standalone"].items():
+        sa_rows += (
+            f"<tr><td>{labels[key]}</td><td class='pos'>{m['cagr_pct']:+.1f}%</td>"
+            f"<td>{m['sharpe']:.2f}</td><td class='neg'>{m['max_dd_pct']:.1f}%</td></tr>"
+        )
+    st.markdown(
+        f"<table class='pc-table'><thead><tr><th>Strategie</th><th>CAGR</th><th>Sharpe</th><th>MaxDD (solo)</th>"
+        f"</tr></thead><tbody>{sa_rows}</tbody></table>",
+        unsafe_allow_html=True,
+    )
+    st.caption(
+        "Jede Einzelstrategie hat bei diesen Risikostufen solo einen erheblich groesseren Drawdown (bis zu -78,9% "
+        "bei BTC EMA9/21) als das Portfolio (-19,2%) -- die fast nicht vorhandene Korrelation zwischen den "
+        "Strategien traegt hier den Loewenanteil der Risikoreduktion. Bricht diese Korrelationsannahme in einer "
+        "echten Krise zusammen, waere der reale Drawdown deutlich naeher an den Einzelwerten."
+    )
+
+    section_title("Erweiterung: CTNL Edge als 6. Strategie")
+    ctnl = d["ctnl_extension"]
+    st.info(
+        f"Gemeinsames Fenster aller 6 Beine: {ctnl['common_window']['start']} bis {ctnl['common_window']['end']} "
+        "-- kurz (durch OU-Modells Datenstand Ende 2024 UND CTNLs Start Mitte 2024 auf ~5 Monate begrenzt), "
+        "daher nur als Richtungs-Hinweis, nicht als belastbare Kennzahl.",
+        icon=":material/info:",
+    )
+    ctnl_rows = (
+        f"<tr><td>5 Beine ohne CTNL (gleiches Fenster)</td><td class='pos'>{ctnl['baseline_5leg_same_window']['cagr_pct']:+.1f}%</td>"
+        f"<td>{ctnl['baseline_5leg_same_window']['sharpe']:.2f}</td><td class='neg'>{ctnl['baseline_5leg_same_window']['max_dd_pct']:.1f}%</td>"
+        f"<td>{ctnl['baseline_5leg_same_window']['calmar']:.2f}</td></tr>"
+        f"<tr><td>6 Beine mit CTNL Edge (konservatives Risiko)</td><td class='pos'>{ctnl['with_ctnl_6leg']['cagr_pct']:+.1f}%</td>"
+        f"<td>{ctnl['with_ctnl_6leg']['sharpe']:.2f}</td><td class='neg'>{ctnl['with_ctnl_6leg']['max_dd_pct']:.1f}%</td>"
+        f"<td>{ctnl['with_ctnl_6leg']['calmar']:.2f}</td></tr>"
+    )
+    st.markdown(
+        f"<table class='pc-table'><thead><tr><th>Kombination</th><th>CAGR</th><th>Sharpe</th><th>MaxDD</th>"
+        f"<th>Calmar</th></tr></thead><tbody>{ctnl_rows}</tbody></table>",
+        unsafe_allow_html=True,
+    )
+    st.caption(
+        "Korrelation CTNL vs. die 5 Beine in diesem Fenster: " +
+        ", ".join(f"{labels[k]} {v:+.3f}" for k, v in ctnl["ctnl_correlation"].items()) +
+        " -- durchgehend nahe null, CTNL bleibt auch hier ein sauberer Diversifikator trotz kurzer Historie und "
+        "eigenem Walk-Forward-Vorbehalt (siehe Einordnung & Vorbehalte)."
+    )
+
+
 # ============================================================ Tab: Walk-Forward
 def _render_tab_wf():
     wf = load_json("walk_forward_results.json")
@@ -1325,7 +1451,7 @@ def _render_tab_caveats():
 # Cloud memory-limit suspension).
 for _tab, _render in [
     (tab_combined, _render_tab_combined), (tab_overlap, _render_tab_overlap),
-    (tab_ek, _render_tab_ek), (tab_fk, _render_tab_fk), (tab_ekfast, _render_tab_ekfast),
+    (tab_ek, _render_tab_ek), (tab_ekv2, _render_tab_ekv2), (tab_fk, _render_tab_fk), (tab_ekfast, _render_tab_ekfast),
     (tab_ifund, _render_tab_ifund),
     (tab_wf, _render_tab_wf), (tab_crisis, _render_tab_crisis), (tab_caveats, _render_tab_caveats),
 ]:

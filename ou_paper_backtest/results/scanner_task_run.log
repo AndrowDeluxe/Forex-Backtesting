@@ -1827,3 +1827,22 @@
 2026-08-25 18:35:27 Saved 1 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-08-25T18:35:26)
 2026-08-25 18:35:27                                 market ticker  scan_date  close  lower_band  entry    sl    tp  tp_price  risk_pct_price  position_size_pct  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
 2026-08-25 18:35:27 S&P 500 (volles Universum, 420 Ticker)    TXT 2026-08-24  82.13       82.81  82.13 75.61 91.91     91.91            7.94              12.59       True       True                            12.5 2026-08-25T18:35:26
+2026-08-25 18:35:27 [main 29e2b20] OU-Modell Scanner: Snapshot 2026-08-25 18:35
+2026-08-25 18:35:27  2 files changed, 20 insertions(+), 1 deletion(-)
+2026-08-25 18:35:30 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-25 18:35:30    33da15d..29e2b20  main -> main
+2026-08-25 18:35:30 Commit + Push erfolgreich.
+2026-08-25 18:35:30 === Scanner-Task beendet ===
+2026-08-25 19:35:03 === Scanner-Task gestartet ===
+2026-08-25 19:35:26 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-08-25 19:35:26 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-08-25 19:35:26 [sp500] 1 raw signal(s) as of 2026-08-24, regime_ok=True
+2026-08-25 19:35:26 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-08-25 19:35:26 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-08-25 19:35:26 [nasdaq100] 0 raw signal(s) as of 2026-08-24, regime_ok=True
+2026-08-25 19:35:26 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-08-25 19:35:26 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-08-25 19:35:26 
+2026-08-25 19:35:26 Saved 1 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-08-25T19:35:25)
+2026-08-25 19:35:26                                 market ticker  scan_date  close  lower_band  entry    sl    tp  tp_price  risk_pct_price  position_size_pct  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
+2026-08-25 19:35:26 S&P 500 (volles Universum, 420 Ticker)    TXT 2026-08-24  82.13       82.81  82.13 75.61 91.91     91.91            7.94              12.59       True       True                            12.5 2026-08-25T19:35:25

@@ -2575,11 +2575,4315 @@
       "exit_reason": "target",
       "r_multiple": 2.152099207759092,
       "notified_exit": true
+    },
+    "gold_asb__2016-12-15T06:45:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2016-12-15T06:45:00",
+      "exit_time": "2016-12-15T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 3.8074296640264196,
+      "notified_exit": true
+    },
+    "gold_asb__2016-12-20T06:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2016-12-20T06:15:00",
+      "exit_time": "2016-12-20T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.5159730979402917,
+      "notified_exit": true
+    },
+    "gold_asb__2017-01-27T06:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2017-01-27T06:15:00",
+      "exit_time": "2017-01-27T13:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1083717149824133,
+      "notified_exit": true
+    },
+    "gold_asb__2017-01-30T06:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2017-01-30T06:15:00",
+      "exit_time": "2017-01-30T15:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.149198060425246,
+      "notified_exit": true
+    },
+    "gold_asb__2017-02-23T06:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2017-02-23T06:15:00",
+      "exit_time": "2017-02-23T08:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.233918128655019,
+      "notified_exit": true
+    },
+    "gold_asb__2017-05-26T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2017-05-26T05:15:00",
+      "exit_time": "2017-05-26T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.1494626343414045,
+      "notified_exit": true
+    },
+    "gold_asb__2017-06-06T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2017-06-06T05:15:00",
+      "exit_time": "2017-06-06T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.251543942992986,
+      "notified_exit": true
+    },
+    "gold_asb__2017-06-08T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2017-06-08T05:30:00",
+      "exit_time": "2017-06-08T10:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1119194180190495,
+      "notified_exit": true
+    },
+    "gold_asb__2017-07-18T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2017-07-18T05:30:00",
+      "exit_time": "2017-07-18T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.003958587088961,
+      "notified_exit": true
+    },
+    "gold_asb__2017-07-21T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2017-07-21T05:30:00",
+      "exit_time": "2017-07-21T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.212614870509613,
+      "notified_exit": true
+    },
+    "gold_asb__2017-07-25T05:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2017-07-25T05:45:00",
+      "exit_time": "2017-07-25T08:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1224364860728755,
+      "notified_exit": true
+    },
+    "gold_asb__2017-08-10T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2017-08-10T05:30:00",
+      "exit_time": "2017-08-10T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.881126554498726,
+      "notified_exit": true
+    },
+    "gold_asb__2017-08-24T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2017-08-24T05:15:00",
+      "exit_time": "2017-08-24T06:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2116402116402485,
+      "notified_exit": true
+    },
+    "gold_asb__2017-08-28T05:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2017-08-28T05:45:00",
+      "exit_time": "2017-08-28T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 7.846407382992489,
+      "notified_exit": true
+    },
+    "gold_asb__2017-09-04T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2017-09-04T05:30:00",
+      "exit_time": "2017-09-04T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.11536458333338391,
+      "notified_exit": true
+    },
+    "gold_asb__2017-09-08T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2017-09-08T05:15:00",
+      "exit_time": "2017-09-08T12:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.062431715311391,
+      "notified_exit": true
+    },
+    "gold_asb__2017-10-12T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2017-10-12T05:30:00",
+      "exit_time": "2017-10-12T12:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1094990418834079,
+      "notified_exit": true
+    },
+    "gold_asb__2017-10-16T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2017-10-16T05:30:00",
+      "exit_time": "2017-10-16T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.1407445181030421,
+      "notified_exit": true
+    },
+    "gold_asb__2017-11-27T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2017-11-27T06:15:00",
+      "exit_time": "2017-11-27T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.3944954128440568,
+      "notified_exit": true
+    },
+    "gold_asb__2017-12-07T06:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2017-12-07T06:15:00",
+      "exit_time": "2017-12-07T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.4977973568282164,
+      "notified_exit": true
+    },
+    "gold_asb__2017-12-26T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2017-12-26T06:15:00",
+      "exit_time": "2017-12-26T09:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2498438475953277,
+      "notified_exit": true
+    },
+    "gold_asb__2018-01-02T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2018-01-02T06:15:00",
+      "exit_time": "2018-01-02T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.235714285714192,
+      "notified_exit": true
+    },
+    "gold_asb__2018-01-18T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2018-01-18T06:15:00",
+      "exit_time": "2018-01-18T07:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1117006422787215,
+      "notified_exit": true
+    },
+    "gold_asb__2018-01-24T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2018-01-24T06:15:00",
+      "exit_time": "2018-01-24T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 4.636114911080708,
+      "notified_exit": true
+    },
+    "gold_asb__2018-03-06T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2018-03-06T06:15:00",
+      "exit_time": "2018-03-06T07:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.15071590052754,
+      "notified_exit": true
+    },
+    "gold_asb__2018-03-14T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2018-03-14T05:30:00",
+      "exit_time": "2018-03-14T08:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0840336134453974,
+      "notified_exit": true
+    },
+    "gold_asb__2018-03-15T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2018-03-15T05:15:00",
+      "exit_time": "2018-03-15T05:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2664890073285124,
+      "notified_exit": true
+    },
+    "gold_asb__2018-03-23T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2018-03-23T05:30:00",
+      "exit_time": "2018-03-23T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.149892933618777,
+      "notified_exit": true
+    },
+    "gold_asb__2018-04-11T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2018-04-11T05:15:00",
+      "exit_time": "2018-04-11T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 7.898467432950304,
+      "notified_exit": true
+    },
+    "gold_asb__2018-04-23T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2018-04-23T05:30:00",
+      "exit_time": "2018-04-23T07:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1563110590074621,
+      "notified_exit": true
+    },
+    "gold_asb__2018-05-21T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2018-05-21T05:15:00",
+      "exit_time": "2018-05-21T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.4270109235352471,
+      "notified_exit": true
+    },
+    "gold_asb__2018-05-28T05:45:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2018-05-28T05:45:00",
+      "exit_time": "2018-05-28T12:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1612253123740797,
+      "notified_exit": true
+    },
+    "gold_asb__2018-06-04T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2018-06-04T05:15:00",
+      "exit_time": "2018-06-04T07:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1229634183830617,
+      "notified_exit": true
+    },
+    "gold_asb__2018-06-21T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2018-06-21T05:15:00",
+      "exit_time": "2018-06-21T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.7024904214559625,
+      "notified_exit": true
+    },
+    "gold_asb__2018-06-25T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2018-06-25T05:15:00",
+      "exit_time": "2018-06-25T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.005682894487630254,
+      "notified_exit": true
+    },
+    "gold_asb__2018-06-28T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2018-06-28T05:15:00",
+      "exit_time": "2018-06-28T12:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1941747572816026,
+      "notified_exit": true
+    },
+    "gold_asb__2018-07-02T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2018-07-02T05:15:00",
+      "exit_time": "2018-07-02T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.2044545973729024,
+      "notified_exit": true
+    },
+    "gold_asb__2018-07-13T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2018-07-13T05:15:00",
+      "exit_time": "2018-07-13T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.6644776119402823,
+      "notified_exit": true
+    },
+    "gold_asb__2018-07-18T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2018-07-18T05:15:00",
+      "exit_time": "2018-07-18T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.0424289606851509,
+      "notified_exit": true
+    },
+    "gold_asb__2018-08-02T05:30:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2018-08-02T05:30:00",
+      "exit_time": "2018-08-02T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.2442244224422494,
+      "notified_exit": true
+    },
+    "gold_asb__2018-08-06T05:30:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2018-08-06T05:30:00",
+      "exit_time": "2018-08-06T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.954302670623145,
+      "notified_exit": true
+    },
+    "gold_asb__2018-08-15T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2018-08-15T05:15:00",
+      "exit_time": "2018-08-15T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.2137158377186004,
+      "notified_exit": true
+    },
+    "gold_asb__2018-09-06T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2018-09-06T05:15:00",
+      "exit_time": "2018-09-06T08:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1474382602285647,
+      "notified_exit": true
+    },
+    "gold_asb__2018-09-10T05:30:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2018-09-10T05:30:00",
+      "exit_time": "2018-09-10T13:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1049042748492275,
+      "notified_exit": true
+    },
+    "gold_asb__2018-10-30T05:45:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2018-10-30T05:45:00",
+      "exit_time": "2018-10-30T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.1224696356275518,
+      "notified_exit": true
+    },
+    "gold_asb__2018-11-12T06:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2018-11-12T06:15:00",
+      "exit_time": "2018-11-12T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.1662952646239537,
+      "notified_exit": true
+    },
+    "gold_asb__2018-11-13T06:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2018-11-13T06:15:00",
+      "exit_time": "2018-11-13T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.6402439024390962,
+      "notified_exit": true
+    },
+    "gold_asb__2018-12-26T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2018-12-26T06:15:00",
+      "exit_time": "2018-12-26T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.7570273392376345,
+      "notified_exit": true
+    },
+    "gold_asb__2018-12-28T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2018-12-28T06:15:00",
+      "exit_time": "2018-12-28T08:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.237670825906175,
+      "notified_exit": true
+    },
+    "gold_asb__2019-01-02T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-01-02T06:15:00",
+      "exit_time": "2019-01-02T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.014507471347730833,
+      "notified_exit": true
+    },
+    "gold_asb__2019-01-03T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-01-03T06:15:00",
+      "exit_time": "2019-01-03T09:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.149253731343314,
+      "notified_exit": true
+    },
+    "gold_asb__2019-01-25T06:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-01-25T06:30:00",
+      "exit_time": "2019-01-25T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 4.960500329163885,
+      "notified_exit": true
+    },
+    "gold_asb__2019-01-29T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-01-29T06:15:00",
+      "exit_time": "2019-01-29T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 3.6202935545628434,
+      "notified_exit": true
+    },
+    "gold_asb__2019-01-30T06:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-01-30T06:30:00",
+      "exit_time": "2019-01-30T12:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1450852375771063,
+      "notified_exit": true
+    },
+    "gold_asb__2019-02-25T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-02-25T06:15:00",
+      "exit_time": "2019-02-25T07:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2105263157895114,
+      "notified_exit": true
+    },
+    "gold_asb__2019-03-12T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-03-12T05:30:00",
+      "exit_time": "2019-03-12T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.0957178841310092,
+      "notified_exit": true
+    },
+    "gold_asb__2019-03-25T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-03-25T05:15:00",
+      "exit_time": "2019-03-25T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.281826163301138,
+      "notified_exit": true
+    },
+    "gold_asb__2019-04-04T05:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-04-04T05:45:00",
+      "exit_time": "2019-04-04T11:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1515151515151933,
+      "notified_exit": true
+    },
+    "gold_asb__2019-04-30T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-04-30T05:15:00",
+      "exit_time": "2019-04-30T13:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.115041702617222,
+      "notified_exit": true
+    },
+    "gold_asb__2019-05-08T05:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-05-08T05:45:00",
+      "exit_time": "2019-05-08T14:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1902044698050778,
+      "notified_exit": true
+    },
+    "gold_asb__2019-06-18T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-06-18T05:15:00",
+      "exit_time": "2019-06-18T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.7297141207045457,
+      "notified_exit": true
+    },
+    "gold_asb__2019-07-22T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-07-22T05:30:00",
+      "exit_time": "2019-07-22T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.38163296335715247,
+      "notified_exit": true
+    },
+    "gold_asb__2019-09-20T05:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-09-20T05:45:00",
+      "exit_time": "2019-09-20T12:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0686931135153872,
+      "notified_exit": true
+    },
+    "gold_asb__2019-10-22T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-10-22T05:30:00",
+      "exit_time": "2019-10-22T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.32556409620633125,
+      "notified_exit": true
+    },
+    "gold_asb__2019-10-23T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-10-23T05:30:00",
+      "exit_time": "2019-10-23T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.4841628959277178,
+      "notified_exit": true
+    },
+    "gold_asb__2019-10-25T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-10-25T05:30:00",
+      "exit_time": "2019-10-25T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.1750988142292442,
+      "notified_exit": true
+    },
+    "gold_asb__2019-11-19T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-11-19T06:15:00",
+      "exit_time": "2019-11-19T07:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1063829787234287,
+      "notified_exit": true
+    },
+    "gold_asb__2019-12-16T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-12-16T06:15:00",
+      "exit_time": "2019-12-16T16:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1809954751131604,
+      "notified_exit": true
+    },
+    "gold_asb__2019-12-17T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-12-17T06:15:00",
+      "exit_time": "2019-12-17T13:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1440403312927925,
+      "notified_exit": true
+    },
+    "gold_asb__2019-12-23T06:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-12-23T06:30:00",
+      "exit_time": "2019-12-23T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.3011803011802917,
+      "notified_exit": true
+    },
+    "gold_asb__2019-12-24T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2019-12-24T06:15:00",
+      "exit_time": "2019-12-24T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.3174999999998698,
+      "notified_exit": true
+    },
+    "gold_asb__2020-01-20T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2020-01-20T06:15:00",
+      "exit_time": "2020-01-20T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.3569415743002175,
+      "notified_exit": true
+    },
+    "gold_asb__2020-02-19T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2020-02-19T06:15:00",
+      "exit_time": "2020-02-19T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.6719242902207675,
+      "notified_exit": true
+    },
+    "gold_asb__2020-02-21T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2020-02-21T06:15:00",
+      "exit_time": "2020-02-21T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.6883780332056386,
+      "notified_exit": true
+    },
+    "gold_asb__2020-05-15T05:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2020-05-15T05:45:00",
+      "exit_time": "2020-05-15T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.5553489944228671,
+      "notified_exit": true
+    },
+    "gold_asb__2020-05-28T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2020-05-28T05:15:00",
+      "exit_time": "2020-05-28T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.8046153846153901,
+      "notified_exit": true
+    },
+    "gold_asb__2020-07-13T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2020-07-13T05:15:00",
+      "exit_time": "2020-07-13T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.17148760330576493,
+      "notified_exit": true
+    },
+    "gold_asb__2020-07-20T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2020-07-20T05:15:00",
+      "exit_time": "2020-07-20T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.2771771771771836,
+      "notified_exit": true
+    },
+    "gold_asb__2020-12-14T06:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2020-12-14T06:15:00",
+      "exit_time": "2020-12-14T14:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0850520944078446,
+      "notified_exit": true
+    },
+    "gold_asb__2020-12-16T06:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2020-12-16T06:45:00",
+      "exit_time": "2020-12-16T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0608550129317031,
+      "notified_exit": true
+    },
+    "gold_asb__2020-12-17T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2020-12-17T06:15:00",
+      "exit_time": "2020-12-17T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.0469361147326923,
+      "notified_exit": true
+    },
+    "gold_asb__2020-12-21T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2020-12-21T06:15:00",
+      "exit_time": "2020-12-21T07:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0411522633744947,
+      "notified_exit": true
+    },
+    "gold_asb__2021-01-04T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2021-01-04T06:15:00",
+      "exit_time": "2021-01-04T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.4044713362731995,
+      "notified_exit": true
+    },
+    "gold_asb__2021-03-29T05:30:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2021-03-29T05:30:00",
+      "exit_time": "2021-03-29T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.3101382488479274,
+      "notified_exit": true
+    },
+    "gold_asb__2021-03-30T05:30:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2021-03-30T05:30:00",
+      "exit_time": "2021-03-30T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.9218573046432599,
+      "notified_exit": true
+    },
+    "gold_asb__2021-04-05T05:45:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2021-04-05T05:45:00",
+      "exit_time": "2021-04-05T14:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.065146579804574,
+      "notified_exit": true
+    },
+    "gold_asb__2021-05-10T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2021-05-10T05:15:00",
+      "exit_time": "2021-05-10T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.49918831168826167,
+      "notified_exit": true
+    },
+    "gold_asb__2021-05-17T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2021-05-17T05:15:00",
+      "exit_time": "2021-05-17T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.982492276004135,
+      "notified_exit": true
+    },
+    "gold_asb__2021-06-21T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2021-06-21T05:15:00",
+      "exit_time": "2021-06-21T06:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0648298217180043,
+      "notified_exit": true
+    },
+    "gold_asb__2021-07-12T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2021-07-12T05:15:00",
+      "exit_time": "2021-07-12T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.30812641083523773,
+      "notified_exit": true
+    },
+    "gold_asb__2021-07-15T05:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2021-07-15T05:45:00",
+      "exit_time": "2021-07-15T10:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0731662703493843,
+      "notified_exit": true
+    },
+    "gold_asb__2021-08-06T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2021-08-06T05:15:00",
+      "exit_time": "2021-08-06T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 10.18100890207671,
+      "notified_exit": true
+    },
+    "gold_asb__2021-08-31T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2021-08-31T05:15:00",
+      "exit_time": "2021-08-31T12:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0911161731207475,
+      "notified_exit": true
+    },
+    "gold_asb__2021-09-16T05:30:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2021-09-16T05:30:00",
+      "exit_time": "2021-09-16T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 4.953038674033074,
+      "notified_exit": true
+    },
+    "gold_asb__2021-10-11T05:30:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2021-10-11T05:30:00",
+      "exit_time": "2021-10-11T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.6047697368421346,
+      "notified_exit": true
+    },
+    "gold_asb__2021-12-13T06:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2021-12-13T06:15:00",
+      "exit_time": "2021-12-13T11:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.104438642297676,
+      "notified_exit": true
+    },
+    "gold_asb__2021-12-28T06:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2021-12-28T06:30:00",
+      "exit_time": "2021-12-28T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.8059405940594093,
+      "notified_exit": true
+    },
+    "gold_asb__2022-02-10T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2022-02-10T06:15:00",
+      "exit_time": "2022-02-10T08:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3030303030303865,
+      "notified_exit": true
+    },
+    "gold_asb__2022-02-17T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2022-02-17T06:15:00",
+      "exit_time": "2022-02-17T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.2024453327063527,
+      "notified_exit": true
+    },
+    "gold_asb__2022-05-16T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2022-05-16T05:15:00",
+      "exit_time": "2022-05-16T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.5179883945841535,
+      "notified_exit": true
+    },
+    "gold_asb__2022-05-23T05:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2022-05-23T05:45:00",
+      "exit_time": "2022-05-23T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.2648059904696976,
+      "notified_exit": true
+    },
+    "gold_asb__2022-05-30T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2022-05-30T05:15:00",
+      "exit_time": "2022-05-30T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.3835719668424962,
+      "notified_exit": true
+    },
+    "gold_asb__2022-07-01T05:30:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2022-07-01T05:30:00",
+      "exit_time": "2022-07-01T15:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0647249190938675,
+      "notified_exit": true
+    },
+    "gold_asb__2022-07-06T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2022-07-06T05:15:00",
+      "exit_time": "2022-07-06T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 3.9951191501578296,
+      "notified_exit": true
+    },
+    "gold_asb__2022-07-20T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2022-07-20T05:15:00",
+      "exit_time": "2022-07-20T09:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1017811704834821,
+      "notified_exit": true
+    },
+    "gold_asb__2022-08-22T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2022-08-22T05:15:00",
+      "exit_time": "2022-08-22T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.4177606177605662,
+      "notified_exit": true
+    },
+    "gold_asb__2022-10-19T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2022-10-19T05:15:00",
+      "exit_time": "2022-10-19T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.4043016259121257,
+      "notified_exit": true
+    },
+    "gold_asb__2022-12-01T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2022-12-01T06:15:00",
+      "exit_time": "2022-12-01T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.51147111152727,
+      "notified_exit": true
+    },
+    "gold_asb__2022-12-30T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2022-12-30T06:15:00",
+      "exit_time": "2022-12-30T07:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1092896174863611,
+      "notified_exit": true
+    },
+    "gold_asb__2023-01-03T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2023-01-03T06:15:00",
+      "exit_time": "2023-01-03T15:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.02695417789758,
+      "notified_exit": true
+    },
+    "gold_asb__2023-03-03T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2023-03-03T06:15:00",
+      "exit_time": "2023-03-03T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.4128440366972221,
+      "notified_exit": true
+    },
+    "gold_asb__2023-03-23T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2023-03-23T05:15:00",
+      "exit_time": "2023-03-23T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.30951370618687046,
+      "notified_exit": true
+    },
+    "gold_asb__2023-04-17T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2023-04-17T05:30:00",
+      "exit_time": "2023-04-17T13:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0366871503256068,
+      "notified_exit": true
+    },
+    "gold_asb__2023-05-09T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2023-05-09T05:15:00",
+      "exit_time": "2023-05-09T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.18949935446849978,
+      "notified_exit": true
+    },
+    "gold_asb__2023-05-31T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2023-05-31T05:30:00",
+      "exit_time": "2023-05-31T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.5291368482546854,
+      "notified_exit": true
+    },
+    "gold_asb__2023-06-12T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2023-06-12T05:15:00",
+      "exit_time": "2023-06-12T13:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0763358778626126,
+      "notified_exit": true
+    },
+    "gold_asb__2023-07-11T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2023-07-11T05:15:00",
+      "exit_time": "2023-07-11T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.4921995165896954,
+      "notified_exit": true
+    },
+    "gold_asb__2023-07-17T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2023-07-17T05:30:00",
+      "exit_time": "2023-07-17T07:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0795228628230802,
+      "notified_exit": true
+    },
+    "gold_asb__2023-07-18T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2023-07-18T05:15:00",
+      "exit_time": "2023-07-18T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 3.6118644067797354,
+      "notified_exit": true
+    },
+    "gold_asb__2023-09-12T05:45:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2023-09-12T05:45:00",
+      "exit_time": "2023-09-12T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.684337349397501,
+      "notified_exit": true
+    },
+    "gold_asb__2023-09-27T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2023-09-27T05:15:00",
+      "exit_time": "2023-09-27T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.7401360544217006,
+      "notified_exit": true
+    },
+    "gold_asb__2023-10-02T05:30:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2023-10-02T05:30:00",
+      "exit_time": "2023-10-02T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.328657314629232,
+      "notified_exit": true
+    },
+    "gold_asb__2023-12-01T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2023-12-01T06:15:00",
+      "exit_time": "2023-12-01T11:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.09787129924152,
+      "notified_exit": true
+    },
+    "gold_asb__2023-12-14T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2023-12-14T06:15:00",
+      "exit_time": "2023-12-14T07:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0676818950930798,
+      "notified_exit": true
+    },
+    "gold_asb__2023-12-27T06:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2023-12-27T06:30:00",
+      "exit_time": "2023-12-27T10:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1261829652997104,
+      "notified_exit": true
+    },
+    "gold_asb__2024-01-29T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-01-29T06:15:00",
+      "exit_time": "2024-01-29T15:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0667779632721353,
+      "notified_exit": true
+    },
+    "gold_asb__2024-02-20T06:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-02-20T06:30:00",
+      "exit_time": "2024-02-20T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.2096219931270293,
+      "notified_exit": true
+    },
+    "gold_asb__2024-05-08T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-05-08T05:15:00",
+      "exit_time": "2024-05-08T07:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0323362974939445,
+      "notified_exit": true
+    },
+    "gold_asb__2024-05-09T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-05-09T05:15:00",
+      "exit_time": "2024-05-09T07:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0538358008075472,
+      "notified_exit": true
+    },
+    "gold_asb__2024-05-10T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-05-10T05:15:00",
+      "exit_time": "2024-05-10T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.6672508470615323,
+      "notified_exit": true
+    },
+    "gold_asb__2024-05-20T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-05-20T05:15:00",
+      "exit_time": "2024-05-20T12:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.026613439787098,
+      "notified_exit": true
+    },
+    "gold_asb__2024-06-20T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-06-20T05:15:00",
+      "exit_time": "2024-06-20T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.4542448614835317,
+      "notified_exit": true
+    },
+    "gold_asb__2024-07-03T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-07-03T05:15:00",
+      "exit_time": "2024-07-03T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 3.2217375928326493,
+      "notified_exit": true
+    },
+    "gold_asb__2024-07-05T05:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-07-05T05:45:00",
+      "exit_time": "2024-07-05T12:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0513281149749885,
+      "notified_exit": true
+    },
+    "gold_asb__2024-07-10T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-07-10T05:30:00",
+      "exit_time": "2024-07-10T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.9089609832785864,
+      "notified_exit": true
+    },
+    "gold_asb__2024-07-11T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-07-11T05:15:00",
+      "exit_time": "2024-07-11T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 3.798087141338853,
+      "notified_exit": true
+    },
+    "gold_asb__2024-08-12T05:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-08-12T05:45:00",
+      "exit_time": "2024-08-12T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.5887638128678687,
+      "notified_exit": true
+    },
+    "gold_asb__2024-09-13T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-09-13T05:15:00",
+      "exit_time": "2024-09-13T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.4197044334975099,
+      "notified_exit": true
+    },
+    "gold_asb__2024-09-16T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-09-16T05:30:00",
+      "exit_time": "2024-09-16T07:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0439560439560545,
+      "notified_exit": true
+    },
+    "gold_asb__2024-09-20T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-09-20T05:30:00",
+      "exit_time": "2024-09-20T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.00491580378617,
+      "notified_exit": true
+    },
+    "gold_asb__2024-09-23T05:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-09-23T05:45:00",
+      "exit_time": "2024-09-23T07:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.026507620941027,
+      "notified_exit": true
+    },
+    "gold_asb__2024-10-16T05:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-10-16T05:45:00",
+      "exit_time": "2024-10-16T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.09044715447153044,
+      "notified_exit": true
+    },
+    "gold_asb__2024-10-18T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-10-18T05:30:00",
+      "exit_time": "2024-10-18T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.3121720881426986,
+      "notified_exit": true
+    },
+    "gold_asb__2024-10-30T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-10-30T05:30:00",
+      "exit_time": "2024-10-30T12:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0657894736842262,
+      "notified_exit": true
+    },
+    "gold_asb__2024-11-19T06:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-11-19T06:45:00",
+      "exit_time": "2024-11-19T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.0843715182821918,
+      "notified_exit": true
+    },
+    "gold_asb__2024-11-21T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-11-21T06:15:00",
+      "exit_time": "2024-11-21T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.0869309493001422,
+      "notified_exit": true
+    },
+    "gold_asb__2024-11-22T06:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-11-22T06:45:00",
+      "exit_time": "2024-11-22T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.8940506915491943,
+      "notified_exit": true
+    },
+    "gold_asb__2024-12-12T06:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2024-12-12T06:45:00",
+      "exit_time": "2024-12-12T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0306960325378016,
+      "notified_exit": true
+    },
+    "gold_asb__2025-01-07T06:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-01-07T06:30:00",
+      "exit_time": "2025-01-07T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.24557670772672843,
+      "notified_exit": true
+    },
+    "gold_asb__2025-01-10T06:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-01-10T06:30:00",
+      "exit_time": "2025-01-10T13:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0735294117647218,
+      "notified_exit": true
+    },
+    "gold_asb__2025-01-20T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-01-20T06:15:00",
+      "exit_time": "2025-01-20T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.09332376166548437,
+      "notified_exit": true
+    },
+    "gold_asb__2025-01-21T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-01-21T06:15:00",
+      "exit_time": "2025-01-21T09:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0353669319186642,
+      "notified_exit": true
+    },
+    "gold_asb__2025-01-23T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-01-23T06:15:00",
+      "exit_time": "2025-01-23T09:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.073937153419612,
+      "notified_exit": true
+    },
+    "gold_asb__2025-01-24T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-01-24T06:15:00",
+      "exit_time": "2025-01-24T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.23071808510640046,
+      "notified_exit": true
+    },
+    "gold_asb__2025-02-05T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-02-05T06:15:00",
+      "exit_time": "2025-02-05T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.45558223289316996,
+      "notified_exit": true
+    },
+    "gold_asb__2025-02-10T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-02-10T06:15:00",
+      "exit_time": "2025-02-10T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 3.20311059907822,
+      "notified_exit": true
+    },
+    "gold_asb__2025-03-19T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-03-19T05:15:00",
+      "exit_time": "2025-03-19T08:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.034423407917392,
+      "notified_exit": true
+    },
+    "gold_asb__2025-03-28T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-03-28T05:30:00",
+      "exit_time": "2025-03-28T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.19516846789572753,
+      "notified_exit": true
+    },
+    "gold_asb__2025-03-31T05:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-03-31T05:45:00",
+      "exit_time": "2025-03-31T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.22168367346939016,
+      "notified_exit": true
+    },
+    "gold_asb__2025-04-16T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-04-16T05:15:00",
+      "exit_time": "2025-04-16T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.6564340308232096,
+      "notified_exit": true
+    },
+    "gold_asb__2025-04-21T05:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-04-21T05:45:00",
+      "exit_time": "2025-04-21T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.4468438538206083,
+      "notified_exit": true
+    },
+    "gold_asb__2025-05-21T05:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-05-21T05:45:00",
+      "exit_time": "2025-05-21T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.09972770592240572,
+      "notified_exit": true
+    },
+    "gold_asb__2025-06-09T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-06-09T05:30:00",
+      "exit_time": "2025-06-09T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.4656857855361548,
+      "notified_exit": true
+    },
+    "gold_asb__2025-07-01T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-07-01T05:15:00",
+      "exit_time": "2025-07-01T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.0613510279559866,
+      "notified_exit": true
+    },
+    "gold_asb__2025-07-11T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-07-11T05:15:00",
+      "exit_time": "2025-07-11T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.602818181818169,
+      "notified_exit": true
+    },
+    "gold_asb__2025-09-05T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-09-05T05:30:00",
+      "exit_time": "2025-09-05T08:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.029739776951679,
+      "notified_exit": true
+    },
+    "gold_asb__2025-09-12T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-09-12T05:15:00",
+      "exit_time": "2025-09-12T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.6376163115879484,
+      "notified_exit": true
+    },
+    "gold_asb__2025-09-22T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-09-22T05:15:00",
+      "exit_time": "2025-09-22T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 2.263463131731634,
+      "notified_exit": true
+    },
+    "gold_asb__2025-09-29T05:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-09-29T05:30:00",
+      "exit_time": "2025-09-29T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.3561177329116961,
+      "notified_exit": true
+    },
+    "gold_asb__2025-10-06T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-10-06T05:15:00",
+      "exit_time": "2025-10-06T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.34773006134969503,
+      "notified_exit": true
+    },
+    "gold_asb__2025-10-08T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-10-08T05:15:00",
+      "exit_time": "2025-10-08T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.270508947246106,
+      "notified_exit": true
+    },
+    "gold_asb__2025-10-15T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-10-15T05:15:00",
+      "exit_time": "2025-10-15T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.2610358011817902,
+      "notified_exit": true
+    },
+    "gold_asb__2025-11-10T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-11-10T06:15:00",
+      "exit_time": "2025-11-10T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.6471499380421234,
+      "notified_exit": true
+    },
+    "gold_asb__2025-11-27T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-11-27T06:15:00",
+      "exit_time": "2025-11-27T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.09425625920469456,
+      "notified_exit": true
+    },
+    "gold_asb__2025-12-05T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-12-05T06:15:00",
+      "exit_time": "2025-12-05T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.745640652182694,
+      "notified_exit": true
+    },
+    "gold_asb__2025-12-08T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-12-08T06:15:00",
+      "exit_time": "2025-12-08T13:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.021344717182478,
+      "notified_exit": true
+    },
+    "gold_asb__2025-12-12T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-12-12T06:15:00",
+      "exit_time": "2025-12-12T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.3604651162791023,
+      "notified_exit": true
+    },
+    "gold_asb__2025-12-15T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-12-15T06:15:00",
+      "exit_time": "2025-12-15T14:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0159426066161672,
+      "notified_exit": true
+    },
+    "gold_asb__2025-12-22T06:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-12-22T06:45:00",
+      "exit_time": "2025-12-22T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.9139158576052111,
+      "notified_exit": true
+    },
+    "gold_asb__2025-12-26T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2025-12-26T06:15:00",
+      "exit_time": "2025-12-26T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.0443864229764799,
+      "notified_exit": true
+    },
+    "gold_asb__2026-01-05T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2026-01-05T06:15:00",
+      "exit_time": "2026-01-05T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 1.2144782441278266,
+      "notified_exit": true
+    },
+    "gold_asb__2026-01-19T06:30:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2026-01-19T06:30:00",
+      "exit_time": "2026-01-19T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.10834896810504326,
+      "notified_exit": true
+    },
+    "gold_asb__2026-01-21T06:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2026-01-21T06:15:00",
+      "exit_time": "2026-01-21T15:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.006550933508019,
+      "notified_exit": true
+    },
+    "gold_asb__2026-01-28T06:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2026-01-28T06:45:00",
+      "exit_time": "2026-01-28T16:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.2649953860350576,
+      "notified_exit": true
+    },
+    "gold_asb__2026-04-13T05:45:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2026-04-13T05:45:00",
+      "exit_time": "2026-04-13T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": -0.6029454230435788,
+      "notified_exit": true
+    },
+    "gold_asb__2026-05-06T05:15:00_long": {
+      "leg": "gold_asb",
+      "entry_time": "2026-05-06T05:15:00",
+      "exit_time": "2026-05-06T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.9736722650930786,
+      "notified_exit": true
+    },
+    "gold_asb__2026-07-28T05:30:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2026-07-28T05:30:00",
+      "exit_time": "2026-07-28T15:00:00",
+      "exit_reason": "time_exit",
+      "r_multiple": 0.31473102061336367,
+      "notified_exit": true
+    },
+    "gold_asb__2026-08-17T05:15:00_short": {
+      "leg": "gold_asb",
+      "entry_time": "2026-08-17T05:15:00",
+      "exit_time": "2026-08-17T14:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0140498770635633,
+      "notified_exit": true
+    },
+    "cls_practical__2025-11-19T08:50:00_short": {
+      "leg": "cls_practical",
+      "entry_time": "2025-11-19T08:50:00",
+      "exit_time": "2025-11-19T14:20:00",
+      "exit_reason": "take_profit",
+      "r_multiple": 1.0184265972221829,
+      "notified_exit": true
+    },
+    "cls_practical__2025-11-27T09:45:00_short": {
+      "leg": "cls_practical",
+      "entry_time": "2025-11-27T09:45:00",
+      "exit_time": "2025-11-27T10:35:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1021676470588417,
+      "notified_exit": true
+    },
+    "cls_practical__2025-11-28T09:15:00_short": {
+      "leg": "cls_practical",
+      "entry_time": "2025-11-28T09:15:00",
+      "exit_time": "2025-11-28T10:50:00",
+      "exit_reason": "take_profit",
+      "r_multiple": 2.916869090908547,
+      "notified_exit": true
+    },
+    "cls_practical__2025-12-08T09:20:00_short": {
+      "leg": "cls_practical",
+      "entry_time": "2025-12-08T09:20:00",
+      "exit_time": "2025-12-08T15:05:00",
+      "exit_reason": "take_profit",
+      "r_multiple": 0.6033848739496454,
+      "notified_exit": true
+    },
+    "cls_practical__2025-12-11T10:55:00_long": {
+      "leg": "cls_practical",
+      "entry_time": "2025-12-11T10:55:00",
+      "exit_time": "2025-12-11T13:30:00",
+      "exit_reason": "take_profit",
+      "r_multiple": 0.6513854508195879,
+      "notified_exit": true
+    },
+    "cls_practical__2025-12-15T09:05:00_long": {
+      "leg": "cls_practical",
+      "entry_time": "2025-12-15T09:05:00",
+      "exit_time": "2025-12-15T12:10:00",
+      "exit_reason": "take_profit",
+      "r_multiple": 2.9402794034090354,
+      "notified_exit": true
+    },
+    "cls_practical__2025-12-16T09:20:00_long": {
+      "leg": "cls_practical",
+      "entry_time": "2025-12-16T09:20:00",
+      "exit_time": "2025-12-16T12:55:00",
+      "exit_reason": "take_profit",
+      "r_multiple": 2.1192957916664743,
+      "notified_exit": true
+    },
+    "cls_practical__2025-12-22T08:40:00_long": {
+      "leg": "cls_practical",
+      "entry_time": "2025-12-22T08:40:00",
+      "exit_time": "2025-12-22T13:05:00",
+      "exit_reason": "take_profit",
+      "r_multiple": 7.461549999997051,
+      "notified_exit": true
+    },
+    "cls_practical__2025-12-23T09:30:00_long": {
+      "leg": "cls_practical",
+      "entry_time": "2025-12-23T09:30:00",
+      "exit_time": "2025-12-23T12:30:00",
+      "exit_reason": "take_profit",
+      "r_multiple": 4.165929189188682,
+      "notified_exit": true
+    },
+    "cls_practical__2025-12-29T09:40:00_long": {
+      "leg": "cls_practical",
+      "entry_time": "2025-12-29T09:40:00",
+      "exit_time": "2025-12-29T16:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.7677843750000257,
+      "notified_exit": true
+    },
+    "cls_practical__2025-12-31T09:55:00_long": {
+      "leg": "cls_practical",
+      "entry_time": "2025-12-31T09:55:00",
+      "exit_time": "2025-12-31T10:10:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0386993406595055,
+      "notified_exit": true
+    },
+    "cls_practical__2026-01-09T09:50:00_short": {
+      "leg": "cls_practical",
+      "entry_time": "2026-01-09T09:50:00",
+      "exit_time": "2026-01-09T10:50:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1204417241372984,
+      "notified_exit": true
+    },
+    "cls_practical__2026-01-28T09:30:00_long": {
+      "leg": "cls_practical",
+      "entry_time": "2026-01-28T09:30:00",
+      "exit_time": "2026-01-28T10:25:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0312686086955265,
+      "notified_exit": true
+    },
+    "cls_practical__2026-02-09T08:45:00_long": {
+      "leg": "cls_practical",
+      "entry_time": "2026-02-09T08:45:00",
+      "exit_time": "2026-02-09T13:10:00",
+      "exit_reason": "take_profit",
+      "r_multiple": 6.111150500000391,
+      "notified_exit": true
+    },
+    "cls_practical__2026-02-19T08:45:00_long": {
+      "leg": "cls_practical",
+      "entry_time": "2026-02-19T08:45:00",
+      "exit_time": "2026-02-19T08:50:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1073072727268425,
+      "notified_exit": true
+    },
+    "cls_practical__2026-03-13T08:40:00_short": {
+      "leg": "cls_practical",
+      "entry_time": "2026-03-13T08:40:00",
+      "exit_time": "2026-03-13T09:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -3.212716937500305,
+      "notified_exit": true
+    },
+    "cls_practical__2026-03-23T09:35:00_short": {
+      "leg": "cls_practical",
+      "entry_time": "2026-03-23T09:35:00",
+      "exit_time": "2026-03-23T11:05:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0473001369864787,
+      "notified_exit": true
+    },
+    "cls_practical__2026-03-27T09:05:00_short": {
+      "leg": "cls_practical",
+      "entry_time": "2026-03-27T09:05:00",
+      "exit_time": "2026-03-27T09:20:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0691020000003282,
+      "notified_exit": true
+    },
+    "cls_practical__2026-04-14T09:00:00_long": {
+      "leg": "cls_practical",
+      "entry_time": "2026-04-14T09:00:00",
+      "exit_time": "2026-04-14T14:55:00",
+      "exit_reason": "take_profit",
+      "r_multiple": 5.448073633332825,
+      "notified_exit": true
+    },
+    "cls_practical__2026-05-08T08:10:00_long": {
+      "leg": "cls_practical",
+      "entry_time": "2026-05-08T08:10:00",
+      "exit_time": "2026-05-08T08:45:00",
+      "exit_reason": "take_profit",
+      "r_multiple": 9.592908088236044,
+      "notified_exit": true
+    },
+    "cls_practical__2026-06-15T07:50:00_short": {
+      "leg": "cls_practical",
+      "entry_time": "2026-06-15T07:50:00",
+      "exit_time": "2026-06-15T19:55:00",
+      "exit_reason": "take_profit",
+      "r_multiple": 1.6395922083331915,
+      "notified_exit": true
+    },
+    "cls_practical__2026-07-07T07:40:00_short": {
+      "leg": "cls_practical",
+      "entry_time": "2026-07-07T07:40:00",
+      "exit_time": "2026-07-07T08:10:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1269722222227776,
+      "notified_exit": true
+    },
+    "cls_practical__2026-08-05T08:40:00_short": {
+      "leg": "cls_practical",
+      "entry_time": "2026-08-05T08:40:00",
+      "exit_time": "2026-08-05T11:10:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0308962500000785,
+      "notified_exit": true
+    },
+    "cls_practical__2026-08-06T07:45:00_short": {
+      "leg": "cls_practical",
+      "entry_time": "2026-08-06T07:45:00",
+      "exit_time": "2026-08-06T11:25:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1117054838707234,
+      "notified_exit": true
+    },
+    "cls_practical__2026-08-17T08:15:00_long": {
+      "leg": "cls_practical",
+      "entry_time": "2026-08-17T08:15:00",
+      "exit_time": "2026-08-17T08:40:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.9292550735287863,
+      "notified_exit": true
+    },
+    "cls_practical__2026-08-19T07:55:00_long": {
+      "leg": "cls_practical",
+      "entry_time": "2026-08-19T07:55:00",
+      "exit_time": "2026-08-19T10:10:00",
+      "exit_reason": "take_profit",
+      "r_multiple": 5.419209743588409,
+      "notified_exit": true
+    },
+    "cls_practical__2026-08-26T08:05:00_long": {
+      "leg": "cls_practical",
+      "entry_time": "2026-08-26T08:05:00",
+      "exit_time": "2026-08-26T12:50:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.7960776315786864,
+      "notified_exit": true
+    },
+    "trend_pullback_XAUUSD_2025-12-02T12:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2025-12-02T12:00:00",
+      "exit_time": "2025-12-02T15:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2479748710356509,
+      "notified_exit": true
+    },
+    "trend_pullback_XAUUSD_2025-12-02T17:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2025-12-02T17:00:00",
+      "exit_time": "2025-12-11T16:00:00",
+      "exit_reason": "target",
+      "r_multiple": 2.208188855225279,
+      "notified_exit": true
+    },
+    "trend_pullback_XAUUSD_2025-12-16T13:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2025-12-16T13:00:00",
+      "exit_time": "2025-12-18T16:00:00",
+      "exit_reason": "target",
+      "r_multiple": 2.0692964340167634,
+      "notified_exit": true
+    },
+    "trend_pullback_XAUUSD_2025-12-29T10:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2025-12-29T10:00:00",
+      "exit_time": "2025-12-29T13:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.206839545414943,
+      "notified_exit": true
+    },
+    "trend_pullback_XAUUSD_2026-01-29T17:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2026-01-29T17:00:00",
+      "exit_time": "2026-01-30T09:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.5640532966831606,
+      "notified_exit": true
+    },
+    "trend_pullback_XAUUSD_2026-02-24T15:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2026-02-24T15:00:00",
+      "exit_time": "2026-02-27T18:00:00",
+      "exit_reason": "target",
+      "r_multiple": 1.9744225071356187,
+      "notified_exit": true
+    },
+    "trend_pullback_XAUUSD_2026-03-03T13:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2026-03-03T13:00:00",
+      "exit_time": "2026-03-03T14:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.7209033515390209,
+      "notified_exit": true
+    },
+    "trend_pullback_XAUUSD_2026-04-02T08:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2026-04-02T08:00:00",
+      "exit_time": "2026-04-07T22:00:00",
+      "exit_reason": "target",
+      "r_multiple": 2.0255208512855707,
+      "notified_exit": true
+    },
+    "trend_pullback_XAUUSD_2026-08-14T06:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2026-08-14T06:00:00",
+      "exit_time": "2026-08-17T14:00:00",
+      "exit_reason": "target",
+      "r_multiple": 2.1664164621345927,
+      "notified_exit": true
+    },
+    "trend_pullback_XAGUSD_2025-11-14T16:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2025-11-14T16:00:00",
+      "exit_time": "2025-11-17T19:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.4934698317503434,
+      "notified_exit": true
+    },
+    "trend_pullback_XAGUSD_2025-12-04T10:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2025-12-04T10:00:00",
+      "exit_time": "2025-12-09T15:00:00",
+      "exit_reason": "target",
+      "r_multiple": 2.7414293138637067,
+      "notified_exit": true
+    },
+    "trend_pullback_XAGUSD_2025-12-12T18:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2025-12-12T18:00:00",
+      "exit_time": "2025-12-17T01:00:00",
+      "exit_reason": "target",
+      "r_multiple": 2.613408972247858,
+      "notified_exit": true
+    },
+    "trend_pullback_XAGUSD_2026-01-08T07:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2026-01-08T07:00:00",
+      "exit_time": "2026-01-11T23:00:00",
+      "exit_reason": "target",
+      "r_multiple": 2.4099263378316436,
+      "notified_exit": true
+    },
+    "trend_pullback_XAGUSD_2026-01-21T21:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2026-01-21T21:00:00",
+      "exit_time": "2026-01-23T01:00:00",
+      "exit_reason": "target",
+      "r_multiple": 2.4378543765639313,
+      "notified_exit": true
+    },
+    "trend_pullback_XAGUSD_2026-03-02T19:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2026-03-02T19:00:00",
+      "exit_time": "2026-03-03T06:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1605734634636566,
+      "notified_exit": true
+    },
+    "trend_pullback_XPTUSD_2025-12-02T12:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2025-12-02T12:00:00",
+      "exit_time": "2025-12-09T15:00:00",
+      "exit_reason": "target",
+      "r_multiple": 2.1960808920389323,
+      "notified_exit": true
+    },
+    "trend_pullback_XPTUSD_2025-12-10T20:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2025-12-10T20:00:00",
+      "exit_time": "2025-12-11T16:00:00",
+      "exit_reason": "target",
+      "r_multiple": 2.0878071636128883,
+      "notified_exit": true
+    },
+    "trend_pullback_XPTUSD_2026-02-26T19:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2026-02-26T19:00:00",
+      "exit_time": "2026-02-27T02:00:00",
+      "exit_reason": "target",
+      "r_multiple": 2.390602036436396,
+      "notified_exit": true
+    },
+    "trend_pullback_XPTUSD_2026-08-25T07:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2026-08-25T07:00:00",
+      "exit_time": "2026-08-26T18:00:00",
+      "exit_reason": "data_end",
+      "r_multiple": -0.8938313979518839,
+      "notified_exit": false
+    },
+    "trend_pullback_CHFJPY_2025-11-24T00:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2025-11-24T00:00:00",
+      "exit_time": "2025-12-05T04:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0900065486553878,
+      "notified_exit": true
+    },
+    "trend_pullback_CHFJPY_2026-01-08T12:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2026-01-08T12:00:00",
+      "exit_time": "2026-01-12T12:00:00",
+      "exit_reason": "target",
+      "r_multiple": 1.9889724505262927,
+      "notified_exit": true
+    },
+    "trend_pullback_CHFJPY_2026-01-16T08:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2026-01-16T08:00:00",
+      "exit_time": "2026-01-20T04:00:00",
+      "exit_reason": "target",
+      "r_multiple": 2.6338108049281415,
+      "notified_exit": true
+    },
+    "trend_pullback_CHFJPY_2026-01-26T16:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2026-01-26T16:00:00",
+      "exit_time": "2026-02-05T08:00:00",
+      "exit_reason": "target",
+      "r_multiple": 2.006665344988846,
+      "notified_exit": true
+    },
+    "trend_pullback_CHFJPY_2026-02-11T12:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2026-02-11T12:00:00",
+      "exit_time": "2026-02-11T12:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0254222630663812,
+      "notified_exit": true
+    },
+    "trend_pullback_CHFJPY_2026-02-12T12:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2026-02-12T12:00:00",
+      "exit_time": "2026-03-01T20:00:00",
+      "exit_reason": "target",
+      "r_multiple": 2.0170487915339717,
+      "notified_exit": true
+    },
+    "trend_pullback_USDJPY_2025-12-01T20:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2025-12-01T20:00:00",
+      "exit_time": "2025-12-04T08:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3251320834563192,
+      "notified_exit": true
+    },
+    "trend_pullback_USDJPY_2026-07-03T00:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2026-07-03T00:00:00",
+      "exit_time": "2026-07-21T16:00:00",
+      "exit_reason": "target",
+      "r_multiple": 2.1856529368248894,
+      "notified_exit": true
+    },
+    "ctnl_continuation__2026-06-02T04:50:00_-1": {
+      "leg": "ctnl_continuation",
+      "entry_time": "2026-06-02T04:50:00",
+      "exit_time": "2026-06-02T05:10:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3112726779838444,
+      "notified_exit": true
+    },
+    "ctnl_continuation__2026-06-04T14:55:00_1": {
+      "leg": "ctnl_continuation",
+      "entry_time": "2026-06-04T14:55:00",
+      "exit_time": "2026-06-05T00:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2747545855943465,
+      "notified_exit": true
+    },
+    "ctnl_continuation__2026-06-16T14:35:00_1": {
+      "leg": "ctnl_continuation",
+      "entry_time": "2026-06-16T14:35:00",
+      "exit_time": "2026-06-17T15:35:00",
+      "exit_reason": "max_hold",
+      "r_multiple": 4.352345184937776,
+      "notified_exit": true
+    },
+    "ctnl_continuation__2026-07-15T13:15:00_-1": {
+      "leg": "ctnl_continuation",
+      "entry_time": "2026-07-15T13:15:00",
+      "exit_time": "2026-07-15T18:25:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2866689119530728,
+      "notified_exit": true
+    },
+    "ctnl_continuation__2026-07-15T19:00:00_-1": {
+      "leg": "ctnl_continuation",
+      "entry_time": "2026-07-15T19:00:00",
+      "exit_time": "2026-07-16T14:00:00",
+      "exit_reason": "target",
+      "r_multiple": 5.943071167999161,
+      "notified_exit": true
+    },
+    "ctnl_continuation__2026-07-31T08:20:00_1": {
+      "leg": "ctnl_continuation",
+      "entry_time": "2026-07-31T08:20:00",
+      "exit_time": "2026-07-31T08:25:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2467401957876363,
+      "notified_exit": true
+    },
+    "ctnl_continuation__2026-08-12T12:35:00_1": {
+      "leg": "ctnl_continuation",
+      "entry_time": "2026-08-12T12:35:00",
+      "exit_time": "2026-08-12T12:55:00",
+      "exit_reason": "target",
+      "r_multiple": 0.1843354782238974,
+      "notified_exit": true
+    },
+    "ctnl_continuation__2026-08-13T05:50:00_1": {
+      "leg": "ctnl_continuation",
+      "entry_time": "2026-08-13T05:50:00",
+      "exit_time": "2026-08-13T06:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.5085719140391396,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T03:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T03:45:00",
+      "exit_time": "2026-07-07T19:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1559966096975347,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T04:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T04:00:00",
+      "exit_time": "2026-07-07T22:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1718761595278018,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T04:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T04:15:00",
+      "exit_time": "2026-07-07T19:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.153712789267962,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T04:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T04:30:00",
+      "exit_time": "2026-07-07T19:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2222329291751988,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T04:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T04:45:00",
+      "exit_time": "2026-07-07T19:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1515478963911818,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T05:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T05:00:00",
+      "exit_time": "2026-07-07T19:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1119509933618628,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T05:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T05:15:00",
+      "exit_time": "2026-07-07T22:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.128385520646546,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T05:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T05:30:00",
+      "exit_time": "2026-07-07T22:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0962803151976592,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T05:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T05:45:00",
+      "exit_time": "2026-07-08T08:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.270968834109795,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T06:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T06:00:00",
+      "exit_time": "2026-07-07T22:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0873002932072693,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T06:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T06:15:00",
+      "exit_time": "2026-07-07T22:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0800872790182687,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T06:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T06:30:00",
+      "exit_time": "2026-07-07T22:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1452681385275452,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T06:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T06:45:00",
+      "exit_time": "2026-07-07T22:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1859600188888413,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T07:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T07:00:00",
+      "exit_time": "2026-07-07T19:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.107952815009876,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T07:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T07:15:00",
+      "exit_time": "2026-07-07T22:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1923154119212462,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T07:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T07:30:00",
+      "exit_time": "2026-07-07T19:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1264056053140001,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T07:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T07:45:00",
+      "exit_time": "2026-07-07T19:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0946688284216437,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T08:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T08:00:00",
+      "exit_time": "2026-07-07T22:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1881965293698407,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T08:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T08:15:00",
+      "exit_time": "2026-07-07T22:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.138243202738115,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T08:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T08:30:00",
+      "exit_time": "2026-07-07T19:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.264491066918829,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T08:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T08:45:00",
+      "exit_time": "2026-07-07T19:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0845498269476816,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T09:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T09:00:00",
+      "exit_time": "2026-07-07T22:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0782966230408773,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T09:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T09:15:00",
+      "exit_time": "2026-07-07T22:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1610151095259857,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T09:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T09:30:00",
+      "exit_time": "2026-07-08T08:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3842488610287789,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T09:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T09:45:00",
+      "exit_time": "2026-07-07T22:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.070608072399565,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T10:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T10:00:00",
+      "exit_time": "2026-07-07T22:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1555475407083586,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T10:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T10:15:00",
+      "exit_time": "2026-07-07T19:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1741682193918723,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T10:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T10:30:00",
+      "exit_time": "2026-07-07T19:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1993763226676275,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T10:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T10:45:00",
+      "exit_time": "2026-07-07T19:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3488324614341332,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T11:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T11:00:00",
+      "exit_time": "2026-07-07T19:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3082780209518974,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T11:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T11:15:00",
+      "exit_time": "2026-07-07T19:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2268431967903843,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T11:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T11:30:00",
+      "exit_time": "2026-07-07T19:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1968107706924567,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T11:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T11:45:00",
+      "exit_time": "2026-07-07T19:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3887690762211116,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T12:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T12:00:00",
+      "exit_time": "2026-07-07T19:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.5336315750366603,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T12:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T12:15:00",
+      "exit_time": "2026-07-07T18:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1139883928032326,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T12:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T12:30:00",
+      "exit_time": "2026-07-07T15:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0590082698737753,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T12:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T12:45:00",
+      "exit_time": "2026-07-07T18:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3995109042533613,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T13:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T13:00:00",
+      "exit_time": "2026-07-07T15:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0486252175264204,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T13:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T13:15:00",
+      "exit_time": "2026-07-07T18:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2509244468418104,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T13:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T13:30:00",
+      "exit_time": "2026-07-07T18:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.426599595310862,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T13:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T13:45:00",
+      "exit_time": "2026-07-07T18:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2472735727363815,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-07T14:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-07T14:00:00",
+      "exit_time": "2026-07-07T18:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.08912830602541,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-08T04:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-08T04:30:00",
+      "exit_time": "2026-07-14T08:30:00",
+      "exit_reason": "max_hold",
+      "r_multiple": 3.4360637096134488,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T00:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T00:45:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3512829027773734,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T01:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T01:00:00",
+      "exit_time": "2026-07-10T08:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0708283397966,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T01:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T01:15:00",
+      "exit_time": "2026-07-10T08:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1274273158510881,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T01:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T01:30:00",
+      "exit_time": "2026-07-10T08:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1748724841364684,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T01:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T01:45:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1046604378972833,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T02:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T02:00:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0610368004885362,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T02:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T02:15:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.290875089455022,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T02:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T02:30:00",
+      "exit_time": "2026-07-10T08:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1605202595669375,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T02:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T02:45:00",
+      "exit_time": "2026-07-10T08:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1828575707043376,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T03:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T03:15:00",
+      "exit_time": "2026-07-10T08:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0776032860538864,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T03:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T03:30:00",
+      "exit_time": "2026-07-10T08:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1104360811448821,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T03:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T03:45:00",
+      "exit_time": "2026-07-10T08:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1771140116316883,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T04:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T04:00:00",
+      "exit_time": "2026-07-10T08:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.106323097778896,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T04:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T04:15:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3827955348670036,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T04:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T04:30:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2110445916560273,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T04:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T04:45:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.4568525428376111,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T05:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T05:00:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.4314430716096094,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T05:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T05:15:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3539557883156286,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T05:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T05:30:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.334341718231115,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T05:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T05:45:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1348229489931172,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T06:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T06:00:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0969186262030806,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T06:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T06:15:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.4391390627345153,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T06:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T06:30:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3970950235211748,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T06:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T06:45:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3018151697953786,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T07:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T07:00:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3233012704898006,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T07:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T07:15:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1863996785912039,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T07:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T07:30:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1484923969010579,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T07:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T07:45:00",
+      "exit_time": "2026-07-12T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.295145604394666,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T08:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T08:00:00",
+      "exit_time": "2026-07-12T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2176665742072201,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T08:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T08:15:00",
+      "exit_time": "2026-07-12T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2249563654764308,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T08:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T08:30:00",
+      "exit_time": "2026-07-12T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.213825224556457,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T08:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T08:45:00",
+      "exit_time": "2026-07-12T22:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1582046546270355,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T09:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T09:00:00",
+      "exit_time": "2026-07-12T22:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.078368696242333,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T09:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T09:15:00",
+      "exit_time": "2026-07-12T22:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0664207410042301,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T09:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T09:30:00",
+      "exit_time": "2026-07-12T22:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1919735351273701,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T09:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T09:45:00",
+      "exit_time": "2026-07-12T22:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1335510007831486,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T10:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T10:00:00",
+      "exit_time": "2026-07-12T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2006715920780022,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T10:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T10:15:00",
+      "exit_time": "2026-07-12T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2775269305293289,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T10:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T10:30:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1067056979133363,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T10:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T10:45:00",
+      "exit_time": "2026-07-10T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1121057467909754,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T11:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T11:00:00",
+      "exit_time": "2026-07-12T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3536915788445387,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T11:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T11:15:00",
+      "exit_time": "2026-07-12T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3153276191208108,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T11:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T11:30:00",
+      "exit_time": "2026-07-12T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.090283338271965,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T11:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T11:45:00",
+      "exit_time": "2026-07-12T22:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.121406084549584,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T12:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T12:00:00",
+      "exit_time": "2026-07-12T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1346905230540882,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T12:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T12:15:00",
+      "exit_time": "2026-07-12T22:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1101313676765214,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T12:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T12:30:00",
+      "exit_time": "2026-07-12T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1253323090267955,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T12:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T12:45:00",
+      "exit_time": "2026-07-12T22:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1414647193685536,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-10T13:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-10T13:00:00",
+      "exit_time": "2026-07-12T22:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.131678955176735,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T13:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T13:30:00",
+      "exit_time": "2026-07-21T17:30:00",
+      "exit_reason": "max_hold",
+      "r_multiple": -0.42951887116295784,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T13:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T13:45:00",
+      "exit_time": "2026-07-21T17:45:00",
+      "exit_reason": "max_hold",
+      "r_multiple": -0.38469054205424097,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T14:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T14:00:00",
+      "exit_time": "2026-07-21T18:00:00",
+      "exit_reason": "max_hold",
+      "r_multiple": -0.427600481198763,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T14:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T14:15:00",
+      "exit_time": "2026-07-21T18:15:00",
+      "exit_reason": "max_hold",
+      "r_multiple": -0.841546830245422,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T14:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T14:30:00",
+      "exit_time": "2026-07-21T18:30:00",
+      "exit_reason": "max_hold",
+      "r_multiple": -0.8142146165795642,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T14:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T14:45:00",
+      "exit_time": "2026-07-21T18:45:00",
+      "exit_reason": "max_hold",
+      "r_multiple": -0.8683165672090701,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T15:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T15:00:00",
+      "exit_time": "2026-07-21T19:00:00",
+      "exit_reason": "max_hold",
+      "r_multiple": -0.857729549607391,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T15:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T15:15:00",
+      "exit_time": "2026-07-21T19:15:00",
+      "exit_reason": "max_hold",
+      "r_multiple": -0.9397080117528063,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T15:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T15:30:00",
+      "exit_time": "2026-07-21T06:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.126607035525774,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T15:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T15:45:00",
+      "exit_time": "2026-07-21T06:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.12052538644092,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T16:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T16:00:00",
+      "exit_time": "2026-07-21T06:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0851515466819348,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T16:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T16:15:00",
+      "exit_time": "2026-07-15T18:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0832243563251938,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T16:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T16:30:00",
+      "exit_time": "2026-07-15T18:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1062262791655046,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T16:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T16:45:00",
+      "exit_time": "2026-07-15T17:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0458678527365455,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T17:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T17:00:00",
+      "exit_time": "2026-07-15T18:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1989557449291528,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T17:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T17:15:00",
+      "exit_time": "2026-07-15T18:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1455229241811176,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T17:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T17:30:00",
+      "exit_time": "2026-07-21T06:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1307206377397079,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T17:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T17:45:00",
+      "exit_time": "2026-07-21T22:45:00",
+      "exit_reason": "max_hold",
+      "r_multiple": -0.7011117156621205,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T18:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T18:00:00",
+      "exit_time": "2026-07-21T23:00:00",
+      "exit_reason": "max_hold",
+      "r_multiple": -0.6957138047592701,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T18:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T18:15:00",
+      "exit_time": "2026-07-21T23:15:00",
+      "exit_reason": "max_hold",
+      "r_multiple": -0.5320947321089489,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T18:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T18:30:00",
+      "exit_time": "2026-07-21T23:30:00",
+      "exit_reason": "max_hold",
+      "r_multiple": -0.31028656298243706,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T18:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T18:45:00",
+      "exit_time": "2026-07-21T23:45:00",
+      "exit_reason": "max_hold",
+      "r_multiple": -0.3853067505570632,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T19:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T19:00:00",
+      "exit_time": "2026-07-22T00:00:00",
+      "exit_reason": "max_hold",
+      "r_multiple": -0.9582159528974058,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T19:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T19:15:00",
+      "exit_time": "2026-07-22T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1376465039147052,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T19:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T19:30:00",
+      "exit_time": "2026-07-22T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1662158970581449,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T19:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T19:45:00",
+      "exit_time": "2026-07-21T19:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0633002697079723,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T20:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T20:00:00",
+      "exit_time": "2026-07-21T18:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.080405249952077,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T20:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T20:15:00",
+      "exit_time": "2026-07-21T18:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0584322636792587,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T20:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T20:30:00",
+      "exit_time": "2026-07-22T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.236211044264268,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T20:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T20:45:00",
+      "exit_time": "2026-07-22T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2123374862726564,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T22:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T22:00:00",
+      "exit_time": "2026-07-22T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2213587161291244,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T22:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T22:15:00",
+      "exit_time": "2026-07-22T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0988560342642042,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T22:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T22:30:00",
+      "exit_time": "2026-07-22T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2426394997943275,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T22:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T22:45:00",
+      "exit_time": "2026-07-22T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.312436427805503,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T23:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T23:00:00",
+      "exit_time": "2026-07-21T18:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0764264041963014,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T23:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T23:15:00",
+      "exit_time": "2026-07-21T18:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0782282757072092,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T23:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T23:30:00",
+      "exit_time": "2026-07-21T18:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1354765997336926,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-15T23:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-15T23:45:00",
+      "exit_time": "2026-07-21T18:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1953557696502162,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T00:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T00:00:00",
+      "exit_time": "2026-07-21T18:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1350134998648969,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T00:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T00:15:00",
+      "exit_time": "2026-07-21T18:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.196428519540191,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T00:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T00:30:00",
+      "exit_time": "2026-07-21T18:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1686279026131947,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T00:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T00:45:00",
+      "exit_time": "2026-07-21T18:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0711133220098672,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T01:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T01:00:00",
+      "exit_time": "2026-07-21T18:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0564117495277145,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T01:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T01:15:00",
+      "exit_time": "2026-07-21T06:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1751248010836617,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T01:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T01:30:00",
+      "exit_time": "2026-07-21T06:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1353276245295172,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T01:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T01:45:00",
+      "exit_time": "2026-07-21T06:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1419531794684787,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T02:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T02:00:00",
+      "exit_time": "2026-07-21T06:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2019406595060163,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T02:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T02:15:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.139615308687768,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T02:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T02:30:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.350497072612218,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T02:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T02:45:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2495836581896806,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T03:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T03:00:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.4550975531530155,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T03:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T03:15:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.4056126519946475,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T03:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T03:30:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.4416671563623626,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T03:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T03:45:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3495875778362503,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T04:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T04:00:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3508399251358172,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T04:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T04:15:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3125077696486784,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T04:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T04:30:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3506539820270418,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T04:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T04:45:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.4326572070866204,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T05:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T05:00:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.4624107193653535,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T05:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T05:15:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.5007273139408495,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T05:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T05:30:00",
+      "exit_time": "2026-07-21T05:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0631495433891365,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T05:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T05:45:00",
+      "exit_time": "2026-07-21T05:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0832927954612024,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T06:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T06:00:00",
+      "exit_time": "2026-07-21T05:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0673919588532563,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T06:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T06:15:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.371064246287042,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T06:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T06:30:00",
+      "exit_time": "2026-07-21T05:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0676841939084105,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T06:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T06:45:00",
+      "exit_time": "2026-07-21T05:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.141699713178248,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T07:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T07:00:00",
+      "exit_time": "2026-07-21T05:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1509950833815226,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T07:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T07:15:00",
+      "exit_time": "2026-07-21T05:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0711759600139412,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T07:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T07:30:00",
+      "exit_time": "2026-07-21T03:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0741654047729514,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T07:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T07:45:00",
+      "exit_time": "2026-07-21T04:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1141420233352868,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T08:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T08:00:00",
+      "exit_time": "2026-07-21T05:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.150446302887177,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T08:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T08:15:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.4227902327120865,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T08:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T08:30:00",
+      "exit_time": "2026-07-21T05:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0760745356357915,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T08:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T08:45:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.5108606814816405,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T09:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T09:00:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.5134810383365902,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T09:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T09:15:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.4894268725683757,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T09:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T09:30:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.4124063847734436,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T09:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T09:45:00",
+      "exit_time": "2026-07-21T05:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0776303600763384,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T10:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T10:00:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.492887797085238,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T10:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T10:15:00",
+      "exit_time": "2026-07-21T05:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0899345063439747,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T10:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T10:30:00",
+      "exit_time": "2026-07-21T05:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.132740866387847,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T10:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T10:45:00",
+      "exit_time": "2026-07-21T05:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1484355679060845,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T11:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T11:00:00",
+      "exit_time": "2026-07-21T05:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0871780705416503,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T11:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T11:15:00",
+      "exit_time": "2026-07-21T04:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.13932979048172,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T11:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T11:30:00",
+      "exit_time": "2026-07-21T03:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0973416722601692,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T11:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T11:45:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.5334909118031521,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T12:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T12:00:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1809336734132123,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T12:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T12:15:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0722469963726193,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T12:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T12:30:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3432274746778656,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T12:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T12:45:00",
+      "exit_time": "2026-07-21T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2382330361514648,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T13:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T13:00:00",
+      "exit_time": "2026-07-21T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0407081287068427,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T13:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T13:15:00",
+      "exit_time": "2026-07-20T03:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0561532358820689,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T13:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T13:30:00",
+      "exit_time": "2026-07-21T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.072042301850583,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T14:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T14:30:00",
+      "exit_time": "2026-07-20T11:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1272551586687791,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T14:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T14:45:00",
+      "exit_time": "2026-07-21T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0784768477792772,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-16T15:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-16T15:00:00",
+      "exit_time": "2026-07-21T02:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0760600428664056,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T14:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T14:45:00",
+      "exit_time": "2026-07-26T22:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0730398938487973,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T15:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T15:00:00",
+      "exit_time": "2026-07-26T22:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1155196453460554,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T15:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T15:15:00",
+      "exit_time": "2026-07-27T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.6436458115340533,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T15:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T15:30:00",
+      "exit_time": "2026-07-27T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3669405015491325,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T15:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T15:45:00",
+      "exit_time": "2026-07-27T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.4406840560444638,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T16:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T16:00:00",
+      "exit_time": "2026-07-27T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.6576146480569,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T16:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T16:15:00",
+      "exit_time": "2026-07-27T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.6404946776975677,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T16:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T16:30:00",
+      "exit_time": "2026-07-27T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.5755983224020662,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T16:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T16:45:00",
+      "exit_time": "2026-07-27T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.7038161522911017,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T17:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T17:00:00",
+      "exit_time": "2026-07-26T22:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1318240547501721,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T17:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T17:15:00",
+      "exit_time": "2026-07-26T22:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.090783282596601,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T17:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T17:30:00",
+      "exit_time": "2026-07-26T23:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1794050996430214,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T17:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T17:45:00",
+      "exit_time": "2026-07-26T22:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0695345565618883,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T18:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T18:00:00",
+      "exit_time": "2026-07-26T22:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1773164792248274,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T18:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T18:15:00",
+      "exit_time": "2026-07-26T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1631664490130273,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T18:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T18:30:00",
+      "exit_time": "2026-07-26T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1883622221013885,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T18:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T18:45:00",
+      "exit_time": "2026-07-26T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.4288398500425137,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T19:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T19:00:00",
+      "exit_time": "2026-07-26T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.5676051209632647,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T19:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T19:15:00",
+      "exit_time": "2026-07-26T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.5126065453270974,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T19:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T19:30:00",
+      "exit_time": "2026-07-26T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.7678792857280106,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T19:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T19:45:00",
+      "exit_time": "2026-07-26T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.5333374829089614,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T20:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T20:00:00",
+      "exit_time": "2026-07-26T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.5144525163980416,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T20:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T20:15:00",
+      "exit_time": "2026-07-26T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.6678025185209415,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T20:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T20:30:00",
+      "exit_time": "2026-07-26T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.7498292883173843,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-24T20:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-24T20:45:00",
+      "exit_time": "2026-07-26T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.7023387593943264,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-26T22:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-26T22:00:00",
+      "exit_time": "2026-07-26T22:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -0.2717092573195272,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-26T22:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-26T22:15:00",
+      "exit_time": "2026-07-31T02:15:00",
+      "exit_reason": "max_hold",
+      "r_multiple": 0.0777484513156589,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-26T22:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-26T22:30:00",
+      "exit_time": "2026-07-27T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1319813442060356,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-26T22:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-26T22:45:00",
+      "exit_time": "2026-07-31T02:45:00",
+      "exit_reason": "max_hold",
+      "r_multiple": 0.4452904815609446,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-26T23:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-26T23:00:00",
+      "exit_time": "2026-07-31T03:00:00",
+      "exit_reason": "max_hold",
+      "r_multiple": 0.2433891349095748,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-26T23:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-26T23:15:00",
+      "exit_time": "2026-07-27T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2492245934007797,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-26T23:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-26T23:30:00",
+      "exit_time": "2026-07-27T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.320281757952696,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-26T23:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-26T23:45:00",
+      "exit_time": "2026-07-27T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2124724942296803,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-27T00:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-27T00:00:00",
+      "exit_time": "2026-07-31T04:00:00",
+      "exit_reason": "max_hold",
+      "r_multiple": 0.5182052081004908,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-27T00:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-27T00:15:00",
+      "exit_time": "2026-07-31T04:15:00",
+      "exit_reason": "max_hold",
+      "r_multiple": 1.1259869653070094,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-27T00:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-27T00:30:00",
+      "exit_time": "2026-07-31T04:30:00",
+      "exit_reason": "max_hold",
+      "r_multiple": 0.25087835433569683,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-27T00:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-27T00:45:00",
+      "exit_time": "2026-07-31T04:45:00",
+      "exit_reason": "max_hold",
+      "r_multiple": 0.543683564437755,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-07-27T01:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-07-27T01:00:00",
+      "exit_time": "2026-07-31T05:00:00",
+      "exit_reason": "max_hold",
+      "r_multiple": 0.4708122074588545,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T02:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T02:30:00",
+      "exit_time": "2026-08-04T13:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.08653785228101,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T02:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T02:45:00",
+      "exit_time": "2026-08-04T13:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0706595469996836,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T03:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T03:00:00",
+      "exit_time": "2026-08-04T13:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1922112597886987,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T03:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T03:15:00",
+      "exit_time": "2026-08-04T13:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2826957486969157,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T03:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T03:30:00",
+      "exit_time": "2026-08-04T13:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2297241654401636,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T03:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T03:45:00",
+      "exit_time": "2026-08-04T12:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1191830127728657,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T04:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T04:00:00",
+      "exit_time": "2026-08-04T11:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.143973021954529,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T04:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T04:15:00",
+      "exit_time": "2026-08-04T11:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1075193536001477,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T04:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T04:30:00",
+      "exit_time": "2026-08-04T13:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3041739054041126,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T04:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T04:45:00",
+      "exit_time": "2026-08-04T13:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1752044286205467,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T05:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T05:00:00",
+      "exit_time": "2026-08-04T13:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0898439054498588,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T05:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T05:15:00",
+      "exit_time": "2026-08-04T13:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1060208393323405,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T05:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T05:30:00",
+      "exit_time": "2026-08-04T13:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1638314096037141,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T05:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T05:45:00",
+      "exit_time": "2026-08-04T14:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2558630042780683,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T06:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T06:00:00",
+      "exit_time": "2026-08-04T13:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1237740706584545,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T06:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T06:15:00",
+      "exit_time": "2026-08-04T13:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0830055631275881,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T06:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T06:30:00",
+      "exit_time": "2026-08-04T13:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.109003491310408,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T06:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T06:45:00",
+      "exit_time": "2026-08-04T12:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1069452800785027,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T07:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T07:00:00",
+      "exit_time": "2026-08-04T13:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2088252321715838,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T07:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T07:15:00",
+      "exit_time": "2026-08-04T13:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0855444564664352,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T07:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T07:30:00",
+      "exit_time": "2026-08-04T13:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0992844261330177,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T07:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T07:45:00",
+      "exit_time": "2026-08-04T14:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3511898590631102,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T08:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T08:00:00",
+      "exit_time": "2026-08-04T13:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1000057641116718,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T08:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T08:15:00",
+      "exit_time": "2026-08-04T16:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1864110792778875,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T08:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T08:30:00",
+      "exit_time": "2026-08-04T14:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2203131415098656,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T08:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T08:45:00",
+      "exit_time": "2026-08-04T13:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.118672964601645,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T09:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T09:00:00",
+      "exit_time": "2026-08-04T12:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1022325004796543,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T09:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T09:15:00",
+      "exit_time": "2026-08-04T11:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1610779609321393,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T09:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T09:30:00",
+      "exit_time": "2026-08-04T11:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.088053333318755,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T09:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T09:45:00",
+      "exit_time": "2026-08-04T11:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.145439282855014,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T10:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T10:00:00",
+      "exit_time": "2026-08-04T11:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1759822351927807,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T10:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T10:15:00",
+      "exit_time": "2026-08-04T11:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2374715236538099,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T10:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T10:30:00",
+      "exit_time": "2026-08-04T11:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2271917907429533,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T10:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T10:45:00",
+      "exit_time": "2026-08-04T11:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2715938949727672,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T11:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T11:00:00",
+      "exit_time": "2026-08-04T12:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.066643456499386,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T11:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T11:15:00",
+      "exit_time": "2026-08-04T12:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1734415048939748,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T11:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T11:30:00",
+      "exit_time": "2026-08-04T13:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.317679782772034,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T11:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T11:45:00",
+      "exit_time": "2026-08-04T14:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1069535912856823,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T12:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T12:00:00",
+      "exit_time": "2026-08-05T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.8430450970615828,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T12:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T12:15:00",
+      "exit_time": "2026-08-04T17:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1576361082182747,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T12:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T12:30:00",
+      "exit_time": "2026-08-04T16:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.148290030571717,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T12:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T12:45:00",
+      "exit_time": "2026-08-05T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.8212989000943445,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T13:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T13:00:00",
+      "exit_time": "2026-08-05T01:45:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0617119160020374,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T13:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T13:15:00",
+      "exit_time": "2026-08-04T17:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.185820199243627,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T13:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T13:30:00",
+      "exit_time": "2026-08-05T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3592331130648991,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T13:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T13:45:00",
+      "exit_time": "2026-08-05T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3784500163268336,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T14:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T14:00:00",
+      "exit_time": "2026-08-05T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.285055682523656,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T14:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T14:15:00",
+      "exit_time": "2026-08-05T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.4591826679124218,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T14:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T14:30:00",
+      "exit_time": "2026-08-05T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3427630148086,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T14:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T14:45:00",
+      "exit_time": "2026-08-05T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.5042280087110564,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T15:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T15:00:00",
+      "exit_time": "2026-08-05T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.7014909639959406,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T15:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T15:15:00",
+      "exit_time": "2026-08-05T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.654604099099064,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T15:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T15:30:00",
+      "exit_time": "2026-08-05T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.5886445388761385,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T15:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T15:45:00",
+      "exit_time": "2026-08-05T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.566361837028981,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T16:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T16:00:00",
+      "exit_time": "2026-08-05T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.5675711679853601,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T16:15:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T16:15:00",
+      "exit_time": "2026-08-05T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.549223728303017,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T16:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T16:30:00",
+      "exit_time": "2026-08-05T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.5301833648926728,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T16:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T16:45:00",
+      "exit_time": "2026-08-05T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.6127812946437883,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-04T17:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-04T17:00:00",
+      "exit_time": "2026-08-05T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.4244561554130912,
+      "notified_exit": true
+    },
+    "gold_silver__2026-04-15T12:00:00_1": {
+      "leg": "gold_silver",
+      "entry_time": "2026-04-15T12:00:00",
+      "exit_time": "2026-04-21T16:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.608298166098767,
+      "notified_exit": true
+    },
+    "gold_silver__2026-05-07T00:00:00_1": {
+      "leg": "gold_silver",
+      "entry_time": "2026-05-07T00:00:00",
+      "exit_time": "2026-05-15T00:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1651240683995834,
+      "notified_exit": true
+    },
+    "gold_silver__2026-08-05T16:00:00_1": {
+      "leg": "gold_silver",
+      "entry_time": "2026-08-05T16:00:00",
+      "exit_time": "2026-08-10T20:00:00",
+      "exit_reason": "target",
+      "r_multiple": 2.152099207759092,
+      "notified_exit": true
     }
   },
-  "kill_switch_active": true,
+  "kill_switch_active": false,
   "last_heartbeat_hour": "2026-08-26 19",
   "eod_equity": {
-    "2026-08-26T00:00:00": 93390.67640544788
+    "2026-08-26T00:00:00": 132145.8800697472
   }
 }

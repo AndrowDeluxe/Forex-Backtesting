@@ -112,29 +112,66 @@ def save_state(state: dict) -> None:
 # mindestens entry_time/exit_time/r_multiple/exit_reason -- identisch zum
 # Backtest, keine zweite Implementierung der Entry/Exit-Regeln.
 
+GOLD_ASB_HISTORY_START = "2016-01-01"  # identisch zu app_pages/asian_range_breakout.py START -- die
+# Liquiditaets-Filterschwelle ist eine EXPANDING Quantile ueber die volle Historie (min_periods=250
+# Handelstage); ein kuerzeres Trailing-Fenster wuerde eine andere Schwelle berechnen als der echte Bot.
+GOLD_ASB_ADX_MIN = 15.0
+GOLD_ASB_TREND_SMA_WINDOW = 200
+GOLD_ASB_SILVER_ALIGNMENT_WINDOW = 5
+GOLD_ASB_LIQUIDITY_QUANTILE = 2 / 3
+GOLD_ASB_LIQUIDITY_MIN_PERIODS = 250
+GOLD_ASB_MAX_DELAY_BARS = 3
+
+
 def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
-    """BEKANNTE LUECKE (2026-08-25): das echte, live laufende GoldASB-MT5-Bridge
-    nutzt fuenf produktiv validierte Filter (ADX, Trend-Bias, Silber-Alignment,
-    Liquiditaet, Fuellverzoegerung -- siehe scripts/collect_gold_asb_daily_log.py-
-    Docstring), die HIER bewusst NICHT reimplementiert werden (identische
-    Vorsicht wie dort: ein zweiter, unabhaengiger Nachbau mit evtl. falschen
-    Parametern waere ein echtes Fehlerrisiko). simulate_asian_breakout(df) ohne
-    Filter liefert daher MEHR und weniger selektive Signale als der echte Bot --
-    diese Bein-Kurve ist bis auf Weiteres eine grobe Naeherung, kein Faksimile.
-    Sauberer Fix waere, wie der Collector, direkt aus GoldASB-MT5-Bridge/state/
-    *.sqlite3 zu lesen (die tatsaechliche Wahrheit dessen, was der echte Bot
-    entschieden hat) statt hier ein zweites Mal zu simulieren -- noch nicht
-    umgesetzt."""
+    """Repliziert die fuenf produktiv validierten Live-Filter der echten
+    GoldASB-MT5-Bridge (ADX, Trend-Bias, Fuellverzoegerung, Silber-Alignment,
+    Liquiditaet -- siehe GoldASB-MT5-Bridge/config.py, Parameter dort mit
+    dieser Reihenfolge/diesen Werten identisch) statt des rohen, ungefilterten
+    Signals -- Parameter und Filterkette 1:1 aus app_pages/asian_range_
+    breakout.py uebernommen (dieselben apply_*_filter-Funktionen, die laut
+    config.py-Docstring bereits gegen die Bridge abgeglichen wurden), nicht
+    neu erfunden. Volle Historie seit GOLD_ASB_HISTORY_START noetig, weil die
+    Liquiditaets-Schwelle eine expanding Quantile ist (siehe Konstante oben)."""
     from asian_range_breakout.data import fetch_gold_m15
     from asian_range_breakout.engine import simulate_asian_breakout
+    from asian_range_breakout.filters import (
+        apply_adx_filter, apply_entry_delay_filter, apply_gold_liquidity_filter_causal,
+        apply_silver_alignment_filter, apply_trend_bias_filter,
+    )
+    from asian_range_breakout.sizing import simulate_equity
+    from bond_yield_indicator.friction import fetch_fx_friction
+    from combined_strategy.data import fetch_timeframe
 
-    start = (end - pd.Timedelta(days=14)).strftime("%Y-%m-%d")  # Asian-Range ist ein 1-Nacht-Setup, 14 Tage Puffer reicht
-    df = fetch_gold_m15(start, (end + pd.Timedelta(days=1)).strftime("%Y-%m-%d"), force_refresh=force_refresh)
+    end_str = (end + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
+    df = fetch_gold_m15(GOLD_ASB_HISTORY_START, end_str, force_refresh=force_refresh)
     if df.empty:
         return pd.DataFrame(columns=["entry_time", "exit_time", "r_multiple", "exit_reason"])
     trades = simulate_asian_breakout(df)
     if trades.empty:
         return trades
+
+    daily_close = df["close"].tz_localize(None).resample("D").last().dropna()
+    silver_m15 = fetch_timeframe("SILVER", "M15", GOLD_ASB_HISTORY_START, end_str, force_refresh=force_refresh)
+    daily_close_silver = silver_m15["Close"].tz_localize(None).resample("D").last().dropna()
+    gold_friction = fetch_fx_friction("GOLD", GOLD_ASB_HISTORY_START, end_str)
+
+    trades = apply_adx_filter(trades, adx_min=GOLD_ASB_ADX_MIN)
+    trades = apply_trend_bias_filter(trades, daily_close, sma_window=GOLD_ASB_TREND_SMA_WINDOW)
+    trades = apply_entry_delay_filter(trades, max_delay_bars=GOLD_ASB_MAX_DELAY_BARS)
+    trades = apply_silver_alignment_filter(trades, daily_close_silver, window=GOLD_ASB_SILVER_ALIGNMENT_WINDOW)
+    trades = apply_gold_liquidity_filter_causal(
+        trades, gold_friction, quantile=GOLD_ASB_LIQUIDITY_QUANTILE, min_periods=GOLD_ASB_LIQUIDITY_MIN_PERIODS
+    )
+    if trades.empty:
+        return trades
+    # simulate_asian_breakout() liefert nur return_pct (roher Preis-Move), KEIN
+    # r_multiple -- simulate_equity() rechnet es exakt wie asian_range_breakout/
+    # sizing.py (r_multiple = vorzeichenbehafteter Preis-Move / stop_distance)
+    # nach; starting_equity/risk_pct hier sind irrelevant, nur die r_multiple-
+    # Spalte wird verwendet, die eigentliche Positionsgroesse kommt aus der
+    # gemeinsamen Kapitalanteil-Verduennungsformel weiter unten im Modul.
+    trades = simulate_equity(trades, starting_equity=100_000.0, risk_pct=0.005)
     trades = trades[_utc_naive(trades["entry_time"]) <= end]
     return trades
 
@@ -165,7 +202,23 @@ def _scan_cls_practical(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
     trades = simulate_cls_practical(eurusd_m5, other_majors_m15, bund_m5, ustbond_m5, risk_multiplier=combined_mult)
     if trades.empty:
         return pd.DataFrame(columns=["entry_time", "exit_time", "r_multiple", "exit_reason"])
-    trades = trades[_utc_naive(trades["entry_time"]) <= end].copy()
+    trades = trades.copy()
+    # simulate_cls_practical() liefert nur return_pct + pnl_usd (mit dem
+    # Tages-Zins-Multiplikator bereits VERRECHNET in ihrer eigenen internen
+    # Equity-Annahme), kein r_multiple. Fuer die gemeinsame Kapitalanteil-
+    # Verduennungsformel brauchen wir ein von dieser internen Equity-Annahme
+    # unabhaengiges r_multiple: sign*(exit-entry)/sl_distance ist die reine
+    # Preis-Bewegung relativ zum Stop (wie asian_range_breakout/sizing.py),
+    # multipliziert mit dem TAGES-Zins-Multiplikator (derselbe, der auch beim
+    # Backtest -- cls_practical_rXXX.csv-Beinkurven -- bereits standardmaessig
+    # in die Rendite eingerechnet ist, siehe rates.py/live_scan.py) --
+    # dadurch bleibt die Risiko-Skalierung ueber Trade und Tages-Zinssignal
+    # konsistent mit den bereits validierten Backtest-Zahlen.
+    sign = trades["direction"].map({"long": 1, "short": -1})
+    raw_r = sign * (trades["exit_price"] - trades["entry_price"]) / trades["sl_distance"]
+    rate_mult = trades["date"].map(lambda d: combined_mult.get(d, 1.0))
+    trades["r_multiple"] = raw_r * rate_mult
+    trades = trades[_utc_naive(trades["entry_time"]) <= end]
     if "exit_reason" not in trades.columns:
         trades["exit_reason"] = np.where(trades["exit_time"].notna(), "closed", "data_end")
     return trades
@@ -268,7 +321,17 @@ def _merge_trades(state: dict, leg: str, trades: pd.DataFrame) -> list[str]:
             continue
         entry_naive = _utc_naive(t["entry_time"])
         exit_naive = _utc_naive(t["exit_time"])
-        key = f"{leg}_{entry_naive.isoformat()}_{int(t.get('direction', 1) if pd.notna(t.get('direction', 1)) else 1)}"
+        # direction ist je nach Engine numerisch (1/-1, strategy.backtest) ODER
+        # ein String ("long"/"short", asian_range_breakout/cls_practical) --
+        # int(...) wuerde bei Strings crashen, daher roh in den Key. "market"
+        # zusaetzlich noetig, weil trend_pullback 5 Instrumente auf denselben
+        # "leg"-Schluessel mappt -- ohne market koennten zwei verschiedene
+        # Instrumente mit zufaellig identischem entry_time+direction denselben
+        # Key erzeugen und sich gegenseitig ueberschreiben.
+        direction_raw = t.get("direction", 1)
+        direction_key = direction_raw if pd.notna(direction_raw) else 1
+        market_key = t.get("market", "")
+        key = f"{leg}_{market_key}_{entry_naive.isoformat()}_{direction_key}"
         exit_reason = t.get("exit_reason", "data_end")
         r_mult = float(t["r_multiple"])
 

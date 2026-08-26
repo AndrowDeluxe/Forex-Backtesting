@@ -40,3 +40,11 @@
 2026-08-26 21:56:34 [FK Instant Funding] ÔÜá´©Å CTNL-Edge-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'
 2026-08-26 21:56:34 ---
 2026-08-26 21:56:34 [FK Instant Funding] ÔÜá´©Å Gold-Silber-Divergenz-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'
+2026-08-26 21:56:34 [main 9e72746] FK Instant Funding Bot: Snapshot 2026-08-26 21:56
+2026-08-26 21:56:34  2 files changed, 44 insertions(+), 1 deletion(-)
+2026-08-26 21:56:34  create mode 100644 fk_instant_funding_logs/task_run.log
+2026-08-26 21:56:37 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-26 21:56:37  ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 9e72746359f827b4a408c0cd713f9bfd174d8b6d but expected 51a783d556c206d9db7e1ff642b02943bef6bdba)
+2026-08-26 21:56:37 error: failed to push some refs to 'https://github.com/AndrowDeluxe/Forex-Backtesting.git'
+2026-08-26 21:56:37 WARNUNG: git push fehlgeschlagen (Exit 1) - Commit liegt lokal vor, aber nicht auf GitHub bis zum naechsten erfolgreichen Push.
+2026-08-26 21:56:37 === FK-Instant-Funding-Task beendet ===

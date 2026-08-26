@@ -42,6 +42,7 @@ Ueberwacht alle drei Instant-Funding-Regeln:
    Punkt-in-Zeit-Wahrscheinlichkeitskurve, auf der dieser Live-Check beruht)."""
 
 import json
+import time
 from pathlib import Path
 
 import numpy as np
@@ -49,6 +50,25 @@ import pandas as pd
 
 from fk_instant_funding.telegram_notify import send_telegram_message
 from strategy.backtest import BacktestConfig, simulate_trades
+
+
+def _retry(fn, attempts: int = 3, delay_seconds: float = 5.0):
+    """dukascopy_python's Streaming-Client wirft gelegentlich ein KeyError(0)
+    tief in seiner eigenen _stream()-Cursor-Logik, wenn end nah an "jetzt"
+    liegt (reproduzierbar bei fast jedem Live-Abruf bis zum aktuellen
+    Moment, siehe Traceback ueber dukascopy_python/__init__.py:209) --
+    bekannte Instabilitaet der Drittanbieter-Bibliothek, kein Fehler in
+    unserem Code. Ein einfacher Retry reicht empirisch aus (der zweite oder
+    dritte Versuch kommt fast immer durch)."""
+    last_exc = None
+    for attempt in range(attempts):
+        try:
+            return fn()
+        except Exception as e:
+            last_exc = e
+            if attempt < attempts - 1:
+                time.sleep(delay_seconds)
+    raise last_exc
 
 REPO_DIR = Path(__file__).resolve().parents[1]
 LOG_DIR = REPO_DIR / "fk_instant_funding_logs"
@@ -92,7 +112,7 @@ def _utc_naive(x):
 
 
 def _default_state() -> dict:
-    return {"trades": {}, "kill_switch_active": False, "last_heartbeat_hour": None, "eod_equity": {}}
+    return {"trades": {}, "kill_switch_active": False, "last_heartbeat_hour": None, "eod_equity": {}, "account_start": None}
 
 
 def load_state() -> dict:
@@ -143,8 +163,29 @@ def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
     from bond_yield_indicator.friction import fetch_fx_friction
     from combined_strategy.data import fetch_timeframe
 
+    # fetch_timeframe() cached unter dem exakten (start, end)-Datumspaar
+    # (combined_strategy/data.py::_cache_path) -- mit end=jetzt wuerde JEDER
+    # stuendliche Lauf einen NEUEN Cache-Schluessel erzeugen und die vollen
+    # ~10 Jahre M15-Gold/Silber komplett frisch von Dukascopy herunterladen
+    # (langsam UND die Ursache der beobachteten "KeyError: 0"/Streaming-
+    # Aussetzer in der dukascopy_python-Bibliothek bei Live-Abrufen bis genau
+    # jetzt). Fix: alte, laengst abgeschlossene Historie bis GESTERN cachen
+    # (aendert sich nur einmal pro Tag), nur den kurzen frischen Rest seit
+    # gestern wirklich force_refresh=True abrufen und anhaengen.
     end_str = (end + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
-    df = fetch_gold_m15(GOLD_ASB_HISTORY_START, end_str, force_refresh=force_refresh)
+    stable_end_str = (end.normalize() - pd.Timedelta(days=1)).strftime("%Y-%m-%d")
+
+    def _concat_fresh(old: pd.DataFrame | pd.Series, new: pd.DataFrame | pd.Series):
+        if old.empty:
+            return new
+        if new.empty:
+            return old
+        combined = pd.concat([old, new])
+        return combined[~combined.index.duplicated(keep="last")].sort_index()
+
+    gold_m15_old = fetch_gold_m15(GOLD_ASB_HISTORY_START, stable_end_str, force_refresh=False)
+    gold_m15_new = fetch_gold_m15(stable_end_str, end_str, force_refresh=force_refresh)
+    df = _concat_fresh(gold_m15_old, gold_m15_new)
     if df.empty:
         return pd.DataFrame(columns=["entry_time", "exit_time", "r_multiple", "exit_reason"])
     trades = simulate_asian_breakout(df)
@@ -152,9 +193,13 @@ def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
         return trades
 
     daily_close = df["close"].tz_localize(None).resample("D").last().dropna()
-    silver_m15 = fetch_timeframe("SILVER", "M15", GOLD_ASB_HISTORY_START, end_str, force_refresh=force_refresh)
+    silver_m15_old = fetch_timeframe("SILVER", "M15", GOLD_ASB_HISTORY_START, stable_end_str, force_refresh=False)
+    silver_m15_new = fetch_timeframe("SILVER", "M15", stable_end_str, end_str, force_refresh=force_refresh)
+    silver_m15 = _concat_fresh(silver_m15_old, silver_m15_new)
     daily_close_silver = silver_m15["Close"].tz_localize(None).resample("D").last().dropna()
-    gold_friction = fetch_fx_friction("GOLD", GOLD_ASB_HISTORY_START, end_str)
+    gold_friction_old = fetch_fx_friction("GOLD", GOLD_ASB_HISTORY_START, stable_end_str, force_refresh=False)
+    gold_friction_new = fetch_fx_friction("GOLD", stable_end_str, end_str, force_refresh=force_refresh)
+    gold_friction = _concat_fresh(gold_friction_old, gold_friction_new)
 
     trades = apply_adx_filter(trades, adx_min=GOLD_ASB_ADX_MIN)
     trades = apply_trend_bias_filter(trades, daily_close, sma_window=GOLD_ASB_TREND_SMA_WINDOW)
@@ -428,34 +473,54 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
         state = _default_state()
     state.setdefault("eod_equity", {})
 
+    # Kontostart fixieren: manche Scans brauchen JAHRE an Historie fuer ihre
+    # eigene Filter-/Indikator-Aufwaermzeit (z.B. Gold ASB's expanding
+    # Liquiditaets-Quantile seit 2016), das darf aber nicht heissen, dass
+    # deren komplette Mehrjahres-Historie ins gemeinsame Paper-Konto einfliesst
+    # -- sonst compoundiert das Konto de facto Gold-ASB-Trades seit 2016,
+    # waehrend jedes andere Bein erst seit ein paar Monaten mitzaehlt (genau
+    # der Bug, der den ersten Live-Lauf "surreal" aussehen liess: +32% "seit
+    # heute" war in Wahrheit ein 10-Jahre-Gold-ASB-Backtest mit ein paar
+    # Monaten der anderen 5 Beine oben drauf). account_start wird beim
+    # allerersten Lauf einmalig auf `end` gesetzt und danach persistiert --
+    # nur Trades mit entry_time >= account_start zaehlen fuers Paper-Konto.
+    if state.get("account_start") is None:
+        state["account_start"] = end.isoformat()
+    account_start = pd.Timestamp(state["account_start"])
+
+    def _since_start(trades: pd.DataFrame) -> pd.DataFrame:
+        if trades.empty:
+            return trades
+        return trades[_utc_naive(trades["entry_time"]) >= account_start]
+
     messages = []
     try:
-        gold_asb_trades = _scan_gold_asb(end, force_refresh=not dry_run)
+        gold_asb_trades = _since_start(_retry(lambda: _scan_gold_asb(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "gold_asb", gold_asb_trades)
     except Exception as e:
         messages.append(f"[FK Instant Funding] ⚠️ Gold-ASB-Scan fehlgeschlagen: {e}")
 
     try:
-        cls_trades = _scan_cls_practical(end, force_refresh=not dry_run)
+        cls_trades = _since_start(_retry(lambda: _scan_cls_practical(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "cls_practical", cls_trades)
     except Exception as e:
         messages.append(f"[FK Instant Funding] ⚠️ CLS-Practical-Scan fehlgeschlagen: {e}")
 
     try:
-        tp_trades = _scan_trend_pullback(end, force_refresh=not dry_run)
+        tp_trades = _since_start(_retry(lambda: _scan_trend_pullback(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "trend_pullback", tp_trades)
     except Exception as e:
         messages.append(f"[FK Instant Funding] ⚠️ Trend-Pullback-Scan fehlgeschlagen: {e}")
 
     try:
-        cont_trades, rev_trades = _scan_ctnl(end, force_refresh=not dry_run)
-        messages += _merge_trades(state, "ctnl_continuation", cont_trades)
-        messages += _merge_trades(state, "ctnl_reversal", rev_trades)
+        cont_trades, rev_trades = _retry(lambda: _scan_ctnl(end, force_refresh=not dry_run))
+        messages += _merge_trades(state, "ctnl_continuation", _since_start(cont_trades))
+        messages += _merge_trades(state, "ctnl_reversal", _since_start(rev_trades))
     except Exception as e:
         messages.append(f"[FK Instant Funding] ⚠️ CTNL-Edge-Scan fehlgeschlagen: {e}")
 
     try:
-        gsd_trades = _scan_gold_silver(end, force_refresh=not dry_run)
+        gsd_trades = _since_start(_retry(lambda: _scan_gold_silver(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "gold_silver", gsd_trades)
     except Exception as e:
         messages.append(f"[FK Instant Funding] ⚠️ Gold-Silber-Divergenz-Scan fehlgeschlagen: {e}")

@@ -3222,8 +3222,19 @@
       "exit_reason": "stop",
       "r_multiple": -1.4244561554130912,
       "notified_exit": true
+    },
+    "continuation_2026-06-02T00:50:00-04:00_-1": {
+      "strategy": "continuation",
+      "entry_time": "2026-06-02T00:50:00-04:00",
+      "direction": -1,
+      "entry_price": 4510.550058,
+      "exit_time": "2026-06-02T01:10:00-04:00",
+      "exit_price": 4520.422446,
+      "exit_reason": "stop",
+      "r_multiple": -1.3112726779838444,
+      "notified_exit": true
     }
   },
   "kill_switch_active": false,
-  "last_heartbeat_hour": "2026-08-20 06"
+  "last_heartbeat_hour": "2026-08-26 16"
 }

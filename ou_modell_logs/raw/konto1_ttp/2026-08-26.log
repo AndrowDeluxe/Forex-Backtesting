@@ -1,0 +1,18 @@
+===== run_20260826_201407.log =====
+2026-08-26 20:14:07,344 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260826_201407.log ===
+2026-08-26 20:14:07,618 INFO executor: SL für NUE (Ticket 18003931) auf Break-Even (241.9300) gesetzt.
+2026-08-26 20:14:07,623 INFO run_once.konto1_ttp: Break-Even-Management: [{'status': 'moved', 'ticket': 18003931, 'symbol': 'NUE', 'sl': 241.93}]
+2026-08-26 20:14:07,631 ERROR run_once.konto1_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-26 20:14:07,633 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260826_203559.log =====
+2026-08-26 20:35:59,850 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260826_203559.log ===
+2026-08-26 20:35:59,893 ERROR run_once.konto1_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-26 20:35:59,895 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===
+
+
+===== run_20260826_213557.log =====
+2026-08-26 21:35:57,070 INFO run_once.konto1_ttp: === Lauf gestartet für Konto 1 (TTP) (DRY_RUN=False, signal_source=external) - Log: logs\konto1_ttp\run_20260826_213557.log ===
+2026-08-26 21:35:57,283 ERROR run_once.konto1_ttp: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-26 21:35:57,284 INFO run_once.konto1_ttp: === Lauf für Konto 1 (TTP) beendet ===

@@ -1,0 +1,18 @@
+===== run_20260826_201408.log =====
+2026-08-26 20:14:08,508 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260826_201408.log ===
+2026-08-26 20:14:08,781 INFO executor: SL für NUE (Ticket 254488131) auf Break-Even (241.8800) gesetzt.
+2026-08-26 20:14:08,786 INFO run_once.konto3_tickmill: Break-Even-Management: [{'status': 'moved', 'ticket': 254488131, 'symbol': 'NUE', 'sl': 241.88}]
+2026-08-26 20:14:08,792 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-26 20:14:08,794 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260826_203600.log =====
+2026-08-26 20:36:00,378 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260826_203600.log ===
+2026-08-26 20:36:00,417 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-26 20:36:00,419 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===
+
+
+===== run_20260826_213558.log =====
+2026-08-26 21:35:58,134 INFO run_once.konto3_tickmill: === Lauf gestartet für Konto 3 (Tickmill) (DRY_RUN=False, signal_source=external) - Log: logs\konto3_tickmill\run_20260826_213558.log ===
+2026-08-26 21:35:58,283 ERROR run_once.konto3_tickmill: Kein Scan-Ergebnis verfügbar (gemeinsamer Scan für alle Konten ist fehlgeschlagen) - keine neuen Orders in diesem Lauf.
+2026-08-26 21:35:58,284 INFO run_once.konto3_tickmill: === Lauf für Konto 3 (Tickmill) beendet ===

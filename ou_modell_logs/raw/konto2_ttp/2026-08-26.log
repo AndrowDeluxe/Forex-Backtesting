@@ -1,0 +1,25 @@
+===== run_20260826_201407.log =====
+2026-08-26 20:14:07,970 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260826_201407.log ===
+2026-08-26 20:14:08,322 INFO run_once.konto2_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-26 20:14:08,324 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100309.15, aktueller Drawdown 0.00% (Limit 2.0%)
+2026-08-26 20:14:08,331 INFO executor: Für TXT ist bereits eine Position offen (Ticket 18077241) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-26 20:14:08,331 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'TXT', 'direction': 'Long', 'entry': 81.8, 'sl': 74.67, 'tp': 92.49}}
+2026-08-26 20:14:08,332 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260826_203600.log =====
+2026-08-26 20:36:00,141 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260826_203600.log ===
+2026-08-26 20:36:00,182 INFO run_once.konto2_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-26 20:36:00,184 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100309.15, aktueller Drawdown 0.01% (Limit 2.0%)
+2026-08-26 20:36:00,188 INFO executor: Für TXT ist bereits eine Position offen (Ticket 18077241) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-26 20:36:00,188 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'TXT', 'direction': 'Long', 'entry': 81.8, 'sl': 74.67, 'tp': 92.49}}
+2026-08-26 20:36:00,189 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===
+
+
+===== run_20260826_213557.log =====
+2026-08-26 21:35:57,748 INFO run_once.konto2_ttp: === Lauf gestartet für Konto 2 (TTP, Demo) (DRY_RUN=False, signal_source=internal) - Log: logs\konto2_ttp\run_20260826_213557.log ===
+2026-08-26 21:35:57,941 INFO run_once.konto2_ttp: 1 Signal(e) verfügbar (gemeinsamer Scan für alle Konten).
+2026-08-26 21:35:57,943 INFO run_once.konto2_ttp: Tages-Drawdown-Check: Baseline-Equity 100309.15, aktueller Drawdown 0.01% (Limit 2.0%)
+2026-08-26 21:35:57,946 INFO executor: Für TXT ist bereits eine Position offen (Ticket 18077241) - Signal wird übersprungen, auch wenn es erneut im Scan auftaucht.
+2026-08-26 21:35:57,947 INFO run_once.konto2_ttp: Ergebnis: {'status': 'skipped', 'reason': 'position_already_open', 'signal': {'symbol': 'TXT', 'direction': 'Long', 'entry': 81.8, 'sl': 74.67, 'tp': 92.49}}
+2026-08-26 21:35:57,948 INFO run_once.konto2_ttp: === Lauf für Konto 2 (TTP, Demo) beendet ===

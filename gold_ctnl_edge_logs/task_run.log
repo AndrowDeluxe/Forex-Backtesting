@@ -1,0 +1,30 @@
+2026-08-26 21:56:23 === CTNL-Edge-FK-Paper-Task gestartet ===
+2026-08-26 21:56:33 Traceback (most recent call last):
+2026-08-26 21:56:33   File "<frozen runpy>", line 203, in _run_module_as_main
+2026-08-26 21:56:33   File "<frozen runpy>", line 88, in _run_code
+2026-08-26 21:56:33   File "C:\Users\andre\Forex-Backtesting\gold_smc_htf_ltf\paper_bot.py", line 203, in <module>
+2026-08-26 21:56:33     result, _ = scan_once()
+2026-08-26 21:56:33                 ~~~~~~~~~^^
+2026-08-26 21:56:33   File "C:\Users\andre\Forex-Backtesting\gold_smc_htf_ltf\paper_bot.py", line 129, in scan_once
+2026-08-26 21:56:33     h4, h1, m15, m5 = _fetch_window(end, force_refresh=not dry_run)
+2026-08-26 21:56:33                       ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-26 21:56:33   File "C:\Users\andre\Forex-Backtesting\gold_smc_htf_ltf\paper_bot.py", line 73, in _fetch_window
+2026-08-26 21:56:33     h4 = fetch_gold_h4(start, end_str, force_refresh=force_refresh)
+2026-08-26 21:56:33   File "C:\Users\andre\Forex-Backtesting\gold_smc_htf_ltf\data.py", line 38, in fetch_gold_h4
+2026-08-26 21:56:33     return _fetch("H4", start, end, force_refresh)
+2026-08-26 21:56:33   File "C:\Users\andre\Forex-Backtesting\gold_smc_htf_ltf\data.py", line 11, in _fetch
+2026-08-26 21:56:33     df = fetch_timeframe("GOLD", timeframe, start, end, force_refresh=force_refresh)
+2026-08-26 21:56:33   File "C:\Users\andre\Forex-Backtesting\combined_strategy\data.py", line 83, in fetch_timeframe
+2026-08-26 21:56:33     df = dukascopy_python.fetch(
+2026-08-26 21:56:33         INSTRUMENTS[key], _TF_INTERVAL[timeframe], OFFER_SIDE,
+2026-08-26 21:56:33         start_ts.to_pydatetime(), end_ts.to_pydatetime(),
+2026-08-26 21:56:33     )
+2026-08-26 21:56:33   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\dukascopy_python\__init__.py", line 278, in fetch
+2026-08-26 21:56:33     for row in datafeed:
+2026-08-26 21:56:33                ^^^^^^^^
+2026-08-26 21:56:33   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\dukascopy_python\__init__.py", line 242, in _stream
+2026-08-26 21:56:33     raise e
+2026-08-26 21:56:33   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\dukascopy_python\__init__.py", line 219, in _stream
+2026-08-26 21:56:33     if end_timestamp is not None and row[0] > end_timestamp:
+2026-08-26 21:56:33                                      ^^^^^^^^^^^^^^^^^^^^^^
+2026-08-26 21:56:33 TypeError: '>' not supported between instances of 'str' and 'float'

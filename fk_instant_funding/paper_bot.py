@@ -427,21 +427,30 @@ def compute_shared_equity(state: dict) -> pd.DataFrame:
 
 
 def check_trailing_dd(equity_df: pd.DataFrame, eod_equity_state: dict, as_of: pd.Timestamp) -> tuple[bool, float, float]:
-    """EOD-Trailing-Drawdown: Floor = 95% des bisherigen EOD-Hoechststands,
-    bewegt sich nur nach oben. Nutzt den PERSISTIERTEN EOD-Verlauf (nicht nur
-    die aktuell im State bekannten Trades), damit der Floor ueber Neustarts
-    hinweg stabil bleibt. `as_of` statt pd.Timestamp.now() -- sonst wuerde ein
-    historischer Dry-Run/Backtest-Aufruf faelschlich das ECHTE heutige Datum
-    als EOD-Schluessel benutzen statt des simulierten Datums."""
+    """EOD-Trailing-Drawdown: Floor = 95% des bisherigen EOD-Hoechststands
+    (Regeltext: "floor = previous day's highest equity, moves only up"),
+    bewegt sich nur nach oben. `as_of` statt pd.Timestamp.now() -- sonst
+    wuerde ein historischer Dry-Run/Backtest-Aufruf faelschlich das ECHTE
+    heutige Datum als EOD-Schluessel benutzen statt des simulierten Datums.
+
+    Der Floor darf NUR auf abgeschlossenen VORTAGEN beruhen, niemals auf dem
+    noch laufenden heutigen Wert -- sonst wuerde jeder stuendliche Lauf den
+    Floor faelschlich an ein reines INTRADAY-Hoch dieses Tages anpassen
+    (echter Bug, gefunden beim Regel-Re-Audit vor der echten Kontoanbindung:
+    eod_equity_state[today] wurde VOR der running_max-Berechnung gesetzt,
+    wodurch der heutige Wert seinen eigenen Floor mitbestimmte). Der heutige
+    Stand wird erst NACH dem Vergleich gespeichert, damit er ab dem naechsten
+    Kalendertag als abgeschlossener Vortag in die Floor-Berechnung eingeht."""
     if equity_df.empty:
         return False, 0.0, STARTING_EQUITY
     today = as_of.normalize().isoformat()
     current_equity = float(equity_df["equity"].iloc[-1])
-    eod_equity_state[today] = current_equity
-    running_max = max([STARTING_EQUITY] + list(eod_equity_state.values()))
+    prior_days_only = {k: v for k, v in eod_equity_state.items() if k != today}
+    running_max = max([STARTING_EQUITY] + list(prior_days_only.values()))
     floor = (1 - TRAILING_DD_PCT) * running_max
     breached = current_equity < floor
     current_dd = current_equity / running_max - 1
+    eod_equity_state[today] = current_equity
     return breached, current_dd, floor
 
 

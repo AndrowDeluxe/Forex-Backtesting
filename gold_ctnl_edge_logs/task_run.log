@@ -397,3 +397,26 @@
 2026-08-27 19:56:30   "n_trades": 33,
 2026-08-27 19:56:30   "kill_switch_active": false
 2026-08-27 19:56:30 }
+2026-08-27 19:56:30 [main 73412cb] CTNL Edge FK-Paper: Snapshot 2026-08-27 19:56
+2026-08-27 19:56:30  3 files changed, 24 insertions(+), 1 deletion(-)
+2026-08-27 19:56:34 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-27 19:56:34  ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at 4f79bff7c8f1e6dc4c39155eff05e1e90b165b72 but expected 09a767b1c3ca5cc2ae6a7fad33a230f0cb380b7d)
+2026-08-27 19:56:34 error: failed to push some refs to 'https://github.com/AndrowDeluxe/Forex-Backtesting.git'
+2026-08-27 19:56:34 WARNUNG: git push fehlgeschlagen (Exit 1) - Commit liegt lokal vor, aber nicht auf GitHub bis zum naechsten erfolgreichen Push.
+2026-08-27 19:56:34 === CTNL-Edge-FK-Paper-Task beendet ===
+2026-08-27 20:56:24 === CTNL-Edge-FK-Paper-Task gestartet ===
+2026-08-27 20:56:29 INFO:DUKASCRIPT:current timestamp :2026-08-27T14:00:00
+2026-08-27 20:56:29 INFO:DUKASCRIPT:current timestamp :2026-08-27T19:00:00
+2026-08-27 20:56:29 INFO:DUKASCRIPT:current timestamp :2026-06-29T20:45:00
+2026-08-27 20:56:29 INFO:DUKASCRIPT:current timestamp :2026-07-29T18:30:00
+2026-08-27 20:56:29 INFO:DUKASCRIPT:current timestamp :2026-08-27T20:30:00
+2026-08-27 20:56:29 INFO:DUKASCRIPT:current timestamp :2026-06-29T20:55:00
+2026-08-27 20:56:29 INFO:DUKASCRIPT:current timestamp :2026-07-29T18:50:00
+2026-08-27 20:56:29 INFO:DUKASCRIPT:current timestamp :2026-08-27T20:50:00
+2026-08-27 20:56:29 {
+2026-08-27 20:56:29   "date": "2026-08-27 14:56:26.140303-04:00",
+2026-08-27 20:56:29   "final_equity": 101379.33845962268,
+2026-08-27 20:56:29   "current_dd": -0.03164400337583027,
+2026-08-27 20:56:29   "n_trades": 33,
+2026-08-27 20:56:29   "kill_switch_active": false
+2026-08-27 20:56:29 }

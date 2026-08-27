@@ -76,13 +76,16 @@ STATE_PATH = LOG_DIR / "paper_state.json"
 HEARTBEAT_CSV = LOG_DIR / "heartbeat.csv"
 
 STARTING_EQUITY = 100_000.0  # Platzhalter -- vor echtem Livegang auf die reale Kontogroesse setzen
-CAPITAL_WEIGHT = 0.20  # je Bein, 5 gleichgewichtete Beine (CTNL Continuation+Reversal teilen sich EIN Bein)
+CAPITAL_WEIGHT = 1 / 6  # je Bein, 6 gleichgewichtete Beine (CTNL Continuation+Reversal teilen sich EIN Bein,
+# die 3 ORB-Instrumente teilen sich ebenfalls EIN Bein -- siehe ORB_RISK_PCT_PER_INSTRUMENT unten)
 
 MAX_POSITION_LOSS_PCT = 0.005   # vom STARTKAPITAL (fester Dollar-Deckel, siehe Docstring)
 TRAILING_DD_PCT = 0.05          # End-of-Day, gegen den bisherigen Hoechststand
 CONSISTENCY_CAP_PCT = 0.30      # bester Einzeltag / kumulierter Gesamtgewinn
 
 # interne Risikostufen je Bein, identisch zu portfolio_construction/results/fk_instant_funding_final.json
+ORB_COMBINED_RISK_PCT = 0.01  # "ORB Portfolio"-Bein gesamt, gleichgewichtet ueber 3 Instrumente (siehe unten)
+ORB_RISK_PCT_PER_INSTRUMENT = ORB_COMBINED_RISK_PCT / 3  # exakt die Backtest-Konvention (combined += ret/3)
 LEG_RISK_PCT = {
     "gold_asb": 0.02,
     "cls_practical": 0.015,
@@ -90,10 +93,14 @@ LEG_RISK_PCT = {
     "ctnl_continuation": 0.005,
     "ctnl_reversal": 0.0015,
     "gold_silver": 0.01,
+    "orb_sp500": ORB_RISK_PCT_PER_INSTRUMENT,
+    "orb_us30": ORB_RISK_PCT_PER_INSTRUMENT,
+    "orb_nasdaq": ORB_RISK_PCT_PER_INSTRUMENT,
 }
 LEG_LABELS = {
     "gold_asb": "Gold ASB", "cls_practical": "CLS Practical", "trend_pullback": "Trend Pullback",
     "ctnl_continuation": "CTNL Continuation", "ctnl_reversal": "CTNL Reversal", "gold_silver": "Gold-Silber-Divergenz",
+    "orb_sp500": "NY-Open ORB (SP500)", "orb_us30": "NY-Open ORB (US30)", "orb_nasdaq": "NY-Open ORB (NASDAQ)",
 }
 MAX_POSITION_LOSS_DOLLARS = MAX_POSITION_LOSS_PCT * STARTING_EQUITY
 
@@ -354,6 +361,73 @@ def _scan_gold_silver(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
     return trades[_utc_naive(trades["entry_time"]) <= end]
 
 
+ORB_EXIT_CFG = dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0)
+ORB_HISTORY_LOOKBACK_DAYS = 500  # EMA-Ribbon-Bias (4H/1D/1W) braucht Monate an Vorlauf
+
+
+def _scan_orb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
+    """NY-Open ORB (SP500+US30+NASDAQ), 1:1 die validierte Config aus
+    app_pages/ny_open_orb_portfolio.py (siehe knowledge/projects/ny-open-
+    orb-sp500.md, Stage 1-5 + Phase 6 abgeschlossen). Anders als die anderen
+    5 Beine schliesst ORB IMMER innerhalb derselben NY-Handelssession
+    (spaetestens per session_end) -- kein Mehrtage-Halten. Deshalb eine
+    Besonderheit: simulate() labelt "keine Bar mehr im gefetchten Fenster
+    gefunden" auch als "session_end", selbst wenn die echte Session noch
+    gar nicht vorbei ist (ein Scan MITTEN in der Session haette sonst
+    faelschlich einen finalen Exit gemeldet, statt eines vorlaeufigen
+    Mark-to-Market-Stands wie bei den anderen Beinen ueber "data_end") --
+    wird hier anhand der frame-eigenen session_close-Spalte korrigiert."""
+    from ny_open_orb import filters, regime
+    from ny_open_orb.data import fetch_m5, fetch_m15
+    from ny_open_orb.engine import build_frame, find_entries, simulate
+
+    start = (end - pd.Timedelta(days=ORB_HISTORY_LOOKBACK_DAYS)).strftime("%Y-%m-%d")
+    end_str = (end + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
+
+    all_trades = []
+    for instrument in ["SP500", "US30", "NASDAQ"]:
+        m15 = fetch_m15(instrument, start, end_str, force_refresh=force_refresh)
+        m5 = fetch_m5(instrument, start, end_str, force_refresh=force_refresh)
+        if m15.empty or m5.empty:
+            continue
+        frame = build_frame(m15, m5, range_bars=1)
+        all_entries = find_entries(frame, "stop_breakout")
+        if all_entries.empty:
+            continue
+
+        if instrument == "NASDAQ":
+            entries = filters.filter_by_weekday(all_entries, exclude=["Wednesday"])
+        else:
+            long_entries = filters.filter_by_direction(all_entries, 1)
+            bias = regime.ema_trend_bias(m15, frame["session"].unique())
+            bias_vals = filters.values_at(long_entries, bias)
+            entries = filters.filter_by_category(long_entries, bias_vals, (0.0,))
+        if entries.empty:
+            continue
+
+        trades = simulate(frame, entries, **ORB_EXIT_CFG)
+        if trades.empty:
+            continue
+        trades = trades[_utc_naive(trades["entry_time"]) <= end].copy()
+        if trades.empty:
+            continue
+
+        session_close_naive = _utc_naive(frame["session_close"])
+        for idx in trades.index[trades["exit_reason"] == "session_end"]:
+            entry_t = trades.loc[idx, "entry_time"]
+            if entry_t not in session_close_naive.index:
+                continue
+            if session_close_naive.loc[entry_t] > end:
+                trades.loc[idx, "exit_reason"] = "data_end"  # Session noch nicht wirklich vorbei
+
+        trades["market"] = instrument
+        all_trades.append(trades)
+
+    if not all_trades:
+        return pd.DataFrame(columns=["entry_time", "exit_time", "r_multiple", "exit_reason", "market"])
+    return pd.concat(all_trades, ignore_index=True)
+
+
 # ------------------------------------------------------------------ State-Merge (Muster: gold_smc_htf_ltf/paper_bot.py)
 def _merge_trades(state: dict, leg: str, trades: pd.DataFrame) -> list[str]:
     """Speichert entry_time/exit_time konsistent als UTC-naive ISO-Strings --
@@ -533,6 +607,15 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
         messages += _merge_trades(state, "gold_silver", gsd_trades)
     except Exception as e:
         messages.append(f"[FK Instant Funding] ⚠️ Gold-Silber-Divergenz-Scan fehlgeschlagen: {e}")
+
+    try:
+        orb_trades = _since_start(_retry(lambda: _scan_orb(end, force_refresh=not dry_run)))
+        orb_leg_by_market = {"SP500": "orb_sp500", "US30": "orb_us30", "NASDAQ": "orb_nasdaq"}
+        if not orb_trades.empty:
+            for market, sub in orb_trades.groupby("market"):
+                messages += _merge_trades(state, orb_leg_by_market[market], sub)
+    except Exception as e:
+        messages.append(f"[FK Instant Funding] ⚠️ NY-Open-ORB-Scan fehlgeschlagen: {e}")
 
     equity_df = compute_shared_equity(state)
     dd_breached, current_dd, dd_floor = check_trailing_dd(equity_df, state["eod_equity"], end)

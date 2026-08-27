@@ -47,16 +47,16 @@ INSTRUMENT_CONFIG = {
 }
 
 
-@st.cache_data(ttl="6h", show_spinner="Lade M15/M5-Historie (Dukascopy)...")
-def load_data(instrument: str):
+@st.cache_data(ttl="1h", show_spinner="Berechne Trades...", max_entries=3)
+def run_backtest(instrument: str):
+    """Fetches, builds the execution frame, and simulates - all internal to
+    one cached call. Returns only (index, trades), NOT the full M5 execution
+    frame: the page never plots raw candles, only equity curves derived from
+    `trades`, so keeping the whole frame (ATR/ADX/RVOL/fractal columns across
+    ~650k M5 bars per instrument) cached would multiply memory for nothing -
+    a real contributor to Streamlit Cloud's recurring resource-limit hits."""
     m15 = fetch_m15(instrument, START, END)
     m5 = fetch_m5(instrument, START, END)
-    return m15, m5
-
-
-@st.cache_data(ttl="6h", show_spinner="Berechne Trades...")
-def run_backtest(instrument: str):
-    m15, m5 = load_data(instrument)
     frame = build_frame(m15, m5, range_bars=1)
     all_entries = find_entries(frame, "stop_breakout")
 
@@ -69,19 +69,17 @@ def run_backtest(instrument: str):
         entries = filters.filter_by_category(long_entries, bias_vals, (0.0,))
 
     trades = simulate(frame, entries, **EXIT_CFG)
-    return frame, trades
+    return frame.index, trades
 
 
-@st.cache_data(ttl="6h", show_spinner="Baue Portfolio...")
+@st.cache_data(ttl="1h", show_spinner="Baue Portfolio...")
 def build_portfolio():
     daily = {}
-    frames = {}
     for instrument in INSTRUMENT_CONFIG:
-        frame, trades = run_backtest(instrument)
-        d = trades_to_daily_returns(trades, frame.index)
+        index, trades = run_backtest(instrument)
+        d = trades_to_daily_returns(trades, index)
         d.index = d.index.tz_localize(None)
         daily[instrument] = d
-        frames[instrument] = frame
 
     common = daily["SP500"].index
     for s in daily.values():
@@ -202,10 +200,10 @@ def _render_portfolio():
 
 
 def _render_instrument(instrument: str):
-    frame, trades = run_backtest(instrument)
+    index, trades = run_backtest(instrument)
     daily = df[instrument]
-    oos_trades = trades[trades["entry_time"] >= pd.Timestamp(SPLIT_DATE, tz=frame.index.tz)]
-    oos_index = frame.index[frame.index >= pd.Timestamp(SPLIT_DATE, tz=frame.index.tz)]
+    oos_trades = trades[trades["entry_time"] >= pd.Timestamp(SPLIT_DATE, tz=index.tz)]
+    oos_index = index[index >= pd.Timestamp(SPLIT_DATE, tz=index.tz)]
     oos_summary = summarize(oos_trades, oos_index)
 
     st.markdown(f"#### Config: {INSTRUMENT_CONFIG[instrument]}")
@@ -219,7 +217,7 @@ def _render_instrument(instrument: str):
     st.markdown("##### Jaehrliche OOS-Aufschluesselung")
     rows = []
     for year, group in oos_trades.groupby(oos_trades["entry_time"].dt.year):
-        year_index = frame.index[frame.index.year == year]
+        year_index = index[index.year == year]
         s = summarize(group, year_index)
         rows.append({"Jahr": year, "n": s["n_trades"], "Sharpe": fmt_num(s["sharpe"]), "PF": fmt_num(s["profit_factor"]), "Win-Rate": f"{s['win_rate']:.1%}", "CAGR": fmt_pct(s["cagr"])})
     st.dataframe(pd.DataFrame(rows), hide_index=True)

@@ -35,8 +35,13 @@ st.set_page_config(
 LONG_START, LONG_END = "2016-07-28", "2026-07-28"
 
 
-@st.cache_data(ttl="6h", show_spinner="Lade Dukascopy-Historie (M15)...")
+@st.cache_data(ttl="10m", show_spinner="Lade Dukascopy-Historie (M15)...")
 def load_raw(pair: str) -> pd.DataFrame:
+    # Short TTL on purpose (unlike the 6h caches below): every consumer
+    # reduces this raw 10-year M15 frame (x6 pairs) to a small derived result
+    # (daily features / a backtest summary row) that stays cached at 6h on
+    # its own - keeping all 6 raw frames resident for 6h too just duplicates
+    # memory once consumed (a Streamlit Cloud resource-limit contributor).
     return fetch_pair_history(pair, LONG_START, LONG_END)
 
 

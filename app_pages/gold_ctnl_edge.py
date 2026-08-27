@@ -355,10 +355,6 @@ caveat_box(
     kind="danger",
 )
 
-h4, h1, m15, m5 = load_data()
-cont_signaled, cont_trades = run_continuation_backtest(h4, h1, m5, m15)
-rev_signaled, rev_trades_single, rev_trades_concurrent = run_reversal_backtest(h4, h1, m15)
-
 tab_cont, tab_rev, tab_portfolio, tab_history = st.tabs([
     ":material/trending_up: Continuation",
     ":material/sync_alt: Reversal-Kaskade",
@@ -368,6 +364,9 @@ tab_cont, tab_rev, tab_portfolio, tab_history = st.tabs([
 
 # -------------------------------------------------------------- Tab 1: Continuation
 def _render_tab_tab_cont():
+    h4, h1, m15, m5 = load_data()
+    cont_signaled, cont_trades = run_continuation_backtest(h4, h1, m5, m15)
+
     with st.expander(":material/menu_book: Strategie-Regeln", expanded=False):
         st.markdown(
             """
@@ -426,6 +425,9 @@ def _render_tab_tab_cont():
 
 # -------------------------------------------------------------- Tab 2: Reversal-Kaskade
 def _render_tab_tab_rev():
+    h4, h1, m15, m5 = load_data()
+    rev_signaled, rev_trades_single, rev_trades_concurrent = run_reversal_backtest(h4, h1, m15)
+
     with st.expander(":material/menu_book: Strategie-Regeln", expanded=False):
         st.markdown(
             """
@@ -510,6 +512,10 @@ def _render_tab_tab_rev():
 
 # -------------------------------------------------------------- Tab 3: Portfolio & Risk
 def _render_tab_tab_portfolio():
+    h4, h1, m15, m5 = load_data()
+    _, cont_trades = run_continuation_backtest(h4, h1, m5, m15)
+    rev_signaled, _, rev_trades_concurrent = run_reversal_backtest(h4, h1, m15)
+
     cont_oos_trades_only = cont_trades[cont_trades["entry_time"] >= SPLIT]
     rev_conc_oos_only = rev_trades_concurrent[rev_trades_concurrent["entry_time"] >= SPLIT]
     rev_oos_sig_index = rev_signaled[rev_signaled.index >= SPLIT].index

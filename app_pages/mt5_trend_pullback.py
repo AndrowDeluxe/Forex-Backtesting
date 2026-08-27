@@ -644,17 +644,6 @@ with st.expander(":material/menu_book: Strategie-Regeln (1:1 aus dem Live-Bot)",
         unsafe_allow_html=True,
     )
 
-data = load_markets()
-extra_data = load_extra_markets()
-gold_daily_close = load_gold_daily_close()
-standard_result = run_standard_recommendation(data, extra_data, gold_daily_close)
-baseline = run_baseline(data)
-adx_result = run_adx_sweep(data)
-spread_result = run_spread_sensitivity(data)
-account_result = run_account_sim(data)
-tpsl_result = run_tp_sl_be_sweep(data)
-risk_result = run_risk_management(data, extra_data, gold_daily_close)
-
 tab_standard, tab_chart, tab_overview, tab_adx, tab_spread, tab_account, tab_tpsl, tab_risk, tab_mc = st.tabs([
     ":material/star: Empfehlung (Standard)",
     ":material/candlestick_chart: Chart & Entries",
@@ -669,6 +658,11 @@ tab_standard, tab_chart, tab_overview, tab_adx, tab_spread, tab_account, tab_tps
 
 # ------------------------------------------------------------------ Tab: Standard recommendation
 def _render_tab_tab_standard():
+    data = load_markets()
+    extra_data = load_extra_markets()
+    gold_daily_close = load_gold_daily_close()
+    standard_result = run_standard_recommendation(data, extra_data, gold_daily_close)
+
     caveat_box(
         "<b>Standard-Konfiguration:</b> Gold, Silber (gefiltert -- nur Trades, bei denen Golds eigener "
         "5-Tage-Trend positiv war), CHFJPY, USDJPY, <b>USDCAD (testweise, 2026-08-14 hinzugefuegt)</b>. "
@@ -750,6 +744,11 @@ def _render_tab_tab_standard():
 
 # ------------------------------------------------------------------ Tab: Chart & Entries
 def _render_tab_tab_chart():
+    data = load_markets()
+    extra_data = load_extra_markets()
+    gold_daily_close = load_gold_daily_close()
+    standard_result = run_standard_recommendation(data, extra_data, gold_daily_close)
+
     caveat_box(
         "Interaktiver Kerzenchart (TradingView Lightweight Charts) mit den tatsaechlichen Backtest-"
         "Entries/Exits der Standard-Konfiguration ueberlagert -- blaue Pfeile nach oben = Long-Entry, "
@@ -857,6 +856,9 @@ def _render_tab_tab_chart():
 
 # ------------------------------------------------------------------ Tab: Baseline
 def _render_tab_tab_overview():
+    data = load_markets()
+    baseline = run_baseline(data)
+
     cf, cis, coos = baseline["combined_full"], baseline["combined_is"], baseline["combined_oos"]
     tile_row([
         ("N TRADES (FULL)", str(cf["n_trades"])),
@@ -926,6 +928,10 @@ def _render_tab_tab_overview():
 
 # ------------------------------------------------------------------ Tab: ADX filter
 def _render_tab_tab_adx():
+    data = load_markets()
+    baseline = run_baseline(data)
+    adx_result = run_adx_sweep(data)
+
     caveat_box(
         f"Disziplin wie bei den anderen Research-Skripten in diesem Repo: EIN adx_min wird "
         f"<b>ausschliesslich auf der In-Sample-Periode (2016-2022)</b> gewaehlt (gepoolt ueber alle "
@@ -1007,6 +1013,9 @@ def _render_tab_tab_adx():
 
 # ------------------------------------------------------------------ Tab: Spread sensitivity
 def _render_tab_tab_spread():
+    data = load_markets()
+    spread_result = run_spread_sensitivity(data)
+
     caveat_box(
         "Dieses Repo hat keine echte historische Geld-/Brief-Spread-Historie -- alle bisherigen "
         "Ergebnisse nutzen eine <b>angenommene</b> Round-Trip-Spanne (10bp Metalle / 3bp CHFJPY / 1.5bp "
@@ -1059,6 +1068,9 @@ def _render_tab_tab_spread():
 
 # ------------------------------------------------------------------ Tab: Account simulation
 def _render_tab_tab_account():
+    data = load_markets()
+    account_result = run_account_sim(data)
+
     caveat_box(
         f"<b>Backtest-Parameter dieser Simulation:</b> Startkapital {STARTING_EQUITY:,.0f} USD &middot; "
         f"Risiko/Trade {RISK_PCT:.1%} des aktuellen Kontostands (fixed-fractional, compounding, auf realisiertem "
@@ -1133,6 +1145,9 @@ def _render_tab_tab_account():
 
 # ------------------------------------------------------------------ Tab: TP/SL & breakeven
 def _render_tab_tab_tpsl():
+    data = load_markets()
+    tpsl_result = run_tp_sl_be_sweep(data)
+
     caveat_box(
         f"Disziplin wie ueberall in dieser Serie: ADX&gt;={CHOSEN_ADX_MIN:.0f}-Filter bleibt FEST (nicht neu "
         f"gesweept -- 3 gleichzeitige freie Parameter auf ~180 gepoolten IS-Trades wuerden die Stichprobe je "
@@ -1243,6 +1258,11 @@ def _render_tab_tab_tpsl():
 
 # ------------------------------------------------------------------ Tab: Risk management
 def _render_tab_tab_risk():
+    data = load_markets()
+    extra_data = load_extra_markets()
+    gold_daily_close = load_gold_daily_close()
+    risk_result = run_risk_management(data, extra_data, gold_daily_close)
+
     caveat_box(
         "<b>Zwei Fremdkapital-Profile + Eigenkapital, kalibriert per taeglichem Mark-to-Market</b> "
         "(Standard-Portfolio: Gold/Silber-aligned/CHFJPY/USDJPY/USDCAD, Bot-Default-Parameter, kein "

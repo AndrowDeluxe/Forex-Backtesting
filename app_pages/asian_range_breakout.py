@@ -61,8 +61,12 @@ TTP_MAX_TOTAL_DD = 0.07
 RECOMMENDED_RISK_PCT = 0.01
 
 
-@st.cache_data(ttl="6h", show_spinner="Lade Gold M15-Daten (Dukascopy, ~10 Jahre)...")
+@st.cache_data(ttl="10m", show_spinner="Lade Gold M15-Daten (Dukascopy, ~10 Jahre)...")
 def load_data() -> pd.DataFrame:
+    # Short TTL on purpose (unlike the 6h caches below, which hold small
+    # derived series): backed by a local disk cache underneath, so a cache
+    # miss here is a fast re-read, not a slow re-fetch - see knowledge/ +
+    # app_pages/ny_open_orb_portfolio.py for the analogous fix.
     return fetch_gold_m15(START, END)
 
 

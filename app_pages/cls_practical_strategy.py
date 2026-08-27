@@ -114,8 +114,15 @@ def tile_row(tiles: list[tuple[str, str]]) -> None:
 
 
 # ------------------------------------------------------------------ Daten/Backtest
-@st.cache_data(ttl="6h", show_spinner="Lade EUR/USD + Majors + Zinsen...")
+@st.cache_data(ttl="10m", show_spinner="Lade EUR/USD + Majors + Zinsen...")
 def load_data():
+    # Short TTL on purpose (unlike the 6h caches below): this returns the wide
+    # raw multi-instrument M5/M15 frame, which every consumer immediately
+    # reduces to a small derived result (trades/a risk multiplier/a metrics
+    # dict) that stays cached at 6h on its own - keeping the raw frame itself
+    # resident for 6h too just duplicates memory for nothing once consumed
+    # (a Streamlit Cloud resource-limit contributor, see knowledge/ + the
+    # analogous fix in app_pages/ny_open_orb_portfolio.py).
     eurusd_m5 = fetch_eurusd_entry_tf_berlin("M5", START, END)
     other_majors_m15 = {p: fetch_major_m15_berlin(p, START, END) for p in OTHER_MAJORS}
     bund_m5 = fetch_rate_instrument_m5_berlin("BUND", START, END)

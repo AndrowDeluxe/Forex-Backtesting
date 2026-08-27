@@ -108,6 +108,32 @@ def run_for(name: str, split: str, params: dict):
     )
 
 
+def metrics_for(name: str, split: str, params: dict) -> dict:
+    """Same computation as run_for(), but NOT cached as a wide (signals,
+    trades, equity, daily) tuple - the optimization tab's comparison loop
+    below only needs `metrics`, fanned out across 3 assets x 2 param sets x
+    2 splits (12 combos). Caching all 12 full tuples (as run_cached does for
+    _render_tab_backtest's single-combo view, where it's genuinely needed for
+    charting) would hold a dozen large frames in memory for nothing - a real
+    Streamlit Cloud resource-limit contributor. load_asset_data() underneath
+    stays cached, so this only re-runs the pipeline itself, not the fetch."""
+    p = full_params(params)
+    trigger_rule = p["trigger_rule"]
+    h4, d1, w1 = load_asset_data(name)
+    trigger_df = h4 if trigger_rule == "4h" else resample_ohlc(h4, trigger_rule)
+    trigger_df = split_h4(trigger_df, split)
+    _, _, _, metrics, _, _ = run_pipeline(
+        trigger_df, daily=d1, weekly=w1, ema_length=p["ema_length"], ema_smooth=p["ema_smooth"], rr=p["rr"],
+        sl_buffer_atr=p["sl_buffer_atr"], min_rejection_atr=p["min_rejection_atr"],
+        require_htf_slope=p["require_htf_slope"], invalidation_confirm_bars=p["invalidation_confirm_bars"],
+        sl_mode=p["sl_mode"], atr_multiplier=p["atr_multiplier"],
+        exit_on_htf_bias_flip=p["exit_on_htf_bias_flip"], htf_bias_col=p["htf_bias_col"],
+        use_trailing_stop=p["use_trailing_stop"], breakeven_trigger_r=p["breakeven_trigger_r"],
+        trail_atr_mult=p["trail_atr_mult"], adx_col=p["adx_col"], adx_threshold=p["adx_threshold"],
+    )
+    return metrics
+
+
 def metric_row(metrics: dict) -> None:
     if metrics.get("Anzahl Trades", 0) == 0:
         st.info("Keine Trades in diesem Zeitraum.")
@@ -328,7 +354,7 @@ def _render_tab_optimization():
     for a in ASSETS:
         for label, p in (("Baseline", BASELINE_PARAMS), ("Optimiert (IS)", optimized_params)):
             for split_key, split_lbl in (("is", "In-Sample"), ("oos", "Out-of-Sample")):
-                _, _, _, m, _, _, _ = run_for(a, split_key, p)
+                m = metrics_for(a, split_key, p)
                 rows.append({
                     "Asset": a, "Parameter": label, "Zeitraum": split_lbl,
                     "Trades": m.get("Anzahl Trades"), "Trefferquote %": m.get("Trefferquote %"),

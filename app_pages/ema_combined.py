@@ -64,12 +64,28 @@ def run_cached(key: str, split: str, config_name: str):
     return signals, trades, equity, metrics, daily, h4_split.index.min(), h4_split.index.max()
 
 
+def _metrics_only(key: str, split: str, config_name: str) -> dict:
+    """Same computation as run_cached(), but deliberately NOT cached as a
+    wide (signals, trades, equity, daily) tuple - comparison_table() below
+    only ever needs the small `metrics` dict, and fans this out across every
+    CONFIGS x INSTRUMENTS combo (up to ~44). Caching the full tuple per combo
+    (as run_cached does for the single-instrument tabs, where it's genuinely
+    needed for charting) would hold dozens of large frames in memory at once
+    for no benefit - a real Streamlit Cloud resource-limit contributor.
+    load_instrument_data() underneath is still cached, so this only re-runs
+    the (fast, H4-bar-count) pipeline itself, not the Dukascopy fetch."""
+    h4, daily, weekly = load_instrument_data(key)
+    h4_split = split_h4(h4, split)
+    _, _, _, metrics = run_pipeline(h4_split, daily, weekly, **CONFIGS[config_name])
+    return metrics
+
+
 @st.cache_data(ttl="1h", show_spinner="Berechne Vergleichstabelle über alle Instrumente...")
 def comparison_table(split: str) -> pd.DataFrame:
     rows = []
     for config_name in CONFIGS:
         for key in INSTRUMENTS:
-            _, _, _, m, _, _, _ = run_cached(key, split, config_name)
+            m = _metrics_only(key, split, config_name)
             rows.append(
                 {
                     "Konfiguration": config_name,

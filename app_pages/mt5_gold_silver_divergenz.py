@@ -395,15 +395,6 @@ with st.expander(":material/menu_book: Strategie-Regeln (1:1 aus dem Live-Bot)",
         unsafe_allow_html=True,
     )
 
-data = load_markets()
-baseline = run_baseline(data)
-optimized = run_optimized(data)
-walkforward = run_walkforward(baseline["signaled"], baseline["trades"])
-mc_result = run_monte_carlo_tab(baseline["trades"], baseline["signaled"].index, baseline["trades_oos"], baseline["index_oos"], variant="baseline")
-mc_result_opt = run_monte_carlo_tab(optimized["trades"], optimized["signaled"].index, optimized["trades_oos"], optimized["index_oos"], variant="optimized")
-oos_signaled = baseline["signaled"][baseline["signaled"].index >= SPLIT]
-cost_result = run_cost_sensitivity(oos_signaled)
-
 tab_empfehlung, tab_overview, tab_chart, tab_wf, tab_mc, tab_cost = st.tabs([
     ":material/star: Empfehlung (Optimiert)",
     ":material/show_chart: Baseline (Bot-Original)",
@@ -415,6 +406,13 @@ tab_empfehlung, tab_overview, tab_chart, tab_wf, tab_mc, tab_cost = st.tabs([
 
 # ------------------------------------------------------------------ Tab: Empfehlung (optimiert)
 def _render_tab_empfehlung():
+    data = load_markets()
+    baseline = run_baseline(data)
+    optimized = run_optimized(data)
+    walkforward = run_walkforward(baseline["signaled"], baseline["trades"])
+    mc_result = run_monte_carlo_tab(baseline["trades"], baseline["signaled"].index, baseline["trades_oos"], baseline["index_oos"], variant="baseline")
+    mc_result_opt = run_monte_carlo_tab(optimized["trades"], optimized["signaled"].index, optimized["trades_oos"], optimized["index_oos"], variant="optimized")
+
     caveat_box(
         f"<b>Empfohlene Konfiguration</b> (auf In-Sample 2016-2022 gewaehlt, unveraendert auf Out-of-Sample "
         f"2023-2026 geprueft, komplette Phase-6-Robustheitspruefung wiederholt -- "
@@ -495,6 +493,9 @@ def _render_tab_empfehlung():
 
 # ------------------------------------------------------------------ Tab: Overview
 def _render_tab_overview():
+    data = load_markets()
+    baseline = run_baseline(data)
+
     cf, cis, coos = baseline["full"], baseline["is"], baseline["oos"]
     tile_row([
         ("N TRADES (FULL)", str(cf["n_trades"])),
@@ -554,6 +555,9 @@ def _render_tab_overview():
 
 # ------------------------------------------------------------------ Tab: Chart & Entries
 def _render_tab_chart():
+    data = load_markets()
+    baseline = run_baseline(data)
+
     caveat_box(
         "Interaktiver Kerzenchart (TradingView Lightweight Charts) mit den tatsaechlichen Backtest-"
         "Entries/Exits ueberlagert -- blaue Pfeile nach oben = Long-Entry, Pfeile nach unten am Exit "
@@ -653,6 +657,10 @@ def _render_tab_chart():
 
 # ------------------------------------------------------------------ Tab: Walk-Forward
 def _render_tab_wf():
+    data = load_markets()
+    baseline = run_baseline(data)
+    walkforward = run_walkforward(baseline["signaled"], baseline["trades"])
+
     caveat_box(
         "3 rollierende Sub-Perioden statt eines einzelnen IS/OOS-Splits -- zeigt, ob ein Fund an einem "
         "einzelnen Zeitpunkt haengt oder sich ueber mehrere unabhaengige Fenster durchtraegt "
@@ -693,6 +701,10 @@ def _render_tab_wf():
 
 # ------------------------------------------------------------------ Tab: Monte Carlo
 def _render_tab_mc():
+    data = load_markets()
+    baseline = run_baseline(data)
+    mc_result = run_monte_carlo_tab(baseline["trades"], baseline["signaled"].index, baseline["trades_oos"], baseline["index_oos"], variant="baseline")
+
     caveat_box(
         "Zirkulaerer Block-Bootstrap (<code>ou_paper_backtest/monte_carlo.py</code>, Blockgroesse 20 Tage, "
         f"2000 Simulationen), {RISK_PCT:.0%} Risiko/Trade -- config.py-Default. MAX_OPEN_POSITIONS=1, "
@@ -737,6 +749,11 @@ def _render_tab_mc():
 
 # ------------------------------------------------------------------ Tab: Cost sensitivity
 def _render_tab_cost():
+    data = load_markets()
+    baseline = run_baseline(data)
+    oos_signaled = baseline["signaled"][baseline["signaled"].index >= SPLIT]
+    cost_result = run_cost_sensitivity(oos_signaled)
+
     caveat_box(
         "Dieses Repo hat keine echte historische Geld-/Brief-Spread-Historie -- alle bisherigen Ergebnisse "
         f"nutzen eine <b>angenommene</b> Round-Trip-Spanne ({SPREAD_BPS:.1f}bp, \"Realistic\"-Gold-Tier). "

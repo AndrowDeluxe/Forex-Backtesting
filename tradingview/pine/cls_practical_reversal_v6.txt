@@ -1,0 +1,273 @@
+//@version=6
+// CLS Practical - Reversal-Only (M5), TradingView Strategy Tester port.
+// Pine v6 version of cls_practical_reversal.pine (v5).
+//
+// HONEST CAVEAT ABOUT THIS FILE SPECIFICALLY: I don't have reliable,
+// verified knowledge of what actually changed syntactically between Pine
+// v5 and v6 - I have no Pine compiler available in this environment for
+// either version, and v6 is recent enough that I'm not confident I know
+// its exact breaking changes vs. v5. What I changed here is ONLY the
+// version pragma (//@version=6) - everything else is IDENTICAL to the v5
+// file. This is a best-effort "try v6 as-is" starting point, not a
+// verified v6 port - expect to hit v6-specific compiler errors (renamed
+// functions, stricter typing, etc.) that I can't predict or pre-fix from
+// here. If v5 already compiled cleanly for you, that file is the safer bet;
+// use this one only if you specifically need v6.
+//
+// Port of cls_practical/engine.py's Reversal-Only variant (this repo's
+// research pipeline, 2026-08-11/12) so entries can be seen and replayed
+// directly on a real, interactive TradingView chart instead of only in
+// static matplotlib PNGs.
+//
+// Deliberately Reversal-only, not the full Continuation+Reversal pipeline -
+// this repo's own backtest found Reversal has ~2x the win-rate (59.6% vs
+// 24-38% depending on config) and is the currently recommended variant.
+//
+// KNOWN GAPS vs. the Python engine (disclosed, not silently glossed over):
+// 1. Rates-Ampel: Python uses BUND/USTBOND CFD price (Dukascopy), a
+//    disclosed LONG-END duration proxy. Here it's re-expressed directly as
+//    a yield-based score (cleaner in Pine - no price-inversion needed) via
+//    the deTenYSymbol/usTenYSymbol inputs below. VERIFY these tickers
+//    resolve on your TradingView plan before trusting any signal from them
+//    - "TVC:DE10" and "TVC:US10Y" are common community picks, not a
+//    guaranteed match to any specific data vendor.
+// 2. Cross-pair confirmation: Python compares EUR/USD's own 06:00-09:00
+//    move against the AVERAGE of the other 5 majors' same-window move
+//    (strategy.cls_advanced.compute_cross_confirmation). Reproducing that
+//    exact session-window aggregation for 5 other symbols inside Pine's
+//    request.security model is the riskiest part of this port - implemented
+//    below via f_sessionMove(), but treat it as unverified until you've
+//    watched a few real days confirm sensible values in the Data Window.
+// 3. Trend filter: SMA(100) on EUR/USD's own DAILY close, prior-day value
+//    only (no lookahead) - straightforward, high-confidence port.
+// 4. Position sizing: risk% x equity / SL-distance, EUR notional. Uses
+//    strategy.equity, not a fixed 100k - drop initial_capital below if you
+//    want it pinned at exactly 100,000 like the Python backtest.
+
+strategy(
+     "CLS Practical - Reversal Only (M5, v6)", overlay = true, initial_capital = 100000,
+     currency = currency.USD, default_qty_type = strategy.cash, default_qty_value = 100000,
+     commission_type = strategy.commission.percent, commission_value = 0.015,
+     max_bars_back = 5000)
+
+// ============================== Inputs ==============================
+tz              = "Europe/Berlin"
+smaLen          = input.int(100, "Trend-SMA (Tages-Close)", group = "Trend-Filter")
+adrLen          = input.int(14, "ADR/ATR-Periode", group = "SL/TP")
+adrMult         = input.float(0.35, "TP = adrMult x ADR(14)", step = 0.05, group = "SL/TP")
+minSlAtrMult    = input.float(1.0, "Min. SL = minSlAtrMult x ATR(M5)", step = 0.25, group = "SL/TP")
+entryCutoffHour = input.int(12, "Entry-Cutoff Stunde (Berlin)", group = "Timing")
+riskPct         = input.float(0.5, "Risiko % pro Trade", step = 0.1, group = "Sizing") / 100
+useRatesFilter  = input.bool(true, "Rates-Ampel-Filter aktiv", group = "Rates (Long-End-Proxy, unverifiziert)")
+deTenYSymbol    = input.symbol("TVC:DE10", "Deutschland-10J-Rendite-Symbol", group = "Rates (Long-End-Proxy, unverifiziert)")
+usTenYSymbol    = input.symbol("TVC:US10Y", "US-10J-Rendite-Symbol", group = "Rates (Long-End-Proxy, unverifiziert)")
+ratesZWindow    = input.int(60, "Rates Z-Score-Fenster (Tage)", group = "Rates (Long-End-Proxy, unverifiziert)")
+useCrossFilter  = input.bool(true, "Cross-Pair-Filter aktiv", group = "Crosses (unverifiziert)")
+
+// ============================== Session windows ==============================
+h = hour(time, tz)
+m = minute(time, tz)
+minutesOfDay = h * 60 + m
+
+asiaEndMin   = 360   // 06:00
+settleEndMin = 540   // 09:00
+testHourMin  = 555   // 09:15
+entryHourMin = 570   // 09:30
+cutoffMin    = entryCutoffHour * 60
+
+inAsia   = minutesOfDay < asiaEndMin
+inSettle = minutesOfDay >= asiaEndMin and minutesOfDay < settleEndMin
+isTestBar   = minutesOfDay >= testHourMin and minutesOfDay < entryHourMin
+afterEntryHour = minutesOfDay >= entryHourMin
+beforeCutoff   = minutesOfDay < cutoffMin
+
+dayNum = dayofmonth(time, tz)
+newDay = ta.change(dayNum) != 0
+
+// ============================== Daily Asia range + Settle sweep ==============================
+var float asiaHigh = na
+var float asiaLow = na
+var float settleHigh = na
+var float settleLow = na
+var int direction = 0          // +1 = broke up in Settle window, -1 = broke down, 0 = none/both
+var bool dayResolved = false   // true once direction is locked in for the day
+var bool holds = bool(na)      // 09:15 acceptance test result
+var bool testDone = false
+
+if newDay
+    asiaHigh := na
+    asiaLow := na
+    settleHigh := na
+    settleLow := na
+    direction := 0
+    dayResolved := false
+    holds := bool(na)
+    testDone := false
+
+if inAsia
+    asiaHigh := na(asiaHigh) ? high : math.max(asiaHigh, high)
+    asiaLow := na(asiaLow) ? low : math.min(asiaLow, low)
+
+if inSettle and not na(asiaHigh) and not na(asiaLow)
+    settleHigh := na(settleHigh) ? high : math.max(settleHigh, high)
+    settleLow := na(settleLow) ? low : math.min(settleLow, low)
+    brokeUp = settleHigh > asiaHigh
+    brokeDown = settleLow < asiaLow
+    direction := brokeUp and not brokeDown ? 1 : brokeDown and not brokeUp ? -1 :
+                 brokeUp and brokeDown ? (close > (asiaHigh + asiaLow) / 2 ? 1 : -1) : 0
+
+// 09:15 acceptance test (single bar in [09:15,09:30)) - does the break still hold?
+if isTestBar and not testDone and direction != 0
+    holds := direction == 1 ? close > asiaHigh : close < asiaLow
+    testDone := true
+    dayResolved := true
+
+// ============================== Trend filter (daily SMA, no lookahead) ==============================
+dailyClose = request.security(syminfo.tickerid, "D", close[1], lookahead = barmerge.lookahead_off)
+dailySma   = request.security(syminfo.tickerid, "D", ta.sma(close, smaLen)[1], lookahead = barmerge.lookahead_off)
+trendUp = dailyClose > dailySma
+trendVal = trendUp ? 1 : -1
+
+// ============================== Rates-Ampel (long-end yield proxy) ==============================
+// f_sessionMove: this symbol's own 06:00-09:00 Berlin open->close return,
+// evaluated on ITS OWN 5m bars via a nested security call - the Pine
+// analogue of cls_practical/rates.py's compute_rate_support_score(). Not
+// yet verified against the Python output; sanity-check via the Data Window
+// before trusting it.
+f_sessionReturn() =>
+    inS = (minute(time, tz) + 60 * hour(time, tz)) >= asiaEndMin and (minute(time, tz) + 60 * hour(time, tz)) < settleEndMin
+    var float o = na
+    var float c = na
+    if inS and not inS[1]
+        o := open
+    if inS
+        c := close
+    inS ? (na(o) ? na : c / o - 1) : na
+
+f_sessionMove(sym) =>
+    request.security(sym, "5", f_sessionReturn(), lookahead = barmerge.lookahead_off)
+
+deMove = f_sessionMove(deTenYSymbol)
+usMove = f_sessionMove(usTenYSymbol)
+// sign convention (see rates.py): EUR yield up (deMove>0) or USD yield down
+// (usMove<0) both support EUR/USD long -> score = deMove - usMove
+rateScore = deMove - usMove
+rateScoreDaily = request.security(syminfo.tickerid, "D", rateScore, lookahead = barmerge.lookahead_off)
+rateZ = (rateScoreDaily - ta.sma(rateScoreDaily, ratesZWindow)) / ta.stdev(rateScoreDaily, ratesZWindow)
+
+ratesFlag() =>
+    if not useRatesFilter
+        1  // filter disabled -> always pass
+    else if na(rateZ)
+        0  // "gelb" / no signal
+    else if math.sign(rateZ) == direction
+        2  // "grün"
+    else
+        -2 // "rot"
+
+// ============================== Cross-pair confirmation ==============================
+// Broad-dollar move check (strategy.cls_advanced.compute_cross_confirmation
+// port): is this pair's Settle-window move part of a shared move across the
+// other 5 majors, or isolated? USD-quote pairs (EURUSD/GBPUSD/AUDUSD) flip
+// sign so everything is on one "USD strength" scale, same as the Python.
+gbpMove = f_sessionMove("FX:GBPUSD") * -1
+jpyMove = f_sessionMove("FX:USDJPY")
+chfMove = f_sessionMove("FX:USDCHF")
+audMove = f_sessionMove("FX:AUDUSD") * -1
+cadMove = f_sessionMove("FX:USDCAD")
+ownUsdMove = f_sessionMove(syminfo.tickerid) * -1  // EURUSD is USD-quote too
+
+avgOther = (gbpMove + jpyMove + chfMove + audMove + cadMove) / 5
+crossConfirmed = useCrossFilter ? (math.sign(ownUsdMove) == math.sign(avgOther) and math.abs(ownUsdMove) > 1e-9) : true
+
+// ============================== Reversal setup decision ==============================
+setupReversal = dayResolved and testDone and direction != 0 and not holds and
+     trendVal == -direction and ratesFlag() == -2 and not crossConfirmed
+setupDirection = setupReversal ? -direction : 0
+
+// ============================== M5 ATR / ADR ==============================
+atr5 = ta.atr(adrLen)
+dailyHigh = request.security(syminfo.tickerid, "D", high[1], lookahead = barmerge.lookahead_off)
+dailyLow  = request.security(syminfo.tickerid, "D", low[1], lookahead = barmerge.lookahead_off)
+adr = request.security(syminfo.tickerid, "D", ta.sma(high[1] - low[1], adrLen), lookahead = barmerge.lookahead_off)
+
+// ============================== Reversal state machine ==============================
+// Stage 1: Rückkehr in die Range (close back BETWEEN both boundaries).
+// Stage 2: Structure Shift = first confirmed 3-bar fractal against the
+//   original break direction (ta.pivothigh/pivotlow(1,1) - same 3-bar,
+//   1-bar-confirmation-lag definition as cls_practical/engine.py's
+//   _first_fractal()).
+// Stage 3: Retest + entry = a resting stop order breaking that fractal
+//   further in the reversal direction.
+var bool armed = false          // setupReversal locked in for today, waiting to trade
+var bool returned = false       // stage 1 done
+var float structureLevel = na   // stage 2 fractal level
+var float sweepLevel = na       // original Settle-window extreme, for SL
+var int tradeDir = 0
+
+if newDay
+    armed := false
+    returned := false
+    structureLevel := na
+    sweepLevel := na
+    tradeDir := 0
+
+if setupReversal and not armed and afterEntryHour and beforeCutoff
+    armed := true
+    tradeDir := setupDirection
+    sweepLevel := direction == 1 ? settleHigh : settleLow
+
+if armed and not returned and beforeCutoff
+    insideRange = close > asiaLow and close < asiaHigh
+    blownThrough = direction == 1 ? close < asiaLow : close > asiaHigh
+    if insideRange
+        returned := true
+    else if blownThrough
+        armed := false  // ran straight through the range - not a clean return, invalidate
+
+pivH = ta.pivothigh(1, 1)
+pivL = ta.pivotlow(1, 1)
+if armed and returned and na(structureLevel) and beforeCutoff
+    if direction == 1 and not na(pivL)
+        structureLevel := pivL
+    else if direction == -1 and not na(pivH)
+        structureLevel := pivH
+
+longCondition  = armed and returned and not na(structureLevel) and tradeDir == 1 and low <= structureLevel and beforeCutoff
+shortCondition = armed and returned and not na(structureLevel) and tradeDir == -1 and high >= structureLevel and beforeCutoff
+
+// ============================== SL/TP + sizing ==============================
+float slDist = na
+if longCondition or shortCondition
+    slDist := math.abs(structureLevel - sweepLevel)
+minSlDist = minSlAtrMult * atr5
+slOk = not na(slDist) and slDist > 0 and not na(minSlDist) and slDist >= minSlDist
+
+tpDist = adrMult * adr
+riskAmount = strategy.equity * riskPct
+qty = slOk and not na(tpDist) and tpDist > 0 ? riskAmount / slDist : na
+
+if longCondition and slOk and not na(qty)
+    slPrice = structureLevel - slDist
+    tpPrice = structureLevel + tpDist
+    strategy.entry("Reversal Long", strategy.long, qty = qty)
+    strategy.exit("Exit Long", "Reversal Long", stop = slPrice, limit = tpPrice)
+    armed := false
+
+if shortCondition and slOk and not na(qty)
+    slPrice = structureLevel + slDist
+    tpPrice = structureLevel - tpDist
+    strategy.entry("Reversal Short", strategy.short, qty = qty)
+    strategy.exit("Exit Short", "Reversal Short", stop = slPrice, limit = tpPrice)
+    armed := false
+
+if armed and minutesOfDay >= cutoffMin
+    armed := false  // unfilled by cutoff - invalidated, no trade today
+
+// ============================== Plots (visual check) ==============================
+plot(asiaHigh, "Asia High", color = color.new(color.gray, 30), style = plot.style_circles)
+plot(asiaLow, "Asia Low", color = color.new(color.gray, 30), style = plot.style_circles)
+plot(settleHigh, "Settle High", color = color.new(color.orange, 40), style = plot.style_circles)
+plot(settleLow, "Settle Low", color = color.new(color.orange, 40), style = plot.style_circles)
+plotshape(setupReversal and not setupReversal[1], "Reversal-Setup erkannt", shape.triangledown,
+     location.abovebar, color = color.purple, size = size.tiny)

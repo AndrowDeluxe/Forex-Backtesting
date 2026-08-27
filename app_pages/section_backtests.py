@@ -45,8 +45,8 @@ render_section(
             "tag": "BACKTEST",
         },
         {
-            "page": "app_pages/orb_strategy.py",
-            "title": "ORB Strategie",
+            "page": "app_pages/ny_open_orb_portfolio.py",
+            "title": "NY-Open ORB Portfolio",
             "icon": ":material/bolt:",
             "tag": "BACKTEST",
         },

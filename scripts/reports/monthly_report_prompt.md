@@ -1,0 +1,48 @@
+Consolidated monthly version of the two weekly reports (see
+`scripts/reports/weekly_report_prompt.md` for full context on data sources -
+same rules apply: prefer each bot's own bridge folder/sqlite/MT5 history
+over this repo's diagnostic logs, flag disagreements rather than hiding them,
+summarize trades/winrate/PnL per bot - never list individual trades).
+
+This runs as a follow-on to the weekly report, on the last Sunday before the
+month rolls over. Read all of this month's files in
+`knowledge/reports/weekly/` (the ones falling inside the current calendar
+month) and consolidate - do not redo the underlying data-gathering from
+scratch where the weekly reports already captured it correctly, but DO
+pull a fresh month-to-date PnL figure per bot directly from each bridge's
+sqlite/MT5 history rather than just summing the weekly numbers (rounding/
+week-boundary effects compound - a fresh month-start-to-month-end read is
+more reliable than adding up 4-5 weekly deltas).
+
+## Report 1: Monthly Performance Report
+
+File: `knowledge/reports/monthly/<YYYY-MM>_performance.md`
+
+Same structure as the weekly performance report, but:
+- Trades/winrate/PnL figures are for the full month (fresh pull, not summed
+  weeklies - see above).
+- Add a short trend line per bot: did performance improve, worsen, or stay
+  flat across the weeks of this month (reference the weekly files briefly).
+- Add a portfolio-vs-individual-accounts note if the Portfolio Bot (FK
+  Instant Funding / `fk_instant_funding/paper_bot.py`) has real trade
+  history this month: how did the combined portfolio's risk-adjusted
+  performance (drawdown, consistency) compare to what the same capital
+  would have looked like split across individual per-strategy accounts?
+  (See `portfolio_construction/results/fk_instant_funding_final.json` for
+  the existing backtested comparison as a reference point - CAGR/Sharpe/
+  MaxDD/Calmar for portfolio vs. each leg standalone.)
+
+## Report 2: Monthly Education Checkup
+
+File: `knowledge/reports/monthly/<YYYY-MM>_education.md`
+
+Same structure as the weekly education checkup, but summarizing the whole
+month: main themes across the weeks, the biggest 2-3 learnings of the month,
+net improvements vs. regressions, and what's still open going into next
+month.
+
+## After writing both files
+
+`git add knowledge/reports/ && git commit -m "Monthly report: <YYYY-MM>"`
+(local commit only, can be combined with the weekly commit into one if run
+together - do NOT push).

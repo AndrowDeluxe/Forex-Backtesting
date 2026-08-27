@@ -262,3 +262,90 @@ st.info(
     "dadurch auch geringere absolute Rendite).",
     icon=":material/rocket_launch:",
 )
+
+# ------------------------------------------------------------------ TTP-Handelbarkeits-Fix
+st.divider()
+st.markdown("### :material/report: Datenleck-Fund: nicht alle OU-selektierten Ticker sind auf TTP handelbar (2026-08-11)")
+st.error(
+    "**Der Scanner (`ou_paper_backtest/scanner.py`) selektierte bisher NUR ueber die "
+    "OU-Kriterien (theta/p-value/half-life) -- ohne zu pruefen, ob der Live-Bot "
+    "(`OU-Modell-MT5-Bridge`, Konto 1/2 auf TTPMarkets) ein Signal ueberhaupt ausfuehren "
+    "koennte.** `resolve_symbol()` dort ueberspringt jedes Symbol, das der Broker nicht "
+    "fuehrt -- der Backtest/Scanner hat also mit einem Universum gerechnet, das live gar "
+    "nicht vollstaendig zur Verfuegung steht. Read-only per MT5-API gegen das TTP-Demo-"
+    "Terminal (Konto 2, kein Echtgeld) geprueft:",
+    icon=":material/report:",
+)
+
+ttp_rows = [
+    {"Markt": "S&P 500", "OU-selektiert": 147, "davon TTP-handelbar": 58, "Anteil": "39 %"},
+    {"Markt": "Nasdaq-100", "OU-selektiert": 16, "davon TTP-handelbar": 8, "Anteil": "50 %"},
+    {"Markt": "DAX", "OU-selektiert": 13, "davon TTP-handelbar": 0, "Anteil": "0 %"},
+]
+st.dataframe(pd.DataFrame(ttp_rows), hide_index=True, width="stretch")
+
+st.warning(
+    "**DAX ist auf TTP komplett nicht handelbar** -- 0 von 40 DAX-Tickern existieren "
+    "dort als Symbol. Der einzige Beinahe-Treffer (`MRK.DE` -> `MRK`) ist eine falsche "
+    "Namenskollision: Merck KGaA (DAX) und Merck & Co. (NYSE, dort tatsaechlich als "
+    "`MRK` gefuehrt) sind zwei vollstaendig unabhaengige Unternehmen -- ein "
+    "`symbol_map`-Eintrag dafuer wuerde die FALSCHE Aktie handeln. Die DAX-Zeilen bzw. "
+    "'60/40 S&P+DAX'/'50/50 S&P+DAX'-Profile weiter oben auf dieser Seite bleiben als "
+    "reine Forschungs-/Robustheits-Befunde gueltig, sind aber ueber dieses Konto "
+    "**nicht ausfuehrbar** -- fuer echte DAX-Exponierung braucht es einen anderen Broker.",
+    icon=":material/warning:",
+)
+
+st.markdown(
+    "**Fix umgesetzt:** `scanner.py` filtert seit 2026-08-11 jedes Marktuniversum "
+    "zusaetzlich auf die tatsaechlich handelbaren Ticker (`scripts/"
+    "build_ttp_tradable_universe.py` -> `results/<market>_ttp_tradable.csv`); DAX "
+    "liefert seitdem korrekt 0 Signale statt ungueltiger. Verifikation der gesperrten "
+    "finalen Config auf dem korrigierten Universum, jeweils in-sample (2018-2024) UND "
+    "auf dem echten 2025-heute-Holdout:"
+)
+
+verify_rows = [
+    {"Fenster": "In-Sample 2018-2024", "Universum": "ungefiltert (147)", "Sharpe": 0.86, "Calmar": 0.58, "MDD": "-37,6 %", "Return": "+295 %", "Trades": 1834},
+    {"Fenster": "In-Sample 2018-2024", "Universum": "TTP-handelbar (58)", "Sharpe": 0.58, "Calmar": 0.46, "MDD": "-26,7 %", "Return": "+126 %", "Trades": 1273},
+    {"Fenster": "Holdout 2025-heute", "Universum": "ungefiltert (147)", "Sharpe": 1.54, "Calmar": 2.21, "MDD": "-17,7 %", "Return": "+70 %", "Trades": 525},
+    {"Fenster": "Holdout 2025-heute", "Universum": "TTP-handelbar (58)", "Sharpe": 1.50, "Calmar": 1.69, "MDD": "-17,0 %", "Return": "+50 %", "Trades": 351},
+]
+st.dataframe(pd.DataFrame(verify_rows), hide_index=True, width="stretch")
+
+st.success(
+    "**Einordnung:** In-Sample sieht die Verwaesserung deutlich aus (Sharpe 0.86 -> "
+    "0.58, 60 % weniger Kandidaten). Auf dem echten Holdout, der eigentlich zaehlt, "
+    "haelt sich die Strategie aber fast unveraendert (Sharpe 1.54 -> 1.50, MDD sogar "
+    "minimal besser). Kein Totalschaden -- aber jetzt echte, auf dem tatsaechlich "
+    "handelbaren Universum gemessene Performance statt einer optimistischen Fiktion.",
+    icon=":material/check_circle:",
+)
+
+st.markdown(
+    "**Braucht das kleinere Universum anderes Risk Management?** Naheliegende Vermutung "
+    "-- Gegentest per Sweep (`scripts/research_risk_sweep_ttp_universe.py`) auf den 58 "
+    "TTP-handelbaren S&amp;P-Tickern, dieselben Profile wie in der Funded-Challenge-Tabelle "
+    "oben, jetzt auf dem echten 2025-heute-Holdout mit dem korrigierten Universum:"
+)
+
+ttp_profile_rows = [
+    {"Profil": "Konservativ (0,25%/2,5%)", "Sharpe": 1.48, "Calmar": 1.77, "MDD": "-3,7 %", "Return": "+10,5 %", "Schlechtester Tag": "-1,02 %", "3%-Regel": "eingehalten", "10%-Ziel nach": "578 Tage"},
+    {"Profil": "Mittelweg (0,5%/4%)", "Sharpe": 1.32, "Calmar": 1.88, "MDD": "-5,2 %", "Return": "+16,1 %", "Schlechtester Tag": "-2,03 %", "3%-Regel": "eingehalten", "10%-Ziel nach": "377 Tage"},
+    {"Profil": "Aggressiv (1%/10%)", "Sharpe": 1.53, "Calmar": 1.75, "MDD": "-13,9 %", "Return": "+41,5 %", "Schlechtester Tag": "-3,75 %", "3%-Regel": "VERLETZT", "10%-Ziel nach": "327 Tage (zaehlt nicht)"},
+    {"Profil": "Konto 2 aktuell (TP1,5/0,25%/5%/BE0,35)", "Sharpe": 1.29, "Calmar": 1.41, "MDD": "-5,1 %", "Return": "+11,7 %", "Schlechtester Tag": "-1,31 %", "3%-Regel": "eingehalten", "10%-Ziel nach": "377 Tage"},
+]
+st.dataframe(pd.DataFrame(ttp_profile_rows), hide_index=True, width="stretch")
+
+st.info(
+    "**Ergebnis: Vermutung nicht bestaetigt.** Auf dem kleineren, aber tatsaechlich "
+    "handelbaren Universum performen die konservativen/mittleren Profile GLEICH GUT "
+    "oder sogar BESSER als auf dem alten 147er-Fantasieuniversum (Konservativ: Sharpe "
+    "1.48 statt 1.21; Mittelweg: 1.32 statt 1.03). Das Aggressiv-Profil verletzt die "
+    "3%-Tagesregel weiterhin, auf beiden Universen -- konsistenter Befund, keine neue "
+    "Erkenntnis durch den kleineren Pool. Die aktuell auf Konto 2 laufende Config bleibt "
+    "sicher (Sharpe etwas niedriger als vorher gemessen, MDD und Sicherheitsabstand zur "
+    "3%-Regel aber weiterhin komfortabel) -- **keine Aenderung an Konto 2 noetig**, nur "
+    "der zugrunde liegende Signal-Pool war fehlerhaft zu gross.",
+    icon=":material/task_alt:",
+)

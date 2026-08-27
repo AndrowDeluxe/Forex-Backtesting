@@ -31,7 +31,7 @@ LOOKBACK_DAYS = 400
 def scan_today() -> dict:
     today = dt.date.today()
     start = (today - dt.timedelta(days=LOOKBACK_DAYS)).isoformat()
-    end = today.isoformat()
+    end = (today + dt.timedelta(days=1)).isoformat()
 
     eurusd_m5 = fetch_eurusd_entry_tf_berlin("M5", start, end, force_refresh=True)
     other_majors_m15 = {p: fetch_major_m15_berlin(p, start, end, force_refresh=True) for p in OTHER_MAJORS}

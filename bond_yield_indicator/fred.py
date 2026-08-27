@@ -77,3 +77,27 @@ def fetch_yield(country: str, force_refresh: bool = False) -> pd.Series:
 
 def fetch_all_yields(force_refresh: bool = False) -> dict[str, pd.Series]:
     return {c: fetch_yield(c, force_refresh=force_refresh) for c in COUNTRIES}
+
+
+def fetch_us_real_yield(force_refresh: bool = False) -> pd.Series:
+    """US 10-year REAL yield (percent) - FRED series DFII10 (10-Year Treasury
+    Inflation-Indexed Security, Constant Maturity), i.e. the actual TIPS
+    market yield, not DGS10 (nominal) minus an inflation proxy. Used for the
+    "real interest rates drive Gold" idea (see gold_trend_pullback_atr/
+    filters.py, chat 2026-08-13) - separate from COUNTRIES/fetch_yield above,
+    which is nominal yields for the FX-spread indicator project."""
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    path = CACHE_DIR / "yield_US_DFII10_real.parquet"
+    if path.exists() and not force_refresh:
+        return pd.read_parquet(path)["value"]
+
+    url = FRED_CSV_URL.format(series="DFII10")
+    df = pd.read_csv(url)
+    df.columns = ["date", "value"]
+    df["date"] = pd.to_datetime(df["date"])
+    df = df.dropna(subset=["value"]).set_index("date").sort_index()
+    df["value"] = pd.to_numeric(df["value"], errors="coerce")
+    df = df.dropna(subset=["value"])
+
+    df.to_parquet(path)
+    return df["value"]

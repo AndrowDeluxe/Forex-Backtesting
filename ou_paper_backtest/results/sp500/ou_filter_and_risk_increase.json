@@ -1,0 +1,105 @@
+{
+  "in_sample": {
+    "ou_filter_58": {
+      "n_tickers": 58,
+      "n_trades": 1273,
+      "sharpe": 0.5828606893932862,
+      "calmar": 0.4628412950635855,
+      "max_drawdown_pct": -26.703542541643653,
+      "total_return_pct": 125.66557604599002,
+      "final_equity": 225665.57604599
+    },
+    "no_ou_filter_182": {
+      "n_tickers": 182,
+      "n_trades": 1962,
+      "sharpe": 0.49341918029843995,
+      "calmar": 0.42231744187702747,
+      "max_drawdown_pct": -29.909497084126112,
+      "total_return_pct": 129.50584674262996,
+      "final_equity": 229505.84674263
+    }
+  },
+  "holdout": {
+    "ou_filter_58": {
+      "n_tickers": 58,
+      "n_trades": 351,
+      "sharpe": 1.5042361621664189,
+      "calmar": 1.687224571280814,
+      "max_drawdown_pct": -17.047091008741454,
+      "total_return_pct": 49.67146186923961,
+      "final_equity": 149671.4618692398
+    },
+    "no_ou_filter_182": {
+      "n_tickers": 182,
+      "n_trades": 542,
+      "sharpe": 0.4149354449334476,
+      "calmar": 0.4866967901753935,
+      "max_drawdown_pct": -21.01067928448653,
+      "total_return_pct": 16.802477855682252,
+      "final_equity": 116802.47785568237
+    }
+  },
+  "risk_increase": {
+    "ou_filter_58": {
+      "risk_pct_0.0025": {
+        "n_tickers": 58,
+        "risk_pct": 0.0025,
+        "n_trades": 368,
+        "sharpe": 1.290978253414296,
+        "calmar": 1.4110923215952813,
+        "max_drawdown_pct": -5.0707150412562685,
+        "total_return_pct": 11.65510542774224,
+        "final_equity": 111655.105427742,
+        "worst_single_day_pct": -1.3057188286982768,
+        "worst_day_date": "2026-03-18",
+        "breached_3pct_daily_rule": false,
+        "days_to_10pct_target": 377
+      },
+      "risk_pct_0.005": {
+        "n_tickers": 58,
+        "risk_pct": 0.005,
+        "n_trades": 272,
+        "sharpe": 1.2708614139034051,
+        "calmar": 1.5511504193534613,
+        "max_drawdown_pct": -7.243904927686106,
+        "total_return_pct": 18.515395621299536,
+        "final_equity": 118515.39562129974,
+        "worst_single_day_pct": -1.9795511872551685,
+        "worst_day_date": "2025-06-20",
+        "breached_3pct_daily_rule": false,
+        "days_to_10pct_target": 371
+      }
+    },
+    "no_ou_filter_182": {
+      "risk_pct_0.0025": {
+        "n_tickers": 182,
+        "risk_pct": 0.0025,
+        "n_trades": 675,
+        "sharpe": 0.7527009027898272,
+        "calmar": 0.9289394474472136,
+        "max_drawdown_pct": -6.572452186620447,
+        "total_return_pct": 9.915131944656185,
+        "final_equity": 109915.13194465637,
+        "worst_single_day_pct": -1.4499547445466776,
+        "worst_day_date": "2026-03-12",
+        "breached_3pct_daily_rule": false,
+        "days_to_10pct_target": 578
+      },
+      "risk_pct_0.005": {
+        "n_tickers": 182,
+        "risk_pct": 0.005,
+        "n_trades": 361,
+        "sharpe": 0.1589934393896081,
+        "calmar": 0.15424008518679247,
+        "max_drawdown_pct": -9.50692164968685,
+        "total_return_pct": 2.349363211631861,
+        "final_equity": 102349.36321163177,
+        "worst_single_day_pct": -1.9103837104926469,
+        "worst_day_date": "2025-02-21",
+        "breached_3pct_daily_rule": false,
+        "days_to_10pct_target": null
+      }
+    }
+  },
+  "holdout_period": "2025-01-01 .. 2026-08-11"
+}

@@ -12,6 +12,14 @@ EMA200 regime filter permits it. This is a point-in-time signal snapshot, not a
 running position tracker -- it does not know about (and cannot show) positions a
 user might already be holding from a prior scan.
 
+Since 2026-08-11, each market's OU-selected universe is additionally filtered down
+to tickers actually tradable on TTP (the broker behind Konto 1/2 in
+OU-Modell-MT5-Bridge) -- see _load_ttp_tradable_tickers()/
+scripts/build_ttp_tradable_universe.py. Fixes a real data leak: the scanner used to
+emit signals for OU-selected tickers the live bot could never execute (resolve_symbol()
+in executor.py silently drops them) -- e.g. only 58 of 147 OU-selected S&P tickers, and
+0 of 40 DAX tickers, are actually tradable on TTP.
+
 Run: `python scanner.py` from the ou_paper_backtest/ directory. Commit the resulting
 results/scanner_signals.csv afterward for the dashboard to pick up.
 """
@@ -49,6 +57,23 @@ def _refresh_universe_prices(tickers: list[str], benchmark_ticker: str) -> tuple
     return panel, benchmark
 
 
+def _load_ttp_tradable_tickers(market_key: str) -> set[str] | None:
+    """Ticker, die auf TTP (Konto 1/2, siehe OU-Modell-MT5-Bridge) tatsaechlich als
+    Symbol existieren -- gebaut von scripts/build_ttp_tradable_universe.py (read-only
+    gegen das TTP-Demo-Terminal, Symbol-Namen 1:1 wie resolve_symbol() sie live prueft).
+    Datenleck-Fix (2026-08-11): der Scanner selektierte bisher NUR ueber die
+    OU-Kriterien, ohne zu pruefen, ob der Live-Bot ein Signal je ausfuehren koennte --
+    von 147 OU-selektierten S&P-Tickern waren nur 58 tatsaechlich handelbar. Gibt None
+    zurueck, wenn die Datei fehlt (z.B. frisch geklontes Repo vor dem ersten Lauf von
+    build_ttp_tradable_universe.py) -- der Aufrufer faellt dann auf das ungefilterte
+    Verhalten zurueck, statt hart zu failen."""
+    path = config.RESULTS_DIR / f"{market_key}_ttp_tradable.csv"
+    if not path.exists():
+        return None
+    df = pd.read_csv(path)
+    return set(df[df["ttp_tradable"]]["Symbol"])
+
+
 def scan_market(market_key: str) -> pd.DataFrame:
     label = config.UNIVERSES[market_key]["label"]
     benchmark_ticker = config.UNIVERSES[market_key]["benchmark"]
@@ -58,6 +83,20 @@ def scan_market(market_key: str) -> pd.DataFrame:
         & (ou_table["half_life"].between(config.HALFLIFE_MIN, config.HALFLIFE_MAX))
     ]
     tickers = sel.index.tolist()
+
+    tradable = _load_ttp_tradable_tickers(market_key)
+    if tradable is None:
+        print(f"[{market_key}] WARNUNG: keine {market_key}_ttp_tradable.csv gefunden -- "
+              f"scanne UNGEFILTERT (siehe scripts/build_ttp_tradable_universe.py).")
+    else:
+        n_before = len(tickers)
+        tickers = [t for t in tickers if t in tradable]
+        print(f"[{market_key}] TTP-Handelbarkeitsfilter: {n_before} -> {len(tickers)} Ticker.")
+        if not tickers:
+            print(f"[{market_key}] {label}: 0 auf TTP handelbare OU-selektierte Ticker -- "
+                  f"kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).")
+            return pd.DataFrame()
+
     print(f"[{market_key}] {label}: scanning {len(tickers)} OU-selected tickers...")
 
     panel, benchmark = _refresh_universe_prices(tickers, benchmark_ticker)

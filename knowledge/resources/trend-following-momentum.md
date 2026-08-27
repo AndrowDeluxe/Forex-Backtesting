@@ -488,6 +488,24 @@ Vorhersagekraft insgesamt):
   als Daily-Bars -- wurde hier nicht verfolgt, da es die Fill-/Timing-Logik
   des gesamten Skripts aendern wuerde.
 
+**Nachtrag 2026-08-25 -- vierter Kandidat (Hurst-Kollaps/DFA) getestet,
+ebenfalls gescheitert -- Frage damit ausgeschoepft**
+
+Aus [[crypto-hurst-wyckoff-cycles]] (FLPD-Paper-Distillation): rollierender
+Hurst-Exponent (DFA) als Exit-/Trendende-Signal, als Overlay auf genau diese
+EMA9/21-Baseline getestet (`crypto_flpd/`, `scripts/research_btc_flpd_
+hurst_wyckoff.py`). Ergebnis: schadet klar und konsistent auf BEIDEN Assets
+(BTCUSDT PF 3.30->1.72 Full, ETHUSDT OOS PF 1.54->0.80, sogar Return
+negativ), Randomisierungstest zeigt der Exit-Zeitpunkt ist nicht von einem
+zufaelligen footprint-gleichen vorzeitigen Exit unterscheidbar (p=0.57/0.62).
+Exakt dasselbe Muster wie TP/Chandelier/Volumen-Exhaustion oben -- die Kante
+lebt von seltenen grossen Trades, jeder vorzeitige Exit-Mechanismus kappt
+das, unabhaengig vom Ausloeser. Damit sind jetzt 4/4 versuchte
+Crash-/Trendende-Vorwarn-Kandidaten (ATR-Expansion, BTC-ETH-Korrelation,
+Taker-Sell-Aggression, Hurst-Kollaps) gescheitert -- kein weiterer
+naheliegender Kandidat offen, Frage gilt als ausgeschoepft ohne echten
+1h-Bar-Umbau (s. Punkt oben).
+
 **Nachtrag 2026-08-15 -- Diversifikation ueber Asset-Klassen begonnen,
 pausiert bis weitere Strategien feststehen**
 

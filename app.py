@@ -123,8 +123,8 @@ auction_playbook = st.Page(
     "app_pages/auction_playbook.py", title="Auction Market Playbook", icon=":material/gavel:",
     visibility="hidden",
 )
-orb_strategy_page = st.Page(
-    "app_pages/orb_strategy.py", title="ORB Strategie", icon=":material/bolt:", visibility="hidden"
+ny_open_orb_portfolio = st.Page(
+    "app_pages/ny_open_orb_portfolio.py", title="NY-Open ORB Portfolio", icon=":material/bolt:", visibility="hidden"
 )
 ou_paper_backtest = st.Page(
     "app_pages/ou_paper_backtest.py", title="OU-Modell Paper-Backtest", icon=":material/science:",
@@ -216,7 +216,7 @@ page = st.navigation(
         fertige_strategien, btc_ema_cross, btc_ema_cross_live_log, cls_practical_strategy, cls_practical_live_log, ou_scanner, gold_bitcoin_dual_momentum, asian_range_breakout, gold_asb_live_log, portfolio_construction,
         presettle_breakout,
         adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook,
-        orb_strategy_page, ou_paper_backtest,
+        ny_open_orb_portfolio, ou_paper_backtest,
         cls_advanced, kalman_filter, adx_vwap_writeup, triple_ma, risk_management,
         execution_overlay_writeup, gap_fade_writeup, orb_writeup,
         paper151, goldi_papers_202608, fx_papers_202608,

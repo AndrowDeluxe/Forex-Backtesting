@@ -1,0 +1,59 @@
+{
+  "ou_selected_count": 16,
+  "ttp_tradable_count": 8,
+  "ttp_universe": [
+    "ADI",
+    "AMGN",
+    "FAST",
+    "MDLZ",
+    "MSTR",
+    "PEP",
+    "QCOM",
+    "WBD"
+  ],
+  "in_sample": {
+    "unfiltered": {
+      "n_tickers": 16,
+      "n_trades": 479,
+      "final_equity": 180262.93815422058,
+      "total_return_pct": 80.26293815421974,
+      "sharpe": 0.7883815275788871,
+      "calmar": 0.5487955926484163,
+      "max_drawdown_pct": -16.040708499396285,
+      "max_concurrent_positions": 14
+    },
+    "ttp_tradable": {
+      "n_tickers": 8,
+      "n_trades": 246,
+      "final_equity": 128913.5987291336,
+      "total_return_pct": 28.913598729133728,
+      "sharpe": 0.5537973225453356,
+      "calmar": 0.3506125270767942,
+      "max_drawdown_pct": -10.562505997690208,
+      "max_concurrent_positions": 7
+    }
+  },
+  "holdout": {
+    "unfiltered": {
+      "n_tickers": 16,
+      "n_trades": 122,
+      "final_equity": 98794.48168849945,
+      "total_return_pct": -1.2055183115006307,
+      "sharpe": -0.08824239749723752,
+      "calmar": -0.1130404061932288,
+      "max_drawdown_pct": -6.700322114004287,
+      "max_concurrent_positions": 10
+    },
+    "ttp_tradable": {
+      "n_tickers": 8,
+      "n_trades": 66,
+      "final_equity": 107500.20168495178,
+      "total_return_pct": 7.500201684951757,
+      "sharpe": 0.8666195444772402,
+      "calmar": 1.542409754760751,
+      "max_drawdown_pct": -3.0069781587122257,
+      "max_concurrent_positions": 5
+    }
+  },
+  "holdout_period": "2025-01-01 .. 2026-08-11"
+}

@@ -1,0 +1,41 @@
+Symbol,Name,ttp_tradable,base_symbol_tradable
+ADS.DE,Adidas,False,False
+AIR.PA,Airbus,False,False
+ALV.DE,Allianz,False,False
+BAS.DE,BASF,False,False
+BAYN.DE,Bayer,False,False
+BEI.DE,Beiersdorf,False,False
+BMW.DE,BMW,False,False
+BNR.DE,Brenntag,False,False
+CBK.DE,Commerzbank,False,False
+CON.DE,Continental,False,False
+DTG.DE,Daimler Truck,False,False
+DBK.DE,Deutsche Bank,False,False
+DB1.DE,Deutsche Börse,False,False
+DHL.DE,Deutsche Post,False,False
+DTE.DE,Deutsche Telekom,False,False
+EOAN.DE,E.ON,False,False
+FRE.DE,Fresenius,False,False
+FME.DE,Fresenius Medical Care,False,False
+G1A.DE,GEA Group,False,False
+HNR1.DE,Hannover Re,False,False
+HEI.DE,Heidelberg Materials,False,False
+HEN3.DE,Henkel,False,False
+IFX.DE,Infineon Technologies,False,False
+MBG.DE,Mercedes-Benz Group,False,False
+MRK.DE,Merck,False,True
+MTX.DE,MTU Aero Engines,False,False
+MUV2.DE,Munich Re,False,False
+PAH3.DE,Porsche SE,False,False
+QIA.DE,Qiagen,False,False
+RHM.DE,Rheinmetall,False,False
+RWE.DE,RWE,False,False
+SAP.DE,SAP,False,False
+G24.DE,Scout24,False,False
+SIE.DE,Siemens,False,False
+ENR.DE,Siemens Energy,False,False
+SHL.DE,Siemens Healthineers,False,False
+SY1.DE,Symrise,False,False
+VOW3.DE,Volkswagen Group,False,False
+VNA.DE,Vonovia,False,False
+ZAL.DE,Zalando,False,False

@@ -1,0 +1,311 @@
+//@version=6
+// CLS Practical - Full Pipeline (Continuation + Reversal), M3, TradingView
+// Strategy (strategy() declaration - this is a Strategy, not an Indicator;
+// confirmed working via the Strategy Tester tab, checked 2026-08-12).
+//
+// Full-pipeline M3 sibling of cls_practical_reversal_m3.pine - adds the
+// Continuation setup back in (the M3-only file was Reversal-only). Per the
+// repo's own timeframe sweep, M3-Voll had the best numbers of any tested
+// combination: 136 trades, PF 1.44, Sharpe 0.50, Calmar 0.43, +15,968$ over
+// ~7.5y - ahead of M3-Reversal-Only, M5-Voll, and M5-Reversal-Only alike.
+//
+// Same "how to run at M3" note as the Reversal-only file: TradingView has
+// no M3 preset button - click the interval dropdown, type "3". A red
+// warning label appears on the chart if you're on any other timeframe.
+//
+// Continuation setup (mirrors cls_practical/engine.py's _continuation_trigger):
+// break holds at 09:15 + trend aligned + rates grün + crosses confirmed ->
+// wait for the first confirmed M3 fractal AGAINST the break direction that
+// still sits OUTSIDE the broken Asia-range level (a fractal that's already
+// drifted back inside the range doesn't count as "a pullback that holds" -
+// this exact bug was found and fixed in the Python engine 2026-08-11, see
+// cls_practical/engine.py's _continuation_trigger docstring) - then a
+// resting stop order breaking back beyond THAT pivot bar's own opposite
+// extreme. SL = the pivot bar's own near extreme (the pullback low/high
+// itself).
+//
+// Reversal setup: unchanged from cls_practical_reversal_m3.pine - see that
+// file's header for the Rückkehr/Structure-Shift/Retest mechanics.
+//
+// KNOWN GAPS: identical list as cls_practical_reversal_v6.pine (Rates
+// ticker choice, cross-pair session-aggregation fidelity, ATR/minSlAtrMult
+// scale shifting with timeframe) - not repeated here.
+
+strategy(
+     "CLS Practical - Full M3 (Cont.+Rev., v6)", overlay = true, initial_capital = 100000,
+     currency = currency.USD, default_qty_type = strategy.cash, default_qty_value = 100000,
+     commission_type = strategy.commission.percent, commission_value = 0.015,
+     max_bars_back = 5000)
+
+// ============================== Inputs ==============================
+tz              = "Europe/Berlin"
+smaLen          = input.int(100, "Trend-SMA (Tages-Close)", group = "Trend-Filter")
+adrLen          = input.int(14, "ADR/ATR-Periode", group = "SL/TP")
+adrMult         = input.float(0.35, "TP = adrMult x ADR(14)", step = 0.05, group = "SL/TP")
+minSlAtrMult    = input.float(1.0, "Min. SL = minSlAtrMult x ATR(M3)", step = 0.25, group = "SL/TP")
+entryCutoffHour = input.int(12, "Entry-Cutoff Stunde (Berlin)", group = "Timing")
+riskPct         = input.float(0.5, "Risiko % pro Trade", step = 0.1, group = "Sizing") / 100
+useRatesFilter  = input.bool(true, "Rates-Ampel-Filter aktiv", group = "Rates (Long-End-Proxy, unverifiziert)")
+deTenYSymbol    = input.symbol("TVC:DE10", "Deutschland-10J-Rendite-Symbol", group = "Rates (Long-End-Proxy, unverifiziert)")
+usTenYSymbol    = input.symbol("TVC:US10Y", "US-10J-Rendite-Symbol", group = "Rates (Long-End-Proxy, unverifiziert)")
+ratesZWindow    = input.int(60, "Rates Z-Score-Fenster (Tage)", group = "Rates (Long-End-Proxy, unverifiziert)")
+useCrossFilter  = input.bool(true, "Cross-Pair-Filter aktiv", group = "Crosses (unverifiziert)")
+
+// ============================== Timeframe guard ==============================
+if barstate.islast and timeframe.period != "3"
+    label.new(bar_index, high, "⚠ Chart steht auf " + timeframe.period + ", nicht M3 - Intervall-Dropdown -> \"3\" eingeben",
+         color = color.new(color.red, 20), style = label.style_label_down, textcolor = color.white, size = size.small)
+
+// ============================== Session windows ==============================
+h = hour(time, tz)
+m = minute(time, tz)
+minutesOfDay = h * 60 + m
+
+asiaEndMin   = 360   // 06:00
+settleEndMin = 540   // 09:00
+testHourMin  = 555   // 09:15
+entryHourMin = 570   // 09:30
+cutoffMin    = entryCutoffHour * 60
+
+inAsia   = minutesOfDay < asiaEndMin
+inSettle = minutesOfDay >= asiaEndMin and minutesOfDay < settleEndMin
+isTestBar   = minutesOfDay >= testHourMin and minutesOfDay < entryHourMin
+afterEntryHour = minutesOfDay >= entryHourMin
+beforeCutoff   = minutesOfDay < cutoffMin
+
+dayNum = dayofmonth(time, tz)
+newDay = ta.change(dayNum) != 0
+
+// ============================== Daily Asia range + Settle sweep ==============================
+var float asiaHigh = na
+var float asiaLow = na
+var float settleHigh = na
+var float settleLow = na
+var int direction = 0          // +1 = broke up in Settle window, -1 = broke down, 0 = none/both
+var bool dayResolved = false   // true once direction is locked in for the day
+var bool holds = bool(na)      // 09:15 acceptance test result
+var bool testDone = false
+
+if newDay
+    asiaHigh := na
+    asiaLow := na
+    settleHigh := na
+    settleLow := na
+    direction := 0
+    dayResolved := false
+    holds := bool(na)
+    testDone := false
+
+if inAsia
+    asiaHigh := na(asiaHigh) ? high : math.max(asiaHigh, high)
+    asiaLow := na(asiaLow) ? low : math.min(asiaLow, low)
+
+if inSettle and not na(asiaHigh) and not na(asiaLow)
+    settleHigh := na(settleHigh) ? high : math.max(settleHigh, high)
+    settleLow := na(settleLow) ? low : math.min(settleLow, low)
+    brokeUp = settleHigh > asiaHigh
+    brokeDown = settleLow < asiaLow
+    direction := brokeUp and not brokeDown ? 1 : brokeDown and not brokeUp ? -1 :
+                 brokeUp and brokeDown ? (close > (asiaHigh + asiaLow) / 2 ? 1 : -1) : 0
+
+// 09:15 acceptance test (single bar in [09:15,09:30)) - does the break still hold?
+if isTestBar and not testDone and direction != 0
+    holds := direction == 1 ? close > asiaHigh : close < asiaLow
+    testDone := true
+    dayResolved := true
+
+// ============================== Trend filter (daily SMA, no lookahead) ==============================
+dailyClose = request.security(syminfo.tickerid, "D", close[1], lookahead = barmerge.lookahead_off)
+dailySma   = request.security(syminfo.tickerid, "D", ta.sma(close, smaLen)[1], lookahead = barmerge.lookahead_off)
+trendUp = dailyClose > dailySma
+trendVal = trendUp ? 1 : -1
+
+// ============================== Rates-Ampel (long-end yield proxy) ==============================
+f_sessionReturn() =>
+    inS = (minute(time, tz) + 60 * hour(time, tz)) >= asiaEndMin and (minute(time, tz) + 60 * hour(time, tz)) < settleEndMin
+    var float o = na
+    var float c = na
+    if inS and not inS[1]
+        o := open
+    if inS
+        c := close
+    inS ? (na(o) ? na : c / o - 1) : na
+
+f_sessionMove(sym) =>
+    request.security(sym, "5", f_sessionReturn(), lookahead = barmerge.lookahead_off)
+
+deMove = f_sessionMove(deTenYSymbol)
+usMove = f_sessionMove(usTenYSymbol)
+rateScore = deMove - usMove
+rateScoreDaily = request.security(syminfo.tickerid, "D", rateScore, lookahead = barmerge.lookahead_off)
+rateZ = (rateScoreDaily - ta.sma(rateScoreDaily, ratesZWindow)) / ta.stdev(rateScoreDaily, ratesZWindow)
+
+ratesFlag() =>
+    if not useRatesFilter
+        1  // filter disabled -> always pass
+    else if na(rateZ)
+        0  // "gelb" / no signal
+    else if math.sign(rateZ) == direction
+        2  // "grün"
+    else
+        -2 // "rot"
+
+// ============================== Cross-pair confirmation ==============================
+gbpMove = f_sessionMove("FX:GBPUSD") * -1
+jpyMove = f_sessionMove("FX:USDJPY")
+chfMove = f_sessionMove("FX:USDCHF")
+audMove = f_sessionMove("FX:AUDUSD") * -1
+cadMove = f_sessionMove("FX:USDCAD")
+ownUsdMove = f_sessionMove(syminfo.tickerid) * -1  // EURUSD is USD-quote too
+
+avgOther = (gbpMove + jpyMove + chfMove + audMove + cadMove) / 5
+crossConfirmed = useCrossFilter ? (math.sign(ownUsdMove) == math.sign(avgOther) and math.abs(ownUsdMove) > 1e-9) : true
+
+// ============================== Setup decisions ==============================
+setupReversal = dayResolved and testDone and direction != 0 and not holds and
+     trendVal == -direction and ratesFlag() == -2 and not crossConfirmed
+setupDirection = setupReversal ? -direction : 0
+
+setupContinuation = dayResolved and testDone and direction != 0 and holds and
+     trendVal == direction and ratesFlag() == 2 and crossConfirmed
+
+// ============================== M3 ATR / ADR ==============================
+atr3 = ta.atr(adrLen)
+adr = request.security(syminfo.tickerid, "D", ta.sma(high[1] - low[1], adrLen), lookahead = barmerge.lookahead_off)
+riskAmount = strategy.equity * riskPct
+tpDist = adrMult * adr
+
+pivH = ta.pivothigh(1, 1)
+pivL = ta.pivotlow(1, 1)
+
+// ============================== Reversal state machine ==============================
+// Stage 1: Rückkehr in die Range. Stage 2: Structure Shift (first confirmed
+// fractal against the original break). Stage 3: Retest + entry (resting
+// stop order breaking that fractal further).
+var bool armedR = false
+var bool returnedR = false
+var float structureLevelR = na
+var float sweepLevelR = na
+var int tradeDirR = 0
+
+if newDay
+    armedR := false
+    returnedR := false
+    structureLevelR := na
+    sweepLevelR := na
+    tradeDirR := 0
+
+if setupReversal and not armedR and afterEntryHour and beforeCutoff
+    armedR := true
+    tradeDirR := setupDirection
+    sweepLevelR := direction == 1 ? settleHigh : settleLow
+
+if armedR and not returnedR and beforeCutoff
+    insideRange = close > asiaLow and close < asiaHigh
+    blownThrough = direction == 1 ? close < asiaLow : close > asiaHigh
+    if insideRange
+        returnedR := true
+    else if blownThrough
+        armedR := false  // ran straight through the range - not a clean return, invalidate
+
+if armedR and returnedR and na(structureLevelR) and beforeCutoff
+    if direction == 1 and not na(pivL)
+        structureLevelR := pivL
+    else if direction == -1 and not na(pivH)
+        structureLevelR := pivH
+
+longConditionR  = armedR and returnedR and not na(structureLevelR) and tradeDirR == 1 and low <= structureLevelR and beforeCutoff
+shortConditionR = armedR and returnedR and not na(structureLevelR) and tradeDirR == -1 and high >= structureLevelR and beforeCutoff
+
+// ============================== Continuation state machine ==============================
+// Pullback fractal must still hold OUTSIDE the broken Asia-range level
+// ("Break hält außerhalb der Range") - the SAME fix already applied in
+// cls_practical/engine.py's _continuation_trigger (2026-08-11): a fractal
+// that only forms after price has already retraced back inside the range
+// doesn't count. trigger level = the pivot bar's OWN opposite extreme
+// (high[1] for a long, low[1] for a short); SL = the pivot bar's own near
+// extreme (pivL/pivH itself).
+var bool armedC = false
+var float structureLevelC = na   // entry trigger level
+var float pullbackExtremeC = na  // SL level
+var int tradeDirC = 0
+
+if newDay
+    armedC := false
+    structureLevelC := na
+    pullbackExtremeC := na
+    tradeDirC := 0
+
+if setupContinuation and not armedC and afterEntryHour and beforeCutoff
+    armedC := true
+    tradeDirC := direction
+
+if armedC and na(structureLevelC) and beforeCutoff
+    if tradeDirC == 1 and not na(pivL) and pivL > asiaHigh
+        structureLevelC := high[1]
+        pullbackExtremeC := pivL
+    else if tradeDirC == -1 and not na(pivH) and pivH < asiaLow
+        structureLevelC := low[1]
+        pullbackExtremeC := pivH
+
+longConditionC  = armedC and not na(structureLevelC) and tradeDirC == 1 and high >= structureLevelC and beforeCutoff
+shortConditionC = armedC and not na(structureLevelC) and tradeDirC == -1 and low <= structureLevelC and beforeCutoff
+
+// ============================== SL/TP + sizing: Reversal ==============================
+float slDistR = na
+if longConditionR or shortConditionR
+    slDistR := math.abs(structureLevelR - sweepLevelR)
+minSlDist = minSlAtrMult * atr3
+slOkR = not na(slDistR) and slDistR > 0 and not na(minSlDist) and slDistR >= minSlDist
+qtyR = slOkR and not na(tpDist) and tpDist > 0 ? riskAmount / slDistR : na
+
+if longConditionR and slOkR and not na(qtyR)
+    slPriceR = structureLevelR - slDistR
+    tpPriceR = structureLevelR + tpDist
+    strategy.entry("Reversal Long", strategy.long, qty = qtyR)
+    strategy.exit("Exit Rev Long", "Reversal Long", stop = slPriceR, limit = tpPriceR)
+    armedR := false
+
+if shortConditionR and slOkR and not na(qtyR)
+    slPriceR = structureLevelR + slDistR
+    tpPriceR = structureLevelR - tpDist
+    strategy.entry("Reversal Short", strategy.short, qty = qtyR)
+    strategy.exit("Exit Rev Short", "Reversal Short", stop = slPriceR, limit = tpPriceR)
+    armedR := false
+
+if armedR and minutesOfDay >= cutoffMin
+    armedR := false  // unfilled by cutoff - invalidated, no trade today
+
+// ============================== SL/TP + sizing: Continuation ==============================
+float slDistC = na
+if longConditionC or shortConditionC
+    slDistC := math.abs(structureLevelC - pullbackExtremeC)
+slOkC = not na(slDistC) and slDistC > 0 and not na(minSlDist) and slDistC >= minSlDist
+qtyC = slOkC and not na(tpDist) and tpDist > 0 ? riskAmount / slDistC : na
+
+if longConditionC and slOkC and not na(qtyC)
+    slPriceC = structureLevelC - slDistC
+    tpPriceC = structureLevelC + tpDist
+    strategy.entry("Continuation Long", strategy.long, qty = qtyC)
+    strategy.exit("Exit Cont Long", "Continuation Long", stop = slPriceC, limit = tpPriceC)
+    armedC := false
+
+if shortConditionC and slOkC and not na(qtyC)
+    slPriceC = structureLevelC + slDistC
+    tpPriceC = structureLevelC - tpDist
+    strategy.entry("Continuation Short", strategy.short, qty = qtyC)
+    strategy.exit("Exit Cont Short", "Continuation Short", stop = slPriceC, limit = tpPriceC)
+    armedC := false
+
+if armedC and minutesOfDay >= cutoffMin
+    armedC := false  // unfilled by cutoff - invalidated, no trade today
+
+// ============================== Plots (visual check) ==============================
+plot(asiaHigh, "Asia High", color = color.new(color.gray, 30), style = plot.style_circles)
+plot(asiaLow, "Asia Low", color = color.new(color.gray, 30), style = plot.style_circles)
+plot(settleHigh, "Settle High", color = color.new(color.orange, 40), style = plot.style_circles)
+plot(settleLow, "Settle Low", color = color.new(color.orange, 40), style = plot.style_circles)
+plotshape(setupReversal and not setupReversal[1], "Reversal-Setup erkannt", shape.triangledown,
+     location.abovebar, color = color.purple, size = size.tiny)
+plotshape(setupContinuation and not setupContinuation[1], "Continuation-Setup erkannt", shape.triangleup,
+     location.belowbar, color = color.blue, size = size.tiny)

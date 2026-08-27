@@ -1,0 +1,15 @@
+# Archiv: London-Range Breakout->Retest->BOS/CHOCH EUR/USD
+
+**Status**: abgeschlossen, negativ -- kein weiterer Aufwand geplant.
+
+**Capture** -- Range = Hoch/Tief 06:00-07:00 Berlin-Zeit ("bekannte Range"), erster Breakout, Retest zurueck in die Range, dann Entry am zweiten Breakout/Struktur-Signal; erfasst 2026-08-12.
+
+**Distill** -- Zwei Entry-Mechaniken getestet, beide auf EUR/USD M5, 10 Jahre (5 Jahre In-Sample 2016-2021 zum Sweepen, 5 Jahre Out-of-Sample 2021-2026 zur einmaligen Verifikation, `intraday_backtest_config.py`):
+1. Range-Level-BOS (Close bricht denselben Level erneut) + Markt-Entry am naechsten Bar-Open. 49-Kombinationen-SL/TP-Sweep (0.5-3.5 x ATR(14), unabhaengig), 7-Varianten-Breakeven-Sweep (1:0.5-1:1). Bester In-Sample-Kandidat (SL=3.0, TP=2.0 x ATR) bereits leicht negativ (-22.69R/981 Trades), OOS-Verifikation bestaetigt (-56.25R/958 Trades).
+2. Fractal/CHOCH-Entry (Resting-Stop-Order, ausgeloest durch erstes 3-Bar-Fractal gegen die Breakout-Richtung ODER direkten Bruch des Retest-Bar-Extrems, je nachdem was zuerst fuellt -- identische Fractal-Konvention wie `cls_practical/engine.py::_continuation_trigger`). Bester In-Sample-Kandidat (SL=3.0, TP=1.5 x ATR) praktisch bei Null (+3.92R/1108 Trades, statistisches Rauschen), OOS-Verifikation kippt negativ (-47.03R/1091 Trades).
+
+Zusaetzliche Filter in beiden Varianten aktiv: Entry-Cutoff 11:00 Berlin, Range-Breite < 20 Pips, VIX-Boost (SL +0.5 x ATR bei VIX > 20, `asian_range_breakout/vix.py`). Breakeven verschlechtert in JEDER getesteten Konfiguration (beide Entry-Mechaniken) das Ergebnis deutlich, am staerksten bei frueher Triggerung (1:0.5R) -- Mechanismus: TP naeher als SL bedeutet, dass viele spaetere Gewinner-Trades erst durch den BE-Level wackeln, bevor sie ihr TP erreichen.
+
+Drei weitere TP-Definitionen auf der Fractal/CHOCH-Entry-Mechanik nachgetestet (2026-08-12, Nutzerfrage): feste 1:2R (-35.46R In-Sample, bestes SL=3.5), feste 1:3R (-6.38R, SL=3.5), ADR-basiert 0.35 x ADR(14) (-82.38R, SL=3.5, gleicher Multiplikator wie `asian_range_breakout/cls_settle.py`). Alle drei schneiden schlechter ab als der bereits als Rauschen eingestufte Bestwert (unabhaengiges ATR-Grid, SL=3.0/TP=1.5 x ATR, +3.92R) -- bestaetigt den Negativ-Befund zusaetzlich, keine TP-Definition (ATR-unabhaengig, R-fix, ADR-basiert) findet eine Kante.
+
+**Express** -- Keine robuste Kante in keiner der getesteten Konfigurationen (2 Entry-Mechaniken x 49 SL/TP(ATR)-Kombinationen x 3 weitere TP-Definitionen x 7 BE-Varianten, macht ueber 70 einzeln getestete Setups). Bestes In-Sample-Ergebnis war in beiden Faellen nahe Null (kein echtes Signal, nur Rauschen), und hielt dem Out-of-Sample-Holdout in beiden Faellen nicht stand. Nicht weiterverfolgen, ausser eine grundsaetzlich andere Idee (anderer Range-Zeitraum, anderes Market-Structure-Konzept) taucht auf. Verwandtes Framework ([[cls-practical]] -> CLS-Continuation/Reversal-Fractal-Mechanik in `cls_practical/engine.py`) nutzt dieselbe Fractal-Logik in einem anderen Kontext (CLS-Settlement statt reiner Range-Breakout) und ist noch aktiv/nicht als negativ eingestuft.

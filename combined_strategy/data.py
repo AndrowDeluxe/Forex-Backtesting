@@ -29,6 +29,8 @@ INSTRUMENTS = {
     "CHFJPY": duka.INSTRUMENT_FX_CROSSES_CHF_JPY,
     "SP500": duka.INSTRUMENT_IDX_AMERICA_E_SANDP_500,
     "NASDAQ": duka.INSTRUMENT_IDX_AMERICA_E_NQ_100,
+    "US30": duka.INSTRUMENT_IDX_AMERICA_E_D_J_IND,
+    "VIX": duka.INSTRUMENT_IDX_AMERICA_VOL_IDX_USD,
     "OIL": duka.INSTRUMENT_CMD_ENERGY_E_LIGHT,
     # --- Zusaetzliche Kreuze fuer die paar-spezifische Waehrungsstaerke
     # (cls_practical/currency_strength.py, 2026-08-18) -- EUR/JPY selbst als

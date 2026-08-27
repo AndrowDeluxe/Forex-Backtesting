@@ -1,0 +1,245 @@
+//@version=6
+// London-Range Breakout -> Retest -> Fractal/CHOCH-Entry, EUR/USD M5.
+// Port of scripts/research_london_range_bos_retest.py (this repo's research
+// pipeline, captured 2026-08-12) so the setup can be seen and replayed on a
+// real, interactive TradingView chart instead of only in the offline
+// backtest CSVs.
+//
+// STATUS (disclosed, not glossed over): this strategy was BACKTESTED AND
+// FOUND NEGATIVE (see knowledge/archive/london-range-bos-retest-eurusd.md).
+// Best in-sample candidate (SL=3.0xATR, TP=1.5xATR) was ~flat in-sample
+// (+3.92R/1108 trades, statistical noise) and turned clearly negative
+// out-of-sample (-47.03R/1091 trades). This port exists purely to make the
+// already-rejected setup visually inspectable on a chart, NOT because it is
+// recommended for live or paper trading.
+//
+// Mechanic:
+// 1. Range = high/low of the 06:00-07:00 Berlin window.
+// 2. First breakout: first M5 bar after 07:00 whose CLOSE is outside the
+//    range -> locks in a direction for the day.
+// 3. Retest: first subsequent bar whose CLOSE is back inside the range.
+// 4. Entry: a resting stop order, triggered by whichever of the following
+//    two levels is actually touched FIRST (chronologically) after the
+//    retest:
+//    (a) Fractal trigger: first confirmed 3-bar M5 fractal AGAINST the
+//        breakout direction after the retest (ta.pivotlow/pivothigh(1,1),
+//        same 3-bar/1-bar-confirmation convention as
+//        cls_practical/engine.py::_continuation_trigger). Stop level = the
+//        pivot bar's OWN opposite extreme (long: pivot bar's high; short:
+//        pivot bar's low).
+//    (b) CHOCH trigger: stop level = the retest bar's OWN extreme itself
+//        (long: retest bar's high; short: retest bar's low), active
+//        immediately after the retest bar, no fractal confirmation needed.
+//    Ties (both levels touched on the same bar) resolve to the fractal
+//    trigger, matching the Python reference's stable sort order.
+//
+// SL = slAtrMult x ATR(14) M5, TP = tpAtrMult x ATR(14) M5 (independent of
+// SL), both using the PRIOR fully-closed bar's ATR (ta.atr(...)[1]) so
+// there is no lookahead into the bar that triggers entry - same convention
+// as the Python engine's atr.shift(1).
+//
+// KNOWN GAPS vs. the Python engine (disclosed):
+// 1. Spread: Python adds/subtracts half of a fixed 0.3bps spread to every
+//    entry/exit price. Not reproduced here explicitly - approximated via
+//    the commission_value below instead (same simplification this repo's
+//    other Pine ports use for cls_practical).
+// 2. VIX filter: Python uses the PRIOR US trading day's ^VIX daily close
+//    (via yfinance) to widen the SL by vixSlBoost when VIX > vixThreshold.
+//    Here it's approximated with request.security(vixSymbol, "D", close[1],
+//    lookahead=off) - a prior-bar daily close on whatever symbol the input
+//    resolves to (default "TVC:VIX"). Verify this ticker resolves on your
+//    TradingView plan before trusting the filter; it can also just be
+//    switched off below.
+// 3. Breakeven: available as an optional input for experimentation, but
+//    DEFAULT OFF - the Python sweep found breakeven made results worse in
+//    every tested configuration (see archive doc), so the recommended
+//    default reproduces the best-known (still losing) configuration.
+// 4. "Structure SL reference" (the pivot/retest bar's own opposite extreme,
+//    `structure_sl_ref` in the Python code) is computed there but never
+//    actually used for the SL - the real SL is purely ATR-based. Same here:
+//    no structure-based SL, ATR-based only, to stay faithful to what the
+//    Python backtest actually measured.
+
+strategy(
+     "London-Range BOS/Retest (M5) - NEGATIVE RESULT, chart-only",
+     shorttitle = "LDN-BOS-Retest",
+     overlay = true, initial_capital = 100000,
+     currency = currency.USD, default_qty_type = strategy.cash, default_qty_value = 100000,
+     commission_type = strategy.commission.percent, commission_value = 0.015,
+     max_bars_back = 5000)
+
+// ============================== Inputs ==============================
+tz               = "Europe/Berlin"
+rangeStartHour   = input.int(6, "Range-Start Stunde (Berlin)", group = "Range")
+rangeEndHour     = input.int(7, "Range-Ende Stunde (Berlin)", group = "Range")
+useMaxRangeFilter = input.bool(true, "Max. Range-Breite Filter aktiv", group = "Range")
+maxRangePips     = input.float(20.0, "Max. Range-Breite (Pips)", group = "Range")
+pipSize          = input.float(0.0001, "Pip-Groesse", group = "Range")
+
+atrLen           = input.int(14, "ATR-Periode", group = "SL/TP")
+slAtrMult        = input.float(3.0, "SL = slAtrMult x ATR(14)", step = 0.25, group = "SL/TP")
+tpAtrMult        = input.float(1.5, "TP = tpAtrMult x ATR(14)", step = 0.25, group = "SL/TP")
+
+useBreakeven     = input.bool(false, "Breakeven aktiv (Sweep-Ergebnis: verschlechtert IMMER, Default aus)", group = "Breakeven")
+beTriggerR       = input.float(0.7, "BE-Trigger (x SL-Distanz im Plus)", step = 0.1, group = "Breakeven")
+
+entryCutoffHour  = input.int(11, "Entry-Cutoff Stunde (Berlin)", group = "Timing")
+
+useVixFilter     = input.bool(true, "VIX-Filter aktiv (unverifizierter Symbol-Proxy)", group = "VIX (unverifiziert)")
+vixSymbol        = input.symbol("TVC:VIX", "VIX-Symbol", group = "VIX (unverifiziert)")
+vixThreshold     = input.float(20.0, "VIX-Schwelle", group = "VIX (unverifiziert)")
+vixSlBoost       = input.float(0.5, "SL-Boost bei hohem VIX (x ATR)", step = 0.25, group = "VIX (unverifiziert)")
+
+riskPct          = input.float(0.5, "Risiko % pro Trade", step = 0.1, group = "Sizing") / 100
+
+// ============================== Session windows ==============================
+h = hour(time, tz)
+m = minute(time, tz)
+minutesOfDay = h * 60 + m
+
+rangeStartMin = rangeStartHour * 60
+rangeEndMin   = rangeEndHour * 60
+cutoffMin     = entryCutoffHour * 60
+
+inWindow  = minutesOfDay >= rangeStartMin and minutesOfDay < rangeEndMin
+newWindow = inWindow and not inWindow[1]
+
+// ============================== Range + state machine ==============================
+var float rangeHigh = na
+var float rangeLow = na
+var bool  rangeReady = false
+var bool  daySkipped = false
+var int   breakoutDir = 0        // 0 = none yet, 1 = long, -1 = short
+var bool  retested = false
+var float chochLevel = na
+var int   retestBarIdx = na
+var float fractalLevel = na
+var bool  tradeTaken = false
+
+if newWindow
+    rangeHigh := high
+    rangeLow := low
+    rangeReady := false
+    daySkipped := false
+    breakoutDir := 0
+    retested := false
+    chochLevel := na
+    retestBarIdx := na
+    fractalLevel := na
+    tradeTaken := false
+
+if inWindow
+    rangeHigh := na(rangeHigh) ? high : math.max(rangeHigh, high)
+    rangeLow := na(rangeLow) ? low : math.min(rangeLow, low)
+
+justClosedWindow = not inWindow and inWindow[1]
+if justClosedWindow and not na(rangeHigh) and not na(rangeLow)
+    rangeReady := true
+    rangeWidth = rangeHigh - rangeLow
+    if useMaxRangeFilter and rangeWidth > maxRangePips * pipSize
+        daySkipped := true
+
+// ---- Step 1: first breakout (close outside range) ----
+if rangeReady and not daySkipped and not inWindow and breakoutDir == 0
+    if close > rangeHigh
+        breakoutDir := 1
+    else if close < rangeLow
+        breakoutDir := -1
+
+// ---- Step 2: retest (close back inside range) ----
+if breakoutDir != 0 and not retested and not inWindow
+    if breakoutDir == 1 and close <= rangeHigh and close >= rangeLow
+        retested := true
+        chochLevel := high
+        retestBarIdx := bar_index
+    else if breakoutDir == -1 and close >= rangeLow and close <= rangeHigh
+        retested := true
+        chochLevel := low
+        retestBarIdx := bar_index
+
+// ---- Step 3: fractal trigger candidate (pivot strictly after the retest bar) ----
+pivL = ta.pivotlow(1, 1)
+pivH = ta.pivothigh(1, 1)
+if retested and na(fractalLevel) and not na(retestBarIdx) and (bar_index - 1) > retestBarIdx
+    if breakoutDir == 1 and not na(pivL)
+        fractalLevel := high[1]
+    else if breakoutDir == -1 and not na(pivH)
+        fractalLevel := low[1]
+
+// ---- Step 4: entry = whichever resting level fills first (fractal wins ties) ----
+fractalHit = retested and not tradeTaken and not na(fractalLevel) and
+     (breakoutDir == 1 ? high >= fractalLevel : low <= fractalLevel)
+chochHit = retested and not tradeTaken and not na(chochLevel) and not fractalHit and
+     (breakoutDir == 1 ? high >= chochLevel : low <= chochLevel)
+
+triggerLevel = fractalHit ? fractalLevel : chochHit ? chochLevel : na
+triggerKind = fractalHit ? "fractal" : chochHit ? "choch" : na
+
+// ============================== ATR / VIX / SL / TP ==============================
+atrPrev = ta.atr(atrLen)[1]   // last fully closed bar before this one, no lookahead
+vixPrevClose = request.security(vixSymbol, "D", close[1], lookahead = barmerge.lookahead_off)
+highVix = useVixFilter and not na(vixPrevClose) and vixPrevClose > vixThreshold
+effectiveSlAtrMult = slAtrMult + (highVix ? vixSlBoost : 0.0)
+
+canEnter = not na(triggerLevel) and not na(atrPrev) and atrPrev > 0 and minutesOfDay < cutoffMin
+
+if not na(triggerLevel) and minutesOfDay >= cutoffMin
+    tradeTaken := true  // would-be entry falls after the cutoff -> setup invalidated for the day
+
+slDist = effectiveSlAtrMult * atrPrev
+tpDist = tpAtrMult * atrPrev
+riskAmount = strategy.equity * riskPct
+qty = canEnter and slDist > 0 ? riskAmount / slDist : na
+
+var float activeSlDist = na
+var float activeSlPrice = na
+var float activeTpPrice = na
+var bool  beMoved = false
+
+if canEnter and breakoutDir == 1 and not na(qty)
+    slPrice = triggerLevel - slDist
+    tpPrice = triggerLevel + tpDist
+    strategy.entry("Long", strategy.long, qty = qty, comment = triggerKind)
+    strategy.exit("Exit Long", "Long", stop = slPrice, limit = tpPrice)
+    activeSlDist := slDist
+    activeSlPrice := slPrice
+    activeTpPrice := tpPrice
+    beMoved := false
+    tradeTaken := true
+
+if canEnter and breakoutDir == -1 and not na(qty)
+    slPrice = triggerLevel + slDist
+    tpPrice = triggerLevel - tpDist
+    strategy.entry("Short", strategy.short, qty = qty, comment = triggerKind)
+    strategy.exit("Exit Short", "Short", stop = slPrice, limit = tpPrice)
+    activeSlDist := slDist
+    activeSlPrice := slPrice
+    activeTpPrice := tpPrice
+    beMoved := false
+    tradeTaken := true
+
+// ---- Optional breakeven (default off - archive sweep found it always hurts
+// results in every tested configuration, worst at early triggers) ----
+if useBreakeven and strategy.position_size != 0 and not beMoved and not na(activeSlDist)
+    avgPrice = strategy.position_avg_price
+    favorable = strategy.position_size > 0 ? high - avgPrice : avgPrice - low
+    if favorable >= beTriggerR * activeSlDist
+        beMoved := true
+        activeSlPrice := avgPrice
+        if strategy.position_size > 0
+            strategy.exit("Exit Long", "Long", stop = activeSlPrice, limit = activeTpPrice)
+        else
+            strategy.exit("Exit Short", "Short", stop = activeSlPrice, limit = activeTpPrice)
+
+if strategy.position_size == 0
+    activeSlDist := na
+
+// ============================== Plots (visual check) ==============================
+plot(rangeHigh, "Range High", color = color.new(color.gray, 30), style = plot.style_circles)
+plot(rangeLow, "Range Low", color = color.new(color.gray, 30), style = plot.style_circles)
+plot(retested ? chochLevel : na, "CHOCH-Level", color = color.new(color.orange, 20), style = plot.style_circles)
+plot(fractalLevel, "Fractal-Level", color = color.new(color.purple, 20), style = plot.style_circles)
+plotshape(breakoutDir != 0 and breakoutDir[1] == 0, "Breakout erkannt", shape.triangleup,
+     location.belowbar, color = color.blue, size = size.tiny)
+plotshape(retested and not retested[1], "Retest erkannt", shape.circle,
+     location.abovebar, color = color.orange, size = size.tiny)

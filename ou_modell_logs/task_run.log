@@ -1340,3 +1340,12 @@
 2026-08-26 21:40:01   connection_error: None
 2026-08-26 21:40:01   hourly_breakdown: [{"time": "20:14", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 1, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "20:36", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "21:35", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
 2026-08-26 21:40:01 
+2026-08-26 21:40:01 [main b42dafa] OU-Modell: daily log 2026-08-26
+2026-08-26 21:40:01  5 files changed, 125 insertions(+)
+2026-08-26 21:40:01  create mode 100644 ou_modell_logs/raw/konto1_ttp/2026-08-26.log
+2026-08-26 21:40:01  create mode 100644 ou_modell_logs/raw/konto2_ttp/2026-08-26.log
+2026-08-26 21:40:01  create mode 100644 ou_modell_logs/raw/konto3_tickmill/2026-08-26.log
+2026-08-26 21:40:04 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-26 21:40:04    d832dd8..b42dafa  main -> main
+2026-08-26 21:40:04 Commit + Push erfolgreich.
+2026-08-26 21:40:04 === Task beendet ===

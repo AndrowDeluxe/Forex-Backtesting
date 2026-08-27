@@ -1192,3 +1192,14 @@
 2026-08-27 04:00:08 
 2026-08-27 04:00:08 Aktuellstes Fenster: 2026-08-26T01:00:00-04:00 -- OrderSendResult(retcode=10027, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='AutoTrading disabled by client', request_id=0, retcode_external=0, request=TradeRequest(action=5, magic=0, order=0, symbol='XAUUSD.gbe', volume=0.22, price=4673.64, stoplimit=0.0, sl=4629.73, tp=0.0, deviation=0, type=4, type_filling=1, type_time=0, expiration=0, comment='GoldASB auto', position=0, position_by=0))
 2026-08-27 04:00:08 Gespeichert: C:\Users\andre\Forex-Backtesting\gold_asb_logs\daily_log.csv
+2026-08-27 04:00:08 [main fc8de0f] Gold ASB Scan: Snapshot 2026-08-27 04:00
+2026-08-27 04:00:08  1 file changed, 11 insertions(+)
+2026-08-27 04:00:13 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-27 04:00:13    d43284f..fc8de0f  main -> main
+2026-08-27 04:00:13 Commit + Push erfolgreich.
+2026-08-27 04:00:13 === Gold-ASB-Scan-Task beendet ===
+2026-08-27 05:00:04 === Gold-ASB-Scan-Task gestartet ===
+2026-08-27 05:00:08 Gold ASB (BeyondIQCapital Demo/Eval): 11 Fenster gelesen (C:\Users\andre\GoldASB-MT5-Bridge\state\goldasb_beyondiq.sqlite3).
+2026-08-27 05:00:08 
+2026-08-27 05:00:08 Aktuellstes Fenster: 2026-08-26T01:00:00-04:00 -- OrderSendResult(retcode=10027, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='AutoTrading disabled by client', request_id=0, retcode_external=0, request=TradeRequest(action=5, magic=0, order=0, symbol='XAUUSD.gbe', volume=0.22, price=4673.64, stoplimit=0.0, sl=4629.73, tp=0.0, deviation=0, type=4, type_filling=1, type_time=0, expiration=0, comment='GoldASB auto', position=0, position_by=0))
+2026-08-27 05:00:08 Gespeichert: C:\Users\andre\Forex-Backtesting\gold_asb_logs\daily_log.csv

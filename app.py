@@ -56,9 +56,6 @@ education_kelly = st.Page(
 ou_modell = st.Page(
     "app_pages/ou_modell.py", title="OU-Modell", icon=":material/monitoring:", visibility="hidden"
 )
-orb_forward_test = st.Page(
-    "app_pages/orb_forward_test.py", title="ORB Forward-Test", icon=":material/bolt:", visibility="hidden"
-)
 fertige_strategien = st.Page(
     "app_pages/fertige_strategien.py", title="OU-Modell (finale Konfiguration)",
     icon=":material/military_tech:", visibility="hidden",
@@ -212,7 +209,7 @@ page = st.navigation(
         education,
         # hidden pages -- must still be registered so they stay routable
         education_gold_intraday, education_book_chan, education_kelly,
-        ou_modell, orb_forward_test,
+        ou_modell,
         fertige_strategien, btc_ema_cross, btc_ema_cross_live_log, cls_practical_strategy, cls_practical_live_log, ou_scanner, gold_bitcoin_dual_momentum, asian_range_breakout, gold_asb_live_log, portfolio_construction,
         presettle_breakout,
         adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook,

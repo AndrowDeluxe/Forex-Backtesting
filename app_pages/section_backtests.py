@@ -45,12 +45,6 @@ render_section(
             "tag": "BACKTEST",
         },
         {
-            "page": "app_pages/ny_open_orb_portfolio.py",
-            "title": "NY-Open ORB Portfolio",
-            "icon": ":material/bolt:",
-            "tag": "BACKTEST",
-        },
-        {
             "page": "app_pages/ou_paper_backtest.py",
             "title": "OU-Modell Paper-Backtest",
             "icon": ":material/science:",

@@ -15,12 +15,6 @@ render_section(
             "tag": "LIVE",
         },
         {
-            "page": "app_pages/orb_forward_test.py",
-            "title": "ORB Forward-Test",
-            "icon": ":material/bolt:",
-            "tag": "LIVE",
-        },
-        {
             "page": "app_pages/cls_practical_live_log.py",
             "title": "CLS Practical -- Live Log",
             "icon": ":material/rss_feed:",

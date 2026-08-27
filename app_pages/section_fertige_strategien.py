@@ -62,5 +62,11 @@ render_section(
             "icon": ":material/military_tech:",
             "tag": "STRATEGIE",
         },
+        {
+            "page": "app_pages/ny_open_orb_portfolio.py",
+            "title": "NY-Open ORB Portfolio",
+            "icon": ":material/bolt:",
+            "tag": "STRATEGIE",
+        },
     ],
 )

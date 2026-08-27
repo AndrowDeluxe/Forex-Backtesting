@@ -925,7 +925,8 @@ def _render_tab_ifund():
         unsafe_allow_html=True,
     )
 
-    section_title("Empfohlenes Portfolio (5 Strategien, ohne OU-Modell)")
+    n_legs = len(data["legs"])
+    section_title(f"Empfohlenes Portfolio ({n_legs} Strategien, ohne OU-Modell)")
     tile_row([
         ("CAGR", f"{m['cagr_pct']:+.1f}%", "good"),
         ("Sharpe", f"{m['sharpe']:.2f}", ""),
@@ -933,9 +934,11 @@ def _render_tab_ifund():
         ("Max Drawdown", f"{m['max_dd_pct']:.1f}%", "bad"),
         ("Endkapital", f"${m['final_equity']:,.0f}", "good"),
     ])
+    if "orb_integration_note" in comp:
+        st.success(comp["orb_integration_note"], icon=":material/trending_up:")
 
     section_title("Positionsgroessen-Formel (verbindlich fuer den Bot)")
-    st.code("Order-Risiko = Kapitalanteil (20%) x internes Risiko/Trade x aktueller Kontostand", language=None)
+    st.code(f"Order-Risiko = Kapitalanteil ({data['capital_weight']*100:.1f}%) x internes Risiko/Trade x aktueller Kontostand", language=None)
     st.caption(
         "Nicht `internes Risiko/Trade x Kontostand` allein -- ohne die Kapitalanteil-Verduennung wuerde jede "
         "Strategie unabhaengig bis zu ihr eigenes internes Risiko-% vom VOLLEN Konto riskieren und die "
@@ -977,7 +980,13 @@ def _render_tab_ifund():
     curve_df = pd.Series({pd.Timestamp(d): v for d, v in data["curve"]}).rename("value").rename_axis("date").reset_index()
     curve_df["Serie"] = "Empfohlenes Portfolio"
     st.altair_chart(line_chart(curve_df, {"Empfohlenes Portfolio": (C_BLUE, None)}), use_container_width=True)
-    st.caption(f"Historischer Zeitraum {cw['start']} bis {cw['end']} ({cw['days']} Tage, gemeinsames Fenster aller 5 Strategien).")
+    st.caption(f"Historischer Zeitraum {cw['start']} bis {cw['end']} ({cw['days']} Tage, gemeinsames Fenster aller {n_legs} Strategien).")
+    if "orb_portfolio_breakdown" in data:
+        ob = data["orb_portfolio_breakdown"]
+        st.caption(
+            f"ORB-Bein = {ob['weighting']} ueber {', '.join(ob['instruments'])}. "
+            f"SP500/US30: {ob['config_sp500_us30']}. NASDAQ: {ob['config_nasdaq']}."
+        )
 
     section_title("Warum OU-Modell hier NICHT dabei ist")
     st.warning(

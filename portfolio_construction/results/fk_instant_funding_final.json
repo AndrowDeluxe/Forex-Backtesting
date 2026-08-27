@@ -19,24 +19,28 @@
     "gold_silver": {
       "label": "Gold-Silber-Divergenz",
       "internal_risk_pct": 0.01
+    },
+    "orb_portfolio": {
+      "label": "NY-Open ORB Portfolio (SP500+US30+NASDAQ)",
+      "internal_risk_pct": 0.01
     }
   },
   "ctnl_edge_breakdown": {
     "continuation_risk_pct": 0.005,
     "reversal_risk_pct": 0.0015
   },
-  "capital_weight": 0.2,
+  "capital_weight": 0.1667,
   "common_window": {
     "start": "2024-08-01",
     "end": "2026-07-29",
     "days": 728
   },
   "portfolio_metrics": {
-    "final_equity": 133441.43,
-    "cagr_pct": 15.6,
-    "sharpe": 2.941,
-    "max_dd_pct": -2.04,
-    "calmar": 7.653
+    "final_equity": 140911.84,
+    "cagr_pct": 18.8,
+    "sharpe": 3.0,
+    "max_dd_pct": -1.78,
+    "calmar": 10.548
   },
   "per_leg_standalone": {
     "gold_asb": {
@@ -68,428 +72,430 @@
       "cagr_pct": 11.67,
       "sharpe": 1.373,
       "max_dd_pct": -6.59
+    },
+    "orb_portfolio": {
+      "label": "NY-Open ORB Portfolio (SP500+US30+NASDAQ)",
+      "cagr_pct": 34.72,
+      "sharpe": 1.664,
+      "max_dd_pct": -9.26
     }
   },
   "curve": [
     [
-      "2024-08-02",
-      100906.41
+      "2024-08-01",
+      99943.43
     ],
     [
-      "2024-08-09",
-      100241.14
+      "2024-08-08",
+      100368.9
     ],
     [
-      "2024-08-16",
-      102072.75
+      "2024-08-15",
+      101461.76
     ],
     [
-      "2024-08-23",
-      102072.75
+      "2024-08-22",
+      101645.75
     ],
     [
-      "2024-08-30",
-      102347.59
+      "2024-08-29",
+      102235.79
     ],
     [
-      "2024-09-06",
-      102573.53
+      "2024-09-05",
+      102037.33
     ],
     [
-      "2024-09-13",
-      103523.94
+      "2024-09-12",
+      102111.81
     ],
     [
-      "2024-09-20",
-      103995.26
+      "2024-09-19",
+      101764.92
     ],
     [
-      "2024-09-27",
-      104197.89
+      "2024-09-26",
+      103249.39
     ],
     [
-      "2024-10-04",
-      103506.15
+      "2024-10-03",
+      103293.82
     ],
     [
-      "2024-10-11",
-      102318.16
+      "2024-10-10",
+      102384.13
     ],
     [
-      "2024-10-18",
-      102816.24
+      "2024-10-17",
+      102936.88
     ],
     [
-      "2024-10-25",
-      102413.05
+      "2024-10-24",
+      102526.17
     ],
     [
-      "2024-11-01",
-      102961.26
+      "2024-10-31",
+      104119.62
     ],
     [
-      "2024-11-08",
-      102971.59
+      "2024-11-07",
+      104906.37
     ],
     [
-      "2024-11-15",
-      103926.95
+      "2024-11-14",
+      105868.26
     ],
     [
-      "2024-11-22",
-      105885.12
+      "2024-11-21",
+      107631.96
     ],
     [
-      "2024-11-29",
-      105756.15
+      "2024-11-28",
+      107892.13
     ],
     [
-      "2024-12-06",
-      106772.19
+      "2024-12-05",
+      108503.91
     ],
     [
-      "2024-12-13",
-      106456.23
+      "2024-12-12",
+      108800.09
     ],
     [
-      "2024-12-20",
-      106624.37
+      "2024-12-19",
+      108761.05
     ],
     [
-      "2024-12-27",
-      105848.09
+      "2024-12-26",
+      108503.28
     ],
     [
-      "2025-01-03",
-      105342.32
+      "2025-01-02",
+      107514.35
     ],
     [
-      "2025-01-10",
-      105658.78
+      "2025-01-09",
+      108737.32
     ],
     [
-      "2025-01-17",
-      105980.15
+      "2025-01-16",
+      108696.7
     ],
     [
-      "2025-01-24",
-      105157.89
+      "2025-01-23",
+      107829.39
     ],
     [
-      "2025-01-31",
-      106020.49
+      "2025-01-30",
+      107850.64
     ],
     [
-      "2025-02-07",
-      106674.14
+      "2025-02-06",
+      109136.51
     ],
     [
-      "2025-02-14",
-      108503.5
+      "2025-02-13",
+      110809.53
     ],
     [
-      "2025-02-21",
-      108717.99
+      "2025-02-20",
+      111349.7
     ],
     [
-      "2025-02-28",
-      108250.12
+      "2025-02-27",
+      112050.36
     ],
     [
-      "2025-03-07",
-      108003.99
+      "2025-03-06",
+      112411.62
     ],
     [
-      "2025-03-14",
-      109104.35
+      "2025-03-13",
+      112705.01
     ],
     [
-      "2025-03-21",
-      108885.92
+      "2025-03-20",
+      113447.96
     ],
     [
-      "2025-03-28",
-      108855.42
+      "2025-03-27",
+      113413.21
     ],
     [
-      "2025-04-04",
-      109509.0
+      "2025-04-03",
+      114326.46
     ],
     [
-      "2025-04-11",
-      109396.26
+      "2025-04-10",
+      114181.4
     ],
     [
-      "2025-04-18",
-      109552.49
+      "2025-04-17",
+      113931.1
     ],
     [
-      "2025-04-25",
-      110827.68
+      "2025-04-24",
+      115860.12
     ],
     [
-      "2025-05-02",
-      112514.65
+      "2025-05-01",
+      115993.37
     ],
     [
-      "2025-05-09",
-      113028.99
+      "2025-05-08",
+      116585.19
     ],
     [
-      "2025-05-16",
-      112447.93
+      "2025-05-15",
+      116980.2
     ],
     [
-      "2025-05-23",
-      112888.02
+      "2025-05-22",
+      117610.99
     ],
     [
-      "2025-05-30",
-      112297.34
+      "2025-05-29",
+      117754.48
     ],
     [
-      "2025-06-06",
-      112017.98
+      "2025-06-05",
+      117255.21
     ],
     [
-      "2025-06-13",
-      112768.63
+      "2025-06-12",
+      116972.36
     ],
     [
-      "2025-06-20",
-      113175.94
+      "2025-06-19",
+      118677.2
     ],
     [
-      "2025-06-27",
-      112908.61
+      "2025-06-26",
+      119521.64
     ],
     [
-      "2025-07-04",
-      113762.48
+      "2025-07-03",
+      120210.29
     ],
     [
-      "2025-07-11",
-      114356.58
+      "2025-07-10",
+      119603.07
     ],
     [
-      "2025-07-18",
-      114211.36
+      "2025-07-17",
+      120737.53
     ],
     [
-      "2025-07-25",
-      114776.03
+      "2025-07-24",
+      121661.51
     ],
     [
-      "2025-08-01",
-      114730.72
+      "2025-07-31",
+      121863.55
     ],
     [
-      "2025-08-08",
-      114076.99
+      "2025-08-07",
+      121687.27
     ],
     [
-      "2025-08-15",
-      113766.11
+      "2025-08-14",
+      121662.77
     ],
     [
-      "2025-08-22",
-      113726.99
+      "2025-08-21",
+      121650.7
     ],
     [
-      "2025-08-29",
-      113954.09
+      "2025-08-28",
+      121533.65
     ],
     [
-      "2025-09-05",
-      114798.01
+      "2025-09-04",
+      122077.15
     ],
     [
-      "2025-09-12",
-      114387.75
+      "2025-09-11",
+      122382.96
     ],
     [
-      "2025-09-19",
-      114785.53
+      "2025-09-18",
+      122871.4
     ],
     [
-      "2025-09-26",
-      116398.01
+      "2025-09-25",
+      124708.54
     ],
     [
-      "2025-10-03",
-      118132.77
+      "2025-10-02",
+      125686.18
     ],
     [
-      "2025-10-10",
-      118902.74
+      "2025-10-09",
+      126558.61
     ],
     [
-      "2025-10-17",
-      119814.68
+      "2025-10-16",
+      126989.45
     ],
     [
-      "2025-10-24",
-      120461.94
+      "2025-10-23",
+      127477.63
     ],
     [
-      "2025-10-31",
-      120644.98
+      "2025-10-30",
+      127344.4
     ],
     [
-      "2025-11-07",
-      120729.42
+      "2025-11-06",
+      128946.33
     ],
     [
-      "2025-11-14",
-      121510.47
+      "2025-11-13",
+      129213.06
     ],
     [
-      "2025-11-21",
-      121466.96
+      "2025-11-20",
+      130234.62
     ],
     [
-      "2025-11-28",
-      121667.69
+      "2025-11-27",
+      129763.14
     ],
     [
-      "2025-12-05",
-      120674.19
+      "2025-12-04",
+      129537.66
     ],
     [
-      "2025-12-12",
-      122231.43
+      "2025-12-11",
+      130304.13
     ],
     [
-      "2025-12-19",
-      123154.26
+      "2025-12-18",
+      131844.88
     ],
     [
-      "2025-12-26",
-      125633.65
+      "2025-12-25",
+      133206.66
     ],
     [
-      "2026-01-02",
-      124604.1
+      "2026-01-01",
+      132525.74
     ],
     [
-      "2026-01-09",
-      124942.32
+      "2026-01-08",
+      133228.35
     ],
     [
-      "2026-01-16",
-      126375.48
+      "2026-01-15",
+      134496.63
     ],
     [
-      "2026-01-23",
-      127006.59
+      "2026-01-22",
+      135365.44
     ],
     [
-      "2026-01-30",
-      127546.92
+      "2026-01-29",
+      136454.37
     ],
     [
-      "2026-02-06",
-      127808.52
+      "2026-02-05",
+      136865.7
     ],
     [
-      "2026-02-13",
-      128338.33
+      "2026-02-12",
+      137287.84
     ],
     [
-      "2026-02-20",
-      128209.74
+      "2026-02-19",
+      137116.0
     ],
     [
-      "2026-02-27",
-      128786.75
+      "2026-02-26",
+      136641.16
     ],
     [
-      "2026-03-06",
-      129450.85
+      "2026-03-05",
+      138035.31
     ],
     [
-      "2026-03-13",
-      128858.51
+      "2026-03-12",
+      137948.77
     ],
     [
-      "2026-03-20",
-      129504.63
+      "2026-03-19",
+      137291.92
     ],
     [
-      "2026-03-27",
-      129493.65
+      "2026-03-26",
+      137006.64
     ],
     [
-      "2026-04-03",
-      129493.65
+      "2026-04-02",
+      138175.66
     ],
     [
-      "2026-04-10",
-      129759.45
+      "2026-04-09",
+      138400.32
     ],
     [
-      "2026-04-17",
-      130710.06
+      "2026-04-16",
+      139312.9
     ],
     [
-      "2026-04-24",
-      130036.48
+      "2026-04-23",
+      138497.74
     ],
     [
-      "2026-05-01",
-      130095.59
+      "2026-04-30",
+      138055.22
     ],
     [
-      "2026-05-08",
-      131854.78
+      "2026-05-07",
+      138489.69
     ],
     [
-      "2026-05-15",
-      131222.47
+      "2026-05-14",
+      139662.66
     ],
     [
-      "2026-05-22",
-      131094.97
+      "2026-05-21",
+      138583.77
     ],
     [
-      "2026-05-29",
-      132450.82
+      "2026-05-28",
+      139697.99
     ],
     [
-      "2026-06-05",
-      132101.81
+      "2026-06-04",
+      139457.87
     ],
     [
-      "2026-06-12",
-      132101.81
+      "2026-06-11",
+      139279.93
     ],
     [
-      "2026-06-19",
-      133230.82
+      "2026-06-18",
+      139952.99
     ],
     [
-      "2026-06-26",
-      133230.82
+      "2026-06-25",
+      140640.56
     ],
     [
-      "2026-07-03",
-      133230.82
+      "2026-07-02",
+      140943.22
     ],
     [
-      "2026-07-10",
-      132520.51
+      "2026-07-09",
+      140391.53
     ],
     [
-      "2026-07-17",
-      133225.92
+      "2026-07-16",
+      140368.93
     ],
     [
-      "2026-07-24",
-      133472.28
-    ],
-    [
-      "2026-07-31",
-      133441.43
+      "2026-07-23",
+      141342.0
     ]
   ],
   "instant_funding_rules": {
@@ -500,14 +506,15 @@
   "rule_compliance": {
     "position_sizing_formula": "risk_dollars = capital_weight * internal_risk_pct * current_account_equity",
     "real_risk_per_trade_pct_of_account": {
-      "gold_asb": 0.4,
-      "cls_practical": 0.3,
-      "trend_pullback": 0.1,
-      "ctnl_continuation": 0.1,
-      "ctnl_reversal": 0.03,
-      "gold_silver": 0.2
+      "gold_asb": 0.333,
+      "cls_practical": 0.25,
+      "trend_pullback": 0.083,
+      "ctnl_continuation": 0.083,
+      "ctnl_reversal": 0.025,
+      "gold_silver": 0.167,
+      "orb_portfolio": 0.167
     },
-    "trailing_dd_breach_prob": 0.002,
+    "trailing_dd_breach_prob": 0.0,
     "ou_modell_excluded_reason": "Treiber des Drawdown-Bruchs (viele gleichzeitig offene Positionen erzeugen die groessten Drawdown-Spitzen); das Weglassen senkte den Trailing-DD-Bruch von 14,4% auf 0,2%.",
     "tested_and_rejected_fixes": [
       {
@@ -527,36 +534,31 @@
         "result": "keine nennenswerte Verbesserung (Bruch blieb bei ~99,4-100%)."
       }
     ],
-    "conclusion": "Neu bewertet (Payout-Sperre statt Konto-Schliessung): Die Wahrscheinlichkeit, dass das Verhaeltnis AN EINEM GEGEBENEN TAG <= 30% liegt (= Auszahlung an diesem Tag waere zulaessig), steigt mit dem Kontoalter monoton von praktisch 0% in den ersten Wochen auf 90% nach ca. 217 Tagen (~7 Monate), 95% nach ca. 261 Tagen (~9 Monate) und 99% nach ca. 368 Tagen (~12 Monate). Der fruehe Einbruch (Tag 20-45: Bruch-Wahrscheinlichkeit steigt sogar zunaechst auf ueber 78%) ist der mathematisch unvermeidliche Konto-Alter-Effekt: der erste grosse Einzeltag dominiert die noch kleine Gewinnbasis. Praktische Konsequenz: in den ersten ~6-7 Monaten Auszahlungen eher meiden/zuruckstellen und erst beantragen, wenn das Verhaeltnis aktuell unter 30% liegt -- das Konto bleibt in der Zwischenzeit unter der Trailing-DD-Regel weiter regelkonform (0,2% Bruchwahrscheinlichkeit, siehe oben) und handelbar, nur Auszahlungen sollten zeitlich gezielt beantragt werden.",
+    "conclusion": "Neu bewertet (Payout-Sperre statt Konto-Schliessung, jetzt inkl. ORB als 6. Bein): Die Wahrscheinlichkeit, dass das Verhaeltnis AN EINEM GEGEBENEN TAG <= 30% liegt (= Auszahlung an diesem Tag waere zulaessig), steigt mit dem Kontoalter monoton von praktisch 0% in den ersten Wochen auf 90% nach ca. 148 Tagen (~5 Monate), 95% nach ca. 175 Tagen (~6 Monate) und 99% nach ca. 233 Tagen (~7,7 Monate) -- schneller als ohne ORB (217/261/368 Tage), weil ORBs zusaetzlicher Profit die kumulierte Gewinnbasis schneller waechst laesst. Praktische Konsequenz unveraendert: in den ersten Monaten Auszahlungen eher zeitlich gezielt beantragen statt automatisch, das Konto bleibt unter der Trailing-DD-Regel durchgehend regelkonform (0,0% Bruchwahrscheinlichkeit).",
     "consistency_note_payout_only": "Ein Bruch der 30%-Regel verweigert laut Nutzer-Recherche nur die naechste Auszahlung, schliesst das Konto NICHT wie die DD-Regel. Die ENTSCHEIDENDE Frage ist daher nicht mehr die alte kumulierte Jemals-gebrochen-Wahrscheinlichkeit (Worst-Case-Annahme, siehe unten), sondern: Wie wahrscheinlich ist das Verhaeltnis GENAU AN EINEM GEGEBENEN TAG (z.B. beim Auszahlungsantrag) <= 30%?",
     "consistency_compliant_point_in_time_by_account_age_days": {
-      "10": 0.002,
-      "20": 0.0423,
-      "30": 0.0467,
-      "45": 0.1003,
-      "60": 0.1733,
-      "90": 0.3993,
-      "120": 0.587,
-      "150": 0.7253,
-      "180": 0.8187,
-      "210": 0.8897,
-      "240": 0.9337,
-      "270": 0.957,
-      "300": 0.9713,
-      "350": 0.9867,
-      "400": 0.996,
-      "450": 0.9993,
-      "500": 0.9997,
-      "550": 1.0,
-      "600": 0.9997,
-      "650": 1.0
+      "10": 0.0023333333333333335,
+      "20": 0.03166666666666667,
+      "30": 0.1,
+      "45": 0.234,
+      "60": 0.379,
+      "90": 0.6343333333333333,
+      "120": 0.8076666666666666,
+      "150": 0.9083333333333333,
+      "180": 0.9593333333333334,
+      "210": 0.981,
+      "240": 0.9926666666666667,
+      "270": 0.997,
+      "300": 0.999,
+      "350": 0.9996666666666667,
+      "400": 1.0,
+      "450": 1.0,
+      "500": 1.0
     },
     "consistency_payout_milestones_days": {
-      "p50": 106,
-      "p80": 174,
-      "p90": 217,
-      "p95": 261,
-      "p99": 368
+      "p90": 148,
+      "p95": 175,
+      "p99": 233
     },
     "consistency_breach_by_account_age_days_LEGACY_worst_case": {
       "20": 0.996,
@@ -566,6 +568,17 @@
       "250": 0.086,
       "350": 0.021,
       "450": 0.004
-    }
+    },
+    "orb_integration_note": "ORB (2026-08-27 auf Nutzerwunsch integriert) verbessert alle Kennzahlen gleichzeitig: CAGR 15,6%->18,8%, MaxDD -2,04%->-1,78% (kleiner!), Sharpe 2,94->3,00, Calmar 7,65->10,55, Trailing-DD-Bruchwahrscheinlichkeit 0,2%->0,0%, Konsistenz-Meilensteine schneller erreicht (90%/95%/99% jetzt bei Tag 148/175/233 statt 217/261/368). Kapitalanteil je Bein sinkt von 20% auf 16,67% (jetzt 6 statt 5 gleichgewichtete Beine)."
+  },
+  "orb_portfolio_breakdown": {
+    "instruments": [
+      "SP500",
+      "US30",
+      "NASDAQ"
+    ],
+    "weighting": "gleichgewichtet (1/3 je Instrument)",
+    "config_sp500_us30": "stop_breakout, range_bars=1, long-only, EMA-Ribbon-Bias neutral, ATR-Stop 0.6x, Target 4R",
+    "config_nasdaq": "stop_breakout, range_bars=1, long+short, ohne Mittwoch, ATR-Stop 0.6x, Target 4R"
   }
 }

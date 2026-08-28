@@ -3294,10 +3294,10 @@
       "entry_time": "2026-08-28T12:15:00-04:00",
       "direction": 1,
       "entry_price": 4499.57411,
-      "exit_time": "2026-08-28T16:15:00-04:00",
-      "exit_price": 4456.0618620000005,
+      "exit_time": "2026-08-28T16:30:00-04:00",
+      "exit_price": 4455.022278,
       "exit_reason": "data_end",
-      "r_multiple": -0.8679068236003088,
+      "r_multiple": -0.8886426414166122,
       "notified_exit": false
     },
     "reversal_2026-08-28T12:30:00-04:00_1": {
@@ -3305,10 +3305,10 @@
       "entry_time": "2026-08-28T12:30:00-04:00",
       "direction": 1,
       "entry_price": 4482.557306000001,
-      "exit_time": "2026-08-28T16:15:00-04:00",
-      "exit_price": 4456.0618620000005,
+      "exit_time": "2026-08-28T16:30:00-04:00",
+      "exit_price": 4455.022278,
       "exit_reason": "data_end",
-      "r_multiple": -0.39495503867358794,
+      "r_multiple": -0.4104516251404719,
       "notified_exit": false
     },
     "reversal_2026-08-28T12:45:00-04:00_1": {
@@ -3316,10 +3316,10 @@
       "entry_time": "2026-08-28T12:45:00-04:00",
       "direction": 1,
       "entry_price": 4470.602526,
-      "exit_time": "2026-08-28T16:15:00-04:00",
-      "exit_price": 4456.0618620000005,
+      "exit_time": "2026-08-28T16:30:00-04:00",
+      "exit_price": 4455.022278,
       "exit_reason": "data_end",
-      "r_multiple": -0.27460335620567305,
+      "r_multiple": -0.29423610856538396,
       "notified_exit": false
     },
     "reversal_2026-08-28T13:00:00-04:00_1": {
@@ -3327,10 +3327,10 @@
       "entry_time": "2026-08-28T13:00:00-04:00",
       "direction": 1,
       "entry_price": 4480.9766740000005,
-      "exit_time": "2026-08-28T16:15:00-04:00",
-      "exit_price": 4456.0618620000005,
+      "exit_time": "2026-08-28T16:30:00-04:00",
+      "exit_price": 4455.022278,
       "exit_reason": "data_end",
-      "r_multiple": -0.41610544732693355,
+      "r_multiple": -0.4334676720691458,
       "notified_exit": false
     }
   },

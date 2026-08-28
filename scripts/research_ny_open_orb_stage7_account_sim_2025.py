@@ -24,10 +24,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "ou_paper_backtest"))
 
 import numpy as np
 import pandas as pd
 from gold_smc_htf_ltf.concurrent_backtest import equity_curve_to_daily_returns, simulate_combined_account
+from monte_carlo import run_monte_carlo
 
 from ny_open_orb import filters, regime
 from ny_open_orb.data import fetch_m15, fetch_m5
@@ -112,6 +114,26 @@ def main():
         for ts, val in eq_yearly.items():
             print(f"  {ts.year}: ${val:>12,.0f}  ({(val / prev - 1):+7.1%} ggue. Vorjahresende)")
             prev = val
+
+        print(f"\n{'=' * 90}")
+        print("Monte Carlo (zirkulaerer Block-Bootstrap, block_size=20, n_sims=2000, seed=42)")
+        print("auf genau dieser $100k-Trade-Sequenz - nicht nur EIN realisierter Pfad")
+        print(f"{'=' * 90}")
+        mc = run_monte_carlo(daily, initial_equity=STARTING_EQUITY, block_size=20, n_sims=2000, seed=42)
+        s = mc["summary"]
+        for pct in (5, 25, 50, 75, 95):
+            print(
+                f"  p{pct:>2}: End-Equity=${STARTING_EQUITY * (1 + np.percentile(s['total_return_pct'], pct) / 100):>12,.0f}  "
+                f"total_return={np.percentile(s['total_return_pct'], pct):>7.1f}%  "
+                f"max_drawdown={np.percentile(s['max_drawdown_pct'], pct):>7.1f}%  "
+                f"sharpe={np.percentile(s['sharpe'], pct):>5.2f}"
+            )
+        for limit in (10.0, 16.0, 25.0, 35.0):
+            print(f"  P(MaxDD > {limit:.0f}%) = {(s['max_drawdown_pct'] < -limit).mean():.1%}")
+        realized_return_pct = (sim["final_equity"] / STARTING_EQUITY - 1) * 100
+        realized_percentile = (s["total_return_pct"] < realized_return_pct).mean() * 100
+        print(f"\n  Realisierter Pfad (+{realized_return_pct:.0f}%) liegt am p{realized_percentile:.0f} der simulierten Verteilung.")
+        print(f"  Median Sharpe (MC): {np.median(s['sharpe']):.2f}   Median Calmar (MC): {np.nanmedian(s['calmar']):.2f}")
 
 
 if __name__ == "__main__":

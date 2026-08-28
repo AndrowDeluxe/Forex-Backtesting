@@ -517,6 +517,31 @@ SP500 84 Trades/46.4% Win/+$53.359, US30 95 Trades/37.9% Win/+$19.385.
   erneut die schon dokumentierte Intermittenz (nicht deterministisch an
   Instrument/Zeitraum gebunden).
 
+**Monte Carlo auf genau dieser $100k-Trade-Sequenz** (zirkulaerer
+Block-Bootstrap, block_size=20, n_sims=2000, seed=42, direkt auf den
+Tagesrenditen des echten Konto-Equity-Verlaufs - nicht nur ein
+realisierter Pfad):
+
+| Perzentil | End-Equity | Total Return | Max Drawdown | Sharpe |
+|---|---|---|---|---|
+| p5 | $132.389 | +32.4% | -28.0% | 0.48 |
+| p25 | $190.334 | +90.3% | -21.5% | 1.13 |
+| **p50** | **$241.759** | **+141.8%** | **-17.8%** | 1.59 |
+| p75 | $306.698 | +206.7% | -15.0% | 2.06 |
+| p95 | $432.817 | +332.8% | -12.0% | 2.83 |
+
+- **Der realisierte Pfad (+141%) liegt praktisch exakt am Median (p50)** der
+  simulierten Verteilung - das ist KEIN Glueckspfad, sondern repraesentativ
+  fuer diese Trade-Sequenz. Die 44% CAGR sind also keine Zufalls-Reihenfolge.
+- **Der Drawdown ist die eigentliche Erkenntnis**: die real erlebten -16%
+  sind selbst ziemlich typisch (Median-MaxDD ueber alle Simulationen: -17.8%,
+  sogar leicht schlechter). P(MaxDD>10%)=**99.6%**, P(MaxDD>16%)=66.5%,
+  P(MaxDD>25%)=11.2%, P(MaxDD>35%)=0.9%. Ein 10%+-Drawdown ist bei dieser
+  Risikokonfiguration (1% je Instrument, bis zu 3% gleichzeitig gestapelt)
+  praktisch GARANTIERT, kein Tail-Event - wer das live faehrt, sollte
+  psychologisch/kapitalseitig auf 20%+ als normalen, nicht seltenen
+  Vorfall vorbereitet sein, nicht nur auf die zufaellig milden -16%.
+
 ## Fazit (Gesamtprojekt nach Stage 4)
 
 **Finale Config**: `stop_breakout`, `range_bars=1` (15-Min-Range), **M5-Ausfuehrung**,

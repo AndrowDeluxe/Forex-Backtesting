@@ -43,33 +43,33 @@
     "ctnl_reversal__2026-08-28T16:15:00_1": {
       "leg": "ctnl_reversal",
       "entry_time": "2026-08-28T16:15:00",
-      "exit_time": "2026-08-28T20:15:00",
+      "exit_time": "2026-08-28T20:45:00",
       "exit_reason": "data_end",
-      "r_multiple": -0.8679068236003088,
+      "r_multiple": -1.023026691495357,
       "notified_exit": false
     },
     "ctnl_reversal__2026-08-28T16:30:00_1": {
       "leg": "ctnl_reversal",
       "entry_time": "2026-08-28T16:30:00",
-      "exit_time": "2026-08-28T20:15:00",
+      "exit_time": "2026-08-28T20:45:00",
       "exit_reason": "data_end",
-      "r_multiple": -0.39495503867358794,
+      "r_multiple": -0.5108814258970152,
       "notified_exit": false
     },
     "ctnl_reversal__2026-08-28T16:45:00_1": {
       "leg": "ctnl_reversal",
       "entry_time": "2026-08-28T16:45:00",
-      "exit_time": "2026-08-28T20:15:00",
+      "exit_time": "2026-08-28T20:45:00",
       "exit_reason": "data_end",
-      "r_multiple": -0.27460335620567305,
+      "r_multiple": -0.4214714459735187,
       "notified_exit": false
     },
     "ctnl_reversal__2026-08-28T17:00:00_1": {
       "leg": "ctnl_reversal",
       "entry_time": "2026-08-28T17:00:00",
-      "exit_time": "2026-08-28T20:15:00",
+      "exit_time": "2026-08-28T20:45:00",
       "exit_reason": "data_end",
-      "r_multiple": -0.41610544732693355,
+      "r_multiple": -0.5459882439561828,
       "notified_exit": false
     },
     "orb_nasdaq_NASDAQ_2026-08-28T13:45:00_1": {
@@ -82,10 +82,10 @@
     }
   },
   "kill_switch_active": false,
-  "last_heartbeat_hour": "2026-08-28 20",
+  "last_heartbeat_hour": "2026-08-28 21",
   "eod_equity": {
     "2026-08-27T00:00:00": 99952.73840853585,
-    "2026-08-28T00:00:00": 99754.15595621412
+    "2026-08-28T00:00:00": 99743.90944023391
   },
   "account_start": "2026-08-27T21:25:05.852674",
   "ou_notified_dates": [

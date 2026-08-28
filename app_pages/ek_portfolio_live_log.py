@@ -58,14 +58,15 @@ current_dd = float(heartbeat["current_dd"].iloc[-1]) if not heartbeat.empty else
 total_return_pct = (current_equity / STARTING_EQUITY - 1) * 100
 
 st.markdown("### Aktueller Status")
-cols = st.columns(5)
+cols = st.columns(4)
 cols[0].metric("Equity", f"${current_equity:,.0f}", f"{total_return_pct:+.2f}%")
 cols[1].metric("Trailing-DD", f"{current_dd:.2%}", help="EOD-Floor: 20% unter dem bisherigen Hoechststand -- Kill-Switch pausiert neue Entries bei Bruch.")
 cols[2].metric("Kill-Switch", "AKTIV" if state.get("kill_switch_active") else "ok",
                delta_color="inverse" if state.get("kill_switch_active") else "normal")
 cols[3].metric("Trades (7 Beine)", len(state.get("trades", {})))
 account_start = state.get("account_start")
-cols[4].metric("Konto-Start", pd.Timestamp(account_start).strftime("%Y-%m-%d %H:%M") if account_start else "--")
+if account_start:
+    st.caption(f"Konto-Start (Papier-Beine): {pd.Timestamp(account_start).strftime('%Y-%m-%d %H:%M')}")
 
 st.divider()
 st.markdown("### :material/timeline: Equity-Kurve (stuendliche Heartbeats)")

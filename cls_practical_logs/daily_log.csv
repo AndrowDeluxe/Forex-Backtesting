@@ -10,3 +10,4 @@ date,break_direction,holds_0915,cross_confirmed,rate_risk_multiplier,rate_risk_m
 2026-08-25,,,,,,,False,,,,,,,heute noch keine vollstaendige Settle-Range (vor 09:00 Berlin?)
 2026-08-26,,,,,,,False,,,,,,,heute noch keine vollstaendige Settle-Range (vor 09:00 Berlin?)
 2026-08-27,short,False,True,1.0,1.0,1.0,False,,,,,,,
+2026-08-28,short,True,True,1.0,1.0,1.0,False,,,,,,,

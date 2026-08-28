@@ -1,65 +1,67 @@
-"""FK Instant Funding - Paper-Forward-Test-Bot (2026-08-25).
+"""Challenge-Portfolio - Paper-Forward-Test-Bot fuer TTP und IQ Markets/"I Capital"
+(2026-08-27).
 
-NICHT der echte Order-Ausfuehrer. Voellig NEUES, separates Modul -- ruehrt an
-KEINER Stelle die vier bestehenden, bereits live laufenden Bridges an
-(GoldASB-MT5-Bridge, CLS-Practical-Bridge, TrendPullback-Bot,
-CTNL-Edge-MT5-Bridge), die weiterhin unabhaengig auf ihren eigenen Konten mit
-vollem Kapitalzugriff traden. Dieser Bot ist reine Paper-Simulation +
-Telegram-Alerts fuer das GEMEINSAME 100k-Instant-Funding-Konto (5 Beine:
-Gold ASB, CLS Practical, Trend Pullback, CTNL Edge [Continuation+Reversal],
-Gold-Silber-Divergenz), bis eine bewusste, separate Entscheidung fuer echte
-Order-Ausfuehrung gegen ein gemeinsames Konto getroffen wird -- Architektur-
-Vorbild: gold_smc_htf_ltf/paper_bot.py.
+NICHT der echte Order-Ausfuehrer. Getrennt von den bereits live laufenden
+Solo-Bots (OU-Modell-MT5-Bridge auf den echten TTP-Konten konto1_ttp/
+konto2_ttp, CTNL-Edge-MT5-Bridge auf dem echten BeyondIQCapital/IQ-Markets-
+Konto) -- ruehrt an KEINER Stelle deren Order-Ausfuehrung an. Dieser Bot ist
+reine Paper-Simulation + Telegram-Alerts fuer den vollen 6-Bein-FK-Blend
+(Gold ASB, CLS Practical, Trend Pullback, CTNL Edge [Continuation+Reversal],
+OU-Modell [TTP-handelbare Teilmenge], NY-Open ORB [SP500+US30+NASDAQ]) auf
+ZWEI virtuellen 100k-Konten -- eines je Zielfirma/Regelwerk -- bis eine
+bewusste, separate Entscheidung fuer echte Order-Ausfuehrung getroffen wird.
+Architektur-Vorbild: fk_instant_funding/paper_bot.py (das selbst gold_smc_htf_
+ltf/paper_bot.py als Vorbild nennt).
+
+Roster/Risikostufen aus scripts/research_challenge_portfolio_6leg.py
+(2026-08-27, portfolio_construction/results/challenge_portfolio_6leg.json):
+6 Beine gleichgewichtet (1/6 Kapitalanteil je Bein) schlagen die 5-Bein-
+Baseline OHNE ORB auf BEIDEN Regelwerken gleichzeitig (hoehere CAGR,
+niedrigerer MaxDD, niedrigere Bruchwahrscheinlichkeit, schnelleres Ziel) --
+siehe JSON fuer die vollen Zahlen. ORB war zuvor bewusst ausgeschlossen
+("keine Evidenz, dass TTP/IQ Markets die Instrumente anbieten") -- auf
+Nutzerwunsch (2026-08-27) jetzt aufgenommen, Broker-Verfuegbarkeit bleibt vor
+echtem Livegang zu pruefen.
+
+Beide Konten sehen DIESELBEN Trades (identischer Signal-Strom, identische
+Kapitalanteil-Verduennungsformel: risk_dollars = CAPITAL_WEIGHT (1/6) x
+internes Risiko/Trade x aktuelle SHARED-Equity, gedeckelt auf 1% des
+STARTKAPITALS -- erfuellt IQ Markets' explizite 1%-Positionsgrenze strukturell,
+nicht nur zufaellig) -- ein einziger gemeinsamer Trade-Log/Equity-Verlauf
+reicht deshalb; NUR die Regel-Auswertung (Tageslimit/Gesamt-Drawdown/
+Zielschwelle) unterscheidet sich je Konto:
+
+  - TTP:       Tageslimit -3% (Tages-Reset, pausiert NEUE Entries fuer den
+               Rest des Handelstags), Gesamt-Drawdown -7% (harter, manuell
+               zurueckzusetzender Kill-Switch), Ziel +10%.
+  - IQ Markets: kein Tageslimit, Gesamt-Drawdown -6% (harter Kill-Switch),
+               Ziel +8%. Positionslimit 1% strukturell erfuellt (s.o.).
 
 Jeder Scan laesst die ECHTEN, bereits validierten Signal-Engines jeder
 Strategie frisch auf einem strategie-eigenen Trailing-Fenster laufen (keine
 Logik-Duplizierung), gleicht das Ergebnis gegen den PERSISTIERTEN
-Trade-Verlauf ab (fk_instant_funding_logs/paper_state.json) und baut daraus
-EINE gemeinsame, sequenziell kompoundierende Paper-Equity-Kurve mit der
-Kapitalanteil-Verduennungsformel (siehe portfolio_construction/results/
-fk_instant_funding_final.json):
-
-    risk_dollars = CAPITAL_WEIGHT (20%) x internes Risiko/Trade x aktuelle
-                   SHARED-Equity, GEDECKELT auf 0.5% des STARTKAPITALS
-
-Der Deckel ist neu ggue. dem reinen Backtest: die 0,5%-Regel bezieht sich
-laut Regelwerk explizit auf das STARTKAPITAL (fester Dollar-Betrag), waehrend
-die Positionsgroessen-Formel bewusst mit der AKTUELLEN Equity mitwaechst
-(damit das Konto compoundet). Ohne Deckel wuerde ein wachsendes Konto
-irgendwann automatisch ueber die 0,5%-Grenze hinauswachsen (bei den hier
-verwendeten Risikostufen z.B. sobald die Equity sich verdoppelt hat) -- ein
-im reinen historischen Backtest nicht sichtbarer, aber realer Compliance-
-Risiko, das dieser Bot durch den Deckel aktiv verhindert.
-
-Ueberwacht alle drei Instant-Funding-Regeln:
-1. Max. Verlust/Trade 0,5% vom Startkapital (harter Sizing-Deckel, s.o.)
-2. Trailing-Drawdown 5% (End-of-Day gegen den bisherigen Hoechststand,
-   Floor bewegt sich nur nach oben) -- Kill-Switch, pausiert neue Entries
-3. Konsistenzregel 30% (bester Einzeltag / kumulierter Gesamtgewinn) -- laut
-   Nutzer-Recherche verweigert ein Bruch nur die naechste Auszahlung, schliesst
-   das Konto NICHT. Daher kein Kill-Switch, sondern ein Auszahlungs-Ampel-
-   Status (siehe portfolio_construction.py-Tab "FK Instant Funding" fuer die
-   Punkt-in-Zeit-Wahrscheinlichkeitskurve, auf der dieser Live-Check beruht)."""
+Trade-Verlauf ab (challenge_portfolio_logs/paper_state.json) und baut daraus
+EINE gemeinsame, sequenziell kompoundierende Paper-Equity-Kurve, gegen die
+BEIDE Regelwerke unabhaengig ausgewertet werden."""
 
 import json
+import sys
 import time
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
-from fk_instant_funding.telegram_notify import send_telegram_message
+from challenge_portfolio.telegram_notify import send_telegram_message
 from strategy.backtest import BacktestConfig, simulate_trades
 
 
 def _retry(fn, attempts: int = 3, delay_seconds: float = 5.0):
     """dukascopy_python's Streaming-Client wirft gelegentlich ein KeyError(0)
     tief in seiner eigenen _stream()-Cursor-Logik, wenn end nah an "jetzt"
-    liegt (reproduzierbar bei fast jedem Live-Abruf bis zum aktuellen
-    Moment, siehe Traceback ueber dukascopy_python/__init__.py:209) --
-    bekannte Instabilitaet der Drittanbieter-Bibliothek, kein Fehler in
-    unserem Code. Ein einfacher Retry reicht empirisch aus (der zweite oder
-    dritte Versuch kommt fast immer durch)."""
+    liegt -- bekannte Instabilitaet der Drittanbieter-Bibliothek, kein Fehler
+    in unserem Code (identisches Muster wie fk_instant_funding/paper_bot.py).
+    Ein einfacher Retry reicht empirisch aus."""
     last_exc = None
     for attempt in range(attempts):
         try:
@@ -70,49 +72,47 @@ def _retry(fn, attempts: int = 3, delay_seconds: float = 5.0):
                 time.sleep(delay_seconds)
     raise last_exc
 
+
 REPO_DIR = Path(__file__).resolve().parents[1]
-LOG_DIR = REPO_DIR / "fk_instant_funding_logs"
+LOG_DIR = REPO_DIR / "challenge_portfolio_logs"
 STATE_PATH = LOG_DIR / "paper_state.json"
 HEARTBEAT_CSV = LOG_DIR / "heartbeat.csv"
 
-STARTING_EQUITY = 100_000.0  # Platzhalter -- vor echtem Livegang auf die reale Kontogroesse setzen
-CAPITAL_WEIGHT = 1 / 6  # je Bein, 6 gleichgewichtete Beine (CTNL Continuation+Reversal teilen sich EIN Bein,
-# die 3 ORB-Instrumente teilen sich ebenfalls EIN Bein -- siehe ORB_RISK_PCT_PER_INSTRUMENT unten)
+STARTING_EQUITY = 100_000.0  # Platzhalter je virtuellem Konto -- vor echtem Livegang auf die reale Kontogroesse setzen
+CAPITAL_WEIGHT = 1 / 6  # 6 gleichgewichtete Beine (CTNL teilt sich EIN Bein ueber Continuation+Reversal,
+# ORB teilt sich EIN Bein ueber SP500/US30/NASDAQ -- siehe ORB_RISK_PCT_PER_INSTRUMENT unten)
+MAX_POSITION_RISK_PCT = 0.01  # vom STARTKAPITAL -- erfuellt IQ Markets' 1%-Positionslimit strukturell (Hard-Cap-Backstop)
+MAX_POSITION_RISK_DOLLARS = MAX_POSITION_RISK_PCT * STARTING_EQUITY
 
-MAX_POSITION_LOSS_PCT = 0.005   # vom STARTKAPITAL (fester Dollar-Deckel, siehe Docstring)
-TRAILING_DD_PCT = 0.05          # End-of-Day, gegen den bisherigen Hoechststand
-CONSISTENCY_CAP_PCT = 0.30      # bester Einzeltag / kumulierter Gesamtgewinn
-DAILY_SUMMARY_HOUR = 21         # lokale Zeit - erster Lauf nach dieser Stunde sendet den Tagesabschluss
-
-# interne Risikostufen je Bein, identisch zu portfolio_construction/results/fk_instant_funding_final.json
-ORB_COMBINED_RISK_PCT = 0.01  # "ORB Portfolio"-Bein gesamt, gleichgewichtet ueber 3 Instrumente (siehe unten)
-ORB_RISK_PCT_PER_INSTRUMENT = ORB_COMBINED_RISK_PCT / 3  # exakt die Backtest-Konvention (combined += ret/3)
+ORB_COMBINED_RISK_PCT = 0.01  # "ORB Portfolio"-Bein gesamt, gleichgewichtet ueber 3 Instrumente
+ORB_RISK_PCT_PER_INSTRUMENT = ORB_COMBINED_RISK_PCT / 3
 LEG_RISK_PCT = {
     "gold_asb": 0.02,
     "cls_practical": 0.015,
     "trend_pullback": 0.005,
     "ctnl_continuation": 0.005,
     "ctnl_reversal": 0.0015,
-    "gold_silver": 0.01,
+    "ou_modell": 0.01,
     "orb_sp500": ORB_RISK_PCT_PER_INSTRUMENT,
     "orb_us30": ORB_RISK_PCT_PER_INSTRUMENT,
     "orb_nasdaq": ORB_RISK_PCT_PER_INSTRUMENT,
 }
 LEG_LABELS = {
     "gold_asb": "Gold ASB", "cls_practical": "CLS Practical", "trend_pullback": "Trend Pullback",
-    "ctnl_continuation": "CTNL Continuation", "ctnl_reversal": "CTNL Reversal", "gold_silver": "Gold-Silber-Divergenz",
+    "ctnl_continuation": "CTNL Continuation", "ctnl_reversal": "CTNL Reversal", "ou_modell": "OU-Modell (TTP-Teilmenge)",
     "orb_sp500": "NY-Open ORB (SP500)", "orb_us30": "NY-Open ORB (US30)", "orb_nasdaq": "NY-Open ORB (NASDAQ)",
 }
-MAX_POSITION_LOSS_DOLLARS = MAX_POSITION_LOSS_PCT * STARTING_EQUITY
+
+RULES = {
+    "ttp": {"daily_loss_cap": 0.03, "total_dd_cap": 0.07, "target_gain": 0.10, "label": "TTP"},
+    "iqmarkets": {"daily_loss_cap": None, "total_dd_cap": 0.06, "target_gain": 0.08, "label": "IQ Markets"},
+}
 
 
 def _utc_naive(x):
-    """Jede der 5 Strategien liefert Zeitstempel in einer ANDEREN Zeitzone-
-    Konvention (Gold ASB: America/New_York, CLS Practical: Europe/Berlin,
-    Trend Pullback/Gold-Silber-Divergenz: UTC, CTNL: America/New_York) --
-    ohne Normalisierung crasht jeder Vergleich mit dem tz-naiven `end`
-    (tz-aware vs. tz-naive Timestamp-Vergleich ist in pandas ein TypeError,
-    kein stiller Fehler). Konvertiert konsistent nach UTC, dann tz-naiv."""
+    """Jede Strategie liefert Zeitstempel in einer ANDEREN Zeitzone-Konvention
+    -- ohne Normalisierung crasht jeder Vergleich mit dem tz-naiven `end`
+    (identisches Muster wie fk_instant_funding/paper_bot.py)."""
     if isinstance(x, pd.DatetimeIndex):
         return x.tz_convert("UTC").tz_localize(None) if x.tz is not None else x
     s = pd.to_datetime(x, utc=True)
@@ -120,12 +120,19 @@ def _utc_naive(x):
 
 
 def _default_state() -> dict:
-    return {"trades": {}, "kill_switch_active": False, "last_heartbeat_hour": None, "eod_equity": {}, "account_start": None}
+    return {
+        "trades": {}, "account_start": None, "last_heartbeat_hour": None,
+        "ttp": {"eod_equity": {}, "kill_switch_active": False, "daily_paused": False, "target_reached": False},
+        "iqmarkets": {"kill_switch_active": False, "target_reached": False},
+    }
 
 
 def load_state() -> dict:
     if STATE_PATH.exists():
-        return json.loads(STATE_PATH.read_text(encoding="utf-8"))
+        state = json.loads(STATE_PATH.read_text(encoding="utf-8"))
+        for key, default in _default_state().items():
+            state.setdefault(key, default)
+        return state
     return _default_state()
 
 
@@ -138,7 +145,10 @@ def save_state(state: dict) -> None:
 # Jede Funktion laesst die ECHTE, bereits validierte Engine der Strategie auf
 # einem eigenen Trailing-Fenster laufen und liefert eine Trades-DataFrame mit
 # mindestens entry_time/exit_time/r_multiple/exit_reason -- identisch zum
-# Backtest, keine zweite Implementierung der Entry/Exit-Regeln.
+# Backtest, keine zweite Implementierung der Entry/Exit-Regeln. Gold ASB, CLS
+# Practical, Trend Pullback, CTNL und ORB sind 1:1 aus fk_instant_funding/
+# paper_bot.py uebernommen (dort bereits validiert) -- nur OU-Modell ist neu,
+# da FK Instant Funding dieses Bein nicht enthaelt.
 
 GOLD_ASB_HISTORY_START = "2016-01-01"  # identisch zu app_pages/asian_range_breakout.py START -- die
 # Liquiditaets-Filterschwelle ist eine EXPANDING Quantile ueber die volle Historie (min_periods=250
@@ -152,15 +162,6 @@ GOLD_ASB_MAX_DELAY_BARS = 3
 
 
 def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
-    """Repliziert die fuenf produktiv validierten Live-Filter der echten
-    GoldASB-MT5-Bridge (ADX, Trend-Bias, Fuellverzoegerung, Silber-Alignment,
-    Liquiditaet -- siehe GoldASB-MT5-Bridge/config.py, Parameter dort mit
-    dieser Reihenfolge/diesen Werten identisch) statt des rohen, ungefilterten
-    Signals -- Parameter und Filterkette 1:1 aus app_pages/asian_range_
-    breakout.py uebernommen (dieselben apply_*_filter-Funktionen, die laut
-    config.py-Docstring bereits gegen die Bridge abgeglichen wurden), nicht
-    neu erfunden. Volle Historie seit GOLD_ASB_HISTORY_START noetig, weil die
-    Liquiditaets-Schwelle eine expanding Quantile ist (siehe Konstante oben)."""
     from asian_range_breakout.data import fetch_gold_m15
     from asian_range_breakout.engine import simulate_asian_breakout
     from asian_range_breakout.filters import (
@@ -171,15 +172,6 @@ def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
     from bond_yield_indicator.friction import fetch_fx_friction
     from combined_strategy.data import fetch_timeframe
 
-    # fetch_timeframe() cached unter dem exakten (start, end)-Datumspaar
-    # (combined_strategy/data.py::_cache_path) -- mit end=jetzt wuerde JEDER
-    # stuendliche Lauf einen NEUEN Cache-Schluessel erzeugen und die vollen
-    # ~10 Jahre M15-Gold/Silber komplett frisch von Dukascopy herunterladen
-    # (langsam UND die Ursache der beobachteten "KeyError: 0"/Streaming-
-    # Aussetzer in der dukascopy_python-Bibliothek bei Live-Abrufen bis genau
-    # jetzt). Fix: alte, laengst abgeschlossene Historie bis GESTERN cachen
-    # (aendert sich nur einmal pro Tag), nur den kurzen frischen Rest seit
-    # gestern wirklich force_refresh=True abrufen und anhaengen.
     end_str = (end + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
     stable_end_str = (end.normalize() - pd.Timedelta(days=1)).strftime("%Y-%m-%d")
 
@@ -218,12 +210,6 @@ def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
     )
     if trades.empty:
         return trades
-    # simulate_asian_breakout() liefert nur return_pct (roher Preis-Move), KEIN
-    # r_multiple -- simulate_equity() rechnet es exakt wie asian_range_breakout/
-    # sizing.py (r_multiple = vorzeichenbehafteter Preis-Move / stop_distance)
-    # nach; starting_equity/risk_pct hier sind irrelevant, nur die r_multiple-
-    # Spalte wird verwendet, die eigentliche Positionsgroesse kommt aus der
-    # gemeinsamen Kapitalanteil-Verduennungsformel weiter unten im Modul.
     trades = simulate_equity(trades, starting_equity=100_000.0, risk_pct=0.005)
     trades = trades[_utc_naive(trades["entry_time"]) <= end]
     return trades
@@ -236,7 +222,7 @@ def _scan_cls_practical(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
     from strategy.cls_advanced import PAIRS
 
     other_majors = [p for p in PAIRS if p != "EURUSD"]
-    start = (end - pd.Timedelta(days=400)).strftime("%Y-%m-%d")  # SMA100/ADR14-Warmup, gleiche Konvention wie live_scan.py
+    start = (end - pd.Timedelta(days=400)).strftime("%Y-%m-%d")
     end_str = (end + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
 
     eurusd_m5 = fetch_eurusd_entry_tf_berlin("M5", start, end_str, force_refresh=force_refresh)
@@ -256,17 +242,6 @@ def _scan_cls_practical(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
     if trades.empty:
         return pd.DataFrame(columns=["entry_time", "exit_time", "r_multiple", "exit_reason"])
     trades = trades.copy()
-    # simulate_cls_practical() liefert nur return_pct + pnl_usd (mit dem
-    # Tages-Zins-Multiplikator bereits VERRECHNET in ihrer eigenen internen
-    # Equity-Annahme), kein r_multiple. Fuer die gemeinsame Kapitalanteil-
-    # Verduennungsformel brauchen wir ein von dieser internen Equity-Annahme
-    # unabhaengiges r_multiple: sign*(exit-entry)/sl_distance ist die reine
-    # Preis-Bewegung relativ zum Stop (wie asian_range_breakout/sizing.py),
-    # multipliziert mit dem TAGES-Zins-Multiplikator (derselbe, der auch beim
-    # Backtest -- cls_practical_rXXX.csv-Beinkurven -- bereits standardmaessig
-    # in die Rendite eingerechnet ist, siehe rates.py/live_scan.py) --
-    # dadurch bleibt die Risiko-Skalierung ueber Trade und Tages-Zinssignal
-    # konsistent mit den bereits validierten Backtest-Zahlen.
     sign = trades["direction"].map({"long": 1, "short": -1})
     raw_r = sign * (trades["exit_price"] - trades["entry_price"]) / trades["sl_distance"]
     rate_mult = trades["date"].map(lambda d: combined_mult.get(d, 1.0))
@@ -286,7 +261,7 @@ def _scan_trend_pullback(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame
     MARKETS = [("GOLD", "H1", "XAUUSD", 10.0), ("SILVER", "H1", "XAGUSD", 10.0), ("PLATINUM", "H1", "XPTUSD", 10.0),
                ("CHFJPY", "H4", "CHFJPY", 3.0), ("USDJPY", "H4", "USDJPY", 1.5)]
     _rename = {"Open": "open", "High": "high", "Low": "low", "Close": "close", "Volume": "volume"}
-    start = (end - pd.Timedelta(days=300)).strftime("%Y-%m-%d")  # TREND_LEN=150-Bar-EMA-Warmup + Puffer
+    start = (end - pd.Timedelta(days=300)).strftime("%Y-%m-%d")
     end_str = (end + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
 
     gold_daily_close = fetch_timeframe("GOLD", "D1", start, end_str, force_refresh=force_refresh)["Close"]
@@ -342,42 +317,11 @@ def _scan_ctnl(end: pd.Timestamp, force_refresh: bool) -> tuple[pd.DataFrame, pd
     return cont_trades, rev_trades
 
 
-def _scan_gold_silver(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
-    from combined_strategy.data import fetch_timeframe
-    from mt5_gold_silver_divergenz.pipeline import ATR_STOP_MULT, RR_RATIO, run_pipeline
-
-    _rename = {"Open": "open", "High": "high", "Low": "low", "Close": "close", "Volume": "volume"}
-    start = (end - pd.Timedelta(days=200)).strftime("%Y-%m-%d")  # TREND_LEN=150-H4-Bar-Warmup + Puffer
-    end_str = (end + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
-    df_xau = fetch_timeframe("GOLD", "H4", start, end_str, force_refresh=force_refresh).rename(columns=_rename)
-    df_xag = fetch_timeframe("SILVER", "H4", start, end_str, force_refresh=force_refresh).rename(columns=_rename)
-    if df_xau.empty or df_xag.empty:
-        return pd.DataFrame(columns=["entry_time", "exit_time", "r_multiple", "exit_reason"])
-
-    signaled = run_pipeline(df_xau, df_xag, ret_len=25, band_lookback=50, band_mult=1.75, confirm_len=10)
-    cfg = BacktestConfig(spread_bps=10.0, stop_atr_mult=ATR_STOP_MULT, use_vwap_target=False, take_profit_r=RR_RATIO)
-    trades = simulate_trades(signaled, cfg)
-    if trades.empty:
-        return trades
-    return trades[_utc_naive(trades["entry_time"]) <= end]
-
-
 ORB_EXIT_CFG = dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0)
 ORB_HISTORY_LOOKBACK_DAYS = 500  # EMA-Ribbon-Bias (4H/1D/1W) braucht Monate an Vorlauf
 
 
 def _scan_orb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
-    """NY-Open ORB (SP500+US30+NASDAQ), 1:1 die validierte Config aus
-    app_pages/ny_open_orb_portfolio.py (siehe knowledge/projects/ny-open-
-    orb-sp500.md, Stage 1-5 + Phase 6 abgeschlossen). Anders als die anderen
-    5 Beine schliesst ORB IMMER innerhalb derselben NY-Handelssession
-    (spaetestens per session_end) -- kein Mehrtage-Halten. Deshalb eine
-    Besonderheit: simulate() labelt "keine Bar mehr im gefetchten Fenster
-    gefunden" auch als "session_end", selbst wenn die echte Session noch
-    gar nicht vorbei ist (ein Scan MITTEN in der Session haette sonst
-    faelschlich einen finalen Exit gemeldet, statt eines vorlaeufigen
-    Mark-to-Market-Stands wie bei den anderen Beinen ueber "data_end") --
-    wird hier anhand der frame-eigenen session_close-Spalte korrigiert."""
     from ny_open_orb import filters, regime
     from ny_open_orb.data import fetch_m5, fetch_m15
     from ny_open_orb.engine import build_frame, find_entries, simulate
@@ -419,7 +363,7 @@ def _scan_orb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
             if entry_t not in session_close_naive.index:
                 continue
             if session_close_naive.loc[entry_t] > end:
-                trades.loc[idx, "exit_reason"] = "data_end"  # Session noch nicht wirklich vorbei
+                trades.loc[idx, "exit_reason"] = "data_end"
 
         trades["market"] = instrument
         all_trades.append(trades)
@@ -429,25 +373,121 @@ def _scan_orb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
     return pd.concat(all_trades, ignore_index=True)
 
 
-# ------------------------------------------------------------------ State-Merge (Muster: gold_smc_htf_ltf/paper_bot.py)
+OU_MODELL_LOOKBACK_DAYS = 450  # 20d-Bollinger + 200d-EMA-Regimefilter-Warmup + Puffer, gleiche Konvention wie
+# ou_paper_backtest/scanner.py::_refresh_universe_prices (400 Tage dort fuer eine reine Punkt-in-Zeit-Signal-
+# Pruefung; hier etwas mehr, da eine volle Trailing-Trade-Simulation laeuft statt nur der letzte Tag)
+OU_MODELL_MARKETS = ("sp500", "nasdaq100")  # DAX strukturell 0 TTP-handelbare Ticker, siehe scanner.py
+OU_MODELL_STOP_SIGMA = 3.0
+OU_MODELL_BE_TRIGGER_R = 0.25
+OU_MODELL_RISK_PCT = 0.01
+OU_MODELL_MAX_TOTAL_RISK_PCT = 0.15
+
+
+def _scan_ou_modell(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
+    """OU-Modell, TTP-handelbare Teilmenge (SP500+Nasdaq100, DAX raus -- 0
+    Ticker dort ueberhaupt handelbar, siehe ou_paper_backtest/scanner.py::
+    _load_ttp_tradable_tickers). Bracket-Exit-Engine (portfolio.py::
+    simulate_bracket_portfolio) statt der reinen Punkt-in-Zeit-Scanner-Logik,
+    da diese Funktion -- wie alle anderen Beine hier -- eine volle Trades-
+    DataFrame mit r_multiple liefern muss, nicht nur das juengste Tages-
+    Signal. Konfiguration (stop_sigma=3.0, be_trigger_r=0.25, kein TP) ist die
+    ueber viele Skripte hinweg als "gesperrte Baseline" referenzierte Config
+    (siehe ou_paper_backtest/oos_holdout_challenge_profiles.py).
+
+    simulate_bracket_portfolio()'s Trades-Liste enthaelt kein r_multiple direkt
+    (nur pnl_dollars/pnl_pct relativ zur EIGENEN internen Equity-Annahme dieser
+    Simulation) -- wie bei Gold ASB/CLS Practical eigenstaendig aus Entry/Exit-
+    Preis + derselben Stop-Distanz-Formel hergeleitet, die auch die Positions-
+    groesse bestimmt hat (stop_sigma * rollierende 20-Tage-Std zum Entry-Datum),
+    damit r_multiple unabhaengig von dieser Simulation eigener Equity-Groesse
+    bleibt -- exakt dieselbe Notwendigkeit wie bei den anderen Beinen."""
+    import yfinance as yf
+
+    sys.path.insert(0, str(REPO_DIR / "ou_paper_backtest"))
+    import config as ou_config  # noqa: E402
+    import portfolio as ou_portfolio  # noqa: E402
+    from scanner import _load_ttp_tradable_tickers  # noqa: E402
+
+    start = (end - pd.Timedelta(days=OU_MODELL_LOOKBACK_DAYS)).strftime("%Y-%m-%d")
+    end_str = (end + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
+
+    all_trades = []
+    for market_key in OU_MODELL_MARKETS:
+        ou_table = pd.read_csv(ou_config.RESULTS_DIR / market_key / "ou_parameters_in_sample.csv", index_col=0)
+        sel = ou_table[
+            (ou_table["theta"] > ou_config.THETA_MIN) & (ou_table["p_value"] < ou_config.PVALUE_MAX)
+            & (ou_table["half_life"].between(ou_config.HALFLIFE_MIN, ou_config.HALFLIFE_MAX))
+        ]
+        tickers = sel.index.tolist()
+        tradable = _load_ttp_tradable_tickers(market_key)
+        if tradable is not None:
+            tickers = [t for t in tickers if t in tradable]
+        if not tickers:
+            continue
+
+        panel = {}
+        for t in tickers:
+            df = yf.download(t, start=start, end=end_str, auto_adjust=True, progress=False)
+            if df is None or df.empty:
+                continue
+            close = df["Close"]
+            if isinstance(close, pd.DataFrame):
+                close = close.iloc[:, 0]
+            panel[t] = close.dropna()
+        if not panel:
+            continue
+        panel_df = pd.DataFrame(panel).sort_index()
+
+        bench_ticker = ou_config.UNIVERSES[market_key]["benchmark"]
+        bench_df = yf.download(bench_ticker, start=start, end=end_str, auto_adjust=True, progress=False)
+        benchmark = bench_df["Close"]
+        if isinstance(benchmark, pd.DataFrame):
+            benchmark = benchmark.iloc[:, 0]
+        regime = (benchmark > benchmark.ewm(span=200).mean()).reindex(panel_df.index).ffill().fillna(False)
+
+        today_str = panel_df.index.max().date().isoformat()
+        _, trades = ou_portfolio.simulate_bracket_portfolio(
+            panel_df, tickers, start, today_str, stop_sigma=OU_MODELL_STOP_SIGMA, rr_ratio=None,
+            be_trigger_r=OU_MODELL_BE_TRIGGER_R, allowed_directions=(1,), regime_filter=regime,
+            risk_pct=OU_MODELL_RISK_PCT, max_total_risk_pct=OU_MODELL_MAX_TOTAL_RISK_PCT,
+        )
+        if not trades:
+            continue
+
+        std20 = panel_df.rolling(ou_config.BB_LOOKBACK).std()
+        rows = []
+        for t in trades:
+            ticker, entry_date, exit_date = t["ticker"], t["entry_date"], t["exit_date"]
+            if entry_date not in std20.index or ticker not in std20.columns:
+                continue
+            std_at_entry = std20.loc[entry_date, ticker]
+            if pd.isna(std_at_entry) or std_at_entry == 0:
+                continue
+            stop_distance = OU_MODELL_STOP_SIGMA * std_at_entry
+            sign = 1 if t["direction"] == "long" else -1
+            r_multiple = sign * (t["exit_price"] - t["entry_price"]) / stop_distance
+            rows.append({
+                "entry_time": entry_date, "exit_time": exit_date, "r_multiple": r_multiple,
+                "exit_reason": t["reason"], "market": ticker,
+            })
+        if rows:
+            all_trades.append(pd.DataFrame(rows))
+
+    if not all_trades:
+        return pd.DataFrame(columns=["entry_time", "exit_time", "r_multiple", "exit_reason", "market"])
+    combined = pd.concat(all_trades, ignore_index=True)
+    combined = combined[_utc_naive(combined["entry_time"]) <= end]
+    return combined
+
+
+# ------------------------------------------------------------------ State-Merge (Muster: fk_instant_funding/paper_bot.py)
 def _merge_trades(state: dict, leg: str, trades: pd.DataFrame) -> list[str]:
-    """Speichert entry_time/exit_time konsistent als UTC-naive ISO-Strings --
-    ohne diese Normalisierung mischen sich beim Wiedereinlesen (_state_trades_df)
-    Zeitstempel mit verschiedenen tz-Offsets je Bein in EINER Spalte, was
-    pd.to_datetime() mit 'Mixed timezones detected' zum Absturz bringt."""
     messages = []
     for _, t in trades.iterrows():
         if pd.isna(t.get("r_multiple", np.nan)):
             continue
         entry_naive = _utc_naive(t["entry_time"])
         exit_naive = _utc_naive(t["exit_time"])
-        # direction ist je nach Engine numerisch (1/-1, strategy.backtest) ODER
-        # ein String ("long"/"short", asian_range_breakout/cls_practical) --
-        # int(...) wuerde bei Strings crashen, daher roh in den Key. "market"
-        # zusaetzlich noetig, weil trend_pullback 5 Instrumente auf denselben
-        # "leg"-Schluessel mappt -- ohne market koennten zwei verschiedene
-        # Instrumente mit zufaellig identischem entry_time+direction denselben
-        # Key erzeugen und sich gegenseitig ueberschreiben.
         direction_raw = t.get("direction", 1)
         direction_key = direction_raw if pd.notna(direction_raw) else 1
         market_key = t.get("market", "")
@@ -461,13 +501,13 @@ def _merge_trades(state: dict, leg: str, trades: pd.DataFrame) -> list[str]:
                 "exit_time": exit_naive.isoformat(), "exit_reason": exit_reason,
                 "r_multiple": r_mult, "notified_exit": exit_reason != "data_end",
             }
-            messages.append(f"[FK Instant Funding] \U0001F7E2 ENTRY {LEG_LABELS[leg]} @ {t['entry_time']}")
+            messages.append(f"[Challenge Portfolio] \U0001F7E2 ENTRY {LEG_LABELS[leg]} @ {t['entry_time']}")
         else:
             rec = state["trades"][key]
             rec["exit_time"], rec["exit_reason"], rec["r_multiple"] = exit_naive.isoformat(), exit_reason, r_mult
             if exit_reason != "data_end" and not rec.get("notified_exit", False):
                 icon = "\U0001F7E2" if r_mult > 0 else "\U0001F534"
-                messages.append(f"[FK Instant Funding] {icon} EXIT {LEG_LABELS[leg]} ({exit_reason}) R={r_mult:+.2f}")
+                messages.append(f"[Challenge Portfolio] {icon} EXIT {LEG_LABELS[leg]} ({exit_reason}) R={r_mult:+.2f}")
                 rec["notified_exit"] = True
     return messages
 
@@ -482,69 +522,93 @@ def _state_trades_df(state: dict) -> pd.DataFrame:
     return df.dropna(subset=["r_multiple"])
 
 
-# ------------------------------------------------------------------ gemeinsame Equity + Regel-Checks
+# ------------------------------------------------------------------ gemeinsame Equity (beide Konten identisch)
 def compute_shared_equity(state: dict) -> pd.DataFrame:
-    """Baut die EINE gemeinsame, sequenziell kompoundierende Paper-Equity ueber
-    ALLE Beine hinweg -- Trades chronologisch nach exit_time sortiert (nicht
-    pro Bein getrennt), da alle Beine dasselbe Konto teilen. Wendet pro Trade
-    die verduennte, GEDECKELTE Positionsgroessen-Formel an (siehe Docstring)."""
+    """Beide virtuellen Konten (TTP-Paper, IQMarkets-Paper) sehen dieselben
+    Trades UND dieselbe Positionsgroessen-Formel -- ein gemeinsamer Equity-
+    Verlauf reicht, nur die Regel-Auswertung unten unterscheidet sich je Konto."""
     trades = _state_trades_df(state).sort_values("exit_time").reset_index(drop=True)
     equity = STARTING_EQUITY
     rows = []
     for _, t in trades.iterrows():
         risk_uncapped = CAPITAL_WEIGHT * LEG_RISK_PCT[t["leg"]] * equity
-        risk_dollars = min(risk_uncapped, MAX_POSITION_LOSS_DOLLARS)
+        risk_dollars = min(risk_uncapped, MAX_POSITION_RISK_DOLLARS)
         pnl = risk_dollars * t["r_multiple"]
         equity += pnl
         rows.append({"exit_time": t["exit_time"], "leg": t["leg"], "risk_dollars": risk_dollars,
-                      "risk_capped": risk_uncapped > MAX_POSITION_LOSS_DOLLARS, "pnl": pnl, "equity": equity})
+                      "risk_capped": risk_uncapped > MAX_POSITION_RISK_DOLLARS, "pnl": pnl, "equity": equity})
     return pd.DataFrame(rows)
 
 
-def check_trailing_dd(equity_df: pd.DataFrame, eod_equity_state: dict, as_of: pd.Timestamp) -> tuple[bool, float, float]:
-    """EOD-Trailing-Drawdown: Floor = 95% des bisherigen EOD-Hoechststands
-    (Regeltext: "floor = previous day's highest equity, moves only up"),
-    bewegt sich nur nach oben. `as_of` statt pd.Timestamp.now() -- sonst
-    wuerde ein historischer Dry-Run/Backtest-Aufruf faelschlich das ECHTE
-    heutige Datum als EOD-Schluessel benutzen statt des simulierten Datums.
-
-    Der Floor darf NUR auf abgeschlossenen VORTAGEN beruhen, niemals auf dem
-    noch laufenden heutigen Wert -- sonst wuerde jeder stuendliche Lauf den
-    Floor faelschlich an ein reines INTRADAY-Hoch dieses Tages anpassen
-    (echter Bug, gefunden beim Regel-Re-Audit vor der echten Kontoanbindung:
-    eod_equity_state[today] wurde VOR der running_max-Berechnung gesetzt,
-    wodurch der heutige Wert seinen eigenen Floor mitbestimmte). Der heutige
-    Stand wird erst NACH dem Vergleich gespeichert, damit er ab dem naechsten
-    Kalendertag als abgeschlossener Vortag in die Floor-Berechnung eingeht."""
+# ------------------------------------------------------------------ Regel-Checks (je Zielfirma unterschiedlich)
+def _total_dd(equity_df: pd.DataFrame, current_equity: float) -> float:
     if equity_df.empty:
-        return False, 0.0, STARTING_EQUITY
+        return 0.0
+    peak = max(STARTING_EQUITY, equity_df["equity"].cummax().iloc[-1])
+    return current_equity / peak - 1.0
+
+
+def check_ttp_rules(equity_df: pd.DataFrame, ttp_state: dict, as_of: pd.Timestamp) -> dict:
+    """Tageslimit -3% (Tages-Reset, pausiert NEUE Entries fuer den Rest des
+    Handelstags -- vergleicht EOD-Equity mit dem letzten ABGESCHLOSSENEN
+    Vortag, nicht mit einem trailing Hoechststand) UND Gesamt-Drawdown -7%
+    (harter, gegen den ALLZEIT-Hoechststand seit Kontostart gemessener
+    Kill-Switch -- KEIN automatischer Reset, anders als das Tageslimit)."""
+    current_equity = float(equity_df["equity"].iloc[-1]) if not equity_df.empty else STARTING_EQUITY
     today = as_of.normalize().isoformat()
-    current_equity = float(equity_df["equity"].iloc[-1])
-    prior_days_only = {k: v for k, v in eod_equity_state.items() if k != today}
-    running_max = max([STARTING_EQUITY] + list(prior_days_only.values()))
-    floor = (1 - TRAILING_DD_PCT) * running_max
-    breached = current_equity < floor
-    current_dd = current_equity / running_max - 1
-    eod_equity_state[today] = current_equity
-    return breached, current_dd, floor
+    eod = ttp_state.setdefault("eod_equity", {})
+    prior_days = {k: v for k, v in eod.items() if k != today}
+    prior_day_dates = sorted(prior_days.keys())
+    prior_day_equity = prior_days[prior_day_dates[-1]] if prior_day_dates else STARTING_EQUITY
+    daily_return = current_equity / prior_day_equity - 1.0
+    daily_breach_today = daily_return <= -RULES["ttp"]["daily_loss_cap"]
+
+    total_dd = _total_dd(equity_df, current_equity)
+    total_dd_breach = total_dd <= -RULES["ttp"]["total_dd_cap"]
+    target_hit = current_equity >= STARTING_EQUITY * (1 + RULES["ttp"]["target_gain"])
+
+    eod[today] = current_equity  # NACH dem Vergleich speichern (nur abgeschlossene Vortage zaehlen fuer den naechsten Lauf)
+
+    ttp_state["daily_paused"] = bool(daily_breach_today)
+    if total_dd_breach:
+        ttp_state["kill_switch_active"] = True
+    if target_hit:
+        ttp_state["target_reached"] = True
+
+    return {
+        "current_equity": current_equity, "daily_return": daily_return, "daily_breach_today": daily_breach_today,
+        "total_dd": total_dd, "total_dd_breach": total_dd_breach, "target_hit": target_hit,
+        "kill_switch_active": ttp_state["kill_switch_active"], "target_reached": ttp_state["target_reached"],
+    }
 
 
-def check_consistency(equity_df: pd.DataFrame) -> tuple[float, bool, float]:
-    """Punkt-in-Zeit-Konsistenz-Check (siehe portfolio_construction.py-Tab
-    'FK Instant Funding'): Verhaeltnis bester Einzeltag-Gewinn / kumulierter
-    Gesamtgewinn JETZT, nicht kumulativ-jemals-gebrochen (ein Bruch verweigert
-    laut Nutzer-Recherche nur die naechste Auszahlung, schliesst das Konto
-    nicht -- daher Ampel-Status statt Kill-Switch)."""
-    if equity_df.empty:
-        return 0.0, True, 0.0
-    daily_pnl = equity_df.groupby(equity_df["exit_time"].dt.normalize())["pnl"].sum()
-    cum_profit = daily_pnl.sum()
-    best_day = daily_pnl.max()
-    if cum_profit <= 0:
-        return 0.0, False, cum_profit  # keine Auszahlung moeglich, da (noch) kein Gewinn
-    ratio = best_day / cum_profit
-    payout_safe = ratio <= CONSISTENCY_CAP_PCT
-    return float(ratio), payout_safe, float(cum_profit)
+def check_iqmarkets_rules(equity_df: pd.DataFrame, iq_state: dict) -> dict:
+    """Kein Tageslimit -- nur Gesamt-Drawdown -6% (harter Kill-Switch, gleiche
+    Allzeit-Hoechststand-Definition wie TTP) + Zielschwelle +8%. Das explizite
+    1%-Positionslimit wird strukturell durch MAX_POSITION_RISK_DOLLARS erfuellt
+    (siehe compute_shared_equity) -- hier nur als Assert mitgefuehrt, keine
+    stille Annahme."""
+    current_equity = float(equity_df["equity"].iloc[-1]) if not equity_df.empty else STARTING_EQUITY
+    if not equity_df.empty:
+        max_risk_seen = equity_df["risk_dollars"].max()
+        assert max_risk_seen <= MAX_POSITION_RISK_DOLLARS + 1e-6, (
+            f"IQ-Markets-1%-Positionslimit verletzt: max risk_dollars={max_risk_seen:.2f} > {MAX_POSITION_RISK_DOLLARS:.2f}"
+        )
+
+    total_dd = _total_dd(equity_df, current_equity)
+    total_dd_breach = total_dd <= -RULES["iqmarkets"]["total_dd_cap"]
+    target_hit = current_equity >= STARTING_EQUITY * (1 + RULES["iqmarkets"]["target_gain"])
+
+    if total_dd_breach:
+        iq_state["kill_switch_active"] = True
+    if target_hit:
+        iq_state["target_reached"] = True
+
+    return {
+        "current_equity": current_equity, "total_dd": total_dd, "total_dd_breach": total_dd_breach,
+        "target_hit": target_hit, "kill_switch_active": iq_state["kill_switch_active"],
+        "target_reached": iq_state["target_reached"],
+    }
 
 
 # ------------------------------------------------------------------ Haupt-Scan
@@ -555,19 +619,9 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
     state = dict(state_override) if state_override is not None else load_state()
     if "trades" not in state:
         state = _default_state()
-    state.setdefault("eod_equity", {})
+    for key, default in _default_state().items():
+        state.setdefault(key, default)
 
-    # Kontostart fixieren: manche Scans brauchen JAHRE an Historie fuer ihre
-    # eigene Filter-/Indikator-Aufwaermzeit (z.B. Gold ASB's expanding
-    # Liquiditaets-Quantile seit 2016), das darf aber nicht heissen, dass
-    # deren komplette Mehrjahres-Historie ins gemeinsame Paper-Konto einfliesst
-    # -- sonst compoundiert das Konto de facto Gold-ASB-Trades seit 2016,
-    # waehrend jedes andere Bein erst seit ein paar Monaten mitzaehlt (genau
-    # der Bug, der den ersten Live-Lauf "surreal" aussehen liess: +32% "seit
-    # heute" war in Wahrheit ein 10-Jahre-Gold-ASB-Backtest mit ein paar
-    # Monaten der anderen 5 Beine oben drauf). account_start wird beim
-    # allerersten Lauf einmalig auf `end` gesetzt und danach persistiert --
-    # nur Trades mit entry_time >= account_start zaehlen fuers Paper-Konto.
     if state.get("account_start") is None:
         state["account_start"] = end.isoformat()
     account_start = pd.Timestamp(state["account_start"])
@@ -582,32 +636,32 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
         gold_asb_trades = _since_start(_retry(lambda: _scan_gold_asb(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "gold_asb", gold_asb_trades)
     except Exception as e:
-        messages.append(f"[FK Instant Funding] ⚠️ Gold-ASB-Scan fehlgeschlagen: {e}")
+        messages.append(f"[Challenge Portfolio] ⚠️ Gold-ASB-Scan fehlgeschlagen: {e}")
 
     try:
         cls_trades = _since_start(_retry(lambda: _scan_cls_practical(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "cls_practical", cls_trades)
     except Exception as e:
-        messages.append(f"[FK Instant Funding] ⚠️ CLS-Practical-Scan fehlgeschlagen: {e}")
+        messages.append(f"[Challenge Portfolio] ⚠️ CLS-Practical-Scan fehlgeschlagen: {e}")
 
     try:
         tp_trades = _since_start(_retry(lambda: _scan_trend_pullback(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "trend_pullback", tp_trades)
     except Exception as e:
-        messages.append(f"[FK Instant Funding] ⚠️ Trend-Pullback-Scan fehlgeschlagen: {e}")
+        messages.append(f"[Challenge Portfolio] ⚠️ Trend-Pullback-Scan fehlgeschlagen: {e}")
 
     try:
         cont_trades, rev_trades = _retry(lambda: _scan_ctnl(end, force_refresh=not dry_run))
         messages += _merge_trades(state, "ctnl_continuation", _since_start(cont_trades))
         messages += _merge_trades(state, "ctnl_reversal", _since_start(rev_trades))
     except Exception as e:
-        messages.append(f"[FK Instant Funding] ⚠️ CTNL-Edge-Scan fehlgeschlagen: {e}")
+        messages.append(f"[Challenge Portfolio] ⚠️ CTNL-Edge-Scan fehlgeschlagen: {e}")
 
     try:
-        gsd_trades = _since_start(_retry(lambda: _scan_gold_silver(end, force_refresh=not dry_run)))
-        messages += _merge_trades(state, "gold_silver", gsd_trades)
+        ou_trades = _since_start(_retry(lambda: _scan_ou_modell(end, force_refresh=not dry_run)))
+        messages += _merge_trades(state, "ou_modell", ou_trades)
     except Exception as e:
-        messages.append(f"[FK Instant Funding] ⚠️ Gold-Silber-Divergenz-Scan fehlgeschlagen: {e}")
+        messages.append(f"[Challenge Portfolio] ⚠️ OU-Modell-Scan fehlgeschlagen: {e}")
 
     try:
         orb_trades = _since_start(_retry(lambda: _scan_orb(end, force_refresh=not dry_run)))
@@ -616,42 +670,49 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
             for market, sub in orb_trades.groupby("market"):
                 messages += _merge_trades(state, orb_leg_by_market[market], sub)
     except Exception as e:
-        messages.append(f"[FK Instant Funding] ⚠️ NY-Open-ORB-Scan fehlgeschlagen: {e}")
+        messages.append(f"[Challenge Portfolio] ⚠️ NY-Open-ORB-Scan fehlgeschlagen: {e}")
 
     equity_df = compute_shared_equity(state)
-    dd_breached, current_dd, dd_floor = check_trailing_dd(equity_df, state["eod_equity"], end)
-    consistency_ratio, payout_safe, cum_profit = check_consistency(equity_df)
-    current_equity = float(equity_df["equity"].iloc[-1]) if not equity_df.empty else STARTING_EQUITY
+    ttp_result = check_ttp_rules(equity_df, state["ttp"], end)
+    iq_result = check_iqmarkets_rules(equity_df, state["iqmarkets"])
 
-    if dd_breached and not state.get("kill_switch_active", False):
-        state["kill_switch_active"] = True
+    if ttp_result["total_dd_breach"] and not state["ttp"].get("_notified_kill", False):
+        state["ttp"]["_notified_kill"] = True
         messages.append(
-            f"[FK Instant Funding] \U0001F6A8 KILL-SWITCH: Trailing-Drawdown {current_dd:.2%} unter dem "
-            f"5%-Floor (${dd_floor:,.0f}). Neue Entries pruefen/pausieren."
+            f"[TTP Challenge] \U0001F6A8 KILL-SWITCH: Gesamt-Drawdown {ttp_result['total_dd']:.2%} "
+            f"unter der -7%-Grenze. Manueller Reset noetig, neue Entries pruefen/pausieren."
         )
-    elif not dd_breached and state.get("kill_switch_active", False) and current_dd >= -TRAILING_DD_PCT * 0.5:
-        state["kill_switch_active"] = False  # Erholung ueber die Haelfte der Schwelle - Reset
+    if ttp_result["daily_breach_today"]:
+        messages.append(f"[TTP Challenge] ⏸️ Tageslimit erreicht ({ttp_result['daily_return']:.2%}) -- neue Entries fuer heute pausiert.")
+    if ttp_result["target_hit"] and not state["ttp"].get("_notified_target", False):
+        state["ttp"]["_notified_target"] = True
+        messages.append(f"[TTP Challenge] \U0001F3AF ZIEL ERREICHT: Equity ${ttp_result['current_equity']:,.0f} (+10%).")
+
+    if iq_result["total_dd_breach"] and not state["iqmarkets"].get("_notified_kill", False):
+        state["iqmarkets"]["_notified_kill"] = True
+        messages.append(
+            f"[IQ Markets Challenge] \U0001F6A8 KILL-SWITCH: Gesamt-Drawdown {iq_result['total_dd']:.2%} "
+            f"unter der -6%-Grenze. Manueller Reset noetig, neue Entries pruefen/pausieren."
+        )
+    if iq_result["target_hit"] and not state["iqmarkets"].get("_notified_target", False):
+        state["iqmarkets"]["_notified_target"] = True
+        messages.append(f"[IQ Markets Challenge] \U0001F3AF ZIEL ERREICHT: Equity ${iq_result['current_equity']:,.0f} (+8%).")
 
     row = {
-        "date": str(end), "equity": current_equity, "current_dd": current_dd,
-        "consistency_ratio": consistency_ratio, "payout_safe": payout_safe, "cum_profit": cum_profit,
-        "kill_switch_active": state.get("kill_switch_active", False), "n_trades": len(state["trades"]),
+        "date": str(end), "equity": ttp_result["current_equity"], "n_trades": len(state["trades"]),
+        "ttp": ttp_result, "iqmarkets": iq_result,
     }
 
-    # Taeglicher statt stuendlicher Status (User-Wunsch, 2026-08-27: "keine
-    # stuendlichen Logs mehr ... nur noch wenn aktive Trades erkannt werden
-    # und am Ende des Tages einen kleinen Tagesabschluss") - Kill-Switch-/
-    # Scan-Fehler-Meldungen oben (`messages`) bleiben unveraendert Sofort-
-    # Alarme, nur dieser Routine-Status wird auf einmal/Tag reduziert.
-    current_day_key = end.strftime("%Y-%m-%d")
-    if state.get("last_daily_summary_day") != current_day_key and end.hour >= DAILY_SUMMARY_HOUR:
-        state["last_daily_summary_day"] = current_day_key
-        payout_label = "ZULAESSIG" if payout_safe else "NICHT zulaessig (Verhaeltnis > 30%)"
+    current_hour_key = end.strftime("%Y-%m-%d %H")
+    if state.get("last_heartbeat_hour") != current_hour_key:
+        state["last_heartbeat_hour"] = current_hour_key
         heartbeat_msg = (
-            f"[FK Instant Funding] \U0001F4D2 Tagesabschluss {end.strftime('%Y-%m-%d')}\n"
-            f"Equity: ${current_equity:,.0f}  |  Trailing-DD: {current_dd:.2%} (Floor ${dd_floor:,.0f})  |  "
-            f"Trades: {len(state['trades'])}  |  Kill-Switch: {'AKTIV' if state['kill_switch_active'] else 'ok'}\n"
-            f"Konsistenz-Verhaeltnis: {consistency_ratio:.1%}  |  Auszahlung: {payout_label}"
+            f"[Challenge Portfolio] Stuendlicher Status {end.strftime('%Y-%m-%d %H:%M')}\n"
+            f"Equity: ${ttp_result['current_equity']:,.0f}  |  Trades: {len(state['trades'])}\n"
+            f"TTP: DD {ttp_result['total_dd']:.2%} (Grenze -7%)  |  Tag {ttp_result['daily_return']:+.2%} (Grenze -3%)  |  "
+            f"Kill-Switch {'AKTIV' if ttp_result['kill_switch_active'] else 'ok'}\n"
+            f"IQ Markets: DD {iq_result['total_dd']:.2%} (Grenze -6%)  |  "
+            f"Kill-Switch {'AKTIV' if iq_result['kill_switch_active'] else 'ok'}"
         )
         if not dry_run:
             send_telegram_message(heartbeat_msg)
@@ -659,9 +720,10 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
             is_new = not HEARTBEAT_CSV.exists()
             with open(HEARTBEAT_CSV, "a", encoding="utf-8") as f:
                 if is_new:
-                    f.write("date,equity,current_dd,consistency_ratio,payout_safe,kill_switch_active,n_trades\n")
-                f.write(f"{end.isoformat()},{current_equity:.2f},{current_dd:.4f},{consistency_ratio:.4f},"
-                        f"{payout_safe},{state['kill_switch_active']},{len(state['trades'])}\n")
+                    f.write("date,equity,n_trades,ttp_total_dd,ttp_daily_return,ttp_kill_switch,iq_total_dd,iq_kill_switch\n")
+                f.write(f"{end.isoformat()},{ttp_result['current_equity']:.2f},{len(state['trades'])},"
+                        f"{ttp_result['total_dd']:.4f},{ttp_result['daily_return']:.4f},{ttp_result['kill_switch_active']},"
+                        f"{iq_result['total_dd']:.4f},{iq_result['kill_switch_active']}\n")
 
     if not dry_run:
         for m in messages:
@@ -673,8 +735,6 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
 
 
 if __name__ == "__main__":
-    import sys
-
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")  # Windows-Konsole ist sonst cp1252, Telegram-Emojis crashen den print()
 

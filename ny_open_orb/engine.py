@@ -205,6 +205,9 @@ def simulate(
     target_r_mult: float = 4.0,
     target_range_mult: float = 2.0,
     breakeven_trigger_r: float | None = None,
+    partial_exit_r: float | None = None,
+    partial_exit_fraction: float = 0.5,
+    move_stop_to_be_after_partial: bool = False,
     rvol_exit_min: float | None = None,
     spread_bps: float = 0.5,
 ) -> pd.DataFrame:
@@ -222,6 +225,18 @@ def simulate(
     (initial entry-to-stop distance), the stop ratchets to entry_price
     (once, never loosens) - same convention/field name as
     strategy/backtest.py::BacktestConfig. None = disabled (default).
+
+    partial_exit_r: once price reaches this many R in favour (checked
+    intrabar, like the stop/target), `partial_exit_fraction` of the
+    position banks its profit there; the rest keeps running against the
+    ORIGINAL stop/target unless `move_stop_to_be_after_partial=True` moves
+    the remainder's stop to entry_price at that moment (a targeted,
+    partial-position breakeven - deliberately distinct from
+    `breakeven_trigger_r`, which moves the WHOLE position and was found to
+    hurt this strategy's expectancy, see knowledge/). None = disabled
+    (default, unchanged prior behaviour). Reported `exit_reason` is always
+    the reason the REMAINING fraction finally closed for - `r_multiple`/
+    `return_pct` are fraction-weighted across both legs.
     """
     if entries.empty:
         return pd.DataFrame()
@@ -252,11 +267,19 @@ def simulate(
         else:
             target_price = None
 
+        partial_level = None
+        if partial_exit_r is not None:
+            partial_level = entry_price + direction * partial_exit_r * initial_risk
+
         session_close = df.loc[e["entry_time"], "session_close"]
         path = df.loc[(df.index > e["entry_time"]) & (df.index <= session_close)]
 
         exit_i, exit_reason, exit_price = None, None, None
         be_moved = False
+        partial_done = False
+        partial_ret_contribution = 0.0
+        partial_r_contribution = 0.0
+        remaining_fraction = 1.0
         for j, bar in path.iterrows():
             if breakeven_trigger_r is not None and not be_moved:
                 favor = direction * (bar["close"] - entry_price)
@@ -267,6 +290,17 @@ def simulate(
             if hit_stop:
                 exit_i, exit_reason, exit_price = j, ("breakeven" if be_moved else "stop"), stop_price
                 break
+            if partial_level is not None and not partial_done:
+                hit_partial = (bar["high"] >= partial_level) if direction == 1 else (bar["low"] <= partial_level)
+                if hit_partial:
+                    partial_fill = partial_level * (1 - half_cost * direction)
+                    partial_ret_contribution = partial_exit_fraction * direction * (partial_fill - entry_price) / entry_price
+                    partial_r_contribution = partial_exit_fraction * direction * (partial_fill - entry_price) / initial_risk
+                    remaining_fraction = 1.0 - partial_exit_fraction
+                    partial_done = True
+                    if move_stop_to_be_after_partial:
+                        stop_price = entry_price
+                    continue  # remaining fraction keeps running - re-check stop/target on later bars
             if target_price is not None:
                 hit_target = (bar["high"] >= target_price) if direction == 1 else (bar["low"] <= target_price)
                 if hit_target:
@@ -281,12 +315,15 @@ def simulate(
             exit_i, exit_reason, exit_price = path.index[-1], "session_end", path["close"].iloc[-1]
 
         exit_price = exit_price * (1 - half_cost * direction)
-        ret = direction * (exit_price - entry_price) / entry_price
+        final_leg_ret = direction * (exit_price - entry_price) / entry_price
+        final_leg_r = direction * (exit_price - entry_price) / initial_risk
+        ret = partial_ret_contribution + remaining_fraction * final_leg_ret
+        r_multiple = partial_r_contribution + remaining_fraction * final_leg_r
         trades.append({
             "entry_time": e["entry_time"], "exit_time": exit_i, "direction": direction,
             "entry_price": entry_price, "exit_price": exit_price, "return_pct": ret,
             "exit_reason": exit_reason, "hold_bars": path.index.get_loc(exit_i) + 1 if exit_i in path.index else np.nan,
-            "initial_risk": initial_risk, "r_multiple": direction * (exit_price - entry_price) / initial_risk,
+            "initial_risk": initial_risk, "r_multiple": r_multiple, "had_partial_exit": partial_done,
             "adx_at_entry": df.loc[e["entry_time"], "adx"], "atr_at_entry": e["atr"],
         })
 

@@ -14,9 +14,13 @@ sqlite/MT5 history rather than just summing the weekly numbers (rounding/
 week-boundary effects compound - a fresh month-start-to-month-end read is
 more reliable than adding up 4-5 weekly deltas).
 
-## Report 1: Monthly Performance Report
+Both reports together are called **"Monthly Checkup"** (same branding as
+the weekly "Weekly Checkup" reports, just monthly scope).
 
-File: `knowledge/reports/monthly/<YYYY-MM>_performance.md`
+## Report 1: Monthly Checkup - Performance
+
+File: `knowledge/reports/monthly/<YYYY-MM>_performance.md`. Title the
+document itself "Monthly Checkup - Performance - <Month> <YYYY>".
 
 Same structure as the weekly performance report, but:
 - Trades/winrate/PnL figures are for the full month (fresh pull, not summed
@@ -32,17 +36,41 @@ Same structure as the weekly performance report, but:
   the existing backtested comparison as a reference point - CAGR/Sharpe/
   MaxDD/Calmar for portfolio vs. each leg standalone.)
 
-## Report 2: Monthly Education Checkup
+## Report 2: Monthly Checkup - Education
 
-File: `knowledge/reports/monthly/<YYYY-MM>_education.md`
+File: `knowledge/reports/monthly/<YYYY-MM>_education.md`. Title the
+document itself "Monthly Checkup - Education - <Month> <YYYY>".
 
 Same structure as the weekly education checkup, but summarizing the whole
 month: main themes across the weeks, the biggest 2-3 learnings of the month,
 net improvements vs. regressions, and what's still open going into next
 month.
 
-## After writing both files
+## Report 3: PDF (both parts combined, styled)
 
-`git add knowledge/reports/ && git commit -m "Monthly report: <YYYY-MM>"`
+Same design/process as the weekly PDF (see
+`scripts/reports/weekly_report_prompt.md`, "Report 3" section, for the
+full instructions and the exact tested Edge command - reuse it verbatim,
+just swap the file names):
+
+- Reuse the `<style>` block from
+  `scripts/reports/templates/example_weekly_checkup.html` unchanged.
+- Write `knowledge/reports/monthly/<YYYY-MM>_checkup.html`.
+- Render to PDF at
+  `C:\Users\andre\Documents\Trading Reports\<YYYY-MM>_checkup.pdf` (same
+  dedicated folder as the weekly PDFs, not committed to git; the `.html`
+  source is committed).
+- No email sending (user chose Telegram instead, same note as the weekly report).
+
+## Report 4: Send the PDF via Telegram
+
+Same as the weekly report's "Report 4" section - reuse
+`scripts/reports/telegram_notify.py::send_telegram_document()` verbatim,
+just point it at `<YYYY-MM>_checkup.pdf` and caption it "Monthly Checkup -
+<Month> <YYYY>" plus the single most important open item.
+
+## After writing all files
+
+`git add knowledge/reports/ && git commit -m "Monthly Checkup: <YYYY-MM>"`
 (local commit only, can be combined with the weekly commit into one if run
 together - do NOT push).

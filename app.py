@@ -195,6 +195,10 @@ gold_ctnl_edge = st.Page(
     "app_pages/gold_ctnl_edge.py", title="CTNL Edge Strategie", icon=":material/military_tech:",
     visibility="hidden",
 )
+ek_portfolio_live_log = st.Page(
+    "app_pages/ek_portfolio_live_log.py", title="EK-Portfolio -- Live Log", icon=":material/rss_feed:",
+    visibility="hidden",
+)
 
 page = st.navigation(
     [
@@ -220,6 +224,7 @@ page = st.navigation(
         fx_liquidity_filter, cb_event_window_filter, mtf_ema_ribbon_filter, cls_cross_filter, mt5_trend_pullback,
         mt5_gold_silver_divergenz,
         gold_ctnl_edge,
+        ek_portfolio_live_log,
     ]
 )
 page.run()

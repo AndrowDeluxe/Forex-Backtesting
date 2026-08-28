@@ -1,18 +1,7 @@
 {
-  "trades": {
-    "orb_nasdaq_NASDAQ_2026-08-27T13:45:00_1": {
-      "leg": "orb_nasdaq",
-      "entry_time": "2026-08-27T13:45:00",
-      "exit_time": "2026-08-27T13:50:00",
-      "exit_reason": "stop",
-      "r_multiple": -1.026212762318352,
-      "notified_exit": true
-    }
-  },
+  "trades": {},
   "kill_switch_active": false,
   "last_heartbeat_hour": "2026-08-27 20",
-  "eod_equity": {
-    "2026-08-27T00:00:00": 99942.9881798712
-  },
-  "account_start": "2026-08-26T20:13:02.386577"
+  "eod_equity": {},
+  "account_start": "2026-08-27T20:58:06.914380"
 }

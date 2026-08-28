@@ -81,12 +81,12 @@ ACCOUNTS = [
         mt5_terminal_path=r"C:\Users\andre\MT5-Terminals\TTP MT5 Terminal - Konto2\terminal64.exe",
         mt5_login=504072729,
     ),
-    AccountSpec(
-        name="Konto 3 (Tickmill)",
-        state_id="konto3_tickmill",
-        mt5_terminal_path=r"C:\Program Files\Tickmill Europe MT5 Terminal\terminal64.exe",
-        mt5_login=55918977,
-    ),
+    # Konto 3 (Tickmill, EK) entfernt 2026-08-27 auf Nutzer-Wunsch - der Bot
+    # verwaltet dieses Konto nicht mehr, daher taucht es auch im taeglichen
+    # Log nicht mehr auf. 5 offene Positionen (DAL/UAL/NUE/GE/RTX, alle mit
+    # Broker-SL/TP) blieben zum Zeitpunkt der Entfernung unangetastet im
+    # MT5-Terminal stehen - nicht geschlossen, nur nicht mehr vom Bot
+    # ueberwacht (kein Break-Even-Trigger/Zeit-Exit mehr fuer sie).
 ]
 
 FIELDS = [

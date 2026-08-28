@@ -1,0 +1,18 @@
+2026-08-27 10:51:18 === Weekly-Report-Task gestartet ===
+2026-08-27 10:51:18 Nutze Claude Code: C:\Users\andre\.vscode\extensions\anthropic.claude-code-2.1.247-win32-arm64\resources\native-binary\claude.exe
+2026-08-27 10:51:18 Heute ist der letzte Sonntag vor Monatswechsel - haenge Monats-Report-Prompt an.
+2026-08-27 11:03:54 Both Weekly Checkup reports for KW34/2026 are written and committed. Summary:
+2026-08-27 11:03:54 
+2026-08-27 11:03:54 **What was produced:**
+2026-08-27 11:03:54 - `knowledge/reports/weekly/KW34_2026_performance.md` and `..._education.md`, committed locally (not pushed).
+2026-08-27 11:03:54 - Covers Mon 2026-08-17 – Sun 2026-08-23 (the last *fully completed* week), not the in-progress KW35 — this run fired on a Thursday, not the intended Sunday, and it's the first run ever, so I flagged that judgment call explicitly rather than guessing silently. Monthly reports were deliberately **not** generated this run, since KW35 (the actual last week of August) is still open — producing an August rollup now would silently omit it.
+2026-08-27 11:03:54 
+2026-08-27 11:03:54 **Notable findings surfaced (all flagged in the reports, not smoothed over):**
+2026-08-27 11:03:54 - **OU-Modell-MT5-Bridge** — a fully live, 3-account bot family (two look like real/live accounts) that wasn't in any prior known-bridge list. Now folded into the checkup.
+2026-08-27 11:03:54 - **TrendPullback FK1** has been silently dead since 2026-08-19 with no alerting; FK2 died 2026-08-22.
+2026-08-27 11:03:54 - An **unattributed real-money trade** (-$920) on the shared Gold ASB/BTC account that matches neither bot's traded symbol or state log.
+2026-08-27 11:03:54 - **Gold ASB and CTNL Edge have no drawdown kill-switch at all** in their real bridges — unlike BTC/CLS/OU-Modell/FK1/FK2 — the single most important compliance gap this week.
+2026-08-27 11:03:54 - The known Gold ASB shared-terminal AutoTrading bug recurred again this week, confirming the earlier fix never actually landed.
+2026-08-27 11:03:54 
+2026-08-27 11:03:54 I also wrote a memory note (`weekly_checkup_kw34_2026_findings.md`) so future sessions pick up these open items instead of rediscovering them.
+2026-08-27 11:03:54 === Weekly-Report-Task beendet ===

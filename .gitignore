@@ -18,4 +18,6 @@ education_state/
 btc_ema_cross/telegram_config.py
 gold_smc_htf_ltf/telegram_config.py
 fk_instant_funding/telegram_config.py
+scripts/reports/telegram_config.py
 ek_portfolio/telegram_config.py
+challenge_portfolio/telegram_config.py

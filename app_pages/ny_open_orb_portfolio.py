@@ -12,7 +12,12 @@ Jedes Instrument hat seine EIGENE Config (nicht blind uebertragen -
 NASDAQ generalisiert den SP500-Filter nachweislich nicht, siehe Stage 4e):
   - SP500 / US30: long-only + EMA-Ribbon-Bias neutral (strategy/mtf_ema_ribbon.py)
   - NASDAQ: long+short + ohne Mittwoch
-Alle drei: 15-Min-Range (range_bars=1), ATR-Stop 0.6x, Target 4R, M5-Ausfuehrung.
+Alle drei: 15-Min-Range (range_bars=1), ATR-Stop 0.6x, M5-Ausfuehrung, PLUS
+(Stage 6, seit 2026-08-27 Standard) Teil-Ausstieg: ein Teil der Position
+wird frueh realisiert, der Rest laeuft mit Stop auf Breakeven weiter zum
+4R-Ziel - verbessert Sharpe/Win-Rate/MaxDD bei SP500/US30 auf praktisch
+jeder Kennzahl, bei NASDAQ ein bewusster Tausch (mehr Konsistenz/Sharpe
+gegen etwas CAGR). Siehe knowledge/projects/ny-open-orb-sp500.md Stage 6.
 """
 
 import sys
@@ -37,13 +42,22 @@ st.set_page_config(page_title="NY-Open ORB Portfolio", page_icon=":material/bolt
 
 START, END = "2016-07-28", "2026-07-28"
 SPLIT_DATE = "2021-07-28"
-EXIT_CFG = dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0)
 STARTING_EQUITY = 10_000.0
 
+# Stage 6 (2026-08-27): partial-exit standardized per instrument - SP500/US30
+# bank 50% at 2R (genuine improvement on every metric); NASDAQ banks 50% at
+# 1.5R (improves Sharpe/win-rate, trades away some CAGR - a deliberate
+# choice, not a pure win, see knowledge/projects/ny-open-orb-sp500.md).
+EXIT_CFG_BY_INSTRUMENT = {
+    "SP500": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0, partial_exit_r=2.0, partial_exit_fraction=0.5, move_stop_to_be_after_partial=True),
+    "US30": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0, partial_exit_r=2.0, partial_exit_fraction=0.5, move_stop_to_be_after_partial=True),
+    "NASDAQ": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0, partial_exit_r=1.5, partial_exit_fraction=0.5, move_stop_to_be_after_partial=True),
+}
+
 INSTRUMENT_CONFIG = {
-    "SP500": "Long-only + EMA-Ribbon neutral",
-    "US30": "Long-only + EMA-Ribbon neutral",
-    "NASDAQ": "Long+Short + ohne Mittwoch",
+    "SP500": "Long-only + EMA-Ribbon neutral + 2R/50%-Teilausstieg",
+    "US30": "Long-only + EMA-Ribbon neutral + 2R/50%-Teilausstieg",
+    "NASDAQ": "Long+Short + ohne Mittwoch + 1.5R/50%-Teilausstieg",
 }
 
 
@@ -68,7 +82,7 @@ def run_backtest(instrument: str):
         bias_vals = filters.values_at(long_entries, bias)
         entries = filters.filter_by_category(long_entries, bias_vals, (0.0,))
 
-    trades = simulate(frame, entries, **EXIT_CFG)
+    trades = simulate(frame, entries, **EXIT_CFG_BY_INSTRUMENT[instrument])
     return frame.index, trades
 
 

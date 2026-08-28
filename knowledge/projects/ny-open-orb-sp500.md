@@ -7,15 +7,18 @@ Breakout+Retest+Confirmation, M5-Fraktal-Reversal) und mehrere Exit-/Indikator-
 Varianten (ATR-Stop, R-Vielfache inkl. ~4R, Range-Vielfache, Relative Volume
 at Time, ADX-Filter) sollen verglichen werden.
 
-**Status**: Abgeschlossen (Stage 1-5 + Phase 6 fuer SP500 + NASDAQ). Bestes
+**Status**: Abgeschlossen (Stage 1-7 + Phase 6 fuer SP500 + NASDAQ). Bestes
 Gesamtergebnis: **3er-Portfolio SP500+US30+NASDAQ** (je eigene kalibrierte
-Config, 0.6x-ATR/4R-Exit fuer alle drei), OOS-Sharpe 1.61, MaxDD -1.0%,
-schlaegt jedes Einzelinstrument. Dashboard live unter
-`app_pages/ny_open_orb_portfolio.py` ("NY-Open ORB Portfolio"). Die alte
-`orb_strategy/`-Dashboardseite wurde entfernt (Stage 5a: risiko-gewichtete
-Kombination schlaegt `ny_open_orb` allein nicht) - der Code
-(`orb_strategy/pipeline.py`) bleibt im Repo, da historische Research-Skripte
-ihn noch referenzieren, ist aber nicht mehr im Dashboard verlinkt.
+Config, 0.6x-ATR-Stop + Stage-6-Teilausstieg als STANDARD seit 2026-08-27),
+OOS-Sharpe **1.76** (Equal-Weight-Blend), MaxDD -0.8%, schlaegt jedes
+Einzelinstrument. Dashboard live unter `app_pages/ny_open_orb_portfolio.py`
+("NY-Open ORB Portfolio"). Die alte `orb_strategy/`-Dashboardseite wurde
+entfernt (Stage 5a: risiko-gewichtete Kombination schlaegt `ny_open_orb`
+allein nicht) - der Code (`orb_strategy/pipeline.py`) bleibt im Repo, da
+historische Research-Skripte ihn noch referenzieren, ist aber nicht mehr im
+Dashboard verlinkt. Zugehoeriger Live-Forward-Test-Bot + Scheduled Tasks
+sind ebenfalls entfernt/geloescht (kein Ersatz-Bot fuer die neue Strategie
+gewuenscht).
 
 **Prozess-Referenz**: Repo-Standard (8-Phasen-Checkliste), Phase 6 Robustheit
 zwingend vor jeder "final"-Aussage oder Risk-Sizing.
@@ -426,6 +429,93 @@ Volatilitaets-Proxy fuer die fruehen Jahre.
   gesamten OOS-Fenster nach 11:30 Uhr). cutoff=30min schneidet noch echte
   Signale ab (Sharpe faellt auf 0.84) - keine sinnvolle Restriktion unter
   60 Minuten.
+
+## Stage 6 -- Teil-Ausstieg (Scale-Out) zur Win-Rate-Verbesserung (`scripts/research_ny_open_orb_stage6_partial_exit.py`)
+
+Frage: laesst sich die niedrige Win-Rate (25-30%, typisch fuer eine
+Low-Winrate/High-R-Strategie) verbessern, ohne die risikoadjustierte
+Performance zu verschlechtern? `ny_open_orb/engine.py::simulate()` um
+`partial_exit_r`/`partial_exit_fraction`/`move_stop_to_be_after_partial`
+erweitert: ein Teil der Position wird bei einem fruehen R-Level realisiert,
+der Rest laeuft (optional mit Stop auf Breakeven) weiter zum
+Original-Stop/-Target. Anders als Stage 4d's Breakeven-Test (bewegt die
+GANZE Position, schadete durchgehend) betrifft das hier nur die
+verbleibende TEILPOSITION nach einem bereits gesicherten Gewinn.
+
+**Ergebnis: das ist KEIN reiner Trade-off wie beim Target-R-Grid, sondern
+fuer SP500 ein echter Gewinn auf fast jeder Kennzahl gleichzeitig:**
+
+| Instrument | Config | Sharpe | PF | Win-Rate | CAGR | MaxDD |
+|---|---|---|---|---|---|---|
+| SP500 | Baseline (kein Teil-Ausstieg) | 1.05 | 1.63 | 29.8% | 1.3% | -1.1% |
+| **SP500** | **2R-Teilausstieg 50%, Rest auf BE** | **1.20** | 1.65 | **44.6%** | 1.1% | **-0.7%** |
+| NASDAQ | Baseline (kein Teil-Ausstieg) | 1.33 | 1.38 | 25.8% | 4.4% | -2.1% |
+| **NASDAQ** | **1.5R-Teilausstieg 50%, Rest auf BE** | **1.41** | 1.37 | **44.5%** | 3.2% | -2.3% |
+
+- **SP500**: Sharpe UND PF UND MaxDD verbessern sich, Win-Rate fast
+  verdoppelt, CAGR nahezu unveraendert - ein echter Gewinn, kein Kompromiss.
+- **NASDAQ**: Sharpe und Win-Rate verbessern sich deutlich, aber CAGR sinkt
+  spuerbar (4.4%->3.2%, ~27% relativ) und MaxDD wird minimal schlechter -
+  hier ein ECHTER Trade-off (hoehere Konsistenz/bessere Risikoadjustierung
+  gegen absolute Rendite), keine reine Verbesserung.
+- Kleinere Teilausstiegs-Fraktionen (25%) aendern die Win-Rate kaum (ein
+  Viertel der Position reicht meist nicht, um das Vorzeichen des
+  Gesamt-Trades zu drehen) - erst ab 50% Teilausstieg zeigt sich der Effekt.
+- `move_stop_to_be_after_partial=True` (Rest auf Breakeven nach dem
+  Teil-Ausstieg) ist NICHT dasselbe wie Stage 4d's verworfene
+  Breakeven-Logik (die die GANZE Position bewegte) - hier verbessert es das
+  Ergebnis zusaetzlich (SP500 2R/50%: Sharpe 1.16->1.20 ohne vs. mit BE-Rest).
+
+**Update 2026-08-27**: auf Nutzerwunsch als STANDARD uebernommen fuer alle
+drei Instrumente (`app_pages/ny_open_orb_portfolio.py::EXIT_CFG_BY_INSTRUMENT`) -
+SP500/US30: 2R/50%-Teilausstieg+BE-Rest; NASDAQ: 1.5R/50%-Teilausstieg+BE-Rest
+(die CAGR-Einbusse fuer NASDAQ wurde bewusst in Kauf genommen). US30 vorher
+separat verifiziert (Sharpe 1.02->1.12, Win 29%->42%, konsistent mit SP500).
+Das 3er-Portfolio verbessert sich dadurch von OOS-Sharpe 1.61 auf **1.76**,
+MaxDD -1.0%->-0.8%.
+
+## Stage 7 -- Echte $100k-Kontosimulation, 2025-01-01 bis heute (`scripts/research_ny_open_orb_stage7_account_sim_2025.py`)
+
+Reale, kompoundierende Dollar-Simulation aller drei Instrumente auf EINEM
+geteilten Konto (1% Risiko/Trade je Instrument, bis zu 3 gleichzeitig offene
+Positionen moeglich), via
+`gold_smc_htf_ltf/concurrent_backtest.py::simulate_combined_account`
+(wiederverwendet, nicht neu gebaut - dieselbe Heap-basierte,
+zeitgeordnete Abrechnung, die schon fuer die CTNL-Edge-FK-Challenge existiert).
+
+| Kennzahl | Wert |
+|---|---|
+| Start-Kapital (01.01.2025) | $100.000 |
+| End-Kapital (27.08.2026) | **$243.641** |
+| Total Return | +143.6% |
+| Sharpe / Calmar | 1.45 / 2.79 |
+| CAGR | 44.6% |
+| Max Drawdown | **-16.0%** |
+| Trades gesamt (0 uebersprungen) | 518 |
+
+Pro Instrument (alle positiv): NASDAQ 339 Trades/42.8% Win/+$70.897,
+SP500 84 Trades/46.4% Win/+$53.359, US30 95 Trades/37.9% Win/+$19.385.
+2025: +107.4% ($207.395). 2026 (Teiljahr bis August): +17.5% ($243.641).
+
+**Wichtige Einordnung, nicht ueberinterpretieren**:
+- **MaxDD -16% ist deutlich hoeher** als die zuvor berichteten -0.8% bis
+  -2.3% - kein Widerspruch, sondern ein Unterschied im Massstab: die
+  frueheren Zahlen sind gleichgewichtete PROZENTUALE Tagesrenditen (eine
+  geglaettete Kennzahl), diese hier ist ein echtes Konto mit
+  risikobasierter Positionsgroesse UND bis zu 3 gleichzeitig offenen
+  Positionen (echtes Stacking-Risiko an Tagen, an denen mehrere Instrumente
+  gleichzeitig triggern) - realistischer, aber auch volatiler.
+- **44.6% CAGR ist stark vom aussergewoehnlich starken 2025 getrieben**
+  (+107.4%) - und 2025-heute liegt komplett INNERHALB des schon fuer
+  Stop-/Target-/Teilausstiegs-Wahl genutzten OOS-Fensters (ab 2021-07-28),
+  nicht auf komplett unberuehrten Daten. 2026 ist zudem nur ein Teiljahr.
+  Als Bestaetigung "die Strategie ist real profitabel" lesen, nicht als
+  belastbare Erwartungsrendite fuer die Zukunft.
+- Ein zufaelliger, mehrfach reproduzierter `dukascopy_python`-Bibliotheksfehler
+  (`KeyError: 0` / `TypeError` beim Fetch bis "heute") trat wieder auf,
+  loeste sich beim naechsten unabhaengigen Versuch von selbst - bestaetigt
+  erneut die schon dokumentierte Intermittenz (nicht deterministisch an
+  Instrument/Zeitraum gebunden).
 
 ## Fazit (Gesamtprojekt nach Stage 4)
 

@@ -1401,3 +1401,12 @@
 2026-08-27 21:40:03   connection_error: None
 2026-08-27 21:40:03   hourly_breakdown: [{"time": "15:36", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "16:35", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "17:36", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "18:36", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "19:36", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "20:36", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}, {"time": "21:35", "signals_scanned": 0, "sent": 0, "sent_symbols": [], "pending_placed": 0, "pending_symbols": [], "skipped": 0, "error": 0, "be_moved": 0, "pending_cancelled": 0, "drawdown_halted": false, "scan_failed": false}]
 2026-08-27 21:40:03 
+2026-08-27 21:40:03 [main 9a3a1b7] OU-Modell: daily log 2026-08-27
+2026-08-27 21:40:03  5 files changed, 175 insertions(+)
+2026-08-27 21:40:03  create mode 100644 ou_modell_logs/raw/konto1_ttp/2026-08-27.log
+2026-08-27 21:40:03  create mode 100644 ou_modell_logs/raw/konto2_ttp/2026-08-27.log
+2026-08-27 21:40:03  create mode 100644 ou_modell_logs/raw/konto3_tickmill/2026-08-27.log
+2026-08-27 21:40:05 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-27 21:40:05    642d688..9a3a1b7  main -> main
+2026-08-27 21:40:05 Commit + Push erfolgreich.
+2026-08-27 21:40:05 === Task beendet ===

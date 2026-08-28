@@ -2096,3 +2096,9 @@
 2026-08-27 21:35:27 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
 2026-08-27 21:35:27 
 2026-08-27 21:35:27 Saved 0 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-08-27T21:35:26)
+2026-08-27 21:35:28 [main 642d688] OU-Modell Scanner: Snapshot 2026-08-27 21:35
+2026-08-27 21:35:28  1 file changed, 17 insertions(+)
+2026-08-27 21:35:30 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-27 21:35:30    73fa9fe..642d688  main -> main
+2026-08-27 21:35:30 Commit + Push erfolgreich.
+2026-08-27 21:35:30 === Scanner-Task beendet ===

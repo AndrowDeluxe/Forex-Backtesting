@@ -26,5 +26,11 @@ render_section(
             "icon": ":material/rss_feed:",
             "tag": "PAPIER",
         },
+        {
+            "page": "app_pages/ek_portfolio_live_log.py",
+            "title": "EK-Portfolio -- Live Log",
+            "icon": ":material/rss_feed:",
+            "tag": "PAPIER",
+        },
     ],
 )

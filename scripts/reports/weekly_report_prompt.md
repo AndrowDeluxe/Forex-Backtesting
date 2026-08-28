@@ -31,6 +31,13 @@ a git repo, outside `Forex-Backtesting\`. Known bridge folders as of
   terminal `MT5-Terminals\MT5 Terminal - GoldFKBot\`, started 2026-08-20)
 - `C:\Users\andre\TrendPullback-Bot\FK1\` and `\FK2\` (own dedicated
   terminals `MT5-Terminals\MT5 Terminal - FK1\`/`FK2\`, login 111188068 etc.)
+- `C:\Users\andre\OU-Modell-MT5-Bridge\` (3 accounts: Konto1 TTP, Konto2 TTP
+  Demo, Konto3 Tickmill - Konto1/Konto3 look like real/live capital, not
+  just demo challenges, based on account name/server - found missing from
+  this known-bridges list during the 2026-08-27 first run; always do a
+  fresh `Get-ChildItem C:\Users\andre\ -Directory` sweep for `*-Bridge`/
+  `*-Bot` folders each time rather than trusting only this list, since it
+  has already been proven incomplete once)
 - `C:\Users\andre\Forex-Backtesting\fk_instant_funding\paper_bot.py` (the
   "Portfolio Bot", 5 legs sharing one virtual account - check if it has
   been switched from paper-simulation to real execution; as of 2026-08-26
@@ -121,7 +128,85 @@ Structure (adapted from the user's mentor-style reflection journal):
 6. **Optimierungsmöglichkeiten**: what would be worth tackling next,
    based on what surfaced this week.
 
-## After writing both files
+## Report 3: PDF (both parts combined, styled)
+
+The user has approved a specific visual design for this ("ledger" look -
+paper background, Spectral serif headings, IBM Plex Sans body, IBM Plex
+Mono tabular numbers, teal accent, brick-red left-border callouts for
+flagged issues). Do NOT redesign this from scratch - reuse it exactly:
+
+1. Copy the entire `<style>` block from
+   `scripts/reports/templates/example_weekly_checkup.html` verbatim (it's
+   self-contained: Google Fonts import + full light/dark CSS). Reuse the
+   same class names/structure it demonstrates (`.sheet`, `.part`,
+   `section.block`, `h3.sec .num`, `.flag`, `.chip`, the trades table
+   structure, the `.bars` weekday-activity chart) - that file is a real,
+   previously-approved example for a past week (KW34), not a placeholder
+   to fill in; write this week's actual content in the same structure.
+2. Write the combined HTML (masthead + Part I Performance + Part II
+   Education, same content as the two markdown files above, same
+   "summarize trades, don't list them individually" rule) to
+   `knowledge/reports/weekly/KW<n>_<year>_checkup.html`.
+3. Render it to PDF with headless Edge - use this EXACT invocation (a
+   different flag combination silently fails with "Multiple targets are
+   not supported in headless mode", already debugged once, don't
+   rediscover it):
+   ```powershell
+   $edge = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+   $html = "C:\Users\andre\Forex-Backtesting\knowledge\reports\weekly\KW<n>_<year>_checkup.html"
+   $pdf  = "C:\Users\andre\Documents\Trading Reports\KW<n>_<year>_checkup.pdf"
+   $userDataDir = "$env:TEMP\edge-headless-pdf-$(Get-Random)"   # MUST be a fresh/unique dir every run - see note below
+   $fileUrl = "file:///" + ($html -replace '\\','/')
+   & $edge --headless=new --disable-gpu "--user-data-dir=$userDataDir" "--print-to-pdf=$pdf" --no-pdf-header-footer $fileUrl
+   ```
+   Run this via the Bash tool (it can invoke `powershell.exe -Command "..."`
+   or you may already be in a PowerShell-capable shell - check what's
+   available). **`--user-data-dir` MUST be unique per run** (the
+   `-$(Get-Random)` suffix above, or a timestamp) - reusing the same fixed
+   directory across runs was tested 2026-08-27 and intermittently fails
+   silently (exit code 0, no PDF written, stale profile/lock state from
+   the previous run) - already debugged once, don't reintroduce it.
+   Confirm the PDF file exists and is a non-trivial size (100KB+)
+   afterward - don't just trust exit code 0; if it's missing, retry once
+   with a brand-new random user-data-dir before giving up and flagging it
+   in the report instead.
+4. The PDF lives ONLY in `C:\Users\andre\Documents\Trading Reports\` (the
+   user's chosen folder, 2026-08-27 decision) - it is NOT committed to
+   git. The `.html` source IS committed (part of `knowledge/reports/`,
+   see below) so it stays git-versioned even though the PDF itself isn't.
+5. No email sending (deliberately not set up, user chose Telegram instead
+   on 2026-08-27) - if this prompt is ever updated to add email,
+   credentials must be read from a local, gitignored file - never
+   hardcode them here.
+
+## Report 4: Send the PDF via Telegram
+
+Uses the same shared bot/chat as the other bots (CLS-Practical-Bridge,
+OU-Modell-MT5-Bridge, etc.) - user's explicit choice 2026-08-27 ("in den
+Bot mit einbauen" rather than a new bot). From this repo's root (or
+`cd scripts/reports` first, since the config import is relative to that
+directory - see `telegram_notify.py`'s own import):
+
+```python
+import sys
+sys.path.insert(0, r"C:\Users\andre\Forex-Backtesting\scripts\reports")
+from telegram_notify import send_telegram_document, SIGNATURE
+
+ok = send_telegram_document(
+    r"C:\Users\andre\Documents\Trading Reports\KW<n>_<year>_checkup.pdf",
+    caption=f"{SIGNATURE}\n\nWeekly Checkup - KW<n>/<year>\n<one-line headline of the single most important flag from Report 1, section 5 - e.g. the most severe open issue - so the Telegram notification itself is useful even before opening the PDF>",
+)
+```
+
+If `scripts/reports/telegram_config.py` doesn't exist (gitignored, must be
+created once locally - see `telegram_config.example.py`), `send_telegram_
+document()` returns `False` without erroring - Telegram is optional, note
+this in the report if it happens but don't treat it as a failure of the
+whole run. Never let a Telegram error abort report generation - it must
+already be caught inside `telegram_notify.py`, but treat this step as
+best-effort regardless.
+
+## After writing all files
 
 `git add knowledge/reports/ && git commit -m "Weekly Checkup: KW<n>/<year>"`
 in this repo (local commit only - do NOT push). If it is also the last

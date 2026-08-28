@@ -1,7 +1,90 @@
 {
-  "trades": {},
+  "trades": {
+    "ctnl_reversal__2026-08-28T15:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-28T15:00:00",
+      "exit_time": "2026-08-28T16:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2077364335671283,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-28T15:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-28T15:15:00",
+      "exit_time": "2026-08-28T16:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.4505440481239797,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-28T15:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-28T15:30:00",
+      "exit_time": "2026-08-28T16:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2118737703389106,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-28T15:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-28T15:45:00",
+      "exit_time": "2026-08-28T16:15:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2350414877527134,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-28T16:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-28T16:00:00",
+      "exit_time": "2026-08-28T16:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2480880591825951,
+      "notified_exit": true
+    },
+    "ctnl_reversal__2026-08-28T16:15:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-28T16:15:00",
+      "exit_time": "2026-08-28T20:15:00",
+      "exit_reason": "data_end",
+      "r_multiple": -0.8679068236003088,
+      "notified_exit": false
+    },
+    "ctnl_reversal__2026-08-28T16:30:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-28T16:30:00",
+      "exit_time": "2026-08-28T20:15:00",
+      "exit_reason": "data_end",
+      "r_multiple": -0.39495503867358794,
+      "notified_exit": false
+    },
+    "ctnl_reversal__2026-08-28T16:45:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-28T16:45:00",
+      "exit_time": "2026-08-28T20:15:00",
+      "exit_reason": "data_end",
+      "r_multiple": -0.27460335620567305,
+      "notified_exit": false
+    },
+    "ctnl_reversal__2026-08-28T17:00:00_1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-08-28T17:00:00",
+      "exit_time": "2026-08-28T20:15:00",
+      "exit_reason": "data_end",
+      "r_multiple": -0.41610544732693355,
+      "notified_exit": false
+    },
+    "orb_nasdaq_NASDAQ_2026-08-28T13:45:00_1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-08-28T13:45:00",
+      "exit_time": "2026-08-28T13:50:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0342766931129999,
+      "notified_exit": true
+    }
+  },
   "kill_switch_active": false,
   "last_heartbeat_hour": "2026-08-27 20",
-  "eod_equity": {},
+  "eod_equity": {
+    "2026-08-28T00:00:00": 99735.17460891813
+  },
   "account_start": "2026-08-27T20:58:06.914380"
 }

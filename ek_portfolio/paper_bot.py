@@ -403,7 +403,14 @@ def _scan_btc_ema_cross(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
     return out[["entry_time", "exit_time", "r_multiple", "exit_reason"]]
 
 
-ORB_EXIT_CFG = dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0)
+ORB_EXIT_CFG_BY_INSTRUMENT = {
+    # identisch zu app_pages/ny_open_orb_portfolio.py::EXIT_CFG_BY_INSTRUMENT -- Teilausstieg
+    # (50% der Position bankt bei 2R/1.5R, Rest-Stop danach auf Break-Even) ist seit der
+    # Partial-Exit-Ergaenzung in ny_open_orb/engine.py::simulate() der aktuelle Standard.
+    "SP500": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0, partial_exit_r=2.0, partial_exit_fraction=0.5, move_stop_to_be_after_partial=True),
+    "US30": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0, partial_exit_r=2.0, partial_exit_fraction=0.5, move_stop_to_be_after_partial=True),
+    "NASDAQ": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0, partial_exit_r=1.5, partial_exit_fraction=0.5, move_stop_to_be_after_partial=True),
+}
 ORB_HISTORY_LOOKBACK_DAYS = 500  # EMA-Ribbon-Bias (4H/1D/1W) braucht Monate an Vorlauf
 
 
@@ -448,7 +455,7 @@ def _scan_orb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
         if entries.empty:
             continue
 
-        trades = simulate(frame, entries, **ORB_EXIT_CFG)
+        trades = simulate(frame, entries, **ORB_EXIT_CFG_BY_INSTRUMENT[instrument])
         if trades.empty:
             continue
         trades = trades[_utc_naive(trades["entry_time"]) <= end].copy()

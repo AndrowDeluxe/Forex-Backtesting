@@ -936,18 +936,22 @@ def _render_tab_ifund():
     ])
     if "orb_integration_note" in comp:
         st.success(comp["orb_integration_note"], icon=":material/trending_up:")
+    if "weight_optimization_note" in comp:
+        st.success(comp["weight_optimization_note"], icon=":material/tune:")
 
     section_title("Positionsgroessen-Formel (verbindlich fuer den Bot)")
-    st.code(f"Order-Risiko = Kapitalanteil ({data['capital_weight']*100:.1f}%) x internes Risiko/Trade x aktueller Kontostand", language=None)
+    st.code("Order-Risiko = Kapitalanteil (je Bein, siehe Tabelle) x internes Risiko/Trade x aktueller Kontostand", language=None)
     st.caption(
         "Nicht `internes Risiko/Trade x Kontostand` allein -- ohne die Kapitalanteil-Verduennung wuerde jede "
         "Strategie unabhaengig bis zu ihr eigenes internes Risiko-% vom VOLLEN Konto riskieren und die "
-        "0,5%-Grenze sofort reissen."
+        "0,5%-Grenze sofort reissen. Kapitalanteile seit der Gewichts-Optimierung (siehe unten) NICHT mehr "
+        "gleichgewichtet -- jedes Bein hat sein eigenes, Monte-Carlo-geprueftes Gewicht."
     )
 
     rows_html = ""
     for leg, info in data["legs"].items():
         real_risk = comp["real_risk_per_trade_pct_of_account"]
+        cw_leg = info.get("capital_weight", data.get("capital_weight", 0))
         if leg == "ctnl_edge":
             risk_label = f"Cont. {data['ctnl_edge_breakdown']['continuation_risk_pct']*100:.2f}% / Rev. {data['ctnl_edge_breakdown']['reversal_risk_pct']*100:.2f}%"
             real_label = f"{real_risk['ctnl_continuation']:.3f}% / {real_risk['ctnl_reversal']:.3f}%"
@@ -955,7 +959,7 @@ def _render_tab_ifund():
             risk_label = f"{info['internal_risk_pct']*100:.2f}%"
             real_label = f"{real_risk.get(leg, 0):.3f}%"
         rows_html += (
-            f"<tr><td>{info['label']}</td><td>{data['capital_weight']*100:.0f}%</td>"
+            f"<tr><td>{info['label']}</td><td>{cw_leg*100:.0f}%</td>"
             f"<td>{risk_label}</td><td class='pos'>{real_label} vom Konto</td></tr>"
         )
     st.markdown(

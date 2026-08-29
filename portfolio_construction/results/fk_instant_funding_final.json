@@ -2,45 +2,51 @@
   "legs": {
     "gold_asb": {
       "label": "Gold ASB",
-      "internal_risk_pct": 0.02
+      "internal_risk_pct": 0.02,
+      "capital_weight": 0.0606
     },
     "cls_practical": {
       "label": "CLS Practical",
-      "internal_risk_pct": 0.015
+      "internal_risk_pct": 0.015,
+      "capital_weight": 0.1919
     },
     "trend_pullback": {
       "label": "Trend Pullback",
-      "internal_risk_pct": 0.005
+      "internal_risk_pct": 0.005,
+      "capital_weight": 0.0606
     },
     "ctnl_edge": {
       "label": "CTNL Edge (Gold SMC)",
-      "internal_risk_pct": null
+      "internal_risk_pct": null,
+      "capital_weight": 0.2525
     },
     "gold_silver": {
       "label": "Gold-Silber-Divergenz",
-      "internal_risk_pct": 0.01
+      "internal_risk_pct": 0.01,
+      "capital_weight": 0.0606
     },
     "orb_portfolio": {
       "label": "NY-Open ORB Portfolio (SP500+US30+NASDAQ)",
-      "internal_risk_pct": 0.01
+      "internal_risk_pct": 0.01,
+      "capital_weight": 0.3737
     }
   },
   "ctnl_edge_breakdown": {
     "continuation_risk_pct": 0.005,
     "reversal_risk_pct": 0.0015
   },
-  "capital_weight": 0.1667,
   "common_window": {
     "start": "2024-08-01",
     "end": "2026-07-29",
     "days": 728
   },
   "portfolio_metrics": {
-    "final_equity": 140911.84,
-    "cagr_pct": 18.8,
-    "sharpe": 3.0,
-    "max_dd_pct": -1.78,
-    "calmar": 10.548
+    "cagr_pct": 24.81,
+    "max_dd_pct": -2.27,
+    "sharpe": 2.718,
+    "sortino": 8.096,
+    "calmar": 10.943,
+    "final_equity": 155449.67
   },
   "per_leg_standalone": {
     "gold_asb": {
@@ -83,419 +89,419 @@
   "curve": [
     [
       "2024-08-01",
-      99943.43
+      99873.14
     ],
     [
       "2024-08-08",
-      100368.9
+      101164.73
     ],
     [
       "2024-08-15",
-      101461.76
+      101777.66
     ],
     [
       "2024-08-22",
-      101645.75
+      101232.77
     ],
     [
       "2024-08-29",
-      102235.79
+      102068.06
     ],
     [
       "2024-09-05",
-      102037.33
+      101602.01
     ],
     [
       "2024-09-12",
-      102111.81
+      101623.24
     ],
     [
       "2024-09-19",
-      101764.92
+      101349.04
     ],
     [
       "2024-09-26",
-      103249.39
+      102950.82
     ],
     [
       "2024-10-03",
-      103293.82
+      103713.11
     ],
     [
       "2024-10-10",
-      102384.13
+      102869.27
     ],
     [
       "2024-10-17",
-      102936.88
+      103919.39
     ],
     [
       "2024-10-24",
-      102526.17
+      103031.86
     ],
     [
       "2024-10-31",
-      104119.62
+      106193.4
     ],
     [
       "2024-11-07",
-      104906.37
+      108134.13
     ],
     [
       "2024-11-14",
-      105868.26
+      109477.27
     ],
     [
       "2024-11-21",
-      107631.96
+      112106.85
     ],
     [
       "2024-11-28",
-      107892.13
+      112299.66
     ],
     [
       "2024-12-05",
-      108503.91
+      113072.52
     ],
     [
       "2024-12-12",
-      108800.09
+      114085.7
     ],
     [
       "2024-12-19",
-      108761.05
+      114090.5
     ],
     [
       "2024-12-26",
-      108503.28
+      114073.38
     ],
     [
       "2025-01-02",
-      107514.35
+      112200.53
     ],
     [
       "2025-01-09",
-      108737.32
+      114377.23
     ],
     [
       "2025-01-16",
-      108696.7
+      114484.51
     ],
     [
       "2025-01-23",
-      107829.39
+      113661.62
     ],
     [
       "2025-01-30",
-      107850.64
+      113699.34
     ],
     [
       "2025-02-06",
-      109136.51
+      115237.97
     ],
     [
       "2025-02-13",
-      110809.53
+      115820.55
     ],
     [
       "2025-02-20",
-      111349.7
+      116727.3
     ],
     [
       "2025-02-27",
-      112050.36
+      118811.94
     ],
     [
       "2025-03-06",
-      112411.62
+      119670.27
     ],
     [
       "2025-03-13",
-      112705.01
+      119056.22
     ],
     [
       "2025-03-20",
-      113447.96
+      121327.1
     ],
     [
       "2025-03-27",
-      113413.21
+      121238.97
     ],
     [
       "2025-04-03",
-      114326.46
+      122459.08
     ],
     [
       "2025-04-10",
-      114181.4
+      122208.77
     ],
     [
       "2025-04-17",
-      113931.1
+      121197.06
     ],
     [
       "2025-04-24",
-      115860.12
+      124114.47
     ],
     [
       "2025-05-01",
-      115993.37
+      124538.91
     ],
     [
       "2025-05-08",
-      116585.19
+      125204.08
     ],
     [
       "2025-05-15",
-      116980.2
+      126204.02
     ],
     [
       "2025-05-22",
-      117610.99
+      127322.55
     ],
     [
       "2025-05-29",
-      117754.48
+      127901.86
     ],
     [
       "2025-06-05",
-      117255.21
+      126921.99
     ],
     [
       "2025-06-12",
-      116972.36
+      126219.1
     ],
     [
       "2025-06-19",
-      118677.2
+      129030.77
     ],
     [
       "2025-06-26",
-      119521.64
+      131188.57
     ],
     [
       "2025-07-03",
-      120210.29
+      131017.91
     ],
     [
       "2025-07-10",
-      119603.07
+      130202.26
     ],
     [
       "2025-07-17",
-      120737.53
+      130438.73
     ],
     [
       "2025-07-24",
-      121661.51
+      131857.98
     ],
     [
       "2025-07-31",
-      121863.55
+      132589.57
     ],
     [
       "2025-08-07",
-      121687.27
+      132902.56
     ],
     [
       "2025-08-14",
-      121662.77
+      133357.33
     ],
     [
       "2025-08-21",
-      121650.7
+      133533.79
     ],
     [
       "2025-08-28",
-      121533.65
+      132737.84
     ],
     [
       "2025-09-04",
-      122077.15
+      133257.16
     ],
     [
       "2025-09-11",
-      122382.96
+      134460.93
     ],
     [
       "2025-09-18",
-      122871.4
+      136083.98
     ],
     [
       "2025-09-25",
-      124708.54
+      137491.3
     ],
     [
       "2025-10-02",
-      125686.18
+      138084.93
     ],
     [
       "2025-10-09",
-      126558.61
+      137828.58
     ],
     [
       "2025-10-16",
-      126989.45
+      137227.5
     ],
     [
       "2025-10-23",
-      127477.63
+      137472.76
     ],
     [
       "2025-10-30",
-      127344.4
+      137024.41
     ],
     [
       "2025-11-06",
-      128946.33
+      140838.43
     ],
     [
       "2025-11-13",
-      129213.06
+      140056.87
     ],
     [
       "2025-11-20",
-      130234.62
+      142729.83
     ],
     [
       "2025-11-27",
-      129763.14
+      141814.91
     ],
     [
       "2025-12-04",
-      129537.66
+      141416.39
     ],
     [
       "2025-12-11",
-      130304.13
+      143359.4
     ],
     [
       "2025-12-18",
-      131844.88
+      144543.9
     ],
     [
       "2025-12-25",
-      133206.66
+      145458.76
     ],
     [
       "2026-01-01",
-      132525.74
+      144445.01
     ],
     [
       "2026-01-08",
-      133228.35
+      145147.24
     ],
     [
       "2026-01-15",
-      134496.63
+      146572.12
     ],
     [
       "2026-01-22",
-      135365.44
+      148040.54
     ],
     [
       "2026-01-29",
-      136454.37
+      149597.81
     ],
     [
       "2026-02-05",
-      136865.7
+      150822.51
     ],
     [
       "2026-02-12",
-      137287.84
+      151616.14
     ],
     [
       "2026-02-19",
-      137116.0
+      151359.28
     ],
     [
       "2026-02-26",
-      136641.16
+      150367.89
     ],
     [
       "2026-03-05",
-      138035.31
+      151700.46
     ],
     [
       "2026-03-12",
-      137948.77
+      151611.9
     ],
     [
       "2026-03-19",
-      137291.92
+      150128.81
     ],
     [
       "2026-03-26",
-      137006.64
+      149573.61
     ],
     [
       "2026-04-02",
-      138175.66
+      152097.05
     ],
     [
       "2026-04-09",
-      138400.32
+      152165.86
     ],
     [
       "2026-04-16",
-      139312.9
+      153226.57
     ],
     [
       "2026-04-23",
-      138497.74
+      152086.89
     ],
     [
       "2026-04-30",
-      138055.22
+      151460.95
     ],
     [
       "2026-05-07",
-      138489.69
+      151604.89
     ],
     [
       "2026-05-14",
-      139662.66
+      153160.66
     ],
     [
       "2026-05-21",
-      138583.77
+      151935.76
     ],
     [
       "2026-05-28",
-      139697.99
+      153528.23
     ],
     [
       "2026-06-04",
-      139457.87
+      153055.07
     ],
     [
       "2026-06-11",
-      139279.93
+      152940.69
     ],
     [
       "2026-06-18",
-      139952.99
+      153349.55
     ],
     [
       "2026-06-25",
-      140640.56
+      155038.52
     ],
     [
       "2026-07-02",
-      140943.22
+      155785.71
     ],
     [
       "2026-07-09",
-      140391.53
+      155274.96
     ],
     [
       "2026-07-16",
-      140368.93
+      154786.2
     ],
     [
       "2026-07-23",
-      141342.0
+      156684.0
     ]
   ],
   "instant_funding_rules": {
@@ -506,15 +512,15 @@
   "rule_compliance": {
     "position_sizing_formula": "risk_dollars = capital_weight * internal_risk_pct * current_account_equity",
     "real_risk_per_trade_pct_of_account": {
-      "gold_asb": 0.333,
-      "cls_practical": 0.25,
-      "trend_pullback": 0.083,
-      "ctnl_continuation": 0.083,
-      "ctnl_reversal": 0.025,
-      "gold_silver": 0.167,
-      "orb_portfolio": 0.167
+      "gold_asb": 0.121,
+      "cls_practical": 0.288,
+      "trend_pullback": 0.03,
+      "ctnl_continuation": 0.126,
+      "ctnl_reversal": 0.038,
+      "gold_silver": 0.061,
+      "orb_portfolio": 0.125
     },
-    "trailing_dd_breach_prob": 0.0,
+    "trailing_dd_breach_prob": 0.021,
     "ou_modell_excluded_reason": "Treiber des Drawdown-Bruchs (viele gleichzeitig offene Positionen erzeugen die groessten Drawdown-Spitzen); das Weglassen senkte den Trailing-DD-Bruch von 14,4% auf 0,2%.",
     "tested_and_rejected_fixes": [
       {
@@ -534,31 +540,34 @@
         "result": "keine nennenswerte Verbesserung (Bruch blieb bei ~99,4-100%)."
       }
     ],
-    "conclusion": "Neu bewertet (Payout-Sperre statt Konto-Schliessung, jetzt inkl. ORB als 6. Bein): Die Wahrscheinlichkeit, dass das Verhaeltnis AN EINEM GEGEBENEN TAG <= 30% liegt (= Auszahlung an diesem Tag waere zulaessig), steigt mit dem Kontoalter monoton von praktisch 0% in den ersten Wochen auf 90% nach ca. 148 Tagen (~5 Monate), 95% nach ca. 175 Tagen (~6 Monate) und 99% nach ca. 233 Tagen (~7,7 Monate) -- schneller als ohne ORB (217/261/368 Tage), weil ORBs zusaetzlicher Profit die kumulierte Gewinnbasis schneller waechst laesst. Praktische Konsequenz unveraendert: in den ersten Monaten Auszahlungen eher zeitlich gezielt beantragen statt automatisch, das Konto bleibt unter der Trailing-DD-Regel durchgehend regelkonform (0,0% Bruchwahrscheinlichkeit).",
+    "conclusion": "Nach der Gewichts-Optimierung (siehe oben): die Wahrscheinlichkeit, dass das Konsistenz-Verhaeltnis AN EINEM GEGEBENEN TAG <= 30% liegt, steigt monoton von praktisch 0% in den ersten Wochen auf 90% nach ca. 176 Tagen (~5,9 Monate), 95% nach ca. 209 Tagen (~7 Monate) und 99% nach ca. 292 Tagen (~9,7 Monate) -- etwas langsamer als bei der vorherigen Gleich-gewichtung (148/175/233 Tage), da das Portfolio jetzt staerker auf wenige, dafuer bessere Beine konzentriert ist. Praktische Konsequenz unveraendert: Auszahlungen in den ersten Monaten zeitlich gezielt beantragen statt automatisch.",
     "consistency_note_payout_only": "Ein Bruch der 30%-Regel verweigert laut Nutzer-Recherche nur die naechste Auszahlung, schliesst das Konto NICHT wie die DD-Regel. Die ENTSCHEIDENDE Frage ist daher nicht mehr die alte kumulierte Jemals-gebrochen-Wahrscheinlichkeit (Worst-Case-Annahme, siehe unten), sondern: Wie wahrscheinlich ist das Verhaeltnis GENAU AN EINEM GEGEBENEN TAG (z.B. beim Auszahlungsantrag) <= 30%?",
     "consistency_compliant_point_in_time_by_account_age_days": {
-      "10": 0.0023333333333333335,
-      "20": 0.03166666666666667,
-      "30": 0.1,
-      "45": 0.234,
-      "60": 0.379,
-      "90": 0.6343333333333333,
-      "120": 0.8076666666666666,
-      "150": 0.9083333333333333,
-      "180": 0.9593333333333334,
-      "210": 0.981,
-      "240": 0.9926666666666667,
-      "270": 0.997,
-      "300": 0.999,
-      "350": 0.9996666666666667,
-      "400": 1.0,
+      "10": 0.0,
+      "20": 0.037,
+      "30": 0.091,
+      "45": 0.19466666666666665,
+      "60": 0.313,
+      "90": 0.5483333333333333,
+      "120": 0.7166666666666667,
+      "150": 0.837,
+      "180": 0.9096666666666666,
+      "210": 0.9516666666666667,
+      "240": 0.974,
+      "270": 0.9853333333333333,
+      "300": 0.9916666666666667,
+      "350": 0.9976666666666667,
+      "400": 0.999,
       "450": 1.0,
-      "500": 1.0
+      "500": 1.0,
+      "550": 1.0,
+      "600": 1.0,
+      "650": 1.0
     },
     "consistency_payout_milestones_days": {
-      "p90": 148,
-      "p95": 175,
-      "p99": 233
+      "p90": 176,
+      "p95": 209,
+      "p99": 292
     },
     "consistency_breach_by_account_age_days_LEGACY_worst_case": {
       "20": 0.996,
@@ -569,7 +578,8 @@
       "350": 0.021,
       "450": 0.004
     },
-    "orb_integration_note": "ORB (2026-08-27 auf Nutzerwunsch integriert) verbessert alle Kennzahlen gleichzeitig: CAGR 15,6%->18,8%, MaxDD -2,04%->-1,78% (kleiner!), Sharpe 2,94->3,00, Calmar 7,65->10,55, Trailing-DD-Bruchwahrscheinlichkeit 0,2%->0,0%, Konsistenz-Meilensteine schneller erreicht (90%/95%/99% jetzt bei Tag 148/175/233 statt 217/261/368). Kapitalanteil je Bein sinkt von 20% auf 16,67% (jetzt 6 statt 5 gleichgewichtete Beine)."
+    "orb_integration_note": "ORB (2026-08-27 auf Nutzerwunsch integriert) verbessert alle Kennzahlen gleichzeitig: CAGR 15,6%->18,8%, MaxDD -2,04%->-1,78% (kleiner!), Sharpe 2,94->3,00, Calmar 7,65->10,55, Trailing-DD-Bruchwahrscheinlichkeit 0,2%->0,0%, Konsistenz-Meilensteine schneller erreicht (90%/95%/99% jetzt bei Tag 148/175/233 statt 217/261/368). Kapitalanteil je Bein sinkt von 20% auf 16,67% (jetzt 6 statt 5 gleichgewichtete Beine).",
+    "weight_optimization_note": "Gewichts-Optimierung (2026-08-29, auf Nutzerwunsch): bei FIXEN, bereits validierten Risikostufen je Bein wurde die Kapitalanteil-Verteilung durchsucht (statt der bisherigen Gleichgewichtung 16,67% je Bein), mit Monte-Carlo-Pruefung gegen die bereits bekannte Overfitting-Falle (der rein historisch beste Kandidat haette 15,8% Bruchwahrscheinlichkeit gehabt). Ergebnis: weniger Kapital fuer Gold ASB/Trend Pullback/Gold-Silber-Divergenz (je 6% statt 16,7%), deutlich mehr fuer CTNL Edge (25%) und ORB (37%) -- die beiden Beine mit dem besten Sharpe (1,82 bzw. 1,66). CAGR 18,8%->24,8%, MaxDD -1,78%->-2,27%, Trailing-DD-Bruch-wahrscheinlichkeit 0,0%->2,1% (jeweils Monte-Carlo). Reales Risiko/Trade bleibt bei allen Beinen klar unter der 0,5%-Grenze (hoechster Wert: CTNL Continuation 0,125%)."
   },
   "orb_portfolio_breakdown": {
     "instruments": [

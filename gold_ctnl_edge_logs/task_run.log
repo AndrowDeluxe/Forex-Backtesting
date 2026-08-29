@@ -825,3 +825,15 @@
 2026-08-29 23:24:49   "date": "2026-08-29 17:24:49.689245-04:00",
 2026-08-29 23:24:49   "paused": true
 2026-08-29 23:24:49 }
+2026-08-29 23:24:50 [main 3f1e946] CTNL Edge FK-Paper: Snapshot 2026-08-29 23:24
+2026-08-29 23:24:50  1 file changed, 11 insertions(+)
+2026-08-29 23:24:52 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-29 23:24:52  ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at a93dfbbd7dda0ff54e043348fc0504a2fe73219b but expected 5fcf1dad4e51a70888f42e77fd2886ab27e5e542)
+2026-08-29 23:24:52 error: failed to push some refs to 'https://github.com/AndrowDeluxe/Forex-Backtesting.git'
+2026-08-29 23:24:52 WARNUNG: git push fehlgeschlagen (Exit 1) - Commit liegt lokal vor, aber nicht auf GitHub bis zum naechsten erfolgreichen Push.
+2026-08-29 23:24:52 === CTNL-Edge-FK-Paper-Task beendet ===
+2026-08-29 23:56:24 === CTNL-Edge-FK-Paper-Task gestartet ===
+2026-08-29 23:56:27 {
+2026-08-29 23:56:27   "date": "2026-08-29 17:56:27.070615-04:00",
+2026-08-29 23:56:27   "paused": true
+2026-08-29 23:56:27 }

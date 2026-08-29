@@ -3127,3 +3127,17 @@
 2026-08-29 08:27:37   "kill_switch_active": false,
 2026-08-29 08:27:37   "n_trades": 10
 2026-08-29 08:27:37 }
+2026-08-29 08:27:38 [main acfe049] EK Portfolio Bot: Snapshot 2026-08-29 08:27
+2026-08-29 08:27:38  3 files changed, 233 insertions(+), 2 deletions(-)
+2026-08-29 08:27:41 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-29 08:27:41    4e68399..acfe049  main -> main
+2026-08-29 08:27:41 Commit + Push erfolgreich.
+2026-08-29 08:27:41 === EK-Portfolio-Task beendet ===
+2026-08-29 23:24:47 === EK-Portfolio-Task gestartet ===
+2026-08-29 23:24:50 {
+2026-08-29 23:24:50   "date": "2026-08-29 21:24:48.795110",
+2026-08-29 23:24:50   "equity": 99743.90944023391,
+2026-08-29 23:24:50   "current_dd": -0.0025609055976608674,
+2026-08-29 23:24:50   "kill_switch_active": false,
+2026-08-29 23:24:50   "n_trades": 10
+2026-08-29 23:24:50 }

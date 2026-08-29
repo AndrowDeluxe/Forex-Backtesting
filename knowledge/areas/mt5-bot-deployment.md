@@ -49,3 +49,76 @@ Bots/Bridges über dieselbe gerade laufende Terminal-Instanz fahren.
 **Grundregel Ende**: kein Bot geht live (auch nicht papierbasiert mit
 echter MT5-Order-Kette), bevor Schritt 1-5 einmal durchlaufen und im Log
 verifiziert wurden.
+
+## Ergaenzung 2026-08-29 (EK-Portfolio-Bridge-Aufsetzung)
+
+Fuenf weitere, in der Praxis getroffene Probleme + ihre Standard-Loesung --
+alle jetzt Teil des Aufsetzungs-Prozesses, nicht nur einmalige Fixes:
+
+6. **AutoTrading-Check jetzt automatisiert statt nur manuell (Schritt 2/3
+   oben)**: `connect()` prueft bei JEDEM Lauf `mt5.terminal_info().
+   trade_allowed` UND `mt5.account_info().trade_allowed/trade_expert` und
+   bricht mit klarer Fehlermeldung ab, statt erst beim ersten echten
+   Order-Versand mit `retcode=10027` stumm zu scheitern (siehe Incident 2
+   oben). In jede neue Bridge uebernehmen, nicht nur pruefen und vergessen.
+
+7. **`copy_rates_from_pos()` hat eine harte Bar-Anzahl-Grenze pro Aufruf**
+   (`Invalid params`, empirisch getroffen bei ~48.000 Bars/Aufruf). Fix:
+   `copy_rates_range()` (Datums-Spanne statt Bar-Anzahl) verwenden -- aber
+   auch das hat eine Grenze (getroffen bei ~144.000 Bars M5/500 Tage, bei
+   ~32.000 Bars M15/500 Tage noch nicht). Faustregel: nur so viel Historie
+   anfragen, wie die Strategie TATSAECHLICH braucht (z.B. RVOL-Lookback
+   20 Tage statt derselben Tiefe wie ein 200-Tage-EMA-Ribbon-Filter --
+   unterschiedliche Timeframes/Berechnungen im selben Signal brauchen oft
+   unterschiedlich viel Historie, nicht pauschal die groesste Anforderung
+   auf alles anwenden). Reicht das nicht, jahresweise chunken (Vorbild:
+   `ny_open_orb/data.py::_fetch_chunked_by_year`, dort urspruenglich gegen
+   einen anderen Dukascopy-Bug gebaut, aber dieselbe Technik).
+   `copy_rates_range()` braucht ausserdem tz-NAIVE `datetime`-Objekte
+   (tz-aware -> `Invalid params`) und `date_to` darf nicht in der Zukunft
+   liegen (auch das -> `Invalid params`, leicht zu uebersehen, wenn man
+   "bis morgen" puffert wie es andere Datenquellen in diesem Repo tun).
+
+8. **MT5-Zeitstempel sind Server-Wallclock, NICHT UTC** -- epoch-kodiert
+   ALS OB UTC, aber tatsaechlich die lokale Uhrzeit des Broker-Servers
+   (bei den bisher genutzten Brokern EET/EEST, UTC+2/+3, DST-Wechsel wie
+   die EU). Strategien mit festen lokalen Session-Grenzen (z.B. NY-Open
+   ORB: 09:30/16:00 America/New_York) brauchen eine korrekte Konvertierung
+   -- NIEMALS einen festen Stunden-Offset hart hinterlegen (driftet beim
+   naechsten DST-Wechsel unbemerkt um eine Stunde). Stattdessen: echte
+   IANA-Zeitzone (`zoneinfo.ZoneInfo("Europe/Helsinki")` o.ae., beliebige
+   EU-DST-Zone liefert dieselben Offsets) fuer `tz_localize()` verwenden
+   UND bei jedem Lauf empirisch verifizieren (Vergleich eines frischen
+   Tick-Zeitstempels eines 24/7-Instruments wie BTCUSD gegen die echte
+   `datetime.now(timezone.utc)`, Toleranz wenige Minuten) statt der
+   Annahme blind zu vertrauen -- ein Broker-Wechsel der Server-TZ-
+   Konvention faellt sonst nie auf, verschiebt aber jede Session-Grenze
+   lautlos.
+
+9. **Geteiltes Konto mit einem bereits laufenden Bot** (z.B. ein zweiter
+   Bot auf demselben Tickmill-Konto wie OU-Modell-MT5-Bridge): siehe
+   Grundregel oben (eigenes Terminal PRO Bot) -- gilt unveraendert auch
+   wenn beide auf dasselbe Konto zielen, denn das Risiko ist die geteilte
+   Terminal-INSTANZ (Prozess), nicht das Konto selbst (mehrere Terminal-
+   Instanzen gleichzeitig auf einem Konto sind brokerseitig normal).
+   Zusaetzlich noetig: ein kontoweiter, UNGEFILTERTER Risiko-Deckel
+   (`calc_open_risk()` summiert ALLE offenen Positionen des Kontos, auch
+   die des anderen Bots), damit der neue Bot nie blind Risiko auf das
+   stapelt, was der andere gerade offen haelt. Umgekehrt muss jede
+   Positions-VERWALTUNG (Schliessen, SL-Modifikation) strikt nach der
+   eigenen `magic`-Nummer filtern, damit sie nie eine fremde Position
+   anfasst -- diese beiden Filterregeln sind bewusst gegensaetzlich
+   (Risiko-Blick kontoweit offen, Verwaltungs-Zugriff eng gefiltert) und
+   beide noetig.
+
+10. **Positionsgroessen-Berechnung**: immer `mt5.order_calc_profit()` fuer
+    Verlust/Lot nutzen, nie `trade_tick_size`/`trade_tick_value` von Hand
+    verrechnen (ignoriert Kontowaehrung-vs-Symbol-Profitwaehrung-
+    Umrechnung, war schon einmal um Faktor 8,6 daneben). Zwei
+    Architektur-Varianten je nach Exit-Stil der Strategie: (a) fester
+    SL/TP bei Entry, danach keine aktive Verwaltung noetig (Broker
+    schliesst selbststaendig) -- generischer "Bracket-Executor" reicht;
+    (b) Teilausstieg/Break-Even-Verschiebung/Session-Ende-Notausgang
+    noetig -- braucht eigene Positions-Verwaltungslogik, die bei jedem
+    Lauf alle offenen Positionen der eigenen `magic`-Nummer durchgeht.
+    Nicht (b) fuer (a) ueberbauen oder umgekehrt (a) fuer (b) unterbauen.

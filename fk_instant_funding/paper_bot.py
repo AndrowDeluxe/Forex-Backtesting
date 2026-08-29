@@ -52,6 +52,24 @@ import pandas as pd
 from fk_instant_funding.telegram_notify import send_telegram_message
 from strategy.backtest import BacktestConfig, simulate_trades
 
+# Eigenes, sofort wiedererkennbares Telegram-Layout fuer diesen Bot (Nutzer-
+# Wunsch 2026-08-29: "Erstelle gerne ... ein eigenes Layout damit ich das
+# besser erkenne" -- andere Bots (GoldASB/CLS/CTNL) nutzen nur einen
+# "[Bot Name]"-Textpraefix, hier stattdessen ein fester 2-Zeilen-Banner ueber
+# JEDER Nachricht). Alle Ereignisse EINES Scan-Laufs (Entries/Exits/Fehler/
+# Kill-Switch) werden zu EINER Telegram-Nachricht gebuendelt statt je
+# Strategie einzeln verschickt (Nutzer-Wunsch: "in einer Nachricht und nicht
+# jede Strategie einzeln").
+_FK_BANNER = "\U0001F3E6 FK INSTANT FUNDING"
+_FK_RULE = "─" * 24
+
+
+def _fk_message(subtitle: str, body_lines: list[str] | None = None) -> str:
+    header = f"{_FK_BANNER}\n{_FK_RULE}\n{subtitle}"
+    if body_lines:
+        return header + "\n\n" + "\n".join(body_lines)
+    return header
+
 
 def _retry(fn, attempts: int = 3, delay_seconds: float = 5.0):
     """dukascopy_python's Streaming-Client wirft gelegentlich ein KeyError(0)
@@ -479,13 +497,13 @@ def _merge_trades(state: dict, leg: str, trades: pd.DataFrame) -> list[str]:
                 "exit_time": exit_naive.isoformat(), "exit_reason": exit_reason,
                 "r_multiple": r_mult, "notified_exit": exit_reason != "data_end",
             }
-            messages.append(f"[FK Instant Funding] \U0001F7E2 ENTRY {LEG_LABELS[leg]} @ {t['entry_time']}")
+            messages.append(f"\U0001F7E2 ENTRY {LEG_LABELS[leg]} @ {t['entry_time']}")
         else:
             rec = state["trades"][key]
             rec["exit_time"], rec["exit_reason"], rec["r_multiple"] = exit_naive.isoformat(), exit_reason, r_mult
             if exit_reason != "data_end" and not rec.get("notified_exit", False):
                 icon = "\U0001F7E2" if r_mult > 0 else "\U0001F534"
-                messages.append(f"[FK Instant Funding] {icon} EXIT {LEG_LABELS[leg]} ({exit_reason}) R={r_mult:+.2f}")
+                messages.append(f"{icon} EXIT {LEG_LABELS[leg]} ({exit_reason}) R={r_mult:+.2f}")
                 rec["notified_exit"] = True
     return messages
 
@@ -595,37 +613,49 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
             return trades
         return trades[_utc_naive(trades["entry_time"]) >= account_start]
 
+    # Scan-Fehler pro Kalendertag mitschreiben (fuer die "hat heute alles
+    # funktioniert?"-Zeile im Tagesabschluss, Nutzer-Wunsch 2026-08-29) --
+    # Reset bei Tageswechsel, analog zum last_daily_summary_day-Muster unten.
+    current_day_key = end.strftime("%Y-%m-%d")
+    if state.get("scan_errors_today", {}).get("day") != current_day_key:
+        state["scan_errors_today"] = {"day": current_day_key, "legs": []}
+
     messages = []
     try:
         gold_asb_trades = _since_start(_retry(lambda: _scan_gold_asb(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "gold_asb", gold_asb_trades)
     except Exception as e:
-        messages.append(f"[FK Instant Funding] ⚠️ Gold-ASB-Scan fehlgeschlagen: {e}")
+        messages.append(f"⚠️ Gold-ASB-Scan fehlgeschlagen: {e}")
+        state["scan_errors_today"]["legs"].append("Gold ASB")
 
     try:
         cls_trades = _since_start(_retry(lambda: _scan_cls_practical(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "cls_practical", cls_trades)
     except Exception as e:
-        messages.append(f"[FK Instant Funding] ⚠️ CLS-Practical-Scan fehlgeschlagen: {e}")
+        messages.append(f"⚠️ CLS-Practical-Scan fehlgeschlagen: {e}")
+        state["scan_errors_today"]["legs"].append("CLS Practical")
 
     try:
         tp_trades = _since_start(_retry(lambda: _scan_trend_pullback(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "trend_pullback", tp_trades)
     except Exception as e:
-        messages.append(f"[FK Instant Funding] ⚠️ Trend-Pullback-Scan fehlgeschlagen: {e}")
+        messages.append(f"⚠️ Trend-Pullback-Scan fehlgeschlagen: {e}")
+        state["scan_errors_today"]["legs"].append("Trend Pullback")
 
     try:
         cont_trades, rev_trades = _retry(lambda: _scan_ctnl(end, force_refresh=not dry_run))
         messages += _merge_trades(state, "ctnl_continuation", _since_start(cont_trades))
         messages += _merge_trades(state, "ctnl_reversal", _since_start(rev_trades))
     except Exception as e:
-        messages.append(f"[FK Instant Funding] ⚠️ CTNL-Edge-Scan fehlgeschlagen: {e}")
+        messages.append(f"⚠️ CTNL-Edge-Scan fehlgeschlagen: {e}")
+        state["scan_errors_today"]["legs"].append("CTNL Edge")
 
     try:
         gsd_trades = _since_start(_retry(lambda: _scan_gold_silver(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "gold_silver", gsd_trades)
     except Exception as e:
-        messages.append(f"[FK Instant Funding] ⚠️ Gold-Silber-Divergenz-Scan fehlgeschlagen: {e}")
+        messages.append(f"⚠️ Gold-Silber-Divergenz-Scan fehlgeschlagen: {e}")
+        state["scan_errors_today"]["legs"].append("Gold-Silber-Divergenz")
 
     try:
         orb_trades = _since_start(_retry(lambda: _scan_orb(end, force_refresh=not dry_run)))
@@ -634,7 +664,8 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
             for market, sub in orb_trades.groupby("market"):
                 messages += _merge_trades(state, orb_leg_by_market[market], sub)
     except Exception as e:
-        messages.append(f"[FK Instant Funding] ⚠️ NY-Open-ORB-Scan fehlgeschlagen: {e}")
+        messages.append(f"⚠️ NY-Open-ORB-Scan fehlgeschlagen: {e}")
+        state["scan_errors_today"]["legs"].append("NY-Open ORB")
 
     equity_df = compute_shared_equity(state)
     dd_breached, current_dd, dd_floor = check_trailing_dd(equity_df, state["eod_equity"], end)
@@ -644,7 +675,7 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
     if dd_breached and not state.get("kill_switch_active", False):
         state["kill_switch_active"] = True
         messages.append(
-            f"[FK Instant Funding] \U0001F6A8 KILL-SWITCH: Trailing-Drawdown {current_dd:.2%} unter dem "
+            f"\U0001F6A8 KILL-SWITCH: Trailing-Drawdown {current_dd:.2%} unter dem "
             f"5%-Floor (${dd_floor:,.0f}). Neue Entries pruefen/pausieren."
         )
     elif not dd_breached and state.get("kill_switch_active", False) and current_dd >= -TRAILING_DD_PCT * 0.5:
@@ -661,16 +692,25 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
     # und am Ende des Tages einen kleinen Tagesabschluss") - Kill-Switch-/
     # Scan-Fehler-Meldungen oben (`messages`) bleiben unveraendert Sofort-
     # Alarme, nur dieser Routine-Status wird auf einmal/Tag reduziert.
-    current_day_key = end.strftime("%Y-%m-%d")
     if state.get("last_daily_summary_day") != current_day_key and end.hour >= DAILY_SUMMARY_HOUR:
         state["last_daily_summary_day"] = current_day_key
         payout_label = "ZULAESSIG" if payout_safe else "NICHT zulaessig (Verhaeltnis > 30%)"
-        heartbeat_msg = (
-            f"[FK Instant Funding] \U0001F4D2 Tagesabschluss {end.strftime('%Y-%m-%d')}\n"
-            f"Equity: ${current_equity:,.0f}  |  Trailing-DD: {current_dd:.2%} (Floor ${dd_floor:,.0f})  |  "
-            f"Trades: {len(state['trades'])}  |  Kill-Switch: {'AKTIV' if state['kill_switch_active'] else 'ok'}\n"
-            f"Konsistenz-Verhaeltnis: {consistency_ratio:.1%}  |  Auszahlung: {payout_label}"
-        )
+        failed_legs = state.get("scan_errors_today", {}).get("legs", [])
+        if failed_legs:
+            fail_counts: dict[str, int] = {}
+            for leg_name in failed_legs:
+                fail_counts[leg_name] = fail_counts.get(leg_name, 0) + 1
+            health_line = "System: ⚠️ Scan-Fehler heute bei " + ", ".join(
+                f"{leg_name} ({n}x)" for leg_name, n in fail_counts.items()
+            )
+        else:
+            health_line = "System: ✅ alle Scans liefen heute fehlerfrei"
+        heartbeat_msg = _fk_message(f"Tagesabschluss {end.strftime('%Y-%m-%d')}", [
+            health_line,
+            f"Equity: ${current_equity:,.0f}  |  Trailing-DD: {current_dd:.2%} (Floor ${dd_floor:,.0f})",
+            f"Trades gesamt: {len(state['trades'])}  |  Kill-Switch: {'AKTIV' if state['kill_switch_active'] else 'ok'}",
+            f"Konsistenz-Verhaeltnis: {consistency_ratio:.1%}  |  Auszahlung: {payout_label}",
+        ])
         if not dry_run:
             send_telegram_message(heartbeat_msg)
             LOG_DIR.mkdir(exist_ok=True)
@@ -681,9 +721,12 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
                 f.write(f"{end.isoformat()},{current_equity:.2f},{current_dd:.4f},{consistency_ratio:.4f},"
                         f"{payout_safe},{state['kill_switch_active']},{len(state['trades'])}\n")
 
+    # Alle Ereignisse DIESES Scan-Laufs (Entries/Exits/Fehler/Kill-Switch) als
+    # EINE gebuendelte Telegram-Nachricht statt einer pro Strategie (Nutzer-
+    # Wunsch 2026-08-29) -- nur senden, wenn tatsaechlich etwas passiert ist.
     if not dry_run:
-        for m in messages:
-            send_telegram_message(m)
+        if messages:
+            send_telegram_message(_fk_message("Scan-Update", messages))
         save_state(state)
 
     row["messages"] = messages

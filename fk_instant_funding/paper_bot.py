@@ -19,8 +19,9 @@ EINE gemeinsame, sequenziell kompoundierende Paper-Equity-Kurve mit der
 Kapitalanteil-Verduennungsformel (siehe portfolio_construction/results/
 fk_instant_funding_final.json):
 
-    risk_dollars = CAPITAL_WEIGHT (20%) x internes Risiko/Trade x aktuelle
-                   SHARED-Equity, GEDECKELT auf 0.5% des STARTKAPITALS
+    risk_dollars = CAPITAL_WEIGHT[Bein] (siehe Tabelle, Monte-Carlo-optimiert,
+                   NICHT mehr gleichgewichtet) x internes Risiko/Trade x
+                   aktuelle SHARED-Equity, GEDECKELT auf 0.5% des STARTKAPITALS
 
 Der Deckel ist neu ggue. dem reinen Backtest: die 0,5%-Regel bezieht sich
 laut Regelwerk explizit auf das STARTKAPITAL (fester Dollar-Betrag), waehrend
@@ -76,8 +77,25 @@ STATE_PATH = LOG_DIR / "paper_state.json"
 HEARTBEAT_CSV = LOG_DIR / "heartbeat.csv"
 
 STARTING_EQUITY = 100_000.0  # Platzhalter -- vor echtem Livegang auf die reale Kontogroesse setzen
-CAPITAL_WEIGHT = 1 / 6  # je Bein, 6 gleichgewichtete Beine (CTNL Continuation+Reversal teilen sich EIN Bein,
-# die 3 ORB-Instrumente teilen sich ebenfalls EIN Bein -- siehe ORB_RISK_PCT_PER_INSTRUMENT unten)
+
+# Kapitalanteil je Bein (2026-08-29, Monte-Carlo-optimiert statt Gleichgewichtung
+# 1/6 -- siehe portfolio_construction/results/fk_instant_funding_final.json,
+# weight_optimization_note): Grid-Suche ueber Kapitalanteile bei FIXEN, bereits
+# validierten internen Risikostufen je Bein (LEG_RISK_PCT unten), ausgewaehlt
+# nach bestem CAGR unter P(Trailing-DD-Bruch>5%) <= 1% ueber 3.000 Block-
+# Bootstrap-Pfade. CTNL Continuation+Reversal und die 3 ORB-Instrumente teilen
+# sich je EIN gemeinsames Bein-Gewicht (identisch zum Backtest-Aufbau).
+CAPITAL_WEIGHT = {
+    "gold_asb": 0.0606,
+    "cls_practical": 0.1919,
+    "trend_pullback": 0.0606,
+    "ctnl_continuation": 0.2525,
+    "ctnl_reversal": 0.2525,
+    "gold_silver": 0.0606,
+    "orb_sp500": 0.3737,
+    "orb_us30": 0.3737,
+    "orb_nasdaq": 0.3737,
+}
 
 MAX_POSITION_LOSS_PCT = 0.005   # vom STARTKAPITAL (fester Dollar-Deckel, siehe Docstring)
 TRAILING_DD_PCT = 0.05          # End-of-Day, gegen den bisherigen Hoechststand
@@ -492,7 +510,7 @@ def compute_shared_equity(state: dict) -> pd.DataFrame:
     equity = STARTING_EQUITY
     rows = []
     for _, t in trades.iterrows():
-        risk_uncapped = CAPITAL_WEIGHT * LEG_RISK_PCT[t["leg"]] * equity
+        risk_uncapped = CAPITAL_WEIGHT[t["leg"]] * LEG_RISK_PCT[t["leg"]] * equity
         risk_dollars = min(risk_uncapped, MAX_POSITION_LOSS_DOLLARS)
         pnl = risk_dollars * t["r_multiple"]
         equity += pnl

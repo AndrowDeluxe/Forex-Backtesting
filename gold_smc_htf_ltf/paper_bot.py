@@ -32,6 +32,7 @@ from gold_smc_htf_ltf.reversal_cascade import run_pipeline as run_reversal
 from gold_smc_htf_ltf.telegram_notify import send_telegram_message
 from strategy.backtest import BacktestConfig, simulate_trades
 from strategy.metrics import annualized_sharpe
+from strategy.schedule_guard import is_market_paused
 
 REPO_DIR = Path(__file__).resolve().parents[1]
 LOG_DIR = REPO_DIR / "gold_ctnl_edge_logs"
@@ -122,6 +123,17 @@ def _state_trades_df(state: dict, strategy: str) -> pd.DataFrame:
 
 def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_override: dict | None = None) -> dict:
     end = as_of if as_of is not None else pd.Timestamp.now(tz="America/New_York")
+
+    # Wochenende/Spread-Stunde: Gold (XAUUSD) handelt nicht am Wochenende und
+    # hat dieselbe taegliche Spread-Ausweitung wie andere FX-Instrumente
+    # (User-Wunsch 2026-08-29, siehe strategy/schedule_guard.py). `end` ist
+    # hier NY-zeitzonenbehaftet, is_market_paused() erwartet UTC-naiv -- erst
+    # umrechnen. Ein expliziter as_of-Aufruf (Tests/Backtests) wird NICHT
+    # pausiert.
+    if as_of is None and is_market_paused(end.tz_convert("UTC").tz_localize(None)):
+        state = dict(state_override) if state_override is not None else load_state()
+        return {"date": str(end), "paused": True, "messages": []}, state
+
     state = dict(state_override) if state_override is not None else load_state()
     if "trades" not in state:
         state = _default_state()

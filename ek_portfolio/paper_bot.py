@@ -67,6 +67,7 @@ import pandas as pd
 
 from ek_portfolio.telegram_notify import send_telegram_message
 from strategy.backtest import BacktestConfig, simulate_trades
+from strategy.schedule_guard import is_market_paused
 
 
 def _retry(fn, attempts: int = 3, delay_seconds: float = 5.0):
@@ -651,52 +652,62 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
             return trades
         return trades[_utc_naive(trades["entry_time"]) >= account_start]
 
+    # Wochenende/Spread-Stunde: die 7 Forex-/Gold-/Index-Beine pausieren
+    # (kein Handel, kein Sinn in einem Scan), BTC EMA9/21 handelt aber rund
+    # um die Uhr (Krypto) und bleibt bewusst ausgenommen (User-Wunsch
+    # 2026-08-29, siehe strategy/schedule_guard.py-Docstring). Ein expliziter
+    # as_of-Aufruf (Tests/Backtests) wird NICHT pausiert.
+    fx_paused = as_of is None and is_market_paused(end)
+
     messages = []
-    try:
-        gold_asb_trades = _since_start(_retry(lambda: _scan_gold_asb(end, force_refresh=not dry_run)))
-        messages += _merge_trades(state, "gold_asb", gold_asb_trades)
-    except Exception as e:
-        messages.append(f"[EK Portfolio] ⚠️ Gold-ASB-Scan fehlgeschlagen: {e}")
+    if not fx_paused:
+        try:
+            gold_asb_trades = _since_start(_retry(lambda: _scan_gold_asb(end, force_refresh=not dry_run)))
+            messages += _merge_trades(state, "gold_asb", gold_asb_trades)
+        except Exception as e:
+            messages.append(f"[EK Portfolio] ⚠️ Gold-ASB-Scan fehlgeschlagen: {e}")
 
-    try:
-        cls_trades = _since_start(_retry(lambda: _scan_cls_practical(end, force_refresh=not dry_run)))
-        messages += _merge_trades(state, "cls_practical", cls_trades)
-    except Exception as e:
-        messages.append(f"[EK Portfolio] ⚠️ CLS-Practical-Scan fehlgeschlagen: {e}")
+        try:
+            cls_trades = _since_start(_retry(lambda: _scan_cls_practical(end, force_refresh=not dry_run)))
+            messages += _merge_trades(state, "cls_practical", cls_trades)
+        except Exception as e:
+            messages.append(f"[EK Portfolio] ⚠️ CLS-Practical-Scan fehlgeschlagen: {e}")
 
-    try:
-        tp_trades = _since_start(_retry(lambda: _scan_trend_pullback(end, force_refresh=not dry_run)))
-        messages += _merge_trades(state, "trend_pullback", tp_trades)
-    except Exception as e:
-        messages.append(f"[EK Portfolio] ⚠️ Trend-Pullback-Scan fehlgeschlagen: {e}")
+        try:
+            tp_trades = _since_start(_retry(lambda: _scan_trend_pullback(end, force_refresh=not dry_run)))
+            messages += _merge_trades(state, "trend_pullback", tp_trades)
+        except Exception as e:
+            messages.append(f"[EK Portfolio] ⚠️ Trend-Pullback-Scan fehlgeschlagen: {e}")
 
-    try:
-        cont_trades, rev_trades = _retry(lambda: _scan_ctnl(end, force_refresh=not dry_run))
-        messages += _merge_trades(state, "ctnl_continuation", _since_start(cont_trades))
-        messages += _merge_trades(state, "ctnl_reversal", _since_start(rev_trades))
-    except Exception as e:
-        messages.append(f"[EK Portfolio] ⚠️ CTNL-Edge-Scan fehlgeschlagen: {e}")
+        try:
+            cont_trades, rev_trades = _retry(lambda: _scan_ctnl(end, force_refresh=not dry_run))
+            messages += _merge_trades(state, "ctnl_continuation", _since_start(cont_trades))
+            messages += _merge_trades(state, "ctnl_reversal", _since_start(rev_trades))
+        except Exception as e:
+            messages.append(f"[EK Portfolio] ⚠️ CTNL-Edge-Scan fehlgeschlagen: {e}")
 
-    try:
-        gsd_trades = _since_start(_retry(lambda: _scan_gold_silver(end, force_refresh=not dry_run)))
-        messages += _merge_trades(state, "gold_silver", gsd_trades)
-    except Exception as e:
-        messages.append(f"[EK Portfolio] ⚠️ Gold-Silber-Divergenz-Scan fehlgeschlagen: {e}")
+        try:
+            gsd_trades = _since_start(_retry(lambda: _scan_gold_silver(end, force_refresh=not dry_run)))
+            messages += _merge_trades(state, "gold_silver", gsd_trades)
+        except Exception as e:
+            messages.append(f"[EK Portfolio] ⚠️ Gold-Silber-Divergenz-Scan fehlgeschlagen: {e}")
 
+    # BTC EMA9/21 IMMER scannen -- Krypto handelt 24/7, keine Wochenend-/Spread-Stunden-Sperre.
     try:
         btc_trades = _since_start(_retry(lambda: _scan_btc_ema_cross(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "btc_ema_cross", btc_trades)
     except Exception as e:
         messages.append(f"[EK Portfolio] ⚠️ BTC-EMA9/21-Scan fehlgeschlagen: {e}")
 
-    try:
-        orb_trades = _since_start(_retry(lambda: _scan_orb(end, force_refresh=not dry_run)))
-        orb_leg_by_market = {"SP500": "orb_sp500", "US30": "orb_us30", "NASDAQ": "orb_nasdaq"}
-        if not orb_trades.empty:
-            for market, sub in orb_trades.groupby("market"):
-                messages += _merge_trades(state, orb_leg_by_market[market], sub)
-    except Exception as e:
-        messages.append(f"[EK Portfolio] ⚠️ NY-Open-ORB-Scan fehlgeschlagen: {e}")
+    if not fx_paused:
+        try:
+            orb_trades = _since_start(_retry(lambda: _scan_orb(end, force_refresh=not dry_run)))
+            orb_leg_by_market = {"SP500": "orb_sp500", "US30": "orb_us30", "NASDAQ": "orb_nasdaq"}
+            if not orb_trades.empty:
+                for market, sub in orb_trades.groupby("market"):
+                    messages += _merge_trades(state, orb_leg_by_market[market], sub)
+        except Exception as e:
+            messages.append(f"[EK Portfolio] ⚠️ NY-Open-ORB-Scan fehlgeschlagen: {e}")
 
     try:
         ou_returns = _load_ou_modell_daily_returns(account_start)

@@ -5793,3 +5793,14 @@
 2026-08-29 08:58:22   "kill_switch_active": false,
 2026-08-29 08:58:22   "n_trades": 10
 2026-08-29 08:58:22 }
+2026-08-29 08:58:23 [main 8a5c9de] FK Instant Funding Bot: Snapshot 2026-08-29 08:58
+2026-08-29 08:58:23  1 file changed, 230 insertions(+)
+2026-08-29 08:58:25 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-29 08:58:25    d77bd5c..8a5c9de  main -> main
+2026-08-29 08:58:25 Commit + Push erfolgreich.
+2026-08-29 08:58:25 === FK-Instant-Funding-Task beendet ===
+2026-08-29 23:24:47 === FK-Instant-Funding-Task gestartet ===
+2026-08-29 23:24:48 {
+2026-08-29 23:24:48   "date": "2026-08-29 21:24:48.761119",
+2026-08-29 23:24:48   "paused": true
+2026-08-29 23:24:48 }

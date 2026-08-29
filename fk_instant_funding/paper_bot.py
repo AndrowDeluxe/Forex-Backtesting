@@ -690,8 +690,9 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
     # Taeglicher statt stuendlicher Status (User-Wunsch, 2026-08-27: "keine
     # stuendlichen Logs mehr ... nur noch wenn aktive Trades erkannt werden
     # und am Ende des Tages einen kleinen Tagesabschluss") - Kill-Switch-/
-    # Scan-Fehler-Meldungen oben (`messages`) bleiben unveraendert Sofort-
-    # Alarme, nur dieser Routine-Status wird auf einmal/Tag reduziert.
+    # Scan-Fehler-Meldungen oben (`messages`) bleiben Sofort-Alarme INNERHALB
+    # dieses Scan-Laufs (werden weiter unten zu EINER Nachricht gebuendelt,
+    # Nutzer-Wunsch 2026-08-29), nur dieser Routine-Status wird auf einmal/Tag reduziert.
     if state.get("last_daily_summary_day") != current_day_key and end.hour >= DAILY_SUMMARY_HOUR:
         state["last_daily_summary_day"] = current_day_key
         payout_label = "ZULAESSIG" if payout_safe else "NICHT zulaessig (Verhaeltnis > 30%)"

@@ -3141,3 +3141,18 @@
 2026-08-29 23:24:50   "kill_switch_active": false,
 2026-08-29 23:24:50   "n_trades": 10
 2026-08-29 23:24:50 }
+2026-08-29 23:24:51 [main a93dfbb] EK Portfolio Bot: Snapshot 2026-08-29 23:24
+2026-08-29 23:24:51  3 files changed, 16 insertions(+), 1 deletion(-)
+2026-08-29 23:24:53 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-29 23:24:53  ! [remote rejected] main -> main (cannot lock ref 'refs/heads/main': is at a93dfbbd7dda0ff54e043348fc0504a2fe73219b but expected 5fcf1dad4e51a70888f42e77fd2886ab27e5e542)
+2026-08-29 23:24:53 error: failed to push some refs to 'https://github.com/AndrowDeluxe/Forex-Backtesting.git'
+2026-08-29 23:24:53 WARNUNG: git push fehlgeschlagen (Exit 1) - Commit liegt lokal vor, aber nicht auf GitHub bis zum naechsten erfolgreichen Push.
+2026-08-29 23:24:53 === EK-Portfolio-Task beendet ===
+2026-08-29 23:25:04 === EK-Portfolio-Task gestartet ===
+2026-08-29 23:25:05 {
+2026-08-29 23:25:05   "date": "2026-08-29 21:25:05.362012",
+2026-08-29 23:25:06   "equity": 99743.90944023391,
+2026-08-29 23:25:06   "current_dd": -0.0025609055976608674,
+2026-08-29 23:25:06   "kill_switch_active": false,
+2026-08-29 23:25:06   "n_trades": 10
+2026-08-29 23:25:06 }

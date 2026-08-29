@@ -118,7 +118,39 @@ CAPITAL_WEIGHT = {
 MAX_POSITION_LOSS_PCT = 0.005   # vom STARTKAPITAL (fester Dollar-Deckel, siehe Docstring)
 TRAILING_DD_PCT = 0.05          # End-of-Day, gegen den bisherigen Hoechststand
 CONSISTENCY_CAP_PCT = 0.30      # bester Einzeltag / kumulierter Gesamtgewinn
-DAILY_SUMMARY_HOUR = 21         # lokale Zeit - erster Lauf nach dieser Stunde sendet den Tagesabschluss
+DAILY_SUMMARY_HOUR = 21         # ECHTE lokale Zeit (Europe/Berlin, siehe _local_dt()) - erster Lauf nach
+# dieser Stunde sendet den Tagesabschluss. Bug gefunden beim Review 2026-08-29: `end` ist UTC-naiv, ein
+# direkter Vergleich end.hour >= 21 verglich also in Wahrheit gegen UTC 21 Uhr = 23 Uhr Sommerzeit lokal --
+# der Tagesabschluss feuerte real zwei Stunden spaeter als der Kommentar behauptete. Ab jetzt ueber
+# _local_hour() korrekt in Europe/Berlin umgerechnet.
+LOCAL_TZ = "Europe/Berlin"
+SPREAD_HOUR_LOCAL = 23  # taeglicher Broker-Rollover/Swap-Zeitpunkt, spuerbar breitere Spreads (User-Wunsch 2026-08-29)
+
+
+def _local_dt(end: pd.Timestamp) -> pd.Timestamp:
+    """`end` ist im ganzen Modul UTC-naiv (siehe _utc_naive-Docstring) --
+    fuer Uhrzeit-basierte Entscheidungen (Tagesabschluss-Stunde, Wochenende,
+    Spread-Stunde) muss das nach ECHTER lokaler Zeit umgerechnet werden,
+    sonst verschiebt sich jede Stunden-Schwelle um den UTC-Offset (+1/+2h)."""
+    return end.tz_localize("UTC").tz_convert(LOCAL_TZ)
+
+
+def is_market_paused(end: pd.Timestamp) -> bool:
+    """Kein Forex-/Indexhandel am Wochenende (Markt schliesst Freitagabend,
+    oeffnet erst Sonntagabend wieder -- eine grosszuegige, aber einfache
+    Kalendertag-Naeherung: gesamter Samstag+Sonntag pausiert) und waehrend
+    der taeglichen Spread-Stunde (User-Wunsch 2026-08-29: "damit nichts
+    unnoetig am Wochenende laeuft" + "pausiere zur Spreadstunde 23:00 Uhr").
+    Wird von paper_bot.scan_once() UND der echten Bridge (run_once.py) VOR
+    jedem Daten-Fetch/jeder MT5-Verbindung geprueft -- komplett kostenloser
+    No-Op ausserhalb der Handelszeiten, kein unnoetiger Terminal-Start am
+    Wochenende."""
+    local = _local_dt(end)
+    if local.weekday() >= 5:  # 5=Samstag, 6=Sonntag
+        return True
+    if local.hour == SPREAD_HOUR_LOCAL:
+        return True
+    return False
 
 # interne Risikostufen je Bein, identisch zu portfolio_construction/results/fk_instant_funding_final.json
 ORB_COMBINED_RISK_PCT = 0.01  # "ORB Portfolio"-Bein gesamt, gleichgewichtet ueber 3 Instrumente (siehe unten)
@@ -588,6 +620,15 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
     end = as_of if as_of is not None else pd.Timestamp.now(tz="UTC").tz_localize(None)
     if end.tzinfo is not None:
         end = end.tz_convert("UTC").tz_localize(None)
+
+    # Wochenende/Spread-Stunde: kompletter No-Op, kein Datenabruf, kein
+    # Telegram, kein State-Write (User-Wunsch 2026-08-29). Ein reiner
+    # Backtest-/Test-Aufruf mit explizitem as_of wird NICHT pausiert --
+    # sonst koennte man historische Wochenend-Randdaten nie gezielt testen.
+    if as_of is None and is_market_paused(end):
+        state = dict(state_override) if state_override is not None else load_state()
+        return {"date": str(end), "paused": True, "messages": []}, state
+
     state = dict(state_override) if state_override is not None else load_state()
     if "trades" not in state:
         state = _default_state()
@@ -693,7 +734,7 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
     # Scan-Fehler-Meldungen oben (`messages`) bleiben Sofort-Alarme INNERHALB
     # dieses Scan-Laufs (werden weiter unten zu EINER Nachricht gebuendelt,
     # Nutzer-Wunsch 2026-08-29), nur dieser Routine-Status wird auf einmal/Tag reduziert.
-    if state.get("last_daily_summary_day") != current_day_key and end.hour >= DAILY_SUMMARY_HOUR:
+    if state.get("last_daily_summary_day") != current_day_key and _local_dt(end).hour >= DAILY_SUMMARY_HOUR:
         state["last_daily_summary_day"] = current_day_key
         payout_label = "ZULAESSIG" if payout_safe else "NICHT zulaessig (Verhaeltnis > 30%)"
         failed_legs = state.get("scan_errors_today", {}).get("legs", [])

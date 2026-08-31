@@ -915,3 +915,41 @@
 2026-08-31 03:56:33   "n_trades": 40,
 2026-08-31 03:56:33   "kill_switch_active": false
 2026-08-31 03:56:33 }
+2026-08-31 03:56:33 [main ec65135] CTNL Edge FK-Paper: Snapshot 2026-08-31 03:56
+2026-08-31 03:56:33  1 file changed, 19 insertions(+)
+2026-08-31 03:56:37 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-31 03:56:37    44ab766..ec65135  main -> main
+2026-08-31 03:56:37 Commit + Push erfolgreich.
+2026-08-31 03:56:37 === CTNL-Edge-FK-Paper-Task beendet ===
+2026-08-31 15:24:19 === CTNL-Edge-FK-Paper-Task gestartet ===
+2026-08-31 15:25:09 INFO:DUKASCRIPT:current timestamp :2026-08-31T10:00:00
+2026-08-31 15:25:09 INFO:DUKASCRIPT:current timestamp :2026-08-31T14:00:00
+2026-08-31 15:25:09 INFO:DUKASCRIPT:current timestamp :2026-07-01T20:45:00
+2026-08-31 15:25:09 INFO:DUKASCRIPT:current timestamp :2026-07-31T18:30:00
+2026-08-31 15:25:09 INFO:DUKASCRIPT:current timestamp :2026-08-31T15:00:00
+2026-08-31 15:25:09 INFO:DUKASCRIPT:current timestamp :2026-07-01T20:55:00
+2026-08-31 15:25:09 INFO:DUKASCRIPT:current timestamp :2026-07-31T18:50:00
+2026-08-31 15:25:09 INFO:DUKASCRIPT:current timestamp :2026-08-31T15:15:00
+2026-08-31 15:25:09 INFO:DUKASCRIPT:current timestamp :2026-08-31T15:20:00
+2026-08-31 15:25:09 {
+2026-08-31 15:25:09   "date": "2026-08-31 09:24:27.004457-04:00",
+2026-08-31 15:25:09   "final_equity": 99433.63929875496,
+2026-08-31 15:25:09   "current_dd": -0.04427487430240779,
+2026-08-31 15:25:09   "n_trades": 41,
+2026-08-31 15:25:09   "kill_switch_active": false
+2026-08-31 15:25:09 }
+2026-08-31 15:25:09 ---
+2026-08-31 15:25:09 [CTNL Edge FK-Paper] ­ƒƒó ENTRY continuation LONG @ 4462.06
+2026-08-31 15:25:09 Zeit: 2026-06-04 20:35:00-04:00
+2026-08-31 15:25:09 ---
+2026-08-31 15:25:09 [CTNL Edge FK-Paper] ­ƒö¦ EXIT reversal LONG (stop) @ 4445.33
+2026-08-31 15:25:09 R-Multiple: -1.08
+2026-08-31 15:25:09 ---
+2026-08-31 15:25:09 [CTNL Edge FK-Paper] ­ƒö¦ EXIT reversal LONG (stop) @ 4401.05
+2026-08-31 15:25:09 R-Multiple: -1.21
+2026-08-31 15:25:09 ---
+2026-08-31 15:25:09 [CTNL Edge FK-Paper] ­ƒö¦ EXIT reversal LONG (stop) @ 4401.05
+2026-08-31 15:25:09 R-Multiple: -1.31
+2026-08-31 15:25:09 ---
+2026-08-31 15:25:09 [CTNL Edge FK-Paper] ­ƒö¦ EXIT reversal LONG (stop) @ 4401.05
+2026-08-31 15:25:09 R-Multiple: -1.33

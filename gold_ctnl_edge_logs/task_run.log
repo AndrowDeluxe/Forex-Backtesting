@@ -975,3 +975,25 @@
 2026-08-31 15:56:37   "n_trades": 41,
 2026-08-31 15:56:37   "kill_switch_active": false
 2026-08-31 15:56:37 }
+2026-08-31 15:56:37 [main a26fa89] CTNL Edge FK-Paper: Snapshot 2026-08-31 15:56
+2026-08-31 15:56:37  1 file changed, 22 insertions(+)
+2026-08-31 15:56:39 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-31 15:56:39    c0d6a16..a26fa89  main -> main
+2026-08-31 15:56:39 Commit + Push erfolgreich.
+2026-08-31 15:56:39 === CTNL-Edge-FK-Paper-Task beendet ===
+2026-08-31 16:56:24 === CTNL-Edge-FK-Paper-Task gestartet ===
+2026-08-31 16:56:28 INFO:DUKASCRIPT:current timestamp :2026-08-31T10:00:00
+2026-08-31 16:56:28 INFO:DUKASCRIPT:current timestamp :2026-08-31T15:00:00
+2026-08-31 16:56:28 INFO:DUKASCRIPT:current timestamp :2026-07-01T20:45:00
+2026-08-31 16:56:28 INFO:DUKASCRIPT:current timestamp :2026-07-31T18:30:00
+2026-08-31 16:56:28 INFO:DUKASCRIPT:current timestamp :2026-08-31T16:30:00
+2026-08-31 16:56:28 INFO:DUKASCRIPT:current timestamp :2026-07-01T20:55:00
+2026-08-31 16:56:28 INFO:DUKASCRIPT:current timestamp :2026-07-31T18:50:00
+2026-08-31 16:56:28 INFO:DUKASCRIPT:current timestamp :2026-08-31T16:50:00
+2026-08-31 16:56:28 {
+2026-08-31 16:56:28   "date": "2026-08-31 10:56:24.936611-04:00",
+2026-08-31 16:56:28   "final_equity": 99433.63929875496,
+2026-08-31 16:56:28   "current_dd": -0.04427487430240779,
+2026-08-31 16:56:28   "n_trades": 41,
+2026-08-31 16:56:28   "kill_switch_active": false
+2026-08-31 16:56:29 }

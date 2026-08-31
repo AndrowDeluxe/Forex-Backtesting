@@ -51,25 +51,25 @@
     "ctnl_reversal__2026-08-28T16:30:00_1": {
       "leg": "ctnl_reversal",
       "entry_time": "2026-08-28T16:30:00",
-      "exit_time": "2026-08-31T00:45:00",
+      "exit_time": "2026-08-31T01:00:00",
       "exit_reason": "data_end",
-      "r_multiple": -0.42416014393810003,
+      "r_multiple": -0.6102681871797956,
       "notified_exit": false
     },
     "ctnl_reversal__2026-08-28T16:45:00_1": {
       "leg": "ctnl_reversal",
       "entry_time": "2026-08-28T16:45:00",
-      "exit_time": "2026-08-31T00:45:00",
+      "exit_time": "2026-08-31T01:00:00",
       "exit_reason": "data_end",
-      "r_multiple": -0.3116035433451282,
+      "r_multiple": -0.5473853481266343,
       "notified_exit": false
     },
     "ctnl_reversal__2026-08-28T17:00:00_1": {
       "leg": "ctnl_reversal",
       "entry_time": "2026-08-28T17:00:00",
-      "exit_time": "2026-08-31T00:45:00",
+      "exit_time": "2026-08-31T01:00:00",
       "exit_reason": "data_end",
-      "r_multiple": -0.44882656318725667,
+      "r_multiple": -0.6573402045624598,
       "notified_exit": false
     },
     "orb_nasdaq_NASDAQ_2026-08-28T13:45:00_1": {
@@ -88,7 +88,7 @@
     "2026-08-28T00:00:00": 99743.90944023391,
     "2026-08-29T00:00:00": 99743.90944023391,
     "2026-08-30T00:00:00": 99755.17011430487,
-    "2026-08-31T00:00:00": 99748.29975451891
+    "2026-08-31T00:00:00": 99736.50903993986
   },
   "account_start": "2026-08-27T21:25:05.852674",
   "ou_notified_dates": [

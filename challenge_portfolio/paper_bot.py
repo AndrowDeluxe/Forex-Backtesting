@@ -288,11 +288,39 @@ def _scan_trend_pullback(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame
     return pd.concat(all_trades, ignore_index=True)
 
 
+def _cap_concurrent_reversals(rev_trades: pd.DataFrame, max_concurrent: int) -> pd.DataFrame:
+    """simulate_trades_concurrent() erzwingt KEIN Limit gleichzeitig offener
+    Positionen -- das reale REV_MAX_CONCURRENT-Limit lebt nur in der
+    Ausfuehrungsschicht (gold_smc_htf_ltf/live_signal.py-Docstring,
+    EK-Portfolio-Bridge/legs/ctnl_edge/executor.py::check_and_execute_
+    reversal). Ohne diese Kappung ueberzeichnet der Paper-Bot systematisch,
+    was real ausfuehrbar gewesen waere (Fund 2026-08-31, zuerst in
+    fk_instant_funding/paper_bot.py behoben, hier auf Nutzerwunsch 2026-09-01
+    identisch uebernommen). Greedy-Kappung nach Entry-Zeit: ein Trade wird
+    verworfen, wenn zu seinem Entry-Zeitpunkt bereits max_concurrent andere
+    (nach ihrer Exit-Zeit) noch offene Reversal-Trades laufen -- exakt die
+    Regel, die eine echte Bridge angewendet haette."""
+    if rev_trades.empty:
+        return rev_trades
+    entry_naive = _utc_naive(rev_trades["entry_time"])
+    exit_naive = _utc_naive(rev_trades["exit_time"])
+    open_exits: list[pd.Timestamp] = []
+    keep_idx = []
+    for idx in entry_naive.sort_values().index:
+        e, x = entry_naive.loc[idx], exit_naive.loc[idx]
+        open_exits = [t for t in open_exits if t > e]
+        if len(open_exits) >= max_concurrent:
+            continue
+        open_exits.append(x)
+        keep_idx.append(idx)
+    return rev_trades.loc[keep_idx].sort_index()
+
+
 def _scan_ctnl(end: pd.Timestamp, force_refresh: bool) -> tuple[pd.DataFrame, pd.DataFrame]:
     from gold_smc_htf_ltf.concurrent_backtest import simulate_trades_concurrent
     from gold_smc_htf_ltf.continuation import run_pipeline as run_continuation
     from gold_smc_htf_ltf.data import fetch_gold_h1, fetch_gold_h4, fetch_gold_m15, fetch_gold_m5
-    from gold_smc_htf_ltf.live_signal import CONT_KWARGS, LOOKBACK_DAYS, REV_KWARGS
+    from gold_smc_htf_ltf.live_signal import CONT_KWARGS, LOOKBACK_DAYS, REV_KWARGS, REV_MAX_CONCURRENT
     from gold_smc_htf_ltf.reversal_cascade import run_pipeline as run_reversal
 
     start = (end - pd.Timedelta(days=LOOKBACK_DAYS)).strftime("%Y-%m-%d")
@@ -314,6 +342,7 @@ def _scan_ctnl(end: pd.Timestamp, force_refresh: bool) -> tuple[pd.DataFrame, pd
     rev_sig = run_reversal(h4, h1, m15, **REV_KWARGS)
     rev_sig = rev_sig[_utc_naive(rev_sig.index) <= end]
     rev_trades = simulate_trades_concurrent(rev_sig, rev_cfg)
+    rev_trades = _cap_concurrent_reversals(rev_trades, REV_MAX_CONCURRENT)
     return cont_trades, rev_trades
 
 
@@ -383,6 +412,46 @@ OU_MODELL_RISK_PCT = 0.01
 OU_MODELL_MAX_TOTAL_RISK_PCT = 0.15
 
 
+def _import_ou_paper_backtest():
+    """ou_paper_backtest/{config,portfolio,scanner}.py verwenden intern
+    NACKTE 'import config'-Anweisungen (kein Package) -- ueber sys.path
+    eingebunden kollidiert das mit jedem GLEICHNAMIGEN Modul, das der
+    Aufrufer selbst schon geladen hat, weil Python sys.modules['config'] nur
+    EINMAL pro Prozess befuellt. Real aufgetreten (2026-08-29): eine MT5-
+    Bridge mit eigener config.py (import config VOR dem Aufruf dieser
+    Funktion) bekam ou_paper_backtest/portfolio.py's eigenes 'import config'
+    faelschlich die BRIDGE-config zurueck -> AttributeError (fehlendes
+    INITIAL_EQUITY). Fix: config/portfolio/scanner unter EINDEUTIGEN
+    sys.modules-Schluesseln frisch laden (importlib), waehrend 'config'
+    dort NUR WAEHREND DES LADENS temporaer auf die ou_paper_backtest-eigene
+    Instanz zeigt (portfolio.py/scanner.py brauchen das fuer ihr eigenes
+    bare-import), danach den vorherigen Zustand des Aufrufers wiederherstellen
+    -- der Aufrufer bekommt alle drei Module unter eigenen Namen zurueck,
+    sein eigenes 'config' bleibt unangetastet."""
+    import importlib.util
+
+    def _load(mod_name: str, file_path: Path):
+        spec = importlib.util.spec_from_file_location(mod_name, file_path)
+        mod = importlib.util.module_from_spec(spec)
+        sys.modules[mod_name] = mod
+        spec.loader.exec_module(mod)
+        return mod
+
+    ou_dir = REPO_DIR / "ou_paper_backtest"
+    prior_config = sys.modules.get("config")
+    try:
+        ou_config = _load("_ou_paper_backtest_config", ou_dir / "config.py")
+        sys.modules["config"] = ou_config  # portfolio.py/scanner.py's eigenes "import config" braucht das
+        ou_portfolio = _load("_ou_paper_backtest_portfolio", ou_dir / "portfolio.py")
+        ou_scanner = _load("_ou_paper_backtest_scanner", ou_dir / "scanner.py")
+    finally:
+        if prior_config is not None:
+            sys.modules["config"] = prior_config
+        else:
+            sys.modules.pop("config", None)
+    return ou_config, ou_portfolio, ou_scanner._load_ttp_tradable_tickers
+
+
 def _scan_ou_modell(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
     """OU-Modell, TTP-handelbare Teilmenge (SP500+Nasdaq100, DAX raus -- 0
     Ticker dort ueberhaupt handelbar, siehe ou_paper_backtest/scanner.py::
@@ -403,10 +472,7 @@ def _scan_ou_modell(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
     bleibt -- exakt dieselbe Notwendigkeit wie bei den anderen Beinen."""
     import yfinance as yf
 
-    sys.path.insert(0, str(REPO_DIR / "ou_paper_backtest"))
-    import config as ou_config  # noqa: E402
-    import portfolio as ou_portfolio  # noqa: E402
-    from scanner import _load_ttp_tradable_tickers  # noqa: E402
+    ou_config, ou_portfolio, _load_ttp_tradable_tickers = _import_ou_paper_backtest()
 
     start = (end - pd.Timedelta(days=OU_MODELL_LOOKBACK_DAYS)).strftime("%Y-%m-%d")
     end_str = (end + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
@@ -468,7 +534,8 @@ def _scan_ou_modell(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
             r_multiple = sign * (t["exit_price"] - t["entry_price"]) / stop_distance
             rows.append({
                 "entry_time": entry_date, "exit_time": exit_date, "r_multiple": r_multiple,
-                "exit_reason": t["reason"], "market": ticker,
+                "exit_reason": t["reason"], "market": ticker, "direction": t["direction"],
+                "entry_price": float(t["entry_price"]), "sl": float(t["entry_price"] - sign * stop_distance),
             })
         if rows:
             all_trades.append(pd.DataFrame(rows))

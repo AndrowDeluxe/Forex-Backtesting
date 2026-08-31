@@ -1,0 +1,455 @@
+<title>Weekly Checkup KW35</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --paper: #EDEEE7;
+    --paper-raised: #F6F6F1;
+    --ink: #1B2129;
+    --ink-soft: #4B5259;
+    --rule: #C9CCC2;
+    --accent: #2B6E6B;
+    --accent-soft: #E3ECEA;
+    --flag: #B23A2E;
+    --flag-soft: #F5E6E2;
+    --ok: #3F6B4F;
+    --ok-soft: #E5EEE6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12181A;
+      --paper-raised: #182022;
+      --ink: #E7E4DA;
+      --ink-soft: #A9B0AC;
+      --rule: #333B3A;
+      --accent: #5FB3AC;
+      --accent-soft: #1B2E2C;
+      --flag: #E2695A;
+      --flag-soft: #33201C;
+      --ok: #7CB78A;
+      --ok-soft: #1D2B20;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12181A;
+    --paper-raised: #182022;
+    --ink: #E7E4DA;
+    --ink-soft: #A9B0AC;
+    --rule: #333B3A;
+    --accent: #5FB3AC;
+    --accent-soft: #1B2E2C;
+    --flag: #E2695A;
+    --flag-soft: #33201C;
+    --ok: #7CB78A;
+    --ok-soft: #1D2B20;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    margin: 0;
+    padding: 3.5rem 1.25rem 6rem;
+    -webkit-font-smoothing: antialiased;
+  }
+  .sheet {
+    max-width: 760px;
+    margin: 0 auto;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    padding: 3rem 3.25rem 3.5rem;
+  }
+  @media (max-width: 640px) {
+    .sheet { padding: 2rem 1.25rem 2.5rem; }
+  }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.6rem;
+  }
+  h1.title {
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 2.35rem;
+    line-height: 1.1;
+    margin: 0 0 0.5rem;
+    text-wrap: balance;
+  }
+  .subtitle {
+    font-size: 1.02rem;
+    color: var(--ink-soft);
+    margin: 0 0 1.6rem;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.6rem;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--rule);
+  }
+  .meta-row span b { color: var(--ink); font-weight: 600; }
+
+  .note {
+    margin-top: 1.4rem;
+    padding: 0.9rem 1.1rem;
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+  .note b { color: var(--ink); }
+
+  .part {
+    margin-top: 3.2rem;
+    padding-top: 0.4rem;
+  }
+  .part-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+  .part-label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+  h2.part-title {
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.7rem;
+    margin: 0.1rem 0 0;
+  }
+
+  section.block { margin-top: 2.1rem; }
+  h3.sec {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.18rem;
+    margin: 0 0 0.85rem;
+    color: var(--ink);
+  }
+  h3.sec .num {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  p { margin: 0 0 0.9rem; }
+  ul.plain { margin: 0 0 0.9rem; padding-left: 1.2rem; }
+  ul.plain li { margin-bottom: 0.55rem; }
+  ul.plain li b { color: var(--ink); }
+
+  .chip {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    padding: 0.1rem 0.45rem;
+    border-radius: 2px;
+    margin-right: 0.3rem;
+  }
+  .chip.live { background: var(--ok-soft); color: var(--ok); }
+  .chip.dry { background: var(--accent-soft); color: var(--accent); }
+  .chip.dead { background: var(--flag-soft); color: var(--flag); }
+
+  .table-wrap { overflow-x: auto; margin-bottom: 1rem; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.55rem 0.7rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  th {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  td.num, th.num {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  tr.sum td { font-weight: 600; border-top: 1px solid var(--ink-soft); background: var(--accent-soft); }
+  td.neg { color: var(--flag); }
+  td.pos { color: var(--ok); }
+  td.status-flag { color: var(--flag); }
+  td.status-ok { color: var(--ok); }
+
+  .flag {
+    border-left: 3px solid var(--flag);
+    background: var(--flag-soft);
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 0.9rem;
+  }
+  .flag .flag-head {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--flag);
+    margin-bottom: 0.3rem;
+  }
+  .flag p { margin: 0; font-size: 0.92rem; }
+
+  .bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.55rem;
+    height: 90px;
+    margin: 0.4rem 0 0.6rem;
+    padding-top: 0.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+  .bar {
+    width: 100%;
+    max-width: 34px;
+    background: var(--accent);
+    opacity: 0.55;
+  }
+  .bar-col.peak .bar { opacity: 1; }
+  .bar-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+    margin-top: 0.4rem;
+  }
+  .bar-count {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+    margin-bottom: 0.2rem;
+  }
+
+  footer.colophon {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+  }
+
+  @media print {
+    body { padding: 0; background: var(--paper); }
+    .sheet { border: none; max-width: 100%; padding: 0.5in; }
+    section.block, .flag, .table-wrap { page-break-inside: avoid; }
+    .part { page-break-before: always; }
+    .part:first-of-type { page-break-before: avoid; }
+  }
+</style>
+
+<div class="sheet">
+
+  <p class="eyebrow">Weekly Checkup · Andre&nbsp;/&nbsp;Forex-Backtesting</p>
+  <h1 class="title">KW35 · 2026</h1>
+  <p class="subtitle">Trading-Bot-Flotte &amp; Baustelle — Performance und Education, Montag 24.08. bis Sonntag 30.08.2026</p>
+  <div class="meta-row">
+    <span>Erzeugt: <b>Mo/Di, 31.08./01.09.2026 (Nachtlauf)</b></span>
+    <span>Bots erfasst: <b>11 Konten / 8 Bridges</b></span>
+    <span>Lauf-Nr.: <b>#2</b></span>
+  </div>
+
+  <div class="note">
+    <b>Zur Ausführungszeit:</b> verspäteter Nachtlauf statt Sonntagabend (wie
+    schon bei Lauf #1). Da Sonntag 30.08. der letzte Sonntag im August war,
+    wird diesmal zusätzlich der <b>August-Monatsreport</b> miterzeugt (siehe
+    <code>2026-08_checkup.html</code>). Einige Punkte unten (Abschnitt 05)
+    stammen vom 31.08. selbst — technisch schon KW36, aber zu aktuell, um
+    bis zum nächsten Lauf zu warten.
+  </div>
+
+  <!-- ============ PART I — PERFORMANCE ============ -->
+  <div class="part">
+    <p class="part-label">Teil I</p>
+    <h2 class="part-title">Performance</h2>
+  </div>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">01</span> Wochenkontext</h3>
+    <ul class="plain">
+      <li><b>Portfolio-Konsolidierung startet</b> — Mi 27.08.: Gold ASB, CLS Practical, CTNL Edge, OU-Modell pausiert (Scheduled Tasks deaktiviert). Do 27.08. abends: <b>EK-Portfolio-Bridge</b> <span class="chip dry">PAPER</span> (8 Beine) neu gebaut. Sa 29.08.: <span class="chip live">LIVE</span> auf dem realen Tickmill-Konto (demselben, das bis 27.08. OU-Modells "Konto 3" war).</li>
+      <li><b>Gold ASB / BTC EMA</b> (Konto 15514) <span class="chip live">LIVE</span> — 0 Trades, aber 2 gescheiterte Order-Versuche (AutoTrading-Bug, s. u.).</li>
+      <li><b>CTNL Edge FK</b> (alte Bridge) — lief bis 28.08., dann pausiert; kurz davor 2 neue unbehandelte Exceptions.</li>
+      <li><b>OU-Modell</b> — lief bis Do 27.08. abends, dann pausiert. Einzige Bot-Familie mit nennenswertem echtem Handel diese Woche.</li>
+      <li><b>Randnotiz 31.08. (außerhalb der Woche):</b> BTC-EMA-Cross-Bridge/-Scan und CTNL-Edge-FK-Paper deaktiviert, EK-Portfolio-Bridge platziert 16:36 Uhr ihren <b>ersten echten Trade</b> — unbestätigter Zusammenhang mit der Konsolidierung, siehe Abschnitt 05.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">02</span> Risk-Management-Compliance</h3>
+    <p>Kein bestätigter Drawdown-/Kill-Switch-Trigger auf einem echten Konto. Ein Fehlalarm in einer Papier-Diagnose (kein echtes Geld):</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Bot / Konto</th><th>Mechanismus</th><th>Diese Woche</th></tr></thead>
+        <tbody>
+          <tr><td>OU-Modell (3 Konten)</td><td>Tages-DD pro Konto</td><td class="status-ok">kein Trigger</td></tr>
+          <tr><td><b>Gold ASB</b></td><td>—</td><td class="status-flag">weiterhin kein Mechanismus im Code</td></tr>
+          <tr><td><b>CTNL Edge (alte Bridge)</b></td><td>—</td><td class="status-flag">weiterhin kein Mechanismus im Code; jetzt pausiert</td></tr>
+          <tr><td>FK Instant Funding (Papier-Diagnose)</td><td>Kill-Switch + Konsistenzregel</td><td class="status-flag">löste 26.08. fälschlich aus (Bug, gleichentags behoben)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">03</span> Was hat funktioniert / nicht</h3>
+    <ul class="plain">
+      <li><b>Gold ASB / BTC EMA</b> — 0 echte Trades, aber 2 verpasste Setups (26./27.08.) durch denselben, seit 20.08. bekannten Shared-Terminal-Bug. USDJPY-Restposten verschlechtert sich weiter (−$199,97 floating).</li>
+      <li><b>CTNL Edge FK</b> — 0 Signale, zusätzlich 2 neue unbehandelte Exceptions in der Dukascopy-Anbindung kurz vor der Konsolidierungspause.</li>
+      <li><b>OU-Modell</b> — 9 geschlossene Trades über 3 Konten, gemischtes Ergebnis, alle innerhalb der Limits.</li>
+      <li><b>EK-Portfolio-Bridge</b> — ging Sa live, aber innerhalb dieser Woche noch 0 eigene Trades (Wochenend-Sperre + kein Signal bis So).</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">04</span> Trades · Winrate · PnL</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Bot / Konto</th><th class="num">Trades</th><th class="num">Winrate</th><th class="num">PnL</th><th class="num">%</th></tr></thead>
+        <tbody>
+          <tr><td>Gold ASB + BTC EMA (Konto 15514)</td><td class="num">0</td><td class="num">—</td><td class="num">$0</td><td class="num">0,00%</td></tr>
+          <tr><td>CTNL Edge FK (16054)</td><td class="num">0</td><td class="num">—</td><td class="num">$0</td><td class="num">0,00%</td></tr>
+          <tr><td>OU-Modell Konto 1 (TTP)</td><td class="num">4</td><td class="num">25%</td><td class="num neg">−$283,28</td><td class="num neg">−0,29%</td></tr>
+          <tr><td>OU-Modell Konto 2 (TTP, Demo)</td><td class="num">2</td><td class="num">50%</td><td class="num pos">+$35,43</td><td class="num pos">+0,04%</td></tr>
+          <tr><td>OU-Modell Konto 3 / EK-Portfolio (Tickmill)</td><td class="num">3</td><td class="num">33%</td><td class="num neg">−€40,17</td><td class="num neg">−1,14%</td></tr>
+          <tr><td>EK-Portfolio-Bridge (eigene Trades)</td><td class="num">0*</td><td class="num">—</td><td class="num">€0</td><td class="num">0,00%</td></tr>
+          <tr><td>FK Instant Funding / Funded-Portfolio (DRY_RUN)</td><td class="num">0</td><td class="num">—</td><td class="num">$0</td><td class="num">0,00%</td></tr>
+          <tr class="sum"><td>Summe USD (real, ohne Demo)</td><td class="num">4</td><td class="num">25%</td><td class="num neg">−$283,28</td><td class="num">—</td></tr>
+          <tr class="sum"><td>Summe EUR (real)</td><td class="num">3</td><td class="num">33%</td><td class="num neg">−€40,17</td><td class="num">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.8rem; color:var(--ink-soft)">* erster echter Trade erst 31.08. (außerhalb dieser Woche). Repo-Papier-Diagnose "EK-Portfolio-Paper": 10 Trades, ≈−$208,83 (−0,21%) — separat, nicht die echte Bridge.</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">05</span> Auffälligkeiten</h3>
+
+    <div class="flag">
+      <p class="flag-head">Ungeklärt, aktuell (31.08.)</p>
+      <p><b>BTC-EMA-Cross-Bridge/-Scan und CTNL-Edge-FK-Paper wurden am 31.08. deaktiviert</b> — ohne dokumentierte Begründung. Zeitlich passt es zur Konsolidierung, aber unbestätigt. BTC EMA verwaltet echtes Geld — bitte gegenprüfen.</p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">Dritte Woche in Folge</p>
+      <p><b>Unzugeordnete USDJPY-Position auf Konto 15514</b> verschlechtert sich weiter (jetzt −$199,97 floating, war −$169,72). Magic Number weiterhin 0 bei beiden Bots.</p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">Wiederholt, unbehoben</p>
+      <p><b>Gold-ASB-AutoTrading-Bug</b> (<code>retcode=10027</code>) trat erneut zweimal auf (26./27.08.) — vierte/fünfte Wiederholung seit 20.08.</p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">Neu, nicht root-caused</p>
+      <p><b>CTNL Edge FK: zwei neue unbehandelte Exceptions</b> in der Dukascopy-Datenanbindung (27./28.08.) kurz vor der Konsolidierungspause.</p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">Betrieb</p>
+      <p><b>TrendPullback FK1/FK2</b> weiterhin ohne jede Log-Aktivität — jetzt zusätzlich fachlich redundant durch EK-Portfolio-Bridges eigenes Trend-Pullback-Bein.</p>
+    </div>
+  </section>
+
+  <!-- ============ PART II — EDUCATION ============ -->
+  <div class="part">
+    <p class="part-label">Teil II</p>
+    <h2 class="part-title">Education</h2>
+  </div>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">01</span> Hauptfokus der Woche</h3>
+    <ul class="plain">
+      <li><b>Portfolio-Konsolidierung:</b> EK-Portfolio-Bridge (8 Beine) gebaut und binnen zwei Tagen mit echtem Geld live geschaltet.</li>
+      <li><b>FK Instant Funding:</b> drei echte Bugs behoben, Gewichte Monte-Carlo-optimiert, NY-Open ORB als 6. Bein integriert.</li>
+      <li><b>NY-Open ORB:</b> Partial-Exit-Standardkonfiguration, zu "Fertige Strategien" befördert.</li>
+      <li><b>Forschungstag 25.08.:</b> David-V2 (weiterhin nicht empfohlen), Gold-Silber-Divergenz rekonstruiert/optimiert, Haupt-Bot Phase-6-Lücke geschlossen, mehrere Kosten-Sensitivitäts-Nachholtermine.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">02</span> Aktive Zeiten</h3>
+    <p style="font-size:0.86rem; color:var(--ink-soft); margin-bottom:0.3rem;">Inhaltliche Commits nach Wochentag — Dienstag klar am dichtesten; anders als KW34 diesmal auch echte Arbeit am Samstag.</p>
+    <div class="bars">
+      <div class="bar-col"><span class="bar-count">0</span><div class="bar" style="height:2%"></div><span class="bar-label">Mo</span></div>
+      <div class="bar-col peak"><span class="bar-count">15</span><div class="bar" style="height:100%"></div><span class="bar-label">Di</span></div>
+      <div class="bar-col"><span class="bar-count">3</span><div class="bar" style="height:20%"></div><span class="bar-label">Mi</span></div>
+      <div class="bar-col"><span class="bar-count">9</span><div class="bar" style="height:60%"></div><span class="bar-label">Do</span></div>
+      <div class="bar-col"><span class="bar-count">4</span><div class="bar" style="height:27%"></div><span class="bar-label">Fr</span></div>
+      <div class="bar-col"><span class="bar-count">7</span><div class="bar" style="height:47%"></div><span class="bar-label">Sa</span></div>
+      <div class="bar-col"><span class="bar-count">0</span><div class="bar" style="height:2%"></div><span class="bar-label">So</span></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">03</span> Main Erkenntnisse</h3>
+    <ul class="plain">
+      <li>Die in der Memory angekündigte Portfolio-Konsolidierung ist diese Woche tatsächlich eingetreten — fast genau wie vorhergesagt, binnen zwei Tagen von Paper zu Live.</li>
+      <li>Konsolidierte Bots übernehmen bestehende Konten statt neue zu eröffnen — künftige Auswertungen müssen alte/neue Bot-Logik per Magic Number trennen.</li>
+      <li>Ein einmal korrekt diagnostizierter Bug (Gold ASB) ist kein behobener Bug — vierte/fünfte Wiederholung ohne Fix.</li>
+      <li>Dukascopy-Bibliotheksfehler traten jetzt in zwei verschiedenen Bots auf (CLS Practical früher, CTNL Edge diese Woche) — ein geteiltes, nicht bot-spezifisches Risiko.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">04</span> Verbesserungen</h3>
+    <ul class="plain">
+      <li>EK-Portfolio-Bridge gebaut und live geschaltet — größter Konsolidierungsschritt bisher.</li>
+      <li>FK Instant Funding: drei Bugs behoben, Gewichte optimiert, Wochenend-/Spread-Sperre ausgeweitet.</li>
+      <li>NY-Open ORB graduiert, Gold-Silber-Divergenz optimiert, letzte Phase-6-Lücken geschlossen.</li>
+      <li>Standardprozess-Dokumentation für MT5-Bridges/Paper-Bots geschrieben.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">05</span> Verschlechterungen / offene Probleme</h3>
+    <ul class="plain">
+      <li>Gold-ASB-AutoTrading-Bug erneut zweimal aufgetreten, weiterhin unbehoben.</li>
+      <li>CTNL Edge: zwei neue unbehandelte Exceptions, nicht root-caused.</li>
+      <li>USDJPY-Restposten verschlechtert sich weiter — dritte Woche offen.</li>
+      <li>BTC-EMA-Cross/CTNL-Edge-FK-Paper am 31.08. ohne Begründung deaktiviert.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">06</span> Optimierungsmöglichkeiten</h3>
+    <ul class="plain">
+      <li>Gold-ASB-Terminal-Fix tatsächlich umsetzen, nicht erneut nur dokumentieren.</li>
+      <li>Jedem Bot/Konto eine eigene Magic Number geben.</li>
+      <li>Dukascopy-Exceptions root-causen, gegen alle betroffenen Bots prüfen.</li>
+      <li>TrendPullback FK1/FK2 formal stilllegen.</li>
+      <li>Deaktivierung vom 31.08. dokumentieren, bevor der nächste Lauf sie erneut als offene Frage listet.</li>
+    </ul>
+  </section>
+
+  <footer class="colophon">
+    Weekly Checkup · automatisch erzeugt · Forex-Backtesting/scripts/reports · lokal committet, nicht gepusht
+  </footer>
+
+</div>

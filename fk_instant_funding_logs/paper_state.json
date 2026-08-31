@@ -51,26 +51,26 @@
     "ctnl_reversal__2026-08-28T16:30:00_1": {
       "leg": "ctnl_reversal",
       "entry_time": "2026-08-28T16:30:00",
-      "exit_time": "2026-08-31T01:30:00",
-      "exit_reason": "data_end",
-      "r_multiple": -0.503580149580877,
-      "notified_exit": false
+      "exit_time": "2026-08-31T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.2149330706664327,
+      "notified_exit": true
     },
     "ctnl_reversal__2026-08-28T16:45:00_1": {
       "leg": "ctnl_reversal",
       "entry_time": "2026-08-28T16:45:00",
-      "exit_time": "2026-08-31T01:30:00",
-      "exit_reason": "data_end",
-      "r_multiple": -0.4122213991886421,
-      "notified_exit": false
+      "exit_time": "2026-08-31T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3134402430852925,
+      "notified_exit": true
     },
     "ctnl_reversal__2026-08-28T17:00:00_1": {
       "leg": "ctnl_reversal",
       "entry_time": "2026-08-28T17:00:00",
-      "exit_time": "2026-08-31T01:30:00",
-      "exit_reason": "data_end",
-      "r_multiple": -0.5378079649910906,
-      "notified_exit": false
+      "exit_time": "2026-08-31T02:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.3348008584460345,
+      "notified_exit": true
     },
     "orb_nasdaq_NASDAQ_2026-08-28T13:45:00_1": {
       "leg": "orb_nasdaq",
@@ -87,7 +87,7 @@
     "2026-08-28T00:00:00": 99735.17460891813,
     "2026-08-29T00:00:00": 99721.5149336149,
     "2026-08-30T00:00:00": 99559.41914540414,
-    "2026-08-31T00:00:00": 99535.42281385047
+    "2026-08-31T00:00:00": 99444.59550532798
   },
   "account_start": "2026-08-27T20:58:06.914380",
   "scan_errors_today": {

@@ -46,3 +46,22 @@ Research-/Strategie-Wissen.
 
 Keine Notiz bleibt bei Schritt 1 stehen -- unverdichtete Rohnotizen sind
 das Anti-Pattern, das ein Second Brain zur Datenhalde macht.
+
+## Klassisches Trading-Wissen aus OneNote (schrittweise, themenbasiert)
+
+Nutzer-Entscheidung (2026-09-01): ~4 Jahre klassisches/diskretionäres
+Trading-Wissen liegen in OneNote, sollen aber NICHT auf einmal
+reinkopiert werden (genau die Rohnotiz-Datenhalde, die oben vermieden
+werden soll). Stattdessen: erst dann reinziehen, wenn ein Thema im
+laufenden Quant-Kontext ohnehin relevant wird (z.B. eine alte
+Price-Action-/Risk-Management-Regel taucht im Gespräch zu einem neuen
+Backtest auf).
+
+Ablauf in diesem Moment: Nutzer bringt/beschreibt den relevanten
+OneNote-Ausschnitt (Claude hat keinen direkten OneNote-Zugriff) -> ganz
+normaler CODE-Zyklus wie oben, landet als `resources/<thema>.md` (oder
+Ergänzung einer bestehenden Datei) -> **Express-Schritt zusätzlich
+gezielt Richtung Quant-Verknüpfung**: wo bestätigt/widerspricht ein
+Backtest diese klassische Regel? Genau dieses Zusammenspiel (altes
+Erfahrungswissen x quantitative Validierung) ist der eigentliche Zweck
+der Integration, nicht die Vollständigkeit der Übernahme.

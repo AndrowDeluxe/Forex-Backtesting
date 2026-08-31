@@ -43,33 +43,33 @@
     "ctnl_reversal__2026-08-28T16:15:00_1": {
       "leg": "ctnl_reversal",
       "entry_time": "2026-08-28T16:15:00",
-      "exit_time": "2026-08-30T22:00:00",
-      "exit_reason": "data_end",
-      "r_multiple": -0.8525543431017222,
-      "notified_exit": false
+      "exit_time": "2026-08-30T23:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0820440191263563,
+      "notified_exit": true
     },
     "ctnl_reversal__2026-08-28T16:30:00_1": {
       "leg": "ctnl_reversal",
       "entry_time": "2026-08-28T16:30:00",
-      "exit_time": "2026-08-30T22:00:00",
+      "exit_time": "2026-08-31T00:45:00",
       "exit_reason": "data_end",
-      "r_multiple": -0.38348160446254653,
+      "r_multiple": -0.42416014393810003,
       "notified_exit": false
     },
     "ctnl_reversal__2026-08-28T16:45:00_1": {
       "leg": "ctnl_reversal",
       "entry_time": "2026-08-28T16:45:00",
-      "exit_time": "2026-08-30T22:00:00",
+      "exit_time": "2026-08-31T00:45:00",
       "exit_reason": "data_end",
-      "r_multiple": -0.2600675684009086,
+      "r_multiple": -0.3116035433451282,
       "notified_exit": false
     },
     "ctnl_reversal__2026-08-28T17:00:00_1": {
       "leg": "ctnl_reversal",
       "entry_time": "2026-08-28T17:00:00",
-      "exit_time": "2026-08-30T22:00:00",
+      "exit_time": "2026-08-31T00:45:00",
       "exit_reason": "data_end",
-      "r_multiple": -0.4032507232389685,
+      "r_multiple": -0.44882656318725667,
       "notified_exit": false
     },
     "orb_nasdaq_NASDAQ_2026-08-28T13:45:00_1": {
@@ -86,16 +86,15 @@
   "eod_equity": {
     "2026-08-28T00:00:00": 99735.17460891813,
     "2026-08-29T00:00:00": 99721.5149336149,
-    "2026-08-30T00:00:00": 99559.41914540414
+    "2026-08-30T00:00:00": 99559.41914540414,
+    "2026-08-31T00:00:00": 99545.56677208866
   },
   "account_start": "2026-08-27T20:58:06.914380",
   "scan_errors_today": {
-    "day": "2026-08-30",
+    "day": "2026-08-31",
     "legs": [
-      "Gold ASB",
       "CLS Practical",
-      "Trend Pullback",
-      "CTNL Edge"
+      "NY-Open ORB"
     ]
   }
 }

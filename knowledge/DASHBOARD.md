@@ -43,6 +43,21 @@ abgehakt-und-liegengelassen.
   da noch etwas außerhalb des Windows Task Schedulers, oder ist der
   Docstring veraltet? Bitte einmal klarstellen, dann trage ich es hier ein.
 
+## 💡 Ideen-Inbox (unsortiert, später einordnen)
+
+Kurz einfangen, was gerade auftaucht, ohne das aktuelle Thema zu verlassen —
+wird bei Gelegenheit einsortiert (in Offene Aufgaben, PARA-Struktur, oder
+bewusst verworfen), nicht hier für immer liegen gelassen. Genau der Ort für
+"das könnte auch noch interessant sein", ohne dass es das gerade laufende
+Thema verdrängt oder verloren geht.
+
+- **PDFs/Bücher bulk-einbinden** (2026-09-01): viele Bücher/PDFs vorhanden,
+  die sinnvoll integriert werden könnten, ohne sie einzeln in den Chat
+  schicken zu müssen. Prüfen, ob `paper_dropbox/`/`paper_research/`
+  (bestehende "PDF rein, Extraktion + Auto-Backtest raus"-Pipeline, siehe
+  README.md) dafür wiederverwendbar ist, oder ob Bücher (anders als
+  Research-Paper) einen eigenen Weg brauchen. Noch nicht bearbeitet.
+
 ## Offene Aufgaben
 
 **Hoch**

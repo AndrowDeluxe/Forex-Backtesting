@@ -33,6 +33,12 @@ Schritt) haben Vorrang vor dem Eintauchen in ein neu aufgemachtes, größeres
 Thema — nicht stillschweigend liegen lassen, wenn der Nutzer etwas Neues
 anspricht.
 
+5. **Tangentiale Ideen sofort in die Ideen-Inbox** (Abschnitt in
+   `knowledge/DASHBOARD.md`), statt sie entweder sofort voll zu verfolgen
+   (und damit das laufende Thema zu verlassen) oder sie zu ignorieren/zu
+   verlieren. Ein Satz reicht: was, seit wann, worauf bezieht es sich. Wird
+   bei Gelegenheit einsortiert (Task, PARA-Notiz, oder bewusst verworfen).
+
 ## Research-Wissen (PARA/CODE)
 
 Getrennt von der operativen Übersicht: destilliertes Fachwissen (Papers,

@@ -99,10 +99,7 @@
   },
   "account_start": "2026-08-27T20:58:06.914380",
   "scan_errors_today": {
-    "day": "2026-08-31",
-    "legs": [
-      "CLS Practical",
-      "NY-Open ORB"
-    ]
+    "day": "2026-09-01",
+    "legs": []
   }
 }

@@ -381,11 +381,41 @@ def _scan_trend_pullback(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame
     return pd.concat(all_trades, ignore_index=True)
 
 
+def _cap_concurrent_reversals(rev_trades: pd.DataFrame, max_concurrent: int) -> pd.DataFrame:
+    """simulate_trades_concurrent() erzwingt KEIN Limit gleichzeitig offener
+    Positionen -- das reale REV_MAX_CONCURRENT-Limit lebt nur in der
+    Ausfuehrungsschicht (gold_smc_htf_ltf/live_signal.py-Docstring,
+    EK-Portfolio-Bridge/legs/ctnl_edge/executor.py::check_and_execute_
+    reversal). Ohne diese Kappung ueberzeichnet der Paper-Bot systematisch,
+    was real ausfuehrbar gewesen waere (Fund 2026-08-31: mehrere "parallele"
+    Reversal-Trades pro Tag mit fast identischem Exit-Zeitpunkt+R-Multiple
+    in der Live-Nachrichtenflut -- 1122 von 1417 Trades in einer Jahres-
+    Rekonstruktion des EK-Portfolios betrafen genau dieses Muster). Greedy-
+    Kappung nach Entry-Zeit: ein Trade wird verworfen, wenn zu seinem
+    Entry-Zeitpunkt bereits max_concurrent andere (nach ihrer Exit-Zeit)
+    noch offene Reversal-Trades laufen -- exakt die Regel, die eine echte
+    Bridge angewendet haette."""
+    if rev_trades.empty:
+        return rev_trades
+    entry_naive = _utc_naive(rev_trades["entry_time"])
+    exit_naive = _utc_naive(rev_trades["exit_time"])
+    open_exits: list[pd.Timestamp] = []
+    keep_idx = []
+    for idx in entry_naive.sort_values().index:
+        e, x = entry_naive.loc[idx], exit_naive.loc[idx]
+        open_exits = [t for t in open_exits if t > e]
+        if len(open_exits) >= max_concurrent:
+            continue
+        open_exits.append(x)
+        keep_idx.append(idx)
+    return rev_trades.loc[keep_idx].sort_index()
+
+
 def _scan_ctnl(end: pd.Timestamp, force_refresh: bool) -> tuple[pd.DataFrame, pd.DataFrame]:
     from gold_smc_htf_ltf.concurrent_backtest import simulate_trades_concurrent
     from gold_smc_htf_ltf.continuation import run_pipeline as run_continuation
     from gold_smc_htf_ltf.data import fetch_gold_h1, fetch_gold_h4, fetch_gold_m15, fetch_gold_m5
-    from gold_smc_htf_ltf.live_signal import CONT_KWARGS, LOOKBACK_DAYS, REV_KWARGS
+    from gold_smc_htf_ltf.live_signal import CONT_KWARGS, LOOKBACK_DAYS, REV_KWARGS, REV_MAX_CONCURRENT
     from gold_smc_htf_ltf.reversal_cascade import run_pipeline as run_reversal
 
     start = (end - pd.Timedelta(days=LOOKBACK_DAYS)).strftime("%Y-%m-%d")
@@ -407,6 +437,7 @@ def _scan_ctnl(end: pd.Timestamp, force_refresh: bool) -> tuple[pd.DataFrame, pd
     rev_sig = run_reversal(h4, h1, m15, **REV_KWARGS)
     rev_sig = rev_sig[_utc_naive(rev_sig.index) <= end]
     rev_trades = simulate_trades_concurrent(rev_sig, rev_cfg)
+    rev_trades = _cap_concurrent_reversals(rev_trades, REV_MAX_CONCURRENT)
     return cont_trades, rev_trades
 
 
@@ -657,7 +688,14 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
     # Scan-Fehler pro Kalendertag mitschreiben (fuer die "hat heute alles
     # funktioniert?"-Zeile im Tagesabschluss, Nutzer-Wunsch 2026-08-29) --
     # Reset bei Tageswechsel, analog zum last_daily_summary_day-Muster unten.
-    current_day_key = end.strftime("%Y-%m-%d")
+    # ECHTER lokaler Kalendertag (nicht UTC) -- Bug gefunden 2026-08-31: ein
+    # Lauf um 01:20 Uhr lokal ist noch 23:20 Uhr UTC des VORTAGS, ein UTC-
+    # basierter Tagesschluessel haette die Fehler dieses Laufs faelschlich
+    # als "gestern" gezaehlt und beim naechsten Lauf (der schon UTC-Mitternacht
+    # ueberschritten hatte) sofort wieder zurueckgesetzt -- genau das ist
+    # heute passiert (4 Fehler um 01:20 verschwanden, bevor der Tagesabschluss
+    # sie je zeigen konnte).
+    current_day_key = _local_dt(end).strftime("%Y-%m-%d")
     if state.get("scan_errors_today", {}).get("day") != current_day_key:
         state["scan_errors_today"] = {"day": current_day_key, "legs": []}
 

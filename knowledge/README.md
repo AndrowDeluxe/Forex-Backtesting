@@ -4,6 +4,13 @@ Ablage im Repo statt in einer eigenen App -- git-versioniert, durchsuchbar,
 verknüpfbar per Markdown-Link. Struktur nach PARA, Verarbeitung einzelner
 Notizen nach CODE (siehe `_templates/paper_note.md`).
 
+**Für "was läuft gerade / was ist passiert / was steht an" nicht hier
+suchen** -- das ist die operative Ebene, dafür gibt es
+[`DASHBOARD.md`](DASHBOARD.md) (Status, offene Aufgaben, Punkte die deine
+Bestätigung brauchen) und [`CHANGELOG.md`](CHANGELOG.md) (vollständiges Log
+aller relevanten Änderungen). Diese README/PARA-Struktur bleibt reines
+Research-/Strategie-Wissen.
+
 ## Struktur (PARA)
 
 - **projects/** -- aktive Arbeit mit klarem Ziel/Ende (z.B. "Gold-SSRN-Strategie

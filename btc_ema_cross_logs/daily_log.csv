@@ -5,4 +5,4 @@ date,yesterday_close,ema9,ema21,above,go_long_signal,go_flat_signal,action,in_po
 2026-08-22,78338.03,68945.55,66413.63,True,False,False,none,True,102824.74,
 2026-08-24,77734.0,72003.94,68323.65,True,False,False,bereits heute gescannt (kein erneuter Exit/Entry-Check),True,102633.76,
 2026-08-25,78992.75,73401.7,69293.52,True,False,False,bereits heute gescannt (kein erneuter Exit/Entry-Check),True,103031.75,
-2026-08-31,77682.0,77097.61,73311.55,True,False,False,none,True,102617.31,
+2026-08-31,77682.0,77097.61,73311.55,True,False,False,bereits heute gescannt (kein erneuter Exit/Entry-Check),True,102617.31,

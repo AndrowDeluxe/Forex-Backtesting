@@ -134,5 +134,6 @@
   "scan_errors_today": {
     "day": "2026-09-01",
     "legs": []
-  }
+  },
+  "last_daily_summary_day": "2026-09-01"
 }

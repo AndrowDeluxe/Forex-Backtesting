@@ -1,14 +1,17 @@
 {
-  "generated_at": "2026-09-02T18:01:25",
+  "generated_at": "2026-09-02T18:31:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-02T18:00:01",
-      "minutes_since_last_run": 1.4,
+      "last_run": "2026-09-02T18:30:54",
+      "minutes_since_last_run": 0.5,
       "status": "ok",
-      "last_equity_line": "2026-09-02 17:50:06 2026-09-02 17:45:01,991 INFO run_once: Konto-Equity 3410.12 EUR | Aggregiertes offenes Risiko (ganzes Konto): 265.87 (Deckel dieser Bridge: 272.81, 8%)",
+      "last_equity_line": "2026-09-02 18:30:54 2026-09-02 18:30:01,932 INFO run_once: Konto-Equity 3411.94 EUR | Aggregiertes offenes Risiko (ganzes Konto): 265.88 (Deckel dieser Bridge: 272.96, 8%)",
       "last_error_line": "2026-09-02 15:35:56 2026-09-02 15:30:02,321 ERROR legs.ou_modell.executor: OU-Modell: Break-Even-Verschiebung fehlgeschlagen fuer D: OrderSendResult(retcode=10018, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Market closed', request_id=2717433843, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='D', volume=0.0, price=0.0, stoplimit=0.0, sl=64.99, tp=70.06, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=259597312, position_by=0))",
       "recent_events": [
+        "2026-09-02 18:30:54 2026-09-02 18:30:53,838 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, TROW-Entry uebersprungen (offen 265.87 + neu 33.00 > Deckel 272.83)",
+        "2026-09-02 18:17:36 2026-09-02 18:17:36,291 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, TROW-Entry uebersprungen (offen 265.81 + neu 31.40 > Deckel 273.02)",
+        "2026-09-02 18:05:54 2026-09-02 18:05:53,915 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, TROW-Entry uebersprungen (offen 265.83 + neu 30.92 > Deckel 272.88)",
         "2026-09-02 17:50:07 2026-09-02 17:50:06,596 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, TROW-Entry uebersprungen (offen 265.85 + neu 30.80 > Deckel 272.69)",
         "2026-09-02 17:30:52 2026-09-02 17:30:52,343 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, TROW-Entry uebersprungen (offen 265.63 + neu 32.36 > Deckel 273.04)",
         "2026-09-02 17:20:04 2026-09-02 17:20:04,307 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, TROW-Entry uebersprungen (offen 271.45 + neu 33.64 > Deckel 273.47)",
@@ -17,46 +20,43 @@
         "2026-09-02 17:05:07 2026-09-02 17:05:07,002 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, TROW-Entry uebersprungen (offen 271.45 + neu 31.73 > Deckel 273.60)",
         "2026-09-02 17:05:07 2026-09-02 17:05:07,001 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, LEN-Entry uebersprungen (offen 271.45 + neu 30.98 > Deckel 273.60)",
         "2026-09-02 17:05:07 2026-09-02 17:05:07,000 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, GRMN-Entry uebersprungen (offen 271.45 + neu 25.59 > Deckel 273.60)",
-        "2026-09-02 16:57:03 2026-09-02 16:57:02,263 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, TROW-Entry uebersprungen (offen 271.45 + neu 32.50 > Deckel 274.01)",
-        "2026-09-02 16:57:03 2026-09-02 16:57:02,262 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, LEN-Entry uebersprungen (offen 271.45 + neu 32.61 > Deckel 274.01)",
-        "2026-09-02 16:57:03 2026-09-02 16:57:02,260 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, GRMN-Entry uebersprungen (offen 271.45 + neu 25.65 > Deckel 274.01)",
-        "2026-09-02 16:30:56 2026-09-02 16:30:55,833 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, TROW-Entry uebersprungen (offen 271.48 + neu 30.08 > Deckel 273.41)"
+        "2026-09-02 16:57:03 2026-09-02 16:57:02,263 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, TROW-Entry uebersprungen (offen 271.45 + neu 32.50 > Deckel 274.01)"
       ]
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-02T18:00:01",
+      "last_run": "2026-09-02T18:30:00",
       "minutes_since_last_run": 1.4,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-02 17:39:39 Verbunden: Login 504072729, Equity $100,020.77 USD",
+          "last_equity_line": "2026-09-02 18:27:14 Verbunden: Login 504072729, Equity $100,018.54 USD",
           "recent_events": [
             "2026-09-02 16:25:36 [TTP] ?? ENTRY orb_us30 US30 BUY lots=0.42 risk=$55.56 sl=53019.66369 -- placed"
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-02 17:39:39 Verbunden: Login 16054, Equity $99,991.93 USD",
+          "last_equity_line": "2026-09-02 18:27:14 Verbunden: Login 16054, Equity $99,991.93 USD",
           "recent_events": [
             "2026-09-02 16:25:36 [IQMARKETS] ?? ENTRY orb_us30 US30.gbe BUY lots=0.4 risk=$55.56 sl=53019.66369 -- placed"
           ]
         },
         "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (ttp)": {
-          "last_error_line": "2026-09-02 17:39:39 FEHLER auf Konto Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld): Verbindung fuer Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (Login 504069845) auch im zweiten Versuch fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-10005, 'IPC timeout')",
+          "last_error_line": "2026-09-02 18:27:14 FEHLER auf Konto Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld): Verbindung fuer Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (Login 504069845) auch im zweiten Versuch fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-10005, 'IPC timeout')",
           "recent_events": []
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital, Login 15514, ex-GoldASB/BTC-EMA-Cross) (iqmarkets)": {
-          "last_error_line": "2026-09-02 17:39:39 FEHLER auf Konto Funded Portfolio - IQ Markets (BeyondIQCapital, Login 15514, ex-GoldASB/BTC-EMA-Cross): Verbindung fuer Funded Portfolio - IQ Markets (BeyondIQCapital, Login 15514, ex-GoldASB/BTC-EMA-Cross) (Login 15514) auch im zweiten Versuch fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-10005, 'IPC timeout')",
+          "last_error_line": "2026-09-02 18:27:14 FEHLER auf Konto Funded Portfolio - IQ Markets (BeyondIQCapital, Login 15514, ex-GoldASB/BTC-EMA-Cross): Verbindung fuer Funded Portfolio - IQ Markets (BeyondIQCapital, Login 15514, ex-GoldASB/BTC-EMA-Cross) (Login 15514) auch im zweiten Versuch fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-10005, 'IPC timeout')",
           "recent_events": []
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-02T17:13:25",
-      "minutes_since_last_run": 48.0,
+      "last_run": "2026-09-02T18:17:13",
+      "minutes_since_last_run": 14.2,
       "status": "ok",
-      "last_equity_line": "2026-09-02 17:13:25 Verbunden: Login 17764, Equity $100,000.00",
+      "last_equity_line": "2026-09-02 18:17:13 Verbunden: Login 17764, Equity $100,000.00",
       "last_error_line": "2026-09-02 10:22:21 NY-Open-ORB-Scan fehlgeschlagen: 0",
       "recent_events": [
         "2026-09-02 10:22:21 NY-Open-ORB-Scan fehlgeschlagen: 0",

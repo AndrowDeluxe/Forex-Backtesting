@@ -10423,3 +10423,64 @@
 2026-09-02 00:57:56   "kill_switch_active": false,
 2026-09-02 00:57:56   "n_trades": 15
 2026-09-02 00:57:56 }
+2026-09-02 00:57:57 [main 51a04e8] FK Instant Funding Bot: Snapshot 2026-09-02 00:57
+2026-09-02 00:57:57  2 files changed, 214 insertions(+), 1 deletion(-)
+2026-09-02 00:58:01 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-09-02 00:58:01    73dd9ad..51a04e8  main -> main
+2026-09-02 00:58:01 Commit + Push erfolgreich.
+2026-09-02 00:58:01 === FK-Instant-Funding-Task beendet ===
+2026-09-02 10:15:32 === FK-Instant-Funding-Task gestartet ===
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2016-02-02T20:30:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2016-03-03T18:00:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2016-04-05T13:00:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2016-05-05T07:45:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2016-06-06T05:30:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2016-07-06T03:15:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2016-08-04T20:15:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2016-09-05T14:00:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2016-10-05T12:15:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2016-11-04T05:00:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2016-12-06T07:30:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2017-01-09T01:00:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2017-02-07T22:15:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2017-03-09T20:15:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2017-04-10T16:00:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2017-05-11T09:45:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2017-06-12T07:30:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2017-07-12T05:15:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2017-08-10T22:00:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2017-09-11T19:45:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2017-10-11T13:30:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2017-11-10T08:15:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2017-12-12T09:15:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2018-01-15T03:00:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2018-02-14T00:45:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2018-03-15T20:15:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2018-04-17T15:00:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2025-05-21T10:45:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2025-06-23T07:30:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2025-05-21T10:45:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2025-05-21T10:45:00
+2026-09-02 10:22:21 INFO:DUKASCRIPT:current timestamp :2025-06-23T07:30:00
+2026-09-02 10:22:21 {
+2026-09-02 10:22:21   "date": "2026-09-02 08:15:45.639350",
+2026-09-02 10:22:21   "equity": 99810.35943871795,
+2026-09-02 10:22:21   "current_dd": -0.001896405612820562,
+2026-09-02 10:22:21   "consistency_ratio": 0.0,
+2026-09-02 10:22:21   "payout_safe": false,
+2026-09-02 10:22:21   "cum_profit": -189.64056128205226,
+2026-09-02 10:22:21   "kill_switch_active": false,
+2026-09-02 10:22:21   "n_trades": 15
+2026-09-02 10:22:21 }
+2026-09-02 10:22:21 ---
+2026-09-02 10:22:21 ‘‹·¥©≈ Gold-ASB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'
+2026-09-02 10:22:21 ---
+2026-09-02 10:22:21 ‘‹·¥©≈ CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'
+2026-09-02 10:22:21 ---
+2026-09-02 10:22:21 ‘‹·¥©≈ Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'
+2026-09-02 10:22:21 ---
+2026-09-02 10:22:21 ‘‹·¥©≈ CTNL-Edge-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'
+2026-09-02 10:22:21 ---
+2026-09-02 10:22:21 ‘‹·¥©≈ Gold-Silber-Divergenz-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'
+2026-09-02 10:22:21 ---
+2026-09-02 10:22:21 ‘‹·¥©≈ NY-Open-ORB-Scan fehlgeschlagen: 0

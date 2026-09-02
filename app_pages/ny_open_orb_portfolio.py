@@ -14,10 +14,20 @@ NASDAQ generalisiert den SP500-Filter nachweislich nicht, siehe Stage 4e):
   - NASDAQ: long+short + ohne Mittwoch
 Alle drei: 15-Min-Range (range_bars=1), ATR-Stop 0.6x, M5-Ausfuehrung, PLUS
 (Stage 6, seit 2026-08-27 Standard) Teil-Ausstieg: ein Teil der Position
-wird frueh realisiert, der Rest laeuft mit Stop auf Breakeven weiter zum
-4R-Ziel - verbessert Sharpe/Win-Rate/MaxDD bei SP500/US30 auf praktisch
-jeder Kennzahl, bei NASDAQ ein bewusster Tausch (mehr Konsistenz/Sharpe
-gegen etwas CAGR). Siehe knowledge/projects/ny-open-orb-sp500.md Stage 6.
+wird frueh realisiert, der Rest laeuft mit Stop auf Breakeven weiter -
+verbessert Sharpe/Win-Rate/MaxDD bei SP500/US30 auf praktisch jeder
+Kennzahl. SP500/US30 laesst die Restposition weiter zum 4R-Ziel laufen;
+NASDAQ (Stage 8/9, seit 2026-09-01 Standard) laesst die Restposition
+stattdessen bis zum Handelsschluss laufen (EOD-Exit statt 4R-Cap) - schlaegt
+das 4R-Cap auf Sharpe, CAGR und Walk-Forward-Konsistenz gleichzeitig, per
+Phase 6 bestaetigt. Siehe knowledge/projects/ny-open-orb-sp500.md Stage 6/8/9.
+
+WICHTIG: dies ist die Backtest-/Research-Dashboardseite, KEIN Live-Bot. Der
+Live-Bot mit ORB-Bein (challenge_portfolio/paper_bot.py, live importiert von
+Funded-Portfolio-Bridge/run_once.py) hat eine EIGENE, unabhaengige
+ORB_EXIT_CFG (aktuell noch ohne Teilausstieg ueberhaupt) - eine Aenderung
+hier wirkt sich NICHT automatisch auf das Live-System aus, siehe
+knowledge/projects/ny-open-orb-sp500.md, Abschnitt "Live-Bridge-Abgleich".
 """
 
 import sys
@@ -45,19 +55,23 @@ SPLIT_DATE = "2021-07-28"
 STARTING_EQUITY = 10_000.0
 
 # Stage 6 (2026-08-27): partial-exit standardized per instrument - SP500/US30
-# bank 50% at 2R (genuine improvement on every metric); NASDAQ banks 50% at
-# 1.5R (improves Sharpe/win-rate, trades away some CAGR - a deliberate
-# choice, not a pure win, see knowledge/projects/ny-open-orb-sp500.md).
+# bank 50% at 2R (genuine improvement on every metric), rest runs to a 4R cap.
+# NASDAQ (Stage 8/9, 2026-09-01): banks 50% at 1.5R, but the remainder now
+# rides to session close (target_mode=None) instead of a 4R cap - Phase 6
+# confirmed this beats the old 4R-cap version on Sharpe (median MC 1.42->1.55),
+# CAGR (2.7%->3.8% full-history), and walk-forward consistency, while keeping
+# P(MaxDD>5%) low (0.7%, vs. 29.1% for a pure EOD-exit without the partial
+# leg) - see knowledge/projects/ny-open-orb-sp500.md Stage 8/9.
 EXIT_CFG_BY_INSTRUMENT = {
     "SP500": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0, partial_exit_r=2.0, partial_exit_fraction=0.5, move_stop_to_be_after_partial=True),
     "US30": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0, partial_exit_r=2.0, partial_exit_fraction=0.5, move_stop_to_be_after_partial=True),
-    "NASDAQ": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0, partial_exit_r=1.5, partial_exit_fraction=0.5, move_stop_to_be_after_partial=True),
+    "NASDAQ": dict(stop_atr_mult=0.6, target_mode=None, partial_exit_r=1.5, partial_exit_fraction=0.5, move_stop_to_be_after_partial=True),
 }
 
 INSTRUMENT_CONFIG = {
     "SP500": "Long-only + EMA-Ribbon neutral + 2R/50%-Teilausstieg",
     "US30": "Long-only + EMA-Ribbon neutral + 2R/50%-Teilausstieg",
-    "NASDAQ": "Long+Short + ohne Mittwoch + 1.5R/50%-Teilausstieg",
+    "NASDAQ": "Long+Short + ohne Mittwoch + 1.5R/50%-Teilausstieg + EOD-Exit (statt 4R-Cap)",
 }
 
 

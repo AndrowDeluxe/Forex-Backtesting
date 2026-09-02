@@ -81,8 +81,12 @@ HEARTBEAT_CSV = LOG_DIR / "heartbeat.csv"
 STARTING_EQUITY = 100_000.0  # Platzhalter je virtuellem Konto -- vor echtem Livegang auf die reale Kontogroesse setzen
 CAPITAL_WEIGHT = 1 / 6  # 6 gleichgewichtete Beine (CTNL teilt sich EIN Bein ueber Continuation+Reversal,
 # ORB teilt sich EIN Bein ueber SP500/US30/NASDAQ -- siehe ORB_RISK_PCT_PER_INSTRUMENT unten)
-MAX_POSITION_RISK_PCT = 0.01  # vom STARTKAPITAL -- erfuellt IQ Markets' 1%-Positionslimit strukturell (Hard-Cap-Backstop)
-MAX_POSITION_RISK_DOLLARS = MAX_POSITION_RISK_PCT * STARTING_EQUITY
+MAX_POSITION_RISK_PCT = 0.01  # von der AKTUELLEN Kontoequity (Nutzerauftrag 2026-09-01: "in jedem Fall 1% der
+# aktuellen Kontogroesse") -- IMMER live gegen die Equity zum Trade-Zeitpunkt gerechnet (siehe
+# compute_shared_equity()/Funded-Portfolio-Bridge/run_once.py::_process_leg()), NICHT gegen einen fixen
+# Dollarbetrag. Ein frueherer fixer MAX_POSITION_RISK_DOLLARS-Deckel (STARTING_EQUITY x 1%) wurde entfernt --
+# er blieb bei wachsender/schrumpfender Equity stur auf dem $100k-Platzhalter stehen, war also NICHT wirklich
+# "1% der aktuellen Kontogroesse" (Review-Fund 2026-09-01).
 
 ORB_COMBINED_RISK_PCT = 0.01  # "ORB Portfolio"-Bein gesamt, gleichgewichtet ueber 3 Instrumente
 ORB_RISK_PCT_PER_INSTRUMENT = ORB_COMBINED_RISK_PCT / 3
@@ -108,6 +112,46 @@ RULES = {
     "iqmarkets": {"daily_loss_cap": None, "total_dd_cap": 0.06, "target_gain": 0.08, "label": "IQ Markets"},
 }
 
+# Telegram-Struktur (2026-08-31, Nutzerwunsch: "dieselbe Telegram Anbindung
+# wie fuer die anderen beiden Portfolios") -- identisches Muster zu
+# fk_instant_funding/paper_bot.py::_fk_message + EK-Portfolio-Bridge/core/
+# telegram_format.py: fester Banner, ALLE Ereignisse EINES Laufs zu EINER
+# "Scan-Update"-Nachricht gebuendelt statt je Bein einzeln, plus EIN
+# taeglicher Tagesabschluss statt stuendlicher Routine-Nachrichten. Zwei
+# Konten -> zwei getrennte Banner/Nachrichtenstroeme ("TTP Challenge" / "IQ
+# Challenge", siehe Nutzervorgabe), auch wenn beide denselben Trade-Strom
+# sehen (gemeinsame Entry/Exit-Zeilen landen in BEIDEN Nachrichten -- jedes
+# Konto erlebt dieselben Trades unabhaengig, nur die Regel-Auswertung
+# unterscheidet sich).
+_RULE = "─" * 24
+_CHALLENGE_TITLES = {"ttp": "TTP Challenge", "iqmarkets": "IQ Challenge"}
+LOCAL_TZ = "Europe/Berlin"
+DAILY_SUMMARY_HOUR = 21  # echte lokale Zeit -- NIE direkt gegen UTC-Stunde vergleichen (siehe
+# _local_dt()-Docstring, realer Bug in fk_instant_funding/paper_bot.py am 2026-08-29 gefunden)
+
+
+def _challenge_message(rule_key: str, subtitle: str, body_lines: list[str] | None = None) -> str:
+    header = f"\U0001F3E6 {_CHALLENGE_TITLES[rule_key].upper()}\n{_RULE}\n{subtitle}"
+    if body_lines:
+        return header + "\n\n" + "\n".join(body_lines)
+    return header
+
+
+def _local_dt(end: pd.Timestamp) -> pd.Timestamp:
+    """`end` ist im ganzen Modul UTC-naiv -- fuer die Tagesabschluss-Stunden-
+    Entscheidung muss das nach ECHTER lokaler Zeit umgerechnet werden, sonst
+    verschiebt sich die Schwelle um den UTC-Offset (+1/+2h)."""
+    return end.tz_localize("UTC").tz_convert(LOCAL_TZ)
+
+
+def _record_scan_error(state: dict, day: str, leg: str) -> None:
+    """Fuer die Gesundheits-Zeile im taeglichen Tagesabschluss -- ein
+    fehlgeschlagener Scan loest KEINEN Sofort-Alarm mehr aus, taucht aber im
+    Tagesabschluss auf (identisches Muster zu Funded-Portfolio-Bridge/
+    run_once.py::_record_scan_error)."""
+    day_errors = state.setdefault("scan_errors_today", {}).setdefault(day, {})
+    day_errors[leg] = day_errors.get(leg, 0) + 1
+
 
 def _utc_naive(x):
     """Jede Strategie liefert Zeitstempel in einer ANDEREN Zeitzone-Konvention
@@ -121,9 +165,10 @@ def _utc_naive(x):
 
 def _default_state() -> dict:
     return {
-        "trades": {}, "account_start": None, "last_heartbeat_hour": None,
-        "ttp": {"eod_equity": {}, "kill_switch_active": False, "daily_paused": False, "target_reached": False},
-        "iqmarkets": {"kill_switch_active": False, "target_reached": False},
+        "trades": {}, "account_start": None, "scan_errors_today": {},
+        "ttp": {"eod_equity": {}, "kill_switch_active": False, "daily_paused": False, "target_reached": False,
+                "last_daily_summary_day": None},
+        "iqmarkets": {"kill_switch_active": False, "target_reached": False, "last_daily_summary_day": None},
     }
 
 
@@ -346,7 +391,27 @@ def _scan_ctnl(end: pd.Timestamp, force_refresh: bool) -> tuple[pd.DataFrame, pd
     return cont_trades, rev_trades
 
 
-ORB_EXIT_CFG = dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0)
+# Per-Instrument (2026-09-02, gleicher Stand wie app_pages/ny_open_orb_portfolio.py::
+# EXIT_CFG_BY_INSTRUMENT NACH dem NASDAQ-EOD-Exit-Update): NASDAQ laesst die Position
+# jetzt bis Handelsschluss laufen (target_mode=None) statt zum 4R-Cap, siehe
+# knowledge/projects/ny-open-orb-sp500.md Stage 8/9. SP500/US30 unveraendert.
+# ABSICHTLICH (noch) OHNE Stage-6-Teilausstieg (partial_exit_r/-fraction/move_stop_
+# to_be_after_partial): _process_leg() in Funded-Portfolio-Bridge/run_once.py kennt nur
+# EIN offen/geschlossen pro Position (ein Ticket, eine volle Groesse, ein Schluss-Call)
+# -- es gibt dort keine Zwischen-Verwaltung, die einen Teil einer echten Position bei
+# 1.5R schliessen und den Rest-Stop auf Breakeven verschieben koennte. Wuerde man
+# partial_exit_* hier trotzdem setzen, wuerde simulate() intern einen sauberen
+# geblendeten Teilausstieg-Trade fuer die PAPIER-Nachverfolgung berechnen, aber die
+# ECHTE Position bliebe die GANZE Zeit in voller Groesse gegen den urspruenglichen Stop
+# offen -- Papier-P&L und echtes Broker-P&L wuerden auseinanderlaufen, ohne dass das im
+# Log sichtbar waere. Braucht echte neue Verwaltungslogik in run_once.py/executor.py
+# (Ticket-Teilschliessung + SL-Modify), keine reine Config-Aenderung -- nicht Teil
+# dieser Umstellung, siehe DASHBOARD.md.
+ORB_EXIT_CFG_BY_INSTRUMENT = {
+    "SP500": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0),
+    "US30": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0),
+    "NASDAQ": dict(stop_atr_mult=0.6, target_mode=None),
+}
 ORB_HISTORY_LOOKBACK_DAYS = 500  # EMA-Ribbon-Bias (4H/1D/1W) braucht Monate an Vorlauf
 
 
@@ -379,7 +444,7 @@ def _scan_orb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
         if entries.empty:
             continue
 
-        trades = simulate(frame, entries, **ORB_EXIT_CFG)
+        trades = simulate(frame, entries, **ORB_EXIT_CFG_BY_INSTRUMENT[instrument])
         if trades.empty:
             continue
         trades = trades[_utc_naive(trades["entry_time"]) <= end].copy()
@@ -407,9 +472,18 @@ OU_MODELL_LOOKBACK_DAYS = 450  # 20d-Bollinger + 200d-EMA-Regimefilter-Warmup + 
 # Pruefung; hier etwas mehr, da eine volle Trailing-Trade-Simulation laeuft statt nur der letzte Tag)
 OU_MODELL_MARKETS = ("sp500", "nasdaq100")  # DAX strukturell 0 TTP-handelbare Ticker, siehe scanner.py
 OU_MODELL_STOP_SIGMA = 3.0
-OU_MODELL_BE_TRIGGER_R = 0.25
+# 2026-09-02: von der reinen "gesperrten Baseline" (be=0.25R, kein TP) auf die zuletzt live auf
+# Konto 2 (TTP, OU-Modell-MT5-Bridge, bis 2026-09-01) gefahrene, dort ueber den 2025er-Holdout
+# validierte Konfiguration umgestellt (siehe ou_paper_backtest/results/sp500/oos_holdout_
+# challenge_profiles_ttp_universe.csv, Zeile "konto2_aktuell_tp1.5_0.25pct_5pct_be0.35": schlechtester
+# Einzeltag -1.31% -- deutlich unter der 3%-Tagesverlust-Regel -- bei MaxDD -5.1%, und erreicht das
+# 10%-Ziel ~200 Tage frueher als die alte No-TP-Config bei aehnlichem Risiko). Nur die Exit-Logik
+# uebernommen (be_trigger_r, max_total_risk_pct-Gate, TP), NICHT das reale Order-Sizing -- die
+# 1/6-Kapitalgewichtung dieses Beins macht das reale Risiko/Trade schon konservativer (0.167%) als
+# Konto 2s eigenstaendige 0.25%, das bleibt bewusst unangetastet (Nutzerentscheidung 2026-09-02).
+OU_MODELL_BE_TRIGGER_R = 0.35
 OU_MODELL_RISK_PCT = 0.01
-OU_MODELL_MAX_TOTAL_RISK_PCT = 0.15
+OU_MODELL_MAX_TOTAL_RISK_PCT = 0.05
 
 
 def _import_ou_paper_backtest():
@@ -512,10 +586,22 @@ def _scan_ou_modell(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
         regime = (benchmark > benchmark.ewm(span=200).mean()).reindex(panel_df.index).ffill().fillna(False)
 
         today_str = panel_df.index.max().date().isoformat()
+        # 2026-09-02: TP=1:1.5R nur fuer S&P (identisch zu ou_paper_backtest/scanner.py::scan_market's
+        # Einschraenkung) -- bewusst NICHT auf Nasdaq/DAX uebertragen, da dort nie validiert.
+        rr_ratio = 1.5 if market_key == "sp500" else None
+        # Fund 2026-09-02 (Root Cause, nicht nur Config): simulate_bracket_portfolio() liess bis eben
+        # jede noch OFFENE Position beim Rueckgabe-Zeitpunkt STILLSCHWEIGEND unter den Tisch fallen --
+        # nur tatsaechlich GESCHLOSSENE Trades landeten in `trades`. Dieses Bein konnte dadurch
+        # STRUKTURELL nie ein aktuell offenes/handelbares Signal an Funded-Portfolio-Bridge melden,
+        # unabhaengig davon, ob die OU-Kriterien gerade zutrafen -- jede erkannte Zeile hatte immer
+        # einen konkreten exit_reason (nie "data_end"), _process_leg() sah sie deshalb immer nur als
+        # "verpasst" (laengst geschlossen), nie als neuen Entry. `include_open_positions=True` behebt
+        # das (siehe portfolio.py-Docstring).
         _, trades = ou_portfolio.simulate_bracket_portfolio(
-            panel_df, tickers, start, today_str, stop_sigma=OU_MODELL_STOP_SIGMA, rr_ratio=None,
+            panel_df, tickers, start, today_str, stop_sigma=OU_MODELL_STOP_SIGMA, rr_ratio=rr_ratio,
             be_trigger_r=OU_MODELL_BE_TRIGGER_R, allowed_directions=(1,), regime_filter=regime,
             risk_pct=OU_MODELL_RISK_PCT, max_total_risk_pct=OU_MODELL_MAX_TOTAL_RISK_PCT,
+            include_open_positions=True,
         )
         if not trades:
             continue
@@ -568,13 +654,13 @@ def _merge_trades(state: dict, leg: str, trades: pd.DataFrame) -> list[str]:
                 "exit_time": exit_naive.isoformat(), "exit_reason": exit_reason,
                 "r_multiple": r_mult, "notified_exit": exit_reason != "data_end",
             }
-            messages.append(f"[Challenge Portfolio] \U0001F7E2 ENTRY {LEG_LABELS[leg]} @ {t['entry_time']}")
+            messages.append(f"\U0001F7E2 ENTRY {LEG_LABELS[leg]} @ {t['entry_time']}")
         else:
             rec = state["trades"][key]
             rec["exit_time"], rec["exit_reason"], rec["r_multiple"] = exit_naive.isoformat(), exit_reason, r_mult
             if exit_reason != "data_end" and not rec.get("notified_exit", False):
                 icon = "\U0001F7E2" if r_mult > 0 else "\U0001F534"
-                messages.append(f"[Challenge Portfolio] {icon} EXIT {LEG_LABELS[leg]} ({exit_reason}) R={r_mult:+.2f}")
+                messages.append(f"{icon} EXIT {LEG_LABELS[leg]} ({exit_reason}) R={r_mult:+.2f}")
                 rec["notified_exit"] = True
     return messages
 
@@ -599,11 +685,13 @@ def compute_shared_equity(state: dict) -> pd.DataFrame:
     rows = []
     for _, t in trades.iterrows():
         risk_uncapped = CAPITAL_WEIGHT * LEG_RISK_PCT[t["leg"]] * equity
-        risk_dollars = min(risk_uncapped, MAX_POSITION_RISK_DOLLARS)
+        max_position_risk_dollars = MAX_POSITION_RISK_PCT * equity  # 1% der AKTUELLEN (simulierten) Equity, nicht STARTING_EQUITY
+        risk_dollars = min(risk_uncapped, max_position_risk_dollars)
         pnl = risk_dollars * t["r_multiple"]
         equity += pnl
         rows.append({"exit_time": t["exit_time"], "leg": t["leg"], "risk_dollars": risk_dollars,
-                      "risk_capped": risk_uncapped > MAX_POSITION_RISK_DOLLARS, "pnl": pnl, "equity": equity})
+                      "risk_capped": risk_uncapped > max_position_risk_dollars, "max_position_risk_dollars": max_position_risk_dollars,
+                      "pnl": pnl, "equity": equity})
     return pd.DataFrame(rows)
 
 
@@ -652,15 +740,24 @@ def check_ttp_rules(equity_df: pd.DataFrame, ttp_state: dict, as_of: pd.Timestam
 def check_iqmarkets_rules(equity_df: pd.DataFrame, iq_state: dict) -> dict:
     """Kein Tageslimit -- nur Gesamt-Drawdown -6% (harter Kill-Switch, gleiche
     Allzeit-Hoechststand-Definition wie TTP) + Zielschwelle +8%. Das explizite
-    1%-Positionslimit wird strukturell durch MAX_POSITION_RISK_DOLLARS erfuellt
-    (siehe compute_shared_equity) -- hier nur als Assert mitgefuehrt, keine
-    stille Annahme."""
+    1%-Positionslimit wird strukturell durch den DYNAMISCHEN Deckel in
+    compute_shared_equity() (1% der Equity ZUM JEWEILIGEN Trade-Zeitpunkt,
+    nicht STARTING_EQUITY) erfuellt -- hier nur als Invariante mitgefuehrt,
+    keine stille Annahme."""
     current_equity = float(equity_df["equity"].iloc[-1]) if not equity_df.empty else STARTING_EQUITY
     if not equity_df.empty:
-        max_risk_seen = equity_df["risk_dollars"].max()
-        assert max_risk_seen <= MAX_POSITION_RISK_DOLLARS + 1e-6, (
-            f"IQ-Markets-1%-Positionslimit verletzt: max risk_dollars={max_risk_seen:.2f} > {MAX_POSITION_RISK_DOLLARS:.2f}"
-        )
+        # Explizites raise statt assert (Fund beim Review 2026-09-01): ein assert wird mit
+        # `python -O` komplett entfernt -- genau die "stille Annahme", die dieser Check laut
+        # eigenem Docstring vermeiden soll. Ein echtes Exception behaelt die Pruefung auch dann.
+        # Pro-Zeile gegen den DAMALIGEN Deckel pruefen (nicht gegen einen einzelnen globalen Wert --
+        # der Deckel selbst bewegt sich mit der wachsenden/schrumpfenden Equity).
+        over_cap = equity_df["risk_dollars"] > equity_df["max_position_risk_dollars"] + 1e-6
+        if over_cap.any():
+            bad = equity_df[over_cap].iloc[0]
+            raise ValueError(
+                f"IQ-Markets-1%-Positionslimit verletzt: risk_dollars={bad['risk_dollars']:.2f} > "
+                f"{bad['max_position_risk_dollars']:.2f} (1% der Equity zum Zeitpunkt dieses Trades) bei {bad['leg']}"
+            )
 
     total_dd = _total_dd(equity_df, current_equity)
     total_dd_breach = total_dd <= -RULES["iqmarkets"]["total_dd_cap"]
@@ -698,37 +795,44 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
             return trades
         return trades[_utc_naive(trades["entry_time"]) >= account_start]
 
+    day = end.strftime("%Y-%m-%d")
+
     messages = []
     try:
         gold_asb_trades = _since_start(_retry(lambda: _scan_gold_asb(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "gold_asb", gold_asb_trades)
     except Exception as e:
-        messages.append(f"[Challenge Portfolio] ⚠️ Gold-ASB-Scan fehlgeschlagen: {e}")
+        print(f"[Challenge Portfolio] Gold-ASB-Scan fehlgeschlagen: {e}")
+        _record_scan_error(state, day, "gold_asb")
 
     try:
         cls_trades = _since_start(_retry(lambda: _scan_cls_practical(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "cls_practical", cls_trades)
     except Exception as e:
-        messages.append(f"[Challenge Portfolio] ⚠️ CLS-Practical-Scan fehlgeschlagen: {e}")
+        print(f"[Challenge Portfolio] CLS-Practical-Scan fehlgeschlagen: {e}")
+        _record_scan_error(state, day, "cls_practical")
 
     try:
         tp_trades = _since_start(_retry(lambda: _scan_trend_pullback(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "trend_pullback", tp_trades)
     except Exception as e:
-        messages.append(f"[Challenge Portfolio] ⚠️ Trend-Pullback-Scan fehlgeschlagen: {e}")
+        print(f"[Challenge Portfolio] Trend-Pullback-Scan fehlgeschlagen: {e}")
+        _record_scan_error(state, day, "trend_pullback")
 
     try:
         cont_trades, rev_trades = _retry(lambda: _scan_ctnl(end, force_refresh=not dry_run))
         messages += _merge_trades(state, "ctnl_continuation", _since_start(cont_trades))
         messages += _merge_trades(state, "ctnl_reversal", _since_start(rev_trades))
     except Exception as e:
-        messages.append(f"[Challenge Portfolio] ⚠️ CTNL-Edge-Scan fehlgeschlagen: {e}")
+        print(f"[Challenge Portfolio] CTNL-Edge-Scan fehlgeschlagen: {e}")
+        _record_scan_error(state, day, "ctnl_edge")
 
     try:
         ou_trades = _since_start(_retry(lambda: _scan_ou_modell(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "ou_modell", ou_trades)
     except Exception as e:
-        messages.append(f"[Challenge Portfolio] ⚠️ OU-Modell-Scan fehlgeschlagen: {e}")
+        print(f"[Challenge Portfolio] OU-Modell-Scan fehlgeschlagen: {e}")
+        _record_scan_error(state, day, "ou_modell")
 
     try:
         orb_trades = _since_start(_retry(lambda: _scan_orb(end, force_refresh=not dry_run)))
@@ -737,68 +841,100 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
             for market, sub in orb_trades.groupby("market"):
                 messages += _merge_trades(state, orb_leg_by_market[market], sub)
     except Exception as e:
-        messages.append(f"[Challenge Portfolio] ⚠️ NY-Open-ORB-Scan fehlgeschlagen: {e}")
+        print(f"[Challenge Portfolio] NY-Open-ORB-Scan fehlgeschlagen: {e}")
+        _record_scan_error(state, day, "orb")
 
     equity_df = compute_shared_equity(state)
     ttp_result = check_ttp_rules(equity_df, state["ttp"], end)
     iq_result = check_iqmarkets_rules(equity_df, state["iqmarkets"])
 
+    # Gemeinsame Entry/Exit-Zeilen (oben) landen in BEIDEN Konten-Nachrichten --
+    # jedes Konto erlebt dieselben Trades unabhaengig. Nur Regel-Ereignisse
+    # (Kill-Switch/Tageslimit/Ziel) sind je Konto eigenstaendig.
+    ttp_messages = list(messages)
+    iq_messages = list(messages)
+
     if ttp_result["total_dd_breach"] and not state["ttp"].get("_notified_kill", False):
         state["ttp"]["_notified_kill"] = True
-        messages.append(
-            f"[TTP Challenge] \U0001F6A8 KILL-SWITCH: Gesamt-Drawdown {ttp_result['total_dd']:.2%} "
+        ttp_messages.append(
+            f"\U0001F6A8 KILL-SWITCH: Gesamt-Drawdown {ttp_result['total_dd']:.2%} "
             f"unter der -7%-Grenze. Manueller Reset noetig, neue Entries pruefen/pausieren."
         )
     if ttp_result["daily_breach_today"]:
-        messages.append(f"[TTP Challenge] ⏸️ Tageslimit erreicht ({ttp_result['daily_return']:.2%}) -- neue Entries fuer heute pausiert.")
+        ttp_messages.append(f"⏸️ Tageslimit erreicht ({ttp_result['daily_return']:.2%}) -- neue Entries fuer heute pausiert.")
     if ttp_result["target_hit"] and not state["ttp"].get("_notified_target", False):
         state["ttp"]["_notified_target"] = True
-        messages.append(f"[TTP Challenge] \U0001F3AF ZIEL ERREICHT: Equity ${ttp_result['current_equity']:,.0f} (+10%).")
+        ttp_messages.append(f"\U0001F3AF ZIEL ERREICHT: Equity ${ttp_result['current_equity']:,.0f} (+10%).")
 
     if iq_result["total_dd_breach"] and not state["iqmarkets"].get("_notified_kill", False):
         state["iqmarkets"]["_notified_kill"] = True
-        messages.append(
-            f"[IQ Markets Challenge] \U0001F6A8 KILL-SWITCH: Gesamt-Drawdown {iq_result['total_dd']:.2%} "
+        iq_messages.append(
+            f"\U0001F6A8 KILL-SWITCH: Gesamt-Drawdown {iq_result['total_dd']:.2%} "
             f"unter der -6%-Grenze. Manueller Reset noetig, neue Entries pruefen/pausieren."
         )
     if iq_result["target_hit"] and not state["iqmarkets"].get("_notified_target", False):
         state["iqmarkets"]["_notified_target"] = True
-        messages.append(f"[IQ Markets Challenge] \U0001F3AF ZIEL ERREICHT: Equity ${iq_result['current_equity']:,.0f} (+8%).")
+        iq_messages.append(f"\U0001F3AF ZIEL ERREICHT: Equity ${iq_result['current_equity']:,.0f} (+8%).")
 
     row = {
         "date": str(end), "equity": ttp_result["current_equity"], "n_trades": len(state["trades"]),
         "ttp": ttp_result, "iqmarkets": iq_result,
     }
 
-    current_hour_key = end.strftime("%Y-%m-%d %H")
-    if state.get("last_heartbeat_hour") != current_hour_key:
-        state["last_heartbeat_hour"] = current_hour_key
-        heartbeat_msg = (
-            f"[Challenge Portfolio] Stuendlicher Status {end.strftime('%Y-%m-%d %H:%M')}\n"
-            f"Equity: ${ttp_result['current_equity']:,.0f}  |  Trades: {len(state['trades'])}\n"
-            f"TTP: DD {ttp_result['total_dd']:.2%} (Grenze -7%)  |  Tag {ttp_result['daily_return']:+.2%} (Grenze -3%)  |  "
-            f"Kill-Switch {'AKTIV' if ttp_result['kill_switch_active'] else 'ok'}\n"
-            f"IQ Markets: DD {iq_result['total_dd']:.2%} (Grenze -6%)  |  "
-            f"Kill-Switch {'AKTIV' if iq_result['kill_switch_active'] else 'ok'}"
-        )
-        if not dry_run:
-            send_telegram_message(heartbeat_msg)
-            LOG_DIR.mkdir(exist_ok=True)
-            is_new = not HEARTBEAT_CSV.exists()
-            with open(HEARTBEAT_CSV, "a", encoding="utf-8") as f:
-                if is_new:
-                    f.write("date,equity,n_trades,ttp_total_dd,ttp_daily_return,ttp_kill_switch,iq_total_dd,iq_kill_switch\n")
-                f.write(f"{end.isoformat()},{ttp_result['current_equity']:.2f},{len(state['trades'])},"
-                        f"{ttp_result['total_dd']:.4f},{ttp_result['daily_return']:.4f},{ttp_result['kill_switch_active']},"
-                        f"{iq_result['total_dd']:.4f},{iq_result['kill_switch_active']}\n")
-
     if not dry_run:
-        for m in messages:
-            send_telegram_message(m)
+        if ttp_messages:
+            send_telegram_message(_challenge_message("ttp", "Scan-Update", ttp_messages))
+        if iq_messages:
+            send_telegram_message(_challenge_message("iqmarkets", "Scan-Update", iq_messages))
+
+        local_hour = _local_dt(end).hour
+        if state["ttp"].get("last_daily_summary_day") != day and local_hour >= DAILY_SUMMARY_HOUR:
+            state["ttp"]["last_daily_summary_day"] = day
+            _send_daily_summary("ttp", state, day, ttp_result, end)
+        if state["iqmarkets"].get("last_daily_summary_day") != day and local_hour >= DAILY_SUMMARY_HOUR:
+            state["iqmarkets"]["last_daily_summary_day"] = day
+            _send_daily_summary("iqmarkets", state, day, iq_result, end)
+
         save_state(state)
 
-    row["messages"] = messages
+    row["messages"] = ttp_messages + iq_messages
     return row, state
+
+
+def _send_daily_summary(rule_key: str, state: dict, day: str, result: dict, end: pd.Timestamp) -> None:
+    day_errors = state.get("scan_errors_today", {}).get(day, {})
+    if day_errors:
+        health_line = "System: ⚠️ Scan-Fehler heute bei " + ", ".join(f"{leg} ({n}x)" for leg, n in day_errors.items())
+    else:
+        health_line = "System: ✅ alle Scans liefen heute fehlerfrei"
+
+    # Gesamt-P&L seit Kontostart statt "seit Tagesbeginn" -- ein taeglicher
+    # EOD-Baseline-Wert existiert nur fuer TTP (eod_equity, fuer den
+    # Tageslimit-Check gebraucht), IQ Markets hat keinen. Gesamt-P&L ist
+    # ausserdem die relevantere Zahl fuer den Blick auf den Zielabstand.
+    current_equity = result["current_equity"]
+    total_pnl = current_equity - STARTING_EQUITY
+    total_pnl_pct = total_pnl / STARTING_EQUITY
+    rule_line = (
+        f"DD {result['total_dd']:.2%} (Grenze -7%)  |  Tag {result['daily_return']:+.2%} (Grenze -3%)  |  "
+        f"Kill-Switch {'AKTIV' if result['kill_switch_active'] else 'ok'}"
+        if rule_key == "ttp" else
+        f"DD {result['total_dd']:.2%} (Grenze -6%)  |  Kill-Switch {'AKTIV' if result['kill_switch_active'] else 'ok'}"
+    )
+    send_telegram_message(_challenge_message(rule_key, f"Tagesabschluss {end.strftime('%Y-%m-%d')}", [
+        health_line,
+        f"Equity: ${current_equity:,.0f} ({total_pnl:+,.0f}, {total_pnl_pct:+.2%} seit Kontostart)",
+        rule_line,
+        f"Trades gesamt: {sum(1 for t in state['trades'].values())}"
+        + ("  |  Ziel erreicht" if result.get("target_reached") else ""),
+    ]))
+    LOG_DIR.mkdir(exist_ok=True)
+    is_new = not HEARTBEAT_CSV.exists()
+    with open(HEARTBEAT_CSV, "a", encoding="utf-8") as f:
+        if is_new:
+            f.write("date,rule,equity,total_pnl,total_dd,kill_switch_active,target_reached\n")
+        f.write(f"{end.isoformat()},{rule_key},{current_equity:.2f},{total_pnl:.2f},"
+                f"{result['total_dd']:.4f},{result['kill_switch_active']},{result.get('target_reached', False)}\n")
 
 
 if __name__ == "__main__":

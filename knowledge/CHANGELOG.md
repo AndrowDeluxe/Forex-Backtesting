@@ -9,6 +9,231 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-02** [Funded Portfolio] **Echtgeld-Bugfix, direkt nach dem
+  OU-Modell-Root-Cause-Fix gefunden**: um 00:05 Uhr versuchte die Bridge auf
+  BEIDEN Konten echte Aktien-Entries fuer ADI/FAST (die frisch wieder
+  sichtbaren OU-Modell-Signale) — mitten in der Nacht, NYSE laengst zu.
+  TTP: `retcode=10018 "Market closed"`. IQMARKETS: `no_tick` (Broker liefert
+  ausserhalb der Handelszeiten keine Kurse fuer Aktien). Ursache: anders als
+  EK-Portfolio-Bridge (Gate seit 2026-08-31) hatte `run_once.py` fuer das
+  ou_modell-Bein KEIN NYSE-Handelszeiten-Gate — bisher folgenlos, weil das
+  Bein bis zum Root-Cause-Fix nie ein offenes Signal melden konnte, hat sich
+  aber sofort gezeigt, sobald es zum ersten Mal wirklich feuerte. Fix: neue
+  `_nyse_is_open()` (identisches Muster zu EK), gated NUR neue Entries fuer
+  ou_modell (`entries_allowed`) — ein bereits offenes Signal wird weiterhin
+  jederzeit normal geschlossen, kein Handelszeiten-Bezug fuer den Exit
+  noetig. Nur `py_compile`-geprueft.
+- **2026-09-01** [Second Brain] `knowledge/scripts/lint.py` + Skill
+  `second-brain-lint` um Check (e) erweitert: unverarbeitete Dateien in
+  `Clippings/` (Raw-Inbox), Heuristik = Dateiname wird bisher nirgends
+  außerhalb von `Clippings/` erwähnt. Anlass: Nutzerauftrag, nachdem die
+  Video-Wissen-Einbindung besprochen wurde. Erster Lauf fand direkt 5
+  echte Treffer (3 Themen wie besprochen: Trading/Orderflow, Claude-
+  Workflow/Token-Sparen x3, plus ein vermutliches Duplikat des bereits
+  verarbeiteten Second-Brain-Clips) — in `DASHBOARD.md` unter "Offene
+  Aufgaben" (Mittel) eingetragen, noch nicht distilliert.
+- **2026-09-02** [NY-Open ORB] **Beide Live-Bridges auf NASDAQ-EOD-Exit
+  umgestellt (echtes Geld, Nutzerauftrag)**: `challenge_portfolio/paper_bot.py`
+  (live importiert von Funded-Portfolio-Bridge, DRY_RUN=False) -
+  `ORB_EXIT_CFG` durch `ORB_EXIT_CFG_BY_INSTRUMENT` ersetzt, NASDAQ
+  `target_mode=None`; Smoke-getestet mit gecachten Daten. **Teilausstieg
+  bewusst NICHT ergaenzt** - `Funded-Portfolio-Bridge/run_once.py::_process_leg()`
+  hat keine Teilschliessungs-Verwaltung, ein Config-Flip haette Papier- und
+  echtes Broker-P&L unbemerkt auseinanderlaufen lassen (Details:
+  `knowledge/projects/ny-open-orb-sp500.md`). `EK-Portfolio-Bridge/legs/ny_open_orb/`
+  (Tickmill LIVE) - echte Code-Aenderung (nicht nur Config): `config.py`s
+  NASDAQ-`target_r_mult` auf `None`, `signal_source.py` berechnet dann kein
+  `target_price`, `executor.py` sendet `tp=0.0` (kein Broker-TP, bestehende
+  Konvention aus `legs/ctnl_edge/executor.py` wiederverwendet) - der bereits
+  vorhandene Session-Ende-Notausgang in `manage_open_positions()` wird fuer
+  NASDAQ zum primaeren statt nur Fallback-Exit, keine Aenderung an dieser
+  Funktion noetig. Teilausstieg (1.5R/50%+BE) blieb hier unveraendert aktiv,
+  da diese Bridge bereits echte Teilschliessungs-Verwaltung hat. Nur
+  `ast.parse`-syntaxgeprueft, NICHT gegen den echten MT5-Terminal getestet -
+  naechster 15-Minuten-Lauf verifiziert es; bereits offene Positionen
+  unberuehrt. **Nebenfund**: zwei weitere ORB-Kopien (`ek_portfolio/paper_bot.py`,
+  pausiert; `fk_instant_funding/paper_bot.py`, DRY_RUN) noch auf altem Stand,
+  bewusst nicht angefasst, siehe `DASHBOARD.md`.
+- **2026-09-01** [Second Brain] `yt-dlp` installiert (`python -m pip install
+  --user yt-dlp`, aufgerufen via `python -m yt_dlp` da nicht auf PATH) und
+  gegen den bereits bekannten Second-Brain-Video-Clip verifiziert
+  (Auto-Untertitel-Download funktioniert trotz fehlender JS-Runtime-Warnung).
+  Ermöglicht, YouTube-Transkripte künftig selbst zu ziehen statt auf
+  manuelles Copy-Paste vom Nutzer angewiesen zu sein — Nutzer muss nur noch
+  den Link geben.
+- **2026-09-02** [EK-Portfolio] Kleiner Nachzug zum ORB-Fix: `legs/ny_open_orb/
+  executor.py` zeigte bei einem echten Entry "@ 0.00" in Telegram (SP500
+  Ticket 260635110) — derselbe bekannte `result.price`-Broker-Quirk, der in
+  Funded-Portfolio-Bridge/executor.py schon behoben war, hier aber noch
+  nicht. Echten Preis jetzt aus der frisch eroeffneten Position gelesen.
+  Rein kosmetisch (SL/TP/Order selbst waren nie betroffen). Nur
+  `py_compile`-geprueft.
+- **2026-09-02** [Funded Portfolio / OU-Modell] **Echtgeld-Bugfix (Root Cause,
+  nicht nur Config)**: `challenge_portfolio/paper_bot.py::_scan_ou_modell()`
+  konnte strukturell NIE ein aktuell offenes OU-Modell-Signal an
+  Funded-Portfolio-Bridge (TTP/IQ) melden — unabhaengig von Config oder
+  Marktlage. Ursache: `ou_paper_backtest/portfolio.py::simulate_bracket_
+  portfolio()` liess jede beim Rueckgabe-Zeitpunkt noch OFFENE Position
+  einfach unter den Tisch fallen (nur geschlossene Trades landeten in
+  `trades`), jede vom Bein gefundene Zeile hatte deshalb immer einen
+  konkreten exit_reason (nie "data_end") und wurde von `_process_leg()`
+  automatisch als "laengst verpasst" statt als neuer Entry behandelt. Fix:
+  neuer `include_open_positions`-Parameter (additiv, Default `False` --
+  aendert nichts an den ~10 anderen Aufrufern/Sweep-Skripten dieser
+  Funktion). Verifiziert an FAST/SPG/SYY (denselben 3 Tickern, die der
+  Standalone-Scanner um 21:35 fand) — erscheinen jetzt korrekt als offenes
+  Signal (`entry_date=2026-08-31`). Zusaetzlich, auf Nutzerwunsch nach
+  Pruefung der 2025er-Holdout-Drawdown-Daten: Exit-Logik von der reinen
+  "gesperrten Baseline" auf die zuletzt live auf Konto 2 (TTP, bis
+  2026-09-01) gefahrene, validierte Konfiguration umgestellt (TP 1:1.5R nur
+  S&P, be_trigger_r 0.25→0.35, internes Risiko-Gate 15%→5%) — schlechtester
+  Einzeltag im Holdout -1.31%, deutlich unter der 3%-Tagesverlust-Regel.
+  Reales Order-Sizing (`LEG_RISK_PCT["ou_modell"]`) bewusst NICHT angetastet
+  (Nutzerentscheidung: die 1/6-Kapitalgewichtung macht das reale Risiko/
+  Trade schon konservativer als Konto 2s eigenstaendige 0.25%). Nur
+  `py_compile`-geprueft, nicht live getestet — naechster Lauf von
+  Funded-Portfolio-Bridge wird dadurch voraussichtlich 3 neue echte Entries
+  (FAST/SPG/SYY, TTP+IQ) platzieren.
+- **2026-09-01** [Second Brain] Scope von `projects/strategie-backlog-inventar.md`
+  auf Nutzerauftrag eingegrenzt: kein Vollsweep mehr über alle ~26
+  unerfassten Strategie-Ordner, sondern nur (a) aktuell relevante
+  Projekte/Strategien mit Dashboard-Bezug und (b) Filter/Bausteine mit
+  bestätigtem Mehrwert. Daraus 5 echte Lücken bei laufenden/pausierten Bots
+  abgeleitet (`asian_range_breakout`, `cls_practical`, `btc_ema_cross`,
+  `ek_portfolio`, OU-Modell — alle bisher ohne PARA-Notiz trotz Live-/
+  Paper-Relevanz), `asia_ote`/`checklist_strategy` aus dem aktiven Backlog
+  genommen (kein Dashboard-Bezug). Dashboard-Abgleich durchgeführt: Task
+  Scheduler-Status + `DRY_RUN`-Flags aller Live-Bridges gegen die
+  Statustabelle geprüft, keine Abweichung gefunden.
+- **2026-09-01** [Second Brain] Zwei Second-Brain-Methodik-Video-Vorschläge
+  übernommen (Nutzerauftrag): (a) `CLAUDE.md` um eine Kontextfenster-
+  Hygiene-Regel ergänzt (Chats nicht über ~300k Token laufen lassen), (b)
+  Lint-Check von "auf Zuruf" auf wöchentlich geplant umgestellt — neue
+  Cloud-Routine "Second-Brain-Lint (weekly)" (`trig_01TRG6KMs4Eh1cjWpnB21A4L`,
+  jeden Montag 08:00 Europe/Berlin), die `knowledge/scripts/lint.py` +
+  die Triage-Logik aus `.claude/skills/second-brain-lint/SKILL.md` ausführt
+  und Ergebnisse selbstständig committet/pusht. Zusätzlich
+  `knowledge/areas/backtest-standard-process.md` angelegt (löst 8 tote
+  `[[backtest-standard-process]]`-Links auf, referenziert den 8-Phasen-Code
+  in `app_pages/education_gold_intraday.py`).
+- **2026-09-02** [NY-Open ORB] **Nur Research-Dashboard geaendert, KEINE
+  Live-Bridge betroffen**: `app_pages/ny_open_orb_portfolio.py::EXIT_CFG_BY_INSTRUMENT["NASDAQ"]`
+  auf `eod_partial` umgestellt (Restposition nach 1.5R/50%-Teilausstieg+BE
+  laeuft jetzt bis Handelsschluss statt bis 4R-Cap) - Phase-6-bestaetigt
+  (`scripts/research_nasdaq_orb_phase6_eod_exit.py`), seit-2025 auf allen
+  vier Kennzahlen (Return/Sharpe/CAGR/MaxDD) besser als die alte Config,
+  siehe `knowledge/projects/ny-open-orb-sp500.md` Stage 8/9. **Wichtiger
+  Nebenbefund beim Abgleich**: die zwei tatsaechlichen Live-Bridges mit
+  ORB-Bein (`challenge_portfolio/paper_bot.py`, live importiert von
+  Funded-Portfolio-Bridge/DRY_RUN=False; `EK-Portfolio-Bridge/legs/ny_open_orb/`,
+  Tickmill LIVE) haben BEIDE eigene, unabhaengige Exit-Configs, die von
+  dieser Aenderung nicht beruehrt werden - `challenge_portfolio` fehlt sogar
+  noch der seit 2026-08-27 adoptierte Teilausstieg. Nichts an einer
+  Live-Bridge geaendert, siehe `DASHBOARD.md` "🔍 Braucht deine Bestätigung".
+- **2026-09-02** [EK-Portfolio] **Echtgeld-Bugfix (2 Stellen, live)**:
+  (1) `legs/ny_open_orb/executor.py::check_and_execute_entry()` — SP500/US30-
+  Entries scheiterten seit 2026-09-01 wiederholt mit `retcode=10016 "Invalid
+  stops"`, weil der SL relativ zum SIGNAL-Preis (M5-Historie) berechnet,
+  aber zum LIVE-Preis gesendet wurde; war der Kurs seit dem Signal
+  gefallen, landete der SL fuer eine BUY-Order ueber dem aktuellen Kurs.
+  Fix: SL-Seite gegen den tatsaechlichen Fill-Preis validieren, bei
+  Mismatch als "Signal zu alt" sauber ueberspringen statt mit ungueltigem
+  SL zu senden. (2) `legs/ou_modell/executor.py::manage_open_positions()` —
+  der Break-Even-SLTP-Modify hatte das NYSE-Handelszeiten-Gate nicht, das
+  fuer neue Entries schon am 2026-08-31 wegen desselben `retcode=10018
+  "Market closed"`-Problems ergaenzt wurde; lief dadurch ausserhalb der
+  Handelszeiten weiter erfolglos gegen die geschlossene Boerse. Fix:
+  Break-Even-Versuch jetzt ebenfalls hinter `_nyse_is_open()` gated. Beide
+  Fixes nur per `py_compile` syntaktisch geprueft, NICHT live gegen das
+  Echtgeld-Konto getestet (kein DRY_RUN-Testlauf ausgeloest, um keine
+  ungewollte reale Order zu riskieren) — naechster reale Lauf verifiziert.
+- **2026-09-02** [Funded Portfolio] `executor.py::close_position()` meldete
+  bei einer bereits (broker-seitig) geschlossenen Position nur `not_found`
+  — sah wie ein Fehler aus, obwohl der Trade sauber beendet war. Ursache
+  rekonstruiert (TTP Ticket 18202597, Gold ASB SHORT): real geoeffnet
+  09:30:57 UTC @ 4367.13, real automatisch geschlossen ca. 15:30 UTC @
+  4366.16, P/L **+$2.91** (per `mt5.history_deals_get()` direkt am TTP-Konto
+  verifiziert) — der geplante Exit-Versuch um 17:48 kam nur deshalb als
+  `not_found` zurueck, weil `bridge_state_ttp.json` den fruehen Close nie
+  als "closed" vermerkt hatte (vermutlich Race mit einem der manuellen,
+  nicht ueber `run_task.ps1` geloggten Laeufe waehrend der Inbetriebnahme
+  heute). Fix: bei `not_found` jetzt die echte Historie nachschlagen und
+  Preis/P&L mitmelden statt nur "not_found".
+- **2026-09-01** [EK-Portfolio] **Echtgeld-Bugfix**: `legs/gold_asb/signal_
+  source.py` verglich seit 11:30 Uhr bei JEDEM Lauf einen tz-naiven mit
+  einem tz-behafteten Timestamp (`TypeError`) — der Scan crashte komplett,
+  bevor er pruefen konnte, ob ein Signal da ist (3 aufeinanderfolgende
+  Laeufe betroffen, 11:30/11:45/12:00). Behoben (`_utc_naive()` nachgezogen,
+  identisches Muster wie ueberall sonst im Repo). Danach zusaetzlich
+  `_retry()` (bereits etablierter Dukascopy-Flakiness-Workaround) in den
+  drei noch Dukascopy-abhaengigen Beinen nachgezogen: `gold_asb`,
+  `cls_practical`, `ctnl_edge` (Continuation/Reversal + die dynamische
+  VWAP-Ziel-Abfrage fuer offene Continuation-Positionen). Nebenbefund:
+  `trend_pullback`/`gold_silver`/`ny_open_orb` nutzen in dieser Bridge
+  bereits `mt5.copy_rates_range()` direkt statt Dukascopy — der
+  MT5-Umstieg ist dort schon gemacht, wo die Historientiefe das zulaesst.
+  Verifiziert per sauberem 13-Bein-Komplettlauf um 12:15 ohne einen
+  einzigen Fehler.
+- **2026-09-01** [Funded Portfolio] Scheduled Task `Funded-Portfolio-Bridge`
+  angelegt (alle 15 Min, Mo–Fr, wie EK-Portfolio-Bridge) — vorher liefen
+  die 2 offenen Positionen nur bei manuellen Laeufen. 2 weitere Bugs beim
+  ersten automatischen Lauf gefunden + behoben: (1) die "Signal bereits
+  geschlossen, bevor die Bridge es sah"-Meldung wurde nie im State
+  vermerkt und wiederholte sich dadurch bei JEDEM Lauf fuer immer (reiner
+  Telegram-Spam ohne neuen Informationswert) — jetzt einmalig als
+  "missed" vermerkt; (2) `place_market_entry()`s `result.price` kam beim
+  ersten echten Order-Send als `0.0` zurueck (Position war broker-seitig
+  korrekt offen, nur das State-Feld `entry_price` betroffen) — liest den
+  echten Preis jetzt direkt aus der frisch eroeffneten Position. Ausserdem
+  `run_task.ps1`: UTF-8-Erzwingung fuer die PowerShell-Prozess-Erfassung
+  ergaenzt (Emojis kamen im lokalen Log verstuemmelt an — Telegram selbst
+  war davon nie betroffen, rein kosmetisch).
+- **2026-09-01** [Second Brain] Lint-Check aus `CLAUDE.md` Regel 6
+  automatisiert: neues Skript `knowledge/scripts/lint.py` (tote Wikilinks,
+  verwaiste Seiten, veraltete Dashboard-Daten) + Skill
+  `.claude/skills/second-brain-lint/SKILL.md` mit der Triage-Logik
+  (False-Positives/Cross-System-Links/Bestätigung/Aufräumen). Erster Lauf
+  durchgeführt, Befunde in `DASHBOARD.md` eingetragen (kein
+  automatisch geplanter Task — bleibt auf Zuruf, bis Nutzer das bestätigt).
+  Anlass: ECC (externes npm-Tool) sollte installiert werden, dessen Setup
+  scheiterte aber (kein `claude`-Binary auf PATH in dieser Session) und
+  hätte ohnehin ein zweites, paralleles Memory-System eingeführt — stattdessen
+  schlanke, repo-eigene Lösung ohne Drittanbieter-Abhängigkeit.
+
+- **2026-09-01** [Funded Portfolio] **`DRY_RUN=False`** auf Nutzerauftrag
+  ("stelle dry run auf false dann gehen wir rein") — erste echte Orders
+  gesendet: Gold ASB SHORT je 0.03 Lots, TTP Ticket 18202597 @ 4367.13,
+  IQ Markets Ticket 1284739 @ 4370.73 (beide broker-seitig verifiziert,
+  korrekter SL, kein TP). Vorbedingung dafür zuerst erledigt: OU-Modell-MT5-
+  Bridge/config.py's Konto-2-Eintrag (504072729) komplett aus `ACCOUNTS`
+  entfernt (nicht nur Task deaktiviert — Konto 1, echtes Geld, unverändert),
+  CTNL-Edge-MT5-Bridge/config.py mit Warnhinweis versehen (Task war schon
+  deaktiviert) — verhindert, dass beide alten Solo-Bots je wieder
+  gleichzeitig mit der neuen Bridge auf denselben Konten/Terminals laufen.
+  Zusätzlich: 1%-Positionsdeckel und Gesamt-Drawdown-Kill-Switch in Paper-Bot
+  + Bridge von statisch (fixer $100k-Referenzwert) auf dynamisch (echte
+  aktuelle Kontoequity, trailing Peak) umgestellt (Nutzerauftrag), sowie ein
+  Fund direkt aus dem ersten Live-Lauf behoben (`place_market_entry()`s
+  `result.price` kam als 0.0 zurück, echter Preis wird jetzt aus der
+  Position selbst gelesen — betraf nur das State-Feld, keine Fehlausführung).
+  **Kein Scheduled Task angelegt** — die zwei offenen Positionen werden
+  aktuell nur bei einem manuellen `run_once.py`-Lauf verwaltet.
+- **2026-09-01** [Second Brain] Strategie-Backlog-Inventar gestartet
+  (`projects/strategie-backlog-inventar.md`, Batch 1/mehrere: asia_ote,
+  asian_range_breakout, auction_playbook, btc_ema_cross, checklist_strategy)
+  — Ziel: alle ~26 Strategie-Ordner ohne PARA-Notiz erfassen, bevor sie
+  einen vollen CODE-Distill bekommen; bewusst in Häppchen statt einem
+  Rutsch (Nutzer-Entscheidung). Dabei gefunden: `cls_practical` hat trotz
+  bestehender Recherche keine `knowledge/`-Notiz, nur einen Eintrag in
+  Claudes eigenem Memory-System. Außerdem `resources/second-brain-methodik.md`
+  angelegt (Distill des Clippings-Artikels "Der einfachste Einstieg in
+  Second Brains!", Jonas Keil/Karpathys LLM-Wiki-Konzept) — Abgleich zeigt
+  unsere Struktur deckt 2 von 3 Kernkonzepten bereits ab.
+- **2026-09-01** [Second Brain] Lint-Check als wiederkehrender Prozess in
+  `CLAUDE.md` (Regel 6) + Tracking-Zeile in `DASHBOARD.md` ergänzt (Anstoß:
+  Vergleich mit Karpathys "LLM Wiki"-Ansatz — Lint war dort explizit
+  vorgesehen, bei uns fehlte der wiederkehrende Charakter, nur ein
+  einmaliger Aufräum-Punkt in "Offene Aufgaben").
 - **2026-09-01** [Infrastruktur] 5 verwaiste MT5-Terminals geschlossen
   (GoldFKBot/16054, CLSPractical/MetaQuotes-Demo, TTP/504069845,
   TTP-Konto2/504072729, generischer Default-Terminal/15514) — alle gehörten

@@ -40,6 +40,34 @@ def compute_session_range(m15: pd.DataFrame, range_bars: int = 1) -> pd.DataFram
     return result
 
 
+def range_candle_bias(m15: pd.DataFrame, range_bars: int = 1) -> pd.Series:
+    """Direction implied by the opening-range candle's BODY (open of the
+    first range bar vs. close of the last range bar) - +1 bullish, -1
+    bearish, 0.0 doji (open == close). Session-indexed, same shape as
+    compute_session_range's output.
+
+    Distinct from orb_high/orb_low breakout direction: this is a pre-breakout
+    directional bias fixed the moment the range closes, per the "Stocks in
+    Play" 5-minute-ORB paper's entry rule (only take breakouts that agree
+    with the opening candle's own color, even if the opposite level breaks
+    first) - see knowledge/resources/opening-range-breakout.md. Use with
+    filters.filter_by_series/filter_by_category against entries['direction']
+    to lock out disagreeing breakouts."""
+    session = m15.index.normalize()
+    minutes = m15.index.hour * 60 + m15.index.minute
+    open_min = NY_OPEN_HOUR * 60 + NY_OPEN_MINUTE
+    in_range = (minutes >= open_min) & (minutes < open_min + 15 * range_bars)
+
+    range_bars_df = m15.loc[in_range]
+    if range_bars_df.empty:
+        return pd.Series(dtype=float)
+
+    grouped = range_bars_df.groupby(session[in_range])
+    open_ = grouped["open"].first()
+    close_ = grouped["close"].last()
+    return pd.Series(np.sign(close_ - open_), index=open_.index, dtype=float)
+
+
 def attach_orb_levels(df: pd.DataFrame, session_range: pd.DataFrame) -> pd.DataFrame:
     """Broadcasts each session's orb_high/orb_low/orb_width/range_end onto
     every bar of that session, for any execution timeframe (`df` can be M15

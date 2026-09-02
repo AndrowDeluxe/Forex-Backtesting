@@ -642,6 +642,398 @@ EMA-Trend-Filter obendrauf schadet (schrumpft Stichprobe auf 344 ohne
 Sharpe-Vorteil) - **nicht Teil der finalen NASDAQ-Config**, obwohl er isoliert
 auf der Long-only-Slice gut aussah.
 
+## Externe Literatur-Vergleich (2026-09-01)
+
+Zwei vom Nutzer als PDF geteilte Paper (kein eigener Research-Auftrag) mit
+diesem Projekt abgeglichen. Volle Distillation je Paper in
+[[opening-range-breakout]]:
+
+1. "Opening Range Breakout in NQ E-Mini Futures" (AFML/TBM-Replikation auf
+   NQ-Futures, "Private Quantitative Research", Juli 2026)
+2. "A Profitable Day Trading Strategy For The U.S. Equity Market"
+   (Zarattini/Barbon/Aziz, Swiss Finance Institute Research Paper N°24-98,
+   2024, 5-Min-ORB auf ~7.000 US-Aktien)
+
+**Bestaetigt bereits Getroffenes** (keine Aenderung noetig):
+- Stop-Order am Range-Level + Exit-Level aus dem tatsaechlichen Fill-Preis
+  (Paper 1s "Method C") ist die dort selbst als beste identifizierte
+  Execution-Methode - entspricht exakt `stop_breakout`.
+- Paper 1s Kernwarnung (Triple-Barrier-"Touch"-Label != realer Fill, groebere
+  Bar-Aufloesung ueberschaetzt Performance) ist unabhaengig derselbe Grund,
+  aus dem Stage 4c M15- zugunsten von M5-Ausfuehrung verworfen hat
+  (`research_orb_intrabar_stop.py`).
+- Paper 2s Relative-Volume-Kernfund ist Cross-Sectional-Aktienauswahl aus
+  tausenden Titeln, kein Timing-Signal auf einem fixen Instrument - deckt
+  sich mit dem bereits negativen RVOL@Time-Befund aus Stage 3 (Sharpe 0.84
+  -> 0.23-0.33). Kein Widerspruch, zwei verschiedene Anwendungsfaelle
+  desselben Signals.
+
+**Neue, noch NICHT getestete Kandidaten** (nur vorgeschlagen, nicht umgesetzt):
+- **ORB-Width-Perzentil-Filter**: `orb_width` wird in `ny_open_orb/range.py`
+  bereits berechnet, aber nirgends als Filter genutzt. Paper 1s Fund (nur
+  Sessions mit ORB-Width <= trailing IS-33stem-Perzentil handeln) ist eine
+  praezisere, Session-spezifische Variante des bereits bestaetigten
+  ADR-Regime-Filters (`low_adr` schlaegt `high_adr`, Stage 4b) - verwandt,
+  aber nicht identisch getestet.
+- **Erste-Kerze-Richtungssperre**: Paper 2s Regel (Farbe der ersten
+  Opening-Kerze legt Long/Short exklusiv fest, unabhaengig davon welche
+  Range-Grenze zuerst bricht) ist orthogonal zu den bestehenden Filtern
+  (Long-only+EMA-neutral bzw. Long+Short+ohne-Mittwoch), ungetestet.
+- **EOD-Close statt festem R-Ziel**: bisher nur das R-Multiple-Grid
+  (3.5R-4.5R) getestet, nie "Ziel = Handelsschluss" wie in Paper 2 - eine
+  strukturell andere Exit-Philosophie.
+
+**Vorbehalt**: Paper 1 zeigt, wie schnell ein filterbasierter Edge auf
+kleinen Stichproben (dort N=50 OOS) schrumpft und beim Uebergang von
+Touch-Label zu echter Ausfuehrung komplett verschwinden kann - jeder
+Kandidat oben braucht denselben IS/OOS + Phase-6-Prozess wie bisher, kein
+Shortcut (Analogie zum bereits erlebten Wochentag-Fehlalarm, Stage 4a2).
+
+**Nicht uebertragbar / ausserhalb Scope**: Paper 2s vollstaendiger
+Stocks-in-Play-Ansatz (Aktienuniversum-Selektion) passt nicht zur
+bestehenden 3-Index-CFD-Struktur - als eigenstaendige Idee in
+`DASHBOARD.md` Ideen-Inbox festgehalten, nicht Teil dieses Projekts.
+
+## Stage 8 -- Die drei externen Kandidaten getestet (`scripts/research_ny_open_orb_stage8_width_direction_lock.py`)
+
+Alle drei oben vorgeschlagenen Kandidaten gestapelt auf die AKTUELL LIVE
+LAUFENDE Standard-Config (SP500/US30 long-only+EMA-neutral, NASDAQ
+long+short+ohne-Mittwoch, je 0.6x-ATR-Stop + Stage-6-Teilausstieg) getestet,
+IS/OOS-Split 2021-07-28, PLUS ein Diagnose-Block auf rohen
+`stop_breakout`-Entries (keine der bestehenden Filter) zur Isolation jedes
+Kandidaten-Effekts. Neue wiederverwendbare Bausteine:
+`ny_open_orb/regime.py::orb_width_percentile` (rollierender 60-Session-
+Perzentilrang, KEIN statischer IS-Threshold wie im Paper - genau wegen dessen
+eigener OOS-Warnung vor Verteilungsverschiebung), `ny_open_orb/range.py::range_candle_bias`
+(Kerzenfarbe der Range-Bar), sowie `target_mode=None` in `engine.simulate`
+(bereits vorhanden, keine Code-Aenderung noetig) fuer den EOD-Exit.
+
+### Ergebnis 1+2 (ORB-Width-Filter, Richtungssperre): sauberes Negativergebnis auf allen drei Instrumenten
+
+| Instrument | Baseline OOS Sharpe (n) | width<=P33 OOS | direction-lock OOS | width+lock kombiniert OOS |
+|---|---|---|---|---|
+| SP500 | **1.20** (n=242) | 0.44 (n=57) | 0.98 (n=176) | 0.28 (n=38) |
+| US30 | **1.12** (n=271) | 0.89 (n=82) | 0.95 (n=193) | 0.92 (n=55) |
+| NASDAQ | **1.41** (n=1029) | 0.49 (n=329) | 1.05 (n=783) | 0.50 (n=227) |
+
+Beide Filter schneiden die Trade-Zahl drastisch (bis -90%) und verschlechtern
+Sharpe/CAGR auf allen drei Instrumenten, egal in welcher Kombination - kein
+einziger Fall schlaegt die adoptierte Config. **Bemerkenswerter Gegenbefund
+beim Width-Filter**: die Richtung ist umgekehrt zum NQ-Futures-Paper. Im
+Diagnose-Block (rohe Entries) schneiden BREITE Ranges (>=P67) durchgehend
+besser ab als enge (<=P20/P33) - z.B. SP500 raw OOS: wide Sharpe 0.78 vs.
+narrow Sharpe 0.13-0.25; US30 raw OOS: narrow 0.74-0.77 vs. wide 0.21 (hier
+umgekehrt - uneinheitlich zwischen Instrumenten, aber in KEINEM Fall
+"eng = besser" wie im Paper). Passt zum bereits dokumentierten
+Stage-1/Phase-6-Befund: Ranges wachsen mit den Jahren, und gerade die
+spaeteren, breiteren-Range-Jahre (2022-2026) sind die starken - die
+NQ-Futures-Session (08:30-09:00 CT, Futures-Mikrostruktur) tickt hier anders
+als der NY-Cash-Open auf Index-CFDs. Die Richtungssperre bringt an keiner
+Stelle Mehrwert - plausibel, `stop_breakout` laesst bewusst beide Richtungen
+offen (nur echte Doppel-Crosses werden uebersprungen), Zarattinis Regel war
+fuer ein Aktien-Universum mit anderer Mikrostruktur kalibriert.
+**Beide Kandidaten verworfen, keine weitere Verfolgung.**
+
+### Ergebnis 3 (EOD-Close-Exit statt festem 4R-Ziel): fuer SP500/US30 negativ, fuer NASDAQ ein echter Fund
+
+| Instrument | Baseline OOS (Sharpe/PF/CAGR/MaxDD) | EOD-Exit OOS (Sharpe/PF/CAGR/MaxDD) |
+|---|---|---|
+| SP500 | 1.20 / 1.65 / 1.1% / -0.7% | 0.73 / 1.59 / 1.4% / **-2.0%** |
+| US30 | 1.12 / 1.56 / 1.0% / -1.1% | 0.59 / 1.46 / 1.2% / **-2.6%** |
+| **NASDAQ** | 1.41 / 1.37 / 3.2% / -2.3% | **1.42 / 1.67 / 9.1% / -3.8%** |
+
+SP500/US30: klar schlechter (Sharpe faellt deutlich, MaxDD verdoppelt sich
+etwa) - **verworfen**. **NASDAQ ist anders**: Sharpe bleibt praktisch gleich
+(1.41->1.42), PF verbessert sich (1.37->1.67), und CAGR fast verdreifacht
+sich (3.2%->9.1%) - bei einem spuerbar, aber nicht dramatisch hoeheren
+MaxDD (-2.3%->-3.8%). **Auf den rohen (ungefilterten) Entries bestaetigt
+sich exakt dasselbe Muster** (raw EOD-exit OOS: Sharpe 1.19 vs. raw baseline
+1.18, CAGR 7.9% vs. 4.1%) - kein Artefakt der long+short+ex-Mittwoch-Filter-
+Kombination, sondern ein echter, auf zwei verschiedene Arten reproduzierter
+NASDAQ-spezifischer Befund. Passt zu NASDAQs bereits dokumentiertem Charakter
+(staerker/nachhaltiger trendend, siehe Stage-3b "mit Trend" schlaegt "neutral"
+- ein Gewinner-laufen-lassen-Exit passt strukturell besser zu einem
+trendstarken Instrument als ein fruehes 4R-Cap).
+
+**Wichtiger Kostenpunkt, kein reiner Gewinn**: Win-Rate stuerzt von 44.5% auf
+**14.9%** (viele kleine Verluste, wenige sehr grosse Gewinner - ein
+Trendfolge-Payoff-Profil). Das ist die GENAUE UMKEHRUNG der Stage-6-Entscheidung
+(Teilausstieg wurde explizit gewaehlt, um die Win-Rate von ~26% auf ~44% zu
+heben, auf Kosten etwas CAGR) - psychologisch/im Live-Betrieb ein deutlich
+haerter zu handelndes System, auch wenn Sharpe/PF/CAGR dafuer sprechen.
+
+**Update (Phase 6 nachgezogen, siehe unten)**: der EOD-Exit-Fund fuer NASDAQ
+ist jetzt durch Phase 6 geprueft - und in Kombination mit dem bestehenden
+Teilausstieg+BE-Mechanismus (auf Nutzerwunsch zusaetzlich getestet) sogar
+noch robuster als in Stage 8 allein sichtbar war. Siehe "Phase 6 fuer
+NASDAQ-EOD-Exit" weiter unten.
+
+## Phase 6 fuer NASDAQ-EOD-Exit (`scripts/research_nasdaq_orb_phase6_eod_exit.py`)
+
+Drei Configs durch die volle Phase-6-Batterie gejagt (Walk-Forward 3x~3
+Jahre, Monte Carlo block_size=20/n_sims=2000/seed=42 auf OOS, Cost-Sweep,
+jaehrliche OOS-Aufschluesselung) - inkl. der vom Nutzer angefragten
+Kombination aus EOD-Exit UND dem bestehenden Stage-6-Teilausstieg+BE-Rest
+(engine.py brauchte dafuer keine Codeaenderung, `target_mode=None` und
+`partial_exit_r`/... sind unabhaengige Parameter):
+
+| Config | Full Sharpe | Full CAGR | OOS MC Median-Sharpe | OOS P(MaxDD>5%) | Cost-Sicherheitsfaktor | Verlustjahre (2021-2026) |
+|---|---|---|---|---|---|---|
+| Baseline (4R + Teilausstieg+BE) | 1.28 | 2.7% | 1.42 | 0.1% | 5.4x | keine |
+| eod_pure (EOD-Exit, kein Teilausstieg) | 1.19 | 6.6% | 1.45 | **29.1%** | 15.3x | keine |
+| **eod_partial (EOD-Exit + Teilausstieg+BE)** | **1.30** | **3.8%** | **1.55** | **0.7%** | 9.0x | keine |
+
+**Walk-Forward (3 unabhaengige ~3-Jahres-Perioden)** - alle drei Configs
+robust ueber alle Perioden (kein regimeabhaengiger Ausfall wie bei SP500):
+Baseline 1.69/0.94/1.45, eod_pure 1.41/1.21/1.10, eod_partial **1.50/1.22/1.29**
+(am gleichmaessigsten von allen dreien - kleinste Spannweite).
+
+**Jaehrliche OOS-Aufschluesselung**: alle drei Configs haben in JEDEM
+Jahr 2021-2026 ein positives Sharpe - bestaetigt NASDAQs bereits aus dem
+urspruenglichen Phase 6 bekannte Robustheit (keine Verlustjahre), auch nach
+dem Exit-Wechsel.
+
+**Fazit: `eod_partial` ist die vielversprechendste der drei Varianten**, nicht
+`eod_pure`:
+- Schlaegt die Baseline auf CAGR (3.8% vs. 2.7%, +41% relativ) UND auf dem
+  simulierten Median-Sharpe (1.55 vs. 1.42) UND auf Walk-Forward-Konsistenz
+  (kleinste Streuung ueber die drei Perioden).
+- Vermeidet `eod_pure`s zentrales Risiko: P(MaxDD>5%) faellt von 29.1% auf
+  0.7% - fast so sicher wie die Baseline (0.1%), weit weg von `eod_pure`s
+  fast 1-in-3-Chance auf einen 5%+-Drawdown.
+- Win-Rate bleibt bei ~45% (Teilausstieg-Mechanismus wirkt weiterhin), nicht
+  `eod_pure`s ~15% - psychologisch/im Live-Betrieb deutlich leichter zu
+  handeln, ohne den CAGR-Vorteil komplett aufzugeben.
+- Kosten-Sicherheitsfaktor 9.0x, solide zwischen Baseline (5.4x) und
+  `eod_pure` (15.3x).
+
+**Bewertung**: `eod_partial` (EOD-Exit fuer die Restposition NACH dem
+1.5R/50%-Teilausstieg+BE, statt des bisherigen 4R-Caps) besteht Phase 6 auf
+praktisch jeder Kennzahl klar besser als die aktuell adoptierte Baseline -
+ein starker Kandidat fuer eine Uebernahme als neuer NASDAQ-Standard.
+
+**Update 2026-09-01: auf Nutzerwunsch als STANDARD uebernommen** fuer NASDAQ
+in `app_pages/ny_open_orb_portfolio.py::EXIT_CFG_BY_INSTRUMENT` (`target_mode=None`
+statt `"r_multiple"`/`target_r_mult=4.0`, Teilausstieg-Parameter unveraendert).
+SP500/US30 bleiben beim 4R-Cap (fuer sie nicht getestet/nicht Teil dieser
+Anfrage). **Seit-2025-Vergleich** (NASDAQ, `stop_breakout` long+short ohne
+Mittwoch, 2025-01-01 bis heute, $10.000 Start, daily-return-basiert wie der
+Rest des Projekts):
+
+| Config | Total Return | Sharpe | CAGR | MaxDD | Endkapital |
+|---|---|---|---|---|---|
+| Baseline (4R-Cap, bisher live im Dashboard) | +5.1% | 1.01 | 2.2% | -2.3% | $10.515 |
+| **eod_partial (neu, seit heute Standard)** | **+8.3%** | **1.14** | **3.6%** | **-1.9%** | **$10.827** |
+
+Seit 2025 schlaegt `eod_partial` die alte Config auf ALLEN vier Kennzahlen
+gleichzeitig (mehr Rendite, besserer Sharpe, hoehere CAGR UND kleinerer
+Drawdown) - kein Trade-off in diesem Fenster, deckt sich mit Phase 6s
+2025-Jahresaufschluesselung (Sharpe 1.21->1.39, CAGR 2.8%->4.8%).
+
+## Live-Bridge-Abgleich (2026-09-01) - WICHTIG, betrifft echtes Geld
+
+Vor der Uebernahme geprueft: wird diese Aenderung automatisch auf die
+laufenden Portfolio-Bridges angewendet? **Nein.** `app_pages/ny_open_orb_portfolio.py`
+ist die Research-/Backtest-Dashboardseite, kein Live-Bot, und wird von
+keiner Bridge importiert. Es gibt tatsaechlich ZWEI separate, unabhaengige
+Live-/Paper-Implementierungen der ORB-Logik, keine davon liest
+`EXIT_CFG_BY_INSTRUMENT` aus dieser Datei:
+
+1. **`challenge_portfolio/paper_bot.py`** (live importiert von
+   `Funded-Portfolio-Bridge/run_once.py` per `sys.path`-Insert direkt aus dem
+   Repo - `import challenge_portfolio.paper_bot as pb`, kein eingefrorener
+   Deploy-Snapshot; Bridge laeuft alle 15 Min Mo-Fr mit **DRY_RUN=False,
+   echtes Geld**, TTP Konto 2 + BeyondIQCapital): eigene `ORB_EXIT_CFG`
+   (Zeile 394, `dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0)`,
+   fuer alle drei Instrumente gleich) - hat **noch nicht einmal den seit
+   2026-08-27 adoptierten Stage-6-Teilausstieg** (kein `partial_exit_r`/...).
+   Handelt aktuell die vor-Stage-6-Rohversion.
+2. **`EK-Portfolio-Bridge/legs/ny_open_orb/`** (eigenstaendiger Ordner
+   ausserhalb des Repos, KEIN Import aus `Forex-Backtesting` - eine separat
+   gepflegte, MT5-native Portierung; **Tickmill LIVE, echtes Geld**, laeuft
+   SP500+US30+NASDAQ als eigene Beine `orb_sp500`/`orb_us30`/`orb_nasdaq`):
+   eigene `config.py::ORB_EXIT_CFG_BY_INSTRUMENT` (Stand 2026-08-28) - IST
+   bereits mit dem Stage-6-Teilausstieg synchron (2R/50% SP500/US30,
+   1.5R/50% NASDAQ, identisch zu `EXIT_CFG_BY_INSTRUMENT` vor der heutigen
+   Aenderung). **ABER**: `legs/ny_open_orb/signal_source.py::target_price`
+   wird UNBEDINGT aus `exit_cfg["target_r_mult"]` berechnet (kein
+   `target_mode`-Konzept im Code) und die Entry-Order traegt den TP SOFORT
+   als echten Broker-Bracket mit (kein Polling noetig, siehe
+   `executor.py`-Docstring). Ein reiner Config-Wert-Wechsel wuerde NICHT
+   reichen (fehlende/andere Zahl wird stur als R-Multiple interpretiert,
+   im Zweifel `KeyError` oder falsches Ziel) - ein EOD-Exit bräuchte eine
+   ECHTE Code-Aenderung an `signal_source.py`/`executor.py` (kein TP-Order
+   mehr auf Entry setzen, stattdessen auf den bereits vorhandenen
+   "Session-Ende-Notausgang"-Mechanismus als primaeren statt nur
+   Fallback-Exit umstellen).
+
+**Fazit**: die Dashboard-Aenderung allein war ausschliesslich im
+Research-Dashboard wirksam. Beide Live-Bridges wurden SEPARAT nachgezogen,
+auf expliziten Nutzerauftrag ("Baue beide Systeme auf den neusten Standard
+um") - siehe "Live-Bridges auf NASDAQ-EOD-Exit umgestellt" unten.
+
+## Live-Bridges auf NASDAQ-EOD-Exit umgestellt (2026-09-02)
+
+Auf Nutzerauftrag beide oben identifizierten Live-Bridges angepasst -
+**unterschiedlich tief**, weil ihre Architekturen unterschiedlich viel
+tragen:
+
+**`challenge_portfolio/paper_bot.py`** (live von Funded-Portfolio-Bridge
+importiert, DRY_RUN=False): `ORB_EXIT_CFG` (ein gemeinsamer Dict fuer alle 3
+Instrumente) durch `ORB_EXIT_CFG_BY_INSTRUMENT` ersetzt - NASDAQ jetzt
+`target_mode=None`, SP500/US30 unveraendert (weiterhin 4R). Per Smoke-Test
+verifiziert (gecachte Daten, Juli 2026): NASDAQ-Trades zeigen keinen
+`exit_reason="target"` mehr, SP500 weiterhin schon.
+**BEWUSST NICHT ergaenzt: der Stage-6-Teilausstieg** (fehlt hier fuer alle
+3 Instrumente, nicht nur NASDAQ). Grund, beim Code-Review entdeckt:
+`Funded-Portfolio-Bridge/run_once.py::_process_leg()` kennt nur ein
+binaeres offen/geschlossen pro Position (ein Ticket, eine volle Groesse,
+EIN `close_position()`-Aufruf) - keine Zwischen-Verwaltung, die real einen
+Teil einer Position bei 1.5R/2R schliessen und den Rest-Stop auf Breakeven
+verschieben koennte. Ein reiner `ORB_EXIT_CFG`-Wert-Wechsel haette
+`simulate()` intern einen sauberen geblendeten Teilausstieg-Trade fuer die
+PAPIER-Nachverfolgung rechnen lassen, waehrend die ECHTE Position die ganze
+Zeit in voller Groesse gegen den urspruenglichen Stop offen geblieben waere
+- Papier-P&L und echtes Broker-P&L waeren unbemerkt auseinandergelaufen.
+Deshalb bewusst nicht angefasst; braucht echte neue Verwaltungslogik
+(Ticket-Teilschliessung + SL-Modify in `run_once.py`/`executor.py`), kein
+Config-Flip - eigenes, spaeteres Projekt, falls gewuenscht.
+
+**`EK-Portfolio-Bridge/legs/ny_open_orb/`** (Tickmill LIVE): hier eine
+ECHTE Code-Aenderung moeglich UND umgesetzt, weil diese Bridge bereits
+eine funktionierende Teilausstiegs-Verwaltung hat
+(`executor.py::manage_open_positions()`: echte MT5-Teilschliessung per
+`mt5.order_send()` bei 1.5R/2R + echte `TRADE_ACTION_SLTP`-Breakeven-
+Verschiebung, per-Ticket in SQLite getrackt) - strukturell in der Lage, den
+neuen Standard korrekt abzubilden:
+- `config.py::ORB_EXIT_CFG_BY_INSTRUMENT["NASDAQ"]["target_r_mult"]`:
+  `4.0` -> `None`.
+- `legs/ny_open_orb/signal_source.py::scan_entry()`: `target_price=None`
+  wenn `target_r_mult` fehlt, statt ihn stur zu berechnen.
+- `legs/ny_open_orb/executor.py::check_and_execute_entry()`: sendet fuer
+  NASDAQ jetzt `tp=0.0` (MT5-Konvention "kein Take-Profit", bereits
+  identisches Muster in `legs/ctnl_edge/executor.py` und
+  `core/bracket_executor.py` vorhanden - keine neue Konvention erfunden).
+  Log-/Telegram-Nachrichten zeigen "kein TP (EOD-Exit)" statt eines
+  Preises. `manage_open_positions()`s bereits vorhandener
+  Session-Ende-Notausgang (16:00 NY) wird dadurch fuer NASDAQ vom Fallback
+  zum PRIMAEREN Ziel-Exit - **keine Aenderung an dieser Funktion noetig**,
+  sie kannte "weder Stop noch TP erreicht" schon immer.
+- Teilausstieg (1.5R/50%+BE) unveraendert fuer alle drei Instrumente aktiv.
+- Nur `py_compile`/`ast.parse` syntaktisch geprueft, NICHT gegen den
+  echten MT5-Terminal getestet (kein Testlauf ausgeloest, um kein
+  ungewolltes Verhalten auf dem Live-Konto zu riskieren) - naechster
+  echter 15-Minuten-Lauf verifiziert es. Bereits offene Positionen sind
+  unberuehrt (ihr `target_price` steht schon in der SQLite-DB, wird nicht
+  rueckwirkend geaendert - nur NEUE Entries nutzen die neue Logik).
+
+## Weitere gefundene ORB-Kopien, NICHT Teil dieser Umstellung
+
+Beim Review zusaetzlich entdeckt (nicht Teil des "beide Systeme"-Auftrags,
+da nicht die zwei besprochenen Live-Bridges) - beide noch auf dem alten
+4R-Stand fuer NASDAQ, aktuell aber niedrigeres Risiko:
+- **`ek_portfolio/paper_bot.py`** (Repo): treibt den "EK-Portfolio-Paper"-
+  Task, laut `DASHBOARD.md`-Statustabelle aktuell **pausiert/Disabled** -
+  hat bereits die per-Instrument-`ORB_EXIT_CFG_BY_INSTRUMENT`-Struktur samt
+  Teilausstieg (Kommentar behauptet "identisch zu
+  app_pages/ny_open_orb_portfolio.py", ist es aber seit der EOD-Exit-
+  Aenderung nicht mehr) - waere ein einfacher Ein-Zeilen-Fix
+  (`target_mode` fuer NASDAQ), aber nicht angefasst, da nicht angefragt und
+  aktuell nicht live.
+- **`fk_instant_funding/paper_bot.py`** (Repo, treibt FKInstantFunding-MT5-
+  Bridge, laut `DASHBOARD.md` **DRY_RUN**, kein echtes Geld): hat ein
+  einzelnes gemeinsames `ORB_EXIT_CFG` fuer alle 3 Instrumente, **kein**
+  Teilausstieg - naeher am alten `challenge_portfolio`-Stand als am
+  aktuellen Standard.
+Beide dokumentiert, nicht geaendert - siehe `DASHBOARD.md`
+"🔍 Braucht deine Bestätigung".
+
+## Stage 9 -- Risk-Scaling statt Ein-/Ausschluss-Filter (`scripts/research_ny_open_orb_stage9_risk_scaling.py`)
+
+Direkte Folgefrage aus Stage 8: jeder binaere Ein-/Ausschluss-Filter (Width-
+Threshold, Richtungssperre) verschlechterte Sharpe auf allen drei
+Instrumenten, weil die verlorene Stichprobengroesse den Qualitaetsgewinn pro
+Trade ueberwog. Kann ein GRADUELLES Signal (mehr Bestaetigung -> mehr
+Risiko, statt raus/rein) das umgehen - volle Stichprobe bleibt erhalten, nur
+die Positionsgroesse variiert? Getestet: `orb_width_percentile` (Stage 8s
+Signal), `adx_at_entry`, `rvol_at_time` bei Entry - alle drei sowohl auf
+rohen `stop_breakout`-Entries als auch auf der Standard-Config, jeweils
+IS/OOS.
+
+**Wichtiger methodischer Vorbehalt**: die "Risk-Multiplier"-Simulation
+skaliert `return_pct` direkt vor der Tagesrenditen-Kompoundierung - dieselbe
+Vereinfachung, auf der Stage 1-6s Sharpe/CAGR-Zahlen ohnehin schon beruhen
+(kein echtes risikobasiertes Positions-Sizing wie in Stage 7s Dollar-Kontosimulation).
+Ergebnis ist als RICHTUNGSAUSSAGE zu lesen (skaliert vs. flach), nicht als
+belastbare Dollar-Zahl.
+
+### Teil A: Quintil-Scan - keines der drei Signale zeigt einen sauberen, verlaesslichen Gradienten
+
+Auf den GEFILTERTEN Standard-Config-Trades (n~90-100/Quintil, entsprechend
+verrauscht) ist kein Signal auch nur annaehernd monoton: z.B. SP500-ADX auf
+der Standard-Config faellt sogar von Q0=+0.52R auf Q4=+0.22R (GEGENTEIL der
+ueblichen Erwartung "hohe Trendstaerke = besser") - deckt sich mit Stage 3s
+bereits bestaetigtem Negativbefund fuer einen ADX>=25-Ausschlussfilter.
+Auf den ROHEN Entries (n~500/Quintil, weniger verrauscht) zeigen Width und
+RVOL bei SP500 eine leicht ansteigende Tendenz (Width Q0=-0.03R -> Q4=+0.22R,
+RVOL Q0=-0.08R -> Q4=+0.24R) - aber mit Ausreissern/Plateaus dazwischen,
+kein glatter Gradient. Bei US30/NASDAQ noch schwaecher/uneinheitlicher.
+
+### Teil B: Terzil-Risk-Scaling schlaegt in JEDEM der 18 getesteten Faelle die Flat-Risk-Baseline NICHT
+
+3 Instrumente x 2 Entry-Saetze (roh/Standard-Config) x 3 Signale = 18
+Kombinationen, Terzil-Multiplikatoren 0.5x/1.0x/1.5x gegen durchgehend 1.0x:
+
+| Beispiel | Flat OOS Sharpe | Skaliert OOS Sharpe | Flat MaxDD | Skaliert MaxDD |
+|---|---|---|---|---|
+| SP500 Standard, width | 1.20 | 1.07 | -0.7% | -1.1% |
+| US30 Standard, width | 1.12 | 0.80 | -1.1% | -1.4% |
+| NASDAQ Standard, width | 1.41 | 1.25 | -2.3% | -3.3% |
+| SP500 Standard, ADX | 1.20 | 1.08 | -0.7% | -0.7% |
+| US30 roh, width | 0.84 | 0.57 | -3.5% | -5.0% |
+
+**Ausnahmslos in allen 18 Faellen**: Sharpe gleich oder schlechter, MaxDD
+gleich oder schlechter unter Skalierung - CAGR manchmal marginal hoeher,
+aber nie genug, um die zusaetzliche Volatilitaet auszugleichen. Mathematisch
+plausibel: die Quintil-Unterschiede aus Teil A liegen meist nur bei
+0.1-0.3R - zu klein, um eine 3-fache Positionsgroessen-Spreizung
+(0.5x vs. 1.5x) zu rechtfertigen; die zusaetzliche Varianz aus ungleicher
+Positionsgroesse frisst den kleinen Erwartungswert-Unterschied auf.
+
+**Fazit**: weder ORB-Width noch ADX-at-Entry noch RVOL@Time liefern aktuell
+ein nutzbares Skalierungssignal - derselbe Befund wie bei ihrer binaeren
+Filter-Version (Stage 3/8), nur diesmal ohne den Stichproben-Verlust als
+moegliche Erklaerung. Ehrliches Negativergebnis: **der Width-Gegenbefund
+laesst sich mit den hier getesteten Mitteln nicht in eine Skalierungsregel
+uebersetzen.**
+
+**Andere, hier NICHT getestete Richtungen** (dokumentiert als Ideen fuer
+spaeter, nicht verworfen):
+- **EMA-Ribbon-Bias graduell statt binaer**: die EMA-neutral-Bedingung ist
+  das mit Abstand staerkste bereits bestaetigte Signal dieses Projekts
+  (Stage 4b: Sharpe 0.56->1.05 als Ausschlussfilter) - im Gegensatz zu
+  Width/ADX/RVOL, die schon ALS Ausschlussfilter schwach waren. Eine
+  graduelle Version (z.B. Positionsgroesse nach "wie nah am neutralen
+  Zustand" statt hartem neutral/nicht-neutral-Schnitt) steht auf einer
+  bereits belegten Grundlage, anders als die hier getesteten drei Signale.
+- **Volatilitaets-normalisiertes statt konfidenz-skaliertes Sizing**: die
+  in diesem Projekt ueberall genutzten Sharpe/CAGR-Zahlen sind NICHT
+  risikobasiert positionsgroessen-normalisiert (siehe Vorbehalt oben) - erst
+  Stage 7s echte Kontosimulation macht das (1% Risiko/Trade ueber die
+  ATR-Stop-Distanz). Insofern ist "nach Risiko normalisieren" bereits
+  teilweise geloest, nur nicht in den schnellen Vergleichsmetriken sichtbar.
+- **Cross-Instrument-Bestaetigung**: Positionsgroesse hochsetzen, wenn
+  SP500/US30/NASDAQ am selben Tag in dieselbe Richtung brechen (eine Art
+  Marktbreite-Signal) - eine strukturell andere Signalquelle (mehrere
+  Instrumente statt ein Trade-internes Merkmal), bisher nirgends in diesem
+  Projekt getestet.
+- **Sequenz-/Streak-basiertes Sizing** (Anti-Martingale nach Gewinn-/
+  Verlustserie) - orthogonal zu Setup-Qualitaetssignalen, ebenfalls
+  ungetestet.
+
+Keiner dieser vier Punkte wurde umgesetzt - reine Ideen-Dokumentation fuer
+einen spaeteren Anlauf, kein aktueller Auftrag.
+
 ### Phase 6 fuer NASDAQ (`scripts/research_nasdaq_orb_phase6.py`)
 
 **Deutlich robuster als die SP500-Config - keine Regimeschwaeche:**

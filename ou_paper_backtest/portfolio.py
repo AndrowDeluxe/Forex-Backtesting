@@ -234,6 +234,7 @@ def simulate_bracket_portfolio(
     portfolio_profit_lock_close_frac: float = 1.0,
     portfolio_profit_lock_n_best: int | None = None,
     cost_bps: float = 0.0,
+    include_open_positions: bool = False,
 ) -> tuple[pd.Series, list[dict]]:
     """Fixed-CRV bracket exit -- mirrors the live OU-Modell-MT5-Bridge bot's actual
     mechanism (not the paper's own "exit at MA" rule used by simulate_portfolio):
@@ -300,6 +301,22 @@ def simulate_bracket_portfolio(
     cost-FREE for comparability with every existing call site -- only the equity
     curve reflects cost). Default 0.0 preserves prior behavior exactly for every
     existing caller.
+
+    `include_open_positions` (added 2026-09-02, root-cause fix for challenge_
+    portfolio/paper_bot.py::_scan_ou_modell()): by default `trades` contains ONLY
+    positions that actually closed (SL/TP/breakeven/max_holding/profit_lock) within
+    `start..end` -- a position still open at `end` is silently dropped, never
+    appears in `trades` at all. Fine for pure backtest metrics (the equity curve
+    already reflects its unrealized P&L), but it means a live-signal consumer that
+    filters `trades` for exit_reason == "data_end" (the convention every OTHER leg
+    in challenge_portfolio/paper_bot.py uses to detect a currently-open, tradeable
+    signal) can NEVER see one here -- confirmed 2026-09-02: OU-Modell could not
+    structurally ever report an open signal to Funded-Portfolio-Bridge, regardless
+    of the underlying OU-selection/Bollinger criteria actually firing. Set True to
+    append one extra row per still-open position at the end of the loop, using its
+    last-seen price, `exit_date=None`, `reason="data_end"` -- purely additive,
+    default False preserves exact prior behavior for every existing (research/
+    sweep) caller.
     """
     ind = _precompute_indicators(panel, tickers, lookback, k, trend_filter_window)
     all_dates = panel.loc[start:end].index
@@ -493,6 +510,19 @@ def simulate_bracket_portfolio(
     equity_series = pd.Series(
         [e for _, e in equity_points], index=[d for d, _ in equity_points], name="equity"
     )
+    if include_open_positions:
+        for t, pos in positions.items():
+            pnl_dollars = pos.shares * (
+                (pos.last_price - pos.entry_price) if pos.direction == 1 else (pos.entry_price - pos.last_price)
+            )
+            trades.append({
+                "ticker": t, "direction": "long" if pos.direction == 1 else "short",
+                "entry_date": pos.entry_date, "exit_date": None,
+                "entry_price": pos.entry_price, "exit_price": pos.last_price,
+                "shares": pos.shares, "days_held": pos.days_held,
+                "pnl_dollars": pnl_dollars, "pnl_pct": pnl_dollars / (pos.shares * pos.entry_price),
+                "reason": "data_end",
+            })
     return equity_series, trades
 
 

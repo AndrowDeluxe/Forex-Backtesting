@@ -48,6 +48,38 @@ def average_daily_range(m15: pd.DataFrame, n: int = 20) -> pd.Series:
     return daily_range.shift(1).rolling(n, min_periods=n // 2).mean()
 
 
+def orb_width_percentile(session_width: pd.Series, n: int = 60) -> pd.Series:
+    """Percentile rank (0.0 = narrowest, 1.0 = widest) of each session's OWN
+    opening-range width against the trailing n sessions, INCLUDING itself -
+    not the shift(1)-before-rolling convention used elsewhere in this file,
+    because a session's own width is already fully known (range has closed)
+    by the time any entry can fire, per range.py's range_end gate - no
+    lookahead either way. NaN until n/2 sessions of history exist.
+
+    Input: a session-indexed width series, e.g.
+    `frame.groupby("session")["orb_width"].first()` from engine.build_frame's
+    output (frame already carries orb_width per bar, broadcast from
+    range.compute_session_range).
+
+    Motivated by the NQ-futures ORB-Width setup-quality filter in
+    knowledge/resources/opening-range-breakout.md (narrow opening range ->
+    less pre-open participant disagreement -> stronger directional signal on
+    the subsequent breakout) - here as a walk-forward-safe ROLLING percentile
+    rather than that paper's single static IS-calibrated threshold, which its
+    own OOS section showed collapses when the underlying width distribution
+    shifts (IS mean 53.5pt -> OOS mean 74.7pt, +40%)."""
+    min_hist = max(n // 2, 1)
+
+    def _rank(window: np.ndarray) -> float:
+        history, today = window[:-1], window[-1]
+        history = history[~np.isnan(history)]
+        if len(history) < min_hist - 1 or np.isnan(today):
+            return np.nan
+        return float((history <= today).mean())
+
+    return session_width.rolling(n, min_periods=min_hist).apply(_rank, raw=True)
+
+
 def ema_trend_bias(m15: pd.DataFrame, session_dates: pd.DatetimeIndex) -> pd.Series:
     """+1/-1/0 daily HTF-EMA-ribbon bias (strategy/mtf_ema_ribbon.py, the
     user-supplied 4H-50/1D-50/1W-50/1D-200 stack), evaluated once per

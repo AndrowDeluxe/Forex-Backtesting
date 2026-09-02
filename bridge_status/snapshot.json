@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-02T12:01:24",
+  "generated_at": "2026-09-02T12:31:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-02T12:01:09",
-      "minutes_since_last_run": 0.3,
+      "last_run": "2026-09-02T12:30:56",
+      "minutes_since_last_run": 0.5,
       "status": "ok",
-      "last_equity_line": "2026-09-02 12:01:09 2026-09-02 12:00:01,944 INFO run_once: Konto-Equity 3405.78 EUR | Aggregiertes offenes Risiko (ganzes Konto): 221.98 (Deckel dieser Bridge: 272.46, 8%)",
+      "last_equity_line": "2026-09-02 12:30:56 2026-09-02 12:30:02,029 INFO run_once: Konto-Equity 3405.78 EUR | Aggregiertes offenes Risiko (ganzes Konto): 221.99 (Deckel dieser Bridge: 272.46, 8%)",
       "last_error_line": "2026-09-02 11:01:25 2026-09-02 11:01:17,853 ERROR run_once: cls_practical: unerwarteter Fehler",
       "recent_events": [
         "2026-09-02 01:18:41 2026-09-02 01:15:07,933 WARNING legs.ny_open_orb.executor: [EK-ORB] \\u26a0\\ufe0f US30: Signal zu alt fuer Live-Entry - SL 52943.25 liegt nicht mehr auf der richtigen Seite des aktuellen Kurses 52778.28 (Kurs seit Signal zu weit gelaufen). Uebersprungen.",
@@ -14,20 +14,17 @@
         "2026-09-02 00:46:24 2026-09-02 00:45:11,769 WARNING legs.ny_open_orb.executor: [EK-ORB] \\u26a0\\ufe0f US30: Signal zu alt fuer Live-Entry - SL 52943.25 liegt nicht mehr auf der richtigen Seite des aktuellen Kurses 52773.44 (Kurs seit Signal zu weit gelaufen). Uebersprungen.",
         "2026-09-02 00:31:23 2026-09-02 00:30:08,864 WARNING legs.ny_open_orb.executor: [EK-ORB] \\u26a0\\ufe0f US30: Signal zu alt fuer Live-Entry - SL 52943.25 liegt nicht mehr auf der richtigen Seite des aktuellen Kurses 52775.03 (Kurs seit Signal zu weit gelaufen). Uebersprungen.",
         "2026-09-02 00:15:56 2026-09-02 00:15:06,603 WARNING legs.ny_open_orb.executor: [EK-ORB] \\u26a0\\ufe0f US30: Signal zu alt fuer Live-Entry - SL 52943.25 liegt nicht mehr auf der richtigen Seite des aktuellen Kurses 52776.98 (Kurs seit Signal zu weit gelaufen). Uebersprungen.",
-        "2026-09-02 00:01:00 2026-09-02 00:00:07,814 WARNING legs.ny_open_orb.executor: [EK-ORB] \\u26a0\\ufe0f US30: Signal zu alt fuer Live-Entry - SL 52943.25 liegt nicht mehr auf der richtigen Seite des aktuellen Kurses 52793.55 (Kurs seit Signal zu weit gelaufen). Uebersprungen.",
-        "2026-09-01 22:47:50 2026-09-01 22:45:04,783 ERROR legs.ny_open_orb.executor: [EK-ORB] \\u26a0\\ufe0f Order fehlgeschlagen fuer US30: OrderSendResult(retcode=10016, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Invalid stops', request_id=0, retcode_external=0, request=TradeRequest(action=1, magic=990009, order=0, symbol='US30', volume=0.37, price=52773.43, stoplimit=0.0, sl=52943.24723553943, tp=53118.011057842275, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='EK-orb_us30 auto', position=0, position_by=0))",
-        "2026-09-01 22:31:05 2026-09-01 22:30:09,079 ERROR legs.ny_open_orb.executor: [EK-ORB] \\u26a0\\ufe0f Order fehlgeschlagen fuer US30: OrderSendResult(retcode=10016, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Invalid stops', request_id=0, retcode_external=0, request=TradeRequest(action=1, magic=990009, order=0, symbol='US30', volume=0.37, price=52764.95, stoplimit=0.0, sl=52943.24723553943, tp=53118.011057842275, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='EK-orb_us30 auto', position=0, position_by=0))",
-        "2026-09-01 22:31:05 2026-09-01 22:30:08,598 ERROR legs.ny_open_orb.executor: [EK-ORB] \\u26a0\\ufe0f Order fehlgeschlagen fuer SP500: OrderSendResult(retcode=10016, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Invalid stops', request_id=0, retcode_external=0, request=TradeRequest(action=1, magic=990008, order=0, symbol='US500', volume=3.24, price=7635.75, stoplimit=0.0, sl=7635.504607178923, tp=7655.78157128431, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='EK-orb_sp500 auto', position=0, position_by=0))"
+        "2026-09-02 00:01:00 2026-09-02 00:00:07,814 WARNING legs.ny_open_orb.executor: [EK-ORB] \\u26a0\\ufe0f US30: Signal zu alt fuer Live-Entry - SL 52943.25 liegt nicht mehr auf der richtigen Seite des aktuellen Kurses 52793.55 (Kurs seit Signal zu weit gelaufen). Uebersprungen."
       ]
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-02T12:00:01",
+      "last_run": "2026-09-02T12:30:01",
       "minutes_since_last_run": 1.4,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-02 11:49:03 Verbunden: Login 504072729, Equity $99,759.91 USD",
+          "last_equity_line": "2026-09-02 12:19:19 Verbunden: Login 504072729, Equity $99,759.91 USD",
           "last_error_line": "2026-09-02 11:04:03 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
           "recent_events": [
             "2026-09-02 11:04:03 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
@@ -37,29 +34,25 @@
             "2026-09-02 10:27:59 CTNL-Edge-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
             "2026-09-02 10:27:59 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
             "2026-09-02 10:27:59 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-09-02 10:27:59 Gold-ASB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-09-02 01:08:32 [TTP] ?? Entry fehlgeschlagen ou_modell (FAST) FAST: OrderSendResult(retcode=10018, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Market closed', request_id=1939376507, retcode_external=0, request=TradeRequest(action=1, magic=0, order=0, symbol='FAST', volume=81.0, price=48.79, stoplimit=0.0, sl=46.762474728593624, tp=0.0, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='FP ou_modell (FAST)', position=0, position_by=0))",
-            "2026-09-02 01:08:32 [TTP] ?? Entry fehlgeschlagen ou_modell (ADI) ADI: OrderSendResult(retcode=10018, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Market closed', request_id=1939376506, retcode_external=0, request=TradeRequest(action=1, magic=0, order=0, symbol='ADI', volume=5.0, price=353.87, stoplimit=0.0, sl=325.4613728227869, tp=0.0, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='FP ou_modell (ADI)', position=0, position_by=0))"
+            "2026-09-02 10:27:59 Gold-ASB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'"
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-02 11:49:03 Verbunden: Login 16054, Equity $100,001.77 USD",
+          "last_equity_line": "2026-09-02 12:19:19 Verbunden: Login 16054, Equity $100,001.77 USD",
           "last_error_line": "2026-09-02 10:27:59 [IQMARKETS] ?? Entry fehlgeschlagen ou_modell (FAST) FAST: no_tick",
           "recent_events": [
             "2026-09-02 10:27:59 [IQMARKETS] ?? Entry fehlgeschlagen ou_modell (FAST) FAST: no_tick",
-            "2026-09-02 10:27:59 [IQMARKETS] ?? Entry fehlgeschlagen ou_modell (ADI) ADI: no_tick",
-            "2026-09-02 01:08:32 [IQMARKETS] ?? Entry fehlgeschlagen ou_modell (FAST) FAST: no_tick",
-            "2026-09-02 01:08:32 [IQMARKETS] ?? Entry fehlgeschlagen ou_modell (ADI) ADI: no_tick"
+            "2026-09-02 10:27:59 [IQMARKETS] ?? Entry fehlgeschlagen ou_modell (ADI) ADI: no_tick"
           ]
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-02T11:08:20",
-      "minutes_since_last_run": 53.1,
+      "last_run": "2026-09-02T12:08:20",
+      "minutes_since_last_run": 23.1,
       "status": "ok",
-      "last_equity_line": "2026-09-02 11:08:20 Verbunden: Login 17764, Equity $100,000.00",
+      "last_equity_line": "2026-09-02 12:08:20 Verbunden: Login 17764, Equity $100,000.00",
       "last_error_line": "2026-09-02 10:22:21 NY-Open-ORB-Scan fehlgeschlagen: 0",
       "recent_events": [
         "2026-09-02 10:22:21 NY-Open-ORB-Scan fehlgeschlagen: 0",

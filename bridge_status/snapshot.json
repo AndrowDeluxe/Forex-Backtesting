@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-02T11:53:21",
+  "generated_at": "2026-09-02T11:54:17",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
       "last_run": "2026-09-02T11:45:53",
-      "minutes_since_last_run": 7.5,
+      "minutes_since_last_run": 8.4,
       "status": "ok",
       "last_equity_line": "2026-09-02 11:45:53 2026-09-02 11:45:02,103 INFO run_once: Konto-Equity 3405.78 EUR | Aggregiertes offenes Risiko (ganzes Konto): 221.92 (Deckel dieser Bridge: 272.46, 8%)",
       "last_error_line": "2026-09-02 11:01:25 2026-09-02 11:01:17,853 ERROR run_once: cls_practical: unerwarteter Fehler",
@@ -25,29 +25,41 @@
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
       "last_run": "2026-09-02T11:49:03",
-      "minutes_since_last_run": 4.3,
+      "minutes_since_last_run": 5.2,
       "status": "ok",
-      "last_equity_line": "2026-09-02 11:49:03 Verbunden: Login 16054, Equity $100,001.77 USD",
-      "last_error_line": "2026-09-02 11:04:03 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-      "recent_events": [
-        "2026-09-02 11:04:03 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-        "2026-09-02 10:27:59 [IQMARKETS] ?? Entry fehlgeschlagen ou_modell (FAST) FAST: no_tick",
-        "2026-09-02 10:27:59 [IQMARKETS] ?? Entry fehlgeschlagen ou_modell (ADI) ADI: no_tick",
-        "2026-09-02 10:27:59 [TTP] ?? Entry fehlgeschlagen ou_modell (FAST) FAST: OrderSendResult(retcode=10018, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Market closed', request_id=1939376511, retcode_external=0, request=TradeRequest(action=1, magic=0, order=0, symbol='FAST', volume=81.0, price=48.79, stoplimit=0.0, sl=46.76247472859564, tp=0.0, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='FP ou_modell (FAST)', position=0, position_by=0))",
-        "2026-09-02 10:27:59 [TTP] ?? Entry fehlgeschlagen ou_modell (ADI) ADI: OrderSendResult(retcode=10018, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Market closed', request_id=1939376510, retcode_external=0, request=TradeRequest(action=1, magic=0, order=0, symbol='ADI', volume=5.0, price=353.87, stoplimit=0.0, sl=325.92205175538345, tp=0.0, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='FP ou_modell (ADI)', position=0, position_by=0))",
-        "2026-09-02 10:27:59 NY-Open-ORB-Scan fehlgeschlagen: 0",
-        "2026-09-02 10:27:59 CTNL-Edge-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-        "2026-09-02 10:27:59 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-        "2026-09-02 10:27:59 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-        "2026-09-02 10:27:59 Gold-ASB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-        "2026-09-02 10:27:58 ERROR:executor:Markt-Entry fehlgeschlagen: OrderSendResult(retcode=10018, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Market closed', request_id=1939376511, retcode_external=0, request=TradeRequest(action=1, magic=0, order=0, symbol='FAST', volume=81.0, price=48.79, stoplimit=0.0, sl=46.76247472859564, tp=0.0, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='FP ou_modell (FAST)', position=0, position_by=0))",
-        "2026-09-02 10:27:58 ERROR:executor:Markt-Entry fehlgeschlagen: OrderSendResult(retcode=10018, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Market closed', request_id=1939376510, retcode_external=0, request=TradeRequest(action=1, magic=0, order=0, symbol='ADI', volume=5.0, price=353.87, stoplimit=0.0, sl=325.92205175538345, tp=0.0, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='FP ou_modell (ADI)', position=0, position_by=0))"
-      ]
+      "accounts": {
+        "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
+          "last_equity_line": "2026-09-02 11:49:03 Verbunden: Login 504072729, Equity $99,759.91 USD",
+          "last_error_line": "2026-09-02 11:04:03 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+          "recent_events": [
+            "2026-09-02 11:04:03 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+            "2026-09-02 10:27:59 [TTP] ?? Entry fehlgeschlagen ou_modell (FAST) FAST: OrderSendResult(retcode=10018, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Market closed', request_id=1939376511, retcode_external=0, request=TradeRequest(action=1, magic=0, order=0, symbol='FAST', volume=81.0, price=48.79, stoplimit=0.0, sl=46.76247472859564, tp=0.0, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='FP ou_modell (FAST)', position=0, position_by=0))",
+            "2026-09-02 10:27:59 [TTP] ?? Entry fehlgeschlagen ou_modell (ADI) ADI: OrderSendResult(retcode=10018, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Market closed', request_id=1939376510, retcode_external=0, request=TradeRequest(action=1, magic=0, order=0, symbol='ADI', volume=5.0, price=353.87, stoplimit=0.0, sl=325.92205175538345, tp=0.0, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='FP ou_modell (ADI)', position=0, position_by=0))",
+            "2026-09-02 10:27:59 NY-Open-ORB-Scan fehlgeschlagen: 0",
+            "2026-09-02 10:27:59 CTNL-Edge-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+            "2026-09-02 10:27:59 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+            "2026-09-02 10:27:59 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+            "2026-09-02 10:27:59 Gold-ASB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+            "2026-09-02 01:08:32 [TTP] ?? Entry fehlgeschlagen ou_modell (FAST) FAST: OrderSendResult(retcode=10018, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Market closed', request_id=1939376507, retcode_external=0, request=TradeRequest(action=1, magic=0, order=0, symbol='FAST', volume=81.0, price=48.79, stoplimit=0.0, sl=46.762474728593624, tp=0.0, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='FP ou_modell (FAST)', position=0, position_by=0))",
+            "2026-09-02 01:08:32 [TTP] ?? Entry fehlgeschlagen ou_modell (ADI) ADI: OrderSendResult(retcode=10018, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Market closed', request_id=1939376506, retcode_external=0, request=TradeRequest(action=1, magic=0, order=0, symbol='ADI', volume=5.0, price=353.87, stoplimit=0.0, sl=325.4613728227869, tp=0.0, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='FP ou_modell (ADI)', position=0, position_by=0))"
+          ]
+        },
+        "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
+          "last_equity_line": "2026-09-02 11:49:03 Verbunden: Login 16054, Equity $100,001.77 USD",
+          "last_error_line": "2026-09-02 10:27:59 [IQMARKETS] ?? Entry fehlgeschlagen ou_modell (FAST) FAST: no_tick",
+          "recent_events": [
+            "2026-09-02 10:27:59 [IQMARKETS] ?? Entry fehlgeschlagen ou_modell (FAST) FAST: no_tick",
+            "2026-09-02 10:27:59 [IQMARKETS] ?? Entry fehlgeschlagen ou_modell (ADI) ADI: no_tick",
+            "2026-09-02 01:08:32 [IQMARKETS] ?? Entry fehlgeschlagen ou_modell (FAST) FAST: no_tick",
+            "2026-09-02 01:08:32 [IQMARKETS] ?? Entry fehlgeschlagen ou_modell (ADI) ADI: no_tick"
+          ]
+        }
+      }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-09-02T11:08:20",
-      "minutes_since_last_run": 45.0,
+      "minutes_since_last_run": 46.0,
       "status": "ok",
       "last_equity_line": "2026-09-02 11:08:20 Verbunden: Login 17764, Equity $100,000.00",
       "last_error_line": "2026-09-02 10:22:21 NY-Open-ORB-Scan fehlgeschlagen: 0",

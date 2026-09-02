@@ -53,20 +53,25 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
-- **CLS Practical auf EK-Portfolio-Bridge (Echtgeld) scheitert seit 10:18 Uhr
-  wiederholt** (2026-09-02, 10:18/10:31/11:01, jeweils eigener Prozess-Lauf,
-  trotz bestehendem `_retry()`-Wrapper): vollstaendiger Traceback zeigt
-  diesmal die exakte Ursache — ein Bug **in der Drittanbieter-Bibliothek
-  `dukascopy_python` selbst** (`dukascopy_python/__init__.py::_stream()`,
-  Zeile 219: `row[0] > end_timestamp` wirft `TypeError: '>' not supported
-  between instances of 'str' and 'float'`, wenn die Bibliothek intern einen
-  Zeitstempel als String statt Zahl liefert). Selbe allgemeine Fehlerklasse
-  wie der bereits bekannte, im Code dokumentierte "gelegentliche KeyError(0)
-  in _stream()" — nur diesmal ein TypeError statt KeyError. Nicht direkt
-  fixbar (liegt in der installierten Bibliothek, nicht in unserem Code) —
-  moegliche Ansaetze: mehr Retry-Versuche/laengeres Backoff speziell fuer
-  diesen Fehlertyp, oder ein Fallback auf yfinance fuer EURUSD M5, falls
-  Dukascopy laenger haengt. Noch nicht angegangen, nur dokumentiert.
+- [x] ~~CLS Practical auf EK-Portfolio-Bridge (Echtgeld) scheitert wiederholt
+  an dukascopy_python~~ — Nutzerentscheid 2026-09-02: mehr Retries statt
+  Fallback-Datenquelle. Alle drei `_retry()`-Kopien (`ek_portfolio/
+  paper_bot.py`, `challenge_portfolio/paper_bot.py`, `fk_instant_funding/
+  paper_bot.py` — identischer Code, von allen drei echten Bridges genutzt)
+  von 3 Versuchen/5s Pause auf 6 Versuche/8s Pause erhoeht. Root Cause blieb
+  wie dokumentiert ein Bug in der Drittanbieter-Bibliothek selbst
+  (`dukascopy_python/__init__.py::_stream()` Zeile 219), nicht behebbar,
+  nur die Toleranz dagegen erhoeht. Nur `py_compile`-geprueft, kein echter
+  Live-Lauf abgewartet.
+- [x] ~~Funded-Portfolio-Bridge (TTP/IQ) hatte keinen "Signal zu alt"-Schutz
+  beim Echt-Entry~~ — Nutzerentscheid 2026-09-02: einbauen. Neue Pruefung in
+  `_process_leg()` (`MAX_SIGNAL_AGE_MINUTES_FOR_ENTRY = 60`): ist die
+  Signalzeit (`entry_time`) mehr als 60 Min. in der Vergangenheit, wird das
+  Signal als "missed" vermerkt statt real zum laengst gelaufenen Kurs zu
+  jagen — exakt das Muster, das beim ersten Gold-ASB-Entry (05:15 UTC
+  Signal, 09:30 UTC Fill) passiert ist. Einfacher als der ORB-Fix (dort
+  SL-Seite gegen Live-Preis, hier reine Signalzeit, da `_process_leg()`
+  generisch fuer alle Beine/Richtungen gilt). Nur `py_compile`-geprueft.
 
 - [x] ~~Rechner/Scheduled Tasks hatten heute Nacht eine ~9h-Lücke~~ — Ursache
   gefunden (2026-09-02, NICHT "Rechner aus", wie zuerst vermutet — Nutzer

@@ -70,12 +70,16 @@ from strategy.backtest import BacktestConfig, simulate_trades
 from strategy.schedule_guard import is_market_paused
 
 
-def _retry(fn, attempts: int = 3, delay_seconds: float = 5.0):
+def _retry(fn, attempts: int = 6, delay_seconds: float = 8.0):
     """dukascopy_python's Streaming-Client wirft gelegentlich ein KeyError(0)
-    tief in seiner eigenen _stream()-Cursor-Logik, wenn end nah an "jetzt"
-    liegt (reproduzierbar bei fast jedem Live-Abruf bis zum aktuellen
-    Moment) -- bekannte Instabilitaet der Drittanbieter-Bibliothek, kein
-    Fehler in unserem Code. Ein einfacher Retry reicht empirisch aus."""
+    ODER (Fund 2026-09-02, CLS Practical auf EK-Portfolio-Bridge, 3x
+    hintereinander ueber 45 Min. beobachtet) ein TypeError ("'>' not
+    supported between instances of 'str' and 'float'") tief in seiner
+    eigenen _stream()-Cursor-Logik, wenn end nah an "jetzt" liegt
+    (reproduzierbar bei fast jedem Live-Abruf bis zum aktuellen Moment) --
+    bekannte Instabilitaet der Drittanbieter-Bibliothek, kein Fehler in
+    unserem Code. attempts/delay_seconds 2026-09-02 von 3x/5s auf 6x/8s
+    erhoeht, nachdem 3 Versuche im obigen Fall nicht ausgereicht haben."""
     last_exc = None
     for attempt in range(attempts):
         try:

@@ -9,6 +9,35 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-02** [System] **Cloud-Routine "Forex-Backtesting Bridge Error
+  Monitor" eingerichtet** (`trig_01PN2SADKXZDkvgs3Zkno4xe`, 3x werktags
+  9/15/21 Uhr UTC = 11/17/23 Uhr Berlin, vor/waehrend/nach NYSE-Handel):
+  liest `bridge_status/snapshot.json` (siehe Bridge-Watchdog-Eintrag oben)
+  und CHANGELOG/DASHBOARD, um Doppelmeldungen zu vermeiden. Zweistufige
+  Autonomie-Policy (Nutzerauftrag): Fehler mit Traceback INNERHALB des
+  Repos (z.B. `combined_strategy/data.py`, `challenge_portfolio/
+  paper_bot.py`) darf sie selbststaendig fixen (`py_compile` + Commit+Push
+  + CHANGELOG-Eintrag), aber NUR wenn keine Order-/Risiko-Logik betroffen
+  ist. Alles ausserhalb des Repos (die eigentlichen Bridge-Ordner, fuer die
+  Routine unsichtbar) oder mit Order-/Risiko-Bezug: nur dokumentieren als
+  neuer Punkt in `DASHBOARD.md` "🔍 Braucht deine Bestätigung", nie selbst
+  aendern. Bei nichts Neuem: stiller Lauf, keine Aenderung.
+- **2026-09-02** [Shared] `_retry()` (3 identische Kopien: `ek_portfolio/
+  paper_bot.py`, `challenge_portfolio/paper_bot.py`, `fk_instant_funding/
+  paper_bot.py`) von 3 Versuchen/5s Pause auf 6 Versuche/8s Pause erhoeht
+  (Nutzerentscheid nach dem CLS-Practical/dukascopy_python-Fund von heute
+  Morgen: mehr Retries statt yfinance-Fallback). Root Cause bleibt ein Bug
+  in der Drittanbieter-Bibliothek selbst (`dukascopy_python/__init__.py::
+  _stream()` Zeile 219), nicht behebbar — nur die Toleranz dagegen erhoeht.
+  Nur `py_compile`-geprueft.
+- **2026-09-02** [Funded Portfolio] **Echtgeld-Aenderung**: neuer "Signal zu
+  alt"-Schutz in `_process_leg()` (`MAX_SIGNAL_AGE_MINUTES_FOR_ENTRY = 60`)
+  — ein Signal, dessen Signalzeit mehr als 60 Min. zurueckliegt, wird beim
+  ersten Erkennen als "missed" vermerkt statt real zum laengst gelaufenen
+  Kurs zu jagen (genau das Muster vom ersten Gold-ASB-Entry heute Nacht:
+  05:15 UTC Signal, 09:30 UTC Fill). Nutzerentscheid nach Rueckfrage. Nur
+  `py_compile`-geprueft, kein echter Live-Lauf abgewartet.
+
 - **2026-09-02** [NY-Open ORB / FK Instant Funding] `fk_instant_funding/paper_bot.py`
   auf Nutzerauftrag ("voller Umfang", da kein Echtgeld-Risiko) als letzte
   verbliebene ORB-Kopie synchronisiert: `ORB_EXIT_CFG` durch
@@ -44,8 +73,13 @@ keine Planung (dafür ist `DASHBOARD.md`).
   Live-Log-Seite. Verifiziert per `streamlit.testing.v1.AppTest` durch die
   volle `app.py`-Navigation (alle 4 Seiten: keine Exceptions, korrekte
   Metrik-/Status-Werte) — ausserdem kurz per echtem `streamlit run`
-  gegengeprüft. **Neue Dateien noch nicht committet** (nur `git rm` für die
-  entfernten alten Seiten ist gestaged) — auf Rückfrage, ob gewünscht.
+  gegengeprüft. Committet+gepusht (`00f31a9`) — dabei einen eigenen Fehler
+  korrigiert: die `git rm`-Löschungen waren versehentlich in einen der
+  automatischen Bridge-Watchdog-Commits gerutscht und bereits ohne die
+  zugehörigen `app.py`-Anpassungen gepusht (`git add <snapshot>` staged
+  nur die eine Datei ZUSÄTZLICH zum bereits Gestagten, ersetzt es nicht) —
+  Remote war kurzzeitig inkonsistent (Seiten gelöscht, aber noch
+  registriert), jetzt behoben.
 - **2026-09-02** [Bridge-Watchdog] Um Status-Snapshot erweitert
   (Nutzerauftrag): schreibt jetzt zusätzlich `bridge_status/snapshot.json`
   im Forex-Backtesting-Repo (letzter Lauf/Status je Bridge, bei

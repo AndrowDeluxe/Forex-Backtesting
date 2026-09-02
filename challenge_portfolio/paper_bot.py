@@ -56,12 +56,15 @@ from challenge_portfolio.telegram_notify import send_telegram_message
 from strategy.backtest import BacktestConfig, simulate_trades
 
 
-def _retry(fn, attempts: int = 3, delay_seconds: float = 5.0):
+def _retry(fn, attempts: int = 6, delay_seconds: float = 8.0):
     """dukascopy_python's Streaming-Client wirft gelegentlich ein KeyError(0)
-    tief in seiner eigenen _stream()-Cursor-Logik, wenn end nah an "jetzt"
-    liegt -- bekannte Instabilitaet der Drittanbieter-Bibliothek, kein Fehler
-    in unserem Code (identisches Muster wie fk_instant_funding/paper_bot.py).
-    Ein einfacher Retry reicht empirisch aus."""
+    ODER (Fund 2026-09-02, siehe ek_portfolio/paper_bot.py::_retry()) ein
+    TypeError tief in seiner eigenen _stream()-Cursor-Logik, wenn end nah an
+    "jetzt" liegt -- bekannte Instabilitaet der Drittanbieter-Bibliothek,
+    kein Fehler in unserem Code (identisches Muster wie
+    fk_instant_funding/paper_bot.py). attempts/delay_seconds 2026-09-02 von
+    3x/5s auf 6x/8s erhoeht, nachdem 3 Versuche in einem realen Fall nicht
+    ausgereicht haben."""
     last_exc = None
     for attempt in range(attempts):
         try:

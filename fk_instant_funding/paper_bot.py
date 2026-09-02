@@ -60,14 +60,16 @@ from strategy.backtest import BacktestConfig, simulate_trades
 # weiter unten nutzbar (import oben).
 
 
-def _retry(fn, attempts: int = 3, delay_seconds: float = 5.0):
+def _retry(fn, attempts: int = 6, delay_seconds: float = 8.0):
     """dukascopy_python's Streaming-Client wirft gelegentlich ein KeyError(0)
-    tief in seiner eigenen _stream()-Cursor-Logik, wenn end nah an "jetzt"
-    liegt (reproduzierbar bei fast jedem Live-Abruf bis zum aktuellen
-    Moment, siehe Traceback ueber dukascopy_python/__init__.py:209) --
-    bekannte Instabilitaet der Drittanbieter-Bibliothek, kein Fehler in
-    unserem Code. Ein einfacher Retry reicht empirisch aus (der zweite oder
-    dritte Versuch kommt fast immer durch)."""
+    ODER (Fund 2026-09-02, siehe ek_portfolio/paper_bot.py::_retry()) ein
+    TypeError tief in seiner eigenen _stream()-Cursor-Logik, wenn end nah an
+    "jetzt" liegt (reproduzierbar bei fast jedem Live-Abruf bis zum
+    aktuellen Moment, siehe Traceback ueber dukascopy_python/__init__.py:209)
+    -- bekannte Instabilitaet der Drittanbieter-Bibliothek, kein Fehler in
+    unserem Code. attempts/delay_seconds 2026-09-02 von 3x/5s auf 6x/8s
+    erhoeht, nachdem 3 Versuche in einem realen Fall nicht ausgereicht
+    haben (der zweite oder dritte Versuch kommt sonst fast immer durch)."""
     last_exc = None
     for attempt in range(attempts):
         try:

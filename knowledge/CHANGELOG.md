@@ -9,6 +9,110 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-02** [NY-Open ORB / FK Instant Funding] `fk_instant_funding/paper_bot.py`
+  auf Nutzerauftrag ("voller Umfang", da kein Echtgeld-Risiko) als letzte
+  verbliebene ORB-Kopie synchronisiert: `ORB_EXIT_CFG` durch
+  `ORB_EXIT_CFG_BY_INSTRUMENT` ersetzt — NASDAQ `target_mode=None` (EOD-Exit)
+  UND Stage-6-Teilausstieg (1.5R/2R, 50%, Rest auf Breakeven) fuer alle drei
+  Instrumente, identisch zu `app_pages/ny_open_orb_portfolio.py`/
+  `EK-Portfolio-Bridge/config.py`. Anders als bei `challenge_portfolio/
+  paper_bot.py` (Funded-Portfolio-Bridge sendet echte Orders, kann nur
+  ganz/offen pro Ticket) ist der Teilausstieg hier unproblematisch, da dieses
+  Modul nur FKInstantFunding-MT5-Bridge (reiner Order-Planer ohne echten
+  Order-Versand) und FK-Instant-Funding-Paper (reine Simulation) treibt.
+  Smoke-getestet mit gecachten Daten (422 Trades, 2026-07-15): NASDAQ zeigt
+  keinen `exit_reason="target"` mehr (nur noch `stop`/`session_end`),
+  `had_partial_exit`-Rate 34.2-44.8% je Instrument, 0 NaN-r_multiple. Damit
+  sind alle drei aktiven ORB-Traeger (EK-Portfolio-Bridge, Funded-Portfolio-
+  Bridge/Challenge, FK Instant Funding) auf demselben Stand — nur
+  `ek_portfolio/paper_bot.py` (pausiert) bewusst nicht angefasst.
+- **2026-09-02** [Streamlit] **Portfolio-Bridge-Status-Seiten neu gebaut,
+  alte Einzelstrategie-Live-Logs entfernt** (Nutzerauftrag: "wir fokussieren
+  uns jetzt erstmal nur noch auf die portfolio Arbeit"). Entfernt (per
+  `git rm`, aus `app.py`/`section_live_logs.py` ausgetragen): `ou_modell.py`,
+  `cls_practical_live_log.py`, `btc_ema_cross_live_log.py`,
+  `gold_asb_live_log.py`, `ek_portfolio_live_log.py` (dangling
+  `st.page_link` in `cls_cross_filter.py` mit entfernt). Neu:
+  `app_pages/_bridge_status_data.py` (gemeinsame Lade-/Render-Helfer) +
+  drei Detail-Seiten (`ek_portfolio_bridge_status.py`,
+  `funded_portfolio_bridge_status.py` mit TTP/IQ-Konto-Kacheln,
+  `fk_instant_funding_bridge_status.py`) + neu fokussierte
+  `section_live_logs.py`-Übersicht ("Portfolio-Bridges"). Alle lesen
+  ausschließlich `bridge_status/snapshot.json` (siehe naechster Eintrag),
+  rufen nie selbst MT5/eine Bridge auf — identisches "Collector laeuft
+  lokal, Seite liest nur committete Daten"-Muster wie jede bisherige
+  Live-Log-Seite. Verifiziert per `streamlit.testing.v1.AppTest` durch die
+  volle `app.py`-Navigation (alle 4 Seiten: keine Exceptions, korrekte
+  Metrik-/Status-Werte) — ausserdem kurz per echtem `streamlit run`
+  gegengeprüft. **Neue Dateien noch nicht committet** (nur `git rm` für die
+  entfernten alten Seiten ist gestaged) — auf Rückfrage, ob gewünscht.
+- **2026-09-02** [Bridge-Watchdog] Um Status-Snapshot erweitert
+  (Nutzerauftrag): schreibt jetzt zusätzlich `bridge_status/snapshot.json`
+  im Forex-Backtesting-Repo (letzter Lauf/Status je Bridge, bei
+  Funded-Portfolio-Bridge pro Konto TTP/IQ getrennt via Banner-Zeilen-
+  Erkennung im Log, letzte Equity-/Fehler-Zeile, letzte ~12 Entry/Exit/
+  Fehler-Ereignisse) und committet+pusht sie — identisches Muster wie
+  `ou_paper_backtest/scanner.py` seit Wochen mit seinen eigenen Ergebnissen.
+  Bewusst NICHT die Bridges selbst pushen lassen (kein Git im Order-Pfad).
+  Ermöglicht sowohl die neuen Streamlit-Statusseiten als auch eine
+  zukünftige Cloud-Routine (kein lokaler Dateizugriff, aber GitHub-Zugriff)
+  echten Status zu lesen. Zwei Bugs beim ersten Testlauf gefunden+behoben:
+  (1) Konto-Aufsplittung nutzte `.match()` statt `.search()` (Banner-Zeilen
+  haben einen Zeitstempel-Prefix, `.match()` ankert immer an Position 0) —
+  lief anfangs komplett leer durch; (2) `_EVENT_RE` ohne Wortgrenzen matchte
+  faelschlich Substrings wie "entry" in "fetch_eurusd_**entry**_tf_berlin".
+  Mehrfach real committet+gepusht (3x waehrend des Testens, jeweils
+  erfolgreich).
+
+- **2026-09-02** [Shared/Data] `combined_strategy/data.py::fetch_timeframe()`
+  validiert jetzt vor dem Cachen, dass die OHLC-Spalten numerisch sind —
+  bester Erklaerungsversuch fuer den `'>' not supported between instances
+  of 'str' and 'float'`-Fund von heute Morgen (nicht reproduziert, Netzwerk
+  war beim Nachpruefen schon wieder stabil): nach der Standby-Pause hat
+  `dukascopy_python.fetch()` vermutlich einmal kaputte (nicht-numerische)
+  Daten geliefert, die ungeprueft gecacht wurden und mehrere Ebenen tiefer
+  bei Regime-/Friction-Vergleichen crashten. Jetzt: bei nicht-numerischen
+  Spalten sauberer `ValueError` statt stillem Cache-Write — der bestehende
+  `_retry()`-Wrapper der Aufrufer bekommt dadurch einen klaren Grund zum
+  Neuversuch statt kaputter Daten drei Ebenen tiefer. Rein additiv (nur ein
+  zusaetzlicher Check vor dem bestehenden `df.to_parquet()`), betrifft
+  keine Order-/Risiko-Logik. Nur `py_compile`-geprueft.
+
+- **2026-09-02** [System] **Absicherung gegen die naechtliche ~9h-Standby-
+  Luecke**: Ursache war nicht "PC aus", sondern Windows Modern Standby (S0),
+  ausgeloest ueber die Display-Idle-Timeout-Kette (AC-Bildschirm-Timeout war
+  auf 5 Min. gestellt) — von aussen sah der Rechner "an" aus. Drei Massnahmen:
+  (1) `powercfg /change monitor-timeout-ac 0` + `standby-timeout-ac 0` +
+  `hibernate-timeout-ac 0` — Display/Standby auf Netzbetrieb schaltet nicht
+  mehr automatisch ab. (2) Alle 5 Bridge-/Scanner-Tasks (EK-Portfolio-Bridge,
+  FKInstantFunding-MT5-Bridge, Funded-Portfolio-Bridge, OU-Modell-
+  ScannerHourly, Forex-Weekly-Report) auf `WakeToRun=True` +
+  `StartWhenAvailable=True` gestellt — falls der Rechner trotzdem mal
+  einschlaeft, weckt der Task-Scheduler ihn gezielt fuer diese Laeufe statt
+  sie zu verpassen. (3) Neuer **Bridge-Watchdog**
+  (`C:\Users\andre\Bridge-Watchdog\`, ausserhalb des Repos wie jede andere
+  Bridge, eigener Scheduled Task alle 30 Min): prueft Log-Frische von
+  EK-Portfolio-Bridge/Funded-Portfolio-Bridge (Toleranz 40 Min, nur Mo-Fr)
+  und FKInstantFunding-MT5-Bridge (Toleranz 100 Min, taeglich), meldet einen
+  Ausfall EINMAL per Telegram (kein Spam bei mehrstuendiger Downtime) +
+  Erholungsmeldung, sobald wieder frisch. Einmal manuell getestet (kein
+  Fehlalarm, alles war frisch).
+- **2026-09-02** [FK Instant Funding] Telegram-Logik auf dasselbe Muster wie
+  EK-Portfolio-Bridge/Funded-Portfolio-Bridge gebracht (Nutzerauftrag nach
+  Abgleich-Nachfrage): neues `fk_instant_funding/telegram_format.py`
+  (`fk_message()`, aus `paper_bot.py` herausgezogen) + `queue_message()`/
+  `flush_queued_messages()` in `telegram_notify.py` ergaenzt (vorher nur
+  nacktes `send_telegram_message()`). `paper_bot.py::scan_once()` schickt
+  die gesammelten Lauf-Ereignisse jetzt ueber dieselbe Queue/Flush-
+  Infrastruktur statt eines eigenen lokalen Listen-Patterns — `messages`
+  bleibt fuer den bestehenden Rueckgabewert (`row["messages"]`) unveraendert
+  bestehen, nur der Versandweg ist jetzt gemeinsam. Sichtbares Ergebnis
+  (eine gebuendelte "Scan-Update"-Nachricht pro Lauf) bleibt identisch,
+  verifiziert per Smoke-Test (Queue sammelt/leert korrekt, Banner-Format
+  bytegleich). Reines DRY_RUN/Paper-Bein, kein Echtgeld betroffen. Keine
+  weiteren Referenzen auf die entfernten `_FK_BANNER`/`_FK_RULE`-Konstanten
+  im Repo gefunden.
+
 - **2026-09-02** [Funded Portfolio] **Echtgeld-Bugfix, direkt nach dem
   OU-Modell-Root-Cause-Fix gefunden**: um 00:05 Uhr versuchte die Bridge auf
   BEIDEN Konten echte Aktien-Entries fuer ADI/FAST (die frisch wieder

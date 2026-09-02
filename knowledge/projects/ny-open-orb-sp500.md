@@ -927,26 +927,35 @@ neuen Standard korrekt abzubilden:
   unberuehrt (ihr `target_price` steht schon in der SQLite-DB, wird nicht
   rueckwirkend geaendert - nur NEUE Entries nutzen die neue Logik).
 
-## Weitere gefundene ORB-Kopien, NICHT Teil dieser Umstellung
+## Weitere gefundene ORB-Kopien
 
-Beim Review zusaetzlich entdeckt (nicht Teil des "beide Systeme"-Auftrags,
-da nicht die zwei besprochenen Live-Bridges) - beide noch auf dem alten
-4R-Stand fuer NASDAQ, aktuell aber niedrigeres Risiko:
+Beim Review zusaetzlich entdeckt (nicht Teil des urspruenglichen "beide
+Systeme"-Auftrags, da nicht die zwei zuerst besprochenen Live-Bridges):
 - **`ek_portfolio/paper_bot.py`** (Repo): treibt den "EK-Portfolio-Paper"-
-  Task, laut `DASHBOARD.md`-Statustabelle aktuell **pausiert/Disabled** -
-  hat bereits die per-Instrument-`ORB_EXIT_CFG_BY_INSTRUMENT`-Struktur samt
-  Teilausstieg (Kommentar behauptet "identisch zu
-  app_pages/ny_open_orb_portfolio.py", ist es aber seit der EOD-Exit-
-  Aenderung nicht mehr) - waere ein einfacher Ein-Zeilen-Fix
-  (`target_mode` fuer NASDAQ), aber nicht angefasst, da nicht angefragt und
-  aktuell nicht live.
+  Task, laut `DASHBOARD.md`-Statustabelle **pausiert/Disabled** - hat bereits
+  die per-Instrument-`ORB_EXIT_CFG_BY_INSTRUMENT`-Struktur samt Teilausstieg,
+  aber noch NASDAQ auf 4R statt EOD-Exit (Kommentar behauptet "identisch zu
+  app_pages/ny_open_orb_portfolio.py", stimmt seit der EOD-Exit-Aenderung
+  nicht mehr). **Bewusst NICHT nachgezogen** (Nutzerentscheid 2026-09-02):
+  bleibt pausiert, da `EK-Portfolio-Bridge` bereits live mit echtem Geld
+  dieselbe Logik faehrt - ein synchronisierter, aber ungenutzter Paper-Bot
+  waere ohne Zweck.
 - **`fk_instant_funding/paper_bot.py`** (Repo, treibt FKInstantFunding-MT5-
-  Bridge, laut `DASHBOARD.md` **DRY_RUN**, kein echtes Geld): hat ein
-  einzelnes gemeinsames `ORB_EXIT_CFG` fuer alle 3 Instrumente, **kein**
-  Teilausstieg - naeher am alten `challenge_portfolio`-Stand als am
-  aktuellen Standard.
-Beide dokumentiert, nicht geaendert - siehe `DASHBOARD.md`
-"🔍 Braucht deine Bestätigung".
+  Bridge [reiner Order-Planer, **DRY_RUN**, kein echtes Geld] und
+  FK-Instant-Funding-Paper [reine Simulation]): **nachgezogen 2026-09-02**
+  (Nutzerauftrag, "voller Umfang") - `ORB_EXIT_CFG` durch
+  `ORB_EXIT_CFG_BY_INSTRUMENT` ersetzt, NASDAQ-EOD-Exit UND Stage-6-
+  Teilausstieg fuer alle drei Instrumente, identisch zum aktuellen Standard.
+  Anders als bei `challenge_portfolio/paper_bot.py` konnte hier der VOLLE
+  Umfang (inkl. Teilausstieg) uebernommen werden, weil keiner der beiden
+  Konsumenten echte Orders sendet - kein Risiko einer Papier-/Broker-P&L-
+  Divergenz. Smoke-getestet (gecachte Daten, 422 Trades): NASDAQ ohne
+  `exit_reason="target"`, `had_partial_exit` 34-45% je Instrument.
+
+Damit sind alle drei AKTIVEN ORB-Traeger (EK-Portfolio-Bridge,
+Funded-Portfolio-Bridge/`challenge_portfolio`, FK Instant Funding) auf
+demselben ORB-Stand - nur die pausierte `ek_portfolio/paper_bot.py`-Kopie
+bewusst zurueckgelassen.
 
 ## Stage 9 -- Risk-Scaling statt Ein-/Ausschluss-Filter (`scripts/research_ny_open_orb_stage9_risk_scaling.py`)
 

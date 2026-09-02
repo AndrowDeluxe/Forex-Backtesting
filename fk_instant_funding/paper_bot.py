@@ -49,26 +49,15 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from fk_instant_funding.telegram_notify import send_telegram_message
+from fk_instant_funding.telegram_format import fk_message as _fk_message
+from fk_instant_funding.telegram_notify import flush_queued_messages, queue_message, send_telegram_message
 from strategy.backtest import BacktestConfig, simulate_trades
 
-# Eigenes, sofort wiedererkennbares Telegram-Layout fuer diesen Bot (Nutzer-
-# Wunsch 2026-08-29: "Erstelle gerne ... ein eigenes Layout damit ich das
-# besser erkenne" -- andere Bots (GoldASB/CLS/CTNL) nutzen nur einen
-# "[Bot Name]"-Textpraefix, hier stattdessen ein fester 2-Zeilen-Banner ueber
-# JEDER Nachricht). Alle Ereignisse EINES Scan-Laufs (Entries/Exits/Fehler/
-# Kill-Switch) werden zu EINER Telegram-Nachricht gebuendelt statt je
-# Strategie einzeln verschickt (Nutzer-Wunsch: "in einer Nachricht und nicht
-# jede Strategie einzeln").
-_FK_BANNER = "\U0001F3E6 FK INSTANT FUNDING"
-_FK_RULE = "─" * 24
-
-
-def _fk_message(subtitle: str, body_lines: list[str] | None = None) -> str:
-    header = f"{_FK_BANNER}\n{_FK_RULE}\n{subtitle}"
-    if body_lines:
-        return header + "\n\n" + "\n".join(body_lines)
-    return header
+# Telegram-Layout (Banner, Buendelung) lebt seit 2026-09-02 in
+# fk_instant_funding/telegram_format.py + telegram_notify.py -- identisches
+# Muster wie EK-Portfolio-Bridge/Funded-Portfolio-Bridge, siehe deren
+# Docstrings. `_fk_message` bleibt als lokaler Alias fuer den Tagesabschluss
+# weiter unten nutzbar (import oben).
 
 
 def _retry(fn, attempts: int = 3, delay_seconds: float = 5.0):
@@ -461,7 +450,24 @@ def _scan_gold_silver(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
     return trades[_utc_naive(trades["entry_time"]) <= end]
 
 
-ORB_EXIT_CFG = dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0)
+# Per-Instrument (2026-09-02, gleicher Stand wie app_pages/ny_open_orb_portfolio.py::
+# EXIT_CFG_BY_INSTRUMENT / EK-Portfolio-Bridge/config.py nach dem NASDAQ-EOD-Exit-Update
+# + Stage-6-Teilausstieg): NASDAQ laeuft bis Handelsschluss (target_mode=None) statt
+# 4R-Cap, alle drei Instrumente mit 1.5R/2R-Teilausstieg (50%) + Rest auf Breakeven,
+# siehe knowledge/projects/ny-open-orb-sp500.md Stage 6/8/9. Anders als bei
+# challenge_portfolio/paper_bot.py (Funded-Portfolio-Bridge sendet ECHTE Orders, kann
+# aber nur ganz/offen pro Ticket) ist der Teilausstieg hier unbedenklich: dieses Modul
+# treibt nur FKInstantFunding-MT5-Bridge (reiner Order-PLANER, kein echter Order-Versand)
+# und FK-Instant-Funding-Paper (reine Simulation) -- keine echte Position, die vom
+# Papier-P&L abweichen koennte.
+ORB_EXIT_CFG_BY_INSTRUMENT = {
+    "SP500": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0,
+                  partial_exit_r=2.0, partial_exit_fraction=0.5, move_stop_to_be_after_partial=True),
+    "US30": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0,
+                 partial_exit_r=2.0, partial_exit_fraction=0.5, move_stop_to_be_after_partial=True),
+    "NASDAQ": dict(stop_atr_mult=0.6, target_mode=None,
+                   partial_exit_r=1.5, partial_exit_fraction=0.5, move_stop_to_be_after_partial=True),
+}
 ORB_HISTORY_LOOKBACK_DAYS = 500  # EMA-Ribbon-Bias (4H/1D/1W) braucht Monate an Vorlauf
 
 
@@ -505,7 +511,7 @@ def _scan_orb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
         if entries.empty:
             continue
 
-        trades = simulate(frame, entries, **ORB_EXIT_CFG)
+        trades = simulate(frame, entries, **ORB_EXIT_CFG_BY_INSTRUMENT[instrument])
         if trades.empty:
             continue
         trades = trades[_utc_naive(trades["entry_time"]) <= end].copy()
@@ -803,10 +809,15 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
 
     # Alle Ereignisse DIESES Scan-Laufs (Entries/Exits/Fehler/Kill-Switch) als
     # EINE gebuendelte Telegram-Nachricht statt einer pro Strategie (Nutzer-
-    # Wunsch 2026-08-29) -- nur senden, wenn tatsaechlich etwas passiert ist.
+    # Wunsch 2026-08-29) -- ueber dieselbe queue_message()/flush_queued_
+    # messages()-Infrastruktur wie EK-Portfolio-Bridge/Funded-Portfolio-Bridge
+    # (Fund 2026-09-02, vorher eigener Code-Pfad mit gleichem Ergebnis). `messages`
+    # bleibt als lokale Liste fuer den Rueckgabewert (row["messages"]) unveraendert
+    # bestehen, wird zusaetzlich durch die gemeinsame Queue geschickt.
     if not dry_run:
-        if messages:
-            send_telegram_message(_fk_message("Scan-Update", messages))
+        for m in messages:
+            queue_message(m)
+        flush_queued_messages()
         save_state(state)
 
     row["messages"] = messages

@@ -1,42 +1,40 @@
 {
-  "generated_at": "2026-09-02T14:01:25",
+  "generated_at": "2026-09-02T14:31:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-02T14:00:01",
+      "last_run": "2026-09-02T14:30:01",
       "minutes_since_last_run": 1.4,
       "status": "ok",
-      "last_equity_line": "2026-09-02 13:45:58 2026-09-02 13:45:03,957 INFO run_once: Konto-Equity 3405.78 EUR | Aggregiertes offenes Risiko (ganzes Konto): 221.90 (Deckel dieser Bridge: 272.46, 8%)",
+      "last_equity_line": "2026-09-02 14:18:14 2026-09-02 14:15:02,966 INFO run_once: Konto-Equity 3405.78 EUR | Aggregiertes offenes Risiko (ganzes Konto): 221.83 (Deckel dieser Bridge: 272.46, 8%)",
       "last_error_line": "2026-09-02 13:01:48 2026-09-02 13:01:16,716 ERROR run_once: cls_practical: unerwarteter Fehler",
-      "recent_events": [
-        "2026-09-02 01:18:41 2026-09-02 01:15:07,933 WARNING legs.ny_open_orb.executor: [EK-ORB] \\u26a0\\ufe0f US30: Signal zu alt fuer Live-Entry - SL 52943.25 liegt nicht mehr auf der richtigen Seite des aktuellen Kurses 52778.28 (Kurs seit Signal zu weit gelaufen). Uebersprungen."
-      ]
+      "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-02T14:00:01",
+      "last_run": "2026-09-02T14:30:01",
       "minutes_since_last_run": 1.4,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-02 13:49:18 Verbunden: Login 504072729, Equity $99,759.91 USD",
+          "last_equity_line": "2026-09-02 14:10:25 Verbunden: Login 504072729, Equity $99,759.91 USD",
           "last_error_line": "2026-09-02 13:05:26 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
           "recent_events": [
             "2026-09-02 13:05:26 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'"
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-02 13:49:18 Verbunden: Login 16054, Equity $100,001.77 USD",
+          "last_equity_line": "2026-09-02 14:10:25 Verbunden: Login 16054, Equity $100,001.77 USD",
           "recent_events": []
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-02T13:08:32",
-      "minutes_since_last_run": 52.9,
+      "last_run": "2026-09-02T14:10:25",
+      "minutes_since_last_run": 21.0,
       "status": "ok",
-      "last_equity_line": "2026-09-02 13:08:32 Verbunden: Login 17764, Equity $100,000.00",
+      "last_equity_line": "2026-09-02 14:10:25 Verbunden: Login 17764, Equity $100,000.00",
       "last_error_line": "2026-09-02 10:22:21 NY-Open-ORB-Scan fehlgeschlagen: 0",
       "recent_events": [
         "2026-09-02 10:22:21 NY-Open-ORB-Scan fehlgeschlagen: 0",

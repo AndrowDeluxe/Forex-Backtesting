@@ -1,11 +1,11 @@
 market,ticker,scan_date,close,lower_band,entry,sl,tp,tp_price,risk_pct_price,position_size_pct,regime_ok,tradeable,position_size_concentrated_pct,scanned_at
-"S&P 500 (volles Universum, 420 Ticker)",AXP,2026-09-01,324.19,326.5,324.19,307.29,349.54,349.54,5.21,19.19,True,True,12.5,2026-09-02T15:35:17
-"S&P 500 (volles Universum, 420 Ticker)",ADI,2026-09-01,354.52,355.96,354.52,325.92,397.42,397.42,8.07,12.4,True,True,12.5,2026-09-02T15:35:17
-"S&P 500 (volles Universum, 420 Ticker)",DHI,2026-09-01,141.37,142.61,141.37,133.35,153.41,153.41,5.68,17.62,True,True,12.5,2026-09-02T15:35:17
-"S&P 500 (volles Universum, 420 Ticker)",FAST,2026-09-01,48.75,49.07,48.75,45.91,53.02,53.02,5.83,17.14,True,True,12.5,2026-09-02T15:35:17
-"S&P 500 (volles Universum, 420 Ticker)",GRMN,2026-09-01,275.17,275.87,275.17,241.84,325.17,325.17,12.11,8.26,True,True,12.5,2026-09-02T15:35:17
-"S&P 500 (volles Universum, 420 Ticker)",LEN,2026-09-01,82.75,83.32,82.75,78.27,89.47,89.47,5.42,18.46,True,True,12.5,2026-09-02T15:35:17
-"S&P 500 (volles Universum, 420 Ticker)",SPG,2026-09-01,211.87,212.24,211.87,201.33,227.67,227.67,4.97,20.0,True,True,12.5,2026-09-02T15:35:17
-"S&P 500 (volles Universum, 420 Ticker)",TROW,2026-09-01,108.98,109.13,108.98,104.54,115.63,115.63,4.07,20.0,True,True,12.5,2026-09-02T15:35:17
-Nasdaq-100 (alle ~103 Ticker),ADI,2026-09-01,354.52,355.96,354.52,325.92,kein TP (finale Config),0.0,8.07,12.4,True,True,12.5,2026-09-02T15:35:17
-Nasdaq-100 (alle ~103 Ticker),FAST,2026-09-01,48.75,49.07,48.75,45.91,kein TP (finale Config),0.0,5.83,17.14,True,True,12.5,2026-09-02T15:35:17
+"S&P 500 (volles Universum, 420 Ticker)",AXP,2026-09-01,324.19,326.5,324.19,307.29,349.54,349.54,5.21,19.19,True,True,12.5,2026-09-02T16:35:16
+"S&P 500 (volles Universum, 420 Ticker)",ADI,2026-09-01,354.52,355.96,354.52,325.92,397.42,397.42,8.07,12.4,True,True,12.5,2026-09-02T16:35:16
+"S&P 500 (volles Universum, 420 Ticker)",DHI,2026-09-01,141.37,142.61,141.37,133.35,153.41,153.41,5.68,17.62,True,True,12.5,2026-09-02T16:35:16
+"S&P 500 (volles Universum, 420 Ticker)",FAST,2026-09-01,48.75,49.07,48.75,45.91,53.02,53.02,5.83,17.14,True,True,12.5,2026-09-02T16:35:16
+"S&P 500 (volles Universum, 420 Ticker)",GRMN,2026-09-01,275.17,275.87,275.17,241.84,325.17,325.17,12.11,8.26,True,True,12.5,2026-09-02T16:35:16
+"S&P 500 (volles Universum, 420 Ticker)",LEN,2026-09-01,82.75,83.32,82.75,78.27,89.47,89.47,5.42,18.46,True,True,12.5,2026-09-02T16:35:16
+"S&P 500 (volles Universum, 420 Ticker)",SPG,2026-09-01,211.87,212.24,211.87,201.33,227.67,227.67,4.97,20.0,True,True,12.5,2026-09-02T16:35:16
+"S&P 500 (volles Universum, 420 Ticker)",TROW,2026-09-01,108.98,109.13,108.98,104.54,115.63,115.63,4.07,20.0,True,True,12.5,2026-09-02T16:35:16
+Nasdaq-100 (alle ~103 Ticker),ADI,2026-09-01,354.52,355.96,354.52,325.92,kein TP (finale Config),0.0,8.07,12.4,True,True,12.5,2026-09-02T16:35:16
+Nasdaq-100 (alle ~103 Ticker),FAST,2026-09-01,48.75,49.07,48.75,45.91,kein TP (finale Config),0.0,5.83,17.14,True,True,12.5,2026-09-02T16:35:16

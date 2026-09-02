@@ -2527,3 +2527,31 @@
 2026-09-02 16:35:16 S&P 500 (volles Universum, 420 Ticker)   TROW 2026-09-01 108.98      109.13 108.98 104.54                  115.63    115.63            4.07              20.00       True       True                            12.5 2026-09-02T16:35:16
 2026-09-02 16:35:16          Nasdaq-100 (alle ~103 Ticker)    ADI 2026-09-01 354.52      355.96 354.52 325.92 kein TP (finale Config)      0.00            8.07              12.40       True       True                            12.5 2026-09-02T16:35:16
 2026-09-02 16:35:16          Nasdaq-100 (alle ~103 Ticker)   FAST 2026-09-01  48.75       49.07  48.75  45.91 kein TP (finale Config)      0.00            5.83              17.14       True       True                            12.5 2026-09-02T16:35:16
+2026-09-02 16:35:17 [main 0596553] OU-Modell Scanner: Snapshot 2026-09-02 16:35
+2026-09-02 16:35:17  2 files changed, 38 insertions(+), 10 deletions(-)
+2026-09-02 16:35:22 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-09-02 16:35:22    17a24a8..0596553  main -> main
+2026-09-02 16:35:22 Commit + Push erfolgreich.
+2026-09-02 16:35:22 === Scanner-Task beendet ===
+2026-09-02 17:35:01 === Scanner-Task gestartet ===
+2026-09-02 17:35:16 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-09-02 17:35:16 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-09-02 17:35:16 [sp500] 8 raw signal(s) as of 2026-09-01, regime_ok=True
+2026-09-02 17:35:16 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-09-02 17:35:16 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-09-02 17:35:16 [nasdaq100] 2 raw signal(s) as of 2026-09-01, regime_ok=True
+2026-09-02 17:35:16 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-09-02 17:35:16 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-09-02 17:35:16 
+2026-09-02 17:35:16 Saved 10 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-09-02T17:35:15)
+2026-09-02 17:35:16                                 market ticker  scan_date  close  lower_band  entry     sl                      tp  tp_price  risk_pct_price  position_size_pct  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
+2026-09-02 17:35:16 S&P 500 (volles Universum, 420 Ticker)    AXP 2026-09-01 324.19      326.50 324.19 307.29                  349.54    349.54            5.21              19.19       True       True                            12.5 2026-09-02T17:35:15
+2026-09-02 17:35:16 S&P 500 (volles Universum, 420 Ticker)    ADI 2026-09-01 354.52      355.96 354.52 325.92                  397.42    397.42            8.07              12.40       True       True                            12.5 2026-09-02T17:35:15
+2026-09-02 17:35:16 S&P 500 (volles Universum, 420 Ticker)    DHI 2026-09-01 141.37      142.61 141.37 133.35                  153.41    153.41            5.68              17.62       True       True                            12.5 2026-09-02T17:35:15
+2026-09-02 17:35:16 S&P 500 (volles Universum, 420 Ticker)   FAST 2026-09-01  48.75       49.07  48.75  45.91                   53.02     53.02            5.83              17.14       True       True                            12.5 2026-09-02T17:35:15
+2026-09-02 17:35:16 S&P 500 (volles Universum, 420 Ticker)   GRMN 2026-09-01 275.17      275.87 275.17 241.84                  325.17    325.17           12.11               8.26       True       True                            12.5 2026-09-02T17:35:15
+2026-09-02 17:35:16 S&P 500 (volles Universum, 420 Ticker)    LEN 2026-09-01  82.75       83.32  82.75  78.27                   89.47     89.47            5.42              18.46       True       True                            12.5 2026-09-02T17:35:15
+2026-09-02 17:35:16 S&P 500 (volles Universum, 420 Ticker)    SPG 2026-09-01 211.87      212.24 211.87 201.33                  227.67    227.67            4.97              20.00       True       True                            12.5 2026-09-02T17:35:15
+2026-09-02 17:35:16 S&P 500 (volles Universum, 420 Ticker)   TROW 2026-09-01 108.98      109.13 108.98 104.54                  115.63    115.63            4.07              20.00       True       True                            12.5 2026-09-02T17:35:15
+2026-09-02 17:35:16          Nasdaq-100 (alle ~103 Ticker)    ADI 2026-09-01 354.52      355.96 354.52 325.92 kein TP (finale Config)      0.00            8.07              12.40       True       True                            12.5 2026-09-02T17:35:15
+2026-09-02 17:35:16          Nasdaq-100 (alle ~103 Ticker)   FAST 2026-09-01  48.75       49.07  48.75  45.91 kein TP (finale Config)      0.00            5.83              17.14       True       True                            12.5 2026-09-02T17:35:15

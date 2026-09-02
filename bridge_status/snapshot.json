@@ -1,31 +1,31 @@
 {
-  "generated_at": "2026-09-02T17:01:25",
+  "generated_at": "2026-09-02T17:31:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-02T17:00:00",
-      "minutes_since_last_run": 1.4,
+      "last_run": "2026-09-02T17:30:52",
+      "minutes_since_last_run": 0.5,
       "status": "ok",
-      "last_equity_line": "2026-09-02 16:57:02 2026-09-02 16:45:01,825 INFO run_once: Konto-Equity 3417.95 EUR | Aggregiertes offenes Risiko (ganzes Konto): 271.47 (Deckel dieser Bridge: 273.44, 8%)",
+      "last_equity_line": "2026-09-02 17:30:52 2026-09-02 17:30:02,263 INFO run_once: Konto-Equity 3415.12 EUR | Aggregiertes offenes Risiko (ganzes Konto): 210.86 (Deckel dieser Bridge: 273.21, 8%)",
       "last_error_line": "2026-09-02 15:35:56 2026-09-02 15:30:02,321 ERROR legs.ou_modell.executor: OU-Modell: Break-Even-Verschiebung fehlgeschlagen fuer D: OrderSendResult(retcode=10018, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Market closed', request_id=2717433843, retcode_external=0, request=TradeRequest(action=6, magic=0, order=0, symbol='D', volume=0.0, price=0.0, stoplimit=0.0, sl=64.99, tp=70.06, deviation=0, type=0, type_filling=0, type_time=0, expiration=0, comment='', position=259597312, position_by=0))",
       "recent_events": [
+        "2026-09-02 17:30:52 2026-09-02 17:30:52,343 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, TROW-Entry uebersprungen (offen 265.63 + neu 32.36 > Deckel 273.04)",
+        "2026-09-02 17:20:04 2026-09-02 17:20:04,307 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, TROW-Entry uebersprungen (offen 271.45 + neu 33.64 > Deckel 273.47)",
+        "2026-09-02 17:20:04 2026-09-02 17:20:04,306 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, LEN-Entry uebersprungen (offen 271.45 + neu 30.44 > Deckel 273.47)",
+        "2026-09-02 17:20:04 2026-09-02 17:20:04,306 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, GRMN-Entry uebersprungen (offen 271.45 + neu 26.28 > Deckel 273.47)",
+        "2026-09-02 17:05:07 2026-09-02 17:05:07,002 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, TROW-Entry uebersprungen (offen 271.45 + neu 31.73 > Deckel 273.60)",
+        "2026-09-02 17:05:07 2026-09-02 17:05:07,001 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, LEN-Entry uebersprungen (offen 271.45 + neu 30.98 > Deckel 273.60)",
+        "2026-09-02 17:05:07 2026-09-02 17:05:07,000 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, GRMN-Entry uebersprungen (offen 271.45 + neu 25.59 > Deckel 273.60)",
         "2026-09-02 16:57:03 2026-09-02 16:57:02,263 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, TROW-Entry uebersprungen (offen 271.45 + neu 32.50 > Deckel 274.01)",
         "2026-09-02 16:57:03 2026-09-02 16:57:02,262 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, LEN-Entry uebersprungen (offen 271.45 + neu 32.61 > Deckel 274.01)",
         "2026-09-02 16:57:03 2026-09-02 16:57:02,260 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, GRMN-Entry uebersprungen (offen 271.45 + neu 25.65 > Deckel 274.01)",
         "2026-09-02 16:30:56 2026-09-02 16:30:55,833 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, TROW-Entry uebersprungen (offen 271.48 + neu 30.08 > Deckel 273.41)",
-        "2026-09-02 16:30:56 2026-09-02 16:30:55,832 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, LEN-Entry uebersprungen (offen 271.48 + neu 30.68 > Deckel 273.41)",
-        "2026-09-02 16:30:56 2026-09-02 16:30:55,831 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, GRMN-Entry uebersprungen (offen 271.48 + neu 25.84 > Deckel 273.41)",
-        "2026-09-02 16:15:56 2026-09-02 16:15:56,528 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, TROW-Entry uebersprungen (offen 271.40 + neu 33.21 > Deckel 273.07)",
-        "2026-09-02 16:15:56 2026-09-02 16:15:56,527 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, LEN-Entry uebersprungen (offen 271.40 + neu 32.18 > Deckel 273.07)",
-        "2026-09-02 16:15:56 2026-09-02 16:15:56,526 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, GRMN-Entry uebersprungen (offen 271.40 + neu 25.06 > Deckel 273.07)",
-        "2026-09-02 16:02:38 2026-09-02 16:02:38,329 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, TROW-Entry uebersprungen (offen 271.30 + neu 33.56 > Deckel 271.83)",
-        "2026-09-02 16:02:38 2026-09-02 16:02:38,329 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, LEN-Entry uebersprungen (offen 271.30 + neu 30.66 > Deckel 271.83)",
-        "2026-09-02 16:02:38 2026-09-02 16:02:38,327 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, GRMN-Entry uebersprungen (offen 271.30 + neu 25.17 > Deckel 271.83)"
+        "2026-09-02 16:30:56 2026-09-02 16:30:55,832 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, LEN-Entry uebersprungen (offen 271.48 + neu 30.68 > Deckel 273.41)"
       ]
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-02T17:00:01",
+      "last_run": "2026-09-02T17:30:01",
       "minutes_since_last_run": 1.4,
       "status": "ok",
       "accounts": {
@@ -53,10 +53,10 @@
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-02T16:08:02",
-      "minutes_since_last_run": 53.4,
+      "last_run": "2026-09-02T17:13:25",
+      "minutes_since_last_run": 18.0,
       "status": "ok",
-      "last_equity_line": "2026-09-02 16:08:02 Verbunden: Login 17764, Equity $100,000.00",
+      "last_equity_line": "2026-09-02 17:13:25 Verbunden: Login 17764, Equity $100,000.00",
       "last_error_line": "2026-09-02 10:22:21 NY-Open-ORB-Scan fehlgeschlagen: 0",
       "recent_events": [
         "2026-09-02 10:22:21 NY-Open-ORB-Scan fehlgeschlagen: 0",

@@ -16,7 +16,7 @@ import streamlit as st
 home = st.Page("app_pages/home.py", title="Home", icon=":material/home:", default=True)
 
 section_live_logs = st.Page(
-    "app_pages/section_live_logs.py", title="Live Logs", icon=":material/rss_feed:"
+    "app_pages/section_live_logs.py", title="Portfolio-Bridges", icon=":material/account_balance_wallet:"
 )
 section_fertige_strategien = st.Page(
     "app_pages/section_fertige_strategien.py", title="Fertige Strategien", icon=":material/military_tech:"
@@ -53,9 +53,6 @@ education_kelly = st.Page(
 
 # Individual strategy/Baustein pages -- hidden from the sidebar, reachable
 # only via the tiles on their section_*.py page.
-ou_modell = st.Page(
-    "app_pages/ou_modell.py", title="OU-Modell", icon=":material/monitoring:", visibility="hidden"
-)
 fertige_strategien = st.Page(
     "app_pages/fertige_strategien.py", title="OU-Modell (finale Konfiguration)",
     icon=":material/military_tech:", visibility="hidden",
@@ -64,17 +61,9 @@ btc_ema_cross = st.Page(
     "app_pages/btc_ema_cross.py", title="BTC EMA9/21 Crossover",
     icon=":material/currency_bitcoin:", visibility="hidden",
 )
-btc_ema_cross_live_log = st.Page(
-    "app_pages/btc_ema_cross_live_log.py", title="BTC EMA9/21 -- Paper-Forward-Test",
-    icon=":material/rss_feed:", visibility="hidden",
-)
 cls_practical_strategy = st.Page(
     "app_pages/cls_practical_strategy.py", title="CLS Practical (EUR/USD)",
     icon=":material/military_tech:", visibility="hidden",
-)
-cls_practical_live_log = st.Page(
-    "app_pages/cls_practical_live_log.py", title="CLS Practical -- Live Log",
-    icon=":material/rss_feed:", visibility="hidden",
 )
 ou_scanner = st.Page(
     "app_pages/ou_scanner.py", title="OU-Modell Live-Signale (Scanner)", icon=":material/radar:",
@@ -91,10 +80,6 @@ asian_range_breakout = st.Page(
 portfolio_construction = st.Page(
     "app_pages/portfolio_construction.py", title="Portfolio-Konstruktion -- EK/FK",
     icon=":material/account_balance_wallet:", visibility="hidden",
-)
-gold_asb_live_log = st.Page(
-    "app_pages/gold_asb_live_log.py", title="Gold ASB -- Live Log", icon=":material/rss_feed:",
-    visibility="hidden",
 )
 presettle_breakout = st.Page(
     "app_pages/presettle_breakout.py", title="Pre-Settle Range Breakout", icon=":material/wb_twilight:",
@@ -195,11 +180,18 @@ gold_ctnl_edge = st.Page(
     "app_pages/gold_ctnl_edge.py", title="CTNL Edge Strategie", icon=":material/military_tech:",
     visibility="hidden",
 )
-ek_portfolio_live_log = st.Page(
-    "app_pages/ek_portfolio_live_log.py", title="EK-Portfolio -- Live Log", icon=":material/rss_feed:",
-    visibility="hidden",
+ek_portfolio_bridge_status = st.Page(
+    "app_pages/ek_portfolio_bridge_status.py", title="EK-Portfolio-Bridge -- Status",
+    icon=":material/account_balance_wallet:", visibility="hidden",
 )
-
+funded_portfolio_bridge_status = st.Page(
+    "app_pages/funded_portfolio_bridge_status.py", title="Funded-Portfolio-Bridge -- Status",
+    icon=":material/account_balance_wallet:", visibility="hidden",
+)
+fk_instant_funding_bridge_status = st.Page(
+    "app_pages/fk_instant_funding_bridge_status.py", title="FK Instant Funding -- Status",
+    icon=":material/account_balance_wallet:", visibility="hidden",
+)
 page = st.navigation(
     [
         home,
@@ -213,8 +205,7 @@ page = st.navigation(
         education,
         # hidden pages -- must still be registered so they stay routable
         education_gold_intraday, education_book_chan, education_kelly,
-        ou_modell,
-        fertige_strategien, btc_ema_cross, btc_ema_cross_live_log, cls_practical_strategy, cls_practical_live_log, ou_scanner, gold_bitcoin_dual_momentum, asian_range_breakout, gold_asb_live_log, portfolio_construction,
+        fertige_strategien, btc_ema_cross, cls_practical_strategy, ou_scanner, gold_bitcoin_dual_momentum, asian_range_breakout, portfolio_construction,
         presettle_breakout,
         adx_vwap, ema_sr, ema_combined, cls_squeeze, checklist, auction_playbook,
         ny_open_orb_portfolio, ou_paper_backtest,
@@ -224,7 +215,7 @@ page = st.navigation(
         fx_liquidity_filter, cb_event_window_filter, mtf_ema_ribbon_filter, cls_cross_filter, mt5_trend_pullback,
         mt5_gold_silver_divergenz,
         gold_ctnl_edge,
-        ek_portfolio_live_log,
+        ek_portfolio_bridge_status, funded_portfolio_bridge_status, fk_instant_funding_bridge_status,
     ]
 )
 page.run()

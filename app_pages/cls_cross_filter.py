@@ -112,7 +112,6 @@ st.warning(
     icon=":material/science:",
 )
 st.page_link("app_pages/cls_practical_strategy.py", label="Zur CLS Practical Strategie-Seite (Backtest)", icon=":material/military_tech:")
-st.page_link("app_pages/cls_practical_live_log.py", label="Zum eigentlichen Live-Log (echter Live-Filter-Status)", icon=":material/rss_feed:")
 
 if not DAILY_CSV.exists() or not BREAKDOWN_CSV.exists():
     st.error(

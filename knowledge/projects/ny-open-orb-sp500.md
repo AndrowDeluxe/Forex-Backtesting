@@ -884,20 +884,30 @@ Instrumente) durch `ORB_EXIT_CFG_BY_INSTRUMENT` ersetzt - NASDAQ jetzt
 `target_mode=None`, SP500/US30 unveraendert (weiterhin 4R). Per Smoke-Test
 verifiziert (gecachte Daten, Juli 2026): NASDAQ-Trades zeigen keinen
 `exit_reason="target"` mehr, SP500 weiterhin schon.
-**BEWUSST NICHT ergaenzt: der Stage-6-Teilausstieg** (fehlt hier fuer alle
-3 Instrumente, nicht nur NASDAQ). Grund, beim Code-Review entdeckt:
-`Funded-Portfolio-Bridge/run_once.py::_process_leg()` kennt nur ein
-binaeres offen/geschlossen pro Position (ein Ticket, eine volle Groesse,
-EIN `close_position()`-Aufruf) - keine Zwischen-Verwaltung, die real einen
-Teil einer Position bei 1.5R/2R schliessen und den Rest-Stop auf Breakeven
-verschieben koennte. Ein reiner `ORB_EXIT_CFG`-Wert-Wechsel haette
-`simulate()` intern einen sauberen geblendeten Teilausstieg-Trade fuer die
-PAPIER-Nachverfolgung rechnen lassen, waehrend die ECHTE Position die ganze
-Zeit in voller Groesse gegen den urspruenglichen Stop offen geblieben waere
-- Papier-P&L und echtes Broker-P&L waeren unbemerkt auseinandergelaufen.
-Deshalb bewusst nicht angefasst; braucht echte neue Verwaltungslogik
-(Ticket-Teilschliessung + SL-Modify in `run_once.py`/`executor.py`), kein
-Config-Flip - eigenes, spaeteres Projekt, falls gewuenscht.
+**Update 2026-09-02 (spaeter am selben Tag) - Stage-6-Teilausstieg NACHGEZOGEN,
+Nutzerauftrag ("Setze um")**: der oben beschriebene Grund (keine Zwischen-
+Verwaltung fuer echte Teilschliessungen) ist behoben, nicht mehr nur
+dokumentiert. Neu in `Funded-Portfolio-Bridge/executor.py`:
+`partial_close_position()` (echter `TRADE_ACTION_DEAL`-Teil-Close ueber
+`position`-Feld auf dasselbe Ticket) + `move_stop_to_breakeven()` (echtes
+`TRADE_ACTION_SLTP`, laeuft ueber das bestehende `_send_order()`-Sicherheitsnetz).
+Neu in `run_once.py`: `_manage_orb_partial_exits()` - identisches Polling-
+Prinzip wie der Rest der Bridge (kein Broker-Trigger, bei jedem 15-Min-Lauf
+aktueller Kurs gegen ein aus `entry_price`/`sl` berechnetes Teilausstiegs-Level
+geprueft), liest `partial_exit_r`/`-fraction`/`move_stop_to_be_after_partial`
+live aus `pb.ORB_EXIT_CFG_BY_INSTRUMENT` (jetzt mit diesen Feldern befuellt,
+Single Source of Truth). `_process_leg()` setzt beim Entry neu `"partial_done":
+False` im Position-State - ein VOR diesem Feature eroeffnetes Ticket hat den
+Key gar nicht (`.get(..., True)` faellt sicher auf "nichts tun" zurueck), wird
+also nie rueckwirkend angefasst, nur neue Entries ab jetzt.
+**Getestet**: 19 gemockte Logik-Tests (kein echter MT5-Kontakt) decken Treffer/
+Kein-Treffer, bereits erledigt, Legacy-Position ohne den neuen State-Key,
+Long+Short, DRY_RUN-Verzweigung und zu-kleines Restvolumen ab - alle bestanden.
+**NICHT getestet**: ein echter Lauf gegen die lebenden MT5-Konten (TTP/
+BeyondIQCapital) - der naechste Bridge-Lauf, der tatsaechlich eine offene
+ORB-Position ueber ihr Teilausstiegs-Level laufen sieht, ist der erste echte
+Test dieses Pfads. Damit sind jetzt ALLE DREI aktiven ORB-Traeger (EK,
+Challenge, FK Instant Funding) inklusive Teilausstieg auf demselben Stand.
 
 **`EK-Portfolio-Bridge/legs/ny_open_orb/`** (Tickmill LIVE): hier eine
 ECHTE Code-Aenderung moeglich UND umgesetzt, weil diese Bridge bereits

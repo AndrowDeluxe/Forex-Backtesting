@@ -9,6 +9,73 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-02** [Portfolio-Konsolidierung] **Nutzer bestaetigt: TTP
+  Konto 1 (504069845, echtes Geld) + IQ Markets Login 15514 sollen DOCH in
+  die Funded-Portfolio-Bridge (`state_id="ttp1"`/`"iqmarkets2"`) — beide
+  waren zuvor als "anderweitig vergeben" gestoppt worden (siehe Eintrag
+  weiter unten). Nutzer will bewusst konsolidieren ("bester Usecase im
+  Vergleich zu allen Einzelstrategien"). Umgesetzt: Konto 1 aus
+  `OU-Modell-MT5-Bridge/config.py::ACCOUNTS` entfernt (Bridge hat damit
+  JETZT KEINE Konten mehr — faktisch aufgeloest), Login 15514 aus
+  `GoldASB-MT5-Bridge/config.py` UND `BTC-EMA-Cross-Bridge/config.py`
+  entfernt (beide hatten es sich bisher geteilt). Alte Konfigurationen
+  jeweils als Kommentar aufgehoben (kein Git-Verlauf in diesen Ordnern).
+  Neue Terminals: `TTP MT5 Terminal - Konto3` fuer Konto 1 (dediziert,
+  ersetzt das bisher genutzte `C:\Program Files\TTP MT5 Terminal\`), `IQ
+  MT5 Terminal - Konto2` fuer Login 15514 (dediziert, ersetzt das bisher
+  mit GoldASB/BTC-EMA-Cross geteilte `C:\Program Files\MetaTrader 5\`).
+  `symbol_map` je 1:1 vom jeweiligen Schwesterkonto uebernommen (gleicher
+  Server), NICHT per `check_symbols.py` fuer die neuen Konten selbst
+  verifiziert. **Noch offen**: AutoTrading in beiden neuen Terminals
+  manuell verifizieren (siehe DASHBOARD.md) — bis dahin bricht
+  `executor.py::connect()` fuer diese zwei Konten sauber mit Fehlermeldung
+  ab, sendet aber keine Order. Ausserdem im selben Zug auf Nutzerauftrag
+  ("nur noch die Portfolios als offene Strategien") alle verbliebenen
+  Einzelstrategien/-Tests ausserhalb der drei Portfolios (EK, Funded/
+  Challenge, FK Instant Funding) als aufgeloest markiert — Live-Check
+  (`Get-ScheduledTask`) bestaetigt: bis auf `OU-Modell-ScannerHourly`
+  waren alle bereits `Disabled` (BTC-EMA-Cross-Bridge/-Scan, CLS-Practical-
+  Bridge/-Scan, CTNL-Edge-FK-Paper, CTNL-Edge-MT5-Bridge, Gold-ASB-Scan,
+  GoldASB-MT5-Bridge, OU-Modell-MT5-Bridge/-DailyLog/-Heartbeat). Details
+  siehe DASHBOARD.md.
+- **2026-09-02** [Funded Portfolio] **Echtgeld-Aenderung: echter Stage-6-
+  Teilausstieg fuer die ORB-Beine implementiert** (Nutzerauftrag "Setze um",
+  nachdem der EK-vs-Challenge-Architekturunterschied besprochen wurde). Neu
+  in `Funded-Portfolio-Bridge/executor.py`: `partial_close_position()` (echter
+  Teil-Close per `TRADE_ACTION_DEAL` auf dasselbe Ticket) + `move_stop_to_
+  breakeven()` (echtes `TRADE_ACTION_SLTP`, ueber das bestehende `_send_order()`-
+  Sicherheitsnetz). Neu in `run_once.py`: `_manage_orb_partial_exits()` -
+  pollt bei jedem 15-Min-Lauf offene ORB-Positionen gegen ihr aus entry_price/
+  sl berechnetes Teilausstiegs-Level (liest `partial_exit_r`/-fraction/
+  move_stop_to_be_after_partial live aus `challenge_portfolio/paper_bot.py::
+  ORB_EXIT_CFG_BY_INSTRUMENT`, die jetzt ebenfalls diese Felder traegt - Single
+  Source of Truth, identisch zu `app_pages/ny_open_orb_portfolio.py`/
+  `EK-Portfolio-Bridge/config.py`). Neue Positionen bekommen ein `partial_done`-
+  Flag; ein VOR diesem Feature eroeffnetes Ticket hat den Key nicht und wird
+  deshalb NIE rueckwirkend angefasst (`.get(..., True)` faellt sicher auf
+  "nichts tun" zurueck) - nur neue Entries ab jetzt. **19 gemockte Logik-Tests**
+  (Treffer/kein Treffer, bereits erledigt, Legacy-Position ohne den State-Key,
+  Long+Short, DRY_RUN-Verzweigung, zu-kleines Restvolumen) bestanden, KEIN
+  echter MT5-Kontakt. **Noch nicht live verifiziert** - der naechste Bridge-
+  Lauf, der wirklich eine offene ORB-Position ueber ihr Teilausstiegs-Level
+  laufen sieht, ist der erste echte Test. Damit haben jetzt alle drei aktiven
+  ORB-Traeger (EK, Challenge, FK Instant Funding) denselben Stand INKLUSIVE
+  Teilausstieg.
+- **2026-09-02** [Funded-Portfolio-Bridge] **Versuch, zwei weitere Konten
+  anzubinden, GESTOPPT vor dem Scharfschalten** (Nutzerauftrag, TTP-Login
+  504069845 + IQ-Login 15514 vom Nutzer genannt): Cross-Check gegen andere
+  Bridge-Configs ergab, dass BEIDE Logins bereits anderweitig vergeben
+  sind — TTP 504069845 ist `OU-Modell-MT5-Bridge`'s echtes Live-Konto
+  "Konto 1" (dessen `config.py`: "ab jetzt echte Orders"), IQ
+  15514/Sm6^znlf/BeyondIQCapital-Server ist das von `GoldASB-MT5-Bridge` +
+  `BTC-EMA-Cross-Bridge` geteilte Demo/Eval-Konto, nicht das hier bereits
+  aktive IQ-Konto 16054. `config.py`-Eintrag NICHT vorgenommen (nur ein
+  Kommentar mit dem Befund hinterlassen); zwei neue, ungenutzte
+  MT5-Terminal-Kopien (`TTP MT5 Terminal - Konto3` / `IQ MT5 Terminal -
+  Konto2`, aus den ruhenden `MT5 Terminal - FK1`/`FK2`-Installationen)
+  bleiben vorsorglich liegen, falls sich die Konten nach Klaerung als
+  korrekt herausstellen. Klaerung mit Nutzer ausstehend (siehe
+  DASHBOARD.md).
 - **2026-09-02** [System] **Cloud-Routine "Forex-Backtesting Bridge Error
   Monitor" eingerichtet** (`trig_01PN2SADKXZDkvgs3Zkno4xe`, 3x werktags
   9/15/21 Uhr UTC = 11/17/23 Uhr Berlin, vor/waehrend/nach NYSE-Handel):

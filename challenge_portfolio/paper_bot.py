@@ -395,25 +395,25 @@ def _scan_ctnl(end: pd.Timestamp, force_refresh: bool) -> tuple[pd.DataFrame, pd
 
 
 # Per-Instrument (2026-09-02, gleicher Stand wie app_pages/ny_open_orb_portfolio.py::
-# EXIT_CFG_BY_INSTRUMENT NACH dem NASDAQ-EOD-Exit-Update): NASDAQ laesst die Position
-# jetzt bis Handelsschluss laufen (target_mode=None) statt zum 4R-Cap, siehe
-# knowledge/projects/ny-open-orb-sp500.md Stage 8/9. SP500/US30 unveraendert.
-# ABSICHTLICH (noch) OHNE Stage-6-Teilausstieg (partial_exit_r/-fraction/move_stop_
-# to_be_after_partial): _process_leg() in Funded-Portfolio-Bridge/run_once.py kennt nur
-# EIN offen/geschlossen pro Position (ein Ticket, eine volle Groesse, ein Schluss-Call)
-# -- es gibt dort keine Zwischen-Verwaltung, die einen Teil einer echten Position bei
-# 1.5R schliessen und den Rest-Stop auf Breakeven verschieben koennte. Wuerde man
-# partial_exit_* hier trotzdem setzen, wuerde simulate() intern einen sauberen
-# geblendeten Teilausstieg-Trade fuer die PAPIER-Nachverfolgung berechnen, aber die
-# ECHTE Position bliebe die GANZE Zeit in voller Groesse gegen den urspruenglichen Stop
-# offen -- Papier-P&L und echtes Broker-P&L wuerden auseinanderlaufen, ohne dass das im
-# Log sichtbar waere. Braucht echte neue Verwaltungslogik in run_once.py/executor.py
-# (Ticket-Teilschliessung + SL-Modify), keine reine Config-Aenderung -- nicht Teil
-# dieser Umstellung, siehe DASHBOARD.md.
+# EXIT_CFG_BY_INSTRUMENT / EK-Portfolio-Bridge/config.py): NASDAQ laesst die Position bis
+# Handelsschluss laufen (target_mode=None) statt zum 4R-Cap, siehe knowledge/projects/
+# ny-open-orb-sp500.md Stage 8/9. SP500/US30 unveraendert (4R). JETZT INKLUSIVE Stage-6-
+# Teilausstieg (partial_exit_r/-fraction/move_stop_to_be_after_partial) fuer alle drei
+# Instrumente -- war hier zuerst bewusst ausgelassen (Funded-Portfolio-Bridge/run_once.py
+# kannte nur ganz/offen pro Ticket, ein Config-Flip haette Papier-/Broker-P&L auseinanderlaufen
+# lassen), aber seit 2026-09-02 hat run_once.py::_manage_orb_partial_exits() + executor.py::
+# partial_close_position()/move_stop_to_breakeven() eine ECHTE Teilschliessungs-Verwaltung
+# (Muster identisch zu EK-Portfolio-Bridge/legs/ny_open_orb/executor.py::manage_open_
+# positions()) -- die Bridge liest diese Werte jetzt direkt aus diesem Dict, Single Source
+# of Truth. Diese Datei bleibt damit auch fuer die reine PAPIER-Simulation (falls je
+# eigenstaendig gescanned) konsistent mit dem, was die Bridge nun wirklich ausfuehrt.
 ORB_EXIT_CFG_BY_INSTRUMENT = {
-    "SP500": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0),
-    "US30": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0),
-    "NASDAQ": dict(stop_atr_mult=0.6, target_mode=None),
+    "SP500": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0,
+                  partial_exit_r=2.0, partial_exit_fraction=0.5, move_stop_to_be_after_partial=True),
+    "US30": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0,
+                 partial_exit_r=2.0, partial_exit_fraction=0.5, move_stop_to_be_after_partial=True),
+    "NASDAQ": dict(stop_atr_mult=0.6, target_mode=None,
+                   partial_exit_r=1.5, partial_exit_fraction=0.5, move_stop_to_be_after_partial=True),
 }
 ORB_HISTORY_LOOKBACK_DAYS = 500  # EMA-Ribbon-Bias (4H/1D/1W) braucht Monate an Vorlauf
 

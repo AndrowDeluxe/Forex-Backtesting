@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-09-02** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-09-03** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -26,7 +26,7 @@ passiert, was steht an.
 | OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner                                                                                      | Ready (Mo–Fr, US-Handelszeiten) | 2026-09-01      |
 | Forex-Weekly-Report                                     | —                                                                                        | Report-Generator                                                                             | Ready                           | 2026-09-02      |
 | **Bridge-Watchdog**                                     | — (nur Log-Frische, kein Order-Bezug)                                                    | Heartbeat-Alarm + Status-Snapshot ins Repo                                                   | Ready (alle 30 Min)             | 2026-09-02      |
-| **Funded-Portfolio-Bridge** (TTP+IQ Markets, 6 Beine)   | TTP Konto 2 (504072729) + BeyondIQCapital (16054)                                        | **LIVE — DRY_RUN=False**                                                                     | Ready (alle 15 Min, Mo–Fr)      | 2026-09-02      |
+| **Funded-Portfolio-Bridge** (TTP+IQ Markets, 6 Beine)   | TTP Konto 2 (504072729) + BeyondIQCapital (16054) + **neu: TTP Konto 1 (504069845, echtes Geld) + BeyondIQCapital (15514)** — die zwei neuen verbinden erst seit 2026-09-03 12:37, noch kein einziger Entry darauf (siehe unten) | **LIVE — DRY_RUN=False**                                                                     | Ready (alle 15 Min, Mo–Fr)      | 2026-09-03      |
 | Challenge Portfolio (Paper-Bot, `challenge_portfolio/`) | — (reine Simulation)                                                                     | Paper-Bot fertig entwickelt                                                                  | Noch kein Task angelegt         | 2026-09-01      |
 | BTC-EMA-Cross-Bridge/-Scan                              | Binance                                                                                  | LIVE (war), aktuell pausiert                                                                 | **Disabled**                    | 2026-09-01      |
 | CLS-Practical-Bridge/-Scan                              | —                                                                                        | pausiert                                                                                     | Disabled                        | 2026-09-01      |
@@ -52,6 +52,57 @@ vollständig manuell durchgegangen, nur stichprobenartig._
 Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
+
+- **Keine OU-Entries auf den beiden neuen Konten (TTP Konto 1 / 504069845, IQ
+  15514) — sollen Alt-Signale nachgezogen werden?** Befund 2026-09-03 (rein aus
+  der `bridge_status/snapshot.json`-Historie, der Bridge-Code liegt ausserhalb
+  des Repos und war von hier aus nicht einsehbar):
+  1. **Bis 12:04 heute lief auf beiden neuen Konten gar nichts** — jeder Lauf
+     seit 2026-09-02 19:27 endete mit `mt5.initialize() fehlgeschlagen:
+     (-10005, 'IPC timeout')`, ab 12:04 mit `(-6, 'Terminal: Authorization
+     failed')`. Erste erfolgreiche Verbindung: **2026-09-03 12:37:03** (beide
+     Konten, Equity-Zeilen seitdem in jedem Snapshot). Das war die im CHANGELOG
+     als offen vermerkte Terminal-/AutoTrading-Baustelle; sie ist damit
+     erledigt, aber niemand hat es bisher irgendwo festgehalten.
+  2. **Seit 12:37 verbinden beide sauber, haben aber trotzdem nichts
+     gehandelt.** Der bisher einzige OU-Entry der Bridge (`2026-09-03 15:42:39
+     [TTP] ENTRY ou_modell (FAST) FAST BUY lots=40.0 risk=$166.79`) ging NUR auf
+     TTP Konto 2. Auf den beiden neuen Konten steht zu diesem Lauf weder ein
+     Entry noch eine Fehlerzeile — sie waren zu genau diesem Zeitpunkt
+     verbunden (gleiche 15:42:39-Equity-Zeile).
+  3. **Wahrscheinlichste Ursache (Annahme, nicht im Code verifiziert): das
+     `account_start`-Gating** aus `run_once.py`/`bridge_state_<id>.json`
+     ("verhindert faelschliches Nacheroeffnen von Alt-Signalen beim ersten
+     Lauf", siehe [[challenge-portfolio-ttp-icapital]]). Das FAST-Signal traegt
+     `scan_date=2026-09-02`, liegt also VOR dem `account_start` der neuen Konten
+     (= erster erfolgreicher Lauf, 2026-09-03 12:37) und wird darum bewusst
+     nicht nachgeholt. Auf Konto 2 (`account_start` vom 2026-09-01) greift das
+     Gate nicht — genau das erklaert den Unterschied.
+  4. **Nebeneffekt, falls das Gate wirklich Zeitstempel gegen Zeitstempel
+     vergleicht**: OU-Signale tragen als Zeit den Vortages-Schlusskurs
+     (Datum, 00:00). Ein morgen frisch entstehendes Signal traegt dann
+     `2026-09-03 00:00` — immer noch VOR `account_start` (12:37). Die neuen
+     Konten wuerden dann erst ab 2026-09-05 OU-Entries bekommen, nicht ab
+     morgen.
+
+  **Zum Nachpruefen auf dem Rechner** (ich komme von hier nicht dran):
+  `type C:\Users\andre\Funded-Portfolio-Bridge\bridge_state_ttp1.json` (bzw.
+  `bridge_state_iqmarkets2.json`) → steht dort ein `account_start` vom
+  2026-09-03 ~12:37? Und im Log des 15:42-Laufs der Block der neuen Konten:
+  taucht `ou_modell`/`FAST` dort mit einer Skip-Begruendung auf?
+
+  **Deine Entscheidung**: (a) so lassen — die neuen Konten steigen erst bei
+  frischen Signalen ein und laufen dauerhaft leicht hinter den alten her, oder
+  (b) `account_start` der beiden neuen Konten einmalig zurueckdatieren, damit
+  sie die aktuell offenen Signale (FAST, SPG) noch mitnehmen. (b) heisst auf
+  Konto 1 **echtes Geld** in eine Position, die schon einen Tag gelaufen ist —
+  mache ich nicht von selbst.
+
+  **Separater Befund am Rande**: auch IQ Markets 16054 (altes Konto, kein
+  `account_start`-Problem) hat den FAST-Entry nicht bekommen. Das OU-Bein hat
+  dort also eine eigene Ursache — passt zum bekannten offenen Punkt "OU-Modell-
+  Handelbarkeit auf BeyondIQCapital nur stichprobenartig geprueft" (`.gbe`-
+  Suffix). Noch nicht untersucht.
 
 - [x] ~~CLS Practical auf EK-Portfolio-Bridge (Echtgeld) scheitert wiederholt
   an dukascopy_python~~ — Nutzerentscheid 2026-09-02: mehr Retries statt

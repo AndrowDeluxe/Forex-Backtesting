@@ -9,6 +9,35 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-03** [Funded-Portfolio-Bridge] **Diagnose (keine Code-Aenderung):
+  warum die beiden neuen Konten TTP Konto 1 (504069845, echtes Geld) und IQ
+  15514 noch keine OU-Entries bekommen haben.** Quelle ausschliesslich die
+  committete `bridge_status/snapshot.json`-Historie — der Bridge-Code liegt
+  ausserhalb des Repos und war aus dieser Session nicht einsehbar, die Ursache
+  ist also plausibel hergeleitet, nicht im Code verifiziert. (1) Von
+  2026-09-02 19:27 bis 2026-09-03 12:04 scheiterte auf beiden neuen Konten
+  JEDER Lauf schon an der Verbindung (`mt5.initialize()` `-10005 IPC timeout`,
+  ab 12:04 `-6 'Terminal: Authorization failed'`) — in diesem Fenster lief dort
+  kein einziges Bein. Erste erfolgreiche Verbindung: 2026-09-03 12:37:03
+  (seitdem in jedem Snapshot Equity-Zeilen fuer beide). Damit ist der bisher
+  offene Punkt "AutoTrading/Terminal der zwei neuen Konten" faktisch erledigt.
+  (2) Seit 12:37 verbinden beide sauber, haben aber nichts gehandelt: der
+  einzige OU-Entry der Bridge (`2026-09-03 15:42:39 [TTP] ENTRY ou_modell
+  (FAST) FAST BUY lots=40.0 risk=$166.79 sl=44.09007 -- placed`) ging nur auf
+  TTP Konto 2, obwohl die neuen Konten in genau diesem Lauf verbunden waren
+  (gleiche 15:42:39-Equity-Zeile) und dazu weder Entry noch Fehlerzeile
+  loggen. (3) Wahrscheinlichste Ursache: das dokumentierte `account_start`-
+  Gating (`run_once.py`/`bridge_state_<id>.json`, "verhindert faelschliches
+  Nacheroeffnen von Alt-Signalen beim ersten Lauf") — das FAST-Signal traegt
+  `scan_date=2026-09-02` und liegt damit vor dem `account_start` der neuen
+  Konten (2026-09-03 12:37), auf Konto 2 (`account_start` 2026-09-01) nicht.
+  Nachzupruefende Kommandos, moegliche Folgewirkung (OU-Signale tragen ein
+  00:00-Datum, das Gate koennte die neuen Konten einen weiteren Tag blockieren)
+  und die offene Entscheidung "Alt-Signale nachziehen oder nicht" stehen in
+  DASHBOARD.md. Nebenbefund: auch IQ 16054 (altes Konto, kein
+  `account_start`-Thema) hat den FAST-Entry nicht bekommen — eigene, noch
+  nicht untersuchte Ursache im OU-Bein auf BeyondIQCapital.
+
 - **2026-09-02** [Portfolio-Konsolidierung] **Nutzer bestaetigt: TTP
   Konto 1 (504069845, echtes Geld) + IQ Markets Login 15514 sollen DOCH in
   die Funded-Portfolio-Bridge (`state_id="ttp1"`/`"iqmarkets2"`) — beide

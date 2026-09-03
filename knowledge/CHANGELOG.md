@@ -9,6 +9,34 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-03** [combined_strategy / cls_practical] **Der am 2026-09-02
+  dokumentierte "OHLC vor dem Cachen validieren"-Fix war in Wahrheit nie im
+  Code — jetzt tatsächlich umgesetzt, nachdem derselbe Fehler heute erneut
+  auftrat.** Bridge-Monitor-Routine fand im heutigen Snapshot-Check den
+  exakt gleichen `'>' not supported between instances of 'str' and 'float'`-
+  Fehler zeitgleich in drei Beinen (`CTNL-Edge-Scan`, `Trend-Pullback-Scan`,
+  `CLS-Practical-Scan`, alle 2026-09-03 13:13:40 laut `Funded-Portfolio-
+  Bridge`-Snapshot) — derselbe Fehler, den der DASHBOARD-Eintrag vom
+  2026-09-02 als "gehärtet" markiert hatte (Validierung numerischer OHLC-
+  Spalten vor dem Cachen in `combined_strategy/data.py::fetch_timeframe()`).
+  Beim Nachsehen im aktuellen Code existierte dort KEINE solche Validierung
+  — `df.to_parquet(path)` cachte weiterhin ungeprüft, exakt wie vor dem
+  damaligen Fund. Die damalige Beschreibung wurde offenbar nie tatsächlich
+  umgesetzt (oder ist verlorengegangen). Jetzt wirklich ergänzt: neue
+  `validate_ohlc_numeric()`-Hilfsfunktion in `combined_strategy/data.py`,
+  prüft OHLC(V)-Spalten auf numerischen dtype VOR dem `to_parquet()`-
+  Schreiben und wirft sonst einen `ValueError` statt die kaputten Daten zu
+  cachen — dank der bestehenden `_retry()`-Wrapper (6 Versuche/8s, siehe
+  Eintrag weiter unten) läuft das automatisch in einen frischen Fetch statt
+  in einen dauerhaft kaputten Cache. Zusätzlich in `cls_practical/data.py`
+  an den zwei Stellen ergänzt, die eigene, duplizierte Fetch-/Cache-Blöcke
+  haben und NICHT über `fetch_timeframe()` laufen (`fetch_rate_instrument_
+  m5_berlin` für BUND/USTBOND/UKGILT, `fetch_eurusd_entry_tf_berlin` für
+  EUR/USD M1/M5/M15) — sonst wäre `CLS-Practical-Scan` weiterhin
+  verwundbar geblieben. Reine Datenfetch-/Caching-Härtung, keine Order-/
+  Risiko-/Entry-Exit-Logik angefasst. Nur `py_compile` auf beiden
+  geänderten Dateien geprüft (kein pandas/dukascopy_python in dieser
+  Sandbox installierbar, kein echter Live-Lauf abgewartet).
 - **2026-09-02** [Portfolio-Konsolidierung] **Nutzer bestaetigt: TTP
   Konto 1 (504069845, echtes Geld) + IQ Markets Login 15514 sollen DOCH in
   die Funded-Portfolio-Bridge (`state_id="ttp1"`/`"iqmarkets2"`) — beide

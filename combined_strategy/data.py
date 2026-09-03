@@ -69,6 +69,20 @@ def _cache_path(key: str, timeframe: str, start: pd.Timestamp, end: pd.Timestamp
     return CACHE_DIR / f"{key}_{timeframe}_{start.date()}_{end.date()}.parquet"
 
 
+def validate_ohlc_numeric(df: pd.DataFrame, columns: list[str]) -> None:
+    """Guards against caching a corrupted Dukascopy response (Fund 2026-09-02,
+    recurred 2026-09-03 across CTNL-Edge-/Trend-Pullback-/CLS-Practical-Scan
+    simultaneously): a bad fetch occasionally comes back with one of these
+    columns as strings instead of floats, which then blows up much later
+    with "'>' not supported between instances of 'str' and 'float'" deep in
+    a strategy's indicator code, and (worse) gets cached, so the bad data
+    keeps getting served. Raise here instead so the caller's existing
+    _retry() wrapper re-fetches rather than ever caching it."""
+    for col in columns:
+        if col in df.columns and not pd.api.types.is_numeric_dtype(df[col]):
+            raise ValueError(f"fetched data has non-numeric column {col!r} (dtype {df[col].dtype}) - refusing to cache")
+
+
 def fetch_timeframe(key: str, timeframe: str, start: str, end: str, force_refresh: bool = False) -> pd.DataFrame:
     if key not in INSTRUMENTS:
         raise ValueError(f"unknown instrument key {key!r}, expected one of {list(INSTRUMENTS)}")
@@ -89,6 +103,7 @@ def fetch_timeframe(key: str, timeframe: str, start: str, end: str, force_refres
     # Match ema_strategy's OHLC column naming (capitalised) so the existing
     # EMA/ADX indicator code can be reused unmodified.
     df = df.rename(columns={"open": "Open", "high": "High", "low": "Low", "close": "Close", "volume": "Volume"})
+    validate_ohlc_numeric(df, ["Open", "High", "Low", "Close", "Volume"])
 
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     df.to_parquet(path)

@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-09-02** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-09-03** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -136,6 +136,23 @@ abgehakt-und-liegengelassen.
   _nyse_is_open()`, identisches Muster zu EK), nur neue Entries gegated,
   Exits laufen weiter uneingeschraenkt. Nur `py_compile`-geprueft.
 
+- **EK-Portfolio-Bridge (Echtgeld): neue, vage Fehlerzeile "cls_practical:
+  unerwarteter Fehler"** — laut Snapshot vom 2026-09-03 17:01
+  (`bridge_status/snapshot.json`) `last_error_line`: "2026-09-03 16:54:31
+  2026-09-03 16:54:15,602 ERROR run_once: cls_practical: unerwarteter
+  Fehler", `recent_events` dabei leer (keine weiteren Details). Bridge
+  selbst läuft trotzdem normal weiter (`status: ok`, letzter Lauf nur 1,4
+  Min. vor dem Snapshot). Dieser exakte Text ("unerwarteter Fehler") kommt
+  NICHT aus diesem Repo (kein Treffer für den String in irgendeiner
+  `.py`-Datei hier) — muss also aus dem für mich unsichtbaren
+  `EK-Portfolio-Bridge`-Ordner selbst stammen. Könnte derselbe
+  dukascopy_python-Fund vom 2026-09-02 sein (nur hinter einem
+  generischeren Catch-Block statt der spezifischen Hang-/KeyError-Meldung),
+  oder etwas Neues — ohne Log-Zugriff vor Ort kann ich weder Root Cause
+  noch Häufigkeit einschätzen, und will hier nichts erfinden. Kannst du
+  kurz in `C:\Users\andre\EK-Portfolio-Bridge\logs\task_run.log` um
+  16:54:15 Uhr nachsehen, was den Fehler wirklich auslöst?
+
 - **Funded-Portfolio-Bridge (TTP/IQ) hat noch keinen "Signal zu alt"-Schutz**
   beim Echt-Entry (`_process_leg()`), anders als der ORB-Fix heute in
   EK-Portfolio-Bridge. Der erste reale Gold-ASB-Entry heute ist genau daran
@@ -242,6 +259,12 @@ Thema verdrängt oder verloren geht.
 
 _(Auszug — vollständiges Log in [CHANGELOG.md](CHANGELOG.md))_
 
+- 2026-09-03 — Bridge Error Monitor: den am 2026-09-02 dokumentierten, aber
+  nie tatsächlich umgesetzten "OHLC vor dem Cachen validieren"-Fix jetzt
+  wirklich in `combined_strategy/data.py` + `cls_practical/data.py`
+  ergänzt, nachdem derselbe `str`/`float`-Fehler heute erneut in drei
+  Beinen gleichzeitig auftrat. Neue vage Fehlerzeile auf EK-Portfolio-
+  Bridge zur Bestätigung im Dashboard vermerkt.
 - 2026-09-02 — Second Brain: 5 offene Clippings verarbeitet (CODE-Prozess) —
   3 Claude-Workflow-Videos als neue Einträge in
   `resources/second-brain-methodik.md`, 1 Trading-Video (Order Flow, nicht

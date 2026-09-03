@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-09-03T07:19:15",
+  "generated_at": "2026-09-03T07:31:27",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T05:15:03",
-      "minutes_since_last_run": 124.2,
-      "status": "stale",
+      "last_run": "2026-09-03T07:30:03",
+      "minutes_since_last_run": 1.4,
+      "status": "ok",
       "last_equity_line": "2026-09-03 05:05:50 2026-09-03 05:00:05,868 INFO run_once: Konto-Equity 3408.23 EUR | Aggregiertes offenes Risiko (ganzes Konto): 265.83 (Deckel dieser Bridge: 272.66, 8%)",
       "last_error_line": "2026-09-03 05:05:51     raise error[0]",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T05:15:03",
-      "minutes_since_last_run": 124.2,
-      "status": "stale",
+      "last_run": "2026-09-03T07:30:03",
+      "minutes_since_last_run": 1.4,
+      "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
           "last_equity_line": "2026-09-03 03:42:55 Verbunden: Login 504072729, Equity $100,018.75 USD",
@@ -41,23 +41,20 @@
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T05:06:20",
-      "minutes_since_last_run": 132.9,
-      "status": "stale",
-      "last_equity_line": "2026-09-03 04:18:01 Verbunden: Login 17764, Equity $100,000.00",
-      "last_error_line": "2026-09-03 04:18:01 NY-Open-ORB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+      "last_run": "2026-09-03T07:23:12",
+      "minutes_since_last_run": 8.3,
+      "status": "ok",
+      "last_equity_line": "2026-09-03 07:23:12 Verbunden: Login 17764, Equity $100,000.00",
+      "last_error_line": "2026-09-03 07:23:12 NY-Open-ORB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
       "recent_events": [
+        "2026-09-03 07:23:12 NY-Open-ORB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+        "2026-09-03 07:23:12 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
         "2026-09-03 04:18:01 NY-Open-ORB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
         "2026-09-03 04:18:01 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
         "2026-09-03 03:26:57 NY-Open-ORB-Scan fehlgeschlagen: 0",
         "2026-09-03 03:26:57 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
         "2026-09-03 03:26:57 Gold-ASB-Scan fehlgeschlagen: 0",
-        "2026-09-02 10:22:21 NY-Open-ORB-Scan fehlgeschlagen: 0",
-        "2026-09-02 10:22:21 Gold-Silber-Divergenz-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-        "2026-09-02 10:22:21 CTNL-Edge-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-        "2026-09-02 10:22:21 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-        "2026-09-02 10:22:21 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-        "2026-09-02 10:22:21 Gold-ASB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'"
+        "2026-09-02 10:22:21 NY-Open-ORB-Scan fehlgeschlagen: 0"
       ]
     }
   }

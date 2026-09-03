@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-09-03T16:31:25",
+  "generated_at": "2026-09-03T17:01:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T16:30:02",
+      "last_run": "2026-09-03T17:00:01",
       "minutes_since_last_run": 1.4,
       "status": "ok",
-      "last_equity_line": "2026-09-03 16:28:10 2026-09-03 16:15:02,827 INFO run_once: Konto-Equity 3409.98 EUR | Aggregiertes offenes Risiko (ganzes Konto): 265.06 (Deckel dieser Bridge: 272.80, 8%)",
-      "last_error_line": "2026-09-03 16:28:11 2026-09-03 16:25:01,898 ERROR run_once: cls_practical: unerwarteter Fehler",
+      "last_equity_line": "2026-09-03 16:54:31 2026-09-03 16:45:02,630 INFO run_once: Konto-Equity 3418.17 EUR | Aggregiertes offenes Risiko (ganzes Konto): 265.33 (Deckel dieser Bridge: 273.45, 8%)",
+      "last_error_line": "2026-09-03 16:54:31 2026-09-03 16:54:15,602 ERROR run_once: cls_practical: unerwarteter Fehler",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T16:30:02",
+      "last_run": "2026-09-03T17:00:01",
       "minutes_since_last_run": 1.4,
       "status": "ok",
       "accounts": {
@@ -74,7 +74,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-09-03T16:27:14",
-      "minutes_since_last_run": 4.2,
+      "minutes_since_last_run": 34.2,
       "status": "ok",
       "last_equity_line": "2026-09-03 16:27:14 Verbunden: Login 17764, Equity $100,000.00",
       "last_error_line": "2026-09-03 16:27:14 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",

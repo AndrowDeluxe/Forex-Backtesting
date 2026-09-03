@@ -21,3 +21,4 @@ date,equity,current_dd,consistency_ratio,payout_safe,kill_switch_active,n_trades
 2026-08-27T20:55:26.834179,99942.99,-0.0006,0.0000,False,False,1
 2026-08-27T20:58:06.914380,100000.00,0.0000,0.0000,True,False,0
 2026-09-01T19:55:24.996055,99810.36,-0.0019,0.0000,False,False,15
+2026-09-03T20:55:24.698774,99539.45,-0.0046,0.0000,False,False,20

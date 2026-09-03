@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-09-03T08:01:26",
+  "generated_at": "2026-09-03T09:47:34",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T08:00:04",
-      "minutes_since_last_run": 1.4,
+      "last_run": "2026-09-03T09:47:33",
+      "minutes_since_last_run": 0.0,
       "status": "ok",
-      "last_equity_line": "2026-09-03 07:47:16 2026-09-03 07:45:05,998 INFO run_once: Konto-Equity 3408.24 EUR | Aggregiertes offenes Risiko (ganzes Konto): 265.68 (Deckel dieser Bridge: 272.66, 8%)",
-      "last_error_line": "2026-09-03 07:34:26     raise error[0]",
+      "last_equity_line": "2026-09-03 09:47:32 2026-09-03 08:15:05,822 INFO run_once: Konto-Equity 3408.24 EUR | Aggregiertes offenes Risiko (ganzes Konto): 265.70 (Deckel dieser Bridge: 272.66, 8%)",
+      "last_error_line": "2026-09-03 09:47:33     raise error[0]",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T08:00:04",
-      "minutes_since_last_run": 1.4,
-      "status": "ok",
+      "last_run": "2026-09-03T08:15:03",
+      "minutes_since_last_run": 92.5,
+      "status": "stale",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
           "last_equity_line": "2026-09-03 07:55:33 Verbunden: Login 504072729, Equity $100,018.75 USD",
@@ -41,20 +41,20 @@
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T07:23:12",
-      "minutes_since_last_run": 38.2,
+      "last_run": "2026-09-03T09:47:33",
+      "minutes_since_last_run": 0.0,
       "status": "ok",
-      "last_equity_line": "2026-09-03 07:23:12 Verbunden: Login 17764, Equity $100,000.00",
-      "last_error_line": "2026-09-03 07:23:12 NY-Open-ORB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+      "last_equity_line": "2026-09-03 08:16:32 Verbunden: Login 17764, Equity $100,000.00",
+      "last_error_line": "2026-09-03 08:16:32 NY-Open-ORB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
       "recent_events": [
+        "2026-09-03 08:16:32 NY-Open-ORB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
         "2026-09-03 07:23:12 NY-Open-ORB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
         "2026-09-03 07:23:12 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
         "2026-09-03 04:18:01 NY-Open-ORB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
         "2026-09-03 04:18:01 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
         "2026-09-03 03:26:57 NY-Open-ORB-Scan fehlgeschlagen: 0",
         "2026-09-03 03:26:57 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-        "2026-09-03 03:26:57 Gold-ASB-Scan fehlgeschlagen: 0",
-        "2026-09-02 10:22:21 NY-Open-ORB-Scan fehlgeschlagen: 0"
+        "2026-09-03 03:26:57 Gold-ASB-Scan fehlgeschlagen: 0"
       ]
     }
   }

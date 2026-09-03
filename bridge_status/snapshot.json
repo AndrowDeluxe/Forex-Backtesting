@@ -1,52 +1,56 @@
 {
-  "generated_at": "2026-09-03T10:01:24",
+  "generated_at": "2026-09-03T10:31:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T10:00:01",
+      "last_run": "2026-09-03T10:30:02",
       "minutes_since_last_run": 1.4,
       "status": "ok",
-      "last_equity_line": "2026-09-03 09:47:32 2026-09-03 08:15:05,822 INFO run_once: Konto-Equity 3408.24 EUR | Aggregiertes offenes Risiko (ganzes Konto): 265.70 (Deckel dieser Bridge: 272.66, 8%)",
-      "last_error_line": "2026-09-03 09:47:33     raise error[0]",
+      "last_equity_line": "2026-09-03 10:21:12 2026-09-03 10:15:02,993 INFO run_once: Konto-Equity 3408.26 EUR | Aggregiertes offenes Risiko (ganzes Konto): 265.62 (Deckel dieser Bridge: 272.66, 8%)",
+      "last_error_line": "2026-09-03 10:21:12     raise error[0]",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T10:00:01",
+      "last_run": "2026-09-03T10:30:02",
       "minutes_since_last_run": 1.4,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-03 07:55:33 Verbunden: Login 504072729, Equity $100,018.75 USD",
-          "last_error_line": "2026-09-03 01:13:58 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+          "last_equity_line": "2026-09-03 10:26:33 Verbunden: Login 504072729, Equity $100,018.75 USD",
+          "last_error_line": "2026-09-03 10:26:33 Trend-Pullback-Scan fehlgeschlagen: 0",
           "recent_events": [
+            "2026-09-03 10:26:33 Trend-Pullback-Scan fehlgeschlagen: 0",
+            "2026-09-03 10:26:33 CLS-Practical-Scan fehlgeschlagen: 0",
+            "2026-09-03 10:26:33 Gold-ASB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
             "2026-09-03 01:13:58 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-09-03 00:56:55 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-09-03 00:25:42 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)"
+            "2026-09-03 00:56:55 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'"
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-03 07:55:33 Verbunden: Login 16054, Equity $99,991.93 USD",
+          "last_equity_line": "2026-09-03 10:26:33 Verbunden: Login 16054, Equity $99,991.93 USD",
           "recent_events": []
         },
         "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (ttp)": {
-          "last_error_line": "2026-09-03 07:55:33 FEHLER auf Konto Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld): Verbindung fuer Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (Login 504069845) auch im zweiten Versuch fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-10005, 'IPC timeout')",
+          "last_error_line": "2026-09-03 10:26:33 FEHLER auf Konto Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld): Verbindung fuer Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (Login 504069845) auch im zweiten Versuch fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-10005, 'IPC timeout')",
           "recent_events": []
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital, Login 15514, ex-GoldASB/BTC-EMA-Cross) (iqmarkets)": {
-          "last_error_line": "2026-09-03 07:55:33 FEHLER auf Konto Funded Portfolio - IQ Markets (BeyondIQCapital, Login 15514, ex-GoldASB/BTC-EMA-Cross): Verbindung fuer Funded Portfolio - IQ Markets (BeyondIQCapital, Login 15514, ex-GoldASB/BTC-EMA-Cross) (Login 15514) auch im zweiten Versuch fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-10005, 'IPC timeout')",
+          "last_error_line": "2026-09-03 10:26:33 FEHLER auf Konto Funded Portfolio - IQ Markets (BeyondIQCapital, Login 15514, ex-GoldASB/BTC-EMA-Cross): Verbindung fuer Funded Portfolio - IQ Markets (BeyondIQCapital, Login 15514, ex-GoldASB/BTC-EMA-Cross) (Login 15514) auch im zweiten Versuch fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-10005, 'IPC timeout')",
           "recent_events": []
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T10:00:55",
-      "minutes_since_last_run": 0.5,
+      "last_run": "2026-09-03T10:20:45",
+      "minutes_since_last_run": 10.7,
       "status": "ok",
-      "last_equity_line": "2026-09-03 10:00:55 Verbunden: Login 17764, Equity $100,000.00",
-      "last_error_line": "2026-09-03 10:00:55 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+      "last_equity_line": "2026-09-03 10:20:45 Verbunden: Login 17764, Equity $100,000.00",
+      "last_error_line": "2026-09-03 10:20:45 NY-Open-ORB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
       "recent_events": [
+        "2026-09-03 10:20:45 NY-Open-ORB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+        "2026-09-03 10:20:45 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
         "2026-09-03 10:00:55 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
         "2026-09-03 10:00:55 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
         "2026-09-03 08:16:32 NY-Open-ORB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",

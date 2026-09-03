@@ -2859,3 +2859,15 @@
 2026-09-03 21:35:14 S&P 500 (volles Universum, 420 Ticker)   FAST 2026-09-02  47.93       48.56  47.93  44.48                   53.11     53.11            7.20              13.89       True       True                            12.5 2026-09-03T21:35:13
 2026-09-03 21:35:14 S&P 500 (volles Universum, 420 Ticker)    SPG 2026-09-02 210.20      210.93 210.20 198.78                  227.32    227.32            5.43              18.41       True       True                            12.5 2026-09-03T21:35:13
 2026-09-03 21:35:14          Nasdaq-100 (alle ~103 Ticker)   FAST 2026-09-02  47.93       48.56  47.93  44.48 kein TP (finale Config)      0.00            7.20              13.89       True       True                            12.5 2026-09-03T21:35:13
+2026-09-03 21:35:14 [main a2b8ad9] OU-Modell Scanner: Snapshot 2026-09-03 21:35
+2026-09-03 21:35:14  2 files changed, 30 insertions(+), 3 deletions(-)
+2026-09-03 21:35:15 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-09-03 21:35:15  ! [rejected]        main -> main (fetch first)
+2026-09-03 21:35:15 error: failed to push some refs to 'https://github.com/AndrowDeluxe/Forex-Backtesting.git'
+2026-09-03 21:35:15 hint: Updates were rejected because the remote contains work that you do not
+2026-09-03 21:35:15 hint: have locally. This is usually caused by another repository pushing to
+2026-09-03 21:35:15 hint: the same ref. If you want to integrate the remote changes, use
+2026-09-03 21:35:15 hint: 'git pull' before pushing again.
+2026-09-03 21:35:15 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+2026-09-03 21:35:15 WARNUNG: git push fehlgeschlagen (Exit 1) - Commit liegt lokal vor, aber Streamlit Cloud zeigt ihn NICHT bis zum naechsten erfolgreichen Push.
+2026-09-03 21:35:15 === Scanner-Task beendet ===

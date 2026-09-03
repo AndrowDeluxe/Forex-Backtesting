@@ -27,8 +27,18 @@ Bots/Bridges über dieselbe gerade laufende Terminal-Instanz fahren.
    anlegen, mit dem Zielkonto einloggen, Pfad fest in der Bridge-Config
    hinterlegen -- nie auf "irgendein laufendes Terminal" verlassen.
 2. Im neuen Terminal: AutoTrading-Button aktivieren (grün) UND Extras ->
-   Optionen -> Experts -> "Automatisierten Handel zulassen" anhaken,
-   verifizieren bevor der Task live geht.
+   Optionen -> Experts -> "Automatisierten Handel zulassen" **UND
+   "DLL-Importe zulassen"** anhaken (2026-09-03 ergaenzt -- zwei getrennte
+   Haken, leicht zu uebersehen: AutoTrading kann bereits an sein, waehrend
+   DLL-Importe noch aus sind. Ohne DLL-Importe verbindet sich das Terminal
+   im Broker/GUI ganz normal, aber `MetaTrader5`-Python (nutzt eine
+   DLL-Bruecke) bekommt nur `mt5.initialize() (-10005, 'IPC timeout')` --
+   sieht wie ein Netzwerk-/Verbindungsproblem aus, ist aber ein reines
+   Terminal-Einstellungsproblem. Kostete am 2026-09-02/03 fast 24h
+   Fehlersuche fuer 2 neue Funded-Portfolio-Bridge-Konten, weil alle
+   bisherigen Terminals dieses Projekts das schon laengst gesetzt hatten und
+   niemand mehr daran dachte, es fuer ein BRANDNEUES Terminal zu pruefen).
+   Beide Haken verifizieren, bevor der Task live geht.
 3. Bridge/Executor: Kontonummer nach Connect gegen die erwartete
    Kontonummer prüfen und bei Abweichung hart sichtbar machen/failen
    (Pattern wie ORB's "connected to account X, expected Y" -- als Standard
@@ -122,3 +132,41 @@ alle jetzt Teil des Aufsetzungs-Prozesses, nicht nur einmalige Fixes:
     noetig -- braucht eigene Positions-Verwaltungslogik, die bei jedem
     Lauf alle offenen Positionen der eigenen `magic`-Nummer durchgeht.
     Nicht (b) fuer (a) ueberbauen oder umgekehrt (a) fuer (b) unterbauen.
+
+## Ergaenzung 2026-09-02 (Funded-Portfolio-Bridge-Erweiterungsversuch)
+
+11. **Vom Nutzer genannte MT5-Login-Nummer IMMER gegen alle Schwester-
+    Bridge-Configs cross-checken, BEVOR sie in eine `ACCOUNTS`-Liste mit
+    `DRY_RUN=False` geschrieben wird** -- auch wenn der Nutzer die Zugangs-
+    daten direkt liefert und explizit "ohne Vorab-Test sofort eintragen"
+    sagt. Konkreter Fund: zwei als "neu" gemeldete Konten waren tatsaechlich
+    bereits vergeben -- ein TTP-Login gehoerte zu `OU-Modell-MT5-Bridge`'s
+    echtem Live-Geld-Konto ("Konto 1"), ein IQ-Markets-Login war das von
+    `GoldASB-MT5-Bridge`/`BTC-EMA-Cross-Bridge` bereits geteilte Demo/Eval-
+    Konto. Beide waeren sonst innerhalb der naechsten 15 Minuten (Bridge-
+    Task-Intervall) live gehandelt worden -- entweder gegen ein fremdes
+    Echtgeld-Konto oder doppelt gegen ein bereits von zwei anderen Bots
+    genutztes Konto, ohne dass irgendeine der beiden Seiten von der anderen
+    weiss (kein gemeinsames Risiko-/Magic-Number-Handling zwischen
+    unabhaengigen Bridges). Ein einfaches `grep -r "<login>" ~/*-Bridge/
+    config.py` VOR dem Eintragen haette beide Faelle sofort aufgedeckt.
+    "Risiko akzeptiert, sofort eintragen" bezieht sich auf das Ueberspringen
+    von `check_symbols.py`/End-to-End-Dry-Run -- NICHT auf das Ueberspringen
+    des Kollisions-Checks gegen andere Konten.
+
+12. **"DLL-Importe zulassen" separat von AutoTrading pruefen** -- siehe
+    Schritt 2 oben, ergaenzt nach fast 24h Fehlersuche (2026-09-02/03) fuer
+    die beiden neuen Funded-Portfolio-Bridge-Konten. Zusaetzlicher, nie ganz
+    aufgeklaerter Nebenfund: von zwei am selben Tag ueber `mt5setup.exe`
+    frisch installierten Terminal-Ordnern verbindet sich EINER zuverlaessig
+    per Python, der ANDERE zuverlaessig NICHT -- unabhaengig davon, welches
+    Konto gerade darin eingeloggt ist (empirisch mehrfach mit vertauschten
+    Konten bestaetigt). Der Ordner-NAME sagt nichts darueber aus, welcher
+    der beiden "gesund" ist. Falls ein neu installiertes Terminal trotz
+    korrektem Login + beiden Haken (AutoTrading, DLL-Importe) weiter
+    `IPC timeout` wirft, ANDERES Konto testweise in denselben Ordner
+    einloggen (oder umgekehrt) -- verbindet es dann sauber, liegt es am
+    Ordner selbst, nicht am Konto. Pragmatischer Fix: Konto einfach dem
+    Ordner zuweisen, der nachweislich funktioniert, statt weiter zu
+    debuggen (Config-Kommentar bei `Funded-Portfolio-Bridge/config.py`s
+    `ttp1`/`iqmarkets2` als Beispiel).

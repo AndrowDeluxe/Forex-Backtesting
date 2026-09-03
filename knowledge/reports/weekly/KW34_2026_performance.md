@@ -17,8 +17,8 @@
 
 ## 1. Wochenkontext
 
-Aktive Bots/Legs in KW34 (Bridge-Ordner außerhalb des Repos, siehe
-[[paper_bots_status_20260826]]):
+Aktive Bots/Legs in KW34 (Bridge-Ordner außerhalb des Repos, siehe Memory:
+`paper_bots_status_20260826`):
 
 - **BTC-EMA-Cross-Bridge**: FK (BeyondIQCapital, Login 15514, geteilt mit
   Gold ASB) live seit 2026-08-20 (`DRY_RUN=False`); EK (Axi MT4, Demo)
@@ -27,7 +27,7 @@ Aktive Bots/Legs in KW34 (Bridge-Ordner außerhalb des Repos, siehe
   `DRY_RUN=True`** die ganze Woche - keine echten Orders. EK (Axi MT4,
   Demo) ebenfalls ohne bestätigte Order diese Woche. Im Repo lief parallel
   viel Strategie-Forschung (09:00-Checkpoint, Zins-Skalierung als Standard,
-  neuer Front-End-2Y-Filter - siehe [[cls_practical_strategy_state]]) -
+  neuer Front-End-2Y-Filter - siehe Memory: `cls_practical_strategy_state`) -
   das betrifft aber nur die Anzeige/den Backtest, nicht die (weiterhin
   Paper-)Bridge.
 - **CTNL-Edge-MT5-Bridge**: ging **mitten in der Woche live** -
@@ -100,7 +100,7 @@ beide portieren, bevor mehr Volumen über diese Konten läuft.
   `knowledge/areas/mt5-bot-deployment.md` dokumentiert, aber noch nicht
   behoben (trat am 08-26 und 08-27 erneut auf).
 - **CTNL Edge**: ging diese Woche live, aber 0 Signale ausgelöst - deckt
-  sich mit dem bereits in [[paper_bots_status_20260826]] aufgelösten
+  sich mit dem bereits in Memory `paper_bots_status_20260826` aufgelösten
   Fehlalarm (der Offline-Replay fand ebenfalls keine Signale im
   Live-Zeitraum). Zu früh für ein Urteil.
 - **OU-Modell**: einzige Bot-Familie mit nennenswertem echtem Handel diese

@@ -59,6 +59,7 @@ gleichgewichtet ueber SP500/US30/NASDAQ) statt eine unbelegte Zahl zu
 erfinden -- bei Bedarf spaeter gezielt hochstufen."""
 
 import json
+import threading
 import time
 from pathlib import Path
 
@@ -70,7 +71,36 @@ from strategy.backtest import BacktestConfig, simulate_trades
 from strategy.schedule_guard import is_market_paused
 
 
-def _retry(fn, attempts: int = 6, delay_seconds: float = 8.0):
+def _call_with_timeout(fn, timeout_seconds: float):
+    """Laesst fn() in einem Daemon-Thread laufen, wartet maximal timeout_seconds.
+    Fund 2026-09-02 (Abend, auf Funded-Portfolio-Bridge beobachtet, identischer
+    Code hier): dukascopy_python haengt manchmal OHNE jemals eine Exception zu
+    werfen -- 23 python.exe-Prozesse liefen dadurch stundenlang fest, `Stop-
+    Process` war der einzige Weg raus (siehe knowledge/CHANGELOG.md). Ein
+    echter Thread-Abbruch ist in Python nicht moeglich -- der haengende Aufruf
+    laeuft im Hintergrund weiter, aber `daemon=True` verhindert, dass ER den
+    Prozess am saubern Beenden hindert, und der Hauptablauf blockiert dadurch
+    nie wieder unbegrenzt."""
+    result: list = []
+    error: list = []
+
+    def _target():
+        try:
+            result.append(fn())
+        except Exception as e:
+            error.append(e)
+
+    t = threading.Thread(target=_target, daemon=True)
+    t.start()
+    t.join(timeout_seconds)
+    if t.is_alive():
+        raise TimeoutError(f"Aufruf haengt noch nach {timeout_seconds:.0f}s (dukascopy_python-Hang, siehe DASHBOARD.md)")
+    if error:
+        raise error[0]
+    return result[0]
+
+
+def _retry(fn, attempts: int = 6, delay_seconds: float = 8.0, timeout_seconds: float = 90.0):
     """dukascopy_python's Streaming-Client wirft gelegentlich ein KeyError(0)
     ODER (Fund 2026-09-02, CLS Practical auf EK-Portfolio-Bridge, 3x
     hintereinander ueber 45 Min. beobachtet) ein TypeError ("'>' not
@@ -79,11 +109,14 @@ def _retry(fn, attempts: int = 6, delay_seconds: float = 8.0):
     (reproduzierbar bei fast jedem Live-Abruf bis zum aktuellen Moment) --
     bekannte Instabilitaet der Drittanbieter-Bibliothek, kein Fehler in
     unserem Code. attempts/delay_seconds 2026-09-02 von 3x/5s auf 6x/8s
-    erhoeht, nachdem 3 Versuche im obigen Fall nicht ausgereicht haben."""
+    erhoeht, nachdem 3 Versuche im obigen Fall nicht ausgereicht haben. Jeder
+    Versuch laeuft jetzt zusaetzlich durch _call_with_timeout() (siehe
+    dortiger Docstring) -- ein haengender Versuch zaehlt wie jeder andere
+    Fehlversuch, statt den ganzen Bridge-Lauf fuer immer zu blockieren."""
     last_exc = None
     for attempt in range(attempts):
         try:
-            return fn()
+            return _call_with_timeout(fn, timeout_seconds)
         except Exception as e:
             last_exc = e
             if attempt < attempts - 1:

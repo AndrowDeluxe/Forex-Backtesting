@@ -997,3 +997,9 @@
 2026-08-31 16:56:28   "n_trades": 41,
 2026-08-31 16:56:28   "kill_switch_active": false
 2026-08-31 16:56:29 }
+2026-08-31 16:56:29 [main 9ca49b8] CTNL Edge FK-Paper: Snapshot 2026-08-31 16:56
+2026-08-31 16:56:29  3 files changed, 24 insertions(+), 1 deletion(-)
+2026-08-31 16:56:31 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-31 16:56:31    118f951..9ca49b8  main -> main
+2026-08-31 16:56:31 Commit + Push erfolgreich.
+2026-08-31 16:56:31 === CTNL-Edge-FK-Paper-Task beendet ===

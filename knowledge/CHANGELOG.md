@@ -37,6 +37,351 @@ keine Planung (dafür ist `DASHBOARD.md`).
   Risiko-/Entry-Exit-Logik angefasst. Nur `py_compile` auf beiden
   geänderten Dateien geprüft (kein pandas/dukascopy_python in dieser
   Sandbox installierbar, kein echter Live-Lauf abgewartet).
+- **2026-09-03** [Funded-Portfolio-Bridge] **Scheduled-Task-Zeitlimit 14 -> 40
+  Minuten angehoben, Diagnostik fuer bekannte vs. neue Scan-Fehler ergaenzt,
+  OU-Modell-Nichtauftreten auf ttp1/iqmarkets2 aufgeklaert (kein Bug).**
+  Beim Live-Beobachten des ersten Laufs nach dem Scan-Dedup-Umbau (Nutzerbitte
+  "beobachte den Live Lauf") gefunden: der Lauf ab 14:00:00 wurde nach 15 Min.
+  zwangsbeendet (`ExecutionTimeLimit: PT14M`, Task-Ergebnis 267009, kein
+  sauberes "beendet" im Log) -- der Scan-Dedup-Umbau buendelt jetzt ALLE 6
+  Scans fuer ALLE 4 Konten in einer Phase VOR der Kontoverarbeitung, wodurch
+  ein Haenger dort (mehrere dukascopy-Retry-Erschoepfungen an diesem Tag)
+  locker ueber 14 Minuten dauern kann -- Nebenwirkung des Umbaus, vorher
+  haetten wenigstens frueher verarbeitete Konten ihre Order schon platziert
+  gehabt. `MultipleInstances=IgnoreNew` verhindert zuverlaessig echte
+  Ueberlappung (bestaetigt per Prozessliste), daher Zeitlimit einfach auf 40
+  Minuten angehoben (Nutzerauftrag) statt das Retry-Budget zu kuerzen.
+  Zusaetzlich `_record_scan_error()`/`_send_daily_summary()` erweitert:
+  zaehlt jetzt getrennt, wie viele Scan-Fehler pro Bein dem bereits
+  dokumentierten dukascopy-Bug (`_stream()` Zeile 219 ODER
+  `dukascopy_python-Hang` ODER `KeyError(0)`) zuzuordnen sind vs. echten NEUEN
+  Fehlern -- Tagesabschluss zeigt jetzt z.B. "ctnl_edge (2x, davon 1x
+  bekannter dukascopy-Bug)" statt einer nackten Zahl. Per synthetischem Test
+  verifiziert, inkl. sauberer Migration alter Nur-Zahl-Eintraege. Dabei auch
+  geklaert, wieso OU-Modell auf den beiden neuen Konten (ttp1/iqmarkets2)
+  bisher nichts tat: deren `account_start` liegt (durch die erst heute
+  gelungene Erstverbindung) NACH dem heutigen OU-Modell-Tagessignal
+  (Mitternacht) -- der bestehende account_start-Schutzfilter blendet das
+  Signal fuer sie korrekt aus, kein Bug, loest sich mit dem naechsten
+  Tagessignal von selbst. Nebenbefund: `ttp` platzierte FAST+ADI heute schon
+  real, `iqmarkets` (noch auf dem alten, unabhaengigen Scan-Stand) nicht --
+  genau die Divergenz, die der Scan-Dedup-Umbau kuenftig verhindern soll.
+- **2026-09-03** [tradingview/data.py] **TradingView-Pro-Login entfernt —
+  Ursache fuer taeglich hunderte `ERROR:tvDatafeed.main:error while signin`
+  in Funded-Portfolio-Bridge + FK Instant Funding gefunden.** Nutzerfrage
+  nach den taeglichen Datenfehlern (siehe DASHBOARD, "MT5 statt Dukascopy?")
+  fuehrte zu diesem separaten Fund: TradingView verlangt seit einiger Zeit
+  ein Captcha beim Passwort-Login, das die `tvDatafeed`-Bibliothek nicht
+  loesen kann (offenes, seit 2024-12-07 ungeloestes Upstream-Issue,
+  github.com/rongardF/tvdatafeed/issues/62, "recaptcha_required") — jeder
+  Login-Versuch schlug seit mind. 2026-09-01 13:04 zuverlaessig fehl, ohne
+  Bot-Ausfall (nur Log-Spam), da die Bibliothek intern anonym weiterlief.
+  `_client()` in `tradingview/data.py` versucht den Login jetzt gar nicht
+  mehr (anonymer Zugriff war laut `cls_practical/rates.py`-Docstring schon
+  vor Einfuehrung des Pro-Logins nachweislich ausreichend, DE02Y/US02Y bis
+  2014 zurueck). `tradingview/_secrets.py` entfernt (dadurch verwaist).
+  Smoke-getestet: `fetch_ohlcv("DE02Y", "TVC", ...)` liefert saubere,
+  aktuelle Daten ohne Fehlermeldung.
+- **2026-09-03** [Funded-Portfolio-Bridge] **Redundante Scans behoben — 6
+  Strategie-Scans laufen jetzt 1x pro Bridge-Lauf statt 1x pro Konto.**
+  Umsetzung der bereits im DASHBOARD skizzierten Idee (Nutzerauftrag nach
+  Ruecksprache: MT5 als Datenquellen-Ersatz geprueft und verworfen, da die 4
+  TTP/IQ-Konten nur 9 der ~30 gebrauchten Instrumente abdecken — stattdessen
+  die Redundanz selbst beseitigen). `run_once.py`: neue `run_shared_scans(end)`
+  fuehrt alle 6 Scans (`pb._scan_gold_asb/_cls_practical/_trend_pullback/
+  _ctnl/_ou_modell/_orb`) einmal aus und gibt pro Bein Ergebnis ODER
+  Exception zurueck; `process_account_signals()` verarbeitet daraus nur noch
+  (kein eigener Scan-Aufruf mehr), `main()` scannt einmal VOR der
+  Konten-Schleife und reicht das Ergebnis an alle 4 Konten durch. Viertelt
+  die dukascopy/tvDatafeed-Anfragen pro Zyklus; ein Scan-Fehler betrifft
+  jetzt deterministisch alle 4 Konten gleich statt zufaellig nur eines
+  (vorher beobachtet: "TTP 5 Fehler, IQ 0, reiner Zufall im Timing"). Per
+  Smoke-Test verifiziert (`run_shared_scans()` direkt aufgerufen): lief
+  fehlerfrei durch, isolierte 3 von 6 aktuell dukascopy-bedingt fehlschlagende
+  Beine korrekt einzeln (siehe Eintrag oben zum `_stream()`-Bug — bereits
+  bekannt, kein neuer Fehler). Kein echter Live-Lauf ueber Task Scheduler
+  abgewartet.
+- **2026-09-03** [Funded-Portfolio-Bridge] **Alle 4 Konten verbinden jetzt —
+  IPC-Timeout-Saga nach fast 24h abgeschlossen.** Root Cause hatte am Ende
+  ZWEI Teile: (1) **"DLL-Importe zulassen"** (Extras -> Optionen ->
+  Experten-Berater) war in beiden neu installierten Terminals aus — eine
+  von "Automatisierten Handel zulassen"/AutoTrading GETRENNTE Einstellung,
+  die die `MetaTrader5`-Python-Bruecke selbst braucht; ohne sie verbindet
+  sich das Terminal im Broker ganz normal (GUI zeigt korrektes Login), aber
+  `mt5.initialize()` bekommt zuverlässig `IPC timeout`. Neu in
+  `knowledge/areas/mt5-bot-deployment.md` (Schritt 2 + neuer Punkt 12)
+  aufgenommen. (2) Selbst danach blieb EINER der zwei neu installierten
+  Terminal-ORDNER strukturell defekt, UNABHAENGIG vom eingeloggten Konto
+  (empirisch bestaetigt: Nutzer tauschte die Konten zwischen beiden
+  Terminals, der "gesunde" Ordner blieb gesund, der "kranke" blieb krank —
+  nie geklaert warum). Pragmatischer Fix statt weiterer Fehlersuche: Konten
+  in `Funded-Portfolio-Bridge/config.py` dem Ordner zugewiesen, der
+  nachweislich funktioniert (`ttp1`/504069845 -> Ordner "IQ MT5 Terminal -
+  Konto1", `iqmarkets2`/15514 -> Ordner "TTP MT5 Terminal Konto1neu" —
+  Ordnernamen jetzt bewusst irrefuehrend, im Code kommentiert). Ausserdem
+  ausprobiert und wieder verworfen: Terminal-Verzeichnis-Kopien statt echter
+  Installation (nicht die Ursache), Rechner-Neustart (behob nichts),
+  `MetaTrader5`-Python-Paket-Upgrade 5.0.5735->5.0.6147 (Installation von
+  einem laufenden `run_once.py`-Prozess blockiert, dann durch den DLL-Fund
+  ueberholt — Upgrade am Ende nicht mehr noetig, alte Paketversion
+  funktioniert mit dem finalen Fix einwandfrei). Verifiziert:
+  `test_connection.py` zeigt alle 4 Konten (504072729/16054/504069845/15514)
+  mit `Verbindung erfolgreich`, `AutoTrading: True`, plausible Balances.
+  Naechster echter Live-Lauf (naechste 15-Min-Taktung) ist der erste
+  produktive Test mit allen 4 Konten.
+- **2026-09-03** [Weekly-Report] **Education-Report-Prompt um festen Punkt
+  "Neues Wissen diese Woche (Papers/Ideen)" ergaenzt.** Nutzerwunsch: neu
+  gesammeltes Research-Wissen (Papers, Strategie-Ideen) und Eintraege aus
+  der DASHBOARD-Ideen-Inbox sollen regelmaessig im Weekly/Monthly Education
+  Journal auftauchen, nicht nur beilaeufig beim Verarbeiten eines
+  Clippings-Batches erwaehnt werden. `scripts/reports/weekly_report_prompt.md`
+  Report 2 (Education) hatte dafuer noch keinen expliziten Punkt -- neuer
+  Punkt 4 weist den (unbeaufsichtigten) Report-Generator an, `git log
+  --since="7 days ago" -- knowledge/resources/ knowledge/projects/` sowie
+  neue Ideen-Inbox-Eintraege in `knowledge/DASHBOARD.md` seit dem letzten
+  Report zu pruefen und kurz zu nennen (Titel/Kernaussage, `[[slug]]`-Link),
+  auch wenn noch nichts Konkretes draus wurde. Nachfolgende Punkte 4-6 zu
+  5-7 umnummeriert. `scripts/reports/monthly_report_prompt.md` verweist nur
+  auf "gleiche Struktur wie Weekly" (kein eigener nummerierter Abschnitt),
+  erbt die Ergaenzung deshalb automatisch, keine separate Aenderung noetig.
+  Reine Prompt-/Markdown-Anpassung, kein Code -- erster echter Beweis ist
+  der naechste automatische Sonntagabend-Lauf.
+
+- **2026-09-02** [EK/Challenge/FK Instant Funding] **Tagesabschluss-Uhrzeit von
+  21 auf 22 Uhr verschoben, alle 4 Kopien der Konstante.** Nutzerauftrag nach
+  Nachfrage zur TTP/IQ-Zeitversatz-Ursache: der beobachtete 1h-Versatz kam vom
+  dukascopy-Hang (bereits gefixt), 22 Uhr war aber ohnehin die vom Nutzer
+  urspruenglich gewuenschte Zielzeit fuer den gemeinsamen Tagesabschluss aller
+  3 Portfolios. `DAILY_SUMMARY_HOUR_LOCAL`/`DAILY_SUMMARY_HOUR` 21->22 in
+  `EK-Portfolio-Bridge/run_once.py`, `Funded-Portfolio-Bridge/run_once.py`,
+  `fk_instant_funding/paper_bot.py`, `challenge_portfolio/paper_bot.py`
+  (letzterer aktuell nicht scheduled, nur fuer Konsistenz mitgezogen).
+  Strukturelle Feinsynchronisierung (Funded-Portfolio-Bridges 4 Konten
+  parallel statt sequenziell verarbeiten) bewusst NICHT umgesetzt -- Nutzer
+  will erst den naechsten echten 22-Uhr-Tagesabschluss beobachten, bevor
+  entschieden wird, ob der verbleibende Minuten-Versatz noch stoert. Nur
+  `py_compile`-geprueft, kein echter Live-Lauf abgewartet.
+- **2026-09-02** [Prozess/CLAUDE.md] **Neue Standardregel: nicht-offensichtliche
+  Erkenntnisse proaktiv in die Memory statt nur auf Zuruf.** Nutzeranstoß:
+  Frage, ob es für den Weekly-Checkup-Education-Report ("Meine Main
+  Erkenntnisse") schon einen Standardprozess gibt oder ob dafür jedes Mal
+  ein expliziter Befehl nötig ist — Anlass war der zuvor manuell
+  festgehaltene ORB-Per-Konto-Exit-Divergenz-Fund (siehe Memory
+  `orb-per-account-exit-divergence-20260902`). Nutzerentscheid (per
+  Rückfrage): feste Regel statt Zuruf-only. `CLAUDE.md` Punkt 7 ergänzt
+  (Operative Übersicht) — Architektur-Erkenntnisse/überraschendes
+  Systemverhalten/wiederkehrende Muster künftig eigenständig als
+  Memory-Eintrag (Typ `project`) festhalten, da der wöchentliche
+  `Forex-Weekly-Report`-Task laut `scripts/reports/weekly_report_prompt.md`
+  für den Education-Report automatisch `MEMORY.md` liest. Abgrenzung zur
+  Ideen-Inbox (Punkt 5, unentschiedene künftige Arbeit) explizit vermerkt.
+- **2026-09-02** [Prozess/CLAUDE.md] **Punkt 7 präzisiert: Schwelle statt
+  "jeder Fund".** Nutzer-Feedback direkt im Anschluss an obigen Eintrag:
+  nicht jede Kleinigkeit soll in die Memory, nur spürbar größere
+  Fortschritte/Optimierungen/"spannende" Themen — UND/ODER wenn der Nutzer
+  sichtbar positiv reagiert (auch bei einem für sich kleineren Fund gilt
+  die Reaktion dann als eigenständiger Auslöser). Zwei Signale statt eins,
+  je eins reicht; im Graubereich lieber kurz anbieten statt schweigend
+  übergehen oder schweigend jede Kleinigkeit mitschreiben. Routine-
+  Änderungen bleiben wie zuvor nur im Changelog (Punkt 1), nicht in der
+  Memory.
+- **2026-09-02** [Prozess/CLAUDE.md] **Punkt 7 nochmal präzisiert: im
+  Zweifelsfall aktiv fragen statt nur "anbieten".** Nutzer-Feedback direkt
+  im Anschluss: bei unklaren Fällen (Fund wirkt bedeutsam, aber keine
+  klare Nutzerreaktion) soll Claude explizit nachfragen, ob geloggt werden
+  soll, statt es nur beiläufig zu erwähnen/anzubieten. Eindeutige Fälle
+  (Schwelle klar erfüllt) weiterhin ohne Rückfrage direkt in die Memory.
+- **2026-09-02** [EK-Portfolio-Bridge] **Risiko-Deckel-Skip-Warnungen spammten
+  bei jedem Lauf identisch weiter, jetzt einmal pro Tag+Signal.**
+  Nutzer-Feedback (Screenshot: dieselbe "[EK-ORB] Risiko-Deckel erreicht,
+  SP500/US30-Entry uebersprungen"-Meldung kam 22:37 und 22:49 wortgleich
+  wieder). Root Cause: `check_cap()`-Skip-Pfad in 5 Bein-Executors
+  (`legs/gold_asb`, `legs/btc_ema_cross`, `legs/ctnl_edge`, `legs/ou_modell`,
+  `legs/ny_open_orb`) rief `queue_message()` bisher UNBEDINGT bei jedem
+  einzelnen Lauf auf, ohne jede Dedup-Logik -- anders als z.B. Funded-
+  Portfolio-Bridges "missed"-Signal-Tracking. Fix: neue
+  `already_notified_risk_cap_skip(leg_key, day)` / `mark_risk_cap_skip_
+  notified(leg_key, day)` in `core/state_store.py` (SQLite-Tabelle
+  `risk_cap_notified`, PK `(day, leg_key)`), in allen 5 Executors vor dem
+  `queue_message()`-Aufruf eingebaut -- `leg_key` traegt die volle
+  Signal-Granularitaet (z.B. `orb_SP500`, `ou_modell_ADI`,
+  `ctnl_continuation`). Per Smoke-Test gegen isolierte Test-DB verifiziert
+  (initial ungemeldet -> nach Markierung gemeldet -> unabhaengige
+  Instrumente getrennt getrackt -> doppeltes Markieren harmlos -> neuer Tag
+  setzt zurueck). Kein echter Live-Lauf seitdem abgewartet.
+- **2026-09-02** [EK-Portfolio-Bridge] **Per-Bein-Timeout in allen Live-Bridges
+  umgesetzt (Nutzerauftrag) — dabei eigene Duplikate wieder entfernt, da eine
+  parallele Session dieselbe Absicherung bereits an der richtigen Stelle
+  gebaut hatte.** Erst versucht: einen `_with_timeout()`-Wrapper direkt um
+  jeden Bein-Scan in `Funded-Portfolio-Bridge/run_once.py`,
+  `EK-Portfolio-Bridge/run_once.py` und `FKInstantFunding-MT5-Bridge/
+  run_once.py` gelegt. Beim Pruefen aufgefallen: der eigentliche Fund (siehe
+  Eintrag weiter unten, `_call_with_timeout()` in allen 3 `_retry()`-Kopien)
+  war bereits genau dafuer gebaut, nur eine Ebene tiefer (innerhalb `_retry()`,
+  90s x 6 Versuche). Mein aeusseres 120s-Limit haette diese geduldigere
+  Mehrfachversuch-Logik fuer GENAU die Beine, die `_retry()` nutzen
+  (gold_asb/cls_practical/ctnl_edge), vorzeitig abgewuergt statt sie ergaenzt.
+  Deshalb: Funded-Portfolio-Bridge und FKInstantFunding-MT5-Bridge komplett
+  zurueckgesetzt (dort nutzen ALLE Beine `_retry()`, der aeussere Wrapper war
+  dort 100% redundant). In EK-Portfolio-Bridge/run_once.py::`_run_leg()`
+  blieb der Wrapper, ABER auf `LEG_TIMEOUT_S=600` (statt 120) angehoben --
+  muss ueber `_retry()`s eigenem ~588s-Worst-Case liegen, damit er die 3
+  dukascopy-Beine nicht stoert, deckt dafuer zusaetzlich die 6 EK-Beine ab,
+  die KEIN `_retry()` verwenden (orb, trend_pullback, gold_silver,
+  btc_ema_cross, ou_modell) und bisher gar keinen Hang-Schutz hatten -- das
+  ist der einzige echte Mehrwert gegenueber dem bereits vorhandenen Fix.
+  Alle 3 Dateien `py_compile`-geprueft, kein echter Live-Lauf mit einem
+  Hang seitdem abgewartet.
+- **2026-09-02** [EK/Challenge/FK Instant Funding] **Harter Timeout gegen den
+  dukascopy_python-Hang in allen 3 `_retry()`-Kopien (`ek_portfolio/paper_bot.py`,
+  `challenge_portfolio/paper_bot.py`, `fk_instant_funding/paper_bot.py`).**
+  Nutzerentscheid nach Nachfrage zu inkonsistenten Tagesabschluessen (TTP
+  Konto2 zeigte 5 Scan-Fehler heute, IQ Markets 0 -- reiner Zufall, da jedes
+  der 4 Funded-Portfolio-Bridge-Konten dieselben 6 Scans unabhaengig
+  voneinander neu zieht, 4-fache Exposition gegenueber der bekannten
+  Bibliotheks-Instabilitaet). Neue Funktion `_call_with_timeout()`: fn()
+  laeuft in einem Daemon-Thread, `_retry()` wartet pro Versuch maximal
+  `timeout_seconds=90.0`; ueberschritten, zaehlt der Versuch als
+  gescheitert (TimeoutError) und wird wie jeder andere Fehler behandelt --
+  identisches Verhalten fuer den bereits bekannten KeyError/TypeError-Fall,
+  zusaetzlich jetzt auch fuer den STILLEN Hang (23 Prozesse liefen dadurch
+  frueher am Abend stundenlang fest, siehe Eintrag weiter unten). Ein echter
+  Thread-Abbruch ist in Python nicht moeglich -- der haengende Aufruf laeuft
+  im Hintergrund weiter, aber `daemon=True` verhindert, dass er den Prozess
+  am sauberen Beenden hindert. Verifiziert per eigenem Smoke-Test
+  (`hangs_forever()` mit `time.sleep(999)`): `_retry()` bricht nach exakt der
+  erwarteten Zeit sauber mit `TimeoutError` ab, normales Retry-Verhalten
+  (transiente Fehler) unveraendert korrekt, UND der Prozess beendet sich
+  trotz des im Hintergrund weiterlaufenden Hang-Threads sofort sauber (Exit
+  Code 0, keine Leiche zurueckgelassen). Alte, mit dem ungefixten Code
+  gestartete haengende Prozesse (22:00/22:06/22:55/23:15) danach beendet --
+  naechster Scheduled-Task-Lauf nutzt automatisch den neuen Code. Kein echter
+  Live-Lauf mit echtem dukascopy-Hang seitdem abgewartet (nur der
+  synthetische Smoke-Test), aber Mechanismus isoliert bewiesen.
+- **2026-09-02** [Funded-Portfolio-Bridge] **Root Cause fuer die IPC-Timeouts der
+  zwei neuen Konten gefunden: kopierte statt echt installierte Terminals.**
+  Ausfuehrlich getestet (isolierter Python-Prozess, sequenzielles statt
+  gleichzeitiges Starten, `portable=True`, bis zu 60s Wartezeit/Timeout,
+  Terminal-Ersatz FK2->CLSPractical-Kopie): alle Varianten weiterhin
+  `IPC timeout`, obwohl das Terminal-Fenster nachweislich korrekt eingeloggt
+  ist und AutoTrading an ist (`term.trade_allowed=True`) -- einmal bestaetigt
+  per direktem `account_info()`-Check NACH einem als "fehlgeschlagen"
+  gemeldeten `login()`: Server-seitig hatte der Login tatsaechlich geklappt,
+  nur die Bestaetigung kam nicht rechtzeitig zurueck. Die 2 URSPRUENGLICHEN
+  Konten (Login 504072729, 16054) verbinden dagegen bei JEDEM Test sofort
+  fehlerfrei. Vermutete Ursache: eine echte MT5-Installation registriert
+  etwas fuers Python-IPC, das eine reine Verzeichnis-Kopie (wie meine
+  `TTP MT5 Terminal - Konto3`/`IQ MT5 Terminal - Konto2`, urspruenglich aus
+  den ruhenden FK1/FK2-Installationen kopiert) nicht mitbringt -- alle 4
+  bisher funktionierenden Terminals in diesem Projekt sind echte
+  Installationen. Versuch, `C:\Users\andre\Downloads\mt5setup.exe` per
+  `/auto /dir=...` still in einen neuen Ordner zu installieren, schlug fehl
+  (Installer liess sich nicht zuverlaessig per Kommandozeile steuern).
+  **Kein Order wurde in der gesamten Fehlersuche riskiert** -- jeder
+  Fehlversuch endete sauber mit einem Verbindungsfehler, nie mit einer
+  falschen Order; die 2 bestehenden Live-Beine sind komplett unberuehrt.
+  Nutzerentscheid: macht die 2 echten MT5-Installationen selbst (GUI,
+  ~60 Sek. pro Konto) statt weiterer automatisierter Versuche -- ich trage
+  danach die neuen Pfade in `config.py` ein und teste erneut.
+- **2026-09-02** [OU-Modell-Scanner] **3 Tagesscans (15:35/18:35/21:35) senden
+  jetzt eine Telegram-Zusammenfassung** (Nutzerauftrag, nachdem entschieden
+  wurde, `OU-Modell-ScannerHourly` fuer die Streamlit-Seite weiterlaufen zu
+  lassen statt komplett auf Telegram umzustellen). Neu: `ou_paper_backtest/
+  telegram_notify.py` + `telegram_config.py`/`.example.py` (identisches
+  Muster wie `fk_instant_funding/telegram_notify.py`, `telegram_config.py`
+  in `.gitignore`, gleicher Bot/Chat wie alle anderen Bots dieses Users).
+  `scanner.py::main()` sendet nur bei den 3 genannten Zeiten (+/-10 Min.
+  Toleranz) eine Nachricht mit Signalen je Markt oder "Keine Signale" --
+  NICHT bei den anderen 5 taeglichen Task-Scheduler-Laeufen. Der
+  `telegram_notify`-Import ist bewusst in `try/except ImportError`
+  gekapselt: `challenge_portfolio/paper_bot.py::_import_ou_paper_backtest()`
+  laedt `scanner.py` per `importlib.util.spec_from_file_location` OHNE
+  `ou_paper_backtest/` auf `sys.path` -- dieser Pfad treibt die LIVE
+  Funded-Portfolio-Bridge (OU-Modell-Bein), ein harter Import haette sie
+  kaputt gemacht. Verifiziert: `py_compile` aller 4 neuen/geaenderten
+  Dateien, Zeitfenster-/Format-Logik isoliert getestet, UND der isolierte
+  Live-Lade-Pfad (`_import_ou_paper_backtest()`) laeuft weiterhin fehlerfrei
+  mit dem No-Op-Fallback.
+- **2026-09-02** [Streamlit/Portfolio-Konstruktion] **Neuer Tab "Challenge-Portfolio
+  (live)" auf `app_pages/portfolio_construction.py`** — Nutzerauftrag, EK+Challenge
+  mit aktuellen Backtest-Zahlen zu aktualisieren. Bisher zeigte die Seite nur einen
+  generischen "FK-Portfolio"-Tab (aeltere 5-Bein-Konzeptstufe ohne ORB), obwohl
+  `portfolio_construction/results/challenge_portfolio_6leg.json` (aus
+  `scripts/research_challenge_portfolio_6leg.py`) bereits die Zahlen der tatsaechlich
+  LIVE laufenden 6-Bein-Kombination (Gold ASB, CLS Practical, OU-Modell, Trend
+  Pullback, CTNL Edge, NY-Open ORB) enthielt, aber nirgends in der UI verdrahtet war.
+  Neuer Tab zeigt: TTP/IQ-Markets-Regelwerk-Badges (Tageslimit/Gesamt-Drawdown/
+  Gewinnziel), alle 6 aktuellen Beine, 5-vs-6-Beine-Vergleich (Outcome-Bar +
+  Median-Tage-bis-Ziel je Regelwerk), Kennzahlen-Kacheln, Equity-Kurve. Per
+  Playwright-Browsertest verifiziert (beide Regelwerke durchgeklickt, gescrollt,
+  `stException`-Check + Konsolen-Fehler-Check) — keine Fehler. EK-Tabs nicht
+  angefasst, wirkten bereits aktuell (CTNL-Erweiterung als 8. Strategie schon
+  vorhanden). **Nachtrag selber Abend:** Nutzer meldete "ORB-Bein fehlt
+  komplett" — Ursache war Tab-Position: der neue Tab sass an 6. Stelle neben
+  dem aehnlich benannten alten "FK-Portfolio"-Tab (bewusst ohne ORB), leicht
+  verwechselbar/uebersehen. Tab auf Nutzerwunsch ("verschiebe die finale
+  aktuell genutzte Konfiguration ganz oben") an die ERSTE Stelle verschoben
+  (`tab_challenge` jetzt zuerst in `st.tabs([...])` UND im Lazy-Dispatch,
+  Label ergaenzt um "6 Beine" fuer sofortige Erkennbarkeit) — Streamlit
+  oeffnet den ersten Tab automatisch, ORB ist damit ohne Klick sichtbar. Per
+  Playwright erneut verifiziert (kein Tab-Klick noetig, Screenshot zeigt
+  Challenge-Tab direkt offen mit allen 6 Beinen inkl. NY-Open ORB) — keine
+  Fehler.
+- **2026-09-02** [Funded-Portfolio-Bridge] **OU-Modell-Bein: Signal-Alter-Bremse
+  gefixt, Preis-Abweichungs-Check ergaenzt, Prozess-Stau bereinigt, manueller
+  Nachhol-Lauf gebaut — kein neuer Entry heute moeglich (NYSE zu + 2 Konten
+  ohne Verbindung).** Nutzeranstoss: "bei OU macht diese Bremse keinen Sinn".
+  Root Cause: `MAX_SIGNAL_AGE_MINUTES_FOR_ENTRY=60` in `run_once.py::
+  _process_leg()` verglich bei OU-Modell (Tages-Bar-Datum als `entry_time`,
+  kein Intraday-Zeitstempel wie bei ORB) strukturell IMMER >60 Min. seit
+  Mitternacht des Signaltags — hat NICHT vor alten Signalen geschuetzt,
+  sondern JEDES frische OU-Modell-Signal blockiert (identischer Bug-
+  Charakter wie der `include_open_positions`-Fund vom selben Tag, nur einen
+  Schritt weiter). Referenz `EK-Portfolio-Bridge/legs/ou_modell/executor.py`
+  hat gar keine Alters-Pruefung, nur das NYSE-Gate. Fix (Nutzerentscheid,
+  nicht komplette Ausnahme): neue `MAX_SIGNAL_AGE_DAYS_FOR_ENTRY_OU_MODELL=2`
+  fuer `leg.startswith("ou_modell")`, Minuten-Regel unveraendert fuer alle
+  anderen Beine. Zusaetzlich (Nutzerentscheid): neuer Preis-Abweichungs-Check
+  `MAX_OU_MODELL_ENTRY_DEVIATION_PCT=0.035`, identisch zu EK's bereits live
+  bewaehrtem `OU_MODELL_MAX_ENTRY_DEVIATION_PCT` — Entry nur, wenn der
+  Live-Kurs (`mt5.symbol_info_tick`) noch max. 3,5% vom Signal-Kurs entfernt
+  ist, sonst "missed" statt einem laengst gelaufenen Kurs hinterherzujagen.
+  Beim Nachpruefen zusaetzlich gefunden: **23 haengende `python.exe`-Prozesse**
+  (`run_once.py` UND `fk_instant_funding.paper_bot`, Start alle 15 Min von
+  15:45 bis 21:45 durchgezogen, keiner je beendet) — vermutlich derselbe
+  bereits dokumentierte `dukascopy_python`-Bug (siehe DASHBOARD.md), diesmal
+  ohne Timeout komplett blockierend statt nur langsam. Alle 23 beendet
+  (`Stop-Process`); ein sofortiger frischer `run_once.py`-Testlauf haengte
+  SOFORT wieder in `gold_asb` fest — **Root Cause NICHT behoben, nur der
+  Rueckstau bereinigt**, naechster Scheduled-Task-Lauf haengt vermutlich
+  erneut. Fuer den Nachholbedarf ("hole die Entries aller Aktien nach")
+  deshalb neues Wegwerf-Skript `catchup_ou_modell.py` gebaut — ruft NUR den
+  OU-Modell-Scan+Entry-Block auf, an den haengenden Beinen (gold_asb/
+  cls_practical/trend_pullback/ctnl) vorbei, sonst identische Logik
+  (State/Sizing/Risk-Gate) wie `run_once.py`. Lauf heute Abend: `ttp`/
+  `iqmarkets` (Demo) verbanden sauber, aber `_nyse_is_open()` war bereits
+  False (Handelsschluss) — keine neuen Entries erlaubt, nur Exit-Pfad aktiv.
+  `ttp1` (echtes Geld, Konto 1)/`iqmarkets2` weiterhin `IPC timeout` — GUI-
+  Login (siehe DASHBOARD.md) noch nicht nachgeholt. Ergebnis: **heute Abend
+  keine einzige Order gesendet**, weder automatisch noch manuell. Nur
+  `py_compile`-geprueft, kein echter Order-Versand verifiziert.
+- **2026-09-02** [Funded-Portfolio-Bridge] **Verbindungstest der zwei neuen
+  Konten deckt Terminal-Verwechslung auf, kein Order gesendet.**
+  `test_connection.py` (reiner Lese-Test) gegen alle 4 Konten gelaufen: die
+  zwei bestehenden Konten OK (dabei nebenbei Trade-Modus geprueft: TTP
+  Konto 2 ist `demo`, IQ Markets 16054 ist laut MT5 selbst `real`, trotz
+  Namens "Demo Challenge"). Die zwei neuen Terminals (`TTP MT5 Terminal -
+  Konto3`, `IQ MT5 Terminal - Konto2`, frische Kopien der ruhenden FK1/FK2-
+  Installationen) zeigten wiederholt IPC-Timeouts bzw. verbanden sich mit
+  dem JEWEILS FALSCHEN Konto (Konto3-Pfad landete bei Login 15514) — die
+  eingebaute Kontonummer-Verifikation (identisch zu `executor.py::connect()`)
+  hat das jedes Mal erkannt und abgebrochen, **kein Order gesendet**. Ursache
+  vermutlich eine gemeinsame Windows-weite MT5-Session-Ablage zwischen zwei
+  frischen Kopien desselben Builds, verstaerkt durch mehrere gleichzeitig
+  gestartete Terminal-Prozesse. Fix nicht automatisiert moeglich -- braucht
+  einmaligen manuellen GUI-Login (File -> "Login to Trade Account") in jedem
+  der zwei neuen Terminals, siehe DASHBOARD.md. Beide Terminals laufen
+  bereits (manuell gestartet).
 - **2026-09-02** [Portfolio-Konsolidierung] **Nutzer bestaetigt: TTP
   Konto 1 (504069845, echtes Geld) + IQ Markets Login 15514 sollen DOCH in
   die Funded-Portfolio-Bridge (`state_id="ttp1"`/`"iqmarkets2"`) — beide

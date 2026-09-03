@@ -12,6 +12,16 @@ C:\Users\andre\.claude\projects\c--Users-andre-Forex-Backtesting\memory\ first
 which data sources are trustworthy vs. not. Do not repeat work already
 described there; build on it.
 
+**Citation convention (fixed 2026-09-01 - a Second-Brain-Lint pass found 8
+dead `[[wikilinks]]` across past reports caused by this)**: when citing a
+fact that comes from one of these memory files, do NOT use Obsidian
+`[[slug]]` link syntax - those files live outside the `knowledge/` vault, so
+the link renders as dead/red in Obsidian even though the content is real.
+Write `siehe Memory: \`slug\`` instead (backticks, no double brackets), e.g.
+"siehe Memory: `portfolio_consolidation_pending`". Reserve `[[slug]]` only
+for genuine `knowledge/`-vault notes (`projects/`, `areas/`, `resources/`,
+`archive/`) that this report might also reference.
+
 ## Critical lesson from 2026-08-26/27 (READ THIS FIRST)
 
 The REAL, authoritative live-trading data for most bots does NOT live in
@@ -67,6 +77,30 @@ doing for a weekly figure, not just reading local state files. Only ever
 READ (account_info, history_deals_get, positions_get) - never place,
 modify or cancel any order from this report-generation task.
 
+**Side-effect discovered 2026-09-01, fix this every run:** `mt5.initialize(path=...)`
+LAUNCHES the terminal's GUI application if it isn't already running at that
+path, and `mt5.shutdown()` only closes the Python-side IPC connection - it
+does NOT close that GUI window. Doing this for every bridge every week left
+several MT5 terminal windows (e.g. "MT5 Terminal - GoldFKBot", "TTP MT5
+Terminal - Konto2") sitting open on the user's desktop indefinitely after
+each report run, which the user noticed and had to ask about. Before
+connecting to ANY account, first check with `Get-ScheduledTask` (or
+`schtasks /query`) whether that bot's own trading task is currently
+`Disabled`/paused (cross-check against the "individual strategy bots
+stopped" memory note too - Gold ASB, CLS Practical, CTNL Edge, and
+OU-Modell Konto1/Konto2 were paused 2026-08-27/29). For a PAUSED bot: skip
+the live MT5 connection entirely - nothing can have traded since it was
+paused (no scheduled task = no new activity, that's the whole point of a
+schtasks-based pause), so its last-known local state/sqlite figures are
+already accurate. Report it as "paused since <date>, no activity possible"
+instead of re-verifying via a live connection every single week. Only
+open a live MT5 connection for bots whose trading task is still `Ready`
+(actively scheduled). If you ever DO need to connect to an account whose
+terminal isn't already running (check `Get-Process terminal64` first),
+close the GUI process afterward with `Stop-Process` on the PID you
+launched (not one that was already running before you connected) so the
+report doesn't leave stray windows behind.
+
 Both reports together are called **"Weekly Checkup"** - use the German
 calendar-week notation "KW<n>" (ISO week number, e.g. "KW35"), not the
 ISO "2026-W35" form, in both filenames and document titles.
@@ -121,11 +155,22 @@ Structure (adapted from the user's mentor-style reflection journal):
    think about the system. Pull from new/updated files in
    C:\Users\andre\.claude\projects\c--Users-andre-Forex-Backtesting\memory\
    this week plus new `knowledge/` docs.
-4. **Verbesserungen**: bugs fixed, infra improved, new validated strategies/
+4. **Neues Wissen diese Woche (Papers/Ideen)** (Nutzerwunsch 2026-09-03 -
+   this should show up regularly, not just get folded into "Main
+   Erkenntnisse" above or mentioned only when a Clippings-batch happens to
+   get processed): what Research-Wissen came in this week? Check `git log
+   --since="7 days ago" --oneline -- knowledge/resources/ knowledge/projects/`
+   for new/changed PARA notes (name + one-line takeaway, not the full
+   content - link with `[[slug]]` since these ARE genuine knowledge-vault
+   notes) and scan `knowledge/DASHBOARD.md`'s "💡 Ideen-Inbox" section for
+   entries added since the last weekly report (even half-formed ones -
+   just note what came in and whether it's been sorted yet). If nothing
+   came in this week, say so plainly rather than omitting the section.
+5. **Verbesserungen**: bugs fixed, infra improved, new validated strategies/
    features shipped this week.
-5. **Verschlechterungen / offene Probleme**: anything newly broken,
+6. **Verschlechterungen / offene Probleme**: anything newly broken,
    regressed, or found-but-not-yet-fixed this week.
-6. **Optimierungsmöglichkeiten**: what would be worth tackling next,
+7. **Optimierungsmöglichkeiten**: what would be worth tackling next,
    based on what surfaced this week.
 
 ## Report 3: PDF (both parts combined, styled)

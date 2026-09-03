@@ -21,3 +21,5 @@ fk_instant_funding/telegram_config.py
 scripts/reports/telegram_config.py
 ek_portfolio/telegram_config.py
 challenge_portfolio/telegram_config.py
+ou_paper_backtest/telegram_config.py
+knowledge/.obsidian/

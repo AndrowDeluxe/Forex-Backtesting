@@ -16,6 +16,45 @@ passiert, was steht an.
 
 ---
 
+## ▶️ Als Nächstes
+
+1. **M5-Scan-Frequenz fuer CTNL Continuation + NY-Open ORB**: beide nutzen
+   M5-Bars fuer Entries, Funded-Portfolio-Bridge scannt aber nur alle 15 Min
+   -- bis zu 3 Bars zu spaet (gleiches Muster wie der fruehe Gold-ASB-Fund).
+   Nutzerentscheid 2026-09-02: separaten 5-Min-Trigger NUR fuer die
+   M5-Beine bauen (nicht die ganze Bridge auf 5 Min umstellen, da OU-Modell/
+   Gold ASB davon nicht profitieren wuerden) -- braucht Aufbrechen von
+   `run_once.py`s "alle Beine in einem Lauf"-Struktur, kein Kleinvorgang.
+2. **Manuelles Monatsjournal + Quant-System-Verschmelzung** (Nutzerwunsch
+   2026-09-02 Abend, fuer morgen): Nutzer will ein haendisches Monatsjournal
+   anfangen und gemeinsam mit Claude auswerten. Zusaetzlich einen Plan
+   erarbeiten, wie manuelles Trading + dessen Routinen/Auswertungen und das
+   Quant-System (die Portfolio-Bridges hier) sinnvoll miteinander verbunden
+   werden koennen -- Ziel: eine moeglichst optimale Verbindung/Verschmelzung
+   beider Seiten, nicht zwei getrennte Welten. Noch nichts Konkretes gebaut,
+   nur der Wunsch/Auftrag festgehalten -- braucht als Erstes ein klaerendes
+   Gespraech (Format des Journals, welche Kennzahlen, was genau
+   "Verschmelzung" praktisch heissen soll), bevor irgendetwas umgesetzt wird.
+   Punkt 3 unten (Redundanz-Vermeidung) ist ein erster Kandidat fuer einen
+   Quant-Seite-Eintrag, sobald das Journal steht.
+3. ~~Funded-Portfolio-Bridge: redundante Scans vermeiden~~ -- **erledigt
+   2026-09-03**, siehe CHANGELOG. Kurzfassung: MT5 als Datenquellen-Ersatz
+   geprueft und verworfen (die 4 TTP/IQ-Konten decken laut `symbol_map` nur
+   9 der ~30 in `combined_strategy/data.py` gebrauchten Instrumente ab --
+   kein VIX/Oil/GBPUSD/USDCHF/AUDUSD/USDCAD/die ~13 FX-Kreuze -- und wuerde
+   den ohnehin fragilen MT5-IPC-Kanal zusaetzlich belasten statt entlasten).
+   Stattdessen `run_once.py` umgebaut: `run_shared_scans()` fuehrt alle 6
+   Scans EINMAL pro Bridge-Lauf aus (vorher 1x PRO KONTO), `main()` reicht
+   das Ergebnis an alle 4 Konten durch. Nebenbei zweiter Fund/Fix dabei:
+   `tvDatafeed`-Pro-Login (`cls_practical/rates.py`'s Zinsfilter) erzeugte
+   seit 2026-09-01 in praktisch jedem Lauf `error while signin` (TradingView
+   verlangt seit einiger Zeit ein von der Bibliothek nicht loesbares Captcha,
+   offenes Upstream-Issue) -- Login entfernt, laeuft jetzt direkt anonym
+   (nachweislich ausreichend). Beides nur per Smoke-Test verifiziert (kein
+   echter Live-Lauf ueber Task Scheduler abgewartet).
+
+---
+
 ## Status — was läuft gerade wirklich
 
 | Bot/Bridge                                              | Konto/Broker                                                                             | Modus                                                                                        | Task Scheduler                  | Zuletzt geprüft |
@@ -23,18 +62,18 @@ passiert, was steht an.
 | EK-Portfolio-Bridge                                     | Tickmill Live (55918977)                                                                 | **LIVE — echtes Geld**                                                                       | Ready (alle 15 Min, Mo–Fr)      | 2026-09-02      |
 | FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | DRY_RUN                                                                                      | Ready (stündlich)               | 2026-09-02      |
 | FK-Instant-Funding-Paper                                | — (reine Simulation)                                                                     | Paper + Telegram                                                                             | Ready (stündlich)               | 2026-09-01      |
-| OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner                                                                                      | Ready (Mo–Fr, US-Handelszeiten) | 2026-09-01      |
+| OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner + Telegram (3x täglich: 15:35/18:35/21:35)                                           | Ready (Mo–Fr, US-Handelszeiten) | 2026-09-02      |
 | Forex-Weekly-Report                                     | —                                                                                        | Report-Generator                                                                             | Ready                           | 2026-09-02      |
 | **Bridge-Watchdog**                                     | — (nur Log-Frische, kein Order-Bezug)                                                    | Heartbeat-Alarm + Status-Snapshot ins Repo                                                   | Ready (alle 30 Min)             | 2026-09-02      |
-| **Funded-Portfolio-Bridge** (TTP+IQ Markets, 6 Beine)   | TTP Konto 2 (504072729) + BeyondIQCapital (16054)                                        | **LIVE — DRY_RUN=False**                                                                     | Ready (alle 15 Min, Mo–Fr)      | 2026-09-02      |
+| **Funded-Portfolio-Bridge** (TTP+IQ Markets, 6 Beine)   | TTP Konto 2 (504072729) + TTP Konto 1 (504069845) + BeyondIQCapital (16054) + BeyondIQCapital (15514) — **alle 4 verbunden** | **LIVE — DRY_RUN=False**                                       | Ready (alle 15 Min, Mo–Fr)      | 2026-09-03      |
 | Challenge Portfolio (Paper-Bot, `challenge_portfolio/`) | — (reine Simulation)                                                                     | Paper-Bot fertig entwickelt                                                                  | Noch kein Task angelegt         | 2026-09-01      |
-| BTC-EMA-Cross-Bridge/-Scan                              | Binance                                                                                  | LIVE (war), aktuell pausiert                                                                 | **Disabled**                    | 2026-09-01      |
-| CLS-Practical-Bridge/-Scan                              | —                                                                                        | pausiert                                                                                     | Disabled                        | 2026-09-01      |
-| CTNL-Edge-FK-Paper                                      | —                                                                                        | pausiert                                                                                     | Disabled                        | 2026-09-01      |
-| CTNL-Edge-MT5-Bridge                                    | BeyondIQCapital (16054)                                                                  | **abgelöst durch Funded-Portfolio-Bridge**, Konto/Terminal jetzt dort live                   | Disabled                        | 2026-09-01      |
-| Gold-ASB-Scan / GoldASB-MT5-Bridge                      | BeyondIQCapital (16054)                                                                  | pausiert                                                                                     | Disabled                        | 2026-09-01      |
-| OU-Modell-MT5-Bridge/-DailyLog/-Heartbeat               | TTP Konto1 (Konto 2 komplett aus `ACCOUNTS` entfernt, jetzt bei Funded-Portfolio-Bridge) | pausiert                                                                                     | Disabled                        | 2026-09-01      |
-| EK-Portfolio-Paper                                      | —                                                                                        | pausiert                                                                                     | Disabled                        | 2026-09-01      |
+| BTC-EMA-Cross-Bridge/-Scan                              | Binance / BeyondIQCapital (15514, geteilt mit GoldASB)                                   | **aufgelöst** — Konto 15514 jetzt bei Funded-Portfolio-Bridge, `ACCOUNTS_MT5` leer            | Disabled                        | 2026-09-02      |
+| CLS-Practical-Bridge/-Scan                              | —                                                                                        | **aufgelöst** — Logik steckt bereits in allen drei Portfolio-Bots (`paper_bot.py`)           | Disabled                        | 2026-09-02      |
+| CTNL-Edge-FK-Paper                                      | —                                                                                        | **aufgelöst** — Logik steckt bereits in allen drei Portfolio-Bots (`paper_bot.py`)           | Disabled                        | 2026-09-02      |
+| CTNL-Edge-MT5-Bridge                                    | BeyondIQCapital (16054)                                                                  | **aufgelöst** — Konto/Terminal bereits bei Funded-Portfolio-Bridge live                       | Disabled                        | 2026-09-01      |
+| Gold-ASB-Scan / GoldASB-MT5-Bridge                      | BeyondIQCapital (15514)                                                                  | **aufgelöst** — Konto 15514 jetzt bei Funded-Portfolio-Bridge, `ACCOUNTS` leer                | Disabled                        | 2026-09-02      |
+| OU-Modell-MT5-Bridge/-DailyLog/-Heartbeat               | —                                                                                         | **aufgelöst** — Konto 1 jetzt bei Funded-Portfolio-Bridge, `ACCOUNTS` komplett leer           | Disabled                        | 2026-09-02      |
+| EK-Portfolio-Paper                                      | —                                                                                        | pausiert (Paper-Zwilling von EK-Portfolio-Bridge, gehört zum Portfolio, nicht "Einzelstrategie") | Disabled                     | 2026-09-01      |
 
 Live-Status aller drei Portfolio-Bridges jetzt auch als Streamlit-Seiten
 („Portfolio-Bridges" in der Sidebar) — lesen `bridge_status/snapshot.json`,
@@ -153,6 +192,65 @@ abgehakt-und-liegengelassen.
   kurz in `C:\Users\andre\EK-Portfolio-Bridge\logs\task_run.log` um
   16:54:15 Uhr nachsehen, was den Fehler wirklich auslöst?
 
+- [x] ~~Zwei neue Funded-Portfolio-Bridge-Konten (TTP 504069845 / IQ 15514)
+  waren bereits anderweitig vergeben~~ — Nutzerentscheid 2026-09-02:
+  bewusst gewollte Konsolidierung, kein Verwechsler. Beide jetzt in
+  `Funded-Portfolio-Bridge/config.py::ACCOUNTS` (`ttp1`/`iqmarkets2`),
+  aus `OU-Modell-MT5-Bridge`/`GoldASB-MT5-Bridge`/`BTC-EMA-Cross-Bridge`
+  entfernt. Details siehe CHANGELOG.
+- **Zwei neue Konten (TTP Konto 1/504069845, IQ 15514) verbinden weiterhin
+  nicht — Root Cause jetzt gefunden: kopierte statt echt installierte
+  Terminals.** Die urspruengliche "File → Login to Trade Account"-Theorie
+  war falsch — ausfuehrliche Tests (isolierter Prozess, sequenzielles
+  Starten, `portable=True`, bis 60s Timeout, Terminal-Ersatz FK2->CLSPractical)
+  zeigen: das Terminal-Fenster loggt sich korrekt ein UND AutoTrading ist an
+  (einmal sogar per `account_info()` bestaetigt, NACHDEM `login()` faelschlich
+  "fehlgeschlagen" meldete — der Login hatte tatsaechlich geklappt, nur die
+  Bestaetigung kam zu spaet zurueck) — die Python-IPC-Anbindung selbst bleibt
+  trotzdem unzuverlaessig. Die 2 URSPRUENGLICHEN Konten (504072729, 16054)
+  verbinden dagegen bei jedem Test sofort. Vermutung: eine echte
+  MT5-Installation registriert etwas fuers Python-IPC, das eine reine
+  Verzeichnis-Kopie (wie `TTP MT5 Terminal - Konto3`/`IQ MT5 Terminal -
+  Konto2`, urspruenglich aus den ruhenden FK1/FK2-Installationen kopiert)
+  nicht mitbringt. **Kein Order wurde die ganze Zeit riskiert** — auch der
+  ueber Stunden durchgehende `IPC timeout` in `logs/task_run.log` (14:54 bis
+  mind. 21:57) war immer ein sauberer Verbindungsfehler, nie eine falsche
+  Order; das OU-Modell-Bein haette am 2026-09-02 wegen Handelsschluss/
+  Alters-Bremse ohnehin keinen Entry mehr platziert. Die zwei bestehenden
+  Live-Beine sind komplett unberuehrt. **Fix in Arbeit**: Nutzer installiert
+  gerade selbst zwei ECHTE MT5-Terminals per `mt5setup.exe` (mein
+  Silent-Install-Versuch per `/auto /dir=` schlug fehl) — sobald fertig,
+  Pfade in `Funded-Portfolio-Bridge/config.py` eintragen und erneut testen.
+  `symbol_map` fuer beide Konten ausserdem nur vom Schwesterkonto
+  uebernommen, nicht per `check_symbols.py` selbst verifiziert.
+
+- [x] ~~`dukascopy_python`-Datenabruf haengt seit heute Nachmittag komplett
+  fest, ohne Timeout~~ — gefunden 2026-09-02 ~21:50 (23 `python.exe`-Prozesse,
+  `Funded-Portfolio-Bridge/run_once.py` UND `fk_instant_funding/paper_bot.py`,
+  seit 15:45 im 15-Min-Takt gestartet, keiner kam je zum Ende). Zusaetzlicher
+  Fund beim Nachgehen der TTP-vs-IQ-Tagesabschluss-Frage (Nutzeranfrage
+  "wieso TTP voller Fehler, IQ nicht"): dieselbe Instabilitaet zeigt sich auch
+  als schnellere, abfangbare Exceptions statt komplettem Hang -- TTP Konto2
+  hatte heute 5 Scan-Fehler ueber 5 Beine, IQ Markets 0, reiner Zufall im
+  Timing, da jedes der 4 Konten dieselben 6 Scans unabhaengig neu zieht.
+  Nutzerentscheid: alle 3 `_retry()`-Kopien fixen (EK+Challenge+FK Instant
+  Funding, nicht nur die 2 nachweislich haengenden). Fix: neue
+  `_call_with_timeout()`-Funktion (Daemon-Thread + `join(timeout)`,
+  `timeout_seconds=90.0` pro Versuch) um jeden `_retry()`-Versuch gelegt --
+  ein haengender Versuch zaehlt jetzt wie jeder andere Fehlversuch, blockiert
+  aber nie wieder den ganzen Prozess. Per synthetischem Smoke-Test
+  (`hangs_forever()`) verifiziert: sauberer `TimeoutError`-Abbruch nach
+  exakt erwarteter Zeit, normales Retry-Verhalten unveraendert, Prozess
+  beendet sich trotz weiterlaufendem Hang-Thread sofort sauber (kein
+  Ressourcen-Leck). Alte, mit ungefixtem Code gestartete haengende Prozesse
+  beendet. **Kein echter Live-Lauf mit echtem dukascopy-Hang seitdem
+  abgewartet** (nur der synthetische Test) — erster echter Beweis kommt mit
+  dem naechsten Mal, dass die Bibliothek wirklich haengt.
+- [x] ~~`OU-Modell-ScannerHourly` läuft noch (Ready), ist aber jetzt
+  verwaist~~ — Nutzerentscheid 2026-09-02: erstmal weiterlaufen lassen, die
+  Streamlit-Seite (`app_pages/ou_scanner.py`) braucht ihn noch. Zusätzlich:
+  3 der 8 täglichen Läufe (15:35/18:35/21:35) senden jetzt eine
+  Telegram-Zusammenfassung (siehe CHANGELOG) statt den Task zu deaktivieren.
 - **Funded-Portfolio-Bridge (TTP/IQ) hat noch keinen "Signal zu alt"-Schutz**
   beim Echt-Entry (`_process_leg()`), anders als der ORB-Fix heute in
   EK-Portfolio-Bridge. Der erste reale Gold-ASB-Entry heute ist genau daran
@@ -191,12 +289,28 @@ bewusst verworfen), nicht hier für immer liegen gelassen. Genau der Ort für
 "das könnte auch noch interessant sein", ohne dass es das gerade laufende
 Thema verdrängt oder verloren geht.
 
+- **OU-Modell-Scanner evtl. irgendwann komplett auf Telegram umstellen**
+  (2026-09-02): Website-Ansicht bleibt vorerst (siehe Status-Tabelle, jetzt
+  MIT Telegram fuer die 3 Tagesscans), aber "ganz auf Telegram umstellen und
+  die Streamlit-Seite aufgeben" war eine genannte Alternative — nicht
+  entschieden, nur festgehalten.
 - **PDFs/Bücher bulk-einbinden** (2026-09-01): viele Bücher/PDFs vorhanden,
   die sinnvoll integriert werden könnten, ohne sie einzeln in den Chat
   schicken zu müssen. Prüfen, ob `paper_dropbox/`/`paper_research/`
   (bestehende "PDF rein, Extraktion + Auto-Backtest raus"-Pipeline, siehe
   README.md) dafür wiederverwendbar ist, oder ob Bücher (anders als
   Research-Paper) einen eigenen Weg brauchen. Noch nicht bearbeitet.
+- **TTP/IQ Markets ORB-Exits laufen pro Konto unabhaengig auseinander**
+  (2026-09-02, Fund beim Nachpruefen des US30-ORB-Trades): TTP und IQ
+  Markets scannen denselben ORB-Trade in _separaten_ `run_once.py`-Laeufen
+  je Konto -- jeder Lauf ruft `simulate()` neu mit frisch gezogenen Daten
+  auf. Beim heutigen US30-Long (Entry ~16:22 CEST) fuehrte das dazu, dass
+  TTP den Exit bei 53175.04 (+$10,39) fand, IQ Markets aber erst 9,5 Min.
+  spaeter bei 53107.00 (-$9,84) -- derselbe Signal-Trade, gegensaetzliches
+  Vorzeichen. Kein Bug im engeren Sinn (beide folgen korrekt ihrer je
+  aktuellen `rvol_fade`-Exit-Regel), aber noch nicht bewertet, ob das
+  system-immanent so bleiben soll oder ob Exits kontoübergreifend
+  synchronisiert werden sollten. Noch nicht bearbeitet.
 - **Stocks-in-Play 5-Min-ORB als neue Asset-Klasse** (2026-09-01, aus Paper
   "A Profitable Day Trading Strategy For The U.S. Equity Market",
   Zarattini/Barbon/Aziz 2024, siehe [[opening-range-breakout]]): 5-Min-ORB
@@ -265,6 +379,10 @@ _(Auszug — vollständiges Log in [CHANGELOG.md](CHANGELOG.md))_
   ergänzt, nachdem derselbe `str`/`float`-Fehler heute erneut in drei
   Beinen gleichzeitig auftrat. Neue vage Fehlerzeile auf EK-Portfolio-
   Bridge zur Bestätigung im Dashboard vermerkt.
+- 2026-09-03 — Funded-Portfolio-Bridge: redundante Scans behoben (6 Scans
+  1x/Lauf statt 1x/Konto) + tvDatafeed-Pro-Login entfernt (TradingView-
+  Captcha-Wall, seit 2026-09-01 taeglich hunderte Signin-Fehler). MT5 als
+  Dukascopy-Ersatz geprueft und verworfen (Instrumenten-Abdeckung zu duenn).
 - 2026-09-02 — Second Brain: 5 offene Clippings verarbeitet (CODE-Prozess) —
   3 Claude-Workflow-Videos als neue Einträge in
   `resources/second-brain-methodik.md`, 1 Trading-Video (Order Flow, nicht

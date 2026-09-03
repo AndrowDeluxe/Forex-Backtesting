@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-09-03T22:31:25",
+  "generated_at": "2026-09-03T23:01:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T22:31:16",
-      "minutes_since_last_run": 0.2,
+      "last_run": "2026-09-03T23:00:02",
+      "minutes_since_last_run": 1.4,
       "status": "ok",
-      "last_equity_line": "2026-09-03 22:31:16 2026-09-03 22:30:01,826 INFO run_once: Konto-Equity 3452.39 EUR | Aggregiertes offenes Risiko (ganzes Konto): 295.07 (Deckel dieser Bridge: 276.19, 8%)",
-      "last_error_line": "2026-09-03 22:31:16 2026-09-03 22:30:01,833 ERROR legs.ny_open_orb.executor: ORB NASDAQ Ticket 262117522: Session-Ende-Schliessung fehlgeschlagen: None",
+      "last_equity_line": "2026-09-03 22:52:01 2026-09-03 22:45:02,624 INFO run_once: Konto-Equity 3452.59 EUR | Aggregiertes offenes Risiko (ganzes Konto): 295.09 (Deckel dieser Bridge: 276.21, 8%)",
+      "last_error_line": "2026-09-03 22:52:01 2026-09-03 22:45:02,634 ERROR legs.ny_open_orb.executor: ORB NASDAQ Ticket 262117522: Session-Ende-Schliessung fehlgeschlagen: None",
       "recent_events": [
+        "2026-09-03 22:52:01 2026-09-03 22:45:02,634 ERROR legs.ny_open_orb.executor: ORB NASDAQ Ticket 262117522: Session-Ende-Schliessung fehlgeschlagen: None",
         "2026-09-03 22:31:16 2026-09-03 22:30:01,833 ERROR legs.ny_open_orb.executor: ORB NASDAQ Ticket 262117522: Session-Ende-Schliessung fehlgeschlagen: None",
         "2026-09-03 22:21:06 2026-09-03 22:15:02,431 ERROR legs.ny_open_orb.executor: ORB NASDAQ Ticket 262117522: Session-Ende-Schliessung fehlgeschlagen: None",
         "2026-09-03 22:06:15 2026-09-03 22:00:02,019 ERROR legs.ny_open_orb.executor: ORB NASDAQ Ticket 262117522: Session-Ende-Schliessung fehlgeschlagen: None",
         "2026-09-03 22:06:15 2026-09-03 22:00:02,015 INFO legs.ny_open_orb.executor: [EK-ORB] \\U0001f7e2 TEILAUSSTIEG NASDAQ Ticket 262117522: 0.20 Lots @ 29484.24 (R-Level erreicht) | Rest-Stop auf Break-Even verschoben",
-        "2026-09-03 21:55:50 2026-09-03 21:45:02,904 ERROR legs.ny_open_orb.executor: [EK-ORB] \\u26a0\\ufe0f Order fehlgeschlagen fuer US30: OrderSendResult(retcode=10016, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Invalid stops', request_id=0, retcode_external=0, request=TradeRequest(action=1, magic=990009, order=0, symbol='US30', volume=0.34, price=53681.42, stoplimit=0.0, sl=53486.98477908307, tp=53678.86088366773, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='EK-orb_us30 auto', position=0, position_by=0))",
-        "2026-09-03 21:10:07 2026-09-03 21:00:03,094 WARNING legs.ny_open_orb.executor: [EK-ORB] \\u26a0\\ufe0f Risiko-Deckel erreicht, NASDAQ-Entry uebersprungen (offen 264.84 + neu 11.44 > Deckel 276.02)"
+        "2026-09-03 21:55:50 2026-09-03 21:45:02,904 ERROR legs.ny_open_orb.executor: [EK-ORB] \\u26a0\\ufe0f Order fehlgeschlagen fuer US30: OrderSendResult(retcode=10016, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Invalid stops', request_id=0, retcode_external=0, request=TradeRequest(action=1, magic=990009, order=0, symbol='US30', volume=0.34, price=53681.42, stoplimit=0.0, sl=53486.98477908307, tp=53678.86088366773, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='EK-orb_us30 auto', position=0, position_by=0))"
       ]
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T22:30:49",
-      "minutes_since_last_run": 0.6,
+      "last_run": "2026-09-03T22:45:01",
+      "minutes_since_last_run": 16.4,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (ttp)": {
@@ -84,7 +84,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-09-03T22:24:37",
-      "minutes_since_last_run": 6.8,
+      "minutes_since_last_run": 36.8,
       "status": "ok",
       "last_equity_line": "2026-09-03 22:24:37 Verbunden: Login 17764, Equity $100,000.00",
       "last_error_line": "2026-09-03 22:24:37 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",

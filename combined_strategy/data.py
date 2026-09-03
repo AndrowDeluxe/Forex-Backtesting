@@ -105,6 +105,24 @@ def fetch_timeframe(key: str, timeframe: str, start: str, end: str, force_refres
     df = df.rename(columns={"open": "Open", "high": "High", "low": "Low", "close": "Close", "volume": "Volume"})
     validate_ohlc_numeric(df, ["Open", "High", "Low", "Close", "Volume"])
 
+    # Fund 2026-09-02: nach einer laengeren Standby-Pause (Netzwerk/DNS vermutlich noch
+    # nicht vollstaendig reaktiviert) lieferte dukascopy_python.fetch() vermutlich
+    # vereinzelt Daten mit nicht-numerischen OHLC-Spalten zurueck -- wurde bisher
+    # ungeprueft gecacht, liess nachgelagerte Vergleiche (Regime-/Friction-Filter u.ae.)
+    # mit "'>' not supported between instances of 'str' and 'float'" crashen, mehrere
+    # Ebenen entfernt von der eigentlichen Ursache (beobachtet auf FKInstantFunding-MT5-
+    # Bridge + Funded-Portfolio-Bridge, direkt nach demselben Standby-Vorfall). Vor dem
+    # Cachen validieren: ein Fehlversuch wird NIE persistiert, der aufrufer-seitige
+    # _retry()-Wrapper bekommt einen sauberen, verstaendlichen Fehler zum Neuversuch
+    # statt kaputter Daten drei Ebenen tiefer.
+    ohlc_cols = [c for c in ("Open", "High", "Low", "Close") if c in df.columns]
+    bad_cols = [c for c in ohlc_cols if not pd.api.types.is_numeric_dtype(df[c])]
+    if bad_cols:
+        raise ValueError(
+            f"dukascopy_python.fetch() lieferte nicht-numerische OHLC-Spalten fuer "
+            f"{key}/{timeframe} ({start}..{end}): {bad_cols} -- nicht gecacht, Neuversuch noetig."
+        )
+
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     df.to_parquet(path)
     return df

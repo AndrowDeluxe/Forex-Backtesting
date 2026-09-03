@@ -242,7 +242,8 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-tab_combined, tab_overlap, tab_ek, tab_ekv2, tab_fk, tab_ekfast, tab_ifund, tab_wf, tab_crisis, tab_caveats = st.tabs([
+tab_challenge, tab_combined, tab_overlap, tab_ek, tab_ekv2, tab_fk, tab_ekfast, tab_ifund, tab_wf, tab_crisis, tab_caveats = st.tabs([
+    ":material/emoji_events: Challenge-Portfolio (live, 6 Beine)",
     ":material/query_stats: Kombinierter Backtest",
     ":material/calendar_view_week: Trade-Overlap",
     ":material/savings: EK-Portfolio",
@@ -827,6 +828,95 @@ def _render_tab_fk():
         "FK-Track mit hartem Regelbruch-Risiko ist die konservative Stufe klar die richtige Wahl.",
         icon=":material/verified:",
     )
+
+# ============================================================ Tab: Challenge-Portfolio (live, 6 Beine)
+def _render_tab_challenge():
+    st.caption(
+        "Die tatsaechlich LIVE laufende **Funded-Portfolio-Bridge** (TTP + IQ Markets/BeyondIQCapital, "
+        "echtes Geld -- siehe `knowledge/DASHBOARD.md`), identisch zur Config in `challenge_portfolio/"
+        "paper_bot.py`. Anders als der generische FK-Tab (aeltere Konzept-Vorstufe, 5 Beine ohne ORB) "
+        "zeigt dieser Tab die aktuelle Zusammensetzung inklusive NY-Open ORB als 6. Bein."
+    )
+    data = load_json("challenge_portfolio_6leg.json")
+    rule_choice = st.radio("Zielfirma", ["TTP", "IQ Markets"], horizontal=True, label_visibility="collapsed", key="challenge_rule")
+    rule_key = "ttp" if rule_choice == "TTP" else "iqmarkets"
+
+    if rule_key == "ttp":
+        st.markdown(
+            "<span class='pc-rule-badge'>Tageslimit <b>3%</b></span>"
+            "<span class='pc-rule-badge'>Gesamt-Drawdown <b>7%</b></span>"
+            "<span class='pc-rule-badge'>Gewinnziel <b>10%</b></span>",
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown(
+            "<span class='pc-rule-badge'>Kein Tageslimit</span>"
+            "<span class='pc-rule-badge'>Gesamt-Drawdown <b>6%</b></span>"
+            "<span class='pc-rule-badge'>Gewinnziel <b>8%</b></span>",
+            unsafe_allow_html=True,
+        )
+
+    section_title("Aktuelle 6 Beine (live)")
+    st.markdown(" &middot; ".join(f"**{v}**" for v in data["leg_labels"].values()))
+
+    section_title("5 Beine (ohne ORB) vs. 6 Beine (aktuell live)")
+    base, six = data["baseline_5leg"], data["with_orb_6leg"]
+    col1, col2 = st.columns(2)
+    for col, key, cand, tag, tag_label, title in [
+        (col1, "base", base, "safe", "Vorstufe", "5 Beine (ohne ORB)"),
+        (col2, "six", six, "fast", "aktuell live", "6 Beine (mit NY-Open ORB)"),
+    ]:
+        mc = cand["monte_carlo"][rule_key]
+        hist = cand["historical_metrics"]
+        with col:
+            st.markdown(
+                f"<div class='pc-candidate'><div class='pc-candidate-head'>"
+                f"<span class='pc-candidate-title'>{title}</span>"
+                f"<span class='pc-candidate-tag {tag}'>{tag_label}</span></div></div>",
+                unsafe_allow_html=True,
+            )
+            outcome_bar(mc["p_target"], mc["p_neither"], mc["p_breach"])
+            c1, c2, c3 = st.columns(3)
+            c1.metric("Median Tage bis Ziel", f"{mc['median_days_to_target']:.0f}" if mc["median_days_to_target"] else "—")
+            c2.metric("Sharpe (historisch)", f"{hist['sharpe']:.2f}")
+            c3.metric("MaxDD (historisch)", f"{hist['max_dd_pct']:.1f}%")
+
+    section_title("Kennzahlen im Detail (6 Beine, aktuell live)")
+    hist6 = six["historical_metrics"]
+    tile_row([
+        ("CAGR", f"{hist6['cagr_pct']:+.1f}%", "good"),
+        ("Sharpe", f"{hist6['sharpe']:.2f}", ""),
+        ("Calmar", f"{hist6['calmar']:.2f}", ""),
+        ("Max Drawdown", f"{hist6['max_dd_pct']:.1f}%", "bad"),
+        ("Endkapital", f"${hist6['final_equity']:,.0f}", "good"),
+    ])
+
+    section_title("Equity-Kurve (6 Beine, aktuell live)")
+    curve6 = pd.Series({pd.Timestamp(d): v for d, v in six["weekly_curve"]})
+    df6 = curve6.rename("value").rename_axis("date").reset_index()
+    df6["Serie"] = "6 Beine (live)"
+    st.altair_chart(line_chart(df6, {"6 Beine (live)": (C_ORANGE, None)}), use_container_width=True)
+    st.caption(
+        f"Historischer Zeitraum {six['common_window']['start']} bis {six['common_window']['end']}. Monte-Carlo: "
+        f"{mc['n_sims']} Block-Bootstrap-Pfade, Blockgroesse {mc['block_size']} Handelstage, "
+        f"Pfadlaenge {mc['path_length_days']} Handelstage (~{mc['path_length_days']/252:.1f} Jahre)."
+    )
+    mc_base_ttp, mc_six_ttp = base["monte_carlo"]["ttp"], six["monte_carlo"]["ttp"]
+    mc_base_iq, mc_six_iq = base["monte_carlo"]["iqmarkets"], six["monte_carlo"]["iqmarkets"]
+    st.success(
+        "**NY-Open ORB als 6. Bein verbessert beide Regelwerke durchgehend:** TTP Median-Zeit bis Ziel "
+        f"{mc_base_ttp['median_days_to_target']:.0f} -> {mc_six_ttp['median_days_to_target']:.0f} Tage "
+        f"(Bruch-Wahrscheinlichkeit {mc_base_ttp['p_breach']*100:.1f}% -> {mc_six_ttp['p_breach']*100:.1f}%), "
+        f"IQ Markets {mc_base_iq['median_days_to_target']:.0f} -> {mc_six_iq['median_days_to_target']:.0f} Tage "
+        f"(Bruch-Wahrscheinlichkeit {mc_base_iq['p_breach']*100:.1f}% -> {mc_six_iq['p_breach']*100:.1f}%) -- "
+        "dank naeherungsweise Null-Korrelation zu den 5 bestehenden Beinen.",
+        icon=":material/verified:",
+    )
+    st.caption(
+        "Korrelation ORB vs. die 5 bestehenden Beine: " +
+        ", ".join(f"{data['leg_labels'][k]} {v:+.3f}" for k, v in data["orb_vs_existing_correlation"].items())
+    )
+
 
 # ============================================================ Tab: EK-Schnellkonto
 def _render_tab_ekfast():
@@ -1470,8 +1560,10 @@ def _render_tab_caveats():
 # function runs now (found 2026-08-20 while tracking down the Streamlit
 # Cloud memory-limit suspension).
 for _tab, _render in [
+    (tab_challenge, _render_tab_challenge),
     (tab_combined, _render_tab_combined), (tab_overlap, _render_tab_overlap),
-    (tab_ek, _render_tab_ek), (tab_ekv2, _render_tab_ekv2), (tab_fk, _render_tab_fk), (tab_ekfast, _render_tab_ekfast),
+    (tab_ek, _render_tab_ek), (tab_ekv2, _render_tab_ekv2), (tab_fk, _render_tab_fk),
+    (tab_ekfast, _render_tab_ekfast),
     (tab_ifund, _render_tab_ifund),
     (tab_wf, _render_tab_wf), (tab_crisis, _render_tab_crisis), (tab_caveats, _render_tab_caveats),
 ]:

@@ -31,6 +31,28 @@ import yfinance as yf
 
 import config
 
+try:
+    # Nur auflösbar, wenn dieses Modul als Skript aus ou_paper_backtest/ heraus
+    # laeuft (sys.path[0] = dieses Verzeichnis) -- NICHT wenn challenge_portfolio/
+    # paper_bot.py::_import_ou_paper_backtest() es per importlib.util.spec_from_
+    # file_location laedt (dort ist ou_paper_backtest/ nicht auf sys.path). Dieser
+    # zweite Pfad treibt die LIVE Funded-Portfolio-Bridge (OU-Modell-Bein) -- ein
+    # harter Import hier wuerde dessen Verbindung kaputt machen. Fallback: No-Op,
+    # exakt dasselbe "Telegram optional" -Verhalten wie ein fehlendes telegram_config.py.
+    from telegram_notify import send_telegram_message
+except ImportError:
+    def send_telegram_message(text: str, parse_mode: str | None = None) -> None:
+        pass
+
+# Nutzerwunsch 2026-09-02: nur bei den 3 "Tagesscans" (nicht allen 8 stuendlichen
+# Task-Scheduler-Laeufen) eine Telegram-Nachricht schicken -- die tatsaechlichen
+# Trigger-Zeiten des Tasks "OU-Modell-ScannerHourly" sind 14:30/15:35.../21:35,
+# vom Nutzer als "15:30/18:30/21:30" grob benannt. Toleranzfenster (+/- 10 Min),
+# da ein Lauf durch Datenladen/vorherige haengende Prozesse leicht verspaetet
+# starten kann.
+TELEGRAM_RUN_TIMES = [(15, 35), (18, 35), (21, 35)]
+TELEGRAM_TOLERANCE_MINUTES = 10
+
 
 def _refresh_universe_prices(tickers: list[str], benchmark_ticker: str) -> tuple[pd.DataFrame, pd.Series]:
     """Downloads FRESH data up to today for just the (small) OU-selected ticker set
@@ -164,6 +186,30 @@ def scan_market(market_key: str) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def _is_telegram_run_time(now: dt.datetime) -> bool:
+    now_minutes = now.hour * 60 + now.minute
+    return any(
+        abs(now_minutes - (h * 60 + m)) <= TELEGRAM_TOLERANCE_MINUTES
+        for h, m in TELEGRAM_RUN_TIMES
+    )
+
+
+def _format_telegram_message(combined: pd.DataFrame, now: dt.datetime) -> str:
+    lines = [f"OU-Modell Scan {now.strftime('%H:%M')} Uhr"]
+    if combined.empty:
+        lines.append("Keine Signale.")
+        return "\n".join(lines)
+    for market, sub in combined.groupby("market"):
+        lines.append(f"\n{market}:")
+        for _, row in sub.iterrows():
+            status = "handelbar" if row["tradeable"] else "Regime-Filter zu"
+            lines.append(
+                f"  {row['ticker']}: Entry {row['entry']}, SL {row['sl']}, "
+                f"TP {row['tp']} ({status})"
+            )
+    return "\n".join(lines)
+
+
 def main():
     all_signals = []
     for market_key in ["sp500", "nasdaq100", "dax"]:
@@ -189,6 +235,10 @@ def main():
     print(f"\nSaved {len(combined)} total signal(s) to {out_path} (scanned_at={scanned_at})")
     if not combined.empty:
         print(combined.to_string(index=False))
+
+    now = dt.datetime.now()
+    if _is_telegram_run_time(now):
+        send_telegram_message(_format_telegram_message(combined, now))
 
 
 if __name__ == "__main__":

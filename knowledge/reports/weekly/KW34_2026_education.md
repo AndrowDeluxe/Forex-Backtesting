@@ -17,8 +17,8 @@ Schwerpunkte):
   gegengeprüft und adoptiert; die bereits laufende Zins-Risikoskalierung
   wurde von "informativ angezeigt" zu **Standardverhalten** im Bot und im
   Dashboard gemacht; die Funded-Konto-Szenarien wurden mit aktiver
-  Skalierung neu kalibriert. Volles Detail in
-  [[cls_practical_strategy_state]].
+  Skalierung neu kalibriert. Volles Detail siehe Memory:
+  `cls_practical_strategy_state`.
 - **CTNL Edge (Gold SMC Continuation + Reversal-Kaskade)**: Live-Signal-
   Contract, Paper-Forward-Test, Telegram-Anbindung wurden gebaut, dann
   Phase-6-Robustheit/Regime-Untersuchung durchgeführt, ins Portfolio (EK/FK)

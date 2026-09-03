@@ -16,3 +16,29 @@
 2026-08-27 11:03:54 
 2026-08-27 11:03:54 I also wrote a memory note (`weekly_checkup_kw34_2026_findings.md`) so future sessions pick up these open items instead of rediscovering them.
 2026-08-27 11:03:54 === Weekly-Report-Task beendet ===
+2026-08-31 01:15:43 === Weekly-Report-Task gestartet ===
+2026-08-31 01:15:43 Nutze Claude Code: C:\Users\andre\.vscode\extensions\anthropic.claude-code-2.1.251-win32-arm64\resources\native-binary\claude.exe
+2026-08-31 01:15:43 Heute ist der letzte Sonntag vor Monatswechsel - haenge Monats-Report-Prompt an.
+2026-08-31 01:15:46 You've hit your weekly limit -� resets 3am (Europe/Berlin)
+2026-08-31 01:15:46 === Weekly-Report-Task beendet ===
+2026-08-31 23:52:49 === Weekly-Report-Task gestartet ===
+2026-08-31 23:52:49 Nutze Claude Code: C:\Users\andre\.vscode\extensions\anthropic.claude-code-2.1.251-win32-arm64\resources\native-binary\claude.exe
+2026-08-31 23:52:49 Heute ist der letzte Sonntag vor Monatswechsel - haenge Monats-Report-Prompt an.
+2026-09-01 00:17:51 All four reports are done and delivered. Summary:
+2026-09-01 00:17:51 
+2026-09-01 00:17:51 **Timing note:** The run actually started Monday night 2026-08-31 (not Sunday) — a delayed Task Scheduler run, same pattern as the first-ever run. It covers **KW35 (Aug 24–30)**, the last fully-completed week. Since Aug 30 was the last Sunday of August, this run also triggered the **first-ever Monthly Checkup** (August 2026).
+2026-09-01 00:17:51 
+2026-09-01 00:17:51 **What shipped:**
+2026-09-01 00:17:51 - `knowledge/reports/weekly/KW35_2026_{performance,education}.md` + styled HTML
+2026-09-01 00:17:51 - `knowledge/reports/monthly/2026-08_{performance,education}.md` + styled HTML (fresh full-month MT5 pull, not summed from weeklies)
+2026-09-01 00:17:51 - Both PDFs rendered to `Documents\Trading Reports\` and sent via Telegram
+2026-09-01 00:17:51 - Committed locally (not pushed): `8b3af55`
+2026-09-01 00:17:51 
+2026-09-01 00:17:51 **Biggest findings surfaced:**
+2026-09-01 00:17:51 1. **Portfolio consolidation went live this week** — `EK-Portfolio-Bridge` (8 legs) went from paper (Aug 27) to real money on the Tickmill account (Aug 29), placing its first-ever trade Aug 31 — on an account it took over from the now-retired OU-Modell Konto3.
+2026-09-01 00:17:51 2. **Unexplained, flagged prominently:** `BTC-EMA-Cross-Bridge` and `CTNL-Edge-FK-Paper` were both deactivated today (Aug 31) with no commit or memory trail — BTC EMA manages real money, so this needs your confirmation it was intentional.
+2026-09-01 00:17:51 3. The Gold ASB shared-terminal `AutoTrading disabled` bug recurred twice more (4th/5th time since first found Aug 20) — still unfixed.
+2026-09-01 00:17:51 4. Two new unhandled exceptions surfaced in CTNL Edge's Dukascopy data feed, and the 3-week-old unattributed USDJPY position on the shared account got worse (-$199.97 floating).
+2026-09-01 00:17:51 
+2026-09-01 00:17:52 I also saved two memory notes capturing the undocumented deactivation and the account-handover mechanics, so the next run doesn't have to rediscover them.
+2026-09-01 00:17:52 === Weekly-Report-Task beendet ===

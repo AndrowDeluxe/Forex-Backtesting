@@ -17,7 +17,7 @@ Schwerpunkte):
   Donnerstag kam `EK-Portfolio-Bridge` (8 Beine) als Paper-Bot dazu, und
   Samstag ging sie mit echtem Geld auf dem ehemaligen OU-Modell-Tickmill-
   Konto live. Details siehe Performance-Report Abschnitt 1. Dies ist die
-  Umsetzung dessen, was bereits in [[portfolio_consolidation_pending]] als
+  Umsetzung dessen, was bereits in Memory `portfolio_consolidation_pending` als
   "kommt noch" vermerkt war.
 - **FK Instant Funding**: Gewichts-Optimierung der 6 Beine (Monte-Carlo-
   geprüft), NY-Open ORB als 6. Strategie integriert, drei echte Bugs
@@ -61,7 +61,7 @@ aber diese Woche um "gelegentlich auch samstags" ergänzt.
 
 - **Die in der Memory angekündigte Portfolio-Konsolidierung ist diese
   Woche tatsächlich eingetreten, fast genau wie vorhergesagt.**
-  [[portfolio_consolidation_pending]] (27.08.) sagte voraus, dass Telegram/
+  Memory `portfolio_consolidation_pending` (27.08.) sagte voraus, dass Telegram/
   Reporting irgendwann auf Portfolio-Ebene umgestellt werden, sobald die
   konsolidierten Portfolios live gehen - das ist mit `EK-Portfolio-Bridge`
   jetzt eingetreten, innerhalb von zwei Tagen (Paper 08-27 → Live 08-29).

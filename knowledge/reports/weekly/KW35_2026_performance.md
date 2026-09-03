@@ -25,13 +25,13 @@
 ## 1. Wochenkontext
 
 Diese Woche war die Woche, in der die **Portfolio-Konsolidierung** (seit
-[[portfolio_consolidation_pending]] angekündigt) sichtbar wurde:
+Memory `portfolio_consolidation_pending` angekündigt) sichtbar wurde:
 
 - **Mittwoch 08-27**: die vier Einzelstrategie-Bots **Gold ASB, CLS
   Practical, CTNL Edge und OU-Modell** wurden per `Disable-ScheduledTask`
   pausiert (reversibel, nichts gelöscht) - Teil des geplanten Umzugs auf
   konsolidierte Portfolios. BTC EMA Cross war bewusst **nicht** in dieser
-  Liste. Details in [[individual_strategy_bots_stopped_20260827]]. In der
+  Liste. Details in Memory `individual_strategy_bots_stopped_20260827`. In der
   Praxis liefen die zugehörigen Scheduled Tasks noch bis Donnerstagmittag
   08-28 nach (letzte "Gold ASB Scan"/"CLS Practical Scan"-Commits um
   08-28 12:35-13:00 Uhr), dann Stille - vermutlich ein bereits gestarteter
@@ -44,19 +44,19 @@ Diese Woche war die Woche, in der die **Portfolio-Konsolidierung** (seit
   umgestellt (expliziter User-Auftrag) - echtes Geld auf dem realen
   Tickmill-Konto (Login 55918977, **demselben Konto**, das bis 08-27 als
   OU-Modells "Konto3" lief und dann aus dessen Config entfernt wurde, siehe
-  [[ou_modell_tickmill_removed_20260827]]). Gleichzeitig wird eine
+  Memory: `ou_modell_tickmill_removed_20260827`). Gleichzeitig wird eine
   Wochenend-/Spread-Stunden-Sperre für EK-Portfolio, CTNL-Edge-FK-Paper und
   FK Instant Funding eingeführt (sichtbar an den Log-Pausen Sa-Nacht/So).
-  Siehe [[live_money_bridges_status_20260829]].
+  Siehe Memory: `live_money_bridges_status_20260829`.
 - **FK Instant Funding**: Gewichts-Optimierung der 6 Beine (Monte-Carlo-
   geprüft, 08-29), NY-Open ORB als 6. Strategie integriert (08-27), sowie
   mehrere echte Bugfixes (Kontostart-Bug, EOD-Trailing-DD-Floor-Bug,
   `scan_errors_today` auf lokalen Kalendertag umgestellt am 08-31) - bleibt
-  aber die ganze Woche `DRY_RUN=True`, siehe [[fk_instant_funding_scaling_plan]].
+  aber die ganze Woche `DRY_RUN=True`, siehe Memory: `fk_instant_funding_scaling_plan`.
 - **Funded-Portfolio-Bridge** (`challenge_portfolio/` extern, TTP + IQ
   Markets/"I Capital"): reale Order-Ausführung wurde implementiert und
   Ende-zu-Ende gegen die echten Konten getestet, bleibt aber `DRY_RUN=True`
-  - siehe [[challenge_portfolio_ttp_icapital]].
+  - siehe Memory: `challenge_portfolio_ttp_icapital`.
 - **Randnotiz, außerhalb des Berichtszeitraums, aber aktuell**: Am
   **2026-08-31** (heute/gestern, KW36) wurden die Scheduled Tasks
   `BTC-EMA-Cross-Bridge`, `BTC-EMA-Cross-Scan` und `CTNL-Edge-FK-Paper`
@@ -210,7 +210,7 @@ Hinweise zur Tabelle:
    im eigenen Bot-Code. Nicht root-caused - könnte ein breiteres, auch
    andere Bots betreffendes Dukascopy-Problem sein (CLS Practical hatte
    bereits eine andere Dukascopy-bezogene Datumsgrenze-Bug, siehe
-   [[paper_bots_status_20260826]]). Bot wurde kurz danach ohnehin pausiert,
+   Memory: `paper_bots_status_20260826`). Bot wurde kurz danach ohnehin pausiert,
    daher kein akuter Schaden, aber ungeklärt für die Wiederinbetriebnahme.
 5. **FK Instant Fundings Paper-Diagnose durchlief zwei Equity-Resets diese
    Woche** - der erste (08-26 20:00) ist der bekannte, dokumentierte

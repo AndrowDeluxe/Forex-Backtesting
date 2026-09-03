@@ -5,11 +5,19 @@ yfinance-basierten data.py-Modulen im Projekt, aber fuer Faelle, in denen
 gezielt TradingViews eigene Berechnung/Symbolabdeckung gebraucht wird statt
 Yahoo Finance.
 
-Login ist fuer fetch_ohlcv() optional (tvDatafeed funktioniert auch anonym,
-eingeschraenkt in Historie/Rate-Limit) -- mit dem TradingView-Pro-Account aus
-.streamlit/secrets.toml gibt es mehr Historie und hoehere Rate-Limits.
-fetch_indicators() braucht nie einen Login (TradingViews Scanner-API ist
-oeffentlich)."""
+fetch_ohlcv() laeuft IMMER anonym (tvDatafeed funktioniert eingeschraenkt in
+Historie/Rate-Limit, aber ausreichend -- siehe cls_practical/rates.py
+Docstring: TVC:DE02Y/US02Y bis 2014 zurueck bereits ohne Login abrufbar).
+Der fruehere Pro-Account-Login (.streamlit/secrets.toml) wurde 2026-09-03
+entfernt: TradingView verlangt seit einiger Zeit ein Captcha beim
+Passwort-Login, das die Bibliothek nicht loesen kann (offenes, seit
+2024-12-07 ungeloestes Upstream-Issue, github.com/rongardF/tvdatafeed/
+issues/62, "recaptcha_required") -- jeder Versuch schlug zuverlaessig fehl
+und erzeugte nur noch ERROR-Log-Spam ("error while signin") bei praktisch
+jedem Bridge-Lauf (Funded-Portfolio-Bridge + FK Instant Funding, seit
+2026-09-01), ohne echten Funktionsgewinn, da die anonyme Historie fuer
+diesen Bedarf ohnehin ausreicht. fetch_indicators() braucht nie einen Login
+(TradingViews Scanner-API ist oeffentlich)."""
 
 from functools import lru_cache
 
@@ -17,8 +25,6 @@ import pandas as pd
 from tradingview_ta import Interval as TAInterval
 from tradingview_ta import TA_Handler
 from tvDatafeed import Interval, TvDatafeed
-
-from ._secrets import load_credentials
 
 _INTERVAL_MAP = {
     "1m": Interval.in_1_minute, "5m": Interval.in_5_minute, "15m": Interval.in_15_minute,
@@ -35,11 +41,7 @@ _TA_INTERVAL_MAP = {
 
 @lru_cache(maxsize=1)
 def _client() -> TvDatafeed:
-    try:
-        username, password = load_credentials()
-        return TvDatafeed(username=username, password=password)
-    except FileNotFoundError:
-        return TvDatafeed()  # anonym, eingeschraenkt
+    return TvDatafeed()  # anonym, eingeschraenkt -- siehe Modul-Docstring
 
 
 def fetch_ohlcv(symbol: str, exchange: str, interval: str = "1d", n_bars: int = 500) -> pd.DataFrame:

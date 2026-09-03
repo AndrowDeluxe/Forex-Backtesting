@@ -43,6 +43,7 @@ Ueberwacht alle drei Instant-Funding-Regeln:
    Punkt-in-Zeit-Wahrscheinlichkeitskurve, auf der dieser Live-Check beruht)."""
 
 import json
+import threading
 import time
 from pathlib import Path
 
@@ -60,7 +61,36 @@ from strategy.backtest import BacktestConfig, simulate_trades
 # weiter unten nutzbar (import oben).
 
 
-def _retry(fn, attempts: int = 6, delay_seconds: float = 8.0):
+def _call_with_timeout(fn, timeout_seconds: float):
+    """Laesst fn() in einem Daemon-Thread laufen, wartet maximal timeout_seconds.
+    Fund 2026-09-02 (Abend): dukascopy_python haengt manchmal OHNE jemals eine
+    Exception zu werfen -- betrifft auch `fk_instant_funding.paper_bot`,
+    mehrere Prozesse liefen dadurch stundenlang fest, `Stop-Process` war der
+    einzige Weg raus (siehe knowledge/CHANGELOG.md). Ein echter Thread-Abbruch
+    ist in Python nicht moeglich -- der haengende Aufruf laeuft im Hintergrund
+    weiter, aber `daemon=True` verhindert, dass ER den Prozess am saubern
+    Beenden hindert, und der Hauptablauf blockiert dadurch nie wieder
+    unbegrenzt."""
+    result: list = []
+    error: list = []
+
+    def _target():
+        try:
+            result.append(fn())
+        except Exception as e:
+            error.append(e)
+
+    t = threading.Thread(target=_target, daemon=True)
+    t.start()
+    t.join(timeout_seconds)
+    if t.is_alive():
+        raise TimeoutError(f"Aufruf haengt noch nach {timeout_seconds:.0f}s (dukascopy_python-Hang, siehe DASHBOARD.md)")
+    if error:
+        raise error[0]
+    return result[0]
+
+
+def _retry(fn, attempts: int = 6, delay_seconds: float = 8.0, timeout_seconds: float = 90.0):
     """dukascopy_python's Streaming-Client wirft gelegentlich ein KeyError(0)
     ODER (Fund 2026-09-02, siehe ek_portfolio/paper_bot.py::_retry()) ein
     TypeError tief in seiner eigenen _stream()-Cursor-Logik, wenn end nah an
@@ -69,11 +99,14 @@ def _retry(fn, attempts: int = 6, delay_seconds: float = 8.0):
     -- bekannte Instabilitaet der Drittanbieter-Bibliothek, kein Fehler in
     unserem Code. attempts/delay_seconds 2026-09-02 von 3x/5s auf 6x/8s
     erhoeht, nachdem 3 Versuche in einem realen Fall nicht ausgereicht
-    haben (der zweite oder dritte Versuch kommt sonst fast immer durch)."""
+    haben (der zweite oder dritte Versuch kommt sonst fast immer durch).
+    Jeder Versuch laeuft jetzt zusaetzlich durch _call_with_timeout() (siehe
+    dortiger Docstring) -- ein haengender Versuch zaehlt wie jeder andere
+    Fehlversuch, statt den ganzen Bridge-Lauf fuer immer zu blockieren."""
     last_exc = None
     for attempt in range(attempts):
         try:
-            return fn()
+            return _call_with_timeout(fn, timeout_seconds)
         except Exception as e:
             last_exc = e
             if attempt < attempts - 1:
@@ -109,11 +142,12 @@ CAPITAL_WEIGHT = {
 MAX_POSITION_LOSS_PCT = 0.005   # vom STARTKAPITAL (fester Dollar-Deckel, siehe Docstring)
 TRAILING_DD_PCT = 0.05          # End-of-Day, gegen den bisherigen Hoechststand
 CONSISTENCY_CAP_PCT = 0.30      # bester Einzeltag / kumulierter Gesamtgewinn
-DAILY_SUMMARY_HOUR = 21         # ECHTE lokale Zeit (Europe/Berlin, siehe _local_dt()) - erster Lauf nach
+DAILY_SUMMARY_HOUR = 22         # ECHTE lokale Zeit (Europe/Berlin, siehe _local_dt()) - erster Lauf nach
 # dieser Stunde sendet den Tagesabschluss. Bug gefunden beim Review 2026-08-29: `end` ist UTC-naiv, ein
 # direkter Vergleich end.hour >= 21 verglich also in Wahrheit gegen UTC 21 Uhr = 23 Uhr Sommerzeit lokal --
 # der Tagesabschluss feuerte real zwei Stunden spaeter als der Kommentar behauptete. Ab jetzt ueber
-# _local_hour() korrekt in Europe/Berlin umgerechnet.
+# _local_hour() korrekt in Europe/Berlin umgerechnet. Von 21 auf 22 verschoben (Nutzerauftrag
+# 2026-09-02, gemeinsame Zielzeit fuer alle 3 Portfolios).
 LOCAL_TZ = "Europe/Berlin"
 SPREAD_HOUR_LOCAL = 23  # taeglicher Broker-Rollover/Swap-Zeitpunkt, spuerbar breitere Spreads (User-Wunsch 2026-08-29)
 

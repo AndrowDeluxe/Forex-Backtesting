@@ -46,6 +46,7 @@ BEIDE Regelwerke unabhaengig ausgewertet werden."""
 
 import json
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -56,7 +57,36 @@ from challenge_portfolio.telegram_notify import send_telegram_message
 from strategy.backtest import BacktestConfig, simulate_trades
 
 
-def _retry(fn, attempts: int = 6, delay_seconds: float = 8.0):
+def _call_with_timeout(fn, timeout_seconds: float):
+    """Laesst fn() in einem Daemon-Thread laufen, wartet maximal timeout_seconds.
+    Fund 2026-09-02 (Abend): dukascopy_python haengt manchmal OHNE jemals eine
+    Exception zu werfen -- 23 python.exe-Prozesse liefen dadurch stundenlang
+    fest (15:45 bis weit nach 22:00, mehrfach wiederholt), `Stop-Process` war
+    der einzige Weg raus (siehe knowledge/CHANGELOG.md). Ein echter Thread-
+    Abbruch ist in Python nicht moeglich -- der haengende Aufruf laeuft im
+    Hintergrund weiter, aber `daemon=True` verhindert, dass ER den Prozess am
+    saubern Beenden hindert, und der Hauptablauf blockiert dadurch nie wieder
+    unbegrenzt."""
+    result: list = []
+    error: list = []
+
+    def _target():
+        try:
+            result.append(fn())
+        except Exception as e:
+            error.append(e)
+
+    t = threading.Thread(target=_target, daemon=True)
+    t.start()
+    t.join(timeout_seconds)
+    if t.is_alive():
+        raise TimeoutError(f"Aufruf haengt noch nach {timeout_seconds:.0f}s (dukascopy_python-Hang, siehe DASHBOARD.md)")
+    if error:
+        raise error[0]
+    return result[0]
+
+
+def _retry(fn, attempts: int = 6, delay_seconds: float = 8.0, timeout_seconds: float = 90.0):
     """dukascopy_python's Streaming-Client wirft gelegentlich ein KeyError(0)
     ODER (Fund 2026-09-02, siehe ek_portfolio/paper_bot.py::_retry()) ein
     TypeError tief in seiner eigenen _stream()-Cursor-Logik, wenn end nah an
@@ -64,11 +94,14 @@ def _retry(fn, attempts: int = 6, delay_seconds: float = 8.0):
     kein Fehler in unserem Code (identisches Muster wie
     fk_instant_funding/paper_bot.py). attempts/delay_seconds 2026-09-02 von
     3x/5s auf 6x/8s erhoeht, nachdem 3 Versuche in einem realen Fall nicht
-    ausgereicht haben."""
+    ausgereicht haben. Jeder Versuch laeuft jetzt zusaetzlich durch
+    _call_with_timeout() (siehe dortiger Docstring) -- ein haengender Versuch
+    zaehlt wie jeder andere Fehlversuch, statt den ganzen Bridge-Lauf fuer
+    immer zu blockieren."""
     last_exc = None
     for attempt in range(attempts):
         try:
-            return fn()
+            return _call_with_timeout(fn, timeout_seconds)
         except Exception as e:
             last_exc = e
             if attempt < attempts - 1:
@@ -129,8 +162,11 @@ RULES = {
 _RULE = "─" * 24
 _CHALLENGE_TITLES = {"ttp": "TTP Challenge", "iqmarkets": "IQ Challenge"}
 LOCAL_TZ = "Europe/Berlin"
-DAILY_SUMMARY_HOUR = 21  # echte lokale Zeit -- NIE direkt gegen UTC-Stunde vergleichen (siehe
-# _local_dt()-Docstring, realer Bug in fk_instant_funding/paper_bot.py am 2026-08-29 gefunden)
+DAILY_SUMMARY_HOUR = 22  # echte lokale Zeit -- NIE direkt gegen UTC-Stunde vergleichen (siehe
+# _local_dt()-Docstring, realer Bug in fk_instant_funding/paper_bot.py am 2026-08-29 gefunden).
+# Von 21 auf 22 verschoben (Nutzerauftrag 2026-09-02, gemeinsame Zielzeit fuer alle 3 Portfolios).
+# Dieser eigene main()/Tagesabschluss-Pfad ist aktuell nicht scheduled (siehe DASHBOARD.md), nur
+# fuer Konsistenz mitgezogen.
 
 
 def _challenge_message(rule_key: str, subtitle: str, body_lines: list[str] | None = None) -> str:

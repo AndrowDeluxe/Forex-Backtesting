@@ -1456,3 +1456,9 @@
 2026-08-28 13:00:03 
 2026-08-28 13:00:03 Aktuellstes Fenster: 2026-08-28T01:00:00-04:00 -- ADX-Regimefilter
 2026-08-28 13:00:03 Gespeichert: C:\Users\andre\Forex-Backtesting\gold_asb_logs\daily_log.csv
+2026-08-28 13:00:03 [main 3ab5c79] Gold ASB Scan: Snapshot 2026-08-28 13:00
+2026-08-28 13:00:03  1 file changed, 11 insertions(+)
+2026-08-28 13:00:05 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-08-28 13:00:05    30c45bf..3ab5c79  main -> main
+2026-08-28 13:00:05 Commit + Push erfolgreich.
+2026-08-28 13:00:05 === Gold-ASB-Scan-Task beendet ===

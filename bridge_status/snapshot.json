@@ -1,23 +1,23 @@
 {
-  "generated_at": "2026-09-03T07:31:27",
+  "generated_at": "2026-09-03T08:01:26",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T07:30:03",
+      "last_run": "2026-09-03T08:00:04",
       "minutes_since_last_run": 1.4,
       "status": "ok",
-      "last_equity_line": "2026-09-03 05:05:50 2026-09-03 05:00:05,868 INFO run_once: Konto-Equity 3408.23 EUR | Aggregiertes offenes Risiko (ganzes Konto): 265.83 (Deckel dieser Bridge: 272.66, 8%)",
-      "last_error_line": "2026-09-03 05:05:51     raise error[0]",
+      "last_equity_line": "2026-09-03 07:47:16 2026-09-03 07:45:05,998 INFO run_once: Konto-Equity 3408.24 EUR | Aggregiertes offenes Risiko (ganzes Konto): 265.68 (Deckel dieser Bridge: 272.66, 8%)",
+      "last_error_line": "2026-09-03 07:34:26     raise error[0]",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T07:30:03",
+      "last_run": "2026-09-03T08:00:04",
       "minutes_since_last_run": 1.4,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-03 03:42:55 Verbunden: Login 504072729, Equity $100,018.75 USD",
+          "last_equity_line": "2026-09-03 07:55:33 Verbunden: Login 504072729, Equity $100,018.75 USD",
           "last_error_line": "2026-09-03 01:13:58 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
           "recent_events": [
             "2026-09-03 01:13:58 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
@@ -26,15 +26,15 @@
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-03 03:42:55 Verbunden: Login 16054, Equity $99,991.93 USD",
+          "last_equity_line": "2026-09-03 07:55:33 Verbunden: Login 16054, Equity $99,991.93 USD",
           "recent_events": []
         },
         "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (ttp)": {
-          "last_error_line": "2026-09-03 03:42:55 FEHLER auf Konto Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld): Verbindung fuer Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (Login 504069845) auch im zweiten Versuch fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-10005, 'IPC timeout')",
+          "last_error_line": "2026-09-03 07:55:33 FEHLER auf Konto Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld): Verbindung fuer Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (Login 504069845) auch im zweiten Versuch fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-10005, 'IPC timeout')",
           "recent_events": []
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital, Login 15514, ex-GoldASB/BTC-EMA-Cross) (iqmarkets)": {
-          "last_error_line": "2026-09-03 03:42:55 FEHLER auf Konto Funded Portfolio - IQ Markets (BeyondIQCapital, Login 15514, ex-GoldASB/BTC-EMA-Cross): Verbindung fuer Funded Portfolio - IQ Markets (BeyondIQCapital, Login 15514, ex-GoldASB/BTC-EMA-Cross) (Login 15514) auch im zweiten Versuch fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-10005, 'IPC timeout')",
+          "last_error_line": "2026-09-03 07:55:33 FEHLER auf Konto Funded Portfolio - IQ Markets (BeyondIQCapital, Login 15514, ex-GoldASB/BTC-EMA-Cross): Verbindung fuer Funded Portfolio - IQ Markets (BeyondIQCapital, Login 15514, ex-GoldASB/BTC-EMA-Cross) (Login 15514) auch im zweiten Versuch fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-10005, 'IPC timeout')",
           "recent_events": []
         }
       }
@@ -42,7 +42,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-09-03T07:23:12",
-      "minutes_since_last_run": 8.3,
+      "minutes_since_last_run": 38.2,
       "status": "ok",
       "last_equity_line": "2026-09-03 07:23:12 Verbunden: Login 17764, Equity $100,000.00",
       "last_error_line": "2026-09-03 07:23:12 NY-Open-ORB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",

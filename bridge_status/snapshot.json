@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-09-03T04:01:26",
+  "generated_at": "2026-09-03T04:31:26",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T04:00:03",
+      "last_run": "2026-09-03T04:30:03",
       "minutes_since_last_run": 1.4,
       "status": "ok",
-      "last_equity_line": "2026-09-03 03:52:32 2026-09-03 03:45:06,266 INFO run_once: Konto-Equity 3408.23 EUR | Aggregiertes offenes Risiko (ganzes Konto): 265.85 (Deckel dieser Bridge: 272.66, 8%)",
-      "last_error_line": "2026-09-03 03:52:33 2026-09-03 03:52:17,638 ERROR run_once: cls_practical: unerwarteter Fehler",
+      "last_equity_line": "2026-09-03 04:20:03 2026-09-03 04:15:07,854 INFO run_once: Konto-Equity 3408.23 EUR | Aggregiertes offenes Risiko (ganzes Konto): 265.92 (Deckel dieser Bridge: 272.66, 8%)",
+      "last_error_line": "2026-09-03 04:20:04     raise error[0]",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T04:00:03",
+      "last_run": "2026-09-03T04:30:03",
       "minutes_since_last_run": 1.4,
       "status": "ok",
       "accounts": {
@@ -41,12 +41,14 @@
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T03:26:57",
-      "minutes_since_last_run": 34.5,
+      "last_run": "2026-09-03T04:18:01",
+      "minutes_since_last_run": 13.4,
       "status": "ok",
-      "last_equity_line": "2026-09-03 03:26:57 Verbunden: Login 17764, Equity $100,000.00",
-      "last_error_line": "2026-09-03 03:26:57 NY-Open-ORB-Scan fehlgeschlagen: 0",
+      "last_equity_line": "2026-09-03 04:18:01 Verbunden: Login 17764, Equity $100,000.00",
+      "last_error_line": "2026-09-03 04:18:01 NY-Open-ORB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
       "recent_events": [
+        "2026-09-03 04:18:01 NY-Open-ORB-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+        "2026-09-03 04:18:01 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
         "2026-09-03 03:26:57 NY-Open-ORB-Scan fehlgeschlagen: 0",
         "2026-09-03 03:26:57 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
         "2026-09-03 03:26:57 Gold-ASB-Scan fehlgeschlagen: 0",

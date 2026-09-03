@@ -1,103 +1,103 @@
 {
-  "generated_at": "2026-09-03T22:01:25",
+  "generated_at": "2026-09-03T22:31:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T22:00:00",
-      "minutes_since_last_run": 1.4,
+      "last_run": "2026-09-03T22:31:16",
+      "minutes_since_last_run": 0.2,
       "status": "ok",
-      "last_equity_line": "2026-09-03 21:55:50 2026-09-03 21:45:02,014 INFO run_once: Konto-Equity 3456.51 EUR | Aggregiertes offenes Risiko (ganzes Konto): 265.03 (Deckel dieser Bridge: 276.52, 8%)",
-      "last_error_line": "2026-09-03 21:55:51     raise error[0]",
+      "last_equity_line": "2026-09-03 22:31:16 2026-09-03 22:30:01,826 INFO run_once: Konto-Equity 3452.39 EUR | Aggregiertes offenes Risiko (ganzes Konto): 295.07 (Deckel dieser Bridge: 276.19, 8%)",
+      "last_error_line": "2026-09-03 22:31:16 2026-09-03 22:30:01,833 ERROR legs.ny_open_orb.executor: ORB NASDAQ Ticket 262117522: Session-Ende-Schliessung fehlgeschlagen: None",
       "recent_events": [
+        "2026-09-03 22:31:16 2026-09-03 22:30:01,833 ERROR legs.ny_open_orb.executor: ORB NASDAQ Ticket 262117522: Session-Ende-Schliessung fehlgeschlagen: None",
+        "2026-09-03 22:21:06 2026-09-03 22:15:02,431 ERROR legs.ny_open_orb.executor: ORB NASDAQ Ticket 262117522: Session-Ende-Schliessung fehlgeschlagen: None",
+        "2026-09-03 22:06:15 2026-09-03 22:00:02,019 ERROR legs.ny_open_orb.executor: ORB NASDAQ Ticket 262117522: Session-Ende-Schliessung fehlgeschlagen: None",
+        "2026-09-03 22:06:15 2026-09-03 22:00:02,015 INFO legs.ny_open_orb.executor: [EK-ORB] \\U0001f7e2 TEILAUSSTIEG NASDAQ Ticket 262117522: 0.20 Lots @ 29484.24 (R-Level erreicht) | Rest-Stop auf Break-Even verschoben",
         "2026-09-03 21:55:50 2026-09-03 21:45:02,904 ERROR legs.ny_open_orb.executor: [EK-ORB] \\u26a0\\ufe0f Order fehlgeschlagen fuer US30: OrderSendResult(retcode=10016, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Invalid stops', request_id=0, retcode_external=0, request=TradeRequest(action=1, magic=990009, order=0, symbol='US30', volume=0.34, price=53681.42, stoplimit=0.0, sl=53486.98477908307, tp=53678.86088366773, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='EK-orb_us30 auto', position=0, position_by=0))",
         "2026-09-03 21:10:07 2026-09-03 21:00:03,094 WARNING legs.ny_open_orb.executor: [EK-ORB] \\u26a0\\ufe0f Risiko-Deckel erreicht, NASDAQ-Entry uebersprungen (offen 264.84 + neu 11.44 > Deckel 276.02)"
       ]
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T21:45:01",
-      "minutes_since_last_run": 16.4,
+      "last_run": "2026-09-03T22:30:49",
+      "minutes_since_last_run": 0.6,
       "status": "ok",
       "accounts": {
-        "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-03 21:35:10 Verbunden: Login 504072729, Equity $100,072.31 USD",
-          "last_error_line": "2026-09-03 21:35:10 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-          "recent_events": [
-            "2026-09-03 21:35:10 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 21:35:10 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 21:06:12 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 21:06:12 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 20:16:36 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 20:16:36 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-09-03 19:55:47 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 19:20:29 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 19:20:29 CLS-Practical-Scan fehlgeschlagen: 0"
-          ]
-        },
-        "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-03 21:35:10 Verbunden: Login 16054, Equity $99,991.93 USD",
-          "last_error_line": "2026-09-03 21:35:10 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-          "recent_events": [
-            "2026-09-03 21:35:10 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 21:35:10 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 21:06:12 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 21:06:12 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 20:16:36 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 20:16:36 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-09-03 19:55:47 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 19:20:29 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 19:20:29 CLS-Practical-Scan fehlgeschlagen: 0"
-          ]
-        },
         "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (ttp)": {
-          "last_equity_line": "2026-09-03 21:35:10 Verbunden: Login 504069845, Equity $96,710.51 USD",
-          "last_error_line": "2026-09-03 21:35:10 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+          "last_equity_line": "2026-09-03 22:30:49 Verbunden: Login 504069845, Equity $96,727.44 USD",
+          "last_error_line": "2026-09-03 22:30:49 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
           "recent_events": [
+            "2026-09-03 22:30:49 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-03 22:30:49 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+            "2026-09-03 22:05:43 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-03 22:05:43 CLS-Practical-Scan fehlgeschlagen: 0",
             "2026-09-03 21:35:10 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
             "2026-09-03 21:35:10 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
             "2026-09-03 21:06:12 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 21:06:12 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 20:16:36 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 20:16:36 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-09-03 19:55:47 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 19:20:29 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 19:20:29 CLS-Practical-Scan fehlgeschlagen: 0"
+            "2026-09-03 21:06:12 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)"
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital, Login 15514, ex-GoldASB/BTC-EMA-Cross) (iqmarkets)": {
-          "last_equity_line": "2026-09-03 21:35:10 Verbunden: Login 15514, Equity $99,270.31 USD",
-          "last_error_line": "2026-09-03 21:35:10 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+          "last_equity_line": "2026-09-03 22:30:49 Verbunden: Login 15514, Equity $99,293.59 USD",
+          "last_error_line": "2026-09-03 22:30:49 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
           "recent_events": [
+            "2026-09-03 22:30:49 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-03 22:30:49 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+            "2026-09-03 22:05:43 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-03 22:05:43 CLS-Practical-Scan fehlgeschlagen: 0",
             "2026-09-03 21:35:10 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
             "2026-09-03 21:35:10 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
             "2026-09-03 21:06:12 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 21:06:12 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 20:16:36 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 20:16:36 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-09-03 19:55:47 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 19:20:29 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-03 19:20:29 CLS-Practical-Scan fehlgeschlagen: 0"
+            "2026-09-03 21:06:12 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)"
+          ]
+        },
+        "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
+          "last_equity_line": "2026-09-03 22:30:49 Verbunden: Login 504072729, Equity $100,088.58 USD",
+          "last_error_line": "2026-09-03 22:30:49 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+          "recent_events": [
+            "2026-09-03 22:30:49 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-03 22:30:49 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+            "2026-09-03 22:05:43 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-03 22:05:43 CLS-Practical-Scan fehlgeschlagen: 0",
+            "2026-09-03 21:35:10 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-03 21:35:10 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-03 21:06:12 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-03 21:06:12 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)"
+          ]
+        },
+        "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
+          "last_equity_line": "2026-09-03 22:30:49 Verbunden: Login 16054, Equity $99,991.93 USD",
+          "last_error_line": "2026-09-03 22:30:49 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+          "recent_events": [
+            "2026-09-03 22:30:49 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-03 22:30:49 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+            "2026-09-03 22:05:43 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-03 22:05:43 CLS-Practical-Scan fehlgeschlagen: 0",
+            "2026-09-03 21:35:10 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-03 21:35:10 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-03 21:06:12 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-03 21:06:12 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)"
           ]
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-03T21:27:00",
-      "minutes_since_last_run": 34.4,
+      "last_run": "2026-09-03T22:24:37",
+      "minutes_since_last_run": 6.8,
       "status": "ok",
-      "last_equity_line": "2026-09-03 21:27:00 Verbunden: Login 17764, Equity $100,000.00",
-      "last_error_line": "2026-09-03 21:27:00 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+      "last_equity_line": "2026-09-03 22:24:37 Verbunden: Login 17764, Equity $100,000.00",
+      "last_error_line": "2026-09-03 22:24:37 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
       "recent_events": [
+        "2026-09-03 22:24:37 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+        "2026-09-03 22:24:37 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
         "2026-09-03 21:27:00 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
         "2026-09-03 21:27:00 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
         "2026-09-03 20:28:25 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
         "2026-09-03 19:22:01 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
         "2026-09-03 19:22:01 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
         "2026-09-03 18:23:11 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-        "2026-09-03 18:23:11 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-        "2026-09-03 17:28:45 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-        "2026-09-03 17:28:45 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)"
+        "2026-09-03 18:23:11 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)"
       ]
     }
   }

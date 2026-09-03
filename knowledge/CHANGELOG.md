@@ -9,6 +9,37 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-03** [Funded-Portfolio-Bridge] **Diagnose bestaetigt (keine
+  Code-Aenderung): `account_start`-Gating ist der Grund, warum die neuen Konten
+  keine OU-Entries bekommen.** Nutzer hat `bridge_state_ttp1.json` geliefert:
+  `account_start = 2026-09-03T10:33:35`, das FAST-Signal traegt
+  `scan_date=2026-09-02` — liegt davor, wird also als Alt-Signal bewusst nicht
+  nacheroeffnet und taucht in `positions` gar nicht erst auf. Praezisierung
+  gegenueber dem Eintrag darunter: der Zeitstempel stammt nicht von der ersten
+  erfolgreichen Verbindung (12:37:03), sondern vom 10:30-Lauf, der noch gar
+  keine Verbindung hatte — `account_start` wird unabhaengig vom
+  Verbindungserfolg gesetzt. Gegenprobe im selben File: ein Signal NACH
+  `account_start` (die drei ORB-Beine, `2026-09-03T13:45:00Z`) wird sehr wohl
+  getrackt, mit korrekt aufgeloesten Broker-Symbolen (`USTEC`/`US500`/`US30`) —
+  Terminal, Symbol-Map und Bein-Zuordnung des neuen Kontos sind also in
+  Ordnung, `risk.kill_switch_active=false`, kein Drawdown-Deckel im Spiel.
+  Bestaetigt ist auch die befuerchtete Folgewirkung: das morgen frische
+  OU-Signal traegt `2026-09-03 00:00` und liegt damit immer noch vor
+  `account_start` — ohne Eingriff steigen die neuen Konten fruehestens am
+  2026-09-05 ins OU-Bein ein. Entscheidung "Alt-Signale nachziehen oder nicht"
+  liegt beim Nutzer (DASHBOARD.md).
+- **2026-09-03** [Funded-Portfolio-Bridge] **Nebenbefund aus demselben
+  Statefile: alle drei ORB-Beine heute als `missed` verbucht.**
+  `orb_nasdaq`/`orb_sp500`/`orb_us30` stehen auf `status="missed"`,
+  `ticket=null`. Signalzeit `2026-09-03T13:45:00Z`, verarbeitet erst
+  `15:34:59Z` — 110 Minuten Verzoegerung gegen
+  `MAX_SIGNAL_AGE_MINUTES_FOR_ENTRY = 60`, verursacht durch die wiederholten
+  `NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s`-Laeufe
+  (dukascopy-Hang). Betrifft alle Konten dieser Bridge, nicht nur die neuen:
+  solange der Hang anhaelt, feuert das ORB-Bein nicht mehr. Noch nichts
+  geaendert — offene Frage (Scan robuster machen vs. Alterscheck fuer ORB
+  lockern) in DASHBOARD.md.
+
 - **2026-09-03** [Funded-Portfolio-Bridge] **Diagnose (keine Code-Aenderung):
   warum die beiden neuen Konten TTP Konto 1 (504069845, echtes Geld) und IQ
   15514 noch keine OU-Entries bekommen haben.** Quelle ausschliesslich die

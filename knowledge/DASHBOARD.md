@@ -53,56 +53,64 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
-- **Keine OU-Entries auf den beiden neuen Konten (TTP Konto 1 / 504069845, IQ
-  15514) — sollen Alt-Signale nachgezogen werden?** Befund 2026-09-03 (rein aus
-  der `bridge_status/snapshot.json`-Historie, der Bridge-Code liegt ausserhalb
-  des Repos und war von hier aus nicht einsehbar):
-  1. **Bis 12:04 heute lief auf beiden neuen Konten gar nichts** — jeder Lauf
-     seit 2026-09-02 19:27 endete mit `mt5.initialize() fehlgeschlagen:
-     (-10005, 'IPC timeout')`, ab 12:04 mit `(-6, 'Terminal: Authorization
-     failed')`. Erste erfolgreiche Verbindung: **2026-09-03 12:37:03** (beide
-     Konten, Equity-Zeilen seitdem in jedem Snapshot). Das war die im CHANGELOG
-     als offen vermerkte Terminal-/AutoTrading-Baustelle; sie ist damit
-     erledigt, aber niemand hat es bisher irgendwo festgehalten.
-  2. **Seit 12:37 verbinden beide sauber, haben aber trotzdem nichts
-     gehandelt.** Der bisher einzige OU-Entry der Bridge (`2026-09-03 15:42:39
-     [TTP] ENTRY ou_modell (FAST) FAST BUY lots=40.0 risk=$166.79`) ging NUR auf
-     TTP Konto 2. Auf den beiden neuen Konten steht zu diesem Lauf weder ein
-     Entry noch eine Fehlerzeile — sie waren zu genau diesem Zeitpunkt
-     verbunden (gleiche 15:42:39-Equity-Zeile).
-  3. **Wahrscheinlichste Ursache (Annahme, nicht im Code verifiziert): das
-     `account_start`-Gating** aus `run_once.py`/`bridge_state_<id>.json`
-     ("verhindert faelschliches Nacheroeffnen von Alt-Signalen beim ersten
-     Lauf", siehe [[challenge-portfolio-ttp-icapital]]). Das FAST-Signal traegt
-     `scan_date=2026-09-02`, liegt also VOR dem `account_start` der neuen Konten
-     (= erster erfolgreicher Lauf, 2026-09-03 12:37) und wird darum bewusst
-     nicht nachgeholt. Auf Konto 2 (`account_start` vom 2026-09-01) greift das
-     Gate nicht — genau das erklaert den Unterschied.
-  4. **Nebeneffekt, falls das Gate wirklich Zeitstempel gegen Zeitstempel
-     vergleicht**: OU-Signale tragen als Zeit den Vortages-Schlusskurs
-     (Datum, 00:00). Ein morgen frisch entstehendes Signal traegt dann
-     `2026-09-03 00:00` — immer noch VOR `account_start` (12:37). Die neuen
-     Konten wuerden dann erst ab 2026-09-05 OU-Entries bekommen, nicht ab
-     morgen.
+- **OU-Entries auf den beiden neuen Konten: `account_start`-Gating BESTAETIGT —
+  sollen die Alt-Signale einmalig nachgezogen werden?** Ursache am 2026-09-03
+  aus `bridge_state_ttp1.json` verifiziert (Nutzer hat die Datei geliefert):
+  1. **`account_start` = `2026-09-03T10:33:35`** — das FAST-Signal traegt
+     `scan_date=2026-09-02`, liegt also davor und wird als "Alt-Signal"
+     bewusst nicht nacheroeffnet. Genau der vermutete Mechanismus.
+     Abweichung zur ersten Vermutung: der Zeitstempel stammt NICHT von der
+     ersten erfolgreichen Verbindung (12:37:03), sondern vom 10:30-Lauf, der
+     die Verbindung noch gar nicht herstellen konnte — `account_start` wird
+     also unabhaengig vom Verbindungserfolg beim Anlegen des Statefiles
+     gesetzt.
+  2. **Das Konto ist ansonsten voll im Kreislauf**: `positions` enthaelt die
+     drei ORB-Beine von heute mit korrekt aufgeloesten Broker-Symbolen
+     (`USTEC`/`US500`/`US30`) — Symbol-Map und Terminal des neuen Kontos
+     funktionieren, das OU-Bein faellt allein durch das Datums-Gate raus (es
+     taucht in `positions` gar nicht erst auf, waehrend ein Signal NACH
+     `account_start` sehr wohl getrackt wird).
+  3. **`risk`-Block unauffaellig**: `kill_switch_active=false`,
+     `account_start_equity=96664.38`, `peak_equity=96742.13` — kein
+     Risiko-/Drawdown-Deckel im Spiel.
+  4. **Die befuerchtete Folgewirkung ist real**: OU-Signale tragen als Zeit
+     den Vortag 00:00. Das morgen frische Signal traegt `2026-09-03 00:00` —
+     immer noch vor `account_start` (10:33). Ohne Eingriff steigen die neuen
+     Konten also fruehestens am **2026-09-05** ins OU-Bein ein, nicht morgen.
 
-  **Zum Nachpruefen auf dem Rechner** (ich komme von hier nicht dran):
-  `type C:\Users\andre\Funded-Portfolio-Bridge\bridge_state_ttp1.json` (bzw.
-  `bridge_state_iqmarkets2.json`) → steht dort ein `account_start` vom
-  2026-09-03 ~12:37? Und im Log des 15:42-Laufs der Block der neuen Konten:
-  taucht `ou_modell`/`FAST` dort mit einer Skip-Begruendung auf?
-
-  **Deine Entscheidung**: (a) so lassen — die neuen Konten steigen erst bei
-  frischen Signalen ein und laufen dauerhaft leicht hinter den alten her, oder
-  (b) `account_start` der beiden neuen Konten einmalig zurueckdatieren, damit
-  sie die aktuell offenen Signale (FAST, SPG) noch mitnehmen. (b) heisst auf
-  Konto 1 **echtes Geld** in eine Position, die schon einen Tag gelaufen ist —
-  mache ich nicht von selbst.
+  **Deine Entscheidung**: (a) so lassen — dann bleiben die neuen Konten bis
+  Freitag ohne OU-Position und laufen dauerhaft leicht hinter den alten her,
+  oder (b) `account_start` in `bridge_state_ttp1.json`/`bridge_state_iqmarkets2.json`
+  einmalig auf z.B. `2026-09-01T00:00:00` zurueckdatieren, damit die aktuell
+  offenen Signale (FAST, SPG) mitgenommen werden. (b) heisst auf Konto 1
+  **echtes Geld** in eine Position, die schon einen Tag gelaufen ist — und es
+  wuerde auch die anderen Beine rueckwirkend oeffnen, nicht nur das OU-Bein.
+  Mache ich nicht von selbst.
 
   **Separater Befund am Rande**: auch IQ Markets 16054 (altes Konto, kein
   `account_start`-Problem) hat den FAST-Entry nicht bekommen. Das OU-Bein hat
   dort also eine eigene Ursache — passt zum bekannten offenen Punkt "OU-Modell-
   Handelbarkeit auf BeyondIQCapital nur stichprobenartig geprueft" (`.gbe`-
   Suffix). Noch nicht untersucht.
+
+- **NEU 2026-09-03: alle drei ORB-Beine heute als `missed` verbucht — der
+  60-Minuten-Alterscheck und der dukascopy-Hang beissen sich.** Ebenfalls aus
+  `bridge_state_ttp1.json`: `orb_nasdaq`/`orb_sp500`/`orb_us30` stehen alle drei
+  auf `status="missed"`, `ticket=null`. Rechnung: ORB-Signalzeit
+  `2026-09-03T13:45:00Z` (15:45 lokal, NY-Open + 15 Min), verarbeitet erst
+  `15:34:59Z` (17:34 lokal) — **110 Minuten Verzoegerung** gegen
+  `MAX_SIGNAL_AGE_MINUTES_FOR_ENTRY = 60`. Grund der Verzoegerung sind die
+  wiederholten `NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s`-
+  Zeilen (dukascopy-Hang, siehe unten) — der erste erfolgreiche Scan kam zu
+  spaet, das Signal war da schon zu alt. Das trifft nicht nur die neuen Konten,
+  sondern jedes Konto dieser Bridge, und heisst konkret: solange der
+  dukascopy-Hang anhaelt, feuert das ORB-Bein gar nicht mehr. Der Alterscheck
+  selbst ist richtig (er verhindert genau das Hinterherjagen, das beim ersten
+  Gold-ASB-Entry passiert ist) — die Frage ist, ob der Scan schneller/robuster
+  werden muss (Retry-Fenster, Cache, andere Datenquelle) oder ob 60 Min. fuer
+  das ORB-Bein zu eng sind. Noch nichts geaendert, brauche deine Richtung.
+  Zum Gegenpruefen waere `bridge_state_ttp.json` (Konto 2) hilfreich: stehen
+  die ORB-Beine dort auch auf `missed`?
 
 - [x] ~~CLS Practical auf EK-Portfolio-Bridge (Echtgeld) scheitert wiederholt
   an dukascopy_python~~ — Nutzerentscheid 2026-09-02: mehr Retries statt

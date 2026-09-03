@@ -135,6 +135,30 @@
       "exit_reason": "target",
       "r_multiple": 2.959441294429814,
       "notified_exit": true
+    },
+    "orb_nasdaq_NASDAQ_2026-09-03T13:45:00_1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-09-03T13:45:00",
+      "exit_time": "2026-09-03T13:50:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0226505857032797,
+      "notified_exit": true
+    },
+    "orb_sp500_SP500_2026-09-03T13:45:00_1": {
+      "leg": "orb_sp500",
+      "entry_time": "2026-09-03T13:45:00",
+      "exit_time": "2026-09-03T13:50:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0366767633748435,
+      "notified_exit": true
+    },
+    "orb_us30_US30_2026-09-03T13:45:00_1": {
+      "leg": "orb_us30",
+      "entry_time": "2026-09-03T13:45:00",
+      "exit_time": "2026-09-03T13:50:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0352299126027698,
+      "notified_exit": true
     }
   },
   "kill_switch_active": false,
@@ -146,7 +170,7 @@
     "2026-08-31T00:00:00": 99316.9573106794,
     "2026-09-01T00:00:00": 99810.35943871795,
     "2026-09-02T00:00:00": 99924.13688384938,
-    "2026-09-03T00:00:00": 99924.13688384938
+    "2026-09-03T00:00:00": 99539.44535284885
   },
   "account_start": "2026-08-27T20:58:06.914380",
   "scan_errors_today": {

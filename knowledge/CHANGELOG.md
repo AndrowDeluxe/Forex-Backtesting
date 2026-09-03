@@ -9,6 +9,37 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-03** [cls_practical/data.py] **Dritte, bisher übersehene Lücke im
+  heutigen "OHLC vor dem Cachen validieren"-Fix geschlossen — `fetch_2y_yield_daily()`
+  hatte gar keine `validate_ohlc_numeric()`-Prüfung.** Bridge-Monitor-Routine
+  sah im Snapshot, dass `CLS-Practical-Scan fehlgeschlagen: '>' not supported
+  between instances of 'str' and 'float'` auf Funded-Portfolio-Bridge UND
+  FKInstantFunding-MT5-Bridge noch MEHRFACH auftrat (u.a. 21:35, 22:05,
+  22:30 Uhr) — alles NACH dem heutigen Fix-Commit (15:11:59 UTC), und zwar
+  exakt mit dem alten, unbehandelten `TypeError`-Text statt der neuen,
+  saubereren `ValueError`-Meldung aus `validate_ohlc_numeric()`. Das zeigte:
+  der Fix griff hier nicht. Nachverfolgt bis `challenge_portfolio/paper_bot.py::
+  _scan_cls_practical()` — die ruft neben den zwei heute reparierten
+  Funktionen (`fetch_rate_instrument_m5_berlin`, `fetch_eurusd_entry_tf_berlin`)
+  auch `fetch_2y_yield_daily()` (TVC:DE02Y/TVC:US02Y via `tradingview/data.py`)
+  auf, die denselben ungeprüften `to_parquet()`-Cache-Block hat wie die
+  beiden vorhin gefixten Stellen, aber beim heutigen Fix übersehen wurde
+  (Grund vermutlich: sie liegt in derselben Datei, aber nutzt TradingView
+  statt Dukascopy als Quelle, `open/high/low/close`-Spalten aus
+  `tradingview/data.py::fetch_ohlcv()` können genauso non-numerisch
+  zurückkommen). `compute_frontend_2y_risk_multiplier()` in
+  `cls_practical/rates.py` rechnet direkt mit `close-open`-Differenzen und
+  Rolling-Z-Scores dieser Werte — genau der Vergleich, der bei
+  String-Spalten mit `'>' not supported`-Fehlern crasht. Fix: dieselbe
+  `validate_ohlc_numeric(df, ["open", "high", "low", "close", "volume"])`-
+  Prüfung jetzt auch hier vor dem `to_parquet()`-Schreiben ergänzt — damit
+  sind jetzt alle drei Cache-Schreibstellen in `cls_practical/data.py`
+  abgedeckt (die zwei von heute Nachmittag plus diese). Reine
+  Datenfetch-/Caching-Härtung, keine Order-/Risiko-/Entry-Exit-Logik
+  angefasst. Nur `py_compile` geprüft (kein pandas/tradingview_ta in dieser
+  Sandbox installierbar, kein echter Live-Lauf abgewartet) — ob das die
+  verbleibenden Scan-Fehler tatsächlich stoppt, zeigt erst der nächste
+  Bridge-Lauf, der auf einen wirklich kaputten TVC-Fetch trifft.
 - **2026-09-03** [combined_strategy / cls_practical] **Der am 2026-09-02
   dokumentierte "OHLC vor dem Cachen validieren"-Fix war in Wahrheit nie im
   Code — jetzt tatsächlich umgesetzt, nachdem derselbe Fehler heute erneut

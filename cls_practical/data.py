@@ -72,6 +72,7 @@ def fetch_2y_yield_daily(key: str, n_bars: int = 3650, force_refresh: bool = Fal
     df = fetch_ohlcv(_TVC_2Y_SYMBOLS[key], "TVC", interval="1d", n_bars=n_bars)
     df = df.sort_index()
     df = df[~df.index.duplicated(keep="last")]
+    validate_ohlc_numeric(df, ["open", "high", "low", "close", "volume"])
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     df.to_parquet(path)
     return df

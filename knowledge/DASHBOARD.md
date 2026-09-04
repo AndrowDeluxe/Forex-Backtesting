@@ -95,6 +95,34 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
+- **Funded-Portfolio-Bridge: alle 6 Beine auf allen 4 Konten (TTP Konto 1
+  "echtes Geld", TTP Konto 2, beide IQ-Markets-Konten) sind heute Vormittag
+  drei Läufe hintereinander leer ausgegangen — Cold-Start-Lücke des neuen
+  Data-Lake-Pilots.** Laut `bridge_status/snapshot.json` (`recent_events`)
+  scheiterten um 08:33:23, 08:48:23 und 09:03:25 Uhr NY-Open-ORB-, CTNL-
+  Edge-, Trend-Pullback-, CLS-Practical- und Gold-ASB-Scan durchgehend mit
+  "Keine Lake-Daten fuer dukascopy:&lt;KEY&gt; -- Ingestion noch nicht
+  gelaufen?" — auf allen 4 Konten identisch (`last_error_line` steht bei
+  allen noch auf 09:03:25). Danach keine weiteren Fehler mehr, aktueller
+  Snapshot (17:01 Uhr) zeigt `status: ok` und für TTP Konto 2 sogar einen
+  echten Entry (16:15:18 Uhr, EXPE BUY). Mein bester Root-Cause-Gedanke
+  (nicht verifiziert, da ich die neuen Scheduled Tasks selbst nicht sehen
+  kann): laut CHANGELOG (2026-09-04, "Neuer lokaler Data-Lake-Pilot")
+  wurden `DataLake-Ingest-Fast`/`-Slow` heute neu angelegt und
+  `run_once.py::run_shared_scans()` läuft seitdem mit `source="lake"` statt
+  live von Dukascopy — die drei betroffenen Läufe liegen genau in der
+  Zeitspanne, bevor der erste `DataLake-Ingest-Fast`-Lauf die Keys befüllt
+  hatte, und `reader.py` wirft laut Design absichtlich `LakeMissingDataError`
+  statt stiller leerer Daten. Fasse das nicht selbst als Bug an (Ingestion-
+  Timing/Task-Reihenfolge liegt außerhalb des Repos, und es hat sich von
+  selbst erledigt) — aber falls dieses Cold-Start-Muster bei jedem Neustart
+  der Bridge/des Rechners erneut auftritt, wäre das ~30-45 Min. mit
+  komplett ausgesetzten Scans auf allen Konten inkl. Echtgeld. Ist das für
+  dich ok so (einmaliger Rollout-Effekt), oder soll ich mir ansehen, ob
+  `run_shared_scans()` bei `LakeMissingDataError` besser auf `source="live"`
+  zurückfallen sollte, statt den Scan für den ganzen Zyklus ausfallen zu
+  lassen?
+
 - **Merge-Konflikt in diesem Abschnitt + CHANGELOG.md per "beides behalten"
   aufgelöst, nicht inhaltlich geprüft** — beim Pushen des EK-Portfolio-
   August-2026-Backtests (2026-09-03) kollidierte ein paralleler Push

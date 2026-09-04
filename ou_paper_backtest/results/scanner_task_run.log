@@ -2916,3 +2916,20 @@
 2026-09-04 16:35:16 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
 2026-09-04 16:35:16 
 2026-09-04 16:35:16 Saved 0 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-09-04T16:35:16)
+2026-09-04 16:35:16 [main c0a0fe8] OU-Modell Scanner: Snapshot 2026-09-04 16:35
+2026-09-04 16:35:16  1 file changed, 17 insertions(+)
+2026-09-04 16:35:19 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-09-04 16:35:19    7361296..c0a0fe8  main -> main
+2026-09-04 16:35:19 Commit + Push erfolgreich.
+2026-09-04 16:35:19 === Scanner-Task beendet ===
+2026-09-04 17:35:01 === Scanner-Task gestartet ===
+2026-09-04 17:35:15 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-09-04 17:35:15 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-09-04 17:35:15 [sp500] 0 raw signal(s) as of 2026-09-03, regime_ok=True
+2026-09-04 17:35:15 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-09-04 17:35:15 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-09-04 17:35:15 [nasdaq100] 0 raw signal(s) as of 2026-09-03, regime_ok=True
+2026-09-04 17:35:15 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-09-04 17:35:15 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-09-04 17:35:15 
+2026-09-04 17:35:15 Saved 0 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-09-04T17:35:15)

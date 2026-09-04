@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-04T01:31:25",
+  "generated_at": "2026-09-04T02:01:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-04T01:31:02",
-      "minutes_since_last_run": 0.4,
+      "last_run": "2026-09-04T02:00:01",
+      "minutes_since_last_run": 1.4,
       "status": "ok",
-      "last_equity_line": "2026-09-04 01:31:02 2026-09-04 01:30:02,363 INFO run_once: Konto-Equity 3457.58 EUR | Aggregiertes offenes Risiko (ganzes Konto): 295.11 (Deckel dieser Bridge: 276.61, 8%)",
+      "last_equity_line": "2026-09-04 01:45:57 2026-09-04 01:45:02,255 INFO run_once: Konto-Equity 3457.28 EUR | Aggregiertes offenes Risiko (ganzes Konto): 295.09 (Deckel dieser Bridge: 276.58, 8%)",
       "last_error_line": "2026-09-03 22:52:01 2026-09-03 22:45:02,634 ERROR legs.ny_open_orb.executor: ORB NASDAQ Ticket 262117522: Session-Ende-Schliessung fehlgeschlagen: None",
       "recent_events": [
         "2026-09-03 22:52:01 2026-09-03 22:45:02,634 ERROR legs.ny_open_orb.executor: ORB NASDAQ Ticket 262117522: Session-Ende-Schliessung fehlgeschlagen: None",
@@ -19,80 +19,80 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-04T01:30:01",
+      "last_run": "2026-09-04T02:00:01",
       "minutes_since_last_run": 1.4,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-04 01:18:23 Verbunden: Login 504072729, Equity $100,086.18 USD",
-          "last_error_line": "2026-09-04 01:18:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
+          "last_equity_line": "2026-09-04 01:48:23 Verbunden: Login 504072729, Equity $100,086.18 USD",
+          "last_error_line": "2026-09-04 01:48:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
           "recent_events": [
+            "2026-09-04 01:48:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:48:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:48:23 Trend-Pullback-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_D1 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:48:23 CLS-Practical-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:EURUSD_M5 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:48:23 Gold-ASB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_M15 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 Trend-Pullback-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_D1 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 CLS-Practical-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:EURUSD_M5 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 Gold-ASB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_M15 -- Ingestion noch nicht gelaufen?",
             "2026-09-04 01:18:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:18:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:18:23 Trend-Pullback-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_D1 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:18:23 CLS-Practical-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:EURUSD_M5 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:18:23 Gold-ASB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 Trend-Pullback-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_D1 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 CLS-Practical-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:EURUSD_M5 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 Gold-ASB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 00:48:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 00:48:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?"
+            "2026-09-04 01:18:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?"
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-04 01:18:23 Verbunden: Login 16054, Equity $99,991.93 USD",
-          "last_error_line": "2026-09-04 01:18:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
+          "last_equity_line": "2026-09-04 01:48:23 Verbunden: Login 16054, Equity $99,991.93 USD",
+          "last_error_line": "2026-09-04 01:48:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
           "recent_events": [
+            "2026-09-04 01:48:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:48:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:48:23 Trend-Pullback-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_D1 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:48:23 CLS-Practical-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:EURUSD_M5 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:48:23 Gold-ASB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_M15 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 Trend-Pullback-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_D1 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 CLS-Practical-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:EURUSD_M5 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 Gold-ASB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_M15 -- Ingestion noch nicht gelaufen?",
             "2026-09-04 01:18:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:18:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:18:23 Trend-Pullback-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_D1 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:18:23 CLS-Practical-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:EURUSD_M5 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:18:23 Gold-ASB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 Trend-Pullback-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_D1 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 CLS-Practical-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:EURUSD_M5 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 Gold-ASB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 00:48:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 00:48:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?"
+            "2026-09-04 01:18:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?"
           ]
         },
         "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (ttp)": {
-          "last_equity_line": "2026-09-04 01:18:23 Verbunden: Login 504069845, Equity $96,725.23 USD",
-          "last_error_line": "2026-09-04 01:18:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
+          "last_equity_line": "2026-09-04 01:48:23 Verbunden: Login 504069845, Equity $96,725.23 USD",
+          "last_error_line": "2026-09-04 01:48:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
           "recent_events": [
+            "2026-09-04 01:48:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:48:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:48:23 Trend-Pullback-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_D1 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:48:23 CLS-Practical-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:EURUSD_M5 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:48:23 Gold-ASB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_M15 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 Trend-Pullback-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_D1 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 CLS-Practical-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:EURUSD_M5 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 Gold-ASB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_M15 -- Ingestion noch nicht gelaufen?",
             "2026-09-04 01:18:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:18:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:18:23 Trend-Pullback-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_D1 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:18:23 CLS-Practical-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:EURUSD_M5 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:18:23 Gold-ASB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 Trend-Pullback-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_D1 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 CLS-Practical-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:EURUSD_M5 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 Gold-ASB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 00:48:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 00:48:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?"
+            "2026-09-04 01:18:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?"
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital, Login 15514, ex-GoldASB/BTC-EMA-Cross) (iqmarkets)": {
-          "last_equity_line": "2026-09-04 01:18:23 Verbunden: Login 15514, Equity $99,140.89 USD",
-          "last_error_line": "2026-09-04 01:18:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
+          "last_equity_line": "2026-09-04 01:48:23 Verbunden: Login 15514, Equity $99,216.48 USD",
+          "last_error_line": "2026-09-04 01:48:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
           "recent_events": [
+            "2026-09-04 01:48:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:48:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:48:23 Trend-Pullback-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_D1 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:48:23 CLS-Practical-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:EURUSD_M5 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:48:23 Gold-ASB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_M15 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 Trend-Pullback-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_D1 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 CLS-Practical-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:EURUSD_M5 -- Ingestion noch nicht gelaufen?",
+            "2026-09-04 01:33:23 Gold-ASB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_M15 -- Ingestion noch nicht gelaufen?",
             "2026-09-04 01:18:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:18:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:18:23 Trend-Pullback-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_D1 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:18:23 CLS-Practical-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:EURUSD_M5 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:18:23 Gold-ASB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 Trend-Pullback-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_D1 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 CLS-Practical-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:EURUSD_M5 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 01:03:22 Gold-ASB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 00:48:23 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
-            "2026-09-04 00:48:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?"
+            "2026-09-04 01:18:23 CTNL-Edge-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:GOLD_H4 -- Ingestion noch nicht gelaufen?"
           ]
         }
       }
@@ -100,7 +100,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-09-04T01:07:53",
-      "minutes_since_last_run": 23.5,
+      "minutes_since_last_run": 53.5,
       "status": "ok",
       "last_equity_line": "2026-09-04 01:07:53 Verbunden: Login 17764, Equity $100,000.00",
       "last_error_line": "2026-09-03 22:24:37 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",

@@ -9,6 +9,74 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-04** [EK-Portfolio/Challenge-Portfolio/FK-Instant-Funding-Paper]
+  **CTNL-eigenen Kill-Switch (Stand-alone Cont+Rev-Drawdown gegen die
+  Phase-6-P5-Schwelle -6,6%) in alle drei konsolidierten Portfolio-Bots
+  nachgeruestet — Nutzerauftrag, nachdem sich herausstellte, dass dieser
+  Monitor bei der Portfolio-Konsolidierung (2026-08-27) NICHT automatisch
+  mit uebernommen wurde.** Fund vom Vortag (siehe Eintrag "CTNL Reversal:
+  August 2026 lief 0/14"): der urspruengliche Kill-Switch existierte nur in
+  der eigenstaendigen `gold_smc_htf_ltf/paper_bot.py`-Task
+  ("CTNL-Edge-FK-Paper"), die deaktiviert wurde, ohne dass die drei
+  Nachfolge-Bots (EK/Challenge/FK Instant Funding) diese spezifische Pruefung
+  selbst nachgebaut haetten — lief seitdem live nirgends. Neue geteilte
+  Funktion `gold_smc_htf_ltf/live_signal.py::ctnl_standalone_drawdown()`
+  (+ Konstante `CTNL_KILL_SWITCH_DD_THRESHOLD=-0.066`) rechnet Continuation+
+  Reversal auf einem EIGENEN 100k-Stand-alone-Konto mit den validierten
+  FK-Risikogroessen (0,5%/0,15%) durch — unabhaengig von der jeweiligen
+  Portfolio-Kapitalgewichtung, sonst wuerde CTNL Reversals winziger
+  0,15%-Risikoanteil einen echten Bruch in der Portfolio-Gesamtkurve fuer
+  immer unsichtbar verduennen. In allen drei `scan_once()`-Funktionen nach
+  dem jeweils bestehenden Portfolio-Kill-Switch eingehaengt, eigener
+  `ctnl_kill_switch_active`-State (kollidiert nicht mit dem bestehenden
+  Flag), Telegram-Alarm bei Bruch/Erholung nach demselben Muster.
+  **Betrifft `challenge_portfolio/paper_bot.py` — wird von der ECHTEN,
+  live laufenden Funded-Portfolio-Bridge direkt aus diesem Repo importiert
+  (kein eingefrorener Deploy-Snapshot), wirkt sich also ab dem naechsten
+  Bridge-Lauf unmittelbar aus.** `ek_portfolio/paper_bot.py` (Task
+  deaktiviert) und `fk_instant_funding/paper_bot.py` (DRY_RUN) sind davon
+  nicht in Echtgeld-Hinsicht betroffen. Verifiziert: `py_compile` auf allen
+  vier geaenderten Dateien + isolierter Funktionstest (`_state_trades_df` +
+  `ctnl_standalone_drawdown()` mit synthetischen Trades, inkl. eines
+  synthetischen Beinahe-Bruch-Szenarios) in allen drei Bots einzeln
+  ausgefuehrt, kein echter Live-Lauf abgewartet.
+- **2026-09-03** [Funded-Portfolio-Bridge] **Zeitlimit-Erhoehung (14->40 Min,
+  siehe Eintrag weiter unten) wieder zurueckgenommen (40->14 Min) — war ein
+  Fehlschluss.** Nutzerkorrektur: mit 40 Min. darf ein haengender Lauf viel
+  laenger blockieren, und `MultipleInstances=IgnoreNew` ueberspringt in dieser
+  laengeren Zeit entsprechend MEHR 15-Minuten-Trigger als vorher -- verschaerft
+  also genau das Verzoegerungsproblem (spaete Entries), das an diesem Tag das
+  eigentliche Thema war, statt es zu lindern. Die urspruengliche Sorge (ein
+  zwangsbeendeter Lauf koennte mitten in einer echten Order-Versendung
+  abgebrochen werden) bleibt zwar bestehen, aber ein kuerzeres statt laengeres
+  Zeitlimit ist der richtige Hebel dagegen (schneller wieder ein frischer,
+  hoffentlich saubererer Lauf) -- nicht ein laengeres. Zurueck auf 14 Minuten.
+- **2026-09-03** [EK-Portfolio-Bridge] **MT5-native Beine (ORB, Gold-Silber,
+  Trend Pullback) in einen eigenen, viel schnelleren Scheduled Task
+  ausgelagert (`run_once_fast.py`, alle 2 Min., eigenes `IgnoreNew`+2-Min-
+  Zeitlimit).** Nutzerauftrag nach Beobachtung, dass ein "sauberer" ORB-Trade
+  trotzdem stundenlang zu spaet ausgefuehrt wurde: diese drei Beine ziehen
+  ihre Kurse bereits ueber `mt5.copy_rates_range()` (kein Dukascopy), liefen
+  aber bisher im selben sequenziellen `run_once.py`-Prozess wie die 6
+  dukascopy-abhaengigen Beine (bis zu ~588s Worst-Case pro Bein) -- ein
+  haengendes Dukascopy-Bein liess den GANZEN 15-Minuten-Task oft ueber das
+  14-Minuten-`ExecutionTimeLimit` laufen, wodurch der naechste Trigger per
+  `IgnoreNew` komplett uebersprungen wurde. Real beobachtet: ein NASDAQ-ORB-
+  Signal haengte am 20:45-Uhr-`entry_on_forming_bar_wait`-Status fest, bis
+  21:45 statt planmaessig 21:00 zu bestaetigen. Fix: `orb_executor.
+  manage_open_positions()` + alle ORB-Entries + Gold-Silber + Trend-Pullback
+  (4 Maerkte) aus `run_once.py::main()` entfernt, in neues `run_once_fast.py`
+  verschoben (importiert `market_is_open()`/`_run_leg()`/`_check_trend_
+  pullback()`/`_check_gold_silver()` aus `run_once.py` statt sie zu
+  duplizieren). Geteilter State (SQLite, `core/state_store.py`) und Telegram-
+  Queue (In-Memory pro Prozess, `core/telegram_notify.py`) sind fuer zwei
+  parallel laufende Prozesse unproblematisch verifiziert (siehe Docstring
+  `run_once_fast.py` fuer die einzige bekannte Restluecke: ein theoretisch
+  zeitgleicher Risiko-Deckel-Check aus beiden Prozessen). Naked-SL-Watchdog +
+  Tagesabschluss bewusst NUR im alten `run_once.py` belassen (nicht
+  zeitkritisch, doppelte Meldungen waeren nur Spam). Nur Import-Wiring +
+  `py_compile` verifiziert, kein echter Live-Lauf des neuen Tasks abgewartet
+  (erster Trigger unmittelbar nach Registrierung faellig).
 - **2026-09-03** [combined_strategy / cls_practical] **Der am 2026-09-02
   dokumentierte "OHLC vor dem Cachen validieren"-Fix war in Wahrheit nie im
   Code — jetzt tatsächlich umgesetzt, nachdem derselbe Fehler heute erneut

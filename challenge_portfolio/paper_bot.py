@@ -54,6 +54,7 @@ import numpy as np
 import pandas as pd
 
 from challenge_portfolio.telegram_notify import send_telegram_message
+from gold_smc_htf_ltf.live_signal import CTNL_KILL_SWITCH_DD_THRESHOLD, ctnl_standalone_drawdown
 from strategy.backtest import BacktestConfig, simulate_trades
 
 
@@ -204,7 +205,7 @@ def _utc_naive(x):
 
 def _default_state() -> dict:
     return {
-        "trades": {}, "account_start": None, "scan_errors_today": {},
+        "trades": {}, "account_start": None, "scan_errors_today": {}, "ctnl_kill_switch_active": False,
         "ttp": {"eod_equity": {}, "kill_switch_active": False, "daily_paused": False, "target_reached": False,
                 "last_daily_summary_day": None},
         "iqmarkets": {"kill_switch_active": False, "target_reached": False, "last_daily_summary_day": None},
@@ -886,6 +887,31 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
     equity_df = compute_shared_equity(state)
     ttp_result = check_ttp_rules(equity_df, state["ttp"], end)
     iq_result = check_iqmarkets_rules(equity_df, state["iqmarkets"])
+
+    # CTNL-eigener Kill-Switch (Nutzerauftrag 2026-09-03): der urspruengliche, in
+    # gold_smc_htf_ltf/paper_bot.py gebaute Monitor (Stand-alone Cont+Rev-Drawdown gegen
+    # die Phase-6-P5-Schwelle) lief NUR in der eigenstaendigen "CTNL-Edge-FK-Paper"-Task,
+    # die am 2026-08-27 bei der Portfolio-Konsolidierung deaktiviert wurde -- diese
+    # spezifische Pruefung wurde dabei NICHT in die 3 Nachfolge-Bots uebernommen. Hier
+    # nachgeruestet, auf einem EIGENEN 100k-Stand-alone-Konto (ctnl_standalone_drawdown()),
+    # unbeeindruckt von der 1/6-Kapitalverduennung -- betrifft BEIDE Konten gleich (beide
+    # sehen denselben CTNL-Signalstrom), deshalb vor dem ttp/iq-Nachrichten-Split geprueft.
+    try:
+        ctnl_all = _state_trades_df(state)
+        ctnl_dd = ctnl_standalone_drawdown(
+            ctnl_all[ctnl_all["leg"] == "ctnl_continuation"], ctnl_all[ctnl_all["leg"] == "ctnl_reversal"]
+        )
+        if ctnl_dd < CTNL_KILL_SWITCH_DD_THRESHOLD and not state.get("ctnl_kill_switch_active", False):
+            state["ctnl_kill_switch_active"] = True
+            messages.append(
+                f"\U0001F6A8 CTNL-KILL-SWITCH: Stand-alone Cont+Rev-Drawdown {ctnl_dd:.2%} unter der "
+                f"Phase-6-P5-Schwelle ({CTNL_KILL_SWITCH_DD_THRESHOLD:.2%}). CTNL-Entries pruefen/pausieren, "
+                f"Phase 6 auf frischeren Daten neu durchlaufen."
+            )
+        elif ctnl_dd >= CTNL_KILL_SWITCH_DD_THRESHOLD * 0.5 and state.get("ctnl_kill_switch_active", False):
+            state["ctnl_kill_switch_active"] = False  # Erholung ueber die Haelfte der Schwelle - Reset
+    except Exception as e:
+        messages.append(f"⚠️ CTNL-Kill-Switch-Check fehlgeschlagen: {e}")
 
     # Gemeinsame Entry/Exit-Zeilen (oben) landen in BEIDEN Konten-Nachrichten --
     # jedes Konto erlebt dieselben Trades unabhaengig. Nur Regel-Ereignisse

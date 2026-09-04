@@ -24,8 +24,10 @@ function right after each M5/M15 bar close will see a signal on the very
 bar it fires, and should fill at the current market price (the "next
 bar's open" the backtest assumes)."""
 
+import numpy as np
 import pandas as pd
 
+from .concurrent_backtest import simulate_combined_account
 from .continuation import run_pipeline as run_continuation
 from .data import fetch_gold_h1, fetch_gold_h4, fetch_gold_m5, fetch_gold_m15
 from .reversal_cascade import run_pipeline as run_reversal
@@ -44,6 +46,36 @@ FK_RISK_CONT = 0.005
 FK_RISK_REV = 0.0015
 
 LOOKBACK_DAYS = 90  # empirisch gegen die Vollhistorie verifiziert, siehe verify-Skript
+
+# Phase-6-Bootstrap-Referenz (research_gold_smc_phase6_robustness.py, block_size=20,
+# n_sims=2000, FK 0.50%/0.15%): P5-MaxDD lag bei -6.56%, konservativ gerundet. Bei
+# substanzieller Config-Aenderung (anderer Risiko-Split, neue Pipeline-Kwargs) neu
+# ziehen statt blind weiterzuverwenden.
+CTNL_KILL_SWITCH_DD_THRESHOLD = -0.066
+
+
+def ctnl_standalone_drawdown(cont_trades: pd.DataFrame, rev_trades: pd.DataFrame, starting_equity: float = 100_000.0) -> float:
+    """Stand-alone Continuation+Reversal-Drawdown mit den EIGENEN FK-Risikogroessen
+    (FK_RISK_CONT/FK_RISK_REV) auf einem eigenen 100k-Konto, komplett unabhaengig von
+    der Equity/Gewichtung des aufrufenden Portfolio-Bots -- exakt dieselbe Rechnung wie
+    gold_smc_htf_ltf/paper_bot.py's Kill-Switch (dort das Original). Fund 2026-09-03:
+    dieser Monitor lief nur in der eigenstaendigen "CTNL-Edge-FK-Paper"-Task, die bei
+    der Portfolio-Konsolidierung 2026-08-27 deaktiviert wurde, OHNE dass die Pruefung
+    selbst in die 3 Nachfolge-Bots (EK/Challenge/FK Instant Funding) uebernommen wurde --
+    lief seitdem live nirgends mehr, obwohl genau er den Trigger fuer den beobachteten
+    August-2026-Bruch (CTNL Reversal 0/14) haette liefern sollen. Nachgeruestet in allen
+    drei `paper_bot.py`, damit jede Portfolio-Instanz ihn wieder selbst prueft."""
+    sim = simulate_combined_account(
+        {"continuation": cont_trades, "reversal": rev_trades},
+        {"continuation": FK_RISK_CONT, "reversal": FK_RISK_REV},
+        {"continuation": None, "reversal": REV_MAX_CONCURRENT},
+        starting_equity=starting_equity,
+    )
+    eq = sim["equity_curve"]["equity"].to_numpy()
+    if len(eq) == 0:
+        return 0.0
+    peak = np.maximum.accumulate(eq)
+    return float(((eq - peak) / peak).min())
 
 
 def _fetch_window(end: pd.Timestamp, lookback_days: int, force_refresh: bool):

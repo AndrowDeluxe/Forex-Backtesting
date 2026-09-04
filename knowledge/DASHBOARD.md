@@ -59,7 +59,8 @@ passiert, was steht an.
 
 | Bot/Bridge                                              | Konto/Broker                                                                             | Modus                                                                                        | Task Scheduler                  | Zuletzt geprüft |
 | ------------------------------------------------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------- | --------------- |
-| EK-Portfolio-Bridge                                     | Tickmill Live (55918977)                                                                 | **LIVE — echtes Geld**                                                                       | Ready (alle 15 Min, Mo–Fr)      | 2026-09-02      |
+| EK-Portfolio-Bridge                                     | Tickmill Live (55918977)                                                                 | **LIVE — echtes Geld** (6 Dukascopy-Beine: btc/gold_asb/cls_practical/ctnl x2/ou_modell)     | Ready (alle 15 Min, Mo–Fr)      | 2026-09-03      |
+| **EK-Portfolio-Bridge-Fast** (neu)                      | Tickmill Live (55918977, geteiltes Terminal)                                             | **LIVE — echtes Geld** (3 MT5-native Beine: ORB/Gold-Silber/Trend-Pullback, kein Dukascopy)  | Ready (alle 2 Min, Mo–Fr)       | 2026-09-03      |
 | FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | DRY_RUN                                                                                      | Ready (stündlich)               | 2026-09-02      |
 | FK-Instant-Funding-Paper                                | — (reine Simulation)                                                                     | Paper + Telegram                                                                             | Ready (stündlich)               | 2026-09-01      |
 | OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner + Telegram (3x täglich: 15:35/18:35/21:35)                                           | Ready (Mo–Fr, US-Handelszeiten) | 2026-09-02      |
@@ -92,6 +93,18 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
+- **Merge-Konflikt in diesem Abschnitt + CHANGELOG.md per "beides behalten"
+  aufgelöst, nicht inhaltlich geprüft** — beim Pushen des EK-Portfolio-
+  August-2026-Backtests (2026-09-03) kollidierte ein paralleler Push
+  (OHLC-Validierungsfix in `combined_strategy/data.py`/`cls_practical/
+  data.py`, jetzt bereits gemergt) mit hier bereits vorhandenen, noch
+  ungesicherten lokalen Aenderungen (u.a. der "Zwei neue Konten verbinden
+  nicht"-Fund und der aufgeloeste "Zwei neue Funded-Portfolio-Bridge-Konten
+  waren bereits anderweitig vergeben"-Punkt weiter unten). Beide Seiten
+  wortgleich uebernommen (nichts geloescht), OHNE zu beurteilen, ob dadurch
+  bereits erledigte/abgehakte Punkte neben denselben Punkten in aelterer,
+  noch offener Form stehen — bitte einmal kurz durchsehen, ob sich hier was
+  dupliziert oder widerspricht.
 - [x] ~~CLS Practical auf EK-Portfolio-Bridge (Echtgeld) scheitert wiederholt
   an dukascopy_python~~ — Nutzerentscheid 2026-09-02: mehr Retries statt
   Fallback-Datenquelle. Alle drei `_retry()`-Kopien (`ek_portfolio/
@@ -289,6 +302,21 @@ bewusst verworfen), nicht hier für immer liegen gelassen. Genau der Ort für
 "das könnte auch noch interessant sein", ohne dass es das gerade laufende
 Thema verdrängt oder verloren geht.
 
+- **Grundsaetzlicher Umstieg von CFDs auf echte Futures** (2026-09-03,
+  Nutzer: "hatte ich generell schon ueberlegt", losgetreten durch die
+  heutige Dukascopy-Ausfall-Diskussion): zwei separate Punkte, beide
+  unentschieden. (1) Futures gelten dem Nutzer als "echtere" Daten als
+  CFDs (kein Broker-eigenes Pricing-Modell) — koennte langfristig ein Grund
+  sein, Signalerzeugung UND Ausfuehrung auf Futures umzustellen statt nur
+  die Datenquelle zu tauschen (Databento wurde heute schon als moeglicher
+  Futures-Datenanbieter genannt, siehe CHANGELOG). Vorbehalt aus der
+  heutigen Recherche: Futures brauchen eigene Rollover-Logik (CFDs nicht)
+  und die bestehenden Strategien sind auf CFD-Kursen validiert — ein
+  Umstieg waere Neuvalidierung, kein reiner Datentausch. (2) Getrennt davon:
+  es gibt eigene **Futures-Challenges** bei Prop-Firms (anders als die
+  aktuell laufenden FX/CFD-Challenges bei TTP/IQ Markets) — ein moeglicher
+  komplett neuer Track, nicht nur ein Datenquellen-Detail. Beides noch
+  nicht bearbeitet, nur festgehalten fuer spaeter.
 - **OU-Modell-Scanner evtl. irgendwann komplett auf Telegram umstellen**
   (2026-09-02): Website-Ansicht bleibt vorerst (siehe Status-Tabelle, jetzt
   MIT Telegram fuer die 3 Tagesscans), aber "ganz auf Telegram umstellen und

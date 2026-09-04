@@ -67,6 +67,7 @@ import numpy as np
 import pandas as pd
 
 from ek_portfolio.telegram_notify import send_telegram_message
+from gold_smc_htf_ltf.live_signal import CTNL_KILL_SWITCH_DD_THRESHOLD, ctnl_standalone_drawdown
 from strategy.backtest import BacktestConfig, simulate_trades
 from strategy.schedule_guard import is_market_paused
 
@@ -704,6 +705,7 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
         state = _default_state()
     state.setdefault("eod_equity", {})
     state.setdefault("ou_notified_dates", [])
+    state.setdefault("ctnl_kill_switch_active", False)
 
     # Kontostart fixieren: manche Scans brauchen JAHRE an Historie fuer ihre eigene Filter-/
     # Indikator-Aufwaermzeit (z.B. Gold ASB's expanding Liquiditaets-Quantile seit 2016), das darf
@@ -797,9 +799,35 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
     elif not dd_breached and state.get("kill_switch_active", False) and current_dd >= -TRAILING_DD_PCT * 0.5:
         state["kill_switch_active"] = False  # Erholung ueber die Haelfte der Schwelle - Reset
 
+    # CTNL-eigener Kill-Switch (Nutzerauftrag 2026-09-03): der urspruengliche, in
+    # gold_smc_htf_ltf/paper_bot.py gebaute Monitor (Stand-alone Cont+Rev-Drawdown gegen
+    # die Phase-6-P5-Schwelle) lief NUR in der eigenstaendigen "CTNL-Edge-FK-Paper"-Task,
+    # die am 2026-08-27 bei der Portfolio-Konsolidierung deaktiviert wurde -- diese
+    # spezifische Pruefung wurde dabei NICHT in die 3 Nachfolge-Bots uebernommen, obwohl
+    # deren Docstrings das nahelegten. Hier nachgeruestet, auf einem EIGENEN 100k-Stand-
+    # alone-Konto (ctnl_standalone_drawdown()) -- sonst wuerde CTNL Reversals winziger
+    # 0.15%-Risikoanteil den Bruch in der 8-Bein-Kurve fuer immer unsichtbar verduennen.
+    try:
+        ctnl_all = _state_trades_df(state)
+        ctnl_dd = ctnl_standalone_drawdown(
+            ctnl_all[ctnl_all["leg"] == "ctnl_continuation"], ctnl_all[ctnl_all["leg"] == "ctnl_reversal"]
+        )
+        if ctnl_dd < CTNL_KILL_SWITCH_DD_THRESHOLD and not state.get("ctnl_kill_switch_active", False):
+            state["ctnl_kill_switch_active"] = True
+            messages.append(
+                f"[EK Portfolio] \U0001F6A8 CTNL-KILL-SWITCH: Stand-alone Cont+Rev-Drawdown {ctnl_dd:.2%} "
+                f"unter der Phase-6-P5-Schwelle ({CTNL_KILL_SWITCH_DD_THRESHOLD:.2%}). CTNL-Entries pruefen/"
+                f"pausieren, Phase 6 auf frischeren Daten neu durchlaufen."
+            )
+        elif ctnl_dd >= CTNL_KILL_SWITCH_DD_THRESHOLD * 0.5 and state.get("ctnl_kill_switch_active", False):
+            state["ctnl_kill_switch_active"] = False  # Erholung ueber die Haelfte der Schwelle - Reset
+    except Exception as e:
+        messages.append(f"[EK Portfolio] ⚠️ CTNL-Kill-Switch-Check fehlgeschlagen: {e}")
+
     row = {
         "date": str(end), "equity": current_equity, "current_dd": current_dd,
-        "kill_switch_active": state.get("kill_switch_active", False), "n_trades": len(state["trades"]),
+        "kill_switch_active": state.get("kill_switch_active", False),
+        "ctnl_kill_switch_active": state.get("ctnl_kill_switch_active", False), "n_trades": len(state["trades"]),
     }
 
     current_hour_key = end.strftime("%Y-%m-%d %H")

@@ -2979,3 +2979,26 @@
 2026-09-04 19:35:14 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
 2026-09-04 19:35:14 
 2026-09-04 19:35:14 Saved 0 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-09-04T19:35:14)
+2026-09-04 19:35:15 [main 72bb8e1] OU-Modell Scanner: Snapshot 2026-09-04 19:35
+2026-09-04 19:35:15  1 file changed, 23 insertions(+)
+2026-09-04 19:35:16 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-09-04 19:35:16  ! [rejected]        main -> main (fetch first)
+2026-09-04 19:35:16 error: failed to push some refs to 'https://github.com/AndrowDeluxe/Forex-Backtesting.git'
+2026-09-04 19:35:16 hint: Updates were rejected because the remote contains work that you do not
+2026-09-04 19:35:16 hint: have locally. This is usually caused by another repository pushing to
+2026-09-04 19:35:16 hint: the same ref. If you want to integrate the remote changes, use
+2026-09-04 19:35:16 hint: 'git pull' before pushing again.
+2026-09-04 19:35:16 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+2026-09-04 19:35:16 WARNUNG: git push fehlgeschlagen (Exit 1) - Commit liegt lokal vor, aber Streamlit Cloud zeigt ihn NICHT bis zum naechsten erfolgreichen Push.
+2026-09-04 19:35:16 === Scanner-Task beendet ===
+2026-09-04 20:35:01 === Scanner-Task gestartet ===
+2026-09-04 20:35:15 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-09-04 20:35:15 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-09-04 20:35:15 [sp500] 0 raw signal(s) as of 2026-09-03, regime_ok=True
+2026-09-04 20:35:15 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-09-04 20:35:15 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-09-04 20:35:15 [nasdaq100] 0 raw signal(s) as of 2026-09-03, regime_ok=True
+2026-09-04 20:35:15 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-09-04 20:35:15 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-09-04 20:35:15 
+2026-09-04 20:35:15 Saved 0 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-09-04T20:35:14)

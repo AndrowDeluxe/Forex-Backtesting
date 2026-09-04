@@ -2871,3 +2871,14 @@
 2026-09-03 21:35:15 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 2026-09-03 21:35:15 WARNUNG: git push fehlgeschlagen (Exit 1) - Commit liegt lokal vor, aber Streamlit Cloud zeigt ihn NICHT bis zum naechsten erfolgreichen Push.
 2026-09-03 21:35:15 === Scanner-Task beendet ===
+2026-09-04 14:30:01 === Scanner-Task gestartet ===
+2026-09-04 14:30:18 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-09-04 14:30:18 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-09-04 14:30:18 [sp500] 0 raw signal(s) as of 2026-09-03, regime_ok=True
+2026-09-04 14:30:18 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-09-04 14:30:18 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-09-04 14:30:18 [nasdaq100] 0 raw signal(s) as of 2026-09-03, regime_ok=True
+2026-09-04 14:30:18 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-09-04 14:30:18 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-09-04 14:30:18 
+2026-09-04 14:30:18 Saved 0 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-09-04T14:30:18)

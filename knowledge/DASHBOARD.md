@@ -395,6 +395,28 @@ Thema verdrängt oder verloren geht.
   (max. Konkurrenz, max. IP-Risiko, harte Deadline, kein eigener Edge),
   sondern -- falls ueberhaupt -- an den eigenen Live-Bridge-/Trading-Daten,
   wo ein echter Edge und Original-Value vorliegt. Nutzerentscheid steht aus.
+  **Nachtrag 2026-09-04** (Nutzer-Rueckfrage "boomt das nicht erst richtig
+  beim Release?" + Bitte um Analyse der "GTA-V-Short-Video-Millionaere"):
+  (a) Die Praemisse traegt nicht -- GTA V erschien 17.09.2013, Short-Form
+  gab es da noch nicht (TikTok intl. 09/2017, Reels 08/2020, Shorts global
+  03/2021). GTA-V-Short-Video-Millionaere existieren nicht. (b) Was es gab,
+  waren drei Wellen, keine davon automatisierbar: Launch 2013 = taegliche
+  Long-Form-News (MrBossFTW: ~50k-CoD-Kanal -> heute 3,2 Mio. Abos/1,6 Mrd.
+  Views/9.000+ Videos); 02/2021 = GTA RP/NoPixel, Twitch-Allzeitrekord
+  438.085 gleichzeitige Zuschauer SIEBEN Jahre nach Launch; 2026 = geplanter
+  UGC-Marktplatz. (c) Entscheidende Zahl: MrBossFTWs geschaetzte AdSense-
+  Einnahmen liegen bei ~3.070 $/Monat (Drittanbieter-Schaetzung, eher
+  Untergrenze) -- die Millionen in der GTA-Szene kamen nie aus dem
+  Werbetopf, sondern aus Sponsoring/Marke/eigenen Produkten. (d) NEUER,
+  interessanterer Zweig: der GTA-VI-**UGC-Marktplatz** (Roblox-/Fortnite-
+  Creative-Modell mit Umsatzbeteiligung, Rechenbeispiel aus der
+  Berichterstattung 240 Mio. $/Jahr fuer die Creator-Community) -- das ist
+  Code schreiben statt Videos schneiden und liegt damit deutlich naeher an
+  Andres Skillset. ABER: unbestaetigt, Quelle ist HipHopGamer mit eigenen
+  Rockstar-Kontakten, KEINE offizielle Rockstar-/Take-Two-Ankuendigung.
+  Angebot an den Nutzer steht, den UGC-Zweig sauber zu recherchieren
+  (was ist offiziell bestaetigt, welche Creator-Tools sind angekuendigt,
+  wie verdienen FiveM-Entwickler heute) -- Antwort steht aus.
 - **Grundsaetzlicher Umstieg von CFDs auf echte Futures** (2026-09-03,
   Nutzer: "hatte ich generell schon ueberlegt", losgetreten durch die
   heutige Dukascopy-Ausfall-Diskussion): zwei separate Punkte, beide

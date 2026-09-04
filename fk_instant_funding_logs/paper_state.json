@@ -176,7 +176,9 @@
   "account_start": "2026-08-27T20:58:06.914380",
   "scan_errors_today": {
     "day": "2026-09-04",
-    "legs": []
+    "legs": [
+      "NY-Open ORB"
+    ]
   },
   "last_daily_summary_day": "2026-09-03",
   "ctnl_kill_switch_active": false

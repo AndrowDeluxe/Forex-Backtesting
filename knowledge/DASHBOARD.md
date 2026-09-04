@@ -374,6 +374,27 @@ bewusst verworfen), nicht hier für immer liegen gelassen. Genau der Ort für
 "das könnte auch noch interessant sein", ohne dass es das gerade laufende
 Thema verdrängt oder verloren geht.
 
+- **Vollautomatisierte GTA-VI-Short-Video-Pipeline auf allen Social-Media-
+  Plattformen** (2026-09-04, Nutzeridee, ausgeloest durch den 26-Min-
+  "Extended Look" auf Netflix vom 27.08.2026): Idee war, den GTA-VI-Hype
+  (Release 19.11.2026) mit vollautomatisiert erzeugten/geposteten Shorts zu
+  monetarisieren. Recherche-Ergebnis in Kuerze, noch NICHT entschieden:
+  technisch waere ein MVP (1 Plattform, Script->TTS->ffmpeg->Upload) in 1-2
+  Tagen baubar, die offiziellen Posting-APIs (TikTok Content Posting API,
+  Meta/Instagram Reels) sind der Flaschenhals (App-Review, +1-3 Wochen je
+  Plattform, kann abgelehnt werden). Wirtschaftlich sprechen drei Punkte
+  dagegen: (1) YouTube-"inauthentic content"-Policy (Praezisierung Juli
+  2026) schliesst generische/template-basierte Massenware von der
+  Monetarisierung aus, Erkennung seit 2026 auf KANAL-Ebene (Jan 2026: 16
+  Kanaele entfernt, 4,7 Mrd. Views); (2) Rockstar/Netflix haben Clipping/
+  Reactions zwar ausdruecklich freigegeben, aber NUR mit eigenem Kontext/
+  Kommentar -- also genau das, was die Vollautomatisierung weglaesst;
+  (3) Saettigung seit dem ersten Trailer 12/2023 + niedrige Gaming-Shorts-
+  RPM (0,02-0,10 $/1000 Views). Meine Empfehlung an den Nutzer war: die
+  These "automatisierte Content-Pipeline -> Geld" nicht an GTA VI testen
+  (max. Konkurrenz, max. IP-Risiko, harte Deadline, kein eigener Edge),
+  sondern -- falls ueberhaupt -- an den eigenen Live-Bridge-/Trading-Daten,
+  wo ein echter Edge und Original-Value vorliegt. Nutzerentscheid steht aus.
 - **Grundsaetzlicher Umstieg von CFDs auf echte Futures** (2026-09-03,
   Nutzer: "hatte ich generell schon ueberlegt", losgetreten durch die
   heutige Dukascopy-Ausfall-Diskussion): zwei separate Punkte, beide

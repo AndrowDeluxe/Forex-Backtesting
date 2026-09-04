@@ -1,23 +1,23 @@
 {
-  "generated_at": "2026-09-04T15:31:25",
+  "generated_at": "2026-09-04T16:01:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-04T15:31:07",
-      "minutes_since_last_run": 0.3,
+      "last_run": "2026-09-04T16:00:01",
+      "minutes_since_last_run": 1.4,
       "status": "ok",
-      "last_equity_line": "2026-09-04 15:31:06 2026-09-04 15:30:02,411 INFO run_once: Konto-Equity 3484.01 EUR | Aggregiertes offenes Risiko (ganzes Konto): 265.29 (Deckel dieser Bridge: 278.72, 8%)",
-      "last_error_line": "2026-09-04 15:26:58 2026-09-04 15:24:47,659 ERROR run_once: cls_practical: unerwarteter Fehler",
+      "last_equity_line": "2026-09-04 15:55:12 2026-09-04 15:45:02,335 INFO run_once: Konto-Equity 3488.80 EUR | Aggregiertes offenes Risiko (ganzes Konto): 265.30 (Deckel dieser Bridge: 279.10, 8%)",
+      "last_error_line": "2026-09-04 15:55:12 2026-09-04 15:54:52,248 ERROR run_once: cls_practical: unerwarteter Fehler",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-04T15:30:18",
+      "last_run": "2026-09-04T16:00:19",
       "minutes_since_last_run": 1.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-04 15:30:18 Verbunden: Login 504072729, Equity $100,086.18 USD",
+          "last_equity_line": "2026-09-04 16:00:19 Verbunden: Login 504072729, Equity $100,132.08 USD",
           "last_error_line": "2026-09-04 09:03:25 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
           "recent_events": [
             "2026-09-04 09:03:25 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
@@ -35,7 +35,7 @@
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-04 15:30:18 Verbunden: Login 16054, Equity $99,991.93 USD",
+          "last_equity_line": "2026-09-04 16:00:19 Verbunden: Login 16054, Equity $99,991.93 USD",
           "last_error_line": "2026-09-04 09:03:25 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
           "recent_events": [
             "2026-09-04 09:03:25 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
@@ -53,7 +53,7 @@
           ]
         },
         "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (ttp)": {
-          "last_equity_line": "2026-09-04 15:30:18 Verbunden: Login 504069845, Equity $96,725.23 USD",
+          "last_equity_line": "2026-09-04 16:00:19 Verbunden: Login 504069845, Equity $96,783.76 USD",
           "last_error_line": "2026-09-04 09:03:25 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
           "recent_events": [
             "2026-09-04 09:03:25 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
@@ -71,7 +71,7 @@
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital, Login 15514, ex-GoldASB/BTC-EMA-Cross) (iqmarkets)": {
-          "last_equity_line": "2026-09-04 15:30:18 Verbunden: Login 15514, Equity $99,279.48 USD",
+          "last_equity_line": "2026-09-04 16:00:19 Verbunden: Login 15514, Equity $99,209.28 USD",
           "last_error_line": "2026-09-04 09:03:25 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
           "recent_events": [
             "2026-09-04 09:03:25 NY-Open-ORB-Scan fehlgeschlagen: Keine Lake-Daten fuer dukascopy:SP500_M15 -- Ingestion noch nicht gelaufen?",
@@ -93,7 +93,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-09-04T15:11:55",
-      "minutes_since_last_run": 19.5,
+      "minutes_since_last_run": 49.5,
       "status": "ok",
       "last_equity_line": "2026-09-04 15:11:55 Verbunden: Login 17764, Equity $100,000.00",
       "recent_events": []

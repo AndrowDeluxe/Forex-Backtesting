@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-09-03** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-09-04** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -66,7 +66,9 @@ passiert, was steht an.
 | OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner + Telegram (3x täglich: 15:35/18:35/21:35)                                           | Ready (Mo–Fr, US-Handelszeiten) | 2026-09-02      |
 | Forex-Weekly-Report                                     | —                                                                                        | Report-Generator                                                                             | Ready                           | 2026-09-02      |
 | **Bridge-Watchdog**                                     | — (nur Log-Frische, kein Order-Bezug)                                                    | Heartbeat-Alarm + Status-Snapshot ins Repo                                                   | Ready (alle 30 Min)             | 2026-09-02      |
-| **Funded-Portfolio-Bridge** (TTP+IQ Markets, 6 Beine)   | TTP Konto 2 (504072729) + TTP Konto 1 (504069845) + BeyondIQCapital (16054) + BeyondIQCapital (15514) — **alle 4 verbunden** | **LIVE — DRY_RUN=False**                                       | Ready (alle 15 Min, Mo–Fr)      | 2026-09-03      |
+| **Funded-Portfolio-Bridge** (TTP+IQ Markets, 6 Beine)   | TTP Konto 2 (504072729) + TTP Konto 1 (504069845) + BeyondIQCapital (16054) + BeyondIQCapital (15514) — **alle 4 verbunden** | **LIVE — DRY_RUN=False** (alle 6 Beine jetzt `source="lake"`, siehe Data-Lake-Pilot) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-04      |
+| **DataLake-Ingest-Fast** (neu)                          | — (nur Datenabruf, kein Order-Bezug)                                                     | Fuellt `data_lake_store/` fuer Funded-Portfolio-Bridge (24 Dukascopy/TradingView-Keys)       | Ready (alle 15 Min, Mo–Fr)      | 2026-09-04      |
+| **DataLake-Ingest-Slow** (neu)                          | — (nur Datenabruf, kein Order-Bezug)                                                     | Fuellt OU-Modell-Universum (~59 aktuell gefilterte Ticker) via yfinance                      | Ready (stündlich, Mo–Fr)        | 2026-09-04      |
 | Challenge Portfolio (Paper-Bot, `challenge_portfolio/`) | — (reine Simulation)                                                                     | Paper-Bot fertig entwickelt                                                                  | Noch kein Task angelegt         | 2026-09-01      |
 | BTC-EMA-Cross-Bridge/-Scan                              | Binance / BeyondIQCapital (15514, geteilt mit GoldASB)                                   | **aufgelöst** — Konto 15514 jetzt bei Funded-Portfolio-Bridge, `ACCOUNTS_MT5` leer            | Disabled                        | 2026-09-02      |
 | CLS-Practical-Bridge/-Scan                              | —                                                                                        | **aufgelöst** — Logik steckt bereits in allen drei Portfolio-Bots (`paper_bot.py`)           | Disabled                        | 2026-09-02      |
@@ -401,6 +403,13 @@ Thema verdrängt oder verloren geht.
 
 _(Auszug — vollständiges Log in [CHANGELOG.md](CHANGELOG.md))_
 
+- 2026-09-04 — Data-Lake-Pilot gebaut + live geschaltet: Funded-Portfolio-
+  Bridges 6 Beine lesen jetzt aus einem lokalen Parquet-Lake
+  (`data_lake/`) statt live von Dukascopy/TradingView/yfinance. Neue
+  Scheduled Tasks `DataLake-Ingest-Fast`/`-Slow`. Vollstaendig end-to-end
+  verifiziert (Seed-Laeufe, `run_shared_scans()` direkt gegen die echte
+  Config, kuenstlicher Stale-Test) — siehe CHANGELOG fuer Details. EK-
+  Portfolio-Bridge/FK Instant Funding folgen erst nach Bewaehrung.
 - 2026-09-03 — Bridge Error Monitor: den am 2026-09-02 dokumentierten, aber
   nie tatsächlich umgesetzten "OHLC vor dem Cachen validieren"-Fix jetzt
   wirklich in `combined_strategy/data.py` + `cls_practical/data.py`

@@ -9,6 +9,52 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-04** [Data Lake / Funded-Portfolio-Bridge] **Neuer lokaler
+  Data-Lake-Pilot gebaut und live geschaltet — Funded-Portfolio-Bridges 6
+  Beine lesen ihre Marktdaten jetzt aus einem lokal gepflegten Parquet-Lake
+  statt live von Dukascopy/TradingView/yfinance zu ziehen.** Nutzerauftrag
+  nach der wiederholten Dukascopy-Instabilitaet ("ganz alles ordentlich
+  machen"), Struktur explizit vom Nutzer vorgegeben: kostenlose Rohquellen
+  -> lokaler Data Lake -> Validierung -> Normalisierung -> abgeleitete
+  Daten -> Bots. Vollstaendiger Entwurf in
+  `C:\Users\andre\.claude\plans\resilient-painting-raven.md`.
+  Neues Paket `data_lake/` (git-getrackt) + gitignored Payload
+  `data_lake_store/`: `sources.py` (Registry, jede (Quelle,Key,Timeframe)
+  GENAU EINMAL, wiederverwendet ausschliesslich bereits bestehende, validierte
+  Fetch-Funktionen -- keine neue Fetch-Logik), `storage.py` (atomares
+  Parquet-Schreiben, inkrementell gemergt statt komplett neu geschrieben),
+  `manifest.py` (Freshness-Kontrolle, JSON, pro Key last_success_at/
+  last_error, Cutoff-Klassen 35 Min./4h/90 Min. je nach Timeframe -- deutlich
+  unter dem bestehenden `MAX_SIGNAL_AGE_MINUTES_FOR_ENTRY=60`-Gate),
+  `reader.py` (Lake-gestuetzte Ersatzfunktionen fuer jede Original-Fetch-
+  Funktion, identischer Name/identische Form, wirft `LakeMissingDataError`/
+  `LakeStaleDataError` statt still leere/veraltete Daten zu liefern),
+  `ingest.py` (Ingestion-Entrypoint, `--universe fast|slow`), eigene Kopie
+  von `_retry()`/`_call_with_timeout()` in `retry_util.py` (bewusst NICHT
+  die 3 bestehenden Bridge-Kopien angefasst, siehe Plan). `challenge_
+  portfolio/paper_bot.py`: alle 6 `_scan_*()`-Funktionen um `source: str =
+  "live"` erweitert (Default erhaelt bestehendes Verhalten fuer `scan_once()`
+  + `catchup_ou_modell.py` unveraendert), `Funded-Portfolio-Bridge/
+  run_once.py::run_shared_scans()` ruft jetzt mit `source="lake"`.
+  Zwei neue Scheduled Tasks: `DataLake-Ingest-Fast` (alle 15 Min., 24
+  Dukascopy/TradingView-Keys) und `DataLake-Ingest-Slow` (stuendlich, ~59
+  aktuell gefilterte OU-Modell-Ticker -- Ticker-Liste wird ueber dieselbe
+  theta/p-value/half-life-Filterlogik wie der Live-Scan dynamisch gebaut,
+  driftet also nie davon ab). Vollstaendig verifiziert (nicht nur
+  `py_compile`): erster Fast-Seed-Lauf 23/23 Quellen sauber (bis zu 95.530
+  Zeilen bei SP500 M5), erster Slow-Lauf 59/59 Ticker sauber; `run_once.py::
+  run_shared_scans()` DIREKT gegen die echte, live `DRY_RUN=False`-Config
+  aufgerufen (liest/rechnet nur, ruehrt nie MT5/`executor.*` an) -- alle 6
+  Beine liefern Ergebnisse, `gold_asb` mit EXAKT derselben Zeilenzahl (188)
+  wie der fruehere Live-Dukascopy-Test; kuenstlich einen Key (GOLD_M15) als
+  veraltet markiert -> `gold_asb`/`ctnl_edge` (beide von GOLD_M15 abhaengig)
+  scheitern sauber mit klarer `LakeStaleDataError`, alle anderen 4 Beine
+  unbeeinflusst -- danach echten Re-Ingest gefahren, Test-Zustand
+  zurueckgesetzt. Pilot bewusst auf Funded-Portfolio-Bridge begrenzt --
+  EK-Portfolio-Bridge (hat fuer ORB/Gold-Silber/Trend-Pullback bereits einen
+  eigenen MT5-Pfad, siehe Eintrag "EK-Portfolio-Bridge-Fast" oben) und
+  FK-Instant-Funding-MT5-Bridge folgen erst, sobald sich der Pilot bewaehrt
+  hat.
 - **2026-09-04** [EK-Portfolio/Challenge-Portfolio/FK-Instant-Funding-Paper]
   **CTNL-eigenen Kill-Switch (Stand-alone Cont+Rev-Drawdown gegen die
   Phase-6-P5-Schwelle -6,6%) in alle drei konsolidierten Portfolio-Bots

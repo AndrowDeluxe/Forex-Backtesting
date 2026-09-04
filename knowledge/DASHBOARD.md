@@ -207,6 +207,48 @@ abgehakt-und-liegengelassen.
   kurz in `C:\Users\andre\EK-Portfolio-Bridge\logs\task_run.log` um
   16:54:15 Uhr nachsehen, was den Fehler wirklich auslöst?
 
+- **EK-Portfolio-Bridge (Echtgeld): NASDAQ-ORB-Position (Ticket 262117522)
+  scheitert seit mind. 22:00 Uhr wiederholt am Session-Ende-Exit.** Laut
+  Snapshot vom 2026-09-03 23:01 (`bridge_status/snapshot.json`)
+  `recent_events`: vier identische Fehlerzeilen "ORB NASDAQ Ticket
+  262117522: Session-Ende-Schliessung fehlgeschlagen: None" um 22:00:02,
+  22:15:02, 22:30:01 und 22:45:02 Uhr — jeweils direkt im 15-Minuten-Takt
+  der Bridge, also bei praktisch jedem Lauf seit dem Teilausstieg um
+  22:00:02 ("TEILAUSSTIEG NASDAQ Ticket 262117522: 0.20 Lots @ 29484.24 |
+  Rest-Stop auf Break-Even verschoben"). Die Bridge selbst bleibt `status:
+  ok`, das Ticket scheint also weiter offen zu sein statt sauber geschlossen
+  zu werden. Der Text "Session-Ende-Schliessung fehlgeschlagen: None" kommt
+  nicht aus diesem Repo (kein Treffer dafür in `legs/ny_open_orb/executor.py`
+  oder sonst irgendwo hier) — muss aus dem für mich unsichtbaren
+  `EK-Portfolio-Bridge`-Ordner stammen, das ": None" deutet auf eine
+  Exception ohne Nachricht oder einen `None`-Rückgabewert einer Order-Close-
+  Funktion hin. Da das eine offene Echtgeld-Position auf Tickmill betrifft,
+  fasse ich das nicht selbst an. Kannst du kurz prüfen, ob Ticket 262117522
+  auf US30/NASDAQ noch offen ist und ob der geplante Session-Ende-Notausgang
+  (siehe CHANGELOG 2026-09-02, "der bereits vorhandene Session-Ende-
+  Notausgang in `manage_open_positions()`") gerade zuverlässig greift?
+- **EK-Portfolio-Bridge (Echtgeld): US30-Order erneut mit "Invalid stops"
+  (retcode=10016) gescheitert — derselbe Fehler, der am 2026-09-02 als
+  behoben dokumentiert wurde.** Laut Snapshot `recent_events` um 21:45:02
+  Uhr: "Order fehlgeschlagen fuer US30: OrderSendResult(retcode=10016, ...,
+  comment='Invalid stops', ..., request=TradeRequest(..., symbol='US30',
+  volume=0.34, price=53681.42, sl=53486.98477908307, tp=53678.86088366773,
+  ..., comment='EK-orb_us30 auto', ...))". Der DASHBOARD-Eintrag vom
+  2026-09-02 ("EK-Portfolio-Bridge / NY-Open-ORB: SP500/US30-Entries
+  'Invalid stops'") markiert genau dieses Problem als behoben (SL jetzt
+  gegen den Live-Fill-Preis validiert statt gegen den älteren Signalpreis),
+  aber mit dem Zusatz "nächster echter Live-Lauf verifiziert es noch nicht
+  endgültig" — dieser Lauf zeigt jetzt, dass es zumindest in diesem Fall
+  erneut aufgetreten ist. Ohne Log-Zugriff auf `legs/ny_open_orb/executor.py`s
+  tatsächlichen Auslöser vor Ort kann ich nicht sagen, ob der 2026-09-02-Fix
+  eine andere Lücke hat (z.B. ein noch schnellerer Kursverlauf zwischen
+  Signal und Sendezeitpunkt als beim Fix bedacht) oder ob das ein neuer,
+  eigenständiger Fall ist — ich will hier nichts erfinden. Da das Order-
+  Entry-Logik auf einem Echtgeld-Konto betrifft, fasse ich den Code nicht
+  selbst an. Soll ich mir den 2026-09-02-Fix nochmal genauer ansehen (nur
+  Lesen/Analyse, kein Deploy) oder reicht dir das für den nächsten Blick in
+  `C:\Users\andre\EK-Portfolio-Bridge\logs\task_run.log` um 21:45:02 Uhr?
+
 - [x] ~~Zwei neue Funded-Portfolio-Bridge-Konten (TTP 504069845 / IQ 15514)
   waren bereits anderweitig vergeben~~ — Nutzerentscheid 2026-09-02:
   bewusst gewollte Konsolidierung, kein Verwechsler. Beide jetzt in
@@ -410,6 +452,17 @@ _(Auszug — vollständiges Log in [CHANGELOG.md](CHANGELOG.md))_
   verifiziert (Seed-Laeufe, `run_shared_scans()` direkt gegen die echte
   Config, kuenstlicher Stale-Test) — siehe CHANGELOG fuer Details. EK-
   Portfolio-Bridge/FK Instant Funding folgen erst nach Bewaehrung.
+- 2026-09-04 — CTNL-eigener Kill-Switch (Stand-alone Cont+Rev-Drawdown
+  gegen die Phase-6-P5-Schwelle) in EK-Portfolio/Challenge-Portfolio/FK
+  Instant Funding nachgeruestet, nachdem er bei der Portfolio-Konsolidierung
+  nicht automatisch mit uebernommen wurde — siehe CHANGELOG.
+- 2026-09-03 (spät) — Bridge Error Monitor: dritte Lücke im heutigen OHLC-
+  Validierungsfix geschlossen (`fetch_2y_yield_daily()` in
+  `cls_practical/data.py`, siehe CHANGELOG). Zwei neue Echtgeld-Befunde auf
+  EK-Portfolio-Bridge zur Bestätigung im Dashboard vermerkt: NASDAQ-Ticket
+  262117522 scheitert wiederholt am Session-Ende-Exit, US30-Order erneut
+  mit "Invalid stops" (derselbe, am 2026-09-02 als behoben dokumentierte
+  Fehler) gescheitert.
 - 2026-09-03 — Bridge Error Monitor: den am 2026-09-02 dokumentierten, aber
   nie tatsächlich umgesetzten "OHLC vor dem Cachen validieren"-Fix jetzt
   wirklich in `combined_strategy/data.py` + `cls_practical/data.py`

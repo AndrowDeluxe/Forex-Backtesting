@@ -30360,3 +30360,20 @@
 2026-09-05 12:55:25   "date": "2026-09-05 10:55:25.710860",
 2026-09-05 12:55:25   "paused": true
 2026-09-05 12:55:25 }
+2026-09-05 12:55:26 [main ee3766d] FK Instant Funding Bot: Snapshot 2026-09-05 12:55
+2026-09-05 12:55:26  1 file changed, 17 insertions(+)
+2026-09-05 12:55:27 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-09-05 12:55:27  ! [rejected]        main -> main (fetch first)
+2026-09-05 12:55:27 error: failed to push some refs to 'https://github.com/AndrowDeluxe/Forex-Backtesting.git'
+2026-09-05 12:55:27 hint: Updates were rejected because the remote contains work that you do not
+2026-09-05 12:55:27 hint: have locally. This is usually caused by another repository pushing to
+2026-09-05 12:55:27 hint: the same ref. If you want to integrate the remote changes, use
+2026-09-05 12:55:27 hint: 'git pull' before pushing again.
+2026-09-05 12:55:27 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+2026-09-05 12:55:27 WARNUNG: git push fehlgeschlagen (Exit 1) - Commit liegt lokal vor, aber nicht auf GitHub bis zum naechsten erfolgreichen Push.
+2026-09-05 12:55:27 === FK-Instant-Funding-Task beendet ===
+2026-09-05 13:55:24 === FK-Instant-Funding-Task gestartet ===
+2026-09-05 13:55:25 {
+2026-09-05 13:55:25   "date": "2026-09-05 11:55:25.600459",
+2026-09-05 13:55:25   "paused": true
+2026-09-05 13:55:25 }

@@ -9,6 +9,34 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-07** [data_lake] **Automatischer Live-Fallback bei Cold Start /
+  haengender Ingestion gebaut** (`1db4e52`, Nutzerauftrag "Baue den
+  Fallback" nach Rueckfrage zur seit 2026-09-04 offenen Cold-Start-Frage im
+  Dashboard). Neue `data_lake.reader.with_live_fallback(lake_fn, live_fn)`:
+  faengt `LakeMissingDataError`/`LakeStaleDataError` genau EINES
+  Fetch-Aufrufs ab und ruft stattdessen die uebergebene Live-Fetch-Funktion
+  auf, statt den kompletten Scan-Zyklus scheitern zu lassen -- jeder andere
+  Fehler (Netzwerk, Parsing) laeuft weiterhin ungefangen in den
+  bestehenden `_retry()`-Pfad. Angewendet auf alle Lake-faehigen `_scan_*`
+  in `challenge_portfolio/paper_bot.py` (gold_asb, cls_practical,
+  trend_pullback, ctnl, orb), `ek_portfolio/paper_bot.py` (gold_asb,
+  cls_practical), `fk_instant_funding/paper_bot.py` (alle 5) sowie
+  `gold_smc_htf_ltf/live_signal.py::_fetch_window()` (EK's ctnl_edge-Pfad).
+  Bewusst NICHT auf `_scan_ou_modell` angewendet: das hat bereits eine
+  eigene, gewollte Skip-pro-Ticker-Logik bei fehlenden Lake-Daten (siehe
+  Kommentar dort) -- ein Fallback auf `yf.download()` wuerde bei einem
+  echten Cold Start (alle ~160 Ticker gleichzeitig fehlend) genau den
+  yfinance-Rate-Limit-Ansturm reproduzieren, den die eigene Slow-Lane
+  (stuendliche statt 15-Min-Ingestion) ueberhaupt vermeiden soll. Jeder
+  Fallback loggt eine `WARNING` ueber den Modul-Logger (sichtbar im
+  jeweiligen Bridge-Log), sendet aber bewusst KEINE Telegram-Nachricht --
+  bei einem laengeren Ingest-Ausfall wuerde das sonst pro betroffenem Key
+  und Zyklus spammen. Verifiziert: `with_live_fallback()` isoliert getestet
+  (happy path, `LakeMissingDataError`, `LakeStaleDataError`, unabhaengiger
+  Fehler laeuft weiterhin durch) sowie EK-Portfolio-Bridges gold_asb/
+  cls_practical end-to-end nochmal gegen `source="lake"` gelaufen -- exakt
+  dieselben Zeilenzahlen wie vor dem Umbau (188 bzw. 28), also kein
+  Verhaltensunterschied im gesunden Lake-Fall.
 - **2026-09-06** [data_lake / EK-Portfolio-Bridge / FK Instant Funding]
   **`data_lake/`-Paket committet (war seit 09-04 ungetrackt) + Data-Lake-
   Pilot auf EK-Portfolio-Bridge (3 Beine: gold_asb, cls_practical,

@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-09-06** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-09-07** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -70,19 +70,19 @@ abgehakt-und-liegengelassen.
   — Merge-Konflikt manuell aufgelöst, alte Struktur verworfen (längst durch
   das Sept-6-Redesign abgelöst), aber der einzige darin noch NICHT
   anderswo erfasste Punkt unten neu aufgenommen (siehe nächster Punkt).
-- **Funded-Portfolio-Bridge: Data-Lake-Cold-Start-Lücke vom 2026-09-04,
-  Frage nie beantwortet** (beim Nachmerge des seit Sept 4 ungemergten
-  Remote-Commits wiedergefunden — sonst verloren gegangen). Beim ersten
-  Rollout des Data-Lake-Pilots scheiterten alle 6 Beine auf allen 4 Konten
-  drei Läufe hintereinander (08:33/08:48/09:03 Uhr) mit "Keine Lake-Daten
-  ... Ingestion noch nicht gelaufen?", weil `run_shared_scans()` bereits auf
-  `source="lake"` lief, bevor `DataLake-Ingest-Fast` zum ersten Mal befüllt
-  hatte — `reader.py` wirft dabei bewusst `LakeMissingDataError` statt
-  stiller leerer Daten. Hat sich von selbst erledigt (danach 2 Tage
-  fehlerfrei) und trat seitdem nicht wieder auf — nur relevant, falls
-  Bridge/Rechner nochmal komplett neu starten: soll `run_shared_scans()` bei
-  `LakeMissingDataError` dann auf `source="live"` zurückfallen, oder reicht
-  dir das einmalige Rollout-Verhalten als akzeptabel?
+- ~~Funded-Portfolio-Bridge: Data-Lake-Cold-Start-Lücke vom 2026-09-04,
+  Frage nie beantwortet~~ — **gebaut 2026-09-07** (Nutzerauftrag "Baue den
+  Fallback"): neue `data_lake.reader.with_live_fallback()` faengt
+  `LakeMissingDataError`/`LakeStaleDataError` pro Fetch-Aufruf ab und weicht
+  fuer genau diesen Aufruf auf die echte Live-Fetch-Funktion aus, statt den
+  Scan-Zyklus hart scheitern zu lassen. Angewendet auf alle Lake-faehigen
+  Beine in allen 3 Bridges (Funded-Portfolio-Bridge, EK-Portfolio-Bridge,
+  FKInstantFunding-MT5-Bridge) — bewusst NICHT auf OU-Modell (eigene,
+  gewollte Skip-pro-Ticker-Logik, ein Fallback dort wuerde bei einem echten
+  Cold Start den yfinance-Rate-Limit-Ansturm reproduzieren, den die eigene
+  Slow-Lane vermeiden soll). Jeder Fallback loggt eine Warnung, spammt aber
+  kein Telegram. Verifiziert (isolierter Wrapper-Test + unveraenderte
+  Zeilenzahlen im gesunden Lake-Fall). Details: CHANGELOG.
 - ~~5-Min-Fast-Trigger: 3 Engineering-Entscheidungen unbestätigt~~ —
   **bestätigt 2026-09-06** (Nutzerauftrag, echt nachgeprüft statt pauschal
   abgenickt): M15-Zusatz für SP500/US30/NASDAQ (Begründung Opening-Range-
@@ -226,6 +226,9 @@ bewusst verworfen), nicht hier für immer liegen gelassen.
 
 _(Auszug — vollständiges Log in [CHANGELOG.md](CHANGELOG.md))_
 
+- 2026-09-07 — Data Lake: automatischer Live-Fallback bei Cold Start/
+  haengender Ingestion gebaut (`with_live_fallback()`), beantwortet die
+  seit 2026-09-04 offene Cold-Start-Frage. Details: CHANGELOG.
 - 2026-09-06 — `data_lake/`-Paket committet + gepusht, Data-Lake-Pilot von
   Funded-Portfolio-Bridge auf EK-Portfolio-Bridge (gold_asb, cls_practical,
   ctnl_edge) und FKInstantFunding-MT5-Bridge (alle 6 Beine) erweitert —

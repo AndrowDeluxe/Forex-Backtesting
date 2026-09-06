@@ -18,36 +18,21 @@ passiert, was steht an.
 
 ## ▶️ Als Nächstes
 
-1. **`data_lake/`-Paket nie committet, obwohl CHANGELOG es als "git-getrackt"
-   dokumentiert** (gefunden 2026-09-06 beim Weekly-Checkup-Lauf für KW36):
-   `git log --oneline -- data_lake/` liefert keinen einzigen Commit, `git
-   status` zeigt den kompletten Ordner (8 Dateien inkl. `manifest.py`,
-   `storage.py`, `sources.py`, dem selbentags gebauten
-   `twelvedata_source.py`) als `??`/untracked. Anders als der separate
-   Push-Fehler (unten unter "Braucht deine Bestätigung") gibt es hier
-   nicht mal einen lokalen Commit als Sicherheitsnetz — der komplette
-   Code, von dem seit 09-04 alle 6 Beine von Funded-Portfolio-Bridge
-   (echtes Geld, 4 Konten) ihre Marktdaten beziehen, existiert nur auf
-   dieser einen Maschine. Sollte zeitnah per `git add data_lake/` +
-   Commit nachgeholt werden. Details: `knowledge/reports/weekly/
-   KW36_2026_performance.md` Punkt 2.
-2. **gold_asb: "alte" Historie-Slice cached nie sauber** (2026-09-06 beim
-   Twelve-Data-Failover-Test gefunden): `_scan_gold_asb()`s
-   `force_refresh=False`-Slice (2016 bis "gestern") nutzt einen Cache-Namen
-   mit taeglich wanderndem End-Datum — trifft dadurch JEDEN Tag komplett
-   daneben und zieht die volle Historie frisch von Dukascopy, was dieses
-   eine Bein unnötig oft dem bekannten 90s-Hang aussetzt. Vorbestehend,
-   nicht durch den Data-Lake-Pilot verursacht. Fix: fixer Cache-Dateiname
-   ohne wanderndes End-Datum für diesen Slice. Noch nicht bearbeitet.
+1. **`data_lake/`-Paket nie committet** (gefunden 2026-09-06): treibt seit
+   09-04 alle 6 Live-Beine von Funded-Portfolio-Bridge (echtes Geld), hat
+   aber null Git-Commits — existiert nur lokal, kein Backup. Fix: `git add
+   data_lake/` + Commit nachholen. Details: KW36-Weekly-Report Punkt 2.
+2. ~~gold_asb: Historie-Cache greift nie~~ — **behoben 2026-09-06.**
+   `stable_end_str` (Alt/Neu-Grenze) lief auf "gestern" (wandert täglich,
+   verfehlte den Datums-Cache dadurch jeden Tag) → jetzt auf Monatsanfang
+   stabilisiert (ändert sich nur 1x/Monat), "neues" Fenster deckt dafür den
+   laufenden Monat ab (max. ~31 Tage, bleibt klein). Verifiziert: zwei
+   Aufrufe lieferten identische 188 Zeilen, zweiter schneller. Voller
+   Cache-Vorteil zeigt sich über die nächsten Tage.
 3. **Manuelles Monatsjournal + Quant-System-Verschmelzung** (Nutzerwunsch
-   2026-09-02): Nutzer will ein händisches Monatsjournal führen und einen
-   Plan erarbeiten, wie manuelles Trading und das Quant-System (die
-   Portfolio-Bridges) sinnvoll verschmolzen werden können — noch nichts
-   Konkretes gebaut, braucht zuerst ein klärendes Gespräch (Format,
-   Kennzahlen, was "Verschmelzung" praktisch heißen soll). Die
-   Redundanz-Vermeidung bei Funded-Portfolio-Bridge (unten, erledigt) ist
-   ein erster Kandidat für einen Quant-Seite-Eintrag, sobald das Journal
-   steht.
+   2026-09-02): händisches Monatsjournal + Plan, wie manuelles Trading und
+   das Quant-System sinnvoll verschmolzen werden — braucht zuerst ein
+   klärendes Gespräch (Format, Kennzahlen). Noch nichts gebaut.
 3. ~~M5-Scan-Frequenz für CTNL Continuation + NY-Open ORB~~ — **erledigt,
    live seit 2026-09-04.** Neue `data_lake`-Lane `"fast5"` + eigener
    Fast-Task, Cross-Prozess-Lock gegen Doppel-Ausführung. Nutzer hat
@@ -75,22 +60,19 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
-- **Lokaler `main` 64 Commits vor, 1 hinter `origin/main`** (2026-09-06
-  nebenbei beim FK-Instant-Funding-Wochenvergleich gefunden): jeder
-  automatische Bot-Commit scheitert seitdem beim Push ("rejected - fetch
-  first", siehe `fk_instant_funding_logs/task_run.log`, mehrfach seit heute
-  morgen) — Snapshots (Bot-States, Dashboard) liegen seitdem nur lokal, nicht
-  auf GitHub gesichert. Vermutlich ein einzelner fremder Commit auf
-  `origin/main` (`7616951`), den diese Maschine noch nicht gemergt hat.
-  Noch nicht angefasst — ein Merge/Pull auf einem Repo, in das mehrere
-  Bridges alle paar Minuten automatisch committen, sollte nicht ungefragt
-  passieren.
-- **5-Min-Fast-Trigger: 3 Engineering-Entscheidungen unbestätigt.** M15
-  zusätzlich zu M5 für SP500/US30/NASDAQ (Opening-Range-Timing), neuer
-  Cross-Prozess-Datei-Lock, kürzere Retry-Parameter (3x/3s/20s statt
-  6x/8s/90s). Läuft seit 2026-09-04 live und sauber (Testlauf + Tasks vom
-  Nutzer selbst verifiziert) — nur die nachträgliche Bestätigung dieser 3
-  Entscheidungen steht noch aus.
+- **Lokaler `main` 64 vor / 1 hinter `origin/main`** (2026-09-06): Push
+  seitdem "rejected - fetch first" — Bot-Snapshots (States, Dashboard)
+  liegen nur noch lokal, nicht auf GitHub. Vermutlich 1 fremder Commit
+  (`7616951`) ungemergt. Merge/Pull auf einem Repo mit mehreren
+  Auto-Commit-Bots nicht ungefragt — braucht dein OK.
+- ~~5-Min-Fast-Trigger: 3 Engineering-Entscheidungen unbestätigt~~ —
+  **bestätigt 2026-09-06** (Nutzerauftrag, echt nachgeprüft statt pauschal
+  abgenickt): M15-Zusatz für SP500/US30/NASDAQ (Begründung Opening-Range-
+  Timing schlüssig), `account_state_lock()` (Code gelesen — identische
+  `os.O_CREAT|O_EXCL`-Technik, die unabhängig davon am selben Tag für
+  `data_lake/manifest.py`s analoges Problem gebaut wurde, starkes Indiz für
+  den richtigen Ansatz), Retry-Parameter 3x/3s/20s im Fast-Pfad direkt im
+  Code verifiziert (`run_once_fast.py`). Alle drei sinnvoll.
 - ~~Funded-Portfolio-Bridge: kein "Signal zu alt"-Schutz beim Echt-Entry~~
   — **Korrektur 2026-09-06**: war bereits längst umgesetzt
   (`MAX_SIGNAL_AGE_MINUTES_FOR_ENTRY=60` in `_process_leg()`, gilt generisch
@@ -135,11 +117,9 @@ abgehakt-und-liegengelassen.
 ### Offene Aufgaben
 
 **Mittel**
-- **12 unverarbeitete Clippings seit 2026-09-03** (gefunden 2026-09-06 beim
-  Weekly-Checkup-Lauf für KW36) in `knowledge/Clippings/` — PDFs u.a. zu
-  Edge-Genesis/-Decay, Risk-Factor-Investing (Kolanovic/JPM),
-  Sektor-Rotation, "Von Paper zu Strategie"-Leitfaden. Noch nicht durch
-  den CODE-Prozess gelaufen.
+- **12 unverarbeitete Clippings seit 2026-09-03** in `knowledge/Clippings/`
+  (Edge-Genesis/-Decay, Risk-Factor-Investing, Sektor-Rotation, u.a.) —
+  noch nicht durch den CODE-Prozess.
 - ~~Second-Brain/Dashboard-Struktur: Feedback nach ein paar Tagen
   einholen~~ — erhalten 2026-09-06: Nutzer sehr zufrieden mit dem neuen
   Workflow, Dashboard passt gut rein. Redesign (Prioritäten-Sortierung,
@@ -172,6 +152,7 @@ abgehakt-und-liegengelassen.
 | DataLake-Ingest-Fast                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt `data_lake_store/` für Funded-Portfolio-Bridge (19 Keys, 15-Min-Kadenz)                | Ready (alle 15 Min, Mo–Fr)      | 2026-09-04      |
 | DataLake-Ingest-Fast5                                   | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt 7 M5/M15-Timing-kritische Keys für ctnl_continuation/orb                               | Ready (alle 5 Min, Mo–Fr)       | 2026-09-04      |
 | DataLake-Ingest-Slow                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt OU-Modell-Universum (~59 Ticker) via yfinance                                          | Ready (stündlich, Mo–Fr)        | 2026-09-04      |
+| Dashboard-Telegram-Digest (neu)                         | — (nur Lesezugriff auf DASHBOARD.md, kein Order-Bezug)                                   | Schickt offene Punkte aus DASHBOARD.md per Telegram                                          | Ready (täglich 8:00)            | 2026-09-06      |
 
 Live-Status aller drei Portfolio-Bridges jetzt auch als Streamlit-Seiten
 („Portfolio-Bridges" in der Sidebar) — lesen `bridge_status/snapshot.json`,
@@ -205,12 +186,6 @@ Kurz einfangen, was gerade auftaucht, ohne das aktuelle Thema zu verlassen —
 wird bei Gelegenheit einsortiert (Offene Aufgaben, PARA-Struktur, oder
 bewusst verworfen), nicht hier für immer liegen gelassen.
 
-- **Dashboard jeden Morgen 8 Uhr per Telegram** (2026-09-06, Nutzerfrage):
-  technisch machbar — bestehendes `scripts/reports/telegram_notify.py`-
-  Muster (Token/Chat-ID aus lokaler Config) wiederverwenden, neuer
-  8:00-Scheduled-Task, der die "Als Nächstes" + "Offene Punkte"-Abschnitte
-  als Textnachricht verschickt. Noch nicht gebaut, nicht entschieden ob/
-  wann.
 - **Periodischer `/doctor`-Check** (2026-09-04): zurückgestellt, noch keine
   nennenswerte Skill/MCP-Altlast bei aktuell nur 2 Skills.
 - **CFDs → echte Futures umstellen** (2026-09-03): zwei getrennte,
@@ -233,6 +208,9 @@ bewusst verworfen), nicht hier für immer liegen gelassen.
 
 _(Auszug — vollständiges Log in [CHANGELOG.md](CHANGELOG.md))_
 
+- 2026-09-06 — Neuer Scheduled Task `Dashboard-Telegram-Digest`: schickt
+  jeden Morgen 8:00 die offenen Punkte aus diesem Dashboard per Telegram
+  (Nutzerwunsch). Details: CHANGELOG.
 - 2026-09-04 — Second Brain: neuer Skill `handoff` (+ Inbox
   `knowledge/_handoff/`) für Session-Übergaben am Kontextfenster-Limit,
   aus dem "Everlast AI"-Clip übernommen (3 der 4 vorgeschlagenen Ideen

@@ -9,6 +9,51 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-06** [Second Brain / Reporting] **Neuer Scheduled Task
+  `Dashboard-Telegram-Digest`: schickt jeden Morgen 8:00 die offenen Punkte
+  aus `knowledge/DASHBOARD.md` per Telegram** (Nutzerwunsch, direkt nach dem
+  Dashboard-Redesign gestellt). Neues `scripts/reports/dashboard_digest.py`
+  extrahiert per Regex "Als Nächstes"/"Braucht deine Bestätigung"/"Offene
+  Aufgaben" (nur offene, durchgestrichene = erledigte Punkte werden
+  uebersprungen) sowie eine Kurzstatistik der Status-Tabelle und den
+  letzten "Letzte Aktivität"-Eintrag, formatiert als HTML (fette
+  Ueberschriften, Leerzeilen zwischen Punkten — Nutzerfeedback nach dem
+  ersten Testlauf) und verschickt per `send_telegram_message(...,
+  parse_mode="HTML")`. Wiederverwendet `scripts/reports/telegram_notify.py`/
+  `telegram_config.py` (gleicher Bot wie der Weekly-Report), kein neuer
+  Bot noetig. Neuer `scripts/reports/dashboard_digest_task.ps1`-Wrapper +
+  Scheduled Task (taeglich 8:00, `WakeToRun`+`StartWhenAvailable` wie die
+  anderen Bridge-Tasks). End-to-end per `schtasks /run` zweimal getestet
+  (Nutzer hat beide Testnachrichten in Telegram bestaetigt, zweite mit
+  Formatierungs-Feedback). Bekannte kleine Einschraenkung: das Logfile
+  (`dashboard_digest_task.log`) zeigt Umlaute/Emojis teils als Mojibave/
+  Platzhalter (PowerShell dekodiert die UTF-8-Ausgabe des Python-Prozesses
+  nicht immer sauber) — betrifft NUR das Logfile, nicht die tatsaechlich
+  verschickte Telegram-Nachricht (die direkt per `requests.post()` aus
+  Python kommt). Nicht weiter verfolgt, da rein kosmetisch und vermutlich
+  ein bereits bestehendes Muster in den anderen `*_task.ps1`-Wrappern.
+- **2026-09-06** [challenge_portfolio/paper_bot.py] **gold_asb-Cache-Bug
+  behoben.** `_scan_gold_asb()`s Alt/Neu-Grenze (`stable_end_str`) lief auf
+  "gestern" -- wandert taeglich, verfehlte `combined_strategy.data`s
+  Datums-Bereich-Cache dadurch JEDEN Kalendertag komplett und zog die volle
+  2016-bis-heute-Historie taeglich frisch von Dukascopy nach, was dieses
+  eine Bein unnoetig oft dem bekannten 90s-Hang aussetzte. Auf Monatsanfang
+  stabilisiert (aendert sich nur 1x/Monat); das "neue" `force_refresh=True`-
+  Fenster deckt dafuer den laufenden Monat statt nur "seit gestern" ab --
+  bleibt mit max. ~31 Tagen M15-Daten klein genug, um nicht das grosse-
+  Fenster-Problem zu wiederholen. Funktional verifiziert: zwei
+  aufeinanderfolgende `_scan_gold_asb(source="live")`-Aufrufe lieferten
+  identische 188 Zeilen (2,5s -> 1,9s) -- der eigentliche Cache-Vorteil
+  (kein taeglicher Full-Refetch mehr) zeigt sich erst ueber mehrere Tage,
+  nicht in einem Einzeltest messbar. Nutzerauftrag: "damit die Bots naechste
+  Woche maximal sauber laufen". Gleichzeitig die 3 Engineering-Entscheidungen
+  beim 5-Min-Fast-Trigger (M15-Zusatz, Cross-Prozess-Lock, kuerzere Retry-
+  Parameter) inhaltlich nachgeprueft (nicht nur pauschal bestaetigt) --
+  `account_state_lock()`s Code gelesen, identische `os.O_CREAT|O_EXCL`-
+  Technik wie unabhaengig davon am selben Tag fuer `data_lake/manifest.py`
+  gebaut; Retry-Parameter 3x/3s/20s direkt in `run_once_fast.py` verifiziert.
+  Alle drei bestaetigt, siehe DASHBOARD.md.
+
 - **2026-09-06** [Data-Fetch] **`validate_ohlc_numeric()` false-positive bei
   leerem Fetch-Fenster behoben + doppelte Pruefstelle entfernt.** Gefunden
   beim FK-Instant-Funding-Wochen-Backtest-Vergleich: ein Dukascopy-Fetch

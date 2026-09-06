@@ -77,7 +77,18 @@ def validate_ohlc_numeric(df: pd.DataFrame, columns: list[str]) -> None:
     with "'>' not supported between instances of 'str' and 'float'" deep in
     a strategy's indicator code, and (worse) gets cached, so the bad data
     keeps getting served. Raise here instead so the caller's existing
-    _retry() wrapper re-fetches rather than ever caching it."""
+    _retry() wrapper re-fetches rather than ever caching it.
+
+    Fund 2026-09-06: a fetch window with ZERO matching bars (e.g. a request
+    that falls entirely on a weekend/market holiday) comes back as a valid,
+    legitimately empty DataFrame -- but pandas then has no values to infer a
+    dtype from, so every column shows up as `object`, which used to trip
+    this same "corrupted data" check as a false positive. That wasted 6
+    retries (~8 minutes) and then crashed instead of just returning the
+    correctly-empty result. An empty frame is never corrupted, only a
+    non-empty one with the wrong dtype is -- skip the check for len(df)==0."""
+    if df.empty:
+        return
     for col in columns:
         if col in df.columns and not pd.api.types.is_numeric_dtype(df[col]):
             raise ValueError(f"fetched data has non-numeric column {col!r} (dtype {df[col].dtype}) - refusing to cache")
@@ -103,25 +114,13 @@ def fetch_timeframe(key: str, timeframe: str, start: str, end: str, force_refres
     # Match ema_strategy's OHLC column naming (capitalised) so the existing
     # EMA/ADX indicator code can be reused unmodified.
     df = df.rename(columns={"open": "Open", "high": "High", "low": "Low", "close": "Close", "volume": "Volume"})
+    # Fund 2026-09-02, siehe validate_ohlc_numeric()-Docstring oben (Fehlversuch
+    # wird nie gecacht) -- frueher stand hier zusaetzlich eine inline duplizierte
+    # Kopie derselben Pruefung (Fund 2026-09-06: die Duplizierung liess den
+    # Wochenend-Leerfetch-Fix oben unwirksam wirken, weil diese zweite Kopie ihn
+    # nicht mitbekam und weiterhin auch auf leeren DataFrames warf). Entfernt --
+    # eine einzige Pruefstelle statt zwei synchron zu haltender Kopien.
     validate_ohlc_numeric(df, ["Open", "High", "Low", "Close", "Volume"])
-
-    # Fund 2026-09-02: nach einer laengeren Standby-Pause (Netzwerk/DNS vermutlich noch
-    # nicht vollstaendig reaktiviert) lieferte dukascopy_python.fetch() vermutlich
-    # vereinzelt Daten mit nicht-numerischen OHLC-Spalten zurueck -- wurde bisher
-    # ungeprueft gecacht, liess nachgelagerte Vergleiche (Regime-/Friction-Filter u.ae.)
-    # mit "'>' not supported between instances of 'str' and 'float'" crashen, mehrere
-    # Ebenen entfernt von der eigentlichen Ursache (beobachtet auf FKInstantFunding-MT5-
-    # Bridge + Funded-Portfolio-Bridge, direkt nach demselben Standby-Vorfall). Vor dem
-    # Cachen validieren: ein Fehlversuch wird NIE persistiert, der aufrufer-seitige
-    # _retry()-Wrapper bekommt einen sauberen, verstaendlichen Fehler zum Neuversuch
-    # statt kaputter Daten drei Ebenen tiefer.
-    ohlc_cols = [c for c in ("Open", "High", "Low", "Close") if c in df.columns]
-    bad_cols = [c for c in ohlc_cols if not pd.api.types.is_numeric_dtype(df[c])]
-    if bad_cols:
-        raise ValueError(
-            f"dukascopy_python.fetch() lieferte nicht-numerische OHLC-Spalten fuer "
-            f"{key}/{timeframe} ({start}..{end}): {bad_cols} -- nicht gecacht, Neuversuch noetig."
-        )
 
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     df.to_parquet(path)

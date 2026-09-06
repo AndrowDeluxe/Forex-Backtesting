@@ -64,6 +64,17 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
+- **Funded-Portfolio-Bridge: TTP Konto 2 (Demo, #504072729) verbindet seit
+  Wochenschluss nicht mehr** (gefunden 2026-09-07, beim Log-Check nach dem
+  Data-Lake-Fallback-Umbau). Letzter Erfolg Freitag 2026-09-05 01:34 Uhr,
+  seit dem ersten Lauf nach dem Wochenende (2026-09-07 00:04 Uhr) beide
+  Läufe (00:04, 00:19) mit `mt5.initialize() fehlgeschlagen: (-6, 'Terminal:
+  Authorization failed')` — nicht mit dem bekannten IPC-Timeout-Bild
+  identisch, eher nach abgelaufener/ungültig gewordener Demo-Session
+  (Konto 2 ist ein TTP-**Demo**-Konto, kein echtes Geld betroffen). IQ
+  Markets + TTP Konto 1 (echtes Geld) verbinden im selben Lauf weiterhin
+  einwandfrei. Braucht vermutlich einen manuellen Login-Check am Terminal —
+  nichts, was ich aus der Ferne beheben kann.
 - ~~Lokaler `main` 64 vor / 1 hinter `origin/main`~~ — **gemergt 2026-09-06**
   (Nutzer-OK): der eine fremde Commit (`7616951`) betraf nur `DASHBOARD.md`
   und stammte noch von der alten, unredesignten Dashboard-Struktur (Sept 4)
@@ -165,8 +176,8 @@ abgehakt-und-liegengelassen.
 | OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner + Telegram (3x täglich: 15:35/18:35/21:35)                                           | Ready (Mo–Fr, US-Handelszeiten) | 2026-09-02      |
 | Forex-Weekly-Report                                     | —                                                                                        | Report-Generator                                                                             | Ready                           | 2026-09-02      |
 | Bridge-Watchdog                                         | — (nur Log-Frische, kein Order-Bezug)                                                    | Heartbeat-Alarm + Status-Snapshot ins Repo                                                   | Ready (alle 30 Min)             | 2026-09-02      |
-| Funded-Portfolio-Bridge (TTP+IQ Markets, 6 Beine)       | TTP Konto 2 (504072729) + TTP Konto 1 (504069845) + BeyondIQCapital (16054) + BeyondIQCapital (15514) — **alle 4 verbunden** | **LIVE — DRY_RUN=False** (alle 6 Beine `source="lake"`, siehe Data-Lake-Pilot) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-04      |
-| Funded-Portfolio-Bridge-Fast                            | Gleiche 4 Konten (geteilte Terminals)                                                    | **LIVE — DRY_RUN=False** (nur ctnl_continuation + orb_sp500/us30/nasdaq, `source="lake"`)   | Ready (alle 5 Min, Mo–Fr)       | 2026-09-04      |
+| Funded-Portfolio-Bridge (TTP+IQ Markets, 6 Beine)       | TTP Konto 2 (504072729) + TTP Konto 1 (504069845) + BeyondIQCapital (16054) — **alle 3 verbunden** (IQ 15514 am 2026-09-07 entfernt) | **LIVE — DRY_RUN=False** (alle 6 Beine `source="lake"`, siehe Data-Lake-Pilot) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-07      |
+| Funded-Portfolio-Bridge-Fast                            | Gleiche 3 Konten (geteilte Terminals)                                                    | **LIVE — DRY_RUN=False** (nur ctnl_continuation + orb_sp500/us30/nasdaq, `source="lake"`)   | Ready (alle 5 Min, Mo–Fr)       | 2026-09-07      |
 | DataLake-Ingest-Fast                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt `data_lake_store/` für Funded-Portfolio-Bridge (19 Keys, 15-Min-Kadenz)                | Ready (alle 15 Min, Mo–Fr)      | 2026-09-04      |
 | DataLake-Ingest-Fast5                                   | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt 7 M5/M15-Timing-kritische Keys für ctnl_continuation/orb                               | Ready (alle 5 Min, Mo–Fr)       | 2026-09-04      |
 | DataLake-Ingest-Slow                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt OU-Modell-Universum (~59 Ticker) via yfinance                                          | Ready (stündlich, Mo–Fr)        | 2026-09-04      |

@@ -9,6 +9,249 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-06** [Data-Fetch] **`validate_ohlc_numeric()` false-positive bei
+  leerem Fetch-Fenster behoben + doppelte Pruefstelle entfernt.** Gefunden
+  beim FK-Instant-Funding-Wochen-Backtest-Vergleich: ein Dukascopy-Fetch
+  ueber ein Fenster ganz ohne Handelstage (z.B. komplett am Wochenende)
+  liefert einen legitim leeren (0 Zeilen) DataFrame, dessen Spalten mangels
+  Werten `object`-statt `float`-dtype haben — die Korruptions-Guard in
+  `combined_strategy/data.py` hielt das faelschlich fuer eine kaputte
+  Dukascopy-Antwort, `_retry()` erschoepfte alle 6 Versuche erfolglos
+  (~8 Min) und crashte dann. Fix: `validate_ohlc_numeric()` ueberspringt
+  jetzt leere DataFrames (nichts zu validieren, kein Korruptionsfall). Dabei
+  eine zweite, komplett duplizierte inline-Kopie derselben Pruefung direkt
+  darunter in `fetch_timeframe()` gefunden und entfernt (haette den Fix
+  sonst unwirksam gemacht, da sie den leeren-Fall nicht mitbekam) — vermutlich
+  bei der Umstellung der ersten Version auf die wiederverwendbare Funktion
+  (2026-09-02/03) liegengeblieben. Betrifft den echten Live-Betrieb nicht
+  direkt (alle Bots ueberspringen Wochenend-Scans komplett via
+  `is_market_paused()`/Task-Scheduler-Zeitplan, bevor ein solcher Fetch je
+  passiert), macht `combined_strategy.fetch_timeframe()` (genutzt von
+  `combined_strategy/data.py`, `cls_practical/data.py`,
+  `data_lake/ingest.py` — Letzteres treibt Funded-Portfolio-Bridge, LIVE)
+  aber robust gegen jedes zukuenftige leere Fenster (Feiertage,
+  Datenluecken), statt 8 Min. Retry-Zeit zu verschwenden und dann zu
+  crashen. Verifiziert: alle 100 bestehenden Tests weiterhin gruen, Original-
+  Fehlerfall (`_scan_gold_asb()` mit Wochenend-`end`) laeuft jetzt sauber
+  durch (188 Trades statt Crash).
+
+- **2026-09-06** [Reporting] **Weekly Checkup KW36/2026 erstellt — erster Lauf
+  im neuen Portfolio-Bridge-Format.** Dabei zwei neue Funde, in
+  `DASHBOARD.md` unter "Als Nächstes"/"Offene Aufgaben" ergänzt: (1)
+  `git log -- data_lake/` zeigt keinen einzigen Commit, obwohl der
+  09-04-Eintrag unten das Paket als "git-getrackt" beschreibt — kompletter
+  Ordner (`manifest.py`, `storage.py`, `sources.py`, `twelvedata_source.py`
+  u.a.) existiert nur lokal, kein Git-Backup für die Dateninfrastruktur von
+  Funded-Portfolio-Bridges 6 Beinen. (2) 12 neue, unverarbeitete Clippings
+  seit 2026-09-03 in `knowledge/Clippings/` gefunden. Reports:
+  `knowledge/reports/weekly/KW36_2026_{performance,education,checkup}.{md,html}`
+  (PDF nur lokal unter `Documents/Trading Reports/`, nicht committet).
+
+- **2026-09-06** [Data Lake] **Twelve-Data-Backup-Datenquelle gebaut + kritischen
+  Concurrency-Bug im Manifest gefunden und behoben.** Nutzerauftrag: falls
+  Dukascopy weiterhin haengt, nie wieder Trades verpassen. Erwogen wurde
+  zunaechst "jeden Zyklus beide Quellen parallel abfragen" (Nutzeridee) --
+  durchgerechnet und verworfen: bei 24 Keys x alle 5 Min. (288 Zyklen/Tag)
+  bräuchte das >6900 Anfragen/Tag, Twelve Datas kostenloses Kontingent
+  (verifiziert: 800/Tag) reicht dafuer nur fuer ~2-3 Instrumente durchgehend.
+  Stattdessen reaktives Modell: `data_lake/twelvedata_source.py` (neu) springt
+  erst nach `FAILOVER_AFTER_N_FAILURES=2` aufeinanderfolgenden Dukascopy-
+  Fehlversuchen fuer denselben Key ein, schreibt aber in denselben Lake-
+  Speicherplatz wie Dukascopy (source bleibt "dukascopy") -- reader.py
+  braucht dadurch KEINE Aenderung. Deckt nur FX-Majors + Gold/Silber ab
+  (SYMBOL_MAP) -- Platin/CHFJPY/Indizes/Anleihen/2Y-Renditen bewusst nicht
+  geraten, da auf dem kostenlosen Twelve-Data-Plan nicht zuverlaessig
+  verfuegbar. `timezone=UTC` wird IMMER explizit mitgegeben (empirisch
+  verifiziert: ohne den Parameter war das Antwortformat mehrdeutig, zwei
+  Calls Sekunden auseinander lieferten "aktuellste Kerze"-Zeitstempel mit
+  ~10h Differenz). Alternative Anbieter gegengeprueft und verworfen: Finexly
+  (Nutzervorschlag) liefert nur Einzel-Umrechnungskurse, KEINE OHLC-Kerzen --
+  fuer Breakout-/ATR-basierte Strategien ungeeignet, dazu nur 1.000
+  Anfragen/Monat und FX-only; Alpha Vantage nur 25/Tag, zu knapp.
+  **Beim End-to-End-Test kritischen Bug gefunden**: `manifest.json` war
+  korrupt (zwei aneinandergehaengte JSON-Objekte) -- `DataLake-Ingest-Fast`/
+  `-Fast5`/`-Slow` koennen sich zeitlich ueberlappen und schrieben bisher
+  ALLE ohne gegenseitige Sperre in dieselbe Datei; `storage.py`s Tmp-Datei-
+  plus-Rename schuetzt nur vor einem halb geschriebenen Read, nicht vor zwei
+  gleichzeitigen Schreibern mit demselben Tmp-Dateinamen. Legte dadurch ALLE
+  6 Funded-Portfolio-Bridge-Beine lahm (jeder Freshness-Check crashte an der
+  kaputten Datei), bis von Hand repariert (erstes vollstaendiges JSON-Objekt
+  im File war zum Glueck noch unbeschaedigt, Rest verworfen). Fix: neue
+  `manifest.py::_locked()`-Sperre um `record_success()`/`record_failure()`,
+  identisches `os.O_CREAT|O_EXCL`-Muster wie Funded-Portfolio-Bridge/
+  run_once.py::account_state_lock() (dort schon fuer denselben Bug bei
+  bridge_state_*.json eingebaut). End-to-end verifiziert: 2 simulierte
+  Dukascopy-Fehlversuche loesten den echten Twelve-Data-Failover erfolgreich
+  aus (84.884 Zeilen EURUSD_M5 uebernommen, `consecutive_failures` korrekt
+  auf 0 zurueckgesetzt, `last_source_used: "twelvedata"` vermerkt), danach
+  `run_shared_scans()` komplett gegen die reparierte, gesperrte Version
+  gegengeprueft.
+
+- **2026-09-05** [Second Brain / Workflow] **Neuer Edge-Card-Workflow +
+  Verzahnung mit Backtest-Standardprozess** (`knowledge/areas/
+  edge-card-workflow.md`, Nutzer-Vorgabe vollständig übernommen). Prozess
+  für händisch entwickelte/getradete Strategien: Phase 0 (Strategie-
+  verständnis bestätigen) + 5 Felder (01 Idee, 02 Regel, 03 Mechanismus,
+  04 Gegenprobe, 05 Test), Schritt für Schritt, Nutzer-Begriffe/-
+  Definitionen übernehmen, keine Scheingenauigkeit. Auf Nutzerwunsch mit
+  dem bestehenden [[backtest-standard-process]] verzahnt: ersetzt für
+  händische Strategien dessen Phase 1-3, Feld 02 REGEL wird 1:1-
+  Spezifikation für Phase 4, Feld 04 GEGENPROBE liefert zusätzliche
+  Kontrollgruppen für Phase 6 Robustheit. `CLAUDE.md` um Referenz-Abschnitt
+  "Edge-Card-Workflow" ergänzt. **Nutzerentscheid 2026-09-05 (Bestätigung
+  nachgetragen)**: Zuordnung passt so; klare Abgrenzung nach Herkunft der
+  Strategie -- Papers/Dokumente bleiben unverändert beim vollen
+  8-Phasen-Prozess (Phase 1-3 inklusive), der Edge-Card-Workflow greift
+  ausschließlich bei händisch entwickelten/getradeten Strategien ohne
+  Paper-Ursprung. Punkt aus DASHBOARD "Braucht deine Bestätigung" entfernt.
+
+- **2026-09-04** [Reporting] **Weekly Checkup - Performance auf Portfolio-
+  statt Bein-Ebene umgestellt** (`scripts/reports/weekly_report_prompt.md`).
+  Nutzerauftrag, bereits 2026-08-27 angekuendigt (Memory
+  `portfolio_consolidation_pending`: "sobald die neuen Portfolios stehen,
+  wird das nochmal geaendert") und heute explizit bestaetigt+umgesetzt. Die
+  Trades/Winrate/PnL-Tabelle (Punkt 4) sowie Wochenkontext/Risk-Compliance/
+  "Was hat funktioniert" (Punkte 1-3) berichten ab sofort NUR noch pro
+  Portfolio-Bridge (EK-Portfolio-Bridge, Funded-Portfolio-Bridge/Challenge
+  Portfolio, FK Instant Funding) statt pro Einzelbein (Gold ASB/CTNL/OU-
+  Modell/etc., die als eigenstaendige Bots ohnehin aufgeloest sind).
+  Nutzerentscheid zur Granularitaet (Rueckfrage gestellt, da nicht
+  eindeutig): Funded-Portfolio-Bridge wird trotz 4 echter Broker-Konten zu
+  EINER zusammengefassten Zeile aggregiert (gleicher Strategie-Blend, nur
+  kapitalgewichtet pro Konto) -- kontospezifische Kill-Switch-/Drawdown-
+  Ereignisse sollen aber weiterhin in der Risk-Compliance-Sektion einzeln
+  auftauchen, nicht in der Aggregation verschwinden. Wirkt erst beim
+  naechsten `Forex-Weekly-Report`-Lauf (naechste vollstaendige Woche ist
+  KW36, noch kein Report dafuer generiert).
+
+- **2026-09-04** [Second Brain / Claude-Workflow] **Neuer Skill `handoff`**
+  (`.claude/skills/handoff/SKILL.md` + Inbox `knowledge/_handoff/`):
+  schreibt am Ende einer Session (oder wenn das Kontextfenster sich der
+  ~300k-Token-Grenze nähert) eine Handoff-Datei, die nur festhält, was
+  sonst verlorenginge (Learnings, Fehlannahmen, offene Fäden) — kein
+  Task-Recap, das aus Git/DASHBOARD/CHANGELOG rekonstruierbar wäre. Neue
+  Sessions prüfen den Ordner zuerst (CLAUDE.md "Kontextfenster-Hygiene"
+  entsprechend ergänzt). Nutzerentscheid nach Auswertung des "Everlast AI"-
+  Claude-Workflow-Clips (siehe `resources/second-brain-methodik.md`) — von
+  4 vorgeschlagenen Ideen nur diese eine übernommen, `/prime`-Command
+  verworfen, `/doctor`-Check + CLAUDE.md-Englisch zurückgestellt/verworfen
+  (Details in der Resource-Notiz).
+- **2026-09-04** [EK-Portfolio-Bridge / Task Scheduler] **Telegram-Spam bei
+  "Signal zu alt"-Warnungen behoben + zwei Scheduled-Task-Trigger entzerrt.**
+  Nutzerauftrag nach Screenshots mit identischer NASDAQ-Stale-Warnung alle 2
+  Minuten. Root Cause: `legs/ny_open_orb/executor.py`s SL-/TP-Stale-Checks
+  (siehe Eintraege weiter oben) hatten anders als Funded-Portfolio-Bridge's
+  `_process_leg()` keine Einmal-pro-Signal-Sperre — wiederverwendet jetzt
+  das bereits vorhandene `already_notified_risk_cap_skip()`/`mark_risk_cap_
+  skip_notified()`-Muster (`core/state_store.py`) mit einem eigenen
+  `orb_stale_{instrument}_{entry_time}`-Key statt einer neuen Tabelle.
+  Zusaetzlich beim Nachgehen der heutigen IPC-Timeout-Haeufung bei ttp1/
+  iqmarkets2 gefunden: durch die neuen Fast-Tasks laufen jetzt 6-8 Scheduled
+  Tasks dicht getaktet, EK-Portfolio-Bridge UND Funded-Portfolio-Bridge
+  feuerten beide exakt auf demselben :00/:15/:30/:45-Raster — Funded-
+  Portfolio-Bridges Trigger um 4 Minuten verschoben (jetzt :04/:19/:34/:49),
+  Wiederholungsintervall (PT15M) dabei unveraendert verifiziert. Reduziert
+  gleichzeitige MT5-Verbindungslast, behebt aber nicht zwangslaeufig die
+  zugrundeliegende Terminal-Fragilitaet selbst — nur ein erster, risikoarmer
+  Schritt, keine erneute Tiefen-Diagnose wie am Vortag.
+
+- **2026-09-04** [Funded-Portfolio-Bridge / Data Lake] **5-Minuten-Scan-Trigger
+  fuer ctnl_continuation + orb jetzt live geschaltet** (Fortsetzung des
+  Eintrags direkt unten, gleicher Tag). Nutzer hat den vom aktiven Auto-Mode-
+  Classifier geforderten, aktiv begleiteten manuellen `run_once_fast.py`-
+  Testlauf selbst durchgefuehrt: alle 4 Konten sauber durchgelaufen, keine
+  Fehler, keine unerwarteten Orders ("Keine offenen/neuen Signale in diesem
+  Zyklus" bei allen). Beide Scheduled Tasks (`DataLake-Ingest-Fast5`,
+  `Funded-Portfolio-Bridge-Fast`) vom Nutzer selbst registriert (der
+  Classifier blockierte sowohl den direkten `run_once_fast.py`-Lauf als auch
+  die Task-Registrierung als Claude-Aktion) — beide per `schtasks /XML`
+  gegengeprueft: korrekte 5-Min-Wiederholung, Mo-Fr, `ExecutionTimeLimit`
+  passend (PT4M). Nebenbefund waehrend der Umsetzung: eine PARALLELE Claude-
+  Session (`knowledge-4c`) war vom selben Nutzer unabhaengig auf denselben
+  DASHBOARD-Punkt angesetzt worden und hatte bereits `DataLake-Ingest-Fast5`
+  registriert, bevor das hier bemerkt wurde -- ueber Cross-Session-
+  Nachrichten abgeglichen (siehe DASHBOARD-Historie), keine doppelte
+  Registrierung/kein doppelter Testlauf. Dieselbe Session hat zeitgleich,
+  unabhaengig von diesem Feature, einen kleinen Bugfix in `run_once.py::
+  _process_leg()` ergaenzt (OU-Modell: `live_price <= 0`-Check fuer einen
+  Tick mit ask/bid=0.0 statt None) -- beide Aenderungen liegen konfliktfrei
+  nebeneinander in der Datei, `py_compile` nach dem Zusammentreffen erneut
+  sauber.
+
+- **2026-09-04** [Funded-Portfolio-Bridge / Data Lake] **5-Minuten-Scan-Trigger
+  fuer die zwei M5-Timing-kritischen Beine (ctnl_continuation, NY-Open ORB)
+  gebaut — Code fertig, NOCH NICHT live geschaltet.** Nutzerentscheid
+  2026-09-02 (DASHBOARD.md Punkt 1): Funded-Portfolio-Bridge scannt sonst nur
+  alle 15 Min, ein frisches M5-Signal kann bis zu 3 Bars zu spaet erkannt
+  werden. Zwei Ebenen noetig (Fund waehrend der Umsetzung: die 2026-09-02-
+  Entscheidung war VOR dem selbentags-2026-09-04 live gegangenen Data-Lake-
+  Pilot getroffen worden — ein reiner Bridge-Trigger allein haette nur
+  dieselben 15 Min alten Lake-Bars 3x wiederholt gelesen):
+  (1) `data_lake/sources.py`/`ingest.py`: neue Lane `"fast5"` fuer die 7
+  M5/M15-Timing-kritischen Keys (GOLD M5, SP500/US30/NASDAQ M5+M15) —
+  SP500/US30/NASDAQ M15 bewusst MIT drin, nicht nur M5 (`ny_open_orb/
+  engine.py::build_frame()` haengt die Opening-Range am M15-Bar direkt nach
+  NY-Open, sonst waere der allererste Breakout jeder Session weiterhin bis zu
+  15 Min zu spaet). `ingest_fast()` filterte `FAST_SOURCES` bisher NICHT nach
+  `lane` (das Feld existierte, wurde aber nirgends ausgewertet) — ohne
+  Nachruesten dieses Filters haetten zwei Ingest-Kadenzen dieselbe Parquet-
+  Datei gleichzeitig ueber einen nicht PID-eindeutigen Tmp-Pfad beschrieben
+  (`storage.py`), echtes Korruptionsrisiko, jetzt behoben. Per drei manuellen
+  Laeufen verifiziert: `--universe fast5` aktualisiert exakt die 7 Keys
+  (Manifest-Zeitstempel geprueft), `--universe fast` beruehrt sie danach
+  nicht mehr (verbleibende 19 Keys, kein Ueberlapp).
+  (2) `Funded-Portfolio-Bridge/run_once.py`: neuer Cross-Prozess-Lock pro
+  Konto (`account_state_lock()`, atomares `os.O_CREAT|O_EXCL`, Stale-Lock-
+  Erkennung nach 16 Min) um `run_account()` — noetig, weil `_save_state()`
+  ein blindes `write_text()` ohne Read-Merge ist (anders als EK-Portfolio-
+  Bridges SQLite-State): ohne Lock haette ein spaeter speichernder Prozess
+  ein vom parallel laufenden Fast-Prozess gerade real eroeffnetes MT5-Ticket
+  aus dem State verschwinden lassen koennen -> echter Doppel-Entry beim
+  naechsten Scan. Per eigenem Unit-Test verifiziert (Acquire/Release,
+  Timeout bei gehaltenem Lock, Stale-Lock-Reclaim).
+  (3) Neue `Funded-Portfolio-Bridge/run_once_fast.py` (+`run_task_fast.ps1`):
+  Muster 1:1 von `EK-Portfolio-Bridge/run_once_fast.py` uebernommen
+  (`import run_once as slow`, keine Logik-Kopie). Deckt NUR
+  `ctnl_continuation` (nicht `ctnl_reversal`, kein M5-Timing) +
+  `orb_sp500`/`orb_us30`/`orb_nasdaq` + `_manage_orb_partial_exits()` ab.
+  `run_shared_scans_fast()` end-to-end gegen die echten Lake-Daten getestet
+  (kein MT5, keine Order) — beide Scans liefen fehlerfrei, ORB lieferte 429
+  Trades ueber alle 3 Maerkte, CTNL Continuation 0 (kein aktuelles Signal).
+  **Zwei Scheduled Tasks (`DataLake-Ingest-Fast5`, `Funded-Portfolio-Bridge-
+  Fast`) sind bewusst NOCH NICHT registriert** — `DRY_RUN=False` gilt
+  bridge-weit fuer `run_once.py` UND `run_once_fast.py` gleichermassen, der
+  allererste Lauf von `run_once_fast.py` kann bei einem echten offenen
+  Signal eine echte Order ausloesen. Wartet auf einen vom Nutzer aktiv
+  begleiteten manuellen Testlauf, siehe DASHBOARD.md "Braucht deine
+  Bestaetigung".
+
+- **2026-09-04** [EK-Portfolio-Bridge] **Zwei echte Order-Bugs in
+  `legs/ny_open_orb/executor.py` gefunden + behoben, beim Nachgehen der drei
+  offenen Bridge-Monitor-Fragen im Dashboard (dessen Snapshot-Zugriff keine
+  vollen Logs/Root-Causes zeigt).** (1) NASDAQ-Ticket 262117522 hing seit
+  ~22:00 Uhr Vortag durchgehend (297 Fehlversuche) am Session-Ende-
+  Notausgang fest: der Order-Request hatte kein `deviation`-Feld, wodurch
+  `mt5.order_send()` manche Marktorders clientseitig ohne Retcode ablehnte
+  (`result=None`) — dazu fehlte `mt5.last_error()` im Log, jeder Versuch
+  sah identisch nichtssagend aus. Fix: `deviation: 20` ergaenzt,
+  `mt5.last_error()` mitgeloggt. (2) US30-Order scheiterte erneut mit
+  "Invalid stops" trotz des 2026-09-02-SL-Fixes: TP wurde weiterhin aus dem
+  alten Signalpreis berechnet und lag bei genug Kursbewegung auf der
+  FALSCHEN Seite des Live-Preises (beobachtet: TP unter Einstiegspreis bei
+  einer LONG) — der bestehende Fix prüfte nur das SL, nie das TP. Fix:
+  identische Seiten-Pruefung jetzt auch fuers TP in `check_and_execute_
+  entry()`, Signal wird bei ungueltiger TP-Seite als "zu alt" uebersprungen
+  statt eine zum Scheitern verurteilte Order zu senden.
+  **Update 10:48 Uhr**: der `deviation`-Fix allein reichte nicht -- das
+  jetzt sichtbare `mt5.last_error()` zeigte den echten dritten Grund:
+  `(-2, 'Invalid "comment" argument')`. Ein erster Versuch, den Kommentar
+  auf 31 Zeichen zu kappen, war wirkungslos ("EK-orb_nasdaq auto-session_end"
+  hatte nur 30 Zeichen, schon unter 31) — Tickmills tatsaechliches Limit
+  liegt niedriger. Auf 16 Zeichen gekappt, damit griff es sofort: Ticket
+  262117522 um 10:48:12 endgueltig geschlossen (0.21 Lots @ 29604.49), nach
+  ~13h Haengen. Strukturell betraf das nur NASDAQ (laengster Leg-Name),
+  SP500/US30 nie. Live bestaetigt, kein reiner py_compile-Stand mehr.
+
 - **2026-09-04** [Data Lake / Funded-Portfolio-Bridge] **Neuer lokaler
   Data-Lake-Pilot gebaut und live geschaltet — Funded-Portfolio-Bridges 6
   Beine lesen ihre Marktdaten jetzt aus einem lokal gepflegten Parquet-Lake

@@ -60,11 +60,25 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
-- **Lokaler `main` 64 vor / 1 hinter `origin/main`** (2026-09-06): Push
-  seitdem "rejected - fetch first" — Bot-Snapshots (States, Dashboard)
-  liegen nur noch lokal, nicht auf GitHub. Vermutlich 1 fremder Commit
-  (`7616951`) ungemergt. Merge/Pull auf einem Repo mit mehreren
-  Auto-Commit-Bots nicht ungefragt — braucht dein OK.
+- ~~Lokaler `main` 64 vor / 1 hinter `origin/main`~~ — **gemergt 2026-09-06**
+  (Nutzer-OK): der eine fremde Commit (`7616951`) betraf nur `DASHBOARD.md`
+  und stammte noch von der alten, unredesignten Dashboard-Struktur (Sept 4)
+  — Merge-Konflikt manuell aufgelöst, alte Struktur verworfen (längst durch
+  das Sept-6-Redesign abgelöst), aber der einzige darin noch NICHT
+  anderswo erfasste Punkt unten neu aufgenommen (siehe nächster Punkt).
+- **Funded-Portfolio-Bridge: Data-Lake-Cold-Start-Lücke vom 2026-09-04,
+  Frage nie beantwortet** (beim Nachmerge des seit Sept 4 ungemergten
+  Remote-Commits wiedergefunden — sonst verloren gegangen). Beim ersten
+  Rollout des Data-Lake-Pilots scheiterten alle 6 Beine auf allen 4 Konten
+  drei Läufe hintereinander (08:33/08:48/09:03 Uhr) mit "Keine Lake-Daten
+  ... Ingestion noch nicht gelaufen?", weil `run_shared_scans()` bereits auf
+  `source="lake"` lief, bevor `DataLake-Ingest-Fast` zum ersten Mal befüllt
+  hatte — `reader.py` wirft dabei bewusst `LakeMissingDataError` statt
+  stiller leerer Daten. Hat sich von selbst erledigt (danach 2 Tage
+  fehlerfrei) und trat seitdem nicht wieder auf — nur relevant, falls
+  Bridge/Rechner nochmal komplett neu starten: soll `run_shared_scans()` bei
+  `LakeMissingDataError` dann auf `source="live"` zurückfallen, oder reicht
+  dir das einmalige Rollout-Verhalten als akzeptabel?
 - ~~5-Min-Fast-Trigger: 3 Engineering-Entscheidungen unbestätigt~~ —
   **bestätigt 2026-09-06** (Nutzerauftrag, echt nachgeprüft statt pauschal
   abgenickt): M15-Zusatz für SP500/US30/NASDAQ (Begründung Opening-Range-

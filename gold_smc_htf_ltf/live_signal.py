@@ -78,29 +78,40 @@ def ctnl_standalone_drawdown(cont_trades: pd.DataFrame, rev_trades: pd.DataFrame
     return float(((eq - peak) / peak).min())
 
 
-def _fetch_window(end: pd.Timestamp, lookback_days: int, force_refresh: bool):
+def _fetch_window(end: pd.Timestamp, lookback_days: int, force_refresh: bool, source: str = "live"):
     start = (end - pd.Timedelta(days=lookback_days)).strftime("%Y-%m-%d")
     end_str = (end + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
-    h4 = fetch_gold_h4(start, end_str, force_refresh=force_refresh)
-    h1 = fetch_gold_h1(start, end_str, force_refresh=force_refresh)
-    m15 = fetch_gold_m15(start, end_str, force_refresh=force_refresh)
-    m5 = fetch_gold_m5(start, end_str, force_refresh=force_refresh)
+    if source == "lake":
+        import data_lake.reader as _lake
+        fetch_h4, fetch_h1 = _lake.fetch_gold_h4, _lake.fetch_gold_h1
+        fetch_m15, fetch_m5 = _lake.fetch_gold_m15_ny, _lake.fetch_gold_m5
+    else:
+        fetch_h4, fetch_h1, fetch_m15, fetch_m5 = fetch_gold_h4, fetch_gold_h1, fetch_gold_m15, fetch_gold_m5
+    h4 = fetch_h4(start, end_str, force_refresh=force_refresh)
+    h1 = fetch_h1(start, end_str, force_refresh=force_refresh)
+    m15 = fetch_m15(start, end_str, force_refresh=force_refresh)
+    m5 = fetch_m5(start, end_str, force_refresh=force_refresh)
     return h4, h1, m15, m5
 
 
 def continuation_signal(as_of: pd.Timestamp | None = None, lookback_days: int = LOOKBACK_DAYS, force_refresh: bool = True,
-                          _h4=None, _h1=None, _m15=None, _m5=None) -> dict:
+                          _h4=None, _h1=None, _m15=None, _m5=None, *, source: str = "live") -> dict:
     """{date, has_signal} or {date, has_signal: True, direction, entry_ref,
     stop, target, atr, risk_pct} for the most recently closed M5 bar.
     entry_ref is the trigger bar's own close (informational) - the bridge
     fills at the current live price, matching the backtest's next-bar-open
     convention. `_h4`/`_h1`/`_m15`/`_m5` let the verify-script inject an
-    already-fetched full-history slice instead of a fresh trailing fetch."""
+    already-fetched full-history slice instead of a fresh trailing fetch.
+    `source="lake"` (2026-09-06, EK-Portfolio-Bridge data-lake extension):
+    reads the same local Parquet lake the Funded-Portfolio-Bridge pilot
+    already ingests for these exact keys (GOLD H4/H1/M15/M5) instead of
+    hitting Dukascopy directly - no new ingestion needed, EK just becomes
+    another reader of the already-running fast/fast5 lanes."""
     end = as_of if as_of is not None else pd.Timestamp.now(tz="America/New_York")
     if _m5 is not None:
         h4, h1, m15, m5 = _h4, _h1, _m15, _m5
     else:
-        h4, h1, m15, m5 = _fetch_window(end, lookback_days, force_refresh)
+        h4, h1, m15, m5 = _fetch_window(end, lookback_days, force_refresh, source=source)
     if m5.empty or h1.empty or h4.empty:
         return {"date": str(end), "status": "keine Daten"}
 
@@ -128,7 +139,7 @@ def continuation_signal(as_of: pd.Timestamp | None = None, lookback_days: int = 
 
 
 def reversal_signal(as_of: pd.Timestamp | None = None, lookback_days: int = LOOKBACK_DAYS, force_refresh: bool = True,
-                      _h4=None, _h1=None, _m15=None) -> dict:
+                      _h4=None, _h1=None, _m15=None, *, source: str = "live") -> dict:
     """Same contract as continuation_signal(), for the most recently
     closed M15 bar. target is the 5R ATR-multiple level (informational -
     the bridge should manage the actual TP itself, see max_hold_bars
@@ -141,7 +152,7 @@ def reversal_signal(as_of: pd.Timestamp | None = None, lookback_days: int = LOOK
     if _m15 is not None:
         h4, h1, m15 = _h4, _h1, _m15
     else:
-        h4, h1, m15, _ = _fetch_window(end, lookback_days, force_refresh)
+        h4, h1, m15, _ = _fetch_window(end, lookback_days, force_refresh, source=source)
     if m15.empty or h1.empty or h4.empty:
         return {"date": str(end), "status": "keine Daten"}
 
@@ -169,7 +180,8 @@ def reversal_signal(as_of: pd.Timestamp | None = None, lookback_days: int = LOOK
     }
 
 
-def continuation_market_state(as_of: pd.Timestamp | None = None, lookback_days: int = LOOKBACK_DAYS, force_refresh: bool = True) -> dict:
+def continuation_market_state(as_of: pd.Timestamp | None = None, lookback_days: int = LOOKBACK_DAYS, force_refresh: bool = True,
+                               *, source: str = "live") -> dict:
     """For a bridge managing an ALREADY-OPEN Continuation position: the
     target (h1_target/vwap) is DYNAMIC (re-read fresh every bar, per
     continuation.py's module docstring - it is NOT a static broker-side TP
@@ -180,7 +192,7 @@ def continuation_market_state(as_of: pd.Timestamp | None = None, lookback_days: 
     expired) - a bridge seeing that should flatten defensively rather than
     hold with no exit reference."""
     end = as_of if as_of is not None else pd.Timestamp.now(tz="America/New_York")
-    h4, h1, m15, m5 = _fetch_window(end, lookback_days, force_refresh)
+    h4, h1, m15, m5 = _fetch_window(end, lookback_days, force_refresh, source=source)
     if m5.empty or h1.empty or h4.empty:
         return {"date": str(end), "status": "keine Daten"}
 

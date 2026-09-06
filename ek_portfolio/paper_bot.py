@@ -217,7 +217,7 @@ GOLD_ASB_LIQUIDITY_MIN_PERIODS = 250
 GOLD_ASB_MAX_DELAY_BARS = 3
 
 
-def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
+def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> pd.DataFrame:
     """Repliziert die fuenf produktiv validierten Live-Filter der echten
     GoldASB-MT5-Bridge (ADX, Trend-Bias, Fuellverzoegerung, Silber-Alignment,
     Liquiditaet) -- Parameter und Filterkette 1:1 aus app_pages/asian_range_
@@ -233,13 +233,23 @@ def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
     from bond_yield_indicator.friction import fetch_fx_friction
     from combined_strategy.data import fetch_timeframe
 
+    # Nur die LIVE-Fenster (unten "_new") werden bei source="lake" ersetzt -- identisches
+    # Muster zu challenge_portfolio/paper_bot.py::_scan_gold_asb (2026-09-06-Erweiterung
+    # auf EK-Portfolio-Bridge: liest denselben, bereits laufenden Lake, keine neue Ingestion).
+    if source == "lake":
+        import data_lake.reader as _lake
+        fetch_gold_m15_new, fetch_timeframe_new, fetch_fx_friction_new = _lake.fetch_gold_m15, _lake.fetch_timeframe, _lake.fetch_fx_friction
+    else:
+        fetch_gold_m15_new, fetch_timeframe_new, fetch_fx_friction_new = fetch_gold_m15, fetch_timeframe, fetch_fx_friction
+
     # fetch_timeframe() cached unter dem exakten (start, end)-Datumspaar -- mit end=jetzt wuerde JEDER
     # stuendliche Lauf einen NEUEN Cache-Schluessel erzeugen und die vollen ~10 Jahre M15-Gold/Silber
-    # komplett frisch herunterladen. Fix: alte, laengst abgeschlossene Historie bis GESTERN cachen
-    # (aendert sich nur einmal pro Tag), nur den kurzen frischen Rest seit gestern wirklich
-    # force_refresh=True abrufen und anhaengen.
+    # komplett frisch herunterladen. Fix: alte, laengst abgeschlossene Historie bis MONATSANFANG cachen
+    # (aendert sich nur 1x/Monat statt taeglich, identischer Fix wie challenge_portfolio/paper_bot.py
+    # 2026-09-06 -- derselbe Bug war hier unabhaengig vorhanden), nur der laufende Monat wird wirklich
+    # force_refresh=True abgerufen und angehaengt.
     end_str = (end + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
-    stable_end_str = (end.normalize() - pd.Timedelta(days=1)).strftime("%Y-%m-%d")
+    stable_end_str = end.normalize().replace(day=1).strftime("%Y-%m-%d")
 
     def _concat_fresh(old: pd.DataFrame | pd.Series, new: pd.DataFrame | pd.Series):
         if old.empty:
@@ -250,7 +260,7 @@ def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
         return combined[~combined.index.duplicated(keep="last")].sort_index()
 
     gold_m15_old = fetch_gold_m15(GOLD_ASB_HISTORY_START, stable_end_str, force_refresh=False)
-    gold_m15_new = fetch_gold_m15(stable_end_str, end_str, force_refresh=force_refresh)
+    gold_m15_new = fetch_gold_m15_new(stable_end_str, end_str, force_refresh=force_refresh)
     df = _concat_fresh(gold_m15_old, gold_m15_new)
     if df.empty:
         return pd.DataFrame(columns=["entry_time", "exit_time", "r_multiple", "exit_reason"])
@@ -260,11 +270,11 @@ def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
 
     daily_close = df["close"].tz_localize(None).resample("D").last().dropna()
     silver_m15_old = fetch_timeframe("SILVER", "M15", GOLD_ASB_HISTORY_START, stable_end_str, force_refresh=False)
-    silver_m15_new = fetch_timeframe("SILVER", "M15", stable_end_str, end_str, force_refresh=force_refresh)
+    silver_m15_new = fetch_timeframe_new("SILVER", "M15", stable_end_str, end_str, force_refresh=force_refresh)
     silver_m15 = _concat_fresh(silver_m15_old, silver_m15_new)
     daily_close_silver = silver_m15["Close"].tz_localize(None).resample("D").last().dropna()
     gold_friction_old = fetch_fx_friction("GOLD", GOLD_ASB_HISTORY_START, stable_end_str, force_refresh=False)
-    gold_friction_new = fetch_fx_friction("GOLD", stable_end_str, end_str, force_refresh=force_refresh)
+    gold_friction_new = fetch_fx_friction_new("GOLD", stable_end_str, end_str, force_refresh=force_refresh)
     gold_friction = _concat_fresh(gold_friction_old, gold_friction_new)
 
     trades = apply_adx_filter(trades, adx_min=GOLD_ASB_ADX_MIN)
@@ -281,8 +291,15 @@ def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
     return trades
 
 
-def _scan_cls_practical(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
-    from cls_practical.data import fetch_2y_yield_daily, fetch_eurusd_entry_tf_berlin, fetch_major_m15_berlin, fetch_rate_instrument_m5_berlin
+def _scan_cls_practical(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> pd.DataFrame:
+    if source == "lake":
+        import data_lake.reader as _lake
+        fetch_2y_yield_daily = _lake.fetch_2y_yield_daily
+        fetch_eurusd_entry_tf_berlin = _lake.fetch_eurusd_entry_tf_berlin
+        fetch_major_m15_berlin = _lake.fetch_major_m15_berlin
+        fetch_rate_instrument_m5_berlin = _lake.fetch_rate_instrument_m5_berlin
+    else:
+        from cls_practical.data import fetch_2y_yield_daily, fetch_eurusd_entry_tf_berlin, fetch_major_m15_berlin, fetch_rate_instrument_m5_berlin
     from cls_practical.engine import simulate_cls_practical
     from cls_practical.rates import compute_combined_rate_risk_multiplier
     from strategy.cls_advanced import PAIRS

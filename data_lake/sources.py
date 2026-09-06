@@ -75,6 +75,9 @@ FAST_SOURCES: list[LakeSource] = [
     # unten auf "fast5" (5-Min-Ingestion, siehe DASHBOARD.md 2026-09-02-Entscheidung).
     LakeSource("dukascopy", "GOLD", "H4", _dukascopy("GOLD", "H4"), "fast", 100),
     LakeSource("dukascopy", "GOLD", "M5", _dukascopy("GOLD", "M5"), "fast5", 100),
+    # gold_silver (2026-09-06, FK-Instant-Funding-Erweiterung): GOLD H4 s.o. gemeinsam
+    # genutzt, SILVER H4 braucht sonst niemand -- neu registriert.
+    LakeSource("dukascopy", "SILVER", "H4", _dukascopy("SILVER", "H4"), "fast", 320),
     # cls_practical: gehandeltes Paar + 5 Referenz-Majors (nie gehandelt, nur Cross-Check) + Zinsproxy
     LakeSource("dukascopy", "EURUSD", "M5", _dukascopy("EURUSD", "M5"), "fast", 410),
     LakeSource("dukascopy", "GBPUSD", "M15", _dukascopy("GBPUSD", "M15"), "fast", 410),

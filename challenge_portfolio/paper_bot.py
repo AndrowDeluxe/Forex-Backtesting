@@ -246,7 +246,7 @@ GOLD_ASB_LIQUIDITY_MIN_PERIODS = 250
 GOLD_ASB_MAX_DELAY_BARS = 3
 
 
-def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
+def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> pd.DataFrame:
     from asian_range_breakout.data import fetch_gold_m15
     from asian_range_breakout.engine import simulate_asian_breakout
     from asian_range_breakout.filters import (
@@ -257,8 +257,28 @@ def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
     from bond_yield_indicator.friction import fetch_fx_friction
     from combined_strategy.data import fetch_timeframe
 
+    # Nur die LIVE-Fenster (unten "_new") werden bei source="lake" ersetzt -- die lange,
+    # stabile Historie (force_refresh=False, "_old") bleibt auf der echten, bereits durch
+    # combined_strategy.data's eigenen Datums-Cache guenstigen Fetch-Funktion (siehe
+    # Plan-Dokument, Abschnitt "Integration": nur dieses Bein hat diese alt/neu-Aufteilung
+    # schon selbst eingebaut).
+    if source == "lake":
+        import data_lake.reader as _lake
+        fetch_gold_m15_new, fetch_timeframe_new, fetch_fx_friction_new = _lake.fetch_gold_m15, _lake.fetch_timeframe, _lake.fetch_fx_friction
+    else:
+        fetch_gold_m15_new, fetch_timeframe_new, fetch_fx_friction_new = fetch_gold_m15, fetch_timeframe, fetch_fx_friction
+
     end_str = (end + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
-    stable_end_str = (end.normalize() - pd.Timedelta(days=1)).strftime("%Y-%m-%d")
+    # Fund 2026-09-06 (Twelve-Data-Failover-Test, live beobachtet): stable_end_str war bisher
+    # "gestern" -- wandert dadurch JEDEN Kalendertag um einen Tag weiter. combined_strategy.data's
+    # Cache-Dateiname enthaelt genau dieses Enddatum, verfehlt den Cache also taeglich komplett
+    # und zieht die volle GOLD_ASB_HISTORY_START-bis-heute-Historie (fast 10 Jahre) jeden Tag
+    # frisch von Dukascopy -- macht dieses eine Bein unnoetig oft anfaellig fuer den bekannten
+    # 90s-Hang. Fix: die "alte" Grenze auf den Monatsanfang stabilisieren (aendert sich nur 1x im
+    # Monat statt taeglich); das "neue" (force_refresh=True) Fenster deckt dafuer den ganzen
+    # laufenden Monat ab statt nur "seit gestern" -- bleibt mit maximal ~31 Tagen M15-Daten klein
+    # genug, um nicht wieder in dasselbe grosse-Fenster-Problem zu laufen.
+    stable_end_str = end.normalize().replace(day=1).strftime("%Y-%m-%d")
 
     def _concat_fresh(old: pd.DataFrame | pd.Series, new: pd.DataFrame | pd.Series):
         if old.empty:
@@ -269,7 +289,7 @@ def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
         return combined[~combined.index.duplicated(keep="last")].sort_index()
 
     gold_m15_old = fetch_gold_m15(GOLD_ASB_HISTORY_START, stable_end_str, force_refresh=False)
-    gold_m15_new = fetch_gold_m15(stable_end_str, end_str, force_refresh=force_refresh)
+    gold_m15_new = fetch_gold_m15_new(stable_end_str, end_str, force_refresh=force_refresh)
     df = _concat_fresh(gold_m15_old, gold_m15_new)
     if df.empty:
         return pd.DataFrame(columns=["entry_time", "exit_time", "r_multiple", "exit_reason"])
@@ -279,11 +299,11 @@ def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
 
     daily_close = df["close"].tz_localize(None).resample("D").last().dropna()
     silver_m15_old = fetch_timeframe("SILVER", "M15", GOLD_ASB_HISTORY_START, stable_end_str, force_refresh=False)
-    silver_m15_new = fetch_timeframe("SILVER", "M15", stable_end_str, end_str, force_refresh=force_refresh)
+    silver_m15_new = fetch_timeframe_new("SILVER", "M15", stable_end_str, end_str, force_refresh=force_refresh)
     silver_m15 = _concat_fresh(silver_m15_old, silver_m15_new)
     daily_close_silver = silver_m15["Close"].tz_localize(None).resample("D").last().dropna()
     gold_friction_old = fetch_fx_friction("GOLD", GOLD_ASB_HISTORY_START, stable_end_str, force_refresh=False)
-    gold_friction_new = fetch_fx_friction("GOLD", stable_end_str, end_str, force_refresh=force_refresh)
+    gold_friction_new = fetch_fx_friction_new("GOLD", stable_end_str, end_str, force_refresh=force_refresh)
     gold_friction = _concat_fresh(gold_friction_old, gold_friction_new)
 
     trades = apply_adx_filter(trades, adx_min=GOLD_ASB_ADX_MIN)
@@ -300,8 +320,15 @@ def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
     return trades
 
 
-def _scan_cls_practical(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
-    from cls_practical.data import fetch_2y_yield_daily, fetch_eurusd_entry_tf_berlin, fetch_major_m15_berlin, fetch_rate_instrument_m5_berlin
+def _scan_cls_practical(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> pd.DataFrame:
+    if source == "lake":
+        import data_lake.reader as _lake
+        fetch_2y_yield_daily = _lake.fetch_2y_yield_daily
+        fetch_eurusd_entry_tf_berlin = _lake.fetch_eurusd_entry_tf_berlin
+        fetch_major_m15_berlin = _lake.fetch_major_m15_berlin
+        fetch_rate_instrument_m5_berlin = _lake.fetch_rate_instrument_m5_berlin
+    else:
+        from cls_practical.data import fetch_2y_yield_daily, fetch_eurusd_entry_tf_berlin, fetch_major_m15_berlin, fetch_rate_instrument_m5_berlin
     from cls_practical.engine import simulate_cls_practical
     from cls_practical.rates import compute_combined_rate_risk_multiplier
     from strategy.cls_advanced import PAIRS
@@ -337,8 +364,12 @@ def _scan_cls_practical(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
     return trades
 
 
-def _scan_trend_pullback(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
-    from combined_strategy.data import fetch_timeframe
+def _scan_trend_pullback(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> pd.DataFrame:
+    if source == "lake":
+        import data_lake.reader as _lake
+        fetch_timeframe = _lake.fetch_timeframe
+    else:
+        from combined_strategy.data import fetch_timeframe
     from mt5_trend_pullback.filters import alignment_filter
     from mt5_trend_pullback.pipeline import ATR_STOP_MULT, RR_RATIO, run_pipeline
 
@@ -401,10 +432,15 @@ def _cap_concurrent_reversals(rev_trades: pd.DataFrame, max_concurrent: int) -> 
     return rev_trades.loc[keep_idx].sort_index()
 
 
-def _scan_ctnl(end: pd.Timestamp, force_refresh: bool) -> tuple[pd.DataFrame, pd.DataFrame]:
+def _scan_ctnl(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> tuple[pd.DataFrame, pd.DataFrame]:
     from gold_smc_htf_ltf.concurrent_backtest import simulate_trades_concurrent
     from gold_smc_htf_ltf.continuation import run_pipeline as run_continuation
-    from gold_smc_htf_ltf.data import fetch_gold_h1, fetch_gold_h4, fetch_gold_m15, fetch_gold_m5
+    if source == "lake":
+        import data_lake.reader as _lake
+        fetch_gold_h1, fetch_gold_h4 = _lake.fetch_gold_h1, _lake.fetch_gold_h4
+        fetch_gold_m15, fetch_gold_m5 = _lake.fetch_gold_m15_ny, _lake.fetch_gold_m5
+    else:
+        from gold_smc_htf_ltf.data import fetch_gold_h1, fetch_gold_h4, fetch_gold_m15, fetch_gold_m5
     from gold_smc_htf_ltf.live_signal import CONT_KWARGS, LOOKBACK_DAYS, REV_KWARGS, REV_MAX_CONCURRENT
     from gold_smc_htf_ltf.reversal_cascade import run_pipeline as run_reversal
 
@@ -455,9 +491,13 @@ ORB_EXIT_CFG_BY_INSTRUMENT = {
 ORB_HISTORY_LOOKBACK_DAYS = 500  # EMA-Ribbon-Bias (4H/1D/1W) braucht Monate an Vorlauf
 
 
-def _scan_orb(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
+def _scan_orb(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> pd.DataFrame:
     from ny_open_orb import filters, regime
-    from ny_open_orb.data import fetch_m5, fetch_m15
+    if source == "lake":
+        import data_lake.reader as _lake
+        fetch_m5, fetch_m15 = _lake.fetch_m5, _lake.fetch_m15
+    else:
+        from ny_open_orb.data import fetch_m5, fetch_m15
     from ny_open_orb.engine import build_frame, find_entries, simulate
 
     start = (end - pd.Timedelta(days=ORB_HISTORY_LOOKBACK_DAYS)).strftime("%Y-%m-%d")
@@ -566,7 +606,7 @@ def _import_ou_paper_backtest():
     return ou_config, ou_portfolio, ou_scanner._load_ttp_tradable_tickers
 
 
-def _scan_ou_modell(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
+def _scan_ou_modell(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> pd.DataFrame:
     """OU-Modell, TTP-handelbare Teilmenge (SP500+Nasdaq100, DAX raus -- 0
     Ticker dort ueberhaupt handelbar, siehe ou_paper_backtest/scanner.py::
     _load_ttp_tradable_tickers). Bracket-Exit-Engine (portfolio.py::
@@ -607,7 +647,17 @@ def _scan_ou_modell(end: pd.Timestamp, force_refresh: bool) -> pd.DataFrame:
 
         panel = {}
         for t in tickers:
-            df = yf.download(t, start=start, end=end_str, auto_adjust=True, progress=False)
+            if source == "lake":
+                import data_lake.reader as _lake
+                try:
+                    df = _lake.fetch_ticker_daily(t, start, end_str, force_refresh=force_refresh)
+                except (_lake.LakeMissingDataError, _lake.LakeStaleDataError):
+                    # Ein einzelner fehlender/veralteter Ticker darf die restlichen ~160 nicht
+                    # blockieren -- identisches Verhalten zum bisherigen "df leer -> skip" unten,
+                    # nur dass der Grund jetzt "Lake statt Yahoo" statt "Yahoo selbst leer" ist.
+                    continue
+            else:
+                df = yf.download(t, start=start, end=end_str, auto_adjust=True, progress=False)
             if df is None or df.empty:
                 continue
             close = df["Close"]

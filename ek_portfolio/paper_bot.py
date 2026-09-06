@@ -238,7 +238,9 @@ def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool, *, source: str = "liv
     # auf EK-Portfolio-Bridge: liest denselben, bereits laufenden Lake, keine neue Ingestion).
     if source == "lake":
         import data_lake.reader as _lake
-        fetch_gold_m15_new, fetch_timeframe_new, fetch_fx_friction_new = _lake.fetch_gold_m15, _lake.fetch_timeframe, _lake.fetch_fx_friction
+        fetch_gold_m15_new = _lake.with_live_fallback(_lake.fetch_gold_m15, fetch_gold_m15)
+        fetch_timeframe_new = _lake.with_live_fallback(_lake.fetch_timeframe, fetch_timeframe)
+        fetch_fx_friction_new = _lake.with_live_fallback(_lake.fetch_fx_friction, fetch_fx_friction)
     else:
         fetch_gold_m15_new, fetch_timeframe_new, fetch_fx_friction_new = fetch_gold_m15, fetch_timeframe, fetch_fx_friction
 
@@ -292,14 +294,13 @@ def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool, *, source: str = "liv
 
 
 def _scan_cls_practical(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> pd.DataFrame:
+    from cls_practical.data import fetch_2y_yield_daily, fetch_eurusd_entry_tf_berlin, fetch_major_m15_berlin, fetch_rate_instrument_m5_berlin
     if source == "lake":
         import data_lake.reader as _lake
-        fetch_2y_yield_daily = _lake.fetch_2y_yield_daily
-        fetch_eurusd_entry_tf_berlin = _lake.fetch_eurusd_entry_tf_berlin
-        fetch_major_m15_berlin = _lake.fetch_major_m15_berlin
-        fetch_rate_instrument_m5_berlin = _lake.fetch_rate_instrument_m5_berlin
-    else:
-        from cls_practical.data import fetch_2y_yield_daily, fetch_eurusd_entry_tf_berlin, fetch_major_m15_berlin, fetch_rate_instrument_m5_berlin
+        fetch_2y_yield_daily = _lake.with_live_fallback(_lake.fetch_2y_yield_daily, fetch_2y_yield_daily)
+        fetch_eurusd_entry_tf_berlin = _lake.with_live_fallback(_lake.fetch_eurusd_entry_tf_berlin, fetch_eurusd_entry_tf_berlin)
+        fetch_major_m15_berlin = _lake.with_live_fallback(_lake.fetch_major_m15_berlin, fetch_major_m15_berlin)
+        fetch_rate_instrument_m5_berlin = _lake.with_live_fallback(_lake.fetch_rate_instrument_m5_berlin, fetch_rate_instrument_m5_berlin)
     from cls_practical.engine import simulate_cls_practical
     from cls_practical.rates import compute_combined_rate_risk_multiplier
     from strategy.cls_advanced import PAIRS

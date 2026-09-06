@@ -10,11 +10,28 @@ Wirft LakeMissingDataError/LakeStaleDataError statt stillschweigend leere
 oder veraltete Daten zurueckzugeben -- der bestehende _retry()/
 _record_scan_error()-Pfad in paper_bot.py/run_once.py behandelt das dann
 GENAU WIE einen heutigen Dukascopy-Fehler (Bein wird diesen Zyklus
-uebersprungen, kein Crash, kein stiller Fallback auf veraltete Kurse)."""
+uebersprungen, kein Crash, kein stiller Fallback auf veraltete Kurse).
+
+with_live_fallback() (2026-09-07, Nutzerentscheid nach realem Cold-Start-
+Vorfall 2026-09-04): bei einem frisch aufgesetzten/neu gestarteten Lake
+schlugen alle 6 Funded-Portfolio-Bridge-Beine auf allen 4 Konten drei Laeufe
+lang hart fehl, weil `run_shared_scans()` schon auf source="lake" lief,
+bevor der Ingest-Task zum ersten Mal befuellt hatte -- hat sich damals von
+selbst erledigt, sobald die Ingestion nachgezogen hatte, waere in der
+Zwischenzeit aber ein verpasstes Signal statt nur eines haerteren Fehlers
+gewesen. with_live_fallback() faengt genau diesen Fall (und den
+symmetrischen "Ingest-Task haengt/ist kaputt"-Fall, LakeStaleDataError) ab
+und weicht NUR fuer diesen einen Aufruf auf den echten Live-Fetch aus --
+KEIN generischer "Lake ignorieren"-Schalter, jeder andere Fehler (Netzwerk,
+Parsing) laeuft weiterhin ungefangen in den bestehenden _retry()-Pfad."""
+
+import logging
 
 import pandas as pd
 
 from data_lake import manifest, storage
+
+log = logging.getLogger(__name__)
 
 
 class LakeMissingDataError(Exception):
@@ -23,6 +40,23 @@ class LakeMissingDataError(Exception):
 
 class LakeStaleDataError(Exception):
     pass
+
+
+def with_live_fallback(lake_fn, live_fn):
+    """Wrappt eine Lake-Fetch-Funktion so, dass ein fehlender/veralteter
+    Lake-Eintrag (Cold Start, siehe Moduldocstring) NICHT den ganzen
+    Scan-Zyklus scheitern laesst, sondern fuer genau diesen einen Aufruf
+    auf die uebergebene Live-Fetch-Funktion ausweicht -- gleicher
+    Aufrufer-Code wie bei einem reinen Lake-Fetch, `lake_fn`/`live_fn`
+    muessen dieselbe Signatur/Rueckgabeform haben (immer der Fall hier,
+    siehe Moduldocstring: "gleicher Name/gleiche Signatur")."""
+    def _wrapped(*args, **kwargs):
+        try:
+            return lake_fn(*args, **kwargs)
+        except (LakeMissingDataError, LakeStaleDataError) as e:
+            log.warning("Lake-Fallback auf Live-Fetch (%s): %s", type(e).__name__, e)
+            return live_fn(*args, **kwargs)
+    return _wrapped
 
 
 def _require_fresh(source: str, key: str, timeframe: str) -> pd.DataFrame:

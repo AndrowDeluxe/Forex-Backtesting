@@ -270,7 +270,9 @@ def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool, *, source: str = "liv
     # auf FK Instant Funding: liest denselben, bereits laufenden Lake, keine neue Ingestion).
     if source == "lake":
         import data_lake.reader as _lake
-        fetch_gold_m15_new, fetch_timeframe_new, fetch_fx_friction_new = _lake.fetch_gold_m15, _lake.fetch_timeframe, _lake.fetch_fx_friction
+        fetch_gold_m15_new = _lake.with_live_fallback(_lake.fetch_gold_m15, fetch_gold_m15)
+        fetch_timeframe_new = _lake.with_live_fallback(_lake.fetch_timeframe, fetch_timeframe)
+        fetch_fx_friction_new = _lake.with_live_fallback(_lake.fetch_fx_friction, fetch_fx_friction)
     else:
         fetch_gold_m15_new, fetch_timeframe_new, fetch_fx_friction_new = fetch_gold_m15, fetch_timeframe, fetch_fx_friction
 
@@ -335,14 +337,13 @@ def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool, *, source: str = "liv
 
 
 def _scan_cls_practical(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> pd.DataFrame:
+    from cls_practical.data import fetch_2y_yield_daily, fetch_eurusd_entry_tf_berlin, fetch_major_m15_berlin, fetch_rate_instrument_m5_berlin
     if source == "lake":
         import data_lake.reader as _lake
-        fetch_2y_yield_daily = _lake.fetch_2y_yield_daily
-        fetch_eurusd_entry_tf_berlin = _lake.fetch_eurusd_entry_tf_berlin
-        fetch_major_m15_berlin = _lake.fetch_major_m15_berlin
-        fetch_rate_instrument_m5_berlin = _lake.fetch_rate_instrument_m5_berlin
-    else:
-        from cls_practical.data import fetch_2y_yield_daily, fetch_eurusd_entry_tf_berlin, fetch_major_m15_berlin, fetch_rate_instrument_m5_berlin
+        fetch_2y_yield_daily = _lake.with_live_fallback(_lake.fetch_2y_yield_daily, fetch_2y_yield_daily)
+        fetch_eurusd_entry_tf_berlin = _lake.with_live_fallback(_lake.fetch_eurusd_entry_tf_berlin, fetch_eurusd_entry_tf_berlin)
+        fetch_major_m15_berlin = _lake.with_live_fallback(_lake.fetch_major_m15_berlin, fetch_major_m15_berlin)
+        fetch_rate_instrument_m5_berlin = _lake.with_live_fallback(_lake.fetch_rate_instrument_m5_berlin, fetch_rate_instrument_m5_berlin)
     from cls_practical.engine import simulate_cls_practical
     from cls_practical.rates import compute_combined_rate_risk_multiplier
     from strategy.cls_advanced import PAIRS
@@ -390,11 +391,10 @@ def _scan_cls_practical(end: pd.Timestamp, force_refresh: bool, *, source: str =
 
 
 def _scan_trend_pullback(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> pd.DataFrame:
+    from combined_strategy.data import fetch_timeframe
     if source == "lake":
         import data_lake.reader as _lake
-        fetch_timeframe = _lake.fetch_timeframe
-    else:
-        from combined_strategy.data import fetch_timeframe
+        fetch_timeframe = _lake.with_live_fallback(_lake.fetch_timeframe, fetch_timeframe)
     from mt5_trend_pullback.filters import alignment_filter
     from mt5_trend_pullback.pipeline import ATR_STOP_MULT, RR_RATIO, run_pipeline
 
@@ -462,12 +462,13 @@ def _cap_concurrent_reversals(rev_trades: pd.DataFrame, max_concurrent: int) -> 
 def _scan_ctnl(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> tuple[pd.DataFrame, pd.DataFrame]:
     from gold_smc_htf_ltf.concurrent_backtest import simulate_trades_concurrent
     from gold_smc_htf_ltf.continuation import run_pipeline as run_continuation
+    from gold_smc_htf_ltf.data import fetch_gold_h1, fetch_gold_h4, fetch_gold_m15, fetch_gold_m5
     if source == "lake":
         import data_lake.reader as _lake
-        fetch_gold_h1, fetch_gold_h4 = _lake.fetch_gold_h1, _lake.fetch_gold_h4
-        fetch_gold_m15, fetch_gold_m5 = _lake.fetch_gold_m15_ny, _lake.fetch_gold_m5
-    else:
-        from gold_smc_htf_ltf.data import fetch_gold_h1, fetch_gold_h4, fetch_gold_m15, fetch_gold_m5
+        fetch_gold_h1 = _lake.with_live_fallback(_lake.fetch_gold_h1, fetch_gold_h1)
+        fetch_gold_h4 = _lake.with_live_fallback(_lake.fetch_gold_h4, fetch_gold_h4)
+        fetch_gold_m15 = _lake.with_live_fallback(_lake.fetch_gold_m15_ny, fetch_gold_m15)
+        fetch_gold_m5 = _lake.with_live_fallback(_lake.fetch_gold_m5, fetch_gold_m5)
     from gold_smc_htf_ltf.live_signal import CONT_KWARGS, LOOKBACK_DAYS, REV_KWARGS, REV_MAX_CONCURRENT
     from gold_smc_htf_ltf.reversal_cascade import run_pipeline as run_reversal
 
@@ -495,11 +496,10 @@ def _scan_ctnl(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") 
 
 
 def _scan_gold_silver(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> pd.DataFrame:
+    from combined_strategy.data import fetch_timeframe
     if source == "lake":
         import data_lake.reader as _lake
-        fetch_timeframe = _lake.fetch_timeframe
-    else:
-        from combined_strategy.data import fetch_timeframe
+        fetch_timeframe = _lake.with_live_fallback(_lake.fetch_timeframe, fetch_timeframe)
     from mt5_gold_silver_divergenz.pipeline import ATR_STOP_MULT, RR_RATIO, run_pipeline
 
     _rename = {"Open": "open", "High": "high", "Low": "low", "Close": "close", "Volume": "volume"}
@@ -552,12 +552,12 @@ def _scan_orb(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -
     Mark-to-Market-Stands wie bei den anderen Beinen ueber "data_end") --
     wird hier anhand der frame-eigenen session_close-Spalte korrigiert."""
     from ny_open_orb import filters, regime
+    from ny_open_orb.data import fetch_m5, fetch_m15
     from ny_open_orb.engine import build_frame, find_entries, simulate
     if source == "lake":
         import data_lake.reader as _lake
-        fetch_m5, fetch_m15 = _lake.fetch_m5, _lake.fetch_m15
-    else:
-        from ny_open_orb.data import fetch_m5, fetch_m15
+        fetch_m5 = _lake.with_live_fallback(_lake.fetch_m5, fetch_m5)
+        fetch_m15 = _lake.with_live_fallback(_lake.fetch_m15, fetch_m15)
 
     start = (end - pd.Timedelta(days=ORB_HISTORY_LOOKBACK_DAYS)).strftime("%Y-%m-%d")
     end_str = (end + pd.Timedelta(days=1)).strftime("%Y-%m-%d")

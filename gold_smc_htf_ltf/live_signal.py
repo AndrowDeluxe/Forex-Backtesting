@@ -83,8 +83,10 @@ def _fetch_window(end: pd.Timestamp, lookback_days: int, force_refresh: bool, so
     end_str = (end + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
     if source == "lake":
         import data_lake.reader as _lake
-        fetch_h4, fetch_h1 = _lake.fetch_gold_h4, _lake.fetch_gold_h1
-        fetch_m15, fetch_m5 = _lake.fetch_gold_m15_ny, _lake.fetch_gold_m5
+        fetch_h4 = _lake.with_live_fallback(_lake.fetch_gold_h4, fetch_gold_h4)
+        fetch_h1 = _lake.with_live_fallback(_lake.fetch_gold_h1, fetch_gold_h1)
+        fetch_m15 = _lake.with_live_fallback(_lake.fetch_gold_m15_ny, fetch_gold_m15)
+        fetch_m5 = _lake.with_live_fallback(_lake.fetch_gold_m5, fetch_gold_m5)
     else:
         fetch_h4, fetch_h1, fetch_m15, fetch_m5 = fetch_gold_h4, fetch_gold_h1, fetch_gold_m15, fetch_gold_m5
     h4 = fetch_h4(start, end_str, force_refresh=force_refresh)

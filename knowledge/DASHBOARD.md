@@ -18,10 +18,14 @@ passiert, was steht an.
 
 ## ▶️ Als Nächstes
 
-1. **`data_lake/`-Paket nie committet** (gefunden 2026-09-06): treibt seit
-   09-04 alle 6 Live-Beine von Funded-Portfolio-Bridge (echtes Geld), hat
-   aber null Git-Commits — existiert nur lokal, kein Backup. Fix: `git add
-   data_lake/` + Commit nachholen. Details: KW36-Weekly-Report Punkt 2.
+1. ~~`data_lake/`-Paket nie committet~~ — **committet + gepusht 2026-09-06**
+   (`19e5b2c`) + im selben Zug auf EK-Portfolio-Bridge (gold_asb,
+   cls_practical, ctnl_edge) und FKInstantFunding-MT5-Bridge (alle 6 Beine)
+   erweitert (`f8db9f3`), inkl. Verifikation jedes Pfads gegen `source=
+   "live"` und Fix eines dabei gefundenen echten tz-Bugs in cls_practical.
+   Details: CHANGELOG. Push zunaechst durch den separaten Sync-Konflikt
+   blockiert, nach dessen Merge durch eine parallele Session (siehe unten)
+   sauber als Fast-Forward durchgegangen (`e592d4d..f8db9f3`).
 2. ~~gold_asb: Historie-Cache greift nie~~ — **behoben 2026-09-06.**
    `stable_end_str` (Alt/Neu-Grenze) lief auf "gestern" (wandert täglich,
    verfehlte den Datums-Cache dadurch jeden Tag) → jetzt auf Monatsanfang
@@ -154,9 +158,9 @@ abgehakt-und-liegengelassen.
 
 | Bot/Bridge                                              | Konto/Broker                                                                             | Modus                                                                                        | Task Scheduler                  | Zuletzt geprüft |
 | ------------------------------------------------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------- | --------------- |
-| EK-Portfolio-Bridge                                     | Tickmill Live (55918977)                                                                 | **LIVE — echtes Geld** (6 Dukascopy-Beine: btc/gold_asb/cls_practical/ctnl x2/ou_modell)     | Ready (alle 15 Min, Mo–Fr)      | 2026-09-03      |
+| EK-Portfolio-Bridge                                     | Tickmill Live (55918977)                                                                 | **LIVE — echtes Geld** (btc/ou_modell weiterhin direkt Dukascopy/yfinance; gold_asb/cls_practical/ctnl x2 jetzt `source="lake"`) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-06      |
 | EK-Portfolio-Bridge-Fast                                | Tickmill Live (55918977, geteiltes Terminal)                                             | **LIVE — echtes Geld** (3 MT5-native Beine: ORB/Gold-Silber/Trend-Pullback, kein Dukascopy)  | Ready (alle 2 Min, Mo–Fr)       | 2026-09-03      |
-| FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | DRY_RUN                                                                                      | Ready (stündlich)               | 2026-09-02      |
+| FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | DRY_RUN (alle 6 Beine jetzt `source="lake"`)                                                 | Ready (stündlich)               | 2026-09-06      |
 | FK-Instant-Funding-Paper                                | — (reine Simulation)                                                                     | Paper + Telegram                                                                             | Ready (stündlich)               | 2026-09-01      |
 | OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner + Telegram (3x täglich: 15:35/18:35/21:35)                                           | Ready (Mo–Fr, US-Handelszeiten) | 2026-09-02      |
 | Forex-Weekly-Report                                     | —                                                                                        | Report-Generator                                                                             | Ready                           | 2026-09-02      |
@@ -222,6 +226,14 @@ bewusst verworfen), nicht hier für immer liegen gelassen.
 
 _(Auszug — vollständiges Log in [CHANGELOG.md](CHANGELOG.md))_
 
+- 2026-09-06 — `data_lake/`-Paket committet + gepusht, Data-Lake-Pilot von
+  Funded-Portfolio-Bridge auf EK-Portfolio-Bridge (gold_asb, cls_practical,
+  ctnl_edge) und FKInstantFunding-MT5-Bridge (alle 6 Beine) erweitert —
+  keine neue Ingestion noetig (liest denselben laufenden Lake), ein neuer
+  Key (SILVER H4) ergaenzt. Jeder Pfad vor dem Umschalten gegen
+  `source="live"` verifiziert; dabei echten tz-Bug in `legs/cls_practical/
+  signal_source.py` gefunden und gefixt (identischer Bugtyp wie der am
+  2026-09-01 fuer gold_asb behobene). Details: CHANGELOG.
 - 2026-09-06 — Neuer Scheduled Task `Dashboard-Telegram-Digest`: schickt
   jeden Morgen 8:00 die offenen Punkte aus diesem Dashboard per Telegram
   (Nutzerwunsch). Details: CHANGELOG.

@@ -9,6 +9,46 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-06** [data_lake / EK-Portfolio-Bridge / FK Instant Funding]
+  **`data_lake/`-Paket committet (war seit 09-04 ungetrackt) + Data-Lake-
+  Pilot auf EK-Portfolio-Bridge (3 Beine: gold_asb, cls_practical,
+  ctnl_edge Continuation+Reversal) und FKInstantFunding-MT5-Bridge (alle 6
+  Beine) erweitert.** Commits `19e5b2c` (Nachhol-Commit des
+  `data_lake/`-Pakets) und `f8db9f3` (Erweiterung). `source: str = "live"`
+  (Default-erhaltend) analog zu `challenge_portfolio/paper_bot.py` zu
+  `ek_portfolio/paper_bot.py::_scan_gold_asb/_scan_cls_practical`,
+  `fk_instant_funding/paper_bot.py` (alle 6 `_scan_*`) und neu
+  `gold_smc_htf_ltf/live_signal.py::continuation_signal/reversal_signal/
+  continuation_market_state` (EK's ctnl_edge-Bein haengt NICHT an
+  `_scan_ctnl`, sondern an dieser eigenen Live-Signal-Implementierung)
+  ergaenzt. Braucht keine neue Ingestion -- liest denselben, seit 09-04
+  fuer Funded-Portfolio-Bridge laufenden Lake (GOLD H4/H1/M15/M5, EURUSD
+  M5, Majors M15, BUND/USTBOND M5, DE02Y/US02Y liegen schon frisch vor);
+  einzige Ergaenzung in `data_lake/sources.py`: SILVER H4 (bisher von
+  keinem Funded-Portfolio-Bridge-Bein gebraucht, aber fuer FK Instant
+  Funding's `gold_silver`-Bein noetig). Externe, nicht-Git-getrackte
+  Bridge-Dateien im selben Zug umgestellt: `EK-Portfolio-Bridge/legs/
+  {gold_asb,cls_practical,ctnl_edge}/signal_source.py` (`source="lake"`),
+  `FKInstantFunding-MT5-Bridge/run_once.py` (alle 6 Scan-Aufrufstellen).
+  Vor dem Umschalten jeden Pfad einzeln gegen `source="live"` verifiziert:
+  gold_asb (188=188 Zeilen, identischer letzter Entry) und ctnl_edge
+  (continuation/reversal/market_state: alle Werte identisch) matchten
+  exakt; bei cls_practical war Dukascopy LIVE gerade selbst ~2 Tage
+  veraltet (letzter live Trade 08-26 bereits geschlossen) waehrend der Lake
+  ein aktuelles, gerade offenes Signal (09-06, `data_end`) korrekt zeigte
+  -- ein reales Beispiel genau des Fehlerbilds ("Trade waere sonst komplett
+  verpasst worden"), das dieser Umbau beheben soll. Nebenfund beim
+  Verifizieren: `legs/cls_practical/signal_source.py::scan_signal()`
+  crashte mit einem echten, reproduzierbaren tz-Vergleichsfehler
+  (`entry_time` tz-aware/Europe-Berlin gegen tz-naives `end`), sobald ein
+  offenes Signal vorlag -- derselbe Bugtyp, der fuer `gold_asb` bereits am
+  2026-09-01 gefunden und mit `_utc_naive()` gefixt wurde, hier aber
+  uebersehen; jetzt identisch nachgezogen. Gleicher `stable_end_str`-
+  Cache-Bug wie bei `challenge_portfolio/paper_bot.py` (09-06, s.u.) auch
+  unabhaengig in `ek_portfolio/paper_bot.py` und `fk_instant_funding/
+  paper_bot.py` gefunden und mitgefixt. Push nach GitHub blockiert durch
+  den separaten, unangetasteten Git-Sync-Konflikt (Dashboard, "Braucht
+  deine Bestaetigung") -- beide Commits liegen bisher nur lokal in `main`.
 - **2026-09-06** [Second Brain / Reporting] **Neuer Scheduled Task
   `Dashboard-Telegram-Digest`: schickt jeden Morgen 8:00 die offenen Punkte
   aus `knowledge/DASHBOARD.md` per Telegram** (Nutzerwunsch, direkt nach dem

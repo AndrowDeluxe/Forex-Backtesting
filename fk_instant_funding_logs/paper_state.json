@@ -179,24 +179,13 @@
     "2026-09-01T00:00:00": 99810.35943871795,
     "2026-09-02T00:00:00": 99924.13688384938,
     "2026-09-03T00:00:00": 99539.44535284885,
-    "2026-09-04T00:00:00": 99411.88700776787
+    "2026-09-04T00:00:00": 99411.88700776787,
+    "2026-09-06T00:00:00": 99411.88700776787
   },
   "account_start": "2026-08-27T20:58:06.914380",
   "scan_errors_today": {
-    "day": "2026-09-04",
-    "legs": [
-      "NY-Open ORB",
-      "CLS Practical",
-      "NY-Open ORB",
-      "CLS Practical",
-      "NY-Open ORB",
-      "CLS Practical",
-      "NY-Open ORB",
-      "CLS Practical",
-      "NY-Open ORB",
-      "CLS Practical",
-      "NY-Open ORB"
-    ]
+    "day": "2026-09-07",
+    "legs": []
   },
   "last_daily_summary_day": "2026-09-04",
   "ctnl_kill_switch_active": false

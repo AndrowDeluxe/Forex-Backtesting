@@ -64,6 +64,22 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
+- **`DataLake-Ingest-Fast5` + `FKInstantFunding-MT5-Bridge` (stündlich):
+  auffällige Lücke ~14:31-15:0x Uhr** (gefunden 2026-09-07 beim Performance-
+  Check des cls_practical-Fixes). `DataLake-Ingest-Fast5` lief laut Task
+  Scheduler zuletzt 14:26:51, naechster Lauf erst 15:11:50 (~45 statt 5 Min.
+  Abstand); `FKInstantFunding-MT5-Bridge` hat seinen 14:57-Lauf ausgelassen,
+  erst 15:06:19 wieder gelaufen. `Bridge-Watchdog` (alle 30 Min) lief im
+  selben Fenster ganz normal (14:31, 15:01) — kein Totalausfall der
+  Maschine. Nicht durch heutige Code-Aenderungen ausgeloest (keine der
+  beiden betroffenen Tasks/Dateien wurde heute angefasst). Ungeprüfte
+  Vermutung: `DataLake-Ingest-Fast5` ist auf "bei Batteriebetrieb nicht
+  starten" konfiguriert (schtasks-Energieverwaltung) — passt zu einem
+  Surface-Geraet, das kurz vom Netzteil getrennt war, aber nicht verifiziert
+  (Akkustatus-Historie nicht einsehbar). Beide Tasks laufen inzwischen
+  wieder normal, kein Handlungsbedarf akut, aber falls sich das wiederholt
+  lohnt ein Blick auf die Energieeinstellungen der betroffenen Scheduled
+  Tasks.
 - **FKInstantFunding-MT5-Bridge: echter Order-Executor gebaut, wartet auf
   Review vor `DRY_RUN=False`** (2026-09-07, Details CHANGELOG). Mehrere
   Implementierungsentscheidungen waren eigenes Ingenieurs-Judgement statt

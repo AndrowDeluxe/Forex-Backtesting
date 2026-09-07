@@ -78,8 +78,15 @@ FAST_SOURCES: list[LakeSource] = [
     # gold_silver (2026-09-06, FK-Instant-Funding-Erweiterung): GOLD H4 s.o. gemeinsam
     # genutzt, SILVER H4 braucht sonst niemand -- neu registriert.
     LakeSource("dukascopy", "SILVER", "H4", _dukascopy("SILVER", "H4"), "fast", 320),
-    # cls_practical: gehandeltes Paar + 5 Referenz-Majors (nie gehandelt, nur Cross-Check) + Zinsproxy
-    LakeSource("dukascopy", "EURUSD", "M5", _dukascopy("EURUSD", "M5"), "fast", 410),
+    # cls_practical: gehandeltes Paar + 5 Referenz-Majors (nie gehandelt, nur Cross-Check) + Zinsproxy.
+    # EURUSD M5 auf "fast5" (2026-09-07, Fund: cls_practical/engine.py::simulate_cls_practical()
+    # triggert per Stop-Order auf genau diesem M5-Timeframe und kann direkt in den ersten Balken
+    # nach Entry stoppen -- auf dem alten 15-Min-Bridge-Scan passten Entry+Stop-Exit teils komplett
+    # in EIN Scan-Intervall, siehe Funded-Portfolio-Bridge/run_once_fast.py-Docstring. Die 5
+    # Referenz-Majors/BUND/USTBOND/Yields bleiben auf "fast"/"slow" -- reiner Cross-Check-/
+    # Sizing-Kontext ohne M5-Entry-Timing-Wirkung, exakt analog zur GOLD H4/H1/M15-vs-M5-Unterscheidung
+    # oben.
+    LakeSource("dukascopy", "EURUSD", "M5", _dukascopy("EURUSD", "M5"), "fast5", 410),
     LakeSource("dukascopy", "GBPUSD", "M15", _dukascopy("GBPUSD", "M15"), "fast", 410),
     LakeSource("dukascopy", "USDJPY", "M15", _dukascopy("USDJPY", "M15"), "fast", 410),
     LakeSource("dukascopy", "USDCHF", "M15", _dukascopy("USDCHF", "M15"), "fast", 410),

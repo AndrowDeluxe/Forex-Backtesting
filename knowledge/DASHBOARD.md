@@ -64,6 +64,20 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
+- **FKInstantFunding-MT5-Bridge: echter Order-Executor gebaut, wartet auf
+  Review vor `DRY_RUN=False`** (2026-09-07, Details CHANGELOG). Mehrere
+  Implementierungsentscheidungen waren eigenes Ingenieurs-Judgement statt
+  expliziter Vorgabe, bitte gegenlesen bevor live geschaltet wird:
+  (1) Rollout nur fuer die 3 NY-Open-ORB-Beine (`config.py::LIVE_LEGS`),
+  Rest bleibt Mini-DRY_RUN pro Bein; (2) Trailing-DD-Kill-Switch + CTNL-
+  Kill-Switch stoppen nur NEUE Entries, offene Positionen laufen normal
+  weiter (identisches Verhalten wie Funded-Portfolio-Bridge); (3) 30%-
+  Konsistenzregel ist reine Telegram-Ampel, kein Kill-Switch; (4) Telegram-
+  Nachrichten bekommen ein "🔴 LIVE"-Praefix, damit sie im selben Chat nie
+  mit dem weiterlaufenden Paper-Bot verwechselt werden. Smoke-Test (DRY_RUN=
+  True, folgenlos) zweimal sauber gegen das echte Konto gelaufen, Equity
+  $100.000,00 exakt gegen `STARTING_EQUITY` bestaetigt. `DRY_RUN=False` habe
+  ich bewusst NICHT gesetzt.
 - **Funded-Portfolio-Bridge: TTP Konto 2 (Demo, #504072729) verbindet seit
   Wochenschluss nicht mehr** (gefunden 2026-09-07, beim Log-Check nach dem
   Data-Lake-Fallback-Umbau). Letzter Erfolg Freitag 2026-09-05 01:34 Uhr,
@@ -171,15 +185,15 @@ abgehakt-und-liegengelassen.
 | ------------------------------------------------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------- | --------------- |
 | EK-Portfolio-Bridge                                     | Tickmill Live (55918977)                                                                 | **LIVE — echtes Geld** (btc/ou_modell weiterhin direkt Dukascopy/yfinance; gold_asb/cls_practical/ctnl x2 jetzt `source="lake"`) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-06      |
 | EK-Portfolio-Bridge-Fast                                | Tickmill Live (55918977, geteiltes Terminal)                                             | **LIVE — echtes Geld** (3 MT5-native Beine: ORB/Gold-Silber/Trend-Pullback, kein Dukascopy)  | Ready (alle 2 Min, Mo–Fr)       | 2026-09-03      |
-| FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | DRY_RUN (alle 6 Beine jetzt `source="lake"`)                                                 | Ready (stündlich)               | 2026-09-06      |
+| FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | DRY_RUN (echter Order-Executor gebaut 09-07, `LIVE_LEGS`={ORB x3} vorbereitet, noch nicht scharf) | Ready (stündlich)               | 2026-09-07      |
 | FK-Instant-Funding-Paper                                | — (reine Simulation)                                                                     | Paper + Telegram                                                                             | Ready (stündlich)               | 2026-09-01      |
 | OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner + Telegram (3x täglich: 15:35/18:35/21:35)                                           | Ready (Mo–Fr, US-Handelszeiten) | 2026-09-02      |
 | Forex-Weekly-Report                                     | —                                                                                        | Report-Generator                                                                             | Ready                           | 2026-09-02      |
 | Bridge-Watchdog                                         | — (nur Log-Frische, kein Order-Bezug)                                                    | Heartbeat-Alarm + Status-Snapshot ins Repo                                                   | Ready (alle 30 Min)             | 2026-09-02      |
 | Funded-Portfolio-Bridge (TTP+IQ Markets, 6 Beine)       | TTP Konto 2 (504072729) + TTP Konto 1 (504069845) + BeyondIQCapital (16054) — **alle 3 verbunden** (IQ 15514 am 2026-09-07 entfernt) | **LIVE — DRY_RUN=False** (alle 6 Beine `source="lake"`, siehe Data-Lake-Pilot) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-07      |
-| Funded-Portfolio-Bridge-Fast                            | Gleiche 3 Konten (geteilte Terminals)                                                    | **LIVE — DRY_RUN=False** (nur ctnl_continuation + orb_sp500/us30/nasdaq, `source="lake"`)   | Ready (alle 5 Min, Mo–Fr)       | 2026-09-07      |
+| Funded-Portfolio-Bridge-Fast                            | Gleiche 3 Konten (geteilte Terminals)                                                    | **LIVE — DRY_RUN=False** (ctnl_continuation + orb_sp500/us30/nasdaq + cls_practical, `source="lake"`) | Ready (alle 5 Min, Mo–Fr)       | 2026-09-07      |
 | DataLake-Ingest-Fast                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt `data_lake_store/` für Funded-Portfolio-Bridge (19 Keys, 15-Min-Kadenz)                | Ready (alle 15 Min, Mo–Fr)      | 2026-09-04      |
-| DataLake-Ingest-Fast5                                   | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt 7 M5/M15-Timing-kritische Keys für ctnl_continuation/orb                               | Ready (alle 5 Min, Mo–Fr)       | 2026-09-04      |
+| DataLake-Ingest-Fast5                                   | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt 8 M5/M15-Timing-kritische Keys für ctnl_continuation/orb/cls_practical (EURUSD M5 seit 2026-09-07) | Ready (alle 5 Min, Mo–Fr)       | 2026-09-07      |
 | DataLake-Ingest-Slow                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt OU-Modell-Universum (~59 Ticker) via yfinance                                          | Ready (stündlich, Mo–Fr)        | 2026-09-04      |
 | Dashboard-Telegram-Digest (neu)                         | — (nur Lesezugriff auf DASHBOARD.md, kein Order-Bezug)                                   | Schickt offene Punkte aus DASHBOARD.md per Telegram                                          | Ready (täglich 8:00)            | 2026-09-06      |
 

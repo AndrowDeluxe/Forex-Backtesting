@@ -9,6 +9,78 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-07** [FK Instant Funding] **Echten Order-Executor gebaut --
+  `FKInstantFunding-MT5-Bridge` war bisher ein reiner Order-PLANER, sendete
+  auch bei DRY_RUN=False nie echte Orders.** Beim Vorbereiten des Live-
+  Schaltens gefunden: `run_once.py` verband sich echt mit MT5, berechnete
+  Lot-Groessen, rief aber nie `mt5.order_send()` -- der Status war bei
+  DRY_RUN=False woertlich "NICHT GESENDET -- echte Ausfuehrung noch nicht
+  implementiert". Zusaetzlich fehlten der 5%-EOD-Trailing-Drawdown-Kill-
+  Switch, der CTNL-Standalone-Kill-Switch und der 30%-Konsistenzregel-Check
+  komplett im Ausfuehrungspfad (existierten bisher nur in der Paper-
+  Simulation `fk_instant_funding/paper_bot.py`). Nachgebaut, 1:1 nach dem
+  bereits real getesteten Funded-Portfolio-Bridge-Muster: neues
+  `executor.py` (connect/place_market_entry/partial_close_position/
+  move_stop_to_breakeven/close_position/check_naked_positions), `run_once.py`
+  komplett umgebaut auf Re-Scan-Vergleich (offen/neu -> Entry, geschlossen ->
+  Exit, inkl. Signal-Alter-Gate 60 Min.) statt reinem Planen, Kill-Switches
+  + Konsistenz-Ampel ueber `fk_instant_funding.paper_bot`s bereits
+  validierte Formeln wiederverwendet (kein zweiter Code). Telegram-
+  Nachrichten bekommen ein "🔴 LIVE"-Praefix, damit sie im selben Chat nie
+  mit dem weiterlaufenden Paper-Bot verwechselt werden koennen.
+  Schrittweiser Rollout (Nutzerentscheid): neues `config.py::LIVE_LEGS`
+  steuert PRO BEIN, ob echte Orders gesendet werden, unabhaengig vom
+  globalen `DRY_RUN`-Flag -- Start mit nur den 3 NY-Open-ORB-Beinen
+  (hoechste Aktivitaet diese Woche, alle 10 geloggten Trades beim frischen
+  Backtest-Vergleich exakt reproduziert, siehe
+  `scripts/research_fk_instant_funding_week_reconstruction.py`). Smoke-Test
+  gegen das echte Konto (DRY_RUN=True, also folgenlos) erfolgreich: echte
+  Verbindung (Login 17764), Equity $100.000,00 bestaetigt exakt gegen
+  `pb.STARTING_EQUITY`, alle 9 Scans + beide Kill-Switches + Konsistenz-
+  Check liefen ohne Fehler. `DRY_RUN=False` NICHT gesetzt -- das bleibt
+  bewusst dem Nutzer selbst ueberlassen.
+
+  **Beinahe-Regression dabei gefunden+korrigiert**: eine parallele Session
+  hatte `run_once.py` bereits am 2026-09-06 auf `source="lake"` (Data-Lake-
+  Pilot, alle 6 Scan-Aufrufstellen) umgestellt -- beim kompletten Neuschreiben
+  der Datei fuer den Executor-Umbau ist das zunaechst untergegangen (kein Git-
+  Diff fuer diesen Ordner, da bewusst nicht getrackt), zurueckgefallen auf
+  `source="live"`-Default. Vor dem finalen Smoke-Test bemerkt (DASHBOARD-
+  Eintrag zufaellig gegengelesen) und nachgezogen, zweiter Smoke-Test danach
+  nochmal sauber durchgelaufen (deutlich schneller, keine Dukascopy-Fetches).
+
+- **2026-09-07** [Funded-Portfolio-Bridge] **cls_practical in den 5-Minuten-
+  Fast-Task aufgenommen** (Nutzerauftrag "Bau das so um", nach Diagnose eines
+  konkreten Live-Vorfalls: `cls_practical EURUSD.gbe war bereits offen UND
+  geschlossen (stop), bevor diese Bridge es je gesehen hat` in allen drei
+  Telegram-Kanälen um 00:04 Uhr). Root Cause: `cls_practical/engine.py::
+  simulate_cls_practical()` triggert per Stop-Order auf M5 und kann direkt im
+  ersten Balken nach Entry stoppen — bei der bisherigen 15-Minuten-Scan-Kadenz
+  konnte ein kompletter Entry-plus-Stop-Exit-Zyklus komplett in EIN
+  Scan-Intervall fallen und wurde nie als offene Position gesehen. Die
+  ursprüngliche Einschätzung vom 2026-09-02 ("cls_practical hat keine
+  M5-Timing-Abhängigkeit") war so nicht korrekt — nur die Trigger-Frequenz ist
+  niedriger (max. 1x/Tag) als bei ctnl_continuation/orb, nicht die
+  Timing-Granularität. Fix, analog zum bestehenden ctnl_continuation/orb-Muster:
+  `data_lake/sources.py` — EURUSD M5 von Lane `"fast"` auf `"fast5"` gehoben
+  (5-Minuten- statt 15-Minuten-Ingestion, die 5 Referenz-Majors/BUND/USTBOND/
+  Yields bleiben unverändert auf `"fast"`/`"slow"`, reiner Cross-Check-/
+  Sizing-Kontext ohne Entry-Timing-Wirkung); `Funded-Portfolio-Bridge/
+  run_once_fast.py` (ausserhalb des Repos) — `cls_practical`-Scan +
+  `_process_leg`-Verarbeitung ergänzt, Docstrings korrigiert. Slow-Loop
+  (alle 15 Min) bleibt unverändert als Fallback bestehen, identisches
+  Redundanz-Muster wie bei ctnl_continuation/orb. `data_lake/sources.py` noch
+  nicht committet.
+- **2026-09-07** [Funded-Portfolio-Bridge] **Konto IQ Markets/BeyondIQCapital
+  Login 15514 (state_id `iqmarkets2`) auf Nutzerauftrag aus `ACCOUNTS` in
+  `Funded-Portfolio-Bridge/config.py` entfernt** (Bridge liegt ausserhalb des
+  Repos). Damit laeuft die Bridge (6 Beine, `DRY_RUN=False`) nur noch mit 3
+  statt 4 Konten (TTP Konto 2 504072729, TTP Konto 1 504069845,
+  BeyondIQCapital 16054). Keine offenen Broker-Positionen betroffen --
+  `bridge_state_iqmarkets2.json` zeigte zum Zeitpunkt der Entfernung nur
+  "missed"-Signale ohne echtes Ticket, State-Datei bleibt als Historie liegen.
+  Veraltete "4 Konten"-Kommentare in `run_once.py`/`run_once_fast.py`
+  mitkorrigiert.
 - **2026-09-07** [data_lake] **Automatischer Live-Fallback bei Cold Start /
   haengender Ingestion gebaut** (`1db4e52`, Nutzerauftrag "Baue den
   Fallback" nach Rueckfrage zur seit 2026-09-04 offenen Cold-Start-Frage im

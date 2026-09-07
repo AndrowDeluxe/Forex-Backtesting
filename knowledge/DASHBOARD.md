@@ -94,17 +94,35 @@ abgehakt-und-liegengelassen.
   True, folgenlos) zweimal sauber gegen das echte Konto gelaufen, Equity
   $100.000,00 exakt gegen `STARTING_EQUITY` bestaetigt. `DRY_RUN=False` habe
   ich bewusst NICHT gesetzt.
-- **Funded-Portfolio-Bridge: TTP Konto 2 (Demo, #504072729) verbindet seit
-  Wochenschluss nicht mehr** (gefunden 2026-09-07, beim Log-Check nach dem
-  Data-Lake-Fallback-Umbau). Letzter Erfolg Freitag 2026-09-05 01:34 Uhr,
-  seit dem ersten Lauf nach dem Wochenende (2026-09-07 00:04 Uhr) beide
-  Läufe (00:04, 00:19) mit `mt5.initialize() fehlgeschlagen: (-6, 'Terminal:
-  Authorization failed')` — nicht mit dem bekannten IPC-Timeout-Bild
-  identisch, eher nach abgelaufener/ungültig gewordener Demo-Session
-  (Konto 2 ist ein TTP-**Demo**-Konto, kein echtes Geld betroffen). IQ
-  Markets + TTP Konto 1 (echtes Geld) verbinden im selben Lauf weiterhin
-  einwandfrei. Braucht vermutlich einen manuellen Login-Check am Terminal —
-  nichts, was ich aus der Ferne beheben kann.
+- ~~Funded-Portfolio-Bridge: TTP Konto 2 (Demo, #504072729) verbindet seit
+  Wochenschluss nicht mehr~~ — **behoben 2026-09-07** (gefunden beim
+  Log-Check nach dem Data-Lake-Fallback-Umbau, gemeinsam mit Nutzer geloest).
+  Ursprünglicher Prozess-Neustart (Task Manager) half nicht wirklich weiter
+  (Prozess lief laut Startzeit unveraendert weiter) — eigentliche Root
+  Cause erst beim Versuch, einen komplett frischen, dedizierten
+  Terminal-Ordner anzulegen (Nutzerwunsch, Kopie von "TTP MT5 Terminal
+  Konto1neu" nach "...Konto2neu"): der frisch kopierte, noch nie gestartete
+  Terminal scheiterte dabei zunaechst mit `IPC timeout`/`IPC send failed`
+  statt "Authorization failed" -- `executor.py::_connect_once()` liess
+  `mt5.initialize()` einen fehlenden Terminal-Prozess selbst starten, aber
+  OHNE `/portable`-Flag, wodurch der neue Prozess mit den anderen
+  gleichzeitig laufenden MT5-Terminals auf der Maschine kollidierte
+  (identisches Fehlerbild + identische Ursache wie der 2026-08-28-Vorfall,
+  der `FKInstantFunding-MT5-Bridge` bereits einen `_ensure_terminal_running()`
+  -Schutz eingebaut hat -- Funded-Portfolio-Bridge hatte den bisher NICHT
+  uebernommen). Fix: identisches `_ensure_terminal_running()`-Muster
+  (Powershell-Prozess-Check + `/portable`-Vorstart) jetzt auch in
+  `Funded-Portfolio-Bridge/executor.py::_connect_once()` + `test_connection.py`
+  ergaenzt -- gilt automatisch fuer alle 3 Konten, da `run_once.py` dieselbe
+  `executor.connect()` wiederverwendet. Verifiziert: `test_connection.py`
+  verbindet jetzt sauber mit allen 3 Konten inkl. Konto 2 (Equity
+  $100.102,87). Offen: `AutoTrading` zeigt bei Konto 2 noch `False` (bei den
+  anderen beiden `True`) — reiner Terminal-GUI-Schalter ("Algo Trading"-
+  Button), muss einmalig manuell im neuen Terminal-Fenster aktiviert werden,
+  sonst koennte dieses Konto spaeter keine echten Orders senden. Alter,
+  verwaister Ordner "TTP MT5 Terminal - Konto2" (Prozess lief seit Samstag
+  durch) kann geschlossen werden, config.py zeigt seit dem Fix nicht mehr
+  darauf.
 - ~~Lokaler `main` 64 vor / 1 hinter `origin/main`~~ — **gemergt 2026-09-06**
   (Nutzer-OK): der eine fremde Commit (`7616951`) betraf nur `DASHBOARD.md`
   und stammte noch von der alten, unredesignten Dashboard-Struktur (Sept 4)
@@ -262,6 +280,11 @@ bewusst verworfen), nicht hier für immer liegen gelassen.
   Zarattini/Barbon/Aziz 2024, siehe [[opening-range-breakout]]): braucht
   neue Datenquelle (breites US-Aktienuniversum) + eigene Selektionslogik —
   eigenständige Idee, kein Filter-Add-on.
+- **Agentisches Research-System + separater Self-Learning-Bot** (2026-09-07):
+  Konzept steht (Kernentscheidungen geklärt — autonome Ideen-Findung,
+  Hybrid ML/RL, Alpaca Paper-Trading, erst Agentensystem dann Lern-Bot),
+  siehe [[agentisches-research-system-und-self-learning-bot]]. Bau
+  frühestens in ein paar Wochen (Nutzerentscheid), aktuell nichts zu tun.
 
 ## Letzte Aktivität
 

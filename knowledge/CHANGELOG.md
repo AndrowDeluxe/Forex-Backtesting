@@ -9,6 +9,46 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-07** [Funded-Portfolio-Bridge] **TTP Konto 2 (Demo) Verbindungs-
+  fehler behoben: fehlender `/portable`-Terminal-Start nachgeruestet.**
+  Root Cause: `executor.py::_connect_once()` liess `mt5.initialize()` einen
+  fehlenden Terminal-Prozess selbst starten, aber ohne `/portable` --
+  kollidierte dadurch mit den anderen gleichzeitig laufenden MT5-Terminals
+  auf der Maschine (identischer Bugtyp wie der 2026-08-28-Vorfall in
+  FKInstantFunding-MT5-Bridge, dort bereits mit `_ensure_terminal_running()`
+  gefixt, hier aber nie uebernommen). Sichtbar erst als `Authorization
+  failed` (Konto 2s Terminal lief seit Samstag 11:07 Uhr durchgehend idle,
+  Session zum TTP-Server vermutlich abgelaufen), nach einem Kopieren des
+  Terminal-Ordners ("TTP MT5 Terminal Konto1neu" -> "...Konto2neu",
+  Nutzerwunsch fuer einen frischen, dedizierten Ordner) dann als `IPC
+  timeout`/`IPC send failed` -- beides derselbe zugrunde liegende Fehler,
+  nur zu unterschiedlichen Zeitpunkten des Terminal-Lebenszyklus sichtbar.
+  Fix: `_terminal_running()`/`_ensure_terminal_running()` (identisches
+  Powershell-Prozess-Check + `/portable`-Vorstart-Muster wie
+  FKInstantFunding-MT5-Bridge) neu in `executor.py`, aufgerufen in
+  `_connect_once()` vor `mt5.initialize()` -- gilt fuer alle 3 Konten, da
+  `run_once.py` `executor.connect()` wiederverwendet, keine zweite Kopie.
+  `test_connection.py` importiert dieselbe Funktion statt sie zu
+  duplizieren. `config.py` zeigt Konto 2 jetzt auf den frischen
+  "Konto2neu"-Ordner. Verifiziert: `test_connection.py` verbindet sauber
+  mit allen 3 Konten. Offen (nicht code-seitig loesbar): `AutoTrading` bei
+  Konto 2 zeigt `False` (Terminal-GUI-Schalter, muss manuell aktiviert
+  werden); alter, jetzt unbenutzter Ordner "TTP MT5 Terminal - Konto2"
+  kann geschlossen werden.
+- **2026-09-07** [Second Brain] **Neue Prozessregel in `CLAUDE.md`: größere
+  neue Vorhaben laufen erst durch den Plan-Modus** (`EnterPlanMode` +
+  `AskUserQuestion` zur Klärung offener Design-/Architekturfragen, dann
+  `ExitPlanMode` zur Freigabe), statt direkt draufloszubauen — gilt nicht
+  für kleine, klar umrissene Änderungen. Ausgelöst durch eine Planungssession
+  zu einer Idee für ein agentisches Research-System (automatisiert den
+  8-Phasen-Prozess, inkl. autonomer Ideen-Findung) + einen separaten,
+  live-lernenden Bot (Hybrid ML/RL, zuerst Alpaca-Paper-Trading, strikt
+  getrennt von allen Live-Money-Bots) — Kernentscheidungen dazu geklärt,
+  Bau selbst aber bewusst auf "frühestens in ein paar Wochen" vertagt.
+  Vollständiger Entscheidungs-/Rechercheanstand gesichert in
+  `knowledge/projects/agentisches-research-system-und-self-learning-bot.md`
+  + Pointer in `DASHBOARD.md`s Ideen-Inbox + aktualisierter Claude-Memory
+  `ml-self-learning-idea`.
 - **2026-09-07** [FK Instant Funding] **Echten Order-Executor gebaut --
   `FKInstantFunding-MT5-Bridge` war bisher ein reiner Order-PLANER, sendete
   auch bei DRY_RUN=False nie echte Orders.** Beim Vorbereiten des Live-

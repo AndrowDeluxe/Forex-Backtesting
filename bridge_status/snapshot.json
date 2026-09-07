@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-09-07T18:01:26",
+  "generated_at": "2026-09-07T18:31:26",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-07T18:00:01",
+      "last_run": "2026-09-07T18:30:02",
       "minutes_since_last_run": 1.4,
       "status": "ok",
       "last_equity_line": "2026-09-07 17:42:16 2026-09-07 17:30:05,008 INFO run_once: Konto-Equity 3460.62 EUR | Aggregiertes offenes Risiko (ganzes Konto): 231.05 (Deckel dieser Bridge: 276.85, 8%)",
@@ -21,7 +21,7 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-07T17:49:01",
+      "last_run": "2026-09-07T18:19:01",
       "minutes_since_last_run": 12.4,
       "status": "ok",
       "accounts": {
@@ -70,8 +70,8 @@
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-07T17:24:59",
-      "minutes_since_last_run": 36.4,
+      "last_run": "2026-09-07T18:06:21",
+      "minutes_since_last_run": 25.1,
       "status": "ok",
       "last_equity_line": "2026-09-07 17:24:59 Verbunden: Login 17764, Equity $100,000.00",
       "last_error_line": "2026-09-07 17:24:59 orb-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",

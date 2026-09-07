@@ -9,6 +9,16 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-07** [Second Brain] **Wöchentliche Second-Brain-Lint-Routine
+  lief zum ersten geplanten Termin ins Leere**: `knowledge/scripts/lint.py`
+  + `.claude/skills/second-brain-lint/SKILL.md` — laut Eintrag vom
+  2026-09-01 damals erstellt und committet, inkl. wöchentlichem
+  Cloud-Trigger ab demselben Tag — sind in diesem Repo nicht auffindbar
+  (`git log --all` liefert für beide Pfade auf keinem Branch je einen
+  Treffer). Kein Lint durchgeführt; Befund unter "🔍 Braucht deine
+  Bestätigung" in `DASHBOARD.md` vermerkt statt die Dateien auf Verdacht
+  neu zu bauen (Risiko, eine evtl. nur lokal vorhandene Version zu
+  duplizieren/überschreiben).
 - **2026-09-07** [data_lake] **Automatischer Live-Fallback bei Cold Start /
   haengender Ingestion gebaut** (`1db4e52`, Nutzerauftrag "Baue den
   Fallback" nach Rueckfrage zur seit 2026-09-04 offenen Cold-Start-Frage im

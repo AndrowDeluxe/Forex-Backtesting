@@ -64,6 +64,19 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
+- **Second-Brain-Lint (wöchentliche Routine) lief heute ins Leere:
+  `knowledge/scripts/lint.py` + `.claude/skills/second-brain-lint/SKILL.md`
+  fehlen im Repo** (geprüft 2026-09-07). Laut `CHANGELOG.md`-Einträgen vom
+  2026-09-01 wurden beide Dateien damals erstellt und committet, inkl.
+  wöchentlichem Cloud-Trigger ab demselben Tag — `git log --all` findet
+  aber auf keinem Branch/Commit dieses Repos je einen Pfad `knowledge/
+  scripts/*` oder `.claude/skills/second-brain-lint/*`. Mögliche Ursachen:
+  nur lokal erstellt und nie gepusht, in einem späteren Commit versehentlich
+  wieder entfernt, oder in einem anderen Repo/Pfad gelandet. Diese Routine
+  hat NICHTS rekonstruiert (Gefahr, etwas Bestehendes/Lokales zu
+  duplizieren oder zu überschreiben) — kein Lint-Lauf heute, Status quo vom
+  2026-09-01 unten unverändert. Bitte prüfen: Dateien lokal noch vorhanden
+  (dann nachträglich committen) oder soll das Skript neu gebaut werden?
 - **Funded-Portfolio-Bridge: TTP Konto 2 (Demo, #504072729) verbindet seit
   Wochenschluss nicht mehr** (gefunden 2026-09-07, beim Log-Check nach dem
   Data-Lake-Fallback-Umbau). Letzter Erfolg Freitag 2026-09-05 01:34 Uhr,
@@ -194,7 +207,10 @@ veraltete Statustabellen-Daten, 8 verwaiste Seiten, mehrere tote Wikilinks,
 5 unverarbeitete Clippings (inzwischen verarbeitet, siehe "Offene Aufgaben"
 unten). Widersprüche (c) nicht vollständig manuell durchgegangen, nur
 stichprobenartig — zwei sind beim heutigen Redesign per Code-Check
-aufgefallen und aufgelöst (siehe "🔍 Braucht deine Bestätigung" oben)._
+aufgefallen und aufgelöst (siehe "🔍 Braucht deine Bestätigung" oben).
+**Versuch 2026-09-07 (erster geplanter wöchentlicher Lauf) fehlgeschlagen**
+— `lint.py`/Skill fehlen im Repo, siehe "🔍 Braucht deine Bestätigung" oben.
+Kein neuer Lint durchgeführt, obiger Stand vom 2026-09-01 weiterhin aktuell._
 
 ## Status — aktuell nicht aktiv
 

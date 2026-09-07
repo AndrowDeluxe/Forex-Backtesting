@@ -9,6 +9,35 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-07** [Bridge Error Monitor] **`validate_ohlc_numeric()`-Cache-Guard
+  griff nur beim Neu-Fetch, nicht beim Lesen aus dem Cache -- eine bereits
+  VOR dem 2026-09-02/-03-Fix gecachte korrupte Parquet-Datei haette denselben
+  `'>' not supported between instances of 'str' and 'float'`-Fehler auf
+  unbestimmte Zeit immer wieder ausgeloest.** Gefunden beim Nachgehen eines
+  aktuellen `FKInstantFunding-MT5-Bridge`-Vorfalls (`cls_practical-Scan`
+  scheiterte 2026-09-07 15:24 Uhr genau mit diesem Fehler, danach 16:14 Uhr
+  mit einem zweiten, unklaren `KeyError`-artigen "0"-Fehler -- beide Symptome
+  passen zu ein und derselben Ursache: irgendeine der vier von diesem Bein
+  genutzten gecachten Dateien hat vermutlich ein falsches dtype-Schema aus
+  der Zeit vor dem urspruenglichen Fix). Root Cause: `combined_strategy/
+  data.py::fetch_timeframe()` sowie `cls_practical/data.py::
+  fetch_rate_instrument_m5_berlin()/fetch_2y_yield_daily()/
+  fetch_eurusd_entry_tf_berlin()` riefen `validate_ohlc_numeric()` bisher nur
+  im "frisch gefetcht + cachen"-Zweig auf (verhindert seit 2026-09-02 NEUE
+  Korruption) -- der "aus Cache lesen"-Zweig (`path.exists() and not
+  force_refresh`) gab die Datei ungeprueft zurueck, eine schon VORHER
+  korrupt gecachte Datei waere also nie geheilt worden. Fix: alle vier
+  Cache-Lese-Zweige validieren jetzt genauso; schlaegt die Validierung fehl
+  (`ValueError`), wird die Cache-Datei ignoriert und wie bei einem fehlenden
+  Cache frisch nachgefetcht (self-healing, ueberschreibt die korrupte Datei
+  automatisch beim naechsten Lauf statt bei jedem Aufruf erneut zu scheitern).
+  Bewusst nur diese beiden Dateien angefasst (genau der Aufrufpfad des
+  gemeldeten `cls_practical`-Scans, kein breiterer Auditsweep). Nur
+  `python -m py_compile` gegen beide geaenderten Dateien verifiziert (dieses
+  Environment hat keinen Pandas-Zugriff, daher kein Live-Test gegen echte
+  Cache-Dateien moeglich) -- ob dies die konkrete "0"-Fehlermeldung vom
+  16:14-Lauf tatsaechlich behebt, ist eine unbestaetigte, aber gut
+  begruendete Vermutung, kein verifizierter Fix dieses einen Vorfalls.
 - **2026-09-07** [Funded-Portfolio-Bridge] **TTP Konto 2 (Demo) Verbindungs-
   fehler behoben: fehlender `/portable`-Terminal-Start nachgeruestet.**
   Root Cause: `executor.py::_connect_once()` liess `mt5.initialize()` einen

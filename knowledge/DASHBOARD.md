@@ -64,6 +64,42 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
+- **EK-Portfolio-Bridge/ou_modell: Order fuer EXPE scheitert seit heute
+  Nachmittag wiederholt mit "Market closed"** (gefunden 2026-09-07,
+  Snapshot-Stand 17:01 Uhr). `recent_events` zeigt denselben Fehler viermal
+  in Folge (16:10, 16:17, 16:31, 16:54 Uhr, jeweils ein 15-Minuten-Bridge-
+  Lauf) fuer denselben Versuch: `OrderSendResult(retcode=10018, ...
+  comment='Market closed', symbol='EXPE', volume=1.0, price=297.51,
+  sl=264.36, tp=348.56, magic=990011)` -- die Order wird bei jedem Lauf neu
+  versucht und scheitert jedes Mal identisch. `legs.ou_modell.executor`
+  liegt in der Bridge selbst (ausserhalb des Repos), Quellcode kann ich
+  nicht einsehen. Ungepruefte Vermutung: EXPE ist eine US-Aktie, retcode
+  10018 deutet auf einen Versuch ausserhalb der NYSE-Handelszeiten hin --
+  moeglicherweise fehlt fuer dieses ou_modell-Bein ein Handelszeiten-Gate
+  vor dem Order-Versand (aehnlich der Spread-Stunden-Pause, die fuer andere
+  Beine bereits existiert). Da es um Order-Versand/Echtgeld geht, fasse ich
+  das nicht an. Bitte pruefen: ist das erwartetes Verhalten (Retry bis der
+  Markt wieder offen ist), oder sollte ein Handelszeiten-Check ergaenzt
+  werden, damit nicht bei jedem Lauf ein aussichtsloser Order-Versuch
+  anfaellt?
+- **EK-Portfolio-Bridge: unformatiertes Log-Fragment in `recent_events`
+  (Rohtext eines f-Strings statt ausgewerteter Werte)** (gefunden
+  2026-09-07). Zweimal (15:24 und 16:54 Uhr) taucht in den Events woertlich
+  `f"Lake-Daten fuer {source}:{key}_{timeframe} zu alt
+  (last_success_at=...)"` auf -- das ist der Quelltext der `raise`-Zeile in
+  `data_lake/reader.py:69` (`_require_fresh()`), nicht eine ausgewertete
+  Fehlermeldung. Sieht nach einer rohen Traceback-Zeile aus (Python zeigt
+  bei mehrzeiligen `raise`-Statements den Quellcode woertlich), was darauf
+  hindeuten wuerde, dass hier eine `LakeStaleDataError` NICHT von
+  `with_live_fallback()` abgefangen, sondern als unbehandelte Exception mit
+  vollem Traceback geloggt wurde -- moeglicherweise weil danach auch der
+  Live-Fallback-Fetch gescheitert ist (z.B. der bekannte dukascopy-Hang).
+  Bridge-Status insgesamt bleibt "ok", und ich habe nur die Snapshot-
+  Fragmente, keinen vollstaendigen Log-Kontext -- will deswegen nichts am
+  Code aendern/vermuten. Bitte bei Gelegenheit im echten Log
+  (`EK-Portfolio-Bridge\logs\task_run.log`, ca. 15:24 und 16:54 Uhr)
+  nachschauen, ob dahinter mehr steckt als die schon bekannte
+  Lake-Staleness/dukascopy-Traegheit.
 - **Second-Brain-Lint (wöchentliche Routine) lief heute ins Leere:
   `knowledge/scripts/lint.py` + `.claude/skills/second-brain-lint/SKILL.md`
   fehlen im Repo** (geprüft 2026-09-07). Laut `CHANGELOG.md`-Einträgen vom

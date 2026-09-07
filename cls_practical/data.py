@@ -33,9 +33,15 @@ def fetch_rate_instrument_m5_berlin(key: str, start: str, end: str, force_refres
 
     start_ts, end_ts = pd.Timestamp(start), pd.Timestamp(end)
     path = CACHE_DIR / f"{key}_M5_{start_ts.date()}_{end_ts.date()}.parquet"
+    df = None
     if path.exists() and not force_refresh:
-        df = pd.read_parquet(path)
-    else:
+        cached = pd.read_parquet(path)
+        try:
+            validate_ohlc_numeric(cached, ["open", "high", "low", "close", "volume"])
+            df = cached
+        except ValueError:
+            pass  # cache file predates validate_ohlc_numeric and is itself corrupted -- re-fetch below
+    if df is None:
         df = dukascopy_python.fetch(
             _RATE_INSTRUMENTS[key], dukascopy_python.INTERVAL_MIN_5, OFFER_SIDE,
             start_ts.to_pydatetime(), end_ts.to_pydatetime(),
@@ -65,7 +71,12 @@ def fetch_2y_yield_daily(key: str, n_bars: int = 3650, force_refresh: bool = Fal
 
     path = CACHE_DIR / f"{key}_1d_tvc.parquet"
     if path.exists() and not force_refresh:
-        return pd.read_parquet(path)
+        cached = pd.read_parquet(path)
+        try:
+            validate_ohlc_numeric(cached, ["open", "high", "low", "close", "volume"])
+            return cached
+        except ValueError:
+            pass  # cache file predates validate_ohlc_numeric and is itself corrupted -- re-fetch below
 
     from tradingview.data import fetch_ohlcv
 
@@ -115,9 +126,15 @@ def fetch_eurusd_entry_tf_berlin(timeframe: str, start: str, end: str, force_ref
 
     start_ts, end_ts = pd.Timestamp(start), pd.Timestamp(end)
     path = CACHE_DIR / f"EURUSD_{timeframe}_{start_ts.date()}_{end_ts.date()}.parquet"
+    df = None
     if path.exists() and not force_refresh:
-        df = pd.read_parquet(path)
-    else:
+        cached = pd.read_parquet(path)
+        try:
+            validate_ohlc_numeric(cached, ["open", "high", "low", "close", "volume"])
+            df = cached
+        except ValueError:
+            pass  # cache file predates validate_ohlc_numeric and is itself corrupted -- re-fetch below
+    if df is None:
         from combined_strategy.data import INSTRUMENTS
 
         df = dukascopy_python.fetch(

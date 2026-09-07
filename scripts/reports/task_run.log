@@ -42,3 +42,15 @@
 2026-09-01 00:17:51 
 2026-09-01 00:17:52 I also saved two memory notes capturing the undocumented deactivation and the account-handover mechanics, so the next run doesn't have to rediscover them.
 2026-09-01 00:17:52 === Weekly-Report-Task beendet ===
+2026-09-06 18:00:00 === Weekly-Report-Task gestartet ===
+2026-09-06 18:00:00 Nutze Claude Code: C:\Users\andre\.vscode\extensions\anthropic.claude-code-2.1.263-win32-arm64\resources\native-binary\claude.exe
+2026-09-06 18:25:58 Good, that follows the convention correctly ("siehe Memory `slug`"). Everything checks out ÔÇö citations are properly formatted, wikilinks are only used for genuine `knowledge/` vault notes. The weekly checkup for KW36/2026 is complete.
+2026-09-06 18:25:58 
+2026-09-06 18:25:58 **Summary of what was produced:**
+2026-09-06 18:25:58 - `knowledge/reports/weekly/KW36_2026_performance.md` ÔÇö first report under the new portfolio-bridge-only format (EK-Portfolio-Bridge, Funded-Portfolio-Bridge, FK Instant Funding), with live read-only MT5 data pulled from all 6 broker accounts
+2026-09-06 18:25:58 - `knowledge/reports/weekly/KW36_2026_education.md` ÔÇö weekly focus, active times, learnings, new PARA knowledge, improvements/regressions
+2026-09-06 18:25:58 - `knowledge/reports/weekly/KW36_2026_checkup.html` + PDF (sent via Telegram, saved to `Documents/Trading Reports/`)
+2026-09-06 18:25:58 - Committed locally (not pushed): `9708b9d`
+2026-09-06 18:25:58 
+2026-09-06 18:25:58 **Most significant finding:** the entire `data_lake/` package (which feeds Funded-Portfolio-Bridge's 6 live real-money legs) has never been committed to git, despite the CHANGELOG documenting it as "git-tracked" since 09-04 ÔÇö flagged in the report, added to `DASHBOARD.md`, and logged to memory given its weight (no backup exists for critical live-money data infrastructure). Also flagged: 12 unprocessed clippings, a possible link between a Sept-4 error spike and today's manifest-corruption fix, and the pre-existing git push failure to `origin/main`.
+2026-09-06 18:25:58 === Weekly-Report-Task beendet ===

@@ -1,0 +1,66 @@
+2026-09-06 21:46:08 === Dashboard-Telegram-Digest gestartet ===
+2026-09-06 21:46:08 <b>­ƒôï Forex-Backtesting Dashboard ÔÇö Stand 2026-09-06</b>
+2026-09-06 21:46:08 
+2026-09-06 21:46:08 <b>ÔûÂ´©Å Als N+ñchstes (offen):</b>
+2026-09-06 21:46:08 data_lake/-Paket nie committet (gefunden 2026-09-06): treibt seit 09-04 alle 6 Live-Beine von Funded-Portfolio-Bridge (echtes Geld), hat aber null Git-Commits ÔÇö existiert nur lokal, kein Backup. Fix: git add data_lake/ + Commit nachholen. Details: KW36-Weekly-Report Punkt 2.
+2026-09-06 21:46:08 
+2026-09-06 21:46:08 Manuelles Monatsjournal + Quant-System-Verschmelzung (Nutzerwunsch 2026-09-02): h+ñndisches Monatsjournal + Plan, wie manuelles Trading und das Quant-System sinnvoll verschmolzen werden ÔÇö braucht zuerst ein kl+ñrendes Gespr+ñch (Format, Kennzahlen). Noch nichts gebaut.
+2026-09-06 21:46:08 
+2026-09-06 21:46:08 <b>­ƒöì Braucht deine Best+ñtigung:</b>
+2026-09-06 21:46:08 Lokaler main 64 vor / 1 hinter origin/main (2026-09-06): Push seitdem "rejected - fetch first" ÔÇö Bot-Snapshots (States, Dashboard) liegen nur noch lokal, nicht auf GitHub. Vermutlich 1 fremder Commit (7616951) ungemergt. Merge/Pull auf einem Repo mit mehreren Auto-Commit-Bots nicht ungefragt ÔÇö braucht dein OK.
+2026-09-06 21:46:08 
+2026-09-06 21:46:08 <b>­ƒôî Offene Aufgaben:</b>
+2026-09-06 21:46:08 12 unverarbeitete Clippings seit 2026-09-03 in knowledge/Clippings/ (Edge-Genesis/-Decay, Risk-Factor-Investing, Sektor-Rotation, u.a.) ÔÇö noch nicht durch den CODE-Prozess.
+2026-09-06 21:46:08 
+2026-09-06 21:46:08 knowledge/-Altlasten (Lint 2026-09-01): tote Wikilinks ([[cls-practical]], [[gap-fade]], [[execution-overlay]]) + 8 verwaiste Seiten, meist unkritisch. Details: Lint-Output/CHANGELOG.
+2026-09-06 21:46:08 
+2026-09-06 21:46:08 ­ƒƒó 12 aktive Bots/Bridges, davon 4 LIVE mit echtem Geld
+2026-09-06 21:46:08 
+2026-09-06 21:46:08 ­ƒòÉ Zuletzt: 2026-09-04 ÔÇö Second Brain: neuer Skill handoff (+ Inbox knowledge/_handoff/) f++r Session-+£bergaben am Kontextfenster-Limit, aus dem "Everlast AI"-Clip ++bernommen (3 der 4 vorgeschlagenen Ideen bewusst verworfen/zur++ckgestellt, siehe resources/second-brain-methodik.md).
+2026-09-06 21:46:08 
+2026-09-06 21:46:08 Volles Dashboard: knowledge/DASHBOARD.md
+2026-09-06 21:46:08 === Dashboard-Telegram-Digest beendet ===
+2026-09-06 21:46:39 === Dashboard-Telegram-Digest gestartet ===
+2026-09-06 21:46:40 <b>?? Forex-Backtesting Dashboard — Stand 2026-09-06</b>
+2026-09-06 21:46:40 
+2026-09-06 21:46:40 <b>?? Als Nächstes (offen):</b>
+2026-09-06 21:46:40 data_lake/-Paket nie committet (gefunden 2026-09-06): treibt seit 09-04 alle 6 Live-Beine von Funded-Portfolio-Bridge (echtes Geld), hat aber null Git-Commits — existiert nur lokal, kein Backup. Fix: git add data_lake/ + Commit nachholen. Details: KW36-Weekly-Report Punkt 2.
+2026-09-06 21:46:40 
+2026-09-06 21:46:40 Manuelles Monatsjournal + Quant-System-Verschmelzung (Nutzerwunsch 2026-09-02): händisches Monatsjournal + Plan, wie manuelles Trading und das Quant-System sinnvoll verschmolzen werden — braucht zuerst ein klärendes Gespräch (Format, Kennzahlen). Noch nichts gebaut.
+2026-09-06 21:46:40 
+2026-09-06 21:46:40 <b>?? Braucht deine Bestätigung:</b>
+2026-09-06 21:46:40 Lokaler main 64 vor / 1 hinter origin/main (2026-09-06): Push seitdem "rejected - fetch first" — Bot-Snapshots (States, Dashboard) liegen nur noch lokal, nicht auf GitHub. Vermutlich 1 fremder Commit (7616951) ungemergt. Merge/Pull auf einem Repo mit mehreren Auto-Commit-Bots nicht ungefragt — braucht dein OK.
+2026-09-06 21:46:40 
+2026-09-06 21:46:40 <b>?? Offene Aufgaben:</b>
+2026-09-06 21:46:40 12 unverarbeitete Clippings seit 2026-09-03 in knowledge/Clippings/ (Edge-Genesis/-Decay, Risk-Factor-Investing, Sektor-Rotation, u.a.) — noch nicht durch den CODE-Prozess.
+2026-09-06 21:46:40 
+2026-09-06 21:46:40 knowledge/-Altlasten (Lint 2026-09-01): tote Wikilinks ([[cls-practical]], [[gap-fade]], [[execution-overlay]]) + 8 verwaiste Seiten, meist unkritisch. Details: Lint-Output/CHANGELOG.
+2026-09-06 21:46:40 
+2026-09-06 21:46:40 ?? 12 aktive Bots/Bridges, davon 4 LIVE mit echtem Geld
+2026-09-06 21:46:40 
+2026-09-06 21:46:40 ?? Zuletzt: 2026-09-04 — Second Brain: neuer Skill handoff (+ Inbox knowledge/_handoff/) für Session-Übergaben am Kontextfenster-Limit, aus dem "Everlast AI"-Clip übernommen (3 der 4 vorgeschlagenen Ideen bewusst verworfen/zurückgestellt, siehe resources/second-brain-methodik.md).
+2026-09-06 21:46:40 
+2026-09-06 21:46:40 Volles Dashboard: knowledge/DASHBOARD.md
+2026-09-06 21:46:40 === Dashboard-Telegram-Digest beendet ===
+2026-09-07 08:00:00 === Dashboard-Telegram-Digest gestartet ===
+2026-09-07 08:00:01 <b>?? Forex-Backtesting Dashboard — Stand 2026-09-07</b>
+2026-09-07 08:00:01 
+2026-09-07 08:00:01 <b>?? Als Nächstes (offen):</b>
+2026-09-07 08:00:01 Manuelles Monatsjournal + Quant-System-Verschmelzung (Nutzerwunsch 2026-09-02): händisches Monatsjournal + Plan, wie manuelles Trading und das Quant-System sinnvoll verschmolzen werden — braucht zuerst ein klärendes Gespräch (Format, Kennzahlen). Noch nichts gebaut.
+2026-09-07 08:00:01 
+2026-09-07 08:00:01 <b>?? Braucht deine Bestätigung:</b>
+2026-09-07 08:00:01 FKInstantFunding-MT5-Bridge: echter Order-Executor gebaut, wartet auf Review vor DRY_RUN=False (2026-09-07, Details CHANGELOG). Mehrere Implementierungsentscheidungen waren eigenes Ingenieurs-Judgement statt expliziter Vorgabe, bitte gegenlesen bevor live geschaltet wird: (1) Rollout nur fuer die 3 NY-Open-ORB-Beine (config.py::LIVE_LEGS), Rest bleibt Mini-DRY_RUN pro Bein; (2) Trailing-DD-Kill-Switch + CTNL- Kill-Switch stoppen nur NEUE Entries, offene Positionen laufen normal weiter (identisches Verhalten wie Funded-Portfolio-Bridge); (3) 30%- Konsistenzregel ist reine Telegram-Ampel, kein Kill-Switch; (4) Telegram- Nachrichten bekommen ein "?? LIVE"-Praefix, damit sie im selben Chat nie mit dem weiterlaufenden Paper-Bot verwechselt werden. Smoke-Test (DRY_RUN= True, folgenlos) zweimal sauber gegen das echte Konto gelaufen, Equity $100.000,00 exakt gegen STARTING_EQUITY bestaetigt. DRY_RUN=False habe ich bewusst NICHT gesetzt.
+2026-09-07 08:00:01 
+2026-09-07 08:00:01 Funded-Portfolio-Bridge: TTP Konto 2 (Demo, #504072729) verbindet seit Wochenschluss nicht mehr (gefunden 2026-09-07, beim Log-Check nach dem Data-Lake-Fallback-Umbau). Letzter Erfolg Freitag 2026-09-05 01:34 Uhr, seit dem ersten Lauf nach dem Wochenende (2026-09-07 00:04 Uhr) beide Läufe (00:04, 00:19) mit mt5.initialize() fehlgeschlagen: (-6, 'Terminal: Authorization failed') — nicht mit dem bekannten IPC-Timeout-Bild identisch, eher nach abgelaufener/ungültig gewordener Demo-Session (Konto 2 ist ein TTP-Demo-Konto, kein echtes Geld betroffen). IQ Markets + TTP Konto 1 (echtes Geld) verbinden im selben Lauf weiterhin einwandfrei. Braucht vermutlich einen manuellen Login-Check am Terminal — nichts, was ich aus der Ferne beheben kann.
+2026-09-07 08:00:01 
+2026-09-07 08:00:01 <b>?? Offene Aufgaben:</b>
+2026-09-07 08:00:01 12 unverarbeitete Clippings seit 2026-09-03 in knowledge/Clippings/ (Edge-Genesis/-Decay, Risk-Factor-Investing, Sektor-Rotation, u.a.) — noch nicht durch den CODE-Prozess.
+2026-09-07 08:00:01 
+2026-09-07 08:00:01 knowledge/-Altlasten (Lint 2026-09-01): tote Wikilinks ([[cls-practical]], [[gap-fade]], [[execution-overlay]]) + 8 verwaiste Seiten, meist unkritisch. Details: Lint-Output/CHANGELOG.
+2026-09-07 08:00:01 
+2026-09-07 08:00:01 ?? 13 aktive Bots/Bridges, davon 4 LIVE mit echtem Geld
+2026-09-07 08:00:01 
+2026-09-07 08:00:01 ?? Zuletzt: 2026-09-07 — Data Lake: automatischer Live-Fallback bei Cold Start/ haengender Ingestion gebaut (with_live_fallback()), beantwortet die seit 2026-09-04 offene Cold-Start-Frage. Details: CHANGELOG.
+2026-09-07 08:00:01 
+2026-09-07 08:00:01 Volles Dashboard: knowledge/DASHBOARD.md
+2026-09-07 08:00:01 === Dashboard-Telegram-Digest beendet ===

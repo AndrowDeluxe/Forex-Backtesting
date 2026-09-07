@@ -1,0 +1,17 @@
+{
+  "trades": {},
+  "account_start": "2026-08-28T04:47:49.902411",
+  "last_heartbeat_hour": "2026-08-28 04",
+  "ttp": {
+    "eod_equity": {
+      "2026-08-28T00:00:00": 100000.0
+    },
+    "kill_switch_active": false,
+    "daily_paused": false,
+    "target_reached": false
+  },
+  "iqmarkets": {
+    "kill_switch_active": false,
+    "target_reached": false
+  }
+}

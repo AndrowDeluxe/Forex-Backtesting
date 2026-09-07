@@ -116,21 +116,51 @@ Structure (mirrors the user's own weekly trading journal - see
 `knowledge/reports/_templates/` if present for the exact source images/
 text; otherwise use this structure):
 
-1. **Wochenkontext**: one paragraph - which bots/legs were live this week,
-   any that started, stopped, or had config changes (check git log in this
-   repo for the week, and check each bridge folder's file mtimes).
-2. **Risk-Management-Compliance**: for each active bot, did it respect its
-   own configured risk limits (max risk/trade, daily/weekly drawdown caps,
-   kill-switches)? Did any kill-switch or drawdown halt trigger this week?
-   Flag violations clearly - this is the single most important compliance
-   check in the user's template.
-3. **Was hat gut / nicht gut funktioniert**: short per-bot bullet, not
-   a full trade-by-trade breakdown.
-4. **Trades, Winrate, Gewinn ($ and %) - SUMMARY ONLY**: one line per bot/
-   leg: number of trades, win rate, $ and % PnL for the week. The user
-   explicitly does NOT want individual trades listed out - aggregate only.
-   Also give the combined total across all active bots, and the Portfolio
-   Bot's own number separately if it has gone live by the time you run this.
+**Portfolio-level, not per-leg (Nutzerentscheid 2026-09-04, angekuendigt
+bereits 2026-08-27, siehe Memory `portfolio_consolidation_pending`):** the
+individual legacy strategy bots (Gold ASB, CLS Practical, CTNL Edge,
+Trend Pullback, OU-Modell, BTC EMA, NY-Open ORB, ...) are dissolved into
+three portfolio bridges and are no longer separately reported units. Report
+by **account type / bridge** instead - exactly these three, one row each,
+regardless of how many legs or broker accounts sit underneath:
+- **EK-Portfolio-Bridge** (Tickmill, echtes Geld) - aggregate across all its
+  legs (and its `-Fast` companion task, same account/money).
+- **Funded-Portfolio-Bridge / Challenge Portfolio** (TTP + IQ Markets) -
+  aggregate across ALL 4 real broker accounts AND all 6 legs (including its
+  `-Fast` companion task) into ONE combined portfolio number, even though
+  each account has its own equity/risk-sizing under the hood - the accounts
+  are the same strategy blend, capital-weighted per account, not separate
+  strategies.
+- **FK Instant Funding** (BeyondIQCapital) - one row, whatever its current
+  `DRY_RUN` state is (label it Paper/Live accordingly).
+If a NEW portfolio bridge goes live after this was written, add it as a
+fourth row following the same pattern - don't fall back to per-leg
+reporting for it.
+
+1. **Wochenkontext**: one paragraph - which of the 3 portfolio bridges
+   were live this week, any that started, stopped, changed `DRY_RUN`
+   status, or had config changes (check git log in this repo for the week,
+   and check each bridge folder's file mtimes).
+2. **Risk-Management-Compliance**: for each of the 3 portfolio bridges
+   (and, within Funded-Portfolio-Bridge, per real account if a limit was
+   actually hit somewhere - don't lose an account-specific kill-switch/
+   drawdown event inside the aggregate), did it respect its configured
+   risk limits (max risk/trade, daily/total drawdown caps, kill-switches)?
+   Did any kill-switch or drawdown halt trigger this week? Flag violations
+   clearly - this is the single most important compliance check in the
+   user's template.
+3. **Was hat gut / nicht gut funktioniert**: short per-portfolio-bridge
+   bullet (not per leg, not a full trade-by-trade breakdown) - which legs
+   contributed/detracted can be mentioned in prose within that bullet if
+   notable, but each bridge gets exactly one bullet, not one per leg.
+4. **Trades, Winrate, Gewinn ($ and %) - SUMMARY ONLY**: exactly one table
+   row per portfolio bridge (the 3 above), aggregated across all legs and
+   (for Funded-Portfolio-Bridge) all 4 accounts: number of trades, win
+   rate, $ and % PnL for the week. The user explicitly does NOT want
+   individual trades OR individual legs listed out - aggregate only. Add
+   one combined grand-total row across all 3 (live/real-money bridges
+   only - keep a still-`DRY_RUN` bridge like FK Instant Funding out of the
+   real-money total, but still show its own paper row).
 5. **Auffälligkeiten / offene Punkte**: anything that looks wrong (a bot
    silently not running, a data source you couldn't trust, a discrepancy
    between bridge data and repo diagnostic) - flag it the way memory

@@ -1,0 +1,84 @@
+{
+  "trades": {
+    "orb_nasdaq_NASDAQ_2026-08-31T13:45:00_-1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-08-31T13:45:00",
+      "exit_time": "2026-08-31T13:50:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0303804834125854,
+      "notified_exit": true
+    },
+    "orb_nasdaq_NASDAQ_2026-09-01T13:45:00_1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-09-01T13:45:00",
+      "exit_time": "2026-09-01T13:50:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0286854909171401,
+      "notified_exit": true
+    },
+    "orb_nasdaq_NASDAQ_2026-09-03T13:45:00_1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-09-03T13:45:00",
+      "exit_time": "2026-09-03T13:50:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0226505857032797,
+      "notified_exit": true
+    },
+    "orb_nasdaq_NASDAQ_2026-09-04T13:45:00_1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-09-04T13:45:00",
+      "exit_time": "2026-09-04T13:50:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0287546625626678,
+      "notified_exit": true
+    },
+    "orb_sp500_SP500_2026-09-01T13:50:00_1": {
+      "leg": "orb_sp500",
+      "entry_time": "2026-09-01T13:50:00",
+      "exit_time": "2026-09-01T13:55:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0466429367017223,
+      "notified_exit": true
+    },
+    "orb_sp500_SP500_2026-09-02T13:45:00_1": {
+      "leg": "orb_sp500",
+      "entry_time": "2026-09-02T13:45:00",
+      "exit_time": "2026-09-02T13:50:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0430402832409587,
+      "notified_exit": true
+    },
+    "orb_sp500_SP500_2026-09-03T13:45:00_1": {
+      "leg": "orb_sp500",
+      "entry_time": "2026-09-03T13:45:00",
+      "exit_time": "2026-09-03T13:50:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0366767633748435,
+      "notified_exit": true
+    },
+    "orb_us30_US30_2026-09-01T14:05:00_1": {
+      "leg": "orb_us30",
+      "entry_time": "2026-09-01T14:05:00",
+      "exit_time": "2026-09-01T14:20:00",
+      "exit_reason": "target",
+      "r_multiple": 2.9622007052546415,
+      "notified_exit": true
+    },
+    "orb_us30_US30_2026-09-02T14:00:00_1": {
+      "leg": "orb_us30",
+      "entry_time": "2026-09-02T14:00:00",
+      "exit_time": "2026-09-02T14:35:00",
+      "exit_reason": "target",
+      "r_multiple": 2.959441294429814,
+      "notified_exit": true
+    },
+    "orb_us30_US30_2026-09-03T13:45:00_1": {
+      "leg": "orb_us30",
+      "entry_time": "2026-09-03T13:45:00",
+      "exit_time": "2026-09-03T13:50:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0352299126027698,
+      "notified_exit": true
+    }
+  }
+}

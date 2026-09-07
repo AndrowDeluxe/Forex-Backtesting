@@ -116,6 +116,16 @@ Session starten (der aktuelle Stand steht ohnehin in `DASHBOARD.md`/
 einzelnen, immer länger werdenden Gespräch weiterzuarbeiten — hält das
 Second Brain als die verlässliche Quelle der Wahrheit, nicht den Chat selbst.
 
+Bevor eine Session deswegen (oder aus anderem Grund mitten in einem
+mehrteiligen Thema) endet: Skill `handoff` prüfen, ob eine Handoff-Datei
+nach `knowledge/_handoff/` sinnvoll ist (2026-09-04, Nutzerentscheid nach
+Auswertung eines Claude-Workflow-Videos, siehe
+`resources/second-brain-methodik.md`) — hält NUR fest, was sonst
+verlorenginge (Learnings, Fehlannahmen, offene Fäden), kein Recap dessen,
+was ohnehin in Dashboard/Changelog steht. Umgekehrt: **am Anfang jeder
+neuen Session zuerst `knowledge/_handoff/` auf wartende Dateien prüfen**,
+bevor losgelegt wird.
+
 ## Research-Wissen (PARA/CODE)
 
 Getrennt von der operativen Übersicht: destilliertes Fachwissen (Papers,
@@ -129,3 +139,19 @@ siehe `knowledge/README.md` für Details. Nicht in `DASHBOARD.md`/
 Neue Strategien durchlaufen den 8-Phasen-Prozess aus
 `app_pages/education_gold_intraday.py`. Phase 6 (Robustheit/Monte-Carlo)
 läuft VOR jeder Portfolio-/Risiko-Arbeit, nicht danach.
+
+## Edge-Card-Workflow
+
+Will der Nutzer eine bestehende, händisch gebacktestete/getradete Strategie
+in eine vollständige, falsifizierbare Ausgangsthese überführen ("Edge
+Card"), gilt der Prozess aus `knowledge/areas/edge-card-workflow.md`
+(Nutzer-Vorgabe, 2026-09-05): Phase 0 (Strategieverständnis bestätigen) +
+5 Felder (01 Idee, 02 Regel, 03 Mechanismus, 04 Gegenprobe, 05 Test),
+Schritt für Schritt, nichts erfinden, Nutzer-Begriffe/-Definitionen
+übernehmen. Gilt NUR für händisch entwickelte/getradete Strategien ohne
+Paper-Ursprung — Papers/Dokumente laufen unverändert durch den vollen
+8-Phasen-Backtest-Standardprozess oben (Nutzerentscheid 2026-09-05). Für
+händische Strategien ersetzt die Edge Card dessen Phase 1-3 (siehe
+`knowledge/areas/edge-card-workflow.md` Abschnitt "Konkrete Verzahnung"):
+Feld 02 REGEL wird 1:1-Spezifikation für Phase 4, Feld 04 GEGENPROBE
+liefert zusätzliche Kontrollgruppen für Phase 6 Robustheit.

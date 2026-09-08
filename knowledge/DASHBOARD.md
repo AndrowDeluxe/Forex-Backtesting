@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-09-07** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-09-08** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -64,6 +64,27 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
+- **`bridge_status/snapshot.json` seit Montag 17:01 Uhr (CEST) nicht mehr
+  aktualisiert -- Bridge-Watchdog liefert seit ~18h keinen neuen Stand**
+  (gefunden 2026-09-08, ca. 11:05 Uhr CEST beim Error-Monitor-Lauf). Letzter
+  Snapshot-Commit `9baf938` vom 2026-09-07 17:01:27 +0200 (`generated_at:
+  2026-09-07T17:01:26`), seitdem kein weiterer `Bridge-Watchdog:
+  Status-Snapshot`-Commit auf `main`, obwohl der Watchdog laut Beschreibung
+  alle 30 Minuten laufen und pushen soll und inzwischen ein normaler
+  Dienstag-Vormittag (Handelszeit) erreicht ist -- kein reines
+  Wochenend-/Nacht-Fenster mehr. Ich habe dadurch aktuell KEINE Sicht auf
+  den echten Live-Status der drei Bridges seit Montagnachmittag. Ungepruefte
+  Vermutung: aehnliches Muster wie die bereits am 2026-09-02 gefixte
+  "Rechner-/Task-Luecke ueber Nacht" (Windows Modern Standby), diesmal aber
+  deutlich laenger (~18h statt ~9h) und bis in den naechsten Handelstag
+  hinein -- moeglich waere ein Rechner/Task-Scheduler-Ausfall, der WakeToRun-
+  Fix greift nicht zuverlaessig, oder der Bridge-Watchdog-Task selbst ist
+  abgestuerzt/deaktiviert. Da das ausserhalb des Repos liegt (Rechner/Task
+  Scheduler), kann ich das von hier aus nicht beheben oder tiefer
+  diagnostizieren. Bitte pruefen: laeuft der Rechner/die Bridges gerade
+  ueberhaupt, ist der `Bridge-Watchdog`-Task im Task Scheduler noch aktiv,
+  und falls ja, warum committet/pusht er seit gestern Nachmittag nichts
+  mehr?
 - **EK-Portfolio-Bridge/ou_modell: Order fuer EXPE scheitert seit heute
   Nachmittag wiederholt mit "Market closed"** (gefunden 2026-09-07,
   Snapshot-Stand 17:01 Uhr). `recent_events` zeigt denselben Fehler viermal

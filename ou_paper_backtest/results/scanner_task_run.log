@@ -3201,3 +3201,28 @@
 2026-09-08 14:30:16                                 market ticker  scan_date  close  lower_band  entry     sl     tp  tp_price  risk_pct_price  position_size_pct  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
 2026-09-08 14:30:16 S&P 500 (volles Universum, 420 Ticker)   EXPE 2026-09-04 298.04      298.40 298.04 264.36 348.56    348.56           11.30               8.85       True       True                            12.5 2026-09-08T14:30:16
 2026-09-08 14:30:16 S&P 500 (volles Universum, 420 Ticker)    SYY 2026-09-04  80.05       80.25  80.05  76.38  85.55     85.55            4.58              20.00       True       True                            12.5 2026-09-08T14:30:16
+2026-09-08 14:30:16 [main 969b3cd] OU-Modell Scanner: Snapshot 2026-09-08 14:30
+2026-09-08 14:30:16  2 files changed, 28 insertions(+), 2 deletions(-)
+2026-09-08 14:30:17 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-09-08 14:30:17  ! [rejected]        main -> main (non-fast-forward)
+2026-09-08 14:30:17 error: failed to push some refs to 'https://github.com/AndrowDeluxe/Forex-Backtesting.git'
+2026-09-08 14:30:17 hint: Updates were rejected because the tip of your current branch is behind
+2026-09-08 14:30:17 hint: its remote counterpart. If you want to integrate the remote changes,
+2026-09-08 14:30:17 hint: use 'git pull' before pushing again.
+2026-09-08 14:30:17 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+2026-09-08 14:30:17 WARNUNG: git push fehlgeschlagen (Exit 1) - Commit liegt lokal vor, aber Streamlit Cloud zeigt ihn NICHT bis zum naechsten erfolgreichen Push.
+2026-09-08 14:30:17 === Scanner-Task beendet ===
+2026-09-08 15:35:00 === Scanner-Task gestartet ===
+2026-09-08 15:35:21 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-09-08 15:35:21 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-09-08 15:35:21 [sp500] 2 raw signal(s) as of 2026-09-04, regime_ok=True
+2026-09-08 15:35:21 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-09-08 15:35:21 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-09-08 15:35:21 [nasdaq100] 0 raw signal(s) as of 2026-09-04, regime_ok=True
+2026-09-08 15:35:21 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-09-08 15:35:21 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-09-08 15:35:21 
+2026-09-08 15:35:21 Saved 2 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-09-08T15:35:20)
+2026-09-08 15:35:21                                 market ticker  scan_date  close  lower_band  entry     sl     tp  tp_price  risk_pct_price  position_size_pct  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
+2026-09-08 15:35:21 S&P 500 (volles Universum, 420 Ticker)   EXPE 2026-09-04 298.04      298.40 298.04 264.36 348.56    348.56           11.30               8.85       True       True                            12.5 2026-09-08T15:35:20
+2026-09-08 15:35:21 S&P 500 (volles Universum, 420 Ticker)    SYY 2026-09-04  80.05       80.25  80.05  76.38  85.55     85.55            4.58              20.00       True       True                            12.5 2026-09-08T15:35:20

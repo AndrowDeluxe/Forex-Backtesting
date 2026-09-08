@@ -106,6 +106,19 @@ anspricht.
    automatisch `MEMORY.md` + verlinkte Dateien — ein Fund, der nicht in der
    Memory landet, taucht dort nicht auf.
 
+## Größere neue Vorhaben: erst Plan-Modus
+
+Bei größeren neuen Vorhaben — spürbarer Scope, mehrere sinnvolle
+Herangehensweisen, mehrere Dateien/Systeme betroffen, oder mehrere
+Entscheidungen, die eigentlich dem Nutzer gehören (nicht bei kleinen,
+klar umrissenen Änderungen wie Bugfix/Config-Flip/einzelne Datei) — zuerst
+in den Plan-Modus wechseln (`EnterPlanMode`), dort offene Design-/
+Architekturfragen per `AskUserQuestion` klären, BEVOR der Plan geschrieben
+wird, und den fertigen Plan über `ExitPlanMode` zur Freigabe vorlegen,
+statt direkt draufloszubauen. Nutzerentscheid 2026-09-07, nach einer
+Planungssession zu "Agentisches Research-System + Self-Learning-Bot" (siehe
+`knowledge/projects/agentisches-research-system-und-self-learning-bot.md`).
+
 ## Kontextfenster-Hygiene
 
 Übernommen aus einem vom Nutzer geteilten Second-Brain-Methodik-Video

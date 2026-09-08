@@ -9,6 +9,19 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-08** [FK Instant Funding] **`DRY_RUN=False` gesetzt — NY-Open
+  ORB (SP500/US30/NASDAQ) ist LIVE auf echtem Geld** (BeyondIQCapital,
+  Konto 17764, IQIF100K-144048). Expliziter Nutzerauftrag ("Setze dry run
+  False, damit ist orb jetzt live"), `FKInstantFunding-MT5-Bridge/config.py`
+  geaendert. Alle anderen 6 Beine bleiben ueber `LIVE_LEGS` weiterhin nur
+  geplant/geloggt (kein echter Order-Versand). Voraussetzungen erfuellt vor
+  dem Flip: echter Order-Executor gebaut + 3x sauber gegen das echte Konto
+  smoke-getestet, alle 4 Design-Entscheidungen vom Nutzer bestaetigt/
+  nachgeschaerft (Rollout-Umfang, aggregierte Offene-Risiko-Kill-Switches
+  zusaetzlich zum Trailing-DD-Check, Konsistenz-Ampel, Telegram-Kennzeichnung
+  -- siehe CHANGELOG 2026-09-07). Naechster stuendlicher Scheduled-Task-Lauf
+  kann dadurch echte Orders senden, falls ein ORB-Signal vorliegt.
+
 - **2026-09-07** [Funded-Portfolio-Bridge] **TTP Konto 2 (Demo) Verbindungs-
   fehler behoben: fehlender `/portable`-Terminal-Start nachgeruestet.**
   Root Cause: `executor.py::_connect_once()` liess `mt5.initialize()` einen
@@ -88,6 +101,24 @@ keine Planung (dafür ist `DASHBOARD.md`).
   `source="live"`-Default. Vor dem finalen Smoke-Test bemerkt (DASHBOARD-
   Eintrag zufaellig gegengelesen) und nachgezogen, zweiter Smoke-Test danach
   nochmal sauber durchgelaufen (deutlich schneller, keine Dukascopy-Fetches).
+
+  **Nachtrag selber Tag**: Nutzerauftrag, den Trailing-DD-Kill-Switch um zwei
+  ZUSAETZLICHE, vorausschauende Kill-Switches zu ergaenzen (nicht ersetzen,
+  explizit nachgefragt + bestaetigt): `config.py::AGGREGATE_OPEN_RISK_CAP_PCT`
+  (5%, alle Beine) + `CTNL_OPEN_RISK_CAP_PCT` (1%, nur CTNL Continuation+
+  Reversal) begrenzen das offene Risiko VOM AKTUELLEN Kurs bis zum
+  (ggf. schon auf Breakeven verschobenen) Stop ueber alle offenen Positionen,
+  gegen die aktuelle Kontoequity -- `mt5.order_calc_profit()` mit dem echten
+  Positionstyp und live vom Broker gelesenem SL/Volumen, reflektiert also
+  automatisch Teilausstiege/Breakeven-Verschiebungen. Punkt-in-Zeit-Check,
+  kein Hysterese-Reset noetig (anders als die beiden bestehenden Drawdown-
+  Kill-Switches). Dritter Smoke-Test lief trotz eines echten dukascopy-Hangs
+  (orb-Scan) und einem bekannten Korruptions-Glitch (cls_practical) sauber
+  durch -- beide Scan-Fehler wurden vom bestehenden Error-Handling
+  abgefangen, keiner der neuen Risk-Gates crashte. Ungetesteter Rest: die
+  MT5-Positions-Iteration selbst (aktuell 0 offene Positionen, da noch nie
+  ein echter Trade platziert wurde) -- verifizierbar erst nach dem ersten
+  echten Live-Entry.
 
 - **2026-09-07** [Funded-Portfolio-Bridge] **cls_practical in den 5-Minuten-
   Fast-Task aufgenommen** (Nutzerauftrag "Bau das so um", nach Diagnose eines

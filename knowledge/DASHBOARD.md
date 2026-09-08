@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-09-07** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-09-08** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -93,20 +93,15 @@ abgehakt-und-liegengelassen.
   wieder normal, kein Handlungsbedarf akut, aber falls sich das wiederholt
   lohnt ein Blick auf die Energieeinstellungen der betroffenen Scheduled
   Tasks.
-- **FKInstantFunding-MT5-Bridge: echter Order-Executor gebaut, wartet auf
-  Review vor `DRY_RUN=False`** (2026-09-07, Details CHANGELOG). Mehrere
-  Implementierungsentscheidungen waren eigenes Ingenieurs-Judgement statt
-  expliziter Vorgabe, bitte gegenlesen bevor live geschaltet wird:
-  (1) Rollout nur fuer die 3 NY-Open-ORB-Beine (`config.py::LIVE_LEGS`),
-  Rest bleibt Mini-DRY_RUN pro Bein; (2) Trailing-DD-Kill-Switch + CTNL-
-  Kill-Switch stoppen nur NEUE Entries, offene Positionen laufen normal
-  weiter (identisches Verhalten wie Funded-Portfolio-Bridge); (3) 30%-
-  Konsistenzregel ist reine Telegram-Ampel, kein Kill-Switch; (4) Telegram-
-  Nachrichten bekommen ein "🔴 LIVE"-Praefix, damit sie im selben Chat nie
-  mit dem weiterlaufenden Paper-Bot verwechselt werden. Smoke-Test (DRY_RUN=
-  True, folgenlos) zweimal sauber gegen das echte Konto gelaufen, Equity
-  $100.000,00 exakt gegen `STARTING_EQUITY` bestaetigt. `DRY_RUN=False` habe
-  ich bewusst NICHT gesetzt.
+- ~~FKInstantFunding-MT5-Bridge: echter Order-Executor gebaut, wartet auf
+  `DRY_RUN=False`~~ — **`DRY_RUN=False` gesetzt 2026-09-08** (expliziter
+  Nutzerauftrag "Setze dry run False, damit ist orb jetzt live"). NY-Open
+  ORB (SP500/US30/NASDAQ) ist damit LIVE auf echtem Geld, alle anderen 6
+  Beine bleiben ueber `LIVE_LEGS` weiterhin nur geplant/geloggt. Details/
+  Vorgeschichte: CHANGELOG 2026-09-07+08. Weiterhin ungetestet bis zum ersten
+  echten Entry: die MT5-Live-Positions-Iteration der Offene-Risiko-Checks
+  (aktuell 0 offene Positionen) — beim ersten echten Trade gegenlesen, ob
+  Sizing/SL/Telegram-Meldung wie erwartet aussehen.
 - ~~Funded-Portfolio-Bridge: TTP Konto 2 (Demo, #504072729) verbindet seit
   Wochenschluss nicht mehr~~ — **behoben 2026-09-07** (gefunden beim
   Log-Check nach dem Data-Lake-Fallback-Umbau, gemeinsam mit Nutzer geloest).
@@ -232,7 +227,7 @@ abgehakt-und-liegengelassen.
 | ------------------------------------------------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------- | --------------- |
 | EK-Portfolio-Bridge                                     | Tickmill Live (55918977)                                                                 | **LIVE — echtes Geld** (btc/ou_modell weiterhin direkt Dukascopy/yfinance; gold_asb/cls_practical/ctnl x2 jetzt `source="lake"`) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-06      |
 | EK-Portfolio-Bridge-Fast                                | Tickmill Live (55918977, geteiltes Terminal)                                             | **LIVE — echtes Geld** (3 MT5-native Beine: ORB/Gold-Silber/Trend-Pullback, kein Dukascopy)  | Ready (alle 2 Min, Mo–Fr)       | 2026-09-03      |
-| FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | DRY_RUN (echter Order-Executor gebaut 09-07, `LIVE_LEGS`={ORB x3} vorbereitet, noch nicht scharf) | Ready (stündlich)               | 2026-09-07      |
+| FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | **LIVE — echtes Geld** (nur NY-Open ORB x3 via `LIVE_LEGS`, `DRY_RUN=False` seit 09-08; die anderen 6 Beine bleiben geplant/geloggt) | Ready (stündlich)               | 2026-09-08      |
 | FK-Instant-Funding-Paper                                | — (reine Simulation)                                                                     | Paper + Telegram                                                                             | Ready (stündlich)               | 2026-09-01      |
 | OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner + Telegram (3x täglich: 15:35/18:35/21:35)                                           | Ready (Mo–Fr, US-Handelszeiten) | 2026-09-02      |
 | Forex-Weekly-Report                                     | —                                                                                        | Report-Generator                                                                             | Ready                           | 2026-09-02      |

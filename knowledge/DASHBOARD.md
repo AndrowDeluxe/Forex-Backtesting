@@ -85,6 +85,24 @@ abgehakt-und-liegengelassen.
   ueberhaupt, ist der `Bridge-Watchdog`-Task im Task Scheduler noch aktiv,
   und falls ja, warum committet/pusht er seit gestern Nachmittag nichts
   mehr?
+- **Update zum obigen Punkt: Snapshot ist weiterhin auf demselben Stand --
+  Luecke jetzt ~30h statt ~18h, durchgehend ueber den kompletten
+  Dienstag-Handelstag hinein** (geprueft 2026-09-08, ca. 23:05 Uhr CEST
+  beim naechsten Error-Monitor-Lauf). Immer noch derselbe letzte
+  Snapshot-Commit `9baf938` (`generated_at: 2026-09-07T17:01:26`) --
+  seit dem ersten Fund heute Vormittag (~11:05 Uhr CEST, siehe Punkt
+  oben) ist ein weiterer kompletter Handelstag vergangen, ohne dass der
+  Bridge-Watchdog auch nur einmal neu committet/gepusht haette. Das ist
+  kein kurzer Aussetzer mehr, sondern ein durchgehender, mindestens
+  30-stuendiger Blindflug bei allen drei Live-Bridges (echtes Geld bei
+  EK-Portfolio-Bridge + Funded-Portfolio-Bridge) -- ich habe von hier aus
+  keinerlei Sicht darauf, ob/wie die Bots seit Montagnachmittag
+  gehandelt haben. Root Cause weiterhin nur Vermutung (siehe Punkt oben),
+  liegt komplett ausserhalb des Repos (Rechner/Task Scheduler), daher
+  wieder nur dokumentiert statt angefasst. Bitte pruefen: laeuft der
+  Rechner ueberhaupt noch / ist er erreichbar, und falls ja, was macht
+  der `Bridge-Watchdog`-Task im Task Scheduler (deaktiviert, abgestuerzt,
+  haengt fest)?
 - **EK-Portfolio-Bridge/ou_modell: Order fuer EXPE scheitert seit heute
   Nachmittag wiederholt mit "Market closed"** (gefunden 2026-09-07,
   Snapshot-Stand 17:01 Uhr). `recent_events` zeigt denselben Fehler viermal

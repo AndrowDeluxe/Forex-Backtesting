@@ -85,6 +85,20 @@ abgehakt-und-liegengelassen.
   ueberhaupt, ist der `Bridge-Watchdog`-Task im Task Scheduler noch aktiv,
   und falls ja, warum committet/pusht er seit gestern Nachmittag nichts
   mehr?
+- **`knowledge/projects/agentisches-research-system-und-self-learning-bot.md`
+  fehlt im Repo -- Ideen-Inbox verlinkt eine Datei, die es nie gab**
+  (gefunden 2026-09-08 beim Beantworten der Aktien-Analyst-Agent-Frage). Der
+  `CHANGELOG.md`-Eintrag vom 2026-09-07 sagt, der vollstaendige
+  Entscheidungs-/Rechercheanstand zum agentischen Research-System sei dort
+  "gesichert", und die Ideen-Inbox unten verlinkt sie als
+  `[[agentisches-research-system-und-self-learning-bot]]` -- `git log --all`
+  findet den Pfad aber auf keinem Branch/Commit. Exakt dasselbe Muster wie
+  beim Second-Brain-Lint-Befund weiter unten (2026-09-07): lokal erstellt,
+  nie committet. Bitte pruefen, ob die Datei auf deinem Rechner unter
+  `C:\Users\andre\Forex-Backtesting\knowledge\projects\` liegt (dann
+  nachtraeglich committen) -- sonst ist der Stand verloren, und der
+  Aktien-Analyst-Agent (Ideen-Inbox, s.u.) ueberschneidet sich inhaltlich
+  stark damit, ohne dass ich weiss, was dort schon entschieden wurde.
 - **EK-Portfolio-Bridge/ou_modell: Order fuer EXPE scheitert seit heute
   Nachmittag wiederholt mit "Market closed"** (gefunden 2026-09-07,
   Snapshot-Stand 17:01 Uhr). `recent_events` zeigt denselben Fehler viermal
@@ -336,6 +350,23 @@ Kurz einfangen, was gerade auftaucht, ohne das aktuelle Thema zu verlassen —
 wird bei Gelegenheit einsortiert (Offene Aufgaben, PARA-Struktur, oder
 bewusst verworfen), nicht hier für immer liegen gelassen.
 
+- **Automatisierter Aktien-Analysten-Agent auf Basis der Claude-Finanz-
+  Plug-ins** (2026-09-08, Nutzerfrage): technisch machbar, nichts entschieden.
+  Katalog live geprueft -- aktienfaehig sind `bigdata-com` (SEC-Filings,
+  Earnings-Calls, Sentiment), `daloopa` (Fundamentals/DCF/Comps), `lseg`
+  (Equity-Research + Macro/Rates), dazu die Connectors FactSet/Zacks/Quartr;
+  alle institutionell bepreist. Einzig privat bezahlbar: **Alpha Vantage**
+  (MCP-Connector, Kurse/Fundamentals/Earnings/SEC/News-Sentiment). Aktuell
+  ist KEINES dieser Plug-ins aktiviert und KEIN Connector verbunden. Der
+  automatisierte Teil existiert dagegen schon als Bauplan
+  (`scripts/reports/run_weekly_report_task.ps1`: Task Scheduler ->
+  `claude.exe -p` -> Prompt-Datei -> committet Reports), Aktien-Kursdaten
+  ebenfalls (`ou_paper_backtest/`, S&P 500 + Nasdaq-100 + DAX ueber
+  yfinance). Offene Kernfrage: reine Informations-/Monitoring-Ebene
+  (Earnings-/Katalysator-Warnung fuer Ticker, die der OU-Bot gerade haelt --
+  ginge ohne jedes kostenpflichtige Plug-in) ODER Signalgeber -- Letzteres
+  waere eine Strategie, die der 8-Phasen-Standardprozess nicht falsifizieren
+  kann. Ueberschneidet sich stark mit der Idee vom 2026-09-07 (s.o.).
 - **Periodischer `/doctor`-Check** (2026-09-04): zurückgestellt, noch keine
   nennenswerte Skill/MCP-Altlast bei aktuell nur 2 Skills.
 - **CFDs → echte Futures umstellen** (2026-09-03): zwei getrennte,

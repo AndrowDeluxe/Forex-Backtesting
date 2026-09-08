@@ -64,3 +64,51 @@
 2026-09-07 08:00:01 
 2026-09-07 08:00:01 Volles Dashboard: knowledge/DASHBOARD.md
 2026-09-07 08:00:01 === Dashboard-Telegram-Digest beendet ===
+2026-09-08 02:08:23 === Dashboard-Telegram-Digest gestartet ===
+2026-09-08 02:08:25 <b>?? Forex-Backtesting Dashboard — Stand 2026-09-07</b>
+2026-09-08 02:08:25 
+2026-09-08 02:08:25 <b>?? Als Nächstes (offen):</b>
+2026-09-08 02:08:25 Manuelles Monatsjournal + Quant-System-Verschmelzung (Nutzerwunsch 2026-09-02): händisches Monatsjournal + Plan, wie manuelles Trading und das Quant-System sinnvoll verschmolzen werden — braucht zuerst ein klärendes Gespräch (Format, Kennzahlen). Noch nichts gebaut.
+2026-09-08 02:08:25 
+2026-09-08 02:08:25 <b>?? Braucht deine Bestätigung:</b>
+2026-09-08 02:08:25 Second-Brain-Lint (wöchentliche Routine) lief heute ins Leere: knowledge/scripts/lint.py + .claude/skills/second-brain-lint/SKILL.md fehlen im Repo (geprüft 2026-09-07). Laut CHANGELOG.md-Einträgen vom 2026-09-01 wurden beide Dateien damals erstellt und committet, inkl. wöchentlichem Cloud-Trigger ab demselben Tag — git log --all findet aber auf keinem Branch/Commit dieses Repos je einen Pfad knowledge/ scripts/* oder .claude/skills/second-brain-lint/*. Mögliche Ursachen: nur lokal erstellt und nie gepusht, in einem späteren Commit versehentlich wieder entfernt, oder in einem anderen Repo/Pfad gelandet. Diese Routine hat NICHTS rekonstruiert (Gefahr, etwas Bestehendes/Lokales zu duplizieren oder zu überschreiben) — kein Lint-Lauf heute, Status quo vom 2026-09-01 unten unverändert. Bitte prüfen: Dateien lokal noch vorhanden (dann nachträglich committen) oder soll das Skript neu gebaut werden?
+2026-09-08 02:08:25 
+2026-09-08 02:08:25 DataLake-Ingest-Fast5 + FKInstantFunding-MT5-Bridge (stündlich): auffällige Lücke ~14:31-15:0x Uhr (gefunden 2026-09-07 beim Performance- Check des cls_practical-Fixes). DataLake-Ingest-Fast5 lief laut Task Scheduler zuletzt 14:26:51, naechster Lauf erst 15:11:50 (~45 statt 5 Min. Abstand); FKInstantFunding-MT5-Bridge hat seinen 14:57-Lauf ausgelassen, erst 15:06:19 wieder gelaufen. Bridge-Watchdog (alle 30 Min) lief im selben Fenster ganz normal (14:31, 15:01) — kein Totalausfall der Maschine. Nicht durch heutige Code-Aenderungen ausgeloest (keine der beiden betroffenen Tasks/Dateien wurde heute angefasst). Ungeprüfte Vermutung: DataLake-Ingest-Fast5 ist auf "bei Batteriebetrieb nicht starten" konfiguriert (schtasks-Energieverwaltung) — passt zu einem Surface-Geraet, das kurz vom Netzteil getrennt war, aber nicht verifiziert (Akkustatus-Historie nicht einsehbar). Beide Tasks laufen inzwischen wieder normal, kein Handlungsbedarf akut, aber falls sich das wiederholt lohnt ein Blick auf die Energieeinstellungen der betroffenen Scheduled Tasks.
+2026-09-08 02:08:25 
+2026-09-08 02:08:25 FKInstantFunding-MT5-Bridge: echter Order-Executor gebaut, alle 4 Design-Entscheidungen vom Nutzer bestaetigt/nachgeschaerft — wartet nur noch auf DRY_RUN=False durch den Nutzer selbst (2026-09-07, Details CHANGELOG). (1) Rollout nur fuer die 3 NY-Open-ORB-Beine — bestaetigt. (2) Trailing-DD-Kill-Switch NICHT ersetzt, sondern um zwei zusaetzliche, vorausschauende Kill-Switches ergaenzt (Nutzerauftrag): offenes Risiko (aktueller Kurs -&gt; aktueller Stop) ueber alle Beine gedeckelt auf 5% der aktuellen Equity, CTNL allein zusaetzlich auf 1%. (3) 30%-Konsistenzregel bleibt reine Ampel — bestaetigt. (4) "?? LIVE"-Telegram-Praefix — bestaetigt. Dritter Smoke-Test (DRY_RUN=True, folgenlos) lief trotz eines echten dukascopy-Hangs + eines bekannten Korruptions-Glitches sauber durch (beide vom bestehenden Error-Handling abgefangen). Ungetestet bis zum ersten echten Entry: die MT5-Live-Positions-Iteration der neuen Offene- Risiko-Checks (aktuell 0 offene Positionen). DRY_RUN=False habe ich bewusst NICHT gesetzt.
+2026-09-08 02:08:25 
+2026-09-08 02:08:25 <b>?? Offene Aufgaben:</b>
+2026-09-08 02:08:25 12 unverarbeitete Clippings seit 2026-09-03 in knowledge/Clippings/ (Edge-Genesis/-Decay, Risk-Factor-Investing, Sektor-Rotation, u.a.) — noch nicht durch den CODE-Prozess.
+2026-09-08 02:08:25 
+2026-09-08 02:08:25 knowledge/-Altlasten (Lint 2026-09-01): tote Wikilinks ([[cls-practical]], [[gap-fade]], [[execution-overlay]]) + 8 verwaiste Seiten, meist unkritisch. Details: Lint-Output/CHANGELOG.
+2026-09-08 02:08:25 
+2026-09-08 02:08:25 ?? 13 aktive Bots/Bridges, davon 4 LIVE mit echtem Geld
+2026-09-08 02:08:25 
+2026-09-08 02:08:25 ?? Zuletzt: 2026-09-07 — Data Lake: automatischer Live-Fallback bei Cold Start/ haengender Ingestion gebaut (with_live_fallback()), beantwortet die seit 2026-09-04 offene Cold-Start-Frage. Details: CHANGELOG.
+2026-09-08 02:08:25 
+2026-09-08 02:08:25 Volles Dashboard: knowledge/DASHBOARD.md
+2026-09-08 02:08:25 === Dashboard-Telegram-Digest beendet ===
+2026-09-08 08:00:01 === Dashboard-Telegram-Digest gestartet ===
+2026-09-08 08:00:02 <b>?? Forex-Backtesting Dashboard — Stand 2026-09-07</b>
+2026-09-08 08:00:02 
+2026-09-08 08:00:02 <b>?? Als Nächstes (offen):</b>
+2026-09-08 08:00:02 Manuelles Monatsjournal + Quant-System-Verschmelzung (Nutzerwunsch 2026-09-02): händisches Monatsjournal + Plan, wie manuelles Trading und das Quant-System sinnvoll verschmolzen werden — braucht zuerst ein klärendes Gespräch (Format, Kennzahlen). Noch nichts gebaut.
+2026-09-08 08:00:02 
+2026-09-08 08:00:02 <b>?? Braucht deine Bestätigung:</b>
+2026-09-08 08:00:02 Second-Brain-Lint (wöchentliche Routine) lief heute ins Leere: knowledge/scripts/lint.py + .claude/skills/second-brain-lint/SKILL.md fehlen im Repo (geprüft 2026-09-07). Laut CHANGELOG.md-Einträgen vom 2026-09-01 wurden beide Dateien damals erstellt und committet, inkl. wöchentlichem Cloud-Trigger ab demselben Tag — git log --all findet aber auf keinem Branch/Commit dieses Repos je einen Pfad knowledge/ scripts/* oder .claude/skills/second-brain-lint/*. Mögliche Ursachen: nur lokal erstellt und nie gepusht, in einem späteren Commit versehentlich wieder entfernt, oder in einem anderen Repo/Pfad gelandet. Diese Routine hat NICHTS rekonstruiert (Gefahr, etwas Bestehendes/Lokales zu duplizieren oder zu überschreiben) — kein Lint-Lauf heute, Status quo vom 2026-09-01 unten unverändert. Bitte prüfen: Dateien lokal noch vorhanden (dann nachträglich committen) oder soll das Skript neu gebaut werden?
+2026-09-08 08:00:02 
+2026-09-08 08:00:02 DataLake-Ingest-Fast5 + FKInstantFunding-MT5-Bridge (stündlich): auffällige Lücke ~14:31-15:0x Uhr (gefunden 2026-09-07 beim Performance- Check des cls_practical-Fixes). DataLake-Ingest-Fast5 lief laut Task Scheduler zuletzt 14:26:51, naechster Lauf erst 15:11:50 (~45 statt 5 Min. Abstand); FKInstantFunding-MT5-Bridge hat seinen 14:57-Lauf ausgelassen, erst 15:06:19 wieder gelaufen. Bridge-Watchdog (alle 30 Min) lief im selben Fenster ganz normal (14:31, 15:01) — kein Totalausfall der Maschine. Nicht durch heutige Code-Aenderungen ausgeloest (keine der beiden betroffenen Tasks/Dateien wurde heute angefasst). Ungeprüfte Vermutung: DataLake-Ingest-Fast5 ist auf "bei Batteriebetrieb nicht starten" konfiguriert (schtasks-Energieverwaltung) — passt zu einem Surface-Geraet, das kurz vom Netzteil getrennt war, aber nicht verifiziert (Akkustatus-Historie nicht einsehbar). Beide Tasks laufen inzwischen wieder normal, kein Handlungsbedarf akut, aber falls sich das wiederholt lohnt ein Blick auf die Energieeinstellungen der betroffenen Scheduled Tasks.
+2026-09-08 08:00:02 
+2026-09-08 08:00:02 FKInstantFunding-MT5-Bridge: echter Order-Executor gebaut, alle 4 Design-Entscheidungen vom Nutzer bestaetigt/nachgeschaerft — wartet nur noch auf DRY_RUN=False durch den Nutzer selbst (2026-09-07, Details CHANGELOG). (1) Rollout nur fuer die 3 NY-Open-ORB-Beine — bestaetigt. (2) Trailing-DD-Kill-Switch NICHT ersetzt, sondern um zwei zusaetzliche, vorausschauende Kill-Switches ergaenzt (Nutzerauftrag): offenes Risiko (aktueller Kurs -&gt; aktueller Stop) ueber alle Beine gedeckelt auf 5% der aktuellen Equity, CTNL allein zusaetzlich auf 1%. (3) 30%-Konsistenzregel bleibt reine Ampel — bestaetigt. (4) "?? LIVE"-Telegram-Praefix — bestaetigt. Dritter Smoke-Test (DRY_RUN=True, folgenlos) lief trotz eines echten dukascopy-Hangs + eines bekannten Korruptions-Glitches sauber durch (beide vom bestehenden Error-Handling abgefangen). Ungetestet bis zum ersten echten Entry: die MT5-Live-Positions-Iteration der neuen Offene- Risiko-Checks (aktuell 0 offene Positionen). DRY_RUN=False habe ich bewusst NICHT gesetzt.
+2026-09-08 08:00:02 
+2026-09-08 08:00:02 <b>?? Offene Aufgaben:</b>
+2026-09-08 08:00:02 12 unverarbeitete Clippings seit 2026-09-03 in knowledge/Clippings/ (Edge-Genesis/-Decay, Risk-Factor-Investing, Sektor-Rotation, u.a.) — noch nicht durch den CODE-Prozess.
+2026-09-08 08:00:02 
+2026-09-08 08:00:02 knowledge/-Altlasten (Lint 2026-09-01): tote Wikilinks ([[cls-practical]], [[gap-fade]], [[execution-overlay]]) + 8 verwaiste Seiten, meist unkritisch. Details: Lint-Output/CHANGELOG.
+2026-09-08 08:00:02 
+2026-09-08 08:00:02 ?? 13 aktive Bots/Bridges, davon 4 LIVE mit echtem Geld
+2026-09-08 08:00:02 
+2026-09-08 08:00:02 ?? Zuletzt: 2026-09-07 — Data Lake: automatischer Live-Fallback bei Cold Start/ haengender Ingestion gebaut (with_live_fallback()), beantwortet die seit 2026-09-04 offene Cold-Start-Frage. Details: CHANGELOG.
+2026-09-08 08:00:02 
+2026-09-08 08:00:02 Volles Dashboard: knowledge/DASHBOARD.md
+2026-09-08 08:00:02 === Dashboard-Telegram-Digest beendet ===

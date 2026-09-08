@@ -103,7 +103,13 @@ def fetch_timeframe(key: str, timeframe: str, start: str, end: str, force_refres
     start_ts, end_ts = pd.Timestamp(start), pd.Timestamp(end)
     path = _cache_path(key, timeframe, start_ts, end_ts)
     if path.exists() and not force_refresh:
-        return pd.read_parquet(path)
+        cached = pd.read_parquet(path)
+        try:
+            validate_ohlc_numeric(cached, ["Open", "High", "Low", "Close", "Volume"])
+            return cached
+        except ValueError:
+            pass  # cache file predates validate_ohlc_numeric (written before 2026-09-02) and is itself
+            # corrupted -- fall through and re-fetch fresh instead of serving the same bad data forever
 
     df = dukascopy_python.fetch(
         INSTRUMENTS[key], _TF_INTERVAL[timeframe], OFFER_SIDE,

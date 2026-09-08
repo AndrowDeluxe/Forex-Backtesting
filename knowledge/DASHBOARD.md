@@ -64,6 +64,76 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
+- ~~`bridge_status/snapshot.json` seit Montag 17:01 Uhr (CEST) nicht mehr
+  aktualisiert -- Bridge-Watchdog liefert seit ~18h/~30h keinen neuen
+  Stand~~ — **war ein Fehlalarm, aufgeklärt 2026-09-08 (heutige Session):
+  kein Bot-/Rechner-Ausfall, sondern reines Git-Push-Problem.** Der lokale
+  Rechner hatte durchgehend weiterlaufende, aktuelle Snapshots (lokale
+  `bridge_status/snapshot.json`/Logs zeigten beim Gegencheck Läufe bis
+  wenige Minuten vor der Prüfung) — nur die Pushes zu GitHub schlugen seit
+  2026-09-07 ~17:xx durchgehend fehl ("fetch first", weil die
+  Auto-Commit-Skripte vor dem Push nicht pullen), nachdem eine parallele
+  Cloud-Session zwischenzeitlich selbst auf `main` gepusht hatte. Dadurch
+  sah GitHub/Streamlit einen eingefrorenen Stand, obwohl lokal alles lief.
+  Jetzt zusammengeführt + gepusht (dieser Merge), siehe CHANGELOG
+  2026-09-08 "Git-Sync-Reparatur". **Noch offen:** die Auto-Commit-Skripte
+  pullen vor dem Push weiterhin nicht — das gleiche Einfrieren kann jederzeit
+  wieder passieren, sobald irgendeine andere Session/Session-Kopie
+  zwischenzeitlich pusht. Root-Cause-Fix (Pull-vor-Push in den Skripten)
+  noch nicht gebaut, nur der aktuelle Rückstand behoben.
+- **EK-Portfolio-Bridge/ou_modell: Order fuer EXPE scheitert seit heute
+  Nachmittag wiederholt mit "Market closed"** (gefunden 2026-09-07,
+  Snapshot-Stand 17:01 Uhr). `recent_events` zeigt denselben Fehler viermal
+  in Folge (16:10, 16:17, 16:31, 16:54 Uhr, jeweils ein 15-Minuten-Bridge-
+  Lauf) fuer denselben Versuch: `OrderSendResult(retcode=10018, ...
+  comment='Market closed', symbol='EXPE', volume=1.0, price=297.51,
+  sl=264.36, tp=348.56, magic=990011)` -- die Order wird bei jedem Lauf neu
+  versucht und scheitert jedes Mal identisch. `legs.ou_modell.executor`
+  liegt in der Bridge selbst (ausserhalb des Repos), Quellcode kann ich
+  nicht einsehen. Ungepruefte Vermutung: EXPE ist eine US-Aktie, retcode
+  10018 deutet auf einen Versuch ausserhalb der NYSE-Handelszeiten hin --
+  moeglicherweise fehlt fuer dieses ou_modell-Bein ein Handelszeiten-Gate
+  vor dem Order-Versand (aehnlich der Spread-Stunden-Pause, die fuer andere
+  Beine bereits existiert). Da es um Order-Versand/Echtgeld geht, fasse ich
+  das nicht an. Bitte pruefen: ist das erwartetes Verhalten (Retry bis der
+  Markt wieder offen ist), oder sollte ein Handelszeiten-Check ergaenzt
+  werden, damit nicht bei jedem Lauf ein aussichtsloser Order-Versuch
+  anfaellt?
+- **EK-Portfolio-Bridge: unformatiertes Log-Fragment in `recent_events`
+  (Rohtext eines f-Strings statt ausgewerteter Werte)** (gefunden
+  2026-09-07). Zweimal (15:24 und 16:54 Uhr) taucht in den Events woertlich
+  `f"Lake-Daten fuer {source}:{key}_{timeframe} zu alt
+  (last_success_at=...)"` auf -- das ist der Quelltext der `raise`-Zeile in
+  `data_lake/reader.py:69` (`_require_fresh()`), nicht eine ausgewertete
+  Fehlermeldung. Sieht nach einer rohen Traceback-Zeile aus (Python zeigt
+  bei mehrzeiligen `raise`-Statements den Quellcode woertlich), was darauf
+  hindeuten wuerde, dass hier eine `LakeStaleDataError` NICHT von
+  `with_live_fallback()` abgefangen, sondern als unbehandelte Exception mit
+  vollem Traceback geloggt wurde -- moeglicherweise weil danach auch der
+  Live-Fallback-Fetch gescheitert ist (z.B. der bekannte dukascopy-Hang).
+  Bridge-Status insgesamt bleibt "ok", und ich habe nur die Snapshot-
+  Fragmente, keinen vollstaendigen Log-Kontext -- will deswegen nichts am
+  Code aendern/vermuten. Bitte bei Gelegenheit im echten Log
+  (`EK-Portfolio-Bridge\logs\task_run.log`, ca. 15:24 und 16:54 Uhr)
+  nachschauen, ob dahinter mehr steckt als die schon bekannte
+  Lake-Staleness/dukascopy-Traegheit.
+- **Funded-Portfolio-Bridge: wiederholte `IPC timeout`-Verbindungsfehler auf
+  allen 3 MT5-Konten, seit ca. 11:52 Uhr andauernd** (gefunden 2026-09-08,
+  heutige Session, beim direkten Log-Check). Betrifft alle drei Konten
+  (TTP Konto 2 Demo, TTP Konto 1 **echtes Geld**, IQ Markets) gleichzeitig —
+  anders als der TTP-Konto-2-Vorfall vom 2026-09-07 (nur 1 Konto, fehlendes
+  `/portable`), was eher gegen ein einzelnes kaputtes Terminal und eher für
+  Maschinen-/Ressourcen-Druck (z.B. gleichzeitig laufende Terminals + Python-
+  Prozesse + evtl. weitere parallele Sessions) spricht — nicht verifiziert.
+  Einzelne Läufe klappen zwischendurch (z.B. 12:21 Uhr Konto 1 verbunden,
+  Equity $96.856,98), einige Folgeläufe scheitern zusätzlich mit
+  "State-Lock nicht frei geworden" (Symptom der langsamen/gescheiterten
+  Verbindungsversuche, kein eigenständiger Bug). Kein Totalausfall, aber
+  unzuverlässig auf einem Konto mit echtem Geld. Ich habe nichts an Terminals/
+  Prozessen angefasst (Neustart eines MT5-Terminals wäre ein Eingriff in
+  laufende Bridge-Prozesse). Bitte prüfen: laufen gerade ungewöhnlich viele
+  Prozesse auf der Maschine, und falls sich das nicht von selbst legt, lohnt
+  ein Blick auf die 3 MT5-Terminal-Prozesse für Funded-Portfolio-Bridge.
 - **Second-Brain-Lint (wöchentliche Routine) lief heute ins Leere:
   `knowledge/scripts/lint.py` + `.claude/skills/second-brain-lint/SKILL.md`
   fehlen im Repo** (geprüft 2026-09-07). Laut `CHANGELOG.md`-Einträgen vom
@@ -225,15 +295,15 @@ abgehakt-und-liegengelassen.
 
 | Bot/Bridge                                              | Konto/Broker                                                                             | Modus                                                                                        | Task Scheduler                  | Zuletzt geprüft |
 | ------------------------------------------------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------- | --------------- |
-| EK-Portfolio-Bridge                                     | Tickmill Live (55918977)                                                                 | **LIVE — echtes Geld** (btc/ou_modell weiterhin direkt Dukascopy/yfinance; gold_asb/cls_practical/ctnl x2 jetzt `source="lake"`) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-06      |
+| EK-Portfolio-Bridge                                     | Tickmill Live (55918977)                                                                 | **LIVE — echtes Geld** (btc/ou_modell weiterhin direkt Dukascopy/yfinance; gold_asb/cls_practical/ctnl x2 jetzt `source="lake"`) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-08      |
 | EK-Portfolio-Bridge-Fast                                | Tickmill Live (55918977, geteiltes Terminal)                                             | **LIVE — echtes Geld** (3 MT5-native Beine: ORB/Gold-Silber/Trend-Pullback, kein Dukascopy)  | Ready (alle 2 Min, Mo–Fr)       | 2026-09-03      |
 | FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | **LIVE — echtes Geld** (nur NY-Open ORB x3 via `LIVE_LEGS`, `DRY_RUN=False` seit 09-08; die anderen 6 Beine bleiben geplant/geloggt) | Ready (stündlich)               | 2026-09-08      |
 | FK-Instant-Funding-Paper                                | — (reine Simulation)                                                                     | Paper + Telegram                                                                             | Ready (stündlich)               | 2026-09-01      |
 | OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner + Telegram (3x täglich: 15:35/18:35/21:35)                                           | Ready (Mo–Fr, US-Handelszeiten) | 2026-09-02      |
 | Forex-Weekly-Report                                     | —                                                                                        | Report-Generator                                                                             | Ready                           | 2026-09-02      |
-| Bridge-Watchdog                                         | — (nur Log-Frische, kein Order-Bezug)                                                    | Heartbeat-Alarm + Status-Snapshot ins Repo                                                   | Ready (alle 30 Min)             | 2026-09-02      |
-| Funded-Portfolio-Bridge (TTP+IQ Markets, 6 Beine)       | TTP Konto 2 (504072729) + TTP Konto 1 (504069845) + BeyondIQCapital (16054) — **alle 3 verbunden** (IQ 15514 am 2026-09-07 entfernt) | **LIVE — DRY_RUN=False** (alle 6 Beine `source="lake"`, siehe Data-Lake-Pilot) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-07      |
-| Funded-Portfolio-Bridge-Fast                            | Gleiche 3 Konten (geteilte Terminals)                                                    | **LIVE — DRY_RUN=False** (ctnl_continuation + orb_sp500/us30/nasdaq + cls_practical, `source="lake"`) | Ready (alle 5 Min, Mo–Fr)       | 2026-09-07      |
+| Bridge-Watchdog                                         | — (nur Log-Frische, kein Order-Bezug)                                                    | Heartbeat-Alarm + Status-Snapshot ins Repo                                                   | Ready (alle 30 Min)             | 2026-09-08      |
+| Funded-Portfolio-Bridge (TTP+IQ Markets, 6 Beine)       | TTP Konto 2 (504072729) + TTP Konto 1 (504069845) + BeyondIQCapital (16054) — **alle 3 verbunden** (IQ 15514 am 2026-09-07 entfernt) | **LIVE — DRY_RUN=False** (alle 6 Beine `source="lake"`; seit ~11:52 Uhr 09-08 wiederholte IPC-Timeouts, siehe 🔍 Bestätigung) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-08      |
+| Funded-Portfolio-Bridge-Fast                            | Gleiche 3 Konten (geteilte Terminals)                                                    | **LIVE — DRY_RUN=False** (ctnl_continuation + orb_sp500/us30/nasdaq + cls_practical, `source="lake"`) | Ready (alle 5 Min, Mo–Fr)       | 2026-09-08      |
 | DataLake-Ingest-Fast                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt `data_lake_store/` für Funded-Portfolio-Bridge (19 Keys, 15-Min-Kadenz)                | Ready (alle 15 Min, Mo–Fr)      | 2026-09-04      |
 | DataLake-Ingest-Fast5                                   | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt 8 M5/M15-Timing-kritische Keys für ctnl_continuation/orb/cls_practical (EURUSD M5 seit 2026-09-07) | Ready (alle 5 Min, Mo–Fr)       | 2026-09-07      |
 | DataLake-Ingest-Slow                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt OU-Modell-Universum (~59 Ticker) via yfinance                                          | Ready (stündlich, Mo–Fr)        | 2026-09-04      |
@@ -301,6 +371,12 @@ bewusst verworfen), nicht hier für immer liegen gelassen.
 
 _(Auszug — vollständiges Log in [CHANGELOG.md](CHANGELOG.md))_
 
+- 2026-09-08 — FK Instant Funding: `DRY_RUN=False` gesetzt (Nutzerauftrag),
+  NY-Open ORB live auf echtem Geld. Second Brain: Git-Sync-Reparatur
+  (lokal/GitHub 38 vs. 2 Commits auseinandergelaufen, Bridge-Watchdog-
+  "Ausfall" war ein Fehlalarm), cls_practical-Cache-Bugfix einer parallelen
+  Session eingespielt, neuer Fund: Funded-Portfolio-Bridge IPC-Timeouts auf
+  allen 3 Konten. Details: CHANGELOG.
 - 2026-09-07 — Data Lake: automatischer Live-Fallback bei Cold Start/
   haengender Ingestion gebaut (`with_live_fallback()`), beantwortet die
   seit 2026-09-04 offene Cold-Start-Frage. Details: CHANGELOG.

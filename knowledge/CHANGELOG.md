@@ -21,7 +21,50 @@ keine Planung (dafür ist `DASHBOARD.md`).
   zusaetzlich zum Trailing-DD-Check, Konsistenz-Ampel, Telegram-Kennzeichnung
   -- siehe CHANGELOG 2026-09-07). Naechster stuendlicher Scheduled-Task-Lauf
   kann dadurch echte Orders senden, falls ein ORB-Signal vorliegt.
-
+- **2026-09-08** [Second Brain] **Git-Sync-Reparatur: lokal 38 vs. `origin/
+  main` 2 Commits auseinandergelaufen, dadurch Bridge-Watchdog/Scanner-
+  Snapshots seit 2026-09-07 17:01 nicht mehr auf GitHub sichtbar (siehe
+  DASHBOARD.md-Korrektur unten) -- war KEIN echter Bot-/Rechner-Ausfall,
+  nur ein Push-Problem.** Root Cause: die automatischen Commit-Skripte
+  (Bridge-Watchdog, FK Instant Funding Snapshot, OU-Modell Scanner) pushen
+  ohne vorher zu pullen/fetchen; sobald irgendeine andere Session (hier: ein
+  paralleler Cloud-Agent) zwischenzeitlich auf `main` gepusht hatte, schlug
+  jeder weitere lokale Push seither mit "fetch first" fehl -- nur als
+  Warnung geloggt, nie eskaliert, daher unbemerkt ueber ~30h aufgelaufen.
+  Bots liefen die ganze Zeit normal weiter (lokale Logs/Snapshots
+  durchgehend aktuell), nur der GitHub-/Streamlit-sichtbare Stand war
+  eingefroren. Beim naechsten Status-Check zusammengefuehrt (dieser Merge)
+  und gepusht. Automatisierungs-Luecke (kein Pull-vor-Push) bleibt bestehen,
+  noch nicht behoben -- siehe DASHBOARD.md.
+- **2026-09-07** [Bridge Error Monitor] **`validate_ohlc_numeric()`-Cache-Guard
+  griff nur beim Neu-Fetch, nicht beim Lesen aus dem Cache -- eine bereits
+  VOR dem 2026-09-02/-03-Fix gecachte korrupte Parquet-Datei haette denselben
+  `'>' not supported between instances of 'str' and 'float'`-Fehler auf
+  unbestimmte Zeit immer wieder ausgeloest.** Gefunden beim Nachgehen eines
+  aktuellen `FKInstantFunding-MT5-Bridge`-Vorfalls (`cls_practical-Scan`
+  scheiterte 2026-09-07 15:24 Uhr genau mit diesem Fehler, danach 16:14 Uhr
+  mit einem zweiten, unklaren `KeyError`-artigen "0"-Fehler -- beide Symptome
+  passen zu ein und derselben Ursache: irgendeine der vier von diesem Bein
+  genutzten gecachten Dateien hat vermutlich ein falsches dtype-Schema aus
+  der Zeit vor dem urspruenglichen Fix). Root Cause: `combined_strategy/
+  data.py::fetch_timeframe()` sowie `cls_practical/data.py::
+  fetch_rate_instrument_m5_berlin()/fetch_2y_yield_daily()/
+  fetch_eurusd_entry_tf_berlin()` riefen `validate_ohlc_numeric()` bisher nur
+  im "frisch gefetcht + cachen"-Zweig auf (verhindert seit 2026-09-02 NEUE
+  Korruption) -- der "aus Cache lesen"-Zweig (`path.exists() and not
+  force_refresh`) gab die Datei ungeprueft zurueck, eine schon VORHER
+  korrupt gecachte Datei waere also nie geheilt worden. Fix: alle vier
+  Cache-Lese-Zweige validieren jetzt genauso; schlaegt die Validierung fehl
+  (`ValueError`), wird die Cache-Datei ignoriert und wie bei einem fehlenden
+  Cache frisch nachgefetcht (self-healing, ueberschreibt die korrupte Datei
+  automatisch beim naechsten Lauf statt bei jedem Aufruf erneut zu scheitern).
+  Bewusst nur diese beiden Dateien angefasst (genau der Aufrufpfad des
+  gemeldeten `cls_practical`-Scans, kein breiterer Auditsweep). Nur
+  `python -m py_compile` gegen beide geaenderten Dateien verifiziert (dieses
+  Environment hat keinen Pandas-Zugriff, daher kein Live-Test gegen echte
+  Cache-Dateien moeglich) -- ob dies die konkrete "0"-Fehlermeldung vom
+  16:14-Lauf tatsaechlich behebt, ist eine unbestaetigte, aber gut
+  begruendete Vermutung, kein verifizierter Fix dieses einen Vorfalls.
 - **2026-09-07** [Funded-Portfolio-Bridge] **TTP Konto 2 (Demo) Verbindungs-
   fehler behoben: fehlender `/portable`-Terminal-Start nachgeruestet.**
   Root Cause: `executor.py::_connect_once()` liess `mt5.initialize()` einen

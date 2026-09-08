@@ -175,6 +175,14 @@
       "exit_reason": "stop",
       "r_multiple": -1.0467358238956148,
       "notified_exit": true
+    },
+    "ctnl_continuation__2026-09-08T06:25:00_1": {
+      "leg": "ctnl_continuation",
+      "entry_time": "2026-09-08T06:25:00",
+      "exit_time": "2026-09-08T06:50:00",
+      "exit_reason": "data_end",
+      "r_multiple": -0.3180089477774456,
+      "notified_exit": false
     }
   },
   "kill_switch_active": false,
@@ -190,7 +198,7 @@
     "2026-09-04T00:00:00": 99411.88700776787,
     "2026-09-06T00:00:00": 99411.88700776787,
     "2026-09-07T00:00:00": 99411.88700776787,
-    "2026-09-08T00:00:00": 99282.26544638105
+    "2026-09-08T00:00:00": 99242.40497731199
   },
   "account_start": "2026-08-27T20:58:06.914380",
   "scan_errors_today": {

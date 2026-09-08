@@ -26,6 +26,7 @@ if (-not (Test-Path $logDir)) {
 }
 
 Set-Location $repo
+. (Join-Path $repo "scripts\lib\git_sync_push.ps1")
 Log "=== CLS-Practical-Scan-Task gestartet ==="
 
 try {
@@ -43,12 +44,7 @@ if ($LASTEXITCODE -eq 0) {
 } else {
     $ts = Get-Date -Format "yyyy-MM-dd HH:mm"
     & git commit -m "CLS Practical Scan: Snapshot $ts" 2>&1 | ForEach-Object { Log $_ }
-    & git push 2>&1 | ForEach-Object { Log $_ }
-    if ($LASTEXITCODE -ne 0) {
-        Log "WARNUNG: git push fehlgeschlagen (Exit $LASTEXITCODE) - Commit liegt lokal vor, aber Streamlit Cloud zeigt ihn NICHT bis zum naechsten erfolgreichen Push."
-    } else {
-        Log "Commit + Push erfolgreich."
-    }
+    Sync-AndPush -Log ${function:Log}
 }
 
 Log "=== CLS-Practical-Scan-Task beendet ==="

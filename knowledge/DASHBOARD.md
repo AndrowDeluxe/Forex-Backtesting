@@ -118,11 +118,15 @@ abgehakt-und-liegengelassen.
   Cloud-Session zwischenzeitlich selbst auf `main` gepusht hatte. Dadurch
   sah GitHub/Streamlit einen eingefrorenen Stand, obwohl lokal alles lief.
   Jetzt zusammengeführt + gepusht (dieser Merge), siehe CHANGELOG
-  2026-09-08 "Git-Sync-Reparatur". **Noch offen:** die Auto-Commit-Skripte
-  pullen vor dem Push weiterhin nicht — das gleiche Einfrieren kann jederzeit
-  wieder passieren, sobald irgendeine andere Session/Session-Kopie
-  zwischenzeitlich pusht. Root-Cause-Fix (Pull-vor-Push in den Skripten)
-  noch nicht gebaut, nur der aktuelle Rückstand behoben.
+  2026-09-08 "Git-Sync-Reparatur". **Root Cause inzwischen ebenfalls behoben
+  (2026-09-09, Commit `a34cb8a`)**: neue gemeinsame
+  `scripts/lib/git_sync_push.ps1` (`Sync-AndPush`) fetcht+merged jetzt vor
+  jedem Push, eingebunden in alle 11 `scripts/*_task.ps1` + analog in
+  `C:\Users\andre\Bridge-Watchdog\watchdog.py`. Bei einem echten
+  Merge-Konflikt wird der Merge abgebrochen und der Push für diesen Lauf
+  ausgelassen (statt in einem kaputten Merge-Zustand zu landen). Verifiziert:
+  PowerShell-Parser + `py_compile` sauber; der praktische Beweis kommt mit
+  dem nächsten Push-Zyklus der geplanten Tasks.
 - **EK-Portfolio-Bridge/ou_modell: Order fuer EXPE scheiterte am 2026-09-07
   wiederholt mit "Market closed"** (urspruenglich gefunden 2026-09-07,
   Snapshot-Stand 17:01 Uhr) -- **Telegram-Wiederholung jetzt behoben, offene
@@ -343,7 +347,7 @@ abgehakt-und-liegengelassen.
 | EK-Portfolio-Bridge-Fast                                | Tickmill Live (55918977, geteiltes Terminal)                                             | **LIVE — echtes Geld** (3 MT5-native Beine: ORB/Gold-Silber/Trend-Pullback, kein Dukascopy)  | Ready (alle 2 Min, Mo–Fr)       | 2026-09-03      |
 | FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | **LIVE — echtes Geld** (7 Beine via `LIVE_LEGS`: orb_sp500/us30/nasdaq + gold_asb/cls_practical/ctnl_continuation/ctnl_reversal seit 09-09; trend_pullback/gold_silver bleiben geplant/geloggt) | Ready (stündlich)               | 2026-09-09      |
 | FKInstantFunding-MT5-Bridge-Fast                        | BeyondIQCapital (17764, geteiltes Terminal)                                              | **LIVE — echtes Geld** (ctnl_continuation + orb_sp500/us30/nasdaq + cls_practical, `source="lake"`, analog Funded-Fast) | Ready (alle 5 Min, Mo–Fr)       | 2026-09-09      |
-| FK-Instant-Funding-Paper                                | — (reine Simulation)                                                                     | Paper + Telegram                                                                             | Ready (stündlich)               | 2026-09-01      |
+| FK-Instant-Funding-Paper                                | — (reine Simulation)                                                                     | Paper + Telegram, **nur noch trend_pullback/gold_silver** (die anderen 7 Beine laufen live über die Bridge, seit 09-09 hier entfernt) | Ready (stündlich)               | 2026-09-09      |
 | OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner + Telegram (3x täglich: 15:35/18:35/21:35)                                           | Ready (Mo–Fr, US-Handelszeiten) | 2026-09-02      |
 | Forex-Weekly-Report                                     | —                                                                                        | Report-Generator                                                                             | Ready                           | 2026-09-02      |
 | Bridge-Watchdog                                         | — (nur Log-Frische, kein Order-Bezug)                                                    | Heartbeat-Alarm + Status-Snapshot ins Repo                                                   | Ready (alle 30 Min)             | 2026-09-08      |
@@ -430,6 +434,10 @@ bewusst verworfen), nicht hier für immer liegen gelassen.
 
 _(Auszug — vollständiges Log in [CHANGELOG.md](CHANGELOG.md))_
 
+- 2026-09-09 — FK Instant Funding: Paper-Bot auf die 2 noch nicht live
+  geschalteten Beine (trend_pullback/gold_silver) reduziert, um doppelte
+  Telegram-Meldungen mit der jetzt 7-beinigen live Bridge zu vermeiden.
+  Details: CHANGELOG.
 - 2026-09-09 — dukascopy-Hang entschärft: Slow-Pfad-Retry bei FK Instant
   Funding + Funded-Portfolio-Bridge von 6x/8s/90s auf die in beiden
   Fast-Lanes längst bewährten 3x/3s/20s verkürzt (Worst Case pro Bein

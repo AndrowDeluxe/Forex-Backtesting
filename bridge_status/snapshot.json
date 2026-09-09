@@ -1,28 +1,26 @@
 {
-  "generated_at": "2026-09-09T16:01:25",
+  "generated_at": "2026-09-09T16:31:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-09T16:00:09",
+      "last_run": "2026-09-09T16:30:08",
       "minutes_since_last_run": 1.3,
       "status": "ok",
-      "last_equity_line": "2026-09-09 16:00:09 2026-09-09 16:00:02,827 INFO run_once: Konto-Equity 3399.32 EUR | Aggregiertes offenes Risiko (ganzes Konto): 243.41 (Deckel dieser Bridge: 271.95, 8%)",
-      "last_error_line": "2026-09-07 17:42:17 2026-09-07 17:42:15,948 INFO run_once: ou_modell: [{'status': 'error', 'symbol': 'EXPE', 'detail': \"OrderSendResult(retcode=10018, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Market closed', request_id=2346592997, retcode_external=0, request=TradeRequest(action=1, magic=990011, order=0, symbol='EXPE', volume=1.0, price=297.51, stoplimit=0.0, sl=264.36, tp=348.56, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='EK-ou_modell auto', position=0, position_by=0))\"}, {'status': 'skipped', 'reason': 'position_already_open', 'symbol': 'SYY'}]",
+      "last_equity_line": "2026-09-09 16:30:08 2026-09-09 16:30:02,382 INFO run_once: Konto-Equity 3388.80 EUR | Aggregiertes offenes Risiko (ganzes Konto): 243.41 (Deckel dieser Bridge: 271.10, 8%)",
       "recent_events": [
         "2026-09-09 15:45:08 2026-09-09 15:45:08,196 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, EXPE-Entry uebersprungen (offen 243.40 + neu 32.78 > Deckel 271.40)",
         "2026-09-09 15:45:08 2026-09-09 15:45:08,184 WARNING legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Risiko-Deckel erreicht, AIG-Entry uebersprungen (offen 243.40 + neu 33.61 > Deckel 271.40)",
-        "2026-09-09 10:30:08 2026-09-09 10:30:08,119 WARNING core.bracket_executor: [EK-CLSPractical] \\u26a0\\ufe0f Risiko-Deckel erreicht, Entry uebersprungen (offen 251.32 + neu 50.94 > Deckel 272.36)",
-        "2026-09-07 17:42:17 2026-09-07 17:42:15,947 ERROR legs.ou_modell.executor: [EK-OU] \\u26a0\\ufe0f Order fehlgeschlagen fuer EXPE: OrderSendResult(retcode=10018, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='Market closed', request_id=2346592997, retcode_external=0, request=TradeRequest(action=1, magic=990011, order=0, symbol='EXPE', volume=1.0, price=297.51, stoplimit=0.0, sl=264.36, tp=348.56, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='EK-ou_modell auto', position=0, position_by=0))"
+        "2026-09-09 10:30:08 2026-09-09 10:30:08,119 WARNING core.bracket_executor: [EK-CLSPractical] \\u26a0\\ufe0f Risiko-Deckel erreicht, Entry uebersprungen (offen 251.32 + neu 50.94 > Deckel 272.36)"
       ]
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-09T15:49:18",
+      "last_run": "2026-09-09T16:19:17",
       "minutes_since_last_run": 12.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-09 15:49:18 Verbunden: Login 504072729, Equity $99,110.30 USD",
+          "last_equity_line": "2026-09-09 16:19:17 Verbunden: Login 504072729, Equity $99,086.54 USD",
           "last_error_line": "2026-09-08 12:21:54 FEHLER auf Konto Funded Portfolio - TTP (Konto 2, Demo): Verbindung fuer Funded Portfolio - TTP (Konto 2, Demo) (Login 504072729) auch im zweiten Versuch fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-10005, 'IPC timeout')",
           "recent_events": [
             "2026-09-09 10:34:18 [TTP] ?? EXIT cls_practical EURUSD (Ticket 18334869, stop) -- already_closed @ 1.16 (P/L -582.40)",
@@ -30,14 +28,14 @@
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-09 15:49:18 Verbunden: Login 16054, Equity $99,469.37 USD",
+          "last_equity_line": "2026-09-09 16:19:17 Verbunden: Login 16054, Equity $99,469.37 USD",
           "last_error_line": "2026-09-08 12:21:54 FEHLER auf Konto Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835): Verbindung fuer Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (Login 16054) auch im zweiten Versuch fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-10005, 'IPC timeout')",
           "recent_events": [
             "2026-09-09 10:34:18 [IQMARKETS] ?? EXIT cls_practical EURUSD.gbe (Ticket 1441052, stop) -- already_closed @ 1.16 (P/L -408.96)"
           ]
         },
         "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (ttp)": {
-          "last_equity_line": "2026-09-09 15:49:18 Verbunden: Login 504069845, Equity $96,116.29 USD",
+          "last_equity_line": "2026-09-09 16:19:17 Verbunden: Login 504069845, Equity $96,110.62 USD",
           "last_error_line": "2026-09-08 12:07:27 FEHLER auf Konto Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld): Verbindung fuer Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (Login 504069845) auch im zweiten Versuch fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-10005, 'IPC timeout')",
           "recent_events": [
             "2026-09-09 10:34:18 [TTP] ?? EXIT cls_practical EURUSD (Ticket 18334870, stop) -- already_closed @ 1.16 (P/L -371.60)",
@@ -48,10 +46,10 @@
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-09T15:06:33",
-      "minutes_since_last_run": 54.9,
+      "last_run": "2026-09-09T16:06:33",
+      "minutes_since_last_run": 24.9,
       "status": "ok",
-      "last_equity_line": "2026-09-09 15:06:33 Verbunden: Login 17764, Equity $100,000.00",
+      "last_equity_line": "2026-09-09 16:06:33 Verbunden: Login 17764, Equity $100,000.00",
       "last_error_line": "2026-09-07 18:33:54 orb-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
       "recent_events": [
         "2026-09-08 10:06:33  LIVE EXIT ctnl_continuation XAUUSD.gbe (stop) -- war nur geplant, kein echtes Ticket.",

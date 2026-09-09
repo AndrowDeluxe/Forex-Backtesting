@@ -9,6 +9,93 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-09** [FK Instant Funding Bridge] **Bugfix: die ersten beiden
+  echten Orders dieser Bridge sind nie beim Broker angekommen — Lot-Größe
+  wurde als Dataclass statt als `float` in den MT5-Request gelegt.**
+  `FKInstantFunding-MT5-Bridge/sizing.py::calc_lot_size()` liefert seit
+  2026-08-28 ein `SizingResult`-Dataclass (`lots`/`actual_risk_dollars`/
+  `bumped_to_minimum`), `executor.py::place_market_entry()` reichte dieses
+  Objekt aber unverändert als `request["volume"]` durch. `mt5.order_send()`
+  lehnt das als Invalid Params ab und gibt `None` zurück → Log nur
+  "Markt-Entry fehlgeschlagen: None", Signal landet als `status:"missed"`,
+  `ticket:null` im `bridge_state.json`. Aufgefallen erst heute, weil mit der
+  LIVE_LEGS-Erweiterung (09:47, `gold_asb`/`cls_practical`/
+  `ctnl_continuation`/`ctnl_reversal` dazu) überhaupt zum ersten Mal echte
+  Orders losgehen sollten — der DRY_RUN-Pfad baut den Request gar nicht
+  erst und konnte den Fehler nie zeigen. **Zwei Signale verloren:**
+  `cls_practical` EURUSD long (10:30 Berlin) und `ctnl_continuation` XAUUSD
+  long (17:20 Berlin). Fix: `lots = sizing.lots` vor dem Request-Bau;
+  `actual_risk_dollars`/`bumped_to_minimum` werden jetzt zusätzlich in
+  State + Telegram-Meldung geführt (tatsächliches statt nur Ziel-Risiko).
+  Zusätzlich: bei `order_send()==None` wird jetzt `mt5.last_error()` + der
+  Request geloggt statt bloß "None". Andere Bridges nicht betroffen —
+  Funded-/EK-/GoldASB-/CTNL-Edge-/OU-/BTC-Bridge geben in `calc_lot_size()`
+  weiterhin ein blankes `float` zurück (geprüft). Dateien liegen außerhalb
+  des Repos, kein Commit-Hash.
+
+- **2026-09-09** [FK Instant Funding Bridge] **Signal-Erkennung hinkt
+  strukturell ~10 Min. hinter dem Signal-Zeitstempel her — Ursachenkette
+  vermessen, noch nichts geändert.** M5-Bar-Label 10:20 → Bar schließt
+  10:25 → `DataLake-Ingest-Fast5` schreibt zur Minute ≡1 mod 5 (:26:51) →
+  `FKInstantFunding-MT5-Bridge-Fast` scannt zur Minute ≡0 mod 5 (:30:00).
+  Die beiden Tasks stehen ~2 Min. gegeneinander versetzt: die Bridge läuft
+  jeweils *vor* dem frischen Ingest. Bei `cls_practical` heute war die
+  Erkennung (10:30) damit später als der Ausstieg des Trades selbst
+  (Entry 10:20, Stop 10:25) — `MAX_SIGNAL_AGE_MINUTES_FOR_ENTRY = 60` greift
+  hier nicht, weil es das ALTER des Signals misst, nicht dessen Restlaufzeit.
+  Vorschläge (Task-Offset, Restlaufzeit-Gate) unter "🔍 Braucht deine
+  Bestätigung" in `DASHBOARD.md`, nicht eigenmächtig umgesetzt.
+
+- **2026-09-09** [Research / Second Brain] **JPM "Cross Asset Momentum
+  Spillover"-Paper durch den 8-Phasen-Prozess: beide verfolgten Workstreams
+  negativ, ehrlich dokumentiert, nichts live verdrahtet.** Nutzerentscheid
+  nach Screening: FX-only-Nachbau (neues Package `fx_momentum_spillover/`)
+  + Cross-Check-Filter für Gold ASB, volles 42-Asset-Universum bewusst
+  zurückgestellt (Ideen-Inbox). **Workstream A** (FX-only, 7 Majors, eigenes
+  Ersatz-Momentum-Signal + rollierende L1-Logit-Spillover-Regression,
+  eigene Portfolio-Engine): reproduziert die Paper-These nicht (Sharpe
+  Individual -0.37, Spillover -0.13, Combination -0.30 statt Paper-Claim
+  +0.66/+0.75/+0.74), konsistent negativ über IS/OOS + Monte-Carlo +
+  Kosten-Sweep. Dabei ein echter Datenlücken-Fund (Dukascopy NZDUSD
+  2003-2009 lückenhaft, USDJPY-Lücke 2010) und ein echter Konstruktions-
+  Bug gefunden+behoben (Turnover/Return-Skalen-Asymmetrie ließ Kosten
+  Tagesrenditen bis -420% erzeugen — behoben durch Gross-Exposure-
+  Normalisierung). **Workstream B** (Gold ASB: die bei `cls_practical`
+  validierte Rate-Momentum-Risk-Scaling-Mechanik zum ersten Mal auf Gold
+  angewendet, NICHT die bereits verworfene Alignment-Gate-Variante):
+  besteht den Structure-Preserving-Randomisierungstest nicht (p=0.665-0.670,
+  Muster nicht von Zufall unterscheidbar) — reines Leverage-Artefakt.
+  Details: `knowledge/projects/fx-momentum-spillover.md`,
+  `knowledge/resources/cross-asset-momentum-spillover.md`,
+  `knowledge/resources/fx-microstructure.md`.
+
+- **2026-09-09** [Second Brain / Funded-Portfolio-Bridge / EK-Portfolio-Bridge]
+  **5 offene Dashboard-Punkte durchgearbeitet, keine Code-Aenderung — reine
+  Log-/Git-Recherche.** (1) Terminal-Check Funded-Portfolio-Bridge: IPC-
+  Timeouts vom 09-08 waren auf das Fenster 09:52-12:24 Uhr begrenzt, seither
+  durchgehend stabil; wahrscheinliche Ursache gefunden (Prozess-Restart des
+  GoldFKBot-Terminals faellt zeitlich exakt mit der Erholung zusammen,
+  `_terminal_running()` prueft nur Prozess-Existenz statt Health, alle 3
+  Konten teilen sich einen MT5-IPC-Client pro Lauf). (2) EK-Portfolio-Bridge/
+  ou_modell EXPE "Market closed": wahrscheinliche Ursache gefunden (Deviation-
+  Check meldete kurz vorher `deviation=1.0`, passt zu fehlendem Live-Kurs;
+  spaetere Order scheiterte mit echtem Broker-Retcode 10018, kein Verbindungs-
+  fehler — spricht fuer symbolspezifischen Session-/Halt-Zustand bei
+  Tickmill, nicht fuer einen Gate-Bug). (3) EK-Portfolio-Bridge Log-Fragment:
+  geklaert, kein Bug — normaler Python-3.14-Traceback, ausgeloest durch den
+  bekannten dukascopy-`_stream()`-Bug (Zeile 219/242) beim Versuch des am
+  selben Tag (09-07) neu gebauten Live-Fallbacks. (4) Second-Brain-Lint:
+  der Dashboard-Eintrag "lint.py/Skill fehlen im Repo" (09-07) war ein
+  Fehlbefund — `git ls-files`/`git log` bestaetigen, beide Dateien wurden
+  bereits am 2026-09-07 committet (`af96c0e`) und sind auf `origin/main`;
+  Lint danach tatsaechlich gelaufen (erster echter Durchlauf seit 09-01):
+  8 tote Wikilinks (1 falsch-positiv), 6 verwaiste Seiten, 0 veraltete
+  Statustabellen-Daten, 14 unverarbeitete Clippings; ein neuer Cross-System-
+  Link-Fall (Wikilink auf eine Claude-Memory-Datei) als offene Konventions-
+  frage vermerkt. (5) `DataLake-Ingest-Fast5`-Luecke vom 09-07 auf
+  Nutzerentscheid verworfen (einmaliger Ausreisser, seither nicht
+  wiederholt). Details/vollstaendiger Wortlaut je Punkt: `DASHBOARD.md`.
+
 - **2026-09-09** [FK Instant Funding / Funded-Portfolio-Bridge] **dukascopy-
   Hang entschaerft: Slow-Pfad-Retry von 6x/8s/90s auf 3x/3s/20s verkuerzt
   (Worst Case pro Bein ~9,7 Min. -> ~66s) + FKs unbehandelten Lock-Absturz
@@ -114,6 +201,29 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-09** [FK Instant Funding] **Paper-Bot (`fk_instant_funding/
+  paper_bot.py::scan_once()`) auf die 2 noch nicht live geschalteten Beine
+  reduziert** (Nutzerauftrag, direkte Folge der `LIVE_LEGS`-Erweiterung
+  oben): scannt jetzt nur noch `trend_pullback`/`gold_silver`, die 5
+  Scan-Bloecke fuer gold_asb/cls_practical/ctnl_continuation/ctnl_reversal/
+  orb (alle 3 Maerkte) entfernt -- die live Bridge sendet fuer diese 7
+  Beine bereits eigene Telegram-Meldungen zum selben Signal, ein paralleler
+  Paper-Scan haette nur doppelte Meldungen erzeugt. Scan-Funktionen selbst
+  (`_scan_gold_asb` etc.) bleiben unveraendert im Modul, werden weiterhin von
+  `FKInstantFunding-MT5-Bridge/run_once.py` (`import fk_instant_funding.
+  paper_bot as pb`) fuer die echte Bridge gebraucht -- nur die Aufrufe
+  INNERHALB von `scan_once()` entfernt. Historische Trades der 7 Beine
+  bleiben im State (fuer Equity-/Kill-Switch-Historie unveraendert), es
+  kommen nur keine neuen mehr dazu. CTNL-Standalone-Kill-Switch-Check
+  bewusst NICHT entfernt (arbeitet ab jetzt nur noch auf eingefrorener
+  historischer Ctnl-Historie, aber erzeugt dadurch selbst keine neuen
+  Meldungen -- kein zusaetzlicher Spam, Entfernen war nicht Teil des
+  Auftrags). `py_compile` sauber. Getrennt vom separat dokumentierten
+  dukascopy-Hang-Retry-Punkt (siehe DASHBOARD "Braucht deine Bestätigung") --
+  dort ging es um Fehlermeldungs-Spam bei Scan-Fehlern, hier um doppelte
+  Signal-Meldungen wegen Ueberschneidung mit der live Bridge; falls die
+  dortige Meldung von einem der jetzt entfernten Beine stammte, sollte sie
+  nebenbei mit verschwinden, das ist aber nicht verifiziert.
 - **2026-09-09** [FK Instant Funding] **`LIVE_LEGS` um gold_asb/cls_practical/
   ctnl_continuation/ctnl_reversal erweitert** (Nutzerentscheid, nach zwei
   weiteren sauberen `run_once_fast.py`-Laeufen -- einer davon ausserhalb der

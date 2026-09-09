@@ -77,6 +77,26 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
+- **FK-Bridge Signal-Latenz: zwei Vorschläge von mir, beide NICHT umgesetzt**
+  (2026-09-09, Details CHANGELOG). Beim Nachgehen des Order-Bugs vermessen:
+  die Bridge sieht ein M5-Signal strukturell erst ~10 Min. nach dessen
+  Zeitstempel (5 Min. Bar-Laufzeit + 5 Min. Scan-Raster). (1) **Task-Offset:**
+  `DataLake-Ingest-Fast5` schreibt zur Minute ≡1 mod 5 (:01:51, :06:51, …),
+  `FKInstantFunding-MT5-Bridge-Fast` scannt zur Minute ≡0 mod 5 (:00, :05, …)
+  — die Bridge läuft also jeweils ~2 Min. *vor* dem frischen Ingest und
+  arbeitet auf Daten, die schon fast einen Zyklus alt sind. Den Fast-Task auf
+  :03/:08/:13/… zu verschieben würde jedem Signal ~2 Min. Latenz sparen, ohne
+  sonst irgendetwas zu ändern. Betrifft die gleichen Task-Paare auch bei
+  Funded-/EK-Portfolio-Bridge (dort nicht nachgeprüft). (2) **Restlaufzeit-
+  Gate:** `MAX_SIGNAL_AGE_MINUTES_FOR_ENTRY = 60` misst nur das ALTER des
+  Signals, nicht dessen erwartete Restlaufzeit. Der heutige `cls_practical`-
+  Trade (Entry 10:20, Stop 10:25 Berlin) war bereits 5 Min. TOT, als die
+  Bridge um 10:30 zu entern versuchte — der 60-Min.-Wächter hätte den Entry
+  klaglos durchgelassen. Heißt: der Order-Bugfix allein löst diesen Fall
+  nicht; ohne engeres Gate hätte die Bridge heute eine Live-Position in ein
+  längst gelaufenes Signal eröffnet und beim nächsten Scan wieder
+  geschlossen. Ein per-Bein-Limit (CLS/ORB kurz, CTNL lang) wäre die
+  naheliegende Form — **deine Entscheidung, ich habe nichts angefasst.**
 - **dukascopy-Hang-Fix: eine Plan-Abweichung + Verifikation steht noch aus**
   (2026-09-09, Details CHANGELOG). Der freigegebene Plan sah zusätzlich vor,
   dieselben engeren Retry-Werte auch in `fk_instant_funding/paper_bot.py`s
@@ -127,90 +147,103 @@ abgehakt-und-liegengelassen.
   ausgelassen (statt in einem kaputten Merge-Zustand zu landen). Verifiziert:
   PowerShell-Parser + `py_compile` sauber; der praktische Beweis kommt mit
   dem nächsten Push-Zyklus der geplanten Tasks.
-- **EK-Portfolio-Bridge/ou_modell: Order fuer EXPE scheiterte am 2026-09-07
-  wiederholt mit "Market closed"** (urspruenglich gefunden 2026-09-07,
-  Snapshot-Stand 17:01 Uhr) -- **Telegram-Wiederholung jetzt behoben, offene
-  Frage nach der eigentlichen Ursache bleibt.** Beim direkten Lesen von
-  `legs/ou_modell/executor.py` (2026-09-08, ich habe darauf entgegen der
-  urspruenglichen Annahme hier vollen Zugriff) gefunden: `check_and_execute()`
-  hat bereits einen `_nyse_is_open()`-Handelszeiten-Gate GANZ AM ANFANG (Zeile
-  150) -- die urspruengliche Vermutung "fehlendes Handelszeiten-Gate" trifft
-  also nicht zu, die 16:10-16:54-Uhr-Versuche lagen vermutlich innerhalb der
-  erkannten NYSE-Handelszeit (16:xx Uhr CEST = vormittags ET). "Market closed"
-  fuer genau dieses eine Symbol trotz offenem Gate deutet eher auf einen
-  einzeltitel-spezifischen Halt/Broker-Zustand hin, nicht auf einen
-  generischen Zeitfehler -- nicht weiter untersucht, da an dem Tag selbst
-  nicht mehr reproduzierbar. Was ich behoben habe: die wiederholte IDENTISCHE
-  Telegram-Meldung (Nutzerauftrag "Fehler-Nachrichten auf 1x reduzieren") --
-  `already_notified("order_failed", "ou_modell_EXPE")`-Dedup in
-  `_execute_one()` ergaenzt, sodass ein anhaltender Fehlschlag nur noch 1x/Tag
-  alarmiert, der Order-Versuch selbst aber weiterhin jeden Lauf erfolgt
-  (kein stilles Aufgeben). Falls sich das wiederholt: dann lohnt eine echte
-  Root-Cause-Untersuchung des Broker-Fehlers selbst, nicht mehr des Gates.
-- **EK-Portfolio-Bridge: unformatiertes Log-Fragment in `recent_events`
-  (Rohtext eines f-Strings statt ausgewerteter Werte)** (gefunden
-  2026-09-07). Zweimal (15:24 und 16:54 Uhr) taucht in den Events woertlich
-  `f"Lake-Daten fuer {source}:{key}_{timeframe} zu alt
-  (last_success_at=...)"` auf -- das ist der Quelltext der `raise`-Zeile in
-  `data_lake/reader.py:69` (`_require_fresh()`), nicht eine ausgewertete
-  Fehlermeldung. Sieht nach einer rohen Traceback-Zeile aus (Python zeigt
-  bei mehrzeiligen `raise`-Statements den Quellcode woertlich), was darauf
-  hindeuten wuerde, dass hier eine `LakeStaleDataError` NICHT von
-  `with_live_fallback()` abgefangen, sondern als unbehandelte Exception mit
-  vollem Traceback geloggt wurde -- moeglicherweise weil danach auch der
-  Live-Fallback-Fetch gescheitert ist (z.B. der bekannte dukascopy-Hang).
-  Bridge-Status insgesamt bleibt "ok", und ich habe nur die Snapshot-
-  Fragmente, keinen vollstaendigen Log-Kontext -- will deswegen nichts am
-  Code aendern/vermuten. Bitte bei Gelegenheit im echten Log
-  (`EK-Portfolio-Bridge\logs\task_run.log`, ca. 15:24 und 16:54 Uhr)
-  nachschauen, ob dahinter mehr steckt als die schon bekannte
-  Lake-Staleness/dukascopy-Traegheit.
-- **Funded-Portfolio-Bridge: wiederholte `IPC timeout`-Verbindungsfehler auf
-  allen 3 MT5-Konten, seit ca. 11:52 Uhr andauernd** (gefunden 2026-09-08,
-  heutige Session, beim direkten Log-Check). Betrifft alle drei Konten
-  (TTP Konto 2 Demo, TTP Konto 1 **echtes Geld**, IQ Markets) gleichzeitig —
-  anders als der TTP-Konto-2-Vorfall vom 2026-09-07 (nur 1 Konto, fehlendes
-  `/portable`), was eher gegen ein einzelnes kaputtes Terminal und eher für
-  Maschinen-/Ressourcen-Druck (z.B. gleichzeitig laufende Terminals + Python-
-  Prozesse + evtl. weitere parallele Sessions) spricht — nicht verifiziert.
-  Einzelne Läufe klappen zwischendurch (z.B. 12:21 Uhr Konto 1 verbunden,
-  Equity $96.856,98), einige Folgeläufe scheitern zusätzlich mit
-  "State-Lock nicht frei geworden" (Symptom der langsamen/gescheiterten
-  Verbindungsversuche, kein eigenständiger Bug). Kein Totalausfall, aber
-  unzuverlässig auf einem Konto mit echtem Geld. Ich habe nichts an Terminals/
-  Prozessen angefasst (Neustart eines MT5-Terminals wäre ein Eingriff in
-  laufende Bridge-Prozesse). Bitte prüfen: laufen gerade ungewöhnlich viele
-  Prozesse auf der Maschine, und falls sich das nicht von selbst legt, lohnt
-  ein Blick auf die 3 MT5-Terminal-Prozesse für Funded-Portfolio-Bridge.
-- **Second-Brain-Lint (wöchentliche Routine) lief heute ins Leere:
+- ~~EK-Portfolio-Bridge/ou_modell: Order fuer EXPE scheiterte am 2026-09-07
+  wiederholt mit "Market closed"~~ — **wahrscheinliche Ursache gefunden
+  2026-09-09** (volle Log-Auswertung `EK-Portfolio-Bridge/logs/task_run.log`).
+  Um 15:54:27 Uhr, kurz VOR der ersten fehlgeschlagenen Order, meldete der
+  eigene Deviation-Schutz (`legs/ou_modell/executor.py:192`)
+  `entry_deviation_too_large` mit `deviation=1.0` fuer EXPE — eine Abweichung
+  von exakt 100% zwischen Zielpreis (297.51) und `symbol_info_tick().ask`
+  deutet auf `ask=0` hin, also KEINEN Live-Kurs fuer dieses Symbol zu dem
+  Zeitpunkt (kein Rundungsfehler, ein "kein Kurs verfuegbar"-Symptom). 6
+  Minuten spaeter (ab 16:00 Uhr) kam wieder ein Tick-Wert zurueck, der
+  Deviation-Check liess die Order durch, aber `order_send()` wurde vom
+  Broker mit `retcode=10018` (`TRADE_RETCODE_MARKET_CLOSED`) abgelehnt — ein
+  echter Broker-seitiger Ablehnungscode, kein Verbindungs-/Timeout-Fehler.
+  Zusammengenommen spricht das dafuer: der generische
+  `_nyse_is_open()`-Handelszeiten-Gate war korrekt offen, aber die
+  tatsaechliche, symbolspezifische Handelssession fuer EXPE bei Tickmill war
+  zu dem Zeitpunkt noch nicht aktiv (verzoegerter Session-Start fuer dieses
+  eine CFD, oder ein Symbol-seitiger Halt) — passt auch dazu, dass Zielpreis
+  UND SL/TP ueber alle ~15 Wiederholungen (15:15-17:42 Uhr) identisch blieben
+  (festgehaltenes Tagessignal, kein Refresh). Nicht 100% zweifelsfrei (kein
+  Broker-Session-Log einsehbar), aber deutlich konkreter als der bisherige
+  Stand. Kein Code-Bug, kein Handlungsbedarf — falls es sich wiederholt,
+  waere Tickmills tatsaechliche Handelszeit fuer US-Aktien-CFDs (ggf.
+  abweichend von den generischen NYSE-Kernzeiten) der naechste Schritt.
+- ~~EK-Portfolio-Bridge: unformatiertes Log-Fragment in `recent_events`
+  (Rohtext eines f-Strings statt ausgewerteter Werte)~~ — **geklaert
+  2026-09-09, kein Bug.** Volle Einzel-Run-Logs
+  (`logs/run_20260907_151503.log` Zeile 274ff, `run_20260907_164504.log`
+  Zeile 500ff) zeigen: das ist ein ganz normaler Python-Traceback (`ERROR
+  run_once: cls_practical: unerwarteter Fehler`), bei dem Python 3.14 die
+  Quellzeile des `raise LakeStaleDataError(...)`-Statements woertlich mit
+  ausgibt (Standard-Traceback-Format seit Python 3.11) — erklaert die "rohe
+  f-String"-Optik vollstaendig. Ablauf beide Male identisch: Lake-Daten zu
+  alt -> `with_live_fallback()` (erst am selben Tag, 09-07, gebaut) greift
+  korrekt und versucht Live-Fetch -> Live-Fetch scheitert SEINERSEITS am
+  bereits bekannten dukascopy-Bug (`_stream()` Zeile 219/242, `TypeError:
+  '>' not supported between instances of 'str' and 'float'`, identisch fuer
+  beide Vorkommen: EURUSD_M5 um 15:21 und USDCHF_M15 um 16:53) -> keine
+  weitere Fallback-Ebene mehr -> Exception propagiert bis `_run_leg()` hoch
+  und wird dort mit vollem Traceback geloggt (kein Telegram-Spam,
+  Bridge-Status blieb "ok", wie schon vermutet). Kein neuer Bug — nur eine
+  bisher nicht explizit beobachtete Kombination zweier bekannter Dinge
+  (Lake-Staleness + dukascopy-Bug). Idee fuer spaeter (kein Auftrag):
+  `with_live_fallback()` koennte einen fehlschlagenden Live-Fallback selbst
+  auch abfangen und als "no_signal" statt als harten Leg-Fehler behandeln —
+  aktuell nicht gebaut.
+- ~~Funded-Portfolio-Bridge: wiederholte `IPC timeout`-Verbindungsfehler auf
+  allen 3 MT5-Konten, seit ca. 11:52 Uhr 09-08 andauernd~~ — **war zeitlich
+  begrenzt, seit 2026-09-08 12:34 Uhr durchgehend stabil** (geprueft
+  2026-09-09, inkl. sauberer Laeufe den gesamten heutigen Vormittag).
+  Log-Auswertung: Fehler traten durchgehend von 09:52 bis 12:24 Uhr auf
+  09-08 auf (alle 3 Konten pro Zyklus gemeinsam betroffen), endeten
+  schlagartig ab 12:34 Uhr. Prozessliste zeigt: der Terminal-Prozess "MT5
+  Terminal - GoldFKBot" (IQ-Markets/BeyondIQCapital-Konto 16054) wurde exakt
+  in diesem Fenster (12:19:36 Uhr) neu gestartet — passt zum ersten wieder
+  erfolgreichen Connect fuer genau dieses Konto um 12:24 Uhr. Wahr-
+  scheinlichste Ursache: `_terminal_running()` in `executor.py` prueft nur,
+  OB ein Terminal-Prozess mit passendem Pfad LAEUFT (PowerShell-
+  Prozessliste), nicht ob er noch reagiert — ein haengender, aber technisch
+  noch laufender GoldFKBot-Prozess waere von `_ensure_terminal_running()`
+  nie automatisch neugestartet worden. Da `run_once.py` alle 3 Konten
+  sequenziell in EINEM Python-Prozess mit gemeinsamem MT5-IPC-Client
+  abarbeitet, wuerde ein haengender Connect fuer ein Konto plausibel auch
+  die beiden anderen im selben Zyklus mitreissen — passt zum beobachteten
+  Muster (immer alle 3 gemeinsam betroffen). Nicht zweifelsfrei bewiesen
+  (kein Log vom haengenden Prozess selbst), aber die zeitliche Deckung ist
+  sehr stark. Terminals nicht angefasst, aktuell kein Handlungsbedarf, da
+  stabil. Idee fuer spaeter (kein Auftrag): `_terminal_running()` um einen
+  echten Health-Check erweitern statt nur Prozess-Existenz zu pruefen.
+- ~~Second-Brain-Lint (wöchentliche Routine) lief heute ins Leere:
   `knowledge/scripts/lint.py` + `.claude/skills/second-brain-lint/SKILL.md`
-  fehlen im Repo** (geprüft 2026-09-07). Laut `CHANGELOG.md`-Einträgen vom
-  2026-09-01 wurden beide Dateien damals erstellt und committet, inkl.
-  wöchentlichem Cloud-Trigger ab demselben Tag — `git log --all` findet
-  aber auf keinem Branch/Commit dieses Repos je einen Pfad `knowledge/
-  scripts/*` oder `.claude/skills/second-brain-lint/*`. Mögliche Ursachen:
-  nur lokal erstellt und nie gepusht, in einem späteren Commit versehentlich
-  wieder entfernt, oder in einem anderen Repo/Pfad gelandet. Diese Routine
-  hat NICHTS rekonstruiert (Gefahr, etwas Bestehendes/Lokales zu
-  duplizieren oder zu überschreiben) — kein Lint-Lauf heute, Status quo vom
-  2026-09-01 unten unverändert. Bitte prüfen: Dateien lokal noch vorhanden
-  (dann nachträglich committen) oder soll das Skript neu gebaut werden?
-- **`DataLake-Ingest-Fast5` + `FKInstantFunding-MT5-Bridge` (stündlich):
-  auffällige Lücke ~14:31-15:0x Uhr** (gefunden 2026-09-07 beim Performance-
-  Check des cls_practical-Fixes). `DataLake-Ingest-Fast5` lief laut Task
-  Scheduler zuletzt 14:26:51, naechster Lauf erst 15:11:50 (~45 statt 5 Min.
-  Abstand); `FKInstantFunding-MT5-Bridge` hat seinen 14:57-Lauf ausgelassen,
-  erst 15:06:19 wieder gelaufen. `Bridge-Watchdog` (alle 30 Min) lief im
-  selben Fenster ganz normal (14:31, 15:01) — kein Totalausfall der
-  Maschine. Nicht durch heutige Code-Aenderungen ausgeloest (keine der
-  beiden betroffenen Tasks/Dateien wurde heute angefasst). Ungeprüfte
-  Vermutung: `DataLake-Ingest-Fast5` ist auf "bei Batteriebetrieb nicht
-  starten" konfiguriert (schtasks-Energieverwaltung) — passt zu einem
-  Surface-Geraet, das kurz vom Netzteil getrennt war, aber nicht verifiziert
-  (Akkustatus-Historie nicht einsehbar). Beide Tasks laufen inzwischen
-  wieder normal, kein Handlungsbedarf akut, aber falls sich das wiederholt
-  lohnt ein Blick auf die Energieeinstellungen der betroffenen Scheduled
-  Tasks.
+  fehlen im Repo~~ — **Korrektur 2026-09-09: falscher Befund, beide Dateien
+  waren die ganze Zeit da.** `git ls-files`/`git log` bestaetigen: beide
+  wurden bereits am 2026-09-07 committet (`af96c0e`, "Second Brain:
+  Handoff-Skill, Edge-Card-Workflow, PARA-Notizen, Tooling") und sind auf
+  `origin/main` gepusht — der Eintrag vom 2026-09-07 beruhte auf einem
+  fehlerhaften `git log`-Check der damaligen Session (Detail nicht mehr
+  rekonstruierbar). Lint jetzt tatsaechlich gelaufen (erster echter
+  Durchlauf seit 2026-09-01): 8 tote Wikilinks (1 davon falsch-positiv,
+  `[[slug]]` in CHANGELOG.md:1008 ist literaler Beispieltext, kein echter
+  Link), 6 verwaiste Seiten, 0 veraltete Statustabellen-Daten, 14
+  unverarbeitete Clippings. Details/Einsortierung: CHANGELOG + unten.
+- **Neuer Wikilink-Typ beim heutigen Lint-Lauf: Cross-System-Link auf eine
+  Claude-Memory-Datei** (`resources/cross-asset-momentum-spillover.md:86`,
+  `[[cls-practical-strategy-state]]` — zeigt auf die Memory-Notiz
+  `cls_practical_strategy_state.md`, nicht auf eine `knowledge/`-Datei).
+  Fuer Obsidian technisch ein toter Link, obwohl der referenzierte Inhalt
+  existiert — reine Konventionsfrage (z.B. eigene Zitierform statt
+  `[[...]]` fuer Memory-Referenzen), siehe Skill `second-brain-lint`.
+  Bisher einziges bekanntes Vorkommen dieses Typs. Wie soll auf Memory-
+  Inhalte aus `knowledge/`-Notizen kuenftig verwiesen werden?
+- ~~`DataLake-Ingest-Fast5` + `FKInstantFunding-MT5-Bridge` (stündlich):
+  auffällige Lücke ~14:31-15:0x Uhr~~ — **bewusst verworfen 2026-09-09
+  (Nutzerentscheid)**: einmaliger ~45-Minuten-Ausreisser am 2026-09-07,
+  seither nicht wiederholt, ungeprüfte Akku-/Energieverwaltungs-Vermutung
+  bleibt unverifiziert. Keine weitere Untersuchung — bei erneutem Auftreten
+  neu aufgreifen.
 - ~~FKInstantFunding-MT5-Bridge: echter Order-Executor gebaut, wartet auf
   `DRY_RUN=False`~~ — **`DRY_RUN=False` gesetzt 2026-09-08** (expliziter
   Nutzerauftrag "Setze dry run False, damit ist orb jetzt live"). NY-Open
@@ -320,9 +353,10 @@ abgehakt-und-liegengelassen.
 ### Offene Aufgaben
 
 **Mittel**
-- **12 unverarbeitete Clippings seit 2026-09-03** in `knowledge/Clippings/`
-  (Edge-Genesis/-Decay, Risk-Factor-Investing, Sektor-Rotation, u.a.) —
-  noch nicht durch den CODE-Prozess.
+- **14 unverarbeitete Clippings** in `knowledge/Clippings/` (Stand
+  2026-09-09-Lint, davor 12 seit 2026-09-03) — u.a. Edge-Genesis/-Decay,
+  Risk-Factor-Investing, Sektor-Rotation, "Six Repos One System", "How
+  system works" — noch nicht durch den CODE-Prozess.
 - ~~Second-Brain/Dashboard-Struktur: Feedback nach ein paar Tagen
   einholen~~ — erhalten 2026-09-06: Nutzer sehr zufrieden mit dem neuen
   Workflow, Dashboard passt gut rein. Redesign (Prioritäten-Sortierung,
@@ -335,9 +369,10 @@ abgehakt-und-liegengelassen.
   2026-09-02.
 
 **Niedrig**
-- `knowledge/`-Altlasten (Lint 2026-09-01): tote Wikilinks
-  (`[[cls-practical]]`, `[[gap-fade]]`, `[[execution-overlay]]`) + 8
-  verwaiste Seiten, meist unkritisch. Details: Lint-Output/CHANGELOG.
+- `knowledge/`-Altlasten (Lint 2026-09-09, vorher 2026-09-01): tote
+  Wikilinks (`[[cls-practical]]`, `[[gap-fade]]`, `[[execution-overlay]]`,
+  je 2 Vorkommen) + 6 verwaiste Seiten, meist unkritisch. Details:
+  Lint-Output/CHANGELOG.
 
 ## Status — was läuft gerade wirklich
 
@@ -351,7 +386,7 @@ abgehakt-und-liegengelassen.
 | OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner + Telegram (3x täglich: 15:35/18:35/21:35)                                           | Ready (Mo–Fr, US-Handelszeiten) | 2026-09-02      |
 | Forex-Weekly-Report                                     | —                                                                                        | Report-Generator                                                                             | Ready                           | 2026-09-02      |
 | Bridge-Watchdog                                         | — (nur Log-Frische, kein Order-Bezug)                                                    | Heartbeat-Alarm + Status-Snapshot ins Repo                                                   | Ready (alle 30 Min)             | 2026-09-08      |
-| Funded-Portfolio-Bridge (TTP+IQ Markets, 6 Beine)       | TTP Konto 2 (504072729) + TTP Konto 1 (504069845) + BeyondIQCapital (16054) — **alle 3 verbunden** (IQ 15514 am 2026-09-07 entfernt) | **LIVE — DRY_RUN=False** (alle 6 Beine `source="lake"`; seit ~11:52 Uhr 09-08 wiederholte IPC-Timeouts, siehe 🔍 Bestätigung) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-08      |
+| Funded-Portfolio-Bridge (TTP+IQ Markets, 6 Beine)       | TTP Konto 2 (504072729) + TTP Konto 1 (504069845) + BeyondIQCapital (16054) — **alle 3 verbunden** (IQ 15514 am 2026-09-07 entfernt) | **LIVE — DRY_RUN=False** (alle 6 Beine `source="lake"`; IPC-Timeouts 09-08 09:52-12:24 Uhr, seither stabil, siehe 🔍 Bestätigung) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-09      |
 | Funded-Portfolio-Bridge-Fast                            | Gleiche 3 Konten (geteilte Terminals)                                                    | **LIVE — DRY_RUN=False** (ctnl_continuation + orb_sp500/us30/nasdaq + cls_practical, `source="lake"`) | Ready (alle 5 Min, Mo–Fr)       | 2026-09-08      |
 | DataLake-Ingest-Fast                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt `data_lake_store/` für Funded-Portfolio-Bridge (19 Keys, 15-Min-Kadenz)                | Ready (alle 15 Min, Mo–Fr)      | 2026-09-04      |
 | DataLake-Ingest-Fast5                                   | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt 8 M5/M15-Timing-kritische Keys für ctnl_continuation/orb/cls_practical (EURUSD M5 seit 2026-09-07) | Ready (alle 5 Min, Mo–Fr)       | 2026-09-07      |
@@ -363,16 +398,14 @@ Live-Status aller drei Portfolio-Bridges jetzt auch als Streamlit-Seiten
 das der Bridge-Watchdog alle 30 Min. committet.
 
 _Letzter Lint-Check (tote Wikilinks, veraltete Daten, Widersprüche,
-verwaiste Seiten, unverarbeitete Clippings): 2026-09-01, `knowledge/scripts/lint.py`
-um Clippings-Check erweitert (siehe Skill `second-brain-lint`). Ergebnis: 0
-veraltete Statustabellen-Daten, 8 verwaiste Seiten, mehrere tote Wikilinks,
-5 unverarbeitete Clippings (inzwischen verarbeitet, siehe "Offene Aufgaben"
-unten). Widersprüche (c) nicht vollständig manuell durchgegangen, nur
-stichprobenartig — zwei sind beim heutigen Redesign per Code-Check
-aufgefallen und aufgelöst (siehe "🔍 Braucht deine Bestätigung" oben).
-**Versuch 2026-09-07 (erster geplanter wöchentlicher Lauf) fehlgeschlagen**
-— `lint.py`/Skill fehlen im Repo, siehe "🔍 Braucht deine Bestätigung" oben.
-Kein neuer Lint durchgeführt, obiger Stand vom 2026-09-01 weiterhin aktuell._
+verwaiste Seiten, unverarbeitete Clippings): **2026-09-09** (erster
+tatsaechlich erfolgreiche Lauf seit 2026-09-01 — der Fehlversuch vom
+2026-09-07 war ein falscher Befund, siehe "🔍 Braucht deine Bestätigung").
+Ergebnis: 0 veraltete Statustabellen-Daten, 6 verwaiste Seiten, 8 tote
+Wikilinks (1 falsch-positiv), davon 1 neuer Cross-System-Link-Fall
+(Memory-Verweis, siehe oben), 14 unverarbeitete Clippings (siehe "Offene
+Aufgaben"). Widersprüche (c) weiterhin nur stichprobenartig, nicht
+vollstaendig manuell durchgegangen._
 
 ## Status — aktuell nicht aktiv
 

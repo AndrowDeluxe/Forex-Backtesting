@@ -9,6 +9,137 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-09** [FK Instant Funding] **NY-Open ORB holt seine Bars jetzt direkt
+  aus MT5 statt aus dukascopy/Lake — plus ein dabei gefundener Bug, der auch
+  EK-Portfolio-Bridge betrifft.** Nutzerauftrag, nachdem aufgefallen war, dass
+  EK diese Datenbeschaffung laengst hat und die beiden anderen Bridges nicht.
+
+  **Phase 0 (Probe, `FKInstantFunding-MT5-Bridge/probe_orb_mt5.py`, read-only):**
+  vier Unbekannte am echten Terminal geklaert. Server-Zeitzone = **UTC+3**
+  (= Europe/Helsinki, identisch zu Tickmill/EK); 24/7-Verifikationssymbol
+  `BTCUSD.gbe` vorhanden; **M15-Historie 499 Tage / ~32.250 Bars** bei allen 3
+  Symbolen (reicht fuer regime.ema_trend_bias()'s 200-Tage-Ribbon); M5 ueber 40
+  Tage sauber, M5 ueber 500 Tage scheitert mit exakt `Invalid params` --
+  bestaetigt EKs empirischen Fund vom 2026-08-28 punktgenau.
+
+  **Dabei gefunden — abgeschnittenes Abfragefenster:** `copy_rates_range()`
+  vergleicht `date_to` gegen SERVER-gestempelte Bar-Zeiten. Uebergibt man dort
+  eine naive UTC-Zeit (genau das tut EKs `fetch_recent_mt5()`), endet das Fenster
+  rund **zwei Stunden vor dem neuesten verfuegbaren Bar**. Nachgewiesen am selben
+  Symbol/derselben Sekunde: `date_to = UTC now` -> letzter Bar 18:05 Serverzeit,
+  `date_to = UTC now + 12h` -> letzter Bar 23:05, Bars dazwischen lueckenlos
+  vorhanden. Fuer ORB waere das fatal (die Balken direkt nach 09:30 NY fehlen).
+  Hier von vornherein richtig gebaut (`_FUTURE_PAD`, MT5 kappt selbst auf das
+  Vorhandene). **EK ist nach Codelage genauso betroffen, aber noch NICHT
+  geprueft** -- Diagnoseskript `EK-Portfolio-Bridge/probe_orb_bar_window.py`
+  liegt bereit, siehe DASHBOARD "Braucht deine Bestaetigung".
+
+  **Umsetzung:** neues `FKInstantFunding-MT5-Bridge/orb_mt5_source.py`
+  (`fetch_m5`/`fetch_m15` signaturkompatibel zu `ny_open_orb/data.py` und
+  `data_lake/reader.py`, `_to_ny_index()` + `verify_server_offset()` nach EKs
+  Muster, eigenes `config.SERVER_TZ_NAME`). Im Repo bekam
+  `fk_instant_funding/paper_bot.py::_scan_orb()` optionale Parameter
+  `fetch_m5_override`/`fetch_m15_override` -- bewusst KEIN weiterer
+  `source="mt5"`-String, weil die broker-spezifische Symbol-/Zeitzonen-
+  Behandlung in die Bridge gehoert, nicht ins Repo. Ohne Override aendert sich
+  nichts. `run_once.py` bekam `scan_orb_mt5_first()` (MT5 zuerst, bei JEDEM
+  Fehler stiller Rueckfall auf den bisherigen Lake-Weg -- nie schlechter als
+  vorher), `run_once_fast.py` scannt ORB jetzt erst NACH `executor.connect()`
+  (vorher lief der Scan vor dem Verbindungsaufbau, was mit MT5-Bars nicht geht).
+
+  **Verifiziert** (`compare_orb_sources.py`, read-only): Entry-Preise beider
+  Quellen weichen um <0,03% ab, alle Richtungen identisch, NASDAQ 10/10 gleiche
+  Entry-Tage. Die einzigen Abweichungen liegen im Juli, also vor der bewusst
+  gesetzten 40-Tage-M5-Grenze -- kein Datenfehler, fuers Live-Trading (nur die
+  heutige Session zaehlt) irrelevant. Erster echter Lauf um 22:23 lief in 7s
+  sauber durch, ohne die Fallback-Warnung. Funded-Portfolio-Bridge folgt in
+  Phase 2 nach einem Beobachtungstag (Nutzerentscheid: erst FK, dann Funded;
+  dort ein Referenz-Terminal fuer alle 3 Konten).
+- **2026-09-09** [Alle 3 Portfolio-Bridges] **Restlaufzeit-Gate: Bridges
+  entern kein nachweislich totes Signal mehr.** Die vorhandenen
+  `MAX_SIGNAL_AGE`-Wächter messen nur das ALTER eines Signals, nicht dessen
+  Restlaufzeit — ein Signal kann beim Entry-Versuch längst ausgestoppt sein
+  und trotzdem „unauffällig jung" wirken. Ein engeres Alterslimit löst das
+  prinzipiell nicht, weil die Bridge unter ~10 Min. Latenz strukturell nicht
+  kommt (Bar muss schließen + Lake-Ingest + Scan-Raster). Neu: vor jedem Entry
+  an den **echten Broker-M5-Bars** prüfen, ob der SL des Signals seit Schluss
+  der Signal-Bar schon berührt wurde — Broker-Bars, nicht der Lake, denn der
+  Lake ist ja gerade das, was hinterherhinkt. Fällt bei jedem Zweifel (kein
+  Server-Offset, keine Bars, Kurslücke) auf „nicht blockieren" zurück und
+  meldet den blinden Fleck, statt ein lebendes Signal zu verwerfen.
+  **Umsetzung:** FK + Funded je `executor.py::signal_already_stopped()`,
+  aufgerufen in `run_once.py::_process_leg()` vor `place_market_entry()`;
+  EK neu `core/signal_liveness.py`, aufgerufen in 6 Bein-`signal_source.py`
+  (`cls_practical`, `gold_asb`, `ny_open_orb`, `gold_silver`,
+  `trend_pullback`, `ctnl_edge` — letzteres reicht `date`/`stop` jetzt durch,
+  die bisher verworfen wurden). **Nicht abgedeckt** (bewusst): `ou_modell`
+  (Funded + EK) und `btc_ema_cross` (EK) — reine Tagessignale ohne
+  Intraday-Zeitstempel, ein M5-Berührungscheck wäre dort sinnlos; `ou_modell`
+  hat mit `MAX_OU_MODELL_ENTRY_DEVIATION_PCT` bereits einen eigenen
+  Kurs-Wächter. **Zeitzonen:** EK nutzt seine bestehende
+  `config.SERVER_TZ_NAME`+`verify_server_offset()`-Mechanik weiter; FK/Funded
+  messen den Server-Offset pro Aufruf aus `symbol_info_tick().time`, weil
+  Funded drei Konten über ZWEI Broker fährt (TTPMarkets + BeyondIQCapital) und
+  eine einzelne Konstante dort falsch wäre. Verifiziert: FK-Broker misst
+  +3.00h (EEST, deckt sich mit EKs Tickmill-Befund), EKs Konvertierung inkl.
+  DST-Wechsel per Gegenprobe geprüft; Gate feuert korrekt auf einem real
+  ausgestoppten Signal und lässt ein lebendes durch.
+  **Wichtige Einschränkung — dieser Gate hätte den CLS-Trade von heute NICHT
+  verhindert** (siehe Eintrag „Erster Live-Trade des CLS-Beins" unten): auf dem
+  Broker-Feed lag das 08:25-UTC-Low bei 1.16360 und damit 0,1 Pip ÜBER dem SL
+  1.163590 — der Stop fiel erst 16 Sekunden nach dem Entry. Das Signal war zum
+  Entry-Zeitpunkt also tatsächlich noch am Leben, der Gate verhält sich
+  korrekt. Er adressiert den Fall „Erkennung landet ganze Bars nach dem Stop"
+  (Lock-Timeout, ausgefallener Zyklus, Kill-Switch-Freigabe), nicht die
+  Kosten-/Slippage-Ursache des heutigen Verlusts. Dateien außerhalb des Repos,
+  kein Commit-Hash.
+
+- **2026-09-09** [Scheduled Tasks] **Bridge-Tasks hinter den DataLake-Ingest
+  gelegt statt davor — bis zu eine volle M15-Bar Latenz gespart.** Die
+  Bridge-Tasks liefen jeweils *vor* dem zugehörigen Ingest und arbeiteten damit
+  auf Daten, die fast einen ganzen Zyklus alt waren. Verschoben (nur
+  `StartBoundary`, Intervalle unverändert): `FKInstantFunding-MT5-Bridge-Fast`
+  und `Funded-Portfolio-Bridge-Fast` von ≡0 auf **≡3 mod 5** (Fast5-Ingest
+  läuft ≡1 mod 5 @:50s, Dauer 4–24s); `Funded-Portfolio-Bridge` von ≡4 auf
+  **≡13 mod 15**, `EK-Portfolio-Bridge` von ≡0 auf **≡14 mod 15**,
+  `FKInstantFunding-MT5-Bridge` von stündlich :06:19 auf **:14:00** (15-Min-
+  Ingest ≡10 mod 15 @:28s, Dauer bis 62s). Die 15-Min-Lanes waren der größere
+  Hebel: ein Consumer um :00 sah als neueste M15-Bar die von :30 davor.
+  `EK-Portfolio-Bridge-Fast` blieb unverändert (läuft alle 2 Min, lag schon
+  ≤20s hinter dem Ingest). Unkritisch, weil `data_lake/storage.py` über
+  `.tmp`+`.replace()` atomar schreibt — ein Consumer, der den Ingest überholt,
+  liest alt-oder-neu, nie halb. Verifiziert: alle 6 Tasks Ready, Intervalle und
+  Repetition-Duration erhalten, NextRunTime auf der erwarteten Minute.
+
+- **2026-09-09** [Funded-Portfolio-Bridge / cls_practical] **Erster
+  Live-Trade des CLS-Beins verlor auf drei Konten zusammen das 2,2-fache
+  seines Risikobudgets — Ursache vermessen, Kostenmodell des Backtests
+  widerlegt.** Signal 10:20 Berlin (EURUSD long, Entry 1.163967, SL
+  1.163590, `sl_distance` 3,6 Pips). Entry live erst 10:30 (5-Min-Fast-Lane),
+  Stop 16 Sekunden später — die Bridge bemerkte den Exit erst 10:34.
+  Budget $741,20, realisiert **−$1.634,08** (Kursverlust −$1.362,96 plus
+  Kommission −$271,12): TTP Konto 2 2,67x, IQ Markets 2,09x, TTP Konto 1
+  1,85x. Positionsgrößen 18,58–22,72 Lots, auf TTP Konto 2 ~$2,42 Mio.
+  Nominal auf $99.842 Equity (~24:1).
+  **Gemessen** (neu: `scripts/measure_broker_spreads.py`, rein lesend über
+  `copy_ticks_range`/`history_orders_get`/`history_deals_get`, Fenster
+  08:00–12:30 Berlin, 30 Tage): der **Spread ist NICHT die Ursache** —
+  TTP 0,30 Pips (346.627 Ticks), IQ 0,10 Pips (250.588 Ticks); der
+  Engine-Default `spread_bps=0.3` liegt damit ungefähr richtig. Die
+  tatsächlich fehlenden Blöcke sind **Slippage** (`slippage_bps=0.0`:
+  real TTP 0,70 Pips Entry + 0,65 Exit, IQ 0,30 + 0,40) und **Kommission**
+  (gar nicht modelliert: TTP $4,00/Lot, IQ $5,00/Lot Round-Trip). Gesamte
+  Round-Trip-Kosten: **TTP ~2,05 Pips, IQ ~1,30 Pips**. Messwerte in
+  `knowledge/resources/broker-kostenmodell-eurusd.md`, Rohdaten in
+  `knowledge/_data/broker_spreads_eurusd.json`.
+  **EK/Tickmill konnte NICHT belastbar gemessen werden** — die Tickhistorie
+  des Terminals deckt das Handelsfenster mit 15 Ticks praktisch nicht ab,
+  das M1-`spread`-Feld ist dort durchgehend 0. Gesichert ist nur:
+  Kommission $0,00 über 331 Lots. Braucht Vorwärts-Sampling.
+  Keine Änderung an Bridge-Code, Config oder Scheduled Tasks — reine
+  Messung und Analyse; `cls_practical` läuft unverändert weiter
+  (Nutzerentscheid: erst Kostenmodell validieren, dann Risiko anpassen).
+
 - **2026-09-09** [EK-Portfolio-Bridge] **Bugfix: Live-Position (echtes Geld)
   konnte 4h lang nicht geschlossen werden — Order-Kommentar zu lang, exakt
   derselbe Bug wie am 2026-09-04, dessen Fix nur in EINEM Bein landete.**
@@ -39,6 +170,38 @@ keine Planung (dafür ist `DASHBOARD.md`).
   Scheduled Task ist aber Disabled. Alle übrigen Bridges bauen kurze
   Kommentare (`Funded-Portfolio-Bridge` kappt selbst auf 31) und sind nicht
   betroffen.
+  **LIVE BESTÄTIGT 22:15:09 Uhr** (Lauf `run_20260909_221502.log`, kein
+  reiner py_compile-Stand): `core.order_send` loggte
+  `Order-Kommentar von 38 auf 16 Zeichen gekappt
+  ('EK-ctnl_continuation auto-stale_target' -> 'EK-ctnl_continua')`, direkt
+  danach `[EK-CTNL-Cont] EXIT (stale_target) 0.01 Lots @ 4397.45` und
+  `ctnl_continuation: {'status': 'closed', 'ticket': 264958111}`. Position
+  nach 16 Fehlversuchen und 4h beim ersten Lauf mit dem Fix geschlossen.
+  **Nachtrag zum Exit-Grund:** es war `stale_target`, nicht `vwap_target` —
+  die VWAP-Referenz war abgelaufen (H4-Kontext), das Bein wollte also die
+  ganze Zeit DEFENSIV raus, nicht ins Ziel. Dass die Position in den 4h
+  Zwangs-Haltezeit von ~4384 auf 4397.45 ins Plus lief, war Glück, kein
+  Systemverhalten.
+
+- **2026-09-09** [EK-Portfolio-Bridge] **Täglicher Order-Abgleich im
+  Tagesabschluss ergänzt (Nutzerentscheid), statt mehr Sofort-Alarme.**
+  Anlass: derselbe Vorfall — nach der einen 18:15-Warnung kam vier Stunden
+  nichts mehr, "ein einzelner Fehlversuch" war von "hängt seit Stunden"
+  nicht zu unterscheiden. Die Einmal-pro-Tag-Dedup aus `already_notified()`
+  (Nutzerwunsch 2026-09-08, weniger Lärm) bleibt bewusst unverändert.
+  Neu: Tabelle `order_failures` in `core/state_store.py` +
+  `record_order_failure()`/`get_order_failures_today()`, befüllt zentral aus
+  `core/order_send.py::send_order()` — erfasst damit JEDES Bein (auch
+  künftige) und auch die Ablehnungen des SL-Sicherheitsnetzes, nicht nur
+  CTNL. Der Tagesabschluss listet jetzt je betroffener Position
+  `Art · Symbol/Ticket · Anzahl · zuletzt`, ab 3 Fehlversuchen bei
+  Exit/SL-TP mit `⛔ hängt`-Markierung (die ANZAHL ist der eigentliche
+  Mehrwert gegenüber dem Einmal-Alarm). Die Buchführung ist in try/except
+  gekapselt — sie darf den Order-Versand niemals zum Absturz bringen.
+  Verifiziert: `py_compile` über alle vier geänderten Dateien, plus
+  Roundtrip-Test gegen die echte SQLite (Mehrfach-Zählung korrekt,
+  Testzeilen wieder entfernt). Greift erstmals beim Tagesabschluss am
+  2026-09-10 — der heutige war um 22:00 bereits raus.
 
 - **2026-09-09** [FK Instant Funding Bridge] **Bugfix: die ersten beiden
   echten Orders dieser Bridge sind nie beim Broker angekommen — Lot-Größe

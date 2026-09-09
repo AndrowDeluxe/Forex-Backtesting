@@ -77,28 +77,42 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
-- **🔴 AKUT, ECHTES GELD: EK-Portfolio-Bridge kann die offene CTNL-
-  Continuation-Position (Ticket 264958111, XAUUSD 0.01 Lots, Entry
-  2026-09-09 17:15) nicht schliessen** — seit 18:15 Uhr scheitert der Exit
-  bei JEDEM 15-Min-Lauf (Stand 21:45: 15 Fehlversuche), Log immer nur
-  `Exit-Order fehlgeschlagen: None`. Root Cause identifiziert und **exakt
-  derselbe Bug, der am 2026-09-04 schon einmal live zuschlug** (NASDAQ-
-  Ticket 262117522, ~13h haengend, siehe CHANGELOG 2026-09-04): Tickmill
-  lehnt `mt5.order_send()` mit `(-2, 'Invalid "comment" argument')`
-  clientseitig ab (result=None, kein Retcode), wenn der Order-Kommentar zu
-  lang ist. Der Exit-Kommentar hier ist
-  `"EK-ctnl_continuation auto-vwap_target"` = **37 Zeichen** (bzw. 38 bei
-  `-stale_target`); der Fix vom 09-04 (`[:16]`-Kappung + `deviation: 20` +
-  `mt5.last_error()`-Logging) wurde **nur in `legs/ny_open_orb/executor.py`
-  eingebaut, nicht in die anderen Beine**. Gleiches Muster ungefixt in
-  `legs/ctnl_edge/executor.py:46` und `legs/btc_ema_cross/executor.py:53`
-  (`"EK-btc_ema_cross auto-crossunder"` = 32 Zeichen). Zusaetzlich meldet
-  `_close_position()` den Fehlschlag per `already_notified()` nur EINMAL pro
-  Tag — du hast also um 18:15 eine Telegram-Warnung bekommen und seitdem
-  nichts mehr, obwohl die Position durchgehend haengt. **Entscheidung noetig:**
-  (a) Position von Hand im Terminal schliessen, (b) Fix (Kommentar kappen +
-  `deviation` + `last_error`-Logging in allen Beinen) einbauen — Aenderung an
-  echtem Geld, deshalb nicht ohne dein OK gemacht.
+- **EK-Portfolio-Bridge: ORB sieht die laufende Session vermutlich ~2 Stunden
+  zu spät — Diagnoseskript liegt bereit, aber NICHT ausgeführt** (gefunden
+  2026-09-09 beim FK-Umbau, Details CHANGELOG). `copy_rates_range()` vergleicht
+  `date_to` gegen server-gestempelte Bar-Zeiten; `legs/ny_open_orb/
+  signal_source.py:88` übergibt dort eine naive UTC-Zeit. Am FK-Terminal
+  nachgewiesen: das Abfragefenster endet dadurch ~2 Std. vor dem neuesten
+  vorhandenen Bar (`date_to = UTC now` → letzter Bar 18:05 Serverzeit, mit +12h
+  → 23:05, Bars dazwischen lückenlos da). EK nutzt identischen Code auf
+  demselben Rechner, Tickmills Server steht wie BeyondIQCapital auf UTC+3 —
+  der Mechanismus müsste dort genauso greifen. **Belegt ist das bisher nur am
+  FK-Terminal**, EKs eigenes habe ich nicht angefasst (Fast-Task alle 2 Min.).
+  Falls es zutrifft, würde EKs ORB-Bein Entries systematisch verspätet sehen —
+  das würde zum dokumentierten 2026-09-03-Vorfall passen ("NASDAQ-ORB-Signal
+  hing bis 21:45 statt 21:00"), der damals dem blockierenden dukascopy-Bein
+  zugeschrieben wurde. Fertig zum Ausführen: `EK-Portfolio-Bridge/
+  probe_orb_bar_window.py` (read-only, sendet keine Order) — am besten direkt
+  nach einem beendeten Fast-Lauf. Soll ich das ausführen, oder machst du es?
+
+- **Kostenmessung EUR/USD: vier Annahmen von mir, die deine Bestätigung
+  brauchen** (2026-09-09, im Rahmen der CLS-Kostenvalidierung).
+  (a) **Messfenster 08:00–12:30 Berlin** — abgeleitet aus der Handelszeit von
+  `cls_practical` selbst (`test_hour=9.0` bis `entry_cutoff="12:00"`), nicht
+  von dir vorgegeben. Ein 24h-Mittel wäre durch Asien-Session und Rollover
+  verzerrt, aber die Fenstergrenzen sind meine Wahl.
+  (b) **Alle Kostenblöcke werden im Backtest in `spread_bps` gebündelt**
+  statt Slippage getrennt in `slippage_bps` — Begründung: der Live-Bot setzt
+  keinen Broker-TP (`target=None`), jeder Ausstieg ist eine Marktorder und
+  slippt, während `slippage_bps` in der Engine NUR auf Stop-Exits wirkt.
+  (c) **`risk_pct=0.25 %` im Validierungslauf** (= `CAPITAL_WEIGHT` 1/6 ×
+  `LEG_RISK_PCT` 1,5 %, also das real gehandelte Risiko) statt des
+  Engine-Defaults 0,5 %.
+  (d) **EK/Tickmill-Kosten sind im Validierungslauf GESCHÄTZT, nicht
+  gemessen** (0,20 Spread / 0,50 Entry-Slip / 0,50 Exit-Slip). Die
+  Tickhistorie des Terminals deckt das Handelsfenster mit 15 Ticks nicht ab.
+  Sauber wird das nur mit Vorwärts-Sampling während der Handelszeit — sag,
+  ob ich das aufsetzen soll.
 
 - **EK-Portfolio-Bridge: `CAPITAL_WEIGHT` (1/8) ist definiert, wird aber
   NIRGENDS im Code verwendet** (2026-09-09 gefunden). `config.py:57` schreibt
@@ -115,8 +129,34 @@ abgehakt-und-liegengelassen.
   10:30 (EURUSD, den alle 3 Challenge-Konten genommen haben) wurde auf EK
   genau deswegen uebersprungen** ("offen 251.32 + neu 50.94 > Deckel 272.36").
   Wer zuerst laeuft, bekommt das Risiko — das ist kein gewolltes Portfolio-
-  Verhalten. **Frage: war die fehlende 1/8-Verduennung Absicht (kleines Konto,
-  sonst faellt fast alles unter das Broker-Mindestlot) oder ein Bug?**
+  Verhalten.
+  **BACKTEST-ANTWORT (2026-09-09, auf deinen Auftrag):** eindeutig ein Bug,
+  keine Absicht. Ich habe die `ek_v2_realistic_final.json`-Studie aus den
+  Bein-Kurven in `portfolio_construction/results/legs/` rekonstruiert (5 von
+  6 Beinen reproduzieren die dortigen `per_leg_standalone`-Zahlen exakt, btc
+  minimal ab durch die Renditen-Skalierung) und dann beide Risikologiken
+  gegeneinander gerechnet:
+  | Variante | CAGR | Max Drawdown |
+  |---|---|---|
+  | mit 1/6-Kapitalverduennung (= Studie, = `paper_bot.py`) | 75,2 % | **-16,1 %** |
+  | Studie `riskopt_20dd` zum Abgleich | 76,8 % | **-19,2 %** |
+  | **ohne Verduennung (= was die Live-Bridge tut)** | 1199 % | **-73,7 %** |
+  Die 8 % je Bein sind also die Risikostufe INNERHALB einer Kapitalscheibe,
+  nicht auf das ganze Konto. Ohne Verduennung liegt der Max Drawdown bei
+  -73,7 % statt der validierten -19,2 %, gegen die auch der 20 %-Kill-Switch
+  ausgelegt wurde. **Nach deinem eigenen Kriterium ("wenn die Werte deutlich
+  schlechter werden muessen wir das Risiko anpassen") ist damit klar: Risiko
+  anpassen, BEVOR am Deckel etwas passiert.**
+  ⚠️ **Deshalb den aggregierten Deckel NICHT auf 30 % erhoeht.** Genau dieser
+  8 %-Deckel ist aktuell die einzige Bremse, die das 8x-Risiko im Zaum haelt
+  (er tut unfreiwillig die Arbeit der fehlenden Verduennung). Von 8 % auf
+  30 % zu gehen, solange die Verduennung fehlt, wuerde die Bremse loesen
+  statt das Risiko zu ordnen. Braucht deine ausdrueckliche Bestaetigung —
+  siehe Vorschlag unten.
+  **Offen:** mit 1/8-Verduennung faellt bei 3,4k Equity fast jedes Bein unter
+  das Broker-Mindestlot (ctnl_continuation 2,10 EUR statt 16,80). Verduennung
+  einbauen erfordert deshalb im selben Zug eine Neukalibrierung von
+  `LEG_RISK_PCT` auf die echte Kontogroesse (Phase-6-Arbeit, eigene Session).
 
 - **Challenge/Funded OU-Bein: der Entry-Filter haengt an einem simulierten
   Buch, das von den echten Positionen abgedriftet ist** (2026-09-09).
@@ -136,26 +176,31 @@ abgehakt-und-liegengelassen.
   Positionen blockiert. **Frage: soll der Sim-Risikodeckel gegen die ECHTEN
   offenen Positionen laufen statt gegen das simulierte Buch?**
 
-- **FK-Bridge Signal-Latenz: zwei Vorschläge von mir, beide NICHT umgesetzt**
-  (2026-09-09, Details CHANGELOG). Beim Nachgehen des Order-Bugs vermessen:
-  die Bridge sieht ein M5-Signal strukturell erst ~10 Min. nach dessen
-  Zeitstempel (5 Min. Bar-Laufzeit + 5 Min. Scan-Raster). (1) **Task-Offset:**
-  `DataLake-Ingest-Fast5` schreibt zur Minute ≡1 mod 5 (:01:51, :06:51, …),
-  `FKInstantFunding-MT5-Bridge-Fast` scannt zur Minute ≡0 mod 5 (:00, :05, …)
-  — die Bridge läuft also jeweils ~2 Min. *vor* dem frischen Ingest und
-  arbeitet auf Daten, die schon fast einen Zyklus alt sind. Den Fast-Task auf
-  :03/:08/:13/… zu verschieben würde jedem Signal ~2 Min. Latenz sparen, ohne
-  sonst irgendetwas zu ändern. Betrifft die gleichen Task-Paare auch bei
-  Funded-/EK-Portfolio-Bridge (dort nicht nachgeprüft). (2) **Restlaufzeit-
-  Gate:** `MAX_SIGNAL_AGE_MINUTES_FOR_ENTRY = 60` misst nur das ALTER des
-  Signals, nicht dessen erwartete Restlaufzeit. Der heutige `cls_practical`-
-  Trade (Entry 10:20, Stop 10:25 Berlin) war bereits 5 Min. TOT, als die
-  Bridge um 10:30 zu entern versuchte — der 60-Min.-Wächter hätte den Entry
-  klaglos durchgelassen. Heißt: der Order-Bugfix allein löst diesen Fall
-  nicht; ohne engeres Gate hätte die Bridge heute eine Live-Position in ein
-  längst gelaufenes Signal eröffnet und beim nächsten Scan wieder
-  geschlossen. Ein per-Bein-Limit (CLS/ORB kurz, CTNL lang) wäre die
-  naheliegende Form — **deine Entscheidung, ich habe nichts angefasst.**
+- **Restlaufzeit-Gate: eine Design-Entscheidung + eine offene Frage**
+  (2026-09-09, Details CHANGELOG). Die beiden Latenz-Vorschläge von gestern
+  Abend hast du freigegeben und sie sind umgesetzt (Gate in allen 3
+  Portfolio-Bridges, Task-Offsets verschoben). Zwei Punkte bleiben:
+  (1) **Ausgenommen habe ich `ou_modell` und `btc_ema_cross`** — reine
+  Tagessignale, ein M5-SL-Berührungscheck wäre dort sinnlos. Das war meine
+  Einschätzung, nicht deine Ansage.
+  (2) **Der Gate hätte den CLS-Trade von heute NICHT verhindert.** Auf dem
+  Broker-Feed lag das 08:25-UTC-Low 0,1 Pip ÜBER dem SL; der Stop fiel erst
+  16 Sekunden nach dem Entry (siehe den parallel entstandenen
+  Kostenmodell-Eintrag im CHANGELOG). Das Signal war zum Entry-Zeitpunkt also
+  wirklich noch am Leben — der Gate verhält sich korrekt, greift aber bei
+  dieser Verlustursache nicht. Beim Planen hatte ich dir eine strengere
+  Variante angeboten (zusätzlich abbrechen, wenn der Kurs schon >0,5R gegen
+  das Signal gelaufen ist); du hast die einfachere gewählt. Die strengere
+  **hätte heute gegriffen** (0,76R Gegenbewegung beim Entry-Versuch). Sag
+  Bescheid, ob ich sie nachrüsten soll — sie verwirft aber auch mehr Trades,
+  und 0,5R wäre ein gesetzter, nicht gebacktesteter Wert.
+  (3) **Ungefragt mitgemacht:** `Funded-Portfolio-Bridge/executor.py` loggte
+  bei `order_send()==None` weiterhin nur „None". FK hat das heute früh
+  bekommen, EK parallel über `core/order_send.py` — Funded war die letzte
+  Bridge ohne. Genau dieser blinde Fleck hat heute auf zwei Bridges je Stunden
+  Diagnose gekostet, deshalb habe ich `mt5.last_error()` + Request dort
+  nachgezogen. Rein diagnostisch, ändert nichts daran, ob oder was gesendet
+  wird — sag Bescheid, falls du das zurückgedreht haben willst.
 - **dukascopy-Hang-Fix: eine Plan-Abweichung + Verifikation steht noch aus**
   (2026-09-09, Details CHANGELOG). Der freigegebene Plan sah zusätzlich vor,
   dieselben engeren Retry-Werte auch in `fk_instant_funding/paper_bot.py`s
@@ -410,6 +455,37 @@ abgehakt-und-liegengelassen.
   (Streamlit-Seite braucht ihn), 2026-09-02.
 
 ### Offene Aufgaben
+
+- **Risiko-Anpassung CLS/Challenges — Entscheidung steht aus** (2026-09-09).
+  Nach deinem Entscheid "erst Kostenmodell validieren, dann Risiko anpassen"
+  ist die Messung fertig (siehe `CHANGELOG.md` und
+  `resources/broker-kostenmodell-eurusd.md`), die Risiko-Runde noch nicht.
+  Offen bleiben: Mindest-SL-Abstand gegen den Live-Spread, Nominal-/
+  Hebel-Deckel, absoluter Pip-Floor statt/zusätzlich zum relativen
+  `min_sl_atr_mult`, und ob `cls_practical` in dieser Form weiterläuft.
+  Reihenfolge laut deinem Entscheid: Challenges zuerst, dann EK, dann FK.
+  **Bis dahin läuft `cls_practical` auf allen drei Portfolios unverändert
+  live** — bewusst so entschieden, kein Versehen.
+- **Kein Hebel-/Mindestabstand-Schutz in ALLEN vier Bridges** (2026-09-09
+  gefunden). `Funded-Portfolio-Bridge/sizing.py`,
+  `EK-Portfolio-Bridge/core/sizing.py`, `FKInstantFunding-MT5-Bridge/sizing.py`
+  und `CLS-Practical-Bridge/sizing.py` haben identisch nur
+  `min(lots, info.volume_max)` als Obergrenze. Die Abweichungsprüfung
+  `MAX_OU_MODELL_ENTRY_DEVIATION_PCT` existiert nur für `ou_modell`. Gehört
+  in die Risiko-Runde oben. Priorität: Hoch.
+- **Rates-Risikomultiplikator erreicht das Live-Sizing nie** (2026-09-09
+  gefunden). `challenge_portfolio/paper_bot.py:361` skaliert mit
+  `combined_mult` nur das *reportete* `r_multiple`; das Live-`risk_dollars`
+  in `run_once.py::_process_leg` ist ein flaches
+  `CAPITAL_WEIGHT × LEG_RISK_PCT × equity`. Die als "übernommen"
+  dokumentierte Daily-Rates-Risikoskalierung wirkt live also nicht.
+  Priorität: Mittel.
+- **Fill-Rücklesepfad greift auf TTP nicht** (2026-09-09 gefunden).
+  `Funded-Portfolio-Bridge/executor.py` speichert `entry_price: 0.0` (weder
+  `result.price` noch `positions_get(ticket=…)` lieferten einen Preis); auf
+  IQ funktioniert derselbe Pfad. Ohne echten Fill sind TTP-Trades
+  nachträglich nicht auditierbar — die Slippage-Messung musste deshalb über
+  `history_orders_get()` gehen. Priorität: Niedrig-Mittel.
 
 **Mittel**
 - **14 unverarbeitete Clippings** in `knowledge/Clippings/` (Stand

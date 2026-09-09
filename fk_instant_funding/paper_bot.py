@@ -539,7 +539,8 @@ ORB_EXIT_CFG_BY_INSTRUMENT = {
 ORB_HISTORY_LOOKBACK_DAYS = 500  # EMA-Ribbon-Bias (4H/1D/1W) braucht Monate an Vorlauf
 
 
-def _scan_orb(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> pd.DataFrame:
+def _scan_orb(end: pd.Timestamp, force_refresh: bool, *, source: str = "live",
+              fetch_m5_override=None, fetch_m15_override=None) -> pd.DataFrame:
     """NY-Open ORB (SP500+US30+NASDAQ), 1:1 die validierte Config aus
     app_pages/ny_open_orb_portfolio.py (siehe knowledge/projects/ny-open-
     orb-sp500.md, Stage 1-5 + Phase 6 abgeschlossen). Anders als die anderen
@@ -550,7 +551,16 @@ def _scan_orb(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -
     gar nicht vorbei ist (ein Scan MITTEN in der Session haette sonst
     faelschlich einen finalen Exit gemeldet, statt eines vorlaeufigen
     Mark-to-Market-Stands wie bei den anderen Beinen ueber "data_end") --
-    wird hier anhand der frame-eigenen session_close-Spalte korrigiert."""
+    wird hier anhand der frame-eigenen session_close-Spalte korrigiert.
+
+    fetch_m5_override/fetch_m15_override (2026-09-09): erlauben einem Aufrufer,
+    eigene, signaturgleiche Fetch-Funktionen einzureichen -- genutzt von
+    FKInstantFunding-MT5-Bridge/orb_mt5_source.py, das die Bars direkt aus dem
+    ohnehin verbundenen MT5-Terminal holt statt aus dukascopy/Lake (kann damit
+    nie an einem dukascopy_python-Hang haengen, was fuer dieses zeitkritische
+    Bein zaehlt). Bewusst als Parameter statt als weiterer source=-String: die
+    broker-spezifische Symbol-/Zeitzonen-Behandlung gehoert in die jeweilige
+    Bridge, nicht in dieses Repo. Ohne Override aendert sich nichts."""
     from ny_open_orb import filters, regime
     from ny_open_orb.data import fetch_m5, fetch_m15
     from ny_open_orb.engine import build_frame, find_entries, simulate
@@ -558,6 +568,10 @@ def _scan_orb(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -
         import data_lake.reader as _lake
         fetch_m5 = _lake.with_live_fallback(_lake.fetch_m5, fetch_m5)
         fetch_m15 = _lake.with_live_fallback(_lake.fetch_m15, fetch_m15)
+    if fetch_m5_override is not None:
+        fetch_m5 = fetch_m5_override
+    if fetch_m15_override is not None:
+        fetch_m15 = fetch_m15_override
 
     start = (end - pd.Timedelta(days=ORB_HISTORY_LOOKBACK_DAYS)).strftime("%Y-%m-%d")
     end_str = (end + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
@@ -778,21 +792,18 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
     if state.get("scan_errors_today", {}).get("day") != current_day_key:
         state["scan_errors_today"] = {"day": current_day_key, "legs": []}
 
+    # Nur noch die 2 Beine scannen, die NICHT in FKInstantFunding-MT5-Bridge/
+    # config.py::LIVE_LEGS stehen (Nutzerauftrag 2026-09-09, nachdem
+    # gold_asb/cls_practical/ctnl_continuation/ctnl_reversal dort zusaetzlich
+    # zu den 3 ORB-Beinen live geschaltet wurden): die live Bridge sendet fuer
+    # diese 7 Beine bereits ihre eigenen Telegram-Meldungen ueber dasselbe
+    # Signal -- ein paralleler Scan hier haette nur zu doppelten Meldungen
+    # gefuehrt. trend_pullback/gold_silver bleiben ungedeckt (weiterhin
+    # DRY_RUN in der Bridge), dieser Paper-Bot bleibt fuer genau diese beiden
+    # das einzige Monitoring. Historische Trades der 7 entfernten Beine
+    # bleiben im State (fuer Equity-/Kill-Switch-Historie), es kommen nur
+    # keine neuen mehr dazu.
     messages = []
-    try:
-        gold_asb_trades = _since_start(_retry(lambda: _scan_gold_asb(end, force_refresh=not dry_run)))
-        messages += _merge_trades(state, "gold_asb", gold_asb_trades)
-    except Exception as e:
-        messages.append(f"⚠️ Gold-ASB-Scan fehlgeschlagen: {e}")
-        state["scan_errors_today"]["legs"].append("Gold ASB")
-
-    try:
-        cls_trades = _since_start(_retry(lambda: _scan_cls_practical(end, force_refresh=not dry_run)))
-        messages += _merge_trades(state, "cls_practical", cls_trades)
-    except Exception as e:
-        messages.append(f"⚠️ CLS-Practical-Scan fehlgeschlagen: {e}")
-        state["scan_errors_today"]["legs"].append("CLS Practical")
-
     try:
         tp_trades = _since_start(_retry(lambda: _scan_trend_pullback(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "trend_pullback", tp_trades)
@@ -801,29 +812,11 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
         state["scan_errors_today"]["legs"].append("Trend Pullback")
 
     try:
-        cont_trades, rev_trades = _retry(lambda: _scan_ctnl(end, force_refresh=not dry_run))
-        messages += _merge_trades(state, "ctnl_continuation", _since_start(cont_trades))
-        messages += _merge_trades(state, "ctnl_reversal", _since_start(rev_trades))
-    except Exception as e:
-        messages.append(f"⚠️ CTNL-Edge-Scan fehlgeschlagen: {e}")
-        state["scan_errors_today"]["legs"].append("CTNL Edge")
-
-    try:
         gsd_trades = _since_start(_retry(lambda: _scan_gold_silver(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "gold_silver", gsd_trades)
     except Exception as e:
         messages.append(f"⚠️ Gold-Silber-Divergenz-Scan fehlgeschlagen: {e}")
         state["scan_errors_today"]["legs"].append("Gold-Silber-Divergenz")
-
-    try:
-        orb_trades = _since_start(_retry(lambda: _scan_orb(end, force_refresh=not dry_run)))
-        orb_leg_by_market = {"SP500": "orb_sp500", "US30": "orb_us30", "NASDAQ": "orb_nasdaq"}
-        if not orb_trades.empty:
-            for market, sub in orb_trades.groupby("market"):
-                messages += _merge_trades(state, orb_leg_by_market[market], sub)
-    except Exception as e:
-        messages.append(f"⚠️ NY-Open-ORB-Scan fehlgeschlagen: {e}")
-        state["scan_errors_today"]["legs"].append("NY-Open ORB")
 
     equity_df = compute_shared_equity(state)
     dd_breached, current_dd, dd_floor = check_trailing_dd(equity_df, state["eod_equity"], end)

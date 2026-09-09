@@ -289,6 +289,95 @@ def run_jump_activity_walk_forward(
     return pd.DataFrame(rows)
 
 
+def _dollar_profit_factor(trades_with_pnl: pd.DataFrame) -> float:
+    """Gross winning $ / gross losing $ from a simulate_equity() output -
+    unlike trade_stats()'s profit_factor (built on the scaling-invariant
+    return_pct column), this reacts to risk_multiplier, which is the whole
+    point when validating a SCALING mechanism rather than a gate."""
+    if trades_with_pnl.empty:
+        return float("nan")
+    pnl = trades_with_pnl["pnl_dollar"]
+    gross_win = pnl[pnl > 0].sum()
+    gross_loss = -pnl[pnl < 0].sum()
+    return gross_win / gross_loss if gross_loss > 0 else float("inf")
+
+
+def _rate_scaling_confirmed(
+    train: pd.DataFrame, risk_multiplier: pd.Series, risk_pct: float = 0.005, min_trades: int = 30
+) -> bool:
+    """True if, using ONLY `train` trades, applying `risk_multiplier` (see
+    asian_range_breakout.sizing.simulate_equity) produces a strictly higher
+    dollar profit factor than flat risk sizing - same expanding-window
+    discipline as the other _*_confirmed helpers above, adapted for a
+    continuous scaling multiplier (cls_practical.rates-style) instead of a
+    bucket/gate threshold."""
+    if len(train) < min_trades:
+        return False
+    from asian_range_breakout.sizing import simulate_equity
+
+    base = simulate_equity(train, risk_pct=risk_pct)
+    scaled = simulate_equity(train, risk_pct=risk_pct, risk_multiplier=risk_multiplier)
+    return _dollar_profit_factor(scaled) > _dollar_profit_factor(base)
+
+
+def run_rate_scaling_walk_forward(
+    trades: pd.DataFrame,
+    risk_multiplier: pd.Series,
+    start_test_year: int,
+    end_test_year: int,
+    risk_pct: float = 0.005,
+    min_train_trades: int = 100,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Same expanding-window discipline as run_walk_forward, but for the
+    rate-momentum risk-SCALING multiplier (2026-09-09, cls_practical.rates
+    applied to Gold ASB for the first time - see scripts/research_gold_
+    rate_risk_scaling.py) instead of a bucket gate. For each test year,
+    scaling is only applied if _rate_scaling_confirmed on strictly-prior
+    years' trades; equity is chained across years (each year's
+    simulate_equity starts from the prior year's ending equity) so a single
+    continuous stitched curve results, directly comparable to an
+    always-flat baseline run the same way. Returns (summary_df,
+    stitched_walkforward_trades_df) - the second so downstream metrics
+    (Sharpe/Calmar via strategy.metrics on the resulting pnl_dollar/equity
+    series) can be computed on the actual walk-forward-selected sequence."""
+    from asian_range_breakout.sizing import simulate_equity
+
+    rows = []
+    stitched = []
+    equity = 100_000.0
+    for year in range(start_test_year, end_test_year + 1):
+        train = trades[trades["entry_time"].dt.year < year]
+        test = trades[trades["entry_time"].dt.year == year]
+        if test.empty or len(train) < min_train_trades:
+            continue
+
+        confirmed = _rate_scaling_confirmed(train, risk_multiplier, risk_pct=risk_pct)
+        mult = risk_multiplier if confirmed else None
+        year_sim = simulate_equity(test, starting_equity=equity, risk_pct=risk_pct, risk_multiplier=mult)
+        base_sim = simulate_equity(test, starting_equity=equity, risk_pct=risk_pct)
+
+        rows.append(
+            {
+                "test_year": year,
+                "train_n_trades": len(train),
+                "scaling_confirmed_on_train": confirmed,
+                "n_trades": len(test),
+                "pf_flat": _dollar_profit_factor(base_sim),
+                "pf_walkforward": _dollar_profit_factor(year_sim),
+                "end_equity_flat": base_sim["equity"].iloc[-1] if not base_sim.empty else equity,
+                "end_equity_walkforward": year_sim["equity"].iloc[-1] if not year_sim.empty else equity,
+            }
+        )
+        stitched.append(year_sim)
+        equity = year_sim["equity"].iloc[-1] if not year_sim.empty else equity
+
+    summary = pd.DataFrame(rows)
+    walkforward_trades = (
+        pd.concat(stitched).sort_values("entry_time").reset_index(drop=True) if stitched else pd.DataFrame()
+    )
+    return summary, walkforward_trades
+
+
 _DELAY_BINS = [0, 3, 7, 999]
 _DELAY_LABELS = ["<=3", "4-7", "8+"]
 

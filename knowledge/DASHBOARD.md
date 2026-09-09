@@ -77,6 +77,65 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
+- **🔴 AKUT, ECHTES GELD: EK-Portfolio-Bridge kann die offene CTNL-
+  Continuation-Position (Ticket 264958111, XAUUSD 0.01 Lots, Entry
+  2026-09-09 17:15) nicht schliessen** — seit 18:15 Uhr scheitert der Exit
+  bei JEDEM 15-Min-Lauf (Stand 21:45: 15 Fehlversuche), Log immer nur
+  `Exit-Order fehlgeschlagen: None`. Root Cause identifiziert und **exakt
+  derselbe Bug, der am 2026-09-04 schon einmal live zuschlug** (NASDAQ-
+  Ticket 262117522, ~13h haengend, siehe CHANGELOG 2026-09-04): Tickmill
+  lehnt `mt5.order_send()` mit `(-2, 'Invalid "comment" argument')`
+  clientseitig ab (result=None, kein Retcode), wenn der Order-Kommentar zu
+  lang ist. Der Exit-Kommentar hier ist
+  `"EK-ctnl_continuation auto-vwap_target"` = **37 Zeichen** (bzw. 38 bei
+  `-stale_target`); der Fix vom 09-04 (`[:16]`-Kappung + `deviation: 20` +
+  `mt5.last_error()`-Logging) wurde **nur in `legs/ny_open_orb/executor.py`
+  eingebaut, nicht in die anderen Beine**. Gleiches Muster ungefixt in
+  `legs/ctnl_edge/executor.py:46` und `legs/btc_ema_cross/executor.py:53`
+  (`"EK-btc_ema_cross auto-crossunder"` = 32 Zeichen). Zusaetzlich meldet
+  `_close_position()` den Fehlschlag per `already_notified()` nur EINMAL pro
+  Tag — du hast also um 18:15 eine Telegram-Warnung bekommen und seitdem
+  nichts mehr, obwohl die Position durchgehend haengt. **Entscheidung noetig:**
+  (a) Position von Hand im Terminal schliessen, (b) Fix (Kommentar kappen +
+  `deviation` + `last_error`-Logging in allen Beinen) einbauen — Aenderung an
+  echtem Geld, deshalb nicht ohne dein OK gemacht.
+
+- **EK-Portfolio-Bridge: `CAPITAL_WEIGHT` (1/8) ist definiert, wird aber
+  NIRGENDS im Code verwendet** (2026-09-09 gefunden). `config.py:57` schreibt
+  die Formel `risk_dollars = CAPITAL_WEIGHT * LEG_RISK_PCT * equity` explizit
+  fest (identisch zu `ek_portfolio/paper_bot.py`, das sie auch so rechnet) —
+  die Bridge uebergibt aber ueberall nur `config.LEG_RISK_PCT[leg]` an
+  `calc_lot_size()`. Live verifiziert im Log: OU-Modell rechnet
+  `risk_amount=33.67 EUR` bei Equity 3367.90 = **exakt 1,0 %**, also die
+  volle `LEG_RISK_PCT`-Stufe ohne die 1/8-Verduennung. Jedes Bein handelt
+  damit ~8x groesser als dokumentiert. Gebremst wird das nur noch von
+  `MAX_TOTAL_RISK_PCT = 8 %` — was erklaert, warum das Konto praktisch
+  dauerhaft am Deckel klebt (heute durchgehend ~247–256 von ~269 EUR) und
+  Beine sich gegenseitig aushungern: **der CLS-Practical-Entry vom 2026-09-09
+  10:30 (EURUSD, den alle 3 Challenge-Konten genommen haben) wurde auf EK
+  genau deswegen uebersprungen** ("offen 251.32 + neu 50.94 > Deckel 272.36").
+  Wer zuerst laeuft, bekommt das Risiko — das ist kein gewolltes Portfolio-
+  Verhalten. **Frage: war die fehlende 1/8-Verduennung Absicht (kleines Konto,
+  sonst faellt fast alles unter das Broker-Mindestlot) oder ein Bug?**
+
+- **Challenge/Funded OU-Bein: der Entry-Filter haengt an einem simulierten
+  Buch, das von den echten Positionen abgedriftet ist** (2026-09-09).
+  Warum heute kein OU-Trade auf Challenge kam, obwohl EK APD genommen hat:
+  `challenge_portfolio/paper_bot.py::_scan_ou_modell()` laesst
+  `simulate_bracket_portfolio()` ueber 450 Tage durchlaufen und uebernimmt
+  dessen internen `max_total_risk_pct = 5 %`-Deckel. Instrumentierter Lauf
+  (2026-09-09): das SIMULIERTE S&P-Buch haelt 4 offene Positionen (RL ab
+  08-27, D ab 08-28, EXPE + SYY ab 09-04) mit 4626.5 von 5727.7 Risiko —
+  ein 5. Slot braucht 1145.5 und passt um ~45 nicht mehr rein. Blockiert
+  wurden dadurch am 09-08 und 09-09 **alle** Kandidaten (APD, AIG, AMGN,
+  DHI, LEN, SPG, TROW, UPS). Der Haken: **RL und D wurden live nie eroeffnet**
+  (stehen in keinem `bridge_state_*.json`) — sie stammen aus der Zeit vor dem
+  `include_open_positions=True`-Fix (2026-09-02) und belegen jetzt 2 der
+  ~4 nutzbaren Risiko-Slots, bis sie simuliert per max_holding auslaufen
+  (~09-16/09-17). Das Bein ist also nicht "still", sondern durch Phantom-
+  Positionen blockiert. **Frage: soll der Sim-Risikodeckel gegen die ECHTEN
+  offenen Positionen laufen statt gegen das simulierte Buch?**
+
 - **FK-Bridge Signal-Latenz: zwei Vorschläge von mir, beide NICHT umgesetzt**
   (2026-09-09, Details CHANGELOG). Beim Nachgehen des Order-Bugs vermessen:
   die Bridge sieht ein M5-Signal strukturell erst ~10 Min. nach dessen

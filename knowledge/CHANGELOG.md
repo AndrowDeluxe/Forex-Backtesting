@@ -9,6 +9,37 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-09** [EK-Portfolio-Bridge] **Bugfix: Live-Position (echtes Geld)
+  konnte 4h lang nicht geschlossen werden — Order-Kommentar zu lang, exakt
+  derselbe Bug wie am 2026-09-04, dessen Fix nur in EINEM Bein landete.**
+  Aufgefallen beim Nachgehen einer Nutzerfrage zu einem Telegram-Screenshot.
+  `ctnl_continuation`-Position Ticket 264958111 (XAUUSD 0.01 Lots, Entry
+  17:15) versuchte ab 18:15 Uhr bei jedem 15-Min-Lauf den VWAP-Exit und
+  scheiterte 16x in Folge, Log jedes Mal nur `Exit-Order fehlgeschlagen:
+  None`. Ursache: Tickmill lehnt `mt5.order_send()` clientseitig ohne
+  Retcode ab (`result=None`, `mt5.last_error()` = `(-2, 'Invalid "comment"
+  argument')`), wenn der Kommentar zu lang ist. Exit-Kommentar hier
+  `"EK-ctnl_continuation auto-vwap_target"` = 37 Zeichen. Der am 2026-09-04
+  live bestätigte Fix (`[:16]`-Kappung + `deviation: 20` +
+  `mt5.last_error()`-Logging, siehe Eintrag von damals) war ausschliesslich
+  in `legs/ny_open_orb/executor.py` eingebaut worden — jedes Bein hat aber
+  seine eigene `_close_position()` mit identischem Request-Muster.
+  **Fix: alle drei Härtungen in den gemeinsamen Engpass
+  `core/order_send.py::send_order()` gezogen**, durch den laut Modul-Vertrag
+  ohnehin jede Order dieser Bridge laufen muss — greift damit für alle 11
+  Beine gleichzeitig, auch für künftige. Verifiziert: `py_compile` sauber,
+  und die auf 16 Zeichen gekappten Kommentare bleiben für alle 11 Beine
+  kollisionsfrei unterscheidbar (geprüft). Kein Risiko für die
+  Positions-Zuordnung: die Beine filtern ausschliesslich über `magic`,
+  `pos.comment` wird nur in `core/safety.py` zur Anzeige gelesen.
+  Gleiches ungefixtes Muster steckt in `legs/btc_ema_cross/executor.py:53`
+  (32 Zeichen) — durch den zentralen Fix jetzt mit abgedeckt; die
+  gleichnamige `BTC-EMA-Cross-Bridge` (eigener Ordner,
+  `order_comment + " exit"` = 21 Zeichen) hätte denselben Bug, ihr
+  Scheduled Task ist aber Disabled. Alle übrigen Bridges bauen kurze
+  Kommentare (`Funded-Portfolio-Bridge` kappt selbst auf 31) und sind nicht
+  betroffen.
+
 - **2026-09-09** [FK Instant Funding Bridge] **Bugfix: die ersten beiden
   echten Orders dieser Bridge sind nie beim Broker angekommen — Lot-Größe
   wurde als Dataclass statt als `float` in den MT5-Request gelegt.**

@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-10T01:01:25",
+  "generated_at": "2026-09-10T01:31:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-10T00:59:07",
+      "last_run": "2026-09-10T01:29:08",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-09-10 00:59:07 2026-09-10 00:59:02,694 INFO run_once: Konto-Equity 3355.73 EUR | Aggregiertes offenes Risiko (ganzes Konto): 243.62 (Deckel dieser Bridge: 268.46, 8%)",
+      "last_equity_line": "2026-09-10 01:29:08 2026-09-10 01:29:02,754 INFO run_once: Konto-Equity 3355.73 EUR | Aggregiertes offenes Risiko (ganzes Konto): 243.65 (Deckel dieser Bridge: 268.46, 8%)",
       "last_error_line": "2026-09-09 22:00:11 2026-09-09 22:00:10,950 INFO run_once: ctnl_continuation: {'status': 'error', 'detail': 'None'}",
       "recent_events": [
         "2026-09-09 22:15:09 2026-09-09 22:15:09,458 INFO legs.ctnl_edge.executor: [EK-CTNL-Cont] \\U0001f7e1 EXIT (stale_target) 0.01 Lots @ 4397.45",
@@ -25,21 +25,12 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-10T00:58:20",
+      "last_run": "2026-09-10T01:28:19",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
-        "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-10 00:58:20 Verbunden: Login 504072729, Equity $98,813.64 USD",
-          "last_error_line": "2026-09-08 12:21:54 FEHLER auf Konto Funded Portfolio - TTP (Konto 2, Demo): Verbindung fuer Funded Portfolio - TTP (Konto 2, Demo) (Login 504072729) auch im zweiten Versuch fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-10005, 'IPC timeout')",
-          "recent_events": [
-            "2026-09-09 17:19:18 [TTP] ?? ENTRY ctnl_continuation XAUUSD BUY lots=0.28 risk=$250.00 sl=4375.77607 -- placed",
-            "2026-09-09 10:34:18 [TTP] ?? EXIT cls_practical EURUSD (Ticket 18334869, stop) -- already_closed @ 1.16 (P/L -582.40)",
-            "2026-09-08 16:19:19 [TTP] ?? ENTRY ou_modell (AMGN) AMGN BUY lots=4.0 risk=$166.55 sl=361.29264 -- placed"
-          ]
-        },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-10 00:58:20 Verbunden: Login 16054, Equity $99,223.85 USD",
+          "last_equity_line": "2026-09-10 01:28:19 Verbunden: Login 16054, Equity $99,223.85 USD",
           "last_error_line": "2026-09-08 12:21:54 FEHLER auf Konto Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835): Verbindung fuer Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (Login 16054) auch im zweiten Versuch fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-10005, 'IPC timeout')",
           "recent_events": [
             "2026-09-09 17:19:18 [IQMARKETS] ?? ENTRY ctnl_continuation XAUUSD.gbe BUY lots=0.31 risk=$250.00 sl=4375.77607 -- placed",
@@ -47,22 +38,31 @@
           ]
         },
         "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (ttp)": {
-          "last_equity_line": "2026-09-10 00:58:20 Verbunden: Login 504069845, Equity $95,816.26 USD",
+          "last_equity_line": "2026-09-10 01:28:19 Verbunden: Login 504069845, Equity $95,816.26 USD",
           "last_error_line": "2026-09-08 12:07:27 FEHLER auf Konto Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld): Verbindung fuer Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (Login 504069845) auch im zweiten Versuch fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-10005, 'IPC timeout')",
           "recent_events": [
             "2026-09-09 17:19:18 [TTP] ?? ENTRY ctnl_continuation XAUUSD BUY lots=0.31 risk=$250.00 sl=4375.77607 -- placed",
             "2026-09-09 10:34:18 [TTP] ?? EXIT cls_practical EURUSD (Ticket 18334870, stop) -- already_closed @ 1.16 (P/L -371.60)",
             "2026-09-08 16:23:42 [TTP] ?? ENTRY ou_modell (AMGN) AMGN BUY lots=4.0 risk=$161.20 sl=361.29264 -- placed"
           ]
+        },
+        "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
+          "last_equity_line": "2026-09-10 01:28:19 Verbunden: Login 504072729, Equity $98,813.64 USD",
+          "last_error_line": "2026-09-08 12:21:54 FEHLER auf Konto Funded Portfolio - TTP (Konto 2, Demo): Verbindung fuer Funded Portfolio - TTP (Konto 2, Demo) (Login 504072729) auch im zweiten Versuch fehlgeschlagen: mt5.initialize() fehlgeschlagen: (-10005, 'IPC timeout')",
+          "recent_events": [
+            "2026-09-09 17:19:18 [TTP] ?? ENTRY ctnl_continuation XAUUSD BUY lots=0.28 risk=$250.00 sl=4375.77607 -- placed",
+            "2026-09-09 10:34:18 [TTP] ?? EXIT cls_practical EURUSD (Ticket 18334869, stop) -- already_closed @ 1.16 (P/L -582.40)",
+            "2026-09-08 16:19:19 [TTP] ?? ENTRY ou_modell (AMGN) AMGN BUY lots=4.0 risk=$166.55 sl=361.29264 -- placed"
+          ]
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-10T00:14:09",
-      "minutes_since_last_run": 47.3,
+      "last_run": "2026-09-10T01:14:10",
+      "minutes_since_last_run": 17.2,
       "status": "ok",
-      "last_equity_line": "2026-09-10 00:14:09 Verbunden: Login 17764, Equity $100,000.00",
+      "last_equity_line": "2026-09-10 01:14:10 Verbunden: Login 17764, Equity $100,000.00",
       "last_error_line": "2026-09-07 18:33:54 orb-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
       "recent_events": [
         "2026-09-08 10:06:33  LIVE EXIT ctnl_continuation XAUUSD.gbe (stop) -- war nur geplant, kein echtes Ticket.",

@@ -188,12 +188,9 @@ abgehakt-und-liegengelassen.
   16 Sekunden nach dem Entry (siehe den parallel entstandenen
   Kostenmodell-Eintrag im CHANGELOG). Das Signal war zum Entry-Zeitpunkt also
   wirklich noch am Leben — der Gate verhält sich korrekt, greift aber bei
-  dieser Verlustursache nicht. Beim Planen hatte ich dir eine strengere
-  Variante angeboten (zusätzlich abbrechen, wenn der Kurs schon >0,5R gegen
-  das Signal gelaufen ist); du hast die einfachere gewählt. Die strengere
-  **hätte heute gegriffen** (0,76R Gegenbewegung beim Entry-Versuch). Sag
-  Bescheid, ob ich sie nachrüsten soll — sie verwirft aber auch mehr Trades,
-  und 0,5R wäre ein gesetzter, nicht gebacktesteter Wert.
+  dieser Verlustursache nicht. Die strengere Variante, die heute
+  gegriffen hätte, liegt als eigener Punkt in der Ideen-Inbox
+  („Gegen das Signal"-Check) — dort mit allen Zahlen zum Abwägen.
   (3) **Ungefragt mitgemacht:** `Funded-Portfolio-Bridge/executor.py` loggte
   bei `order_send()==None` weiterhin nur „None". FK hat das heute früh
   bekommen, EK parallel über `core/order_send.py` — Funded war die letzte
@@ -456,6 +453,14 @@ abgehakt-und-liegengelassen.
 
 ### Offene Aufgaben
 
+- **`cls_practical/results/final_verification_vs_buyhold.csv` ist veraltet und
+  irreführend** (2026-09-09 gefunden). Die CSV stammt vom 2026-08-13, die
+  Engine wurde am 2026-08-20 geändert (`f549b23`, u.a. neuer `test_hour=9.0`).
+  Derselbe Aufruf liefert heute $73.558,93 statt der dort ausgewiesenen
+  $60.393,55 (+22 %). Neu erzeugen — bis dahin ist jede Zahl daraus falsch.
+  Zweiter Fall dieser Art nach dem Gold-ASB-Liquiditätsfilter; lohnt zu prüfen,
+  ob weitere `results/`-CSVs älter sind als ihre Engine. Priorität: Mittel.
+
 - **Risiko-Anpassung CLS/Challenges — Entscheidung steht aus** (2026-09-09).
   Nach deinem Entscheid "erst Kostenmodell validieren, dann Risiko anpassen"
   ist die Messung fertig (siehe `CHANGELOG.md` und
@@ -561,6 +566,30 @@ Kurz einfangen, was gerade auftaucht, ohne das aktuelle Thema zu verlassen —
 wird bei Gelegenheit einsortiert (Offene Aufgaben, PARA-Struktur, oder
 bewusst verworfen), nicht hier für immer liegen gelassen.
 
+- **„Gegen das Signal"-Check als Ergänzung zum Restlaufzeit-Gate**
+  (2026-09-09, offen — deine Entscheidung): Der heute gebaute Gate fragt
+  „wurde der SL schon berührt?". Die Alternative, die ich beim Planen
+  angeboten hatte und die du damals bewusst nicht gewählt hast, fragt
+  zusätzlich „wie weit ist der Kurs schon **gegen** das Signal gelaufen?" —
+  Entry abbrechen, wenn beim Versuch bereits mehr als ~0,5R der Stopdistanz
+  aufgebraucht sind.
+  **Warum es jetzt wieder auf dem Tisch liegt:** der CLS-Trade vom
+  2026-09-09 wäre davon erfasst worden, vom gebauten Gate dagegen nicht.
+  Zahlen: Entry-Signal 1.163967, SL 1.163590 (3,8 Pips). Beim Entry-Versuch
+  um 10:30 Berlin stand der Kurs bei 1.163680 — **0,76R schon gegen das
+  Signal**. Der SL war auf dem Broker-Feed zu dem Zeitpunkt noch nicht
+  berührt (08:25-UTC-Low 1.16360, 0,1 Pip darüber), der Stop fiel erst
+  16 Sekunden nach dem Entry.
+  **Wogegen es abzuwägen ist:** verwirft zwangsläufig auch Trades, die noch
+  gelaufen wären — bei einem Bein mit 3,8 Pips Stopdistanz ist 0,76R
+  Vorlauf keine ungewöhnliche Marktbewegung, sondern gut eine Minute
+  normales Rauschen. Und 0,5R wäre ein gesetzter Wert, kein aus einem
+  Backtest abgeleiteter. Sauber wäre, die Schwelle gegen die Bein-Historie
+  zu prüfen (welcher Anteil der Gewinner startete mit wieviel Vorlauf?),
+  statt sie zu raten. Zusammen mit dem parallel laufenden Kostenmodell-Thema
+  (Slippage/Kommission, siehe CHANGELOG 2026-09-09) zu entscheiden — beide
+  drehen an derselben Schraube „später Entry kostet mehr, als der Backtest
+  denkt".
 - **NY-Open ORB komplett von dukascopy lösen** (2026-09-09): der heutige
   Fix verkürzt nur die Hang-Dauer (3x/20s statt 6x/90s), beseitigt sie
   nicht. Strukturell sauberer wäre, die ORB-Entry-Daten direkt per MT5

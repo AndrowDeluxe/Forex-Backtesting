@@ -9,6 +9,152 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-09** [FK Instant Funding / Funded-Portfolio-Bridge] **dukascopy-
+  Hang entschaerft: Slow-Pfad-Retry von 6x/8s/90s auf 3x/3s/20s verkuerzt
+  (Worst Case pro Bein ~9,7 Min. -> ~66s) + FKs unbehandelten Lock-Absturz
+  behoben.** Ausgeloest durch die Nutzerfrage zu wiederkehrenden
+  "NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 90s"-Telegram-
+  Meldungen, seit NY-Open ORB am 2026-09-08 live auf echtem Geld laeuft.
+  Zwei unabhaengige Befunde:
+  (1) `FKInstantFunding-MT5-Bridge/run_once.py::_run_scans()` und
+  `Funded-Portfolio-Bridge/run_once.py::run_shared_scans()` riefen
+  `pb._retry(fn)` ohne Override auf (Default 6 Versuche/8s/90s) -- ein
+  haengendes Bein konnte damit ~9,7 Min. blockieren, WAEHREND der
+  Cross-Prozess-Lock gehalten wird, also lange genug, um ein Live-ORB-Signal
+  komplett zu verpassen (ORB resolved in 15-20 Min.) und den parallelen
+  5-Minuten-Fast-Lauf reihenweise am Lock scheitern zu lassen. Beide
+  Fast-Lanes nutzen dieselben engeren Werte (3/3s/20s) bereits seit
+  2026-09-04 bzw. 09-08 produktiv -- jetzt auch im Slow-Pfad, keine neuen
+  Zahlen erfunden.
+  (2) `FKInstantFunding-MT5-Bridge/run_once_fast.py` (und `run_once.py`)
+  hatten KEIN try/except um den `state_lock()`-Erwerb: haelt der jeweils
+  andere Lauf den Lock, wirft `state_lock()` nach 45s `TimeoutError` -- bisher
+  ein unbehandelter Traceback ohne verwertbare Log-Zeile und ohne Telegram,
+  d.h. ein komplett verlorener 5-Minuten-Zyklus genau dann, wenn ein
+  Live-Trade Ueberwachung braucht. Funded-Portfolio-Bridge faengt exakt
+  diesen Fall seit jeher pro Konto ab (Beleg: die real geloggte Meldung
+  "State-Lock fuer Konto ttp nach 45s nicht frei geworden ... dieser
+  Kontolauf wird fuer diesen Zyklus uebersprungen"); FK hat nur EIN Konto
+  und damit keine Account-Loop, in der das automatisch mitkam. Jetzt am
+  jeweiligen Einsprungpunkt abgefangen (bewusst dort statt per Neu-
+  Einrueckung von ~80 Zeilen Echtgeld-Code).
+  Bewusst NICHT geaendert: `fk_instant_funding/paper_bot.py`s eigener
+  Paper-Loop (dort laeuft `source="live"`, also ein echter dukascopy-
+  Netzwerkabruf -- ein 20s-Timeout wuerde dort legitime, nur langsame
+  Abrufe abwuergen und die Meldungen eher haeufiger machen; die Begruendung
+  fuer die engeren Werte gilt nur fuer `source="lake"`, wo der Normalfall
+  ein Millisekunden-Parquet-Read ist). Ebenfalls nicht angefasst:
+  `data_lake/ingest.py` (bereits durch `ExecutionTimeLimit=4min` +
+  `MultipleInstances=IgnoreNew` auf Task-Scheduler-Ebene gedeckelt) und
+  `EK-Portfolio-Bridge` (hat mit `LEG_TIMEOUT_S=600` + MT5-nativem Fetching
+  fuer zeitkritische Beine bereits staerkere Absicherungen).
+  Verifiziert: `python -m py_compile` gegen alle 3 geaenderten Dateien,
+  `_retry()`-Signatur in beiden genutzten paper_bot-Modulen gegengeprueft.
+  Kein Live-Testlauf (DRY_RUN=False) -- Wirkung zeigt sich im naechsten
+  regulaeren Scheduled-Task-Lauf, Logs danach gegenlesen.
+- **2026-09-08** [FK Instant Funding] **5-Minuten-Fast-Task fuer NY-Open ORB
+  (+ ctnl_continuation/cls_practical) live geschaltet — behebt, dass seit
+  `DRY_RUN=False` noch KEINE echte ORB-Order gesendet wurde.** Root Cause
+  (im Log bestaetigt): der stuendliche Lauf sah beide bisherigen echten
+  ORB-Signale (07./08.09., NASDAQ) erst, nachdem sie laengst ihren Stop
+  erreicht hatten (ORB kann in 15-20 Min. resolven) -- markierte sie nur als
+  "missed" statt eine Order zu senden. Identisches Muster wie bei EK-
+  Portfolio-Bridge/Funded-Portfolio-Bridge uebernommen: neues
+  `FKInstantFunding-MT5-Bridge/run_once_fast.py` (+`run_task_fast.ps1`),
+  `import run_once as slow` (keine Logik-Kopie), nutzt die bereits seit
+  09-06 laufende `source="lake"`-"fast5"-Lane (kein neuer Ingest noetig).
+  Scheduled Task `FKInstantFunding-MT5-Bridge-Fast` (alle 5 Min., Mo-Fr)
+  bereits registriert und laeuft sauber (`LastTaskResult=0`) -- Registrierung
+  + finaler Feinschliff parallel zu meiner Plan-Session entstanden, beim
+  Gegenlesen uebernommen statt dupliziert (siehe Memory "External Bridge
+  Files Have No Git Safety Net").
+- **2026-09-08** [FK Instant Funding / Funded-Portfolio-Bridge / EK-Portfolio-
+  Bridge] **Wiederholende Telegram-Fehlermeldungen auf 1x/Tag begrenzt**
+  (Nutzerauftrag, Screenshot als Beleg: "kein Live-Kurs fuer ou_modell
+  (AMGN)" kam bei Funded-Portfolio-Bridge 6x identisch alle paar Minuten).
+  Root Cause ueberall gleich: ein Signal/eine Order wird als
+  gescheitert/uebersprungen gemeldet, aber NICHT im State vermerkt -- der
+  naechste Lauf haelt es deshalb wieder fuer neu und meldet identisch erneut.
+  - `FKInstantFunding-MT5-Bridge/run_once.py` + `Funded-Portfolio-Bridge/
+    run_once.py::_process_leg()`: "kein SL", "kein Live-Kurs" (ou_modell,
+    nur Funded), Entry-Exception/"Entry fehlgeschlagen" schreiben jetzt vor
+    dem `continue` denselben `state["positions"][key]={"status":"missed",...}`-
+    Eintrag wie die 2 bereits korrekten Nachbar-Zweige ("Signal zu alt"/
+    "Kurs zu weit entfernt"). Fuer die EXIT-Seite bewusst NICHT komplett
+    stummgeschaltet (Position bleibt echt offen) -- neues
+    `"exit_error_notified"`-Flag alarmiert einmalig, der Schliessversuch
+    selbst laeuft jeden Lauf weiter. **Zusaetzlicher echter Bug dabei
+    gefunden**: `result["status"]=="error"` von `executor.close_position()`
+    (ein normaler Rueckgabewert, keine Exception) setzte die Position bisher
+    trotzdem unconditional auf `"closed"`, obwohl sie auf dem Broker
+    weiterhin offen war -- liess sie aus `_aggregate_open_risk_dollars()`
+    verschwinden (FK) und verhinderte jeden weiteren Schliessversuch. Beide
+    Bridges gleich behandelt: nur bei echtem Erfolg als `"closed"` markieren.
+  - `EK-Portfolio-Bridge` (andere Architektur, kein `_process_leg()`):
+    bestehenden Praezedenzfall verallgemeinert -- `core/state_store.py`s
+    `already_notified_risk_cap_skip()`/`mark_risk_cap_skip_notified()`
+    (2026-09-02 fuer genau dieses Problem gebaut, aber nur fuer den
+    Risiko-Deckel-Fall) sind jetzt duenne Wrapper um neue generische
+    `already_notified(category, key)`/`mark_notified(category, key)`
+    (neue `notified`-Tabelle, additive Migration, `risk_cap_notified`
+    bleibt als Alt-Historie liegen). Angewendet auf jede bisher ungeschuetzte
+    "Order/Exit-Order fehlgeschlagen"-Meldung in
+    `legs/{gold_asb,btc_ema_cross,ctnl_edge,ny_open_orb,ou_modell}/
+    executor.py` (`category="order_failed"`, `key=<Bein/Symbol>`) --
+    deckt u.a. das bereits im Dashboard dokumentierte EXPE-"Market
+    closed"-Wiederholungsmuster ab. Zwei bereits nur-lokal-loggende Stellen
+    in `ny_open_orb/executor.py` (Teilausstieg/Session-Ende-Fehlschlag)
+    unangetastet gelassen -- die spammen Telegram schon heute nicht.
+  - Verifiziert: alle geaenderten Dateien `py_compile`-sauber; neue
+    `already_notified()`/`mark_notified()` isoliert gegen eine Temp-DB
+    getestet (inkl. Rueckwaertskompatibilitaet der alten Wrapper-Funktionen);
+    FKs `_process_leg()`-Fix mit einem synthetischen wiederholten "kein
+    SL"-Signal verifiziert (1. Aufruf meldet, 2. Aufruf mit identischem
+    Signal meldet nichts mehr).
+
+---
+
+- **2026-09-09** [FK Instant Funding] **`LIVE_LEGS` um gold_asb/cls_practical/
+  ctnl_continuation/ctnl_reversal erweitert** (Nutzerentscheid, nach zwei
+  weiteren sauberen `run_once_fast.py`-Laeufen -- einer davon ausserhalb der
+  Spread-Stunden-Pause mit vollem Connect-Scan-Gates-Durchlauf, nur zufaellig
+  kein neues Signal). `LIVE_LEGS` ist jetzt `{orb_sp500, orb_us30,
+  orb_nasdaq, gold_asb, cls_practical, ctnl_continuation, ctnl_reversal}` --
+  `trend_pullback`/`gold_silver` bleiben bewusst DRY_RUN (kuerzere
+  Live-Historie). Explizites Spannungsverhaeltnis zur 09-07-"schrittweise,
+  nur bewaehrte Beine"-Regel benannt und vom Nutzer nach Hinweis bestaetigt,
+  kein stillschweigendes Uebergehen -- siehe Konversation. Noch offen: ein
+  echter Entry ueber die neue Fast-Lane wurde bisher nicht beobachtet
+  (reiner Zufall, kein neues Signal seit Registrierung); Order-Versand-Code
+  ist aber identisch zu dem der bereits seit 09-08 lebenden ORB-Beine, kein
+  neuer Codepfad. Bei Gelegenheit gegenlesen, ob Sizing/SL/Telegram-Meldung
+  beim ersten echten Entry der 4 neuen Beine wie erwartet aussehen.
+- **2026-09-08** [FK Instant Funding] **Fast/M5-Scan-Lane + Terminal-Restart-
+  Fix nachgeruestet** (Nutzerauftrag, nach Vergleich der drei Portfolio-
+  Bridges bei Scan-/M5-Timing: EK hatte eine eigene 2-Min-Fast-Bridge,
+  Funded eine 5-Min-fast5-Lane, FK lief komplett auf der alten stuendlichen
+  Kadenz -- trotz seit heute live laufender NY-Open-ORB-Beine). Scope in
+  drei Rueckfragen praezisiert (kein `ou_modell`, kein Telegram-Vendoring,
+  konkrete Beine-Liste fuer den spaeteren Live-Rollout). Neu:
+  `run_once_fast.py` (5-Min-Trigger fuer ctnl_continuation/orb_sp500/
+  orb_us30/orb_nasdaq/cls_practical, `import run_once as slow`-Reuse-Prinzip
+  wie bei Funded, aber an FKs Einzelkonto-Struktur + 4 einzelne Risk-Gates
+  angepasst statt 1:1 kopiert) + `run_task_fast.ps1` + Scheduled Task
+  `FKInstantFunding-MT5-Bridge-Fast` (per XML-Export von
+  `Funded-Portfolio-Bridge-Fast` registriert, identische Repetition/
+  Settings). Keine neue Data-Lake-Ingestion noetig (`DataLake-Ingest-Fast5`
+  deckt GOLD/SP500/US30/NASDAQ/EURUSD M5 bereits ab, geteilter Lake mit
+  EK/Funded). Zusaetzlich `executor.py::_connect_once()` bekommt jetzt
+  `_ensure_terminal_running()` bei JEDEM Connect-Versuch (identisches Muster
+  zu Funded-Portfolio-Bridge/executor.py, 09-07 dort gebaut) statt nur einmal
+  beim Bridge-Start in `run_once.py::main()` -- der dortige alte
+  Alleinstand-Check + `import subprocess` entfernt (jetzt redundant).
+  Manueller Smoke-Test von `run_once_fast.py` durch den Nutzer lief sauber
+  (traf die 23:00-Spread-Stunden-Pause, kein Traceback). Voller Connect-
+  Scan-Gates-Entry-Pfad noch nicht beobachtet (Pause-Fenster) -- siehe
+  DASHBOARD.md "Als Naechstes" fuer den offenen Verifikationsschritt vor der
+  geplanten `LIVE_LEGS`-Erweiterung (gold_asb/cls_practical/
+  ctnl_continuation/ctnl_reversal zusaetzlich zu den 3 ORB-Beinen).
 - **2026-09-08** [FK Instant Funding] **`DRY_RUN=False` gesetzt — NY-Open
   ORB (SP500/US30/NASDAQ) ist LIVE auf echtem Geld** (BeyondIQCapital,
   Konto 17764, IQIF100K-144048). Expliziter Nutzerauftrag ("Setze dry run

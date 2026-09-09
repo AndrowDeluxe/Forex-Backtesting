@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-09-08** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-09-09** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -47,6 +47,19 @@ passiert, was steht an.
    umgebaut: 6 Scans laufen jetzt 1x pro Bridge-Lauf statt 1x pro Konto.
    Nebenfund: `tvDatafeed`-Pro-Login entfernt (TradingView-Captcha-Wall).
    Details: CHANGELOG.
+5. ~~FKInstantFunding-MT5-Bridge: vollen Connect-Scan-Gates-Entry-Pfad nach
+   Fast-Lane-/Terminal-Fix-Umbau beobachten, dann LIVE_LEGS erweitern~~ —
+   **erledigt 2026-09-09.** Task Scheduler bestätigt (`LastTaskResult=0`,
+   läuft sauber im 5-Min-Takt Mo–Fr); Root Cause des eigentlichen Auslösers
+   (beide bisherigen ORB-Signale 07./08.09. vom stündlichen Takt verpasst)
+   damit behoben. Ein zweiter Testlauf außerhalb der Spread-Stunden-Pause
+   zeigte den vollen Connect-Scan-Gates-Durchlauf fehlerfrei (nur zufällig
+   kein neues Signal) — auf dieser Basis hat der Nutzer entschieden, nicht
+   erst auf einen echten Entry zu warten (Order-Versand-Code ist identisch
+   zu dem der schon lebenden ORB-Beine). `LIVE_LEGS` jetzt erweitert um
+   gold_asb/cls_practical/ctnl_continuation/ctnl_reversal. Noch offen: der
+   erste echte Entry der 4 neuen Beine ist noch nicht beobachtet — bei
+   Gelegenheit gegenlesen. Details: CHANGELOG.
 
 ---
 
@@ -64,6 +77,35 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
+- **dukascopy-Hang-Fix: eine Plan-Abweichung + Verifikation steht noch aus**
+  (2026-09-09, Details CHANGELOG). Der freigegebene Plan sah zusätzlich vor,
+  dieselben engeren Retry-Werte auch in `fk_instant_funding/paper_bot.py`s
+  eigenem Paper-Loop zu setzen (der die Telegram-Meldung aus deinem
+  Screenshot erzeugt). **Habe ich beim Umsetzen bewusst weggelassen**: dort
+  läuft `source="live"`, also ein echter dukascopy-Netzwerkabruf — ein
+  20s-Timeout würde dort legitime, nur langsame Abrufe abwürgen und die
+  Meldungen eher häufiger machen statt seltener. Die Begründung für die
+  engeren Werte gilt nur bei `source="lake"` (Normalfall = Millisekunden-
+  Parquet-Read). Heißt konkret: **die Meldungen aus deinem Screenshot
+  (Paper-Bot) werden vorerst weiter auftreten** — die Änderung wirkt nur auf
+  die beiden Echtgeld-Bridges. Sag Bescheid, falls du die Paper-Meldungen
+  trotzdem stummer haben willst (dann eher über eine Dedup-/Sammelmeldung
+  als über kürzere Timeouts). Zweitens: verifiziert ist bisher nur die
+  Syntax + die `_retry()`-Signatur — ob der Fix im echten Lauf greift,
+  zeigt erst der nächste reguläre Scheduled-Task-Lauf beider Bridges
+  (danach `task_run.log`/`task_run_fast.log` gegenlesen: keine
+  unbehandelten Tracebacks mehr, im Fehlerfall die neue "...wird fuer
+  diesen Zyklus uebersprungen"-Zeile).
+- **Wiederholende-Fehlermeldung-Fix: Design-Entscheidungen waren eigenes
+  Judgement** (2026-09-08, Details CHANGELOG). (1) Dedup ist 1x/TAG pro
+  Signal/Order, nicht 1x fuer immer — reagiert am nächsten Tag wieder frisch.
+  (2) Bei fehlgeschlagenem EXIT wird nur die Telegram-Meldung gedämpft, der
+  Schliessversuch selbst läuft weiter jeden Zyklus (kein stilles Aufgeben).
+  (3) Dabei einen zusätzlichen echten Bug gefunden+mitbehoben: ein
+  fehlgeschlagener Exit setzte die Position bisher trotzdem auf "closed",
+  obwohl sie real offen blieb (betraf FK Instant Funding + Funded-Portfolio-
+  Bridge). Nur `py_compile` + isolierte Funktionstests, kein echter Live-Lauf
+  mit einem echten wiederholten Fehler abgewartet.
 - ~~`bridge_status/snapshot.json` seit Montag 17:01 Uhr (CEST) nicht mehr
   aktualisiert -- Bridge-Watchdog liefert seit ~18h/~30h keinen neuen
   Stand~~ — **war ein Fehlalarm, aufgeklärt 2026-09-08 (heutige Session):
@@ -81,24 +123,26 @@ abgehakt-und-liegengelassen.
   wieder passieren, sobald irgendeine andere Session/Session-Kopie
   zwischenzeitlich pusht. Root-Cause-Fix (Pull-vor-Push in den Skripten)
   noch nicht gebaut, nur der aktuelle Rückstand behoben.
-- **EK-Portfolio-Bridge/ou_modell: Order fuer EXPE scheitert seit heute
-  Nachmittag wiederholt mit "Market closed"** (gefunden 2026-09-07,
-  Snapshot-Stand 17:01 Uhr). `recent_events` zeigt denselben Fehler viermal
-  in Folge (16:10, 16:17, 16:31, 16:54 Uhr, jeweils ein 15-Minuten-Bridge-
-  Lauf) fuer denselben Versuch: `OrderSendResult(retcode=10018, ...
-  comment='Market closed', symbol='EXPE', volume=1.0, price=297.51,
-  sl=264.36, tp=348.56, magic=990011)` -- die Order wird bei jedem Lauf neu
-  versucht und scheitert jedes Mal identisch. `legs.ou_modell.executor`
-  liegt in der Bridge selbst (ausserhalb des Repos), Quellcode kann ich
-  nicht einsehen. Ungepruefte Vermutung: EXPE ist eine US-Aktie, retcode
-  10018 deutet auf einen Versuch ausserhalb der NYSE-Handelszeiten hin --
-  moeglicherweise fehlt fuer dieses ou_modell-Bein ein Handelszeiten-Gate
-  vor dem Order-Versand (aehnlich der Spread-Stunden-Pause, die fuer andere
-  Beine bereits existiert). Da es um Order-Versand/Echtgeld geht, fasse ich
-  das nicht an. Bitte pruefen: ist das erwartetes Verhalten (Retry bis der
-  Markt wieder offen ist), oder sollte ein Handelszeiten-Check ergaenzt
-  werden, damit nicht bei jedem Lauf ein aussichtsloser Order-Versuch
-  anfaellt?
+- **EK-Portfolio-Bridge/ou_modell: Order fuer EXPE scheiterte am 2026-09-07
+  wiederholt mit "Market closed"** (urspruenglich gefunden 2026-09-07,
+  Snapshot-Stand 17:01 Uhr) -- **Telegram-Wiederholung jetzt behoben, offene
+  Frage nach der eigentlichen Ursache bleibt.** Beim direkten Lesen von
+  `legs/ou_modell/executor.py` (2026-09-08, ich habe darauf entgegen der
+  urspruenglichen Annahme hier vollen Zugriff) gefunden: `check_and_execute()`
+  hat bereits einen `_nyse_is_open()`-Handelszeiten-Gate GANZ AM ANFANG (Zeile
+  150) -- die urspruengliche Vermutung "fehlendes Handelszeiten-Gate" trifft
+  also nicht zu, die 16:10-16:54-Uhr-Versuche lagen vermutlich innerhalb der
+  erkannten NYSE-Handelszeit (16:xx Uhr CEST = vormittags ET). "Market closed"
+  fuer genau dieses eine Symbol trotz offenem Gate deutet eher auf einen
+  einzeltitel-spezifischen Halt/Broker-Zustand hin, nicht auf einen
+  generischen Zeitfehler -- nicht weiter untersucht, da an dem Tag selbst
+  nicht mehr reproduzierbar. Was ich behoben habe: die wiederholte IDENTISCHE
+  Telegram-Meldung (Nutzerauftrag "Fehler-Nachrichten auf 1x reduzieren") --
+  `already_notified("order_failed", "ou_modell_EXPE")`-Dedup in
+  `_execute_one()` ergaenzt, sodass ein anhaltender Fehlschlag nur noch 1x/Tag
+  alarmiert, der Order-Versuch selbst aber weiterhin jeden Lauf erfolgt
+  (kein stilles Aufgeben). Falls sich das wiederholt: dann lohnt eine echte
+  Root-Cause-Untersuchung des Broker-Fehlers selbst, nicht mehr des Gates.
 - **EK-Portfolio-Bridge: unformatiertes Log-Fragment in `recent_events`
   (Rohtext eines f-Strings statt ausgewerteter Werte)** (gefunden
   2026-09-07). Zweimal (15:24 und 16:54 Uhr) taucht in den Events woertlich
@@ -297,7 +341,8 @@ abgehakt-und-liegengelassen.
 | ------------------------------------------------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------- | --------------- |
 | EK-Portfolio-Bridge                                     | Tickmill Live (55918977)                                                                 | **LIVE — echtes Geld** (btc/ou_modell weiterhin direkt Dukascopy/yfinance; gold_asb/cls_practical/ctnl x2 jetzt `source="lake"`) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-08      |
 | EK-Portfolio-Bridge-Fast                                | Tickmill Live (55918977, geteiltes Terminal)                                             | **LIVE — echtes Geld** (3 MT5-native Beine: ORB/Gold-Silber/Trend-Pullback, kein Dukascopy)  | Ready (alle 2 Min, Mo–Fr)       | 2026-09-03      |
-| FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | **LIVE — echtes Geld** (nur NY-Open ORB x3 via `LIVE_LEGS`, `DRY_RUN=False` seit 09-08; die anderen 6 Beine bleiben geplant/geloggt) | Ready (stündlich)               | 2026-09-08      |
+| FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | **LIVE — echtes Geld** (7 Beine via `LIVE_LEGS`: orb_sp500/us30/nasdaq + gold_asb/cls_practical/ctnl_continuation/ctnl_reversal seit 09-09; trend_pullback/gold_silver bleiben geplant/geloggt) | Ready (stündlich)               | 2026-09-09      |
+| FKInstantFunding-MT5-Bridge-Fast                        | BeyondIQCapital (17764, geteiltes Terminal)                                              | **LIVE — echtes Geld** (ctnl_continuation + orb_sp500/us30/nasdaq + cls_practical, `source="lake"`, analog Funded-Fast) | Ready (alle 5 Min, Mo–Fr)       | 2026-09-09      |
 | FK-Instant-Funding-Paper                                | — (reine Simulation)                                                                     | Paper + Telegram                                                                             | Ready (stündlich)               | 2026-09-01      |
 | OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner + Telegram (3x täglich: 15:35/18:35/21:35)                                           | Ready (Mo–Fr, US-Handelszeiten) | 2026-09-02      |
 | Forex-Weekly-Report                                     | —                                                                                        | Report-Generator                                                                             | Ready                           | 2026-09-02      |
@@ -344,6 +389,15 @@ Kurz einfangen, was gerade auftaucht, ohne das aktuelle Thema zu verlassen —
 wird bei Gelegenheit einsortiert (Offene Aufgaben, PARA-Struktur, oder
 bewusst verworfen), nicht hier für immer liegen gelassen.
 
+- **NY-Open ORB komplett von dukascopy lösen** (2026-09-09): der heutige
+  Fix verkürzt nur die Hang-Dauer (3x/20s statt 6x/90s), beseitigt sie
+  nicht. Strukturell sauberer wäre, die ORB-Entry-Daten direkt per MT5
+  (`mt5.copy_rates_range()`) zu holen — genau das macht
+  `EK-Portfolio-Bridge/run_once_fast.py` für seine 3 zeitkritischen Beine
+  bereits ("sie haengen NIE an einem dukascopy_python-Hang"). Bewusst
+  zurückgestellt (Nutzerentscheid 2026-09-09): braucht neuen Code +
+  Validierung (Symbol-Suffixe, Zeitzonen, Abgleich gegen den bestehenden
+  dukascopy-basierten Backtest), also eine eigene Session wert.
 - **Periodischer `/doctor`-Check** (2026-09-04): zurückgestellt, noch keine
   nennenswerte Skill/MCP-Altlast bei aktuell nur 2 Skills.
 - **CFDs → echte Futures umstellen** (2026-09-03): zwei getrennte,
@@ -361,6 +415,11 @@ bewusst verworfen), nicht hier für immer liegen gelassen.
   Zarattini/Barbon/Aziz 2024, siehe [[opening-range-breakout]]): braucht
   neue Datenquelle (breites US-Aktienuniversum) + eigene Selektionslogik —
   eigenständige Idee, kein Filter-Add-on.
+- **Volles 42-Asset-Futures-Universum aus dem JPM-Spillover-Paper**
+  (2026-09-09, siehe [[cross-asset-momentum-spillover]]): Commodities/
+  Aktienindizes/US-Treasury-Futures über den aktuellen FX/Gold-Fokus
+  hinaus -- bewusst zurückgestellt, kein Termin. FX-only-Teilmenge +
+  Gold-Cross-Check laufen stattdessen jetzt als eigenes Project.
 - **Agentisches Research-System + separater Self-Learning-Bot** (2026-09-07):
   Konzept steht (Kernentscheidungen geklärt — autonome Ideen-Findung,
   Hybrid ML/RL, Alpaca Paper-Trading, erst Agentensystem dann Lern-Bot),
@@ -371,6 +430,24 @@ bewusst verworfen), nicht hier für immer liegen gelassen.
 
 _(Auszug — vollständiges Log in [CHANGELOG.md](CHANGELOG.md))_
 
+- 2026-09-09 — dukascopy-Hang entschärft: Slow-Pfad-Retry bei FK Instant
+  Funding + Funded-Portfolio-Bridge von 6x/8s/90s auf die in beiden
+  Fast-Lanes längst bewährten 3x/3s/20s verkürzt (Worst Case pro Bein
+  ~9,7 Min. → ~66s, gehalten wird dabei der State-Lock) + FKs unbehandelten
+  Lock-Absturz behoben (Fast-Lauf crashte ohne Log-Zeile, wenn der Slow-Lauf
+  den Lock hielt — Funded fängt das seit jeher ab). Details: CHANGELOG.
+- 2026-09-09 — FK Instant Funding: `LIVE_LEGS` um gold_asb/cls_practical/
+  ctnl_continuation/ctnl_reversal erweitert (Nutzerentscheid, nach zwei
+  weiteren sauberen `run_once_fast.py`-Testläufen). Damit sind 7 von 9
+  Beinen live; trend_pullback/gold_silver bleiben bewusst DRY_RUN. Details:
+  CHANGELOG.
+- 2026-09-08 — FK Instant Funding: Fast/M5-Scan-Lane (`run_once_fast.py` +
+  Scheduled Task `FKInstantFunding-MT5-Bridge-Fast`, 5 Min) + Terminal-
+  Restart-Fix in `executor.py` nachgerüstet, nach Vergleich der drei
+  Portfolio-Bridges beim Scan-/M5-Timing (Nutzerauftrag). `LIVE_LEGS`-
+  Erweiterung (gold_asb/cls_practical/ctnl_continuation/ctnl_reversal)
+  steht noch aus, wartet auf einen vollen Connect-Test außerhalb der
+  Spread-Stunden-Pause. Details: CHANGELOG.
 - 2026-09-08 — FK Instant Funding: `DRY_RUN=False` gesetzt (Nutzerauftrag),
   NY-Open ORB live auf echtem Geld. Second Brain: Git-Sync-Reparatur
   (lokal/GitHub 38 vs. 2 Commits auseinandergelaufen, Bridge-Watchdog-

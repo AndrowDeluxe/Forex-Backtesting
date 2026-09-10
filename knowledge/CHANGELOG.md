@@ -9,6 +9,67 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-10** [EK-Portfolio-Bridge] **Bar-Fenster-Bug behoben — er betraf
+  ALLE DREI MT5-Beine, nicht nur ORB.** Nutzerauftrag ("Baue den Zeitversatz auf
+  allen Konten so um, dass alles vernuenftig funktioniert"). `fetch_recent_mt5()`
+  existierte dreimal als eigene Kopie (`legs/ny_open_orb`, `legs/gold_silver`,
+  `legs/trend_pullback`) -- jeweils mit derselben kaputten Fensterlogik
+  (`date_to = utcnow()` naiv). `legs/gold_asb` war nie betroffen, es laeuft
+  ueber den Lake-Weg.
+  Neu: **`core/mt5_bars.py`** (`recent_range()` / `copy_rates_recent()`) als
+  gemeinsamer Helfer -- bewusst dorthin, damit sich derselbe Fehler nicht ein
+  viertes Mal einschleicht; die Index-Umrechnung bleibt bei den Beinen, weil
+  ORB nach America/New_York und die anderen beiden nach UTC rechnen. `date_to`
+  liegt jetzt 12h in der Zukunft (MT5 kappt selbst auf Vorhandenes), `date_from`
+  bleibt an der echten Jetzt-Zeit verankert. Bewusst keine exakt gerechnete
+  Offset-Konstante: der Abstand Rechner/Server verschiebt sich mit jeder
+  DST-Umstellung und waere die naechste stille Fehlerquelle.
+  **Verifiziert** an den echten Funktionen (`verify_bar_window_fix.py`,
+  read-only, 12:18): ORB M5 und M15 liefern Bars, die **3,4 Minuten** alt sind
+  (vorher ~300), Gold-Silber H4 78 Min., Trend-Pullback H1 18 Min. -- alles im
+  normalen Bereich des jeweiligen Timeframes. Der Fast-Lauf um 12:18:12 mit dem
+  gefixten Code lief fehlerfrei durch.
+  **Nicht aufgearbeitet:** EK hat wochenlang auf 5 Std. alten Bars gehandelt.
+  Die bisherigen ORB-/Gold-Silber-/Trend-Pullback-Trades dieser Bridge sind
+  unter falschen Voraussetzungen entstanden und taugen nicht als
+  Leistungsnachweis -- Entscheidung ueber eine rueckwirkende Auswertung liegt
+  beim Nutzer (DASHBOARD).
+- **2026-09-10** [cls_practical] **SL-/TP-Varianten durchgetestet: der
+  absolute Pip-Boden ist der einzige belastbare Hebel — TP-Änderungen und
+  Break-even-Nachziehen fallen durch.** Neu:
+  `scripts/research_cls_practical_sl_optimization.py` und
+  `scripts/research_cls_practical_tp_variants.py`. Dafür `cls_practical/engine.py`
+  um `min_sl_pips`, `sl_floor_mode` und `session_sl_mult` erweitert —
+  **Defaults reproduzieren das bisherige Verhalten exakt** (Regressionslauf:
+  207 Trades, identische PnL mit/ohne explizite No-Op-Parameter), wichtig weil
+  der Live-Bot die Datei über `challenge_portfolio/paper_bot.py` direkt
+  importiert. Keine Verhaltensänderung am laufenden Bot.
+  **Gewinner: `min_sl_pips=5` im Modus "drop"** (Trade verwerfen, nicht Stop
+  aufweiten). Unter TTP-Kosten: PF 1,11 → **1,52**, Ø R 0,09 → **0,34**,
+  In-Sample dreht von −0,06 auf **+0,28**, MaxDD **7,34 % → 3,10 %** (damit
+  wieder unter der 7-%-TTP-Grenze), max. Hebel 10,0 → 5,0. Kostet 27 % der
+  Trades (207 → 152). Plateau von 4–6 mit Abfall ab 7, kein Einzelspike;
+  Faustformel Boden ≈ 2,5 × Round-Trip-Kosten. Auf IQ-Kosten gegengeprüft
+  (PF 1,70).
+  **Verworfen:** Stop aufweiten statt verwerfen (PF 0,97–1,09 — das ADR-Ziel
+  bleibt stehen, R:R kollabiert); volatilitätsgemittelter fester Stop
+  (bestenfalls Baseline-Niveau, bei ×1,0 Ø R −0,47 — er wirft das strukturelle
+  SL-Niveau weg, und genau das trägt den Edge); höheres ATR-Multiple (hilft,
+  aber schwächer und teurer an Trades); **fester 2R-TP** (PF 1,14 vs. 1,52 —
+  liegt in der Senke einer U-Form über 1R–4R); **Break-even-Nachziehen**
+  (durchgehend schädlich, schneidet die tragenden Gewinner ab).
+  **Ein weiteres ADR-Ziel (`adr_mult=0.75`, PF 1,64) wurde nach Prüfung
+  ebenfalls verworfen:** das Optimum lag am Gitterrand, nach Erweiterung auf
+  0,6–1,5 ist die Fläche zackig und nicht-monoton, und der Bootstrap (10.000
+  Resamples) zeigt fast vollständig überlappende Konfidenzintervalle — die
+  Trefferquote fällt von 48 % auf 23 %, die Unsicherheit wächst
+  proportional zum Punktschätzer. **Belastbar ist dagegen der Boden selbst:
+  P(Ø R < 0) fällt von 26,6 % auf 1,2 %.**
+  Fazit: SL-Boden ändern, TP unangetastet lassen. Auswertung in
+  `knowledge/projects/cls-practical-kostenvalidierung.md` (Befunde 5+6), CSVs
+  in `cls_practical/results/`. Noch **nicht** scharfgestellt — Entscheidung
+  liegt beim Nutzer.
+
 - **2026-09-10** [EK-Portfolio-Bridge / Second Brain] **Der Bar-Fenster-Bug ist
   auf EKs Terminal bestaetigt — und er ist groesser als gestern notiert: 5
   Stunden, nicht 2.** `probe_orb_bar_window.py` (read-only) um 11:29 im freien

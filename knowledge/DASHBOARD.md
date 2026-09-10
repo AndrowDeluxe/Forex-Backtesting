@@ -88,9 +88,17 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
-- **🔴 EK-Portfolio-Bridge: ORB rechnet auf 5 Stunden alten Bars — bestätigt,
-  Fix steht bereit, aber NICHT angewandt** (gefunden 2026-09-09, am
-  2026-09-10 11:29 am echten EK-Terminal verifiziert). `copy_rates_range()`
+- ~~**🔴 EK-Portfolio-Bridge: ORB rechnet auf 5 Stunden alten Bars**~~ —
+  **behoben 2026-09-10** (Nutzerauftrag). Betraf nicht nur ORB, sondern alle
+  drei Beine mit MT5-Bar-Abfrage (ORB, Gold-Silber, Trend-Pullback). Neu:
+  `core/mt5_bars.py` als gemeinsamer Helfer. Verifiziert an den echten
+  Funktionen: ORB M5/M15 jetzt **3,4 Min.** alt statt ~300, Gold-Silber H4
+  78 Min., Trend-Pullback H1 18 Min. **Noch offen:** EK hat wochenlang auf
+  5 Std. alten Bars gehandelt — die bisherigen ORB-Trades dieser Bridge sind
+  damit unter falschen Voraussetzungen entstanden und taugen nicht als
+  Leistungsnachweis. Ob das rückwirkend ausgewertet werden soll, ist deine
+  Entscheidung. Ursprünglicher Befund (gefunden 2026-09-09, am
+  2026-09-10 11:29 am echten EK-Terminal verifiziert): `copy_rates_range()`
   bekommt in `legs/ny_open_orb/signal_source.py:88` eine naive UTC-Zeit als
   `date_to`. MT5 liest die als **lokale Rechnerzeit** (Berlin, UTC+2) und
   vergleicht sie gegen **server-gestempelte** Bars (UTC+3) → das Fenster endet

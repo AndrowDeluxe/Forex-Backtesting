@@ -47,12 +47,14 @@ Deshalb hier eine nachschlagbare Tabelle statt einer Behauptung.
 
 ## Offene Lücken (der eigentliche Soll-Ist-Delta)
 
-1. **🔴 EK: ORB rechnet auf 5 Stunden alten Bars.** `copy_rates_range()`
-   bekommt eine naive UTC-Zeit als `date_to`; MT5 liest die als lokale
-   Rechnerzeit (Berlin, UTC+2) und vergleicht gegen server-gestempelte Bars
-   (UTC+3) → Fenster endet 5 Std. zu früh. Am 2026-09-10 am echten EK-Terminal
-   auf allen 3 Symbolen bestätigt. Fix in FK bereits erprobt (`_FUTURE_PAD`),
-   für EK **freigegeben werden muss er noch**. Details: `DASHBOARD.md`.
+1. ~~**🔴 EK: ORB rechnet auf 5 Stunden alten Bars.**~~ — **behoben 2026-09-10.**
+   Der Fehler saß nicht nur im ORB-Bein, sondern in **allen drei** Beinen mit
+   MT5-Bar-Abfrage (ORB, Gold-Silber, Trend-Pullback), jeweils als eigene Kopie
+   derselben Fensterlogik. Neu: `core/mt5_bars.py` als gemeinsamer Helfer, die
+   drei Beine rufen ihn auf. Verifiziert an den echten Funktionen: ORB M5/M15
+   liefern jetzt Bars, die **3,4 Minuten** alt sind (vorher ~300), Gold-Silber
+   H4 78 Min., Trend-Pullback H1 18 Min. — alles im normalen Bereich des
+   jeweiligen Timeframes. `gold_asb` war nie betroffen (nutzt den Lake-Weg).
 2. **Funded + FK haben keinen Hard-Timeout je Bein.** EK kappt jedes Bein bei
    600s (gebaut nach einem Vorfall mit 23 nie beendeten `python.exe`). Die
    beiden anderen verlassen sich allein auf Retry-Timeouts plus das

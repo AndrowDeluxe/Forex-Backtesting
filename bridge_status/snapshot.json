@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-10T15:01:25",
+  "generated_at": "2026-09-10T15:31:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-10T14:59:08",
+      "last_run": "2026-09-10T15:29:08",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-09-10 14:59:08 2026-09-10 14:59:02,743 INFO run_once: Konto-Equity 3355.73 EUR | Aggregiertes offenes Risiko (ganzes Konto): 244.33 (Deckel dieser Bridge: 1006.72, 30%)",
+      "last_equity_line": "2026-09-10 15:29:08 2026-09-10 15:29:02,735 INFO run_once: Konto-Equity 3355.73 EUR | Aggregiertes offenes Risiko (ganzes Konto): 244.33 (Deckel dieser Bridge: 1006.72, 30%)",
       "last_error_line": "2026-09-09 22:00:11 2026-09-09 22:00:10,950 INFO run_once: ctnl_continuation: {'status': 'error', 'detail': 'None'}",
       "recent_events": [
         "2026-09-09 22:15:09 2026-09-09 22:15:09,458 INFO legs.ctnl_edge.executor: [EK-CTNL-Cont] \\U0001f7e1 EXIT (stale_target) 0.01 Lots @ 4397.45",
@@ -25,26 +25,26 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-10T14:58:19",
+      "last_run": "2026-09-10T15:28:19",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-10 14:58:19 Verbunden: Login 504072729, Equity $98,813.64 USD",
+          "last_equity_line": "2026-09-10 15:28:19 Verbunden: Login 504072729, Equity $98,813.64 USD",
           "recent_events": [
             "2026-09-09 17:19:18 [TTP] ?? ENTRY ctnl_continuation XAUUSD BUY lots=0.28 risk=$250.00 sl=4375.77607 -- placed",
             "2026-09-09 10:34:18 [TTP] ?? EXIT cls_practical EURUSD (Ticket 18334869, stop) -- already_closed @ 1.16 (P/L -582.40)"
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-10 14:58:19 Verbunden: Login 16054, Equity $99,223.85 USD",
+          "last_equity_line": "2026-09-10 15:28:19 Verbunden: Login 16054, Equity $99,223.85 USD",
           "recent_events": [
             "2026-09-09 17:19:18 [IQMARKETS] ?? ENTRY ctnl_continuation XAUUSD.gbe BUY lots=0.31 risk=$250.00 sl=4375.77607 -- placed",
             "2026-09-09 10:34:18 [IQMARKETS] ?? EXIT cls_practical EURUSD.gbe (Ticket 1441052, stop) -- already_closed @ 1.16 (P/L -408.96)"
           ]
         },
         "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (ttp)": {
-          "last_equity_line": "2026-09-10 14:58:19 Verbunden: Login 504069845, Equity $95,816.26 USD",
+          "last_equity_line": "2026-09-10 15:28:19 Verbunden: Login 504069845, Equity $95,816.26 USD",
           "recent_events": [
             "2026-09-09 17:19:18 [TTP] ?? ENTRY ctnl_continuation XAUUSD BUY lots=0.31 risk=$250.00 sl=4375.77607 -- placed",
             "2026-09-09 10:34:18 [TTP] ?? EXIT cls_practical EURUSD (Ticket 18334870, stop) -- already_closed @ 1.16 (P/L -371.60)"
@@ -54,10 +54,10 @@
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-10T14:14:09",
-      "minutes_since_last_run": 47.3,
+      "last_run": "2026-09-10T15:14:09",
+      "minutes_since_last_run": 17.3,
       "status": "ok",
-      "last_equity_line": "2026-09-10 14:14:09 Verbunden: Login 17764, Equity $100,000.00",
+      "last_equity_line": "2026-09-10 15:14:09 Verbunden: Login 17764, Equity $100,000.00",
       "last_error_line": "2026-09-07 18:33:54 orb-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)",
       "recent_events": [
         "2026-09-08 10:06:33  LIVE EXIT ctnl_continuation XAUUSD.gbe (stop) -- war nur geplant, kein echtes Ticket.",

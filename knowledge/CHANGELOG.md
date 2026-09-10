@@ -9,6 +9,62 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-10** [EK-Portfolio-Bridge / Second Brain] **Der Bar-Fenster-Bug ist
+  auf EKs Terminal bestaetigt — und er ist groesser als gestern notiert: 5
+  Stunden, nicht 2.** `probe_orb_bar_window.py` (read-only) um 11:29 im freien
+  Fenster nach einem beendeten Lauf ausgefuehrt, alle 3 ORB-Symbole identisch:
+  `date_to = UTC now` -> letzter Bar **07:25** Serverzeit, mit `+12h` ->
+  **12:25** (echte Serverzeit 12:29, Bars dazwischen lueckenlos). Mechanik
+  damit geklaert: MT5 liest die naive Zeit als LOKALE Rechnerzeit (Berlin,
+  UTC+2) und vergleicht gegen server-gestempelte Bars (UTC+3) -- Verlust
+  2+3=5 Std. Erklaert beide Messungen exakt (FK 20:07 -> 18:05, EK 09:29 ->
+  07:25). Bedeutung fuer EK: NY-Open ist 16:30 Serverzeit, die Opening Range
+  wird fruehestens gegen 21:30 sichtbar -- rund 5 Std. zu spaet und kurz vor
+  Session-Ende (23:00). **EKs Live-Code bewusst NICHT angefasst** (aendert das
+  Verhalten eines Echtgeld-Beins im laufenden Betrieb), Freigabe steht aus,
+  siehe DASHBOARD. Nebenbefund: EKs 2-Minuten-Fast-Lane hat am selben Vormittag
+  sechs Laeufe ausgelassen (zwischen 11:14 und 11:27 gar keiner) -- gleiches
+  Muster wie die bekannte DataLake-Ingest-Fast5-Luecke, nur vermerkt.
+
+  **Neu: `knowledge/areas/bridge-infrastruktur-vergleich.md`** (Nutzerwunsch):
+  Soll-Ist-Tabelle ueber alle drei Bridges (ORB-Datenquelle, Server-TZ-
+  Behandlung, Hard-Timeouts, Retry-Werte, Lock-/Fehlerbehandlung, Kadenzen,
+  Scan-Deduplizierung, Symbolnamen) plus die vier offenen Luecken. Kadenzen und
+  Zeitlimits per `Get-ScheduledTask` gegengeprueft statt aus dem Gedaechtnis
+  behauptet. Ausserdem im DASHBOARD der FK-Beobachtungsstand nach der
+  ORB-Umstellung: null Fallback-Warnungen seit 2026-09-09 22:20, Fast-Laeufe
+  ~8s -- der erste echte ORB-Entry ueber den neuen Pfad steht noch aus, und
+  daran haengt Phase 2 (Funded).
+- **2026-09-09** [cls_practical] **Phase-6-Kostenvalidierung abgeschlossen:
+  bei echten Broker-Kosten bricht das CLS-Bein weitgehend zusammen — und der
+  Schaden sitzt vollständig in den engen Stops.** Neu:
+  `scripts/research_cls_practical_broker_cost_validation.py` und
+  `scripts/research_cls_practical_entry_lag.py`. 206 Trades, 2018-12 bis
+  2026-09, `risk_pct=0,25 %` (das real gehandelte Risiko).
+  **Breakeven bei ~2,70 Pips Round-Trip.** TTP zahlt gemessene 2,05 Pips —
+  nur 0,65 Pips Luft: PF fällt 1,57 → **1,12**, Ø R 0,36 → **0,10**, das
+  In-Sample wird **negativ** (PF 0,94), **5 von 8 Jahren negativ**, und der
+  MaxDD steigt 3,88 % → **7,34 % — über die eigene 7-%-Gesamtdrawdown-Grenze
+  der TTP-Challenge**. Auf IQ Markets (1,30 Pips) bleibt PF 1,29 / Ø R 0,21.
+  **Ursache lokalisiert:** Trades mit Stop < 6,15 Pips (42,2 % aller Trades)
+  haben Ø R **−0,238**, die übrigen **+0,343**. Ein absoluter Pip-Floor von
+  ~6 Pips würde Ø R auf TTP von 0,10 auf 0,343 heben. Der bestehende Schutz
+  `min_sl_atr_mult = 1.0 × ATR(M5)` greift nicht, weil er relativ ist und in
+  ruhigen Phasen mitschrumpft (2026-09-09: 3,6-Pip-Stop durchgelassen).
+  **Entry-Lag als Hebel-Mechanik quantifiziert:** der Backtest steigt zum
+  Schlusskurs der Signalbar ein, der Live-Bot beim nächsten 5-Min-Scan, der
+  Stop bleibt aber auf dem absoluten Signalpreis — und `sizing.py` rechnet
+  `risk_dollars / |Live-Kurs − SL|`. Im Median harmlos (Abstand wächst sogar
+  auf 9,5 Pips, Lots schrumpfen aufs 0,74-fache), im Tail nicht: bei 10 Min.
+  Lag kommen **13,1 % der Signale mit weniger Abstand zum Stop an, als der
+  Round-Trip kostet**, 4,9 % sind schon hinter dem Stop, und **29,1 % erzeugen
+  über 5x Equity an Nominal**. Der Trade vom 2026-09-09 war damit kein
+  Ausreißer, sondern ein regelmäßig wiederkehrender Fall.
+  Auswertung: `knowledge/projects/cls-practical-kostenvalidierung.md`,
+  CSVs in `cls_practical/results/`. Weiterhin **keine** Änderung an
+  Bridge-Code, Config oder Scheduled Tasks — die Risiko-Entscheidung liegt
+  beim Nutzer.
+
 - **2026-09-09** [FK Instant Funding] **NY-Open ORB holt seine Bars jetzt direkt
   aus MT5 statt aus dukascopy/Lake — plus ein dabei gefundener Bug, der auch
   EK-Portfolio-Bridge betrifft.** Nutzerauftrag, nachdem aufgefallen war, dass
@@ -25,7 +81,12 @@ keine Planung (dafür ist `DASHBOARD.md`).
   **Dabei gefunden — abgeschnittenes Abfragefenster:** `copy_rates_range()`
   vergleicht `date_to` gegen SERVER-gestempelte Bar-Zeiten. Uebergibt man dort
   eine naive UTC-Zeit (genau das tut EKs `fetch_recent_mt5()`), endet das Fenster
-  rund **zwei Stunden vor dem neuesten verfuegbaren Bar**. Nachgewiesen am selben
+  rund **fuenf Stunden vor dem neuesten verfuegbaren Bar** (am 2026-09-10 auf
+  5 Std. praezisiert -- die zunaechst notierten "zwei Stunden" waren falsch
+  abgelesen). Mechanik: MT5 interpretiert die naive Zeit als LOKALE Rechnerzeit
+  (Berlin, UTC+2) und vergleicht sie gegen server-gestempelte Bars (UTC+3) --
+  Verlust = 2+3 = 5 Std. Erklaert beide Messungen exakt (FK 20:07 -> 18:05,
+  EK 09:29 -> 07:25). Nachgewiesen am selben
   Symbol/derselben Sekunde: `date_to = UTC now` -> letzter Bar 18:05 Serverzeit,
   `date_to = UTC now + 12h` -> letzter Bar 23:05, Bars dazwischen lueckenlos
   vorhanden. Fuer ORB waere das fatal (die Balken direkt nach 09:30 NY fehlen).

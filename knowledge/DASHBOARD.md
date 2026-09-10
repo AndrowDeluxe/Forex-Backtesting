@@ -18,6 +18,17 @@ passiert, was steht an.
 
 ## ▶️ Als Nächstes
 
+0. **FK-ORB auf MT5-Bars: Beobachtung läuft, Phase 2 (Funded) wartet darauf.**
+   Seit 2026-09-09 ~22:20 holt FKs ORB-Bein seine Bars direkt aus MT5
+   (`orb_mt5_source.py`, Fallback auf den Lake-Weg eingebaut).
+   **Log-Stand 2026-09-10 11:28: null Fallback-Warnungen** in
+   `task_run.log` und `task_run_fast.log` — der MT5-Pfad trägt bisher
+   durchgehend, Fast-Läufe brauchen ~8 Sekunden. Was noch fehlt: **ein
+   echter ORB-Entry über den neuen Pfad** ist noch nicht beobachtet (seit der
+   Umstellung gab es schlicht kein Signal). Erst danach Phase 2 bei
+   Funded-Portfolio-Bridge (Referenz-Terminal für alle 3 Konten,
+   Nutzerentscheid 2026-09-09). Vergleich der Datenquellen siehe
+   [[bridge-infrastruktur-vergleich]].
 1. ~~`data_lake/`-Paket nie committet~~ — **committet + gepusht 2026-09-06**
    (`19e5b2c`) + im selben Zug auf EK-Portfolio-Bridge (gold_asb,
    cls_practical, ctnl_edge) und FKInstantFunding-MT5-Bridge (alle 6 Beine)
@@ -77,23 +88,31 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
-- **EK-Portfolio-Bridge: ORB sieht die laufende Session vermutlich ~2 Stunden
-  zu spät — Diagnoseskript liegt bereit, aber NICHT ausgeführt** (gefunden
-  2026-09-09 beim FK-Umbau, Details CHANGELOG). `copy_rates_range()` vergleicht
-  `date_to` gegen server-gestempelte Bar-Zeiten; `legs/ny_open_orb/
-  signal_source.py:88` übergibt dort eine naive UTC-Zeit. Am FK-Terminal
-  nachgewiesen: das Abfragefenster endet dadurch ~2 Std. vor dem neuesten
-  vorhandenen Bar (`date_to = UTC now` → letzter Bar 18:05 Serverzeit, mit +12h
-  → 23:05, Bars dazwischen lückenlos da). EK nutzt identischen Code auf
-  demselben Rechner, Tickmills Server steht wie BeyondIQCapital auf UTC+3 —
-  der Mechanismus müsste dort genauso greifen. **Belegt ist das bisher nur am
-  FK-Terminal**, EKs eigenes habe ich nicht angefasst (Fast-Task alle 2 Min.).
-  Falls es zutrifft, würde EKs ORB-Bein Entries systematisch verspätet sehen —
-  das würde zum dokumentierten 2026-09-03-Vorfall passen ("NASDAQ-ORB-Signal
-  hing bis 21:45 statt 21:00"), der damals dem blockierenden dukascopy-Bein
-  zugeschrieben wurde. Fertig zum Ausführen: `EK-Portfolio-Bridge/
-  probe_orb_bar_window.py` (read-only, sendet keine Order) — am besten direkt
-  nach einem beendeten Fast-Lauf. Soll ich das ausführen, oder machst du es?
+- **🔴 EK-Portfolio-Bridge: ORB rechnet auf 5 Stunden alten Bars — bestätigt,
+  Fix steht bereit, aber NICHT angewandt** (gefunden 2026-09-09, am
+  2026-09-10 11:29 am echten EK-Terminal verifiziert). `copy_rates_range()`
+  bekommt in `legs/ny_open_orb/signal_source.py:88` eine naive UTC-Zeit als
+  `date_to`. MT5 liest die als **lokale Rechnerzeit** (Berlin, UTC+2) und
+  vergleicht sie gegen **server-gestempelte** Bars (UTC+3) → das Fenster endet
+  5 Stunden zu früh. Messung auf allen 3 ORB-Symbolen identisch:
+  `date_to = UTC now` → letzter Bar **07:25** Serverzeit, mit `+12h` → **12:25**
+  (echte Serverzeit war 12:29, die Bars dazwischen sind lückenlos vorhanden).
+  **Bedeutung:** NY-Open ist 16:30 Serverzeit — EK sieht die Opening Range
+  frühestens gegen 21:30 Serverzeit, also rund 5 Stunden nach dem Open und
+  kurz vor Session-Ende (23:00). Das ORB-Bein handelt damit systematisch zu
+  spät oder gar nicht. Passt zum 2026-09-03-Vorfall ("NASDAQ-ORB-Signal hing
+  bis 21:45 statt 21:00"), der damals dem dukascopy-Bein zugeschrieben wurde.
+  **Fix ist trivial und in FK bereits erprobt** (`date_to` großzügig in die
+  Zukunft legen, MT5 kappt selbst auf das Vorhandene — siehe
+  `FKInstantFunding-MT5-Bridge/orb_mt5_source.py::_FUTURE_PAD`). Ich habe EKs
+  Live-Code NICHT angefasst: das ändert das Verhalten eines Echtgeld-Beins
+  mitten im laufenden Betrieb. **Bitte freigeben, dann ziehe ich es nach.**
+- **EK-Portfolio-Bridge: Fast-Lane hat am 2026-09-10 sechs Läufe ausgelassen**
+  (nebenbei gefunden). Der 2-Minuten-Task lief bis 11:12:12 normal, danach kam
+  bis 11:27 kein einziger Lauf mehr (11:14 war der reguläre 15-Minuten-Slow-
+  Lauf). Gleiches Muster wie die bereits vermerkte `DataLake-Ingest-Fast5`-
+  Lücke — ungeprüfte Vermutung weiterhin Energieverwaltung/Task-Scheduler.
+  Nicht weiter verfolgt, nur festgehalten, falls es sich häuft.
 
 - **Kostenmessung EUR/USD: vier Annahmen von mir, die deine Bestätigung
   brauchen** (2026-09-09, im Rahmen der CLS-Kostenvalidierung).
@@ -458,8 +477,18 @@ abgehakt-und-liegengelassen.
   Engine wurde am 2026-08-20 geändert (`f549b23`, u.a. neuer `test_hour=9.0`).
   Derselbe Aufruf liefert heute $73.558,93 statt der dort ausgewiesenen
   $60.393,55 (+22 %). Neu erzeugen — bis dahin ist jede Zahl daraus falsch.
-  Zweiter Fall dieser Art nach dem Gold-ASB-Liquiditätsfilter; lohnt zu prüfen,
-  ob weitere `results/`-CSVs älter sind als ihre Engine. Priorität: Mittel.
+  Zweiter Fall dieser Art nach dem Gold-ASB-Liquiditätsfilter.
+  **Geprüft 2026-09-09 (auf deinen Auftrag): betroffen sind 12 Dateien, alle
+  in `cls_practical/results/`, alle mit 1–7 Tagen Lücke zur Engine-Änderung** —
+  `filter_relaxation_sweep`, `external_filters_in_sample`, `filter_combos`,
+  `final_verification_vs_buyhold`, `full_param_sweep_in_sample`, `kelly`,
+  `risk_pct_table`, `multi_instrument`, `cross_vs_index`,
+  `eurusd_cross_filter_window_threshold_sweep`, `eurusd_holdtest_timing_sweep`,
+  `pair_specific_cross_retest`. Darunter Filter- und Parameter-Sweeps, auf
+  denen die aktuelle CLS-Konfiguration beruht — die Entscheidungen sind damit
+  nicht automatisch falsch, aber die dort ausgewiesenen Zahlen gelten nicht
+  mehr. **Andere Pakete sind sauber** (`mt5_trend_pullback`, `btc_ema_cross`:
+  nur Gleichtag-Fälle ohne echte Lücke). Priorität: Mittel.
 
 - **Risiko-Anpassung CLS/Challenges — Entscheidung steht aus** (2026-09-09).
   Nach deinem Entscheid "erst Kostenmodell validieren, dann Risiko anpassen"

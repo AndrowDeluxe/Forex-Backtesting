@@ -46391,3 +46391,33 @@
 2026-09-10 20:56:13   "ctnl_kill_switch_active": false,
 2026-09-10 20:56:13   "n_trades": 24
 2026-09-10 20:56:13 }
+2026-09-10 20:56:14 [main e8f5168] FK Instant Funding Bot: Snapshot 2026-09-10 20:56
+2026-09-10 20:56:14  1 file changed, 26 insertions(+)
+2026-09-10 20:56:17 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-09-10 20:56:17    eb5947c..e8f5168  main -> main
+2026-09-10 20:56:17 Commit + Push erfolgreich.
+2026-09-10 20:56:17 === FK-Instant-Funding-Task beendet ===
+2026-09-10 21:55:24 === FK-Instant-Funding-Task gestartet ===
+2026-09-10 22:07:49 INFO:DUKASCRIPT:current timestamp :2026-09-09T02:00:00
+2026-09-10 22:07:49 INFO:DUKASCRIPT:current timestamp :2026-09-09T02:00:00
+2026-09-10 22:07:49 INFO:DUKASCRIPT:current timestamp :2026-09-10T20:00:00
+2026-09-10 22:07:49 INFO:DUKASCRIPT:current timestamp :2026-09-09T02:00:00
+2026-09-10 22:07:49 INFO:DUKASCRIPT:current timestamp :2026-09-09T02:00:00
+2026-09-10 22:07:49 INFO:DUKASCRIPT:current timestamp :2026-09-09T02:00:00
+2026-09-10 22:07:49 INFO:DUKASCRIPT:current timestamp :2026-09-10T18:00:00
+2026-09-10 22:07:49 INFO:DUKASCRIPT:current timestamp :2026-09-10T18:00:00
+2026-09-10 22:07:49 INFO:DUKASCRIPT:current timestamp :2026-09-10T18:00:00
+2026-09-10 22:07:49 INFO:DUKASCRIPT:current timestamp :2026-09-10T18:00:00
+2026-09-10 22:07:49 {
+2026-09-10 22:07:49   "date": "2026-09-10 19:55:24.805697",
+2026-09-10 22:07:49   "equity": 98981.6035329672,
+2026-09-10 22:07:49   "current_dd": -0.010183964670328005,
+2026-09-10 22:07:49   "consistency_ratio": 0.0,
+2026-09-10 22:07:49   "payout_safe": false,
+2026-09-10 22:07:49   "cum_profit": -1018.3964670327973,
+2026-09-10 22:07:49   "kill_switch_active": false,
+2026-09-10 22:07:49   "ctnl_kill_switch_active": false,
+2026-09-10 22:07:49   "n_trades": 24
+2026-09-10 22:07:49 }
+2026-09-10 22:07:49 ---
+2026-09-10 22:07:49 ‘‹·¥©≈ Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md)

@@ -1,8 +1,8 @@
 market,ticker,scan_date,close,lower_band,entry,sl,tp,tp_price,risk_pct_price,position_size_pct,regime_ok,tradeable,position_size_concentrated_pct,scanned_at
-"S&P 500 (volles Universum, 420 Ticker)",APD,2026-09-08,297.71,298.37,297.71,287.89,312.44,312.44,3.3,20.0,True,True,12.5,2026-09-09T21:35:15
-"S&P 500 (volles Universum, 420 Ticker)",AIG,2026-09-08,74.68,75.05,74.68,72.8,77.5,77.5,2.52,20.0,True,True,12.5,2026-09-09T21:35:15
-"S&P 500 (volles Universum, 420 Ticker)",AMGN,2026-09-08,393.17,400.83,393.17,350.53,457.12,457.12,10.84,9.22,True,True,12.5,2026-09-09T21:35:15
-"S&P 500 (volles Universum, 420 Ticker)",DHI,2026-09-08,138.49,139.55,138.49,127.89,154.4,154.4,7.66,13.06,True,True,12.5,2026-09-09T21:35:15
-"S&P 500 (volles Universum, 420 Ticker)",EXPE,2026-09-08,274.55,288.43,274.55,228.85,343.1,343.1,16.65,6.01,True,True,12.5,2026-09-09T21:35:15
-"S&P 500 (volles Universum, 420 Ticker)",LEN,2026-09-08,80.37,81.56,80.37,74.34,89.41,89.41,7.5,13.33,True,True,12.5,2026-09-09T21:35:15
-Nasdaq-100 (alle ~103 Ticker),AMGN,2026-09-08,393.17,400.83,393.17,350.53,kein TP (finale Config),0.0,10.84,9.22,True,True,12.5,2026-09-09T21:35:15
+"S&P 500 (volles Universum, 420 Ticker)",APD,2026-09-09,295.24,296.7,295.24,283.97,312.14,312.14,3.82,20.0,True,True,12.5,2026-09-10T14:30:14
+"S&P 500 (volles Universum, 420 Ticker)",AMGN,2026-09-09,391.27,395.92,391.27,342.81,463.96,463.96,12.39,8.07,True,True,12.5,2026-09-10T14:30:14
+"S&P 500 (volles Universum, 420 Ticker)",EXPE,2026-09-09,272.6,279.69,272.6,217.39,355.42,355.42,20.25,4.94,True,True,12.5,2026-09-10T14:30:14
+"S&P 500 (volles Universum, 420 Ticker)",LEN,2026-09-09,80.76,80.8,80.76,74.1,90.76,90.76,8.25,12.12,True,True,12.5,2026-09-10T14:30:14
+"S&P 500 (volles Universum, 420 Ticker)",TROW,2026-09-09,107.74,108.21,107.74,103.65,113.87,113.87,3.79,20.0,True,True,12.5,2026-09-10T14:30:14
+"S&P 500 (volles Universum, 420 Ticker)",UPS,2026-09-09,99.22,99.71,99.22,94.26,106.66,106.66,5.0,20.0,True,True,12.5,2026-09-10T14:30:14
+Nasdaq-100 (alle ~103 Ticker),AMGN,2026-09-09,391.27,395.92,391.27,342.81,kein TP (finale Config),0.0,12.39,8.07,True,True,12.5,2026-09-10T14:30:14

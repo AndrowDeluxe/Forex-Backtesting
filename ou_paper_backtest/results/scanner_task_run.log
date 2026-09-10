@@ -3581,3 +3581,28 @@
 2026-09-09 21:35:15 S&P 500 (volles Universum, 420 Ticker)   EXPE 2026-09-08 274.55      288.43 274.55 228.85                   343.1    343.10           16.65               6.01       True       True                            12.5 2026-09-09T21:35:15
 2026-09-09 21:35:15 S&P 500 (volles Universum, 420 Ticker)    LEN 2026-09-08  80.37       81.56  80.37  74.34                   89.41     89.41            7.50              13.33       True       True                            12.5 2026-09-09T21:35:15
 2026-09-09 21:35:15          Nasdaq-100 (alle ~103 Ticker)   AMGN 2026-09-08 393.17      400.83 393.17 350.53 kein TP (finale Config)      0.00           10.84               9.22       True       True                            12.5 2026-09-09T21:35:15
+2026-09-09 21:35:16 [main 4b167ea] OU-Modell Scanner: Snapshot 2026-09-09 21:35
+2026-09-09 21:35:16  2 files changed, 32 insertions(+), 7 deletions(-)
+2026-09-09 21:35:19 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-09-09 21:35:19    a98801f..4b167ea  main -> main
+2026-09-09 21:35:19 Commit + Push erfolgreich.
+2026-09-09 21:35:19 === Scanner-Task beendet ===
+2026-09-10 14:30:00 === Scanner-Task gestartet ===
+2026-09-10 14:30:14 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-09-10 14:30:14 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-09-10 14:30:14 [sp500] 6 raw signal(s) as of 2026-09-09, regime_ok=True
+2026-09-10 14:30:14 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-09-10 14:30:14 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-09-10 14:30:14 [nasdaq100] 1 raw signal(s) as of 2026-09-09, regime_ok=True
+2026-09-10 14:30:14 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-09-10 14:30:14 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-09-10 14:30:14 
+2026-09-10 14:30:14 Saved 7 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-09-10T14:30:14)
+2026-09-10 14:30:14                                 market ticker  scan_date  close  lower_band  entry     sl                      tp  tp_price  risk_pct_price  position_size_pct  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
+2026-09-10 14:30:14 S&P 500 (volles Universum, 420 Ticker)    APD 2026-09-09 295.24      296.70 295.24 283.97                  312.14    312.14            3.82              20.00       True       True                            12.5 2026-09-10T14:30:14
+2026-09-10 14:30:14 S&P 500 (volles Universum, 420 Ticker)   AMGN 2026-09-09 391.27      395.92 391.27 342.81                  463.96    463.96           12.39               8.07       True       True                            12.5 2026-09-10T14:30:14
+2026-09-10 14:30:14 S&P 500 (volles Universum, 420 Ticker)   EXPE 2026-09-09 272.60      279.69 272.60 217.39                  355.42    355.42           20.25               4.94       True       True                            12.5 2026-09-10T14:30:14
+2026-09-10 14:30:14 S&P 500 (volles Universum, 420 Ticker)    LEN 2026-09-09  80.76       80.80  80.76  74.10                   90.76     90.76            8.25              12.12       True       True                            12.5 2026-09-10T14:30:14
+2026-09-10 14:30:14 S&P 500 (volles Universum, 420 Ticker)   TROW 2026-09-09 107.74      108.21 107.74 103.65                  113.87    113.87            3.79              20.00       True       True                            12.5 2026-09-10T14:30:14
+2026-09-10 14:30:14 S&P 500 (volles Universum, 420 Ticker)    UPS 2026-09-09  99.22       99.71  99.22  94.26                  106.66    106.66            5.00              20.00       True       True                            12.5 2026-09-10T14:30:14
+2026-09-10 14:30:14          Nasdaq-100 (alle ~103 Ticker)   AMGN 2026-09-09 391.27      395.92 391.27 342.81 kein TP (finale Config)      0.00           12.39               8.07       True       True                            12.5 2026-09-10T14:30:14

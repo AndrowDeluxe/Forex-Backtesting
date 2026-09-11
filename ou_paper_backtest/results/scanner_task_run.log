@@ -3963,3 +3963,29 @@
 2026-09-11 20:35:13 S&P 500 (volles Universum, 420 Ticker)    LEN 2026-09-10  77.90       79.35  77.90  69.61                   90.33     90.33           10.64               9.40       True       True                            12.5 2026-09-11T20:35:13
 2026-09-11 20:35:13 S&P 500 (volles Universum, 420 Ticker)   TROW 2026-09-10 107.55      107.64 107.55 102.90                  114.53    114.53            4.33              20.00       True       True                            12.5 2026-09-11T20:35:13
 2026-09-11 20:35:13          Nasdaq-100 (alle ~103 Ticker)   AMGN 2026-09-10 382.47      388.84 382.47 325.74 kein TP (finale Config)      0.00           14.83               6.74       True       True                            12.5 2026-09-11T20:35:13
+2026-09-11 20:35:14 [main 0b105bf] OU-Modell Scanner: Snapshot 2026-09-11 20:35
+2026-09-11 20:35:14  2 files changed, 34 insertions(+), 8 deletions(-)
+2026-09-11 20:35:16 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-09-11 20:35:16    2416df3..0b105bf  main -> main
+2026-09-11 20:35:16 Commit + Push erfolgreich.
+2026-09-11 20:35:16 === Scanner-Task beendet ===
+2026-09-11 21:35:00 === Scanner-Task gestartet ===
+2026-09-11 21:35:14 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-09-11 21:35:14 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-09-11 21:35:14 [sp500] 7 raw signal(s) as of 2026-09-10, regime_ok=True
+2026-09-11 21:35:14 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-09-11 21:35:14 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-09-11 21:35:14 [nasdaq100] 1 raw signal(s) as of 2026-09-10, regime_ok=True
+2026-09-11 21:35:14 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-09-11 21:35:14 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-09-11 21:35:14 
+2026-09-11 21:35:14 Saved 8 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-09-11T21:35:13)
+2026-09-11 21:35:14                                 market ticker  scan_date  close  lower_band  entry     sl                      tp  tp_price  risk_pct_price  position_size_pct  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
+2026-09-11 21:35:14 S&P 500 (volles Universum, 420 Ticker)    APD 2026-09-10 293.65      294.82 293.65 280.34                  313.62    313.62            4.53              20.00       True       True                            12.5 2026-09-11T21:35:13
+2026-09-11 21:35:14 S&P 500 (volles Universum, 420 Ticker)   AMGN 2026-09-10 382.47      388.84 382.47 325.74                  467.56    467.56           14.83               6.74       True       True                            12.5 2026-09-11T21:35:13
+2026-09-11 21:35:14 S&P 500 (volles Universum, 420 Ticker)    COF 2026-09-10 207.11      207.74 207.11 193.21                  227.95    227.95            6.71              14.90       True       True                            12.5 2026-09-11T21:35:13
+2026-09-11 21:35:14 S&P 500 (volles Universum, 420 Ticker)    DHI 2026-09-10 135.57      136.62 135.57 122.22                  155.59    155.59            9.85              10.16       True       True                            12.5 2026-09-11T21:35:13
+2026-09-11 21:35:14 S&P 500 (volles Universum, 420 Ticker)    GIS 2026-09-10  35.96       36.40  35.96  31.49                   42.67     42.67           12.43               8.04       True       True                            12.5 2026-09-11T21:35:13
+2026-09-11 21:35:14 S&P 500 (volles Universum, 420 Ticker)    LEN 2026-09-10  77.90       79.35  77.90  69.61                   90.33     90.33           10.64               9.40       True       True                            12.5 2026-09-11T21:35:13
+2026-09-11 21:35:14 S&P 500 (volles Universum, 420 Ticker)   TROW 2026-09-10 107.55      107.64 107.55 102.90                  114.53    114.53            4.33              20.00       True       True                            12.5 2026-09-11T21:35:13
+2026-09-11 21:35:14          Nasdaq-100 (alle ~103 Ticker)   AMGN 2026-09-10 382.47      388.84 382.47 325.74 kein TP (finale Config)      0.00           14.83               6.74       True       True                            12.5 2026-09-11T21:35:13

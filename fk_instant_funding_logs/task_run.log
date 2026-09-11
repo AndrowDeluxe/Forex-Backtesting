@@ -46476,3 +46476,25 @@
 2026-09-10 23:55:25   "date": "2026-09-10 21:55:25.027514",
 2026-09-10 23:55:25   "paused": true
 2026-09-10 23:55:25 }
+2026-09-10 23:55:25 [main 6f49086] FK Instant Funding Bot: Snapshot 2026-09-10 23:55
+2026-09-10 23:55:25  1 file changed, 11 insertions(+)
+2026-09-10 23:55:28 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-09-10 23:55:28    cb36520..6f49086  main -> main
+2026-09-10 23:55:28 Commit + Push erfolgreich.
+2026-09-10 23:55:28 === FK-Instant-Funding-Task beendet ===
+2026-09-11 02:33:13 === FK-Instant-Funding-Task gestartet ===
+2026-09-11 02:36:01 INFO:DUKASCRIPT:current timestamp :2026-09-10T22:00:00
+2026-09-11 02:36:01 INFO:DUKASCRIPT:current timestamp :2026-09-10T22:00:00
+2026-09-11 02:36:01 {
+2026-09-11 02:36:01   "date": "2026-09-11 00:33:13.869545",
+2026-09-11 02:36:01   "equity": 98981.6035329672,
+2026-09-11 02:36:01   "current_dd": -0.010183964670328005,
+2026-09-11 02:36:01   "consistency_ratio": 0.0,
+2026-09-11 02:36:01   "payout_safe": false,
+2026-09-11 02:36:01   "cum_profit": -1018.3964670327973,
+2026-09-11 02:36:01   "kill_switch_active": false,
+2026-09-11 02:36:01   "ctnl_kill_switch_active": false,
+2026-09-11 02:36:01   "n_trades": 24
+2026-09-11 02:36:01 }
+2026-09-11 02:36:01 ---
+2026-09-11 02:36:01 ÔÜá´©Å Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'

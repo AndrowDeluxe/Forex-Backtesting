@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-11T04:31:25",
+  "generated_at": "2026-09-11T05:01:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-11T04:29:08",
+      "last_run": "2026-09-11T04:59:08",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-09-11 04:29:08 2026-09-11 04:29:02,692 INFO run_once: Konto-Equity 3314.24 EUR | Aggregiertes offenes Risiko (ganzes Konto): 321.83 (Deckel dieser Bridge: 994.27, 30%)",
+      "last_equity_line": "2026-09-11 04:59:08 2026-09-11 04:59:02,726 INFO run_once: Konto-Equity 3314.24 EUR | Aggregiertes offenes Risiko (ganzes Konto): 321.83 (Deckel dieser Bridge: 994.27, 30%)",
       "last_error_line": "2026-09-11 02:36:49     raise error[0]",
       "recent_events": [
         "2026-09-11 02:36:49         f\"Lake-Daten fuer {source}:{key}_{timeframe} zu alt (last_success_at={entry and entry.get('last_success_at')})\"",
@@ -16,12 +16,12 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-11T04:28:19",
+      "last_run": "2026-09-11T04:58:19",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (ttp)": {
-          "last_equity_line": "2026-09-11 04:28:19 Verbunden: Login 504069845, Equity $95,683.93 USD",
+          "last_equity_line": "2026-09-11 04:58:19 Verbunden: Login 504069845, Equity $95,683.93 USD",
           "last_error_line": "2026-09-11 02:31:34 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
           "recent_events": [
             "2026-09-11 02:31:34 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
@@ -39,7 +39,7 @@
           ]
         },
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-11 04:28:19 Verbunden: Login 504072729, Equity $98,676.10 USD",
+          "last_equity_line": "2026-09-11 04:58:19 Verbunden: Login 504072729, Equity $98,676.10 USD",
           "last_error_line": "2026-09-11 02:31:34 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
           "recent_events": [
             "2026-09-11 02:31:34 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
@@ -57,7 +57,7 @@
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-11 04:28:19 Verbunden: Login 16054, Equity $99,223.85 USD",
+          "last_equity_line": "2026-09-11 04:58:19 Verbunden: Login 16054, Equity $99,223.85 USD",
           "last_error_line": "2026-09-11 02:31:34 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
           "recent_events": [
             "2026-09-11 02:31:34 NY-Open-ORB-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
@@ -79,7 +79,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-09-11T04:14:09",
-      "minutes_since_last_run": 17.3,
+      "minutes_since_last_run": 47.3,
       "status": "ok",
       "last_equity_line": "2026-09-11 04:14:09 Verbunden: Login 17764, Equity $100,000.00",
       "last_error_line": "2026-09-11 02:17:20 gold_silver-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",

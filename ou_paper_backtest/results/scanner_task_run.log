@@ -3989,3 +3989,9 @@
 2026-09-11 21:35:14 S&P 500 (volles Universum, 420 Ticker)    LEN 2026-09-10  77.90       79.35  77.90  69.61                   90.33     90.33           10.64               9.40       True       True                            12.5 2026-09-11T21:35:13
 2026-09-11 21:35:14 S&P 500 (volles Universum, 420 Ticker)   TROW 2026-09-10 107.55      107.64 107.55 102.90                  114.53    114.53            4.33              20.00       True       True                            12.5 2026-09-11T21:35:13
 2026-09-11 21:35:14          Nasdaq-100 (alle ~103 Ticker)   AMGN 2026-09-10 382.47      388.84 382.47 325.74 kein TP (finale Config)      0.00           14.83               6.74       True       True                            12.5 2026-09-11T21:35:13
+2026-09-11 21:35:14 [main d37e1b6] OU-Modell Scanner: Snapshot 2026-09-11 21:35
+2026-09-11 21:35:14  2 files changed, 34 insertions(+), 8 deletions(-)
+2026-09-11 21:35:17 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-09-11 21:35:17    873af09..d37e1b6  main -> main
+2026-09-11 21:35:17 Commit + Push erfolgreich.
+2026-09-11 21:35:17 === Scanner-Task beendet ===

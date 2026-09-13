@@ -5,15 +5,34 @@ sehen. Wiederverwendet telegram_notify.py/telegram_config.py aus diesem
 Ordner (gleiche Quelle wie der Weekly-Report) -- ohne lokale
 telegram_config.py tut send_telegram_message() einfach nichts.
 
+UMBAU 2026-09-11 (Nutzerfeedback: "ich habe heute morgen 4 Seiten Dashboard
+bekommen, das ist viel zu viel"): der Digest schuettete bis dahin JEDEN
+offenen Punkt im VOLLTEXT aus. Mit den ausfuehrlichen Eintraegen vom
+2026-09-09/10 (inkl. Markdown-Tabellen) waren das gemessene 16.066 Zeichen
+= 4 Telegram-Nachrichten. Zwei Aenderungen:
+
+1. EIN EINZEILER JE PUNKT statt Volltext (_item_title()). Der Digest haengt
+   damit strukturell nicht mehr an der LAENGE eines Dashboard-Eintrags --
+   das war die eigentliche Ursache, nicht die Anzahl der Punkte. Es werden
+   weiterhin ALLE offenen Punkte gezeigt (Nutzerentscheid: lieber die volle
+   Lage auf einen Blick als eine Top-3-Auswahl).
+2. HEALTH-ZEILEN aus den echten Logs/dem State der EK-Bridge (_health_lines()),
+   nicht nur aus dem, was im Dashboard STEHT. Genau das haette den 4h
+   haengenden CTNL-Exit vom 2026-09-09 am naechsten Morgen sichtbar gemacht,
+   statt ihn erst auf Nachfrage zu finden.
+
 Reine Text-Extraktion, kein Parsen der Markdown-Tabellen/Formatierung im
 Detail -- erledigte Punkte (mit `~~durchgestrichen~~` markiert) werden
-uebersprungen, offene Punkte unveraendert (nur Markdown-Zierde entfernt)
-weitergereicht. Bricht bewusst NICHT hart ab, wenn eine Sektion fehlt oder
+uebersprungen. Bricht bewusst NICHT hart ab, wenn eine Sektion fehlt oder
 umbenannt wird (z.B. nach einem weiteren Dashboard-Redesign) -- zeigt dann
-nur "(Sektion nicht gefunden)" statt den ganzen Lauf scheitern zu lassen."""
+nur "(Sektion nicht gefunden)" statt den ganzen Lauf scheitern zu lassen.
+Dasselbe gilt fuer die Health-Zeilen: fehlt die Bridge, die DB oder das Log,
+entfaellt die Zeile einfach."""
 
+import datetime
 import html
 import re
+import sqlite3
 import sys
 from pathlib import Path
 
@@ -21,6 +40,7 @@ from telegram_notify import send_telegram_message
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DASHBOARD_PATH = REPO_ROOT / "knowledge" / "DASHBOARD.md"
+EK_BRIDGE_PATH = Path(r"C:\Users\andre\EK-Portfolio-Bridge")
 
 
 def _section(text: str, heading_substring: str) -> str | None:
@@ -64,10 +84,11 @@ def _list_items(section_text: str) -> list[str]:
     return [re.sub(r"^(\d+\.|-)\s+", "", item) for item in items]
 
 
-def _open_items(section_text: str) -> list[str]:
-    """Wie `_list_items()`, behaelt aber nur Eintraege, die NICHT mit `~~`
-    (durchgestrichen = erledigt) beginnen."""
-    return [_clean(item) for item in _list_items(section_text) if not item.startswith("~~")]
+def _open_raw_items(section_text: str) -> list[str]:
+    """Wie `_list_items()`, aber ohne erledigte (`~~durchgestrichen~~`) und
+    bewusst OHNE `_clean()`: die `**fett**`-Marker muessen erhalten bleiben,
+    weil `_item_title()` den ersten Fettdruck als Titel liest."""
+    return [item for item in _list_items(section_text) if not item.startswith("~~")]
 
 
 def _clean(text: str) -> str:
@@ -76,6 +97,79 @@ def _clean(text: str) -> str:
     text = re.sub(r"\*\*(.+?)\*\*", r"\1", text)
     text = text.replace("`", "")
     return html.escape(text, quote=False)
+
+
+def _item_title(raw_item: str, max_len: int = 72) -> str:
+    """Ein Dashboard-Punkt auf EINE Zeile. Konvention im Dashboard: jeder
+    Eintrag beginnt mit `**Titel**` -- der erste Fettdruck ist also der Titel.
+    Fallback fuer Eintraege ohne Fettdruck: der erste Satz."""
+    bold = re.search(r"\*\*(.+?)\*\*", raw_item, re.S)
+    title = bold.group(1) if bold else raw_item.split(". ")[0]
+    title = re.sub(r"\s+", " ", title).strip(" .:\u2014-")
+    # Klammer-Zusaetze wie "(2026-09-09 gefunden)" tragen im Einzeiler nichts bei
+    title = re.sub(r"\s*\([^)]*\)\s*$", "", title).strip(" .:\u2014-")
+    if len(title) > max_len:
+        title = title[:max_len].rsplit(" ", 1)[0] + "\u2026"
+    return _clean(title)
+
+
+def _health_lines() -> list[str]:
+    """Echter Betriebszustand der EK-Bridge aus State-DB + Logs
+    (Nutzerwunsch 2026-09-11). Defensiv: jeder Teil einzeln gekapselt, der
+    Digest darf nie am Health-Abschnitt scheitern."""
+    lines: list[str] = []
+    today = datetime.date.today().isoformat()
+
+    try:
+        db = EK_BRIDGE_PATH / "state" / "ek_portfolio_55918977.sqlite3"
+        if db.exists():
+            con = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
+            try:
+                scans = con.execute(
+                    "SELECT leg, COUNT(*) FROM scan_errors WHERE day=? GROUP BY leg", (today,)
+                ).fetchall()
+                orders = con.execute(
+                    "SELECT COUNT(*) FROM order_failures WHERE day=?", (today,)
+                ).fetchone()[0]
+            finally:
+                con.close()
+            if scans:
+                worst = max(scans, key=lambda r: r[1])
+                total = sum(n for _, n in scans)
+                lines.append(
+                    f"\u26a0\ufe0f EK: {total} Scan-Fehler ({_clean(worst[0])}), {orders} Order-Fehler"
+                )
+            elif orders:
+                lines.append(f"\u26a0\ufe0f EK: {orders} gescheiterte Orders heute")
+            else:
+                lines.append("\u2705 EK: keine Scan-/Order-Fehler heute")
+    except Exception:  # noqa: BLE001 -- Health ist Beiwerk, nie ein Grund zu scheitern
+        pass
+
+    try:
+        logs = sorted((EK_BRIDGE_PATH / "logs").glob("run_*.log"))
+        for log in reversed(logs[-40:]):
+            hit = None
+            for line in log.read_text(encoding="utf-8", errors="replace").splitlines():
+                if "Aggregiertes offenes Risiko" in line:
+                    hit = line
+            if hit:
+                m = re.search(
+                    r"Risiko \(ganzes Konto\): ([\d.]+) \(Deckel dieser Bridge: ([\d.]+), (\d+)%", hit
+                )
+                if m:
+                    offen, deckel = float(m.group(1)), float(m.group(2))
+                    pct = offen / deckel * 100 if deckel else 0.0
+                    # deutsches Tausendertrennzeichen -- f"{x:,.0f}" liefert "1,001"
+                    fmt = lambda v: f"{v:,.0f}".replace(",", ".")
+                    lines.append(
+                        f"\U0001F4CA EK-Risiko {fmt(offen)} / {fmt(deckel)} EUR ({pct:.0f}% vom Deckel)"
+                    )
+                break
+    except Exception:  # noqa: BLE001
+        pass
+
+    return lines
 
 
 def _bold(text: str) -> str:
@@ -90,26 +184,9 @@ def build_digest() -> str:
     stand_match = re.search(r"\*\*Stand:\s*([\d-]+)\*\*", text)
     stand = stand_match.group(1) if stand_match else "?"
 
-    sections = {
-        "naechstes": ("Als Nächstes", "▶️ Als Nächstes (offen)"),
-        "bestaetigung": ("Braucht deine Bestätigung", "🔍 Braucht deine Bestätigung"),
-        "aufgaben": ("Offene Aufgaben", "📌 Offene Aufgaben"),
-    }
+    parts = [_bold(f"\U0001F4CB Dashboard \u2014 Stand {stand}")]
 
-    parts = [_bold(f"📋 Forex-Backtesting Dashboard — Stand {stand}")]
-
-    for key, (heading, label) in sections.items():
-        raw = _section(text, heading)
-        parts.append(f"\n{_bold(label + ':')}")
-        if raw is None:
-            parts.append("(Sektion nicht gefunden - Dashboard-Struktur geaendert?)")
-            continue
-        items = _open_items(raw)
-        if items:
-            parts.append("\n\n".join(items))
-        else:
-            parts.append("(keine offenen Punkte)")
-
+    # --- Betriebszustand zuerst: das ist die Zeile, die morgens zaehlt ---
     aktiv_section = _section(text, "was läuft gerade wirklich")
     if aktiv_section is not None:
         rows = [
@@ -119,15 +196,34 @@ def build_digest() -> str:
         live_geld = sum(
             1 for l in rows if "LIVE" in l and ("echtes Geld" in l or "DRY_RUN=False" in l)
         )
-        parts.append(f"\n🟢 {len(rows)} aktive Bots/Bridges, davon {live_geld} LIVE mit echtem Geld")
+        parts.append(f"\U0001F7E2 {len(rows)} aktive Bots/Bridges \u00b7 {live_geld} mit echtem Geld")
+    parts.extend(_health_lines())
+
+    # --- Offene Punkte: ALLE, aber je genau eine Zeile ---
+    sections = [
+        ("Als Nächstes", "\u25B6\uFE0F ALS N\u00c4CHSTES"),
+        ("Braucht deine Bestätigung", "\U0001F50D BRAUCHT DEINE BEST\u00c4TIGUNG"),
+        ("Offene Aufgaben", "\U0001F4CC OFFENE AUFGABEN"),
+    ]
+    for heading, label in sections:
+        raw = _section(text, heading)
+        if raw is None:
+            parts.append(f"\n{_bold(label)}\n (Sektion nicht gefunden \u2014 Struktur geaendert?)")
+            continue
+        items = _open_raw_items(raw)
+        parts.append(f"\n{_bold(f'{label} ({len(items)})')}")
+        if items:
+            parts.append("\n".join(f" \u2022 {_item_title(i)}" for i in items))
+        else:
+            parts.append(" (keine offenen Punkte)")
 
     letzte_section = _section(text, "Letzte Aktivität")
     if letzte_section is not None:
         letzte_items = _list_items(letzte_section)
         if letzte_items:
-            parts.append(f"\n🕐 Zuletzt: {_clean(letzte_items[0])}")
+            parts.append(f"\n\U0001F550 Zuletzt: {_item_title(letzte_items[0], max_len=90)}")
 
-    parts.append("\nVolles Dashboard: knowledge/DASHBOARD.md")
+    parts.append("\nVoll: knowledge/DASHBOARD.md")
     return "\n".join(parts)
 
 

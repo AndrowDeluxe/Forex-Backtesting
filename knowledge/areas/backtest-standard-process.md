@@ -37,7 +37,13 @@ Risiko-Arbeit lief).
    Zeitraum als beim Fitting), Monte-Carlo-Bootstrap der Trade-Sequenz
    (Muster: `ou_paper_backtest/monte_carlo.py`), Kosten-Sensitivität
    (Spread/Slippage bis zum Breakeven), mehrere Jahre/Marktregime statt nur
-   ein gutes Jahr.
+   ein gutes Jahr. **Seit 2026-09-10 zusätzlich die vier Punkte der
+   [[realkosten-und-ausfuehrungs-probe]] (`p6_5`-`p6_8`): Kosten messen statt
+   annehmen, Ausführungs-Lag simulieren, Sizing-Nenner prüfen, Stop-Abstand
+   gegen die Kosten stellen.** Ergänzt nach dem `cls_practical`-Vorfall vom
+   2026-09-09, bei dem der Backtest ein Bein als profitabel auswies, dessen
+   erster Live-Trade das 2,2-fache seines Budgets verlor -- jeder der vier
+   Punkte deckte dort einen realen Fehler auf, den p6_1-p6_4 nicht fanden.
 7. **Dokumentation & Dashboard** -- ehrlichen Befund festhalten (auch
    negativ), bei robustem Fund eigene `app_pages/*.py`-Seite + Karte auf
    `home.py`, vor jedem Commit/Push mit dem User abstimmen.

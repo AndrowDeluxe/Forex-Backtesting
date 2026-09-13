@@ -158,6 +158,20 @@ PHASES: list[tuple[str, str, list[tuple[str, str]]]] = [
             ("p6_2", "Monte-Carlo-Bootstrap der Trade-Sequenz (Muster: `ou_paper_backtest/monte_carlo.py`)"),
             ("p6_3", "Kosten-Sensitivitaet: Spread/Slippage bis zum Breakeven sweepen"),
             ("p6_4", "Mehrere Jahre/Marktregime pruefen, nicht nur ein gutes Jahr"),
+            # p6_5 bis p6_8 ergaenzt 2026-09-10 nach dem cls_practical-Vorfall
+            # (2026-09-09: der erste Live-Trade verlor das 2,2-fache seines Budgets,
+            # obwohl der Backtest das Bein als profitabel auswies). Jeder dieser vier
+            # Punkte hat dort einen realen Fehler aufgedeckt, den p6_1..p6_4 NICHT
+            # gefunden haetten -- Methode, Schwellen und Belege in
+            # knowledge/areas/realkosten-und-ausfuehrungs-probe.md
+            ("p6_5", "Kosten GEMESSEN statt angenommen: echter Spread + Slippage + Kommission je Broker "
+                     "(Muster: `scripts/measure_broker_spreads.py`), je Broker getrennt ausgewertet"),
+            ("p6_6", "Ausfuehrungs-Lag simulieren: Entry zum Kurs des naechsten echten Scan-Zyklus, NICHT "
+                     "zum Schlusskurs der Signalbar (Muster: `research_cls_practical_entry_gate.py`)"),
+            ("p6_7", "Sizing-Nenner pruefen: sizet der Live-Bot auf `|Live-Kurs - SL|`? Dann die Verteilung "
+                     "des erzeugten Hebels ausweisen, nicht nur den Median -- der Schaden sitzt im Tail"),
+            ("p6_8", "Stop-Abstand gegen die Kosten stellen: Anteil der Trades mit SL < 3x Round-Trip-Kosten "
+                     "und deren Ø R separat ausweisen"),
         ],
     ),
     (

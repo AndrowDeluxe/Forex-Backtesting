@@ -144,14 +144,35 @@ ORB_COMBINED_RISK_PCT = 0.01  # "ORB Portfolio"-Bein gesamt, gleichgewichtet ueb
 # von FK's Kalibrierung uebernommen, siehe Moduldocstring (keine EK-eigene MC-validierte Zahl vorhanden)
 ORB_RISK_PCT_PER_INSTRUMENT = ORB_COMBINED_RISK_PCT / 3  # exakt die Backtest-Konvention (combined += ret/3)
 
+# Neu kalibriert 2026-09-10/11 -- MUSS mit EK-Portfolio-Bridge/config.py::LEG_RISK_PCT
+# uebereinstimmen. Diese Datei und die Live-Bridge duplizieren die Werte (anders als
+# Funded-/FKInstantFunding-Bridge, die ihren Paper-Bot zur Laufzeit importieren und
+# deshalb gar nicht abdriften koennen) -- die Duplikation war die Ursache dafuer, dass
+# die Bridge monatelang ohne CAPITAL_WEIGHT lief. Abweichungen meldet seit 2026-09-11
+# knowledge/scripts/bridge_risk_audit.py automatisch.
+#
+# Herleitung: MC-validierte Allokation riskopt_20dd aus portfolio_construction/results/
+# ek_v2_realistic_final.json, relativ UNVERAENDERT gelassen und gleichmaessig mit
+# Faktor 2,20 hochskaliert (Nutzerauftrag "40% DD ausreizen, CAGR optimieren").
+# Auf dem Studien-Fenster 2018-12-01..2024-12-30: CAGR 227,8%, hist. MaxDD -38,1%,
+# MC-Median -26,1%, P(MaxDD>40%) = 7,8%. Die freie Optimierung wurde verworfen
+# (CAGR 531%, aber P(MaxDD>40%) = 32,8% -- Ueberanpassung).
 LEG_RISK_PCT = {
-    "gold_asb": 0.08,
-    "trend_pullback": 0.05,
-    "btc_ema_cross": 0.08,
-    "gold_silver": 0.08,
-    "cls_practical": 0.015,
+    "gold_asb": 0.2347,        # effektiv 2,93%/Trade (x CAPITAL_WEIGHT)
+    "trend_pullback": 0.1467,  # effektiv 1,83%/Trade
+    "btc_ema_cross": 0.2347,   # effektiv 2,93%/Trade
+    "gold_silver": 0.2347,     # effektiv 2,93%/Trade
+    "cls_practical": 0.0440,   # effektiv 0,55%/Trade
+    # CTNL unveraendert konservativ: die CTNL-Kurve beginnt erst 08/2024 und liegt
+    # ausserhalb des Studien-Fensters -- keine auf diesem Fenster validierte Zahl.
     "ctnl_continuation": 0.005,
     "ctnl_reversal": 0.0015,
+    # ou_modell: NUR fuer die Live-Bridge relevant, die OU-Einzelaktien selbst per
+    # Trade sized. Dieser Paper-Bot modelliert OU ueber ECHTE Tagesrenditen
+    # (compute_shared_equity(): risk_dollars = CAPITAL_WEIGHT x equity, ohne
+    # LEG_RISK_PCT) -- der Wert wird hier also nie gelesen, steht aber bewusst drin,
+    # damit beide Seiten dieselbe Tabelle zeigen.
+    "ou_modell": 0.0293,       # effektiv 0,37%/Trade
     "orb_sp500": ORB_RISK_PCT_PER_INSTRUMENT,
     "orb_us30": ORB_RISK_PCT_PER_INSTRUMENT,
     "orb_nasdaq": ORB_RISK_PCT_PER_INSTRUMENT,
@@ -322,7 +343,37 @@ def _scan_cls_practical(end: pd.Timestamp, force_refresh: bool, *, source: str =
     daily = compute_daily_features(eurusd_m5)
     combined_mult = compute_combined_rate_risk_multiplier(bund_m5, ustbond_m5, de02y, us02y, daily["direction"])
 
-    trades = simulate_cls_practical(eurusd_m5, other_majors_m15, bund_m5, ustbond_m5, risk_multiplier=combined_mult)
+    # min_sl_pips=5 (2026-09-11): identisch zu challenge_portfolio/paper_bot.py.
+    # Absoluter Boden auf den strukturellen Stop-Abstand -- Setups darunter
+    # werden VERWORFEN, nicht aufgeweitet. Der bisherige relative Schutz
+    # (min_sl_atr_mult=1.0 x ATR(M5)) schrumpft in ruhigen Phasen mit; der
+    # M5-ATR liegt im Median bei nur 3,18 Pips.
+    #
+    # Fuer EK ist das die WESENTLICHE Massnahme aus der Untersuchung vom
+    # 2026-09-09/10: die Hebel-Aufblaehung, gegen die das Challenge-Portfolio
+    # zusaetzlich einen R-Detektor bekommen hat, kann hier gar nicht entstehen
+    # -- EK-Portfolio-Bridge/run_once.py::_check_cls_practical() verankert SL
+    # und TP am Live-Kurs neu (stop_price = entry_price_now - direction *
+    # sl_distance), der Risiko-Abstand ist also immer exakt sl_distance.
+    # Dieser Boden begrenzt damit direkt auch die groesstmoegliche Position.
+    #
+    # ABER (Messung 2026-09-11, scripts/research_cls_practical_ek_reanchored.py):
+    # das Neu-Verankern ist kein Gratis-Vorteil, sondern KOSTET Ergebnis. Auf
+    # denselben Signalen und bei EK-Risiko (0,55 %/Trade), 0,50 Pips Kosten:
+    #   neu verankert          PF 1,42 | Ø R 0,25 | Sharpe 0,65 | MaxDD -5,57 % | Calmar 0,48
+    #   absoluter SL + Detektor PF 1,85 | Ø R 0,42 | Sharpe 1,02 | MaxDD -4,20 % | Calmar 0,93
+    # Die Alternative ist auf JEDER Kennzahl besser ausser dem maximalen Hebel
+    # (15,5x statt 11,0x). Grund: der neu verankerte Stop sitzt nicht mehr am
+    # strukturellen Invalidierungspunkt, sondern nur noch in dessen Abstand --
+    # und dieses Niveau traegt den Edge (dieselbe Ursache, aus der der
+    # volatilitaetsbasierte Stop in der SL-Studie scheiterte).
+    # NICHT umgestellt: das ist eine Architekturaenderung an einer Live-Bridge
+    # mit echtem Geld und gehoert dem Nutzer, nicht diesem Kommentar.
+    # Steht als Entscheidungspunkt in knowledge/DASHBOARD.md.
+    # Belege: knowledge/projects/cls-practical-kostenvalidierung.md (Befund 5),
+    # Methode: knowledge/areas/realkosten-und-ausfuehrungs-probe.md
+    trades = simulate_cls_practical(eurusd_m5, other_majors_m15, bund_m5, ustbond_m5,
+                                    risk_multiplier=combined_mult, min_sl_pips=5)
     if trades.empty:
         return pd.DataFrame(columns=["entry_time", "exit_time", "r_multiple", "exit_reason"])
     trades = trades.copy()

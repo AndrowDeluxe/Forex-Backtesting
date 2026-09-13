@@ -129,7 +129,16 @@ ORB_COMBINED_RISK_PCT = 0.01  # "ORB Portfolio"-Bein gesamt, gleichgewichtet ueb
 ORB_RISK_PCT_PER_INSTRUMENT = ORB_COMBINED_RISK_PCT / 3
 LEG_RISK_PCT = {
     "gold_asb": 0.02,
-    "cls_practical": 0.015,
+    # cls_practical 0.015 -> 0.010 (2026-09-10, nach der Realkosten-/Ausfuehrungs-
+    # Probe): das Bein zog bei 0,25 % Risiko je Trade (= 1/6 x 0,015) allein
+    # 2,81 % Drawdown -- 40 % des TTP-Gesamtbudgets von 7 %, als EINES von sechs
+    # Beinen, und das fuer 1,07 % CAGR bei Calmar 0,38 und einer laengsten
+    # Unterwasserphase von ~2,4 Jahren. Der Edge ist real, aber duenn
+    # (Ø R +0,23, Untergrenze des 90-%-Intervalls +0,025), also bekommt das Bein
+    # weniger Drawdown-Budget statt mehr. 0.010 -> 0,167 % je Trade, Bein-
+    # Drawdown ~1,9 % und damit unter 2 %. NICHT erhoehen: ab 0,75 % je Trade
+    # reisst das Bein allein die 7-%-TTP- und die 6-%-IQ-Grenze.
+    "cls_practical": 0.010,
     "trend_pullback": 0.005,
     "ctnl_continuation": 0.005,
     "ctnl_reversal": 0.0015,
@@ -351,7 +360,19 @@ def _scan_cls_practical(end: pd.Timestamp, force_refresh: bool, *, source: str =
     daily = compute_daily_features(eurusd_m5)
     combined_mult = compute_combined_rate_risk_multiplier(bund_m5, ustbond_m5, de02y, us02y, daily["direction"])
 
-    trades = simulate_cls_practical(eurusd_m5, other_majors_m15, bund_m5, ustbond_m5, risk_multiplier=combined_mult)
+    # min_sl_pips=5 (2026-09-10): absoluter Boden auf den strukturellen
+    # Stop-Abstand -- Setups darunter werden VERWORFEN, nicht aufgeweitet.
+    # Der bisherige relative Schutz (min_sl_atr_mult=1.0 x ATR(M5)) schrumpft
+    # in ruhigen Phasen mit und liess am 2026-09-09 einen 3,6-Pip-Stop durch,
+    # dessen Round-Trip-Kosten auf TTP allein 2,05 Pips betrugen. Historisch
+    # trugen Trades mit Stop < 6 Pips Ø R -0,24, alle uebrigen +0,34; der
+    # Boden senkt P(negativer Erwartungswert) von 26,6 % auf 1,2 %.
+    # 5 Pips ~ 2,5x der gemessenen TTP-Round-Trip-Kosten; das Optimum ist ein
+    # Plateau von 4-6 Pips, kein Einzelspike.
+    # Belege: knowledge/projects/cls-practical-kostenvalidierung.md (Befund 5),
+    # Methode: knowledge/areas/realkosten-und-ausfuehrungs-probe.md
+    trades = simulate_cls_practical(eurusd_m5, other_majors_m15, bund_m5, ustbond_m5,
+                                    risk_multiplier=combined_mult, min_sl_pips=5)
     if trades.empty:
         return pd.DataFrame(columns=["entry_time", "exit_time", "r_multiple", "exit_reason"])
     trades = trades.copy()

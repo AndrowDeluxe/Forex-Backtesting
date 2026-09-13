@@ -145,6 +145,70 @@ def _day_segments(dates_arr: np.ndarray) -> list[tuple[object, int, int]]:
     return list(zip(dates_arr[starts], starts, ends))
 
 
+def _pip_size(price: float) -> float:
+    """0.0001 fuer die ueblichen Majors, 0.01 fuer JPY-Paare. Diese Engine
+    laeuft ausser auf EURUSD auch auf den G8-Majors (siehe
+    scripts/research_cls_practical_g8_majors_point0900.py), deshalb keine
+    fest verdrahtete 0.0001."""
+    return 0.01 if price > 20 else 0.0001
+
+
+def _atr_on_timeframe(df: pd.DataFrame, n: int, rule: str | None) -> np.ndarray:
+    """ATR(n), wahlweise auf einem hoeheren Timeframe gerechnet und auf den
+    M5-Index zurueckgemappt. `rule=None` -> ATR direkt auf den M5-Baren
+    (bisheriges Verhalten, bit-identisch).
+
+    Hintergrund (Nutzerfrage 2026-09-10): der SL-Boden haengt am ATR der
+    EINEN Einstiegsbar. Auf M5 ist das eine sehr rauschanfaellige Groesse --
+    genau deshalb liess `min_sl_atr_mult=1.0` am 2026-09-09 einen 3,6-Pip-Stop
+    durch. Ein ATR auf M15/H1/H4 misst dieselbe Volatilitaet ruhiger.
+
+    Kein Lookahead: `label="right", closed="right"` stempelt jede Bar auf
+    ihren SCHLUSSZEITPUNKT, und `reindex(..., method="ffill")` waehlt zu einem
+    M5-Zeitpunkt nur Bars, deren Label bereits erreicht ist -- die
+    HTF-Bar 10:00 umfasst (09:00, 10:00] und ist ab 10:00 vollstaendig
+    bekannt."""
+    if rule is None:
+        return compute_atr(df, n=n).to_numpy()
+    agg = (
+        df.resample(rule, label="right", closed="right")
+        .agg({"open": "first", "high": "max", "low": "min", "close": "last"})
+        .dropna()
+    )
+    atr_htf = compute_atr(agg, n=n)
+    return atr_htf.reindex(df.index, method="ffill").to_numpy()
+
+
+def _session_vol_series(dates_arr, minutes, m5_atr, start_min, end_min, window_days):
+    """Tagesreihe der 'durchschnittlichen Session-Volatilitaet': je Tag der
+    MEDIAN von ATR(M5) innerhalb des Handelsfensters, danach der gleitende
+    Mittelwert ueber die `window_days` VORHERGEHENDEN Tage.
+
+    Zweck (Nutzerfrage 2026-09-09): ein Stop, der sich an der typischen
+    Volatilitaet der Session orientiert statt an der Volatilitaet der EINEN
+    Einstiegsbar. Der bestehende min_sl_atr_mult x ATR(M5) haengt am
+    Momentanwert und schrumpft in ruhigen Minuten mit -- genau der Grund,
+    warum am 2026-09-09 ein 3,6-Pip-Stop durchging.
+
+    Strikt nur Vergangenheit (`[:i]`, der laufende Tag ist ausgeschlossen) --
+    kein Lookahead."""
+    per_day = {}
+    for day, ds, de in _day_segments(dates_arr):
+        m = minutes[ds:de]
+        a = m5_atr[ds:de]
+        mask = (m >= start_min) & (m < end_min) & np.isfinite(a) & (a > 0)
+        if mask.any():
+            per_day[day] = float(np.median(a[mask]))
+    days = sorted(per_day)
+    vals = np.array([per_day[d] for d in days], dtype=float)
+    out = {}
+    for i, d in enumerate(days):
+        prev = vals[max(0, i - window_days):i]
+        if prev.size:
+            out[d] = float(prev.mean())
+    return out
+
+
 def _first_fractal(high, low, minutes, i_start, i_end_excl, cutoff_min, kind):
     """First confirmed 3-bar M5 fractal of `kind` ("high"/"low") at index
     j in [i_start, i_end_excl), confirmed once bar j+1 closes (no lookahead).
@@ -250,6 +314,12 @@ def simulate_cls_practical(
     spread_bps: float = 0.3,
     slippage_bps: float = 0.0,
     min_sl_atr_mult: float = 1.0,
+    atr_period: int | None = None,
+    atr_timeframe: str | None = None,
+    min_sl_pips: float | None = None,
+    sl_floor_mode: str = "drop",
+    session_sl_mult: float | None = None,
+    session_vol_window_days: int = 20,
     be_trigger_r: float | None = None,
     allowed_setups: tuple[str, ...] = ("continuation", "reversal"),
     use_execution_overlay: bool = False,
@@ -427,6 +497,8 @@ def simulate_cls_practical(
         raise ValueError(f"filter_mode must be 'and' or 'majority', got {filter_mode!r}")
     if continuation_entry_mode not in ("fractal", "breakout_stop"):
         raise ValueError(f"continuation_entry_mode must be 'fractal' or 'breakout_stop', got {continuation_entry_mode!r}")
+    if sl_floor_mode not in ("drop", "widen"):
+        raise ValueError(f"sl_floor_mode must be 'drop' or 'widen', got {sl_floor_mode!r}")
 
     # --- daily decision layer ---
     daily = compute_daily_features(eurusd_m5, test_hour=test_hour, test_window_end=test_window_end,
@@ -459,7 +531,12 @@ def simulate_cls_practical(
     rates_ampel = classify_rates_ampel(rate_score, daily["direction"], z_window=rates_z_window, z_threshold=rates_z_threshold)
 
     adr = compute_adr(eurusd_m5, n=adr_period)
-    m5_atr = compute_atr(eurusd_m5, n=adr_period).to_numpy()
+    # Bisher trieb adr_period BEIDE Groessen -- das Tagesrange-Ziel UND den
+    # ATR des SL-Bodens. atr_period/atr_timeframe entkoppeln das; None
+    # reproduziert exakt das alte Verhalten (ATR(adr_period) auf M5).
+    m5_atr = _atr_on_timeframe(
+        eurusd_m5, n=atr_period if atr_period is not None else adr_period, rule=atr_timeframe
+    )
 
     # --- M5 arrays for entry timing ---
     minutes = (eurusd_m5.index.hour * 60 + eurusd_m5.index.minute).to_numpy()
@@ -483,6 +560,13 @@ def simulate_cls_practical(
 
     risk_amount = account_size * risk_pct
     half_asia_end_min, half_settle_end_min = int(asia_end * 60), int(SETTLE_END * 60)
+
+    # Nur berechnen, wenn wirklich gebraucht -- der Default-Pfad (session_sl_mult
+    # None) bleibt damit rechnerisch unveraendert.
+    session_vol = (
+        _session_vol_series(dates_arr, minutes, m5_atr, entry_hour_min, cutoff_min, session_vol_window_days)
+        if session_sl_mult is not None else {}
+    )
 
     trades = []
     for day, day_start, day_end in _day_segments(dates_arr):
@@ -592,16 +676,44 @@ def simulate_cls_practical(
             entry_i = overlay_i
             trigger_level = close[entry_i]  # re-anchor entry price; sl_dist (structure) stays fixed
 
+        # session_sl_mult: strukturellen Stop komplett durch ein Vielfaches der
+        # typischen Session-Volatilitaet ERSETZEN (siehe _session_vol_series).
+        # None = unveraendertes Verhalten.
+        if session_sl_mult is not None:
+            sv = session_vol.get(day)
+            if sv is None or not np.isfinite(sv) or sv <= 0:
+                continue
+            sl_dist = session_sl_mult * sv
+
         atr_val_at_entry = m5_atr[entry_i] if entry_i < len(m5_atr) else np.nan
-        min_sl_dist = min_sl_atr_mult * atr_val_at_entry if pd.notna(atr_val_at_entry) else np.nan
-        if sl_dist <= 0 or pd.isna(min_sl_dist) or sl_dist < min_sl_dist:
-            # a stop tighter than min_sl_atr_mult x ATR(M5) isn't a real
-            # structural level - it's sub-noise separation between two
-            # bars, and the risk_amount/sl_dist position-sizing formula
-            # would blow up into unrealistic leverage for it (found
-            # 2026-08-11: a 0.5-pip fractal separation implied ~100
-            # standard lots on a 100k account at 0.5% risk).
+        floors = []
+        if pd.notna(atr_val_at_entry):
+            floors.append(min_sl_atr_mult * atr_val_at_entry)
+        if min_sl_pips is not None:
+            # Absoluter Pip-Boden ZUSAETZLICH zum relativen ATR-Boden. Der
+            # relative allein schrumpft in ruhigen Phasen mit und liess am
+            # 2026-09-09 einen 3,6-Pip-Stop durch, dessen Round-Trip-Kosten
+            # auf TTP bei 2,05 Pips lagen (siehe knowledge/projects/
+            # cls-practical-kostenvalidierung.md). None = wie bisher.
+            floors.append(min_sl_pips * _pip_size(trigger_level))
+        min_sl_dist = max(floors) if floors else np.nan
+
+        if sl_dist <= 0 or pd.isna(min_sl_dist):
             continue
+        if sl_dist < min_sl_dist:
+            # a stop tighter than the floor isn't a real structural level -
+            # it's sub-noise separation between two bars, and the
+            # risk_amount/sl_dist position-sizing formula would blow up into
+            # unrealistic leverage for it (found 2026-08-11: a 0.5-pip
+            # fractal separation implied ~100 standard lots on a 100k account
+            # at 0.5% risk).
+            # "drop" (Default, bisheriges Verhalten) verwirft den Trade;
+            # "widen" handelt ihn stattdessen mit dem Boden als Stop -- das
+            # senkt zugleich die Positionsgroesse, weil units = risk/sl_dist.
+            if sl_floor_mode == "widen":
+                sl_dist = min_sl_dist
+            else:
+                continue
 
         if tp_mode == "adr":
             adr_val = adr[day_start] if day_start < len(adr) else np.nan

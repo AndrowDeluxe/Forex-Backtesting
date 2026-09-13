@@ -28,7 +28,7 @@ keine Planung (dafür ist `DASHBOARD.md`).
   Trigger wurden 1:1 uebernommen (Ingest laeuft weiterhin ~70 s vor dem
   Bridge-Scan, siehe Fund 2026-09-09 Task-Offsets). Verifiziert: alle 11 Tasks
   zeigen `NextRunTime = Mo 2026-09-14`, seit dem Umstellen um 14:21 Uhr startet
-  heute (Sonntag) kein Prozess mehr.
+  heute (Sonntag) kein Prozess mehr. Commit `56d36f7`.
   **Weiter aktiv am Wochenende** (Nutzerentscheid): `Forex-Weekly-Report`
   (So 18:00) und `Dashboard-Telegram-Digest` (taeglich 08:00) -- beide ohne
   MT5-/Marktdatenbezug. BTC-Tasks unangetastet.
@@ -47,7 +47,8 @@ keine Planung (dafür ist `DASHBOARD.md`).
   Zeitpunkte (Fr 23:59 / Sa / So / Mo 00:01 / Mo 01:01 / Di) sowie einen
   Snapshot-Lauf: alle drei Bridges melden heute korrekt
   `not_expected_today`, keine Telegram-Nachricht. Die Watchdog-Dateien liegen
-  ausserhalb des Repos und sind NICHT git-getrackt.
+  ausserhalb des Repos und sind NICHT git-getrackt (Skript + Doku: Commit
+  `56d36f7`).
 
 - **2026-09-11** [Second Brain / Bridges] **Audit-Punkt geschlossen: 5 Bridges
   als stillgelegt markiert, Probe meldet nur noch 1 echten Befund (9 -> 1).**

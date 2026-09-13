@@ -25,3 +25,6 @@ ek_portfolio/telegram_config.py
 challenge_portfolio/telegram_config.py
 ou_paper_backtest/telegram_config.py
 knowledge/.obsidian/
+
+# Lokale XML-Sicherungen der Scheduled Tasks (maschinenspezifisch, s. scripts/weekend_pause.ps1)
+scripts/task_backups/

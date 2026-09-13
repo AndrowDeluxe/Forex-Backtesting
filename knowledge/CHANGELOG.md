@@ -9,6 +9,288 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-13** [Scheduling / alle Bridges] **Wochenend-Pause eingerichtet:
+  alle handelsbezogenen Tasks laufen nur noch Mo-Fr, Sa/So ist der PC still**
+  (Nutzerauftrag -- Markt hat zu, es gibt ohnehin keine neuen Daten). Sieben
+  Tasks hatten 7-Tage-Trigger (`TimeTrigger` ohne Wochentags-Einschraenkung):
+  `EK-Portfolio-Bridge-Fast` (alle 2 Min, rund um die Uhr -- allein ~1.440
+  Leerlaeufe pro Wochenende), `FKInstantFunding-MT5-Bridge`,
+  `FK-Instant-Funding-Paper`, `DataLake-Ingest-Fast/-Fast5/-Slow`,
+  `Bridge-Watchdog`. Drei weitere standen zwar auf Mo-Fr, ihre Wiederholung
+  lief aber mit `P1D` noch Minuten in den Samstag hinein
+  (`Funded-Portfolio-Bridge` bis Sa 00:13, `Funded-Portfolio-Bridge-Fast` und
+  `FKInstantFunding-MT5-Bridge-Fast` bis Sa 00:03) -- Dauer auf Tagesende
+  gekappt. Umgesetzt ueber das neue, git-getrackte
+  `scripts/weekend_pause.ps1` (`-Verify` / `-Apply` / `-Revert`, legt vor jedem
+  Apply XML-Backups nach `scripts/task_backups/` ab). Es haelt den Soll-Zustand
+  deklarativ fest, damit ein spaeter neu angelegter Task nicht still wieder auf
+  7 Tage zurueckfaellt. **Kritisch dabei:** die mm:ss-Versaetze der alten
+  Trigger wurden 1:1 uebernommen (Ingest laeuft weiterhin ~70 s vor dem
+  Bridge-Scan, siehe Fund 2026-09-09 Task-Offsets). Verifiziert: alle 11 Tasks
+  zeigen `NextRunTime = Mo 2026-09-14`, seit dem Umstellen um 14:21 Uhr startet
+  heute (Sonntag) kein Prozess mehr.
+  **Weiter aktiv am Wochenende** (Nutzerentscheid): `Forex-Weekly-Report`
+  (So 18:00) und `Dashboard-Telegram-Digest` (taeglich 08:00) -- beide ohne
+  MT5-/Marktdatenbezug. BTC-Tasks unangetastet.
+  Bewusst in Kauf genommen: So 23:00-24:00 (erste Handelsstunde, duennste
+  Liquiditaet) wird nicht mehr gehandelt, Start ist Mo 00:00.
+
+- **2026-09-13** [Bridge-Watchdog] **Wochenend-/Montags-Karenz, sonst haette die
+  neue Pause jedes Wochenende Fehlalarme ausgeloest.** `config.py`:
+  `FKInstantFunding-MT5-Bridge` stand als einzige Bridge auf
+  `weekdays_only=False` (weil ihr Task als einziger 7 Tage lief) -> `True`.
+  `watchdog.py`: neue Hilfsfunktion `_in_weekend_pause()` ersetzt die beiden
+  `now.weekday() >= 5`-Abfragen und deckt zusaetzlich **Montag vor 01:00** ab --
+  der Watchdog feuert Mo 00:01:23, die erste Bridge erst 00:03; ohne Karenz
+  waere der Log in diesem Moment ~24 h alt und jeder Montag begaenne mit einem
+  Fehlalarm plus "laeuft wieder normal"-Nachzuegler. Getestet ueber sechs
+  Zeitpunkte (Fr 23:59 / Sa / So / Mo 00:01 / Mo 01:01 / Di) sowie einen
+  Snapshot-Lauf: alle drei Bridges melden heute korrekt
+  `not_expected_today`, keine Telegram-Nachricht. Die Watchdog-Dateien liegen
+  ausserhalb des Repos und sind NICHT git-getrackt.
+
+- **2026-09-11** [Second Brain / Bridges] **Audit-Punkt geschlossen: 5 Bridges
+  als stillgelegt markiert, Probe meldet nur noch 1 echten Befund (9 -> 1).**
+  Nutzerentscheid: die alten Ein-Strategie-Bridges (BTC-EMA-Cross,
+  CLS-Practical, CTNL-Edge, GoldASB, OU-Modell) werden NICHT reaktiviert --
+  jede Alt-Strategie bekommt stattdessen ein eigenes optimiertes Bein in den
+  neuen Portfolio-Bridges. Ihre Befunde (tick_value-Sizing, fehlende
+  Kill-Switches) sind damit gegenstandslos. Als `RETIRED_BRIDGES` in
+  `bridge_risk_audit.py` hinterlegt statt nur im Dashboard abgehakt -- sonst
+  meldet die Probe bei jedem Lauf dieselben 7 Befunde, die niemand mehr
+  abarbeitet, und wird dadurch wertlos. Wird eine Bridge doch reaktiviert:
+  Zeile entfernen, dann greift die volle Pruefung wieder.
+  **Beim Aufraeumen NICHT mit weggeraeumt** (steht als eigener
+  Dashboard-Punkt): `Funded-Portfolio-Bridge` fehlt der aggregierte
+  Offenes-Risiko-Kill-Switch, den `FKInstantFunding-MT5-Bridge` am 2026-09-07
+  auf Nutzerauftrag bekommen hat (`_aggregate_open_risk_dollars()` + Deckel
+  gegen zu viele gleichzeitig offene Positionen). Beide sind LIVE-Prop-Bridges;
+  moeglicherweise galt der Auftrag damals beiden und ist nur bei einer
+  gelandet. Funded hat Einzeltrade-Cap (1 %), 20-%-Margin-Deckel und
+  Trailing-DD-Kill-Switch, aber keine vorausschauende Summengrenze.
+
+- **2026-09-11** [EK-Portfolio-Bridge] **cls_practical auf absoluten Signal-SL
+  + R-Detektor umgestellt (Nutzerauftrag) -- alle drei Bridges fahren jetzt
+  dieselbe Logik.** `legs/cls_practical/signal_source.py` liefert zusaetzlich
+  `sl_price`/`tp_price` (vorher nur Distanzen); `run_once.py::_check_cls_practical()`
+  nutzt diese absoluten Preise statt sie am Live-Kurs neu zu verankern, und
+  bekommt denselben `MAX_CONSUMED_R_FOR_ENTRY = 0.50`-Detektor wie die anderen
+  beiden Bridges -- der mit dem absoluten SL erst noetig wird, weil
+  core/bracket_executor.py die Lots dann als Risiko / |Live-Kurs - SL| rechnet.
+  Gilt NUR fuer cls_practical; die uebrigen Beine dieser Bridge setzen ihre
+  Stops weiterhin relativ zum Fuellpreis und koennen sich nicht aufblaehen.
+  Erwartete Wirkung (gemessen auf denselben Signalen, EK-Risiko, 0,50 Pips):
+  PF 1,42 -> **1,85**, Ø R 0,25 -> **0,42**, Sharpe 0,65 -> **1,02**,
+  MaxDD -5,57 % -> **-4,20 %**, Calmar 0,48 -> **0,93**; maximaler Hebel steigt
+  dafuer von 11,0x auf 15,5x (vom Detektor bei 2x Aufblaehung gedeckelt).
+  Verifiziert: importiert sauber, und die neue consumed_r-Rechnung blockt den
+  realen 2026-09-09-Fall (0,61R) korrekt.
+  **Wichtige Einordnung der EK-Zahlen (Nutzerfrage "warum sieht EK so viel
+  besser aus?"):** Der Unterschied zu den Challenge-Zahlen ist FAST
+  VOLLSTAENDIG die Kostenannahme, nicht die Strategie. Isoliert gemessen, selbe
+  Signale, selber Code-Pfad: Ø R 0,357 bei 0,50 Pips gegen 0,179 bei 2,05 Pips
+  -- Faktor 2,0, bei identischer Trefferquote (49,7 %) und Trade-Zahl (147).
+  EK wurde mit 0,50 Pips gerechnet (**Annahme**, Tickmill ist nicht belastbar
+  gemessen), die Challenge mit 2,05 Pips (**gemessen**). Das Risiko-Delta
+  (0,55 % gegen 0,1667 %) erklaert zusaetzlich die CAGR-Differenz, beruehrt
+  aber PF/Ø R nicht. **EKs Zahlen sind also nicht besser, sondern optimistischer
+  angesetzt** -- genau der Fehlertyp, gegen den diese ganze Untersuchung
+  angetreten ist. Tickmills Kosten muessen gemessen werden, bevor die EK-Zahlen
+  belastbar sind.
+
+- **2026-09-11** [Alle 3 Live-Bridges] **Neue SL-/Sizing-Logik auf alle
+  Bridges portiert -- und dabei gefunden, dass sie NICHT dieselbe Schwachstelle
+  haben.** Portiert (Herleitung siehe Eintraege 2026-09-09/10):
+  | Bridge | Scan | SL-Behandlung | Pip-Boden | R-Detektor | Margin-Deckel |
+  |---|---|---|---|---|---|
+  | Funded (3 Konten) | `challenge_portfolio` | absoluter Signal-SL | 5 Pips | 0,50R | 20 % |
+  | FK Instant Funding | `challenge_portfolio` | absoluter Signal-SL | (geerbt) | 0,50R neu | 20 % neu |
+  | EK Portfolio | `ek_portfolio` | am Live-Kurs neu verankert | 5 Pips neu | bewusst KEINER | 80 % neu |
+  **Drei Befunde beim Portieren:**
+  (1) **FK hatte den Pip-Boden schon** -- es zieht seinen CLS-Scan aus
+  `challenge_portfolio/paper_bot.py`, die Aenderung vom 2026-09-10 wirkte dort
+  sofort mit. EK hat einen eigenen Scan (`ek_portfolio/paper_bot.py`) und
+  brauchte ihn separat.
+  (2) **EK kann die Hebel-Aufblaehung strukturell nicht bekommen.**
+  `run_once.py::_check_cls_practical()` rechnet `stop_price = entry_price_now -
+  direction * sl_distance`, verankert SL und TP also am Live-Kurs neu -- der
+  Risiko-Abstand ist immer exakt `sl_distance`. Ein R-Detektor waere dort
+  wirkungslos und wurde bewusst nicht eingebaut.
+  (3) **Der 20-%-Margin-Deckel passt nicht auf EK.** Gemessen 2026-09-11:
+  eine normale CLS-Position mit 5-Pip-Mindeststop braucht auf den Funded-Konten
+  **7,7 %** der Equity an Margin, auf EK **42,6 %** (Equity ~3.343 EUR,
+  Tickmill 1:30, 0,55 %/Trade aus der Kalibrierung vom 2026-09-10). 20 % haette
+  diese Kalibrierung stillschweigend halbiert -> auf EK **80 %**, das bindet im
+  Normalbetrieb nie. **Hinweis fuer den Nutzer:** bei 8 Beinen und 1:30 koennen
+  zwei bis drei gleichzeitig offene Positionen EKs Margin ausreizen -- Folge der
+  Kalibrierung, keine Fehlfunktion, aber ein Deckel richtet dort wenig aus.
+  **Neuer Befund mit Entscheidungsbedarf:** EKs Neu-Verankern ist kein
+  Gratis-Vorteil, sondern kostet Ergebnis. Auf denselben Signalen, EK-Risiko,
+  0,50 Pips Kosten (`scripts/research_cls_practical_ek_reanchored.py`):
+  neu verankert PF 1,42 / Ø R 0,25 / Sharpe 0,65 / MaxDD -5,57 % / Calmar 0,48
+  gegen absoluter SL + R-Detektor PF **1,85** / Ø R **0,42** / Sharpe **1,02** /
+  MaxDD **-4,20 %** / Calmar **0,93**. Die Alternative ist auf jeder Kennzahl
+  besser ausser dem maximalen Hebel (15,5x statt 11,0x). Ursache: der neu
+  verankerte Stop sitzt nicht mehr am strukturellen Invalidierungspunkt --
+  dieselbe Ursache, aus der der volatilitaetsbasierte Stop in der SL-Studie
+  scheiterte. **Nicht umgestellt** -- Architekturaenderung an einer
+  Echtgeld-Bridge, Entscheidung liegt beim Nutzer (steht im `DASHBOARD.md`).
+  Verifiziert: alle fuenf geaenderten Module kompilieren und importieren,
+  Konstanten gesetzt (Funded/FK R-Detektor 0.50 + Deckel 0.20, EK Deckel 0.80).
+
+- **2026-09-11** [Alle Live-Bridges / Second Brain] **Sizing-Logik der uebrigen
+  Live-Bridges geprueft: kein Handlungsbedarf -- EK war der Ausreisser, und der
+  Grund ist strukturell.** Nutzerauftrag war, den EK-Fix von gestern auf die
+  anderen Live-Bridges zu uebertragen. Die Pruefung ergab, dass das nicht noetig
+  ist: live sind nur `Funded-Portfolio-Bridge` und
+  `FKInstantFunding-MT5-Bridge` (alle uebrigen Tasks Disabled), und beide haben
+  Kapitalverduennung, Einzeltrade-Cap und Kill-Switch bereits -- Funded
+  zusaetzlich einen Margin-Deckel (20 %), FKIF zusaetzlich die
+  Mindestlot-Anhebung. **Der strukturelle Unterschied:** beide importieren ihren
+  Paper-Bot zur Laufzeit (`import challenge_portfolio.paper_bot as pb` bzw.
+  `fk_instant_funding.paper_bot`) und lesen `pb.CAPITAL_WEIGHT *
+  pb.LEG_RISK_PCT[leg] * equity` direkt -- sie KOENNEN nicht abdriften. EK
+  dupliziert die Werte in seine eigene `config.py` (5 Treffer gegen 0 bei den
+  anderen beiden), und genau diese Kopie ist abgedriftet. Bewusst NICHT
+  uebernommen: die Mindestlot-Anhebung bei Funded -- sie hat dort noch nie
+  gegriffen (0 Treffer "unter volume_min" in allen Logs, 100k-Konten haben das
+  Problem nicht), und auf einem Prop-Konto waere ein ueber das Zielrisiko
+  angehobener Trade ein Regelverstoss-Risiko ohne Gegenwert.
+  **Dabei eigene Drift gefunden und behoben:** die gestrige EK-Neukalibrierung
+  setzte nur die Bridge auf die 2,20x-Werte, `ek_portfolio/paper_bot.py` blieb
+  auf den alten -- 6 von 8 Beinen wichen ab. Paper-Bot nachgezogen
+  (Nutzerentscheid), inkl. `ou_modell` und der vollstaendigen Herleitung als
+  Kommentar; verifiziert: 0 Abweichungen.
+  **Probe erweitert:** `bridge_risk_audit.py` vergleicht jetzt duplizierte
+  Bridge-Risikowerte automatisch gegen den zugehoerigen Paper-Bot
+  (`_paper_bot_drift()`), Bridges mit Laufzeit-Import werden uebersprungen.
+  Die Pruefung wurde gegenprobiert (EK absichtlich auf einen fremden Paper-Bot
+  gezeigt -> Drift wird gemeldet), damit sie nicht nur zufaellig "OK" sagt.
+  EK und FKIF laufen jetzt ohne Befund durch.
+
+- **2026-09-11** [Reporting] **Morgen-Digest von 4 Telegram-Nachrichten auf 1
+  gekuerzt + Health-Zeilen aus den echten Logs ergaenzt.** Nutzerfeedback:
+  "ich habe heute morgen 4 Seiten Dashboard bekommen, das ist viel zu viel".
+  Gemessen: 16.066 Zeichen = 4 Nachrichten. Ursache war NICHT die Anzahl der
+  offenen Punkte, sondern dass `dashboard_digest.py` jeden Punkt im VOLLTEXT
+  ausschuettete -- die ausfuehrlichen Eintraege vom 2026-09-09/10 (inkl.
+  Markdown-Tabellen) schlugen dadurch voll durch. Fix: neue `_item_title()`
+  reduziert jeden Punkt auf EINE Zeile (erster `**Fettdruck**` = Titel, das ist
+  die bestehende Dashboard-Konvention; Klammer-Zusaetze und Ueberlaenge werden
+  gekappt). Der Digest haengt damit strukturell nicht mehr an der Laenge eines
+  Eintrags. Es werden weiterhin ALLE offenen Punkte gezeigt (Nutzerentscheid:
+  volle Lage auf einen Blick statt Top-3-Auswahl).
+  Zusaetzlich neue `_health_lines()`: Scan-/Order-Fehler des Tages aus der
+  EK-State-DB (read-only) und aktuelles offenes Risiko gegen den Deckel aus dem
+  juengsten Log -- also der ECHTE Betriebszustand, nicht nur das, was im
+  Dashboard steht. Genau diese Zeile haette den 4h haengenden CTNL-Exit vom
+  2026-09-09 am naechsten Morgen sichtbar gemacht. Beide Health-Bloecke sind
+  einzeln in try/except gekapselt; fehlt Bridge/DB/Log, entfaellt die Zeile.
+  **Ergebnis: 16.066 -> 1.580 Zeichen, 4 -> 1 Nachricht** (Trockenlauf ohne
+  Versand verifiziert). Nebenbei: Stand-Datum in DASHBOARD.md nachgefuehrt.
+
+- **2026-09-11** [cls_practical / Funded-Portfolio-Bridge] **Umbau umgesetzt:
+  Pip-Boden, R-Detektor und Margin-Deckel scharf; Risiko des Beins gesenkt.**
+  Nach der Realkosten-/Ausfuehrungs-Probe (siehe Eintraege 2026-09-09/10)
+  implementiert:
+  (1) `challenge_portfolio/paper_bot.py`: `min_sl_pips=5` im CLS-Scan
+  (Setups mit engerem strukturellem Stop werden VERWORFEN, nicht aufgeweitet)
+  und `LEG_RISK_PCT["cls_practical"]` **0.015 -> 0.010** (Risiko je Trade
+  0,25 % -> **0,1667 %**, auf 100k also $166,67). Gesenkt statt erhoeht, weil
+  das Bein bei 0,25 % allein 2,81 % Drawdown zog -- 40 % des TTP-Budgets von
+  7 %, als EINES von sechs Beinen, fuer 1,07 % CAGR bei Calmar 0,38.
+  Alle uebrigen Beine unveraendert, `MAX_POSITION_RISK_PCT` unveraendert.
+  (2) `Funded-Portfolio-Bridge/run_once.py`: R-Detektor
+  `MAX_CONSUMED_R_FOR_ENTRY = 0.50` nach dem Restlaufzeit-Gate, plus
+  bein-uebergreifender Helfer `_signal_sl_distance()`. ou_modell ausgenommen
+  (Tagessignal, eigener Kurs-Waechter).
+  (3) `Funded-Portfolio-Bridge/sizing.py`: harter Margin-Deckel
+  `MAX_MARGIN_PCT_OF_EQUITY = 0.20`, gerechnet ueber `mt5.order_calc_margin()`
+  statt selbstgebauter Nominalwerte (nur MT5 kennt Kontraktgroesse/Hebel je
+  Symbol korrekt -- dieselbe Begruendung wie bei `order_calc_profit()`).
+  Greift unabhaengig davon, WODURCH eine Groesse zustande kam; die
+  20,8-Lot-Position vom 2026-09-09 waere daran gescheitert.
+  **Zwei Korrekturen an eigenen frueheren Aussagen dieser Untersuchung:**
+  (a) Der R-Detektor haette den Trade vom 2026-09-09 **NICHT** geblockt. Aus
+  den echten Orderdaten nachgerechnet waren 0,61-0,67R gegen das Signal
+  aufgebraucht, nicht die in der Ideen-Inbox genannten 0,76R (andere
+  Referenzpreis-/sl_distance-Annahme). Geblockt haette ihn der **Pip-Boden**
+  (3,6 < 5 Pips). Die beiden Massnahmen greifen in verschiedenen Faellen.
+  (b) Schwelle **0,50R statt 0,75R**: bei 0,75R ist der Detektor beim REALEN
+  Ausfuehrungsversatz wirkungslos -- er blockt nichts, was das
+  Restlaufzeit-Gate nicht ohnehin blockt (1,00R bis 0,60R liefern identische
+  142 Trades / PF 1,43). Erst ab 0,50R greift er. Zweck ist die
+  **Hebel-Schranke** (2x statt 4x), nicht die Rendite.
+  Verifiziert: Scan-Pfad liefert seit 2026-08-01 nur noch Signale ab 8,9 Pips
+  Stopdistanz (die Signale vom 09-05 mit 2,9 und 09-09 mit 3,6 Pips fallen
+  jetzt raus), beide Bridge-Module importieren sauber, Engine-Defaults
+  unveraendert (Regressionslauf: 207 Trades, identische PnL).
+
+- **2026-09-10** [EK-Portfolio-Bridge] **Kapitalverduennung scharf geschaltet,
+  Mindestlot-Sizing, Portfolio-Kill-Switch und Risiko-Neukalibrierung auf 40 %
+  Ziel-Drawdown.** `CAPITAL_WEIGHT = 1/8` war seit Einrichtung definiert und im
+  config-Docstring als Formel festgeschrieben, wurde aber NIRGENDS angewendet --
+  jedes Bein handelte ~8x groesser als validiert. **Backtest-Beleg**
+  (Rekonstruktion von `ek_v2_realistic_final.json` aus
+  `portfolio_construction/results/legs/`): mit Verduennung -16,1 % Max-Drawdown,
+  ohne -73,7 %. Die Methodik wurde ZUERST gegen das repo-eigene Szenario
+  `ek_flat1pct_comparison.json::flat_1pct` verifiziert (w=1/7 ergibt
+  12,55 %/-5,34 % gegen publizierte 11,41 %/-5,50 %; ohne Verduennung
+  116,86 %/-32,63 %) -- die Verduennungsformel IST die Backtest-Logik.
+  **Reihenfolge bewusst** (Kill-Switch VOR der Deckel-Lockerung): (1)
+  `core/state_store.py` Tabelle `eod_equity`; (2)
+  `core/risk.py::check_trailing_dd()` portiert aus `ek_portfolio/paper_bot.py` --
+  der heutige Equity-Wert geht bewusst NICHT in den Hoechststand ein, sonst zoege
+  jeder der ~100 Laeufe/Tag den Floor an ein Intraday-Hoch (der im paper_bot
+  dokumentierte Bug); (3) `entries_allowed()` als Gate an den 6 Entry-Punkten
+  statt auf Bein-Ebene -- Exits und Positionsverwaltung laufen dadurch
+  STRUKTURELL immer weiter, auch bei gerissener Grenze; (4) `core/sizing.py`:
+  neue `calc_lot_size_detailed()` mit Verduennung + Anhebung aufs
+  Broker-Mindestlot (Muster 1:1 aus `FKInstantFunding-MT5-Bridge/sizing.py`) +
+  hartem Einzeltrade-Cap 3 %; die alte `calc_lot_size()` bleibt als
+  float-Wrapper, damit der Code zwischen den Edits durchgehend lauffaehig war
+  (die Bridge laeuft alle 2 Min.); (5) Config zuletzt.
+  **Risiko-Kalibrierung** (Nutzerauftrag "40 % DD ausreizen, CAGR optimieren"):
+  freie Optimierung VERWORFEN -- sie liefert CAGR 531 % bei Risikostufen bis
+  58 %, aber Monte Carlo zerlegt sie (P(MaxDD>40 %) = 32,8 %, 5 %-Worst-Case
+  -55,5 %). Stattdessen die MC-validierte Studien-Allokation relativ
+  unveraendert gelassen und gleichmaessig mit **Faktor 2,20** hochskaliert:
+  CAGR 227,8 %, hist. MaxDD -38,1 %, MC-Median -26,1 %, P(MaxDD>40 %) = 7,8 %
+  (die Studie tolerierte 10,3 % bei ihrem 20 %-Ziel). `MAX_TOTAL_RISK_PCT`
+  0.08 -> 0.30, neu `MAX_SINGLE_TRADE_RISK_PCT = 0.03` und
+  `TRAILING_DD_PCT = 0.45`. **45 % statt der 20 % vom 2026-08-27**: ein
+  20-%-Kill-Switch auf einem Portfolio mit -26 % MC-Median-Drawdown wuerde im
+  NORMALBETRIEB ausloesen. Trotz aggressiverem Ziel liegt das effektive Risiko
+  je Trade UNTER dem bisherigen Live-Zustand (Gold ASB 2,93 % statt 8,0 %).
+  Deckel-Auslastung bei allen 6 Kernbeinen gleichzeitig offen: 11,6 % von 30 %.
+  **Verifiziert:** `py_compile` + echter Import aller Module gegen gestubbtes
+  MT5 (findet fehlende Namen, die py_compile nicht sieht); Offline-Test
+  `calc_lot_size_detailed()` mit 5 Faellen (Verduennung exakt 1/8, Anhebung,
+  3-%-Cap-Ablehnung, Aktien-Mindestlot, Wrapper-Rueckgabetyp); Offline-Test
+  `check_trailing_dd()` inkl. der Kernbedingung "heutiger Wert zieht den Floor
+  NICHT hoch", Testzeilen wieder entfernt. Parallel lief eine zweite Session am
+  Bar-Fenster-Bug derselben Bridge -- Koexistenz geprueft, beide Aenderungssaetze
+  intakt, alle 13 Module importieren sauber.
+
+- **2026-09-10** [Second Brain / alle Bridges] **Standardprozess
+  "Paper-Bot -> Live-Bridge" + automatisierte Probe angelegt** (Nutzerauftrag
+  nach dem EK-Fund: "damit sowas in Zukunft nicht mehr vorkommt").
+  `knowledge/areas/paper-bot-zu-live-bridge.md`: Regel (eine Bridge ist
+  Uebertragung, keine Neuimplementierung), 8-Punkte-Checkliste mit
+  Zeilenbeleg-Pflicht statt "ist sinngemaess drin", und die real passierten
+  Fallstricke. `knowledge/scripts/bridge_risk_audit.py` prueft alle 8 Bridges
+  rein statisch (AST, kein Import, keine MT5-Verbindung) auf tote
+  Risikokonstanten (die EK-Signatur), fehlende Kill-Switches, fehlende
+  Risikodeckel und die manuelle `trade_tick_value`-Sizing-Formel.
+  **Erster Lauf: 9 Befunde**, wichtigster: `CLS-Practical-Bridge` und
+  `OU-Modell-MT5-Bridge` sizen ueber `trade_tick_value` statt
+  `order_calc_profit()` -- dieselbe Formel, die am 2026-08-06 um Faktor 8,6
+  danebenlag (beide Bridges aktuell Disabled). Zwei Fehlalarme der ersten
+  Fassung wurden vor der Uebergabe behoben und im Skript dokumentiert
+  (Funded-Kill-Switch: deutsche Schreibweise mit Bindestrich; EKs
+  `ORB_COMBINED_RISK_PCT`: Ableitungskette innerhalb config.py). Triage in
+  DASHBOARD.md.
+
 - **2026-09-10** [EK-Portfolio-Bridge] **Bar-Fenster-Bug behoben — er betraf
   ALLE DREI MT5-Beine, nicht nur ORB.** Nutzerauftrag ("Baue den Zeitversatz auf
   allen Konten so um, dass alles vernuenftig funktioniert"). `fetch_recent_mt5()`

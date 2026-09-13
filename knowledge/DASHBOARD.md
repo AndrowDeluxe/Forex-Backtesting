@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-09-09** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-09-13** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -87,6 +87,31 @@ Bedarf vor generischem Aufräumen.
 Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
+
+- ~~**EK: Stop neu verankern oder auf absoluten Signal-SL umstellen?**~~ — **umgestellt 2026-09-11 auf deinen Auftrag.** Ursprünglicher Punkt:
+  (2026-09-11, deine Entscheidung). EK macht es heute anders als die beiden
+  anderen Bridges: `stop_price = entry_price_now - direction * sl_distance`.
+  Das verhindert die Hebel-Aufblähung strukturell — **kostet aber Ergebnis**.
+  Gemessen auf denselben Signalen, EK-Risiko, 0,50 Pips Kosten:
+
+  | | PF | Ø R | Sharpe | MaxDD | Calmar | Hebel max |
+  |---|---|---|---|---|---|---|
+  | EK heute (neu verankert) | 1,42 | 0,25 | 0,65 | −5,57 % | 0,48 | 11,0x |
+  | absoluter SL + R-Detektor | **1,85** | **0,42** | **1,02** | **−4,20 %** | **0,93** | 15,5x |
+
+  Auf jeder Kennzahl besser außer dem maximalen Hebel. Gilt über alle
+  getesteten Kostenannahmen (0,50 / 1,00 / 2,05 Pips). Ursache: der neu
+  verankerte Stop sitzt nicht mehr am strukturellen Invalidierungspunkt, und
+  genau dieses Niveau trägt den Edge.
+  **Nicht umgestellt** — das ist eine Architekturänderung an einer
+  Echtgeld-Bridge. Sag Bescheid, dann ziehe ich EK auf dasselbe Muster wie
+  Funded/FK (absoluter SL + R-Detektor 0,50R).
+- **EK läuft bei 42,6 % Margin für EINE normale Position** (2026-09-11
+  gemessen; Funded zum Vergleich: 7,7 %). Folge der Kalibrierung vom
+  2026-09-10, keine Fehlfunktion — aber bei 8 Beinen und Tickmill-Hebel 1:30
+  können zwei bis drei gleichzeitig offene Positionen die Margin ausreizen.
+  Der neue Margin-Deckel steht dort deshalb auf 80 % statt 20 % und kann
+  strukturell wenig ausrichten. Bewusst so gelassen, aber du solltest es wissen.
 
 - ~~**🔴 EK-Portfolio-Bridge: ORB rechnet auf 5 Stunden alten Bars**~~ —
   **behoben 2026-09-10** (Nutzerauftrag). Betraf nicht nur ORB, sondern alle
@@ -480,6 +505,18 @@ abgehakt-und-liegengelassen.
 
 ### Offene Aufgaben
 
+- **Funded-Portfolio-Bridge fehlt der aggregierte Offenes-Risiko-Kill-Switch,
+  den FKIF am 2026-09-07 bekommen hat** (2026-09-11 gefunden). Beide sind
+  LIVE-Prop-Bridges. `FKInstantFunding-MT5-Bridge` hat seit dem
+  Nutzerauftrag vom 07.09. `_aggregate_open_risk_dollars()` + Deckel, der neue
+  Entries stoppt, bevor zu viele gleichzeitig offene Positionen den
+  Trailing-Drawdown auf einen Schlag reißen können. `Funded-Portfolio-Bridge`
+  hat das nicht (0 Treffer für `open_risk`/„aggregiert"). Sie hat zwar
+  Einzeltrade-Cap (1 %), 20 %-Margin-Deckel und Trailing-DD-Kill-Switch — aber
+  eben keine vorausschauende Summengrenze. Möglicherweise galt der 07.09.-Auftrag
+  beiden Bridges und ist nur bei einer gelandet. Priorität: Mittel-Hoch.
+  Gefunden von `knowledge/scripts/bridge_risk_audit.py` — der einzige
+  verbliebene Befund der Probe.
 - **`cls_practical/results/final_verification_vs_buyhold.csv` ist veraltet und
   irreführend** (2026-09-09 gefunden). Die CSV stammt vom 2026-08-13, die
   Engine wurde am 2026-08-20 geändert (`f549b23`, u.a. neuer `test_hour=9.0`).
@@ -498,7 +535,20 @@ abgehakt-und-liegengelassen.
   mehr. **Andere Pakete sind sauber** (`mt5_trend_pullback`, `btc_ema_cross`:
   nur Gleichtag-Fälle ohne echte Lücke). Priorität: Mittel.
 
-- **Risiko-Anpassung CLS/Challenges — Entscheidung steht aus** (2026-09-09).
+- **CLS-Bein auf Bewährung — Abbruchkriterium fehlt noch** (2026-09-11).
+  Der Umbau ist umgesetzt und verifiziert (siehe `CHANGELOG.md` 2026-09-11
+  und `projects/cls-practical-kostenvalidierung.md` Befund 7): regelkonform
+  mit großem Abstand (MaxDD 1,66 % = 24 % des TTP-Budgets, Hebel max 5,7x
+  statt 58,8x), Edge statistisch real (P(Ø R<0) 2,16 %, OOS +0,31 über
+  IS +0,17). **Aber CAGR nur 0,78 %** — für ein Challenge-Konto mit
+  +10 %-Ziel zu wenig, um seinen Sechstel-Anteil beizutragen.
+  Offen: (a) ein konkretes Abbruchkriterium festlegen (nach wie vielen
+  Trades / bis wann muss das Bein was liefern?), (b) **Calmar der anderen
+  fünf Beine erheben** — ohne den Vergleich ist nicht entscheidbar, ob 0,47
+  im Portfolio schwach oder normal ist. Priorität: Mittel.
+- ~~**Risiko-Anpassung CLS/Challenges**~~ — **erledigt 2026-09-11.**
+  `LEG_RISK_PCT` 0,015 → 0,010, Pip-Boden, R-Detektor, Margin-Deckel.
+  Ursprünglicher Punkt vom 2026-09-09:
   Nach deinem Entscheid "erst Kostenmodell validieren, dann Risiko anpassen"
   ist die Messung fertig (siehe `CHANGELOG.md` und
   `resources/broker-kostenmodell-eurusd.md`), die Risiko-Runde noch nicht.
@@ -555,20 +605,63 @@ abgehakt-und-liegengelassen.
 
 | Bot/Bridge                                              | Konto/Broker                                                                             | Modus                                                                                        | Task Scheduler                  | Zuletzt geprüft |
 | ------------------------------------------------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------- | --------------- |
-| EK-Portfolio-Bridge                                     | Tickmill Live (55918977)                                                                 | **LIVE — echtes Geld** (btc/ou_modell weiterhin direkt Dukascopy/yfinance; gold_asb/cls_practical/ctnl x2 jetzt `source="lake"`) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-08      |
-| EK-Portfolio-Bridge-Fast                                | Tickmill Live (55918977, geteiltes Terminal)                                             | **LIVE — echtes Geld** (3 MT5-native Beine: ORB/Gold-Silber/Trend-Pullback, kein Dukascopy)  | Ready (alle 2 Min, Mo–Fr)       | 2026-09-03      |
-| FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | **LIVE — echtes Geld** (7 Beine via `LIVE_LEGS`: orb_sp500/us30/nasdaq + gold_asb/cls_practical/ctnl_continuation/ctnl_reversal seit 09-09; trend_pullback/gold_silver bleiben geplant/geloggt) | Ready (stündlich)               | 2026-09-09      |
-| FKInstantFunding-MT5-Bridge-Fast                        | BeyondIQCapital (17764, geteiltes Terminal)                                              | **LIVE — echtes Geld** (ctnl_continuation + orb_sp500/us30/nasdaq + cls_practical, `source="lake"`, analog Funded-Fast) | Ready (alle 5 Min, Mo–Fr)       | 2026-09-09      |
-| FK-Instant-Funding-Paper                                | — (reine Simulation)                                                                     | Paper + Telegram, **nur noch trend_pullback/gold_silver** (die anderen 7 Beine laufen live über die Bridge, seit 09-09 hier entfernt) | Ready (stündlich)               | 2026-09-09      |
+| EK-Portfolio-Bridge                                     | Tickmill Live (55918977)                                                                 | **LIVE — echtes Geld** (btc/ou_modell weiterhin direkt Dukascopy/yfinance; gold_asb/cls_practical/ctnl x2 jetzt `source="lake"`) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-13      |
+| EK-Portfolio-Bridge-Fast                                | Tickmill Live (55918977, geteiltes Terminal)                                             | **LIVE — echtes Geld** (3 MT5-native Beine: ORB/Gold-Silber/Trend-Pullback, kein Dukascopy)  | Ready (alle 2 Min, Mo–Fr)       | 2026-09-13      |
+| FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | **LIVE — echtes Geld** (7 Beine via `LIVE_LEGS`: orb_sp500/us30/nasdaq + gold_asb/cls_practical/ctnl_continuation/ctnl_reversal seit 09-09; trend_pullback/gold_silver bleiben geplant/geloggt) | Ready (stündlich, Mo–Fr)        | 2026-09-13      |
+| FKInstantFunding-MT5-Bridge-Fast                        | BeyondIQCapital (17764, geteiltes Terminal)                                              | **LIVE — echtes Geld** (ctnl_continuation + orb_sp500/us30/nasdaq + cls_practical, `source="lake"`, analog Funded-Fast) | Ready (alle 5 Min, Mo–Fr)       | 2026-09-13      |
+| FK-Instant-Funding-Paper                                | — (reine Simulation)                                                                     | Paper + Telegram, **nur noch trend_pullback/gold_silver** (die anderen 7 Beine laufen live über die Bridge, seit 09-09 hier entfernt) | Ready (stündlich, Mo–Fr)        | 2026-09-13      |
 | OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner + Telegram (3x täglich: 15:35/18:35/21:35)                                           | Ready (Mo–Fr, US-Handelszeiten) | 2026-09-02      |
-| Forex-Weekly-Report                                     | —                                                                                        | Report-Generator                                                                             | Ready                           | 2026-09-02      |
-| Bridge-Watchdog                                         | — (nur Log-Frische, kein Order-Bezug)                                                    | Heartbeat-Alarm + Status-Snapshot ins Repo                                                   | Ready (alle 30 Min)             | 2026-09-08      |
-| Funded-Portfolio-Bridge (TTP+IQ Markets, 6 Beine)       | TTP Konto 2 (504072729) + TTP Konto 1 (504069845) + BeyondIQCapital (16054) — **alle 3 verbunden** (IQ 15514 am 2026-09-07 entfernt) | **LIVE — DRY_RUN=False** (alle 6 Beine `source="lake"`; IPC-Timeouts 09-08 09:52-12:24 Uhr, seither stabil, siehe 🔍 Bestätigung) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-09      |
-| Funded-Portfolio-Bridge-Fast                            | Gleiche 3 Konten (geteilte Terminals)                                                    | **LIVE — DRY_RUN=False** (ctnl_continuation + orb_sp500/us30/nasdaq + cls_practical, `source="lake"`) | Ready (alle 5 Min, Mo–Fr)       | 2026-09-08      |
-| DataLake-Ingest-Fast                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt `data_lake_store/` für Funded-Portfolio-Bridge (19 Keys, 15-Min-Kadenz)                | Ready (alle 15 Min, Mo–Fr)      | 2026-09-04      |
-| DataLake-Ingest-Fast5                                   | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt 8 M5/M15-Timing-kritische Keys für ctnl_continuation/orb/cls_practical (EURUSD M5 seit 2026-09-07) | Ready (alle 5 Min, Mo–Fr)       | 2026-09-07      |
-| DataLake-Ingest-Slow                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt OU-Modell-Universum (~59 Ticker) via yfinance                                          | Ready (stündlich, Mo–Fr)        | 2026-09-04      |
-| Dashboard-Telegram-Digest (neu)                         | — (nur Lesezugriff auf DASHBOARD.md, kein Order-Bezug)                                   | Schickt offene Punkte aus DASHBOARD.md per Telegram                                          | Ready (täglich 8:00)            | 2026-09-06      |
+| Forex-Weekly-Report                                     | —                                                                                        | Report-Generator                                                                             | Ready (So 18:00 — läuft am Wochenende bewusst weiter) | 2026-09-13      |
+| Bridge-Watchdog                                         | — (nur Log-Frische, kein Order-Bezug)                                                    | Heartbeat-Alarm + Status-Snapshot ins Repo                                                   | Ready (alle 30 Min, Mo–Fr)      | 2026-09-13      |
+| Funded-Portfolio-Bridge (TTP+IQ Markets, 6 Beine)       | TTP Konto 2 (504072729) + TTP Konto 1 (504069845) + BeyondIQCapital (16054) — **alle 3 verbunden** (IQ 15514 am 2026-09-07 entfernt) | **LIVE — DRY_RUN=False** (alle 6 Beine `source="lake"`; IPC-Timeouts 09-08 09:52-12:24 Uhr, seither stabil, siehe 🔍 Bestätigung) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-13      |
+| Funded-Portfolio-Bridge-Fast                            | Gleiche 3 Konten (geteilte Terminals)                                                    | **LIVE — DRY_RUN=False** (ctnl_continuation + orb_sp500/us30/nasdaq + cls_practical, `source="lake"`) | Ready (alle 5 Min, Mo–Fr)       | 2026-09-13      |
+| DataLake-Ingest-Fast                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt `data_lake_store/` für Funded-Portfolio-Bridge (19 Keys, 15-Min-Kadenz)                | Ready (alle 15 Min, Mo–Fr)      | 2026-09-13      |
+| DataLake-Ingest-Fast5                                   | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt 8 M5/M15-Timing-kritische Keys für ctnl_continuation/orb/cls_practical (EURUSD M5 seit 2026-09-07) | Ready (alle 5 Min, Mo–Fr)       | 2026-09-13      |
+| DataLake-Ingest-Slow                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt OU-Modell-Universum (~59 Ticker) via yfinance                                          | Ready (stündlich, Mo–Fr)        | 2026-09-13      |
+| Dashboard-Telegram-Digest (neu)                         | — (nur Lesezugriff auf DASHBOARD.md, kein Order-Bezug)                                   | Schickt offene Punkte aus DASHBOARD.md per Telegram                                          | Ready (täglich 8:00, auch Sa/So — bewusst) | 2026-09-13      |
+
+### ⏸️ Wochenend-Pause (seit 2026-09-13)
+
+Alle Tasks oben mit „Mo–Fr" sind am Wochenende komplett still (Markt zu,
+keine Daten) — ein leerer Sa/So-Log ist also **KEIN Ausfall, sondern Plan**.
+Gestartet wird wieder Mo 00:00; die erste Handelsstunde So 23:00–24:00
+entfällt bewusst. Ausnahmen, die weiterlaufen: `Forex-Weekly-Report` (So
+18:00) und `Dashboard-Telegram-Digest` (tägl. 8:00). BTC-Tasks unangetastet.
+
+**Die tatsächlichen Trigger** (Soll-Zustand, deklarativ hinterlegt in
+`scripts/weekend_pause.ps1` — `-Verify` zeigt den Ist-Zustand, `-Apply` ist
+idempotent, `-Revert` spielt die XML-Backups aus `scripts/task_backups/`
+zurück). Alle Wochentags-Trigger, Bitfeld `DaysOfWeek=62` = Mo–Fr:
+
+| Task                               | Erster Lauf | Takt  | Wiederholung endet |
+| ---------------------------------- | ----------- | ----- | ------------------ |
+| `EK-Portfolio-Bridge-Fast`         | 00:00:10    | 2 Min | PT23H58M (23:58)   |
+| `Funded-Portfolio-Bridge-Fast`     | 00:03:00    | 5 Min | PT23H55M (23:58)   |
+| `FKInstantFunding-MT5-Bridge-Fast` | 00:03:00    | 5 Min | PT23H55M (23:58)   |
+| `DataLake-Ingest-Fast5`            | 00:01:50    | 5 Min | PT23H55M (23:56)   |
+| `DataLake-Ingest-Fast`             | 00:10:28    | 15 Min| PT23H45M (23:55)   |
+| `Funded-Portfolio-Bridge`          | 00:13:00    | 15 Min| PT23H45M (23:58)   |
+| `EK-Portfolio-Bridge`              | 00:14:00    | 15 Min| PT23H45M (23:59)   |
+| `DataLake-Ingest-Slow`             | 00:10:29    | 1 Std | PT23H (23:10)      |
+| `FKInstantFunding-MT5-Bridge`      | 00:14:00    | 1 Std | PT23H (23:14)      |
+| `FK-Instant-Funding-Paper`         | 00:55:22    | 1 Std | PT23H (23:55)      |
+| `Bridge-Watchdog`                  | 00:01:23    | 30 Min| PT23H30M (23:31)   |
+
+Die Sekunden sind kein Zufall: der **Ingest muss vor dem Bridge-Scan laufen**
+(Fast5 :01:50 vor Fast-Bridges :03:00, Fast :10:28 vor Funded :13:00 — Fund
+2026-09-09, Task-Offsets). Beim Ändern eines Triggers diesen Versatz
+mitziehen, sonst scannt eine Bridge auf Daten des vorigen Intervalls.
+
+**Zwei Lernpunkte aus dem Umbau** (beides war von außen nicht sichtbar):
+
+1. Ein Wochentags-Trigger reicht **nicht**, wenn die Wiederholungsdauer
+   `P1D` ist — die Wiederholung läuft dann über Mitternacht hinaus weiter
+   (drei Bridges liefen so bis Sa 00:03 bzw. 00:13). Deshalb steht bei jedem
+   Task jetzt eine Dauer, die vor 24:00 endet.
+2. Diese Statustabelle führte mehrere Tasks als „Mo–Fr", die im Task
+   Scheduler tatsächlich 7 Tage liefen (`EK-Portfolio-Bridge-Fast` alle 2 Min
+   rund um die Uhr). Die Modus-Spalte allein beweist nichts — **bei Zweifeln
+   `weekend_pause.ps1 -Verify` statt Dashboard lesen** (CLAUDE.md Punkt 4).
 
 Live-Status aller drei Portfolio-Bridges jetzt auch als Streamlit-Seiten
 („Portfolio-Bridges" in der Sidebar) — lesen `bridge_status/snapshot.json`,

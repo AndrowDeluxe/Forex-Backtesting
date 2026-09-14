@@ -9,6 +9,178 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-13** [EK-Portfolio-Bridge] **MT5-Passwort geaendert -- Bridge war
+  zwischenzeitlich nicht login-faehig, wieder behoben und verifiziert.** Der
+  Nutzer hat das Tickmill-Passwort zurueckgesetzt; `config.py::MT5_PASSWORD`
+  enthielt danach den alten Wert. Symptom beim Verbindungsversuch:
+  `login() fehlgeschlagen: (-6, 'Terminal: Authorization failed')` -- das
+  Terminal selbst lief weiter (manuelle Sitzung), aber jeder programmatische
+  `initialize()+login()`-Pfad waere gescheitert, also JEDER geplante Lauf aller
+  9 Beine auf echtem Geld. Nutzer hat den neuen Wert selbst eingetragen
+  (bewusst nicht ueber den Assistenten, damit das Passwort in keinem
+  Gespraechsverlauf steht). **Verifiziert 2026-09-13:** Login mit dem
+  Config-Wert erfolgreich, Konto 55918977 / TickmillEU-Live, Equity 3.351,63
+  EUR, AutoTrading aktiv, 15 offene Positionen.
+  Merkposten: ein Passwortwechsel beim Broker legt still ALLE Bridges des
+  betroffenen Kontos lahm -- der Fehler taucht erst im naechsten geplanten Lauf
+  auf, nicht beim Wechsel selbst.
+
+- **2026-09-13** [Funded-Portfolio-Bridge / Challenge Portfolio] **IQ-Konto
+  faehrt ab jetzt 5 statt 6 Beine, dafuer mit doppeltem Kapitalanteil
+  (1/6 → 1/3).** Ausloeser: Nutzerinfo, dass IQ Markets/BeyondIQCapital
+  **gar keine Einzelaktien** anbietet — das `ou_modell`-Bein handelt aber
+  genau die. Der Live-Beleg lag schon vor (Dashboard-Befund vom selben Tag):
+  0 von 7 OU-Signalen platziert, 48x `kein Live-Kurs fuer ou_modell (AMGN)`,
+  Symbole per `symbol_select` waehlbar aber ask/bid dauerhaft 0. Das Konto
+  fuhr damit seit Go-Live faktisch nur 5 Beine — aber mit dem Kapitalanteil
+  von 6, ein Sechstel des Risikobudgets lag dauerhaft brach.
+  **Umsetzung:** `AccountConfig` hat zwei neue Felder, `excluded_legs` und
+  `capital_weight` (Defaults erhalten das bisherige Verhalten exakt). Nur der
+  IQ-Eintrag setzt `excluded_legs=("ou_modell",)` und `capital_weight=1/3`.
+  `run_once.py::_process_leg()` — die einzige Sizing-Stelle der Bridge, die
+  5-Minuten-Fast-Lane ruft dieselbe Funktion — nutzt jetzt
+  `account.capital_weight` statt des globalen `pb.CAPITAL_WEIGHT` und
+  blockiert ausgeschlossene Beine ueber `entries_allowed`. **Bewusst ueber
+  `entries_allowed` und nicht per frueherem `return`:** ein ausgeschlossenes
+  Bein darf keine neuen Entries oeffnen, bereits offene Positionen muessen
+  weiter ganz normal ueber den Re-Scan schliessen koennen (gleiche Logik wie
+  beim Kill-Switch). Auf IQ ist aktuell keine OU-Position offen.
+  **`challenge_portfolio/paper_bot.py` wurde NICHT angefasst** — die Datei
+  wird von allen drei Konten live importiert, jede Aenderung dort haette auch
+  die TTP-Konten getroffen. Sie bleibt reiner Signalgeber mit Default 1/6.
+  **Zahlenbasis** (neues `scripts/research_challenge_iq_no_ou.py`, Monte Carlo
+  3000 Pfade ueber das IQ-Regelwerk, CLS auf dem seit 09-10 gefahrenen
+  1,0-%-Stand; Ergebnis in
+  `portfolio_construction/results/challenge_portfolio_iq_no_ou.json`):
+  Ist-Zustand 5 Beine @1/6 → CAGR 10,7 %, MaxDD 2,2 %, p_breach 0,000, Ziel in
+  184 Tagen; **jetzt 5 Beine @1/3 → CAGR 22,3 %, MaxDD 4,4 %, p_breach 0,005,
+  Ziel in 90 Tagen**. Vier Stufen (1/5, 1/4, 1/3,5, 1/3) wurden vorgelegt, der
+  Nutzer hat bewusst die risikofreudigste gewaehlt. Der Puffer zur 6-%-IQ-
+  Grenze ist damit real kleiner als vorher — bewusst gekauft.
+  **Verifiziert** (ohne MT5-Verbindung, kein manueller Live-Lauf): Import- und
+  Syntaxtest beider Bridge-Module; Risikotabelle je Konto gegen beide Deckel —
+  IQ groesstes Einzelrisiko Gold ASB 0,667 % (1-%-Positionsdeckel haelt),
+  Worst Case aller gleichzeitig offenen Beine 2,48 % gegen den seit heute
+  aktiven 3,0-%-Aggregatdeckel; beide TTP-Konten unveraendert bei 1,41 %/3,5 %.
+  Offen bis zum naechsten planmaessigen Lauf: die Live-Gegenprobe, dass die
+  IQ-Lotgroesse fuer ein und dasselbe Signal **exakt doppelt** so gross ist wie
+  die TTP-Lotgroesse.
+  Geaendert: `Funded-Portfolio-Bridge/{config.py,run_once.py,run_once_fast.py,
+  README.md}` (ausserhalb des Repos, nicht git-getrackt) sowie im Repo
+  `scripts/research_challenge_iq_no_ou.py` (neu) +
+  `portfolio_construction/results/challenge_portfolio_iq_no_ou.json` (neu).
+
+- **2026-09-13** [Second Brain / Alle 3 Live-Bridges] **Wochenauswertung
+  2026-09-07 bis 09-13, CLS im Dashboard abgeschlossen, drei offene Rueckfragen
+  mit NEIN entschieden.** Nutzerauftrag nach mehreren Tagen Abwesenheit. Reine
+  Auswertung + Second-Brain-Pflege, **kein Code geaendert**. Lief parallel zur
+  Bein-Audit-Session (Eintrag direkt darunter); doppelte Befunde wurden
+  zusammengefuehrt, nicht zweimal gefuehrt.
+  **(1) Dashboard von CLS befreit** (Nutzerauftrag "saeubere das Dashboard von
+  allen CLS Tasks und halte nur die Beobachtung und Entscheidung des Beins
+  fest"): entfernt wurden der erledigte Risiko-Anpassungs-Punkt, der
+  Ideen-Inbox-Punkt "Gegen das Signal"-Check (am 2026-09-11 als R-Detektor
+  gebaut, also erledigt), zwei erledigte CLS-Zeilen aus der Erledigt-Liste und
+  die Aufgabe zu den 12 veralteten `cls_practical/results/`-CSVs; die
+  Kostenmessungs-Annahmen wurden auf ihr Ergebnis eingekuerzt.
+  **Die CSV-Aufgabe ist NICHT geloest, nur nicht mehr im Dashboard** -- sie ist
+  vollstaendig nach `projects/cls-practical-kostenvalidierung.md` (neuer
+  Abschnitt "Abschluss und verbleibende Punkte") verschoben, damit sie nicht
+  verlorengeht. Im Dashboard bleibt als einziger CLS-Punkt die Bewaehrung des
+  Beins (Abbruchkriterium + Calmar-Vergleich der anderen fuenf Beine).
+  **(2) Drei Rueckfragen mit NEIN abgehakt** (Nutzerentscheid, bewusst ohne
+  weitere Pruefung): Tickmill-Kosten per Vorwaerts-Sampling messen -> nein
+  (Folge, bewusst akzeptiert: EK-Zahlen bleiben auf der geschaetzten
+  0,50-Pips-Annahme und sind nicht mit den gemessenen Challenge-Zahlen
+  vergleichbar); Sim-Risikodeckel des OU-Beins gegen die echten Positionen
+  rechnen -> nein (die zwei Phantom-Positionen laufen am 09-16/09-17 selbst
+  aus, das Muster kann aber wiederkommen); alte EK-ORB-Trades rueckwirkend
+  auswerten -> nein.
+  **(3) Drei neue Befunde aus Logs und State-Dateien:**
+  (a) **Saemtliche Scan-Fehler der Woche haben eine gemeinsame, nicht-fachliche
+  Ursache.** In zwei Fenstern am 2026-09-11 (00:14-02:29 und 13:16-14:38)
+  schwiegen EKs 2-Minuten-Lane und `DataLake-Ingest-Fast`/`-Fast5` gemeinsam,
+  der Lake lief trocken, alle drei Bridges fielen auf Live-dukascopy zurueck und
+  liefen dort in den bekannten `'>' not supported between 'str' and 'float'`-Bug
+  plus Timeouts. Belegt ueber die Stundenverteilung: Funded-Fast hatte 21/72/45
+  Scan-Fehler in den Stunden 00/01/02 und 9/69 in 13/14 -- **null in allen
+  uebrigen Stunden**, gleiches Muster bei FK. Der Ingest kam um 14:38:36 mit
+  einem Lauf ausserhalb des Rasters zurueck (Nachhol-Lauf des Task Schedulers).
+  Damit ist der am 2026-09-09 als Einzelfall bewusst liegengelassene
+  Kurztakt-Task-Ausfall zum vierten Mal aufgetreten (vorher 09-07 Fast5 ~45 Min.
+  und 09-10 EK-Fast 11:12-11:27) und im DASHBOARD auf Prioritaet Hoch
+  hochgezogen, verknuepft mit dem Lake-Fallback-Punkt der Audit-Session.
+  (b) **FK: der erste echte ORB-Entry ueber den neuen MT5-Pfad wurde vom Broker
+  abgelehnt** -- 2026-09-11 16:03:08, SPX500.gbe, 25,3 Lots @ 7672,0,
+  SL 7667,066270640961, `retcode=10016 "Invalid stops"`. Der Datenpfad trug, die
+  Order-Ebene nicht. Zwei ungepruefte Kandidaten: SL nicht auf Tickgroesse
+  gerundet (12 Dezimalstellen) oder Stopabstand (4,93 Punkte = 0,064 %) unter
+  dem Broker-Mindestabstand; eine `symbol_info`-Abfrage (`digits`,
+  `trade_stops_level`) klaert beides, braucht aber ein laufendes Terminal.
+  EKs vorhandene Schutzpruefung greift nicht -- sie prueft nur die Seite von
+  SL/TP, nicht Rundung und nicht Mindestabstand. **Folge fuer die Planung:
+  Phase 2 (ORB-MT5-Pfad auf Funded) wartet nicht mehr auf Beobachtung, sondern
+  auf diesen Fix.**
+  (c) **FK: zwei Echtgeld-Entries am 2026-09-09 starben still an
+  `order_send()=None`** (`10:30 cls_practical`, `17:20 ctnl_continuation`). Das
+  SL-Sicherheitsnetz war es nicht (dessen Log-Zeile fehlt). Verdacht:
+  `run_once.py:484` kappt den Order-Kommentar auf 31 Zeichen, das bekannte
+  Broker-Limit liegt bei 16 -- `FKIF cls_practical` (18) und
+  `FKIF ctnl_continuation` (22) scheiterten, `FKIF orb_sp500` (14) kam bis zu
+  einem echten Retcode durch. Falls das stimmt, koennen die am 2026-09-09
+  freigeschalteten Beine (gold_asb, cls_practical, ctnl_continuation,
+  ctnl_reversal) auf FK derzeit ueberhaupt nicht einsteigen. Beweisbar beim
+  naechsten Versuch: die `last_error()`-Ausgabe ist seit 2026-09-09 im Code,
+  sie fehlte nur zum Zeitpunkt dieser beiden Fehlschlaege.
+  **Handelsbilanz der Woche** (zur Einordnung, aus den Logs): Funded nahm 3x
+  cls_practical am 09-09 (alle ausgestoppt, P/L -582,40 / -408,96 / -371,60),
+  3x ctnl_continuation am 09-09 (alle ausgestoppt am 09-10, -266,00 / -243,97 /
+  -268,77) und 4 ou_modell-Entries (AMGN 09-08 und 09-11, APD 09-11, laufen
+  noch). FK: kein einziger erfolgreicher Live-Entry -- 3 Versuche, alle
+  abgelehnt. EK: kein einziger Entry, Equity-Baseline trotzdem von 3.460,62 auf
+  3.313,61 EUR gefallen (-4,3 %), kommt aus den vorher eroeffneten
+  OU-Positionen. ORB-Trefferquote siehe den zusammengefuehrten DASHBOARD-Punkt
+  der Audit-Session (2 von 24 auf Funded, 0 von 6 auf FK).
+
+- **2026-09-13** [Funded-Portfolio-Bridge] **Bein-Audit gegen den Paper-Bot +
+  die zwei offenen Risiko-Punkte nachgeholt.** Nutzerauftrag.
+  **Statischer Abgleich -- sauber:** die Bridge importiert Scan-Funktionen,
+  Risikokonstanten (`pb.CAPITAL_WEIGHT`, `pb.LEG_RISK_PCT`) UND die
+  ORB-Exit-Config (`pb.ORB_EXIT_CFG_BY_INSTRUMENT`) zur Laufzeit aus
+  `challenge_portfolio/paper_bot.py`; sie dupliziert nichts und kann deshalb
+  strukturell nicht abdriften (im Gegensatz zu EK). Von den 6 Beinen hat nur
+  `cls_practical` ueberhaupt einen Risiko-Modifikator.
+  **Fix 1 -- Rates-Multiplikator erreicht jetzt das Live-Sizing.** Er wirkte
+  bisher nur im Paper-Bot (engine.py: `day_risk_amount = risk_amount *
+  risk_multiplier.get(day, 1.0)`) und auf das reportete `r_multiple`; die
+  Bridge sizte flach. Jetzt gibt `_scan_cls_practical()` ihn als Spalte
+  `risk_multiplier` aus (keine Duplikation der Berechnung), `_process_leg()`
+  wendet ihn PRO TRADE an -- tagesabhaengig, ein Bein kann Trades mehrerer Tage
+  in einem Lauf liefern. **Kritischer Fund dabei:** der Faktor ist ein
+  VERSTAERKER, kein Daempfer (Median 1,75, Max 3,06, 53 % der Trades != 1,0).
+  Die erste Implementierung multiplizierte NACH dem 1-%-Einzeltrade-Deckel --
+  ein Faktor 3,06 haette daraus stillschweigend 3,06 % gemacht und die harte
+  Nutzerregel vom 2026-09-01 ausgehebelt. Korrigiert: Multiplikator auf das
+  ungedeckelte Risiko, Deckel zuletzt. Live-Wirkung: $165 -> bis $505 je Trade
+  (0,17 % -> 0,51 % der Equity), Deckel bindet nicht.
+  **Fix 2 -- aggregierter Offenes-Risiko-Kill-Switch**, baugleich zu
+  `FKInstantFunding-MT5-Bridge` (Nutzerauftrag 2026-09-07, dort eingebaut, hier
+  nicht). Deckel NICHT von FKIF uebernommen (fix 5 %), sondern an die
+  Anbieter-Regel gebunden: Haelfte des jeweiligen Drawdown-Caps, also TTP 3,5 %,
+  IQ 3,0 % -- bei 6-7 % Gesamt-Cap waeren 5 % fast der ganze Puffer. Stoppt NUR
+  neue Entries; Exits und Positionsverwaltung laufen weiter.
+  **Verifiziert:** `py_compile` + echter Import beider Lanes gegen gestubbtes
+  MT5; 7 Offline-Testfaelle fuer das Gate (Normalbetrieb, knapp drunter/drueber
+  an der Schwelle, Breakeven-Stop, Position ohne SL, beim Broker bereits
+  geschlossene Position); Multiplikator gegen echte Lake-Daten gegengeprueft.
+  `bridge_risk_audit.py` meldet fuer alle drei Live-Bridges jetzt **0 Befunde**.
+  **Drei operative Befunde aus dem Audit** (nicht angefasst, in DASHBOARD.md):
+  ORB platziert auf Funded nur 2 von 24 Signalen (Re-Simulation loest den Trade
+  auf, bevor der erste Scan ihn sieht -- trifft systematisch die schnellen
+  Verlierer); OU-Modell platziert auf dem IQ-Konto 0 von 7 (Einzelaktien
+  liefern dort keinen Tick); der Data Lake faellt sehr haeufig auf Live-Fetch
+  zurueck (SP500_M15 281x, EURUSD_M5 264x).
+
 - **2026-09-13** [Scheduling / alle Bridges] **Wochenend-Pause eingerichtet:
   alle handelsbezogenen Tasks laufen nur noch Mo-Fr, Sa/So ist der PC still**
   (Nutzerauftrag -- Markt hat zu, es gibt ohnehin keine neuen Daten). Sieben

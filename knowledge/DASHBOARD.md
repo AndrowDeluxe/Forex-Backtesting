@@ -23,12 +23,17 @@ passiert, was steht an.
    (`orb_mt5_source.py`, Fallback auf den Lake-Weg eingebaut).
    **Log-Stand 2026-09-10 11:28: null Fallback-Warnungen** in
    `task_run.log` und `task_run_fast.log` — der MT5-Pfad trägt bisher
-   durchgehend, Fast-Läufe brauchen ~8 Sekunden. Was noch fehlt: **ein
-   echter ORB-Entry über den neuen Pfad** ist noch nicht beobachtet (seit der
-   Umstellung gab es schlicht kein Signal). Erst danach Phase 2 bei
-   Funded-Portfolio-Bridge (Referenz-Terminal für alle 3 Konten,
-   Nutzerentscheid 2026-09-09). Vergleich der Datenquellen siehe
+   durchgehend, Fast-Läufe brauchen ~8 Sekunden.
+   **Update 2026-09-13: der erste echte Entry über den neuen Pfad ist da — und
+   der Broker hat ihn abgelehnt.** 2026-09-11 16:03:08, `orb_sp500`
+   SPX500.gbe, 25,3 Lots @ 7672,0, SL 7667,066270640961 → `retcode=10016
+   "Invalid stops"`. Der Datenpfad hat also getragen, die Order-Ebene nicht.
+   **Phase 2 (Funded) wartet damit nicht mehr auf Beobachtung, sondern auf
+   diesen Fix** — siehe Offene Aufgaben. Vergleich der Datenquellen siehe
    [[bridge-infrastruktur-vergleich]].
+   ⚠️ **ORB-Backtest/Kostenprobe läuft ab 2026-09-13 in einer PARALLELEN
+   Session** (Nutzerentscheid) — nicht doppelt anfangen; hier nur die
+   Bridge-/Order-Seite anfassen.
 1. ~~`data_lake/`-Paket nie committet~~ — **committet + gepusht 2026-09-06**
    (`19e5b2c`) + im selben Zug auf EK-Portfolio-Bridge (gold_asb,
    cls_practical, ctnl_edge) und FKInstantFunding-MT5-Bridge (alle 6 Beine)
@@ -88,6 +93,22 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
+- **Zwei Annahmen aus dem Funded-Fix von heute** (2026-09-13).
+  (1) **Deckelwert für den neuen aggregierten Offenes-Risiko-Kill-Switch:** ich
+  habe ihn an die Anbieter-Regel gebunden statt FKIFs fixe 5 % zu kopieren —
+  die Hälfte des jeweiligen Drawdown-Caps, also TTP 3,5 % ($3.465) und IQ 3,0 %
+  ($2.970). Begründung: bei 6–7 % Gesamt-Drawdown-Cap wären 5 % offenes Risiko
+  fast der ganze Puffer. Real belegen alle Beine zusammen ~2 %, der Deckel
+  bremst im Normalbetrieb also nicht. Meine Herleitung, nicht deine Vorgabe.
+  (2) **Der Rates-Multiplikator erhöht das cls_practical-Risiko.** Er ist ein
+  VERSTÄRKER, kein Dämpfer (gemessen über die letzten 15 Trades: Median 1,75,
+  Max 3,06, 53 % der Trades ≠ 1,0). Live heißt das: $165 → bis $505 pro Trade
+  (0,17 % → 0,51 % der Equity). Das ist genau das, was der Paper-Bot modelliert
+  — aber es hebt die Risikosenkung, die die Parallel-Session dem Bein am
+  2026-09-11 verpasst hat (`LEG_RISK_PCT` 0,015 → 0,01), im Ergebnis teilweise
+  wieder auf. Falls die Senkung als ENDGÜLTIGES Live-Risiko gemeint war und
+  nicht als Basiswert, müssen wir eins von beidem nachziehen.
+
 - ~~**EK: Stop neu verankern oder auf absoluten Signal-SL umstellen?**~~ — **umgestellt 2026-09-11 auf deinen Auftrag.** Ursprünglicher Punkt:
   (2026-09-11, deine Entscheidung). EK macht es heute anders als die beiden
   anderen Bridges: `stop_price = entry_price_now - direction * sl_distance`.
@@ -113,58 +134,48 @@ abgehakt-und-liegengelassen.
   Der neue Margin-Deckel steht dort deshalb auf 80 % statt 20 % und kann
   strukturell wenig ausrichten. Bewusst so gelassen, aber du solltest es wissen.
 
-- ~~**🔴 EK-Portfolio-Bridge: ORB rechnet auf 5 Stunden alten Bars**~~ —
-  **behoben 2026-09-10** (Nutzerauftrag). Betraf nicht nur ORB, sondern alle
-  drei Beine mit MT5-Bar-Abfrage (ORB, Gold-Silber, Trend-Pullback). Neu:
-  `core/mt5_bars.py` als gemeinsamer Helfer. Verifiziert an den echten
-  Funktionen: ORB M5/M15 jetzt **3,4 Min.** alt statt ~300, Gold-Silber H4
-  78 Min., Trend-Pullback H1 18 Min. **Noch offen:** EK hat wochenlang auf
-  5 Std. alten Bars gehandelt — die bisherigen ORB-Trades dieser Bridge sind
-  damit unter falschen Voraussetzungen entstanden und taugen nicht als
-  Leistungsnachweis. Ob das rückwirkend ausgewertet werden soll, ist deine
-  Entscheidung. Ursprünglicher Befund (gefunden 2026-09-09, am
-  2026-09-10 11:29 am echten EK-Terminal verifiziert): `copy_rates_range()`
-  bekommt in `legs/ny_open_orb/signal_source.py:88` eine naive UTC-Zeit als
-  `date_to`. MT5 liest die als **lokale Rechnerzeit** (Berlin, UTC+2) und
-  vergleicht sie gegen **server-gestempelte** Bars (UTC+3) → das Fenster endet
-  5 Stunden zu früh. Messung auf allen 3 ORB-Symbolen identisch:
-  `date_to = UTC now` → letzter Bar **07:25** Serverzeit, mit `+12h` → **12:25**
-  (echte Serverzeit war 12:29, die Bars dazwischen sind lückenlos vorhanden).
-  **Bedeutung:** NY-Open ist 16:30 Serverzeit — EK sieht die Opening Range
-  frühestens gegen 21:30 Serverzeit, also rund 5 Stunden nach dem Open und
-  kurz vor Session-Ende (23:00). Das ORB-Bein handelt damit systematisch zu
-  spät oder gar nicht. Passt zum 2026-09-03-Vorfall ("NASDAQ-ORB-Signal hing
-  bis 21:45 statt 21:00"), der damals dem dukascopy-Bein zugeschrieben wurde.
-  **Fix ist trivial und in FK bereits erprobt** (`date_to` großzügig in die
-  Zukunft legen, MT5 kappt selbst auf das Vorhandene — siehe
-  `FKInstantFunding-MT5-Bridge/orb_mt5_source.py::_FUTURE_PAD`). Ich habe EKs
-  Live-Code NICHT angefasst: das ändert das Verhalten eines Echtgeld-Beins
-  mitten im laufenden Betrieb. **Bitte freigeben, dann ziehe ich es nach.**
-- **EK-Portfolio-Bridge: Fast-Lane hat am 2026-09-10 sechs Läufe ausgelassen**
-  (nebenbei gefunden). Der 2-Minuten-Task lief bis 11:12:12 normal, danach kam
-  bis 11:27 kein einziger Lauf mehr (11:14 war der reguläre 15-Minuten-Slow-
-  Lauf). Gleiches Muster wie die bereits vermerkte `DataLake-Ingest-Fast5`-
-  Lücke — ungeprüfte Vermutung weiterhin Energieverwaltung/Task-Scheduler.
-  Nicht weiter verfolgt, nur festgehalten, falls es sich häuft.
+- ~~**EK-Portfolio-Bridge: ORB rechnet auf 5 Stunden alten Bars**~~ —
+  **behoben 2026-09-10, Rest am 2026-09-13 mit NEIN abgeschlossen.** Die
+  offene Frage war, ob EKs alte ORB-Trades (entstanden auf 5 Std. alten Bars,
+  also unter falschen Voraussetzungen) rückwirkend ausgewertet werden sollen
+  — **deine Entscheidung 2026-09-13: nein, nicht weiter verfolgen.** Sie
+  taugen damit schlicht nicht als Leistungsnachweis; wer später ORB-Zahlen
+  braucht, rechnet ab 2026-09-10 neu. Voller Befund + Fix: CHANGELOG
+  2026-09-09/10 (Ursprungstext hier gekürzt 2026-09-13).
 
-- **Kostenmessung EUR/USD: vier Annahmen von mir, die deine Bestätigung
-  brauchen** (2026-09-09, im Rahmen der CLS-Kostenvalidierung).
-  (a) **Messfenster 08:00–12:30 Berlin** — abgeleitet aus der Handelszeit von
-  `cls_practical` selbst (`test_hour=9.0` bis `entry_cutoff="12:00"`), nicht
-  von dir vorgegeben. Ein 24h-Mittel wäre durch Asien-Session und Rollover
-  verzerrt, aber die Fenstergrenzen sind meine Wahl.
-  (b) **Alle Kostenblöcke werden im Backtest in `spread_bps` gebündelt**
-  statt Slippage getrennt in `slippage_bps` — Begründung: der Live-Bot setzt
-  keinen Broker-TP (`target=None`), jeder Ausstieg ist eine Marktorder und
-  slippt, während `slippage_bps` in der Engine NUR auf Stop-Exits wirkt.
-  (c) **`risk_pct=0.25 %` im Validierungslauf** (= `CAPITAL_WEIGHT` 1/6 ×
-  `LEG_RISK_PCT` 1,5 %, also das real gehandelte Risiko) statt des
-  Engine-Defaults 0,5 %.
-  (d) **EK/Tickmill-Kosten sind im Validierungslauf GESCHÄTZT, nicht
-  gemessen** (0,20 Spread / 0,50 Entry-Slip / 0,50 Exit-Slip). Die
-  Tickhistorie des Terminals deckt das Handelsfenster mit 15 Ticks nicht ab.
-  Sauber wird das nur mit Vorwärts-Sampling während der Handelszeit — sag,
-  ob ich das aufsetzen soll.
+- **🔴 Kurztakt-Tasks fallen wiederkehrend für 1–2 Stunden aus — und das hat
+  am 2026-09-11 nachweislich Schaden angerichtet** (hochgezogen 2026-09-13
+  aus der Wochenauswertung; vorher als Einzelfall vom 2026-09-10 vermerkt und
+  bewusst liegen gelassen "falls es sich häuft" — es häuft sich).
+  **Vier Vorfälle bekannt:** `DataLake-Ingest-Fast5` 2026-09-07 (~45 Min.),
+  `EK-Portfolio-Bridge-Fast` 2026-09-10 11:12–11:27, und am 2026-09-11 zwei
+  Fenster (**00:14–02:29** und **13:16–14:38**), in denen EKs 2-Minuten-Lane
+  UND `DataLake-Ingest-Fast`/`-Fast5` gemeinsam schwiegen; der Ingest kam um
+  14:38:36 mit einem Lauf außerhalb des Rasters zurück (Nachhol-Lauf des Task
+  Schedulers). **Belegte Folge:** genau in diesen zwei Fenstern lief der Lake
+  trocken, alle drei Bridges fielen auf Live-dukascopy zurück und sammelten
+  dort ihre kompletten Tages-Scan-Fehler ein (Funded Fast 09-11: 21/72/45
+  Fehler in 00/01/02 Uhr + 9/69 in 13/14 Uhr, **null in allen übrigen
+  Stunden** — dieselbe Verteilung bei FK). Kein Strategie- oder Code-Fehler,
+  aber der Grund, warum du "einige Scan-Fehler" siehst.
+  **Ursache weiter unbestätigt** (Energieverwaltung/Modern Standby bleibt die
+  naheliegende Vermutung, ist aber nicht belegt — EKs 15-Minuten-Lane lief in
+  denselben Fenstern weiter, was gegen reines Schlafen spricht).
+  Nächster Schritt wäre, das Task-Scheduler-Verhalten der Kurztakt-Tasks
+  gezielt zu instrumentieren. Priorität: Hoch — sag Bescheid, dann nehme ich
+  es mir vor.
+
+- ~~**Kostenmessung EUR/USD: vier Annahmen brauchen Bestätigung**~~ —
+  **abgeschlossen 2026-09-13.** (a) Messfenster 08:00–12:30 Berlin,
+  (b) alle Kostenblöcke gebündelt in `spread_bps`, (c) `risk_pct=0,25 %`:
+  stehen unverändert — die darauf gebauten Entscheidungen (Pip-Boden,
+  Risikosenkung, R-Detektor) sind umgesetzt und verifiziert.
+  (d) **Tickmill/EK-Kosten per Vorwärts-Sampling echt messen: deine
+  Entscheidung 2026-09-13 — NEIN, vorerst nicht.** Folge, bewusst
+  akzeptiert: EKs Kennzahlen bleiben auf der *geschätzten* Annahme von
+  0,50 Pips und sind damit optimistischer angesetzt als die gemessenen
+  Challenge-Zahlen (2,05 Pips) — EK-Zahlen also nicht mit Funded/FK
+  vergleichen, solange das so ist. Herleitung: `resources/broker-kostenmodell-eurusd.md`.
 
 - **EK-Portfolio-Bridge: `CAPITAL_WEIGHT` (1/8) ist definiert, wird aber
   NIRGENDS im Code verwendet** (2026-09-09 gefunden). `config.py:57` schreibt
@@ -225,8 +236,13 @@ abgehakt-und-liegengelassen.
   `include_open_positions=True`-Fix (2026-09-02) und belegen jetzt 2 der
   ~4 nutzbaren Risiko-Slots, bis sie simuliert per max_holding auslaufen
   (~09-16/09-17). Das Bein ist also nicht "still", sondern durch Phantom-
-  Positionen blockiert. **Frage: soll der Sim-Risikodeckel gegen die ECHTEN
-  offenen Positionen laufen statt gegen das simulierte Buch?**
+  Positionen blockiert.
+  **Entscheidung 2026-09-13: NEIN** — der Sim-Risikodeckel bleibt vorerst,
+  wie er ist (kein Umbau auf die echten offenen Positionen). Die beiden
+  Phantom-Positionen (RL, D) laufen am 09-16/09-17 simuliert von selbst aus,
+  danach gibt das Bein seine Slots ohne Eingriff wieder frei. Bleibt als
+  bekannte Schwäche stehen: solange der Deckel gegen das simulierte Buch
+  rechnet, kann dasselbe Muster jederzeit wiederkommen.
 
 - **Restlaufzeit-Gate: eine Design-Entscheidung + eine offene Frage**
   (2026-09-09, Details CHANGELOG). Die beiden Latenz-Vorschläge von gestern
@@ -240,9 +256,9 @@ abgehakt-und-liegengelassen.
   16 Sekunden nach dem Entry (siehe den parallel entstandenen
   Kostenmodell-Eintrag im CHANGELOG). Das Signal war zum Entry-Zeitpunkt also
   wirklich noch am Leben — der Gate verhält sich korrekt, greift aber bei
-  dieser Verlustursache nicht. Die strengere Variante, die heute
-  gegriffen hätte, liegt als eigener Punkt in der Ideen-Inbox
-  („Gegen das Signal"-Check) — dort mit allen Zahlen zum Abwägen.
+  dieser Verlustursache nicht. **Erledigt 2026-09-11:** die strengere
+  Variante wurde als R-Detektor (`MAX_CONSUMED_R_FOR_ENTRY = 0.50`) in allen
+  drei Bridges gebaut; der zugehörige Ideen-Inbox-Punkt ist damit weg.
   (3) **Ungefragt mitgemacht:** `Funded-Portfolio-Bridge/executor.py` loggte
   bei `order_send()==None` weiterhin nur „None". FK hat das heute früh
   bekommen, EK parallel über `core/order_send.py` — Funded war die letzte
@@ -477,9 +493,6 @@ abgehakt-und-liegengelassen.
   Ordner umgehängt.
 - ~~Merge-Konflikt in diesem Abschnitt + CHANGELOG~~ — nachgeprüft
   2026-09-04, keine Widersprüche/Duplikate gefunden.
-- ~~CLS Practical scheitert wiederholt an `dukascopy_python`~~ — Retries
-  in allen 3 Bridges erhöht (3→6 Versuche), 2026-09-02. Bug bleibt in der
-  Bibliothek selbst, nur Toleranz erhöht.
 - ~~Rechner-/Task-Lücke ~9h über Nacht~~ — Ursache: Windows Modern Standby
   über AC-Display-Idle-Timeout, nicht "Rechner aus". Cache-Validierung +
   WakeToRun + neuer Bridge-Watchdog als Absicherung, 2026-09-02.
@@ -490,8 +503,6 @@ abgehakt-und-liegengelassen.
 - ~~Funded-Portfolio-Bridge OU-Modell-Bein meldete nie offene Signale~~ —
   Root Cause (offene Positionen fielen unter den Tisch) + NYSE-Gate
   gefixt, 2026-09-02.
-- ~~EK-Portfolio-Bridge: vage "cls_practical: unerwarteter Fehler"~~ —
-  geklärt 2026-09-04: bekannter dukascopy-90s-Hang, kein neuer Fehler.
 - ~~EK-Portfolio-Bridge: NASDAQ-Ticket 262117522 hing am Session-Ende-Exit~~
   — geschlossen 2026-09-04 (Comment-Feld für Tickmill zu lang, gekappt).
 - ~~EK-Portfolio-Bridge: US30 "Invalid stops"~~ — zweiter Bug gefunden
@@ -505,35 +516,86 @@ abgehakt-und-liegengelassen.
 
 ### Offene Aufgaben
 
-- **Funded-Portfolio-Bridge fehlt der aggregierte Offenes-Risiko-Kill-Switch,
-  den FKIF am 2026-09-07 bekommen hat** (2026-09-11 gefunden). Beide sind
-  LIVE-Prop-Bridges. `FKInstantFunding-MT5-Bridge` hat seit dem
-  Nutzerauftrag vom 07.09. `_aggregate_open_risk_dollars()` + Deckel, der neue
-  Entries stoppt, bevor zu viele gleichzeitig offene Positionen den
-  Trailing-Drawdown auf einen Schlag reißen können. `Funded-Portfolio-Bridge`
-  hat das nicht (0 Treffer für `open_risk`/„aggregiert"). Sie hat zwar
-  Einzeltrade-Cap (1 %), 20 %-Margin-Deckel und Trailing-DD-Kill-Switch — aber
-  eben keine vorausschauende Summengrenze. Möglicherweise galt der 07.09.-Auftrag
-  beiden Bridges und ist nur bei einer gelandet. Priorität: Mittel-Hoch.
-  Gefunden von `knowledge/scripts/bridge_risk_audit.py` — der einzige
-  verbliebene Befund der Probe.
-- **`cls_practical/results/final_verification_vs_buyhold.csv` ist veraltet und
-  irreführend** (2026-09-09 gefunden). Die CSV stammt vom 2026-08-13, die
-  Engine wurde am 2026-08-20 geändert (`f549b23`, u.a. neuer `test_hour=9.0`).
-  Derselbe Aufruf liefert heute $73.558,93 statt der dort ausgewiesenen
-  $60.393,55 (+22 %). Neu erzeugen — bis dahin ist jede Zahl daraus falsch.
-  Zweiter Fall dieser Art nach dem Gold-ASB-Liquiditätsfilter.
-  **Geprüft 2026-09-09 (auf deinen Auftrag): betroffen sind 12 Dateien, alle
-  in `cls_practical/results/`, alle mit 1–7 Tagen Lücke zur Engine-Änderung** —
-  `filter_relaxation_sweep`, `external_filters_in_sample`, `filter_combos`,
-  `final_verification_vs_buyhold`, `full_param_sweep_in_sample`, `kelly`,
-  `risk_pct_table`, `multi_instrument`, `cross_vs_index`,
-  `eurusd_cross_filter_window_threshold_sweep`, `eurusd_holdtest_timing_sweep`,
-  `pair_specific_cross_retest`. Darunter Filter- und Parameter-Sweeps, auf
-  denen die aktuelle CLS-Konfiguration beruht — die Entscheidungen sind damit
-  nicht automatisch falsch, aber die dort ausgewiesenen Zahlen gelten nicht
-  mehr. **Andere Pakete sind sauber** (`mt5_trend_pullback`, `btc_ema_cross`:
-  nur Gleichtag-Fälle ohne echte Lücke). Priorität: Mittel.
+- **Live-Gegenprobe der neuen IQ-Gewichtung steht noch aus** (2026-09-13,
+  Priorität mittel — erst beim nächsten planmäßigen Lauf mit echten Signalen
+  prüfbar, also frühestens Montag). Seit heute fährt das IQ-Konto 5 Beine
+  @ 1/3 statt 6 @ 1/6 (siehe `CHANGELOG.md`). Statisch ist alles verifiziert
+  (Import, Risiko je Bein gegen beide Deckel). **Offen ist der Live-Beleg:**
+  da alle drei Konten denselben Signalstrom sehen, muss die IQ-Lotgröße für
+  ein und dasselbe Signal **exakt doppelt** so groß sein wie die TTP-Lotgröße,
+  und es darf **kein** OU-Entry-Versuch mehr für IQ im Log auftauchen. Beides
+  in `Funded-Portfolio-Bridge/logs/task_run.log` nachsehen, sobald ein Signal
+  auf mehreren Konten gelaufen ist.
+- **🔴 FK Instant Funding: ORB-Order vom 2026-09-11 vom Broker abgelehnt
+  (`Invalid stops`)** (2026-09-13 in der Wochenauswertung gefunden). Der
+  einzige echte ORB-Entry-Versuch der Woche, auf Echtgeld:
+  `2026-09-11 16:03:08`, SPX500.gbe, LONG, 25,3 Lots @ 7672,0,
+  **SL 7667,066270640961**, `retcode=10016`. Zwei Kandidaten, beide ungeprüft
+  (braucht offene Märkte + laufendes Terminal, also frühestens Montag):
+  (a) **SL nicht auf Tickgröße gerundet** — der Wert geht mit 12 Dezimalstellen
+  an einen Index-CFD raus; (b) **Stopabstand zu klein** — 4,93 Punkte auf 7672
+  (0,064 %) könnte unter dem Mindestabstand des Brokers liegen.
+  Gegen (b) spricht nichts, gegen (a) auch nicht — eine `symbol_info`-Abfrage
+  (`digits`, `trade_stops_level`) klärt beides in einer Minute.
+  **Wichtig:** die vorhandene Schutzprüfung in EKs ORB-Executor greift hier
+  nicht — sie prüft nur, ob SL/TP auf der *richtigen Seite* des Kurses liegen,
+  nicht Rundung und nicht Mindestabstand. Priorität: Hoch.
+- **🔴 FK Instant Funding: zwei Echtgeld-Entries am 2026-09-09 sind mit
+  `order_send()=None` gescheitert — Verdacht Kommentarlänge** (2026-09-13
+  gefunden). `10:30:16 cls_practical EURUSD.gbe` und
+  `17:20:13 ctnl_continuation XAUUSD.gbe`, beide ohne Retcode. Das eigene
+  SL-Sicherheitsnetz war es nicht (das loggt eine eigene Zeile, die fehlt).
+  **Auffällig:** `run_once.py:484` kappt den Kommentar auf **31** Zeichen,
+  das bekannte Broker-Limit liegt aber bei **16** (siehe CHANGELOG 2026-09-04
+  und den EK-Fund vom 2026-09-09). `FKIF cls_practical` = 18 Zeichen,
+  `FKIF ctnl_continuation` = 22 → beide über 16, beide scheiterten;
+  `FKIF orb_sp500` = 14 → kam bis zu einem echten Retcode durch. Passt exakt.
+  **Bedeutung, falls der Verdacht stimmt: die am 2026-09-09 freigeschalteten
+  Beine (gold_asb, cls_practical, ctnl_continuation, ctnl_reversal) können auf
+  FK derzeit gar nicht einsteigen** — jeder Versuch stirbt still an der
+  Kommentarlänge. Belegen lässt sich das jetzt leicht: die verbesserte
+  `last_error()`-Ausgabe ist seit 2026-09-09 im Code, sie fehlte nur zum
+  Zeitpunkt dieser beiden Fehlschläge. Priorität: Hoch.
+- **🔴 ORB handelt auf der Funded-Bridge praktisch nicht: 2 von 24 Signalen
+  platziert** (2026-09-13 beim Bein-Audit gefunden). Über alle drei Konten:
+  `orb_nasdaq` 0/22, `orb_sp500` 0/13, `orb_us30` 2/7. Der Grund steht wörtlich
+  im Log: *„war bereits offen UND geschlossen (stop), bevor diese Bridge es je
+  gesehen hat"*. Die Re-Simulation löst den Trade auf, bevor der erste Scan ihn
+  sieht — es trifft also systematisch die schnellen Verlierer. Das ist KEIN
+  Vorteil: die Live-Performance des Beins ist dadurch nicht mehr mit dem
+  Backtest vergleichbar, und faktisch läuft die getestete Strategie nicht.
+  **Ergänzt 2026-09-13 aus der Wochenauswertung (zweite Session, gleiche
+  Ursache):** auf FK gilt dasselbe — 6 ORB-Signale im September, **0** Entries.
+  Und es ist nicht ORB-exklusiv: `cls_practical` (09-07, 09-08) und
+  `ctnl_continuation` (09-08) wurden genauso verpasst, bei ORB ist es nur die
+  Regel statt der Ausnahme. Das ist zusammen die Erklärung für die
+  Nutzerbeobachtung "wenige Entries".
+  Nicht angefasst — das ist eine Strategie-/Timing-Entscheidung, keine
+  Bugfix-Frage. ⚠️ Inhaltlich gehört es in die **parallel laufende
+  ORB-Kostenprobe-Session** (Stopabstand/Entry-Verzögerung), nicht hier
+  doppelt anfangen.
+- ~~**OU-Modell platziert auf dem IQ-Konto nie: 0 von 7 Signalen**
+  (2026-09-13)~~ — **erledigt am 2026-09-13.** Ursache geklärt: IQ Markets/
+  BeyondIQCapital bietet **gar keine Einzelaktien** an (Nutzerinfo); die Ticker
+  stehen zwar formal in der Symbolliste und lassen sich per `symbol_select`
+  wählen, liefern aber nie einen Kurs (48x `kein Live-Kurs fuer ou_modell
+  (AMGN)` im Log, ask/bid bleiben 0). Die zweite der beiden vorgeschlagenen
+  Optionen ist umgesetzt: **OU für IQ bewusst abgeschaltet**, und das frei
+  werdende Kapital auf die verbleibenden 5 Beine verteilt (Kapitalanteil
+  1/6 → 1/3, Nutzerentscheid). Auf den beiden TTP-Konten bleibt OU unverändert.
+  Siehe `CHANGELOG.md` 2026-09-13 und
+  `scripts/research_challenge_iq_no_ou.py`.
+- **Data Lake wird häufig zu alt und fällt auf Live-Fetch zurück** (2026-09-13).
+  Häufigste Fälle über die Log-Historie: `SP500_M15` 281x, `EURUSD_M5` 264x,
+  `GOLD_H1` 197x, `SP500_M5` 170x. Jeder Fallback ist ein Live-Dukascopy-Abruf
+  — genau die Instabilität, für die der Lake gebaut wurde, und die Ursache der
+  6 `cls_practical`-Timeouts auf EK am 2026-09-11. Ingest-Takt vs.
+  Freshness-Cutoffs prüfen.
+  **Zusammenhang (2026-09-13, zweite Session):** ein großer Teil dieser
+  Fallbacks hat keine Cutoff-Ursache, sondern eine Ausfall-Ursache — siehe den
+  Kurztakt-Task-Punkt unter "Braucht deine Bestätigung": wenn der Ingest
+  1–2 Stunden gar nicht läuft, ist jeder Key danach zwangsläufig zu alt. Die
+  beiden Punkte am besten gemeinsam angehen.
 
 - **CLS-Bein auf Bewährung — Abbruchkriterium fehlt noch** (2026-09-11).
   Der Umbau ist umgesetzt und verifiziert (siehe `CHANGELOG.md` 2026-09-11
@@ -546,32 +608,17 @@ abgehakt-und-liegengelassen.
   Trades / bis wann muss das Bein was liefern?), (b) **Calmar der anderen
   fünf Beine erheben** — ohne den Vergleich ist nicht entscheidbar, ob 0,47
   im Portfolio schwach oder normal ist. Priorität: Mittel.
-- ~~**Risiko-Anpassung CLS/Challenges**~~ — **erledigt 2026-09-11.**
-  `LEG_RISK_PCT` 0,015 → 0,010, Pip-Boden, R-Detektor, Margin-Deckel.
-  Ursprünglicher Punkt vom 2026-09-09:
-  Nach deinem Entscheid "erst Kostenmodell validieren, dann Risiko anpassen"
-  ist die Messung fertig (siehe `CHANGELOG.md` und
-  `resources/broker-kostenmodell-eurusd.md`), die Risiko-Runde noch nicht.
-  Offen bleiben: Mindest-SL-Abstand gegen den Live-Spread, Nominal-/
-  Hebel-Deckel, absoluter Pip-Floor statt/zusätzlich zum relativen
-  `min_sl_atr_mult`, und ob `cls_practical` in dieser Form weiterläuft.
-  Reihenfolge laut deinem Entscheid: Challenges zuerst, dann EK, dann FK.
-  **Bis dahin läuft `cls_practical` auf allen drei Portfolios unverändert
-  live** — bewusst so entschieden, kein Versehen.
-- **Kein Hebel-/Mindestabstand-Schutz in ALLEN vier Bridges** (2026-09-09
-  gefunden). `Funded-Portfolio-Bridge/sizing.py`,
-  `EK-Portfolio-Bridge/core/sizing.py`, `FKInstantFunding-MT5-Bridge/sizing.py`
-  und `CLS-Practical-Bridge/sizing.py` haben identisch nur
-  `min(lots, info.volume_max)` als Obergrenze. Die Abweichungsprüfung
-  `MAX_OU_MODELL_ENTRY_DEVIATION_PCT` existiert nur für `ou_modell`. Gehört
-  in die Risiko-Runde oben. Priorität: Hoch.
-- **Rates-Risikomultiplikator erreicht das Live-Sizing nie** (2026-09-09
-  gefunden). `challenge_portfolio/paper_bot.py:361` skaliert mit
-  `combined_mult` nur das *reportete* `r_multiple`; das Live-`risk_dollars`
-  in `run_once.py::_process_leg` ist ein flaches
-  `CAPITAL_WEIGHT × LEG_RISK_PCT × equity`. Die als "übernommen"
-  dokumentierte Daily-Rates-Risikoskalierung wirkt live also nicht.
-  Priorität: Mittel.
+- **Hebel-/Mindestabstand-Schutz: für CLS gebaut, für die übrigen Beine
+  weiter offen** (gefunden 2026-09-09, Stand nachgezogen 2026-09-13).
+  Gebaut am 2026-09-11: Margin-Deckel über `order_calc_margin()` (Funded/FK
+  20 %, EK 80 %) — der greift bein-übergreifend — sowie Pip-Boden und
+  R-Detektor, die **nur im CLS-Pfad** hängen. Weiter ohne Schutz: jedes
+  andere Bein kann bei knappem Stopabstand beliebig große Lots ziehen,
+  begrenzt nur von `min(lots, info.volume_max)` und dem Margin-Deckel; die
+  Abweichungsprüfung `MAX_OU_MODELL_ENTRY_DEVIATION_PCT` gibt es nur für
+  `ou_modell`. `CLS-Practical-Bridge` ist hier nicht mehr relevant (seit
+  2026-09-11 als stillgelegt markiert). Priorität: Hoch — der ORB-Befund vom
+  2026-09-11 unten zeigt denselben Mechanismus auf einem anderen Bein.
 - **Fill-Rücklesepfad greift auf TTP nicht** (2026-09-09 gefunden).
   `Funded-Portfolio-Bridge/executor.py` speichert `entry_price: 0.0` (weder
   `result.price` noch `positions_get(ticket=…)` lieferten einen Preis); auf
@@ -613,7 +660,7 @@ abgehakt-und-liegengelassen.
 | OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner + Telegram (3x täglich: 15:35/18:35/21:35)                                           | Ready (Mo–Fr, US-Handelszeiten) | 2026-09-02      |
 | Forex-Weekly-Report                                     | —                                                                                        | Report-Generator                                                                             | Ready (So 18:00 — läuft am Wochenende bewusst weiter) | 2026-09-13      |
 | Bridge-Watchdog                                         | — (nur Log-Frische, kein Order-Bezug)                                                    | Heartbeat-Alarm + Status-Snapshot ins Repo                                                   | Ready (alle 30 Min, Mo–Fr)      | 2026-09-13      |
-| Funded-Portfolio-Bridge (TTP+IQ Markets, 6 Beine)       | TTP Konto 2 (504072729) + TTP Konto 1 (504069845) + BeyondIQCapital (16054) — **alle 3 verbunden** (IQ 15514 am 2026-09-07 entfernt) | **LIVE — DRY_RUN=False** (alle 6 Beine `source="lake"`; IPC-Timeouts 09-08 09:52-12:24 Uhr, seither stabil, siehe 🔍 Bestätigung) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-13      |
+| Funded-Portfolio-Bridge (TTP 6 Beine @1/6, IQ 5 Beine @1/3) | TTP Konto 2 (504072729) + TTP Konto 1 (504069845) + BeyondIQCapital (16054) — **alle 3 verbunden** (IQ 15514 am 2026-09-07 entfernt) | **LIVE — DRY_RUN=False** (alle 6 Beine `source="lake"`; **seit 09-13 kontospezifisch: IQ ohne `ou_modell`, Kapitalanteil 1/3 statt 1/6 — IQ handelt keine Aktien**; IPC-Timeouts 09-08 09:52-12:24 Uhr, seither stabil, siehe 🔍 Bestätigung) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-13      |
 | Funded-Portfolio-Bridge-Fast                            | Gleiche 3 Konten (geteilte Terminals)                                                    | **LIVE — DRY_RUN=False** (ctnl_continuation + orb_sp500/us30/nasdaq + cls_practical, `source="lake"`) | Ready (alle 5 Min, Mo–Fr)       | 2026-09-13      |
 | DataLake-Ingest-Fast                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt `data_lake_store/` für Funded-Portfolio-Bridge (19 Keys, 15-Min-Kadenz)                | Ready (alle 15 Min, Mo–Fr)      | 2026-09-13      |
 | DataLake-Ingest-Fast5                                   | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt 8 M5/M15-Timing-kritische Keys für ctnl_continuation/orb/cls_practical (EURUSD M5 seit 2026-09-07) | Ready (alle 5 Min, Mo–Fr)       | 2026-09-13      |
@@ -696,30 +743,6 @@ Kurz einfangen, was gerade auftaucht, ohne das aktuelle Thema zu verlassen —
 wird bei Gelegenheit einsortiert (Offene Aufgaben, PARA-Struktur, oder
 bewusst verworfen), nicht hier für immer liegen gelassen.
 
-- **„Gegen das Signal"-Check als Ergänzung zum Restlaufzeit-Gate**
-  (2026-09-09, offen — deine Entscheidung): Der heute gebaute Gate fragt
-  „wurde der SL schon berührt?". Die Alternative, die ich beim Planen
-  angeboten hatte und die du damals bewusst nicht gewählt hast, fragt
-  zusätzlich „wie weit ist der Kurs schon **gegen** das Signal gelaufen?" —
-  Entry abbrechen, wenn beim Versuch bereits mehr als ~0,5R der Stopdistanz
-  aufgebraucht sind.
-  **Warum es jetzt wieder auf dem Tisch liegt:** der CLS-Trade vom
-  2026-09-09 wäre davon erfasst worden, vom gebauten Gate dagegen nicht.
-  Zahlen: Entry-Signal 1.163967, SL 1.163590 (3,8 Pips). Beim Entry-Versuch
-  um 10:30 Berlin stand der Kurs bei 1.163680 — **0,76R schon gegen das
-  Signal**. Der SL war auf dem Broker-Feed zu dem Zeitpunkt noch nicht
-  berührt (08:25-UTC-Low 1.16360, 0,1 Pip darüber), der Stop fiel erst
-  16 Sekunden nach dem Entry.
-  **Wogegen es abzuwägen ist:** verwirft zwangsläufig auch Trades, die noch
-  gelaufen wären — bei einem Bein mit 3,8 Pips Stopdistanz ist 0,76R
-  Vorlauf keine ungewöhnliche Marktbewegung, sondern gut eine Minute
-  normales Rauschen. Und 0,5R wäre ein gesetzter Wert, kein aus einem
-  Backtest abgeleiteter. Sauber wäre, die Schwelle gegen die Bein-Historie
-  zu prüfen (welcher Anteil der Gewinner startete mit wieviel Vorlauf?),
-  statt sie zu raten. Zusammen mit dem parallel laufenden Kostenmodell-Thema
-  (Slippage/Kommission, siehe CHANGELOG 2026-09-09) zu entscheiden — beide
-  drehen an derselben Schraube „später Entry kostet mehr, als der Backtest
-  denkt".
 - **NY-Open ORB komplett von dukascopy lösen** (2026-09-09): der heutige
   Fix verkürzt nur die Hang-Dauer (3x/20s statt 6x/90s), beseitigt sie
   nicht. Strukturell sauberer wäre, die ORB-Entry-Daten direkt per MT5

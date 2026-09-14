@@ -1,0 +1,295 @@
+{
+  "context": "IQ Markets/BeyondIQCapital handelt keine Einzelaktien -- ou_modell dort ausgeschlossen, Kapitalanteil der verbleibenden 5 Beine neu gesetzt. TTP-Konten unveraendert.",
+  "cls_leg_file": "cls_practical_r100",
+  "chosen_capital_weight": 0.3333333333333333,
+  "reference_6leg_at_1_6": {
+    "legs": [
+      "gold_asb",
+      "cls_practical",
+      "ou_modell",
+      "trend_pullback",
+      "ctnl_edge",
+      "orb_portfolio"
+    ],
+    "capital_weight": 0.16666666666666666,
+    "common_window": {
+      "start": "2024-08-02",
+      "end": "2026-07-29"
+    },
+    "historical_metrics": {
+      "final_equity": 150496.2670526748,
+      "cagr_pct": 15.267340807097284,
+      "sharpe": 3.156108248913812,
+      "max_dd_pct": -3.809284475256991,
+      "calmar": 4.0079287609695475
+    },
+    "monte_carlo": {
+      "ttp": {
+        "p_target": 0.998,
+        "p_breach": 0.002,
+        "p_neither": 0.0,
+        "median_days_to_target": 156.0,
+        "n_sims": 3000,
+        "block_size": 20,
+        "path_length_days": 726
+      },
+      "iqmarkets": {
+        "p_target": 0.9916666666666667,
+        "p_breach": 0.008333333333333333,
+        "p_neither": 0.0,
+        "median_days_to_target": 125.0,
+        "n_sims": 3000,
+        "block_size": 20,
+        "path_length_days": 726
+      }
+    }
+  },
+  "iq_5leg_by_capital_weight": {
+    "1/6": {
+      "legs": [
+        "gold_asb",
+        "cls_practical",
+        "trend_pullback",
+        "ctnl_edge",
+        "orb_portfolio"
+      ],
+      "capital_weight": 0.16666666666666666,
+      "common_window": {
+        "start": "2024-08-02",
+        "end": "2026-07-29"
+      },
+      "historical_metrics": {
+        "final_equity": 134582.73301376536,
+        "cagr_pct": 10.64565669512978,
+        "sharpe": 3.0179122773390747,
+        "max_dd_pct": -2.227550560776581,
+        "calmar": 4.779086447051703
+      },
+      "monte_carlo": {
+        "ttp": {
+          "p_target": 1.0,
+          "p_breach": 0.0,
+          "p_neither": 0.0,
+          "median_days_to_target": 230.0,
+          "n_sims": 3000,
+          "block_size": 20,
+          "path_length_days": 726
+        },
+        "iqmarkets": {
+          "p_target": 1.0,
+          "p_breach": 0.0,
+          "p_neither": 0.0,
+          "median_days_to_target": 184.0,
+          "n_sims": 3000,
+          "block_size": 20,
+          "path_length_days": 726
+        }
+      }
+    },
+    "1/5": {
+      "legs": [
+        "gold_asb",
+        "cls_practical",
+        "trend_pullback",
+        "ctnl_edge",
+        "orb_portfolio"
+      ],
+      "capital_weight": 0.2,
+      "common_window": {
+        "start": "2024-08-02",
+        "end": "2026-07-29"
+      },
+      "historical_metrics": {
+        "final_equity": 142755.98134082544,
+        "cagr_pct": 12.889837283780192,
+        "sharpe": 3.0450914792179615,
+        "max_dd_pct": -2.6689225420497786,
+        "calmar": 4.8296033626665595
+      },
+      "monte_carlo": {
+        "ttp": {
+          "p_target": 1.0,
+          "p_breach": 0.0,
+          "p_neither": 0.0,
+          "median_days_to_target": 190.0,
+          "n_sims": 3000,
+          "block_size": 20,
+          "path_length_days": 726
+        },
+        "iqmarkets": {
+          "p_target": 1.0,
+          "p_breach": 0.0,
+          "p_neither": 0.0,
+          "median_days_to_target": 153.0,
+          "n_sims": 3000,
+          "block_size": 20,
+          "path_length_days": 726
+        }
+      }
+    },
+    "1/4.5": {
+      "legs": [
+        "gold_asb",
+        "cls_practical",
+        "trend_pullback",
+        "ctnl_edge",
+        "orb_portfolio"
+      ],
+      "capital_weight": 0.2222222222222222,
+      "common_window": {
+        "start": "2024-08-02",
+        "end": "2026-07-29"
+      },
+      "historical_metrics": {
+        "final_equity": 148466.59031517198,
+        "cagr_pct": 14.407964250367677,
+        "sharpe": 3.0633600242721166,
+        "max_dd_pct": -2.962405110713906,
+        "calmar": 4.863603630124552
+      },
+      "monte_carlo": {
+        "ttp": {
+          "p_target": 1.0,
+          "p_breach": 0.0,
+          "p_neither": 0.0,
+          "median_days_to_target": 171.0,
+          "n_sims": 3000,
+          "block_size": 20,
+          "path_length_days": 726
+        },
+        "iqmarkets": {
+          "p_target": 1.0,
+          "p_breach": 0.0,
+          "p_neither": 0.0,
+          "median_days_to_target": 137.0,
+          "n_sims": 3000,
+          "block_size": 20,
+          "path_length_days": 726
+        }
+      }
+    },
+    "1/4": {
+      "legs": [
+        "gold_asb",
+        "cls_practical",
+        "trend_pullback",
+        "ctnl_edge",
+        "orb_portfolio"
+      ],
+      "capital_weight": 0.25,
+      "common_window": {
+        "start": "2024-08-02",
+        "end": "2026-07-29"
+      },
+      "historical_metrics": {
+        "final_equity": 155912.81905084726,
+        "cagr_pct": 16.33068217050797,
+        "sharpe": 3.0863645541782536,
+        "max_dd_pct": -3.328397628291835,
+        "calmar": 4.9064697173483545
+      },
+      "monte_carlo": {
+        "ttp": {
+          "p_target": 1.0,
+          "p_breach": 0.0,
+          "p_neither": 0.0,
+          "median_days_to_target": 151.0,
+          "n_sims": 3000,
+          "block_size": 20,
+          "path_length_days": 726
+        },
+        "iqmarkets": {
+          "p_target": 1.0,
+          "p_breach": 0.0,
+          "p_neither": 0.0,
+          "median_days_to_target": 120.0,
+          "n_sims": 3000,
+          "block_size": 20,
+          "path_length_days": 726
+        }
+      }
+    },
+    "1/3.5": {
+      "legs": [
+        "gold_asb",
+        "cls_practical",
+        "trend_pullback",
+        "ctnl_edge",
+        "orb_portfolio"
+      ],
+      "capital_weight": 0.2857142857142857,
+      "common_window": {
+        "start": "2024-08-02",
+        "end": "2026-07-29"
+      },
+      "historical_metrics": {
+        "final_equity": 166013.0144585749,
+        "cagr_pct": 18.844172752800525,
+        "sharpe": 3.1162193931082003,
+        "max_dd_pct": -3.7975549176581413,
+        "calmar": 4.9621857119636505
+      },
+      "monte_carlo": {
+        "ttp": {
+          "p_target": 1.0,
+          "p_breach": 0.0,
+          "p_neither": 0.0,
+          "median_days_to_target": 132.0,
+          "n_sims": 3000,
+          "block_size": 20,
+          "path_length_days": 726
+        },
+        "iqmarkets": {
+          "p_target": 0.9996666666666667,
+          "p_breach": 0.0003333333333333333,
+          "p_neither": 0.0,
+          "median_days_to_target": 105.0,
+          "n_sims": 3000,
+          "block_size": 20,
+          "path_length_days": 726
+        }
+      }
+    },
+    "1/3": {
+      "legs": [
+        "gold_asb",
+        "cls_practical",
+        "trend_pullback",
+        "ctnl_edge",
+        "orb_portfolio"
+      ],
+      "capital_weight": 0.3333333333333333,
+      "common_window": {
+        "start": "2024-08-02",
+        "end": "2026-07-29"
+      },
+      "historical_metrics": {
+        "final_equity": 180457.76204309773,
+        "cagr_pct": 22.269159861570653,
+        "sharpe": 3.1565159800337432,
+        "max_dd_pct": -4.42064168257148,
+        "calmar": 5.0375401266670226
+      },
+      "monte_carlo": {
+        "ttp": {
+          "p_target": 0.9996666666666667,
+          "p_breach": 0.0003333333333333333,
+          "p_neither": 0.0,
+          "median_days_to_target": 112.0,
+          "n_sims": 3000,
+          "block_size": 20,
+          "path_length_days": 726
+        },
+        "iqmarkets": {
+          "p_target": 0.9946666666666667,
+          "p_breach": 0.005333333333333333,
+          "p_neither": 0.0,
+          "median_days_to_target": 90.0,
+          "n_sims": 3000,
+          "block_size": 20,
+          "path_length_days": 726
+        }
+      }
+    }
+  }
+}

@@ -69,6 +69,10 @@ keine Planung (dafür ist `DASHBOARD.md`).
   README.md}` (ausserhalb des Repos, nicht git-getrackt) sowie im Repo
   `scripts/research_challenge_iq_no_ou.py` (neu) +
   `portfolio_construction/results/challenge_portfolio_iq_no_ou.json` (neu).
+  Commit `bc72053` (2026-09-14) -- der Commit enthaelt zusaetzlich die
+  CHANGELOG/DASHBOARD-Aenderungen der parallelen Sessions vom 09-13
+  (EK-MT5-Passwort, Wochenauswertung, Bein-Audit), die zu diesem Zeitpunkt
+  noch uncommitted im Arbeitsverzeichnis lagen.
 
 - **2026-09-13** [Second Brain / Alle 3 Live-Bridges] **Wochenauswertung
   2026-09-07 bis 09-13, CLS im Dashboard abgeschlossen, drei offene Rueckfragen

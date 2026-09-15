@@ -1,0 +1,509 @@
+<title>Weekly Checkup KW37</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --paper: #EDEEE7;
+    --paper-raised: #F6F6F1;
+    --ink: #1B2129;
+    --ink-soft: #4B5259;
+    --rule: #C9CCC2;
+    --accent: #2B6E6B;
+    --accent-soft: #E3ECEA;
+    --flag: #B23A2E;
+    --flag-soft: #F5E6E2;
+    --ok: #3F6B4F;
+    --ok-soft: #E5EEE6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12181A;
+      --paper-raised: #182022;
+      --ink: #E7E4DA;
+      --ink-soft: #A9B0AC;
+      --rule: #333B3A;
+      --accent: #5FB3AC;
+      --accent-soft: #1B2E2C;
+      --flag: #E2695A;
+      --flag-soft: #33201C;
+      --ok: #7CB78A;
+      --ok-soft: #1D2B20;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12181A;
+    --paper-raised: #182022;
+    --ink: #E7E4DA;
+    --ink-soft: #A9B0AC;
+    --rule: #333B3A;
+    --accent: #5FB3AC;
+    --accent-soft: #1B2E2C;
+    --flag: #E2695A;
+    --flag-soft: #33201C;
+    --ok: #7CB78A;
+    --ok-soft: #1D2B20;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    margin: 0;
+    padding: 3.5rem 1.25rem 6rem;
+    -webkit-font-smoothing: antialiased;
+  }
+  .sheet {
+    max-width: 760px;
+    margin: 0 auto;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    padding: 3rem 3.25rem 3.5rem;
+  }
+  @media (max-width: 640px) {
+    .sheet { padding: 2rem 1.25rem 2.5rem; }
+  }
+
+  /* masthead */
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.6rem;
+  }
+  h1.title {
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 2.35rem;
+    line-height: 1.1;
+    margin: 0 0 0.5rem;
+    text-wrap: balance;
+  }
+  .subtitle {
+    font-size: 1.02rem;
+    color: var(--ink-soft);
+    margin: 0 0 1.6rem;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.6rem;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--rule);
+  }
+  .meta-row span b { color: var(--ink); font-weight: 600; }
+
+  .note {
+    margin-top: 1.4rem;
+    padding: 0.9rem 1.1rem;
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+  .note b { color: var(--ink); }
+
+  /* part dividers */
+  .part {
+    margin-top: 3.2rem;
+    padding-top: 0.4rem;
+  }
+  .part-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+  .part-label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+  h2.part-title {
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.7rem;
+    margin: 0.1rem 0 0;
+  }
+
+  /* sections */
+  section.block { margin-top: 2.1rem; }
+  h3.sec {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.18rem;
+    margin: 0 0 0.85rem;
+    color: var(--ink);
+  }
+  h3.sec .num {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  p { margin: 0 0 0.9rem; }
+  ul.plain { margin: 0 0 0.9rem; padding-left: 1.2rem; }
+  ul.plain li { margin-bottom: 0.55rem; }
+  ul.plain li b { color: var(--ink); }
+
+  /* status chips */
+  .chip {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    padding: 0.1rem 0.45rem;
+    border-radius: 2px;
+    margin-right: 0.3rem;
+  }
+  .chip.live { background: var(--ok-soft); color: var(--ok); }
+  .chip.dry { background: var(--accent-soft); color: var(--accent); }
+  .chip.dead { background: var(--flag-soft); color: var(--flag); }
+
+  /* tables */
+  .table-wrap { overflow-x: auto; margin-bottom: 1rem; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.55rem 0.7rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  th {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  td.num, th.num {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  tr.sum td { font-weight: 600; border-top: 1px solid var(--ink-soft); background: var(--accent-soft); }
+  td.neg { color: var(--flag); }
+  td.pos { color: var(--ok); }
+  td.status-flag { color: var(--flag); }
+  td.status-ok { color: var(--ok); }
+
+  /* flag callouts */
+  .flag {
+    border-left: 3px solid var(--flag);
+    background: var(--flag-soft);
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 0.9rem;
+  }
+  .flag .flag-head {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--flag);
+    margin-bottom: 0.3rem;
+  }
+  .flag p { margin: 0; font-size: 0.92rem; }
+
+  /* activity bars */
+  .bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.55rem;
+    height: 90px;
+    margin: 0.4rem 0 0.6rem;
+    padding-top: 0.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+  .bar {
+    width: 100%;
+    max-width: 34px;
+    background: var(--accent);
+    opacity: 0.55;
+  }
+  .bar-col.peak .bar { opacity: 1; }
+  .bar-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+    margin-top: 0.4rem;
+  }
+  .bar-count {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+    margin-bottom: 0.2rem;
+  }
+
+  footer.colophon {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+  }
+
+  @media print {
+    body { padding: 0; background: var(--paper); }
+    .sheet { border: none; max-width: 100%; padding: 0.5in; }
+    section.block, .flag, .table-wrap { page-break-inside: avoid; }
+    .part { page-break-before: always; }
+    .part:first-of-type { page-break-before: avoid; }
+  }
+</style>
+
+<div class="sheet">
+
+  <p class="eyebrow">Weekly Checkup · Andre&nbsp;/&nbsp;Forex-Backtesting</p>
+  <h1 class="title">KW37 · 2026</h1>
+  <p class="subtitle">Trading-Bot-Flotte &amp; Baustelle — Performance und Education, Montag 07.09. bis Sonntag 13.09.2026</p>
+  <div class="meta-row">
+    <span>Erzeugt: <b>Mo, 14.09.2026</b></span>
+    <span>Erfasst: <b>3 Bridges / 5 Konten</b></span>
+    <span>Lauf-Nr.: <b>#4</b></span>
+  </div>
+
+  <div class="note">
+    <b>Zur Ausführungszeit:</b> Der reguläre Sonntagslauf startete durch
+    <code>StartWhenAvailable</code> zwar nach (21:21 statt 18:00), lief dann
+    aber in das 1-Stunden-Zeitlimit des Tasks und wurde vom Scheduler
+    abgeschossen — fertig war nur der Performance-Teil. Limit steht jetzt auf
+    4h. Dieser Lauf <b>ergänzt</b> den Sonntagsstand, statt ihn zu ersetzen:
+    der damals offene Punkt <b>FK-Konto nicht erreichbar</b> ist dabei
+    aufgelöst worden — mit einem anderen Ergebnis als vermutet (Teil I, 05).
+  </div>
+
+  <!-- ============ PART I — PERFORMANCE ============ -->
+  <div class="part">
+    <p class="part-label">Teil I</p>
+    <h2 class="part-title">Performance</h2>
+  </div>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">01</span> Wochenkontext</h3>
+    <p>Alle drei Portfolio-Bridges liefen die ganze Woche. Zwei strukturelle Änderungen fallen hinein — und eine Reihe von Eingriffen, die direkt auf echtes Geld wirkten:</p>
+    <ul class="plain">
+      <li><b>EK-Portfolio-Bridge</b> <span class="chip live">LIVE · Tickmill</span> — am 09-10 wurde <code>CAPITAL_WEIGHT = 1/8</code> <b>erstmals tatsächlich angewendet</b>; bis dahin handelte jedes Bein ~8x größer als validiert. Im selben Zug: Portfolio-Kill-Switch, Mindestlot-Sizing, Einzeltrade-Cap 3 %. Ebenfalls 09-10: der <b>Bar-Fenster-Bug</b> behoben — ORB rechnete zuvor auf <b>5 Stunden alten Bars</b>.</li>
+      <li><b>Funded-Portfolio-Bridge</b> <span class="chip live">LIVE · TTP + IQ, 3 Konten</span> — am 09-11 Pip-Boden (5 Pips), R-Detektor (0,50R), Margin-Deckel 20 % und CLS-Risiko von 0,015 auf 0,010 gesenkt. Am 09-13 Rates-Multiplikator ins Live-Sizing und ein aggregierter Offenes-Risiko-Kill-Switch (TTP 3,5 % / IQ 3,0 %).</li>
+      <li><b>FK Instant Funding</b> <span class="chip live">LIVE seit 09-08</span> — <b>kein Paper-Bot mehr.</b> <code>DRY_RUN=False</code> auf expliziten Auftrag, zunächst nur die 3 ORB-Beine, am 09-09 auf 7 von 9 erweitert. Die Zeile „FK = Paper" aus allen vorherigen Checkups ist damit überholt: es sind jetzt <b>drei</b> Echtgeld-Bridges.</li>
+      <li><b>Wochenend-Pause eingerichtet</b> (09-13) — sieben Tasks liefen mit 7-Tage-Trigger, allein EKs 2-Minuten-Lane ~1.440 Leerläufe pro Wochenende. Alles auf Mo–Fr gekappt. <b>Ein leerer Sa/So-Log ist ab jetzt kein Ausfall.</b></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">02</span> Risk-Management-Compliance</h3>
+    <p><b>Kein Kill-Switch und kein Drawdown-Halt hat diese Woche ausgelöst. Keine Regelverletzung gegen die jeweils zum Handelszeitpunkt geltende Konfiguration.</b></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Bridge / Konto</th><th>Mechanismus</th><th>Diese Woche</th></tr></thead>
+        <tbody>
+          <tr><td>EK-Portfolio-Bridge</td><td>Trailing-DD-Kill-Switch (45 %)</td><td class="status-ok">nicht ausgelöst — Wochenverlust −3,07 %, Abstand sehr groß</td></tr>
+          <tr><td>EK-Portfolio-Bridge</td><td>Aggregierter Risikodeckel</td><td class="status-ok">griff mehrfach korrekt — u.&nbsp;a. CLS-EURUSD am 09-09 gar nicht gesendet</td></tr>
+          <tr><td>EK-Portfolio-Bridge</td><td>Einzeltrade-Cap 3 % / Margin 80 %</td><td class="status-ok">eingehalten — größte Position ~1,2 %, Margin 31,6 %</td></tr>
+          <tr><td>Funded / TTP Konto 2</td><td>3 % Tag / 7 % Gesamt-DD</td><td class="status-ok">inaktiv — schlechtester Tag −1,03 %, Abstand zum Hoch −1,27 %</td></tr>
+          <tr><td>Funded / TTP Konto 1</td><td>3 % Tag / 7 % Gesamt-DD</td><td class="status-ok">inaktiv — schlechtester Tag −0,86 %, Abstand −1,04 %</td></tr>
+          <tr><td>Funded / IQ Markets</td><td>1 % je Position / 6 % Gesamt-DD</td><td class="status-ok">inaktiv — schlechtester Tag −0,77 %, Abstand −0,81 %</td></tr>
+          <tr><td>Funded (alle 3)</td><td>Aggregierter Offenes-Risiko-Deckel</td><td class="status-flag">erst seit 09-13, nach Wochenschluss — war diese Woche noch nicht scharf</td></tr>
+          <tr><td>FK Instant Funding</td><td>Trailing-DD + CTNL-Kill-Switch</td><td class="status-flag">kein Trigger, aber <b>ohne Aussagekraft</b> — es wurde nie eine Order platziert</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.86rem; color:var(--ink-soft)">Zwei Einordnungen, die nicht in der Tabelle verschwinden sollen: Die <b>20,8-Lot-EURUSD-Position</b> auf TTP (09-09) band ~24 % der Konto-Equity an Margin — über dem Deckel, der genau wegen dieses Trades zwei Tage später eingebaut wurde. Regelkonform unter damaliger Konfiguration, heute unmöglich. Und: <b>EK hat kein Risiko wegen einer Regel vermieden, sondern wegen einer noch nicht behobenen Verzerrung Geld gespart</b> — der am Anschlag klebende 8-%-Deckel übersprang den CLS-Entry, den alle drei Challenge-Konten nahmen (zusammen −1.363&nbsp;$). Glück aus einem Bug, kein funktionierender Mechanismus.</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">03</span> Was hat funktioniert / nicht</h3>
+    <ul class="plain">
+      <li><b>EK-Portfolio-Bridge</b> — klar negativ (−106,23&nbsp;€ / −3,07 %), der Verlust kommt aber fast ausschließlich aus dem <b>OU-Modell-Aktienbein</b>: fünf Stop-outs = 80 % des realisierten Wochenverlusts, davon vier aus Alt-Positionen von vor dieser Woche. Der einzige Netto-Gewinner der Woche war ein CTNL-Gold-Trade (+6,92&nbsp;€) — genau die Position, die vier Stunden lang nicht geschlossen werden konnte, bis der Kommentar-Truncation-Fix griff. Sie ist der Live-Beleg, dass der Fix wirkt. Auf der ORB-Seite: fünf echte Entries, <b>alle fünf Verlierer</b>, zusammen aber nur −7,63&nbsp;€, weil ORB effektiv nur 0,042 % je Trade riskiert.</li>
+      <li><b>Funded-Portfolio-Bridge</b> — schlechteste Woche seit Live-Gang: <b>−2.999,11&nbsp;$ / −1,01 %</b>, 9 Trades, <b>kein einziger Gewinner</b>. Fast vollständig ein <b>Ein-Tages-Ereignis</b>: am 09-09 liefen dreimal CLS (Stop <b>16 Sekunden</b> nach Entry) und dreimal CTNL-Gold ins Messer, dazu drei Stop-outs alter OU-Positionen. Genau dieses Muster war der Anlass für den Umbau am 09-11 — und <b>die Gegenprobe fällt positiv aus</b>: seitdem hat kein neues CLS-Signal die Filter mehr passiert.</li>
+      <li><b>FK Instant Funding</b> — <b>operativ die schwächste Bridge der Woche: 9 Signale, 0 platzierte Orders.</b> Acht liefen als „missed" durch (der Trade war beim ersten Scan schon eröffnet <i>und</i> geschlossen), drei Order-Versuche scheiterten an drei verschiedenen Fehlerbildern. Eine Bridge, die seit 09-08 echtes Geld handeln darf und in fünf Handelstagen keinen einzigen Trade zustande gebracht hat.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">04</span> Trades · Winrate · PnL</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Bridge</th><th class="num">Trades</th><th class="num">Winrate</th><th class="num">PnL</th><th class="num">%</th></tr></thead>
+        <tbody>
+          <tr><td>EK-Portfolio-Bridge (Tickmill, 1 Konto)</td><td class="num">12</td><td class="num">8,3 %</td><td class="num neg">−106,23 €</td><td class="num neg">−3,07 %</td></tr>
+          <tr><td>Funded-Portfolio-Bridge (TTP + IQ, 3 Konten)</td><td class="num">9</td><td class="num">0,0 %</td><td class="num neg">−2.999,11 $</td><td class="num neg">−1,01 %</td></tr>
+          <tr><td>FK Instant Funding (LIVE seit 09-08)</td><td class="num">0</td><td class="num">—</td><td class="num">0,00 $</td><td class="num">0,00 %</td></tr>
+          <tr class="sum"><td>Grand Total (alle 3, echtes Geld)</td><td class="num">21</td><td class="num">4,8 %</td><td class="num neg">s. Hinweis</td><td class="num neg">−0,78 %</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.8rem; color:var(--ink-soft)">Nur <b>geschlossene</b> Trades zählen, Winrate nach <b>Netto</b> (inkl. Kommission und Swap). EUR und USD werden nicht zu einer Summe addiert; die kapitalgewichtete Gesamtprozentzahl ist trotzdem robust — über die ganze plausible Kursspanne (1,05–1,25) bewegt sie sich nur zwischen −0,777 % und −0,780 %. <b>FKs 0,00 % ist kein „hat nichts gefunden", sondern „konnte nichts ausführen".</b> Auf Kontoebene stand FK zum Wochenschluss bei +0,13 % — das war jedoch der schwebende Gewinn einer <b>von Hand</b> eröffneten Position (05), nicht das Ergebnis des Bots.</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">05</span> Auffälligkeiten</h3>
+
+    <div class="flag">
+      <p class="flag-head">Aufgelöst — 14.09.</p>
+      <p><b>Die Equity-Bewegung auf dem FK-Konto stammt aus einer manuell eröffneten Position, die die Bridge nicht platziert hat</b> — und sie ist immer noch offen. Broker-Historie: in der ganzen Woche <b>genau ein Deal</b> (EURUSD.gbe, LONG 0,75 Lots, 09-11 14:31 Berlin), <b>Kommentar leer</b> (die Bridge schreibt ausnahmslos <code>FKIF &lt;bein&gt;</code>), fünf Minuten vorher eine stornierte Order zu anderem Preis auf demselben Symbol — ein Handgriff aus der Terminal-GUI. Die vermeintlichen Zeitwidersprüche vom 09-13 waren ein <b>Zeitzonen-Artefakt</b> (MT5 liefert Serverzeit Helsinki, die Bridge loggt Berliner Zeit). FKs „+0,13 %" war nie ein Ergebnis des Bots; inzwischen ist die Position im Minus (−145,50&nbsp;$).</p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">Neu — strukturell</p>
+      <p><b>Eine Handposition auf einem Bot-Konto verschiebt den Kill-Switch des Bots, taucht in seinem Risikodeckel aber nicht auf.</b> Das Trailing-DD-Gate rechnet auf der Konto-Equity <b>inklusive</b> fremder Positionen (ebenso das Sizing jedes Beins), der Offenes-Risiko-Deckel läuft dagegen nur über die <b>eigenen</b> State-Einträge. Eine fremde Position kann den Bot also in Richtung Kill-Switch schieben, ohne dass sein Risikodeckel sie je sieht. Der Bot hat es selbst gemeldet — seit 09-11 steht in jedem Stundenlauf „Kontostand weicht von STARTING_EQUITY ab". Akut harmlos, kein Fehlverhalten. Die Frage dahinter gehört dir: <b>soll auf den Bot-Konten von Hand gehandelt werden?</b></p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">Kritisch — offen</p>
+      <p><b>FK kann seit dem Live-Gang keine Orders platzieren: drei Versuche, drei Fehlerbilder, null Fills.</b> Zwei Entries am 09-09 starben still an <code>order_send() = None</code> (Verdacht: Kommentar auf 31 statt 16 Zeichen gekappt — <code>FKIF cls_practical</code> = 18 scheiterte, <code>FKIF orb_sp500</code> = 14 kam durch). Der erste Entry über den neuen MT5-Datenpfad am 09-11 wurde mit <code>retcode=10016 „Invalid stops"</code> abgewiesen. Der gesamte Live-Rollout von 7 Beinen existiert damit bisher nur auf dem Papier.</p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">Korrektur am eigenen Log</p>
+      <p><b>Der CHANGELOG-Eintrag vom 09-13 sagt „EK: kein einziger Entry" — das stimmt nicht.</b> Broker-Historie und EKs eigene <code>orb_positions</code>-Tabelle zeigen fünf echte ORB-Entries, zwei CTNL-Gold-Entries und acht neue OU-Positionen: 15 Eröffnungen, 12 Schließungen. Die Feststellung zum Equity-Verfall stimmt, die Begründung nur teilweise. Kein Schaden — aber der Eintrag sollte korrigiert werden, bevor er als Ausgangspunkt der nächsten Auswertung dient.</p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">Wirkungslos kalibriert</p>
+      <p><b>EKs ORB-Bein riskiert nach der 09-10-Kalibrierung 0,042 % je Trade.</b> Gemessen an echten Fills: 1,59&nbsp;$ Risiko auf ein ~3.355-€-Konto. Zum Vergleich im selben Konto: <code>gold_asb</code> 2,93 %, <code>trend_pullback</code> 1,83 %. <b>Kein Bug</b> — die 1/8-Verdünnung wirkt korrekt; ORBs Basiswert unterlag nur der 2,20x-Hochskalierung nicht, die sechs andere Beine bekamen. Praktisch: alle fünf ORB-Trades zusammen bewegten die Equity um −7,63&nbsp;€, ein einziger OU-Stop-out um −32,23&nbsp;€. Dazu kamen zwei der vier ORB-Entries mit ~50–56 % des Risikos <b>bereits verbraucht</b> an — EK ist die einzige Bridge ohne R-Detektor auf diesem Bein.</p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">Betrieb — häuft sich</p>
+      <p><b>Kurztakt-Tasks fallen wiederkehrend 1–2 Stunden aus, und der Weekly-Report-Task tut es jetzt auch.</b> Sämtliche Scan-Fehler der Woche konzentrieren sich auf zwei Tage und treffen alle drei Bridges gleichzeitig: in zwei Fenstern am 09-11 schwiegen EKs 2-Minuten-Lane und der Lake-Ingest gemeinsam, alle Bridges fielen auf Live-dukascopy zurück und sammelten dort ihre <b>kompletten</b> Tages-Fehler ein — null in allen übrigen Stunden. <b>Keine neue Ursache, aber der zweite unabhängige Beleg, dass der Lake-Ausfall und nicht die Strategie-Logik die Fehler erzeugt.</b> Dass derselbe Effekt am 09-13 einen <i>wöchentlichen</i> Task um 3h21 verspätete, spricht gegen die bisherige Energieverwaltungs-Hypothese.</p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">Git</p>
+      <p><b>Lokaler <code>main</code> liegt 5 Commits vor <code>origin/main</code></b> — deutlich harmloser als die 64-Commit-Divergenz aus KW36 (die <code>Sync-AndPush</code>-Reparatur wirkt offenbar), aber die heutigen Commits sind noch nicht auf GitHub gesichert. Dieser Report-Lauf committet weisungsgemäß nur lokal.</p>
+    </div>
+  </section>
+
+  <!-- ============ PART II — EDUCATION ============ -->
+  <div class="part">
+    <p class="part-label">Teil II</p>
+    <h2 class="part-title">Education</h2>
+  </div>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">01</span> Hauptfokus der Woche</h3>
+    <p>417 Commits, davon wie üblich die große Mehrheit automatische Snapshots. Die ~29 inhaltlichen ergeben eine Woche mit einem sehr klaren roten Faden — und der wurde nicht geplant, sondern von <b>einem einzelnen Verlusttrade</b> ausgelöst:</p>
+    <ul class="plain">
+      <li><b>Mo 09-07 — Aufräumen und Absichern.</b> Data-Lake-Cold-Start-Fallback in allen 3 Bridges; TTP Konto 2 verband nicht mehr → Root Cause gefunden (fehlendes <code>/portable</code>-Flag). Die in KW36 entstandene, aber nie committete Second-Brain-Arbeit endlich im Repo.</li>
+      <li><b>Di 09-08 — FK geht scharf.</b> <code>DRY_RUN=False</code> auf expliziten Auftrag. Damit drei Echtgeld-Bridges statt zwei.</li>
+      <li><b>Mi 09-09 — der Tag, an dem die Woche gekippt ist.</b> Um 10:30 ein CLS-Trade, <b>16 Sekunden</b> später ausgestoppt, auf allen drei Challenge-Konten. Die Fehlersuche dazu hat den Rest der Woche bestimmt und nacheinander freigelegt: Signal-Latenz, nie angewendeter <code>CAPITAL_WEIGHT</code>, Kommentarlängen-Bug, Phantom-Positionen im simulierten OU-Buch. Dazu: dukascopy-Hang entschärft, Git-Sync-Lücke an der Wurzel behoben, Restlaufzeit-Gate, JPM-Spillover-Paper durch den 8-Phasen-Prozess (negativ).</li>
+      <li><b>Do 09-10 — EK repariert.</b> Kapitalverdünnung scharf, Kill-Switch, Neukalibrierung gegen Monte Carlo. Dabei fiel der Bar-Fenster-Bug auf.</li>
+      <li><b>Fr 09-11 — die Lehre auf alle drei Bridges ausgerollt.</b> Pip-Boden, R-Detektor, Margin-Deckel, CLS-Risiko gesenkt; Morgen-Digest von 4 Nachrichten auf 1; Bridge-Risiko-Audit von 9 auf 1 Befund.</li>
+      <li><b>Sa 09-12 — still.</b> Erster Tag der Woche ohne inhaltliche Arbeit.</li>
+      <li><b>So 09-13 — Wochenschluss.</b> Wochenend-Pause, IQ-Konto auf 5 Beine @ 1/3, EK-Passwort nachgezogen, Bein-Audit, CLS-Projekt abgeschlossen.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">02</span> Aktive Zeiten</h3>
+    <p style="font-size:0.86rem; color:var(--ink-soft); margin-bottom:0.3rem;">Inhaltliche Commits nach Wochentag (ohne die automatischen Snapshots).</p>
+    <div class="bars">
+      <div class="bar-col peak"><span class="bar-count">10</span><div class="bar" style="height:100%"></div><span class="bar-label">Mo</span></div>
+      <div class="bar-col"><span class="bar-count">5</span><div class="bar" style="height:50%"></div><span class="bar-label">Di</span></div>
+      <div class="bar-col"><span class="bar-count">7</span><div class="bar" style="height:70%"></div><span class="bar-label">Mi</span></div>
+      <div class="bar-col"><span class="bar-count">2</span><div class="bar" style="height:20%"></div><span class="bar-label">Do</span></div>
+      <div class="bar-col"><span class="bar-count">0</span><div class="bar" style="height:2%"></div><span class="bar-label">Fr</span></div>
+      <div class="bar-col"><span class="bar-count">0</span><div class="bar" style="height:2%"></div><span class="bar-label">Sa</span></div>
+      <div class="bar-col"><span class="bar-count">5</span><div class="bar" style="height:50%"></div><span class="bar-label">So</span></div>
+    </div>
+    <p><b>Späte Abende sind das Muster dieser Woche</b> — die inhaltlichen Commits liegen auffällig oft nach 21 Uhr (Di 23:36, Mi 21:47–23:45, Mo sogar 00:09–00:26), dazwischen kürzere Mittagsblöcke. Dichter und regelmäßiger als in KW36: kein einziger Tag Mo–Fr ohne Arbeit.</p>
+    <p>Die Null am Freitag ist dabei <b>kein freier Tag</b>, sondern das Gegenteil: gemessen am Changelog war 09-11 der produktivste Tag der Woche (fünf große Einträge). Diese Arbeit kam erst Sonntag um 14:38 ins Repo. Genau dasselbe Muster stand schon im KW36-Report — es ist damit kein Ausrutscher mehr, sondern eine Gewohnheit: <b>an intensiven Arbeitstagen wird nicht committet, das Committen passiert gesammelt am Wochenende.</b> Der Samstag war dagegen zum ersten Mal seit Wochen wirklich frei — passend dazu wurde am Sonntag die Wochenend-Pause auch für die Bots eingeführt.</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">03</span> Main Erkenntnisse</h3>
+    <p>Die lernintensivste Woche bisher — acht neue Memory-Einträge zwischen 09-09 und 09-10. Die fünf, die wirklich etwas geändert haben:</p>
+    <ul class="plain">
+      <li><b>Der Unterschied zwischen zwei Strategie-Ergebnissen war fast vollständig die Kostenannahme, nicht die Strategie.</b> Identische Signale, identischer Code-Pfad, identische Trefferquote (49,7 %) und Trade-Zahl (147) — aber Ø&nbsp;R 0,357 bei 0,50 Pips gegen 0,179 bei 2,05 Pips. <b>Faktor 2,0, allein aus einer Zahl, die bei EK geschätzt und bei der Challenge gemessen war.</b> EKs Zahlen sind nicht besser, sondern optimistischer angesetzt. Konsequenz: Kennzahlen zweier Bots sind nur vergleichbar, wenn ihre Kostenannahmen denselben <i>Status</i> haben.</li>
+      <li><b>Eine dokumentierte Formel ist keine angewendete Formel.</b> <code>CAPITAL_WEIGHT = 1/8</code> stand seit Einrichtung als Formel im Docstring — und wurde nirgends benutzt. Jedes Bein handelte ~8x größer als validiert, auf echtem Geld, wochenlang. Gegencheck: mit Verdünnung −16,1 % Max-Drawdown, ohne <b>−73,7 %</b>. Die Lehre ist die Prüfmethode: eine Risikozahl-Beschriftung sagt nie, ob sie Risiko je Kapitalscheibe oder aufs Gesamtkonto meint — das muss gegen ein publiziertes Szenario zurückgerechnet werden.</li>
+      <li><b>Zwischen „Signal gültig" und „Signal handelbar" liegen zehn Minuten, und die entscheiden über den Edge.</b> Der 16-Sekunden-Stop war kein Ausreißer: M5-Signale werden durch den Ingest-/Scan-Versatz strukturell erst ~10 Min. nach ihrem Zeitstempel gesehen. <b>Der Entry-Lag kostet mehr Edge als sämtliche Broker-Kosten zusammen.</b></li>
+      <li><b>„Sind alle drei Portfolios auf dem gleichen Stand?" war jahrelang mit Ja beantwortet — und es ging um die falsche Ebene.</b> Gemeint war die Infrastruktur, nicht die Strategie-Logik. Und die ist auseinandergedriftet: EK dupliziert seine Risikowerte in eine eigene <code>config.py</code> (und war genau deshalb abgedriftet), Funded und FK importieren ihren Paper-Bot zur Laufzeit und <b>können</b> nicht abdriften.</li>
+      <li><b>Ein Bug, der einmal behoben wurde, ist eine Bug-Klasse, keine erledigte Aufgabe.</b> Der zu lange MT5-Order-Kommentar wurde am 09-04 in genau einem Bein gefixt. Am 09-09 ließ dieselbe Ursache eine CTNL-Position vier Stunden nicht schließen — und auf FK sterben bis heute Entries daran. Lehre: einen bein-spezifischen Fix immer sofort auf die gemeinsame Ebene ziehen und gegen alle Geschwister prüfen.</li>
+    </ul>
+    <p>Nach Wochenschluss, aber inhaltlich über genau diese Woche: <b>„Live" heißt nicht „handelt".</b> Die Bein-Zählung ergab Funded 16 von 80 Signalen (20 %), EK nur 4 von 11 Bein-Keys mit je einer Order, FK <b>null von neun</b>. Der schwerere Teil daran: die fünf nacheinander eingebauten Schutzschichten sind zusammen zum <b>dominanten Effekt</b> geworden und verwerfen systematisch die <i>schnellen Verlierer</i>. Das klingt nach Vorteil, heißt aber: ein Backtest, dessen Verlierer man live überspringt, validiert den Live-Betrieb nicht mehr. Dazu passend: <b>ein nicht ausführbares Bein ist kein Nullbeitrag, sondern ein stillgelegter Kapitalanteil</b> (IQ fuhr 5 Beine mit dem Gewicht von 6, weil dort gar keine Einzelaktien handelbar sind — Symbolliste und <code>symbol_select</code> beweisen keine Handelbarkeit, nur ein Tick tut das). Und neu aus diesem Lauf: <b>Kontostand ≠ Bot-Ergebnis</b>, sobald ein Mensch Zugriff auf dasselbe Login hat.</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">04</span> Neues Wissen (Papers / Ideen)</h3>
+    <p><b>Acht neue PARA-Notizen</b> — die ergiebigste Research-Woche bisher, wobei sieben aus der eigenen Fehlersuche stammen und nur eine aus einem externen Paper:</p>
+    <ul class="plain">
+      <li><b>broker-kostenmodell-eurusd</b> (09-09) — echte, aus den MT5-Terminals gemessene Handelskosten je Broker, als Ersatz für die bis dahin unbelegten Kostenannahmen.</li>
+      <li><b>cls-practical-kostenvalidierung</b> (09-13, <b>abgeschlossen</b>) — Messung, Phase-6-Validierung, Umbau, Risikosenkung. Das Bein läuft weiter, aber <b>auf Bewährung</b>.</li>
+      <li><b>realkosten-und-ausfuehrungs-probe</b> (09-10) — vier zusätzliche Proben als Pflichtteil von Phase 6. Begründung: <b>jede der vier hat beim CLS-Fall einen realen Fehler gefunden, den p6_1–p6_4 nicht gefunden hätten.</b></li>
+      <li><b>paper-bot-zu-live-bridge</b> (09-10) — Standardprozess für den Übergang Paper-Bot → Live-Bridge, direkte Folge des <code>CAPITAL_WEIGHT</code>-Funds.</li>
+      <li><b>bridge-infrastruktur-vergleich</b> (09-10) — Soll-Ist-Vergleich der drei Bridges auf Infrastruktur-Ebene.</li>
+      <li><b>cross-asset-momentum-spillover</b> + <b>fx-momentum-spillover</b> (09-09) — JPM-Paper destilliert und auf den 7 FX-Majors nachgebaut. <b>Ergebnis: negativ</b>, kein integrierbarer Kandidat. Ein sauber dokumentierter negativer Befund ist hier ausdrücklich ein Ergebnis.</li>
+      <li><b>agentisches-research-system-und-self-learning-bot</b> (09-08) — das geklärte Konzept; Bau frühestens in einigen Wochen.</li>
+    </ul>
+    <p>Dazu wurden am 09-07 die <b>sechs in KW36 entstandenen, aber nie committeten Notizen</b> endlich ins Repo geholt — der im letzten Report notierte Rückstand ist abgearbeitet.</p>
+    <p><b>Ideen-Inbox:</b> drei neue Einträge (NY-Open ORB komplett von dukascopy lösen; volles 42-Asset-Futures-Universum aus dem JPM-Paper; agentisches Research-System), alle noch unsortiert. Bemerkenswert ist ein vierter: der „Gegen das Signal"-Check hat diese Woche seinen <b>kompletten Lebenszyklus</b> durchlaufen — am 09-09 rein, am 09-11 als R-Detektor gebaut, am 09-13 entfernt. Das erste Mal, dass die Inbox nicht nur gesammelt, sondern auch geleert hat.</p>
+    <p><b>Unverändert liegen geblieben:</b> die 14 unverarbeiteten Clippings. Diese Woche kam kein einziges durch den CODE-Prozess — angesichts der acht selbst erzeugten Notizen verständlich, lässt den Stapel aber weiter wachsen.</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">05</span> Verbesserungen</h3>
+    <ul class="plain">
+      <li><b>EK-Portfolio-Bridge grundlegend repariert</b> — Kapitalverdünnung erstmals wirksam, Kill-Switch, Mindestlot-Sizing, Einzeltrade-Cap; Neukalibrierung gegen Monte Carlo statt gegen freie Optimierung (die lieferte CAGR 531 % — und P(MaxDD&gt;40 %) = 32,8 %).</li>
+      <li><b>Bar-Fenster-Bug behoben</b> — alle 3 MT5-nativen Beine rechneten auf 5 Stunden alten Bars.</li>
+      <li><b>Ausführungs-Schutzschicht in allen drei Bridges</b> — Pip-Boden, R-Detektor, Margin-Deckel über <code>order_calc_margin()</code> statt selbstgebauter Nominalwerte. CLS-Risiko <b>gesenkt</b> statt erhöht, weil das Bein allein 40 % des TTP-Drawdown-Budgets zog.</li>
+      <li><b>Restlaufzeit-Gate + Task-Offsets</b> gegen bereits tote Signale; Ingest läuft jetzt <i>vor</i> dem Scan.</li>
+      <li><b>dukascopy-Hang entschärft</b> — Worst Case je Bein ~9,7 Min. → ~66 s.</li>
+      <li><b>Git-Sync-Lücke an der Wurzel behoben</b> — gemeinsame <code>Sync-AndPush</code> in allen 11 Task-Skripten; die 64-Commit-Divergenz aus KW36 ist auf 5 geschrumpft.</li>
+      <li><b>Wochenend-Pause</b> — deklarativ hinterlegt, damit ein neu angelegter Task nicht still wieder auf 7 Tage zurückfällt.</li>
+      <li><b>Morgen-Digest von 4 Telegram-Nachrichten auf 1</b> (16.066 → 1.580 Zeichen) plus Health-Zeilen aus den echten Logs statt nur aus dem Dashboard.</li>
+      <li><b>IQ-Konto auf 5 Beine @ 1/3</b> — das brachliegende Sechstel ist wieder im Einsatz: CAGR 10,7 % → 22,3 %, MaxDD 2,2 % → 4,4 % (bewusst die risikofreudigste von vier Stufen).</li>
+      <li><b>Bridge-Risiko-Audit von 9 auf 1 Befund</b>, inkl. neuer automatischer Drift-Prüfung Bridge ↔ Paper-Bot — gegengeprobt, damit sie nicht nur zufällig „OK" sagt.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">06</span> Verschlechterungen / offene Probleme</h3>
+    <ul class="plain">
+      <li><b>FK Instant Funding handelt seit dem Live-Gang nicht</b> — fünf Tage scharf, 9 Signale, 0 Orders, drei Fehlversuche mit drei Fehlerbildern.</li>
+      <li><b>Kurztakt-Tasks fallen wiederkehrend 1–2 Stunden aus</b> — vier belegte Vorfälle, am 09-11 mit nachweisbarem Schaden. Ursache weiter unbestätigt; neu ist, dass es auch einen wöchentlichen Task trifft.</li>
+      <li><b><code>cls_practical</code> hat auf EK noch nie eine Order gesendet</b> — 104 Scan-Fehler seit 08-31, immer dieselbe Kette. Das Bein ist dort faktisch nicht im Portfolio, obwohl mit 0,55 % Risiko/Trade eingeplant.</li>
+      <li><b>Das 35-Minuten-Frischefenster des Lake passt nicht zur 15-Minuten-Kadenz</b> — es verzeiht genau einen ausgefallenen Ingest-Lauf. 774 Fallbacks bei EK, &gt;1.400 bei Funded, 728 bei FK, <b>ausnahmslos</b> Staleness, kein einziges „Datensatz fehlt".</li>
+      <li><b>Zwei von drei Paper-Zwillingen laufen nicht</b> — dadurch lässt sich bei schwachem Live-Ergebnis nicht unterscheiden, ob es von der Strategie oder der Ausführung kommt. Besonders unangenehm: der Challenge-Paper-Bot hat als Simulation nie einen Trade gemacht, wird aber zur Laufzeit von der Echtgeld-Bridge importiert.</li>
+      <li><b>EK läuft bei 42,6 % Margin für EINE normale Position</b> (Funded: 7,7 %) — Folge der Kalibrierung, keine Fehlfunktion, aber bei 8 Beinen und 1:30 können zwei bis drei Positionen die Margin ausreizen.</li>
+      <li><b>Ein Broker-seitiger Passwortwechsel legt still alle Bridges eines Kontos lahm</b> — der Fehler taucht erst im nächsten geplanten Lauf auf, nicht beim Wechsel selbst.</li>
+      <li><b>14 Clippings weiterhin unverarbeitet.</b></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">07</span> Optimierungsmöglichkeiten</h3>
+    <p>Nach Gewicht sortiert — was diese Woche an Einsicht gebracht hat, ist zum großen Teil noch nicht in Handlung übersetzt:</p>
+    <ul class="plain">
+      <li><b>FKs Order-Ebene reparieren, bevor irgendetwas anderes an FK passiert.</b> Beide Verdachtsmomente sind in Minuten prüfbar: Kommentarlänge (der Fix existiert auf EK bereits zentral) und die abgelehnte ORB-Order (eine <code>symbol_info</code>-Abfrage klärt Rundung und Mindestabstand). Solange das offen ist, ist FK eine Echtgeld-Bridge ohne Ausführung.</li>
+      <li><b>Die Ausführungsquote zur ersten Kennzahl machen.</b> Eine Spalte „letzter echter Entry" plus eine Signal→Order-Quote je Bein würde genau das sichtbar machen, was fünf Tage lang unbemerkt blieb.</li>
+      <li><b>Die Gates gegen den Backtest halten.</b> Wenn das Restlaufzeit-Gate allein 22 von 24 ORB-Signalen verwirft und dabei systematisch die schnellen Verlierer trifft, ist die live gefahrene Strategie nicht mehr die getestete. Der saubere Weg ist, die Gates <b>in den Backtest zu übernehmen</b> und neu zu validieren.</li>
+      <li><b>Kurztakt-Ausfälle und Lake-Frischefenster gemeinsam angehen.</b> Sie sind dieselbe Geschichte von zwei Seiten. Zwei Stellschrauben: Fenster an die Kadenz koppeln (2,5 × Ingest-Intervall statt fix 35 Min.) und den Live-Fallback hart deckeln.</li>
+      <li><b>Mindestens einen Paper-Zwilling wieder anwerfen</b> — ohne ihn bleibt die Kernfrage dieser Woche unbeantwortbar.</li>
+      <li><b>Die Freitags-Commit-Lücke schließen</b> — zweite Woche in Folge musste dieser Report auf Changelog und Datei-Zeitstempel ausweichen, um eine Woche zu rekonstruieren.</li>
+      <li><b>Den Clipping-Stapel abbauen</b>, bevor er die dritte Woche übersteht.</li>
+    </ul>
+  </section>
+
+  <footer class="colophon">
+    Weekly Checkup · automatisch erzeugt · Forex-Backtesting/scripts/reports · lokal committet, nicht gepusht
+  </footer>
+
+</div>

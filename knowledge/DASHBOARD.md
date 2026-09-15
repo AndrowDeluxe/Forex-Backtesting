@@ -426,15 +426,22 @@ abgehakt-und-liegengelassen.
   `[[slug]]` in CHANGELOG.md:1008 ist literaler Beispieltext, kein echter
   Link), 6 verwaiste Seiten, 0 veraltete Statustabellen-Daten, 14
   unverarbeitete Clippings. Details/Einsortierung: CHANGELOG + unten.
-- **Neuer Wikilink-Typ beim heutigen Lint-Lauf: Cross-System-Link auf eine
-  Claude-Memory-Datei** (`resources/cross-asset-momentum-spillover.md:86`,
+- **Cross-System-Link auf eine Claude-Memory-Datei** (seit 2026-09-09,
+  weiterhin offen — Lint 2026-09-14 zeigt denselben Fall unverändert:
+  `resources/cross-asset-momentum-spillover.md:86`,
   `[[cls-practical-strategy-state]]` — zeigt auf die Memory-Notiz
   `cls_practical_strategy_state.md`, nicht auf eine `knowledge/`-Datei).
   Fuer Obsidian technisch ein toter Link, obwohl der referenzierte Inhalt
   existiert — reine Konventionsfrage (z.B. eigene Zitierform statt
   `[[...]]` fuer Memory-Referenzen), siehe Skill `second-brain-lint`.
-  Bisher einziges bekanntes Vorkommen dieses Typs. Wie soll auf Memory-
-  Inhalte aus `knowledge/`-Notizen kuenftig verwiesen werden?
+  Wie soll auf Memory-Inhalte aus `knowledge/`-Notizen kuenftig verwiesen
+  werden?
+  **Neue Variante beim Lint 2026-09-14:** `areas/bridge-infrastruktur-
+  vergleich.md:83` verlinkt `[[second-brain-lint]]` — zeigt auf den Skill
+  unter `.claude/skills/second-brain-lint/SKILL.md`, ebenfalls ausserhalb
+  von `knowledge/`. Gleiches Muster wie oben (Inhalt existiert, Ziel liegt
+  nur ausserhalb der PARA-Struktur) — vermutlich dieselbe
+  Konventionsfrage, nicht separat entscheiden.
 - ~~`DataLake-Ingest-Fast5` + `FKInstantFunding-MT5-Bridge` (stündlich):
   auffällige Lücke ~14:31-15:0x Uhr~~ — **bewusst verworfen 2026-09-09
   (Nutzerentscheid)**: einmaliger ~45-Minuten-Ausreisser am 2026-09-07,
@@ -689,7 +696,7 @@ abgehakt-und-liegengelassen.
 
 **Mittel**
 - **14 unverarbeitete Clippings** in `knowledge/Clippings/` (Stand
-  2026-09-09-Lint, davor 12 seit 2026-09-03) — u.a. Edge-Genesis/-Decay,
+  2026-09-14-Lint, unveraendert seit 2026-09-09) — u.a. Edge-Genesis/-Decay,
   Risk-Factor-Investing, Sektor-Rotation, "Six Repos One System", "How
   system works" — noch nicht durch den CODE-Prozess.
 - ~~Second-Brain/Dashboard-Struktur: Feedback nach ein paar Tagen
@@ -704,10 +711,16 @@ abgehakt-und-liegengelassen.
   2026-09-02.
 
 **Niedrig**
-- `knowledge/`-Altlasten (Lint 2026-09-09, vorher 2026-09-01): tote
+- `knowledge/`-Altlasten (Lint 2026-09-14, vorher 2026-09-09): tote
   Wikilinks (`[[cls-practical]]`, `[[gap-fade]]`, `[[execution-overlay]]`,
-  je 2 Vorkommen) + 6 verwaiste Seiten, meist unkritisch. Details:
+  je 2 Vorkommen, unveraendert) + 7 verwaiste Seiten (vorher 6, neu:
+  `areas/paper-bot-zu-live-bridge.md`), meist unkritisch. Details:
   Lint-Output/CHANGELOG.
+- **Isolierter toter Wikilink** `areas/paper-bot-zu-live-bridge.md:86` ->
+  `[[risiko-kalibrierung-methodik]]` (Lint 2026-09-14, einziges
+  Vorkommen) — referenziertes Konzept (Risiko-Kalibrierungs-Methodik)
+  existiert noch nicht als eigene Notiz. Nur ein Vorkommen, daher
+  Aufraeum-Fall, kein Entscheidungspunkt.
 
 ## Status — was läuft gerade wirklich
 
@@ -776,12 +789,16 @@ Live-Status aller drei Portfolio-Bridges jetzt auch als Streamlit-Seiten
 das der Bridge-Watchdog alle 30 Min. committet.
 
 _Letzter Lint-Check (tote Wikilinks, veraltete Daten, Widersprüche,
-verwaiste Seiten, unverarbeitete Clippings): **2026-09-09** (erster
-tatsaechlich erfolgreiche Lauf seit 2026-09-01 — der Fehlversuch vom
-2026-09-07 war ein falscher Befund, siehe "🔍 Braucht deine Bestätigung").
-Ergebnis: 0 veraltete Statustabellen-Daten, 6 verwaiste Seiten, 8 tote
-Wikilinks (1 falsch-positiv), davon 1 neuer Cross-System-Link-Fall
-(Memory-Verweis, siehe oben), 14 unverarbeitete Clippings (siehe "Offene
+verwaiste Seiten, unverarbeitete Clippings): **2026-09-14** (planmaessiger
+woechentlicher Lauf). Ergebnis: 0 veraltete Statustabellen-Daten, 7
+verwaiste Seiten (vorher 6, siehe "Offene Aufgaben"), 13 tote Wikilinks
+(davon 3 Selbstverweise im Dashboard-Text + 1 literaler Beispieltext in
+CHANGELOG.md als falsch-positiv rausgefiltert; von den verbleibenden echten
+Funden: 2 bekannte Cross-System-Links auf Inhalte ausserhalb von
+`knowledge/` — Memory-Notiz + neu ein Skill-Verweis, siehe "🔍 Braucht deine
+Bestätigung" — plus 1 neuer isolierter toter Link und die bereits bekannten
+`[[cls-practical]]`/`[[gap-fade]]`/`[[execution-overlay]]`-Faelle), 14
+unverarbeitete Clippings (unveraendert seit 2026-09-09, siehe "Offene
 Aufgaben"). Widersprüche (c) weiterhin nur stichprobenartig, nicht
 vollstaendig manuell durchgegangen._
 

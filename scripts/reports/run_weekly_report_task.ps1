@@ -48,6 +48,10 @@ if ($nextWeek.Month -ne $today.Month) {
     $prompt += "`n`n---`n`n" + (Get-Content $monthlyPromptPath -Raw)
 }
 
+# Merkzeitpunkt fuer die Vollstaendigkeitspruefung unten -- alles, was dieser
+# Lauf erzeugt, muss juenger sein als das hier.
+$runStart = Get-Date
+
 Set-Location $repo
 try {
     $output = $prompt | & $claudeExe -p --allowedTools "Bash Read Write Edit Glob Grep" --output-format text 2>&1
@@ -56,4 +60,49 @@ try {
     Log "FEHLER beim Claude-Aufruf: $_"
 }
 
-Log "=== Weekly-Report-Task beendet ==="
+# Vollstaendigkeitspruefung (2026-09-15). Anlass: der Nachhol-Lauf vom 09-14
+# lief nach 12 Minuten ins Claude-Session-Limit -- direkt NACH dem Checkup-HTML,
+# aber VOR PDF-Rendering, Telegram-Versand und Commit. Der Task meldete
+# trotzdem Erfolg (LastTaskResult 0), weil dieses Skript den Ausgang des
+# claude.exe-Laufs nie ausgewertet hat: ein halb fertiger Lauf sah exakt aus
+# wie ein gelungener. Dasselbe war eine Woche vorher schon passiert (09-13,
+# dort das 1-Stunden-Zeitlimit) und faellt sonst nur auf, wenn jemand das
+# fehlende PDF bemerkt.
+#
+# Das PDF ist der letzte Schritt vor dem Versand und damit der beste einzelne
+# Indikator fuer "durchgelaufen". Bewusst ueber den Zeitstempel statt ueber den
+# erwarteten Dateinamen: welche Kalenderwoche der Lauf abdeckt, entscheidet der
+# Prompt, nicht dieses Skript.
+$reportDir = "C:\Users\andre\Documents\Trading Reports"
+$freshPdf = Get-ChildItem $reportDir -Filter "*.pdf" -ErrorAction SilentlyContinue |
+    Where-Object { $_.LastWriteTime -ge $runStart } |
+    Sort-Object LastWriteTime -Descending | Select-Object -First 1
+
+if ($freshPdf) {
+    Log "Vollstaendigkeitspruefung OK: $($freshPdf.Name) ($('{0:N0}' -f $freshPdf.Length) Bytes)"
+    Log "=== Weekly-Report-Task beendet ==="
+} else {
+    Log "FEHLER: Lauf unvollstaendig -- kein neues PDF in '$reportDir' seit $($runStart.ToString('HH:mm:ss'))."
+    Log "Haeufigste Ursachen: Claude-Session-/Wochenlimit erreicht, oder Zeitlimit des Tasks."
+    # Telegram-Warnung, damit ein stiller Teilabbruch nicht erst beim naechsten
+    # Blick in den Report-Ordner auffaellt. Darf den Task nicht zum Absturz bringen.
+    try {
+        $warnScript = Join-Path $logDir "_task_incomplete_warn.py"
+        $freshPdfNote = "Weekly Checkup: Lauf unvollstaendig abgebrochen - kein PDF erzeugt. Siehe scripts/reports/task_run.log."
+        Set-Content -Path $warnScript -Encoding UTF8 -Value @"
+import sys
+sys.path.insert(0, r"C:\Users\andre\Forex-Backtesting\scripts\reports")
+from telegram_notify import send_telegram_message, SIGNATURE
+send_telegram_message(SIGNATURE + "\n\n" + sys.argv[1])
+"@
+        & python $warnScript $freshPdfNote 2>&1 | ForEach-Object { Log $_ }
+    } catch {
+        Log "Telegram-Warnung fehlgeschlagen: $_"
+    }
+    Log "=== Weekly-Report-Task beendet (UNVOLLSTAENDIG) ==="
+    # Exitcode != 0, damit der Task Scheduler den Lauf als fehlgeschlagen
+    # erkennt und die eingerichtete Wiederholung (RestartCount/RestartInterval)
+    # greift -- bei einem Session-Limit ist ein spaeterer Versuch genau das
+    # Richtige.
+    exit 1
+}

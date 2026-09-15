@@ -108,8 +108,18 @@ ISO "2026-W35" form, in both filenames and document titles.
 ## Report 1: Weekly Checkup - Performance
 
 File: `knowledge/reports/weekly/KW<n>_<year>_performance.md` (e.g.
-`KW35_2026_performance.md`). Compute the ISO week number for "today"; if
-today is Sunday, this report covers the Monday-Sunday week ending today.
+`KW35_2026_performance.md`).
+
+**Which week to cover (clarified 2026-09-14 after a delayed run):** always the
+LAST FULLY COMPLETED Monday-Sunday week, never a week still in progress. If
+today is Sunday (the normal case), that is the week ending today. If the run
+is delayed and today is a Monday-Saturday - the PC was off on Sunday and the
+task started late, which has now happened three times - it is the week that
+ended on the LAST Sunday, NOT the ISO week containing today. Concretely: a run
+on Monday 2026-09-14 produces KW37 (Sep 7-13), not KW38. Compute the ISO week
+number of that covered week, not of "today". If a report file for that week
+already exists from an aborted earlier run, read it first and build on it
+instead of silently overwriting it with a thinner version.
 Title the document itself "Weekly Checkup - Performance - KW<n>/<year>".
 
 Structure (mirrors the user's own weekly trading journal - see

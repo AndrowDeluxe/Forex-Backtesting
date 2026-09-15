@@ -9,6 +9,121 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-14** [Reporting / Forex-Weekly-Report] **Weekly Checkup KW37 fiel
+  aus -- Ursache war NICHT der ausgeschaltete PC, sondern das 1-Stunden-
+  Zeitlimit des Tasks. Limit auf 4h angehoben, Wochen-Logik fuer verspaetete
+  Laeufe praezisiert, KW37 nachgeholt.**
+  Nutzerwunsch: Checkup nachholen + "Backup-Task" einrichten, damit es bei
+  ausgeschaltetem PC spaeter trotzdem entsteht.
+  **Befund: dieser Backup-Mechanismus existiert bereits und hat funktioniert.**
+  Der Task hat `StartWhenAvailable = True` (plus `WakeToRun`), ist deshalb am
+  2026-09-13 um 21:21:40 nachtraeglich gestartet, nachdem der 18:00-Termin bei
+  ausgeschaltetem PC verstrichen war. Ein zweiter Task waere reine Redundanz
+  gewesen. Gescheitert ist der Lauf an etwas anderem: `ExecutionTimeLimit` war
+  `PT1H`, der Task wurde nach 60 Minuten vom Scheduler abgeschossen
+  (`LastTaskResult` 267014 = `SCHED_S_TASK_TERMINATED`, im `task_run.log` fehlt
+  entsprechend die "beendet"-Zeile). Fertig geworden war bis dahin nur
+  `KW37_2026_performance.md`; Education-Report, Checkup-HTML, PDF und Telegram
+  fehlten. Zum Vergleich: die regulaeren Sonntagslaeufe brauchten 25-26 Min --
+  der verspaetete Lauf hatte mehr aufzuarbeiten und lief in die Grenze.
+  **(1) `ExecutionTimeLimit` `PT1H` -> `PT4H`** (Task Scheduler, kein Repo-
+  Artefakt). `StartWhenAvailable`/`WakeToRun` blieben unveraendert an.
+  **(2) `scripts/reports/weekly_report_prompt.md`: Wochen-Auswahl praezisiert.**
+  Bisher stand dort nur "Compute the ISO week number for today; if today is
+  Sunday, this report covers the Monday-Sunday week ending today" -- fuer einen
+  verspaeteten Montagslauf undefiniert, der Lauf haette plausibel KW38 (die
+  laufende Woche) statt KW37 produziert. Jetzt explizit: immer die LETZTE
+  VOLLSTAENDIG ABGESCHLOSSENE Mo-So-Woche, bei Verspaetung also die Woche, die
+  am letzten Sonntag endete; plus die Anweisung, eine bereits vorhandene Datei
+  aus einem abgebrochenen Lauf zu lesen und darauf aufzubauen statt sie
+  duenner zu ueberschreiben. Das ist inzwischen der dritte verspaetete Lauf,
+  die Luecke war also keine Theorie.
+  **(3) KW37 nachgeholt** ueber einen manuellen Start desselben Tasks
+  (`Start-ScheduledTask`, 09-14 09:20), also exakt der normale Pfad. Die
+  praezisierte Wochen-Logik hat gegriffen: der Lauf hat korrekt KW37
+  (07.-13.09.) erzeugt, nicht die laufende KW38. **Auch dieser Lauf kam nicht
+  ganz durch** -- nach 12 Minuten Claude-Session-Limit, direkt NACH dem
+  Checkup-HTML, aber vor PDF/Telegram/Commit. Die drei Restschritte wurden am
+  2026-09-15 von Hand nachgezogen (Edge-Headless-PDF 558 KB, Telegram-Versand,
+  Commit `be3ef98`). Inhaltlich ist der Report vollstaendig -- er hat sogar den
+  offenen KW34-Befund zum nicht zuordenbaren EURUSD-Trade aufgeloest (Handtrade
+  auf dem FK-Konto, Zeitzonen-Artefakt Helsinki/Berlin).
+  **(4) Stiller Teilabbruch wird jetzt erkannt** (`run_weekly_report_task.ps1`).
+  Der eigentliche Skandal an beiden Fehllaeufen war nicht der Abbruch, sondern
+  dass der Task **Erfolg meldete** (`LastTaskResult` 0): das Skript hat den
+  Ausgang des `claude.exe`-Laufs nie ausgewertet, ein halb fertiger Lauf sah
+  aus wie ein gelungener. Neu am Ende: Pruefung, ob seit Laufbeginn ein neues
+  PDF in `Documents\Trading Reports` liegt (das PDF ist der letzte Schritt vor
+  dem Versand, also der beste Einzelindikator; bewusst ueber den Zeitstempel
+  statt ueber den erwarteten Dateinamen, weil die abgedeckte Kalenderwoche der
+  Prompt entscheidet, nicht das Skript). Fehlt es: klare FEHLER-Zeile im Log,
+  Telegram-Warnung und `exit 1`.
+  **(5) Automatische Wiederholung** dank (4): `RestartCount = 3`,
+  `RestartInterval = PT4H`. Bei einem Session-/Wochenlimit ist ein spaeterer
+  Versuch genau die richtige Reaktion -- vorher konnte der Scheduler gar nicht
+  wiederholen, weil der Lauf sich als erfolgreich ausgab.
+
+- **2026-09-14** [Second Brain / Alle 3 Live-Bridges] **Bein-Ebene erstmals
+  vollstaendig gezaehlt: Ist/Soll/Paper-Matrix + Systemlandkarte angelegt.**
+  Nutzerauftrag ("Ist/Soll-Vergleich um eine Paper-Bot-Spalte ergaenzen, dazu
+  ein frischer Ueberblick ueber Funktionsweise und Luecken"). **Reine
+  Auswertung, kein Code geaendert.** Datenbasis: `bridge_state_*.json`,
+  `ek_portfolio_55918977.sqlite3`, `logs/run_*.log` + `task_run*.log` aller
+  drei Bridges, Task Scheduler, `data_lake_store/manifest.json`.
+  **Zwei neue Seiten:** `areas/bein-matrix-ist-soll-paper.md` (je Bein je
+  Bridge: Soll-Risiko laut Config, tatsaechlich platzierte Orders, Paper-Status)
+  und `areas/systemlandkarte.md` (die sechsstufige Kette Datenquelle → Lake →
+  Scan → Gates → Sizing → `order_send`, mit den Verlusten je Stufe und einer
+  nach Gewicht sortierten Luecken-/Optimierungsliste).
+  `areas/bridge-infrastruktur-vergleich.md` um zwei Zeilen erweitert (Bindung
+  an den Paper-Bot: EK kopiert, Funded/FK importieren zur Laufzeit; laeuft ein
+  Paper-Zwilling?) und um Luecke 5 ergaenzt.
+  **Der zentrale Befund — „live" heisst nicht „handelt":** Funded platziert
+  16 von 80 Signalen (20 %), **FK seit `DRY_RUN=False` am 2026-09-08 null von
+  neun**, EK hat in 4 von 11 Bein-Keys je eine Order gesendet (ORB 9,
+  ou_modell 9, ctnl_continuation 2; `gold_asb`, `gold_silver`,
+  `trend_pullback`, `btc_ema_cross`, `cls_practical`, `ctnl_reversal`,
+  `orb_us30` noch nie). Der Engpass sitzt nicht in der Strategie und nicht in
+  der Verbindung, sondern zwischen „Signal erkannt" und „Order liegt beim
+  Broker".
+  **Vier Befunde, die erst auf Bein-Ebene sichtbar wurden:**
+  (a) **`cls_practical` ist auf EK faktisch tot** — 104 Scan-Fehler zwischen
+  08-31 und 09-11, immer dieselbe Kette: Lake-Eintrag gilt als veraltet →
+  Fallback auf Live-Dukascopy → Hang → 90-s-Timeout → Bein faellt aus. Noch nie
+  eine Order.
+  (b) **Das 35-Minuten-Frischefenster des Lake passt nicht zur 15-Minuten-
+  Kadenz** — es verzeiht genau einen ausgefallenen Ingest-Lauf. Gezaehlt:
+  774 Lake-Fallbacks bei EK, >1.400 bei Funded, 728 bei FK, **ausnahmslos**
+  `LakeStaleDataError`, kein einziges „Datensatz fehlt". Der Ingest selbst ist
+  gesund (585 von 587 Fast-Laeufen sauber beendet) — Ingest und Bridge setzen
+  gemeinsam aus. Ergaenzt den Kurztakt-Task-Befund vom 2026-09-13 um die
+  Auslegungsfrage dahinter.
+  (c) **Der Risikodeckel-Fix vom 2026-09-10 wirkt nachweislich.** `orb_us30`
+  wurde auf EK 213× von `risk_cap` weggeworfen; seit der Anhebung 8 % → 30 %
+  **kein einziger Skip mehr** (letzter 09-09). Das Bein hatte seitdem nur kein
+  Signal — es ist nicht mehr blockiert.
+  (d) **EKs `config.py` widerspricht dem eigenen Log.** Der Kommentar zu
+  `CAPITAL_WEIGHT = 1/8` begruendet die Kapitalscheibe mit „OU-Modell zaehlt
+  mit (eigenes echtes Konto, **keine Order hier**)" — die Bridge hat 9
+  OU-Orders gesendet (D, FAST, SPG, SYY, AXP, ADI, EXPE, APD, AMGN), nachdem
+  `OU-Modell-MT5-Bridge` deaktiviert wurde. Nur ein Kommentar, aber er traegt
+  die Herleitung einer Risikokonstante. In DASHBOARD.md als Aufraeumpunkt.
+  **Die Paper-Spalte ist der eigentliche blinde Fleck:** fuer zwei der drei
+  Portfolios gibt es keinen laufenden Zwilling (EK Task Disabled seit 08-31,
+  Challenge nie angelegt — `challenge_portfolio/paper_bot.py` hat als
+  Simulation nie einen Trade gemacht, wird aber zur Laufzeit von der
+  Echtgeld-Bridge importiert). Der einzige echte Vergleich, FK, geht
+  auseinander: Paper 98.981,60 (−1,02 %, 24 Trades) gegen Live 100.159,75
+  (+0,16 %, 0 Trades) — das Live-Plus kommt daher, dass nichts ausgefuehrt
+  wurde, sagt also nichts ueber die Strategie.
+  **Ueberschneidung mit den Parallel-Session-Eintraegen vom 2026-09-13**
+  (Wochenauswertung + Funded-Bein-Audit) bewusst nicht doppelt gefuehrt: der
+  `10016`-Befund, die ORB-Quote 2/24 und die Lake-Fallback-Zaehlung stehen
+  dort, hier nur die Bein-Aufschluesselung und die Auslegungsfrage zum
+  Frischefenster. Der IQ-`ou_modell`-Befund (0/7) war beim Schreiben bereits
+  behoben (`excluded_legs` + `capital_weight=1/3`) und ist entsprechend als
+  erledigt notiert.
+
 - **2026-09-13** [EK-Portfolio-Bridge] **MT5-Passwort geaendert -- Bridge war
   zwischenzeitlich nicht login-faehig, wieder behoben und verifiziert.** Der
   Nutzer hat das Tickmill-Passwort zurueckgesetzt; `config.py::MT5_PASSWORD`

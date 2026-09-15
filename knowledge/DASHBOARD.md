@@ -93,6 +93,34 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
+- **🔴 Zwei von drei Paper-Zwillingen laufen nicht — wieder scharfstellen?**
+  (2026-09-14, deine Entscheidung). Stand:
+  `ek_portfolio/paper_bot.py` → Task **Disabled seit 2026-08-31**;
+  `challenge_portfolio/paper_bot.py` → **nie ein Task angelegt**, `trades: {}`,
+  also kein einziger simulierter Trade seit Bestehen;
+  `fk_instant_funding/paper_bot.py` → läuft stündlich, 24 Trades.
+  **Warum das mehr wiegt als es klingt:** ohne laufenden Zwilling lässt sich
+  nicht unterscheiden, ob ein schwaches Live-Ergebnis von der *Strategie* oder
+  von der *Ausführung* kommt — und genau das ist gerade die offene Frage, weil
+  Funded nur 20 % und FK 0 % der Signale platziert. Der einzige echte
+  Vergleich, den es gibt, zeigt das Problem in Reinform: FK-Paper steht bei
+  98.981,60 (−1,02 %, 24 Trades), das FK-Live-Konto bei 100.159,75 (+0,16 %,
+  **0 Trades**). Das Live-Plus kommt daher, dass nichts ausgeführt wurde — es
+  sagt nichts über die Strategie.
+  **Besonderheit Challenge:** `challenge_portfolio/paper_bot.py` hat als
+  Simulation nie gearbeitet, wird aber zur Laufzeit von der Echtgeld-Bridge
+  importiert (Scans, `LEG_RISK_PCT`, `ORB_EXIT_CFG_BY_INSTRUMENT`). Ein Commit
+  daran wirkt sofort auf echtes Geld, ohne dass je ein Paper-Lauf ihn
+  gegengeprüft hätte.
+  **ENTSCHIEDEN 2026-09-14: Paper-Zwillinge bleiben aus.** Stattdessen soll
+  das Soll aus einem **Backtest des jeweiligen Bridge-Portfolios über denselben
+  Kalenderzeitraum** kommen, der dann wöchentlich/monatlich gegen die echten
+  Live-Zahlen gestellt wird (Nutzerentscheid). Begründung des Nutzers: liefert
+  denselben Maßstab, ohne zwei zusätzliche Dauer-Tasks — und deckt zusätzlich
+  die Signale ab, die eine Bridge gar nicht erst gesehen hat. Umsetzung als
+  eigener Punkt weiter unten.
+  Details: [[bein-matrix-ist-soll-paper]] · [[systemlandkarte]].
+
 - **Zwei Annahmen aus dem Funded-Fix von heute** (2026-09-13).
   (1) **Deckelwert für den neuen aggregierten Offenes-Risiko-Kill-Switch:** ich
   habe ihn an die Anbieter-Regel gebunden statt FKIFs fixe 5 % zu kopieren —
@@ -516,6 +544,39 @@ abgehakt-und-liegengelassen.
 
 ### Offene Aufgaben
 
+- **🔴 EK: `cls_practical` hat noch NIE eine Order gesendet — 104 Scan-Fehler
+  seit 2026-08-31** (2026-09-14 bei der Bein-Zählung gefunden). Immer dieselbe
+  Kette: Lake-Eintrag gilt als veraltet → Fallback auf Live-Dukascopy → Hang →
+  90-s-Timeout → Bein fällt für den Zyklus aus. Fehlerverteilung: 51× am
+  09-03, 26× am 09-04, 10× am 09-07, 6× am 09-11. Das Bein ist damit auf EK
+  faktisch nicht im Portfolio, obwohl es dort mit 0,55 % Risiko/Trade
+  eingeplant ist. Hängt am Frischefenster-Punkt direkt darunter.
+  Priorität: Hoch. Details: [[bein-matrix-ist-soll-paper]].
+- **Frischefenster des Data Lake (35 Min.) passt nicht zur 15-Min.-Kadenz**
+  (2026-09-14, Vorschlag von mir — **nicht umgesetzt**, Priorität mittel).
+  `data_lake/manifest.py::_STALENESS_MINUTES["fast"] = 35` verzeiht bei
+  15-Minuten-Ingest genau **einen** ausgefallenen Lauf; danach gilt alles als
+  veraltet. Gezählt: 774 Lake-Fallbacks bei EK, >1.400 bei Funded, 728 bei FK
+  — **ausnahmslos** `LakeStaleDataError`, kein einziges „Datensatz fehlt". Der
+  Ingest selbst ist gesund (585 von 587 Fast-Läufen sauber beendet); Ingest
+  und Bridge setzen gemeinsam aus. Zwei Stellschrauben: (a) Fenster an die
+  Kadenz koppeln (z. B. 2,5 × Ingest-Intervall statt fix 35), (b) den
+  Live-Fallback bei Dukascopy hart deckeln — 90 s Hang für ein Bein, das
+  ohnehin nur alle 15 Min. scannt, ist der falsche Tausch. Ergänzt den
+  Kurztakt-Task-Befund vom 2026-09-13 um die Auslegungsfrage dahinter.
+- **Statustabelle braucht eine Spalte „letzter echter Entry"** (2026-09-14,
+  Priorität mittel). Die Modus-Spalte („LIVE — echtes Geld") hat fünf Tage
+  lang verdeckt, dass FK Instant Funding seit `DRY_RUN=False` am 2026-09-08
+  **null** Orders ausgeführt hat. „Läuft" und „handelt" sind nicht dasselbe,
+  und nur eines davon ist im Dashboard sichtbar.
+- **EKs `config.py`-Kommentar zur Kapitalscheibe widerspricht dem eigenen Log**
+  (2026-09-14, Priorität niedrig, reines Aufräumen). Der Kommentar zu
+  `CAPITAL_WEIGHT = 1/8` begründet sie mit „OU-Modell zählt mit (eigenes
+  echtes Konto, **keine Order hier**)" — die Bridge hat 9 OU-Orders gesendet
+  (D, FAST, SPG, SYY, AXP, ADI, EXPE, APD, AMGN), nachdem
+  `OU-Modell-MT5-Bridge` deaktiviert wurde. Nur ein Kommentar, aber er trägt
+  die Herleitung einer Risikokonstante — und genau so ein Kommentar hat am
+  2026-09-09 schon einmal wochenlang etwas Falsches behauptet.
 - **Live-Gegenprobe der neuen IQ-Gewichtung steht noch aus** (2026-09-13,
   Priorität mittel — erst beim nächsten planmäßigen Lauf mit echten Signalen
   prüfbar, also frühestens Montag). Seit heute fährt das IQ-Konto 5 Beine
@@ -658,7 +719,7 @@ abgehakt-und-liegengelassen.
 | FKInstantFunding-MT5-Bridge-Fast                        | BeyondIQCapital (17764, geteiltes Terminal)                                              | **LIVE — echtes Geld** (ctnl_continuation + orb_sp500/us30/nasdaq + cls_practical, `source="lake"`, analog Funded-Fast) | Ready (alle 5 Min, Mo–Fr)       | 2026-09-13      |
 | FK-Instant-Funding-Paper                                | — (reine Simulation)                                                                     | Paper + Telegram, **nur noch trend_pullback/gold_silver** (die anderen 7 Beine laufen live über die Bridge, seit 09-09 hier entfernt) | Ready (stündlich, Mo–Fr)        | 2026-09-13      |
 | OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner + Telegram (3x täglich: 15:35/18:35/21:35)                                           | Ready (Mo–Fr, US-Handelszeiten) | 2026-09-02      |
-| Forex-Weekly-Report                                     | —                                                                                        | Report-Generator                                                                             | Ready (So 18:00 — läuft am Wochenende bewusst weiter) | 2026-09-13      |
+| Forex-Weekly-Report                                     | —                                                                                        | Report-Generator (seit 09-15: Zeitlimit 4h statt 1h, Vollständigkeitsprüfung + 3x Wiederholung alle 4h bei unvollständigem Lauf) | Ready (So 18:00 — läuft am Wochenende bewusst weiter) | 2026-09-15      |
 | Bridge-Watchdog                                         | — (nur Log-Frische, kein Order-Bezug)                                                    | Heartbeat-Alarm + Status-Snapshot ins Repo                                                   | Ready (alle 30 Min, Mo–Fr)      | 2026-09-13      |
 | Funded-Portfolio-Bridge (TTP 6 Beine @1/6, IQ 5 Beine @1/3) | TTP Konto 2 (504072729) + TTP Konto 1 (504069845) + BeyondIQCapital (16054) — **alle 3 verbunden** (IQ 15514 am 2026-09-07 entfernt) | **LIVE — DRY_RUN=False** (alle 6 Beine `source="lake"`; **seit 09-13 kontospezifisch: IQ ohne `ou_modell`, Kapitalanteil 1/3 statt 1/6 — IQ handelt keine Aktien**; IPC-Timeouts 09-08 09:52-12:24 Uhr, seither stabil, siehe 🔍 Bestätigung) | Ready (alle 15 Min, Mo–Fr)      | 2026-09-13      |
 | Funded-Portfolio-Bridge-Fast                            | Gleiche 3 Konten (geteilte Terminals)                                                    | **LIVE — DRY_RUN=False** (ctnl_continuation + orb_sp500/us30/nasdaq + cls_practical, `source="lake"`) | Ready (alle 5 Min, Mo–Fr)       | 2026-09-13      |

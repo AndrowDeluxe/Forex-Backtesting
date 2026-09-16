@@ -93,6 +93,34 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
+- **CLS-Practical-Fix von heute Abend (Commit `b673a68`, 23:08:22 Uhr) scheint auf
+  den Live-Bridges noch NICHT zu wirken — mehrere Zyklen danach weiterhin exakt
+  derselbe Fehler** (2026-09-16, automatischer Bridge-Monitor-Lauf). Beobachtet im
+  `bridge_status/snapshot.json`-Stand von 00:01 Uhr: auf allen drei
+  Funded-Portfolio-Bridge-Konten (TTP Konto 1 **echtes Geld**, TTP Konto 2 Demo, IQ
+  Markets) läuft `CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with
+  duplicate labels` NACH dem Fix-Push unverändert weiter — Events um 23:13, 23:28,
+  23:43 und 23:58 Uhr, wortgleich mit den Fehlern von VOR dem Fix (22:38/22:43/22:58
+  Uhr). FKInstantFunding-MT5-Bridge zeigt denselben Fehlertext noch einmal um
+  23:14 Uhr (6 Min. nach dem Push). Der Fix selbst
+  (`cls_practical/rates.py::compute_daily_rate_score_2y`, `de_chg`/`us_chg` jetzt mit
+  `keep="last"` dedupliziert) ist im Repo committet + gepusht und laut dem
+  CHANGELOG-Eintrag von heute lokal reproduziert und verifiziert — nur eben nicht
+  gegen den echten Live-Lauf, das stand dort schon als offen.
+  **Bestbegründung, nicht bewiesen:** entweder zieht der laufende Bridge-Prozess
+  Code-Änderungen nicht bei jedem Lauf frisch aus diesem Repo (anders als
+  `challenge_portfolio/paper_bot.py`, das laut `CLAUDE.md` live importiert wird) und
+  braucht einen manuellen Pull, oder der laufende Python-Prozess hat
+  `cls_practical.rates` bereits im Speicher und bräuchte einen Neustart, damit die
+  neue Modulversion greift. Von hier aus (kein Zugriff auf die laufenden
+  Bridge-Prozesse) nicht weiter zu klären.
+  **Fragen:** (1) Zieht Funded-Portfolio-Bridge/FKInstantFunding-MT5-Bridge
+  `cls_practical/` bei jedem Lauf frisch aus dem Repo, oder liegt dort eine eigene
+  Kopie, die manuell nachgezogen werden muss? (2) Falls frisch gezogen: braucht der
+  laufende Task/Prozess einen manuellen Neustart, damit ein Fix wie dieser greift?
+  Bis das geklärt ist, würde ich beim nächsten Monitor-Lauf einfach gegenprüfen, ob
+  der Fehler im dann aktuellen Snapshot weiterhin auftritt.
+
 - **🔴 Zwei von drei Paper-Zwillingen laufen nicht — wieder scharfstellen?**
   (2026-09-14, deine Entscheidung). Stand:
   `ek_portfolio/paper_bot.py` → Task **Disabled seit 2026-08-31**;

@@ -48294,3 +48294,28 @@
 2026-09-16 10:55:29   "ctnl_kill_switch_active": false,
 2026-09-16 10:55:29   "n_trades": 24
 2026-09-16 10:55:29 }
+2026-09-16 10:55:30 [main 2de2ef6] FK Instant Funding Bot: Snapshot 2026-09-16 10:55
+2026-09-16 10:55:30  1 file changed, 25 insertions(+)
+2026-09-16 10:55:31 Merge with strategy ort failed.
+2026-09-16 10:55:31 WARNUNG: git merge von origin/main fehlgeschlagen (Exit 2), vermutlich ein echter Konflikt -- Merge abgebrochen, Push uebersprungen. Lokaler Commit bleibt unveraendert liegen, bitte manuell pruefen (git status im Repo).
+2026-09-16 10:55:31 === FK-Instant-Funding-Task beendet ===
+2026-09-16 12:55:23 === FK-Instant-Funding-Task gestartet ===
+2026-09-16 12:55:30 INFO:DUKASCRIPT:current timestamp :2026-09-15T03:00:00
+2026-09-16 12:55:30 INFO:DUKASCRIPT:current timestamp :2026-09-16T11:00:00
+2026-09-16 12:55:30 INFO:DUKASCRIPT:current timestamp :2026-09-16T11:00:00
+2026-09-16 12:55:30 INFO:DUKASCRIPT:current timestamp :2026-09-16T11:00:00
+2026-09-16 12:55:30 INFO:DUKASCRIPT:current timestamp :2026-09-16T07:00:00
+2026-09-16 12:55:30 INFO:DUKASCRIPT:current timestamp :2026-09-16T07:00:00
+2026-09-16 12:55:30 INFO:DUKASCRIPT:current timestamp :2026-09-16T07:00:00
+2026-09-16 12:55:30 INFO:DUKASCRIPT:current timestamp :2026-09-16T07:00:00
+2026-09-16 12:55:30 {
+2026-09-16 12:55:30   "date": "2026-09-16 09:55:24.386140",
+2026-09-16 12:55:30   "equity": 98981.6035329672,
+2026-09-16 12:55:30   "current_dd": -0.010183964670328005,
+2026-09-16 12:55:30   "consistency_ratio": 0.0,
+2026-09-16 12:55:30   "payout_safe": false,
+2026-09-16 12:55:30   "cum_profit": -1018.3964670327973,
+2026-09-16 12:55:30   "kill_switch_active": false,
+2026-09-16 12:55:30   "ctnl_kill_switch_active": false,
+2026-09-16 12:55:30   "n_trades": 24
+2026-09-16 12:55:30 }

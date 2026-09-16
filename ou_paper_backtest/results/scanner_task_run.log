@@ -4186,3 +4186,24 @@
 2026-09-15 22:37:41 S&P 500 (volles Universum, 420 Ticker)    APD 2026-09-14 287.13      289.73 287.13 268.88 314.50    314.50            6.36              15.73       True       True                            12.5 2026-09-15T22:37:37
 2026-09-15 22:37:41 S&P 500 (volles Universum, 420 Ticker)     DD 2026-09-14 124.29      124.37 124.29 109.93 145.84    145.84           11.56               8.65       True       True                            12.5 2026-09-15T22:37:37
 2026-09-15 22:37:41 S&P 500 (volles Universum, 420 Ticker)   TROW 2026-09-14 105.80      106.03 105.80  99.46 115.31    115.31            5.99              16.68       True       True                            12.5 2026-09-15T22:37:37
+2026-09-15 22:37:42 [main 35c14b9] OU-Modell Scanner: Snapshot 2026-09-15 22:37
+2026-09-15 22:37:42  2 files changed, 23 insertions(+), 5 deletions(-)
+2026-09-15 22:37:43 From https://github.com/AndrowDeluxe/Forex-Backtesting
+2026-09-15 22:37:43    d3b2ad4..2854161  main       -> origin/main
+2026-09-15 22:37:50 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-09-15 22:37:50    2854161..35c14b9  main -> main
+2026-09-15 22:37:50 Commit + Push erfolgreich.
+2026-09-15 22:37:50 === Scanner-Task beendet ===
+2026-09-16 14:30:01 === Scanner-Task gestartet ===
+2026-09-16 14:30:24 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-09-16 14:30:24 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-09-16 14:30:24 [sp500] 1 raw signal(s) as of 2026-09-15, regime_ok=True
+2026-09-16 14:30:24 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-09-16 14:30:24 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-09-16 14:30:24 [nasdaq100] 0 raw signal(s) as of 2026-09-15, regime_ok=True
+2026-09-16 14:30:24 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-09-16 14:30:24 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-09-16 14:30:24 
+2026-09-16 14:30:24 Saved 1 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-09-16T14:30:24)
+2026-09-16 14:30:24                                 market ticker  scan_date  close  lower_band  entry   sl    tp  tp_price  risk_pct_price  position_size_pct  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
+2026-09-16 14:30:24 S&P 500 (volles Universum, 420 Ticker)    IVZ 2026-09-15  30.78       31.02  30.78 28.9 33.61     33.61            6.12              16.33       True       True                            12.5 2026-09-16T14:30:24

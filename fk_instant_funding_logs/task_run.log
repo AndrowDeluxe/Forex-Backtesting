@@ -48594,3 +48594,13 @@
 2026-09-16 22:55:31   "ctnl_kill_switch_active": false,
 2026-09-16 22:55:31   "n_trades": 24
 2026-09-16 22:55:31 }
+2026-09-16 22:55:31 [main 36a3f6c] FK Instant Funding Bot: Snapshot 2026-09-16 22:55
+2026-09-16 22:55:31  3 files changed, 27 insertions(+), 1 deletion(-)
+2026-09-16 22:55:32 Merge with strategy ort failed.
+2026-09-16 22:55:32 WARNUNG: git merge von origin/main fehlgeschlagen (Exit 2), vermutlich ein echter Konflikt -- Merge abgebrochen, Push uebersprungen. Lokaler Commit bleibt unveraendert liegen, bitte manuell pruefen (git status im Repo).
+2026-09-16 22:55:33 === FK-Instant-Funding-Task beendet ===
+2026-09-16 23:55:23 === FK-Instant-Funding-Task gestartet ===
+2026-09-16 23:55:24 {
+2026-09-16 23:55:24   "date": "2026-09-16 21:55:24.338220",
+2026-09-16 23:55:24   "paused": true
+2026-09-16 23:55:24 }

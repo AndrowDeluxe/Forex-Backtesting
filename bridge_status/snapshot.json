@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-16T23:01:25",
+  "generated_at": "2026-09-16T23:31:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-16T22:59:08",
-      "minutes_since_last_run": 2.3,
+      "last_run": "2026-09-16T23:29:02",
+      "minutes_since_last_run": 2.4,
       "status": "ok",
       "last_equity_line": "2026-09-16 22:59:08 2026-09-16 22:59:02,644 INFO run_once: Konto-Equity 3261.30 EUR | Aggregiertes offenes Risiko (ganzes Konto): 273.14 (Deckel dieser Bridge: 978.39, 30%)",
       "last_error_line": "2026-09-16 10:44:48     raise error[0]",
@@ -12,30 +12,12 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-16T22:58:18",
+      "last_run": "2026-09-16T23:28:17",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
-        "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (ttp)": {
-          "last_equity_line": "2026-09-16 22:58:18 Verbunden: Login 504069845, Equity $95,662.50 USD",
-          "last_error_line": "2026-09-16 10:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
-          "recent_events": [
-            "2026-09-16 10:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
-            "2026-09-16 10:28:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
-            "2026-09-16 10:13:24 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
-            "2026-09-16 09:58:25 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
-            "2026-09-16 09:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
-            "2026-09-16 09:28:21 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
-            "2026-09-16 09:13:21 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
-            "2026-09-16 08:58:20 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
-            "2026-09-16 08:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
-            "2026-09-16 08:28:20 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
-            "2026-09-16 08:13:20 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
-            "2026-09-16 07:58:20 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels"
-          ]
-        },
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-16 22:58:18 Verbunden: Login 504072729, Equity $98,704.52 USD",
+          "last_equity_line": "2026-09-16 23:28:17 Verbunden: Login 504072729, Equity $98,692.44 USD",
           "last_error_line": "2026-09-16 10:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
           "recent_events": [
             "2026-09-16 10:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
@@ -53,7 +35,25 @@
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-16 22:58:18 Verbunden: Login 16054, Equity $99,458.47 USD",
+          "last_equity_line": "2026-09-16 23:28:17 Verbunden: Login 16054, Equity $99,458.47 USD",
+          "last_error_line": "2026-09-16 10:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
+          "recent_events": [
+            "2026-09-16 10:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
+            "2026-09-16 10:28:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
+            "2026-09-16 10:13:24 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
+            "2026-09-16 09:58:25 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
+            "2026-09-16 09:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
+            "2026-09-16 09:28:21 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
+            "2026-09-16 09:13:21 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
+            "2026-09-16 08:58:20 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
+            "2026-09-16 08:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
+            "2026-09-16 08:28:20 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
+            "2026-09-16 08:13:20 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
+            "2026-09-16 07:58:20 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels"
+          ]
+        },
+        "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (ttp)": {
+          "last_equity_line": "2026-09-16 23:28:17 Verbunden: Login 504069845, Equity $95,653.97 USD",
           "last_error_line": "2026-09-16 10:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
           "recent_events": [
             "2026-09-16 10:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
@@ -74,8 +74,8 @@
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-16T22:14:10",
-      "minutes_since_last_run": 47.2,
+      "last_run": "2026-09-16T23:14:02",
+      "minutes_since_last_run": 17.4,
       "status": "ok",
       "last_equity_line": "2026-09-16 22:14:10 Verbunden: Login 17764, Equity $99,482.73",
       "last_error_line": "2026-09-16 10:14:15 cls_practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",

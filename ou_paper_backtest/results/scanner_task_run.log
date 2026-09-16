@@ -4207,3 +4207,42 @@
 2026-09-16 14:30:24 Saved 1 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-09-16T14:30:24)
 2026-09-16 14:30:24                                 market ticker  scan_date  close  lower_band  entry   sl    tp  tp_price  risk_pct_price  position_size_pct  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
 2026-09-16 14:30:24 S&P 500 (volles Universum, 420 Ticker)    IVZ 2026-09-15  30.78       31.02  30.78 28.9 33.61     33.61            6.12              16.33       True       True                            12.5 2026-09-16T14:30:24
+2026-09-16 14:30:24 [main 3ff6f40] OU-Modell Scanner: Snapshot 2026-09-16 14:30
+2026-09-16 14:30:24  2 files changed, 22 insertions(+), 3 deletions(-)
+2026-09-16 14:30:26 Merge with strategy ort failed.
+2026-09-16 14:30:26 WARNUNG: git merge von origin/main fehlgeschlagen (Exit 2), vermutlich ein echter Konflikt -- Merge abgebrochen, Push uebersprungen. Lokaler Commit bleibt unveraendert liegen, bitte manuell pruefen (git status im Repo).
+2026-09-16 14:30:26 === Scanner-Task beendet ===
+2026-09-16 15:35:01 === Scanner-Task gestartet ===
+2026-09-16 15:35:28 $JPM: possibly delisted; no price data found  (1d 2025-08-12 -> 2026-09-16)
+2026-09-16 15:35:28 System.Management.Automation.RemoteException
+2026-09-16 15:35:28 1 Failed download:
+2026-09-16 15:35:28 ['JPM']: possibly delisted; no price data found  (1d 2025-08-12 -> 2026-09-16)
+2026-09-16 15:35:28 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-09-16 15:35:28 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-09-16 15:35:28 Traceback (most recent call last):
+2026-09-16 15:35:28   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+2026-09-16 15:35:28     return self._engine.get_loc(casted_key)
+2026-09-16 15:35:28            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+2026-09-16 15:35:28   File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+2026-09-16 15:35:28   File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+2026-09-16 15:35:28   File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+2026-09-16 15:35:28   File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+2026-09-16 15:35:28 KeyError: 'JPM'
+2026-09-16 15:35:28 System.Management.Automation.RemoteException
+2026-09-16 15:35:28 The above exception was the direct cause of the following exception:
+2026-09-16 15:35:28 System.Management.Automation.RemoteException
+2026-09-16 15:35:28 Traceback (most recent call last):
+2026-09-16 15:35:28   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 245, in <module>
+2026-09-16 15:35:28     main()
+2026-09-16 15:35:28     ~~~~^^
+2026-09-16 15:35:28   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 216, in main
+2026-09-16 15:35:28     all_signals.append(scan_market(market_key))
+2026-09-16 15:35:28                        ~~~~~~~~~~~^^^^^^^^^^^^
+2026-09-16 15:35:28   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 134, in scan_market
+2026-09-16 15:35:28     price = panel[t].dropna()
+2026-09-16 15:35:28             ~~~~~^^^
+2026-09-16 15:35:28   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+2026-09-16 15:35:28     indexer = self.columns.get_loc(key)
+2026-09-16 15:35:28   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+2026-09-16 15:35:28     raise KeyError(key) from err
+2026-09-16 15:35:28 KeyError: 'JPM'

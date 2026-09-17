@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-09-17T23:31:24",
+  "generated_at": "2026-09-18T00:01:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-17T23:29:02",
+      "last_run": "2026-09-17T23:59:02",
       "minutes_since_last_run": 2.4,
       "status": "ok",
       "last_equity_line": "2026-09-17 22:59:08 2026-09-17 22:59:02,609 INFO run_once: Konto-Equity 3228.72 EUR | Aggregiertes offenes Risiko (ganzes Konto): 388.61 (Deckel dieser Bridge: 968.62, 30%)",
@@ -12,12 +12,12 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-17T23:28:17",
+      "last_run": "2026-09-17T23:58:17",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-17 23:28:16 Verbunden: Login 16054, Equity $99,780.91 USD",
+          "last_equity_line": "2026-09-17 23:58:17 Verbunden: Login 16054, Equity $99,780.91 USD",
           "last_error_line": "2026-09-16 10:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
           "recent_events": [
             "2026-09-17 19:28:25 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.04 risk=$150.00 sl=4394.52503 -- placed",
@@ -35,7 +35,7 @@
           ]
         },
         "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (ttp)": {
-          "last_equity_line": "2026-09-17 23:28:17 Verbunden: Login 504069845, Equity $95,668.90 USD",
+          "last_equity_line": "2026-09-17 23:58:17 Verbunden: Login 504069845, Equity $95,668.90 USD",
           "last_error_line": "2026-09-16 10:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
           "recent_events": [
             "2026-09-17 22:28:19 [TTP] ?? ENTRY ctnl_reversal XAUUSD BUY lots=0.02 risk=$75.00 sl=4316.55306 -- placed",
@@ -53,7 +53,7 @@
           ]
         },
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-17 23:28:16 Verbunden: Login 504072729, Equity $98,570.94 USD",
+          "last_equity_line": "2026-09-17 23:58:17 Verbunden: Login 504072729, Equity $98,570.94 USD",
           "last_error_line": "2026-09-16 10:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
           "recent_events": [
             "2026-09-17 22:28:19 [TTP] ?? ENTRY ctnl_reversal XAUUSD BUY lots=0.02 risk=$75.00 sl=4316.55306 -- placed",
@@ -75,7 +75,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-09-17T23:14:02",
-      "minutes_since_last_run": 17.4,
+      "minutes_since_last_run": 47.4,
       "status": "ok",
       "last_equity_line": "2026-09-17 22:14:20 Verbunden: Login 17764, Equity $99,923.36",
       "last_error_line": "2026-09-17 22:14:20 Telegram-Nachricht fehlgeschlagen: ('Connection aborted.', ConnectionResetError(10054, 'Eine vorhandene Verbindung wurde vom Remotehost geschlossen', None, 10054, None))",

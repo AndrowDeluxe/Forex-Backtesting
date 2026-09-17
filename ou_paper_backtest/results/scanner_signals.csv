@@ -1,8 +1,8 @@
 market,ticker,scan_date,close,lower_band,entry,sl,tp,tp_price,risk_pct_price,position_size_pct,regime_ok,tradeable,position_size_concentrated_pct,scanned_at
-"S&P 500 (volles Universum, 420 Ticker)",AXP,2026-09-16,312.43,315.62,312.43,292.2,342.78,342.78,6.48,15.44,True,True,12.5,2026-09-17T18:35:32
-"S&P 500 (volles Universum, 420 Ticker)",COF,2026-09-16,203.19,203.48,203.19,187.96,226.04,226.04,7.5,13.34,True,True,12.5,2026-09-17T18:35:32
-"S&P 500 (volles Universum, 420 Ticker)",D,2026-09-16,63.51,63.55,63.51,60.55,67.96,67.96,4.67,20.0,True,True,12.5,2026-09-17T18:35:32
-"S&P 500 (volles Universum, 420 Ticker)",IVZ,2026-09-16,30.08,30.57,30.08,27.69,33.66,33.66,7.94,12.6,True,True,12.5,2026-09-17T18:35:32
-"S&P 500 (volles Universum, 420 Ticker)",REG,2026-09-16,73.26,73.53,73.26,71.17,76.39,76.39,2.85,20.0,True,True,12.5,2026-09-17T18:35:32
-"S&P 500 (volles Universum, 420 Ticker)",SYY,2026-09-16,78.71,78.93,78.71,74.14,85.56,85.56,5.8,17.23,True,True,12.5,2026-09-17T18:35:32
-"S&P 500 (volles Universum, 420 Ticker)",TROW,2026-09-16,102.4,102.89,102.4,94.25,114.63,114.63,7.96,12.56,True,True,12.5,2026-09-17T18:35:32
+"S&P 500 (volles Universum, 420 Ticker)",AXP,2026-09-16,312.43,315.62,312.43,292.2,342.78,342.78,6.48,15.44,True,True,12.5,2026-09-17T19:35:33
+"S&P 500 (volles Universum, 420 Ticker)",COF,2026-09-16,203.19,203.48,203.19,187.96,226.04,226.04,7.5,13.34,True,True,12.5,2026-09-17T19:35:33
+"S&P 500 (volles Universum, 420 Ticker)",D,2026-09-16,63.51,63.55,63.51,60.55,67.96,67.96,4.67,20.0,True,True,12.5,2026-09-17T19:35:33
+"S&P 500 (volles Universum, 420 Ticker)",IVZ,2026-09-16,30.08,30.57,30.08,27.69,33.66,33.66,7.94,12.6,True,True,12.5,2026-09-17T19:35:33
+"S&P 500 (volles Universum, 420 Ticker)",REG,2026-09-16,73.26,73.53,73.26,71.17,76.39,76.39,2.85,20.0,True,True,12.5,2026-09-17T19:35:33
+"S&P 500 (volles Universum, 420 Ticker)",SYY,2026-09-16,78.71,78.93,78.71,74.14,85.56,85.56,5.8,17.23,True,True,12.5,2026-09-17T19:35:33
+"S&P 500 (volles Universum, 420 Ticker)",TROW,2026-09-16,102.4,102.89,102.4,94.25,114.63,114.63,7.96,12.56,True,True,12.5,2026-09-17T19:35:33

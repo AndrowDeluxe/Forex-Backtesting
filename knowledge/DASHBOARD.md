@@ -93,6 +93,33 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
+- **`bridge_status/snapshot.json` seit Mi 2026-09-16 00:01:25 Uhr nicht mehr
+  aktualisiert — Bridge-Watchdog liefert seit >41h keinen neuen Stand, obwohl
+  Mi/Do normale Handelstage sind (kein Wochenende)** (2026-09-17, automatischer
+  Bridge-Monitor-Lauf). Letzter Commit auf `bridge_status/snapshot.json` ist
+  `e92c754` (generated_at `2026-09-16T00:01:25`, +0300). Laut Soll-Takt
+  (30-Min-Trigger Mo–Fr, siehe Statustabelle/Wochenend-Pause-Abschnitt unten)
+  hätten seither ca. 80 weitere Snapshot-Commits kommen müssen; es kamen null
+  — auch keine der sonst üblichen Parallel-Commits von anderen Mo–Fr-Tasks
+  (`FK Instant Funding Bot: Snapshot`, `OU-Modell Scanner: Snapshot`), die am
+  09-15 noch mehrfach pro Stunde eingingen. Von hier aus (kein Zugriff auf den
+  Windows-Rechner) nicht unterscheidbar, welcher von mehreren früher schon
+  aufgetretenen Fällen vorliegt: (a) Rechner/Task Scheduler seit Di-Nacht aus
+  oder im Schlaf, (b) alle Scheduled Tasks laufen lokal weiter, aber der
+  Git-Push scheitert erneut (exakt dieses Muster gab es schon einmal,
+  2026-09-07/08, siehe der bereits aufgelöste Punkt weiter unten — der
+  damalige Fix `Sync-AndPush`/`git_sync_push.ps1` sollte das eigentlich
+  verhindern), oder (c) ein anderer, neuer Fehler in `watchdog.py` selbst.
+  **Ohne aktuellen Snapshot ist dieser Monitor für den gesamten Zeitraum
+  blind** — insbesondere lässt sich dadurch NICHT prüfen, ob der
+  CLS-Practical-Fix (`b673a68`, siehe Punkt direkt darunter) auf den Live-
+  Bridges inzwischen gegriffen hat, und es gibt keine Sichtbarkeit auf
+  eventuelle Fehler/Trades der letzten 1,5 Tage auf allen drei Live-Bridges
+  (echtes Geld). **Frage:** Läuft der Rechner? Falls ja, bitte einmal lokal
+  `bridge_status/snapshot.json` und die Watchdog-Logs gegenchecken, ob dort
+  frische lokale Daten stehen (dann wäre es wieder ein reines Push-Problem
+  wie 2026-09-07/08) oder ob der Watchdog selbst steht.
+
 - **CLS-Practical-Fix von heute Abend (Commit `b673a68`, 23:08:22 Uhr) scheint auf
   den Live-Bridges noch NICHT zu wirken — mehrere Zyklen danach weiterhin exakt
   derselbe Fehler** (2026-09-16, automatischer Bridge-Monitor-Lauf). Beobachtet im

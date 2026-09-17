@@ -1,25 +1,45 @@
 {
-  "generated_at": "2026-09-17T18:01:24",
+  "generated_at": "2026-09-17T18:31:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-17T17:59:07",
+      "last_run": "2026-09-17T18:29:07",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-09-17 17:59:07 2026-09-17 17:59:02,417 INFO run_once: Konto-Equity 3166.51 EUR | Aggregiertes offenes Risiko (ganzes Konto): 388.54 (Deckel dieser Bridge: 949.95, 30%)",
+      "last_equity_line": "2026-09-17 18:29:07 2026-09-17 18:29:02,379 INFO run_once: Konto-Equity 3177.86 EUR | Aggregiertes offenes Risiko (ganzes Konto): 388.58 (Deckel dieser Bridge: 953.36, 30%)",
       "last_error_line": "2026-09-16 10:44:48     raise error[0]",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-17T17:58:20",
+      "last_run": "2026-09-17T18:28:20",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
-        "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-17 17:58:20 Verbunden: Login 16054, Equity $98,244.33 USD",
+        "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
+          "last_equity_line": "2026-09-17 18:28:20 Verbunden: Login 504072729, Equity $98,202.06 USD",
           "last_error_line": "2026-09-16 10:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
           "recent_events": [
+            "2026-09-17 18:28:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4403.88903 -- placed",
+            "2026-09-17 18:13:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4401.51572 -- placed",
+            "2026-09-17 17:58:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4399.24816 -- placed",
+            "2026-09-17 17:43:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4396.74344 -- placed",
+            "2026-09-17 17:28:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4399.53684 -- placed",
+            "2026-09-17 17:13:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4402.85414 -- placed",
+            "2026-09-17 16:58:19 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4407.77583 -- placed",
+            "2026-09-17 16:43:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4415.15035 -- placed",
+            "2026-09-17 16:28:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4407.36191 -- placed",
+            "2026-09-17 16:13:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4409.37491 -- placed",
+            "2026-09-17 15:58:23 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4410.08663 -- placed",
+            "2026-09-17 15:43:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4408.45910 -- placed"
+          ]
+        },
+        "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
+          "last_equity_line": "2026-09-17 18:28:20 Verbunden: Login 16054, Equity $98,326.65 USD",
+          "last_error_line": "2026-09-16 10:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
+          "recent_events": [
+            "2026-09-17 18:28:20 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.03 risk=$150.00 sl=4403.88903 -- placed",
+            "2026-09-17 18:13:21 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.04 risk=$150.00 sl=4401.51572 -- placed",
             "2026-09-17 17:58:20 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.04 risk=$150.00 sl=4399.24816 -- placed",
             "2026-09-17 17:43:20 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.04 risk=$150.00 sl=4396.74344 -- placed",
             "2026-09-17 17:28:20 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.03 risk=$150.00 sl=4399.53684 -- placed",
@@ -29,15 +49,15 @@
             "2026-09-17 16:28:21 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.03 risk=$150.00 sl=4407.36191 -- placed",
             "2026-09-17 16:13:21 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.03 risk=$150.00 sl=4409.37491 -- placed",
             "2026-09-17 15:58:23 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.03 risk=$150.00 sl=4410.08663 -- placed",
-            "2026-09-17 15:43:21 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.02 risk=$150.00 sl=4408.45910 -- placed",
-            "2026-09-17 15:28:20 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.03 risk=$150.00 sl=4409.10786 -- placed",
-            "2026-09-17 15:13:20 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.02 risk=$150.00 sl=4414.72348 -- placed"
+            "2026-09-17 15:43:21 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.02 risk=$150.00 sl=4408.45910 -- placed"
           ]
         },
         "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (ttp)": {
-          "last_equity_line": "2026-09-17 17:58:20 Verbunden: Login 504069845, Equity $95,158.04 USD",
+          "last_equity_line": "2026-09-17 18:28:20 Verbunden: Login 504069845, Equity $95,245.29 USD",
           "last_error_line": "2026-09-16 10:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
           "recent_events": [
+            "2026-09-17 18:28:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4403.88903 -- placed",
+            "2026-09-17 18:13:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4401.51572 -- placed",
             "2026-09-17 17:58:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4399.24816 -- placed",
             "2026-09-17 17:43:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4396.74344 -- placed",
             "2026-09-17 17:28:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4399.53684 -- placed",
@@ -47,39 +67,20 @@
             "2026-09-17 16:28:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4407.36191 -- placed",
             "2026-09-17 16:13:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4409.37491 -- placed",
             "2026-09-17 15:58:23 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4410.08663 -- placed",
-            "2026-09-17 15:43:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4408.45910 -- placed",
-            "2026-09-17 15:28:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4409.10786 -- placed",
-            "2026-09-17 15:13:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4414.72348 -- placed"
-          ]
-        },
-        "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-17 17:58:20 Verbunden: Login 504072729, Equity $98,122.40 USD",
-          "last_error_line": "2026-09-16 10:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
-          "recent_events": [
-            "2026-09-17 17:58:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4399.24816 -- placed",
-            "2026-09-17 17:43:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4396.74344 -- placed",
-            "2026-09-17 17:28:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4399.53684 -- placed",
-            "2026-09-17 17:13:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4402.85414 -- placed",
-            "2026-09-17 16:58:19 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4407.77583 -- placed",
-            "2026-09-17 16:43:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4415.15035 -- placed",
-            "2026-09-17 16:28:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4407.36191 -- placed",
-            "2026-09-17 16:13:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4409.37491 -- placed",
-            "2026-09-17 15:58:23 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4410.08663 -- placed",
-            "2026-09-17 15:43:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4408.45910 -- placed",
-            "2026-09-17 15:28:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4409.10786 -- placed",
-            "2026-09-17 15:13:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4414.72348 -- placed"
+            "2026-09-17 15:43:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4408.45910 -- placed"
           ]
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-17T17:14:10",
-      "minutes_since_last_run": 47.2,
+      "last_run": "2026-09-17T18:14:10",
+      "minutes_since_last_run": 17.2,
       "status": "ok",
-      "last_equity_line": "2026-09-17 17:14:10 Verbunden: Login 17764, Equity $99,905.28",
+      "last_equity_line": "2026-09-17 18:14:10 Verbunden: Login 17764, Equity $99,881.24",
       "last_error_line": "2026-09-16 10:14:15 cls_practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
       "recent_events": [
+        "2026-09-17 18:14:10  LIVE  ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.01 risk=$33.64 (Ziel $37.83) sl=4401.51572 -- placed",
         "2026-09-17 17:14:10  LIVE  ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.01 risk=$41.88 (Ziel $37.84) sl=4402.85414 -- placed",
         "2026-09-17 16:14:11  LIVE  ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.01 risk=$37.57 (Ziel $37.86) sl=4409.37491 -- placed",
         "2026-09-17 15:14:10  LIVE  ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.01 risk=$54.23 (Ziel $37.84) sl=4414.72348 -- placed",
@@ -90,8 +91,7 @@
         "2026-09-17 15:14:10  LIVE  EXIT ctnl_reversal XAUUSD.gbe (Ticket 1595834, stop) -- already_closed @ 4351.42 (P/L -34.95)",
         "2026-09-17 14:14:10  LIVE ᴩ ctnl_reversal XAUUSD.gbe: Kurs bereits 0.84R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 6.2-fache aufgeblaeht.",
         "2026-09-17 13:14:10  LIVE ᴩ ctnl_reversal XAUUSD.gbe: Kurs bereits 0.54R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.2-fache aufgeblaeht.",
-        "2026-09-17 12:14:11  LIVE  ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.01 risk=$28.38 (Ziel $37.78) sl=4340.60424 -- placed",
-        "2026-09-17 12:14:11  LIVE  ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.01 risk=$37.34 (Ziel $37.78) sl=4349.55628 -- placed"
+        "2026-09-17 12:14:11  LIVE  ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.01 risk=$28.38 (Ziel $37.78) sl=4340.60424 -- placed"
       ]
     }
   }

@@ -1,23 +1,23 @@
 {
-  "generated_at": "2026-09-17T19:31:24",
+  "generated_at": "2026-09-17T20:01:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-17T19:29:08",
+      "last_run": "2026-09-17T19:59:08",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-09-17 19:29:07 2026-09-17 19:29:02,394 INFO run_once: Konto-Equity 3186.40 EUR | Aggregiertes offenes Risiko (ganzes Konto): 388.61 (Deckel dieser Bridge: 955.92, 30%)",
+      "last_equity_line": "2026-09-17 19:59:08 2026-09-17 19:59:02,741 INFO run_once: Konto-Equity 3192.49 EUR | Aggregiertes offenes Risiko (ganzes Konto): 388.61 (Deckel dieser Bridge: 957.75, 30%)",
       "last_error_line": "2026-09-16 10:44:48     raise error[0]",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-17T19:28:25",
-      "minutes_since_last_run": 3.0,
+      "last_run": "2026-09-17T19:58:20",
+      "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-17 19:28:25 Verbunden: Login 504072729, Equity $98,290.32 USD",
+          "last_equity_line": "2026-09-17 19:58:20 Verbunden: Login 504072729, Equity $98,286.36 USD",
           "last_error_line": "2026-09-16 10:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
           "recent_events": [
             "2026-09-17 19:28:25 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4394.52503 -- placed",
@@ -35,7 +35,7 @@
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-17 19:28:25 Verbunden: Login 16054, Equity $98,572.41 USD",
+          "last_equity_line": "2026-09-17 19:58:20 Verbunden: Login 16054, Equity $98,551.20 USD",
           "last_error_line": "2026-09-16 10:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
           "recent_events": [
             "2026-09-17 19:28:25 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.04 risk=$150.00 sl=4394.52503 -- placed",
@@ -53,7 +53,7 @@
           ]
         },
         "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (ttp)": {
-          "last_equity_line": "2026-09-17 19:28:25 Verbunden: Login 504069845, Equity $95,308.82 USD",
+          "last_equity_line": "2026-09-17 19:58:20 Verbunden: Login 504069845, Equity $95,302.81 USD",
           "last_error_line": "2026-09-16 10:43:19 CLS-Practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",
           "recent_events": [
             "2026-09-17 19:28:25 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4394.52503 -- placed",
@@ -75,7 +75,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-09-17T19:14:10",
-      "minutes_since_last_run": 17.2,
+      "minutes_since_last_run": 47.2,
       "status": "ok",
       "last_equity_line": "2026-09-17 19:14:10 Verbunden: Login 17764, Equity $99,884.15",
       "last_error_line": "2026-09-16 10:14:15 cls_practical-Scan fehlgeschlagen: cannot reindex on an axis with duplicate labels",

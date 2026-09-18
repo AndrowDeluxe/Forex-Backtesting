@@ -49712,3 +49712,15 @@
 2026-09-18 23:14:47   "ctnl_kill_switch_active": false,
 2026-09-18 23:14:47   "n_trades": 24
 2026-09-18 23:14:47 }
+2026-09-18 23:14:47 [main 84b92ba] FK Instant Funding Bot: Snapshot 2026-09-18 23:14
+2026-09-18 23:14:47  3 files changed, 21 insertions(+), 1 deletion(-)
+2026-09-18 23:14:49 From https://github.com/AndrowDeluxe/Forex-Backtesting
+2026-09-18 23:14:49    5e14bdd..3348bca  main       -> origin/main
+2026-09-18 23:14:49 Merge with strategy ort failed.
+2026-09-18 23:14:49 WARNUNG: git merge von origin/main fehlgeschlagen (Exit 2), vermutlich ein echter Konflikt -- Merge abgebrochen, Push uebersprungen. Lokaler Commit bleibt unveraendert liegen, bitte manuell pruefen (git status im Repo).
+2026-09-18 23:14:49 === FK-Instant-Funding-Task beendet ===
+2026-09-18 23:55:23 === FK-Instant-Funding-Task gestartet ===
+2026-09-18 23:55:24 {
+2026-09-18 23:55:24   "date": "2026-09-18 21:55:24.308466",
+2026-09-18 23:55:24   "paused": true
+2026-09-18 23:55:24 }

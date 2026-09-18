@@ -9,6 +9,39 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-18** [Funded-Portfolio-Bridge / TTP Konto 1, echtes Geld] **TTP-Konto
+  wegen Verletzung des "max open drawdown" gesperrt (Nutzermeldung). Ursache der
+  Nacht 17.→18.09. von hier aus NICHT rekonstruierbar — der Repo-seitige
+  Telemetrie-Strom endet am 2026-09-16 00:01:25.** Reine Beobachtung, kein Fix,
+  kein Code angefasst.
+  **Was belegt ist:** Letzter `bridge_status/snapshot.json` (Commit `e92c754`,
+  `generated_at` 2026-09-16T00:01:25 +0300) ist der letzte Stand aller drei
+  Bridges. Seither null Watchdog-/FK-/OU-Snapshot-Commits — die Blindheit war
+  bereits am 2026-09-17 als Tier-2-Befund eingetragen (`5e14bdd`). Über die
+  Nacht der Sperrung existiert im Repo daher KEINE Zeile.
+  **Letzter verifizierter Stand 2026-09-15 23:58:18:** TTP Konto 1 (echtes Geld)
+  Equity $95.814,93 → −4,19 % gegen 100k, d. h. von den 7 % Gesamt-Drawdown-Cap
+  waren nur noch ~2,8 Prozentpunkte übrig. Offen laut Log: drei `ou_modell`-
+  Aktienpositionen, über Nacht eingegangen (22:38/22:43 Uhr: IVZ 84 Lots,
+  APD 8 Lots, DD 8 Lots, je ~$159,7 geplantes Risiko). TTP Konto 2 (Demo)
+  $98.845,93, IQ Markets $99.458,47, FKIF $100.020,91.
+  **CTNL-Befund im selben Stand:** `CTNL-Edge-Scan fehlgeschlagen: '>' not
+  supported between instances of 'str' and 'float'` (Funded, beide TTP-Konten,
+  2026-09-15 12:15:29) sowie mehrfach auf der FKIF-Bridge (09-11, 01:16/02:17/
+  14:17). Das ist der bekannte dukascopy-`_stream()`-Bug, kein neuer Fehler —
+  Wirkung ist ein ausgefallener SCAN (keine neuen Signale), nicht ein
+  fehlgeschlagener Exit; Bestandspositionen verwaltet die Bridge außerhalb
+  dieses Pfads. Ob CTNL in der fraglichen Nacht überhaupt Positionen auf TTP
+  hielt, ist von hier aus nicht feststellbar.
+  **Größenordnung zur Einordnung:** CTNL ist auf der Challenge/Funded-Seite
+  klein sizet — `CAPITAL_WEIGHT` 1/6 × `LEG_RISK_PCT` 0,005 (Continuation) bzw.
+  0,0015 (Reversal) ≈ 0,083 % / 0,025 % der Equity je Trade (~$83 / ~$25 auf
+  100k), gedeckelt durch `MAX_POSITION_RISK_PCT` 1 %. Bei planmäßigem Stop kann
+  CTNL dort einen 7-%-Cap rechnerisch nicht allein reißen. Auf EK läuft CTNL
+  dagegen mit `EK_RISK` 2,0 % / 1,5 % (`app_pages/gold_ctnl_edge.py:66`) —
+  Größenordnungen darüber.
+  Commit: siehe Branch `claude/ctnl-nacht-bridge-issues-9easey`.
+
 - **2026-09-15** [cls_practical/rates.py] **Bridge-Monitor-Routine: CLS-Practical-Scan
   auf Funded-Portfolio-Bridge (TTP + IQ, alle Konten) fiel seit 22:38 Uhr bei
   JEDEM ~15-Minuten-Zyklus mit `cannot reindex on an axis with duplicate

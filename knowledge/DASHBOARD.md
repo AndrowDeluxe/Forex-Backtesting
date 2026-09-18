@@ -93,6 +93,38 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
+- **🔴 TTP Konto 1 (echtes Geld) wegen "max open drawdown" gesperrt — und der
+  Bot prüft genau diese Regel strukturell NICHT** (2026-09-18, deine Meldung +
+  mein Codebefund). Zwei getrennte Punkte:
+  **(1) Keine Telemetrie über die Nacht.** Letzter Stand aller Bridges ist
+  `bridge_status/snapshot.json` vom 2026-09-16 00:01:25 (`e92c754`); seither
+  null Snapshot-Commits (bereits als Tier-2-Befund eingetragen, `5e14bdd`).
+  Über die Nacht 17.→18.09. existiert im Repo keine Zeile — die Rekonstruktion
+  MUSS aus den lokalen Logs auf dem Windows-Rechner kommen
+  (`C:\Users\andre\Funded-Portfolio-Bridge\logs\task_run.log`,
+  `...\EK-Portfolio-Bridge\logs\task_run.log`,
+  `...\FKInstantFunding-MT5-Bridge\logs\task_run.log`) plus der MT5-
+  Kontohistorie des TTP-Kontos.
+  **(2) Codebefund, meine Herleitung — bitte gegenlesen:**
+  `challenge_portfolio/paper_bot.py::check_ttp_rules()` misst den
+  7-%-Gesamt-Drawdown gegen `compute_shared_equity()`, und diese Kurve wird
+  ausschließlich aus GESCHLOSSENEN Trades gebaut (`_state_trades_df()` filtert
+  per `dropna(subset=["r_multiple"])`, aufsummiert nach `exit_time`).
+  Schwebende Buchverluste offener Positionen gehen dort NIE ein. Die
+  Anbieter-Regel, die das Konto gesperrt hat, ist aber genau eine auf die
+  laufende (Floating-)Equity. Der Kill-Switch des Bots kann in diesem Aufbau
+  also "ok" melden, während das Konto real längst durch die Grenze ist.
+  Der 2026-09-13 gebaute aggregierte Offenes-Risiko-Deckel (TTP 3,5 %) deckt
+  das nur teilweise ab: er begrenzt das GEPLANTE Risiko bis zum Stop, nicht
+  den tatsächlichen Buchverlust — bei Gap über den Stop, nicht gesetztem oder
+  vom Broker abgelehntem SL (vgl. `retcode=10016 "Invalid stops"` vom
+  2026-09-11) läuft der reale Verlust daran vorbei.
+  **Fragen an dich:** (a) Kannst du die drei `task_run.log` + die TTP-
+  Kontohistorie (Positionen/Zeiten/P&L der Nacht) bereitstellen? (b) Sollen
+  die übrigen Live-Bridges (EK echtes Geld, IQ, FKIF) bis zur Klärung
+  pausiert werden? (c) Punkt (2) als Bug bestätigt → dann baue ich die
+  Floating-Equity in die Regelprüfung ein.
+
 - **`bridge_status/snapshot.json` seit Mi 2026-09-16 00:01:25 Uhr nicht mehr
   aktualisiert — Bridge-Watchdog liefert seit >41h keinen neuen Stand, obwohl
   Mi/Do normale Handelstage sind (kein Wochenende)** (2026-09-17, automatischer

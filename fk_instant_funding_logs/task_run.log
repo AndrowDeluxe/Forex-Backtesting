@@ -49661,3 +49661,20 @@
 2026-09-18 20:14:46 ‘‹·¥©≈ Trend Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md) (weitere Fehler heute nur noch im Tagesabschluss)
 2026-09-18 20:14:46 ---
 2026-09-18 20:14:46 ‘‹·¥©≈ Gold-Silber-Divergenz-Scan fehlgeschlagen: Aufruf haengt noch nach 90s (dukascopy_python-Hang, siehe DASHBOARD.md) (weitere Fehler heute nur noch im Tagesabschluss)
+2026-09-18 20:14:46 [main 0ac976e] FK Instant Funding Bot: Snapshot 2026-09-18 20:14
+2026-09-18 20:14:46  2 files changed, 25 insertions(+), 1 deletion(-)
+2026-09-18 20:14:48 Merge with strategy ort failed.
+2026-09-18 20:14:48 WARNUNG: git merge von origin/main fehlgeschlagen (Exit 2), vermutlich ein echter Konflikt -- Merge abgebrochen, Push uebersprungen. Lokaler Commit bleibt unveraendert liegen, bitte manuell pruefen (git status im Repo).
+2026-09-18 20:14:48 === FK-Instant-Funding-Task beendet ===
+2026-09-18 20:55:23 === FK-Instant-Funding-Task gestartet ===
+2026-09-18 21:12:52 {
+2026-09-18 21:12:52   "date": "2026-09-18 18:55:25.251803",
+2026-09-18 21:12:52   "equity": 98981.6035329672,
+2026-09-18 21:12:52   "current_dd": -0.010183964670328005,
+2026-09-18 21:12:52   "consistency_ratio": 0.0,
+2026-09-18 21:12:52   "payout_safe": false,
+2026-09-18 21:12:52   "cum_profit": -1018.3964670327973,
+2026-09-18 21:12:52   "kill_switch_active": false,
+2026-09-18 21:12:52   "ctnl_kill_switch_active": false,
+2026-09-18 21:12:52   "n_trades": 24
+2026-09-18 21:12:52 }

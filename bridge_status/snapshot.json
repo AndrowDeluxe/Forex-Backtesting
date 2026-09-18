@@ -1,39 +1,22 @@
 {
-  "generated_at": "2026-09-18T17:31:25",
+  "generated_at": "2026-09-18T18:01:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-18T17:29:08",
+      "last_run": "2026-09-18T17:59:08",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-09-18 17:29:08 2026-09-18 17:29:02,634 INFO run_once: Konto-Equity 3198.96 EUR | Aggregiertes offenes Risiko (ganzes Konto): 375.10 (Deckel dieser Bridge: 959.69, 30%)",
+      "last_equity_line": "2026-09-18 17:59:08 2026-09-18 17:59:02,769 INFO run_once: Konto-Equity 3196.44 EUR | Aggregiertes offenes Risiko (ganzes Konto): 375.23 (Deckel dieser Bridge: 958.93, 30%)",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-18T17:28:19",
+      "last_run": "2026-09-18T17:58:18",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
-        "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-18 17:28:19 Verbunden: Login 504072729, Equity $98,921.38 USD",
-          "recent_events": [
-            "2026-09-18 16:58:20 [TTP] ?? ENTRY ou_modell (PEP) PEP BUY lots=16.0 risk=$164.68 sl=120.50303 -- placed",
-            "2026-09-18 11:28:22 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4417.81483 -- placed",
-            "2026-09-18 11:13:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.04 risk=$75.00 sl=4413.04654 -- placed",
-            "2026-09-18 10:58:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.03 risk=$75.00 sl=4417.84384 -- placed",
-            "2026-09-18 10:43:25 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4422.42483 -- placed",
-            "2026-09-18 10:28:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4423.71034 -- placed",
-            "2026-09-18 10:13:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4421.31294 -- placed",
-            "2026-09-18 09:58:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4420.14873 -- placed",
-            "2026-09-18 09:43:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4420.19024 -- placed",
-            "2026-09-18 09:28:23 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4421.91973 -- placed",
-            "2026-09-18 09:13:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4421.83955 -- placed",
-            "2026-09-18 08:58:22 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4418.72178 -- placed"
-          ]
-        },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-18 17:28:19 Verbunden: Login 16054, Equity $100,691.43 USD",
+          "last_equity_line": "2026-09-18 17:58:18 Verbunden: Login 16054, Equity $100,742.86 USD",
           "recent_events": [
             "2026-09-18 11:28:22 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.04 risk=$150.00 sl=4417.81483 -- placed",
             "2026-09-18 11:13:20 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.09 risk=$150.00 sl=4413.04654 -- placed",
@@ -50,7 +33,7 @@
           ]
         },
         "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (ttp)": {
-          "last_equity_line": "2026-09-18 17:28:19 Verbunden: Login 504069845, Equity $94,626.57 USD",
+          "last_equity_line": "2026-09-18 17:58:18 Verbunden: Login 504069845, Equity $94,634.78 USD",
           "last_error_line": "2026-09-18 16:13:19 [TTP] ?? Entry fehlgeschlagen ou_modell (PEP) PEP: OrderSendResult(retcode=10026, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='AutoTrading disabled by server', request_id=0, retcode_external=0, request=TradeRequest(action=1, magic=0, order=0, symbol='PEP', volume=15.0, price=130.86, stoplimit=0.0, sl=120.50303151690976, tp=0.0, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='FP ou_modell (PEP)', position=0, position_by=0))",
           "recent_events": [
             "2026-09-18 16:13:19 [TTP] ?? Entry fehlgeschlagen ou_modell (PEP) PEP: OrderSendResult(retcode=10026, deal=0, order=0, volume=0.0, price=0.0, bid=0.0, ask=0.0, comment='AutoTrading disabled by server', request_id=0, retcode_external=0, request=TradeRequest(action=1, magic=0, order=0, symbol='PEP', volume=15.0, price=130.86, stoplimit=0.0, sl=120.50303151690976, tp=0.0, deviation=0, type=0, type_filling=1, type_time=0, expiration=0, comment='FP ou_modell (PEP)', position=0, position_by=0))",
@@ -66,13 +49,30 @@
             "2026-09-18 09:13:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4421.83955 -- placed",
             "2026-09-18 08:58:22 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4418.72178 -- placed"
           ]
+        },
+        "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
+          "last_equity_line": "2026-09-18 17:58:18 Verbunden: Login 504072729, Equity $98,944.74 USD",
+          "recent_events": [
+            "2026-09-18 16:58:20 [TTP] ?? ENTRY ou_modell (PEP) PEP BUY lots=16.0 risk=$164.68 sl=120.50303 -- placed",
+            "2026-09-18 11:28:22 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4417.81483 -- placed",
+            "2026-09-18 11:13:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.04 risk=$75.00 sl=4413.04654 -- placed",
+            "2026-09-18 10:58:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.03 risk=$75.00 sl=4417.84384 -- placed",
+            "2026-09-18 10:43:25 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4422.42483 -- placed",
+            "2026-09-18 10:28:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4423.71034 -- placed",
+            "2026-09-18 10:13:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4421.31294 -- placed",
+            "2026-09-18 09:58:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4420.14873 -- placed",
+            "2026-09-18 09:43:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4420.19024 -- placed",
+            "2026-09-18 09:28:23 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4421.91973 -- placed",
+            "2026-09-18 09:13:20 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4421.83955 -- placed",
+            "2026-09-18 08:58:22 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4418.72178 -- placed"
+          ]
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-09-18T17:14:12",
-      "minutes_since_last_run": 17.2,
+      "minutes_since_last_run": 47.2,
       "status": "ok",
       "last_equity_line": "2026-09-18 17:14:12 Verbunden: Login 17764, Equity $100,416.32",
       "last_error_line": "2026-09-17 22:14:20 Telegram-Nachricht fehlgeschlagen: ('Connection aborted.', ConnectionResetError(10054, 'Eine vorhandene Verbindung wurde vom Remotehost geschlossen', None, 10054, None))",

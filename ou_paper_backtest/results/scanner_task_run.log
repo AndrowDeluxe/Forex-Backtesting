@@ -4606,3 +4606,23 @@
 2026-09-18 16:35:33 S&P 500 (volles Universum, 420 Ticker)    AXP 2026-09-17 311.17      312.96 311.17 289.10 344.27    344.27            7.09              14.10       True       True                            12.5 2026-09-18T16:35:32
 2026-09-18 16:35:33 S&P 500 (volles Universum, 420 Ticker)    IVZ 2026-09-17  30.22       30.25  30.22  27.50  34.30     34.30            9.00              11.12       True       True                            12.5 2026-09-18T16:35:32
 2026-09-18 16:35:33 S&P 500 (volles Universum, 420 Ticker)    REG 2026-09-17  73.12       73.23  73.12  70.77  76.64     76.64            3.21              20.00       True       True                            12.5 2026-09-18T16:35:32
+2026-09-18 16:35:33 [main 69f1ef8] OU-Modell Scanner: Snapshot 2026-09-18 16:35
+2026-09-18 16:35:33  2 files changed, 23 insertions(+), 3 deletions(-)
+2026-09-18 16:35:34 Merge with strategy ort failed.
+2026-09-18 16:35:34 WARNUNG: git merge von origin/main fehlgeschlagen (Exit 2), vermutlich ein echter Konflikt -- Merge abgebrochen, Push uebersprungen. Lokaler Commit bleibt unveraendert liegen, bitte manuell pruefen (git status im Repo).
+2026-09-18 16:35:34 === Scanner-Task beendet ===
+2026-09-18 17:35:02 === Scanner-Task gestartet ===
+2026-09-18 17:35:26 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-09-18 17:35:26 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-09-18 17:35:26 [sp500] 3 raw signal(s) as of 2026-09-17, regime_ok=True
+2026-09-18 17:35:26 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-09-18 17:35:26 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-09-18 17:35:26 [nasdaq100] 0 raw signal(s) as of 2026-09-17, regime_ok=True
+2026-09-18 17:35:26 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-09-18 17:35:26 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-09-18 17:35:26 
+2026-09-18 17:35:26 Saved 3 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-09-18T17:35:26)
+2026-09-18 17:35:26                                 market ticker  scan_date  close  lower_band  entry     sl     tp  tp_price  risk_pct_price  position_size_pct  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
+2026-09-18 17:35:26 S&P 500 (volles Universum, 420 Ticker)    AXP 2026-09-17 311.17      312.96 311.17 289.10 344.27    344.27            7.09              14.10       True       True                            12.5 2026-09-18T17:35:26
+2026-09-18 17:35:26 S&P 500 (volles Universum, 420 Ticker)    IVZ 2026-09-17  30.22       30.25  30.22  27.50  34.30     34.30            9.00              11.12       True       True                            12.5 2026-09-18T17:35:26
+2026-09-18 17:35:26 S&P 500 (volles Universum, 420 Ticker)    REG 2026-09-17  73.12       73.23  73.12  70.77  76.64     76.64            3.21              20.00       True       True                            12.5 2026-09-18T17:35:26

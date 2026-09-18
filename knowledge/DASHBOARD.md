@@ -93,6 +93,22 @@ Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
 abgehakt-und-liegengelassen.
 
+- **Eskalation zum Punkt direkt darunter: `bridge_status/snapshot.json` ist
+  jetzt seit fast 3 Tagen eingefroren, nicht mehr nur seit >41h** (2026-09-18,
+  automatischer Bridge-Monitor-Lauf). Letzter Commit auf die Datei ist
+  weiterhin `e92c754` (`generated_at` unverändert `2026-09-16T00:01:25`) —
+  seit dem vorigen Monitor-Lauf (2026-09-17, der den 41h-Ausfall erstmals
+  gemeldet hat) ist ein weiterer voller Handelstag (Do 09-17) plus ein Teil
+  von Fr 09-18 ohne einen einzigen neuen Snapshot-Commit vergangen. Damit ist
+  dieser Monitor jetzt ununterbrochen seit ~3 Tagen blind für alle drei
+  Live-Bridges (echtes Geld) — es gibt von hier aus keinerlei Sichtbarkeit,
+  ob EK-Portfolio-Bridge, Funded-Portfolio-Bridge oder
+  FKInstantFunding-MT5-Bridge in dieser Zeit normal weitergelaufen sind,
+  Fehler hatten, oder ob der Rechner/Task Scheduler selbst steht. Gleiche
+  offene Frage wie im Punkt darunter, nur mit deutlich längerer Dauer — bitte
+  bei Gelegenheit einmal lokal prüfen, ob der Rechner läuft und ob
+  `Bridge-Watchdog` selbst noch aktiv ist.
+
 - **`bridge_status/snapshot.json` seit Mi 2026-09-16 00:01:25 Uhr nicht mehr
   aktualisiert — Bridge-Watchdog liefert seit >41h keinen neuen Stand, obwohl
   Mi/Do normale Handelstage sind (kein Wochenende)** (2026-09-17, automatischer

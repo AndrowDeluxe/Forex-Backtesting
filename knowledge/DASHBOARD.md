@@ -35,6 +35,17 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **🔴 ttp1 (Echtgeld, TTP Konto 1) darf seit 2026-09-18 09:58 nicht mehr
+  handeln -- bitte beim Anbieter klaeren.** `trade_allowed=False` vom Server,
+  9 abgelehnte Entries (`10026 "AutoTrading disabled by server"`). Keine
+  eigene Regelverletzung erkennbar: Equity 94.711,78 (−2,0 % seit Kontostart,
+  Tagesverlust −0,99 %, Peak-DD −2,2 %), Kill-Switch inaktiv; das TTP-**Demo**
+  am selben Server handelt normal. 7 Positionen offen, alle mit SL. Ich habe
+  nichts geaendert. **Offen fuer dich:** TTP-Dashboard/Mail pruefen (Konto
+  gesperrt, Challenge beendet, Regel-Review?). **Offen fuer mich, auf deine
+  Freigabe:** eine Sammelwarnung "Konto darf nicht mehr handeln" einbauen --
+  heute faellt so etwas nur als einzelne Entry-Fehler auf.
+
 - **Git-Sync: Push-Rueckstand ist aufgeloest (09-19), aber die Ursache steht
   noch offen.** 242 Commits sind auf GitHub. Der Abbruch kam NICHT von
   widerspruechlichen Inhalten, sondern von nicht committeten Aenderungen an

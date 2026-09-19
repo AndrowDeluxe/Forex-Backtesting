@@ -9,6 +9,527 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-17** [FK Instant Funding Paper-Bot] **Scan-Fehler als
+  Sammelmeldung** (Nutzerauftrag). `scan_once()` meldet einen Scan-Fehler
+  (z. B. haengendes dukascopy) je Bein nur noch beim ERSTEN Auftreten pro Tag
+  sofort per Telegram; weitere werden nur gezaehlt und stehen wie bisher mit
+  Anzahl im Tagesabschluss. Getestet mit erzwungenem Fehler ueber 3 Laeufe
+  (dry_run, state_override): 1 Meldung, Zaehler 3.
+
+- **2026-09-17** [knowledge/ Lint] **Aufgeraeumt** (Nutzerentscheid bei der
+  Dashboard-Durchsicht). Tote Links: `[[cls-practical]]` ->
+  `[[cls-practical-kostenvalidierung]]`, `[[gap-fade]]`/`[[execution-overlay]]`
+  (Abschnitte derselben Datei) entlinkt, `[[risiko-kalibrierung-methodik]]` ->
+  Memory-Pfad, zwei literale Beispiel-Wikilinks umformuliert. Verwaiste Seiten
+  verlinkt: 3 Archiv-Notizen aus `strategie-backlog-inventar.md`,
+  `paper-bot-architecture` aus `paper-bot-zu-live-bridge.md`,
+  `persoenlicher-tradingplan-validierung` aus `edge-card-workflow.md`.
+  Lint danach: 0/0/0, nur die 14 Clippings bleiben (naechster Lint).
+  Dashboard: "Als Naechstes" Punkt 0 (FK-ORB-MT5-Bars, Phase 2 Funded)
+  verworfen, Monatsjournal bleibt als naechstes Vorhaben. Dashboard gesamt
+  1115 -> ~430 Zeilen.
+
+- **2026-09-17** [Funded-Portfolio-Bridge / OU-Modell] **Signaldatum-Drift
+  behoben: hoechstens eine Position je Titel, verwaiste Positionen werden
+  geschlossen** (Nutzerauftrag). `run_once.py`: neue
+  `_reconcile_ou_positions()`, laeuft vor `_process_leg()` im OU-Dispatch;
+  Schluesselbau in `_signal_key()` zentralisiert (vorher inline); je Titel wird
+  nur noch die aelteste offene Modell-Zeile weitergereicht.
+  **Regel je Titel:** Modell offen -> eine Position bleibt (die unter dem
+  aktuellen Schluessel, sonst die aelteste) und wird auf den aktuellen
+  Schluessel umgehaengt, weitere werden geschlossen. Modell fuehrt den Titel
+  nur noch geschlossen -> alle Positionen schliessen. Titel fehlt ganz im Scan
+  -> **nicht** schliessen, nur einmal taeglich warnen (Datenausfall ist von
+  "Modell draussen" nicht unterscheidbar). Schliessen nur bei offener NYSE.
+  **Verifiziert:** 24 Offline-Faelle
+  (`knowledge/scripts/test_funded_bridge_ou_reconcile.py`) + Trockenlauf auf
+  Kopien der echten States mit dem echten Scan: Konto 2 schliesst FAST, ADI
+  (Modell per Max-Holding draussen), AMGN 09-11, APD 09-14 (Duplikate); Konto 1
+  schliesst AMGN 09-11. **Abweichung von der Liste vom Vortag:** APD auf Konto 1
+  ist kein Waise -- dort die einzige APD-Position, das Modell haelt APD offen;
+  sie wird nur auf den aktuellen Schluessel umgehaengt und bleibt. Greift beim
+  ersten Funded-Lauf in der US-Session (15:43).
+  Backup: `Funded-Portfolio-Bridge/_backup_20260917/`.
+
+- **2026-09-17** [OU-Modell-Solo-Altlasten] **Schliess-Skript fuer die 8
+  verwaisten Solo-Bot-Positionen gebaut -- Einplanen durch den Auto-Modus
+  blockiert, Ausloesen liegt beim Nutzer.** `scripts/close_ou_solo_orphans_once.py`:
+  feste Ticketliste (Konto 2 AFL/NUE/UAL/TXT, Konto 1 DAL/UAL/NUE, Tickmill
+  DAL), vor dem Schliessen Pruefung auf Symbol/Volumen/magic 0/Kommentar, nur
+  bei offener NYSE (echte UTC, nicht Rechnerzeit), TTP-Konten unter dem
+  Funded-State-Lock, Ergebnis in Telegram + `scripts/close_ou_solo_orphans_once.log`.
+  Vorschau-Lauf 11:05 gegen die echten Konten: alle 8 gefunden und verifiziert,
+  zusammen -168,97 schwebend (TTP) bzw. -16,91 EUR (Tickmill) vor Swap.
+  Der Versuch, es als einmaligen Task um 15:35 einzuplanen, wurde vom
+  Claude-Code-Auto-Modus abgelehnt (Echtgeld-Ausloeser).
+
+- **2026-09-17** [Funded-Portfolio-Bridge / Executor] **Fill-Preis wird
+  zuverlaessig zurueckgelesen** (Nutzerauftrag). Im State standen 14 von 30
+  Positionen mit `entry_price 0.0` (TTP 12/25, IQ 2/5 -- nicht nur TTP).
+  Ursache an TTP-Tickets 18395480/18417751/18444889 read-only belegt:
+  Positions-ID == Order-Ticket, `price_open` korrekt -- `positions_get()`
+  direkt nach `order_send()` kam nur zu frueh (Position noch nicht
+  synchronisiert). Fix in `place_market_entry()`: bis 5x/200 ms nachfragen,
+  sonst Einstiegs-Deal (`DEAL_ENTRY_IN`) aus `history_deals_get(position=)`,
+  sonst Warnung. Gezielte Zeilen-Aenderung (die parallele Session hatte die
+  Datei heute 10:43 geaendert). Bestehende 0.0-Eintraege im State NICHT
+  nachgetragen.
+
+- **2026-09-17** [FK Instant Funding] **Order-Kommentare auf 16 Zeichen
+  gekappt** (Nutzerentscheid, vorsorglich). `run_once.py` `[:31]` -> `[:16]`,
+  `executor.py` Teilausstieg `"FKIF partial-exit"` (17) -> `"FKIF part-exit"`.
+  Zuordnung Trade->Bein laeuft ueber Tickets, nicht Kommentare. `order_check`
+  auf dem FK-Broker akzeptierte zuvor auch 22 Zeichen -- Verdacht damit nicht
+  bewiesen, aber ausgeschlossen.
+
+- **2026-09-17** [Dashboard-Durchsicht mit Nutzer] Entscheidungen: Funded
+  Offenes-Risiko-Kill-Switch TTP 3,5 %/IQ 3,0 % bestaetigt; fuenf Alt-
+  Annahmen (Restlaufzeit-Gate ohne ou/btc, last_error-Logging, Dedup 1x/Tag,
+  Exit-Retry, EK-Margin-Info) bestaetigt; Kurztakt-Ausfaelle eine Woche
+  beobachten; TradingView NICHT auf UTC umstellen; CLS-Bewaehrung: Pruefung
+  nach 30 Live-Trades; Mindest-Stopabstand fuer weitere Beine erst nach den
+  Kosten-Checks (CTNL ja, OU nein); FK-Paper-Sammelmeldung beauftragt;
+  Verweise nach ausserhalb von `knowledge/` kuenftig als Pfad in Backticks
+  (README ergaenzt, 2 Links umgeschrieben).
+
+- **2026-09-17** [FK Instant Funding / cls_practical] **5-Pip-Stop-Boden
+  nachgezogen** (Nutzerentscheid). `fk_instant_funding/paper_bot.py::
+  _scan_cls_practical` ruft `simulate_cls_practical(..., min_sl_pips=5)` wie
+  Challenge (09-10) und EK (09-11). Wird von der Live-Bridge zur Laufzeit
+  importiert, wirkt also ab dem naechsten Lauf. Verifiziert per Scan
+  (source=lake, ab 09-01): der 3,6-Pip-Trade vom 09-09 ist weg, uebrig bleibt
+  ein 9-Pip-Trade. **Dabei geklaert (Nutzervorgabe Risiko pro Position):**
+  FK max 0,5 %, Funded (IQ + TTP) max 1 %, EK ohne Deckel -- ist im Code
+  bereits exakt so (`MAX_POSITION_LOSS_PCT=0.005` vom Startkapital;
+  `MAX_POSITION_RISK_PCT=0.01` der aktuellen Equity, Zins-Multiplikator wirkt
+  VOR dem Deckel), keine Aenderung noetig.
+
+- **2026-09-17** [Dashboard] **Aufgeräumt (Nutzerauftrag "Dashboard
+  minimieren").** 37 durchgestrichene/erledigte Punkte entfernt (-309 Zeilen,
+  stehen alle schon hier im Changelog). Dazu fünf offene Aufgaben per Log
+  als erledigt belegt und entfernt: (1) DD-Entry nach dem OU-Tick-Fix wurde
+  am 09-15 22:43 auf beiden TTP-Konten platziert; (2) Funded
+  `cls_practical` `'>' str/float`: letztes Vorkommen 09-15 12:15, seitdem
+  keins mehr; (3) EK `cls_practical`-Scanfehler: seit 09-14 nur noch der am
+  09-16 behobene Duplikat-Fehler; (4) IQ-Gewichtung live bestätigt: dasselbe
+  NASDAQ-Signal am 09-14 mit $110,25 auf IQ vs. $54,91 auf TTP (2,0x), null
+  OU-Versuche auf IQ seit 09-14; (5) FK SP500 "Invalid stops" auf einen
+  Rest-Check gekürzt.
+  **Nebenfund:** lokaler `main` ist **112 Commits vor / 2 hinter**
+  `origin/main` -- seit 09-16 ~09:08 gehen die Auto-Pushes nicht mehr durch.
+  Nur notiert, nicht angefasst.
+
+- **2026-09-17** [Alle 3 Bridges / Lückenliste] **Punkte 5, 6, 8 erledigt;
+  1, 3, 4 geprüft -- zwei davon mit anderem Ergebnis als erwartet.**
+  Nutzerauftrag "gehe die nächsten Punkte an" (Liste aus
+  `areas/systemlandkarte.md`, Punkt 2 vorher verworfen, 7 am 09-16 erledigt).
+  **Punkt 6 -- `check_symbols.py` (Funded + FK) neu gebaut.** Prüft jetzt
+  echte Handelbarkeit statt nur den Namen: Auflösung über die Bridge-eigene
+  Zuordnung (`run_once.resolve_symbol` bzw. `SYMBOL_MAP`/`LEG_TO_SYMBOL`,
+  keine kopierte Liste), `trade_mode`, echter Kurs nach dem Wählen (3 s
+  Wartezeit gegen den bekannten 0-Tick-Fehlalarm), plus Tickgröße/
+  Nachkommastellen/Stopabstand/Mindestlot. Beide gegen die echten Terminals
+  gelaufen, rein lesend, 0 Probleme bei aktiven Beinen. **Zwei Befunde aus
+  dem ersten Lauf:** `SPX500.gbe` hat Tickgröße 0,1 bei 2 Nachkommastellen
+  -- betrifft nicht nur FK, sondern auch das **Funded-IQ-Konto** (dort am
+  09-14 ebenfalls `Invalid stops`); Platin hat auf allen Konten ein
+  Mindestlot von **1,0**.
+  **Punkt 8 -- Spalte "Letzter echter Entry" in der Statustabelle.** Neu
+  `soll_ist.py --last-entries`: letzter Eröffnungs-Deal je Bridge, der der
+  Bridge zugeordnet ist (EK Magic, Funded/FK Tickets), Fremdpositionen
+  getrennt. Stand: EK 09-16 ou_modell, Funded 09-16 orb_sp500 (TTP1),
+  **FK 09-14 orb_nasdaq -- erster echter FK-Entry seit Livegang**; mein
+  "FK 0 Orders" vom 09-13 ist damit überholt. Auf FK liegen wiederholt
+  manuelle Positionen (zuletzt EURUSD 09-16 23:48), die ohne die Trennung
+  wie Bridge-Aktivität ausgesehen hätten.
+  **Punkt 5 -- Hard-Timeout: Lücke bestand so nicht, nichts gebaut.** Jeder
+  Datenabruf ist bei Funded/FK schon hart auf ~66 s begrenzt (`_retry` 3×20 s,
+  Daemon-Thread) -- strenger als EKs 600 s. Ein Timeout um die
+  Order-Verarbeitung wäre schädlich: ein abgebrochener, aber doch
+  durchgegangener `order_send()` fehlt im State und wird beim nächsten Lauf
+  doppelt gesendet. Letzte Sicherung bleibt das Task-Limit mit `IgnoreNew`.
+  `areas/bridge-infrastruktur-vergleich.md` korrigiert (stand dort als "keiner").
+  **Punkt 1 -- Order-Ebene: Ursachen geklärt, eine Härtung blockiert.**
+  `order_send()=None` auf FK war **nicht** die Kommentarlänge (Vermutung vom
+  09-13), sondern ein `SizingResult` im `volume`-Feld, am 09-09 behoben --
+  seither null Vorkommen. `Invalid stops` ist pfadweise behoben (Parallel-
+  Session). Offen: Funded rundet im Market-Pfad nicht. Mein Versuch, das im
+  gemeinsamen `_send_order()` zu härten, wurde **mittendrin** vom
+  Auto-Mode-Classifier blockiert (erstes Edit durch, `import math` nicht) --
+  **vollständig zurückgenommen**, `py_compile` ok, Logs ohne `NameError`,
+  Bridge lief normal weiter. Wartet auf Freigabe (DASHBOARD).
+  **Punkt 3 -- für ORB überholt.** Die Stop-Order-Studie der Parallel-Session
+  (09-16, PF 0,82 Market vs. 1,36 Stop) beantwortet die grundsätzlichere
+  Frage: der Restlaufzeit-Filter hat einen strukturell verlustbringenden
+  Ausführungsweg gebremst. Stop-Orders laufen bisher nur auf den zwei
+  Funded-Demokonten -- Funded-Echtgeld, FK und EK handeln ORB weiter per
+  Market-Order.
+  **Punkt 4 -- Voraussetzung verschoben, zurück an den Nutzer.** Die
+  Stale-Fenster liegen dort, wo Ingest und Bridge gleichzeitig ausfielen
+  (springende Zeitzone, Schlaf); ein breiteres Fenster würde das verdecken.
+
+- **2026-09-17** [OU-Modell / alle 3 OU-Konten] **Live-Auswertung +
+  Kostenvalidierung: der Edge ist nach realen Kosten weg, dazu drei
+  Betriebsschaeden. Reine Auswertung, an keinem Bot etwas geaendert.**
+  Nutzerfrage. Live: MT5-Deals read-only von TTP Konto 1/2 und Tickmill
+  (123 Positionen). Backtest: neues `scripts/research_ou_execution_costs.py`
+  (Modell-Trades fix, Neuausfuehrung auf OHLC in 6 Varianten, Replay-A
+  reproduziert die Engine exakt), Ergebnis
+  `ou_paper_backtest/results/execution_costs_20260916.json`.
+  Modell +0,097R -> realistisch +0,05R -> mit Live-Kosten (Spread 12 bps,
+  zur Eroeffnung 26; Swap 6,5 % p.a.) -0,013R, PF 0,96; seit 2023 -0,046R.
+  Gefunden: (1) Signaldatum wandert zwischen Scans -> doppelte Einstiege im
+  selben Titel und 6 verwaiste Funded-Positionen; (2) 8 verwaiste
+  Solo-Bot-Positionen; (3) MNST-Split von TTP nicht umgebucht, -2.492,56 $
+  auf Konto 1. Nebenbei bestaetigt: der DD-Einstieg aus dem Fix vom
+  2026-09-15 ist auf beiden TTP-Konten ausgefuehrt worden (dazu APD/IVZ).
+  Die 22:38-Logzeit jener Einstiege war der Zeitzonensprung des Rechners
+  (Eintrag darunter), MT5-Deals zeigen 15:37 New York.
+  Details: `projects/ou-modell-kostenvalidierung.md`.
+
+- **2026-09-17** [Rechner] **Automatische Zeitzone abgeschaltet, fest auf
+  Berlin** (Nutzerauftrag). Dienst `tzautoupdate` gestoppt + `Disabled`
+  (Registry Start=4), `tzutil /s "W. Europe Standard Time"`, per UAC-Freigabe.
+  **Warum der Rechner sprang:** der Windows-Standortdienst ortet den Rechner
+  ueber das WLAN bei **37,93 N / 40,21 E = Diyarbakir, Tuerkei** (Genauigkeit
+  500 m; Tuerkei = ganzjaehrig UTC+3). Die automatische Zeitzone folgt dieser
+  Ortung immer wieder und springt zurueck, sobald eine andere Ortung
+  (vermutlich ueber die IP) gewinnt. Wahrscheinlich ist der Router/Access Point
+  in der Standort-Datenbank falsch eingetragen, das ist nicht nachpruefbar.
+  Die Wechsel liefen auch in der Nacht weiter (09-17 04:17, 05:22). Am 09-16
+  12:26 wurde die Einstellung schon einmal aus- und nach 20 s wieder
+  eingeschaltet, das Eventlog zeigt es.
+
+- **2026-09-17** [FK Instant Funding / Executor] **SL wird aufs Preisraster
+  gerundet -- "Invalid stops" bei SP500 behoben** (Nutzerauftrag).
+  `executor.py::_round_stop_to_tick()` rundet auf `trade_tick_size`, immer
+  von der Position weg (long ab, short auf), damit der Stop nie enger wird.
+  Angewandt in `place_market_entry()` VOR dem Sizing (Lots rechnen mit dem
+  tatsaechlich gesendeten Stop) und in `move_stop_to_breakeven()`.
+  **Verifiziert:** 8 Faelle auf SPX500/NAS100/US30/EURUSD/XAUUSD gegen die
+  echten Symboldaten, alle auf dem Raster, kein Stop enger; Broker-
+  `order_check` (sendet nichts): ungerundet -> `10016 Invalid stops`,
+  gerundet -> `0 Done`. Gleiche Ursache wie im Funded-Eintrag darunter
+  (IQ SPX500), dort separat gefixt. Externe Bridge-Datei, nicht git-getrackt.
+
+- **2026-09-16/17** [Funded-Portfolio-Bridge / ORB Stop-Orders, nur Demo-Konten
+  `ttp` + `iqmarkets`] **Erster Stop-Order-Tag ausgewertet, OCO + broker-seitiger
+  Teilausstieg + praeziser 09:45-Pass gebaut.** Echtgeld `ttp1` unveraendert
+  (Marktorder-Pfad).
+  **Wie der 16.09. lief:** auf beiden Demo-Konten KEINE Order -- (1)
+  `orb_pending.todays_setups` las die Level aus der Range-Bar (NaN) -> immer
+  `range_not_ready`; (2) nach dem Fix (23:11, nach Sessionende) versuchte die
+  Bridge alle 5 Min die Orders der geschlossenen Session zu legen. TTP/US30
+  scheiterten an "Market closed", **IQ SPX500 war offen** und scheiterte nur
+  an "Invalid stops" (SL ungerundet, tick 0.1) -- ohne das haette um 23:13 eine
+  veraltete Order im Buch gelegen. ttp1 (Markt) SP500 @ 7612,40, am SL
+  ausgestoppt (-54,76 $); Stop-Order-Level waere 7606,15 gewesen.
+  **Gefixt:** `session_over`-Sperre; `breakout_passed`-Sperre (Level vor
+  Platzierung schon beruehrt -> heute verpasst statt spaetem Entry); Level/SL/TP
+  auf `trade_tick_size` gerundet (per `mt5.order_check` gegen beide Broker fuer
+  alle 3 Instrumente x 2 Seiten validiert: 12/12 "Done", nichts platziert).
+  **Befund Teilausstieg:** lief NICHT wie gebacktestet -- gepollt alle 5 Min
+  statt intrabar. Nachgerechnet 2019-2026 (`ny_open_orb/engine.py::simulate`
+  neuer Parameter `partial_check="close"`): Ø R SP500 0,297->0,255, US30
+  0,305->0,198, **NASDAQ 0,180->0,057**. Neu: je Richtung zwei Orders --
+  P-Scheibe (50 %, Broker-TP am Teilausstiegs-Level) + R-Scheibe (Rest, TP 4R
+  bzw. ohne); BE fuer R, sobald P per TP geschlossen (naechster Lauf). Nicht
+  teilbare Lots -> eine Order mit altem gepolltem Teilausstieg.
+  **OCO (NASDAQ):** beide Seiten liegen, erste gefuellte storniert die
+  Gegenseite; beide gefuellt -> spaeter gefuellte sofort schliessen. Gemessen:
+  Gegenseite in Folgebar bei 2,0 % der Trades beruehrt.
+  **Befund Timing:** 58-65 % aller ORB-Entries fallen in die erste M5-Bar nach
+  Range-Ende (US30 Ø R ohne sie 0,063 statt 0,305). Der 5-Min-Takt kam erst
+  09:48. Neu `run_once_fast.py`: der Lauf ~09:43 NY wartet bis 09:45:03 und
+  platziert nur die Stop-Orders (in NY-Zeit gerechnet, sommerzeitfest; Setups
+  ~1 s je Konto). Ausserdem: Exit-Erkennung fuer Broker-SL/TP mit P/L-Meldung,
+  max. 3 Platzierungsversuche mit Aufraeumen halb gelegter Orders, Tagesreport
+  zaehlt Pendings nicht als Positionen.
+  **Zwischenfall beim Bau:** ein Such-/Ersetz-Muster traf zuerst
+  `place_market_entry` -- fuer ~15 Min (ca. 23:17-23:33) haette jeder
+  Markt-Entry aller Beine mit NameError abgebrochen; laut Log gab es keinen
+  Entry-Versuch. Ausserdem fiel der Fast-Lauf 23:23 an einem Syntaxfehler aus.
+  Ein Testaufruf schickte dabei einen `order_send` an IQ-Demo (abgelehnt,
+  "Market closed"). Behoben, Diff gegen Backup geprueft, pyflakes sauber.
+  Tests: Zustandsmaschine mit simuliertem Broker (16/16), DRY_RUN mit echten
+  Terminaldaten fuer 15./16.09. Backups `%TEMP%\*.bak_20260916`.
+
+- **2026-09-16** [Rechner / alle Bridges] **Tagesreview: die "verschobenen
+  TradingView-Stempel" (Eintrag darunter) kamen vom Rechner selbst -- die
+  Windows-Zeitzone springt seit 2026-09-15 21:35 hin und her.** Nur Befund,
+  kein Code und keine Systemeinstellung geaendert.
+  **Beleg:** System-Eventlog, `Kernel-General` Id 1 mit `reason=3`
+  (Zeitzonenwechsel, UTC-Zeit unveraendert) am 09-15 um 21:35/23:40 und am
+  09-16 um 00:45, 01:50, 04:06, 05:11, 11:02, 12:26 (dieser eine ueber die
+  Einstellungen-App), 17:27, 18:27, 21:13, 21:45. Die EK-Logdateinamen
+  (Lokalzeit) gegen ihre Datei-mtime (UTC) bestaetigen es: 22:44Z ->
+  `run_..._004412`, 22:46Z -> `run_..._014612` -- die Lokalzeit lief
+  zeitweise auf UTC+3 statt UTC+2. Automatische Zeitzone ist aktiv
+  (Dienst `tzautoupdate`, Start=3).
+  **Wirkung 1 -- CLS-Zinsreihen:** `tradingview/data.py` (tvDatafeed) stempelt
+  mit `datetime.fromtimestamp()`, also in LOKALZEIT. In jedem UTC+3-Fenster
+  kamen die D1-Stempel eine Stunde spaeter (08:00 -> 09:00) -- genau die
+  Verdopplung von heute morgen. Die TradingView-Quelle hat nichts verschoben.
+  Einziger tvDatafeed-Nutzer im Live-Pfad sind die zwei 2y-Zinsreihen; der
+  Kalendertag-Dedup von heute faengt weitere Flips dort ab.
+  **Korrektur zum Eintrag darunter:** "EK war nicht betroffen" stimmt nicht --
+  EKs CLS-Bein brach 43-mal mit demselben Fehler ab (09-15 22:36 bis 09-16
+  10:44), die Datei war nur ueber den Lake-Fix mit repariert.
+  **Wirkung 2 -- Scan-Luecken:** jeder Vorwaerts-Sprung laesst ~1 h
+  Scheduled-Task-Laeufe auf ALLEN Bridges aus (EK/Funded/FK identisch:
+  00:44-01:46, 04:03-05:08, 10:58-12:03, 17:23-18:28, 21:13-21:48 Lokalzeit);
+  jeder Rueck-Sprung wiederholt eine Stunde. Session-Logik der Bridges laeuft
+  ueber UTC/Serverzeit und war nicht betroffen; `date.today()`-Tages-Keys
+  sind heute nicht ueber Mitternacht gekippt.
+  **[FK Instant Funding / ORB] "Invalid stops" aufgeklaert** (offen seit
+  09-13): `symbol_info` (rein lesend) zeigt `SPX500.gbe` mit
+  `trade_tick_size = 0.1` (NAS100/US30: 0.01) und `trade_stops_level = 0`.
+  Das ungerundete SL (heute 7604,5535...) liegt nicht auf dem 0,1er-Raster.
+  Mindestabstand als Ursache damit ausgeschlossen. SP500 scheiterte damit
+  3 von 3 (09-11, 09-14, heute 15:53 -- 14,9 Lots); NAS100 ging am 09-14 mit
+  ebenso ungerundetem SL durch, weil dort 0.01 = digits gilt. **Noch nicht
+  gefixt** (Echtgeld-Code), siehe DASHBOARD.
+
+- **2026-09-16** [Data Lake / cls_practical] **🔴 CLS-Bein war auf Funded und FK
+  seit 2026-09-15 22:38 komplett tot -- Ursache gefunden und behoben.**
+  Beim Bau des Soll/Ist-Vergleichs (Eintrag darunter) gestolpert, nicht gesucht.
+  **Symptom:** jeder CLS-Scan brach ab mit `cannot reindex on an axis with
+  duplicate labels`; 792 fehlgeschlagene Scans (Funded 633, FK 159), letzter
+  um 10:28 am 2026-09-16. ~~EK war nicht betroffen.~~ *(falsch -- EK brach
+  43-mal ab, siehe Tagesreview-Eintrag darueber)*
+  **Ursache:** ~~TradingView lieferte~~ die beiden 2y-Zinsreihen kamen ab
+  2026-09-15 eine Stunde spaeter gestempelt (DE02Y 08:00 -> 09:00, US02Y
+  01:00 -> 02:00). *(Korrigiert im Tagesreview darueber: nicht die Quelle hat
+  verschoben, sondern die springende Windows-Zeitzone -- tvDatafeed stempelt in
+  Lokalzeit. Der Fix unten bleibt richtig.)* `data_lake/storage.py::write_bars()` dedupliziert auf den
+  EXAKTEN Zeitstempel -- die verschobene Historie sah damit wie lauter neue
+  Balken aus und wurde vollstaendig ein zweites Mal angehaengt (DE02Y
+  3.657 -> 7.308 Zeilen, im Ingest-Log als Sprung sichtbar).
+  `cls_practical/rates.py::compute_daily_rate_score_2y()` legt den Index auf
+  `.date` um und traf danach auf 3.650 doppelte Kalendertage.
+  **Fix zweistufig:** (a) `write_bars()` dedupliziert D1-Reihen zusaetzlich auf
+  den Kalendertag (spaetester Stempel gewinnt) -- fuer korrekt gestempelte
+  Reihen ein No-Op, gegen alle 62 D1-Reihen geprueft, nur die beiden
+  Zinsreihen waren betroffen; (b) die beiden Parquet-Dateien einmalig bereinigt
+  (7.308 -> 3.658 bzw. 7.321 -> 3.670 Zeilen, Backups `.bak_20260916`).
+  Verifiziert: CLS-Scan laeuft auf FK und Challenge wieder durch.
+  **Lehre:** die Deduplizierung auf den exakten Zeitstempel setzt stillschweigend
+  voraus, dass eine Quelle ihre Stempel nie verschiebt. Genau das ist passiert,
+  und der Lake hat es nicht gemerkt, sondern verdoppelt.
+
+- **2026-09-16** [Reporting / alle 3 Bridges] **Soll/Ist-Vergleich gebaut --
+  Backtest ueber dasselbe Kalenderfenster gegen die echten Zahlen.**
+  Nutzerauftrag 2026-09-14; ersetzt die verworfene Paper-Zwilling-Idee.
+  **Zwei neue Module.** `scripts/reports/mt5_pull.py`: rein lesender
+  MT5-Abzug (account_info/history_deals_get/positions_get, nie order_send)
+  ueber alle Konten -- loest die woechentlich neu geschriebenen Wegwerf-Skripte
+  `_kw37_pull.py` & Co. ab und liest die Kontoliste aus den Bridge-Configs,
+  statt sie zu duplizieren (die alten Skripte fuehrten IQ 15514 noch, neun Tage
+  nach dessen Entfernung). `scripts/reports/soll_ist.py`: ruft die ECHTEN
+  `_scan_*()`-Funktionen der drei `paper_bot.py` auf (keine zweite
+  Formel-Implementierung), rechnet die Soll-Rendite ueber das jeweils vorhandene
+  `compute_shared_equity()` und zerlegt die Differenz in `platziert` /
+  `nicht_platziert` / `nie_gesehen`. **Keine paper_bot.py und keine
+  Bridge-Datei wurde dafuer angefasst.**
+  **Kosten je Bridge** (Nutzerentscheid): Funded 2,05 / FK 1,30 Pips gemessen,
+  EK 0,50 geschaetzt. Angewandt als nachgelagerter R-Abschlag und NUR auf
+  cls_practical, weil die Messung nur fuer EUR/USD existiert; abgezogen wird
+  nur die Restkosten ueber den bereits von der Engine berechneten Spread hinaus.
+  **Erstes Ergebnis KW37** (`scripts/reports/soll_ist_2026-W37.json`):
+  EK Soll -0,33 % / Ist -90,56 EUR; Funded Soll -0,62 % / Ist -2.878,91 USD
+  (3 von 10 Soll-Trades platziert, 7 von Gates verworfen); FK Soll -1,48 % /
+  Ist 0,00 (alle 9 Soll-Trades von Gates verworfen). **In dieser Woche haben
+  die Gates also Verluste VERHINDERT** -- das ist die Gegenprobe zum Befund
+  vom 2026-09-13, der sie als reinen Kostenfaktor gelesen hat. Eine Woche ist
+  noch kein Beweis; das MC-Erwartungsband fehlt bewusst (spaeterer Ausbau).
+  **Wichtigster Vorbehalt, im Modul- und im Report-Prompt festgeschrieben:**
+  das Soll rechnet mit der HEUTE gueltigen Konfiguration. Realfall aus KW37 --
+  Funded nahm am 09-09 einen cls_practical-Trade mit 3,6 Pips Stop
+  (-1.441,72 USD ueber drei Konten); der am 09-10 eingefuehrte 5-Pip-Boden
+  verwirft ihn heute, das Soll zeigt dort "kein Signal". Die Luecke ist also
+  kein Ausfuehrungsfehler, sondern der Beleg, dass der Filter wirkt.
+  **Anbindung:** `weekly_report_prompt.md` Abschnitt 5 (neu) ruft beide Skripte
+  im Sonntagslauf auf -- kein zusaetzlicher Scheduled Task (Nutzerentscheid).
+  **Zwei Nebenbefunde:** EK laesst sich nur grob zerlegen (SQLite statt
+  Signal-Ledger) -- unbelegbare Faelle heissen dort bewusst
+  `nicht_ermittelbar` statt faelschlich `nie_gesehen`; und Funded/FK setzen
+  kein Magic, die Zuordnung Trade->Bein laeuft ueber die Tickets im
+  bridge_state (schwaechere Kopplung, aber sie trennt zuverlaessig die
+  Fremdpositionen ab -- auf FK lagen am 09-14 zwei Positionen mit magic=0 und
+  leerem Kommentar, die NICHT von der Bridge stammen).
+
+- **2026-09-16** [EK-Portfolio-Bridge] **Config-Kommentar zur Kapitalscheibe
+  korrigiert** (Aufraeumpunkt aus der Bein-Auszaehlung). `CAPITAL_WEIGHT = 1/8`
+  war mit "OU-Modell zaehlt mit (eigenes echtes Konto, **keine Order hier**)"
+  begruendet -- seit der Aufloesung der OU-Modell-MT5-Bridge sendet DIESE
+  Bridge die OU-Orders selbst (9 im Log belegt). **An der Zahl aendert sich
+  nichts**, 1/8 bleibt richtig; korrigiert wurde die Begruendung, weil sie
+  sonst ein Achtel des Risikobudgets faelschlich als unbenutzt ausweist.
+
+- **2026-09-16** [Funded-Portfolio-Bridge / ORB] **Ruhende Stop-Orders statt
+  verzoegerter Marktorders -- auf den beiden DEMO-Konten scharf, Echtgeld-Konto
+  bewusst noch nicht.** Damit handelt die Bridge endlich den Mechanismus, den
+  der Backtest seit jeher modelliert ("resting stop at orb_high/orb_low,
+  intrabar fill at the level").
+  **Beleg** (2.336 Trades 2019-2026, gemessene Broker-Spreads):
+  Stop-Order am Level PF 1,36 / Ø R +0,219 / P(Ø R<0) 0,0 % gegen Marktorder
+  zum Bar-Schluss PF 0,82 / Ø R -0,144 / P(Ø R<0) 99,7 %. Entscheidend: EKs
+  14-Sekunden-Pipeline ist fast genauso schlecht wie Funded's 3-Minuten-Pipeline
+  -- es ist nicht die Pipeline, sondern das WARTEN auf den Bar-Schluss (Kurs
+  laeuft im Median 6-18 % der Stopdistanz weiter). Am realen Trade vom
+  2026-09-14 nachgerechnet: Fill am Level haette bei gleichem Dollar-Risiko rund
+  das **2,7-fache** verdient, weil die kleinere Risikodistanz eine groessere
+  Position erlaubt.
+  **Neu:** `executor.py` bekommt `place_pending_stop()` (TRADE_ACTION_PENDING,
+  ORDER_TYPE_BUY/SELL_STOP, ORDER_TIME_DAY), `cancel_pending()` und
+  `pending_order_state()`. `orb_pending.py` (neu) bestimmt die Setups der
+  heutigen Session VOR dem Ausbruch -- bisher reagierte die Bridge erst auf
+  bereits ausgeloeste Trades. `run_once.py::manage_orb_pending()` verwaltet
+  Platzieren/Verfolgen/Stornieren, beide Lanes rufen es auf.
+  **Wichtigste Sicherheitsentscheidung:** auf Pending-Konten ist der
+  Marktorder-Pfad fuer ORB KOMPLETT abgeschaltet (`_orb_pending_enabled()`).
+  Liefe beides, wuerde eine bereits gefuellte Stop-Order vom Scan als "neuer
+  Ausbruch" gesehen und ein zweites Mal gehandelt. Einen Marktorder-Fallback
+  gibt es bewusst nicht -- ein Tag ohne Trade ist besser als ein Tag mit dem
+  nachweislich verlustbringenden Pfad.
+  **Sizing haengt am Level, nicht am Marktpreis** -- damit steht der
+  Risikoabstand schon bei der Platzierung fest und kann nicht mehr durch
+  Kursdrift aufgeblaeht werden. Der R-Detektor ist fuer diesen Pfad
+  gegenstandslos.
+  **Noch offen: OCO.** NASDAQ ist beidseitig, `_find_stop_breakout()` nimmt aber
+  die zuerst brechende Seite und verwirft Tage, an denen beide brechen -- zwei
+  ruhende Orders wuerden dagegen beide ausloesen. `orb_pending.py` meldet solche
+  Setups als `skipped_needs_oco` und platziert NICHTS, statt eine halbe
+  OCO-Logik zu bauen. Heute (Mittwoch) faellt NASDAQ ohnehin durch den
+  Wochentagsfilter.
+  **Verifiziert (alles im Trockenlauf, keine echte Order gesendet):**
+  Filterkette 1:1 reproduziert (230 Ausbrueche ueber 3 Instrumente, **null
+  Abweichungen** gegen die echte `_scan_orb`-Kette); Platzierung erzeugt
+  korrekten State-Eintrag; Idempotenz (zweiter Lauf platziert nicht erneut);
+  Kill-Switch (`entries_allowed=False`) verhindert Platzierung; Stop auf der
+  falschen Seite wird abgelehnt; Verfolgung erkennt "gefuellt"/"verschwunden";
+  Stornierung bei Session-Ende greift.
+  **Staffelung:** `ORB_PENDING_ACCOUNTS = {"ttp", "iqmarkets"}` -- beide Demo.
+  `ttp1` (Echtgeld) laeuft unveraendert ueber Marktorders, bis ein sauberer Tag
+  vorliegt.
+
+- **2026-09-15** [Funded-Portfolio-Bridge] **Ursache gefunden, warum auf TTP
+  fast keine OU-Entries zustande kamen: ein frisch abonniertes MT5-Symbol
+  liefert ~0,5 s lang `bid=ask=0.0` — und der Anti-Spam-Fix vom 2026-09-08
+  machte daraus einen dauerhaften Signalverlust.** Nutzerfrage („warum auf
+  Funded keine OU-Entries bei TTP? TROW gibt es auf TTP"), Umbau auf
+  Nutzerfreigabe.
+  **Kein Symbol-, Markt- oder Kommentar-Problem.** Read-only nachgemessen:
+  TROW/IVZ/DD existieren auf TTP, `trade_mode=4`, und quotierten zum
+  Signalzeitpunkt (letzter Tick der Montagssession 22:54 UTC, Signal 19:13
+  UTC). Der Order-Kommentar `"FP ou_modell (TROW)"` ist 19 Zeichen, auf 31
+  gekappt — der einzige kommentar-artige Fund im Log ist `comment='Market
+  closed'` **im Antwortfeld** eines `OrderSendResult` vom 09-02, also die
+  Rejection-Begruendung des Brokers.
+  **Die Kette:** `resolve_symbol()` ruft `mt5.symbol_select()` und gibt sofort
+  zurueck → `_process_leg()` ruft Mikrosekunden spaeter `symbol_info_tick()` →
+  frisch abonniertes Symbol liefert `bid=ask=0.0` → Zweig `live_price <= 0`
+  meldet „kein Live-Kurs" → **und schreibt seit 2026-09-08 `status="missed"`**
+  → das Signal wird nie wieder angefasst, auch nicht 15 Min. spaeter, wenn der
+  Kurs da ist. Getroffen hat das **jedes Symbol beim allerersten Mal**; bei
+  `ou_modell` ist das fast jedes Signal (rotierendes Aktien-Universum).
+  **Reproduktion (read-only, TTP Konto 2, 3/3):** CAT/CMCSA/COIN frisch
+  selektiert → sofort `bid=0.0 ask=0.0`, nach <0,5 s 783,44 / 24,81 / 192,46.
+  **Abgrenzung zum IQ-Fall:** auf TTP steht die Warnung je Symbol **genau
+  einmal** (transient), auf IQ stand sie **48x** fuer dasselbe Symbol (der
+  Broker quotiert Einzelaktien wirklich nie). Der `excluded_legs`-Ausschluss
+  auf IQ bleibt damit richtig.
+  **Vier Aenderungen** (`executor.py`, `run_once.py`; `run_once_fast.py` erbt
+  sie automatisch ueber `slow._process_leg()`):
+  **(1) `executor.wait_for_tick()`** — wartet bis zu 2 s auf den ersten Tick
+  mit `bid>0 UND ask>0`. Gibt bewusst keinen 0-Tick als Notbehelf zurueck, ein
+  wirklich kursloses Symbol faellt weiterhin sauber durch. Auch in
+  `place_market_entry()` eingesetzt, wo bisher nur `tick is None` geprueft
+  wurde — ein 0-Tick haette dort `entry_price = 0.0` ergeben und
+  `calc_lot_size()` gegen einen Nullpreis rechnen lassen.
+  **(2) `_select_and_wait()`** in `resolve_symbol()` — wartet nur, wenn
+  `info.visible` vorher `False` war. Bei laengst abonnierten Symbolen kostet
+  das nichts; ohne diese Bedingung wuerde ein dauerhaft kursloses Symbol in
+  jedem Lauf und jedem Bein die vollen 2 s verbrennen.
+  **(3) Retry-Marker statt endgueltigem `missed`** fuer die beiden
+  VOROEBERGEHENDEN Ursachen (`_mark_for_retry()`, `MAX_TRANSIENT_ENTRY_RETRIES
+  = 8`). Der Anti-Spam-Zweck von 09-08 bleibt: gemeldet werden nur der erste
+  Versuch und das Aufgeben. Alle anderen Skip-Zweige (Signal zu alt, kein SL,
+  schon ausgestoppt, R-Detektor) bleiben unveraendert endgueltig — ihre
+  Ursachen aendern sich nicht von selbst.
+  **(4) Broker-Ablehnungen werden klassifiziert** (`TRANSIENT_ENTRY_RETCODES`,
+  `place_market_entry()` gibt den `retcode` jetzt strukturiert zurueck statt
+  nur im repr-String). 10018 „Market closed" ist bei einem Aktien-Bein, das
+  rund um die Uhr scannt, der Normalfall ausserhalb 15:30-22:00 Berlin — am
+  2026-09-02 kostete die pauschale Behandlung ADI und FAST. Dauerhafte Gruende
+  (10014/10015/10016/10017/10019/10030 und `retcode=None`, also der zu lange
+  Order-Kommentar vom 2026-09-09) bleiben `missed`.
+  **Verifiziert:** `py_compile` aller drei Module + **32 Offline-Testfaelle**
+  gegen gestubbtes MT5, das den 0-Tick-nach-`symbol_select()` real nachbildet
+  (`knowledge/scripts/test_funded_bridge_tick_retry.py`, git-getrackt, weil die
+  Bridge-Dateien selbst kein Git-Netz haben): Tick-Waechter, Erstabo-Warten,
+  Retry→Entry-Nachholung, Aufgeben nach 8 Versuchen ohne Spam,
+  Nicht-Regression der dauerhaften Skip-Gruende, Retcode-Klassifikation.
+  **(5) Verbrannte State-Eintraege bereinigt:** die drei Signale vom 09-14
+  (DD/IVZ/TROW) auf **beiden** TTP-Konten aus `bridge_state_ttp*.json`
+  entfernt — Signaltag 1,41 Tage alt, also noch innerhalb des 2-Tage-Gates.
+  Nur `status="missed"` OHNE Ticket wurde angefasst, unter dem regulaeren
+  `account_state_lock()`. Aeltere Signale (ADI/FAST/SYY/EXPE/APD) bewusst
+  liegengelassen: sie waeren ohnehin am Alters-Gate gescheitert.
+  Backup der vier beruehrten Dateien in `Funded-Portfolio-Bridge/
+  _backup_20260915/`.
+  **Einloesbar ist davon nur DD:** ein Re-Scan um 12:05 zeigt DD (09-14, Entry
+  124,29) weiterhin als `data_end`; TROW und IVZ stehen im heutigen Scan gar
+  nicht mehr -- `_scan_ou_modell()` leitet die Trades bei jedem Lauf neu her,
+  ein am Vortag offenes Signal kann mit der neuesten Bar verschwinden.
+  **Nachtrag zur Retcode-Klassifikation:** der 10018-Fall ist praktisch schon
+  durch das bestehende `_nyse_is_open()`-Gate abgedeckt (es setzt
+  `ou_entries_allowed=False` ausserhalb der US-Kassazeit -- deshalb war der
+  11:58-Lauf still und nicht etwa fehlerhaft). Die Klassifikation bleibt
+  trotzdem: sie greift fuer die Nicht-Aktien-Beine und an den Rand-Minuten der
+  Session, wo das NYSE-Gate offen ist und der Broker trotzdem ablehnt.
+  **Erster echter Lauf mit dem neuen Code (11:58) sauber durch**, alle drei
+  Konten verbunden, keine Fehlerzeile.
+
+- **2026-09-15** [Funded-Portfolio-Bridge / ORB] **ORB-Bars kommen jetzt vom
+  Ausfuehrungs-Broker statt aus dukascopy/Lake -- und der Scan laeuft je Broker
+  statt einmal fuer alle Konten.** Umsetzung des am selben Tag freigegebenen
+  Plans; EK (seit 2026-08-28) und FK (seit 2026-09-09) hatten das bereits, nur
+  Funded fehlte.
+  **Warum:** die ORB-Level sind ABSOLUTE Preise, die Broker-Feeds liegen aber
+  messbar neben Dukascopy (gemessen 2026-09-13, je 1.767 M15-Bars):
+  TTPMarkets SP500 -1,97 / US30 -1,47 / NASDAQ -1,55 bps; BeyondIQCapital
+  +0,09 / +0,24 / -0,10 bps; TickmillEU -1,74 / -1,34 / -1,40 bps. Bei einer
+  Stopdistanz von 7,5-9,3 bps sind 1,5 bps **15-25 % des Risikos**. Live belegt
+  am 2026-09-14: FK und Funded-IQ haengen am SELBEN Broker, handelten dasselbe
+  NASDAQ-Signal -- FK (MT5) stieg 13:53 UTC bei 28.992,50 ein, Funded-IQ
+  (Dukascopy) 13:58 bei 28.981,80.
+  **Geaendert:** (1) `challenge_portfolio/paper_bot.py::_scan_orb()` bekommt
+  `fetch_m5_override`/`fetch_m15_override` -- Signatur 1:1 aus
+  `fk_instant_funding/paper_bot.py::_scan_orb()`, ohne Override aendert sich
+  nichts. (2) Neu: `Funded-Portfolio-Bridge/orb_mt5_source.py`, portiert von FK.
+  Anders als dort NICHT modulglobal, sondern `make_fetchers(account)` -- dieses
+  Portfolio hat drei Konten an zwei Brokern mit verschiedenen Symbolnamen
+  (TTP "US500" vs. IQ "SPX500.gbe"). (3) `run_once.py::orb_scan_for_broker()`
+  neu, je `mt5_server` gecacht, HINTER dem Connect; `run_once_fast.py` nutzt
+  dieselbe Funktion. ORB ist aus beiden geteilten Vorab-Scans entfernt.
+  **Konsequenz fuer die Scan-Dedup vom 2026-09-03:** ORB kann nicht mehr geteilt
+  werden (broker-spezifische Level). Die beiden TTP-Konten teilen sich aber
+  weiterhin einen Scan -- **2 statt 1 ORB-Scan pro Zyklus, nicht 3.**
+  Verifiziert (2026-09-15): `_scan_orb()` ohne Overrides unveraendert
+  (425 Trades, explizite None-Overrides bit-identisch); Server-Zeitzone auf
+  beiden Brokern verifiziert (-0,09 / -0,08 Min Abweichung); MT5-Level
+  reproduzieren die gemessene Richtung (TTP -1,5 bis -4,5 bps unter Dukascopy,
+  IQ -0,53 bis +0,18); genau 2 Scans fuer 3 Konten, drittes Konto aus dem Cache;
+  Scan-Dauer 1,4 s je Broker (Fast-Task lag bisher bei 13-17 s); erzwungener
+  Rueckfall greift und meldet sich in Log und Telegram.
+  **Dabei gefunden und behoben:** die Rueckfall-Warnung enthielt ein Emoji und
+  liess `print()` auf einer cp1252-Konsole abstuerzen -- ausgerechnet im
+  Fehlerpfad. Telegram-Zeile behaelt das Emoji, Konsolen-Zeile nicht.
+  **Noch nicht umgestellt:** die Stop-Order-Entry-Logik (naechster Schritt).
+  `cls_practical` bleibt bewusst auf Dukascopy -- der EURUSD-Versatz betraegt
+  0,00-0,20 Pips gegen >=5 Pips Stopdistanz (0-4 %), anders als bei Index-CFDs.
+
 - **2026-09-14** [Reporting / Forex-Weekly-Report] **Weekly Checkup KW37 fiel
   aus -- Ursache war NICHT der ausgeschaltete PC, sondern das 1-Stunden-
   Zeitlimit des Tasks. Limit auf 4h angehoben, Wochen-Logik fuer verspaetete
@@ -1982,7 +2503,7 @@ keine Planung (dafür ist `DASHBOARD.md`).
   Punkt 4 weist den (unbeaufsichtigten) Report-Generator an, `git log
   --since="7 days ago" -- knowledge/resources/ knowledge/projects/` sowie
   neue Ideen-Inbox-Eintraege in `knowledge/DASHBOARD.md` seit dem letzten
-  Report zu pruefen und kurz zu nennen (Titel/Kernaussage, `[[slug]]`-Link),
+  Report zu pruefen und kurz zu nennen (Titel/Kernaussage, `Wikilink-Beispiel`-Link),
   auch wenn noch nichts Konkretes draus wurde. Nachfolgende Punkte 4-6 zu
   5-7 umnummeriert. `scripts/reports/monthly_report_prompt.md` verweist nur
   auf "gleiche Struktur wie Weekly" (kein eigener nummerierter Abschnitt),

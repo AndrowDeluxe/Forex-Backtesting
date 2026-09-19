@@ -33,6 +33,10 @@ Research-/Strategie-Wissen.
   besprochen wurde (wie bisher beim Gold-SSRN-Thread).
 - Streamlit-Seite "Erkenntnisse" bleibt die Präsentationsebene für Nutzer;
   `knowledge/` ist die Rohnotiz-Ebene dahinter -- nicht 1:1 dasselbe.
+- **Verweise nach außerhalb von `knowledge/`** (Claude-Memory, Skills,
+  Code) immer als Pfad in Backticks, z. B. `memory/cls_practical_strategy_state.md`,
+  nie als Wikilink (doppelte eckige Klammern) -- Wikilinks sind nur für Notizen innerhalb von
+  `knowledge/` (Nutzerentscheid 2026-09-17, hält den Lint sauber).
 
 ## Prozess für ein neues Paper (CODE)
 

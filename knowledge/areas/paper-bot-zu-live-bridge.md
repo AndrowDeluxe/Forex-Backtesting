@@ -83,8 +83,8 @@ Symptom: Beine bekommen Risiko nach Scan-Reihenfolge statt nach Design.
 **Backtest-Zahlen nie aus der Beschriftung ablesen.** Ob „8 % Risiko/Trade" das
 Risiko *innerhalb einer Kapitalscheibe* oder *auf das Gesamtkonto* meint, entscheidet
 über Faktor 8. Immer gegen ein publiziertes Szenario rückrechnen, bevor eine Zahl in
-eine Live-Config wandert — siehe [[risiko-kalibrierung-methodik]].
+eine Live-Config wandert — siehe Memory `backtest_zahlen_gegen_szenario_pruefen.md`.
 
 ## Verwandt
 
-[[mt5-bot-deployment]] · [[edge-card-workflow]] · [[dashboard]]
+[[mt5-bot-deployment]] · [[edge-card-workflow]] · [[paper-bot-architecture]] · [[dashboard]]

@@ -66,6 +66,13 @@ DEFAULT_LOOKBACK_DAYS = 30
 MAX_POOLED_SAMPLES = 400_000  # Downsampling-Ziel, damit 30 Tage EURUSD-Ticks nicht den Speicher sprengen
 
 _CONNECT_RETRY_DELAY_S = 12  # identisch zu Funded-Portfolio-Bridge/executor.py
+_OFFSET_OVERRIDE: float | None = None  # von main() gesetzt, siehe --server-offset-hours
+
+
+class StaleTickError(RuntimeError):
+    """Letzter Tick zu alt, um daraus den Server-Zeitzonen-Offset abzuleiten
+    (Markt geschlossen). Kein Messfehler, sondern ein fehlender Eingabewert --
+    siehe --server-offset-hours."""
 
 
 @dataclass(frozen=True)
@@ -85,37 +92,44 @@ class Target:
     symbol: str
 
 
-def _load_targets() -> list[Target]:
+def _load_targets(symbol_keys: tuple[str, ...] = ("EURUSD",)) -> list[Target]:
     """Liest Terminalpfade/Zugangsdaten aus den bestehenden Bridge-Configs,
     statt sie hier zu duplizieren -- die Bridges liegen ausserhalb des Repos
-    und sind die einzige Wahrheit fuer diese Werte."""
+    und sind die einzige Wahrheit fuer diese Werte.
+
+    Faechert Konto x Symbol auf: jedes zu vermessende Symbol wird ein eigener
+    Target. Dadurch bleibt der komplette Messpfad darunter unveraendert -- er
+    kennt weiterhin genau ein Symbol je Target."""
     targets: list[Target] = []
 
     sys.path.insert(0, str(FUNDED_BRIDGE))
     import config as funded_config  # noqa: E402
 
     for acc in funded_config.ACCOUNTS:
-        # resolve_symbol()-Logik der Bridge in Kurzform: symbol_map schlaegt
-        # symbol_suffix. Fuer EURUSD ist auf allen drei Konten der Suffix-Pfad
-        # relevant (".gbe" bei BeyondIQCapital, leer bei TTP).
-        symbol = acc.symbol_map.get("EURUSD", "EURUSD" + acc.symbol_suffix)
-        targets.append(Target(
-            portfolio="Funded", account=acc.name, broker=acc.mt5_server, state_id=acc.state_id,
-            terminal_path=acc.mt5_terminal_path, login=acc.mt5_login,
-            password=acc.mt5_password, server=acc.mt5_server, symbol=symbol,
-        ))
+        for key in symbol_keys:
+            # resolve_symbol()-Logik der Bridge in Kurzform: symbol_map schlaegt
+            # symbol_suffix (".gbe" bei BeyondIQCapital, leer bei TTP).
+            symbol = acc.symbol_map.get(key, key + acc.symbol_suffix)
+            targets.append(Target(
+                portfolio="Funded", account=acc.name, broker=acc.mt5_server, state_id=acc.state_id,
+                terminal_path=acc.mt5_terminal_path, login=acc.mt5_login,
+                password=acc.mt5_password, server=acc.mt5_server, symbol=symbol,
+            ))
     sys.path.remove(str(FUNDED_BRIDGE))
     del sys.modules["config"]
 
     sys.path.insert(0, str(EK_BRIDGE))
     import config as ek_config  # noqa: E402
 
-    targets.append(Target(
-        portfolio="EK", account="EK-Portfolio (Tickmill, echtes Geld)", broker=ek_config.MT5_SERVER,
-        state_id=None, terminal_path=ek_config.TERMINAL_PATH, login=ek_config.MT5_LOGIN,
-        password=ek_config.MT5_PASSWORD, server=ek_config.MT5_SERVER,
-        symbol=ek_config.SYMBOL_MAP["EURUSD"],
-    ))
+    for key in symbol_keys:
+        if key not in ek_config.SYMBOL_MAP:
+            continue  # Symbol auf diesem Broker nicht angeboten (z.B. XPTUSD)
+        targets.append(Target(
+            portfolio="EK", account="EK-Portfolio (Tickmill, echtes Geld)", broker=ek_config.MT5_SERVER,
+            state_id=None, terminal_path=ek_config.TERMINAL_PATH, login=ek_config.MT5_LOGIN,
+            password=ek_config.MT5_PASSWORD, server=ek_config.MT5_SERVER,
+            symbol=ek_config.SYMBOL_MAP[key],
+        ))
     sys.path.remove(str(EK_BRIDGE))
     del sys.modules["config"]
 
@@ -235,7 +249,18 @@ def _server_utc_offset_hours(mt5, symbol: str) -> float:
     if tick is None or tick.time == 0:
         raise RuntimeError(f"kein Tick fuer {symbol} - Offset nicht bestimmbar ({mt5.last_error()})")
     now_utc = datetime.now(timezone.utc).timestamp()
-    return round((tick.time - now_utc) / 1800) / 2  # auf halbe Stunden runden
+    raw = (tick.time - now_utc) / 3600.0
+    # WICHTIG: bei geschlossenem Markt (Wochenende, Feiertag) ist der letzte Tick
+    # Stunden bis Tage alt -- diese Rechnung liefert dann stillschweigend einen
+    # voellig falschen Offset und verschiebt das ganze Messfenster. Lieber hart
+    # abbrechen und den bekannten Wert per --server-offset-hours uebergeben.
+    if abs(raw) > 6:
+        raise StaleTickError(
+            f"letzter Tick fuer {symbol} ist {abs(raw):.1f} h alt (Markt geschlossen?) -- "
+            f"Server-Offset nicht bestimmbar. Mit --server-offset-hours den bekannten Wert "
+            f"uebergeben (am 2026-09-09 gemessen: UTC+3 auf allen vier Konten)."
+        )
+    return round(raw * 2) / 2  # auf halbe Stunden runden
 
 
 def _berlin_window_to_server(day: pd.Timestamp, offset_h: float) -> tuple[datetime, datetime]:
@@ -250,8 +275,18 @@ def _berlin_window_to_server(day: pd.Timestamp, offset_h: float) -> tuple[dateti
 
 def _pip_size(info) -> float:
     """Pip = 10 Points bei 5-/3-stelligen FX-Quotes (EURUSD 1.16373 -> point
-    0.00001, 1 Pip = 0.0001)."""
+    0.00001, 1 Pip = 0.0001). Bei Index-CFDs (digits 1/2) gibt es keine Pips --
+    dort ist die Einheit schlicht ein Point, siehe _unit_label()."""
     return info.point * 10 if info.digits in (3, 5) else info.point
+
+
+def _unit_label(info) -> str:
+    """"Pips" ist fuer Index-CFDs falsch und aktiv irrefuehrend (US500-Spread
+    als "64 Pips" zu lesen legt eine voellig andere Groessenordnung nahe als
+    die realen 0,64 Indexpunkte). Die bps-Spalte ist ohnehin die vergleichbare
+    Groesse -- diese Beschriftung sorgt nur dafuer, dass die Rohzahl daneben
+    nicht falsch verstanden wird."""
+    return "Pips" if info.digits in (3, 5) else "Points"
 
 
 def _ensure_symbol(mt5, symbol: str):
@@ -292,7 +327,8 @@ def _measure_spreads(mt5, target: Target, days: int) -> dict:
     pip = _pip_size(info)
     points_per_pip = pip / info.point
 
-    offset_h = _server_utc_offset_hours(mt5, target.symbol)
+    offset_h = (_OFFSET_OVERRIDE if _OFFSET_OVERRIDE is not None
+                else _server_utc_offset_hours(mt5, target.symbol))
     today = pd.Timestamp.now(tz=LOCAL_TZ).normalize().tz_localize(None)
     # range(0, ...) -- HEUTE gehoert dazu: der Vorfall, der diese Messung
     # ausgeloest hat, lag heute frueh mitten im Messfenster.
@@ -330,6 +366,7 @@ def _measure_spreads(mt5, target: Target, days: int) -> dict:
         return {"error": "weder M1-Rates noch Ticks im Messfenster erhalten", "days_with_data": 0}
 
     out = {
+        "unit": _unit_label(info),
         "days_with_data": len(per_day),
         "first_day": per_day[-1]["day"] if per_day else None,
         "last_day": per_day[0]["day"] if per_day else None,
@@ -441,13 +478,29 @@ def _measure_slippage(mt5, target: Target, days: int) -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--days", type=int, default=DEFAULT_LOOKBACK_DAYS)
+    ap.add_argument("--symbols", default="EURUSD",
+                    help="Komma-Liste interner Symbol-Keys, z.B. 'SP500,US30,NASDAQ'. "
+                         "Wird je Broker ueber dessen symbol_map/symbol_suffix aufgeloest.")
+    ap.add_argument("--window", default=None,
+                    help="Messfenster in Berliner Ortszeit als 'START-ENDE' in Stunden, "
+                         "z.B. '15.5-17.0' fuer die NY-Open-Stunde (Default: 8.0-12.5 fuer CLS).")
+    ap.add_argument("--server-offset-hours", type=float, default=None,
+                    help="Server-Zeitzonen-Offset gegen UTC fest vorgeben, statt ihn aus dem "
+                         "letzten Tick abzuleiten. NOETIG bei geschlossenem Markt (Wochenende). "
+                         "Am 2026-09-09 gemessen: 3.0 auf allen vier Konten.")
     ap.add_argument("--out", type=Path,
                     default=REPO_DIR / "knowledge" / "_data" / "broker_spreads_eurusd.json")
     args = ap.parse_args()
 
     import MetaTrader5 as mt5
 
-    targets = _load_targets()
+    global WINDOW_START_H, WINDOW_END_H
+    if args.window:
+        lo, hi = args.window.split("-")
+        WINDOW_START_H, WINDOW_END_H = float(lo), float(hi)
+    global _OFFSET_OVERRIDE
+    _OFFSET_OVERRIDE = args.server_offset_hours
+    targets = _load_targets(tuple(k.strip() for k in args.symbols.split(",") if k.strip()))
     was_running = {t.terminal_path: _terminal_running(t.terminal_path) for t in targets}
     results = []
 
@@ -467,12 +520,13 @@ def main() -> None:
                 else:
                     print(f"    SPREAD ({s['days_with_data']} Tage, {s['first_day']}..{s['last_day']}, "
                           f"Serverzeit UTC{s['server_utc_offset_h']:+g}):")
+                    unit = s.get("unit", "Pips")
                     if "m1_median_pips" in s:
-                        print(f"      M1-Baren ({s['m1_samples']:,}): Median {s['m1_median_pips']:.2f} Pips "
+                        print(f"      M1-Baren ({s['m1_samples']:,}): Median {s['m1_median_pips']:.2f} {unit} "
                               f"({s['m1_median_bps']:.2f} bps) | p75 {s['m1_p75_pips']:.2f} "
                               f"| p90 {s['m1_p90_pips']:.2f} | max {s['m1_max_pips']:.2f}")
                     if "tick_median_pips" in s:
-                        print(f"      Ticks    ({s['tick_samples']:,}): Median {s['tick_median_pips']:.2f} Pips "
+                        print(f"      Ticks    ({s['tick_samples']:,}): Median {s['tick_median_pips']:.2f} {unit} "
                               f"| p90 {s['tick_p90_pips']:.2f} | max {s['tick_max_pips']:.2f}")
                 sl = entry["slippage"]
                 if sl.get("note"):

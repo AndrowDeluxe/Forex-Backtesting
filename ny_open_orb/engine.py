@@ -45,7 +45,7 @@ from ny_open_orb.indicators import relative_volume_at_time
 from ny_open_orb.range import attach_orb_levels, compute_session_range
 from strategy.indicators import compute_adx
 
-ENTRY_TYPES = ("stop_breakout", "confirmed_retest", "limit_in_range", "fractal_reversal")
+ENTRY_TYPES = ("stop_breakout", "close_breakout", "confirmed_retest", "limit_in_range", "fractal_reversal")
 
 
 def build_frame(m15: pd.DataFrame, m_exec: pd.DataFrame, range_bars: int = 1, rvol_lookback_days: int = 20, fractal_k: int = 2) -> pd.DataFrame:
@@ -175,6 +175,37 @@ def _find_fractal_reversal(day: pd.DataFrame, confirm_within_bars: int) -> dict 
     return None
 
 
+def _find_close_breakout(day: pd.DataFrame, confirm_within_bars: int) -> dict | None:
+    """Wie _find_stop_breakout, aber mit BESTAETIGUNG durch den Bar-Schluss
+    statt intrabar am Level (2026-09-14, Nutzerfrage nach dem Candle-Close-
+    Mechanismus).
+
+    Unterschied in einem Satz: stop_breakout stellt eine ruhende Order ins
+    Buch und wird gefuellt, sobald der Kurs das Level beruehrt --
+    close_breakout wartet ab, ob die Bar JENSEITS des Levels schliesst, und
+    steigt dann zu deren Schlusskurs ein.
+
+    Der Tausch dahinter: man filtert Fehlausbruche heraus (eine Bar, die das
+    Level nur anpiekst und darunter schliesst, feuert hier nicht), bezahlt
+    dafuer aber den Weg vom Level bis zum Bar-Schluss. Der ist gemessen und
+    nicht klein -- 6-18 % der Stopdistanz im Median, je Instrument
+    (scripts/research_orb_cost_probe.py).
+
+    Keine Mehrdeutigkeit noetig: ein Schlusskurs liegt entweder ueber oder
+    unter dem Level, nie beides -- anders als bei high/low, wo eine Bar beide
+    Seiten beruehren kann und stop_breakout deshalb einen ~-Filter braucht."""
+    orb_high, orb_low = day["orb_high"].iloc[0], day["orb_low"].iloc[0]
+    close = day["close"]
+    broke_up = close > orb_high
+    broke_down = close < orb_low
+    fires = broke_up | broke_down
+    if not fires.any():
+        return None
+    i = day.index[fires][0]
+    direction = 1 if broke_up.loc[i] else -1
+    return _entry_row(day, i, direction, float(close.loc[i]))
+
+
 def _entry_row(day: pd.DataFrame, i: pd.Timestamp, direction: int, entry_price: float) -> dict:
     return {
         "entry_time": i,
@@ -190,6 +221,7 @@ def _entry_row(day: pd.DataFrame, i: pd.Timestamp, direction: int, entry_price: 
 
 _find_entries_by_type = {
     "stop_breakout": _find_stop_breakout,
+    "close_breakout": _find_close_breakout,
     "confirmed_retest": _find_confirmed_retest,
     "limit_in_range": _find_limit_in_range,
     "fractal_reversal": _find_fractal_reversal,
@@ -210,6 +242,12 @@ def simulate(
     move_stop_to_be_after_partial: bool = False,
     rvol_exit_min: float | None = None,
     spread_bps: float = 0.5,
+    slippage_bps: float = 0.0,
+    entry_slippage_bps: float = 0.0,
+    entry_lag_bars: int = 0,
+    entry_fill_mode: str = "level",
+    reanchor_stop_to_fill: bool = False,
+    partial_check: str = "intrabar",
 ) -> pd.DataFrame:
     """Shared exit loop for every entry_type. Stop is checked intrabar
     (high/low, filled at the stop level - see research_orb_intrabar_stop.py's
@@ -242,20 +280,99 @@ def simulate(
         return pd.DataFrame()
 
     half_cost = spread_bps / 10_000 / 2
+    exit_slip = slippage_bps / 10_000
+    entry_slip = entry_slippage_bps / 10_000
     trades = []
     for _, e in entries.iterrows():
         if pd.isna(e["atr"]) or e["atr"] <= 0:
             continue  # ATR(14) warm-up period at the start of the series - not enough history to size a stop yet
         direction = e["direction"]
-        entry_price = e["entry_price"] * (1 + half_cost * direction)
 
-        atr_stop = entry_price - direction * stop_atr_mult * e["atr"]
+        # Signalpreis = das Ausbruchslevel. Der Stop haengt IMMER hieran, auch
+        # bei verzoegerter Ausfuehrung -- genau so macht es die Live-Bridge:
+        # Funded-Portfolio-Bridge/run_once.py::_sl_price() rekonstruiert den SL
+        # als entry_price - direction * initial_risk aus dem SIGNAL, nicht aus
+        # dem tatsaechlichen Fuellpreis.
+        signal_price = e["entry_price"] * (1 + half_cost * direction)
+
+        # entry_lag_bars > 0: fuellen zum SCHLUSSKURS `lag` Baren spaeter statt
+        # am Ausbruchslevel. Der Backtest unterstellte bisher eine Fuellung
+        # exakt am Level -- der Live-Bot schickt aber eine MARKTorder beim
+        # naechsten Scan (place_market_entry(), target=None). Bei einer
+        # Ausbruchsstrategie ist diese Verzoegerung per Konstruktion
+        # nachteilig, weil der Kurs im Ausbruch weiterlaeuft.
+        # 0 = bisheriges Verhalten, bit-identisch.
+        # Drei unterscheidbare Ausfuehrungsmechanismen:
+        #   entry_fill_mode="level"     -> ruhende Stop-Order: Fuellung AM Level,
+        #                                  intrabar, kein Versatz. Das ist der
+        #                                  Mechanismus, den diese Strategie
+        #                                  validiert hat (siehe Modul-Docstring).
+        #   entry_fill_mode="bar_close" -> Marktorder, sobald der Bot die Bar
+        #                                  sieht. entry_lag_bars=0 heisst
+        #                                  "Schlusskurs der SIGNALbar" (EK sendet
+        #                                  real 3-14 s danach), 1 heisst eine Bar
+        #                                  spaeter (Funded-Pipeline ~3:15 Min).
+        if entry_fill_mode not in ("level", "bar_close"):
+            raise ValueError(f"entry_fill_mode must be 'level' or 'bar_close', got {entry_fill_mode!r}")
+        if entry_fill_mode == "bar_close":
+            try:
+                fill_i = df.index.get_loc(e["entry_time"]) + entry_lag_bars
+            except KeyError:
+                continue
+            if fill_i >= len(df) or df.index[fill_i] > df.loc[e["entry_time"], "session_close"]:
+                continue  # Ausfuehrung faellt aus der Session -- live kaeme der Trade nicht zustande
+            raw_fill = float(df["close"].iloc[fill_i])
+            path_start = df.index[fill_i]
+        elif entry_lag_bars > 0:
+            try:
+                fill_i = df.index.get_loc(e["entry_time"]) + entry_lag_bars
+            except KeyError:
+                continue
+            if fill_i >= len(df) or df.index[fill_i] > df.loc[e["entry_time"], "session_close"]:
+                continue
+            raw_fill = float(df["close"].iloc[fill_i])
+            path_start = df.index[fill_i]
+        else:
+            raw_fill = e["entry_price"]
+            path_start = e["entry_time"]
+
+        # Kosten am Entry: halber Spread PLUS Einstiegs-Slippage, beide gegen uns.
+        entry_price = raw_fill * (1 + (half_cost + entry_slip) * direction)
+
+        # reanchor_stop_to_fill: Stop am tatsaechlichen Fuellpreis aufhaengen
+        # statt am Signal. Der Risiko-Abstand ist dann IMMER exakt
+        # stop_atr_mult x ATR, unabhaengig vom Versatz.
+        #
+        # Warum das hier anders zu bewerten ist als bei cls_practical: dort
+        # kostete dasselbe Vorgehen Ergebnis, weil der CLS-Stop auf einem
+        # STRUKTURELLEN Invalidierungs-Niveau sitzt und dieses Niveau den Edge
+        # traegt (siehe knowledge/projects/cls-practical-kostenvalidierung.md).
+        # Der ORB-Stop im stop_mode="atr" ist dagegen eine reine
+        # Volatilitaets-DISTANZ ohne eigene Bedeutung -- ihn mitwandern zu
+        # lassen wirft also kein strukturelles Niveau weg.
+        # (Fuer stop_mode="structural" gilt das NICHT: dort ist orb_low/orb_high
+        # ein echtes Niveau und bleibt deshalb unangetastet.)
+        stop_anchor = entry_price if reanchor_stop_to_fill else signal_price
+        atr_stop = stop_anchor - direction * stop_atr_mult * e["atr"]
         if stop_mode == "structural":
             structural = e["orb_low"] if direction == 1 else e["orb_high"]
             beyond = (structural < entry_price) if direction == 1 else (structural > entry_price)
             stop_price = structural if beyond else atr_stop
         else:
             stop_price = atr_stop
+        # Fill bereits JENSEITS des Stops (nur bei entry_lag_bars > 0 moeglich):
+        # Der Trade kaeme live gar nicht zustande -- das Restlaufzeit-Gate der
+        # Bridges ("SL schon beruehrt") blockt ihn. Rechnerisch ist er ausserdem
+        # giftig: abs() unten macht aus dem negativen Abstand ein positives
+        # Risiko, der Stop-Exit liefert dann ein POSITIVES r_multiple und ein
+        # toter Trade erscheint als Gewinn. Genau das hat am 2026-09-14 die
+        # Lag-Auswertung verfaelscht (Marktorder mit 10 Min Versatz sah besser
+        # aus als mit 5 Min -- oekonomisch unmoeglich).
+        # Bei entry_lag_bars=0 kann der Fall nicht eintreten (Fill == Signal,
+        # Stop liegt stop_atr_mult x ATR entfernt), der Default-Pfad bleibt
+        # dadurch unveraendert.
+        if (entry_price - stop_price) * direction <= 0:
+            continue
         initial_risk = abs(entry_price - stop_price)
         if initial_risk <= 0:
             continue
@@ -272,7 +389,8 @@ def simulate(
             partial_level = entry_price + direction * partial_exit_r * initial_risk
 
         session_close = df.loc[e["entry_time"], "session_close"]
-        path = df.loc[(df.index > e["entry_time"]) & (df.index <= session_close)]
+        # ab dem tatsaechlichen Fuellzeitpunkt, nicht ab der Signalbar
+        path = df.loc[(df.index > path_start) & (df.index <= session_close)]
 
         exit_i, exit_reason, exit_price = None, None, None
         be_moved = False
@@ -291,9 +409,18 @@ def simulate(
                 exit_i, exit_reason, exit_price = j, ("breakeven" if be_moved else "stop"), stop_price
                 break
             if partial_level is not None and not partial_done:
-                hit_partial = (bar["high"] >= partial_level) if direction == 1 else (bar["low"] <= partial_level)
+                # partial_check="close" bildet einen GEPOLLTEN Teilausstieg nach:
+                # die Live-Bridge prueft das Level nur alle 5 Minuten gegen den
+                # aktuellen Kurs, nicht intrabar -- eine Spitze, die das Level
+                # beruehrt und in derselben Bar zurueckfaellt, sieht sie nicht.
+                # "intrabar" (Default) = bisheriges Verhalten, bit-identisch.
+                if partial_check == "close":
+                    hit_partial = (bar["close"] >= partial_level) if direction == 1 else (bar["close"] <= partial_level)
+                else:
+                    hit_partial = (bar["high"] >= partial_level) if direction == 1 else (bar["low"] <= partial_level)
                 if hit_partial:
-                    partial_fill = partial_level * (1 - half_cost * direction)
+                    # Teilausstieg ist eine Marktorder der Bridge -- halber Spread UND Slippage
+                    partial_fill = partial_level * (1 - (half_cost + exit_slip) * direction)
                     partial_ret_contribution = partial_exit_fraction * direction * (partial_fill - entry_price) / entry_price
                     partial_r_contribution = partial_exit_fraction * direction * (partial_fill - entry_price) / initial_risk
                     remaining_fraction = 1.0 - partial_exit_fraction
@@ -314,7 +441,11 @@ def simulate(
                 continue
             exit_i, exit_reason, exit_price = path.index[-1], "session_end", path["close"].iloc[-1]
 
-        exit_price = exit_price * (1 - half_cost * direction)
+        # Alle Ausstiege dieses Beins sind in der Praxis Marktorders: der Broker-SL
+        # slippt beim Ausloesen, und ein Ziel-/Session-Ende-Ausstieg laeuft ueber eine
+        # Marktorder der Bridge (place_market_entry() setzt target=None). Deshalb
+        # traegt JEDER Ausstieg halben Spread plus Slippage, nicht nur der Stop.
+        exit_price = exit_price * (1 - (half_cost + exit_slip) * direction)
         final_leg_ret = direction * (exit_price - entry_price) / entry_price
         final_leg_r = direction * (exit_price - entry_price) / initial_risk
         ret = partial_ret_contribution + remaining_fraction * final_leg_ret

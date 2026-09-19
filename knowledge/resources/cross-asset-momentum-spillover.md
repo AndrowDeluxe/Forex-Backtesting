@@ -83,7 +83,7 @@ verwendeten Asset-Universums).
   -- `cls_practical/data.py` holt BUND/USTBOND-CFDs (Dukascopy) und
   DE02Y/US02Y (TradingView-Bridge) bereits für den dort validierten
   Rate-Momentum-Risk-Scaling-Filter (`cls_practical/rates.py`, siehe
-  [[cls-practical-strategy-state]]-Memory).
+  Memory `cls_practical_strategy_state.md`).
 
 **Express**
 - Nächster Schritt: **Nutzerentscheid 2026-09-09** auf die Rückfrage:

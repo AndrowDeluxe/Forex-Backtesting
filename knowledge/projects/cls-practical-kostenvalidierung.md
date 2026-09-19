@@ -1,9 +1,12 @@
 # Projekt: CLS Practical — Kostenvalidierung und Risiko-Neubewertung
 
-**Status:** Messung + Phase-6-Validierung abgeschlossen (2026-09-09).
-Risiko-Entscheidung offen — siehe [[DASHBOARD]] "Offene Aufgaben".
-**Bis dahin läuft `cls_practical` auf allen drei Portfolios unverändert live**
-(Nutzerentscheid: erst validieren, dann Risiko anpassen).
+**Status:** **ABGESCHLOSSEN 2026-09-13** (Nutzerentscheid: "damit haben wir
+CLS erstmal abgeschlossen"). Messung + Phase-6-Validierung fertig
+(2026-09-09), Umbau + Risikosenkung umgesetzt und verifiziert (2026-09-11).
+`cls_practical` läuft auf allen drei Portfolios weiter — **auf Bewährung**,
+siehe "Abschluss und verbleibende Punkte" am Ende dieser Notiz. Im
+[[DASHBOARD]] steht dazu nur noch der Bewährungs-/Abbruchpunkt; alle übrigen
+CLS-Punkte wurden dort am 2026-09-13 abgeräumt.
 
 Verwandt: [[broker-kostenmodell-eurusd]] (die Messwerte),
 [[challenge-portfolio-ttp-icapital]] (das betroffene Live-Portfolio),
@@ -354,3 +357,38 @@ repariert wurde, würde nie zeigen, ob die Reparatur trägt.
 sind nicht erhoben. Ohne sie lässt sich nicht sagen, ob 0,47 im Portfolio
 schwach ist oder normal — und damit nicht, ob der Platz besser vergeben wäre.
 Das ist die nächste sinnvolle Messung.
+
+
+---
+
+## Abschluss und verbleibende Punkte (2026-09-13)
+
+Auf Nutzerauftrag wurde das Thema geschlossen und das `DASHBOARD.md` von
+allen CLS-Punkten befreit. Was dort NICHT mehr steht, aber hier
+nachlesbar bleiben soll:
+
+**1. Weiter offen (bewusst nicht im Dashboard): 12 veraltete
+Ergebnis-Dateien in `cls_practical/results/`.** Alle stammen vom
+2026-08-13/14, die Engine wurde am 2026-08-20 geändert (`f549b23`, u.a.
+`test_hour=9.0`). Derselbe Aufruf liefert heute $73.558,93 statt der dort
+ausgewiesenen $60.393,55 (+22 %). Betroffen: `filter_relaxation_sweep`,
+`external_filters_in_sample`, `filter_combos`,
+`final_verification_vs_buyhold`, `full_param_sweep_in_sample`, `kelly`,
+`risk_pct_table`, `multi_instrument`, `cross_vs_index`,
+`eurusd_cross_filter_window_threshold_sweep`, `eurusd_holdtest_timing_sweep`,
+`pair_specific_cross_retest`. Die daraus abgeleiteten Entscheidungen sind
+nicht automatisch falsch, aber **jede Zahl aus diesen Dateien gilt nicht
+mehr** — vor einer Wiederverwendung neu erzeugen. Andere Pakete
+(`mt5_trend_pullback`, `btc_ema_cross`) sind sauber.
+
+**2. Kostenannahmen: (a)-(c) bestätigt, (d) verworfen.** Messfenster
+08:00–12:30 Berlin, Bündelung aller Kostenblöcke in `spread_bps` und
+`risk_pct=0,25 %` bleiben die Grundlage. Ein Vorwärts-Sampling der echten
+Tickmill-Kosten wurde am 2026-09-13 **abgelehnt** — EKs Kennzahlen bleiben
+damit auf der geschätzten Annahme von 0,50 Pips und sind nicht mit den
+gemessenen Challenge-Zahlen (2,05 Pips) vergleichbar. Siehe
+[[broker-kostenmodell-eurusd]].
+
+**3. Der eigentliche Bewährungspunkt bleibt offen:** Abbruchkriterium
+festlegen + Calmar der anderen fünf Beine erheben (siehe Abschnitt davor).
+Das ist der einzige CLS-Punkt, der im `DASHBOARD.md` stehen bleibt.

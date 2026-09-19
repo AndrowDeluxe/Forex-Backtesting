@@ -365,7 +365,13 @@ def _scan_cls_practical(end: pd.Timestamp, force_refresh: bool, *, source: str =
     daily = compute_daily_features(eurusd_m5)
     combined_mult = compute_combined_rate_risk_multiplier(bund_m5, ustbond_m5, de02y, us02y, daily["direction"])
 
-    trades = simulate_cls_practical(eurusd_m5, other_majors_m15, bund_m5, ustbond_m5, risk_multiplier=combined_mult)
+    # min_sl_pips=5 (2026-09-17, Nutzerentscheid): nachgezogen, identisch zu
+    # challenge_portfolio/paper_bot.py (2026-09-10) und ek_portfolio/paper_bot.py
+    # (2026-09-11) -- dort ist die Begruendung ausfuehrlich. Kurz: Setups mit
+    # Stop < 5 Pips werden verworfen; am 2026-09-09 kostete ein 3,6-Pip-Stop
+    # auf Funded -1.441,72 USD. FK misst 1,30 Pips Round-Trip-Kosten.
+    trades = simulate_cls_practical(eurusd_m5, other_majors_m15, bund_m5, ustbond_m5,
+                                    risk_multiplier=combined_mult, min_sl_pips=5)
     if trades.empty:
         return pd.DataFrame(columns=["entry_time", "exit_time", "r_multiple", "exit_reason"])
     trades = trades.copy()
@@ -804,19 +810,29 @@ def scan_once(as_of: pd.Timestamp | None = None, dry_run: bool = False, state_ov
     # bleiben im State (fuer Equity-/Kill-Switch-Historie), es kommen nur
     # keine neuen mehr dazu.
     messages = []
+
+    def _record_scan_error(leg_label: str, e: Exception) -> None:
+        # Sammelmeldung (Nutzerentscheid 2026-09-17): ein haengender dukascopy-
+        # Abruf schlug bisher bei JEDEM stuendlichen Lauf erneut als Telegram-
+        # Sofortmeldung auf. Jetzt nur der ERSTE Fehler je Bein pro Tag sofort,
+        # alle weiteren nur noch gezaehlt -- der Tagesabschluss listet sie
+        # ohnehin mit Anzahl ("Scan-Fehler heute bei ... (Nx)").
+        if leg_label not in state["scan_errors_today"]["legs"]:
+            messages.append(f"⚠️ {leg_label}-Scan fehlgeschlagen: {e} "
+                            f"(weitere Fehler heute nur noch im Tagesabschluss)")
+        state["scan_errors_today"]["legs"].append(leg_label)
+
     try:
         tp_trades = _since_start(_retry(lambda: _scan_trend_pullback(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "trend_pullback", tp_trades)
     except Exception as e:
-        messages.append(f"⚠️ Trend-Pullback-Scan fehlgeschlagen: {e}")
-        state["scan_errors_today"]["legs"].append("Trend Pullback")
+        _record_scan_error("Trend Pullback", e)
 
     try:
         gsd_trades = _since_start(_retry(lambda: _scan_gold_silver(end, force_refresh=not dry_run)))
         messages += _merge_trades(state, "gold_silver", gsd_trades)
     except Exception as e:
-        messages.append(f"⚠️ Gold-Silber-Divergenz-Scan fehlgeschlagen: {e}")
-        state["scan_errors_today"]["legs"].append("Gold-Silber-Divergenz")
+        _record_scan_error("Gold-Silber-Divergenz", e)
 
     equity_df = compute_shared_equity(state)
     dd_breached, current_dd, dd_floor = check_trailing_dd(equity_df, state["eod_equity"], end)

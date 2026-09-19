@@ -1,7 +1,12 @@
 # Bridge-Infrastruktur: Soll-Ist-Vergleich der drei Portfolios
 
-**Stand: 2026-09-10** _(bei jeder Infrastruktur-Änderung an einer der drei
+**Stand: 2026-09-14** _(bei jeder Infrastruktur-Änderung an einer der drei
 Bridges mitpflegen — sonst ist diese Seite schlimmer als keine.)_
+
+> **Diese Seite vergleicht die Infrastruktur.** Was die einzelnen **Beine**
+> tatsächlich gehandelt haben und wie sie zum Paper-Bot stehen:
+> [[bein-matrix-ist-soll-paper]]. Wie die Kette insgesamt funktioniert und wo
+> sie verliert: [[systemlandkarte]].
 
 ## Wozu diese Seite
 
@@ -26,6 +31,8 @@ Deshalb hier eine nachschlagbare Tabelle statt einer Behauptung.
 | Broker / Konten | Tickmill Live 55918977 (1) | TTP ×2 + BeyondIQCapital 16054 (3) | BeyondIQCapital 17764 (1) |
 | Echtes Geld | ja | ja (`DRY_RUN=False`) | ja (`DRY_RUN=False`, `LIVE_LEGS` 7 von 9) |
 | Repo-Modul (`pb`) | `ek_portfolio.paper_bot` | `challenge_portfolio.paper_bot` | `fk_instant_funding.paper_bot` |
+| **Bindung an den Paper-Bot** | **kopiert** (Risiko-/Exit-Konstanten dupliziert → kann abdriften, tat es auch) | **importiert zur Laufzeit** (Scans + `LEG_RISK_PCT` + `ORB_EXIT_CFG`) → kann strukturell nicht abdriften | **importiert zur Laufzeit** |
+| **Paper-Zwilling läuft?** | ⛔ Task **Disabled** seit 2026-08-31 | ⛔ **nie ein Task angelegt**, 0 Trades je | ✅ stündlich, 24 Trades (nur noch `trend_pullback`/`gold_silver`) |
 | Slow-Takt | **15 Min** (Limit 14 Min) | **15 Min** (Limit 14 Min) | **stündlich** (Limit 30 Min) |
 | Fast-Takt | **2 Min** (Limit 2 Min) | **5 Min** (Limit 4 Min) | **5 Min** (Limit 4 Min) |
 | Fast-Beine | ORB, Gold-Silber, Trend-Pullback | ctnl_continuation, ORB ×3, cls_practical | ctnl_continuation, ORB, cls_practical |
@@ -36,7 +43,9 @@ Deshalb hier eine nachschlagbare Tabelle statt einer Behauptung.
 |---|---|---|---|
 | **ORB-Datenquelle** | MT5-nativ (`fetch_recent_mt5`) | Lake + Live-Fallback (dukascopy) | **MT5-nativ** seit 09-09, Fallback auf Lake |
 | **Server-TZ-Behandlung** | `SERVER_TZ_NAME` + `verify_server_offset()` je Lauf | **keine** | `SERVER_TZ_NAME` + `verify_server_offset()` (seit 09-09) |
-| **Hard-Timeout je Bein** | `LEG_TIMEOUT_S = 600` | **keiner** | **keiner** |
+| **Hard-Timeout Datenabruf** | `LEG_TIMEOUT_S = 600` um das ganze Bein | jeder Scan in `_retry` (3×20 s → ~66 s) | jeder Scan in `_retry` (3×20 s → ~66 s) |
+| **Hard-Timeout Order-Verarbeitung** | ja (im 600-s-Wrapper enthalten) | nein — bewusst, siehe Lücke 2 | nein — bewusst, siehe Lücke 2 |
+| **Task-Limit (letzte Sicherung)** | 14 Min / Fast 2 Min | 14 Min / Fast 4 Min | 30 Min / Fast 4 Min |
 | **Retry Slow-Pfad** | `_retry` 6/8s/90s (dukascopy-Beine) | 3/3s/20s (seit 09-08) | 3/3s/20s (seit 09-08) |
 | **Retry Fast-Pfad** | entfällt weitgehend (MT5-nativ) | 3/3s/20s | 3/3s/20s |
 | **Cross-Prozess-Lock** | nicht nötig (SQLite-State) | `account_state_lock()` pro Konto, 45s | `state_lock()` global, 45s |
@@ -55,16 +64,33 @@ Deshalb hier eine nachschlagbare Tabelle statt einer Behauptung.
    liefern jetzt Bars, die **3,4 Minuten** alt sind (vorher ~300), Gold-Silber
    H4 78 Min., Trend-Pullback H1 18 Min. — alles im normalen Bereich des
    jeweiligen Timeframes. `gold_asb` war nie betroffen (nutzt den Lake-Weg).
-2. **Funded + FK haben keinen Hard-Timeout je Bein.** EK kappt jedes Bein bei
-   600s (gebaut nach einem Vorfall mit 23 nie beendeten `python.exe`). Die
-   beiden anderen verlassen sich allein auf Retry-Timeouts plus das
-   Task-Scheduler-Limit.
+2. ~~**Funded + FK haben keinen Hard-Timeout je Bein.**~~ — **geprüft
+   2026-09-16: war falsch beschrieben, keine Änderung nötig.** Der eigentliche
+   Hang-Auslöser (dukascopy_python, 23 nie beendete `python.exe` am
+   2026-09-02) sitzt im Datenabruf — und dort läuft bei Funded und FK **jeder**
+   Scan über `pb._retry(attempts=3, timeout_seconds=20)` mit Daemon-Thread,
+   also hart begrenzt auf ~66 s. Das ist *strenger* als EKs 600 s.
+   Ungeschützt bleibt nur die MT5-Order-Verarbeitung. Dort einen Timeout per
+   abgebrochenem Thread nachzurüsten wäre **schlechter** als keiner: ein
+   `order_send()`, der nach dem Abbruch im Hintergrund doch noch durchgeht,
+   landet nicht im State — der nächste Lauf sieht das Signal als neu und
+   sendet ein zweites Mal. Gegen hängende Order-IPC greift weiterhin das
+   Task-Limit, und `MultipleInstances=IgnoreNew` verhindert, dass ein
+   hängender Lauf von einem zweiten überholt wird.
 3. **Funded holt ORB weiterhin über Lake/dukascopy.** Phase 2 der Umstellung
-   wartet auf einen beobachteten echten ORB-Entry bei FK (Nutzerentscheid
+   wartete auf einen beobachteten echten ORB-Entry bei FK (Nutzerentscheid
    2026-09-09: erst FK, dann Funded, dort mit einem Referenz-Terminal für alle
-   3 Konten).
+   3 Konten). **Update 2026-09-13: der Entry kam am 09-11 16:03 — und wurde vom
+   Broker abgelehnt** (`retcode=10016 "Invalid stops"`). Der Datenpfad trug,
+   die Order-Ebene nicht. Phase 2 wartet damit nicht mehr auf Beobachtung,
+   sondern auf den Order-Fix.
 4. **Funded hat keine Server-TZ-Behandlung** — wird mit Phase 2 zwingend, weil
    MT5-Bars ohne korrekte Zeitzone die Session-Grenzen verschieben.
+5. **Zwei von drei Bridges haben keinen laufenden Paper-Zwilling** (EK seit
+   2026-08-31 Disabled, Challenge nie angelegt). Damit lässt sich bei diesen
+   beiden nicht unterscheiden, ob ein schwaches Live-Ergebnis von der
+   Strategie oder von der Ausführung kommt — siehe
+   [[bein-matrix-ist-soll-paper]], Abschnitt „Die Paper-Bot-Spalte".
 
 ## Was zuletzt angeglichen wurde
 
@@ -80,4 +106,4 @@ Wird an einer Bridge etwas an der Infrastruktur repariert, gehört **im selben
 Zug geprüft**, ob die anderen beiden dieselbe Lücke haben — und das Ergebnis
 hier eingetragen, auch wenn es "betrifft die anderen nicht" lautet.
 
-Verwandt: [[second-brain-lint]] · `DASHBOARD.md` · `CHANGELOG.md`
+Verwandt: `.claude/skills/second-brain-lint/SKILL.md` · `DASHBOARD.md` · `CHANGELOG.md`

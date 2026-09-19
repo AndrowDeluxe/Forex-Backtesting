@@ -46,6 +46,24 @@ def write_bars(source: str, key: str, timeframe: str, new_df: pd.DataFrame) -> p
         combined = combined[~combined.index.duplicated(keep="last")].sort_index()
     else:
         combined = new_df.sort_index()
+
+    # D1 zusaetzlich auf KALENDERTAG deduplizieren, nicht nur auf den exakten
+    # Zeitstempel. Grund (realer Vorfall 2026-09-15): TradingView lieferte die
+    # 2y-Zinsreihen ploetzlich eine Stunde spaeter gestempelt (DE 08:00 -> 09:00,
+    # US 01:00 -> 02:00). Die Zeitstempel-Deduplizierung oben sieht darin lauter
+    # NEUE Balken -- die komplette Historie wurde ein zweites Mal angehaengt
+    # (3.657 -> 7.307 Zeilen). cls_practical/rates.py::compute_daily_rate_score_2y
+    # legt den Index auf .date um und scheiterte danach bei JEDEM Scan mit
+    # "cannot reindex on an axis with duplicate labels" -- das Bein war auf
+    # Funded und FK ab 2026-09-15 22:38 tot (792 fehlgeschlagene Scans).
+    # Eine Tagesreihe hat per Definition einen Balken pro Tag; der spaeteste
+    # Stempel des Tages gewinnt. Fuer korrekt gestempelte Reihen ist das ein
+    # No-Op (2026-09-16 gegen alle 62 D1-Reihen geprueft: nur die beiden
+    # TradingView-Zinsreihen waren betroffen).
+    if timeframe == "D1" and isinstance(combined.index, pd.DatetimeIndex) and not combined.empty:
+        by_date = pd.Index(combined.index.date)
+        combined = combined[~by_date.duplicated(keep="last")]
+
     path.parent.mkdir(parents=True, exist_ok=True)
     # Atomar schreiben (temp + rename) -- ein Absturz mitten im Schreiben darf
     # nie eine halb geschriebene, kaputte Parquet-Datei hinterlassen, die der

@@ -15,7 +15,7 @@ Muster wie hier, dort Crypto statt FX).
 
 **Capture** -- Zarattini & Pagani (2026), "Improving Performance with Fast Alphas"; erfasst 2026-08-09, manuell im Chat.
 
-**Organize** -- Tags: execution, timing-filter, mean-reversion. Verwandt: [[gap-fade]] (unten, gleiche Datei).
+**Organize** -- Tags: execution, timing-filter, mean-reversion. Verwandt: Gap-Fade (unten, gleiche Datei).
 
 **Distill** -- 5-Min-Mean-Reversion-Signal als Solo-Strategie stirbt an Kosten, soll aber als reiner Timing-Filter für eine ATR-Breakout-Trendstrategie den Einstiegspreis verbessern, ohne das Signal zu verändern.
 
@@ -27,7 +27,7 @@ Muster wie hier, dort Crypto statt FX).
 
 **Capture** -- Caporale & Plastun (2016); erfasst 2026-08-09, manuell im Chat.
 
-**Organize** -- Tags: gap-anomaly, mean-reversion, EOD-exit. Verwandt: [[execution-overlay]] (oben, gleiche Datei).
+**Organize** -- Tags: gap-anomaly, mean-reversion, EOD-exit. Verwandt: Execution-Overlay (oben, gleiche Datei).
 
 **Distill** -- Positive Montags-Gaps in EUR/USD und GBP/USD faden, EOD glattstellen -- im Paper der einzige von sechs getesteten Gap-Hypothesen mit signifikantem Effekt.
 

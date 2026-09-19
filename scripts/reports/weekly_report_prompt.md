@@ -171,7 +171,32 @@ reporting for it.
    one combined grand-total row across all 3 (live/real-money bridges
    only - keep a still-`DRY_RUN` bridge like FK Instant Funding out of the
    real-money total, but still show its own paper row).
-5. **Auffälligkeiten / offene Punkte**: anything that looks wrong (a bot
+5. **Soll/Ist je Bridge** (seit 2026-09-16, Nutzerauftrag - ersetzt die
+   verworfene Paper-Zwilling-Idee). Run this FIRST, before writing the
+   section: it needs a fresh MT5 pull plus several minutes of scans.
+
+   ```
+   python scripts/reports/mt5_pull.py  --week <ISO-Woche, z.B. 2026-W37>
+   python scripts/reports/soll_ist.py  --week <ISO-Woche>
+   ```
+
+   `soll_ist.py` picks up the MT5 pull from the first command automatically
+   (`scripts/reports/mt5_<week>.json`) and writes
+   `scripts/reports/soll_ist_<week>.json`. Report one table row per bridge:
+   **Soll-Rendite** (backtest over the same window, that bridge's own sizing
+   and cost assumption) against **Ist-P&L**, plus the decomposition of the
+   Soll trades into `platziert` / `nicht_platziert` / `nie_gesehen`.
+
+   Three caveats that MUST reach the prose, not be silently dropped:
+   - **Soll rechnet mit der HEUTE gültigen Konfiguration**, nicht mit der,
+     die im Fenster live war. Vor jeder Soll/Ist-Lücke prüfen, ob dazwischen
+     eine Konfigurationsänderung lag (`knowledge/CHANGELOG.md`) - sonst wird
+     ein wirksamer Filter als Ausführungsfehler gelesen.
+   - **EK lässt sich nur grob zerlegen** (SQLite statt Signal-Ledger); was
+     dort als `nicht_ermittelbar` steht, ist genau das - nicht "nie gesehen".
+   - **EKs Kostenannahme ist geschätzt** (0,50 Pips), Funded/FK sind
+     gemessen. EK-Zahlen deshalb nicht gegen die anderen beiden stellen.
+6. **Auffälligkeiten / offene Punkte**: anything that looks wrong (a bot
    silently not running, a data source you couldn't trust, a discrepancy
    between bridge data and repo diagnostic) - flag it the way memory
    already models (see the CLS date-bug and CTNL false-alarm entries for

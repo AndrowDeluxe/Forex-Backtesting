@@ -4706,3 +4706,8 @@
 2026-09-18 21:35:27 S&P 500 (volles Universum, 420 Ticker)    AXP 2026-09-17 311.17      312.96 311.17 289.10 344.27    344.27            7.09              14.10       True       True                            12.5 2026-09-18T21:35:25
 2026-09-18 21:35:27 S&P 500 (volles Universum, 420 Ticker)    IVZ 2026-09-17  30.22       30.25  30.22  27.50  34.30     34.30            9.00              11.12       True       True                            12.5 2026-09-18T21:35:25
 2026-09-18 21:35:27 S&P 500 (volles Universum, 420 Ticker)    REG 2026-09-17  73.12       73.23  73.12  70.77  76.64     76.64            3.21              20.00       True       True                            12.5 2026-09-18T21:35:25
+2026-09-18 21:35:27 [main c7b3413] OU-Modell Scanner: Snapshot 2026-09-18 21:35
+2026-09-18 21:35:27  2 files changed, 23 insertions(+), 3 deletions(-)
+2026-09-18 21:35:30 Merge with strategy ort failed.
+2026-09-18 21:35:30 WARNUNG: git merge von origin/main fehlgeschlagen (Exit 2), vermutlich ein echter Konflikt -- Merge abgebrochen, Push uebersprungen. Lokaler Commit bleibt unveraendert liegen, bitte manuell pruefen (git status im Repo).
+2026-09-18 21:35:30 === Scanner-Task beendet ===

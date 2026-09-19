@@ -271,3 +271,7 @@ bei komplexer Strategie darf die Edge Card ausführlich sein. Ziel ist
 nicht eine schöne Zusammenfassung, sondern eine Formulierung präzise
 genug, dass Research, Datenerhebung, Backtest, Validation, Robustheit und
 später Live-Monitoring sauber darauf aufbauen können.
+
+## Verwandt
+
+[[persoenlicher-tradingplan-validierung]] (händische Strategien, die durch diesen Workflow laufen)

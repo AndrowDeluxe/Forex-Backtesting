@@ -380,6 +380,18 @@ def _scan_cls_practical(end: pd.Timestamp, force_refresh: bool, *, source: str =
     raw_r = sign * (trades["exit_price"] - trades["entry_price"]) / trades["sl_distance"]
     rate_mult = trades["date"].map(lambda d: combined_mult.get(d, 1.0))
     trades["r_multiple"] = raw_r * rate_mult
+    # 2026-09-13: Multiplikator zusaetzlich als SPALTE ausgeben. Bis heute wirkte
+    # er nur auf zwei Wegen, die beide an der Live-Bridge vorbeiliefen:
+    # simulate_cls_practical(risk_multiplier=...) skaliert die Groesse INNERHALB
+    # dieser Simulation (engine.py: day_risk_amount = risk_amount *
+    # risk_multiplier.get(day, 1.0)), und die Zeile darueber skaliert das
+    # REPORTETE r_multiple. Funded-Portfolio-Bridge::_process_leg() sized aber
+    # aus einem flachen CAPITAL_WEIGHT x LEG_RISK_PCT x equity -- die als
+    # "uebernommen" dokumentierte Daily-Rates-Risikoskalierung wirkte live also
+    # gar nicht. Als Spalte kann die Bridge sie mitlesen, ohne die Berechnung
+    # zu duplizieren (die Duplikation war die Ursache des EK-Bugs, siehe
+    # knowledge/areas/paper-bot-zu-live-bridge.md).
+    trades["risk_multiplier"] = rate_mult
     trades = trades[_utc_naive(trades["entry_time"]) <= end]
     if "exit_reason" not in trades.columns:
         trades["exit_reason"] = np.where(trades["exit_time"].notna(), "closed", "data_end")
@@ -513,13 +525,36 @@ ORB_EXIT_CFG_BY_INSTRUMENT = {
 ORB_HISTORY_LOOKBACK_DAYS = 500  # EMA-Ribbon-Bias (4H/1D/1W) braucht Monate an Vorlauf
 
 
-def _scan_orb(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> pd.DataFrame:
+def _scan_orb(end: pd.Timestamp, force_refresh: bool, *, source: str = "live",
+              fetch_m5_override=None, fetch_m15_override=None) -> pd.DataFrame:
+    """fetch_m5_override/fetch_m15_override (2026-09-15): erlauben einem Aufrufer,
+    eigene, signaturgleiche Fetch-Funktionen einzureichen -- genutzt von
+    Funded-Portfolio-Bridge/orb_mt5_source.py, das die Bars direkt aus dem
+    ohnehin verbundenen MT5-Terminal holt statt aus dukascopy/Lake.
+
+    Warum das fuer ORB zaehlt (gemessen 2026-09-13/14): die ORB-Level sind
+    ABSOLUTE Preise, und die Broker-Feeds liegen systematisch neben Dukascopy --
+    TTP -1,5 bis -2,0 bps, Tickmill -1,3 bis -1,7 bps, IQ praktisch
+    deckungsgleich. Bei einer Stopdistanz von 7,5-9,3 bps sind das 15-25 % des
+    Risikos. Fuer cls_practical ist derselbe Versatz dagegen vernachlaessigbar
+    (EURUSD: 0,00-0,20 Pips gegen >=5 Pips Stopdistanz) -- deshalb bleibt CLS
+    bewusst auf Dukascopy.
+
+    Bewusst als Parameter statt als weiterer source=-String: die
+    broker-spezifische Symbol-/Zeitzonen-Behandlung gehoert in die jeweilige
+    Bridge, nicht in dieses Repo. Identisches Muster wie
+    fk_instant_funding/paper_bot.py::_scan_orb(). Ohne Override aendert sich
+    nichts -- wichtig, weil dieser Scan auch die Paper-Simulation bedient."""
     from ny_open_orb import filters, regime
     from ny_open_orb.data import fetch_m5, fetch_m15
     if source == "lake":
         import data_lake.reader as _lake
         fetch_m5 = _lake.with_live_fallback(_lake.fetch_m5, fetch_m5)
         fetch_m15 = _lake.with_live_fallback(_lake.fetch_m15, fetch_m15)
+    if fetch_m5_override is not None:
+        fetch_m5 = fetch_m5_override
+    if fetch_m15_override is not None:
+        fetch_m15 = fetch_m15_override
     from ny_open_orb.engine import build_frame, find_entries, simulate
 
     start = (end - pd.Timedelta(days=ORB_HISTORY_LOOKBACK_DAYS)).strftime("%Y-%m-%d")

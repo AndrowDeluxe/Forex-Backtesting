@@ -100,3 +100,7 @@ besser bei den jeweiligen Projekt-Notizen bleibt — Rückfrage bei Bedarf.
 **Nächster Schritt**: die 5 Lücken oben nacheinander (nicht alle 5 auf
 einmal) voll distillen, beginnend mit `asian_range_breakout` (höchste
 Priorität: Live-Bot-Grundlage) — auf Zuruf.
+
+## Archiv (verworfene Strategien)
+
+[[london-range-bos-retest-eurusd]] · [[london-cls-breakout-eurusd]] · [[ipda-zyklus-eurusd]]

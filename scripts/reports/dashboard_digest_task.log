@@ -270,3 +270,238 @@
 2026-09-13 13:53:50 
 2026-09-13 13:53:50 Voll: knowledge/DASHBOARD.md
 2026-09-13 13:53:50 === Dashboard-Telegram-Digest beendet ===
+2026-09-14 08:00:01 === Dashboard-Telegram-Digest gestartet ===
+2026-09-14 08:00:02 <b>?? Dashboard — Stand 2026-09-13</b>
+2026-09-14 08:00:02 ?? 14 aktive Bots/Bridges · 6 mit echtem Geld
+2026-09-14 08:00:02 ? EK: keine Scan-/Order-Fehler heute
+2026-09-14 08:00:02 ?? EK-Risiko 298 / 1.005 EUR (30% vom Deckel)
+2026-09-14 08:00:02 
+2026-09-14 08:00:02 <b>?? ALS NÄCHSTES (2)</b>
+2026-09-14 08:00:02  • FK-ORB auf MT5-Bars: Beobachtung läuft, Phase 2 (Funded) wartet darauf
+2026-09-14 08:00:02  • Manuelles Monatsjournal + Quant-System-Verschmelzung
+2026-09-14 08:00:02 
+2026-09-14 08:00:02 <b>?? BRAUCHT DEINE BESTÄTIGUNG (9)</b>
+2026-09-14 08:00:02  • Zwei Annahmen aus dem Funded-Fix von heute
+2026-09-14 08:00:02  • EK läuft bei 42,6 % Margin für EINE normale Position
+2026-09-14 08:00:02  • ?? Kurztakt-Tasks fallen wiederkehrend für 1–2 Stunden aus — und das hat…
+2026-09-14 08:00:02  • EK-Portfolio-Bridge: CAPITAL_WEIGHT (1/8) ist definiert, wird aber…
+2026-09-14 08:00:02  • Challenge/Funded OU-Bein: der Entry-Filter haengt an einem simulierten…
+2026-09-14 08:00:02  • Restlaufzeit-Gate: eine Design-Entscheidung + eine offene Frage
+2026-09-14 08:00:02  • dukascopy-Hang-Fix: eine Plan-Abweichung + Verifikation steht noch aus
+2026-09-14 08:00:02  • Wiederholende-Fehlermeldung-Fix: Design-Entscheidungen waren eigenes…
+2026-09-14 08:00:02  • Neuer Wikilink-Typ beim heutigen Lint-Lauf: Cross-System-Link auf eine…
+2026-09-14 08:00:02 
+2026-09-14 08:00:02 <b>?? OFFENE AUFGABEN (10)</b>
+2026-09-14 08:00:02  • Live-Gegenprobe der neuen IQ-Gewichtung steht noch aus
+2026-09-14 08:00:02  • ?? FK Instant Funding: ORB-Order vom 2026-09-11 vom Broker abgelehnt
+2026-09-14 08:00:02  • ?? FK Instant Funding: zwei Echtgeld-Entries am 2026-09-09 sind mit…
+2026-09-14 08:00:02  • ?? ORB handelt auf der Funded-Bridge praktisch nicht: 2 von 24 Signalen…
+2026-09-14 08:00:02  • Data Lake wird häufig zu alt und fällt auf Live-Fetch zurück
+2026-09-14 08:00:02  • CLS-Bein auf Bewährung — Abbruchkriterium fehlt noch
+2026-09-14 08:00:02  • Hebel-/Mindestabstand-Schutz: für CLS gebaut, für die übrigen Beine…
+2026-09-14 08:00:02  • Fill-Rücklesepfad greift auf TTP nicht
+2026-09-14 08:00:02  • 14 unverarbeitete Clippings
+2026-09-14 08:00:02  • knowledge/-Altlasten (Lint 2026-09-09, vorher 2026-09-01): tote…
+2026-09-14 08:00:02 
+2026-09-14 08:00:02 ?? Zuletzt: 2026-09-09 — FK Instant Funding: Paper-Bot auf die 2 noch nicht live geschalteten Beine…
+2026-09-14 08:00:02 
+2026-09-14 08:00:02 Voll: knowledge/DASHBOARD.md
+2026-09-14 08:00:02 === Dashboard-Telegram-Digest beendet ===
+2026-09-15 08:00:01 === Dashboard-Telegram-Digest gestartet ===
+2026-09-15 08:00:02 <b>?? Dashboard — Stand 2026-09-13</b>
+2026-09-15 08:00:02 ?? 14 aktive Bots/Bridges · 6 mit echtem Geld
+2026-09-15 08:00:02 ? EK: keine Scan-/Order-Fehler heute
+2026-09-15 08:00:02 ?? EK-Risiko 272 / 1.005 EUR (27% vom Deckel)
+2026-09-15 08:00:02 
+2026-09-15 08:00:02 <b>?? ALS NÄCHSTES (2)</b>
+2026-09-15 08:00:02  • FK-ORB auf MT5-Bars: Beobachtung läuft, Phase 2 (Funded) wartet darauf
+2026-09-15 08:00:02  • Manuelles Monatsjournal + Quant-System-Verschmelzung
+2026-09-15 08:00:02 
+2026-09-15 08:00:02 <b>?? BRAUCHT DEINE BESTÄTIGUNG (10)</b>
+2026-09-15 08:00:02  • ?? Zwei von drei Paper-Zwillingen laufen nicht — wieder scharfstellen?
+2026-09-15 08:00:02  • Zwei Annahmen aus dem Funded-Fix von heute
+2026-09-15 08:00:02  • EK läuft bei 42,6 % Margin für EINE normale Position
+2026-09-15 08:00:02  • ?? Kurztakt-Tasks fallen wiederkehrend für 1–2 Stunden aus — und das hat…
+2026-09-15 08:00:02  • EK-Portfolio-Bridge: CAPITAL_WEIGHT (1/8) ist definiert, wird aber…
+2026-09-15 08:00:02  • Challenge/Funded OU-Bein: der Entry-Filter haengt an einem simulierten…
+2026-09-15 08:00:02  • Restlaufzeit-Gate: eine Design-Entscheidung + eine offene Frage
+2026-09-15 08:00:02  • dukascopy-Hang-Fix: eine Plan-Abweichung + Verifikation steht noch aus
+2026-09-15 08:00:02  • Wiederholende-Fehlermeldung-Fix: Design-Entscheidungen waren eigenes…
+2026-09-15 08:00:02  • Neuer Wikilink-Typ beim heutigen Lint-Lauf: Cross-System-Link auf eine…
+2026-09-15 08:00:02 
+2026-09-15 08:00:02 <b>?? OFFENE AUFGABEN (14)</b>
+2026-09-15 08:00:02  • ?? EK: cls_practical hat noch NIE eine Order gesendet — 104…
+2026-09-15 08:00:02  • Frischefenster des Data Lake (35 Min.) passt nicht zur 15-Min.-Kadenz
+2026-09-15 08:00:02  • Statustabelle braucht eine Spalte „letzter echter Entry"
+2026-09-15 08:00:02  • EKs config.py-Kommentar zur Kapitalscheibe widerspricht dem eigenen…
+2026-09-15 08:00:02  • Live-Gegenprobe der neuen IQ-Gewichtung steht noch aus
+2026-09-15 08:00:02  • ?? FK Instant Funding: ORB-Order vom 2026-09-11 vom Broker abgelehnt
+2026-09-15 08:00:02  • ?? FK Instant Funding: zwei Echtgeld-Entries am 2026-09-09 sind mit…
+2026-09-15 08:00:02  • ?? ORB handelt auf der Funded-Bridge praktisch nicht: 2 von 24 Signalen…
+2026-09-15 08:00:02  • Data Lake wird häufig zu alt und fällt auf Live-Fetch zurück
+2026-09-15 08:00:02  • CLS-Bein auf Bewährung — Abbruchkriterium fehlt noch
+2026-09-15 08:00:02  • Hebel-/Mindestabstand-Schutz: für CLS gebaut, für die übrigen Beine…
+2026-09-15 08:00:02  • Fill-Rücklesepfad greift auf TTP nicht
+2026-09-15 08:00:02  • 14 unverarbeitete Clippings
+2026-09-15 08:00:02  • knowledge/-Altlasten (Lint 2026-09-09, vorher 2026-09-01): tote…
+2026-09-15 08:00:02 
+2026-09-15 08:00:02 ?? Zuletzt: 2026-09-09 — FK Instant Funding: Paper-Bot auf die 2 noch nicht live geschalteten Beine…
+2026-09-15 08:00:02 
+2026-09-15 08:00:02 Voll: knowledge/DASHBOARD.md
+2026-09-15 08:00:02 === Dashboard-Telegram-Digest beendet ===
+2026-09-16 08:00:02 === Dashboard-Telegram-Digest gestartet ===
+2026-09-16 08:00:03 <b>?? Dashboard — Stand 2026-09-13</b>
+2026-09-16 08:00:03 ?? 14 aktive Bots/Bridges · 6 mit echtem Geld
+2026-09-16 08:00:03 ?? EK: 32 Scan-Fehler (cls_practical), 0 Order-Fehler
+2026-09-16 08:00:03 ?? EK-Risiko 286 / 995 EUR (29% vom Deckel)
+2026-09-16 08:00:03 
+2026-09-16 08:00:03 <b>?? ALS NÄCHSTES (2)</b>
+2026-09-16 08:00:03  • FK-ORB auf MT5-Bars: Beobachtung läuft, Phase 2 (Funded) wartet darauf
+2026-09-16 08:00:03  • Manuelles Monatsjournal + Quant-System-Verschmelzung
+2026-09-16 08:00:03 
+2026-09-16 08:00:03 <b>?? BRAUCHT DEINE BESTÄTIGUNG (10)</b>
+2026-09-16 08:00:03  • ?? Zwei von drei Paper-Zwillingen laufen nicht — wieder scharfstellen?
+2026-09-16 08:00:03  • Zwei Annahmen aus dem Funded-Fix von heute
+2026-09-16 08:00:03  • EK läuft bei 42,6 % Margin für EINE normale Position
+2026-09-16 08:00:03  • ?? Kurztakt-Tasks fallen wiederkehrend für 1–2 Stunden aus — und das hat…
+2026-09-16 08:00:03  • EK-Portfolio-Bridge: CAPITAL_WEIGHT (1/8) ist definiert, wird aber…
+2026-09-16 08:00:03  • Challenge/Funded OU-Bein: der Entry-Filter haengt an einem simulierten…
+2026-09-16 08:00:03  • Restlaufzeit-Gate: eine Design-Entscheidung + eine offene Frage
+2026-09-16 08:00:03  • dukascopy-Hang-Fix: eine Plan-Abweichung + Verifikation steht noch aus
+2026-09-16 08:00:03  • Wiederholende-Fehlermeldung-Fix: Design-Entscheidungen waren eigenes…
+2026-09-16 08:00:03  • Cross-System-Link auf eine Claude-Memory-Datei
+2026-09-16 08:00:03 
+2026-09-16 08:00:03 <b>?? OFFENE AUFGABEN (17)</b>
+2026-09-16 08:00:03  • ? Funded/TTP: OU-Signale gingen beim Erstkontakt mit einem Symbol…
+2026-09-16 08:00:03  • ?? Funded: cls_practical scheitert seit 2026-09-01 in JEDEM Lauf auf…
+2026-09-16 08:00:03  • ?? EK: cls_practical hat noch NIE eine Order gesendet — 104…
+2026-09-16 08:00:03  • Frischefenster des Data Lake (35 Min.) passt nicht zur 15-Min.-Kadenz
+2026-09-16 08:00:03  • Statustabelle braucht eine Spalte „letzter echter Entry"
+2026-09-16 08:00:03  • EKs config.py-Kommentar zur Kapitalscheibe widerspricht dem eigenen…
+2026-09-16 08:00:03  • Live-Gegenprobe der neuen IQ-Gewichtung steht noch aus
+2026-09-16 08:00:03  • ?? FK Instant Funding: ORB-Order vom 2026-09-11 vom Broker abgelehnt
+2026-09-16 08:00:03  • ?? FK Instant Funding: zwei Echtgeld-Entries am 2026-09-09 sind mit…
+2026-09-16 08:00:03  • ?? ORB handelt auf der Funded-Bridge praktisch nicht: 2 von 24 Signalen…
+2026-09-16 08:00:03  • Data Lake wird häufig zu alt und fällt auf Live-Fetch zurück
+2026-09-16 08:00:03  • CLS-Bein auf Bewährung — Abbruchkriterium fehlt noch
+2026-09-16 08:00:03  • Hebel-/Mindestabstand-Schutz: für CLS gebaut, für die übrigen Beine…
+2026-09-16 08:00:03  • Fill-Rücklesepfad greift auf TTP nicht
+2026-09-16 08:00:03  • 14 unverarbeitete Clippings
+2026-09-16 08:00:03  • knowledge/-Altlasten (Lint 2026-09-14, vorher 2026-09-09): tote…
+2026-09-16 08:00:03  • Isolierter toter Wikilink
+2026-09-16 08:00:03 
+2026-09-16 08:00:03 ?? Zuletzt: 2026-09-09 — FK Instant Funding: Paper-Bot auf die 2 noch nicht live geschalteten Beine…
+2026-09-16 08:00:03 
+2026-09-16 08:00:03 Voll: knowledge/DASHBOARD.md
+2026-09-16 08:00:03 === Dashboard-Telegram-Digest beendet ===
+2026-09-17 08:00:01 === Dashboard-Telegram-Digest gestartet ===
+2026-09-17 08:00:03 <b>?? Dashboard — Stand 2026-09-13</b>
+2026-09-17 08:00:03 ?? 14 aktive Bots/Bridges · 6 mit echtem Geld
+2026-09-17 08:00:03 ? EK: keine Scan-/Order-Fehler heute
+2026-09-17 08:00:03 ?? EK-Risiko 273 / 978 EUR (28% vom Deckel)
+2026-09-17 08:00:03 
+2026-09-17 08:00:03 <b>?? ALS NÄCHSTES (2)</b>
+2026-09-17 08:00:03  • FK-ORB auf MT5-Bars: Beobachtung läuft, Phase 2 (Funded) wartet darauf
+2026-09-17 08:00:03  • Manuelles Monatsjournal + Quant-System-Verschmelzung
+2026-09-17 08:00:03 
+2026-09-17 08:00:03 <b>?? BRAUCHT DEINE BESTÄTIGUNG (13)</b>
+2026-09-17 08:00:03  • ?? Windows-Zeitzone springt zwischen UTC+2 und UTC+3 -- automatische…
+2026-09-17 08:00:03  • ?? FK: SP500-Orders scheitern an ungerundetem SL (tick_size 0.1) --…
+2026-09-17 08:00:03  • ?? FK fehlt der 5-Pip-Stop-Boden, den EK und Challenge am 2026-09-10…
+2026-09-17 08:00:03  • ?? Zwei von drei Paper-Zwillingen laufen nicht — wieder scharfstellen?
+2026-09-17 08:00:03  • Zwei Annahmen aus dem Funded-Fix von heute
+2026-09-17 08:00:03  • EK läuft bei 42,6 % Margin für EINE normale Position
+2026-09-17 08:00:03  • ?? Kurztakt-Tasks fallen wiederkehrend für 1–2 Stunden aus — und das hat…
+2026-09-17 08:00:03  • EK-Portfolio-Bridge: CAPITAL_WEIGHT (1/8) ist definiert, wird aber…
+2026-09-17 08:00:03  • Challenge/Funded OU-Bein: der Entry-Filter haengt an einem simulierten…
+2026-09-17 08:00:03  • Restlaufzeit-Gate: eine Design-Entscheidung + eine offene Frage
+2026-09-17 08:00:03  • dukascopy-Hang-Fix: eine Plan-Abweichung + Verifikation steht noch aus
+2026-09-17 08:00:03  • Wiederholende-Fehlermeldung-Fix: Design-Entscheidungen waren eigenes…
+2026-09-17 08:00:03  • Cross-System-Link auf eine Claude-Memory-Datei
+2026-09-17 08:00:03 
+2026-09-17 08:00:03 <b>?? OFFENE AUFGABEN (16)</b>
+2026-09-17 08:00:03  • ? Funded/TTP: OU-Signale gingen beim Erstkontakt mit einem Symbol…
+2026-09-17 08:00:03  • ?? Funded: cls_practical scheitert seit 2026-09-01 in JEDEM Lauf auf…
+2026-09-17 08:00:03  • ?? EK: cls_practical hat noch NIE eine Order gesendet — 104…
+2026-09-17 08:00:03  • Frischefenster des Data Lake (35 Min.) passt nicht zur 15-Min.-Kadenz
+2026-09-17 08:00:03  • Statustabelle braucht eine Spalte „letzter echter Entry"
+2026-09-17 08:00:03  • Live-Gegenprobe der neuen IQ-Gewichtung steht noch aus
+2026-09-17 08:00:03  • ?? FK Instant Funding: ORB-Order vom 2026-09-11 vom Broker abgelehnt
+2026-09-17 08:00:03  • ?? FK Instant Funding: zwei Echtgeld-Entries am 2026-09-09 sind mit…
+2026-09-17 08:00:03  • ?? ORB handelt auf der Funded-Bridge praktisch nicht: 2 von 24 Signalen…
+2026-09-17 08:00:03  • Data Lake wird häufig zu alt und fällt auf Live-Fetch zurück
+2026-09-17 08:00:03  • CLS-Bein auf Bewährung — Abbruchkriterium fehlt noch
+2026-09-17 08:00:03  • Hebel-/Mindestabstand-Schutz: für CLS gebaut, für die übrigen Beine…
+2026-09-17 08:00:03  • Fill-Rücklesepfad greift auf TTP nicht
+2026-09-17 08:00:03  • 14 unverarbeitete Clippings
+2026-09-17 08:00:03  • knowledge/-Altlasten (Lint 2026-09-14, vorher 2026-09-09): tote…
+2026-09-17 08:00:03  • Isolierter toter Wikilink
+2026-09-17 08:00:03 
+2026-09-17 08:00:03 ?? Zuletzt: 2026-09-09 — FK Instant Funding: Paper-Bot auf die 2 noch nicht live geschalteten Beine…
+2026-09-17 08:00:03 
+2026-09-17 08:00:03 Voll: knowledge/DASHBOARD.md
+2026-09-17 08:00:03 === Dashboard-Telegram-Digest beendet ===
+2026-09-18 08:00:02 === Dashboard-Telegram-Digest gestartet ===
+2026-09-18 08:00:03 <b>?? Dashboard — Stand 2026-09-17</b>
+2026-09-18 08:00:03 ?? 14 aktive Bots/Bridges · 6 mit echtem Geld
+2026-09-18 08:00:03 ? EK: keine Scan-/Order-Fehler heute
+2026-09-18 08:00:03 ?? EK-Risiko 389 / 941 EUR (41% vom Deckel)
+2026-09-18 08:00:03 
+2026-09-18 08:00:03 <b>?? ALS NÄCHSTES (1)</b>
+2026-09-18 08:00:03  • Manuelles Monatsjournal + Quant-System-Verschmelzung
+2026-09-18 08:00:03 
+2026-09-18 08:00:03 <b>?? BRAUCHT DEINE BESTÄTIGUNG (11)</b>
+2026-09-18 08:00:03  • ?? GitHub-Sync steht seit 2026-09-16 ~09:08: Merge-Konflikt, darf ich…
+2026-09-18 08:00:03  • Tick-Rundung in den gemeinsamen Order-Engpass von Funded + FK — darf…
+2026-09-18 08:00:03  • Lake-Frischefenster: anpassen oder so lassen?
+2026-09-18 08:00:03  • ?? OU-Modell: Edge wird von den Kosten aufgefressen — Bein weiterführen,…
+2026-09-18 08:00:03  • ? Funded/OU: Signaldatum-Drift behoben 2026-09-17
+2026-09-18 08:00:03  • ?? 8 verwaiste OU-Solo-Positionen: Schliessen ist vorbereitet, Ausloesen…
+2026-09-18 08:00:03  • ?? EK/OU: Max-Holding schliesst nie, nur Warnung
+2026-09-18 08:00:03  • ?? MNST-Split auf TTP nicht umgebucht: -2.492,56 $ auf Konto 1
+2026-09-18 08:00:03  • ?? ORB-Stop-Orders (Demo ttp/iqmarkets): vier Annahmen von mir
+2026-09-18 08:00:03  • Zeitzonen-Fix beobachten
+2026-09-18 08:00:03  • Kurztakt-Task-Ausfälle (1–2 h, 09-07 bis 09-11) beobachten bis…
+2026-09-18 08:00:03 
+2026-09-18 08:00:03 <b>?? OFFENE AUFGABEN (4)</b>
+2026-09-18 08:00:03  • FK SP500 „Invalid stops“: behoben 2026-09-17
+2026-09-18 08:00:03  • CLS-Bein auf Bewährung: Prüfung nach 30 Live-Trades
+2026-09-18 08:00:03  • Mindest-Stopabstand für weitere Beine: zurückgestellt bis nach den…
+2026-09-18 08:00:03  • 14 unverarbeitete Clippings
+2026-09-18 08:00:03 
+2026-09-18 08:00:03 ?? Zuletzt: 2026-09-09 — FK Instant Funding: Paper-Bot auf die 2 noch nicht live geschalteten Beine…
+2026-09-18 08:00:03 
+2026-09-18 08:00:03 Voll: knowledge/DASHBOARD.md
+2026-09-18 08:00:03 === Dashboard-Telegram-Digest beendet ===
+2026-09-19 14:11:34 === Dashboard-Telegram-Digest gestartet ===
+2026-09-19 14:11:39 <b>?? Dashboard — Stand 2026-09-17</b>
+2026-09-19 14:11:39 ?? 14 aktive Bots/Bridges · 6 mit echtem Geld
+2026-09-19 14:11:39 ? EK: keine Scan-/Order-Fehler heute
+2026-09-19 14:11:39 ?? EK-Risiko 445 / 943 EUR (47% vom Deckel)
+2026-09-19 14:11:39 
+2026-09-19 14:11:39 <b>?? ALS NÄCHSTES (1)</b>
+2026-09-19 14:11:39  • Manuelles Monatsjournal + Quant-System-Verschmelzung
+2026-09-19 14:11:39 
+2026-09-19 14:11:39 <b>?? BRAUCHT DEINE BESTÄTIGUNG (11)</b>
+2026-09-19 14:11:39  • ?? GitHub-Sync steht seit 2026-09-16 ~09:08: Merge-Konflikt, darf ich…
+2026-09-19 14:11:39  • Tick-Rundung in den gemeinsamen Order-Engpass von Funded + FK — darf…
+2026-09-19 14:11:39  • Lake-Frischefenster: anpassen oder so lassen?
+2026-09-19 14:11:39  • ?? OU-Modell: Edge wird von den Kosten aufgefressen — Bein weiterführen,…
+2026-09-19 14:11:39  • ? Funded/OU: Signaldatum-Drift behoben 2026-09-17
+2026-09-19 14:11:39  • ?? 8 verwaiste OU-Solo-Positionen: Schliessen ist vorbereitet, Ausloesen…
+2026-09-19 14:11:39  • ?? EK/OU: Max-Holding schliesst nie, nur Warnung
+2026-09-19 14:11:39  • ?? MNST-Split auf TTP nicht umgebucht: -2.492,56 $ auf Konto 1
+2026-09-19 14:11:39  • ?? ORB-Stop-Orders (Demo ttp/iqmarkets): vier Annahmen von mir
+2026-09-19 14:11:39  • Zeitzonen-Fix beobachten
+2026-09-19 14:11:39  • Kurztakt-Task-Ausfälle (1–2 h, 09-07 bis 09-11) beobachten bis…
+2026-09-19 14:11:39 
+2026-09-19 14:11:39 <b>?? OFFENE AUFGABEN (4)</b>
+2026-09-19 14:11:39  • FK SP500 „Invalid stops“: behoben 2026-09-17
+2026-09-19 14:11:39  • CLS-Bein auf Bewährung: Prüfung nach 30 Live-Trades
+2026-09-19 14:11:39  • Mindest-Stopabstand für weitere Beine: zurückgestellt bis nach den…
+2026-09-19 14:11:39  • 14 unverarbeitete Clippings
+2026-09-19 14:11:39 
+2026-09-19 14:11:39 ?? Zuletzt: 2026-09-09 — FK Instant Funding: Paper-Bot auf die 2 noch nicht live geschalteten Beine…
+2026-09-19 14:11:39 
+2026-09-19 14:11:39 Voll: knowledge/DASHBOARD.md
+2026-09-19 14:11:39 === Dashboard-Telegram-Digest beendet ===

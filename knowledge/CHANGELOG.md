@@ -9,6 +9,30 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-19** [Git-Sync / 11 Auto-Tasks + Bridge-Watchdog] **Ursache des
+  Push-Staus behoben** (Nutzerauftrag). `scripts/lib/git_sync_push.ps1` und
+  `Bridge-Watchdog/watchdog.py` (gleiche Logik, eigene Implementierung)
+  stashen offene Aenderungen jetzt VOR dem Merge und holen sie nach dem Push
+  zurueck; die Warnung unterscheidet echten Inhaltskonflikt, "nicht
+  committete Aenderungen im Weg" und unklare Ursache.
+  **Bewusst NICHT `-c merge.autoStash=true`:** im Wegwerf-Repo getestet -- das
+  holt die Aenderungen zurueck, bevor feststeht, ob es konfliktfrei geht, und
+  hinterlaesst bei Ueberschneidung Konfliktmarker in der Datei einer laufenden
+  Session PLUS einen liegengebliebenen Stash. Stattdessen: erst mergen+pushen
+  (GitHub in jedem Fall aktuell), dann zurueckholen; kollidiert das, raeumt
+  `reset --hard HEAD` den Konflikt aus Index UND Working Tree (ein
+  `checkout -- .` reicht nicht -- die Konflikt-Stufen stehen im Index) und die
+  Arbeit bleibt vollstaendig im Stash.
+  **Vier Faelle getestet, PowerShell und Python:** (A) offene Aenderung auf
+  derselben Zeile wie der Remote -> Push geht durch, keine Marker, Stash
+  behalten, Warnung; (B) offene Aenderung auf anderer Zeile -> Push geht
+  durch, Aenderung sauber zurueck, kein Stash; (C) echter Konflikt zwischen
+  zwei Commits -> Push uebersprungen, korrekt benannt, offene Aenderung
+  zurueck; (D) sauberer Working Tree -> unveraendert wie bisher.
+  Erster echter Lauf am Montag (Wochenendpause).
+  **Nebenbei:** Commit `ee55b0a` enthaelt zusaetzlich den ttp1-Handelssperre-
+  Eintrag der parallelen Session (lag ungespeichert im Working Tree).
+
 - **2026-09-19** [Funded-Portfolio-Bridge] **🔴 Echtgeld-Konto ttp1 (TTP Konto 1,
   Login 504069845) ist seit 2026-09-18 09:58 vom Broker fuer den Handel
   gesperrt** -- `account_info().trade_allowed=False`, jeder Entry-Versuch

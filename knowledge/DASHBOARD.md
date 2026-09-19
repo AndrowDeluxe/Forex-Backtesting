@@ -46,15 +46,13 @@ Bedarf vor generischem Aufräumen.
   Freigabe:** eine Sammelwarnung "Konto darf nicht mehr handeln" einbauen --
   heute faellt so etwas nur als einzelne Entry-Fehler auf.
 
-- **Git-Sync: Push-Rueckstand ist aufgeloest (09-19), aber die Ursache steht
-  noch offen.** 242 Commits sind auf GitHub. Der Abbruch kam NICHT von
-  widerspruechlichen Inhalten, sondern von nicht committeten Aenderungen an
-  `knowledge/`-Dateien, die der Remote ebenfalls angefasst hatte.
-  `scripts/lib/git_sync_push.ps1` erwartet einen sauberen Working Tree und
-  meldet diesen Fall faelschlich als „echten Konflikt". **Vorschlag:** Merge
-  mit `-c merge.autoStash=true` fahren (legt offene Aenderungen kurz beiseite)
-  und die Warnung nach Ursache trennen. Sonst blockiert der naechste
-  Session-Edit den Push wieder.
+- **Git-Sync: Rueckstand aufgeloest UND Ursache behoben (09-19).** 242 Commits
+  sind auf GitHub. `scripts/lib/git_sync_push.ps1` (11 Tasks) und
+  `Bridge-Watchdog/watchdog.py` stashen offene Aenderungen jetzt vor dem Merge
+  und holen sie nach dem Push zurueck; die Warnung trennt echten Konflikt von
+  „Aenderungen im Weg“. **Erster echter Lauf: Montag** (Wochenendpause) --
+  danach in `scripts/reports/task_run.log` gegenlesen, dass „Commit + Push
+  erfolgreich“ dort steht, dann Punkt loeschen.
 
 - **Tick-Rundung in den gemeinsamen Order-Engpass von Funded + FK — darf ich?**
   (2026-09-17, Lückenliste Punkt 1, **nicht umgesetzt**.) Heute rundet jeder

@@ -35,13 +35,15 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
-- **🔴 GitHub-Sync steht seit 2026-09-16 ~09:08: Merge-Konflikt, darf ich ihn
-  auflösen?** (gefunden 2026-09-17, nicht angefasst). Lokaler `main` ist 112
-  Commits vor / 2 hinter `origin/main`; jeder Auto-Task loggt stündlich „git
-  merge von origin/main fehlgeschlagen (Exit 2) … Push übersprungen“. Die Bots
-  laufen lokal normal, aber GitHub/Streamlit sehen einen eingefrorenen Stand.
-  Die 2 fremden Commits kommen aus der Cloud (u. a. „Bridge-Monitor: CLS-
-  Practical-Fix …“ 09-16 09:08). Auflösen heißt: Konflikt ansehen, mergen, pushen.
+- **Git-Sync: Push-Rueckstand ist aufgeloest (09-19), aber die Ursache steht
+  noch offen.** 242 Commits sind auf GitHub. Der Abbruch kam NICHT von
+  widerspruechlichen Inhalten, sondern von nicht committeten Aenderungen an
+  `knowledge/`-Dateien, die der Remote ebenfalls angefasst hatte.
+  `scripts/lib/git_sync_push.ps1` erwartet einen sauberen Working Tree und
+  meldet diesen Fall faelschlich als „echten Konflikt". **Vorschlag:** Merge
+  mit `-c merge.autoStash=true` fahren (legt offene Aenderungen kurz beiseite)
+  und die Warnung nach Ursache trennen. Sonst blockiert der naechste
+  Session-Edit den Push wieder.
 
 - **Tick-Rundung in den gemeinsamen Order-Engpass von Funded + FK — darf ich?**
   (2026-09-17, Lückenliste Punkt 1, **nicht umgesetzt**.) Heute rundet jeder

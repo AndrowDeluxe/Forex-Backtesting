@@ -9,6 +9,74 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-19** [Funded-Portfolio-Bridge] **🔴 Echtgeld-Konto ttp1 (TTP Konto 1,
+  Login 504069845) ist seit 2026-09-18 09:58 vom Broker fuer den Handel
+  gesperrt** -- `account_info().trade_allowed=False`, jeder Entry-Versuch
+  seitdem mit `retcode=10026 "AutoTrading disabled by server"` abgelehnt
+  (9 Versuche: 7x ctnl_reversal, 1x orb_nasdaq, 1x ou_modell/PEP; letzter
+  16:13). **Kein Bot-Fehler und keine eigene Regelverletzung:** Kill-Switch
+  inaktiv, Equity 94.711,78 (−2,0 % seit Kontostart 96.664,38, Tagesverlust
+  09-18 −0,99 %), Peak-DD −2,2 %. Das TTP-DEMO-Konto (`ttp`) haengt am
+  **selben** Server `TTPMarkets-Server` und darf normal handeln -- also
+  kontospezifisch, keine Wochenend-/Serversache. 7 Positionen offen (DAL, UAL,
+  NUE, AMGN, APD, IVZ, DD), **alle mit SL** -- falls auch das Schliessen
+  blockiert ist, greift weiterhin der Broker-SL. Nichts geaendert, Ursache nur
+  beim Anbieter klaerbar. Nebenbefund: die Bridge meldet so etwas nur als
+  einzelne Entry-Fehler, es gibt keine Sammelwarnung "Konto darf nicht mehr
+  handeln".
+
+- **2026-09-19** [Funded-Portfolio-Bridge / ORB Stop-Orders] **Erste zwei
+  Handelstage ausgewertet (09-17, 09-18, Demo `ttp` + `iqmarkets`) -- Mechanik
+  laeuft vollstaendig wie gebaut, keine einzige Fehlermeldung im ORB-Pfad.**
+  **Platzierung:** beide Tage 15:45:13 bzw. 15:45:16 Berlin, also **13-16 s nach
+  Range-Ende**, alle Gruppen in einem Durchgang (Log: "Range-Ende in 107s").
+  **Einstiegsabweichung gegen das Level:** 09-17 long +0,11 bis +0,24 Punkte
+  (0,07-0,17 bps), 09-18 short −2,60 bis −3,05 Punkte (0,88-1,03 bps,
+  Durchbruch-Gap). Mittel ~0,44 bps gegen 0,30 bps Backtest-Annahme.
+  **OCO:** beide Tage sauber -- 09-17 Long ausgeloest/Short storniert, 09-18
+  umgekehrt, auf beiden Konten.
+  **Teilausstieg + BE (09-18 NASDAQ short):** P-Scheibe am Broker-TP
+  (+36,15 TTP / +38,64 IQ), SL der R-Scheibe auf Break-even, R spaeter am
+  BE-Stop (−1,34 / −0,14). Genau der Backtest-Ablauf; einzige Abweichung: BE
+  liegt auf dem ECHTEN Fill, nicht auf dem Level (3 Punkte Unterschied).
+  **Session-Ende:** nicht ausgeloeste US30-Orders beide Tage storniert.
+  **Ergebnis (klein, 3 bzw. 2 gefuellte Setups -- Rauschen, kein Beleg):**
+  TTP −81,69 $ (−1,50R), IQ −16,62 $ (−0,32R).
+  **Feed-Divergenz belegt:** 09-17 SP500 -- TTP-Level 7.644,96 wurde gefuellt
+  und ausgestoppt (−60,17), IQ-Level 7.646,70 (+1,74 = 2,3 bps, passt zum
+  gemessenen TTP-Versatz −1,97 bps) wurde nie erreicht; IQ sparte den Verlust.
+  **Markt vs. Stop-Order (09-17 NASDAQ, gleiches Signal):** ttp1 stieg 5 Min
+  spaeter, aber 9,7 Punkte guenstiger ein (29.417,93 vs 29.427,60), gleicher
+  SL-Bereich -> kleinere Distanz, groessere Position, am Ende derselbe Verlust
+  (−56,84 vs −56,33). Am 09-18 haette ttp1 den Gewinner gehandelt, wurde aber
+  vom Broker-Block (Eintrag darueber) gestoppt.
+  **Beobachtungsluecke:** nicht platzierte Instrumente (gefiltert, Ausbruch
+  schon passiert, Session vorbei) tauchen im Log NICHT auf -- am 09-17 fehlte
+  bei IQ die US30-Gruppe ohne erkennbaren Grund. Nicht behoben.
+
+- **2026-09-19** [Git-Sync] **GitHub-Rueckstand aufgeloest: 242 Commits
+  gepusht** (Nutzerauftrag). Stand vorher: lokal 240 vor / 4 hinter
+  `origin/main`, seit 09-16 09:08 kein Push mehr.
+  **Die stuendliche Meldung "vermutlich ein echter Konflikt" war eine
+  Fehldiagnose.** `git merge` brach mit *"Your local changes to the following
+  files would be overwritten by merge: knowledge/CHANGELOG.md,
+  knowledge/DASHBOARD.md"* ab -- also wegen NICHT committeter Aenderungen, nicht
+  wegen widerspruechlicher Inhalte. `scripts/lib/git_sync_push.ps1` setzt laut
+  eigenem Kommentar einen sauberen Working Tree voraus; die Auto-Tasks
+  committen aber nur ihre eigenen Dateien, Session-Aenderungen an `knowledge/`
+  bleiben liegen. Sobald der Remote dieselbe Datei anfasst (hier: drei
+  Bridge-Monitor-Eintraege der Cloud-Session), blockiert das jeden Push --
+  **unveraendert, der Fall kann jederzeit wiederkommen** (Vorschlag unten im
+  DASHBOARD).
+  **Ablauf:** lokale Aenderungen committet (`7c61c1e`), `origin/main` gemergt
+  (`27b9b35`), zwei Textkonflikte von Hand aufgeloest, gepusht.
+  **Inhaltlich:** der Cloud-Fix in `cls_practical/rates.py` (Dedup nach der
+  `.date`-Trunkierung) bleibt -- er ergaenzt den Lake-Fix vom 09-16, beide
+  greifen an verschiedenen Stellen derselben Kette. Die drei
+  Bridge-Monitor-Alarme sind ueberholt: der Watchdog lief lokal die ganze Zeit
+  normal (letzter Snapshot 09-18 23:31), eingefroren war nur GitHub. Ein beim
+  Aufraeumen stehengebliebenes Fragment (Pip-Boden-Tabelle) entfernt.
+
 - **2026-09-17** [FK Instant Funding Paper-Bot] **Scan-Fehler als
   Sammelmeldung** (Nutzerauftrag). `scan_once()` meldet einen Scan-Fehler
   (z. B. haengendes dukascopy) je Bein nur noch beim ERSTEN Auftreten pro Tag

@@ -17,9 +17,9 @@ keine Planung (dafür ist `DASHBOARD.md`).
   (dry_run, state_override): 1 Meldung, Zaehler 3.
 
 - **2026-09-17** [knowledge/ Lint] **Aufgeraeumt** (Nutzerentscheid bei der
-  Dashboard-Durchsicht). Tote Links: `[[cls-practical]]` ->
-  `[[cls-practical-kostenvalidierung]]`, `[[gap-fade]]`/`[[execution-overlay]]`
-  (Abschnitte derselben Datei) entlinkt, `[[risiko-kalibrierung-methodik]]` ->
+  Dashboard-Durchsicht). Tote Links: „cls-practical" ->
+  „cls-practical-kostenvalidierung", „gap-fade"/„execution-overlay"
+  (Abschnitte derselben Datei) entlinkt, „risiko-kalibrierung-methodik" ->
   Memory-Pfad, zwei literale Beispiel-Wikilinks umformuliert. Verwaiste Seiten
   verlinkt: 3 Archiv-Notizen aus `strategie-backlog-inventar.md`,
   `paper-bot-architecture` aus `paper-bot-zu-live-bridge.md`,
@@ -529,6 +529,39 @@ keine Planung (dafür ist `DASHBOARD.md`).
   **Noch nicht umgestellt:** die Stop-Order-Entry-Logik (naechster Schritt).
   `cls_practical` bleibt bewusst auf Dukascopy -- der EURUSD-Versatz betraegt
   0,00-0,20 Pips gegen >=5 Pips Stopdistanz (0-4 %), anders als bei Index-CFDs.
+
+- **2026-09-15** [cls_practical/rates.py] **Bridge-Monitor-Routine: CLS-Practical-Scan
+  auf Funded-Portfolio-Bridge (TTP + IQ, alle Konten) fiel seit 22:38 Uhr bei
+  JEDEM ~15-Minuten-Zyklus mit `cannot reindex on an axis with duplicate
+  labels` aus -- Ursache gefunden und gefixt, kein Order-/Risikopfad
+  angefasst.** Snapshot zeigte 7 identische Fehler-Events zwischen 22:38 und
+  23:58 auf allen drei Funded-Konten. Root Cause in
+  `compute_daily_rate_score_2y()`: die Funktion trunkiert `de02y.index` /
+  `us02y.index` (DatetimeIndex mit Uhrzeit) auf `.date`, bevor beide Series
+  per `pd.concat(..., join="outer")` zusammengefuehrt werden.
+  `fetch_2y_yield_daily()` dedupliziert nur auf exaktem Timestamp
+  (`df[~df.index.duplicated(keep="last")]`) -- ein `force_refresh`-Live-Pull
+  kann aber den letzten abgeschlossenen Tagesbalken UND einen noch laufenden
+  Intraday-Snapshot fuer denselben Kalendertag mit zwei verschiedenen
+  Timestamps liefern. Nach der `.date`-Trunkierung kollidieren beide zu
+  einem doppelten Index-Label, worauf `pd.concat` mit genau dem beobachteten
+  Fehlertext abbricht. Reproduziert lokal mit synthetischen Daten (zwei
+  DE02Y-Zeilen am selben Kalendertag, unterschiedliche Uhrzeit) -- exakt
+  derselbe Fehlertext. Fix: `de_chg`/`us_chg` werden nach der
+  `.date`-Trunkierung zusaetzlich mit `keep="last"` dedupliziert, gleiche
+  Konvention wie in `fetch_2y_yield_daily()` selbst. Verifiziert: Reproduktion
+  crasht ohne den Fix, laeuft mit Fix sauber durch (inkl. End-to-End-Test von
+  `compute_frontend_2y_risk_multiplier()` mit injizierter Duplikat-Zeile);
+  `py_compile` auf der geaenderten Datei. **Kein Live-Lauf gegen echte
+  TradingView-Daten abgewartet** (kein Zugriff auf die laufende Bridge von
+  hier aus) -- reine Datenaufbereitung vor dem eigentlichen
+  Risikomultiplikator, Order-Versand/Sizing-Logik selbst unveraendert.
+  Der aeltere, separat dokumentierte `dukascopy_python-Hang` (12:15/12:34 Uhr,
+  siehe DASHBOARD.md) ist ein anderer, bereits bekannter Fehlertext und nicht
+  Teil dieses Fixes.
+  **Nachtrag 2026-09-17 (lokale Session):** dieser Fix ist richtig und bleibt,
+  war aber nicht die einzige Ursache -- die Stempel verschoben sich, weil die
+  Windows-Zeitzone des Rechners sprang (siehe Eintraege vom 09-16/09-17).
 
 - **2026-09-14** [Reporting / Forex-Weekly-Report] **Weekly Checkup KW37 fiel
   aus -- Ursache war NICHT der ausgeschaltete PC, sondern das 1-Stunden-

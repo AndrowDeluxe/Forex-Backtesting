@@ -123,27 +123,14 @@ abgehakt-und-liegengelassen.
   `Kernel-General`-Id-1-Events mit `reason=3` im System-Eventlog und keine
   1-h-Luecken in den Bridge-Logs. Danach Punkt entfernen.
 
-
-  | Bot | `min_sl_pips` |
-  |---|---|
-  | `ek_portfolio/paper_bot.py` | 5 |
-  | `challenge_portfolio/paper_bot.py` | 5 |
-  | `fk_instant_funding/paper_bot.py` | **fehlt** |
-
-  **Warum das zählt:** genau dieser Filter existiert, weil Funded am
-  2026-09-09 einen cls_practical-Trade mit **3,6 Pips Stop** genommen hat —
-  **−1.441,72 USD über drei Konten**. Bei FKs gemessenen Round-Trip-Kosten
-  von 1,30 Pips frisst ein 3,6-Pip-Stop über ein Drittel der Stopdistanz
-  allein an Kosten. `cls_practical` steht auf FK **in `LIVE_LEGS`**, das Bein
-  darf also real einsteigen.
-  Verifiziert am Backtest der KW37: mit `min_sl_pips=0` findet der Scan den
-  09-09-Trade (3,6 Pips), mit `min_sl_pips=5` nicht.
-  **Nicht selbst geändert**, weil es die Handelslogik eines Echtgeld-Bots
-  ist und `fk_instant_funding/paper_bot.py` zur Laufzeit von der Bridge
-  importiert wird. Sag Bescheid, dann ziehe ich es nach — es ist eine Zeile.
-  Dritter Fall des Musters „ein Fix pro Bein ist kein Fix"
-  ([[paper-bot-zu-live-bridge]]).
-
+- **Cloud-Bridge-Monitor meldete 09-16/17/18 dreimal Alarm — beides inzwischen
+  geklaert (2026-09-19).** (1) „CLS-Fix greift nicht": der Cloud-Fix in
+  `cls_practical/rates.py` war richtig, aber nicht die ganze Ursache — die
+  Zinsreihen waren im Lake verdoppelt (behoben 09-16) und der Ausloeser war die
+  springende Windows-Zeitzone (behoben 09-17). (2) „`snapshot.json` seit ~3 Tagen
+  eingefroren": der Watchdog laeuft lokal normal (letzter Snapshot 09-18 23:31,
+  heute Wochenendpause) — eingefroren war nur GitHub, weil die Auto-Pushes seit
+  09-16 an diesem Merge haengen blieben. Genau dieser Merge ist jetzt aufgeloest.
 
 
 

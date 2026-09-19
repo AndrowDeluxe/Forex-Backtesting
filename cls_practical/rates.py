@@ -225,6 +225,16 @@ def compute_daily_rate_score_2y(de02y: pd.DataFrame, us02y: pd.DataFrame, lag_da
     us_chg = (us02y["close"] - us02y["open"]).copy()
     de_chg.index = pd.Index(de02y.index.date, name="date")
     us_chg.index = pd.Index(us02y.index.date, name="date")
+    # fetch_2y_yield_daily() dedups on exact timestamp, not calendar date -- a
+    # force_refresh pull can return the prior day's closed bar AND a
+    # still-forming intraday snapshot for today with two different
+    # timestamps, which collide once truncated to .date here. Without this,
+    # pd.concat(..., join="outer") raises "cannot reindex on an axis with
+    # duplicate labels" (observed live 2026-09-15 on Funded-Portfolio-Bridge,
+    # CLS-Practical-Scan, every ~15min cycle). keep="last" matches the same
+    # convention fetch_2y_yield_daily itself uses.
+    de_chg = de_chg[~de_chg.index.duplicated(keep="last")]
+    us_chg = us_chg[~us_chg.index.duplicated(keep="last")]
     joined = pd.concat({"de": de_chg, "us": us_chg}, axis=1, join="outer").sort_index()
     score = (joined["de"] - joined["us"]).rename("daily_rate_score_2y")
     return score.shift(lag_days)

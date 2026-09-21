@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-21T13:31:24",
+  "generated_at": "2026-09-21T14:01:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-21T13:29:07",
+      "last_run": "2026-09-21T13:59:07",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-09-21 13:29:07 2026-09-21 13:29:01,928 INFO run_once: Konto-Equity 3186.46 EUR | Aggregiertes offenes Risiko (ganzes Konto): 445.47 (Deckel dieser Bridge: 955.94, 30%)",
+      "last_equity_line": "2026-09-21 13:59:07 2026-09-21 13:59:01,933 INFO run_once: Konto-Equity 3162.50 EUR | Aggregiertes offenes Risiko (ganzes Konto): 445.27 (Deckel dieser Bridge: 948.75, 30%)",
       "last_error_line": "2026-09-18 22:57:14 2026-09-18 22:57:12,448 ERROR run_once: cls_practical: unerwarteter Fehler",
       "recent_events": [
         "2026-09-18 22:57:13         f\"Lake-Daten fuer {source}:{key}_{timeframe} zu alt (last_success_at={entry and entry.get('last_success_at')})\"",
@@ -16,12 +16,30 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-21T13:28:16",
+      "last_run": "2026-09-21T13:58:15",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
+        "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
+          "last_equity_line": "2026-09-21 13:58:15 Verbunden: Login 504072729, Equity $98,507.31 USD",
+          "last_error_line": "2026-09-19 00:01:31 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+          "recent_events": [
+            "2026-09-19 00:01:31 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-19 00:01:31 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-19 00:01:31 Gold-ASB-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-18 23:46:32 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-18 23:46:32 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-18 23:46:32 Gold-ASB-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-18 23:33:14 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-18 23:33:14 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-18 23:33:14 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-18 23:33:14 Gold-ASB-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-18 23:17:53 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-18 23:17:53 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)"
+          ]
+        },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-21 13:28:16 Verbunden: Login 16054, Equity $100,283.63 USD",
+          "last_equity_line": "2026-09-21 13:58:15 Verbunden: Login 16054, Equity $100,554.38 USD",
           "last_error_line": "2026-09-19 00:01:31 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
           "recent_events": [
             "2026-09-21 09:58:15 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe BUY lots=0.06 risk=$150.00 sl=4324.16044 -- placed",
@@ -55,31 +73,13 @@
             "2026-09-18 23:17:53 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
             "2026-09-18 23:17:53 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)"
           ]
-        },
-        "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-21 13:28:16 Verbunden: Login 504072729, Equity $98,970.15 USD",
-          "last_error_line": "2026-09-19 00:01:31 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-          "recent_events": [
-            "2026-09-19 00:01:31 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-19 00:01:31 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-19 00:01:31 Gold-ASB-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-18 23:46:32 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-18 23:46:32 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-18 23:46:32 Gold-ASB-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-18 23:33:14 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-18 23:33:14 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-18 23:33:14 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-18 23:33:14 Gold-ASB-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-18 23:17:53 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-18 23:17:53 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)"
-          ]
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-09-21T13:14:09",
-      "minutes_since_last_run": 17.2,
+      "minutes_since_last_run": 47.2,
       "status": "ok",
       "last_equity_line": "2026-09-21 13:14:09 Verbunden: Login 17764, Equity $100,223.96",
       "last_error_line": "2026-09-18 22:18:33 gold_silver-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",

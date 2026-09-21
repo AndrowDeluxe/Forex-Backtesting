@@ -4726,3 +4726,18 @@
 2026-09-21 14:30:28 S&P 500 (volles Universum, 420 Ticker)    PEP 2026-09-18 129.75      131.63 129.75 120.61                  143.45    143.45            7.04               14.2       True       True                            12.5 2026-09-21T14:30:27
 2026-09-21 14:30:28 S&P 500 (volles Universum, 420 Ticker)    REG 2026-09-18  72.95       72.95  72.95  70.40                   76.78     76.78            3.50               20.0       True       True                            12.5 2026-09-21T14:30:27
 2026-09-21 14:30:28          Nasdaq-100 (alle ~103 Ticker)    PEP 2026-09-18 129.75      131.63 129.75 120.61 kein TP (finale Config)      0.00            7.04               14.2       True       True                            12.5 2026-09-21T14:30:27
+2026-09-21 15:35:00 === Scanner-Task gestartet ===
+2026-09-21 15:35:30 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-09-21 15:35:30 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-09-21 15:35:30 [sp500] 2 raw signal(s) as of 2026-09-18, regime_ok=True
+2026-09-21 15:35:30 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-09-21 15:35:30 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-09-21 15:35:30 [nasdaq100] 1 raw signal(s) as of 2026-09-18, regime_ok=True
+2026-09-21 15:35:30 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-09-21 15:35:30 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-09-21 15:35:30 
+2026-09-21 15:35:30 Saved 3 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-09-21T15:35:30)
+2026-09-21 15:35:30                                 market ticker  scan_date  close  lower_band  entry     sl                      tp  tp_price  risk_pct_price  position_size_pct  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
+2026-09-21 15:35:30 S&P 500 (volles Universum, 420 Ticker)    PEP 2026-09-18 129.75      131.63 129.75 120.61                  143.45    143.45            7.04               14.2       True       True                            12.5 2026-09-21T15:35:30
+2026-09-21 15:35:30 S&P 500 (volles Universum, 420 Ticker)    REG 2026-09-18  72.95       72.95  72.95  70.40                   76.78     76.78            3.50               20.0       True       True                            12.5 2026-09-21T15:35:30
+2026-09-21 15:35:30          Nasdaq-100 (alle ~103 Ticker)    PEP 2026-09-18 129.75      131.63 129.75 120.61 kein TP (finale Config)      0.00            7.04               14.2       True       True                            12.5 2026-09-21T15:35:30

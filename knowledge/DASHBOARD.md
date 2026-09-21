@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-09-17** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-09-21** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -164,8 +164,15 @@ abgehakt-und-liegengelassen.
   (ab 09-15), Ursache also offen. Tritt nach dem Zeitzonen-Fix erneut eine
   Lücke auf: Task-Scheduler-Verhalten gezielt instrumentieren. Sonst löschen.
 
-
-
+- **Lint 09-21: zwei mehrfach verlinkte, aber nie angelegte Notizen —
+  anlegen und wo?** `[[bein-matrix-ist-soll-paper]]` (referenziert von
+  `areas/bridge-infrastruktur-vergleich.md` 2x + `reports/weekly/
+  KW37_2026_education.md`) und `[[systemlandkarte]]` (referenziert von
+  denselben zwei Dateien) zeigen beide ins Leere — kein Tippfehler, beide
+  klingen nach eigenständigen, wiederholt referenzierten Konzepten (Soll-
+  Ist-Vergleich der Beine je Bridge vs. Paper-Bot bzw. eine Gesamt-
+  Systemübersicht "wo die Kette verliert"). Ob/wo diese Notizen angelegt
+  werden (`areas/` vermutlich), liegt bei dir — nicht selbst angelegt.
 
 
 ### Offene Aufgaben
@@ -186,11 +193,16 @@ abgehakt-und-liegengelassen.
 
 **Mittel**
 - **14 unverarbeitete Clippings** in `knowledge/Clippings/` (Stand
-  2026-09-14-Lint, unveraendert seit 2026-09-09) — u.a. Edge-Genesis/-Decay,
+  2026-09-21-Lint, unveraendert seit 2026-09-09) — u.a. Edge-Genesis/-Decay,
   Risk-Factor-Investing, Sektor-Rotation, "Six Repos One System", "How
   system works" — noch nicht durch den CODE-Prozess.
 
 **Niedrig**
+- **Toter Wikilink in `DASHBOARD.md`** (Lint 09-21): `[[ou-modell-
+  kostenvalidierung]]` in der OU-Modell-Kosten-Entry oben zeigt auf eine nie
+  angelegte Notiz (kein Tippfehler in einem bestehenden Namen, kein
+  Treffer in der Git-Historie). Entweder die Detail-Notiz nachliefern oder
+  den Link entfernen, sobald die OU-Modell-Entscheidung selbst geklärt ist.
 
 ## Status — was läuft gerade wirklich
 
@@ -260,11 +272,12 @@ Live-Status aller drei Portfolio-Bridges jetzt auch als Streamlit-Seiten
 („Portfolio-Bridges" in der Sidebar) — lesen `bridge_status/snapshot.json`,
 das der Bridge-Watchdog alle 30 Min. committet.
 
-_Letzter Lint-Durchlauf: **2026-09-17** (manuell, bei der Dashboard-Durchsicht
-mit dem Nutzer). Ergebnis: 0 tote Wikilinks, 0 verwaiste Seiten, 0 veraltete
-Statustabellen-Daten; 14 unverarbeitete Clippings bleiben für den nächsten
-Lint-Lauf (Nutzerentscheid). Verweise nach außerhalb von `knowledge/` jetzt
-als Pfad in Backticks (siehe `README.md`)._
+_Letzter Lint-Durchlauf: **2026-09-21** (geplant, `second-brain-lint`).
+Ergebnis: 6 tote Wikilinks (2 mehrfach referenzierte, nie angelegte Notizen
+→ Bestätigung; 1 isolierter toter Link → Niedrig), 0 verwaiste Seiten,
+0 veraltete Statustabellen-Daten; 14 unverarbeitete Clippings unverändert
+seit 09-09. Verweise nach außerhalb von `knowledge/` jetzt als Pfad in
+Backticks (siehe `README.md`)._
 
 ## Status — aktuell nicht aktiv
 

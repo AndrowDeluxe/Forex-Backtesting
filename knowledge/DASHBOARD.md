@@ -112,6 +112,23 @@ Bedarf vor generischem Aufräumen.
   2:1-Split korrekt um, TTP nicht — der alte SL wurde zum halbierten Kurs
   ausgelöst, keine Ausgleichsbuchung. Kandidat für eine Support-Anfrage bei
   TTP; ein Split-Schutz in der Bridge fehlt ebenfalls.
+- **🟠 ttp1 (Echtgeld, TTP Konto 1): Log-Zeile fuer dieses Konto seit
+  2026-09-19 00:01 komplett still — auch an den beiden folgenden
+  Handelstagen (Mo 09-21, Di 09-22) keine einzige neue Zeile** (Bridge-
+  Monitor-Snapshot 2026-09-22 17:01). `last_equity_line` und
+  `last_error_line` fuer diesen Account im Snapshot sind wortgleich mit dem
+  Stand, der schon in der obigen "darf seit 09-18 nicht mehr handeln"-Meldung
+  drin war (Equity 94.711,78 USD, dukascopy-Hang, jeweils 2026-09-19
+  00:01:31) — seitdem keine neue Zeile, weder Fehler noch normaler
+  Verbindungs-/Equity-Check. Die beiden Schwesterkonten auf derselben Bridge
+  (TTP Konto 2/Demo, IQ Markets) haben im selben Zeitraum durchgehend neue
+  Zeilen bis heute 16:58. Ich sehe nur den Snapshot, nicht den Bridge-Code
+  oder die echten Logs — kann also nicht sagen, ob die Bridge ein
+  handelsgesperrtes Konto bewusst ganz aus dem Lauf herausnimmt (dann waere
+  das erwartet) oder ob da zusaetzlich etwas anderes klemmt (Verbindung,
+  Account-Konfiguration). **Frage:** ist das erwartete Folge der
+  Handelssperre, oder lohnt sich ein Blick, ob das Konto ueberhaupt noch
+  normal angebunden ist?
 
 Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
 noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht

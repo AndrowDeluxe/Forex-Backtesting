@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-09-23T00:31:24",
+  "generated_at": "2026-09-23T01:01:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-23T00:29:01",
-      "minutes_since_last_run": 2.4,
+      "last_run": "2026-09-23T00:59:07",
+      "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-09-23 00:14:07 2026-09-23 00:14:01,843 INFO run_once: Konto-Equity 3181.50 EUR | Aggregiertes offenes Risiko (ganzes Konto): 360.09 (Deckel dieser Bridge: 954.45, 30%)",
+      "last_equity_line": "2026-09-23 00:59:07 2026-09-23 00:59:01,901 INFO run_once: Konto-Equity 3180.00 EUR | Aggregiertes offenes Risiko (ganzes Konto): 360.18 (Deckel dieser Bridge: 954.00, 30%)",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-23T00:28:15",
+      "last_run": "2026-09-23T00:58:15",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-23 00:28:15 Verbunden: Login 504072729, Equity $99,055.90 USD",
+          "last_equity_line": "2026-09-23 00:58:15 Verbunden: Login 504072729, Equity $99,071.72 USD",
           "last_error_line": "2026-09-19 00:01:31 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
           "recent_events": [
             "2026-09-22 21:13:17 [TTP] ?? ENTRY ou_modell (AXP) AXP BUY lots=6.0 risk=$165.17 sl=279.28352 -- placed",
@@ -34,7 +34,7 @@
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-23 00:28:15 Verbunden: Login 16054, Equity $99,715.12 USD",
+          "last_equity_line": "2026-09-23 00:58:15 Verbunden: Login 16054, Equity $99,715.12 USD",
           "last_error_line": "2026-09-19 00:01:31 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
           "recent_events": [
             "2026-09-22 09:58:16 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe: Kurs bereits 0.59R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.4-fache aufgeblaeht.",
@@ -74,7 +74,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-09-23T00:14:09",
-      "minutes_since_last_run": 17.2,
+      "minutes_since_last_run": 47.2,
       "status": "ok",
       "last_equity_line": "2026-09-23 00:14:09 Verbunden: Login 17764, Equity $100,263.44",
       "last_error_line": "2026-09-18 22:18:33 gold_silver-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",

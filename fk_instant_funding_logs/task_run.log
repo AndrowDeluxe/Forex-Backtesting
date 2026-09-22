@@ -50732,3 +50732,10 @@
 2026-09-22 22:55:47   "ctnl_kill_switch_active": false,
 2026-09-22 22:55:47   "n_trades": 25
 2026-09-22 22:55:47 }
+2026-09-22 22:55:51 WARNUNG: die offenen Aenderungen liessen sich nach dem Merge nicht konfliktfrei zurueckholen (Remote hat dieselben Zeilen geaendert). Der Push ist durch, der Working Tree steht auf dem gemergten Stand OHNE Konfliktmarker. Die offene Arbeit liegt vollstaendig im Stash: mit 'git stash list' ansehen und 'git stash pop' von Hand zurueckholen/aufloesen.
+2026-09-22 22:55:51 === FK-Instant-Funding-Task beendet ===
+2026-09-22 23:55:23 === FK-Instant-Funding-Task gestartet ===
+2026-09-22 23:55:24 {
+2026-09-22 23:55:24   "date": "2026-09-22 21:55:23.941659",
+2026-09-22 23:55:24   "paused": true
+2026-09-22 23:55:24 }

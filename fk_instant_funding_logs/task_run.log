@@ -50610,3 +50610,23 @@
 2026-09-22 16:56:49   "ctnl_kill_switch_active": false,
 2026-09-22 16:56:49   "n_trades": 25
 2026-09-22 16:56:49 }
+2026-09-22 17:55:23 === FK-Instant-Funding-Task gestartet ===
+2026-09-22 17:56:33 INFO:DUKASCRIPT:current timestamp :2026-09-21T02:00:00
+2026-09-22 17:56:33 INFO:DUKASCRIPT:current timestamp :2026-09-22T16:00:00
+2026-09-22 17:56:33 INFO:DUKASCRIPT:current timestamp :2026-09-22T16:00:00
+2026-09-22 17:56:33 INFO:DUKASCRIPT:current timestamp :2026-09-22T16:00:00
+2026-09-22 17:56:33 INFO:DUKASCRIPT:current timestamp :2026-09-22T10:00:00
+2026-09-22 17:56:33 INFO:DUKASCRIPT:current timestamp :2026-09-22T10:00:00
+2026-09-22 17:56:33 INFO:DUKASCRIPT:current timestamp :2026-09-22T10:00:00
+2026-09-22 17:56:33 INFO:DUKASCRIPT:current timestamp :2026-09-22T10:00:00
+2026-09-22 17:56:33 {
+2026-09-22 17:56:33   "date": "2026-09-22 15:55:23.950970",
+2026-09-22 17:56:33   "equity": 98916.98412610608,
+2026-09-22 17:56:33   "current_dd": -0.010830158738939222,
+2026-09-22 17:56:33   "consistency_ratio": 0.0,
+2026-09-22 17:56:33   "payout_safe": false,
+2026-09-22 17:56:33   "cum_profit": -1083.0158738939244,
+2026-09-22 17:56:33   "kill_switch_active": false,
+2026-09-22 17:56:33   "ctnl_kill_switch_active": false,
+2026-09-22 17:56:33   "n_trades": 25
+2026-09-22 17:56:33 }

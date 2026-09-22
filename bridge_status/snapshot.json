@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-22T07:01:24",
+  "generated_at": "2026-09-22T07:31:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-22T06:59:07",
+      "last_run": "2026-09-22T07:29:07",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-09-22 06:59:07 2026-09-22 06:59:01,936 INFO run_once: Konto-Equity 3170.99 EUR | Aggregiertes offenes Risiko (ganzes Konto): 446.60 (Deckel dieser Bridge: 951.30, 30%)",
+      "last_equity_line": "2026-09-22 07:29:07 2026-09-22 07:29:01,904 INFO run_once: Konto-Equity 3122.67 EUR | Aggregiertes offenes Risiko (ganzes Konto): 464.06 (Deckel dieser Bridge: 936.80, 30%)",
       "last_error_line": "2026-09-18 22:57:14 2026-09-18 22:57:12,448 ERROR run_once: cls_practical: unerwarteter Fehler",
       "recent_events": [
         "2026-09-18 22:57:13         f\"Lake-Daten fuer {source}:{key}_{timeframe} zu alt (last_success_at={entry and entry.get('last_success_at')})\"",
@@ -16,46 +16,10 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-22T06:58:15",
+      "last_run": "2026-09-22T07:28:15",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
-        "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-22 06:58:15 Verbunden: Login 504072729, Equity $99,034.92 USD",
-          "last_error_line": "2026-09-19 00:01:31 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-          "recent_events": [
-            "2026-09-22 02:43:17 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.72R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 3.5-fache aufgeblaeht.",
-            "2026-09-22 01:13:16 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
-            "2026-09-21 23:58:15 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
-            "2026-09-21 21:13:16 [TTP] ?? ENTRY ou_modell (UPS) UPS BUY lots=19.0 risk=$165.31 sl=86.52309 -- placed",
-            "2026-09-21 18:13:16 [TTP] ?? ENTRY ou_modell (OXY) OXY BUY lots=39.0 risk=$165.08 sl=52.87474 -- placed",
-            "2026-09-21 17:13:18 [TTP] ?? ENTRY ou_modell (MDLZ) MDLZ BUY lots=59.0 risk=$165.10 sl=57.68665 -- placed",
-            "2026-09-21 17:13:18 [TTP] ?? ENTRY ou_modell (EOG) EOG BUY lots=19.0 risk=$165.10 sl=132.38821 -- placed",
-            "2026-09-21 16:13:16 [TTP] ?? ABGLEICH ou_modell EXPE Ticket 18280454 geschlossen (Modell ist ausgestiegen, Position hing an altem Signaldatum) -- already_closed @ 264.21",
-            "2026-09-21 16:13:16 [TTP] ?? ctnl_reversal XAUUSD war schon ausgestoppt (2026-09-21 14:05 UTC), bevor der Entry losgehen konnte -- uebersprungen statt in ein totes Signal zu entern.",
-            "2026-09-21 15:58:15 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.53R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.1-fache aufgeblaeht.",
-            "2026-09-19 00:01:31 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-09-19 00:01:31 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)"
-          ]
-        },
-        "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-22 06:58:15 Verbunden: Login 16054, Equity $100,185.19 USD",
-          "last_error_line": "2026-09-19 00:01:31 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-          "recent_events": [
-            "2026-09-22 02:43:17 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe: Kurs bereits 0.72R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 3.6-fache aufgeblaeht.",
-            "2026-09-22 01:13:16 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
-            "2026-09-21 23:58:15 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
-            "2026-09-21 16:58:17 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe BUY lots=0.04 risk=$150.00 sl=4306.26273 -- placed",
-            "2026-09-21 16:43:16 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe BUY lots=0.03 risk=$150.00 sl=4294.97783 -- placed",
-            "2026-09-21 16:28:16 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe BUY lots=0.06 risk=$150.00 sl=4318.24723 -- placed",
-            "2026-09-21 16:13:16 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe war schon ausgestoppt (2026-09-21 14:05 UTC), bevor der Entry losgehen konnte -- uebersprungen statt in ein totes Signal zu entern.",
-            "2026-09-21 15:58:15 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe: Kurs bereits 0.54R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.2-fache aufgeblaeht.",
-            "2026-09-21 14:43:16 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe BUY lots=0.06 risk=$150.00 sl=4338.23665 -- placed",
-            "2026-09-21 14:28:14 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe: Kurs bereits 0.62R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.6-fache aufgeblaeht.",
-            "2026-09-21 09:58:15 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe BUY lots=0.06 risk=$150.00 sl=4324.16044 -- placed",
-            "2026-09-21 08:28:14 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe BUY lots=0.07 risk=$150.00 sl=4327.10305 -- placed"
-          ]
-        },
         "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld) (ttp)": {
           "last_equity_line": "2026-09-19 00:01:31 Verbunden: Login 504069845, Equity $94,711.78 USD",
           "last_error_line": "2026-09-19 00:01:31 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
@@ -73,15 +37,51 @@
             "2026-09-18 23:17:53 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
             "2026-09-18 23:17:53 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)"
           ]
+        },
+        "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
+          "last_equity_line": "2026-09-22 07:28:15 Verbunden: Login 504072729, Equity $98,670.23 USD",
+          "last_error_line": "2026-09-19 00:01:31 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+          "recent_events": [
+            "2026-09-22 02:43:17 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.72R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 3.5-fache aufgeblaeht.",
+            "2026-09-22 01:13:16 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
+            "2026-09-21 23:58:15 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
+            "2026-09-21 21:13:16 [TTP] ?? ENTRY ou_modell (UPS) UPS BUY lots=19.0 risk=$165.31 sl=86.52309 -- placed",
+            "2026-09-21 18:13:16 [TTP] ?? ENTRY ou_modell (OXY) OXY BUY lots=39.0 risk=$165.08 sl=52.87474 -- placed",
+            "2026-09-21 17:13:18 [TTP] ?? ENTRY ou_modell (MDLZ) MDLZ BUY lots=59.0 risk=$165.10 sl=57.68665 -- placed",
+            "2026-09-21 17:13:18 [TTP] ?? ENTRY ou_modell (EOG) EOG BUY lots=19.0 risk=$165.10 sl=132.38821 -- placed",
+            "2026-09-21 16:13:16 [TTP] ?? ABGLEICH ou_modell EXPE Ticket 18280454 geschlossen (Modell ist ausgestiegen, Position hing an altem Signaldatum) -- already_closed @ 264.21",
+            "2026-09-21 16:13:16 [TTP] ?? ctnl_reversal XAUUSD war schon ausgestoppt (2026-09-21 14:05 UTC), bevor der Entry losgehen konnte -- uebersprungen statt in ein totes Signal zu entern.",
+            "2026-09-21 15:58:15 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.53R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.1-fache aufgeblaeht.",
+            "2026-09-19 00:01:31 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-09-19 00:01:31 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)"
+          ]
+        },
+        "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
+          "last_equity_line": "2026-09-22 07:28:15 Verbunden: Login 16054, Equity $99,251.91 USD",
+          "last_error_line": "2026-09-19 00:01:31 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+          "recent_events": [
+            "2026-09-22 02:43:17 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe: Kurs bereits 0.72R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 3.6-fache aufgeblaeht.",
+            "2026-09-22 01:13:16 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
+            "2026-09-21 23:58:15 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
+            "2026-09-21 16:58:17 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe BUY lots=0.04 risk=$150.00 sl=4306.26273 -- placed",
+            "2026-09-21 16:43:16 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe BUY lots=0.03 risk=$150.00 sl=4294.97783 -- placed",
+            "2026-09-21 16:28:16 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe BUY lots=0.06 risk=$150.00 sl=4318.24723 -- placed",
+            "2026-09-21 16:13:16 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe war schon ausgestoppt (2026-09-21 14:05 UTC), bevor der Entry losgehen konnte -- uebersprungen statt in ein totes Signal zu entern.",
+            "2026-09-21 15:58:15 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe: Kurs bereits 0.54R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.2-fache aufgeblaeht.",
+            "2026-09-21 14:43:16 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe BUY lots=0.06 risk=$150.00 sl=4338.23665 -- placed",
+            "2026-09-21 14:28:14 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe: Kurs bereits 0.62R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.6-fache aufgeblaeht.",
+            "2026-09-21 09:58:15 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe BUY lots=0.06 risk=$150.00 sl=4324.16044 -- placed",
+            "2026-09-21 08:28:14 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe BUY lots=0.07 risk=$150.00 sl=4327.10305 -- placed"
+          ]
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-22T06:14:09",
-      "minutes_since_last_run": 47.2,
+      "last_run": "2026-09-22T07:14:10",
+      "minutes_since_last_run": 17.2,
       "status": "ok",
-      "last_equity_line": "2026-09-22 06:14:09 Verbunden: Login 17764, Equity $99,959.01",
+      "last_equity_line": "2026-09-22 07:14:10 Verbunden: Login 17764, Equity $100,009.16",
       "last_error_line": "2026-09-18 22:18:33 gold_silver-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
       "recent_events": [
         "2026-09-18 22:18:33 gold_silver-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",

@@ -4885,3 +4885,21 @@
 2026-09-22 16:35:23 S&P 500 (volles Universum, 420 Ticker)    UPS 2026-09-21  94.75       96.28  94.75  86.34                  107.36    107.36            8.87              11.27       True       True                            12.5 2026-09-22T16:35:23
 2026-09-22 16:35:23          Nasdaq-100 (alle ~103 Ticker)   MDLZ 2026-09-21  60.17       60.33  60.17  57.42 kein TP (finale Config)      0.00            4.57              20.00       True       True                            12.5 2026-09-22T16:35:23
 2026-09-22 16:35:23          Nasdaq-100 (alle ~103 Ticker)    PEP 2026-09-21 129.59      130.35 129.59 119.46 kein TP (finale Config)      0.00            7.82              12.79       True       True                            12.5 2026-09-22T16:35:23
+2026-09-22 17:35:00 === Scanner-Task gestartet ===
+2026-09-22 17:35:22 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-09-22 17:35:22 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-09-22 17:35:22 [sp500] 4 raw signal(s) as of 2026-09-21, regime_ok=True
+2026-09-22 17:35:22 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-09-22 17:35:22 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-09-22 17:35:22 [nasdaq100] 2 raw signal(s) as of 2026-09-21, regime_ok=True
+2026-09-22 17:35:22 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-09-22 17:35:22 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-09-22 17:35:22 
+2026-09-22 17:35:22 Saved 6 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-09-22T17:35:21)
+2026-09-22 17:35:22                                 market ticker  scan_date  close  lower_band  entry     sl                      tp  tp_price  risk_pct_price  position_size_pct  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
+2026-09-22 17:35:22 S&P 500 (volles Universum, 420 Ticker)      D 2026-09-21  62.82       62.97  62.82  59.71                   67.48     67.48            4.95              20.00       True       True                            12.5 2026-09-22T17:35:21
+2026-09-22 17:35:22 S&P 500 (volles Universum, 420 Ticker)   MDLZ 2026-09-21  60.17       60.33  60.17  57.42                   64.29     64.29            4.57              20.00       True       True                            12.5 2026-09-22T17:35:21
+2026-09-22 17:35:22 S&P 500 (volles Universum, 420 Ticker)    PEP 2026-09-21 129.59      130.35 129.59 119.46                  144.79    144.79            7.82              12.79       True       True                            12.5 2026-09-22T17:35:21
+2026-09-22 17:35:22 S&P 500 (volles Universum, 420 Ticker)    UPS 2026-09-21  94.75       96.28  94.75  86.34                  107.36    107.36            8.87              11.27       True       True                            12.5 2026-09-22T17:35:21
+2026-09-22 17:35:22          Nasdaq-100 (alle ~103 Ticker)   MDLZ 2026-09-21  60.17       60.33  60.17  57.42 kein TP (finale Config)      0.00            4.57              20.00       True       True                            12.5 2026-09-22T17:35:21
+2026-09-22 17:35:22          Nasdaq-100 (alle ~103 Ticker)    PEP 2026-09-21 129.59      130.35 129.59 119.46 kein TP (finale Config)      0.00            7.82              12.79       True       True                            12.5 2026-09-22T17:35:21

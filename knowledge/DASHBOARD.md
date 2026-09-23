@@ -235,15 +235,24 @@ Bedarf vor generischem Aufräumen.
 
 - **🟢 OU-Modell: Logik D + BB_K 2,25 ist umgesetzt** (2026-09-23,
   Nutzerfreigabe). Stop 8 Sigma, kein Break-Even, kein TP, Ausstieg am MA20,
-  `max_hold` 10 (schliesst jetzt wirklich). OOS: -0,052R (PF 0,83) -> +0,008R
-  (PF 1,08) TTP-Kosten, -0,028R -> +0,013R (PF 1,13) Tickmill; negative
-  MC-Pfade 30 % -> 18 %, P(DD>7 %) = 0,00 %. **Ehrliche Lesart: von "verliert
+  `max_hold` 10 (schliesst jetzt wirklich). **Nachgemessen auf der Trade-Liste,
+  die der Live-Pfad tatsächlich erzeugt** (764 Trades, 363 OOS): FK −0,052R
+  (PF 0,83) → **+0,0117R (PF 1,12)**, EK −0,028R → **+0,0165R (PF 1,17)**,
+  3 von 4 OOS-Jahren positiv, P(DD>7 %) = 0,00 %. Das liegt rund 20 % unter der
+  Studienerwartung (+0,0148/+0,0196): die Studie wandte den MA-Ausstieg im
+  Replay an, der Live-Pfad tut es in der Engine — der Risikodeckel wird früher
+  frei, dadurch kommen andere Signale zum Zug. Die Live-Zahl gilt.
+  **Noch nicht scharf:** `DRY_RUN` unverändert; der Trockenlauf der EK-Bridge
+  gegen die echten offenen Positionen steht aus (braucht MT5, fällt unter die
+  Echtgeld-Sperre des Auto-Modus). **Ehrliche Lesart: von "verliert
   zuverlaessig" auf "verdient wenig"** -- 2023 bleibt negativ, der Edge-Nachweis
   fehlt weiter. Ob das Bein den Platz im Risikobudget wert ist, bleibt deine
   Portfolio-Entscheidung; sein Gewicht wurde bewusst NICHT mitskaliert.
   Details: [[ou-modell-kostenvalidierung]].
-- **🟡 EK/OU: Max-Holding schliesst nie, nur Warnung** (2026-09-17,
-  **Stand 2026-09-23**). Der Rueckstand ist weg -- der Nutzer hat am 23.09.
+- **✅ EK/OU: Max-Holding schliesst jetzt wirklich** (offen seit 2026-09-17,
+  **behoben 2026-09-23 im Logik-D-Umbau** — `manage_open_positions()` ruft
+  `_close_position(pos, "maxhold")` statt nur CRITICAL zu loggen; dazu neu der
+  MA20-Ausstieg. Der Text unten beschreibt den Stand VOR dem Umbau). Der Rueckstand ist weg -- der Nutzer hat am 23.09.
   gegen 21:41 alle 9 ueberfaelligen Positionen von Hand geschlossen (DAL 33
   Tage, ADI/DHI/GRMN 20, AMGN/EXPE 12, LEN/COF/GIS 11; zusammen **+20,56 EUR**,
   am Broker als `reason=1` belegt). **Die Ursache ist unveraendert:**

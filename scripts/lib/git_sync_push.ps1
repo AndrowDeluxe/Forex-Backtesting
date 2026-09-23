@@ -41,8 +41,25 @@ function Sync-AndPush {
     & git fetch origin 2>&1 | ForEach-Object { & $Log $_ }
     $fetchExit = $LASTEXITCODE
 
-    $stashed = $false
+    # NICHTS ZU MERGEN -> NICHT ANFASSEN (2026-09-23). Bis hierher wurde bei JEDEM
+    # Lauf gestasht, auch wenn der Remote gar nichts Neues hatte. Bei ~14
+    # Auto-Tasks plus Watchdog sind so 93 Stashes entstanden -- und jedes Mal,
+    # wenn der spaetere `stash pop` kollidierte, verschwand der offene Stand
+    # einer laufenden Session aus deren Sicht spurlos (die Arbeit lag im Stash,
+    # aber niemand sah es; am 23.09. zweimal nachweislich passiert). Der ganze
+    # Zyklus ist ueberfluessig, solange keine eingehenden Commits da sind, und
+    # das ist der Normalfall. Gepusht wird trotzdem -- der lokale Commit muss raus.
+    $incoming = '0'
     if ($fetchExit -eq 0) {
+        $incoming = (& git rev-list --count HEAD..FETCH_HEAD 2>$null | Select-Object -First 1)
+        if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($incoming)) { $incoming = 'unbekannt' }
+        if ($incoming -eq '0') {
+            & $Log "Nichts zu mergen (0 eingehende Commits) - Stash und Merge uebersprungen."
+        }
+    }
+
+    $stashed = $false
+    if ($fetchExit -eq 0 -and $incoming -ne '0') {
         # Offene Aenderungen (andere Sessions) beiseitelegen, damit der Merge
         # nicht an ihnen scheitert. --include-untracked bewusst NICHT: neue,
         # noch nicht getrackte Dateien einer Session sollen unangetastet
@@ -116,6 +133,43 @@ function Restore-SyncStash {
     # fehlgeschlagenen pop stehen die Konflikt-Stufen im INDEX, ein checkout
     # aus dem Index wuerde die Marker wieder herausschreiben (getestet
     # 2026-09-19). Die verworfenen Aenderungen liegen vollstaendig im Stash.
+    $betroffen = (& git stash show --name-only "stash@{0}" 2>$null) -join ', '
     & git reset --hard --quiet HEAD 2>&1 | Out-Null
     & $Log "WARNUNG: die offenen Aenderungen liessen sich nach dem Merge nicht konfliktfrei zurueckholen (Remote hat dieselben Zeilen geaendert). Der Push ist durch, der Working Tree steht auf dem gemergten Stand OHNE Konfliktmarker. Die offene Arbeit liegt vollstaendig im Stash: mit 'git stash list' ansehen und 'git stash pop' von Hand zurueckholen/aufloesen."
+
+    # SICHTBAR MACHEN (2026-09-23): der Logeintrag oben stand schon vorher da und
+    # hat trotzdem niemanden erreicht -- eine laufende Session liest das Tasklog
+    # nicht, sie sieht nur, dass ihre Aenderungen weg sind. Deshalb zusaetzlich
+    # eine Datei an der Stelle, die zu Sessionbeginn ohnehin geprueft wird
+    # (CLAUDE.md: "am Anfang jeder neuen Session zuerst knowledge/_handoff/ auf
+    # wartende Dateien pruefen").
+    try {
+        $top = (& git rev-parse --show-toplevel 2>$null | Select-Object -First 1)
+        if ($top) {
+            $dir = Join-Path $top 'knowledge/_handoff'
+            if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Path $dir -Force | Out-Null }
+            $stamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
+            @"
+# Git-Stash-Konflikt: offene Arbeit liegt im Stash
+
+**$stamp** -- ``git_sync_push`` konnte den vor dem Merge beiseitegelegten Stand
+nicht konfliktfrei zurueckholen (der Remote hat dieselben Zeilen geaendert).
+
+Der Working Tree steht auf dem **gemergten** Stand, ohne Konfliktmarker. Die
+offene Arbeit ist NICHT verloren, sie liegt vollstaendig in ``stash@{0}``.
+
+Betroffene Dateien: $betroffen
+
+Zurueckholen:
+
+    git stash show -p "stash@{0}"      # ansehen
+    git stash pop                       # zurueckholen und Konflikt aufloesen
+
+Wenn du in einer Session mittendrin warst und deine Aenderungen verschwunden
+sind: das hier ist die Ursache. Datei nach dem Aufloesen loeschen.
+"@ | Out-File -FilePath (Join-Path $dir 'GIT_STASH_KONFLIKT.md') -Encoding utf8
+        }
+    } catch {
+        & $Log "HINWEIS: Konflikt-Markierungsdatei konnte nicht geschrieben werden: $_"
+    }
 }

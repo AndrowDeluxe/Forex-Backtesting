@@ -450,6 +450,72 @@ der Deckel ist also weit weg und schützt hier nicht.
 
 ---
 
+## Befund 11 — der Edge von `ctnl_reversal` liegt vollständig auf der Long-Seite
+
+`scripts/research_ctnl_entry_origin.py`, 2016-01..2026-09, gesperrte Config,
+gemessene Kosten, Lag 1, R-Detektor. Rohdaten `_data/ctnl_entry_origin.json`.
+
+Diese Frage war in der bisherigen Untersuchung **nicht gestellt**. Der
+Signal-Sweep (Befund 9b) hat an den Kaskaden-Parametern gedreht, ohne zu
+prüfen, ob die Kaskade auf beiden Seiten überhaupt funktioniert.
+
+| Richtung | Trades | Ø R | Σ R | PF |
+|---|---|---|---|---|
+| **long** | 662 | **+0,391** | **+258,9** | **1,46** |
+| **short** | 591 | **−0,207** | **−122,3** | **0,79** |
+
+**Die Short-Seite vernichtet knapp die Hälfte dessen, was die Long-Seite
+erwirtschaftet.** Aus +258,9 ΣR werden netto +136,7.
+
+### Walk-Forward und Monte Carlo bestätigen es
+
+Anker-Walk-Forward über vier Varianten — die Prozedur wählt in 5 von 8 Jahren
+`long + Regime`, in 2019 und 2026 `nur long`, und **nie** die Baseline oder
+`nur short`:
+
+| | OOS Σ R | Ø R | PF | Jahre besser |
+|---|---|---|---|---|
+| Baseline | +143,4 | +0,165 | 1,19 | — |
+| **Richtungs-Prozedur** | **+171,8** | **+0,542** | **1,68** | 5 von 8 |
+
+Monte Carlo (0,15 %/Trade, Block 20, 2.000 Pfade):
+
+| Variante | Median MaxDD | P5 MaxDD | P(MaxDD>6 %) | Median Return | Sharpe |
+|---|---|---|---|---|---|
+| beide (Baseline) | −15,63 % | −28,07 % | 99,9 % | +18,8 % | 0,25 |
+| nur long | −8,12 % | −14,26 % | 84,1 % | **+43,6 %** | 0,71 |
+| nur short | −22,86 % | −37,43 % | 99,9 % | −17,7 % | −0,44 |
+| **long + Regime** | **−4,84 %** | **−8,47 %** | **23,3 %** | +38,6 % | **0,83** |
+
+`long + Regime` senkt den Median-Drawdown von −15,6 % auf **−4,84 %** und die
+Wahrscheinlichkeit, 6 % zu reißen, von 99,9 % auf **23,3 %** — bei mehr als
+verdoppelter Rendite. Das ist der stärkste Einzeleffekt der gesamten
+Untersuchung.
+
+### Der Einwand, der alles relativiert
+
+**Gold ist über den gesamten Stichprobenzeitraum gestiegen** (2016 ≈ 1.150,
+2026 ≈ 4.400). „Long funktioniert, Short nicht" auf einem einseitig steigenden
+Markt ist nahe an einer Tautologie. Die Stichprobe enthält **keine echte
+Gold-Baisse**, an der sich prüfen ließe, ob die Asymmetrie ein Struktur- oder
+ein Regime-Effekt ist.
+
+Ein Hinweis darauf, dass sie **nicht** strukturell ist, steckt in der
+Walk-Forward-Tabelle selbst: **2022** — die Zinserhöhungsphase, in der Gold
+seitwärts bis abwärts lief — ist eines der Jahre, in denen die
+richtungsbeschränkte Variante **schlechter** ist als die Baseline (−19,2 ΣR).
+Die Shorts haben dort also gearbeitet. Dasselbe Muster in 2024 (−24,9) und
+2025 (−35,2), beides starke Aufwärtsjahre — dort kostet die Beschränkung
+Rendite, weil der Regime-Filter zusätzlich aussetzt.
+
+**Was daraus folgt:** Long-only ist keine Erkenntnis über die Strategie,
+sondern eine **Wette darauf, dass Gold weiter steigt**. Das kann eine
+vernünftige Wette sein — aber sie muss als solche getroffen werden, nicht als
+vermeintliche Edge-Verbesserung. Wer sie eingeht, braucht dieselbe
+Ausstiegsregel wie für jede Richtungswette.
+
+---
+
 ## Was daraus folgt (Entscheidung steht bei dir)
 
 Nach Kostenvalidierung, Diagnose und Optimierung stehen **vier** Entscheidungen
@@ -514,6 +580,32 @@ auf diesem Konto angehoben wird — geprüft habe ich nur die Gold-Beine, weil
 dort eine reale Stopdistanz vorlag. `cls_practical` (19,40 EUR Ziel),
 `ou_modell` (10,77) und die drei ORB-Beine (10,58) liegen ebenfalls niedrig
 genug, dass eine Anhebung plausibel ist. **Das habe ich nicht nachgerechnet.**
+
+### E6 — `ctnl_reversal` auf Long beschränken? *(größter Effekt, größter Vorbehalt)*
+
+Monte Carlo: Median MaxDD **−15,6 % → −4,84 %**, P(MaxDD>6 %)
+**99,9 % → 23,3 %**, Sharpe **0,25 → 0,83** (Variante `long + Regime`).
+Walk-Forward bestätigt in 5 von 8 Jahren.
+
+**Aber** (Befund 11): die Stichprobe enthält keine Gold-Baisse. Long-only ist
+eine Wette auf den fortgesetzten Aufwärtstrend, keine Struktur-Erkenntnis —
+2022 hat die Short-Seite nachweislich gearbeitet.
+
+| | Vorgehen | |
+|---|---|---|
+| **a** | Nichts ändern | Short bleibt, kostet im Schnitt −122 ΣR über 10 Jahre |
+| **b** | Long-only + Regime-Filter scharf | Größter Effekt, volle Trendwette |
+| **c** | Long-only, Regime-Filter nur mitlaufend | Hälfte des Effekts, weniger Modellrisiko |
+| **d** | Erst mitlaufen lassen (beides protokollieren, nichts ändern) | Kostet Zeit, kostet nichts sonst |
+
+**Meine Empfehlung: d, dann c.** Der Effekt ist groß genug, dass ein paar
+Wochen Mitschrift ihn nicht zerstören — und der Bull-Market-Vorbehalt ist
+groß genug, dass ich ihn nicht auf Basis dieser Stichprobe scharf schalten
+würde.
+
+**Offen und ungeprüft:** ob die Short-Seite jahresweise dort verdient, wo Gold
+fällt (2022 legt es nahe, gemessen habe ich es nicht). Das wäre der Test, der
+Struktur von Regime trennt — sag Bescheid, dann rechne ich ihn.
 
 ### Was NICHT geändert werden sollte
 

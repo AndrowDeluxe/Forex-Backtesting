@@ -35,6 +35,16 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **`ctnl_reversal` verdient nur long -- Entscheidung E6.** short: 591 Trades,
+  Ø R -0,207, ΣR **-122,3** gegen long +258,9. Monte Carlo (`long + Regime`):
+  Median MaxDD **-15,6 % -> -4,84 %**, P(MaxDD>6 %) **99,9 % -> 23,3 %**,
+  Sharpe 0,25 -> 0,83. Walk-Forward bestaetigt in 5 von 8 Jahren.
+  **Grosser Vorbehalt:** Gold ist ueber die GANZE Stichprobe gestiegen -- eine
+  Baisse fehlt, und 2022 haben die Shorts nachweislich gearbeitet. Long-only
+  ist eine Trendwette, keine Struktur-Erkenntnis. **Meine Empfehlung: erst
+  mitlaufen lassen, dann Long-only ohne scharfen Regime-Filter.** Details:
+  `projects/ctnl-kostenvalidierung.md` Befund 11.
+
 - **🔴 EK: `ctnl_reversal` riskiert real das 46-fache seines Ziels --
   Entscheidung E5 noetig.** Nicht die Formel (die stimmt seit 09-10), sondern
   die Mindestlot-Anhebung: Ziel 0,55 EUR, kleinstes Lot riskiert 25,38 EUR.

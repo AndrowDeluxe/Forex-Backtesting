@@ -9,6 +9,41 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-23** [CTNL / Entry-Herkunft] **Der Edge von `ctnl_reversal` liegt
+  VOLLSTAENDIG auf der Long-Seite -- groesster Einzeleffekt der ganzen
+  Untersuchung.** Neues Skript `research_ctnl_entry_origin.py`, Ergebnis als
+  Befund 11 + Entscheidung E6 in `projects/ctnl-kostenvalidierung.md`,
+  Rohdaten `_data/ctnl_entry_origin.json`. Nichts geaendert.
+  **Zahlen:** long 662 Trades Ø R +0,391 / PF 1,46 / ΣR +258,9; short 591
+  Trades Ø R **-0,207** / PF 0,79 / ΣR **-122,3**. Die Short-Seite vernichtet
+  knapp die Haelfte des Long-Ertrags.
+  **Walk-Forward:** die Prozedur waehlt in 5 von 8 Jahren `long + Regime`,
+  nie die Baseline und nie `nur short`. OOS +171,8 vs. +143,4 ΣR,
+  Ø R +0,542 vs. +0,165, PF 1,68 vs. 1,19.
+  **Monte Carlo (0,15 %/Trade):** `long + Regime` senkt den Median-MaxDD von
+  **-15,63 % auf -4,84 %** und P(MaxDD>6 %) von **99,9 % auf 23,3 %**, bei
+  Median-Return +38,6 % statt +18,8 % und Sharpe 0,83 statt 0,25.
+  **Der Vorbehalt, der alles relativiert:** Gold ist ueber den gesamten
+  Stichprobenzeitraum gestiegen (2016 ~1.150 -> 2026 ~4.400). „Long
+  funktioniert, Short nicht" auf einem einseitig steigenden Markt ist nahe an
+  einer Tautologie; eine echte Gold-Baisse fehlt in der Stichprobe.
+  Gegenindiz aus der Walk-Forward-Tabelle selbst: **2022** (Zinserhoehungs-
+  phase) ist eines der Jahre, in denen die Richtungsbeschraenkung SCHLECHTER
+  ist als die Baseline (-19,2 ΣR) -- dort haben die Shorts gearbeitet.
+  **Long-only ist damit eine Wette auf den fortgesetzten Aufwaertstrend, keine
+  Struktur-Erkenntnis.** Empfehlung E6: erst mitlaufen lassen (d), dann
+  Long-only ohne scharfen Regime-Filter (c).
+  **Eigene Luecke, die das aufgedeckt hat:** der Signal-Sweep vom selben Tag
+  (Befund 9b) hat an den MTF-Kaskaden-Parametern gedreht, ohne zu pruefen, ob
+  die Kaskade auf beiden Richtungen ueberhaupt funktioniert. Parameter
+  optimieren, bevor man die Struktur anschaut, war die falsche Reihenfolge.
+  **Weitere Eimer (deskriptiv, NICHT walk-forward-geprueft):** Wochentag
+  Mi +0,644 / Do +0,426 gegen Mo/Di/Fr -0,13..-0,25; Stopdistanz Q4 (weit)
+  +0,422 gegen Q2/Q3 negativ; Session NY +0,253 am besten. Wochentagseffekte
+  sind der Klassiker unter den Data-Mining-Artefakten -- bewusst nicht
+  weiterverfolgt. `ctnl_continuation` ist in JEDEM Eimer negativ (Richtung,
+  Session, Wochentag, Stopdistanz) -- stuetzt E3 zusaetzlich.
+
 - **2026-09-23** [EK-Portfolio-Bridge / Risiko] **🔴 Auf EK kehrt die
   Mindestlot-Anhebung die Risiko-Hierarchie um -- `ctnl_reversal` riskiert
   real das 46-fache seines Ziels.** Nutzerhinweis ("zu viel Risiko im

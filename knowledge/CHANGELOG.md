@@ -9,6 +9,28 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-23** [EK-Portfolio-Bridge / CTNL] **E5-c umgesetzt:
+  `ctnl_reversal` haelt auf EK ab sofort hoechstens EINE gleichzeitige
+  Position** (Nutzerentscheid; die Mindestlot-Anhebung bleibt ausdruecklich
+  erhalten, gedeckelt wird die Anzahl).
+  Neu: `config.py::CTNL_REV_MAX_CONCURRENT = 1`, ausgewertet in
+  `legs/ctnl_edge/executor.py::check_and_execute_reversal()` per
+  `getattr(config, ..., signal_source.REV_MAX_CONCURRENT)`.
+  **Bewusst NICHT in `gold_smc_htf_ltf/live_signal.py`:** die dortige
+  `REV_MAX_CONCURRENT = 3` ist die STRATEGIE-Vorgabe und wird von
+  Funded-Portfolio-Bridge und FKInstantFunding mitbenutzt -- eine Aenderung
+  dort haette alle drei Bridges getroffen. Dies ist eine reine
+  KONTO-Beschraenkung wegen der Kontogroesse. Faellt die Konstante weg, gilt
+  automatisch wieder die Strategie-Vorgabe.
+  **Wirkung:** der Beitrag des Beins sinkt von 2,59 % auf ~0,86 % der Equity.
+  **Gegen die Live-Lage getestet:** Strategie-Vorgabe 3, Konto-Deckel 1,
+  3 Positionen real offen -> `{'status': 'skipped', 'reason':
+  'max_concurrent_reached', 'count': 3, 'limit': 1}`. Die drei offenen
+  Positionen (alle mit SL) laufen unveraendert weiter und werden NICHT
+  zwangsgeschlossen -- der Deckel wirkt nur auf neue Entries, gleiches Muster
+  wie Kill-Switch und Risiko-Deckel. Das Bein bleibt damit gesperrt, bis die
+  drei ausgelaufen sind; danach laeuft es mit einer Position weiter.
+
 - **2026-09-23** [OU-Modell / alle Bridges + Git-Sync] **Umbau auf Logik D +
   BB_K 2,25 umgesetzt, Git-Sync repariert** (Nutzerfreigabe, Plan
   `.claude/plans/quirky-painting-pancake.md`). **Nicht scharf geschaltet** --

@@ -1,0 +1,528 @@
+{
+  "beine": {
+    "ctnl_reversal": {
+      "regime_schwelle_abs": 0.08267716535433237,
+      "flaeche": {
+        "beide (Baseline)": {
+          "trades": 1253,
+          "avg_r": 0.10907772362311173,
+          "summe_r": 136.674387699759,
+          "trefferquote": 0.2761372705506784,
+          "profit_factor": 1.1200826719634092
+        },
+        "nur long": {
+          "trades": 662,
+          "avg_r": 0.39113196988774285,
+          "summe_r": 258.9293640656858,
+          "trefferquote": 0.31268882175226587,
+          "profit_factor": 1.4582913552203691
+        },
+        "nur short": {
+          "trades": 591,
+          "avg_r": -0.20686121212508762,
+          "summe_r": -122.25497636592678,
+          "trefferquote": 0.23519458544839256,
+          "profit_factor": 0.7867077440247995
+        },
+        "long + Regime": {
+          "trades": 356,
+          "avg_r": 0.6516083000466868,
+          "summe_r": 231.97255481662052,
+          "trefferquote": 0.35674157303370785,
+          "profit_factor": 1.8289513556212034
+        }
+      },
+      "walkforward": {
+        "je_jahr": [
+          {
+            "jahr": 2019,
+            "gewaehlt": "nur long",
+            "oos_trades": 89,
+            "oos_summe_r": 38.74603944880269,
+            "baseline_summe_r": 21.389028509782626,
+            "differenz": 17.357010939020064
+          },
+          {
+            "jahr": 2020,
+            "gewaehlt": "long + Regime",
+            "oos_trades": 33,
+            "oos_summe_r": 18.628518152984547,
+            "baseline_summe_r": -18.52645303291468,
+            "differenz": 37.15497118589923
+          },
+          {
+            "jahr": 2021,
+            "gewaehlt": "long + Regime",
+            "oos_trades": 46,
+            "oos_summe_r": 9.060167615452857,
+            "baseline_summe_r": -2.85001173662514,
+            "differenz": 11.910179352077996
+          },
+          {
+            "jahr": 2022,
+            "gewaehlt": "long + Regime",
+            "oos_trades": 29,
+            "oos_summe_r": 15.585999317313929,
+            "baseline_summe_r": 34.743155213970375,
+            "differenz": -19.157155896656448
+          },
+          {
+            "jahr": 2023,
+            "gewaehlt": "long + Regime",
+            "oos_trades": 22,
+            "oos_summe_r": -12.394045430620944,
+            "baseline_summe_r": -50.90731681575717,
+            "differenz": 38.51327138513623
+          },
+          {
+            "jahr": 2024,
+            "gewaehlt": "long + Regime",
+            "oos_trades": 27,
+            "oos_summe_r": 37.15312043885653,
+            "baseline_summe_r": 62.01183872701048,
+            "differenz": -24.858718288153945
+          },
+          {
+            "jahr": 2025,
+            "gewaehlt": "long + Regime",
+            "oos_trades": 35,
+            "oos_summe_r": 45.011141630506074,
+            "baseline_summe_r": 80.1770828925244,
+            "differenz": -35.16594126201832
+          },
+          {
+            "jahr": 2026,
+            "gewaehlt": "nur long",
+            "oos_trades": 36,
+            "oos_summe_r": 20.016717518393353,
+            "baseline_summe_r": 17.386331839740254,
+            "differenz": 2.6303856786530986
+          }
+        ],
+        "oos": {
+          "trades": 317,
+          "avg_r": 0.5419799958728362,
+          "summe_r": 171.80765869168906,
+          "trefferquote": 0.3659305993690852,
+          "profit_factor": 1.6761872400988311
+        },
+        "baseline": {
+          "trades": 871,
+          "avg_r": 0.1646655058527338,
+          "summe_r": 143.42365559773114,
+          "trefferquote": 0.29161882893226176,
+          "profit_factor": 1.1859070345966176
+        },
+        "jahre_besser": 5,
+        "jahre_gesamt": 8,
+        "gewaehlte_parameter": [
+          "nur long",
+          "long + Regime",
+          "long + Regime",
+          "long + Regime",
+          "long + Regime",
+          "long + Regime",
+          "long + Regime",
+          "nur long"
+        ]
+      },
+      "monte_carlo": {
+        "beide (Baseline)": {
+          "median_maxdd_pct": -15.629599847397552,
+          "p5_maxdd_pct": -28.067770243272395,
+          "P_maxdd_ueber_6pct": 0.9985,
+          "median_return_pct": 18.79335632658018,
+          "median_sharpe": 0.25106952124411397
+        },
+        "nur long": {
+          "median_maxdd_pct": -8.120050329902407,
+          "p5_maxdd_pct": -14.263239184745538,
+          "P_maxdd_ueber_6pct": 0.841,
+          "median_return_pct": 43.56563012594449,
+          "median_sharpe": 0.7070371438565485
+        },
+        "nur short": {
+          "median_maxdd_pct": -22.858831598740203,
+          "p5_maxdd_pct": -37.43199529888835,
+          "P_maxdd_ueber_6pct": 0.9985,
+          "median_return_pct": -17.72247738571332,
+          "median_sharpe": -0.4371547705761723
+        },
+        "long + Regime": {
+          "median_maxdd_pct": -4.839191112309005,
+          "p5_maxdd_pct": -8.46795423423878,
+          "P_maxdd_ueber_6pct": 0.233,
+          "median_return_pct": 38.64123989149407,
+          "median_sharpe": 0.8298031356989595
+        }
+      },
+      "struktur_vs_regime": [
+        {
+          "jahr": 2017,
+          "gold_pct": 13.240755551537342,
+          "short_n": 84,
+          "short_avg_r": -0.6508717263406053,
+          "short_sum_r": -54.67322501261084,
+          "long_avg_r": 0.42102527939446066,
+          "long_sum_r": 23.156390366695337
+        },
+        {
+          "jahr": 2018,
+          "gold_pct": -1.5689125471548993,
+          "short_n": 70,
+          "short_avg_r": -0.27268116370692896,
+          "short_sum_r": -19.087681459485026,
+          "long_avg_r": -0.23368307582393064,
+          "long_sum_r": -11.917836867020462
+        },
+        {
+          "jahr": 2019,
+          "gold_pct": 18.307030576710858,
+          "short_n": 33,
+          "short_avg_r": -0.5259700284551533,
+          "short_sum_r": -17.357010939020057,
+          "long_avg_r": 0.4353487578517156,
+          "long_sum_r": 38.74603944880269
+        },
+        {
+          "jahr": 2020,
+          "gold_pct": 25.106878104574104,
+          "short_n": 60,
+          "short_avg_r": -0.72265500912727,
+          "short_sum_r": -43.3593005476362,
+          "long_avg_r": 0.3820438079187929,
+          "long_sum_r": 24.83284751472154
+        },
+        {
+          "jahr": 2021,
+          "gold_pct": -3.6204166480043654,
+          "short_n": 43,
+          "short_avg_r": 0.42268484494469255,
+          "short_sum_r": 18.17544833262178,
+          "long_avg_r": -0.25030309606246337,
+          "long_sum_r": -21.025460069246922
+        },
+        {
+          "jahr": 2022,
+          "gold_pct": -0.3058951657082476,
+          "short_n": 36,
+          "short_avg_r": 0.19752998996623072,
+          "short_sum_r": 7.1110796387843065,
+          "long_avg_r": 0.4934299209854654,
+          "long_sum_r": 27.63207557518606
+        },
+        {
+          "jahr": 2023,
+          "gold_pct": 13.11926811786146,
+          "short_n": 63,
+          "short_avg_r": -0.4397737526048113,
+          "short_sum_r": -27.70574641410311,
+          "long_avg_r": -0.446184046185655,
+          "long_sum_r": -23.20157040165406
+        },
+        {
+          "jahr": 2024,
+          "gold_pct": 27.225009308242456,
+          "short_n": 73,
+          "short_avg_r": 0.0012113770698041813,
+          "short_sum_r": 0.08843052609570523,
+          "long_avg_r": 1.1258801491075414,
+          "long_sum_r": 61.92340820091478
+        },
+        {
+          "jahr": 2025,
+          "gold_pct": 64.56781067388648,
+          "short_n": 37,
+          "short_avg_r": -0.3101296468803376,
+          "short_sum_r": -11.474796934572492,
+          "long_avg_r": 1.5802048246051186,
+          "long_sum_r": 91.65187982709688
+        },
+        {
+          "jahr": 2026,
+          "gold_pct": 0.9837730472674666,
+          "short_n": 31,
+          "short_avg_r": -0.08485115092429364,
+          "short_sum_r": -2.630385678653103,
+          "long_avg_r": 0.5560199310664821,
+          "long_sum_r": 20.016717518393353
+        }
+      ],
+      "auswertung": {
+        "n_jahre_fallend": 3,
+        "n_jahre_steigend": 7,
+        "short_avg_r_fallende_jahre": 0.11584455706799811,
+        "short_avg_r_steigende_jahre": -0.3904342767518095,
+        "korrelation_gold_vs_short": -0.378776069066221
+      }
+    },
+    "ctnl_continuation": {
+      "regime_schwelle_abs": 0.045329869348198874,
+      "flaeche": {
+        "beide (Baseline)": {
+          "trades": 436,
+          "avg_r": -0.06012120480129937,
+          "summe_r": -26.212845293366527,
+          "trefferquote": 0.2981651376146789,
+          "profit_factor": 0.9402966061283249
+        },
+        "nur long": {
+          "trades": 245,
+          "avg_r": -0.07600899874129667,
+          "summe_r": -18.622204691617686,
+          "trefferquote": 0.2979591836734694,
+          "profit_factor": 0.9215838046134098
+        },
+        "nur short": {
+          "trades": 191,
+          "avg_r": -0.03974157383114581,
+          "summe_r": -7.590640601748849,
+          "trefferquote": 0.29842931937172773,
+          "profit_factor": 0.9623428036305756
+        },
+        "long + Regime": {
+          "trades": 115,
+          "avg_r": -0.1299425513670888,
+          "summe_r": -14.943393407215211,
+          "trefferquote": 0.2956521739130435,
+          "profit_factor": 0.8616440225640422
+        }
+      },
+      "walkforward": {
+        "je_jahr": [
+          {
+            "jahr": 2019,
+            "gewaehlt": "beide (Baseline)",
+            "oos_trades": 45,
+            "oos_summe_r": -14.997958267555688,
+            "baseline_summe_r": -14.997958267555688,
+            "differenz": 0.0
+          },
+          {
+            "jahr": 2020,
+            "gewaehlt": "beide (Baseline)",
+            "oos_trades": 29,
+            "oos_summe_r": -8.210792719416887,
+            "baseline_summe_r": -8.210792719416887,
+            "differenz": 0.0
+          },
+          {
+            "jahr": 2021,
+            "gewaehlt": "beide (Baseline)",
+            "oos_trades": 39,
+            "oos_summe_r": -1.6442809778583387,
+            "baseline_summe_r": -1.6442809778583387,
+            "differenz": 0.0
+          },
+          {
+            "jahr": 2022,
+            "gewaehlt": "nur long",
+            "oos_trades": 24,
+            "oos_summe_r": 9.177888493917585,
+            "baseline_summe_r": -1.9984835819808033,
+            "differenz": 11.176372075898389
+          },
+          {
+            "jahr": 2023,
+            "gewaehlt": "nur long",
+            "oos_trades": 25,
+            "oos_summe_r": -9.245900118369981,
+            "baseline_summe_r": -4.962949388630169,
+            "differenz": -4.282950729739812
+          },
+          {
+            "jahr": 2024,
+            "gewaehlt": "nur long",
+            "oos_trades": 31,
+            "oos_summe_r": -5.30563791533962,
+            "baseline_summe_r": -3.768579856310127,
+            "differenz": -1.5370580590294929
+          },
+          {
+            "jahr": 2025,
+            "gewaehlt": "nur long",
+            "oos_trades": 15,
+            "oos_summe_r": 1.1004622818317809,
+            "baseline_summe_r": 5.499223756248957,
+            "differenz": -4.398761474417176
+          },
+          {
+            "jahr": 2026,
+            "gewaehlt": "nur long",
+            "oos_trades": 13,
+            "oos_summe_r": 4.448427524297085,
+            "baseline_summe_r": 29.554619651713146,
+            "differenz": -25.10619212741606
+          }
+        ],
+        "oos": {
+          "trades": 221,
+          "avg_r": -0.11166421583028988,
+          "summe_r": -24.67779169849406,
+          "trefferquote": 0.2850678733031674,
+          "profit_factor": 0.8893636451336323
+        },
+        "baseline": {
+          "trades": 301,
+          "avg_r": -0.0017581441321924175,
+          "summe_r": -0.5292013837899177,
+          "trefferquote": 0.3023255813953488,
+          "profit_factor": 0.998238695724746
+        },
+        "jahre_besser": 1,
+        "jahre_gesamt": 8,
+        "gewaehlte_parameter": [
+          "beide (Baseline)",
+          "beide (Baseline)",
+          "beide (Baseline)",
+          "nur long",
+          "nur long",
+          "nur long",
+          "nur long",
+          "nur long"
+        ]
+      },
+      "monte_carlo": {
+        "beide (Baseline)": {
+          "median_maxdd_pct": -31.67534835240862,
+          "p5_maxdd_pct": -50.321187207722055,
+          "P_maxdd_ueber_6pct": 1.0,
+          "median_return_pct": -16.362805291304756,
+          "median_sharpe": -0.2004876439447522
+        },
+        "nur long": {
+          "median_maxdd_pct": -21.574901302357404,
+          "p5_maxdd_pct": -36.76109313324065,
+          "P_maxdd_ueber_6pct": 1.0,
+          "median_return_pct": -10.602037648721607,
+          "median_sharpe": -0.17732209337363314
+        },
+        "nur short": {
+          "median_maxdd_pct": -19.460363358387823,
+          "p5_maxdd_pct": -34.11139635727617,
+          "P_maxdd_ueber_6pct": 0.9995,
+          "median_return_pct": -5.437208775174451,
+          "median_sharpe": -0.08693449294277611
+        },
+        "long + Regime": {
+          "median_maxdd_pct": -15.43247523776553,
+          "p5_maxdd_pct": -27.916438159088063,
+          "P_maxdd_ueber_6pct": 0.9925,
+          "median_return_pct": -7.860956152141101,
+          "median_sharpe": -0.19825899224721058
+        }
+      },
+      "struktur_vs_regime": [
+        {
+          "jahr": 2017,
+          "gold_pct": 13.240755551537342,
+          "short_n": 19,
+          "short_avg_r": 0.05579887044898417,
+          "short_sum_r": 1.0601785385306992,
+          "long_avg_r": 0.12985138540181457,
+          "long_sum_r": 4.155244332858066
+        },
+        {
+          "jahr": 2018,
+          "gold_pct": -1.5689125471548993,
+          "short_n": 27,
+          "short_avg_r": -0.7113162649655688,
+          "short_sum_r": -19.205539154070358,
+          "long_avg_r": -0.3239578906992521,
+          "long_sum_r": -7.127073595383547
+        },
+        {
+          "jahr": 2019,
+          "gold_pct": 18.307030576710858,
+          "short_n": 21,
+          "short_avg_r": -0.22718866405812713,
+          "short_sum_r": -4.7709619452206695,
+          "long_avg_r": -0.4261248467639593,
+          "long_sum_r": -10.226996322335022
+        },
+        {
+          "jahr": 2020,
+          "gold_pct": 25.106878104574104,
+          "short_n": 9,
+          "short_avg_r": 0.03569199196675944,
+          "short_sum_r": 0.32122792770083497,
+          "long_avg_r": -0.42660103235588603,
+          "long_sum_r": -8.53202064711772
+        },
+        {
+          "jahr": 2021,
+          "gold_pct": -3.6204166480043654,
+          "short_n": 17,
+          "short_avg_r": -0.2699195113849812,
+          "short_sum_r": -4.588631693544681,
+          "long_avg_r": 0.1338341234402881,
+          "long_sum_r": 2.944350715686338
+        },
+        {
+          "jahr": 2022,
+          "gold_pct": -0.3058951657082476,
+          "short_n": 19,
+          "short_avg_r": -0.5882301092578099,
+          "short_sum_r": -11.176372075898389,
+          "long_avg_r": 0.38241202057989937,
+          "long_sum_r": 9.177888493917585
+        },
+        {
+          "jahr": 2023,
+          "gold_pct": 13.11926811786146,
+          "short_n": 20,
+          "short_avg_r": 0.21414753648699075,
+          "short_sum_r": 4.282950729739815,
+          "long_avg_r": -0.3698360047347993,
+          "long_sum_r": -9.245900118369981
+        },
+        {
+          "jahr": 2024,
+          "gold_pct": 27.225009308242456,
+          "short_n": 21,
+          "short_avg_r": 0.07319324090616618,
+          "short_sum_r": 1.5370580590294898,
+          "long_avg_r": -0.1711496101722458,
+          "long_sum_r": -5.30563791533962
+        },
+        {
+          "jahr": 2025,
+          "gold_pct": 64.56781067388648,
+          "short_n": 13,
+          "short_avg_r": 0.33836626726285984,
+          "short_sum_r": 4.398761474417178,
+          "long_avg_r": 0.07336415212211872,
+          "long_sum_r": 1.1004622818317809
+        },
+        {
+          "jahr": 2026,
+          "gold_pct": 0.9837730472674666,
+          "short_n": 7,
+          "short_avg_r": 3.5865988753451505,
+          "short_sum_r": 25.106192127416055,
+          "long_avg_r": 0.34218673263823735,
+          "long_sum_r": 4.448427524297085
+        }
+      ],
+      "auswertung": {
+        "n_jahre_fallend": 3,
+        "n_jahre_steigend": 7,
+        "short_avg_r_fallende_jahre": -0.5231552952027866,
+        "short_avg_r_steigende_jahre": 0.582372588336969,
+        "korrelation_gold_vs_short": -0.04205110100693274
+      }
+    }
+  },
+  "gold_jahresrendite_pct": {
+    "2017": 13.240755551537342,
+    "2018": -1.5689125471548993,
+    "2019": 18.307030576710858,
+    "2020": 25.106878104574104,
+    "2021": -3.6204166480043654,
+    "2022": -0.3058951657082476,
+    "2023": 13.11926811786146,
+    "2024": 27.225009308242456,
+    "2025": 64.56781067388648,
+    "2026": 0.9837730472674666
+  }
+}

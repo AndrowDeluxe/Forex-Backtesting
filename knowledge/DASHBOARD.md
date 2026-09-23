@@ -78,16 +78,16 @@ Bedarf vor generischem Aufräumen.
   mitlaufen lassen, dann Long-only ohne scharfen Regime-Filter.** Details:
   `projects/ctnl-kostenvalidierung.md` Befund 11.
 
-- **🔴 EK: `ctnl_reversal` riskiert real das 46-fache seines Ziels --
-  Entscheidung E5 noetig.** Nicht die Formel (die stimmt seit 09-10), sondern
-  die Mindestlot-Anhebung: Ziel 0,55 EUR, kleinstes Lot riskiert 25,38 EUR.
-  Drei offene Positionen = **2,59 % der Equity** und **4,4x Nominal-Hebel**
-  aus dem konservativsten Bein. Kein Bug, aber die Studien-Allokation gilt auf
-  diesem Konto faktisch nicht. **Offen fuer dich:** (a) nichts, (b) Anhebung
-  fuer CTNL abschalten (Bein verstummt auf EK), (c) `REV_MAX_CONCURRENT`
-  3 -> 1, (d) CTNL-Risiko anheben. **Meine Empfehlung: b oder c, vor E1-E4.**
-  Ich habe nichts geaendert. Details: `projects/ctnl-kostenvalidierung.md`
-  Befund 10.
+- **EK-Mindestlot: E5-c umgesetzt, aber der Rest der Frage steht noch.**
+  `ctnl_reversal` haelt auf EK jetzt hoechstens EINE Position
+  (`config.CTNL_REV_MAX_CONCURRENT = 1`) -- Beitrag des Beins von 2,59 % auf
+  ~0,86 % der Equity. Die Mindestlot-Anhebung bleibt wie von dir entschieden.
+  **Weiterhin offen fuer dich:** (a) `ctnl_continuation` riskiert ebenfalls
+  das 14-fache seines Ziels und ist NICHT gedeckelt (es ist per Konstruktion
+  single-position, der Faktor bleibt aber); (b) ob dasselbe Muster
+  `cls_practical` (Ziel 19,40 EUR), `ou_modell` (10,77) und die drei
+  ORB-Beine (10,58) trifft -- das habe ich NICHT nachgerechnet, die Ziele
+  liegen aber niedrig genug, dass eine Anhebung plausibel ist.
 
 - **Paper-Screening 2026-09-22: ist das Zumachen der einen Tuer okay?**
   Drei Papers gesichtet (Details in

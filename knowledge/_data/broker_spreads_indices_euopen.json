@@ -1,0 +1,2673 @@
+{
+  "measured_at": "2026-09-23T22:10:44",
+  "window_berlin": "5.5:00-9.5",
+  "lookback_days": 30,
+  "results": [
+    {
+      "portfolio": "Funded",
+      "account": "Funded Portfolio - TTP (Konto 2, Demo)",
+      "broker": "TTPMarkets-Server",
+      "symbol": "US500",
+      "spread": {
+        "unit": "Points",
+        "days_with_data": 23,
+        "first_day": "2026-08-24",
+        "last_day": "2026-09-23",
+        "server_utc_offset_h": 3.0,
+        "pip_size": 0.01,
+        "per_day": [
+          {
+            "day": "2026-09-23",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-22",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-21",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-18",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-17",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-16",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-15",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-14",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-11",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-10",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-09",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-08",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-07",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-04",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-03",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-02",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-01",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-31",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-28",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-27",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-26",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-25",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-24",
+            "m1_bars": 241,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          }
+        ],
+        "m1_samples": 5543,
+        "m1_median_pips": 64.0,
+        "m1_p75_pips": 64.0,
+        "m1_p90_pips": 64.0,
+        "m1_max_pips": 64.0,
+        "tick_samples": 311189,
+        "tick_median_pips": 65.99999999998545,
+        "tick_p75_pips": 67.00000000000728,
+        "tick_p90_pips": 67.99999999993815,
+        "tick_max_pips": 68.0000000000291,
+        "m1_median_bps": 0.8305658619262121,
+        "m1_p75_bps": 0.8305658619262121,
+        "m1_p90_bps": 0.8305658619262121,
+        "tick_median_bps": 0.8565210451112172,
+        "tick_p75_bps": 0.8694986367040977,
+        "tick_p90_bps": 0.8824762282957976
+      },
+      "slippage": {
+        "deals": 6,
+        "detail": [
+          {
+            "position": 18417751,
+            "side": "entry",
+            "time": "2026-09-14T18:58:13",
+            "reference": 7611.95,
+            "fill": 7612.14,
+            "slippage_pips": 19.00000000005093,
+            "volume": 7.64,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_sp500"
+          },
+          {
+            "position": 18417751,
+            "side": "exit",
+            "time": "2026-09-14T19:21:47",
+            "reference": 7604.77,
+            "fill": 7604.5,
+            "slippage_pips": 27.000000000043656,
+            "volume": 7.64,
+            "commission": 0.0,
+            "profit": -58.37,
+            "comment": "[sl 7604.77]"
+          },
+          {
+            "position": 18484464,
+            "side": "entry",
+            "time": "2026-09-18T00:53:50",
+            "reference": 7644.96,
+            "fill": 7645.09,
+            "slippage_pips": 13.000000000010914,
+            "volume": 5.46,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_sp500 R"
+          },
+          {
+            "position": 18484463,
+            "side": "entry",
+            "time": "2026-09-18T00:53:50",
+            "reference": 7644.96,
+            "fill": 7645.07,
+            "slippage_pips": 10.999999999967258,
+            "volume": 5.46,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_sp500 P"
+          },
+          {
+            "position": 18484463,
+            "side": "exit",
+            "time": "2026-09-18T00:54:40",
+            "reference": 7639.96,
+            "fill": 7639.58,
+            "slippage_pips": 38.000000000010914,
+            "volume": 5.46,
+            "commission": 0.0,
+            "profit": -29.98,
+            "comment": "[sl 7639.96]"
+          },
+          {
+            "position": 18484464,
+            "side": "exit",
+            "time": "2026-09-18T00:54:40",
+            "reference": 7639.96,
+            "fill": 7639.56,
+            "slippage_pips": 39.99999999996362,
+            "volume": 5.46,
+            "commission": 0.0,
+            "profit": -30.19,
+            "comment": "[sl 7639.96]"
+          }
+        ],
+        "entry_n": 3,
+        "entry_median_pips": 13.000000000010914,
+        "entry_mean_pips": 14.333333333343035,
+        "entry_max_pips": 19.00000000005093,
+        "exit_n": 3,
+        "exit_median_pips": 38.000000000010914,
+        "exit_mean_pips": 35.00000000000606,
+        "exit_max_pips": 39.99999999996362,
+        "roundtrip_median_pips": 51.00000000002183,
+        "commission_positions": 3,
+        "commission_usd_per_lot_roundtrip": 0.0,
+        "commission_pips_roundtrip": 0.0
+      }
+    },
+    {
+      "portfolio": "Funded",
+      "account": "Funded Portfolio - TTP (Konto 2, Demo)",
+      "broker": "TTPMarkets-Server",
+      "symbol": "US30",
+      "spread": {
+        "unit": "Points",
+        "days_with_data": 23,
+        "first_day": "2026-08-24",
+        "last_day": "2026-09-23",
+        "server_utc_offset_h": 3.0,
+        "pip_size": 0.01,
+        "per_day": [
+          {
+            "day": "2026-09-23",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 251.0
+          },
+          {
+            "day": "2026-09-22",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 251.0
+          },
+          {
+            "day": "2026-09-21",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 251.0
+          },
+          {
+            "day": "2026-09-18",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 251.0
+          },
+          {
+            "day": "2026-09-17",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-16",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-15",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-14",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-11",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-10",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-09",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-08",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 251.0
+          },
+          {
+            "day": "2026-09-07",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 251.0
+          },
+          {
+            "day": "2026-09-04",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 251.0
+          },
+          {
+            "day": "2026-09-03",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 251.0
+          },
+          {
+            "day": "2026-09-02",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-01",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 251.0
+          },
+          {
+            "day": "2026-08-31",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-28",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 251.0
+          },
+          {
+            "day": "2026-08-27",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 251.0
+          },
+          {
+            "day": "2026-08-26",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-25",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-24",
+            "m1_bars": 241,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          }
+        ],
+        "m1_samples": 5543,
+        "m1_median_pips": 250.0,
+        "m1_p75_pips": 250.0,
+        "m1_p90_pips": 251.0,
+        "m1_max_pips": 253.0,
+        "tick_samples": 264723,
+        "tick_median_pips": 255.00000000029104,
+        "tick_p75_pips": 256.9999999999709,
+        "tick_p90_pips": 258.0000000001746,
+        "tick_max_pips": 297.0000000001164,
+        "m1_median_bps": 0.4856391642732749,
+        "m1_p75_bps": 0.4856391642732749,
+        "m1_p90_bps": 0.4875817209303681,
+        "tick_median_bps": 0.4953519475593058,
+        "tick_p75_bps": 0.4992370608728701,
+        "tick_p90_bps": 0.501179617530359
+      },
+      "slippage": {
+        "deals": 7,
+        "detail": [
+          {
+            "position": 18235530,
+            "side": "entry",
+            "time": "2026-09-02T19:21:57",
+            "reference": 53149.16,
+            "fill": 53150.3,
+            "slippage_pips": 113.99999999994179,
+            "volume": 0.42,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_us30"
+          },
+          {
+            "position": 18527511,
+            "side": "entry",
+            "time": "2026-09-21T23:28:36",
+            "reference": 52083.53,
+            "fill": 52083.92,
+            "slippage_pips": 38.99999999994179,
+            "volume": 0.77,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_us30 P"
+          },
+          {
+            "position": 18527512,
+            "side": "entry",
+            "time": "2026-09-21T23:28:36",
+            "reference": 52083.53,
+            "fill": 52083.92,
+            "slippage_pips": 38.99999999994179,
+            "volume": 0.77,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_us30 R"
+          },
+          {
+            "position": 18579838,
+            "side": "entry",
+            "time": "2026-09-23T19:13:54",
+            "reference": 51826.86,
+            "fill": 51828.38,
+            "slippage_pips": 151.99999999967986,
+            "volume": 0.82,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_us30 R"
+          },
+          {
+            "position": 18579837,
+            "side": "entry",
+            "time": "2026-09-23T19:13:54",
+            "reference": 51826.86,
+            "fill": 51828.37,
+            "slippage_pips": 151.00000000020373,
+            "volume": 0.82,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_us30 P"
+          },
+          {
+            "position": 18579838,
+            "side": "exit",
+            "time": "2026-09-23T19:18:18",
+            "reference": 51792.88,
+            "fill": 51790.13,
+            "slippage_pips": 275.0,
+            "volume": 0.82,
+            "commission": 0.0,
+            "profit": -31.37,
+            "comment": "[sl 51792.88]"
+          },
+          {
+            "position": 18579837,
+            "side": "exit",
+            "time": "2026-09-23T19:18:18",
+            "reference": 51792.88,
+            "fill": 51790.12,
+            "slippage_pips": 275.99999999947613,
+            "volume": 0.82,
+            "commission": 0.0,
+            "profit": -31.37,
+            "comment": "[sl 51792.88]"
+          }
+        ],
+        "entry_n": 5,
+        "entry_median_pips": 113.99999999994179,
+        "entry_mean_pips": 98.99999999994179,
+        "entry_max_pips": 151.99999999967986,
+        "exit_n": 2,
+        "exit_median_pips": 275.49999999973807,
+        "exit_mean_pips": 275.49999999973807,
+        "exit_max_pips": 275.99999999947613,
+        "roundtrip_median_pips": 389.49999999967986,
+        "commission_positions": 5,
+        "commission_usd_per_lot_roundtrip": 0.0,
+        "commission_pips_roundtrip": 0.0
+      }
+    },
+    {
+      "portfolio": "Funded",
+      "account": "Funded Portfolio - TTP (Konto 2, Demo)",
+      "broker": "TTPMarkets-Server",
+      "symbol": "USTEC",
+      "spread": {
+        "unit": "Points",
+        "days_with_data": 23,
+        "first_day": "2026-08-24",
+        "last_day": "2026-09-23",
+        "server_utc_offset_h": 3.0,
+        "pip_size": 0.01,
+        "per_day": [
+          {
+            "day": "2026-09-23",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-22",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-21",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-18",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-17",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-16",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-15",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-14",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-11",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-10",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-09",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-08",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-07",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-04",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-03",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-02",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-01",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-31",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-28",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-27",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-26",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-25",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-24",
+            "m1_bars": 241,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          }
+        ],
+        "m1_samples": 5543,
+        "m1_median_pips": 160.0,
+        "m1_p75_pips": 160.0,
+        "m1_p90_pips": 160.0,
+        "m1_max_pips": 161.0,
+        "tick_samples": 383983,
+        "tick_median_pips": 165.00000000014552,
+        "tick_p75_pips": 166.99999999982538,
+        "tick_p90_pips": 168.0000000000291,
+        "tick_max_pips": 170.00000000007276,
+        "m1_median_bps": 0.5251619878562855,
+        "m1_p75_bps": 0.5251619878562855,
+        "m1_p90_bps": 0.5251619878562855,
+        "tick_median_bps": 0.541573299977272,
+        "tick_p75_bps": 0.5481378248244247,
+        "tick_p90_bps": 0.5514200872491952
+      },
+      "slippage": {
+        "deals": 13,
+        "detail": [
+          {
+            "position": 18417750,
+            "side": "entry",
+            "time": "2026-09-14T18:58:13",
+            "reference": 28970.81,
+            "fill": 28971.63,
+            "slippage_pips": 81.9999999999709,
+            "volume": 0.93,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_nasdaq"
+          },
+          {
+            "position": 18484468,
+            "side": "entry",
+            "time": "2026-09-17T19:27:55",
+            "reference": 29427.4,
+            "fill": 29427.6,
+            "slippage_pips": 19.99999999970896,
+            "volume": 1.04,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_nasdaq R"
+          },
+          {
+            "position": 18484467,
+            "side": "entry",
+            "time": "2026-09-17T19:27:55",
+            "reference": 29427.4,
+            "fill": 29427.62,
+            "slippage_pips": 21.999999999752617,
+            "volume": 1.03,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_nasdaq P"
+          },
+          {
+            "position": 18484467,
+            "side": "exit",
+            "time": "2026-09-17T19:45:25",
+            "reference": 29401.1,
+            "fill": 29400.41,
+            "slippage_pips": 68.99999999986903,
+            "volume": 1.03,
+            "commission": 0.0,
+            "profit": -28.03,
+            "comment": "[sl 29401.10]"
+          },
+          {
+            "position": 18484468,
+            "side": "exit",
+            "time": "2026-09-17T19:45:25",
+            "reference": 29401.1,
+            "fill": 29400.39,
+            "slippage_pips": 70.99999999991269,
+            "volume": 1.04,
+            "commission": 0.0,
+            "profit": -28.3,
+            "comment": "[sl 29401.10]"
+          },
+          {
+            "position": 18503911,
+            "side": "entry",
+            "time": "2026-09-18T18:48:59",
+            "reference": 29495.46,
+            "fill": 29494.27,
+            "slippage_pips": 118.99999999986903,
+            "volume": 1.37,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_nasdaq R"
+          },
+          {
+            "position": 18503910,
+            "side": "entry",
+            "time": "2026-09-18T18:48:59",
+            "reference": 29495.46,
+            "fill": 29494.31,
+            "slippage_pips": 114.99999999978172,
+            "volume": 1.3599999999999999,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_nasdaq P"
+          },
+          {
+            "position": 18503910,
+            "side": "exit",
+            "time": "2026-09-18T18:59:22",
+            "reference": 29467.19,
+            "fill": 29467.73,
+            "slippage_pips": 54.00000000008731,
+            "volume": 1.3599999999999999,
+            "commission": 0.0,
+            "profit": 36.15,
+            "comment": "[tp 29467.19]"
+          },
+          {
+            "position": 18503911,
+            "side": "exit",
+            "time": "2026-09-18T23:45:16",
+            "reference": 29494.27,
+            "fill": 29495.25,
+            "slippage_pips": 97.99999999995634,
+            "volume": 1.37,
+            "commission": 0.0,
+            "profit": -1.34,
+            "comment": "[sl 29494.27]"
+          },
+          {
+            "position": 18553324,
+            "side": "entry",
+            "time": "2026-09-22T18:50:37",
+            "reference": 30630.59,
+            "fill": 30631.72,
+            "slippage_pips": 113.00000000010186,
+            "volume": 1.08,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_nasdaq R"
+          },
+          {
+            "position": 18553323,
+            "side": "entry",
+            "time": "2026-09-22T18:50:38",
+            "reference": 30630.59,
+            "fill": 30631.73,
+            "slippage_pips": 113.99999999994179,
+            "volume": 1.08,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_nasdaq P"
+          },
+          {
+            "position": 18553324,
+            "side": "exit",
+            "time": "2026-09-22T18:56:52",
+            "reference": 30603.45,
+            "fill": 30602.78,
+            "slippage_pips": 67.00000000018917,
+            "volume": 1.08,
+            "commission": 0.0,
+            "profit": -31.26,
+            "comment": "[sl 30603.45]"
+          },
+          {
+            "position": 18553323,
+            "side": "exit",
+            "time": "2026-09-22T18:56:52",
+            "reference": 30603.45,
+            "fill": 30602.81,
+            "slippage_pips": 63.99999999994179,
+            "volume": 1.08,
+            "commission": 0.0,
+            "profit": -31.23,
+            "comment": "[sl 30603.45]"
+          }
+        ],
+        "entry_n": 7,
+        "entry_median_pips": 113.00000000010186,
+        "entry_mean_pips": 83.57142857130384,
+        "entry_max_pips": 118.99999999986903,
+        "exit_n": 6,
+        "exit_median_pips": 68.0000000000291,
+        "exit_mean_pips": 70.49999999999272,
+        "exit_max_pips": 97.99999999995634,
+        "roundtrip_median_pips": 181.00000000013097,
+        "commission_positions": 7,
+        "commission_usd_per_lot_roundtrip": 0.0,
+        "commission_pips_roundtrip": 0.0
+      }
+    },
+    {
+      "portfolio": "Funded",
+      "account": "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835)",
+      "broker": "BeyondIQCapital-Server",
+      "symbol": "SPX500.gbe",
+      "spread": {
+        "unit": "Points",
+        "days_with_data": 23,
+        "first_day": "2026-08-24",
+        "last_day": "2026-09-23",
+        "server_utc_offset_h": 3.0,
+        "pip_size": 0.01,
+        "per_day": [
+          {
+            "day": "2026-09-23",
+            "m1_bars": 240,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-09-22",
+            "m1_bars": 240,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-09-21",
+            "m1_bars": 239,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-09-18",
+            "m1_bars": 240,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-09-17",
+            "m1_bars": 241,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-09-16",
+            "m1_bars": 241,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-09-15",
+            "m1_bars": 240,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-09-14",
+            "m1_bars": 241,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-09-11",
+            "m1_bars": 241,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-09-10",
+            "m1_bars": 241,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-09-09",
+            "m1_bars": 240,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-09-08",
+            "m1_bars": 241,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-09-07",
+            "m1_bars": 241,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-09-04",
+            "m1_bars": 231,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-09-03",
+            "m1_bars": 241,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-09-02",
+            "m1_bars": 241,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-09-01",
+            "m1_bars": 240,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-08-31",
+            "m1_bars": 241,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-08-28",
+            "m1_bars": 240,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-08-27",
+            "m1_bars": 241,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-08-26",
+            "m1_bars": 241,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-08-25",
+            "m1_bars": 241,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          },
+          {
+            "day": "2026-08-24",
+            "m1_bars": 241,
+            "median_pips": 50.0,
+            "p90_pips": 50.0
+          }
+        ],
+        "m1_samples": 5524,
+        "m1_median_pips": 50.0,
+        "m1_p75_pips": 50.0,
+        "m1_p90_pips": 50.0,
+        "m1_max_pips": 50.0,
+        "tick_samples": 132771,
+        "tick_median_pips": 50.0,
+        "tick_p75_pips": 50.0,
+        "tick_p90_pips": 50.0,
+        "tick_max_pips": 90.00000000005457,
+        "m1_median_bps": 0.6488282162414679,
+        "m1_p75_bps": 0.6488282162414679,
+        "m1_p90_bps": 0.6488282162414679,
+        "tick_median_bps": 0.6488282162414679,
+        "tick_p75_bps": 0.6488282162414679,
+        "tick_p90_bps": 0.6488282162414679
+      },
+      "slippage": {
+        "deals": 0,
+        "note": "keine SPX500.gbe-Deals mit zuordenbarer Order"
+      }
+    },
+    {
+      "portfolio": "Funded",
+      "account": "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835)",
+      "broker": "BeyondIQCapital-Server",
+      "symbol": "US30.gbe",
+      "spread": {
+        "unit": "Points",
+        "days_with_data": 23,
+        "first_day": "2026-08-24",
+        "last_day": "2026-09-23",
+        "server_utc_offset_h": 3.0,
+        "pip_size": 0.01,
+        "per_day": [
+          {
+            "day": "2026-09-23",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-09-22",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-09-21",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-09-18",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-09-17",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-09-16",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-09-15",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-09-14",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-09-11",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-09-10",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-09-09",
+            "m1_bars": 240,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-09-08",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-09-07",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-09-04",
+            "m1_bars": 240,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-09-03",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-09-02",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-09-01",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-08-31",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-08-28",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-08-27",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-08-26",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-08-25",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          },
+          {
+            "day": "2026-08-24",
+            "m1_bars": 241,
+            "median_pips": 380.0,
+            "p90_pips": 380.0
+          }
+        ],
+        "m1_samples": 5541,
+        "m1_median_pips": 380.0,
+        "m1_p75_pips": 380.0,
+        "m1_p90_pips": 380.0,
+        "m1_max_pips": 380.0,
+        "tick_samples": 165305,
+        "tick_median_pips": 380.00000000029104,
+        "tick_p75_pips": 380.00000000029104,
+        "tick_p90_pips": 380.00000000029104,
+        "tick_max_pips": 929.9999999995634,
+        "m1_median_bps": 0.7379371549415573,
+        "m1_p75_bps": 0.7379371549415573,
+        "m1_p90_bps": 0.7379371549415573,
+        "tick_median_bps": 0.7379371549421225,
+        "tick_p75_bps": 0.7379371549421225,
+        "tick_p90_bps": 0.7379371549421225
+      },
+      "slippage": {
+        "deals": 9,
+        "detail": [
+          {
+            "position": 1334262,
+            "side": "entry",
+            "time": "2026-09-02T19:23:44",
+            "reference": 53131.6,
+            "fill": 53131.6,
+            "slippage_pips": 0.0,
+            "volume": 0.4,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_us30"
+          },
+          {
+            "position": 1688178,
+            "side": "entry",
+            "time": "2026-09-21T23:31:11",
+            "reference": 52089.8,
+            "fill": 52089.8,
+            "slippage_pips": 0.0,
+            "volume": 1.5,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_us30 R"
+          },
+          {
+            "position": 1688177,
+            "side": "entry",
+            "time": "2026-09-21T23:31:11",
+            "reference": 52089.8,
+            "fill": 52089.8,
+            "slippage_pips": 0.0,
+            "volume": 1.6,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_us30 P"
+          },
+          {
+            "position": 1688178,
+            "side": "exit",
+            "time": "2026-09-22T00:59:56",
+            "reference": 52052.97,
+            "fill": 52052.7,
+            "slippage_pips": 27.000000000407454,
+            "volume": 1.5,
+            "commission": 0.0,
+            "profit": -55.65,
+            "comment": "[sl 52052.97]"
+          },
+          {
+            "position": 1688177,
+            "side": "exit",
+            "time": "2026-09-22T00:59:56",
+            "reference": 52052.97,
+            "fill": 52052.7,
+            "slippage_pips": 27.000000000407454,
+            "volume": 1.6,
+            "commission": 0.0,
+            "profit": -59.36,
+            "comment": "[sl 52052.97]"
+          },
+          {
+            "position": 1757108,
+            "side": "entry",
+            "time": "2026-09-23T19:13:40",
+            "reference": 51818.6,
+            "fill": 51818.6,
+            "slippage_pips": 0.0,
+            "volume": 1.6,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_us30 P"
+          },
+          {
+            "position": 1757109,
+            "side": "entry",
+            "time": "2026-09-23T19:13:40",
+            "reference": 51818.6,
+            "fill": 51818.6,
+            "slippage_pips": 0.0,
+            "volume": 1.6,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_us30 R"
+          },
+          {
+            "position": 1757109,
+            "side": "exit",
+            "time": "2026-09-23T19:21:49",
+            "reference": 51780.9,
+            "fill": 51780.7,
+            "slippage_pips": 20.000000000436557,
+            "volume": 1.6,
+            "commission": 0.0,
+            "profit": -60.64,
+            "comment": "[sl 51780.90]"
+          },
+          {
+            "position": 1757108,
+            "side": "exit",
+            "time": "2026-09-23T19:21:49",
+            "reference": 51780.9,
+            "fill": 51780.7,
+            "slippage_pips": 20.000000000436557,
+            "volume": 1.6,
+            "commission": 0.0,
+            "profit": -60.64,
+            "comment": "[sl 51780.90]"
+          }
+        ],
+        "entry_n": 5,
+        "entry_median_pips": 0.0,
+        "entry_mean_pips": 0.0,
+        "entry_max_pips": 0.0,
+        "exit_n": 4,
+        "exit_median_pips": 23.500000000422006,
+        "exit_mean_pips": 23.500000000422006,
+        "exit_max_pips": 27.000000000407454,
+        "roundtrip_median_pips": 23.500000000422006,
+        "commission_positions": 5,
+        "commission_usd_per_lot_roundtrip": 0.0,
+        "commission_pips_roundtrip": 0.0
+      }
+    },
+    {
+      "portfolio": "Funded",
+      "account": "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835)",
+      "broker": "BeyondIQCapital-Server",
+      "symbol": "NAS100.gbe",
+      "spread": {
+        "unit": "Points",
+        "days_with_data": 23,
+        "first_day": "2026-08-24",
+        "last_day": "2026-09-23",
+        "server_utc_offset_h": 3.0,
+        "pip_size": 0.01,
+        "per_day": [
+          {
+            "day": "2026-09-23",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-09-22",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-09-21",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-09-18",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-09-17",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-09-16",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-09-15",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-09-14",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-09-11",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-09-10",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-09-09",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-09-08",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-09-07",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-09-04",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-09-03",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-09-02",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-09-01",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-08-31",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-08-28",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-08-27",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-08-26",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-08-25",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          },
+          {
+            "day": "2026-08-24",
+            "m1_bars": 241,
+            "median_pips": 130.0,
+            "p90_pips": 130.0
+          }
+        ],
+        "m1_samples": 5543,
+        "m1_median_pips": 130.0,
+        "m1_p75_pips": 130.0,
+        "m1_p90_pips": 130.0,
+        "m1_max_pips": 130.0,
+        "tick_samples": 328944,
+        "tick_median_pips": 129.99999999992724,
+        "tick_p75_pips": 129.99999999992724,
+        "tick_p90_pips": 130.00000000029104,
+        "tick_max_pips": 440.0000000001455,
+        "m1_median_bps": 0.4267864295047307,
+        "m1_p75_bps": 0.4267864295047307,
+        "m1_p90_bps": 0.4267864295047307,
+        "tick_median_bps": 0.42678642950449186,
+        "tick_p75_bps": 0.42678642950449186,
+        "tick_p90_bps": 0.4267864295056862
+      },
+      "slippage": {
+        "deals": 13,
+        "detail": [
+          {
+            "position": 1518954,
+            "side": "entry",
+            "time": "2026-09-14T18:58:14",
+            "reference": 28982.6,
+            "fill": 28981.8,
+            "slippage_pips": -79.99999999992724,
+            "volume": 1.56,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_nasdaq"
+          },
+          {
+            "position": 1606838,
+            "side": "entry",
+            "time": "2026-09-17T19:27:58",
+            "reference": 29431.0,
+            "fill": 29431.1,
+            "slippage_pips": 9.99999999985448,
+            "volume": 1.04,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_nasdaq R"
+          },
+          {
+            "position": 1606837,
+            "side": "entry",
+            "time": "2026-09-17T19:27:58",
+            "reference": 29431.0,
+            "fill": 29431.1,
+            "slippage_pips": 9.99999999985448,
+            "volume": 1.04,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_nasdaq P"
+          },
+          {
+            "position": 1606837,
+            "side": "exit",
+            "time": "2026-09-17T19:30:06",
+            "reference": 29404.66,
+            "fill": 29404.6,
+            "slippage_pips": 6.000000000130967,
+            "volume": 1.04,
+            "commission": 0.0,
+            "profit": -27.56,
+            "comment": "[sl 29404.66]"
+          },
+          {
+            "position": 1606838,
+            "side": "exit",
+            "time": "2026-09-17T19:30:06",
+            "reference": 29404.66,
+            "fill": 29404.6,
+            "slippage_pips": 6.000000000130967,
+            "volume": 1.04,
+            "commission": 0.0,
+            "profit": -27.56,
+            "comment": "[sl 29404.66]"
+          },
+          {
+            "position": 1635388,
+            "side": "entry",
+            "time": "2026-09-18T18:48:59",
+            "reference": 29506.6,
+            "fill": 29506.6,
+            "slippage_pips": 0.0,
+            "volume": 1.4,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_nasdaq P"
+          },
+          {
+            "position": 1635389,
+            "side": "entry",
+            "time": "2026-09-18T18:48:59",
+            "reference": 29506.6,
+            "fill": 29506.6,
+            "slippage_pips": 0.0,
+            "volume": 1.3900000000000001,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_nasdaq R"
+          },
+          {
+            "position": 1635388,
+            "side": "exit",
+            "time": "2026-09-18T18:59:21",
+            "reference": 29479.16,
+            "fill": 29479.0,
+            "slippage_pips": -15.999999999985448,
+            "volume": 1.4,
+            "commission": 0.0,
+            "profit": 38.64,
+            "comment": "[tp 29479.16]"
+          },
+          {
+            "position": 1635389,
+            "side": "exit",
+            "time": "2026-09-18T23:45:21",
+            "reference": 29506.6,
+            "fill": 29506.7,
+            "slippage_pips": 10.000000000218279,
+            "volume": 1.3900000000000001,
+            "commission": 0.0,
+            "profit": -0.14,
+            "comment": "[sl 29506.60]"
+          },
+          {
+            "position": 1729493,
+            "side": "entry",
+            "time": "2026-09-22T18:50:37",
+            "reference": 30629.1,
+            "fill": 30628.7,
+            "slippage_pips": -39.99999999978172,
+            "volume": 2.2,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_nasdaq P"
+          },
+          {
+            "position": 1729496,
+            "side": "entry",
+            "time": "2026-09-22T18:50:37",
+            "reference": 30629.1,
+            "fill": 30628.7,
+            "slippage_pips": -39.99999999978172,
+            "volume": 2.2,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_nasdaq R"
+          },
+          {
+            "position": 1729493,
+            "side": "exit",
+            "time": "2026-09-22T18:56:51",
+            "reference": 30602.02,
+            "fill": 30602.4,
+            "slippage_pips": -38.00000000010186,
+            "volume": 2.2,
+            "commission": 0.0,
+            "profit": -57.86,
+            "comment": "[sl 30602.02]"
+          },
+          {
+            "position": 1729496,
+            "side": "exit",
+            "time": "2026-09-22T18:56:51",
+            "reference": 30602.02,
+            "fill": 30602.4,
+            "slippage_pips": -38.00000000010186,
+            "volume": 2.2,
+            "commission": 0.0,
+            "profit": -57.86,
+            "comment": "[sl 30602.02]"
+          }
+        ],
+        "entry_n": 7,
+        "entry_median_pips": 0.0,
+        "entry_mean_pips": -19.999999999968818,
+        "entry_max_pips": 9.99999999985448,
+        "exit_n": 6,
+        "exit_median_pips": -4.99999999992724,
+        "exit_mean_pips": -11.66666666661816,
+        "exit_max_pips": 10.000000000218279,
+        "roundtrip_median_pips": -4.99999999992724,
+        "commission_positions": 7,
+        "commission_usd_per_lot_roundtrip": 0.0,
+        "commission_pips_roundtrip": 0.0
+      }
+    },
+    {
+      "portfolio": "EK",
+      "account": "EK-Portfolio (Tickmill, echtes Geld)",
+      "broker": "TickmillEU-Live",
+      "symbol": "US500",
+      "spread": {
+        "unit": "Points",
+        "days_with_data": 23,
+        "first_day": "2026-08-24",
+        "last_day": "2026-09-23",
+        "server_utc_offset_h": 3.0,
+        "pip_size": 0.01,
+        "per_day": [
+          {
+            "day": "2026-09-23",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-09-22",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-09-21",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-09-18",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-09-17",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-09-16",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-09-15",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-09-14",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-09-11",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-09-10",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-09-09",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-09-08",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-09-07",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-09-04",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-09-03",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-09-02",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-09-01",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-08-31",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-08-28",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-08-27",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-08-26",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-08-25",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          },
+          {
+            "day": "2026-08-24",
+            "m1_bars": 241,
+            "median_pips": 30.0,
+            "p90_pips": 30.0
+          }
+        ],
+        "m1_samples": 5543,
+        "m1_median_pips": 30.0,
+        "m1_p75_pips": 30.0,
+        "m1_p90_pips": 30.0,
+        "m1_max_pips": 30.0,
+        "tick_samples": 385443,
+        "tick_median_pips": 30.00000000001819,
+        "tick_p75_pips": 30.00000000001819,
+        "tick_p90_pips": 30.00000000001819,
+        "tick_max_pips": 30.00000000001819,
+        "m1_median_bps": 0.38941820919546194,
+        "m1_p75_bps": 0.38941820919546194,
+        "m1_p90_bps": 0.38941820919546194,
+        "tick_median_bps": 0.3894182091956981,
+        "tick_p75_bps": 0.3894182091956981,
+        "tick_p90_bps": 0.3894182091956981
+      },
+      "slippage": {
+        "deals": 10,
+        "detail": [
+          {
+            "position": 260635110,
+            "side": "entry",
+            "time": "2026-09-02T01:45:02",
+            "reference": 7636.5,
+            "fill": 7636.45,
+            "slippage_pips": -5.00000000001819,
+            "volume": 3.24,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_sp500 auto"
+          },
+          {
+            "position": 260635110,
+            "side": "exit",
+            "time": "2026-09-02T01:45:45",
+            "reference": 7635.5,
+            "fill": 7635.3,
+            "slippage_pips": 19.99999999998181,
+            "volume": 3.24,
+            "commission": 0.0,
+            "profit": -3.22,
+            "comment": "[sl 7635.50]"
+          },
+          {
+            "position": 265611336,
+            "side": "entry",
+            "time": "2026-09-10T18:50:12",
+            "reference": 7598.17,
+            "fill": 7598.15,
+            "slippage_pips": -2.0000000000436557,
+            "volume": 0.33,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_sp500 aut"
+          },
+          {
+            "position": 265611336,
+            "side": "exit",
+            "time": "2026-09-10T18:50:24",
+            "reference": 7595.75,
+            "fill": 7595.63,
+            "slippage_pips": 11.999999999989086,
+            "volume": 0.33,
+            "commission": 0.0,
+            "profit": -0.71,
+            "comment": "[sl 7595.75]"
+          },
+          {
+            "position": 266316110,
+            "side": "entry",
+            "time": "2026-09-11T19:00:09",
+            "reference": 7672.48,
+            "fill": 7672.26,
+            "slippage_pips": -21.999999999934516,
+            "volume": 0.25,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_sp500 aut"
+          },
+          {
+            "position": 266316110,
+            "side": "exit",
+            "time": "2026-09-11T19:05:55",
+            "reference": 7665.49,
+            "fill": 7664.94,
+            "slippage_pips": 55.00000000001819,
+            "volume": 0.25,
+            "commission": 0.0,
+            "profit": -1.58,
+            "comment": "[sl 7665.49]"
+          },
+          {
+            "position": 267125689,
+            "side": "entry",
+            "time": "2026-09-14T18:50:11",
+            "reference": 7616.13,
+            "fill": 7616.13,
+            "slippage_pips": 0.0,
+            "volume": 0.37,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_sp500 aut"
+          },
+          {
+            "position": 267125689,
+            "side": "exit",
+            "time": "2026-09-14T19:20:55",
+            "reference": 7607.31,
+            "fill": 7607.32,
+            "slippage_pips": -0.9999999999308784,
+            "volume": 0.19,
+            "commission": 0.0,
+            "profit": -1.45,
+            "comment": "[sl 7607.31]"
+          },
+          {
+            "position": 268408480,
+            "side": "entry",
+            "time": "2026-09-16T18:50:11",
+            "reference": 7609.65,
+            "fill": 7609.64,
+            "slippage_pips": -0.9999999999308784,
+            "volume": 0.46,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_sp500 aut"
+          },
+          {
+            "position": 268408480,
+            "side": "exit",
+            "time": "2026-09-16T19:12:48",
+            "reference": 7602.95,
+            "fill": 7603.08,
+            "slippage_pips": -13.000000000010914,
+            "volume": 0.46,
+            "commission": 0.0,
+            "profit": -2.62,
+            "comment": "[sl 7602.95]"
+          }
+        ],
+        "entry_n": 5,
+        "entry_median_pips": -2.0000000000436557,
+        "entry_mean_pips": -5.999999999985448,
+        "entry_max_pips": 0.0,
+        "exit_n": 5,
+        "exit_median_pips": 11.999999999989086,
+        "exit_mean_pips": 14.600000000009459,
+        "exit_max_pips": 55.00000000001819,
+        "roundtrip_median_pips": 9.99999999994543,
+        "commission_positions": 5,
+        "commission_usd_per_lot_roundtrip": 0.0,
+        "commission_pips_roundtrip": 0.0
+      }
+    },
+    {
+      "portfolio": "EK",
+      "account": "EK-Portfolio (Tickmill, echtes Geld)",
+      "broker": "TickmillEU-Live",
+      "symbol": "US30",
+      "spread": {
+        "unit": "Points",
+        "days_with_data": 23,
+        "first_day": "2026-08-24",
+        "last_day": "2026-09-23",
+        "server_utc_offset_h": 3.0,
+        "pip_size": 0.01,
+        "per_day": [
+          {
+            "day": "2026-09-23",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-09-22",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-09-21",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-09-18",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-09-17",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-09-16",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-09-15",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-09-14",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-09-11",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-09-10",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-09-09",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-09-08",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-09-07",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-09-04",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-09-03",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-09-02",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-09-01",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-08-31",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-08-28",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-08-27",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-08-26",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-08-25",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          },
+          {
+            "day": "2026-08-24",
+            "m1_bars": 241,
+            "median_pips": 120.0,
+            "p90_pips": 120.0
+          }
+        ],
+        "m1_samples": 5543,
+        "m1_median_pips": 120.0,
+        "m1_p75_pips": 120.0,
+        "m1_p90_pips": 120.0,
+        "m1_max_pips": 120.0,
+        "tick_samples": 329732,
+        "tick_median_pips": 119.99999999970896,
+        "tick_p75_pips": 120.00000000043656,
+        "tick_p90_pips": 120.00000000043656,
+        "tick_max_pips": 157.0000000006985,
+        "m1_median_bps": 0.2331456575552696,
+        "m1_p75_bps": 0.2331456575552696,
+        "m1_p90_bps": 0.2331456575552696,
+        "tick_median_bps": 0.23314565755470412,
+        "tick_p75_bps": 0.2331456575561178,
+        "tick_p90_bps": 0.2331456575561178
+      },
+      "slippage": {
+        "deals": 6,
+        "detail": [
+          {
+            "position": 270504595,
+            "side": "entry",
+            "time": "2026-09-21T23:28:50",
+            "reference": 52084.28,
+            "fill": 52084.33,
+            "slippage_pips": 5.000000000291038,
+            "volume": 0.02,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_us30 auto"
+          },
+          {
+            "position": 270504598,
+            "side": "entry",
+            "time": "2026-09-21T23:28:50",
+            "reference": 52084.28,
+            "fill": 52084.33,
+            "slippage_pips": 5.000000000291038,
+            "volume": 0.02,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_us30 auto"
+          },
+          {
+            "position": 271858786,
+            "side": "entry",
+            "time": "2026-09-23T19:13:54",
+            "reference": 51827.3,
+            "fill": 51827.5,
+            "slippage_pips": 19.99999999970896,
+            "volume": 0.15,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_us30 auto"
+          },
+          {
+            "position": 271858793,
+            "side": "entry",
+            "time": "2026-09-23T19:13:54",
+            "reference": 51827.3,
+            "fill": 51827.5,
+            "slippage_pips": 19.99999999970896,
+            "volume": 0.15,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_us30 auto"
+          },
+          {
+            "position": 271858786,
+            "side": "exit",
+            "time": "2026-09-23T19:18:18",
+            "reference": 51793.48,
+            "fill": 51792.47,
+            "slippage_pips": 101.00000000020373,
+            "volume": 0.15,
+            "commission": 0.0,
+            "profit": -4.61,
+            "comment": "[sl 51793.48]"
+          },
+          {
+            "position": 271858793,
+            "side": "exit",
+            "time": "2026-09-23T19:18:18",
+            "reference": 51793.48,
+            "fill": 51792.47,
+            "slippage_pips": 101.00000000020373,
+            "volume": 0.15,
+            "commission": 0.0,
+            "profit": -4.61,
+            "comment": "[sl 51793.48]"
+          }
+        ],
+        "entry_n": 4,
+        "entry_median_pips": 12.5,
+        "entry_mean_pips": 12.5,
+        "entry_max_pips": 19.99999999970896,
+        "exit_n": 2,
+        "exit_median_pips": 101.00000000020373,
+        "exit_mean_pips": 101.00000000020373,
+        "exit_max_pips": 101.00000000020373,
+        "roundtrip_median_pips": 113.50000000020373,
+        "commission_positions": 4,
+        "commission_usd_per_lot_roundtrip": 0.0,
+        "commission_pips_roundtrip": 0.0
+      }
+    },
+    {
+      "portfolio": "EK",
+      "account": "EK-Portfolio (Tickmill, echtes Geld)",
+      "broker": "TickmillEU-Live",
+      "symbol": "USTEC",
+      "spread": {
+        "unit": "Points",
+        "days_with_data": 23,
+        "first_day": "2026-08-24",
+        "last_day": "2026-09-23",
+        "server_utc_offset_h": 3.0,
+        "pip_size": 0.01,
+        "per_day": [
+          {
+            "day": "2026-09-23",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-09-22",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-09-21",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-09-18",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-09-17",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-09-16",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-09-15",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-09-14",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-09-11",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-09-10",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-09-09",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-09-08",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-09-07",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-09-04",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-09-03",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-09-02",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-09-01",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-08-31",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-08-28",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-08-27",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-08-26",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-08-25",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          },
+          {
+            "day": "2026-08-24",
+            "m1_bars": 241,
+            "median_pips": 80.0,
+            "p90_pips": 80.0
+          }
+        ],
+        "m1_samples": 5543,
+        "m1_median_pips": 80.0,
+        "m1_p75_pips": 80.0,
+        "m1_p90_pips": 80.0,
+        "m1_max_pips": 80.0,
+        "tick_samples": 396283,
+        "tick_median_pips": 79.99999999992724,
+        "tick_p75_pips": 79.99999999992724,
+        "tick_p90_pips": 80.00000000029104,
+        "tick_max_pips": 80.00000000029104,
+        "m1_median_bps": 0.26259237096949434,
+        "m1_p75_bps": 0.26259237096949434,
+        "m1_p90_bps": 0.26259237096949434,
+        "tick_median_bps": 0.2625923709692555,
+        "tick_p75_bps": 0.2625923709692555,
+        "tick_p90_bps": 0.2625923709704496
+      },
+      "slippage": {
+        "deals": 19,
+        "detail": [
+          {
+            "position": 259814557,
+            "side": "entry",
+            "time": "2026-09-01T00:00:02",
+            "reference": 29349.78,
+            "fill": 29350.45,
+            "slippage_pips": -67.00000000018917,
+            "volume": 0.55,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_nasdaq auto"
+          },
+          {
+            "position": 259814557,
+            "side": "exit",
+            "time": "2026-09-01T00:00:16",
+            "reference": 29357.17,
+            "fill": 29357.61,
+            "slippage_pips": 44.00000000023283,
+            "volume": 0.55,
+            "commission": 0.0,
+            "profit": -3.39,
+            "comment": "[sl 29357.17]"
+          },
+          {
+            "position": 260611665,
+            "side": "entry",
+            "time": "2026-09-02T00:15:02",
+            "reference": 29072.04,
+            "fill": 29072.12,
+            "slippage_pips": 7.999999999810825,
+            "volume": 0.51,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_nasdaq auto"
+          },
+          {
+            "position": 260611665,
+            "side": "exit",
+            "time": "2026-09-02T00:16:22",
+            "reference": 29061.6,
+            "fill": 29060.71,
+            "slippage_pips": 88.99999999994179,
+            "volume": 0.51,
+            "commission": 0.0,
+            "profit": -5.02,
+            "comment": "[sl 29061.60]"
+          },
+          {
+            "position": 262117522,
+            "side": "entry",
+            "time": "2026-09-04T00:45:01",
+            "reference": 29475.05,
+            "fill": 29475.11,
+            "slippage_pips": 6.000000000130967,
+            "volume": 0.41,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_nasdaq auto"
+          },
+          {
+            "position": 263484451,
+            "side": "entry",
+            "time": "2026-09-08T05:08:22",
+            "reference": 29560.09,
+            "fill": 29560.1,
+            "slippage_pips": -0.9999999998399289,
+            "volume": 0.85,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_nasdaq auto"
+          },
+          {
+            "position": 265611343,
+            "side": "entry",
+            "time": "2026-09-10T18:50:14",
+            "reference": 29153.74,
+            "fill": 29153.96,
+            "slippage_pips": 21.999999999752617,
+            "volume": 0.04,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_nasdaq au"
+          },
+          {
+            "position": 265611343,
+            "side": "exit",
+            "time": "2026-09-10T18:50:25",
+            "reference": 29139.86,
+            "fill": 29140.66,
+            "slippage_pips": -79.99999999992724,
+            "volume": 0.04,
+            "commission": 0.0,
+            "profit": -0.46,
+            "comment": "[sl 29139.86]"
+          },
+          {
+            "position": 266307594,
+            "side": "entry",
+            "time": "2026-09-11T18:50:10",
+            "reference": 29415.07,
+            "fill": 29414.71,
+            "slippage_pips": -36.00000000005821,
+            "volume": 0.05,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_nasdaq au"
+          },
+          {
+            "position": 266307594,
+            "side": "exit",
+            "time": "2026-09-11T18:51:25",
+            "reference": 29384.47,
+            "fill": 29384.89,
+            "slippage_pips": -41.99999999982538,
+            "volume": 0.05,
+            "commission": 0.0,
+            "profit": -1.28,
+            "comment": "[sl 29384.47]"
+          },
+          {
+            "position": 267125718,
+            "side": "entry",
+            "time": "2026-09-14T18:50:12",
+            "reference": 29006.25,
+            "fill": 29006.96,
+            "slippage_pips": 70.99999999991269,
+            "volume": 0.06,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_nasdaq au"
+          },
+          {
+            "position": 269230743,
+            "side": "entry",
+            "time": "2026-09-17T19:30:08",
+            "reference": 29404.24,
+            "fill": 29404.53,
+            "slippage_pips": 28.999999999723514,
+            "volume": 0.05,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_nasdaq au"
+          },
+          {
+            "position": 269230743,
+            "side": "exit",
+            "time": "2026-09-17T19:45:25",
+            "reference": 29402.18,
+            "fill": 29401.43,
+            "slippage_pips": 75.0,
+            "volume": 0.05,
+            "commission": 0.0,
+            "profit": -0.14,
+            "comment": "[sl 29402.18]"
+          },
+          {
+            "position": 269766479,
+            "side": "entry",
+            "time": "2026-09-18T18:50:05",
+            "reference": 29486.88,
+            "fill": 29486.5,
+            "slippage_pips": 38.00000000010186,
+            "volume": 0.07,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_nasdaq au"
+          },
+          {
+            "position": 269766479,
+            "side": "exit",
+            "time": "2026-09-18T23:45:29",
+            "reference": 29497.04,
+            "fill": 29496.94,
+            "slippage_pips": -10.000000000218279,
+            "volume": 0.03,
+            "commission": 0.0,
+            "profit": -0.27,
+            "comment": "[sl 29497.04]"
+          },
+          {
+            "position": 271223116,
+            "side": "entry",
+            "time": "2026-09-22T18:50:37",
+            "reference": 30630.09,
+            "fill": 30631.09,
+            "slippage_pips": 100.0,
+            "volume": 0.03,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_nasdaq au"
+          },
+          {
+            "position": 271223113,
+            "side": "entry",
+            "time": "2026-09-22T18:50:37",
+            "reference": 30630.09,
+            "fill": 30631.09,
+            "slippage_pips": 100.0,
+            "volume": 0.02,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "EK-orb_nasdaq au"
+          },
+          {
+            "position": 271223113,
+            "side": "exit",
+            "time": "2026-09-22T18:56:52",
+            "reference": 30603.94,
+            "fill": 30604.29,
+            "slippage_pips": -35.00000000021828,
+            "volume": 0.02,
+            "commission": 0.0,
+            "profit": -0.47,
+            "comment": "[sl 30603.94]"
+          },
+          {
+            "position": 271223116,
+            "side": "exit",
+            "time": "2026-09-22T18:56:52",
+            "reference": 30603.94,
+            "fill": 30604.01,
+            "slippage_pips": -6.999999999970896,
+            "volume": 0.03,
+            "commission": 0.0,
+            "profit": -0.71,
+            "comment": "[sl 30603.94]"
+          }
+        ],
+        "entry_n": 11,
+        "entry_median_pips": 21.999999999752617,
+        "entry_mean_pips": 24.545454545395014,
+        "entry_max_pips": 100.0,
+        "exit_n": 8,
+        "exit_median_pips": -8.500000000094587,
+        "exit_mean_pips": 4.250000000001819,
+        "exit_max_pips": 88.99999999994179,
+        "roundtrip_median_pips": 13.49999999965803,
+        "commission_positions": 11,
+        "commission_usd_per_lot_roundtrip": 0.0,
+        "commission_pips_roundtrip": 0.0
+      }
+    }
+  ]
+}

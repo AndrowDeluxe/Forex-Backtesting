@@ -9,6 +9,62 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-23** [EK-Portfolio-Bridge / Risiko] **🔴 Auf EK kehrt die
+  Mindestlot-Anhebung die Risiko-Hierarchie um -- `ctnl_reversal` riskiert
+  real das 46-fache seines Ziels.** Nutzerhinweis ("zu viel Risiko im
+  Markt"), read-only nachgerechnet, **nichts geaendert**.
+  **Nicht die Ursache:** `CAPITAL_WEIGHT` wird seit 2026-09-10 korrekt
+  angewendet (`core/sizing.py:67`) -- der alte 8x-Fund ist behoben, die
+  Memory dazu ist jetzt als ueberholt markiert.
+  **Die Ursache:** bei 2.939 EUR Equity ist das Ziel-Risiko von
+  `ctnl_reversal` 1/8 x 0,15 % = **0,55 EUR**. Das kleinste handelbare Lot
+  (0,01 XAUUSD) riskiert bei der aktuellen Stopdistanz von 28,90 Punkten
+  aber **25,38 EUR**. Faktor **46x**; `ctnl_continuation` (Ziel 1,84 EUR)
+  liegt bei **14x**. Die beiden CTNL-Beine sind die einzigen Gold-Beine, die
+  angehoben werden -- und landen dadurch bei einem Viertel dessen, was
+  `gold_asb` als GROESSTES Bein beabsichtigt (103,47 EUR), obwohl sie auf
+  1/56 bzw. 1/188 davon kalibriert sind.
+  **Real offen:** `ctnl_reversal` haelt mit 3 Positionen
+  (`REV_MAX_CONCURRENT = 3`) **2,59 % der Equity** im Risiko (beabsichtigt
+  0,06 %) und **12.860 EUR Nominal auf einem 2.939-EUR-Konto = 4,4x Hebel**
+  -- aus dem Bein, das das konservativste sein sollte. Gesamt offen 194 EUR
+  (6,59 %), Gesamthebel 5,1x, 13 Positionen, alle mit SL.
+  **Kein Bug:** die Anhebung ist Nutzerentscheid vom 2026-09-10
+  (`core/sizing.py`, Muster aus FK), damit kleine Beine auf einem 3-k-Konto
+  nicht verstummen; es gibt eine Log-Warnung. Aber die beiden Deckel greifen
+  hier nicht: `MAX_SINGLE_TRADE_RISK_PCT = 5 %` liegt bei 147 EUR (nie
+  ausgeloest) und `MAX_TOTAL_RISK_PCT = 30 %` ist zu 22 % ausgeschoepft.
+  **Entscheidung E5** in `projects/ctnl-kostenvalidierung.md` (Befund 10):
+  (a) nichts, (b) Anhebung fuer CTNL abschalten, (c) `REV_MAX_CONCURRENT`
+  auf EK 3 -> 1, (d) CTNL-Risiko anheben bis Ziel >= Mindestlot. Empfehlung
+  b oder c, VOR E1-E4. **Nicht geprueft:** ob dasselbe Muster auch
+  `cls_practical`, `ou_modell` und die ORB-Beine trifft -- deren Ziele
+  (19,40 / 10,77 / 10,58 EUR) liegen ebenfalls niedrig.
+
+- **2026-09-23** [Aufraeum-Aktion Nutzer + Nachkontrolle] **Alle verwaisten
+  Positionen sind geschlossen -- am Broker verifiziert.** Der Nutzer hat am
+  23.09. zwischen 22:40:39 und 22:42:02 Serverzeit (21:40-21:42 Berlin) von
+  Hand aufgeraeumt, `reason=1` (Client) und leerer Kommentar an jedem Deal.
+  **Geschlossen:** die 4 OU-Solo-Waisen auf TTP Konto 2 (AFL −33,00, NUE −5,64,
+  UAL −32,11, TXT −200,55) + APD −48,50, DAL auf Tickmill (−0,35), die 8
+  ueberfaelligen EK-OU-Positionen (ADI +26,50, DHI −5,97, GRMN +13,80,
+  AMGN +15,90, EXPE −11,70, LEN +1,98, COF −10,84, GIS −0,97) und zwei
+  CTNL-Shorts auf TTP (+210,08 / +192,96). Saldo der Handschliessungen:
+  **EK +20,56 EUR, TTP +30,22 USD.**
+  **Nachkontrolle:** kein `OU-Modell auto`-Kommentar mehr auf irgendeinem
+  Konto; offene Positionen jetzt EK 13, TTP 6, IQ 3, FK 2. Kein EK-OU-Titel
+  mehr ueber dem 10-Tage-Limit. `ctnl_reversal` liegt ueberall unter der
+  Grenze 3 (ttp 2, IQ 3, FK 0) -- das Bein ist auf allen Konten wieder frei.
+  **Preis der Freigabe, ohne Wertung:** IQ hat noch am selben Tag 6 frische
+  ctnl_reversal-Entries genommen und alle ausgestoppt (−982,00 USD); Portfolio
+  heute −1.256,52 USD.
+  **Nebenbefund an der Reporting-Kette:** `mt5_pull.py` verliert bei knapper
+  Obergrenze die letzten Stunden -- `--to 2026-09-24` gab EK 13 / TTP 11 Deals,
+  `--to 2026-09-25` gab 22 / 16. Genau die 22:40er-Schliessungen fehlten, ich
+  habe sie im ersten Abzug nicht gesehen. Die naive Zeitgrenze wird nicht in
+  Serverzeit ausgewertet. Weekly-Report nicht betroffen (`week_bounds()` hat
+  zwei Tage Puffer). Nicht gefixt, in DASHBOARD.md zur Freigabe gelegt.
+
 - **2026-09-23** [Second Brain / Git-Sync] **Korrektur zu meiner Verlust-Diagnose:** ich hatte gemeldet, die Eintraege vom 21./22.09. seien unwiederbringlich weg, weil "keiner der 72 Stashes sie enthaelt". Das war ein Messfehler -- `git show stash@{N}` zeigt auf einem Stash (ein Merge-Commit) einen KOMBINIERTEN Diff, in dem die Zeilen nicht als Zusatz auftauchen; sichtbar werden sie erst mit `git diff stash@{N}^ stash@{N} -- <pfad>`. Die parallele Session hat den Stand darueber vollstaendig zurueckgeholt (Eintrag weiter unten). Zweiter Fehler im selben Zug: meine Erfolgskontrolle suchte mit `grep` nach einem Begriff, der im Markdown ueber einen Zeilenumbruch lief -- dadurch meldete sie faelschlich "fehlt", und ich habe denselben Eintrag acht Mal eingefuegt (bereinigt). Lehre: bei Datei-Diagnosen erst einen Testmarker schreiben und zurueklesen, und nur zeilenanker-feste Muster zur Kontrolle verwenden.
 
 - **2026-09-23** [EK-Portfolio-Bridge / Risiko] **Hebel auf 1,2x angehoben + Einzeltrade-Deckel 3 % -> 5 %.** Nutzerentscheid: "die 40 %-Grenze sollte ueber ein Jahr halten, Risikobereitschaft offen, passe an die groessere Option an." Damit wechselt die Messgroesse vom Drawdown ueber die volle Historie auf das rollierende JAHR (`scripts/research_ek_leverage_1y.py`, 4.000 Pfade, Monatsbloecke): 1,0x -> P(MaxDD>40 % im Jahr) 3,0 % | **1,2x -> 9,1 %** (gewaehlt, groesste Stufe <= 10 %) | 1,4x -> 26,9 % (Klippe, nicht linear). P(Jahr<0) bleibt bei 0,2 %. Neue effektive Risiken je Trade: gold_asb/btc_ema_cross/gold_silver 3,52 %, trend_pullback 2,20 %, cls_practical 0,66 %, orb je Instrument 0,36 %. **`ou_modell` NICHT mitskaliert** (wird gerade umgebaut und separat verifiziert). **`MAX_SINGLE_TRADE_RISK_PCT` musste mitwachsen:** `core/sizing.py` LEHNT Trades ueber dem Deckel AB, statt sie zu verkleinern -- bei 3 % haetten die drei groessten Beine ab sofort gar nicht mehr gehandelt. **Einordnung:** die Median-Jahresrendite der Modellkurven (+443 %) ist KEINE realistische Erwartung (Backtests; live handelt EK bislang nur einen Teil der Beine) -- belastbar ist die relative Aussage zum Hebel, nicht das Renditeniveau.

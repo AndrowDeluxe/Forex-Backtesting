@@ -388,6 +388,68 @@ Trades und zehn Jahre gibt es keinen Edge. Das einzige gute Jahr ist 2026 mit
 
 ---
 
+## Befund 10 — auf EK kehrt das Mindestlot die Risiko-Hierarchie um
+
+Nutzerhinweis 2026-09-23 („zu viel Risiko im Markt"). Nachgerechnet, **read-only**.
+
+### Die Formel wird korrekt angewendet — die Memory war veraltet
+
+`core/sizing.py:67` wendet `CAPITAL_WEIGHT` seit 2026-09-10 an. Der alte Fund
+„Kapitalverdünnung definiert, aber nie benutzt" ist **behoben**. Das ist nicht
+die Ursache.
+
+### Die Ursache ist die Mindestlot-Anhebung
+
+EK-Equity: **2.939 EUR**. Beabsichtigtes Risiko je Trade = Equity × 1/8 ×
+`LEG_RISK_PCT`. Auf XAUUSD riskiert das kleinste handelbare Lot (0,01) bei der
+aktuellen Stopdistanz von 28,90 Punkten aber **25,38 EUR**:
+
+| Bein | Ziel-Risiko | % Equity | Mindestlot riskiert | **Faktor** |
+|---|---|---|---|---|
+| `gold_asb` | 103,47 EUR | 3,52 % | 25,38 EUR | — (kein Bump) |
+| `gold_silver` | 103,47 EUR | 3,52 % | 25,38 EUR | — |
+| `trend_pullback` | 64,67 EUR | 2,20 % | 25,38 EUR | — |
+| `ctnl_continuation` | **1,84 EUR** | 0,062 % | 25,38 EUR | **14x** |
+| `ctnl_reversal` | **0,55 EUR** | 0,019 % | 25,38 EUR | **46x** |
+
+**Die beiden CTNL-Beine sind die einzigen Gold-Beine, die angehoben werden —
+und sie landen dadurch bei einem Viertel dessen, was `gold_asb` als
+*größtes* Bein beabsichtigt, obwohl sie auf 1/56 bzw. 1/188 davon kalibriert
+wurden.** Die Hierarchie der Studie ist damit auf diesem Konto aufgehoben.
+
+### Was real offen ist (Stand 2026-09-23)
+
+| Bein | n | offenes Risiko | % Equity | Nominal |
+|---|---|---|---|---|
+| `ou_modell` | 10 | 118 EUR | 4,00 % | 2.202 EUR |
+| **`ctnl_reversal`** | **3** | **76 EUR** | **2,59 %** | **12.860 EUR** |
+| **Gesamt** | 13 | 194 EUR | 6,59 % | 15.062 EUR |
+
+`ctnl_reversal` hält mit **drei** Positionen (`REV_MAX_CONCURRENT = 3`)
+**2,59 %** der Equity im Risiko — beabsichtigt waren 3 × 0,019 % = **0,06 %**.
+Und **12.860 EUR Nominal auf einem 2.939-EUR-Konto**, also **4,4-facher
+Hebel allein aus dem Bein, das das konservativste sein sollte.**
+Der Gesamthebel liegt bei 5,1x.
+
+### Das ist kein Bug — aber die Folge war so vermutlich nicht gemeint
+
+Die Anhebung ist ein dokumentierter Nutzerentscheid (`core/sizing.py`,
+2026-09-10, Muster aus FK): ohne sie würden die kleinen Beine auf einem
+~3-k-Konto schlicht verstummen. Es gibt einen harten Deckel
+(`MAX_SINGLE_TRADE_RISK_PCT = 5 %` = 147 EUR) und eine Warnung im Log.
+
+Der Kommentar dort nennt das Ziel-Risiko von `ctnl_continuation` mit „~2 EUR" —
+er kannte also die Zielgröße. Was dort **nicht** steht, ist die Gegenrechnung:
+dass die Anhebung daraus 25 EUR macht und das Bein damit an die Spitze der
+Risikoliste hebt. Der 5-%-Deckel greift erst bei 147 EUR und hat in diesem
+Fall nie ausgelöst.
+
+**Zusätzlich:** `MAX_TOTAL_RISK_PCT = 0,30` erlaubt **30 % der Equity** als
+offenes Gesamtrisiko. Aktuell sind 6,59 % ausgeschöpft (22 % des Deckels) —
+der Deckel ist also weit weg und schützt hier nicht.
+
+---
+
 ## Was daraus folgt (Entscheidung steht bei dir)
 
 Nach Kostenvalidierung, Diagnose und Optimierung stehen **vier** Entscheidungen
@@ -428,6 +490,30 @@ Reversal-Bein bei −15,6 % Median und P(>6 %) = 99,9 %. Solange das nicht neu
 gezogen ist, ist jede Aussage über Challenge-Verträglichkeit unbelegt.
 **Reihenfolge beachten** (Repo-Vorgabe): erst E1/E2/E3, dann E4 — die
 Risikozahl hängt von allen dreien ab.
+
+### E5 — EK: Mindestlot-Anhebung für CTNL entscheiden *(dringendste Frage)*
+
+Auf EK riskiert `ctnl_reversal` real **0,86 %/Trade statt 0,019 %** (Faktor 46,
+siehe Befund 10) und hält mit drei Positionen **2,59 %** der Equity plus
+**4,4-fachen Nominal-Hebel** — aus dem Bein, das das konservativste sein
+sollte. Vier Wege:
+
+| | Vorgehen | Wirkung | Haken |
+|---|---|---|---|
+| **a** | Nichts ändern | — | Die Studien-Allokation gilt auf EK faktisch nicht; das kleinste Bein ist eines der größten |
+| **b** | Anhebung für CTNL abschalten | Bein verstummt auf EK, bis das Konto groß genug ist | Kein CTNL auf EK — arguably ehrlich, denn 0,019 % sind dort nicht darstellbar |
+| **c** | `REV_MAX_CONCURRENT` auf EK von 3 auf 1 | Deckelt das Bein bei 0,86 % statt 2,59 % | Ändert die Strategie-Logik, die mit 3 validiert wurde |
+| **d** | CTNL-`LEG_RISK_PCT` anheben, bis das Ziel ≥ Mindestlot liegt | Formel und Realität stimmen wieder überein | Bewusste Abkehr von der Studien-Gewichtung — muss neu MC-validiert werden |
+
+**Meine Empfehlung: b oder c**, und zwar bevor E1–E4 angefasst werden. Beide
+wirken sofort und ohne Neukalibrierung. **d** ist die sauberste Lösung, setzt
+aber E4 (Risikokalibrierung über die volle Historie) voraus.
+
+**Hinweis zur Tragweite:** dasselbe Muster betrifft potenziell jedes Bein, das
+auf diesem Konto angehoben wird — geprüft habe ich nur die Gold-Beine, weil
+dort eine reale Stopdistanz vorlag. `cls_practical` (19,40 EUR Ziel),
+`ou_modell` (10,77) und die drei ORB-Beine (10,58) liegen ebenfalls niedrig
+genug, dass eine Anhebung plausibel ist. **Das habe ich nicht nachgerechnet.**
 
 ### Was NICHT geändert werden sollte
 

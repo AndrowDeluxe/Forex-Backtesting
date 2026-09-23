@@ -35,6 +35,31 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **🔴 EK: `ctnl_reversal` riskiert real das 46-fache seines Ziels --
+  Entscheidung E5 noetig.** Nicht die Formel (die stimmt seit 09-10), sondern
+  die Mindestlot-Anhebung: Ziel 0,55 EUR, kleinstes Lot riskiert 25,38 EUR.
+  Drei offene Positionen = **2,59 % der Equity** und **4,4x Nominal-Hebel**
+  aus dem konservativsten Bein. Kein Bug, aber die Studien-Allokation gilt auf
+  diesem Konto faktisch nicht. **Offen fuer dich:** (a) nichts, (b) Anhebung
+  fuer CTNL abschalten (Bein verstummt auf EK), (c) `REV_MAX_CONCURRENT`
+  3 -> 1, (d) CTNL-Risiko anheben. **Meine Empfehlung: b oder c, vor E1-E4.**
+  Ich habe nichts geaendert. Details: `projects/ctnl-kostenvalidierung.md`
+  Befund 10.
+
+- **🔴 `mt5_pull.py --to <Tag+1>` verliert die letzten Stunden des Tages --
+  darf ich das fixen?** (Fund 2026-09-23, **nicht umgesetzt**.) Derselbe Abzug,
+  nur mit anderer Obergrenze: `--from 2026-09-23 --to 2026-09-24` liefert EK
+  **13** Deals und TTP **11**; `--to 2026-09-25` liefert **22** bzw. **16**.
+  Gefehlt haben genau die Schliessungen ab ~22:40 Serverzeit. Die naive
+  Zeitgrenze wird also nicht in Serverzeit ausgewertet, das Fenster endet
+  effektiv ein bis drei Stunden zu frueh. **Folge:** ein Tages- oder
+  Zeitraum-Abzug weist die Ergebnisse des letzten Tages stillschweigend zu
+  niedrig aus -- mir ist es heute genau so passiert, bevor ich es gegengeprueft
+  habe. Der Weekly-Report ist NICHT betroffen: `week_bounds()` setzt die
+  Grenze auf den Folgemontag 00:00 und hat damit zwei Tage Puffer.
+  **Vorschlag:** Obergrenze intern um einen Tag erweitern und anschliessend auf
+  das gewuenschte Fenster filtern (rein lesend, keine Handelsfunktion).
+
 - **Paper-Screening 2026-09-22: ist das Zumachen der einen Tuer okay?**
   Drei Papers gesichtet (Details in
   [[24h-renditestruktur-und-informationskette]]). Zwei Dinge beruhen auf
@@ -79,19 +104,6 @@ Bedarf vor generischem Aufräumen.
   statt endgueltig verworfen zu werden. Sag Bescheid, falls du eins von
   beidem anders willst.
 
-- **Verwaiste CTNL-Positionen legen das Bein vorerst still -- Entscheidung
-  noetig.** Abgleich vom 2026-09-21 (read-only, nichts geschlossen):
-  `ttp` (Demo) 32 real offen (+493,52 offener P/L), `fk_instant_funding`
-  11 real offen (+31,42), `iqmarkets` 0.
-  **Stand 2026-09-23 (nachgeprueft): weitgehend erledigt.** Der Nutzer hat am
-  21.09. 18 Positionen von Hand geschlossen, der Rest lief ueber Broker-SLs
-  aus. Jetzt offen: `ttp` **4**, FK **0**, IQ **0** (EK 2, dort nie ein
-  Problem). **FK und IQ nehmen wieder normal Entries an.** Nur `ttp` liegt mit
-  4 noch ueber der Grenze 3 und bleibt bis zum Abbau der naechsten Position
-  blockiert -- alle 4 mit SL, kein Handlungsdruck. **Offen fuer dich:** die
-  letzten 4 auslaufen lassen (Bein ist in ein paar Tagen von selbst frei) oder
-  Schliessen vorbereiten? Ohne Antwort lasse ich sie laufen.
-
 - **CTNL: Kostenvalidierung + Diagnose + Optimierung fertig -- vier
   Entscheidungen E1-E4 liegen bei dir** (`projects/ctnl-kostenvalidierung.md`).
   **E1 Kostenzahl korrigieren** (`spread_bps` 8,0 -> gemessen 0,53-2,01,
@@ -128,17 +140,6 @@ Bedarf vor generischem Aufräumen.
   exakt die einzigen zwei der 21 EK-Positionen ohne TP. **Offen fuer dich:**
   soll bei doppelten Tickern die S&P-Zeile (mit validiertem TP) gewinnen, oder
   ist "kein TP" die gewollte konservative Variante?
-
-- **FK Instant Funding: zwei offene Positionen, die KEINE Bridge verwaltet.**
-  (Fund 2026-09-23, nichts geaendert.) XAUUSD.gbe 0,05 Lot @ 4.283,90 (seit
-  14.09.) und EURUSD.gbe 0,35 Lot @ 1,14666 (seit 16.09.), zusammen +250 USD
-  schwebend. Beide haben leeren Order-Kommentar und stehen in keinem State --
-  das sind die **zwei manuellen Positionen**, die weiter unten in der
-  Status-Tabelle schon als Grund fuer die Spalte "Letzter echter Entry"
-  auftauchen. Neu daran ist nur die Konsequenz: kein Bein erkennt sie, also
-  **kein Modell-Exit, kein Teilausstieg, kein Max-Holding** -- sie laufen, bis
-  der Broker-SL greift (bei beiden gesetzt, TP nur bei XAUUSD) oder du sie
-  schliesst. **Offen fuer dich:** bewusst so gewollt, oder sollen sie weg?
 
 - **Verwaiste State-Eintraege nach dem manuellen CTNL-Aufraeumen -- soll ich
   sie nachziehen?** (2026-09-23.) Der Nutzer hat am 21.09. 18 CTNL-Positionen
@@ -226,18 +227,14 @@ Bedarf vor generischem Aufräumen.
   Ehrliche Lesart: D+2,25 hebt das Bein von „verliert zuverlässig" auf „verdient
   wenig". Ob das den Platz im Risikobudget wert ist, ist eine
   Portfolio-Entscheidung. Details: [[ou-modell-kostenvalidierung]].
-- **🟠 8 verwaiste OU-Solo-Positionen: Schliessen ist vorbereitet, Ausloesen
-  liegt bei dir** (2026-09-17). Du hast das Schliessen beauftragt; das Skript
-  `scripts/close_ou_solo_orphans_once.py` ist fertig und per Vorschau gegen die
-  echten Konten geprueft. Das automatische Einplanen hat der Auto-Modus
-  blockiert. Befehl zum Einplanen (15:35:15) oder `--live` nach 15:30 direkt
-  ausfuehren -- siehe Chat vom 2026-09-17. Punkt erst entfernen, wenn Telegram
-  „OU-Solo-Waisen geschlossen" gemeldet hat.
 - **🟡 EK/OU: Max-Holding schliesst nie, nur Warnung** (2026-09-17,
-  **Zahlen 2026-09-23 nachgezogen -- deutlich schlimmer geworden**). Nicht mehr
-  4, sondern **9 der 19 offenen OU-Positionen liegen ueber dem 10-Tage-Limit**:
-  DAL 33 Tage (Altlast Solo-Bot), ADI/DHI/GRMN je 20, AMGN/EXPE je 12,
-  LEN/COF/GIS je 11. AXP ist raus (am 22.09. ausgestoppt). `legs/ou_modell/executor.py::
+  **Stand 2026-09-23**). Der Rueckstand ist weg -- der Nutzer hat am 23.09.
+  gegen 21:41 alle 9 ueberfaelligen Positionen von Hand geschlossen (DAL 33
+  Tage, ADI/DHI/GRMN 20, AMGN/EXPE 12, LEN/COF/GIS 11; zusammen **+20,56 EUR**,
+  am Broker als `reason=1` belegt). **Die Ursache ist unveraendert:**
+  `legs/ou_modell/executor.py::manage_open_positions()` loggt nur CRITICAL und
+  schliesst nie -- der naechste Schwung altert genauso zu, bis das jemand
+  wieder von Hand aufraeumt. Gehoert zur OU-Optimierung, nicht still geaendert. `legs/ou_modell/executor.py::
   manage_open_positions()` loggt nur CRITICAL. Weicht vom Backtest ab und
   verlaengert den Swap -- gehoert zur OU-Optimierung, nicht still geaendert.
 - **🟠 MNST-Split auf TTP nicht umgebucht: −2.492,56 $ auf Konto 1 (echtes

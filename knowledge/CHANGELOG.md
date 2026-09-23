@@ -9,6 +9,52 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-23** [CTNL / MTF-Trendbestaetigung] **Nutzerhypothese geprueft:
+  Trendbestaetigung hilft der LONG-Seite (bestes Ergebnis der ganzen
+  Untersuchung), rettet die SHORT-Seite aber nicht.** Neues Skript
+  `research_ctnl_mtf_trend.py`, Befund 14 in
+  `projects/ctnl-kostenvalidierung.md`, Rohdaten `_data/ctnl_mtf_trend.json`.
+  **Zahlen 2024-2026 (Nutzerfrage):** reversal long n=149 **Ø R +1,165 /
+  PF 2,62**, reversal short n=141 -0,099 / 0,88; continuation long n=59
+  +0,004 / 1,01, continuation **short n=41 +0,757 / PF 1,79** (kleine
+  Stichprobe).
+  **Hypothese Teil 1 -- widerlegt:** `ctnl_reversal` short im BESTAETIGTEN
+  Abwaertstrend (EMA-Stapel H4+D1+W1 < 0) Ø R **-0,161** gegen -0,198 im
+  Aufwaertstrend. Beide negativ, Unterschied im Rauschbereich von 99 Trades.
+  Bei `ctnl_continuation` sogar umgekehrt (-0,316 vs. -0,135).
+  **Hypothese Teil 2 -- bestaetigt:** `trendkonform` (long nur im
+  Aufwaerts-, short nur im Abwaertstrend) Ø R **+0,446** / ΣR **+285,1** /
+  PF **1,53**, Monte Carlo MedDD **-7,81 %**, Return **+49,1 %**,
+  Sharpe **0,76** -- schlaegt `nur long` auf JEDER Kennzahl. Walk-Forward
+  **OOS +201,4 gegen +143,4**, der beste Wert der gesamten Untersuchung
+  (aber nur 4 von 8 Jahren besser). Zerlegung: **long im bestaetigten
+  Aufwaertstrend Ø R +0,557**; die trendkonformen Shorts tragen -15,9 ΣR bei,
+  werden also mitgeschleppt.
+  **Hypothese Teil 3 -- widerlegt fuer continuation:** trendkonformes
+  Handeln macht das Bein SCHLECHTER (-0,245 gegen -0,060 Baseline),
+  Walk-Forward 1/8. In der H4-Kreuztabelle verdient es long am besten, wenn
+  der H4-Trend ABWAERTS zeigt (+0,483) -- das Gegenteil dessen, wofuer ein
+  Continuation-Modell da ist. Kein Trendfolge-Edge.
+  **Die eingebauten Filter bestaetigen den alten Befund:**
+  `require_h4_trend_confirm` (447 statt 1253 Trades, Ø R +0,220, aber ΣR nur
+  +98,2), `require_magnitude`, `require_level_age`, `require_h1_inducement`
+  -- Walk-Forward VERWORFEN (OOS +13,6 vs. +143,4, besser in 2/8 Jahren).
+  Der Unterschied zum wirksamen `trendkonform`-Gate: die eingebauten Filter
+  sind NICHT-DIREKTIONAL, sie entfernen Longs und Shorts gleichermassen.
+
+- **2026-09-23** [Second Brain / Auffindbarkeit] **Warum die Pipeline-Filter
+  ausgeschaltet waren, stand nirgends in `knowledge/`.** Auf die Nutzerfrage
+  "warum ausgeschaltet?" liess sich die Antwort nur im Docstring von
+  `scripts/research_gold_smc_reversal_cascade_v6.py` finden: *"no inducement/
+  magnitude/volume/age -- none of those improved on the baseline per v3-v5"*.
+  Die Filter wurden also im August 2026 geprueft und verworfen -- aber
+  (a) auf dem IS-Fenster 2024-08/2025-08, also nur im guten Regime, und
+  (b) als nicht-direktionale Zustandsbedingungen. Beides schraenkt die
+  Uebertragbarkeit ein und war ohne Lesen der Skript-Docstrings nicht
+  erkennbar. **Muster:** verworfene Optionen gehoeren mit ihrer Begruendung
+  ins Second Brain, sonst werden sie entweder blind wiederholt oder blind
+  ausgeschlossen.
+
 - **2026-09-23** [CTNL / Richtung + Regime] **Der Struktur-gegen-Regime-Test
   ist gerechnet: die Short-Schwaeche ist ein REGIME-Effekt, keine
   strukturelle.** Neues Skript `research_ctnl_direction_regime.py`,

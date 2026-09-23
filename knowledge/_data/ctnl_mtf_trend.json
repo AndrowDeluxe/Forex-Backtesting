@@ -1,0 +1,894 @@
+{
+  "beine": {
+    "ctnl_reversal": {
+      "zeitraum": {
+        "2016-2026": {
+          "long": {
+            "trades": 662,
+            "avg_r": 0.39113196988774285,
+            "summe_r": 258.9293640656858,
+            "trefferquote": 0.31268882175226587,
+            "profit_factor": 1.4582913552203691
+          },
+          "short": {
+            "trades": 591,
+            "avg_r": -0.20686121212508762,
+            "summe_r": -122.25497636592678,
+            "trefferquote": 0.23519458544839256,
+            "profit_factor": 0.7867077440247995
+          }
+        },
+        "2024-2026": {
+          "long": {
+            "trades": 149,
+            "avg_r": 1.1650470170899665,
+            "summe_r": 173.592005546405,
+            "trefferquote": 0.40939597315436244,
+            "profit_factor": 2.61689023239233
+          },
+          "short": {
+            "trades": 141,
+            "avg_r": -0.09940958927042479,
+            "summe_r": -14.016752087129895,
+            "trefferquote": 0.2695035460992908,
+            "profit_factor": 0.8812479420199434
+          }
+        }
+      },
+      "kreuz_h4": {
+        "-1": {
+          "long": {
+            "trades": 74,
+            "avg_r": 0.007507435808139992,
+            "summe_r": 0.5555502498023595,
+            "trefferquote": 0.22972972972972974,
+            "profit_factor": 1.0077234532246728
+          },
+          "short": {
+            "trades": 331,
+            "avg_r": -0.2102664580519997,
+            "summe_r": -69.5981976152119,
+            "trefferquote": 0.2326283987915408,
+            "profit_factor": 0.7868862986123684
+          }
+        },
+        "0": {
+          "long": {
+            "trades": 157,
+            "avg_r": -0.005260466704248729,
+            "summe_r": -0.8258932725670505,
+            "trefferquote": 0.2929936305732484,
+            "profit_factor": 0.9939492773913843
+          },
+          "short": {
+            "trades": 190,
+            "avg_r": -0.15101108976207178,
+            "summe_r": -28.692107054793638,
+            "trefferquote": 0.2578947368421053,
+            "profit_factor": 0.8351841146754446
+          }
+        },
+        "1": {
+          "long": {
+            "trades": 431,
+            "avg_r": 0.6013914317597457,
+            "summe_r": 259.1997070884504,
+            "trefferquote": 0.33410672853828305,
+            "profit_factor": 1.7269388954545764
+          },
+          "short": {
+            "trades": 70,
+            "avg_r": -0.34235245279887483,
+            "summe_r": -23.964671695921236,
+            "trefferquote": 0.18571428571428572,
+            "profit_factor": 0.6695302276932066
+          }
+        }
+      },
+      "kreuz_sum": {
+        "-2": {
+          "long": {
+            "trades": 11,
+            "avg_r": -0.40997925006697233,
+            "summe_r": -4.509771750736696,
+            "trefferquote": 0.18181818181818182,
+            "profit_factor": 0.5852429274817472
+          },
+          "short": {
+            "trades": 41,
+            "avg_r": 0.5491357163154036,
+            "summe_r": 22.514564368931545,
+            "trefferquote": 0.2926829268292683,
+            "profit_factor": 1.574630984986326
+          }
+        },
+        "-1": {
+          "long": {
+            "trades": 30,
+            "avg_r": 0.12623601156536582,
+            "summe_r": 3.787080346960974,
+            "trefferquote": 0.26666666666666666,
+            "profit_factor": 1.1386661197221992
+          },
+          "short": {
+            "trades": 58,
+            "avg_r": -0.6627247561122257,
+            "summe_r": -38.43803585450909,
+            "trefferquote": 0.13793103448275862,
+            "profit_factor": 0.3414265499198145
+          }
+        },
+        "0": {
+          "long": {
+            "trades": 81,
+            "avg_r": -0.5109414277549329,
+            "summe_r": -41.386255648149564,
+            "trefferquote": 0.14814814814814814,
+            "profit_factor": 0.5101448412130988
+          },
+          "short": {
+            "trades": 164,
+            "avg_r": -0.251700377300221,
+            "summe_r": -41.278861877236245,
+            "trefferquote": 0.23170731707317074,
+            "profit_factor": 0.749746740814973
+          }
+        },
+        "1": {
+          "long": {
+            "trades": 114,
+            "avg_r": 0.3119328550847885,
+            "summe_r": 35.56034547966589,
+            "trefferquote": 0.3157894736842105,
+            "profit_factor": 1.3778322357105757
+          },
+          "short": {
+            "trades": 154,
+            "avg_r": -0.5746719398734466,
+            "summe_r": -88.49947874051077,
+            "trefferquote": 0.2012987012987013,
+            "profit_factor": 0.44522819567384364
+          }
+        },
+        "2": {
+          "long": {
+            "trades": 104,
+            "avg_r": 0.6181549786318592,
+            "summe_r": 64.28811777771335,
+            "trefferquote": 0.40384615384615385,
+            "profit_factor": 1.7645716411706636
+          },
+          "short": {
+            "trades": 121,
+            "avg_r": 0.21753883313715516,
+            "summe_r": 26.322198809595776,
+            "trefferquote": 0.30578512396694213,
+            "profit_factor": 1.263924237006485
+          }
+        },
+        "3": {
+          "long": {
+            "trades": 322,
+            "avg_r": 0.6248131921125211,
+            "summe_r": 201.1898478602318,
+            "trefferquote": 0.33229813664596275,
+            "profit_factor": 1.761744715331617
+          },
+          "short": {
+            "trades": 53,
+            "avg_r": -0.05425213343769749,
+            "summe_r": -2.875363072197967,
+            "trefferquote": 0.24528301886792453,
+            "profit_factor": 0.9440891899991586
+          }
+        }
+      },
+      "kreuz_sum_jung": {
+        "-1": {
+          "long": {
+            "trades": 0,
+            "avg_r": NaN,
+            "summe_r": 0.0,
+            "profit_factor": NaN,
+            "trefferquote": NaN
+          },
+          "short": {
+            "trades": 6,
+            "avg_r": -0.6769941334327515,
+            "summe_r": -4.061964800596509,
+            "trefferquote": 0.0,
+            "profit_factor": 0.0
+          }
+        },
+        "0": {
+          "long": {
+            "trades": 6,
+            "avg_r": -1.1444102591912932,
+            "summe_r": -6.86646155514776,
+            "trefferquote": 0.0,
+            "profit_factor": 0.0
+          },
+          "short": {
+            "trades": 22,
+            "avg_r": -0.3240559964922049,
+            "summe_r": -7.129231922828508,
+            "trefferquote": 0.2727272727272727,
+            "profit_factor": 0.665208585685464
+          }
+        },
+        "1": {
+          "long": {
+            "trades": 7,
+            "avg_r": 2.3388642920689042,
+            "summe_r": 16.37205004448233,
+            "trefferquote": 0.5714285714285714,
+            "profit_factor": 5.44980859591061
+          },
+          "short": {
+            "trades": 29,
+            "avg_r": -0.7682002361969397,
+            "summe_r": -22.27780684971125,
+            "trefferquote": 0.1724137931034483,
+            "profit_factor": 0.22366561510288452
+          }
+        },
+        "2": {
+          "long": {
+            "trades": 17,
+            "avg_r": 1.2367588726964145,
+            "summe_r": 21.024900835839045,
+            "trefferquote": 0.47058823529411764,
+            "profit_factor": 2.9943269605690377
+          },
+          "short": {
+            "trades": 70,
+            "avg_r": 0.12721675111444494,
+            "summe_r": 8.905172578011145,
+            "trefferquote": 0.3,
+            "profit_factor": 1.1558231130819505
+          }
+        },
+        "3": {
+          "long": {
+            "trades": 119,
+            "avg_r": 1.2021976153044651,
+            "summe_r": 143.06151622123136,
+            "trefferquote": 0.4117647058823529,
+            "profit_factor": 2.658231183662645
+          },
+          "short": {
+            "trades": 14,
+            "avg_r": 0.7533627791425168,
+            "summe_r": 10.547078907995235,
+            "trefferquote": 0.42857142857142855,
+            "profit_factor": 2.5438079835432004
+          }
+        }
+      },
+      "kernfrage": {
+        "short_im_abwaertstrend": {
+          "trades": 99,
+          "avg_r": -0.16084314631896507,
+          "summe_r": -15.923471485577542,
+          "trefferquote": 0.20202020202020202,
+          "profit_factor": 0.8367602150320769
+        },
+        "short_im_aufwaertstrend": {
+          "trades": 328,
+          "avg_r": -0.19833122866802733,
+          "summe_r": -65.05264300311296,
+          "trefferquote": 0.24695121951219512,
+          "profit_factor": 0.7906159139281675
+        }
+      },
+      "flaeche": {
+        "Baseline (beide)": {
+          "trades": 1253,
+          "avg_r": 0.10907772362311173,
+          "summe_r": 136.674387699759,
+          "trefferquote": 0.2761372705506784,
+          "profit_factor": 1.1200826719634092
+        },
+        "nur long": {
+          "trades": 662,
+          "avg_r": 0.39113196988774285,
+          "summe_r": 258.9293640656858,
+          "trefferquote": 0.31268882175226587,
+          "profit_factor": 1.4582913552203691
+        },
+        "trendkonform": {
+          "trades": 639,
+          "avg_r": 0.4461891074053732,
+          "summe_r": 285.11483963203347,
+          "trefferquote": 0.3208137715179969,
+          "profit_factor": 1.528123194559334
+        },
+        "trendkonform H4": {
+          "trades": 762,
+          "avg_r": 0.2488208785738039,
+          "summe_r": 189.60150947323856,
+          "trefferquote": 0.2900262467191601,
+          "profit_factor": 1.2775437267163496
+        },
+        "gegen den Trend": {
+          "trades": 369,
+          "avg_r": -0.1782529387720561,
+          "summe_r": -65.7753344068887,
+          "trefferquote": 0.24661246612466126,
+          "profit_factor": 0.8114616428754432
+        }
+      },
+      "walkforward": {
+        "je_jahr": [
+          {
+            "jahr": 2019,
+            "gewaehlt": "trendkonform H4",
+            "oos_trades": 76,
+            "oos_summe_r": 16.814745497302386,
+            "baseline_summe_r": 21.389028509782626,
+            "differenz": -4.57428301248024
+          },
+          {
+            "jahr": 2020,
+            "gewaehlt": "nur long",
+            "oos_trades": 65,
+            "oos_summe_r": 24.83284751472154,
+            "baseline_summe_r": -18.52645303291468,
+            "differenz": 43.359300547636224
+          },
+          {
+            "jahr": 2021,
+            "gewaehlt": "nur long",
+            "oos_trades": 84,
+            "oos_summe_r": -21.025460069246922,
+            "baseline_summe_r": -2.85001173662514,
+            "differenz": -18.175448332621784
+          },
+          {
+            "jahr": 2022,
+            "gewaehlt": "nur long",
+            "oos_trades": 56,
+            "oos_summe_r": 27.63207557518606,
+            "baseline_summe_r": 34.743155213970375,
+            "differenz": -7.1110796387843145
+          },
+          {
+            "jahr": 2023,
+            "gewaehlt": "nur long",
+            "oos_trades": 52,
+            "oos_summe_r": -23.20157040165406,
+            "baseline_summe_r": -50.90731681575717,
+            "differenz": 27.70574641410311
+          },
+          {
+            "jahr": 2024,
+            "gewaehlt": "trendkonform",
+            "oos_trades": 55,
+            "oos_summe_r": 61.92340820091478,
+            "baseline_summe_r": 62.01183872701048,
+            "differenz": -0.08843052609569924
+          },
+          {
+            "jahr": 2025,
+            "gewaehlt": "trendkonform",
+            "oos_trades": 58,
+            "oos_summe_r": 91.65187982709688,
+            "baseline_summe_r": 80.1770828925244,
+            "differenz": 11.474796934572481
+          },
+          {
+            "jahr": 2026,
+            "gewaehlt": "trendkonform",
+            "oos_trades": 36,
+            "oos_summe_r": 22.821214272944605,
+            "baseline_summe_r": 17.386331839740254,
+            "differenz": 5.434882433204351
+          }
+        ],
+        "oos": {
+          "trades": 482,
+          "avg_r": 0.41794427472461676,
+          "summe_r": 201.44914041726528,
+          "trefferquote": 0.3257261410788382,
+          "profit_factor": 1.5026469480184508
+        },
+        "baseline": {
+          "trades": 871,
+          "avg_r": 0.1646655058527338,
+          "summe_r": 143.42365559773114,
+          "trefferquote": 0.29161882893226176,
+          "profit_factor": 1.1859070345966176
+        },
+        "jahre_besser": 4,
+        "jahre_gesamt": 8,
+        "gewaehlte_parameter": [
+          "trendkonform H4",
+          "nur long",
+          "nur long",
+          "nur long",
+          "nur long",
+          "trendkonform",
+          "trendkonform",
+          "trendkonform"
+        ]
+      },
+      "monte_carlo": {
+        "Baseline (beide)": {
+          "median_maxdd_pct": -15.629599847397552,
+          "P_maxdd_ueber_6pct": 0.9985,
+          "median_return_pct": 18.79335632658018,
+          "median_sharpe": 0.25106952124411397
+        },
+        "nur long": {
+          "median_maxdd_pct": -8.120050329902407,
+          "P_maxdd_ueber_6pct": 0.841,
+          "median_return_pct": 43.56563012594449,
+          "median_sharpe": 0.7070371438565485
+        },
+        "trendkonform": {
+          "median_maxdd_pct": -7.808968398003913,
+          "P_maxdd_ueber_6pct": 0.796,
+          "median_return_pct": 49.10374300295838,
+          "median_sharpe": 0.7641842695009933
+        },
+        "trendkonform H4": {
+          "median_maxdd_pct": -10.48355006880331,
+          "P_maxdd_ueber_6pct": 0.9595,
+          "median_return_pct": 30.933481228939463,
+          "median_sharpe": 0.4776792004839374
+        },
+        "gegen den Trend": {
+          "median_maxdd_pct": -14.905636499915726,
+          "P_maxdd_ueber_6pct": 0.9675,
+          "median_return_pct": -10.126120409759826,
+          "median_sharpe": -0.32708130351468456
+        }
+      }
+    },
+    "ctnl_continuation": {
+      "zeitraum": {
+        "2016-2026": {
+          "long": {
+            "trades": 245,
+            "avg_r": -0.07600899874129667,
+            "summe_r": -18.622204691617686,
+            "trefferquote": 0.2979591836734694,
+            "profit_factor": 0.9215838046134098
+          },
+          "short": {
+            "trades": 191,
+            "avg_r": -0.03974157383114581,
+            "summe_r": -7.590640601748849,
+            "trefferquote": 0.29842931937172773,
+            "profit_factor": 0.9623428036305756
+          }
+        },
+        "2024-2026": {
+          "long": {
+            "trades": 59,
+            "avg_r": 0.004122913403207533,
+            "summe_r": 0.24325189078924447,
+            "trefferquote": 0.3559322033898305,
+            "profit_factor": 1.0050512313189512
+          },
+          "short": {
+            "trades": 41,
+            "avg_r": 0.7571222356307981,
+            "summe_r": 31.04201166086272,
+            "trefferquote": 0.4146341463414634,
+            "profit_factor": 1.7934271701993802
+          }
+        }
+      },
+      "kreuz_h4": {
+        "-1": {
+          "long": {
+            "trades": 52,
+            "avg_r": 0.48314680295471385,
+            "summe_r": 25.12363375364512,
+            "trefferquote": 0.36538461538461536,
+            "profit_factor": 1.5600165018116836
+          },
+          "short": {
+            "trades": 83,
+            "avg_r": 0.07010291947201226,
+            "summe_r": 5.818542316177018,
+            "trefferquote": 0.3373493975903614,
+            "profit_factor": 1.0751243536138937
+          }
+        },
+        "0": {
+          "long": {
+            "trades": 55,
+            "avg_r": -0.5321546984345917,
+            "summe_r": -29.268508413902545,
+            "trefferquote": 0.2545454545454545,
+            "profit_factor": 0.4894111446540847
+          },
+          "short": {
+            "trades": 59,
+            "avg_r": -0.13528836763790947,
+            "summe_r": -7.982013690636658,
+            "trefferquote": 0.2542372881355932,
+            "profit_factor": 0.8888959202124402
+          }
+        },
+        "1": {
+          "long": {
+            "trades": 138,
+            "avg_r": -0.10490818863304528,
+            "summe_r": -14.47733003136025,
+            "trefferquote": 0.2898550724637681,
+            "profit_factor": 0.8929933239487482
+          },
+          "short": {
+            "trades": 49,
+            "avg_r": -0.11075855565896346,
+            "summe_r": -5.42716922728921,
+            "trefferquote": 0.2857142857142857,
+            "profit_factor": 0.8961849697368992
+          }
+        }
+      },
+      "kreuz_sum": {
+        "-2": {
+          "long": {
+            "trades": 12,
+            "avg_r": -0.40342206612651305,
+            "summe_r": -4.841064793518156,
+            "trefferquote": 0.16666666666666666,
+            "profit_factor": 0.6607428345576691
+          },
+          "short": {
+            "trades": 11,
+            "avg_r": -0.4092156410518763,
+            "summe_r": -4.501372051570639,
+            "trefferquote": 0.2727272727272727,
+            "profit_factor": 0.6274949764778821
+          }
+        },
+        "-1": {
+          "long": {
+            "trades": 13,
+            "avg_r": 0.37588941738935816,
+            "summe_r": 4.886562426061656,
+            "trefferquote": 0.38461538461538464,
+            "profit_factor": 1.4656093102198011
+          },
+          "short": {
+            "trades": 13,
+            "avg_r": -0.236934458672251,
+            "summe_r": -3.0801479627392627,
+            "trefferquote": 0.15384615384615385,
+            "profit_factor": 0.784423222643815
+          }
+        },
+        "0": {
+          "long": {
+            "trades": 29,
+            "avg_r": 0.9076721484684108,
+            "summe_r": 26.322492305583914,
+            "trefferquote": 0.41379310344827586,
+            "profit_factor": 2.0606195286054274
+          },
+          "short": {
+            "trades": 44,
+            "avg_r": 0.3767988139396375,
+            "summe_r": 16.57914781334405,
+            "trefferquote": 0.4090909090909091,
+            "profit_factor": 1.4374809436425127
+          }
+        },
+        "1": {
+          "long": {
+            "trades": 60,
+            "avg_r": -0.11565083484906044,
+            "summe_r": -6.939050090943627,
+            "trefferquote": 0.31666666666666665,
+            "profit_factor": 0.8853215574821881
+          },
+          "short": {
+            "trades": 35,
+            "avg_r": 0.16541487894181306,
+            "summe_r": 5.789520762963457,
+            "trefferquote": 0.3142857142857143,
+            "profit_factor": 1.1822209955342564
+          }
+        },
+        "2": {
+          "long": {
+            "trades": 36,
+            "avg_r": -0.7109000756791883,
+            "summe_r": -25.592402724450782,
+            "trefferquote": 0.16666666666666666,
+            "profit_factor": 0.3792342936979563
+          },
+          "short": {
+            "trades": 52,
+            "avg_r": -0.46250192375276905,
+            "summe_r": -24.05010003514399,
+            "trefferquote": 0.23076923076923078,
+            "profit_factor": 0.6364475945716352
+          }
+        },
+        "3": {
+          "long": {
+            "trades": 95,
+            "avg_r": -0.1311446506773757,
+            "summe_r": -12.458741814350692,
+            "trefferquote": 0.30526315789473685,
+            "profit_factor": 0.8554008256388866
+          },
+          "short": {
+            "trades": 36,
+            "avg_r": 0.04645307976104245,
+            "summe_r": 1.6723108713975283,
+            "trefferquote": 0.3055555555555556,
+            "profit_factor": 1.0424678858343892
+          }
+        }
+      },
+      "kreuz_sum_jung": {
+        "-1": {
+          "long": {
+            "trades": 0,
+            "avg_r": NaN,
+            "summe_r": 0.0,
+            "profit_factor": NaN,
+            "trefferquote": NaN
+          },
+          "short": {
+            "trades": 2,
+            "avg_r": 3.970020858322549,
+            "summe_r": 7.940041716645098,
+            "trefferquote": 0.5,
+            "profit_factor": 6.979119101004232
+          }
+        },
+        "0": {
+          "long": {
+            "trades": 5,
+            "avg_r": -0.569715481913126,
+            "summe_r": -2.84857740956563,
+            "trefferquote": 0.2,
+            "profit_factor": 0.448340681403941
+          },
+          "short": {
+            "trades": 4,
+            "avg_r": 2.943207397237038,
+            "summe_r": 11.772829588948152,
+            "trefferquote": 0.75,
+            "profit_factor": 8.782888505367714
+          }
+        },
+        "1": {
+          "long": {
+            "trades": 8,
+            "avg_r": 0.26123612300758947,
+            "summe_r": 2.0898889840607158,
+            "trefferquote": 0.5,
+            "profit_factor": 1.3561666670982673
+          },
+          "short": {
+            "trades": 1,
+            "avg_r": 0.6801724697161206,
+            "summe_r": 0.6801724697161206,
+            "trefferquote": 1.0,
+            "profit_factor": NaN
+          }
+        },
+        "2": {
+          "long": {
+            "trades": 4,
+            "avg_r": -0.6666403789494331,
+            "summe_r": -2.6665615157977323,
+            "trefferquote": 0.25,
+            "profit_factor": 0.2492888336887849
+          },
+          "short": {
+            "trades": 19,
+            "avg_r": -0.09997664290249535,
+            "summe_r": -1.8995562151474115,
+            "trefferquote": 0.2631578947368421,
+            "profit_factor": 0.9129086856034455
+          }
+        },
+        "3": {
+          "long": {
+            "trades": 42,
+            "avg_r": 0.08734528171647367,
+            "summe_r": 3.668501832091894,
+            "trefferquote": 0.35714285714285715,
+            "profit_factor": 1.1092677112324214
+          },
+          "short": {
+            "trades": 15,
+            "avg_r": 0.8365682733800507,
+            "summe_r": 12.54852410070076,
+            "trefferquote": 0.4666666666666667,
+            "profit_factor": 1.8670745963239403
+          }
+        }
+      },
+      "kernfrage": {
+        "short_im_abwaertstrend": {
+          "trades": 24,
+          "avg_r": -0.3158966672629127,
+          "summe_r": -7.581520014309905,
+          "trefferquote": 0.20833333333333334,
+          "profit_factor": 0.7125162703469966
+        },
+        "short_im_aufwaertstrend": {
+          "trades": 123,
+          "avg_r": -0.13486397073807313,
+          "summe_r": -16.588268400782994,
+          "trefferquote": 0.2764227642276423,
+          "profit_factor": 0.8791851900220502
+        }
+      },
+      "flaeche": {
+        "Baseline (beide)": {
+          "trades": 436,
+          "avg_r": -0.06012120480129937,
+          "summe_r": -26.212845293366527,
+          "trefferquote": 0.2981651376146789,
+          "profit_factor": 0.9402966061283249
+        },
+        "nur long": {
+          "trades": 245,
+          "avg_r": -0.07600899874129667,
+          "summe_r": -18.622204691617686,
+          "trefferquote": 0.2979591836734694,
+          "profit_factor": 0.9215838046134098
+        },
+        "trendkonform": {
+          "trades": 215,
+          "avg_r": -0.24451960299560466,
+          "summe_r": -52.571714644055,
+          "trefferquote": 0.2744186046511628,
+          "profit_factor": 0.7546455524504071
+        },
+        "trendkonform H4": {
+          "trades": 221,
+          "avg_r": -0.03918003491033141,
+          "summe_r": -8.65878771518324,
+          "trefferquote": 0.3076923076923077,
+          "profit_factor": 0.9592998519971784
+        },
+        "gegen den Trend": {
+          "trades": 148,
+          "avg_r": -0.1117754781637804,
+          "summe_r": -16.5427707682395,
+          "trefferquote": 0.27702702702702703,
+          "profit_factor": 0.8979268857971892
+        }
+      },
+      "walkforward": {
+        "je_jahr": [
+          {
+            "jahr": 2019,
+            "gewaehlt": "Baseline (beide)",
+            "oos_trades": 45,
+            "oos_summe_r": -14.997958267555688,
+            "baseline_summe_r": -14.997958267555688,
+            "differenz": 0.0
+          },
+          {
+            "jahr": 2020,
+            "gewaehlt": "Baseline (beide)",
+            "oos_trades": 29,
+            "oos_summe_r": -8.210792719416887,
+            "baseline_summe_r": -8.210792719416887,
+            "differenz": 0.0
+          },
+          {
+            "jahr": 2021,
+            "gewaehlt": "Baseline (beide)",
+            "oos_trades": 39,
+            "oos_summe_r": -1.6442809778583387,
+            "baseline_summe_r": -1.6442809778583387,
+            "differenz": 0.0
+          },
+          {
+            "jahr": 2022,
+            "gewaehlt": "nur long",
+            "oos_trades": 24,
+            "oos_summe_r": 9.177888493917585,
+            "baseline_summe_r": -1.9984835819808033,
+            "differenz": 11.176372075898389
+          },
+          {
+            "jahr": 2023,
+            "gewaehlt": "nur long",
+            "oos_trades": 25,
+            "oos_summe_r": -9.245900118369981,
+            "baseline_summe_r": -4.962949388630169,
+            "differenz": -4.282950729739812
+          },
+          {
+            "jahr": 2024,
+            "gewaehlt": "nur long",
+            "oos_trades": 31,
+            "oos_summe_r": -5.30563791533962,
+            "baseline_summe_r": -3.768579856310127,
+            "differenz": -1.5370580590294929
+          },
+          {
+            "jahr": 2025,
+            "gewaehlt": "nur long",
+            "oos_trades": 15,
+            "oos_summe_r": 1.1004622818317809,
+            "baseline_summe_r": 5.499223756248957,
+            "differenz": -4.398761474417176
+          },
+          {
+            "jahr": 2026,
+            "gewaehlt": "gegen den Trend",
+            "oos_trades": 1,
+            "oos_summe_r": 5.3933208218228055,
+            "baseline_summe_r": 29.554619651713146,
+            "differenz": -24.16129882989034
+          }
+        ],
+        "oos": {
+          "trades": 209,
+          "avg_r": -0.11355453780367629,
+          "summe_r": -23.732898400968345,
+          "trefferquote": 0.2727272727272727,
+          "profit_factor": 0.8889907148965885
+        },
+        "baseline": {
+          "trades": 301,
+          "avg_r": -0.0017581441321924175,
+          "summe_r": -0.5292013837899177,
+          "trefferquote": 0.3023255813953488,
+          "profit_factor": 0.998238695724746
+        },
+        "jahre_besser": 1,
+        "jahre_gesamt": 8,
+        "gewaehlte_parameter": [
+          "Baseline (beide)",
+          "Baseline (beide)",
+          "Baseline (beide)",
+          "nur long",
+          "nur long",
+          "nur long",
+          "nur long",
+          "gegen den Trend"
+        ]
+      },
+      "monte_carlo": {
+        "Baseline (beide)": {
+          "median_maxdd_pct": -31.67534835240862,
+          "P_maxdd_ueber_6pct": 1.0,
+          "median_return_pct": -16.362805291304756,
+          "median_sharpe": -0.2004876439447522
+        },
+        "nur long": {
+          "median_maxdd_pct": -21.574901302357404,
+          "P_maxdd_ueber_6pct": 1.0,
+          "median_return_pct": -10.602037648721607,
+          "median_sharpe": -0.17732209337363314
+        },
+        "trendkonform": {
+          "median_maxdd_pct": -28.35264473754978,
+          "P_maxdd_ueber_6pct": 1.0,
+          "median_return_pct": -24.319948286766206,
+          "median_sharpe": -0.5255556164100327
+        },
+        "trendkonform H4": {
+          "median_maxdd_pct": -18.433805306851127,
+          "P_maxdd_ueber_6pct": 0.998,
+          "median_return_pct": -6.199990036680852,
+          "median_sharpe": -0.1069975981395872
+        },
+        "gegen den Trend": {
+          "median_maxdd_pct": -19.406204837354984,
+          "P_maxdd_ueber_6pct": 0.9975,
+          "median_return_pct": -9.365553854321185,
+          "median_sharpe": -0.1775366477743949
+        }
+      }
+    }
+  }
+}

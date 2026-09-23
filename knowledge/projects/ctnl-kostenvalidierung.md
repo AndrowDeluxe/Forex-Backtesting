@@ -586,6 +586,107 @@ TP-/Signal-Sweep und Eimer-Analyse): dieses Bein hat keinen Edge.
 
 ---
 
+## Befund 14 — MTF-Trendbestätigung: hilft der Long-Seite, rettet die Short-Seite nicht
+
+Nutzerhypothese 2026-09-23: *„nicht der Edge ist das Problem, sondern fehlende
+Bestätigung des Trends im Higher und Lower Timeframe."*
+`scripts/research_ctnl_mtf_trend.py`, Rohdaten `_data/ctnl_mtf_trend.json`.
+
+Getestet mit einem **EMA-Stapel** (fast > mid > slow, nicht nur ein Kreuzen)
+auf drei Ebenen — H4 (20/50/200) sowie H4-Äquivalente für D1 und W1 —
+zusammengefasst zu `trend_sum` ∈ [−3, +3], jeweils zum Einstiegszeitpunkt.
+
+### Die Zahlen für 2024–2026 (Nutzerfrage)
+
+| Bein | Richtung | n | Ø R | Σ R | PF |
+|---|---|---|---|---|---|
+| reversal | **long** | 149 | **+1,165** | +173,6 | **2,62** |
+| reversal | short | 141 | −0,099 | −14,0 | 0,88 |
+| continuation | long | 59 | +0,004 | +0,2 | 1,01 |
+| continuation | **short** | 41 | **+0,757** | +31,0 | **1,79** |
+
+Die Long-Seite des Reversal-Beins ist im jüngeren Fenster außergewöhnlich
+stark. Die Short-Seite ist dort immer noch negativ, aber deutlich milder als
+über die Gesamthistorie (−0,099 gegen −0,207).
+
+### Die Hypothese, Teil 1: widerlegt für die Short-Seite
+
+| `ctnl_reversal` short | n | Ø R | Σ R | PF |
+|---|---|---|---|---|
+| im **bestätigten Abwärtstrend** (`trend_sum < 0`) | 99 | **−0,161** | −15,9 | 0,84 |
+| im Aufwärtstrend (`trend_sum > 0`) | 328 | −0,198 | −65,1 | 0,79 |
+
+**Der Unterschied ist marginal, beide sind negativ.** Trendbestätigung macht
+die Short-Seite nicht profitabel — sie macht sie nur weniger schlecht, und
+das im Rahmen dessen, was 99 Trades an Rauschen hergeben. Für
+`ctnl_continuation` ist es sogar umgekehrt (short im Abwärtstrend −0,316
+gegen −0,135 im Aufwärtstrend).
+
+### Die Hypothese, Teil 2: bestätigt für die Long-Seite
+
+| Variante | n | Ø R | Σ R | PF | MC MedDD | P(>6 %) | Return | Sharpe |
+|---|---|---|---|---|---|---|---|---|
+| Baseline | 1253 | +0,109 | +136,7 | 1,12 | −15,63 % | 99,9 % | +18,8 % | 0,25 |
+| nur long | 662 | +0,391 | +258,9 | 1,46 | −8,12 % | 84,1 % | +43,6 % | 0,71 |
+| **trendkonform** | 639 | **+0,446** | **+285,1** | **1,53** | **−7,81 %** | **79,6 %** | **+49,1 %** | **0,76** |
+| trendkonform H4 | 762 | +0,249 | +189,6 | 1,28 | −10,48 % | 96,0 % | +30,9 % | 0,48 |
+| gegen den Trend | 369 | −0,178 | −65,8 | 0,81 | −14,91 % | 96,8 % | −10,1 % | −0,33 |
+
+Anker-Walk-Forward: **OOS Σ R +201,4 gegen +143,4** der Baseline — der beste
+Wert der gesamten Untersuchung (zum Vergleich: `long + Regime` lag bei
++170,8). Allerdings nur in **4 von 8** Jahren besser.
+
+`trendkonform` schlägt `nur long` auf **jeder** Kennzahl. Die Zerlegung zeigt,
+woher das kommt: **Long im bestätigten Aufwärtstrend hat Ø R +0,557** (gegen
++0,391 für alle Longs). Der Beitrag der trendkonformen Shorts ist −15,9 Σ R,
+also leicht negativ — sie werden mitgeschleppt, nicht getragen.
+
+**Deine Intuition trifft also zu, aber an anderer Stelle als vermutet:** die
+fehlende Trendbestätigung ist ein echter Mangel — sie kostet auf der
+**Long**-Seite Rendite. Auf der Short-Seite behebt sie nichts.
+
+### Die Hypothese, Teil 3: das Continuation-Bein tut nicht, wofür es da ist
+
+Deine Modellvorstellung: Continuation springt auf längere Trends auf,
+Reversal greift an der nächsten größeren Liquidity. Die Daten widersprechen
+dem ersten Teil:
+
+| `ctnl_continuation` | n | Ø R | Σ R | PF |
+|---|---|---|---|---|
+| Baseline | 436 | −0,060 | −26,2 | 0,94 |
+| **trendkonform** | 215 | **−0,245** | **−52,6** | **0,75** |
+| trendkonform H4 | 221 | −0,039 | −8,7 | 0,96 |
+
+**Trendkonformes Handeln macht das Bein schlechter.** Walk-Forward: 1 von 8
+Jahren. In der H4-Kreuztabelle verdient es long am besten, wenn der H4-Trend
+**abwärts** zeigt (+0,483 gegen −0,105 im Aufwärtstrend) — das ist das
+Gegenteil dessen, was ein Continuation-Modell tun sollte. Das ist kein
+Trendfolge-Edge, sondern Rauschen mit umgekehrtem Vorzeichen.
+
+### Warum die eingebauten Filter ausgeschaltet waren
+
+Die Reversal-Pipeline hat `require_h4_trend_confirm`,
+`require_ribbon_stretch` (mit D1/W1), `require_h1_inducement`,
+`require_magnitude`, `require_volume_exhaustion` und `require_level_age`
+**bereits eingebaut** — die gesperrte `REV_KWARGS` nutzt keinen davon.
+
+Sie **wurden** getestet, im August 2026 (`research_gold_smc_reversal_cascade_v3`
+bis `_v6`). Aus dem v6-Docstring:
+
+> h4/h1 stage fixed at the standing-best config (…) **no inducement/magnitude/
+> volume/age — none of those improved on the baseline per v3-v5**
+
+Zwei Einschränkungen, die das für diese Frage wieder öffnen: getestet wurde
+(a) auf dem **IS-Fenster 2024-08/2025-08**, also nur im guten Regime, und
+(b) als **nicht-direktionale** Zustandsbedingung auf das ganze Bein — die
+Frage „Short nur im Abwärtstrend" wurde nie gestellt.
+
+**Und: davon steht nichts in `knowledge/`.** Das Ergebnis lebt ausschließlich
+im Docstring eines Research-Skripts und war damit praktisch nicht auffindbar.
+Das ist ein eigener Befund über das Second Brain, nicht über die Strategie.
+
+---
+
 ## Was daraus folgt (Entscheidung steht bei dir)
 
 Nach Kostenvalidierung, Diagnose und Optimierung stehen **vier** Entscheidungen

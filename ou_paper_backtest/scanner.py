@@ -81,6 +81,20 @@ def _refresh_universe_prices(tickers: list[str], benchmark_ticker: str) -> tuple
         if not close.empty:
             prices[t] = close
 
+    # ABDECKUNG MELDEN (2026-09-23). Ein Ticker, den yfinance nicht liefert, fiel
+    # hier bisher still heraus: der Scanner meldete "scanning 58 tickers" und
+    # rechnete danach mit 6, ohne dass das irgendwo auffiel. Am 2026-09-23 kamen
+    # in einem Lauf nur 8 von 66 Titeln zurueck. Das ist keine Kosmetik -- an
+    # dieser Liste haengen die Einstiegssignale UND (seit Logik D) die
+    # Ausstiegsschwellen der EK-Bridge.
+    fehlend = [t for t in tickers if t not in prices]
+    if fehlend:
+        anteil = len(prices) / len(tickers) if tickers else 0
+        stufe = "WARNUNG" if anteil >= 0.8 else "ACHTUNG - SCAN UNVOLLSTAENDIG"
+        print(f"{stufe}: nur {len(prices)}/{len(tickers)} Ticker mit Kursen "
+              f"({anteil:.0%}). Ohne Kurse: {', '.join(fehlend[:10])}"
+              f"{' ...' if len(fehlend) > 10 else ''}")
+
     panel = pd.DataFrame(prices)
     bench_df = yf.download(benchmark_ticker, start=lookback_start, end=today, auto_adjust=True, progress=False)
     benchmark = bench_df["Close"]

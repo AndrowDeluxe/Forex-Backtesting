@@ -92,16 +92,22 @@ Bedarf vor generischem Aufräumen.
   letzten 4 auslaufen lassen (Bein ist in ein paar Tagen von selbst frei) oder
   Schliessen vorbereiten? Ohne Antwort lasse ich sie laufen.
 
-- **CTNL-Kostenvalidierung fertig -- Entscheidung A/B/C liegt bei dir.**
-  Alle vier Proben durchgerechnet, beide Beine, Ergebnis in
-  `projects/ctnl-kostenvalidierung.md`. **Kein Handlungsdruck:** beide Beine
-  sind bei echten Kosten profitabel. Kernbefund: die angesetzten 8 bps sind
-  4- bis 11-fach ZU HOCH (gemessen 0,73-1,95), der Backtest weist CTNL also
-  schlechter aus als es ist. **Meine Empfehlung ist B** (`spread_bps`
-  broker-getrennt auf die gemessenen Werte), mit dem Haken, dass dann die
-  Phase-6-Referenz `CTNL_KILL_SWITCH_DD_THRESHOLD = -0,066` neu gezogen
-  werden muss. **Offen fuer dich:** A (nichts aendern), B, oder C (B plus
-  EK-Angleichung -- die ist fuer CTNL aber NICHT gemessen, siehe Notiz).
+- **CTNL: Kostenvalidierung + Diagnose + Optimierung fertig -- vier
+  Entscheidungen E1-E4 liegen bei dir** (`projects/ctnl-kostenvalidierung.md`).
+  **E1 Kostenzahl korrigieren** (`spread_bps` 8,0 -> gemessen 0,53-2,01,
+  broker-getrennt). **E2 Regime-Filter** auf `ctnl_reversal` -- der einzige
+  Hebel, den die Optimierung gefunden hat: Monte Carlo Median MaxDD
+  -15,6 % -> -8,4 % UND Median Return +18,8 % -> +32,2 %. Vorschlag: erst
+  mitlaufen lassen (protokollieren, nicht handeln). **E3
+  `ctnl_continuation` stilllegen** -- PF 0,94 ueber 436 Trades und 10 Jahre,
+  Monte Carlo Median Return -16,4 %; keine Variante dreht das.
+  **E4 Risikokalibrierung neu ziehen** -- die dokumentierten FK-Zahlen
+  (Median MaxDD -3,5 %) stammen aus EINEM OOS-Jahr; ueber zehn Jahre liegt
+  allein das Reversal-Bein bei -15,6 %. Reihenfolge: E1-E3 vor E4.
+  **Nicht anfassen:** TP (5R sitzt auf einem flachen Plateau), SL
+  (0,5R-Stop killt 49,5 % der Gewinner), Signal-Parameter (IS-Sieger in
+  8/8 Jahren, verliert OOS), Ausfuehrungstakt (verkuerzbar, aber
+  P&L-Gewinn nicht belegt).
 
 - **Broker-History von ttp1 konnte ich nicht ziehen** -- der Zugriff auf die
   Zugangsdaten im Bridge-Backup wurde vom Auto-Mode-Classifier blockiert.

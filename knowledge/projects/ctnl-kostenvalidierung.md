@@ -687,6 +687,81 @@ Das ist ein eigener Befund über das Second Brain, nicht über die Strategie.
 
 ---
 
+## Befund 15 — der eigene MTF-EMA-Ribbon als Trendrichtung: das stärkste Ergebnis
+
+`gold_smc_htf_ltf/ema_ribbon.py` enthält den MTF-EMA-Ribbon aus dem eigenen
+Pine-Script des Nutzers (H4-EMA50, D1-EMA50, D1-EMA200, W1-EMA50, chat
+2026-08-18). Er war bisher **nur als Dehnungs-Filter** verdrahtet
+(`require_ribbon_stretch`: „Preis zu weit vom Ribbon entfernt") — **nie als
+Trendrichtung**.
+
+Hier als **direktionales Gate** gelesen: Preis über **allen vier** EMAs =
+Aufwärts, unter allen = Abwärts, dazwischen = neutral. **Keine Parametersuche**
+— die Längen sind die Script-Defaults, die Lesart ist die naheliegende.
+
+### Und damit tragen die Shorts
+
+| `ctnl_reversal` short im Abwärtstrend | n | Ø R |
+|---|---|---|
+| generischer EMA-Stapel H4/D1/W1 (20/50/200) | 99 | **−0,161** |
+| **eigener MTF-Ribbon** | 104 | **+0,174** |
+
+**Das ist die Bestätigung der Nutzerhypothese, die dem generischen Stapel
+nicht gelang.** Der Unterschied liegt in der Konstruktion: der Ribbon mischt
+vier Zeitebenen (H4/D1/D1-slow/W1) und verlangt, dass der Preis sie **alle**
+auf derselben Seite hat — eine deutlich strengere Trendaussage als ein
+EMA-Stapel auf einer Ebene.
+
+### Gesamtbild
+
+| Variante | n | Ø R | Σ R | PF | MC MedDD | P(>6 %) | Return | Sharpe |
+|---|---|---|---|---|---|---|---|---|
+| Baseline | 1253 | +0,109 | +136,7 | 1,12 | −15,63 % | 99,9 % | +18,8 % | 0,25 |
+| ribbon als *Dehnung* 2 ATR | 400 | +0,061 | +24,5 | 1,07 | −11,28 % | 94,7 % | +3,2 % | 0,08 |
+| ribbon als *Dehnung* 3 ATR | 368 | +0,062 | +23,0 | 1,07 | −10,91 % | 93,0 % | +2,8 % | 0,07 |
+| ribbon als *Dehnung* 4 ATR | 317 | −0,065 | −20,7 | 0,93 | −11,86 % | 92,5 % | −3,4 % | −0,10 |
+| **ribbon-konform** (Richtung) | 475 | **+0,696** | **+330,6** | **1,87** | **−5,63 %** | 42,4 % | **+58,0 %** | 0,95 |
+| **ribbon long-only** | 371 | **+0,842** | +312,5 | **2,08** | **−4,80 %** | **24,2 %** | +55,6 % | **1,02** |
+
+**Als Dehnungsfilter ist der Ribbon wertlos** (die Variante, für die er
+verdrahtet wurde). **Als Trendrichtung ist er der stärkste Hebel der ganzen
+Untersuchung.** Das Modul war gebaut und angeschlossen — für den falschen
+Zweck.
+
+### Walk-Forward
+
+| | OOS Σ R | Ø R | PF | Jahre besser |
+|---|---|---|---|---|
+| Baseline | +143,4 | +0,165 | 1,19 | — |
+| **Ribbon-Prozedur** | **+243,6** | **+0,820** | **2,07** | 5 von 8 |
+
+Die Prozedur wählt in **7 von 8** Jahren `ribbon-konform` (2022:
+`ribbon long-only`) — ein sehr stabiler Pick. Zum Vergleich der bisherigen
+Kandidaten: `long + Regime` +170,8, `trendkonform` +201,4, **Ribbon +243,6**.
+
+### Einordnung und Vorbehalte
+
+- **Der Bull-Market-Einwand ist abgeschwächt, nicht ausgeräumt.** Dass Shorts
+  im Ribbon-Abwärtstrend **positiv** sind (+0,174), ist ein Argument gegen die
+  reine Tautologie-Lesart aus Befund 11/12 — der Filter findet offenbar
+  Phasen, in denen Shorts tragen. Die Stichprobe bleibt aber dieselbe: 104
+  Short-Trades, und eine echte Gold-Baisse fehlt weiter.
+- **Die Trade-Zahl fällt von 1253 auf 475** (−62 %). Das Bein wird deutlich
+  selektiver; auf Konten mit Mindestlot-Problem (siehe Befund 10) ändert das
+  die Rechnung zusätzlich.
+- **Verliert in 3 von 8 Jahren** — 2021 (−23,2), 2024 (−9,8), 2025 (−27,2).
+  Dasselbe Muster wie bei allen Filtern hier: sie kosten in den starken
+  Trendjahren.
+- **Geringes Überfittungsrisiko:** keine Parametersuche, Script-Defaults,
+  naheliegende Lesart, und der Walk-Forward wählt fast immer dieselbe
+  Variante. Das ist die sauberste Ausgangslage aller geprüften Kandidaten.
+- `ribbon-konform` liefert mehr Σ R und Rendite, `ribbon long-only` den
+  besseren Sharpe und ein **deutlich** niedrigeres P(MaxDD>6 %) (24,2 % gegen
+  42,4 %) — für ein Challenge-Konto mit 6-%-Grenze ist das der relevantere
+  Unterschied.
+
+---
+
 ## Was daraus folgt (Entscheidung steht bei dir)
 
 Nach Kostenvalidierung, Diagnose und Optimierung stehen **vier** Entscheidungen
@@ -752,7 +827,26 @@ dort eine reale Stopdistanz vorlag. `cls_practical` (19,40 EUR Ziel),
 `ou_modell` (10,77) und die drei ORB-Beine (10,58) liegen ebenfalls niedrig
 genug, dass eine Anhebung plausibel ist. **Das habe ich nicht nachgerechnet.**
 
-### E6 — `ctnl_reversal` auf Long beschränken? *(größter Effekt, größter Vorbehalt)*
+### E6 — `ctnl_reversal`: Ribbon-Richtungsfilter *(überholt die reine Long-Frage)*
+
+> **Aktualisiert 2026-09-23 nach Befund 15.** Die ursprüngliche Frage lautete
+> „long-only ja/nein". Der MTF-EMA-Ribbon als Richtungsfilter ist beiden
+> Varianten überlegen und macht die Short-Seite **positiv** (+0,174 Ø R im
+> Ribbon-Abwärtstrend) — die Frage stellt sich damit neu:
+>
+> | | Σ R | MC Return | Sharpe | P(MaxDD>6 %) |
+> |---|---|---|---|---|
+> | Baseline | +136,7 | +18,8 % | 0,25 | 99,9 % |
+> | nur long | +258,9 | +43,6 % | 0,71 | 84,1 % |
+> | **ribbon-konform** | **+330,6** | **+58,0 %** | 0,95 | 42,4 % |
+> | **ribbon long-only** | +312,5 | +55,6 % | **1,02** | **24,2 %** |
+>
+> **Empfehlung: weiter mitlaufen lassen (E6-d), aber den Ribbon-Filter mit
+> protokollieren** statt nur long/short. Für ein Challenge-Konto spricht
+> `ribbon long-only` (P(>6 %) 24,2 %), für ein EK-Konto ohne harte
+> DD-Grenze `ribbon-konform` (mehr Rendite).
+
+### Ursprüngliche Fassung — `ctnl_reversal` auf Long beschränken?
 
 Monte Carlo: Median MaxDD **−15,6 % → −4,84 %**, P(MaxDD>6 %)
 **99,9 % → 23,3 %**, Sharpe **0,25 → 0,83** (Variante `long + Regime`).

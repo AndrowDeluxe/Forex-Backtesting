@@ -56,16 +56,18 @@ Bedarf vor generischem Aufräumen.
   in `_record_entry()` speichern (klein) oder den toten Marktorder-Pfad
   ganz rausnehmen (sauberer)?
 
-- **E6 laeuft mit (Nutzerentscheid) -- Auswertung per
-  `scripts/ctnl_shadow_eval.py`.** Der Struktur-gegen-Regime-Test ist
-  gerechnet: die Short-Schwaeche ist ein **Regime**-Effekt (fallende Jahre
-  Ø R +0,116, steigende -0,390, Korrelation -0,38), keine strukturelle.
-  **Long-only ist damit eine Trendwette** und muesste bei einer Gold-Wende
-  zurueckgedreht werden. Erster Schattenlauf: von 127 realen Trades waren nur
-  26 long, 20 haetten beide Filter bestanden. **Offen fuer dich:** wann
-  entscheiden? Vorschlag: nach ~50 abgeschlossenen Trades mit P&L, dann
-  E6-c (long-only ohne scharfen Regime-Filter). Skript regelmaessig laufen
-  lassen -- soll ich dafuer eine geplante Routine anlegen?
+- **🟢 E6 neu bewertet: dein MTF-EMA-Ribbon als Trendrichtung schlaegt alles
+  bisher Gepruefte -- und macht die Short-Seite positiv.** Der Ribbon
+  (`ema_ribbon.py`, aus deinem Pine-Script) war nur als DEHNUNGS-Filter
+  verdrahtet, nie als Richtung. Als Richtung: short im Ribbon-Abwaertstrend
+  **Ø R +0,174** (generischer EMA-Stapel: -0,161). Walk-Forward OOS
+  **+243,6 gegen +143,4**. Monte Carlo `ribbon long-only`: MedDD **-4,80 %**,
+  **P(MaxDD>6 %) 24,2 %** statt 99,9 %, Sharpe **1,02** statt 0,25.
+  Keine Parametersuche, Script-Defaults. **Offen fuer dich:** weiter
+  mitlaufen lassen (mein Vorschlag, Schattenlauf um den Ribbon ergaenzen),
+  oder `ribbon long-only` fuer die Challenge-Konten / `ribbon-konform` fuer
+  EK scharf schalten? Vorbehalte: -62 % Trades, verliert in starken
+  Trendjahren, Gold-Baisse fehlt im Sample. Details: Befund 15.
 
 - **EK-Mindestlot: E5-c umgesetzt, aber der Rest der Frage steht noch.**
   `ctnl_reversal` haelt auf EK jetzt hoechstens EINE Position

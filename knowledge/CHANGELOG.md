@@ -9,6 +9,42 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-23** [CTNL / MTF-EMA-Ribbon] **🟢 Der eigene Ribbon als
+  TRENDRICHTUNG ist der staerkste Hebel der gesamten Untersuchung -- und die
+  einzige Variante, unter der die SHORT-Seite positiv wird.** Neues Skript
+  `research_ctnl_ribbon_direction.py`, Befund 15 in
+  `projects/ctnl-kostenvalidierung.md`.
+  **Der Kern:** `gold_smc_htf_ltf/ema_ribbon.py` (MTF-Ribbon aus dem eigenen
+  Pine-Script des Nutzers: H4-EMA50, D1-EMA50, D1-EMA200, W1-EMA50) war NUR
+  als Dehnungs-Filter verdrahtet (`require_ribbon_stretch`) -- nie als
+  Trendrichtung. **Das Modul war gebaut und angeschlossen, aber fuer den
+  falschen Zweck.**
+  **Als Dehnung wertlos:** ΣR +24,5 / +23,0 / -20,7 bei 2/3/4 ATR gegen
+  +136,7 der Baseline.
+  **Als Richtung** (Preis ueber ALLEN vier EMAs = Aufwaerts, unter allen =
+  Abwaerts): `ribbon-konform` ΣR **+330,6** / Ø R +0,696 / PF 1,87,
+  `ribbon long-only` ΣR +312,5 / Ø R **+0,842** / PF **2,08**.
+  **Short im Ribbon-Abwaertstrend: n=104, Ø R +0,174 -- POSITIV.** Mit einem
+  generischen EMA-Stapel (20/50/200 auf H4/D1/W1) lag derselbe Schnitt bei
+  **-0,161**. Der Ribbon verlangt, dass der Preis VIER Zeitebenen gleichzeitig
+  auf derselben Seite hat -- eine deutlich strengere Trendaussage.
+  **Damit ist die Nutzerhypothese bestaetigt**, die am generischen Stapel
+  gescheitert war (Befund 14).
+  **Walk-Forward:** OOS **+243,6 gegen +143,4**, Ø R +0,820 vs. +0,165,
+  PF 2,07 vs. 1,19, besser in 5/8 Jahren; die Prozedur waehlt in 7 von 8
+  Jahren `ribbon-konform`. Zum Vergleich der bisherigen Kandidaten:
+  `long + Regime` +170,8, `trendkonform` +201,4.
+  **Monte Carlo (0,15 %/Trade):** `ribbon-konform` MedDD **-5,63 %**,
+  P(>6 %) 42,4 %, Return **+58,0 %**, Sharpe 0,95. `ribbon long-only` MedDD
+  **-4,80 %**, P(>6 %) **24,2 %**, Return +55,6 %, Sharpe **1,02**.
+  Baseline zum Vergleich: -15,63 % / 99,9 % / +18,8 % / 0,25.
+  **Geringes Ueberfittungsrisiko:** KEINE Parametersuche -- Script-Defaults,
+  naheliegende Lesart, stabiler Walk-Forward-Pick.
+  **Vorbehalte:** Trade-Zahl faellt von 1253 auf 475 (-62 %); verliert in
+  2021/2024/2025 (starke Trendjahre); eine echte Gold-Baisse fehlt weiter im
+  Sample. Fuer ein Challenge-Konto spricht `ribbon long-only`
+  (P(>6 %) 24,2 %), fuer EK ohne harte DD-Grenze `ribbon-konform`.
+
 - **2026-09-23** [CTNL / MTF-Trendbestaetigung] **Nutzerhypothese geprueft:
   Trendbestaetigung hilft der LONG-Seite (bestes Ergebnis der ganzen
   Untersuchung), rettet die SHORT-Seite aber nicht.** Neues Skript

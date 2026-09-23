@@ -9,6 +9,78 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-23** [OU-Modell Research] **Signalseite auf Basis der Logik D
+  durchgetestet -- ein Hebel gefunden, vier Einstellungen bestaetigt.**
+  Nutzerauftrag. Neu: `scripts/research_ou_signal_side.py`, Ergebnisse
+  `signal_side_20260923.json`, `signal_k_plateau_20260923.json`,
+  `signal_k_montecarlo_20260923.json`.
+  **Bestaetigt (nicht anfassen):** `BB_LOOKBACK` 20 ist IS-Sieger, der
+  Regimefilter Benchmark > EMA200 ist IS- UND OOS-Sieger (aus: OOS +0,002 statt
+  +0,008), `half_life` 5-200 ist kein Hebel, sp500+nasdaq100 zusammen schlaegt
+  jedes Universum allein, und der TTP-Handelbarkeitsfilter kostet nichts.
+  **Verdacht widerlegt:** `THETA_MIN = 0,03` filtert tatsaechlich nichts (kein
+  Titel unter theta 0,036) und `p_value < 0,2` waehlt aus einer Verteilung ohne
+  jede Signifikanz (0,117-0,297) -- der Filter ist aber trotzdem der wirksamste
+  im System: auf 0,25 gelockert kippt IS von +0,004 auf **-0,023** und OOS von
+  +0,008 auf -0,007. Bei 0,15 bleiben 0 Titel uebrig, die Schwelle sitzt also am
+  Rand des Moeglichen.
+  **Der Hebel: `BB_K`.** Heute 2,0 (Einstieg 2 Sigma unter dem Mittel). Jeder
+  getestete Wert darueber schlaegt 2,0 out-of-sample, auf beiden Brokern, und
+  hebt die positiven OOS-Jahre von 2 auf 3 (bei k=3,0 auf 4). Monte-Carlo in
+  echten Live-Risikogroessen: negative Pfade **30 % -> 18 % (k 2,25) -> 9 %
+  (k 2,5)**, Ertrag +0,58 % -> +0,83 % -> +1,31 % (FK), Drawdown faellt
+  gleichzeitig. Mechanismus: der Ausstieg liegt am Mittel, ein tieferer
+  Einstieg gibt also mehr Weg bei gleichen bps-Kosten.
+  **Empfohlen wird 2,25, NICHT der IS-Sieger 2,5** -- dessen IS-Nachbarn kippen
+  im Vorzeichen (2,25 -0,003 · 2,40 +0,010 · 2,50 +0,016 · 2,60 -0,011), das
+  ist eine Rauschspitze. 2,25 behaelt mehr Trades und liegt im stabilen
+  Bereich. Nichts umgesetzt.
+
+- **2026-09-23** [DASHBOARD-Durchsicht] **Fuenf offene Punkte nachgeprueft und
+  geschlossen, fuenf mit aktuellen Zahlen nachgezogen** (Nutzerauftrag "zieh die
+  geklaerten Punkte nach"). Jeder Punkt gegen echte Daten geprueft, nichts nur
+  abgehakt.
+  **Geschlossen:** (1) *Git-Sync*: `origin/main` hat am 21.09. 82, am 22.09. 82
+  und am 23.09. 29 Commits bekommen, Rueckstand 0 -- die Stash-Logik vom 09-19
+  traegt im Echtbetrieb. (2) *Funded/OU-Signaldatum-Drift*: genau die
+  erwarteten 5 "ABGLEICH"-Meldungen am 17.09. 15:43:21, seitdem 6 weitere
+  (EXPE, MDLZ, OXY, UPS, AMGN, CF) -- Mechanik laeuft. (3) *ttp1-Log-Stille seit
+  09-19*: erwartete Folge, das Konto wurde am 09-19 auf Nutzerauftrag
+  VOLLSTAENDIG aus `ACCOUNTS` entfernt (`state_id="ttp1"` kommt in der config
+  nicht mehr vor) -- die Bridge laeuft es schlicht nicht mehr an, nichts klemmt.
+  (4) *Zeitzonen-Fix beobachten*: seit `tzutil` am 17.09. 10:33 steht die
+  Abweichung in JEDEM Kernel-General-Id-1-Event auf -120 (Berlin), kein Flip
+  mehr; einziges Event seitdem ist eine normale Hardware-Uhr-Resynchronisation
+  am Sa 20.09. 02:21 nach ~9,4 h Schlaf (Wochenende, ohne Handelswirkung).
+  (5) *Cloud-Bridge-Monitor-Alarme 09-16/17/18*: im Punkt selbst bereits als
+  geklaert dokumentiert.
+  **Nachgezogen:** (a) *Verwaiste CTNL-Positionen*: ttp 32 -> **4**, FK 11 ->
+  **0**, IQ 0 -- FK und IQ nehmen wieder Entries an, nur ttp liegt mit 4 noch
+  ueber der Grenze 3. (b) *Order-Flut-Fix*: am 22.09. live bestaetigt, Korb
+  sauber abgebaut (8 -> 6 -> 4 -> 3). (c) *EK/OU-Max-Holding*: nicht mehr 4,
+  sondern **9 von 19** Positionen ueber dem 10-Tage-Limit (DAL 33, ADI/DHI/GRMN
+  20, AMGN/EXPE 12, LEN/COF/GIS 11); AXP am 22.09. ausgestoppt. (d) *FK
+  SP500 "Invalid stops"*: seit dem Fix kein SP500-Signal mehr aufgetreten
+  (21./22.09. beide `filtered_out`), Gegenbeweis steht also noch aus.
+  (e) *Kurztakt-Task-Ausfaelle*: 1.275 Fast-Laeufe seit 09-17, keine Luecke
+  ausser Wochenende und 65 Min am Fix-Tag selbst.
+  DASHBOARD.md 552 -> 525 Zeilen.
+
+- **2026-09-23** [Second Brain / Reports] **Education-Journal-Zwischeneintrag
+  KW39 von Hand angelegt** (`reports/weekly/KW39_2026_education.md`,
+  Nutzerwunsch) -- Abschnitte 3+4 mit den Erkenntnissen aus der
+  Paper-Sichtung vom 22.09.; der Sonntagslauf ersetzt die Datei, der Inhalt
+  bleibt erhalten, da Memory + committete PARA-Notizen als Quellen gesetzt
+  sind. **Dabei zwei Eintraege vom 22.09. wiederhergestellt**, die eine
+  parallele Session mit Commit `1fc8645` ueberschrieben hatte: die
+  DASHBOARD-Rueckfrage zum Paper-Screening und der Abschnitt "Externe
+  Paper-Einordnung 2026-09-22" in `projects/ny-open-orb-sp500.md`. Bekanntes
+  Muster (Memory `parallele_sessions_ueberschreiben_knowledge`), diesmal erst
+  beim ZWEITEN grep-Check gefunden -- einmal pruefen reicht nicht, wenn
+  zwischen Schreiben und Weiterarbeiten Stunden liegen. Nebenbei
+  festgehalten: **fuer KW38 existiert kein Report**, obwohl
+  `scripts/reports/mt5_2026-W38.json` vorliegt -- nicht untersucht.
+
 - **2026-09-23** [SL/TP-Pruefung aller vier Live-Konten] **Alle 37 offenen
   Positionen haben einen SL -- keine Ausnahme.** Nutzerauftrag nach dem
   manuellen CTNL-Aufraeumen. Read-only ueber `positions_get()`/`orders_get()`

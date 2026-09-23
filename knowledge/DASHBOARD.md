@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-09-21** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-09-23** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -35,6 +35,25 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **Paper-Screening 2026-09-22: ist das Zumachen der einen Tuer okay?**
+  Drei Papers gesichtet (Details in
+  [[24h-renditestruktur-und-informationskette]]). Zwei Dinge beruhen auf
+  meiner Einschaetzung, nicht auf deiner Anweisung:
+  **(1)** Ich habe den naheliegenden "Europas/Asiens Close als Richtungs-Prior
+  fuer den NY-Open"-Filter **vor dem Bau verworfen** (Kinoshita: Boost +0,07 pt,
+  Vorzeichenregel 48,89 % = unter Zufall, waehrend alle anderen Legs +10,6 bis
+  +15,0 pt tragen). Spart einen Stage-Zyklus -- sag Bescheid, wenn du ihn
+  trotzdem gemessen haben willst.
+  **(2)** Delta-VIX/Overnight-Vol als ORB-Tagesfilter habe ich NICHT
+  weiterverfolgt, obwohl bisher nur der VIX-*Level* getestet wurde -- weil das
+  Paper die *Aenderung* nur fuer das Nachtfenster belegt und sie fuer die
+  US-Session selbst insignifikant ist (t=0,5). Falls du das anders siehst, ist
+  es testbar (dann aber als Risiko-Skalierung, nicht als binaerer Filter).
+  Die vier ORB-Folgetests (Anteil `session_end`-Exits, Gegenprobe zur
+  EMA-neutral-Mechanismushypothese, Zeit-Exit 15:45, EU-Feiertagscheck) stehen
+  als Vorschlag in [[ny-open-orb-sp500]], **keiner davon ist begonnen** --
+  das EU-Open-Fenster hat am 23.09. Vorrang bekommen.
+
 *(Die folgenden vier Punkte wurden am 2026-09-23 aus `git stash@{71}` wiederhergestellt -- `git_sync_push` hatte sie am 21.09. beiseitegelegt.)*
 
 - **CTNL-Reversal-Order-Flut: Ursache gefunden UND Fix gebaut (2026-09-21) --
@@ -45,6 +64,13 @@ Bedarf vor generischem Aufräumen.
   `_count_open_leg_positions()`, gegen den Broker gezaehlt). Flut vom 09-17
   nachgespielt: 32 Signale -> 3 Positionen statt 32. Details +
   Testprotokoll in `CHANGELOG.md` 2026-09-21.
+  **Im Live-Betrieb bestaetigt (2026-09-23 nachgeprueft):** am 22.09. hat das
+  Gate ueber den ganzen Tag gegriffen und den Korb sauber abgebaut (8 -> 6 ->
+  4 -> 3 offene Positionen, jedes geblockte Signal als Sammelmeldung
+  protokolliert). Der Zaehler prueft dabei wirklich gegen den Broker
+  (`_count_open_leg_positions()` -> `positions_get(ticket=)`), nicht gegen den
+  State -- die 37 (TTP) bzw. 51 (IQ) verwaisten State-Eintraege blaehen ihn
+  also NICHT auf. Offen bleiben nur deine zwei Rueckmeldungen unten.
   **Auf meiner Annahme, nicht auf deiner Ansage:** (a) der Deckel gilt auch
   fuer `ctnl_continuation` (1) -- das Bein ist per Konstruktion
   single-position, der Deckel ist reine Absicherung gegen denselben
@@ -56,13 +82,15 @@ Bedarf vor generischem Aufräumen.
 - **Verwaiste CTNL-Positionen legen das Bein vorerst still -- Entscheidung
   noetig.** Abgleich vom 2026-09-21 (read-only, nichts geschlossen):
   `ttp` (Demo) 32 real offen (+493,52 offener P/L), `fk_instant_funding`
-  (Echtgeld) 11 real offen (+31,42), `iqmarkets` (Echtgeld) 0 -- dort hat der
-  Broker-SL alles glattgestellt, Konto bei 100.625,54. Diese Positionen
-  zaehlen korrekterweise gegen den neuen Deckel, **also nimmt
-  `ctnl_reversal` auf `ttp` und FK bis zu ihrem Abbau keine neuen Entries
-  an.** Alle haben einen SL, akut brennt nichts. **Offen fuer dich:**
-  laufen lassen (Bein steht wochenlang still), oder soll ich das Schliessen
-  vorbereiten (finaler Live-Trigger bleibt bei dir)?
+  11 real offen (+31,42), `iqmarkets` 0.
+  **Stand 2026-09-23 (nachgeprueft): weitgehend erledigt.** Der Nutzer hat am
+  21.09. 18 Positionen von Hand geschlossen, der Rest lief ueber Broker-SLs
+  aus. Jetzt offen: `ttp` **4**, FK **0**, IQ **0** (EK 2, dort nie ein
+  Problem). **FK und IQ nehmen wieder normal Entries an.** Nur `ttp` liegt mit
+  4 noch ueber der Grenze 3 und bleibt bis zum Abbau der naechsten Position
+  blockiert -- alle 4 mit SL, kein Handlungsdruck. **Offen fuer dich:** die
+  letzten 4 auslaufen lassen (Bein ist in ein paar Tagen von selbst frei) oder
+  Schliessen vorbereiten? Ohne Antwort lasse ich sie laufen.
 
 - **CTNL-Kostenvalidierung fertig -- Entscheidung A/B/C liegt bei dir.**
   Alle vier Proben durchgerechnet, beide Beine, Ergebnis in
@@ -98,10 +126,13 @@ Bedarf vor generischem Aufräumen.
 - **FK Instant Funding: zwei offene Positionen, die KEINE Bridge verwaltet.**
   (Fund 2026-09-23, nichts geaendert.) XAUUSD.gbe 0,05 Lot @ 4.283,90 (seit
   14.09.) und EURUSD.gbe 0,35 Lot @ 1,14666 (seit 16.09.), zusammen +250 USD
-  schwebend. Beide haben **leeren Order-Kommentar und stehen in keinem
-  State** -- kein Bein erkennt sie, also kein Modell-Exit, kein Teilausstieg,
-  kein Max-Holding. Broker-SL ist bei beiden gesetzt (TP nur bei XAUUSD).
-  **Offen fuer dich:** laufen lassen (der SL traegt) oder schliessen?
+  schwebend. Beide haben leeren Order-Kommentar und stehen in keinem State --
+  das sind die **zwei manuellen Positionen**, die weiter unten in der
+  Status-Tabelle schon als Grund fuer die Spalte "Letzter echter Entry"
+  auftauchen. Neu daran ist nur die Konsequenz: kein Bein erkennt sie, also
+  **kein Modell-Exit, kein Teilausstieg, kein Max-Holding** -- sie laufen, bis
+  der Broker-SL greift (bei beiden gesetzt, TP nur bei XAUUSD) oder du sie
+  schliesst. **Offen fuer dich:** bewusst so gewollt, oder sollen sie weg?
 
 - **Verwaiste State-Eintraege nach dem manuellen CTNL-Aufraeumen -- soll ich
   sie nachziehen?** (2026-09-23.) Der Nutzer hat am 21.09. 18 CTNL-Positionen
@@ -133,14 +164,6 @@ Bedarf vor generischem Aufräumen.
   Freigabe:** eine Sammelwarnung "Konto darf nicht mehr handeln" einbauen --
   heute faellt so etwas nur als einzelne Entry-Fehler auf.
 
-- **Git-Sync: Rueckstand aufgeloest UND Ursache behoben (09-19).** 242 Commits
-  sind auf GitHub. `scripts/lib/git_sync_push.ps1` (11 Tasks) und
-  `Bridge-Watchdog/watchdog.py` stashen offene Aenderungen jetzt vor dem Merge
-  und holen sie nach dem Push zurueck; die Warnung trennt echten Konflikt von
-  „Aenderungen im Weg“. **Erster echter Lauf: Montag** (Wochenendpause) --
-  danach in `scripts/reports/task_run.log` gegenlesen, dass „Commit + Push
-  erfolgreich“ dort steht, dann Punkt loeschen.
-
 - **Tick-Rundung in den gemeinsamen Order-Engpass von Funded + FK — darf ich?**
   (2026-09-17, Lückenliste Punkt 1, **nicht umgesetzt**.) Heute rundet jeder
   Order-Pfad selbst oder gar nicht: Funded-Stop-Orders ja, Funded-Market-
@@ -168,21 +191,35 @@ Bedarf vor generischem Aufräumen.
   Balken). Empfehlung: erst die Zeitzonen-Frage klären, dann eine Woche
   Fallback-Zählung abwarten (`soll_ist.py` liefert den Vergleich).
 
-- **🔴 OU-Modell: Edge wird von den Kosten aufgefressen — Bein weiterführen,
-  pausieren oder umbauen?** (2026-09-17, Nutzerfrage, reine Auswertung, kein
-  Code geändert). Modell reibungsfrei +0,097R/Trade (PF 1,34), realistisch
-  ausgeführt +0,05R, mit live gemessenem Spread (12 bps, zur Eröffnung 26) und
-  Swap (6,5 % p.a.) **−0,013R, PF 0,96**; seit 2023 −0,046R. Live 88 Trades
-  ≈ 0R — passt zur Erwartung. Swap kostet so viel wie der Spread, weil 63 %
-  der Trades die vollen 10 Tage laufen. Nur Einstieg nach 10:00 NY bringt es
-  auf ±0. Entscheidung liegt bei dir. Details:
-  [[ou-modell-kostenvalidierung]].
-- **✅ Funded/OU: Signaldatum-Drift behoben 2026-09-17** (Nutzerauftrag).
-  `_reconcile_ou_positions()` haelt je Titel hoechstens eine Position und
-  schliesst, was das Modell nicht mehr haelt. Erster echter Abgleich beim
-  Funded-Lauf 15:43 -- **bitte danach in Telegram auf 5 „🧹 ABGLEICH"-Meldungen
-  pruefen** (Konto 2: FAST, ADI, AMGN, APD; Konto 1: AMGN). APD auf Konto 1
-  bleibt bewusst offen (einzige APD dort, Modell haelt APD). Details: CHANGELOG.
+- **🔴 OU-Modell: A–D liegen vor, Phase 6 + Signalseite gerechnet — deine
+  Entscheidung** (17.09. Auswertung, 19.09. Optimierung + SL/TP-Logik +
+  Broker-Kosten, 22.09. Phase 6, 23.09. Signalseite — reine Auswertung, an den
+  Bridges wurde NICHTS geändert). Ausgangslage: out-of-sample (2023–2026)
+  **−0,052R je Trade, PF 0,83** auf FK/TTP, −0,028R auf EK/Tickmill. Der Edge
+  lebt (reibungsfrei +0,075R), er stirbt an Reibung. **Drei gemessene
+  Konstruktionsfehler:** das Kursziel 1,5R liegt bei 4,5 Sigma und feuert in
+  4,8 % der Trades (die Mean Reversion liegt bei 2 Sigma); der Breakeven-Stop
+  nimmt Gewinner heraus; der 3-Sigma-Stop realisiert normale Rückschläge.
+  **A** BE-Stop aus → −0,022R · **B** zusätzlich Einstieg zum Folgetags-Schluss
+  → +0,020R · **C** Bein pausieren ·
+  **D finale Konfiguration:** Stop **8 Sigma** statt 3, BE aus, **kein TP**,
+  Ausstieg beim **Rücklauf ans MA20**, `max_hold` 10 → FK +0,008R (PF 1,08),
+  EK +0,013R (PF 1,13); schlechtester Trade −2,54R → −0,90R, weil die Position
+  bei gleichem Dollar-Risiko nur noch 37,5 % so groß ist. Kein reiner
+  Config-Flip — der MA-Ausstieg fehlt in `simulate_bracket_portfolio`.
+  **Phase 6 (22.09.): D besteht, aber knapp.** Monte-Carlo (5.000 Pfade, echte
+  Live-Risikogrößen 0,167 % FK / 0,366 % EK je Trade): **P(DD > 7 %) = 0,00 %**
+  auf FK, Ertrag **+0,57 % über 3,7 Jahre**, 32 % der Pfade negativ,
+  Kostenpuffer ~50 %. Schwachstelle: 2023 und 2024 bleiben negativ.
+  **Signalseite (23.09.): ein Hebel — `BB_K` von 2,0 auf 2,25** (tiefer unter
+  dem Mittel einsteigen). Negative Pfade 30 % → 18 %, Ertrag +0,58 % → +0,83 %
+  (FK), Drawdown sinkt gleichzeitig. Der IS-Sieger wäre 2,5 (negative Pfade
+  9 %), aber dessen Nachbarn kippen im Vorzeichen — Rauschspitze. Bestätigt und
+  NICHT anfassen: `BB_LOOKBACK` 20, Regimefilter EMA200, `half_life`-Fenster,
+  Universum, `p_value < 0,2` (auf 0,25 gelockert kippt das Vorzeichen).
+  Ehrliche Lesart: D+2,25 hebt das Bein von „verliert zuverlässig" auf „verdient
+  wenig". Ob das den Platz im Risikobudget wert ist, ist eine
+  Portfolio-Entscheidung. Details: [[ou-modell-kostenvalidierung]].
 - **🟠 8 verwaiste OU-Solo-Positionen: Schliessen ist vorbereitet, Ausloesen
   liegt bei dir** (2026-09-17). Du hast das Schliessen beauftragt; das Skript
   `scripts/close_ou_solo_orphans_once.py` ist fertig und per Vorschau gegen die
@@ -190,8 +227,11 @@ Bedarf vor generischem Aufräumen.
   blockiert. Befehl zum Einplanen (15:35:15) oder `--live` nach 15:30 direkt
   ausfuehren -- siehe Chat vom 2026-09-17. Punkt erst entfernen, wenn Telegram
   „OU-Solo-Waisen geschlossen" gemeldet hat.
-- **🟡 EK/OU: Max-Holding schliesst nie, nur Warnung** (2026-09-17). ADI, AXP,
-  DHI, GRMN laufen seit 14 Tagen (Modell: 10). `legs/ou_modell/executor.py::
+- **🟡 EK/OU: Max-Holding schliesst nie, nur Warnung** (2026-09-17,
+  **Zahlen 2026-09-23 nachgezogen -- deutlich schlimmer geworden**). Nicht mehr
+  4, sondern **9 der 19 offenen OU-Positionen liegen ueber dem 10-Tage-Limit**:
+  DAL 33 Tage (Altlast Solo-Bot), ADI/DHI/GRMN je 20, AMGN/EXPE je 12,
+  LEN/COF/GIS je 11. AXP ist raus (am 22.09. ausgestoppt). `legs/ou_modell/executor.py::
   manage_open_positions()` loggt nur CRITICAL. Weicht vom Backtest ab und
   verlaengert den Swap -- gehoert zur OU-Optimierung, nicht still geaendert.
 - **🟠 MNST-Split auf TTP nicht umgebucht: −2.492,56 $ auf Konto 1 (echtes
@@ -199,28 +239,6 @@ Bedarf vor generischem Aufräumen.
   2:1-Split korrekt um, TTP nicht — der alte SL wurde zum halbierten Kurs
   ausgelöst, keine Ausgleichsbuchung. Kandidat für eine Support-Anfrage bei
   TTP; ein Split-Schutz in der Bridge fehlt ebenfalls.
-- **🟠 ttp1 (Echtgeld, TTP Konto 1): Log-Zeile fuer dieses Konto seit
-  2026-09-19 00:01 komplett still — auch an den beiden folgenden
-  Handelstagen (Mo 09-21, Di 09-22) keine einzige neue Zeile** (Bridge-
-  Monitor-Snapshot 2026-09-22 17:01). `last_equity_line` und
-  `last_error_line` fuer diesen Account im Snapshot sind wortgleich mit dem
-  Stand, der schon in der obigen "darf seit 09-18 nicht mehr handeln"-Meldung
-  drin war (Equity 94.711,78 USD, dukascopy-Hang, jeweils 2026-09-19
-  00:01:31) — seitdem keine neue Zeile, weder Fehler noch normaler
-  Verbindungs-/Equity-Check. Die beiden Schwesterkonten auf derselben Bridge
-  (TTP Konto 2/Demo, IQ Markets) haben im selben Zeitraum durchgehend neue
-  Zeilen bis heute 16:58. Ich sehe nur den Snapshot, nicht den Bridge-Code
-  oder die echten Logs — kann also nicht sagen, ob die Bridge ein
-  handelsgesperrtes Konto bewusst ganz aus dem Lauf herausnimmt (dann waere
-  das erwartet) oder ob da zusaetzlich etwas anderes klemmt (Verbindung,
-  Account-Konfiguration). **Frage:** ist das erwartete Folge der
-  Handelssperre, oder lohnt sich ein Blick, ob das Konto ueberhaupt noch
-  normal angebunden ist?
-
-Punkte, bei denen etwas unklar/widersprüchlich ist oder eine Annahme von mir
-noch nicht von dir bestätigt wurde. Erledigte Punkte werden entfernt, nicht
-abgehakt-und-liegengelassen.
-
 - **🟡 ORB-Stop-Orders (Demo ttp/iqmarkets): vier Annahmen von mir** (2026-09-17,
   Details `CHANGELOG.md` 2026-09-16/17). (1) Teilausstieg als zweite Order mit
   Broker-TP statt gepollt; (2) OCO-Whipsaw: spaeter gefuellte Seite sofort
@@ -233,40 +251,14 @@ abgehakt-und-liegengelassen.
   es keinen praezisen Pass -- dann Platzierung erst 15:48 und ~60 % der
   Ausbrueche verpasst.
 
-- **Zeitzonen-Fix beobachten (2026-09-17 umgesetzt):** automatische Zeitzone
-  ist aus, fest auf Berlin. Pruefen bis ~2026-09-19: keine neuen
-  `Kernel-General`-Id-1-Events mit `reason=3` im System-Eventlog und keine
-  1-h-Luecken in den Bridge-Logs. Danach Punkt entfernen.
-
-- **Cloud-Bridge-Monitor meldete 09-16/17/18 dreimal Alarm — beides inzwischen
-  geklaert (2026-09-19).** (1) „CLS-Fix greift nicht": der Cloud-Fix in
-  `cls_practical/rates.py` war richtig, aber nicht die ganze Ursache — die
-  Zinsreihen waren im Lake verdoppelt (behoben 09-16) und der Ausloeser war die
-  springende Windows-Zeitzone (behoben 09-17). (2) „`snapshot.json` seit ~3 Tagen
-  eingefroren": der Watchdog laeuft lokal normal (letzter Snapshot 09-18 23:31,
-  heute Wochenendpause) — eingefroren war nur GitHub, weil die Auto-Pushes seit
-  09-16 an diesem Merge haengen blieben. Genau dieser Merge ist jetzt aufgeloest.
-
-
-
-  | | PF | Ø R | Sharpe | MaxDD | Calmar | Hebel max |
-  |---|---|---|---|---|---|---|
-  | EK heute (neu verankert) | 1,42 | 0,25 | 0,65 | −5,57 % | 0,48 | 11,0x |
-  | absoluter SL + R-Detektor | **1,85** | **0,42** | **1,02** | **−4,20 %** | **0,93** | 15,5x |
-
-  Auf jeder Kennzahl besser außer dem maximalen Hebel. Gilt über alle
-  getesteten Kostenannahmen (0,50 / 1,00 / 2,05 Pips). Ursache: der neu
-  verankerte Stop sitzt nicht mehr am strukturellen Invalidierungspunkt, und
-  genau dieses Niveau trägt den Edge.
-  **Nicht umgestellt** — das ist eine Architekturänderung an einer
-  Echtgeld-Bridge. Sag Bescheid, dann ziehe ich EK auf dasselbe Muster wie
-  Funded/FK (absoluter SL + R-Detektor 0,50R).
-
-
 - **Kurztakt-Task-Ausfälle (1–2 h, 09-07 bis 09-11) beobachten bis ~2026-09-24**
   (Nutzerentscheid 2026-09-17). Die Ausfälle lagen VOR den Zeitzonen-Sprüngen
   (ab 09-15), Ursache also offen. Tritt nach dem Zeitzonen-Fix erneut eine
   Lücke auf: Task-Scheduler-Verhalten gezielt instrumentieren. Sonst löschen.
+  **Zwischenstand 2026-09-23 (gemessen):** 1.275 Fast-Läufe seit 09-17, **keine
+  einzige Lücke** außer der Wochenendpause (Fr 18.09. 23:58 -> Mo 21.09. 00:03)
+  und den 65 Min am 17.09. 04:13-05:18, also am Fix-Tag selbst. Läuft morgen
+  ohne neue Lücke durch, kann der Punkt weg.
 
 - **Lint 09-21: zwei mehrfach verlinkte, aber nie angelegte Notizen —
   anlegen und wo?** `[[bein-matrix-ist-soll-paper]]` (referenziert von
@@ -285,6 +277,10 @@ abgehakt-und-liegengelassen.
 
 - **FK SP500 „Invalid stops“: behoben 2026-09-17** (SL aufs Tick-Raster).
   Nur noch: ersten echten SP500-Entry im FK-Log gegenlesen, dann Punkt löschen.
+  **Stand 2026-09-23: noch kein Gegenbeweis moeglich** -- letzter Fehlschlag
+  16.09. 15:53, seit dem Fix ist schlicht kein SP500-Signal mehr aufgetreten
+  (21./22.09. beide `filtered_out (Bias 1.0)`). Punkt bleibt bis zum ersten
+  echten Entry offen.
 
 - **CLS-Bein auf Bewährung: Prüfung nach 30 Live-Trades** (Kriterium festgelegt
   2026-09-17, Nutzerentscheid). Dann: Live-Ø R < 0 oder außerhalb des
@@ -302,11 +298,10 @@ abgehakt-und-liegengelassen.
   system works" — noch nicht durch den CODE-Prozess.
 
 **Niedrig**
-- **Toter Wikilink in `DASHBOARD.md`** (Lint 09-21): `[[ou-modell-
-  kostenvalidierung]]` in der OU-Modell-Kosten-Entry oben zeigt auf eine nie
-  angelegte Notiz (kein Tippfehler in einem bestehenden Namen, kein
-  Treffer in der Git-Historie). Entweder die Detail-Notiz nachliefern oder
-  den Link entfernen, sobald die OU-Modell-Entscheidung selbst geklärt ist.
+- **✅ `[[ou-modell-kostenvalidierung]]` war nie tot, nur nie committet**
+  (Lint 09-21, erledigt 09-23 mit `1fc8645`). Die Notiz existierte seit dem
+  17.09. nur im Arbeitsverzeichnis — untracked, daher kein Treffer in der
+  Git-Historie. Jetzt getrackt, zusammen mit drei weiteren Research-Notizen.
 
 ## Status — was läuft gerade wirklich
 

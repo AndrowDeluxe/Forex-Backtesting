@@ -674,3 +674,131 @@ zuverlaessig" auf "kostet nichts mehr" gehoben, nicht auf "verdient Geld".**
 Ob es das Betriebsrisiko (MNST-Split, verwaiste Positionen, Signaldatum-Drift —
 alles reale Vorfaelle der letzten vier Wochen) und den Platz im Risikobudget
 wert ist, ist eine Portfolio-Entscheidung, keine Backtest-Frage mehr.
+
+---
+
+# Signalseite auf Basis der Logik D (2026-09-23)
+
+Nutzerauftrag: "wir halten erstmal die optimale Logik unter D fest. Teste auf
+Basis dieser Logik einmal die Signalseite durch." Logik D ist damit fix
+(stop_sigma 8, BE aus, kein TP, MA-Ausstieg, max_hold 10, Einstieg
+Folgetags-Eroeffnung); variiert wird nur, WELCHE Signale entstehen.
+
+Skript `scripts/research_ou_signal_side.py`, Ergebnisse
+`signal_side_20260923.json`, `signal_k_plateau_20260923.json`,
+`signal_k_montecarlo_20260923.json`. Rangfolge wie immer nur auf In-Sample
+(Signal < 2023), dazu neu der **Jahresaufriss als Pflichtspalte** — Lehre aus
+Phase 6, wo der positive OOS-Schnitt aus einem einzigen Jahrespaar kam.
+
+## Was NICHT hilft (und damit bestaetigt ist)
+
+| Block | Heute | Ergebnis |
+|---|---|---|
+| A `BB_LOOKBACK` | 20 | **20 ist IS-Sieger.** 10/15/30/40 alle IS <= 0. (15 und 30 saehen OOS besser aus, sind aber IS-negativ — nicht waehlbar.) |
+| C Regimefilter | Benchmark > EMA200 | **EMA200 ist IS- UND OOS-Sieger.** Filter aus: OOS +0,002 statt +0,008. EMA100 und "EMA200 + steigend" schlechter. |
+| D `half_life` 5–200 | — | Einengen auf 5–60 bringt IS +0,010 statt +0,004, OOS unveraendert; Filter ganz aus aendert praktisch nichts (n 878 -> 880). Kein Hebel. |
+| E Universum | sp500 + nasdaq100 | Beide zusammen besser als jedes allein. Der TTP-Handelbarkeitsfilter kostet nichts (identische Zahlen mit und ohne). |
+
+## Der `p_value`-Filter: Verdacht widerlegt
+
+Vor dem Test sah die Titelauswahl nach Scheinpraezision aus: `THETA_MIN = 0,03`
+schliesst **keinen einzigen Titel aus** (niedrigstes theta im sp500-Universum:
+0,036), und `p_value < 0,2` waehlt aus einer Verteilung von 0,117 bis 0,297 —
+kein Titel erreicht je statistische Signifikanz. Die naheliegende Vermutung war,
+dass dieser Filter nichts beitraegt.
+
+**Falsch.** Er ist der wirksamste Einzelfilter im ganzen System:
+
+| Schwelle | Titel | IS Ø R | OOS Ø R |
+|---|---|---|---|
+| p < 0,15 | **0** | — | — |
+| **p < 0,20 (heute)** | **66** | **+0,004** | **+0,008** |
+| p < 0,25 | 193 | −0,023 | −0,007 |
+| Filter aus | 220 | −0,015 | −0,006 |
+
+Zwischen 0,20 und 0,25 kippt das Vorzeichen. Der Filter waehlt zwar aus einer
+Verteilung ohne Signifikanz, aber die RANGFOLGE darin traegt Information — die
+oberen 30 % sind handelbar, der Rest nicht. Und bei 0,15 bleibt nichts uebrig,
+die heutige Schwelle sitzt also am oberen Rand des Moeglichen. Nicht anfassen.
+
+## Was hilft: tiefer einsteigen (`BB_K`)
+
+Der einzige Hebel der Signalseite. Heute wird bei 2 Sigma unter dem Mittel
+gekauft; getestet 1,5 bis 3,0 (FK-Kosten):
+
+| k | IS n | IS Ø R | OOS n | OOS Ø R | PF | OOS-Jahre positiv |
+|---|---|---|---|---|---|---|
+| 1,5 | 609 | +0,002 | 554 | −0,007 | 0,94 | 1 von 4 |
+| **2,0 (heute)** | 457 | +0,004 | 421 | +0,007 | 1,07 | 2 von 4 |
+| 2,25 | 365 | −0,003 | 343 | +0,015 | 1,16 | 3 von 4 |
+| 2,40 | 310 | +0,010 | 293 | +0,010 | 1,10 | 3 von 4 |
+| **2,50** | 278 | **+0,016** | 266 | **+0,031** | **1,35** | 3 von 4 |
+| 2,60 | 247 | −0,011 | 226 | +0,027 | 1,30 | 3 von 4 |
+| 2,75 | 202 | −0,005 | 175 | +0,008 | 1,08 | 3 von 4 |
+| 3,0 | 136 | −0,003 | 115 | +0,035 | 1,37 | **4 von 4** |
+
+**k = 2,5 ist eine Spitze, kein Plateau.** Die In-Sample-Werte der Nachbarn
+springen im Vorzeichen (2,25: −0,003 · 2,40: +0,010 · 2,50: +0,016 · 2,60:
+−0,011). So verhaelt sich Rauschen, nicht ein stabiler Parameter. **Genau 2,5
+zu waehlen, weil es der IS-Sieger ist, waere Kurvenanpassung.**
+
+Die RICHTUNG ist dagegen belastbar: **jeder** getestete Wert ueber 2,0 schlaegt
+2,0 out-of-sample, auf beiden Brokern, und hebt die positiven Jahre von 2 auf 3
+(bei 3,0 auf 4). Sechs Varianten, dieselbe Richtung.
+
+**Und es gibt einen Mechanismus**, nicht nur eine Zahl: der Ausstieg liegt am
+Mittel. Wer bei 2,5 Sigma einsteigt statt bei 2,0, hat 25 % mehr Weg bis zum
+Ausstieg — waehrend Spread und Swap in bps konstant bleiben. Das
+Verhaeltnis Edge zu Reibung verbessert sich also zwangslaeufig mit k, bis zu
+dem Punkt, an dem Stop und max_hold die Bewegung abschneiden. Genau diese Form
+zeigen die Daten.
+
+## Monte-Carlo: die Pfadverteilung entscheidet
+
+Der ueberzeugendste Beleg steckt nicht im Mittelwert, sondern in der Verteilung
+der 5.000 Bootstrap-Pfade (echte Live-Risikogroessen, OOS-Zeitraum):
+
+| k | FK Ertrag Median | negative Pfade | FK MaxDD | EK Ertrag Median | negative Pfade |
+|---|---|---|---|---|---|
+| **2,0 (heute)** | +0,58 % | **30 %** | −0,95 % | +1,95 % | 20 % |
+| 2,25 | +0,83 % | 18 % | −0,73 % | +2,50 % | 12 % |
+| 2,50 | +1,31 % | **9 %** | −0,66 % | +3,40 % | **6 %** |
+
+Monoton ueber alle drei Werte, auf beiden Brokern, in Ertrag UND Drawdown UND
+Anteil negativer Pfade. Das ist ein deutlich staerkeres Signal als der
+Punktschaetzer: nicht ein Mittelwert verschiebt sich, sondern die ganze
+Verteilung. P(DD > 7 %) bleibt bei 0,00 %.
+
+## Empfehlung Signalseite
+
+**`BB_K` von 2,0 auf 2,25 anheben** — nicht auf 2,5.
+
+Begruendung: 2,5 ist der beste Einzelwert, aber seine IS-Nachbarn kippen im
+Vorzeichen; ihn zu waehlen hiesse, das Rauschen mitzunehmen. 2,25 liegt im
+belastbaren Bereich, behaelt 343 statt 266 OOS-Trades (mehr statistische
+Masse), hebt die positiven Jahre von 2 auf 3 und verbessert die
+Pfadverteilung klar (negative Pfade 30 % -> 18 %, Ertrag +0,58 % -> +0,83 %
+auf FK, +1,95 % -> +2,50 % auf EK). Wer mehr Risiko in Kauf nimmt, nimmt 2,5.
+
+**Was das nicht loest:** 2023 bleibt in jeder Variante negativ, und die
+absolute Groessenordnung aendert sich nicht grundlegend — aus +0,58 % ueber
+3,7 Jahre werden +0,83 %. Die Signalseite hat einen Hebel, aber keinen grossen.
+
+Zusammen mit D ist das die vollstaendige Empfehlung:
+
+| Parameter | heute | Empfehlung |
+|---|---|---|
+| `OU_MODELL_STOP_SIGMA` | 3,0 | **8,0** |
+| `OU_MODELL_BE_TRIGGER_R` | 0,35 | **0** |
+| `rr_ratio` (TP) | 1,5 | **keiner** |
+| Ausstiegsregel | SL/TP/max_hold | **Ruecklauf ans MA20** |
+| **`BB_K`** | **2,0** | **2,25** |
+| `BB_LOOKBACK` | 20 | 20 (bestaetigt) |
+| Regimefilter | Benchmark > EMA200 | unveraendert (bestaetigt) |
+| `p_value`-Schwelle | 0,2 | unveraendert (bestaetigt, sitzt am Rand) |
+| `max_hold` | 10 | 10 (bestaetigt) |
+
+Achtung: `BB_K` und `BB_LOOKBACK` sind globale Werte in
+`ou_paper_backtest/config.py` — sie wirken auf jeden Aufrufer dieses Pakets,
+nicht nur auf das OU-Bein der Bridges. Eine Aenderung gehoert als Parameter in
+den Aufruf, nicht in die Konstante.

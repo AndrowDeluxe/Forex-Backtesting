@@ -13,6 +13,16 @@ Nutzers (nicht SSRN-Paper-Pipeline -- daher separat von
 unten. Realisierung (Streamlit-Page-Update, finale FK/EK-Parameter)
 laeuft.
 
+**Nachtrag 2026-09-21**: Die Realkosten-/Ausfuehrungsproben (p6_5-p6_8) sind
+inzwischen separat durchgelaufen, siehe [[ctnl-kostenvalidierung]].
+Kernbefund fuer dieses Projekt: der hier verwendete Kostenansatz
+`spread_bps=8.0` liegt **4- bis 11-fach ueber** den real gemessenen
+XAUUSD-Kosten (0,73-1,95 bps). Alle Ergebnisse unten sind damit
+konservativ -- das Portfolio ist besser, als diese Notiz ausweist. Die
+Phase-6-Referenz `CTNL_KILL_SWITCH_DD_THRESHOLD = -0,066` haengt allerdings
+an den alten Kosten und muesste neu gezogen werden, falls der Kostenansatz
+korrigiert wird.
+
 **Prozess-Referenz**: `app_pages/education_gold_intraday.py`, Phase 6
 "Robustheit" -- p6_1 Walk-Forward/echter OOS-Split, p6_2 Monte-Carlo-
 Bootstrap (Muster `ou_paper_backtest/monte_carlo.py`), p6_3 Kosten-

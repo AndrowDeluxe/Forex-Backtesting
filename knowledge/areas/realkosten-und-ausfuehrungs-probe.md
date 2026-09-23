@@ -12,6 +12,8 @@ realen Fehler aufgedeckt, den die bestehenden Punkte p6_1–p6_4 nicht gefunden
 hätten** — der Backtest wies das Bein als profitabel aus, der erste Live-Trade
 verlor das 2,2-fache seines Budgets.
 
+Zweiter vollstaendiger Durchlauf: [[ctnl-kostenvalidierung]] (2026-09-21, beide CTNL-Beine). Dort lagen die gegriffenen Kosten **zu hoch** statt zu niedrig — die Proben taugen also in beide Richtungen, nicht nur zur Entzauberung.
+
 Verwandt: [[broker-kostenmodell-eurusd]] (die gemessenen Werte),
 [[backtest-standard-process]] (der übergeordnete Prozess).
 

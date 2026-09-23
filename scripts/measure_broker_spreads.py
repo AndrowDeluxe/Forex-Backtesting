@@ -59,6 +59,7 @@ sys.path.insert(0, str(REPO_DIR))
 
 FUNDED_BRIDGE = Path(r"C:\Users\andre\Funded-Portfolio-Bridge")
 EK_BRIDGE = Path(r"C:\Users\andre\EK-Portfolio-Bridge")
+FK_BRIDGE = Path(r"C:\Users\andre\FKInstantFunding-MT5-Bridge")
 
 LOCAL_TZ = "Europe/Berlin"
 WINDOW_START_H, WINDOW_END_H = 8.0, 12.5  # Berlin, siehe Modul-Docstring
@@ -131,6 +132,39 @@ def _load_targets(symbol_keys: tuple[str, ...] = ("EURUSD",)) -> list[Target]:
             symbol=ek_config.SYMBOL_MAP[key],
         ))
     sys.path.remove(str(EK_BRIDGE))
+    del sys.modules["config"]
+
+    # FK Instant Funding (2026-09-21 ergaenzt): faehrt ctnl_continuation/
+    # ctnl_reversal mit ECHTEM Geld und fehlte hier bisher komplett -- die
+    # CTNL-Kostenvalidierung haette sonst ein Live-Konto ausgelassen.
+    #
+    # Warum die Symbolaufloesung hier per Suffix und nicht aus der Bridge
+    # gelesen wird: FKs SYMBOL_MAP steht in run_once.py, nicht in config.py.
+    # Dieses Modul zu importieren zoege executor/orb_mt5_source/orb_pending
+    # mit in sys.modules -- und genau diese Namen gibt es in der
+    # Funded-Bridge ein zweites Mal, mit anderem Inhalt. Der Aufraeum-Trick
+    # oben (del sys.modules["config"]) traegt dafuer nicht weit genug.
+    #
+    # Der Suffix ".gbe" gilt bei BeyondIQCapital fuer FX und Metalle, NICHT
+    # fuer Indizes (SP500 -> "SPX500.gbe", NASDAQ -> "NAS100.gbe"). Deshalb
+    # werden hier nur Nicht-Index-Keys aufgeloest; ein Index-Key wird
+    # uebersprungen statt falsch geraten. Die Aufloesung ist ausserdem
+    # selbstpruefend: _ensure_symbol() wirft, wenn das Symbol beim Broker
+    # nicht existiert -- ein stiller Fehlgriff ist damit ausgeschlossen.
+    sys.path.insert(0, str(FK_BRIDGE))
+    import config as fk_config  # noqa: E402
+
+    _FK_NON_SUFFIX_KEYS = {"SP500", "US30", "NASDAQ"}
+    for key in symbol_keys:
+        if key in _FK_NON_SUFFIX_KEYS:
+            continue
+        targets.append(Target(
+            portfolio="FK", account=fk_config.ACCOUNT.name, broker=fk_config.ACCOUNT.mt5_server,
+            state_id=None, terminal_path=fk_config.ACCOUNT.mt5_terminal_path,
+            login=fk_config.ACCOUNT.mt5_login, password=fk_config.ACCOUNT.mt5_password,
+            server=fk_config.ACCOUNT.mt5_server, symbol=key + ".gbe",
+        ))
+    sys.path.remove(str(FK_BRIDGE))
     del sys.modules["config"]
 
     return targets
@@ -468,7 +502,14 @@ def _measure_slippage(mt5, target: Target, days: int) -> dict:
         p["volume"] = max(p["volume"], r["volume"])  # Ein- und Ausstieg haben dasselbe Volumen
     per_lot = [p["commission"] / p["volume"] for p in per_pos.values() if p["volume"] > 0]
     if per_lot:
-        usd_per_pip_per_lot = 10.0  # EURUSD, USD als Quote-Waehrung
+        # 2026-09-21: war auf 10.0 hartkodiert ("EURUSD, USD als Quote-Waehrung")
+        # und damit fuer jedes andere Instrument falsch -- fuer XAUUSD um Faktor
+        # 10 zu klein, was die Kommission in der Pips-Spalte 10x zu GUENSTIG
+        # ausgewiesen haette. Aus dem Symbol abgeleitet statt gesetzt:
+        #   EURUSD  100.000 x 0,0001 = 10,0  (unveraendert zum bisherigen Wert)
+        #   XAUUSD      100 x 0,01   =  1,0
+        # Die Identitaet fuer EURUSD ist der Regressionstest dieser Aenderung.
+        usd_per_pip_per_lot = info.trade_contract_size * pip
         out["commission_positions"] = len(per_lot)
         out["commission_usd_per_lot_roundtrip"] = float(np.median(per_lot))
         out["commission_pips_roundtrip"] = float(np.median(per_lot) / usd_per_pip_per_lot)

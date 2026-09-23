@@ -9,11 +9,593 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-23** [SL/TP-Pruefung aller vier Live-Konten] **Alle 37 offenen
+  Positionen haben einen SL -- keine Ausnahme.** Nutzerauftrag nach dem
+  manuellen CTNL-Aufraeumen. Read-only ueber `positions_get()`/`orders_get()`
+  (Skript im Scratchpad, nichts ins Repo gelegt). Keine offenen Pending-Orders
+  zum Pruefzeitpunkt. Verteilung: EK 21, TTP 14, IQ 0, FK 2.
+  **TP: 12 ohne -- davon 10 by design.** Funded- und FK-Bridge setzen bei
+  Markt-Entries GRUNDSAETZLICH keinen Broker-TP (`target=None`, dokumentierte
+  Design-Entscheidung 2026-08-29: Exit signalgetrieben beim naechsten Scan,
+  Broker-SL als harte Grenze); nur ORB-Pending-Orders bekommen seit 2026-09-16
+  einen Broker-TP. EK dagegen setzt TP aus dem Signal.
+  **Zwei echte Abweichungen gefunden:**
+  (a) **EK ADI + MDLZ ohne TP, obwohl die uebrigen 19 EK-Positionen einen
+  haben.** Ursache vollstaendig geklaert: `ou_paper_backtest/scanner.py`
+  schreibt je Universum eine Zeile, und das validierte 1:1,5-TP gilt laut
+  Code-Kommentar NUR fuer S&P (nasdaq100/dax bleiben bewusst auf "kein TP").
+  MDLZ und PEP stehen in BEIDEN Indizes -> zwei `tradeable=True`-Zeilen mit
+  unterschiedlicher TP-Config in `scanner_signals.csv`. Welche gewinnt,
+  entscheidet der 0-Tick frisch selektierter Symbole: die erste Zeile (S&P, mit
+  TP) scheitert mit `entry_deviation_too_large, deviation=1.0`, die zweite
+  (Nasdaq, ohne TP) geht Sekunden spaeter durch. Im EK-Log fuer ADI (02.09.
+  15:35) und MDLZ (22.09. 15:44) genau so belegt. Der Code-Kommentar sichert
+  ausdruecklich die eine Richtung ab (kein ungetestetes TP nach Nasdaq/DAX) --
+  die Gegenrichtung (validiertes S&P-TP geht verloren) war nicht bedacht.
+  Nichts geaendert, Entscheid liegt beim Nutzer (DASHBOARD.md).
+  (b) **TTP-Position 18497256 (`FP ctnl_reversal`) HAT einen TP (4.260,48),
+  obwohl die Funded-Bridge nie einen setzt** -- vermutlich beim manuellen
+  Aufraeumen am 21.09. mitgesetzt.
+  **Nebenbefund:** FKs zwei offene Positionen (XAUUSD.gbe seit 14.09.,
+  EURUSD.gbe seit 16.09., +250 USD schwebend) haben leeren Order-Kommentar und
+  stehen in KEINEM State -- keine Bridge verwaltet sie, nur der Broker-SL
+  traegt. In DASHBOARD.md zur Entscheidung gelegt.
+
 - **2026-09-23** [EK-Portfolio-Bridge / Risiko] **EK-Kalibrierung komplett nachgerechnet -- die 7,8 % vs. 33,9 % sind KEIN Fehler, sondern zwei Zeithorizonte.** 40 % Drawdown reissen: binnen 1 Jahr 3,6 %, binnen 2 Jahren 7,8-9,8 % (= die dokumentierte Zahl), ueber die volle 6-Jahres-Historie 39,3 %. Rechenkette der Studie vollstaendig reproduzierbar (combo/6 x 2,20 = Ist-Zustand; CAGR 227,8 % und MaxDD -38,1 % punktgenau). **Korrektur zum 22.09.:** ich hatte die Einheiten der Studie falsch gelesen und daraus einen Widerspruch gemacht -- es war keiner. **Nebenbefund:** `ou_modell` laeuft mit Faktor 4,40x statt 2,20x (doppeltes Gewicht), ausgerechnet das out-of-sample negative Bein. Nichts geaendert. Details: `projects/ek-risiko-kalibrierung-audit.md`.
 
 - **2026-09-21/22** [Alle Portfolio-Bridges / ORB] **Stop-Orders auf allen vier Konten + Exit-Variante C umgesetzt + EK-ORB-Risiko neu kalibriert.** *(Wiederhergestellt am 23.09.: diese Eintraege waren im Arbeitsstand verschwunden, siehe Eintrag unten.)* (a) FK und EK auf ruhende Stop-Orders umgebaut (FK-Portierung; EK eigener Umbau mit `pending_source.py`/`pending_executor.py`, eigener SQLite-Tabelle und Magic je Order). (b) Funded-Fix: IQ handelte ORB mit halbem Risiko (globales statt kontoeigenes Kapitalgewicht), live bestaetigt 111,36 $ statt 55 $; TTP-Konto 504069845 nach Breach vollstaendig entfernt (7 Positionen bleiben mit Broker-SL offen, unverwaltet). (c) Exit-Variante C live: SP500 Ziel 6R ohne Teilausstieg, US30 Ziel 6R + Teil 3R, NASDAQ ohne Ziel + Teil 3R, Break-Even ueberall aus -- +71 % Ergebnis bei gleichem Tail-Drawdown. (d) EK-ORB-Risiko 0,042 % -> 0,30 % je Instrument (MC-kalibriert; mehr ORB senkt die Reissgefahr, weil unkorreliert). Erste Handelstage: Platzierung 6-9 s nach Range-Ende auf allen vier Konten, OCO/Session-Ende sauber. Details: `projects/orb-exit-logik-neubewertung.md`.
 
-- **2026-09-23** [Second Brain / Git-Sync] **🔴 Datenverlust in CHANGELOG.md: alle Eintraege vom 21./22.09. sind weg -- meine UND die der parallelen Session** (Papers-Screening, OU-Phase-6, Auswertung der ersten zwei Handelstage). Nicht aus Git wiederherstellbar: sie wurden nie committet, HEAD endet beim 19.09., und keiner der **72 (!) aufgelaufenen Stashes** enthaelt sie. `scripts/lib/git_sync_push.ps1` legt bei jedem Lauf offene Aenderungen in einen Stash und setzt bei einem Konflikt beim Zurueckholen den Arbeitsstand per `git reset --hard` zurueck -- die Stash-Halde zeigt, dass das Zurueckholen seit Tagen scheitert. **Offen:** Ursache abschliessend klaeren und die Eintraege der anderen Session rekonstruieren. Sofortmassnahme: `knowledge/` regelmaessig committen, statt sich auf den Arbeitsstand zu verlassen.
+- **2026-09-23** [Second Brain / Git-Sync] **🔴 Datenverlust in CHANGELOG.md: alle Eintraege vom 21./22.09. sind weg -- meine UND die der parallelen Session** (Papers-Screening, OU-Phase-6, Auswertung der ersten zwei Handelstage). Nicht aus Git wiederherstellbar: sie wurden nie committet, HEAD endet beim 19.09., und keiner der **72 (!) aufgelaufenen Stashes** enthaelt sie. **[KORREKTUR 2026-09-23, andere Session: doch -- sie lagen in stash@{8}, {45}, {70} und {71} und sind vollstaendig zurueckgeholt. Der Suchlauf hier hat sie vermutlich verfehlt, weil `git show stash@{N}` auf einen Stash-Merge-Commit einen KOMBINIERTEN Diff liefert, in dem die Zeilen nicht als Zusatz auftauchen; `git diff stash@{N}^ stash@{N}` findet sie. Siehe Eintrag unten.]** `scripts/lib/git_sync_push.ps1` legt bei jedem Lauf offene Aenderungen in einen Stash und setzt bei einem Konflikt beim Zurueckholen den Arbeitsstand per `git reset --hard` zurueck -- die Stash-Halde zeigt, dass das Zurueckholen seit Tagen scheitert. **Offen:** Ursache abschliessend klaeren und die Eintraege der anderen Session rekonstruieren. Sofortmassnahme: `knowledge/` regelmaessig committen, statt sich auf den Arbeitsstand zu verlassen.
+
+- **2026-09-23** [Second Brain / Git-Sync] **Der verloren geglaubte Stand ist
+  zurueck: 21 CHANGELOG-Eintraege und 4 DASHBOARD-Punkte aus den Stashes
+  wiederhergestellt** -- meine (CTNL) UND die der beiden parallelen Sessions
+  (ORB-Umbau, Papers-Screening, OU-Phase-6, Auswertung 21./22.09.).
+  **Warum die Suche vorher ins Leere lief:** ein Stash ist ein
+  Merge-Commit, und `git show stash@{N}` zeigt darauf einen KOMBINIERTEN
+  Diff -- die betroffenen Zeilen erscheinen dort nicht als Zusatz. Erst
+  `git diff stash@{N}^ stash@{N} -- <pfad>` macht sie sichtbar. Der Schluss
+  "keiner der 72 Stashes enthaelt sie" beruhte auf diesem Artefakt, nicht auf
+  der Datenlage.
+  **Was tatsaechlich passiert ist:** `git_sync_push` legt bei jedem Lauf den
+  offenen Stand in einen Stash und setzt bei einem Konflikt beim Zurueckholen
+  per `reset --hard` zurueck. Weil das seit Tagen scheitert, hat **jede**
+  Session auf einem CHANGELOG ohne die Eintraege der vorherigen
+  weitergeschrieben -- die vier Stashes sind deshalb DISJUNKT (3.687 / 3.447 /
+  3.467 / 3.500 Zeilen), keiner enthaelt alles. Zurueckgeholt wurde die
+  Vereinigung, dedupliziert ueber Datum + Bereich + Titelanfang; bei zwei
+  Fassungen desselben Eintrags gewann die spaetere (betraf einen: die
+  ORB-SL/TP/BE-Neubewertung).
+  **Ebenfalls zurueck:** `scripts/measure_broker_spreads.py` (die
+  XAUUSD-Kommissionsumrechnung + FK als Messziel), `areas/realkosten-und-
+  ausfuehrungs-probe.md` und `projects/gold-ctnl-edge-portfolio.md`. Diese
+  drei waren in HEAD seit der Stash-Basis unveraendert, also konfliktfrei
+  direkt zurueckholbar. Untracked angelegte Dateien
+  (`projects/ctnl-kostenvalidierung.md`, `scripts/research_ctnl_execution_
+  costs.py`, `_data/*.json`) waren nie betroffen -- `git stash` ohne `-u`
+  fasst sie nicht an.
+  **Anzuschauen:** der Eintrag vom 2026-09-21/22 ("Stop-Orders auf allen vier
+  Konten + Exit-Variante C") war die Zusammenfassung, die eine Session als
+  Ersatz fuer die verloren geglaubten Eintraege geschrieben hat. Die
+  Originale stehen jetzt wieder darunter -- der Eintrag ist damit redundant.
+  Ich habe ihn NICHT geloescht (fremder Eintrag), das ist deine Entscheidung.
+  **Konsequenz, die bleibt:** `knowledge/` sofort nach jeder Aenderung
+  committen. Die Stash-Halde von 72 Eintraegen ist der eigentliche Alarm --
+  die Ursache in `git_sync_push.ps1` ist damit NICHT behoben, nur ihr
+  Schaden rueckgaengig gemacht.
+
+<!-- Die folgenden Eintraege wurden am 2026-09-23 aus git-stash@{8,45,70,71}
+     wiederhergestellt (git_sync_push hatte sie beiseitegelegt). Siehe den
+     Eintrag vom 2026-09-23 oben. -->
+
+- **2026-09-22** [EK-Portfolio-Bridge / ORB] **ORB-Risiko auf EK neu
+  kalibriert: 0,042 % -> 0,30 % je Instrument (7,2x).** Nutzerauftrag, nachdem
+  aufgefallen war, dass ORB dort mit rund 1/70 von gold_asb lief.
+  **Ursache der Luecke:** die MC-Kalibrierung vom 2026-09-10 enthielt ORB
+  nicht -- `ek_v2_realistic_final.json` fuehrt es unter `removed_strategies`
+  ("keine Evidenz, dass der Broker die noetigen Instrumente anbietet"). Das
+  bezog sich auf das alte, verworfene `orb_strategy`-Paket und ist widerlegt.
+  Stehen geblieben war FKs konservativer Default.
+  **Nachgeholt** (`scripts/research_ek_orb_risk_calibration.py`): ORB frisch
+  unter Variante C simuliert, zusammen mit den 6 Kernbeinen auf deren
+  gemeinsamem Fenster (2018-12-02..2026-07-28, 2.796 Handelstage), Monte Carlo
+  3.000 Pfade, Block-Bootstrap ueber Kalendermonate.
+  **Befund: mehr ORB senkt die Reissgefahr**, weil das Bein weitgehend
+  unkorreliert zu Gold/BTC/FX ist --
+  0,042 %: CAGR 237 %, P(MaxDD>40 %) 33,9 % | 0,30 %: 333 %, 24,1 % |
+  0,40 %: 375 %, 24,0 % | 0,75 %: 543 %, 34,3 %. Ab 0,75 % kippt es.
+  **Gewaehlt 0,30 % statt des Minimums bei 0,40 %:** beide liegen im Rauschen
+  gleichauf (5 Startwerte, Spanne +/-2 Punkte), 0,30 % sitzt mitten in der
+  flachen Mulde statt an deren Rand.
+  **Nebeneffekt geloest:** bei 3.174 EUR Equity waren 1,34 EUR Risiko so wenig,
+  dass die Lot-Rundung 14 % Abweichung erzeugte (0,05 Lots, Teilung 0,02/0,03).
+  Jetzt 9,52 EUR -> 0,41 Lots, Teilung 0,20/0,21, Abweichung 0,7 %.
+  Deckel-Auslastung durch ORB: 0,9 % der Equity von 30 % erlaubt.
+  Nur EK geaendert -- Funded und FK behalten ihre Werte (enge Prop-Caps).
+  Ausserdem: kaputte Emoji-Escapes in EKs Telegram-Meldungen behoben (zeigten
+  `🟡` statt des Symbols).
+
+- **2026-09-22** [Alle Portfolio-Bridges / ORB] **🔍 Offener Befund: EKs
+  Reissgefahr liegt nach meiner Rechnung bei 33,9 %, dokumentiert sind 7,8 %.**
+  Kein Code geaendert, gehoert NICHT zur ORB-Kalibrierung. Meine Rekonstruktion
+  trifft den historischen MaxDD der 09-10-Studie exakt (-38,1 %), nur ihre
+  Zukunftsrechnung nicht. **Korrektur zu meiner ersten Vermutung:** es liegt
+  NICHT an der Bootstrap-Methode -- Block-Bootstrap (22,7 %) und reine
+  Tagespermutation (24,7 %) liefern bei mir dasselbe Bild. Woher die 7,8 %
+  kommen, ist offen. Betrifft die grossen Beine (gold_asb/btc_ema_cross/
+  gold_silver mit je 2,93 % je Trade), nicht ORB. Siehe DASHBOARD.
+
+- **2026-09-22** [Alle Portfolio-Bridges / ORB] **Erster voller Tag unter
+  Variante C.** Platzierung 15:45:09-15:45:10 auf allen vier Konten (EK
+  15:45:08). NASDAQ loeste beidseitig-OCO aus, LONG gefuellt, Gegenseite
+  storniert; beide Scheiben liefen in den Stop: TTP -62,49 $ (-1,13R),
+  IQ -115,72 $ (-1,04R), FK -130,44 $ (-1,04R). US30 wurde nicht ausgeloest
+  und bei Session-Ende storniert. SP500 gefiltert (Dienstag, Bias 1.0).
+  Keine Fehlermeldung, OCO und Session-Ende sauber auf allen Bridges.
+
+- **2026-09-22** [Research / Papers] **Drei geteilte Papers nach Standardprozess
+  Phase 2+3 gesichtet und gescreent (Bondarenko/Muravyev SSRN 3596245,
+  Kinoshita SSRN 7276738 + 7091018).** Nutzerauftrag. Neu:
+  `resources/24h-renditestruktur-und-informationskette.md` (Destillat),
+  `projects/eu-open-renditefenster.md` (neuer Edge-Kandidat), neuer Abschnitt
+  "Externe Paper-Einordnung 2026-09-22" in `projects/ny-open-orb-sp500.md`.
+  **Kein Code, kein Backtest, keine Aenderung an einem laufenden Bot.**
+  Ergebnis fuer den ORB: kein neuer Entry-Filter, aber (a) die US-Cash-Session
+  traegt im Mittel keine Risikopraemie (t=0,89) -- long-only ist dort also kein
+  verstecktes Beta; (b) Mechanismus-Hypothese fuer den bisher unerklaerten
+  EMA-neutral-Filter, mit eigener Gegenprobe; (c) zeitbasierter Ausstieg 15:45
+  statt 16:00 als Gitter-Ablation vorgeschlagen (klein, Paper markiert den
+  Befund selbst als schwach); (d) **Richtungsfilter aus Europa/Asien vor dem
+  Bau verworfen** -- Kinoshitas Leg Europa->NY traegt +0,07 pt, die
+  Null-Parameter-Regel dort 48,89 % (unter Zufall), waehrend alle anderen Legs
+  +10,6 bis +15,0 pt tragen. Separat: das EU-Open-Fenster (05:30-09:30 Berlin,
+  Sharpe 1,67, jedes Jahr positiv) als eigener Edge-Kandidat aufgenommen,
+  kollidiert zeitlich nicht mit dem ORB -- Kostenprobe im Nachtfenster und
+  Nachrechnen auf 2018-2026 stehen als erste Schritte aus.
+
+- **2026-09-22** [OU-Modell Research] **Phase 6 fuer die empfohlene
+  Konfiguration gerechnet -- besteht die Robustheitspruefung, aber nur knapp.**
+  Nutzerauftrag. Neu: `scripts/research_ou_phase6.py`, Ergebnisse
+  `phase6_ou_final_20260922.json` + `phase6_ou_montecarlo_live_20260922.json`.
+  p6_2 Monte-Carlo (Block-Bootstrap der Trade-Sequenz, 5.000 Pfade): FK
+  Ergebnis Median **+0,57 %** ueber OOS bei MaxDD Median -1,10 %, **P(DD > 7 %)
+  = 0,00 %** (TTP-Grenze ungefaehrdet), 32 % der Pfade negativ; EK +1,88 % bei
+  MaxDD -2,28 %. p6_3 Kostenpuffer: Breakeven bei 25,5 bps Einstieg (heute
+  16,9) bzw. 2,5 bps Swap/Tag (heute 1,71) -- rund 50 % Puffer, aber nicht
+  beides. p6_4 **Schwachstelle: 2023 (-0,033) und 2024 (-0,015) sind auch mit
+  der neuen Konfiguration negativ**, der positive OOS-Schnitt stammt komplett
+  aus 2025/2026. p6_7 Nominal nur 0,06x Konto (bei 3 Sigma 0,16x). p6_8 Stop =
+  41x Round-Trip-Kosten, kein Trade unter 3x (der `cls_practical`-Fehler von
+  09-09 existiert hier nicht).
+  **Korrektur an der Vertiefung vom 19.09.:** dort stand "-25,3R, rund -25 %
+  Konto". Falsche Bezugsgroesse -- live riskiert das Bein
+  `capital_weight x LEG_RISK_PCT`, auf FK 1/6 x 0,01 = 0,167 %, auf EK
+  1/8 x 0,0293 = 0,366 % je Trade. Die -25,3R sind rund -4,2 % der
+  FK-Kontoequity. Notiz korrigiert.
+  **Bezugsgroessen verifiziert:** die EK-Kapitalverduennung ist seit
+  2026-09-10 scharf, und zwar INNERHALB `core/sizing.py`, nicht an den
+  Aufrufstellen (die Memory dazu war bereits am 20.09. nachgezogen worden).
+  **Fazit:** Bein von "verliert zuverlaessig" auf "kostet nichts mehr" gehoben,
+  nicht auf "verdient Geld". Nichts umgesetzt, Entscheidung offen.
+
+- **2026-09-22** [Auswertung 21./22.09., alle vier Live-Konten] **Erste zwei
+  Plus-Tage in Folge -- Ausfuehrung sauber, Ergebnis haengt an einem Trade.**
+  Read-only-Abzug ueber `scripts/reports/mt5_pull.py --from 2026-09-21 --to
+  2026-09-23` (kein Eingriff).
+  **Ergebnis** (realisiert, EUR->USD @1,144): 21.09. +309,08 USD, 22.09.
+  +292,41 USD, zusammen +601,49 USD ueber 87 geschlossene Positionen
+  (Trefferquote 48 %, PF 1,19). Mit dem 18.09. (+1.916 USD) sind das drei
+  Handelstage in Folge im Plus -- erstmals im September; der Monat steht
+  trotzdem bei -1.653 USD. Je Konto: EK/Tickmill -135,56 EUR (Equity
+  3.173,66 inkl. +144,82 offen), TTP Konto 2 +1.175,63 USD, IQ -859,57 USD
+  (beide Tage negativ), FK +440,51 USD.
+  **Ausfuehrung: keine einzige Fehlermeldung** in beiden Bridge-Logs ueber
+  die zwei Tage (kein Traceback, kein Reject, kein Exit-Fehler). Fills gegen
+  das eigene SL/TP-Level: Median unter 0,4 bp auf allen vier Konten
+  (Ausreisser EK XAUUSD -5,08 bp, IQ -2,86 bp). ORB beide Tage auf allen drei
+  Konten um 15:45:06-15:45:10 Berlin platziert (~9 s nach Range-Ende), OCO
+  korrekt storniert, Session-Ende korrekt (21.09. Position geschlossen,
+  22.09. nicht ausgeloeste US30-Order storniert). Die Risiko-Deckel griffen
+  sichtbar: TTPs 3,5-%-Offenes-Risiko-Limit blockierte am 21.09. den ganzen
+  Vormittag neue Entries, die ctnl_reversal-Konkurrenzgrenze uebersprang
+  Signale (Zaehler prueft gegen echte Broker-Positionen, nicht gegen den
+  State -- `_count_open_leg_positions()` verifiziert per `positions_get`).
+  **Einschraenkung 1 -- ein Trade traegt alles:** cls_practical EURUSD short
+  am 22.09. 09:58->10:18 Berlin (TP) brachte +2.191,98 USD ueber alle vier
+  Konten. Ohne diesen einen Trade stehen die zwei Tage bei -1.590 USD;
+  Trefferquote am 22.09. nur 24 %.
+  **Einschraenkung 2 -- TTPs 21.09. kam nicht vom Bot:** 18 ctnl_reversal-
+  Positionen vom 17./18.09. wurden am 21.09. zwischen 14:30:44 und 14:33:05
+  Berlin im Abstand von 3-8 s geschlossen (+884 USD). Kein Bridge-Log-Eintrag
+  dazu, weder in der 15-Min- noch in der 5-Min-Lane; 17 der 18 State-Eintraege
+  stehen bis heute auf `status="placed"`. Vom Nutzer am 2026-09-23 BESTAETIGT: manuelles
+  Aufraeumen des fehlerhaften CTNL-Ueberbestands. Die +884 USD sind also kein
+  Bot-Ergebnis.
+  **Einschraenkung 3:** TTP Konto 2 (`trade_mode=0`, Demo) liefert das
+  groesste Plus der zwei Tage. Echtgeld-Konto EK hatte am 22.09. mit
+  -192,61 EUR (-6,1 % der Kontogroesse) seinen schlechtesten Tag im September.
+  **Nebenbefunde:** (a) 37 (TTP) bzw. 51 (IQ) verwaiste ctnl_reversal-
+  Eintraege stehen im State auf "placed" ohne offene Position -- fuer die
+  Konkurrenzgrenze harmlos, als Historie aber unbrauchbar. (b) Der
+  CTNL-Korb ist weiter ueber der Grenze: TTP am 22.09. frueh 8 offene
+  ctnl_reversal bei Grenze 3, arbeitet sich runter (jetzt 4). (c) FK hat die
+  ctnl_continuation vom 22.09. nicht gehandelt und ~300 USD Verlust vermieden
+  -- nicht durch einen Filter, sondern durch Datenlatenz: FK sah das Signal
+  erst um 07:28 Berlin (40 Min nach Funded um 06:48), da war es bereits
+  ausgestoppt ("bereits offen UND geschlossen ... verpasst"). (d) FK loggt bei
+  JEDEM Lauf "Kontostand 99.978,89 weicht von STARTING_EQUITY=100.000 ab --
+  beeinflusst den Trailing-DD-Floor".
+
+- **2026-09-21** [Alle Portfolio-Bridges / ORB] **Variante C UMGESETZT --
+  Teilausstieg/Break-Even nach der Neubewertung umgestellt, Risiko je Konto
+  unveraendert.** Nutzerfreigabe nach `projects/orb-exit-logik-neubewertung.md`.
+  **Neue Exit-Config:** SP500 Ziel 6R ohne Teilausstieg | US30 Ziel 6R,
+  Teilausstieg erst 3R | NASDAQ weiterhin ohne Ziel, Teilausstieg 3R statt 1,5R
+  | **Break-Even ueberall aus** | Stop unveraendert 0,6 ATR.
+  **Geaendert in 5 Dateien:** `challenge_portfolio/paper_bot.py` (Funded live),
+  `fk_instant_funding/paper_bot.py` (FK live), `EK-Portfolio-Bridge/config.py`
+  (EK live), `ek_portfolio/paper_bot.py` (Paper, pausiert -- stand ohnehin
+  falsch: NASDAQ noch mit 4R-Ziel statt None) und
+  `app_pages/ny_open_orb_portfolio.py` (Research-Dashboard, damit es zeigt was
+  live laeuft). Zusaetzlich `EK-.../legs/ny_open_orb/signal_source.py`
+  None-sicher gemacht -- die abgeloeste Funktion waere mit
+  `partial_exit_r=None` hart abgestuerzt.
+  **Sizing/Risikologik bewusst NICHT angefasst** (Nutzerauftrag), live
+  gegengerechnet: TTP 55,07 $ (0,0556 %), IQ 111,18 $ (0,1111 %), FK 124,80 $
+  (0,1246 %), EK 1,34 EUR (0,0417 %) je Instrument -- exakt die Werte von vor
+  der Aenderung.
+  **Zweitrundeneffekt geprueft:** ohne Teilausstieg/BE bleibt offenes Risiko
+  laenger stehen. Worst Case (3 Beine gleichzeitig, kein Abbau) gegen den
+  jeweiligen Deckel: TTP 0,167 % von 3,5 % (4,8 % Auslastung), IQ 0,333 % von
+  3,0 % (11,1 %), FK 0,374 % von 5,0 % (7,5 %), EK 0,125 % von 30 % (0,4 %) --
+  unkritisch, kein Bein wird dadurch ausgebremst.
+  **Verifiziert je Bridge** (nichts platziert): Order-Form stimmt -- SP500
+  erzeugt jetzt EINE Order mit 6R-TP, US30/NASDAQ zwei Scheiben mit
+  Teilausstieg bei exakt 3,0R; `order_check` gegen Tickmill "Done".
+  **WICHTIG -- greift erst ab dem naechsten Handelstag:** die heute um 15:45
+  gelegten US30-Orders auf allen vier Konten tragen noch das ALTE Schema
+  (Teil 2R / Ziel 4R / BE an). Sie laufen konsistent zu Ende, weil der
+  Lebenszyklus die im State gespeicherten Werte nutzt, nicht die Config. Ein
+  Austausch mitten in der Session waere unnoetiges Risiko gewesen.
+
+- **2026-09-21** [Alle Portfolio-Bridges / ORB] **Erster gemeinsamer
+  Handelstag mit Stop-Orders auf ALLEN vier Konten -- Platzierung 6-9 Sekunden
+  nach Range-Ende.** Log 15:45:06 (FK), 15:45:09 (TTP + IQ), 15:45:05 (EK,
+  Server 09:45:05 NY). Alle vier legten US30 (SP500 gefiltert: Montag,
+  Bias 1.0; NASDAQ Ausbruch bereits vor Platzierung gelaufen).
+  **Der IQ-Sizing-Fix wirkt live:** 111,36 $ statt der bisherigen 55 $.
+  Stand 20:00: Orders ruhen noch, keine Ausloesung, keine Fehlermeldung.
+
+- **2026-09-21** [NY-Open ORB / Research] **SL-, TP- und BE-Logik mit realen
+  Kosten neu bewertet -- Grundlage fuer Variante C oben.** Nutzerauftrag
+  2026-09-19, vollstaendig in `projects/orb-exit-logik-neubewertung.md`.
+  *(Dieser und die zwei Eintraege darunter wurden am 2026-09-21 ZWEIMAL von
+  einer parallel laufenden Session ueberschrieben und aus dem Chatverlauf
+  wiederhergestellt -- siehe Memory `parallele-sessions-ueberschreiben-knowledge`.)*
+  **Warum die alte Entscheidung neu zu pruefen war:** der Stage-6-Teilausstieg
+  wurde ohne reale Kosten UND mit dem Marktorder-Einstieg validiert -- beide
+  Annahmen sind seit dem 17.09. widerlegt.
+  **Befunde** (396 Kombinationen je Instrument, 2019-2026, Stop-Order-Entry,
+  gemessene Spreads, Einstiegs-Slippage 0,45 bps aus fuenf echten Fills):
+  Teilausstiege kosten Edge, je frueher desto mehr (NASDAQ Ø R +0,037 bei 1,0R
+  gegen +0,192 ohne); weite Ziele schlagen nahe (6R > 5R > 4R > 3R > 2R); der
+  Stop ist die unwichtigste Schraube (0,4-0,6 ATR flach -- 0,6 bewusst behalten,
+  weil bei 0,4 die gemessene Slippage >15 % des Risikos frisst).
+  **Zwei Befunde, die vor einem Schnellschuss schuetzen:** (a) NUR den BE
+  abzuschalten waere schlechter als heute (-10 % bei gleichem Drawdown); (b)
+  US30 vertraegt "kein Ziel" nicht (OOS -0,101R), NASDAQ ist genau damit am besten.
+  **Phase 6 (3.000 Pfade, Block-Bootstrap ueber Kalendermonate) drehte die
+  Empfehlung:** der historische Einzelpfad liess Variante C schlechter aussehen
+  (MaxDD -56,7R vs. -40,6R), ueber 3.000 Pfade ist ihr Tail-Drawdown praktisch
+  identisch mit dem heutigen (-67,7 vs. -67,4R). Ergebnis +71 % (OOS Ø R +0,236
+  statt +0,100, 8/8 Jahre positiv).
+  Neue Skripte: `scripts/research_orb_exit_{grid,candidates,portfolio,montecarlo}.py`.
+
+- **2026-09-21** [FK Instant Funding + EK-Portfolio-Bridge / ORB]
+  **Stop-Order-Logik auf beide restlichen Bridges uebertragen -- ORB laeuft
+  jetzt auf ALLEN Konten ueber ruhende Stop-Orders.** Nutzerauftrag 2026-09-19
+  (beide gleichzeitig, kein Rueckfall auf Marktorders, jede Bridge behaelt ihre
+  dokumentierte Risikoformel).
+  **FK** (nahezu Portierung): neues `orb_pending.py`, Order-Bausteine in
+  `executor.py` (`place_pending_stop`, `cancel_pending`, `pending_order_state`,
+  `split_volume`, `closed_by_take_profit`, `round_price_to_tick`),
+  `manage_orb_pending()` in `run_once.py`, praeziser 09:45-Pass in
+  `run_once_fast.py`; ORB aus dem `_process_leg`-Marktorderpfad genommen. Die
+  bisherige Teil-Rundung (nur SL) ging in eine vollstaendige Tick-Rundung auf --
+  damit erledigt sich der offene "Invalid stops"-Fehler auf `SPX500.gbe`.
+  **EK** (eigener Umbau): neue `legs/ny_open_orb/pending_source.py` +
+  `pending_executor.py` mit eigener Tabelle `orb_pending_orders` (die alte
+  `orb_positions` kann den Fall nicht abbilden: (Tag, Instrument) ist dort
+  Primaerschluessel, jetzt braucht es bis zu 4 Zeilen je Tag). JEDE Order traegt
+  `config.LEG_MAGIC[leg]`; Kommentar auf 16 Zeichen gekappt.
+  `manage_open_positions()` ueberspringt Tickets des neuen Pfads ueber
+  `is_pending_ticket()` -- sonst zweiter Teilausstieg auf dieselbe Position.
+  **Korrektur zu meiner Aussage im Plan-Gespraech:** EKs Kapitalverduennung war
+  NICHT offen -- sie sitzt seit 2026-09-10 in `core/sizing.py`.
+  **Tests:** Zustandsmaschine mit simuliertem Broker FK 12/12, EK 16/16 (EK
+  gegen eine TEMP-DB); `order_check` gegen beide Broker 6/6 "Done", 0 Orders im
+  Buch; Trockenlauf mit echten Terminaldaten (17./18.09.) -- Sperren
+  `breakout_passed`/`session_over` greifen. **Quercheck:** FKs Level fuer den
+  17.09. (NASDAQ 29.430,90 / SP500 7.646,70) identisch mit Funded-IQ am selben
+  Broker; EK (Tickmill) erwartungsgemaess daneben (29.428,56).
+
+- **2026-09-21** [Funded-Portfolio-Bridge] **IQ handelte ORB mit dem halben
+  vorgesehenen Risiko + TTP-Konto 504069845 entfernt.**
+  (a) `manage_orb_pending()` rechnete mit dem globalen `pb.CAPITAL_WEIGHT`
+  (1/6) statt `account.capital_weight` -- IQ (1/3) platzierte am 17./18.09. mit
+  55,25 $ statt 111 $. Behoben, heute live bestaetigt (111,36 $).
+  (b) Neue Log-Zeile "ORB ohne Order: <Instrument>=<Grund>".
+  (c) TTP "Konto 1" (504069845, Echtgeld) auf Nutzerauftrag **vollstaendig aus
+  der Bridge entfernt** -- Konto gebreacht, Broker hatte den Handel schon am
+  18.09. gesperrt. **7 Positionen (DAL, UAL, NUE, AMGN, APD, IVZ, DD) bleiben
+  offen und werden von KEINER Bridge mehr verwaltet** -- alle mit Broker-SL.
+
+- **2026-09-21** [CTNL-Kostenvalidierung] **Alle vier Proben (p6_5-p6_8)
+  durchgerechnet, beide Beine. Reine Auswertung, kein Bot geaendert.**
+  Ergebnis + Entscheidungsvorlage A/B/C in
+  `projects/ctnl-kostenvalidierung.md`, Rohdaten in `_data/`
+  (`broker_spreads_xauusd.json`, `ctnl_execution_costs{,_ttp,_iq}.json`).
+  **Probe 1: die 8 bps sind 4- bis 11-fach ZU HOCH, nicht zu niedrig**
+  (gemessen TTP 1,95 / BeyondIQ 0,73 / Tickmill 1,07 bps). Umgekehrte
+  Richtung zum CLS-Fall -- der Backtest ist bei CTNL konservativ.
+  **Probe 2/3: bei echten Kosten sind BEIDE Beine profitabel**, am realen
+  Betriebspunkt (Lag 1) reversal +0,266 R / PF 1,31 und continuation
+  +0,194 R / PF 1,22 (TTP-Kosten). Die Lag-Kurve ist in keinem der vier
+  Laeufe monoton -- der Versatz ist hier Rauschen, anders als bei CLS.
+  **Probe 3, wichtigster Einzelfund: der 0,50R-R-Detektor ist tragend.**
+  Ohne ihn kippt `ctnl_continuation` schon bei Lag 1 auf PF 0,99 und
+  einzelne Trades erreichen Hebel bis 380x. Mit Gate liegt der gemessene
+  Maximalhebel bei 1,94-2,00 -- die Identitaet 1/(1-0,5) = 2,0 bestaetigt
+  sich exakt.
+  **Probe 4: die engen Stops waren ein Artefakt der falschen Kostenzahl.**
+  Bei 8 bps sahen 75,7 % der continuation-Trades nach zu engem Stop aus (Ø R
+  eng -0,312 vs. weit +0,321, exakt das CLS-Muster); bei gemessenen Kosten
+  sind es 5,8 % (TTP) bzw. 0,0 % (IQ). **Ein absoluter Stop-Boden ist NICHT
+  faellig.**
+  **Empfehlung (Variante B):** `spread_bps` broker-getrennt auf die
+  gemessenen Werte setzen. Haken, der mitentschieden werden muss: die
+  Phase-6-Referenz `CTNL_KILL_SWITCH_DD_THRESHOLD = -0,066` ist mit den
+  alten Kosten gezogen und muesste neu gerechnet werden.
+  **Bewusst NICHT quantifiziert:** ob EKs Stop-Neuverankerung Edge kostet.
+  Die Replay-Methode rechnet nur die Einstiegsseite neu -- zulaessig, weil
+  Stop/Ziel am Signal-Niveau haengen. Bei EK wandert das Stop-Niveau mit,
+  also verschiebt sich auch die Ausstiegsseite; das braucht einen eigenen
+  Engine-Lauf. Geschaetzt wird hier nichts.
+
+- **2026-09-21** [CTNL-Kostenvalidierung / Research] **Proben p6_5-p6_8 fuer
+  beide CTNL-Beine begonnen (Nutzerauftrag 09-19, Umfang bestaetigt 09-21).
+  Reine Auswertung, kein Bot geaendert.** Neue Notiz
+  `projects/ctnl-kostenvalidierung.md`, neues Skript
+  `scripts/research_ctnl_execution_costs.py`.
+  **Zwei Befunde stehen schon:**
+  (1) **Der Ausfuehrungsversatz ist gross, aber getaktet** -- gemessen an 134
+  echten Broker-Fills: Signal-Label -> Live-Entry Median 28 Min., Streuung
+  min 28 / max 29. Eine Minute Streuung ueber 134 Fills heisst: das ist
+  Scan-Taktung, kein Marktrauschen, also gezielt verkleinerbar. Gegen die
+  Signalbar trifft der real gezahlte Preis am besten das Open der Bar T+30
+  (1,28 Preispunkte Abweichung, gegen 3,44 bei T+15). Der fuer Probe 2
+  relevante Versatz gegenueber dem Backtest betraegt aber nur ~13 Min., weil
+  der Backtest selbst erst zum Open der Bar T+15 fuellt.
+  (2) **Die drei Bridges sizen CTNL unterschiedlich.** Funded und FK nutzen
+  das absolute Signal-SL-Niveau plus `MAX_CONSUMED_R_FOR_ENTRY = 0.50`
+  (Hebel bei 2,0x gedeckelt). **EK verankert den Stop am Live-Kurs neu**
+  (`legs/ctnl_edge/executor.py::_send_entry`: `stop_price = entry_price -
+  direction * sl_distance`) und hat deshalb konsequenterweise gar kein
+  Hebel-Gate -- eine Aufblaehung ist dort strukturell unmoeglich. Der Haken:
+  genau diese Variante hat EK fuer das CLS-Bein selbst vermessen und am
+  09-11 verworfen (PF 1,42 vs. 1,85, Ø R 0,25 vs. 0,42, auf jeder Kennzahl
+  ausser dem Maximalhebel schlechter). **Fuer CTNL faehrt EK bis heute die
+  fuer CLS unterlegene Variante.** Ob das fuer CTNL genauso gilt, ist NICHT
+  gezeigt -- begruendeter Verdacht mit Gegenbeleg aus dem eigenen Repo,
+  Quantifizierung steht aus.
+  **Noch offen:** Probe 1 (XAUUSD-Kosten je Broker, Messung laeuft),
+  Probe 2 (Edge-Verlust je Lag-Stufe), Probe 3 (Hebelverteilung unter 0,50R),
+  Probe 4 (Stopdistanz gegen Kosten), Entscheidungsvorlage A/B/C.
+
+- **2026-09-21** [scripts/measure_broker_spreads.py] **Zwei Luecken
+  geschlossen, damit die CTNL-Kostenmessung ueberhaupt tragen kann.**
+  (a) Die Kommissions-Umrechnung stand auf `usd_per_pip_per_lot = 10.0`,
+  hartkodiert auf EURUSD -- fuer XAUUSD um Faktor 10 zu klein, die Kommission
+  waere also 10x zu guenstig ausgewiesen worden. Ersetzt durch
+  `info.trade_contract_size * pip` (100.000 x 0,0001 = 10,0 fuer EURUSD,
+  100 x 0,01 = 1,0 fuer XAUUSD). **Regressionstest bestanden:** Lauf mit
+  `--symbols EURUSD` liefert TTP $4,00/Lot = 0,40 Pips und IQ $5,00/Lot =
+  0,50 Pips, identisch zu `resources/broker-kostenmodell-eurusd.md`.
+  (b) **FK Instant Funding fehlte komplett als Messziel** -- faehrt beide
+  CTNL-Beine mit echtem Geld und waere sonst ausgelassen worden. Ergaenzt,
+  bewusst ueber Suffix-Aufloesung statt per Import: FKs `SYMBOL_MAP` steht in
+  `run_once.py`, und dieses Modul zu importieren zoege `executor`/
+  `orb_pending` in `sys.modules` -- Namen, die es in der Funded-Bridge ein
+  zweites Mal mit anderem Inhalt gibt. Indizes sind von der
+  Suffix-Aufloesung ausgenommen (SP500 -> "SPX500.gbe", kein reines Suffix).
+
+- **2026-09-21** [Reporting / Soll-Ist] **Aufgeklaert, woher die
+  `ou_modell`-Trades kommen, die im Soll "kein Signal" haben.** Reine
+  Analyse, nichts geaendert. Zwei voneinander unabhaengige Ursachen:
+  (a) **Fenstersemantik:** `build_soll()` filtert auf **Entry** im Fenster,
+  `build_ist()` zaehlt nur **schliessende** Deals (`entry == 1`) im Fenster.
+  Eine Position, die vorher eroeffnet und im Fenster geschlossen wird, kann
+  im Soll gar nicht auftauchen. Bei OU (Haltedauer mehrere Tage) ist das der
+  Normalfall: von den 5 EK-Closes der KW38 wurde **keiner** im Fenster
+  eroeffnet, bei Funded 3 von 4 (nur APD 15.09.->17.09. lag ganz drin).
+  (b) **EK misst das Bein ueberhaupt nicht:** `ek_portfolio/paper_bot.py`
+  hat keine `_scan_ou_modell()`, und `_scan_all()` ueberspringt fehlende
+  Scan-Funktionen **ohne Meldung** (`if fn is None: return None`). Auf EK
+  heisst "kein Signal" also "nicht gemessen". Die Live-Bridge handelt das
+  Bein aus eigenem `legs/`-Code, den der Repo-Paper-Bot nie gespiegelt hat
+  (passt zum Fund vom 09-13, dass EK das OU-Bein von der abgeschalteten
+  `OU-Modell-MT5-Bridge` uebernommen hat). Folge: die EK-Soll-Rendite ist die
+  eines Portfolios **ohne** OU-Bein und mit dem Ist nicht vergleichbar --
+  ausgerechnet beim groessten Verlustposten (KW37 -55,25, KW38 -73,41).
+  **Nebenbefund (offen):** bei Funded existiert `_scan_ou_modell()`, der Lauf
+  vom 09-19 lieferte aber 0 Trades im Fenster, ein Re-Scan am 09-21 mit
+  identischem `end` liefert 3 (DD 14.09., IVZ 15.09., PEP 18.09.) -- genau
+  die drei, die die Bridge laut `bridge_state_ttp.json` mit Ticket platziert
+  hat. Ursache noch offen, in `DASHBOARD.md` als Aufgabe eingetragen.
+
+- **2026-09-21** [Funded-Portfolio-Bridge + FKInstantFunding-MT5-Bridge]
+  **Live-Deckel fuer gleichzeitig offene Positionen eines Beins eingebaut
+  (Nutzerauftrag, behebt die CTNL-Order-Flut vom 09-17/18).** Uebernommen aus
+  `EK-Portfolio-Bridge/legs/ctnl_edge/executor.py::check_and_execute_reversal()`
+  -- der einzigen Bridge, die den Deckel bisher an der richtigen Stelle zog.
+  Neu in beiden `run_once.py`: `LEG_MAX_CONCURRENT`
+  (`ctnl_reversal`: 3 aus `gold_smc_htf_ltf/live_signal.py::REV_MAX_CONCURRENT`,
+  `ctnl_continuation`: 1) + `_count_open_leg_positions()`, aufgerufen in
+  `_process_leg()` als letztes Gate vor der Order.
+  **Gegen den BROKER gezaehlt, nicht gegen den State** -- der State ist genau in
+  dem Szenario unzuverlaessig, das das Gate abfangen soll (er haelt verwaiste
+  "placed"-Eintraege zu laengst per SL geschlossenen Positionen). Der State
+  liefert nur Ticket-Kandidaten, die Wahrheit kommt aus `positions_get()`;
+  der Order-Kommentar-Abgleich ist nur Zusatz fuer Positionen mit verlorenem
+  State-Eintrag (auf Kommentare allein ist kein Verlass, siehe
+  `MT5 Comment-Length Order Reject`).
+  **Bewusst OHNE "missed"-State-Eintrag und mit Sammelmeldung statt einer
+  Zeile je Signal:** ein voller Positionskorb ist ein VORUEBERGEHENDER Zustand
+  (gleiches Muster wie der Kill-Switch-Zweig). Ein "missed"-Eintrag wuerde das
+  Signal endgueltig verwerfen, obwohl es nach dem naechsten Exit legitim
+  handelbar waere -- derselbe Fehler wie beim 0-Tick-Fund vom 09-08.
+  **Tests (Flut vom 09-17 mit gefaketem MT5/Executor nachgespielt):**
+  (a) Funded: 32 Signale je M15-Bar -> 3 eroeffnet, 29 geblockt, Buch = 3;
+  (b) FK: 15 Signale -> 3 eroeffnet, 12 geblockt; (c) nach einem Exit rueckt
+  genau EINE Position nach (kein Dauer-Stopp); (d) 2 kuenstlich verwaiste
+  State-Eintraege veraendern die Zaehlung nicht. Gegen die ECHTE Lage
+  verifiziert: auf `ttp` zaehlt das Gate 32 (State sagt 44) und blockt, auf
+  `iqmarkets` zaehlt es 0 (State sagt 40) und laesst 3 zu.
+  Die Fast-Lanes erben das Gate automatisch (beide `run_once_fast.py` rufen
+  `slow._process_leg()`); `ctnl_reversal` laeuft ohnehin nur auf der Slow-Lane.
+  **Noch nicht im Echtbetrieb ausgeloest** -- erster Lauf der Woche war
+  2026-09-21 00:13, bis dahin kein frisches CTNL-Signal.
+
+- **2026-09-21** [Funded-Portfolio-Bridge + FKInstantFunding-MT5-Bridge]
+  **Verwaiste ctnl_reversal-Positionen gegen den Broker abgeglichen (read-only,
+  nichts geschlossen).** `ttp` (Demo): 32 von 44 State-Eintraegen real noch
+  offen, netto -0,32 Lots, offener P/L +493,52, Equity 98.156,59.
+  `iqmarkets` (Echtgeld): 0 von 40 real offen, Equity 100.625,54 -- alles per
+  Broker-SL glattgestellt, Konto im Plus. `fk_instant_funding` (Echtgeld):
+  11 von 12 real offen, netto -0,10 Lots, offener P/L +31,42, Equity
+  100.081,72. **Folge des neuen Deckels:** solange diese Positionen offen
+  sind, nimmt `ctnl_reversal` auf `ttp` und FK KEINE neuen Entries an. Das ist
+  gewollt (die Positionen sind real und zaehlen zum Risiko), aber es heisst,
+  dass das Bein dort bis zum Abbau praktisch stillsteht.
+
+- **2026-09-19** [Reporting / Soll-Ist] **Soll/Ist KW38 (14.-18.09.) gerechnet**
+  (`scripts/reports/soll_ist.py --week 2026-W38`, Ergebnis
+  `soll_ist_2026-W38.json` + MT5-Abzug `mt5_2026-W38.json`). Reine
+  Auswertung, nichts geaendert. **Soll ist auf allen drei Bridges quasi
+  identisch positiv** (EK +0,09 %, Funded +0,10 %, FK +0,36 % bei je 15
+  Trades), das Ist faellt auseinander:
+  (a) **EK -74,48 (-2,37 %)** -- die 5 platzierten Soll-Trades stehen bei
+  **+6,30 R**, der Verlust kommt praktisch vollstaendig aus `ou_modell`
+  (5 Deals, -73,41), das im Soll gar kein Signal hat. Zweite Woche in Folge
+  dasselbe Muster (KW37: -55,25).
+  (b) **Funded +513,07 (+0,26 %) -- Zahl NICHT belastbar:** `ttp1` ist seit
+  dem Breach am 09-18 aus `config.py` entfernt, `mt5_pull.py` entdeckt die
+  Konten ueber genau diese Liste. Der Abzug enthaelt also nur ttp + iqmarkets;
+  ausgerechnet das Konto, auf dem die Woche entschieden wurde, fehlt.
+  (c) **FK 0 Deals ist ein Messfehler, kein Ergebnis:** `initialize failed:
+  (-10005, 'IPC timeout')`, Konto nicht erreichbar. Der Bridge-State weist
+  fuer dieselbe Woche **7 Signale mit Ticket** aus -- FK haette damit zum
+  ersten Mal seit Livegang (08-09) gehandelt. **Unverifiziert**, muss gegen
+  das Konto nachgezogen werden, sobald das Terminal wieder antwortet.
+  (d) **`ctnl_reversal`: Soll 9 Trades / -7,16 R, Ist auf Funded 60 Deals /
+  +259,85.** Dieselbe Order-Flut wie im Eintrag oben, hier von der anderen
+  Seite sichtbar; dass sie im Plus endete, ist Zufall, nicht Design. EK hat
+  von denselben 9 Soll-Trades **0** platziert -- sein
+  `_own_positions()`-Gate hat gehalten.
+
+- **2026-09-19** [CTNL Reversal / alle Bridges] **Ursache der Order-Flut
+  gefunden: `_cap_concurrent_reversals()` ist ein Simulations-Filter, kein
+  Live-Gate -- Funded-Portfolio-Bridge und FKInstantFunding-MT5-Bridge haben
+  gar keinen Live-Deckel.** Reine Analyse, nichts geaendert.
+  **Mechanik (reproduziert):** `_scan_ctnl()` simuliert bei JEDEM Lauf neu
+  ueber das rollierende Lookback-Fenster. Ein noch offener Trade bekommt
+  `exit_reason="data_end"`, und `run_once.py::_process_leg()` liest genau das
+  als "Signal ist offen" -> echter Entry. Beim naechsten Scan wandert
+  `data_end` mit; die Exits der aelteren Trades verlaengern sich, wodurch die
+  Greedy-Kappung den gerade erst eroeffneten Trade RUECKWIRKEND verwirft --
+  die Zeile verschwindet komplett aus dem Scan-Output. Direkt gemessen:
+  Scan 13:00 liefert Entry 13:00 als offen, Scan 14:00 kennt diese Zeile
+  nicht mehr, dafuer Entry 14:00. Die Bridge macht daraus "Schluessel nicht
+  mehr da -> nichts zu tun": die reale Position ist verwaist (kein
+  max_hold, kein Target, kein Bridge-Exit -- nur noch der Broker-SL), und im
+  selben Lauf wird die naechste eroeffnet. Ergebnis: **eine neue Position pro
+  M15-Bar, unbegrenzt.**
+  **Warum erst jetzt:** zwischen 2026-08-28 und 2026-09-17 gab es gar kein
+  Reversal-Signal. Der Fehler lag ~3 Wochen latent und schlug erst beim
+  ersten dichten Signal-Cluster durch (Gold-Rally 4305 -> 4415 am 09-17).
+  **Zahlen:** 0 CTNL-Entries bis 09-16, dann 100 am 09-17 und 34 am 09-18
+  (Funded-Bridge, 3 Konten); FK Instant Funding 11 + 4 (laeuft stuendlich
+  statt alle 15 Min.). Auf ttp1 zum Breach-Zeitpunkt (09-18 09:49) **38
+  offene ctnl_reversal-Positionen mit $2.850 kumuliertem Sollrisiko gegen
+  eine Design-Obergrenze von 3 x $75 = $225 -- Faktor 12,7.** Alles
+  XAUUSD, alles dieselbe Richtung, also voll korreliert. Die Bridge hat von
+  42 Entries nur 4 Exits ueberhaupt gesehen (-255 $ gebucht), die uebrigen
+  38 liefen unbemerkt in den Broker-SL.
+  **EK-Portfolio-Bridge war als einzige geschuetzt:**
+  `legs/ctnl_edge/executor.py::check_and_execute_reversal()` zaehlt mit
+  `_own_positions()` die ECHTEN offenen Broker-Positionen und lehnt ab
+  (`max_concurrent_reached, count: 3`) -- genau das Gate, das den beiden
+  anderen Bridges fehlt.
+  **Aktueller Stand (Sa, 19.09., Maerkte zu, kein Lauf seit 09-19 00:01):**
+  ttp1 ist heute bereits aus `config.py` entfernt. Verwaiste
+  ctnl_reversal-Eintraege im State: iqmarkets (Echtgeld) 40 / $6.000
+  Sollrisiko, ttp (Demo) 44 / $3.300, FK (Echtgeld) 12 / $454. Alle drei
+  Tasks stehen auf "Ready" -- **ohne Eingriff wiederholt sich das am
+  Montag.**
+
+- **2026-09-19** [OU-Modell Research] **SL/TP-Logik und Broker-Kosten
+  EK vs. FK -- finale Konfiguration steht als Empfehlung, nichts umgesetzt.**
+  Neu: `scripts/research_ou_exit_logic.py` (Ausstiegslogiken),
+  `scripts/research_ou_broker_costs.py` (Kosten je Broker, rein lesend aus
+  beiden MT5-Terminals). Ergebnisse `exit_logic_20260919.json`,
+  `exit_logic_engine_20260919.json`, `exit_logic_sigma_plateau_20260919.json`,
+  `broker_costs_ou_20260919.json`.
+  **Befunde:** (a) der TP 1,5R feuert in **4,8 %** der Trades -- er liegt bei
+  4,5 Sigma ueber dem Einstieg, die Mean Reversion bei 2 Sigma; "MA-Ausstieg
+  ODER TP" ist rechnerisch identisch mit "nur MA-Ausstieg"; (b) der
+  3-Sigma-Stop ist der groesste Einzelfehler: auf 8 Sigma verbreitert steigt
+  OOS von -0,015 auf +0,008R UND der schlechteste Trade faellt von -2,54R auf
+  -0,90R (die Position ist bei gleichem Dollar-Risiko nur noch 37,5 % so
+  gross); ueber 8/10/12/16 Sigma ein Plateau, kein Rand-Artefakt; (c)
+  Trailing-Stop und TP-Sweep bringen nichts; (d) **EK/Tickmill ist beim Spread
+  halb so teuer wie FK/TTP (2,63 vs. 5,67 bps Median), beim Swap exakt gleich
+  (-6,23 vs. -6,24 % p.a.)** -- dieselbe Strategie verliert auf EK halb so viel
+  (-0,028 statt -0,052R), ohne Vorzeichenwechsel; davon 0,011R Broker-Kosten,
+  0,013R Ausfuehrungsfamilie.
+  **Finale Empfehlung:** Stop 8 Sigma, Breakeven aus, kein TP, Ausstieg am
+  MA20, max_hold 10 -> FK +0,008R (PF 1,08), EK +0,013R (PF 1,13); mit
+  Folgetags-Schluss-Einstieg +0,015 bzw. +0,020R. Braucht eine Code-Aenderung
+  (der MA-Ausstieg fehlt in `simulate_bracket_portfolio`), ist also keine reine
+  Config-Aenderung. Phase 6 fehlt weiterhin. Details + Option D im Dashboard
+  und in `projects/ou-modell-kostenvalidierung.md`.
+  **Nebenfund am Messweg:** `measure_broker_spreads._connect` loggt sich per
+  separatem `mt5.login()` ein -- auf einem frisch gestarteten Tickmill-Terminal
+  scheitert das mit "Authorization failed"; die Bridges uebergeben die
+  Zugangsdaten direkt an `initialize()`. In `research_ou_broker_costs.py` als
+  `_connect_direct()` nachgebaut (ein Versuch, kein Retry: wiederholte
+  Fehlanmeldungen sperren Live-Konten).
+
+- **2026-09-19** [OU-Modell Research] **Kosten-/Zeitraum-Optimierung
+  durchgerechnet (Bloecke 0-3) -- reine Auswertung, kein Bot geaendert.**
+  `scripts/research_ou_execution_optimization.py` (am 17.09. gebaut, nie
+  gelaufen) vollstaendig ausgefuehrt; Ergebnis
+  `ou_paper_backtest/results/execution_optimization_20260917.json`,
+  Zusatzlaeufe `ou_be_isolation_20260919.json` + `ou_stopfloor_20260919.json`.
+  Regressionstest bestanden (A +0,0969R / C$ -0,0103R wie am 16.09.).
+  **Befunde:** (a) Spread-Kurve bestaetigt (27,9 bps um 09:35 NY, 8,3 zum
+  Schluss) -- aber nur 0,017R auf die Median-Stopdistanz; (b) keine von 20
+  Ausfuehrungsvarianten ist out-of-sample positiv, die 3,5-%-Abweichungsgrenze
+  ist wirkungslos; (c) Einstiegsstunde ist kein Hebel (alle Stunden IS
+  negativ); (d) **Zeitraumtest: der Edge lebt** (+0,075R OOS reibungsfrei),
+  er wird von Ausfuehrung (0,058R) + Kosten (0,064R) aufgefressen; (e) BE-Stop
+  aus ist IS-Sieger aller 54 Parameter-Kombinationen und dreht das
+  OOS-Vorzeichen, `max_hold` kuerzen hilft NICHT. Zusammen mit dem spaeteren
+  Einstieg (+ Mindest-Stopdistanz 3 % gegen versteckten Hebel) kommt das Bein
+  von -0,051R auf +0,020R OOS (PF 1,07, KI umschliesst die Null).
+  Entscheidungsvorlage A/B/C in `projects/ou-modell-kostenvalidierung.md`,
+  Dashboard nachgefuehrt. **Code-Aenderung nur am Research-Skript:** die
+  Block-3-Ausfuehrungswahl kannte `close_d1` nicht und waere sonst auf die
+  schlechteste Ausfuehrung zurueckgefallen.
 
 - **2026-09-19** [Git-Sync / 11 Auto-Tasks + Bridge-Watchdog] **Ursache des
   Push-Staus behoben** (Nutzerauftrag). `scripts/lib/git_sync_push.ps1` und

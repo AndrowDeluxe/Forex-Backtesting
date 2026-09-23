@@ -35,6 +35,81 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+*(Die folgenden vier Punkte wurden am 2026-09-23 aus `git stash@{71}` wiederhergestellt -- `git_sync_push` hatte sie am 21.09. beiseitegelegt.)*
+
+- **CTNL-Reversal-Order-Flut: Ursache gefunden UND Fix gebaut (2026-09-21) --
+  bitte gegenlesen.** `_cap_concurrent_reversals()` im Scan war ein
+  Simulations-Filter, kein Live-Gate; Funded-Portfolio-Bridge und
+  FKInstantFunding hatten keinen Deckel gegen die ECHTE Zahl offener
+  Positionen. Eingebaut ist jetzt das EK-Gate (`LEG_MAX_CONCURRENT` +
+  `_count_open_leg_positions()`, gegen den Broker gezaehlt). Flut vom 09-17
+  nachgespielt: 32 Signale -> 3 Positionen statt 32. Details +
+  Testprotokoll in `CHANGELOG.md` 2026-09-21.
+  **Auf meiner Annahme, nicht auf deiner Ansage:** (a) der Deckel gilt auch
+  fuer `ctnl_continuation` (1) -- das Bein ist per Konstruktion
+  single-position, der Deckel ist reine Absicherung gegen denselben
+  `data_end`-Mechanismus; (b) ein geblocktes Signal bekommt bewusst KEINEN
+  "missed"-Eintrag, wird also nach dem naechsten Exit wieder handelbar,
+  statt endgueltig verworfen zu werden. Sag Bescheid, falls du eins von
+  beidem anders willst.
+
+- **Verwaiste CTNL-Positionen legen das Bein vorerst still -- Entscheidung
+  noetig.** Abgleich vom 2026-09-21 (read-only, nichts geschlossen):
+  `ttp` (Demo) 32 real offen (+493,52 offener P/L), `fk_instant_funding`
+  (Echtgeld) 11 real offen (+31,42), `iqmarkets` (Echtgeld) 0 -- dort hat der
+  Broker-SL alles glattgestellt, Konto bei 100.625,54. Diese Positionen
+  zaehlen korrekterweise gegen den neuen Deckel, **also nimmt
+  `ctnl_reversal` auf `ttp` und FK bis zu ihrem Abbau keine neuen Entries
+  an.** Alle haben einen SL, akut brennt nichts. **Offen fuer dich:**
+  laufen lassen (Bein steht wochenlang still), oder soll ich das Schliessen
+  vorbereiten (finaler Live-Trigger bleibt bei dir)?
+
+- **CTNL-Kostenvalidierung fertig -- Entscheidung A/B/C liegt bei dir.**
+  Alle vier Proben durchgerechnet, beide Beine, Ergebnis in
+  `projects/ctnl-kostenvalidierung.md`. **Kein Handlungsdruck:** beide Beine
+  sind bei echten Kosten profitabel. Kernbefund: die angesetzten 8 bps sind
+  4- bis 11-fach ZU HOCH (gemessen 0,73-1,95), der Backtest weist CTNL also
+  schlechter aus als es ist. **Meine Empfehlung ist B** (`spread_bps`
+  broker-getrennt auf die gemessenen Werte), mit dem Haken, dass dann die
+  Phase-6-Referenz `CTNL_KILL_SWITCH_DD_THRESHOLD = -0,066` neu gezogen
+  werden muss. **Offen fuer dich:** A (nichts aendern), B, oder C (B plus
+  EK-Angleichung -- die ist fuer CTNL aber NICHT gemessen, siehe Notiz).
+
+- **Broker-History von ttp1 konnte ich nicht ziehen** -- der Zugriff auf die
+  Zugangsdaten im Bridge-Backup wurde vom Auto-Mode-Classifier blockiert.
+  Die exakte realisierte CTNL-P/L auf dem gebreachten Konto ist damit offen;
+  meine Zahlen stammen aus Bridge-Log + State + Goldkurs. **Offen fuer
+  dich:** entweder im MT5-Terminal selbst nachsehen (Konto 504069845,
+  16.-19.09., Symbol XAUUSD) oder mir die Berechtigung geben.
+
+- **OU-Modell: Ticker in S&P UND Nasdaq-100 landen auf der Variante OHNE TP --
+  welche Config soll gelten?** (Fund 2026-09-23, nichts geaendert.)
+  `ou_paper_backtest/scanner.py` schreibt je Universum eine eigene Zeile; das
+  validierte 1:1,5-TP gilt laut Code-Kommentar NUR fuer S&P, nasdaq100/dax
+  bleiben bewusst auf "kein TP". Steht ein Ticker in beiden Indizes (MDLZ,
+  PEP), stehen beide Zeilen als `tradeable=True` in `scanner_signals.csv`, und
+  EK nimmt faktisch die Nasdaq-Zeile: der erste Versuch scheitert am 0-Tick
+  frisch selektierter Symbole (`entry_deviation_too_large, deviation=1.0`), der
+  zweite geht durch. **Real passiert bei ADI (02.09.) und MDLZ (22.09.)** --
+  exakt die einzigen zwei der 21 EK-Positionen ohne TP. **Offen fuer dich:**
+  soll bei doppelten Tickern die S&P-Zeile (mit validiertem TP) gewinnen, oder
+  ist "kein TP" die gewollte konservative Variante?
+
+- **FK Instant Funding: zwei offene Positionen, die KEINE Bridge verwaltet.**
+  (Fund 2026-09-23, nichts geaendert.) XAUUSD.gbe 0,05 Lot @ 4.283,90 (seit
+  14.09.) und EURUSD.gbe 0,35 Lot @ 1,14666 (seit 16.09.), zusammen +250 USD
+  schwebend. Beide haben **leeren Order-Kommentar und stehen in keinem
+  State** -- kein Bein erkennt sie, also kein Modell-Exit, kein Teilausstieg,
+  kein Max-Holding. Broker-SL ist bei beiden gesetzt (TP nur bei XAUUSD).
+  **Offen fuer dich:** laufen lassen (der SL traegt) oder schliessen?
+
+- **Verwaiste State-Eintraege nach dem manuellen CTNL-Aufraeumen -- soll ich
+  sie nachziehen?** (2026-09-23.) Der Nutzer hat am 21.09. 18 CTNL-Positionen
+  von Hand geschlossen (bestaetigt). Im State stehen dadurch 37 (TTP) bzw. 51
+  (IQ) `ctnl_reversal`-Eintraege auf `status="placed"` ohne offene Position.
+  Fuer die Konkurrenzgrenze harmlos -- `_count_open_leg_positions()` prueft
+  gegen `positions_get()` --, aber als Historie/Soll-Ist-Grundlage unbrauchbar.
+
 - **🔴 EK-Hebel: welcher Zeithorizont soll gelten?** (2026-09-23, komplette
   Nachrechnung, nichts geaendert). Die 7,8 % der Kalibrierung und meine 33,9 %
   sind beide richtig -- verschiedene Horizonte: 40 % Drawdown reissen binnen

@@ -170,20 +170,45 @@ def scan_market(market_key: str) -> pd.DataFrame:
     exit_rows = []
     for t in tickers:
         price = panel[t].dropna()
-        if len(price) < config.BB_LOOKBACK + 1 or price.index.max() != last_date:
+        if len(price) < config.BB_LOOKBACK + 1:
             continue
         ma = price.rolling(config.BB_LOOKBACK).mean()
         std = price.rolling(config.BB_LOOKBACK).std()
-        if pd.notna(ma.loc[last_date]):
+
+        # WICHTIG: die Ausstiegsschwelle wird auf dem JEWEILS juengsten Balken
+        # DIESES Titels gebildet, nicht nur wenn er bis `last_date` reicht.
+        # Die Staleness-Regel unten (`price.index.max() != last_date`) ist fuer
+        # EINSTIEGE richtig -- kein neues Signal auf veralteten Kursen. Fuer
+        # AUSSTIEGE ist sie falsch: ein MA20 von gestern ist brauchbar (der
+        # Durchschnitt bewegt sich in einem Tag kaum), eine offene Position
+        # ganz ohne Ausstiegsregel ist es nicht.
+        # Belegt am 2026-09-23: von 10 offenen EK-Positionen hatten 9 keine
+        # Schwelle, weil yfinance den Tagesschluss abends nicht fuer alle
+        # Symbole liefert -- der MA-Ausstieg der Logik D waere fuer 90 % des
+        # Bestands wirkungslos gewesen, und neue Positionen haben seit dem
+        # Umbau keinen TP mehr, auf den sie ausweichen koennten.
+        t_last = price.index.max()
+        if pd.notna(ma.loc[t_last]):
             exit_rows.append({
                 "ticker": t, "market": market_key,
-                "scan_date": last_date.date().isoformat(),
-                "close": round(price.loc[last_date], 2),
-                "ma20": round(ma.loc[last_date], 2),
+                "scan_date": t_last.date().isoformat(),
+                # Alter in Kalendertagen gegenueber dem juengsten Balken des
+                # Universums -- der Verbraucher entscheidet, was ihm zu alt ist.
+                "bar_age_days": int((last_date - t_last).days),
+                "close": round(price.loc[t_last], 2),
+                "ma20": round(ma.loc[t_last], 2),
                 # True = Mean Reversion ist eingetreten, eine offene Long-Position
-                # dieses Titels soll geschlossen werden.
-                "exit_now": bool(price.loc[last_date] >= ma.loc[last_date]),
+                # dieses Titels soll geschlossen werden. Auf DIESEM Titel
+                # gerechnet, nicht auf dem Universums-Stichtag.
+                "exit_now": bool(price.loc[t_last] >= ma.loc[t_last]),
             })
+
+        # Ab hier die EINSTIEGSseite -- hier gilt die Staleness-Regel weiter:
+        # kein neues Signal auf einem Kurs, der aelter ist als der Stichtag des
+        # Universums.
+        if t_last != last_date:
+            continue
+
         # BB_K bewusst LOKAL (2,25 statt der globalen 2,0): der globale Wert in
         # config.py wirkt auf jeden Aufrufer des Pakets, nicht nur auf dieses Bein.
         lower = (ma - OU_BB_K * std).loc[last_date]

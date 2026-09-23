@@ -208,35 +208,15 @@ Bedarf vor generischem Aufräumen.
   Balken). Empfehlung: erst die Zeitzonen-Frage klären, dann eine Woche
   Fallback-Zählung abwarten (`soll_ist.py` liefert den Vergleich).
 
-- **🔴 OU-Modell: A–D liegen vor, Phase 6 + Signalseite gerechnet — deine
-  Entscheidung** (17.09. Auswertung, 19.09. Optimierung + SL/TP-Logik +
-  Broker-Kosten, 22.09. Phase 6, 23.09. Signalseite — reine Auswertung, an den
-  Bridges wurde NICHTS geändert). Ausgangslage: out-of-sample (2023–2026)
-  **−0,052R je Trade, PF 0,83** auf FK/TTP, −0,028R auf EK/Tickmill. Der Edge
-  lebt (reibungsfrei +0,075R), er stirbt an Reibung. **Drei gemessene
-  Konstruktionsfehler:** das Kursziel 1,5R liegt bei 4,5 Sigma und feuert in
-  4,8 % der Trades (die Mean Reversion liegt bei 2 Sigma); der Breakeven-Stop
-  nimmt Gewinner heraus; der 3-Sigma-Stop realisiert normale Rückschläge.
-  **A** BE-Stop aus → −0,022R · **B** zusätzlich Einstieg zum Folgetags-Schluss
-  → +0,020R · **C** Bein pausieren ·
-  **D finale Konfiguration:** Stop **8 Sigma** statt 3, BE aus, **kein TP**,
-  Ausstieg beim **Rücklauf ans MA20**, `max_hold` 10 → FK +0,008R (PF 1,08),
-  EK +0,013R (PF 1,13); schlechtester Trade −2,54R → −0,90R, weil die Position
-  bei gleichem Dollar-Risiko nur noch 37,5 % so groß ist. Kein reiner
-  Config-Flip — der MA-Ausstieg fehlt in `simulate_bracket_portfolio`.
-  **Phase 6 (22.09.): D besteht, aber knapp.** Monte-Carlo (5.000 Pfade, echte
-  Live-Risikogrößen 0,167 % FK / 0,366 % EK je Trade): **P(DD > 7 %) = 0,00 %**
-  auf FK, Ertrag **+0,57 % über 3,7 Jahre**, 32 % der Pfade negativ,
-  Kostenpuffer ~50 %. Schwachstelle: 2023 und 2024 bleiben negativ.
-  **Signalseite (23.09.): ein Hebel — `BB_K` von 2,0 auf 2,25** (tiefer unter
-  dem Mittel einsteigen). Negative Pfade 30 % → 18 %, Ertrag +0,58 % → +0,83 %
-  (FK), Drawdown sinkt gleichzeitig. Der IS-Sieger wäre 2,5 (negative Pfade
-  9 %), aber dessen Nachbarn kippen im Vorzeichen — Rauschspitze. Bestätigt und
-  NICHT anfassen: `BB_LOOKBACK` 20, Regimefilter EMA200, `half_life`-Fenster,
-  Universum, `p_value < 0,2` (auf 0,25 gelockert kippt das Vorzeichen).
-  Ehrliche Lesart: D+2,25 hebt das Bein von „verliert zuverlässig" auf „verdient
-  wenig". Ob das den Platz im Risikobudget wert ist, ist eine
-  Portfolio-Entscheidung. Details: [[ou-modell-kostenvalidierung]].
+- **🟢 OU-Modell: Logik D + BB_K 2,25 ist umgesetzt** (2026-09-23,
+  Nutzerfreigabe). Stop 8 Sigma, kein Break-Even, kein TP, Ausstieg am MA20,
+  `max_hold` 10 (schliesst jetzt wirklich). OOS: -0,052R (PF 0,83) -> +0,008R
+  (PF 1,08) TTP-Kosten, -0,028R -> +0,013R (PF 1,13) Tickmill; negative
+  MC-Pfade 30 % -> 18 %, P(DD>7 %) = 0,00 %. **Ehrliche Lesart: von "verliert
+  zuverlaessig" auf "verdient wenig"** -- 2023 bleibt negativ, der Edge-Nachweis
+  fehlt weiter. Ob das Bein den Platz im Risikobudget wert ist, bleibt deine
+  Portfolio-Entscheidung; sein Gewicht wurde bewusst NICHT mitskaliert.
+  Details: [[ou-modell-kostenvalidierung]].
 - **🟡 EK/OU: Max-Holding schliesst nie, nur Warnung** (2026-09-17,
   **Stand 2026-09-23**). Der Rueckstand ist weg -- der Nutzer hat am 23.09.
   gegen 21:41 alle 9 ueberfaelligen Positionen von Hand geschlossen (DAL 33

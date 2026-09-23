@@ -53,6 +53,16 @@ except ImportError:
 TELEGRAM_RUN_TIMES = [(15, 35), (18, 35), (21, 35)]
 TELEGRAM_TOLERANCE_MINUTES = 10
 
+# Logik D + Signalseite (2026-09-23, Nutzerfreigabe) -- Herleitung in
+# knowledge/projects/ou-modell-kostenvalidierung.md:
+#   stop_sigma 3 -> 8   groesster Einzelhebel; schlechtester Trade -2,54R -> -0,90R,
+#                       weil die Position bei gleichem Dollar-Risiko nur 37,5 % so gross ist
+#   BB_K 2,0 -> 2,25    tiefer einsteigen; negative Monte-Carlo-Pfade 30 % -> 18 %
+#   kein TP, Ausstieg beim Ruecklauf ans MA20, max_hold 10 unveraendert
+OU_STOP_SIGMA = 8.0
+OU_BB_K = 2.25
+
+
 
 def _refresh_universe_prices(tickers: list[str], benchmark_ticker: str) -> tuple[pd.DataFrame, pd.Series]:
     """Downloads FRESH data up to today for just the (small) OU-selected ticker set
@@ -96,6 +106,12 @@ def _load_ttp_tradable_tickers(market_key: str) -> set[str] | None:
     return set(df[df["ttp_tradable"]]["Symbol"])
 
 
+# Von scan_market() je Lauf befuellt, von main() nach ou_exit_levels.csv
+# geschrieben. Modulweite Liste statt zusaetzlichem Rueckgabewert, damit
+# scan_market()'s Signatur (die auch die Streamlit-Seite nutzt) gleich bleibt.
+EXIT_LEVELS: list[dict] = []
+
+
 def scan_market(market_key: str) -> pd.DataFrame:
     label = config.UNIVERSES[market_key]["label"]
     benchmark_ticker = config.UNIVERSES[market_key]["benchmark"]
@@ -130,19 +146,39 @@ def scan_market(market_key: str) -> pd.DataFrame:
     regime_ok = bool((benchmark > benchmark.ewm(span=200).mean()).reindex(panel.index).ffill().loc[last_date])
 
     rows = []
+    # AUSSTIEGSSCHWELLEN FUER ALLE UNIVERSUMSTITEL (2026-09-23, Logik D).
+    # Die Spalte "ma20" in den Signalzeilen unten reicht dafuer NICHT: dort landen
+    # nur Titel, die gerade ein EINSTIEGSsignal geben (close < unteres Band). Ein
+    # Titel, den eine Bridge haelt, ist per Definition kein Signalkandidat mehr --
+    # er steht ueber dem Band und faellt aus der Liste. Die EK-Bridge braucht die
+    # Schwelle aber genau fuer gehaltene Titel, sonst kann sie den MA-Ausstieg
+    # nicht ausloesen und die Position laeuft bis max_hold weiter (mit Swap).
+    exit_rows = []
     for t in tickers:
         price = panel[t].dropna()
         if len(price) < config.BB_LOOKBACK + 1 or price.index.max() != last_date:
             continue
         ma = price.rolling(config.BB_LOOKBACK).mean()
         std = price.rolling(config.BB_LOOKBACK).std()
-        lower = (ma - config.BB_K * std).loc[last_date]
+        if pd.notna(ma.loc[last_date]):
+            exit_rows.append({
+                "ticker": t, "market": market_key,
+                "scan_date": last_date.date().isoformat(),
+                "close": round(price.loc[last_date], 2),
+                "ma20": round(ma.loc[last_date], 2),
+                # True = Mean Reversion ist eingetreten, eine offene Long-Position
+                # dieses Titels soll geschlossen werden.
+                "exit_now": bool(price.loc[last_date] >= ma.loc[last_date]),
+            })
+        # BB_K bewusst LOKAL (2,25 statt der globalen 2,0): der globale Wert in
+        # config.py wirkt auf jeden Aufrufer des Pakets, nicht nur auf dieses Bein.
+        lower = (ma - OU_BB_K * std).loc[last_date]
         close_t = price.loc[last_date]
         std_t = std.loc[last_date]
         if pd.isna(lower) or pd.isna(std_t) or std_t == 0:
             continue
         if close_t < lower:
-            stop_distance = 3.0 * std_t  # stop_sigma from the final locked config
+            stop_distance = OU_STOP_SIGMA * std_t
             sl_price = close_t - stop_distance
             # Fixed 1:1.5 TP -- challenge-optimization finding (2026-08-07, S&P-only,
             # 2025+ OOS, at the tighter risk_pct=0.25%/max_total_risk_pct=5%/be=0.35R
@@ -154,7 +190,11 @@ def scan_market(market_key: str) -> pd.DataFrame:
             # filter and would otherwise pass an untested TP through to whichever
             # account reads this CSV the moment a Nasdaq/DAX signal ever appears.
             # See app_pages/risk_management.py for the full derivation.
-            tp_price = (close_t + 1.5 * stop_distance) if market_key == "sp500" else None
+            # KEIN TP mehr (Logik D, 2026-09-23): das 1,5R-Ziel lag bei 4,5 Sigma und
+            # feuerte in 4,8 % der Trades, waehrend die Mean Reversion bei 2 Sigma
+            # liegt -- es schnitt Gewinner ab. Ausstieg laeuft jetzt ueber den
+            # Ruecklauf ans MA20 (Spalte "ma20" unten).
+            tp_price = None
             risk_pct_price = stop_distance / close_t * 100  # SL distance as % of entry (Kurs->Stop)
             # position size: same rule as portfolio.simulate_bracket_portfolio -- risk
             # RISK_PCT_PER_TRADE of equity against the stop distance, capped at
@@ -170,6 +210,10 @@ def scan_market(market_key: str) -> pd.DataFrame:
                 "tp_price": round(tp_price, 2) if tp_price is not None else 0.0,
                 "risk_pct_price": round(risk_pct_price, 2),
                 "position_size_pct": round(position_pct, 2),
+                # ma20: Ausstiegsschwelle fuer die Live-Bridges (Logik D -- Ruecklauf
+                # ans gleitende Mittel). Der Scanner rechnet es ohnehin fuers Band,
+                # die Bridges haben sonst keinen eigenen Kursstrom dafuer.
+                "ma20": round(ma.loc[last_date], 2),
                 "regime_ok": regime_ok,
                 "tradeable": regime_ok,
             })
@@ -182,7 +226,13 @@ def scan_market(market_key: str) -> pd.DataFrame:
         for row in rows:
             row["position_size_concentrated_pct"] = round(concentrated_frac, 2)
 
-    print(f"[{market_key}] {len(rows)} raw signal(s) as of {last_date.date()}, regime_ok={regime_ok}")
+    # Ausstiegsschwellen sammeln statt zurueckgeben: scan_market()'s Rueckgabetyp
+    # (DataFrame der Signale) wird von main() und der Streamlit-Seite gelesen und
+    # bleibt deshalb unveraendert.
+    EXIT_LEVELS.extend(exit_rows)
+
+    print(f"[{market_key}] {len(rows)} raw signal(s) as of {last_date.date()}, regime_ok={regime_ok}, "
+          f"{len(exit_rows)} Ausstiegsschwellen")
     return pd.DataFrame(rows)
 
 
@@ -226,6 +276,18 @@ def main():
         combined["scanned_at"] = scanned_at
     out_path = config.RESULTS_DIR / "scanner_signals.csv"
     combined.to_csv(out_path, index=False)
+
+    # Ausstiegsschwellen fuer ALLE Universumstitel (Logik D, 2026-09-23). Die
+    # EK-Bridge liest diese Datei, um offene Positionen beim Ruecklauf ans MA20
+    # zu schliessen -- sie hat keine eigene Kursquelle fuer gehaltene Titel.
+    # Unbedingt schreiben, auch bei 0 Signalen: die Ausstiegsseite haengt nicht
+    # davon ab, ob heute ein Einstieg gefunden wurde.
+    exit_df = pd.DataFrame(EXIT_LEVELS)
+    if not exit_df.empty:
+        exit_df["scanned_at"] = scanned_at
+    exit_df.to_csv(config.RESULTS_DIR / "ou_exit_levels.csv", index=False)
+    print(f"{len(exit_df)} Ausstiegsschwellen geschrieben "
+          f"({int(exit_df['exit_now'].sum()) if not exit_df.empty else 0} davon 'Mean Reversion erreicht')")
 
     meta_path = config.RESULTS_DIR / "scanner_last_run.json"
     meta_path.write_text(

@@ -619,7 +619,28 @@ OU_MODELL_LOOKBACK_DAYS = 450  # 20d-Bollinger + 200d-EMA-Regimefilter-Warmup + 
 # ou_paper_backtest/scanner.py::_refresh_universe_prices (400 Tage dort fuer eine reine Punkt-in-Zeit-Signal-
 # Pruefung; hier etwas mehr, da eine volle Trailing-Trade-Simulation laeuft statt nur der letzte Tag)
 OU_MODELL_MARKETS = ("sp500", "nasdaq100")  # DAX strukturell 0 TTP-handelbare Ticker, siehe scanner.py
-OU_MODELL_STOP_SIGMA = 3.0
+# LOGIK D + SIGNALSEITE (2026-09-23, Nutzerfreigabe) -- Herleitung in
+# knowledge/projects/ou-modell-kostenvalidierung.md. Das Bein verlor
+# out-of-sample zuverlaessig (-0,052R, PF 0,83); der Edge lebte, starb aber an
+# drei Konstruktionsfehlern: ein Kursziel bei 4,5 Sigma (feuerte in 4,8 % der
+# Trades, waehrend die Mean Reversion bei 2 Sigma liegt), ein Breakeven-Stop,
+# der Gewinner herausnahm, und ein 3-Sigma-Stop, der normale Rueckschlaege
+# realisierte. Neu:
+#   stop_sigma 3 -> 8      schlechtester Trade -2,54R -> -0,90R (die Position ist
+#                          bei gleichem Dollar-Risiko nur noch 37,5 % so gross)
+#   be_trigger_r 0,35 -> 0 Breakeven-Stop aus
+#   rr_ratio -> None       kein TP mehr, auch nicht fuer S&P
+#   ma_exit=True           Ausstieg beim Ruecklauf ans MA20 (+0,024R, 1,5 Tage
+#                          kuerzer = weniger Swap)
+#   BB_K 2,0 -> 2,25       tiefer einsteigen; negative MC-Pfade 30 % -> 18 %
+#   max_hold 10            unveraendert (kuerzen kostet mehr Edge als es Swap spart)
+# Ergebnis OOS: -0,052R (PF 0,83) -> +0,008R (PF 1,08) auf TTP-Kosten,
+# -0,028R -> +0,013R (PF 1,13) auf Tickmill-Kosten. Phase 6 (5.000 Pfade,
+# echte Live-Risikogroessen): P(DD>7 %) = 0,00 %, negative Pfade 18 %.
+# EHRLICHE LESART: das hebt das Bein von "verliert zuverlaessig" auf "verdient
+# wenig" -- kein Edge-Nachweis, 2023 bleibt in jeder Variante negativ.
+OU_MODELL_STOP_SIGMA = 8.0
+OU_MODELL_BB_K = 2.25
 # 2026-09-02: von der reinen "gesperrten Baseline" (be=0.25R, kein TP) auf die zuletzt live auf
 # Konto 2 (TTP, OU-Modell-MT5-Bridge, bis 2026-09-01) gefahrene, dort ueber den 2025er-Holdout
 # validierte Konfiguration umgestellt (siehe ou_paper_backtest/results/sp500/oos_holdout_
@@ -629,7 +650,7 @@ OU_MODELL_STOP_SIGMA = 3.0
 # uebernommen (be_trigger_r, max_total_risk_pct-Gate, TP), NICHT das reale Order-Sizing -- die
 # 1/6-Kapitalgewichtung dieses Beins macht das reale Risiko/Trade schon konservativer (0.167%) als
 # Konto 2s eigenstaendige 0.25%, das bleibt bewusst unangetastet (Nutzerentscheidung 2026-09-02).
-OU_MODELL_BE_TRIGGER_R = 0.35
+OU_MODELL_BE_TRIGGER_R = 0.0   # Breakeven-Stop aus (Logik D)
 OU_MODELL_RISK_PCT = 0.01
 OU_MODELL_MAX_TOTAL_RISK_PCT = 0.05
 
@@ -746,7 +767,7 @@ def _scan_ou_modell(end: pd.Timestamp, force_refresh: bool, *, source: str = "li
         today_str = panel_df.index.max().date().isoformat()
         # 2026-09-02: TP=1:1.5R nur fuer S&P (identisch zu ou_paper_backtest/scanner.py::scan_market's
         # Einschraenkung) -- bewusst NICHT auf Nasdaq/DAX uebertragen, da dort nie validiert.
-        rr_ratio = 1.5 if market_key == "sp500" else None
+        rr_ratio = None   # Logik D: kein TP mehr, auch nicht fuer S&P
         # Fund 2026-09-02 (Root Cause, nicht nur Config): simulate_bracket_portfolio() liess bis eben
         # jede noch OFFENE Position beim Rueckgabe-Zeitpunkt STILLSCHWEIGEND unter den Tisch fallen --
         # nur tatsaechlich GESCHLOSSENE Trades landeten in `trades`. Dieses Bein konnte dadurch
@@ -759,7 +780,7 @@ def _scan_ou_modell(end: pd.Timestamp, force_refresh: bool, *, source: str = "li
             panel_df, tickers, start, today_str, stop_sigma=OU_MODELL_STOP_SIGMA, rr_ratio=rr_ratio,
             be_trigger_r=OU_MODELL_BE_TRIGGER_R, allowed_directions=(1,), regime_filter=regime,
             risk_pct=OU_MODELL_RISK_PCT, max_total_risk_pct=OU_MODELL_MAX_TOTAL_RISK_PCT,
-            include_open_positions=True,
+            include_open_positions=True, ma_exit=True, k=OU_MODELL_BB_K,
         )
         if not trades:
             continue

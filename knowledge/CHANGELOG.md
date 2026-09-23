@@ -9,6 +9,51 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-23** [CTNL-Optimierung] **Diagnose + Walk-Forward-Optimierung
+  beider Beine abgeschlossen. Reine Auswertung, kein Bot geaendert.**
+  Neue Skripte `research_ctnl_regime_diagnosis.py` und
+  `research_ctnl_optimization.py`, Ergebnis in
+  `projects/ctnl-kostenvalidierung.md` (Befunde 7-9, Entscheidungsvorlage
+  E1-E4), Rohdaten `_data/ctnl_regime_diagnosis.json` +
+  `_data/ctnl_optimization.json`.
+  **Methodik:** Anker-Walk-Forward -- Parameter je Jahr auf allen Trades
+  DAVOR gewaehlt, auf dem Jahr selbst ausgewertet. Gemessen wird die
+  Auswahlprozedur, nicht der Rueckspiegel.
+  **Das Regime-Bild musste korrigiert werden:** "funktioniert nur ab
+  2024-08" haelt jahresweise nicht. `ctnl_reversal` ueber die volle
+  Historie Ø R +0,114 / PF 1,13, **6 von 11 Jahren positiv**, und die guten
+  liegen nicht nur am Ende (2016 +0,46, 2022 +0,38; 2023 ist mit -0,44 das
+  schlechteste Jahr ueberhaupt). Schwacher, verrauschter Edge -- kein
+  Regime-Schalter.
+  **Vier Schrauben bringen nichts:** (a) TP -- Flaeche flach von 5R bis 10R,
+  Auswahl verliert OOS (1 von 8 Jahren), 5R bleibt; (b) Signal-Parameter --
+  `ohne_ema_reject` ist IS-Sieger in ALLEN acht Jahren und verliert
+  out-of-sample (-60,6 ΣR, PF 1,06 vs. 1,19), exakt das OU-Muster;
+  (c) SL -- ein auf 0,5R verengter Stop haette 49,5 % der Gewinner gekillt;
+  (d) Ausfuehrung -- der 13-Min-Versatz ist Altlast (Ingest-Lane :10 statt
+  moeglicher :02, belegt: M5-Bar 19:25 lag um 19:31:52 im Lake) und real
+  auf ~3-4 Min. kuerzbar, aber Lag 1 schlaegt Lag 0 im Backtest
+  (+107,7 vs. +84,0 ΣR). Robustheitsargument, kein Renditeargument.
+  **Eine Schraube bringt etwas:** der **Regime-Filter** (Effizienz-Quantil
+  q50, feste Schwelle statt mitlaufendem Quantil). Walk-Forward waehlt in
+  8/8 Jahren dieselbe Schwelle, OOS +170,8 vs. +143,4 ΣR. Monte Carlo
+  (0,15 %/Trade): **Median MaxDD -15,6 % -> -8,4 %, Median Return +18,8 %
+  -> +32,2 %, Sharpe 0,25 -> 0,56** -- beide Achsen besser. Haken: verliert
+  2022/2024/2025, gewinnt 2019-2021/2023.
+  **`ctnl_continuation` ist ueber die Historie nicht zu retten:** PF 0,94,
+  3 von 11 Jahren positiv, jede Variante negativ, Monte Carlo bei 0,50 %
+  Median Return **-16,4 %**, Sharpe -0,20. Existenz- statt Parameterfrage.
+  **Risiko-Nebenbefund:** die dokumentierte FK-Kalibrierung (Median MaxDD
+  -3,5 %, P(>6 %) 7,8 %) stammt aus EINEM OOS-Jahr; ueber zehn Jahre liegt
+  allein das Reversal-Bein bei -15,6 % Median und P(>6 %) = 99,9 %. Nicht
+  direkt vergleichbar (anderer Zeitraum, anderes Portfolio), aber die
+  Kalibrierung ruht damit auf einem Jahr.
+  **Zwei eigene Korrekturen:** meine MFE-Hypothese aus der Diagnose (ein
+  niedrigeres Ziel sammle die zwischen 3R und 5R zurueckfallende Haelfte
+  ein) ist vom Walk-Forward widerlegt -- sie uebersah, dass ein niedrigeres
+  Ziel auch die echten 5R-Laeufer kappt. Und die MFE-Zensur verbietet nur
+  die DIAGNOSTISCHE Aussage ueber hoehere Ziele, nicht die Simulation.
+
 - **2026-09-23** [OU-Modell Research] **Signalseite auf Basis der Logik D
   durchgetestet -- ein Hebel gefunden, vier Einstellungen bestaetigt.**
   Nutzerauftrag. Neu: `scripts/research_ou_signal_side.py`, Ergebnisse

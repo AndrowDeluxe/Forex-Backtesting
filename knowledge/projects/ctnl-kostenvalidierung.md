@@ -271,35 +271,172 @@ aber nicht, weil die Stops ohnehin ein Vielfaches der Kosten betragen.
 
 ---
 
-## Was daraus folgt (Entscheidung steht bei dir)
+## Befund 9 — Optimierung: vier von fünf Schrauben bringen nichts, eine schon
 
-Zur Einordnung: **kein Handlungsdruck.** Beide Beine sind bei echten Kosten
-und am realen Betriebspunkt profitabel. Es geht um Verbesserung, nicht um
-Schadensbegrenzung.
+`scripts/research_ctnl_optimization.py`, 2016-01..2026-09, gemessene Kosten
+(2,01 bps), Lag 1, R-Detektor. Rohdaten `_data/ctnl_optimization.json`.
 
-**A — Nichts ändern.** Die Beine sind profitabel, die Schutzmechanismen
-greifen nachweislich. Die 8 bps bleiben als bewusst konservative Reserve
-stehen. *Kosten: der Backtest weist CTNL dauerhaft schlechter aus, als es ist
-— was bei künftigen Portfolio-Gewichtungen gegen das Bein arbeitet.*
+**Methode: Anker-Walk-Forward.** Für jedes Jahr Y wird der Parameter auf allen
+Trades **vor** Y gewählt und auf Y ausgewertet. Gemessen wird damit nicht „was
+war rückblickend am besten", sondern „hätte die Auswahlprozedur geholfen".
+Nur wenn sie die gesperrte Baseline out-of-sample schlägt, ist der Parameter
+ein Hebel.
 
-**B — Kostenzahl korrigieren, sonst nichts** *(meine Empfehlung)*.
-`spread_bps` in `_scan_ctnl()` von 8,0 auf einen gemessenen Wert setzen,
-broker-getrennt wie bei CLS (TTP 1,95 / BeyondIQ 0,73 / Tickmill 1,07).
-*Nutzen: Backtest und Realität stimmen wieder überein, Portfolio-Gewichtung
-wird fair. Risiko: gering — die Änderung macht das Modell konservativer in
-der Aussage, nicht in der Ausführung.* **Aber:** die Phase-6-Referenzwerte
-(`CTNL_KILL_SWITCH_DD_THRESHOLD = −0,066`) sind mit den alten Kosten gezogen
-und müssten neu gerechnet werden, sonst passt der Kill-Switch nicht mehr zur
-Kostenannahme.
+### 9a — TP: die 5R stehen auf einem Plateau, die Auswahl verliert
 
-**C — B plus EK-Angleichung.** Zusätzlich EKs CTNL auf das absolute
-Signal-SL-Niveau + R-Detektor umstellen, wie es EK für CLS am 2026-09-11
-bereits getan hat. *Nutzen: potenziell derselbe Sprung wie dort (PF 1,42 →
-1,85). Risiko: für CTNL **nicht gemessen** — siehe offener Punkt unten. Ohne
-diese Messung wäre es eine Übertragung per Analogie, und genau das ist die
-Sorte Annahme, die dieses Projekt gerade widerlegt hat.*
+`ctnl_reversal`, Parameterfläche über die Gesamthistorie:
+
+| TP | 2R | 3R | 4R | **5R** | 6R | 7R | 8R | 10R |
+|---|---|---|---|---|---|---|---|---|
+| Ø R | −0,064 | −0,031 | +0,047 | **+0,109** | +0,066 | +0,106 | +0,114 | +0,116 |
+| PF | 0,92 | 0,96 | 1,05 | **1,12** | 1,07 | 1,12 | 1,12 | 1,13 |
+
+Unter 4R bricht es weg; ab 5R ist die Fläche **flach** (+0,106 bis +0,116 über
+5R–10R). Das ist die gute Nachricht: die gesperrten 5R sitzen nicht auf einem
+Grat, sondern auf einem Plateau — genau die Form, die man haben will.
+
+Walk-Forward: die Prozedur wählt je nach Jahr 5,0 / 8,0 / 10,0 und liefert
+OOS **+100,7 ΣR gegen +143,4** der Baseline, besser in **1 von 8** Jahren.
+**TP ist kein Hebel — 5R bleibt.**
+
+> **Korrektur zu Befund 7c.** Meine MFE-Hypothese („ein niedrigeres Ziel
+> sammelt die Hälfte ein, die zwischen 3R und 5R zurückfällt") ist
+> **widerlegt**. Sie übersah, dass ein niedrigeres Ziel auch die Trades kappt,
+> die tatsächlich 5R erreichen — und deren +5R tragen das Ergebnis. Die
+> Fläche bei 2R/3R ist negativ. Genau dafür ist der Walk-Forward da.
+> Ebenso korrigiert: ich hatte geschrieben, höhere Ziele seien wegen der
+> MFE-Zensur nicht beurteilbar. Das gilt nur für die **Diagnose** — die
+> **Simulation** lässt den Trade weiterlaufen und rechnet sie problemlos.
+
+### 9b — Signal-Parameter: das Lehrbuchbeispiel für Überfittung
+
+`ctnl_reversal`, Walk-Forward über sechs Varianten:
+
+| Jahr | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 | **Σ** |
+|---|---|---|---|---|---|---|---|---|---|
+| gewählt | — alle Jahre `ohne_ema_reject` — | | | | | | | | |
+| Diff zur Baseline | +147 | +47 | +41 | −65 | −86 | +0 | −78 | −67 | **−60,6** |
+
+`ohne_ema_reject` ist **in jedem einzelnen Jahr IS-Sieger** und verliert
+out-of-sample: Ø R +0,053 gegen +0,165, PF 1,06 gegen 1,19. Die frühen Jahre
+tragen den IS-Vorsprung, ab 2022 dreht es. Exakt das OU-Muster.
+**Die gesperrten Signal-Parameter bleiben.**
+
+### 9c — Der Regime-Filter ist der einzige echte Hebel
+
+`ctnl_reversal`, Effizienz-Filter (nur Trades unterhalb der IS-Quantilgrenze,
+Schwelle als absoluter Wert ins OOS übernommen):
+
+| | OOS Σ R | Ø R | PF | Jahre besser |
+|---|---|---|---|---|
+| Baseline | +143,4 | +0,165 | 1,19 | — |
+| **Filter q50** | **+170,8** | **+0,398** | **1,48** | 5 von 8 |
+
+Der Walk-Forward wählt in **allen acht Jahren** dieselbe Schwelle (q50) — ein
+stabiler Pick, kein Herumspringen.
+
+**Monte Carlo** (`ou_paper_backtest/monte_carlo.py`, Block 20, 2.000 Pfade,
+0,15 %/Trade = FK-Reversal-Split):
+
+| | Median MaxDD | P5 MaxDD | P(MaxDD>6 %) | Median Return | Median Sharpe |
+|---|---|---|---|---|---|
+| Baseline | −15,63 % | −28,07 % | 99,9 % | +18,8 % | 0,25 |
+| **Filter q50** | **−8,37 %** | **−15,15 %** | **86,4 %** | **+32,2 %** | **0,56** |
+
+**Der Drawdown halbiert sich und die Rendite steigt** — kein Tausch, beide
+Achsen verbessern sich. Das ist der einzige Befund dieser Untersuchung, der
+eine Änderung rechtfertigt.
+
+**Was dagegen spricht, es sofort scharf zu schalten:** der Filter verliert in
+den Jahren 2022, 2024 und 2025 (je ca. −30 ΣR) und gewinnt in 2019–2021 und
+2023 — er glättet also, indem er in guten Trendphasen aussetzt. Wer nur die
+letzten zwei Jahre betrachtet, sieht einen Verschlechterer.
+
+### 9d — Risiko: die dokumentierte Kalibrierung hängt an einem einzigen Jahr
+
+Die Projektnotiz nennt für FK (0,50 %/0,15 %) einen Bootstrap-Median-MaxDD von
+**−3,5 %** und **P(MaxDD>6 %) = 7,8 %**. Meine Rechnung für das
+Reversal-Bein **allein** bei 0,15 % über die **volle** Historie:
+Median MaxDD **−15,63 %**, P(MaxDD>6 %) **99,9 %**.
+
+Die Zahlen sind **nicht direkt vergleichbar** — die alte stammt aus dem
+OOS-Fenster 2025-08/2026-08 (ein einziges, gutes Jahr) und galt dem
+kombinierten Portfolio, meine läuft über zehn Jahre inklusive der schlechten
+und enthält Kosten, Lag und R-Detektor. Genau das ist der Punkt: **die
+dokumentierte Risikokalibrierung ruht auf einem Jahr.** Bevor an den
+Risikogrößen gedreht wird, gehört sie über die volle Historie neu gezogen.
+
+### 9e — `ctnl_continuation` ist über die Historie nicht zu retten
+
+Jede geprüfte Variante ist negativ:
+
+| Variante | VWAP (Baseline) | TP 2R | TP 5R | TP 10R | htf_valid_12 |
+|---|---|---|---|---|---|
+| Ø R | −0,060 | −0,136 | −0,269 | −0,185 | −0,022 |
+| PF | 0,94 | 0,84 | 0,76 | 0,84 | 0,98 |
+
+TP-Walk-Forward: **0 von 8** Jahren besser. Signal-Walk-Forward: Ø R +0,024
+gegen −0,002 — rechnerisch besser, aber beides ist null. Regime-Filter:
++0,4 gegen −0,5 ΣR, ebenfalls null.
+
+Monte Carlo bei 0,50 %/Trade: **Median Return −16,4 %, Median Sharpe −0,20,
+Median MaxDD −31,68 %.**
+
+**Hier ist keine Parameterfrage offen, sondern eine Existenzfrage.** Über 436
+Trades und zehn Jahre gibt es keinen Edge. Das einzige gute Jahr ist 2026 mit
+20 Trades.
 
 ---
+
+## Was daraus folgt (Entscheidung steht bei dir)
+
+Nach Kostenvalidierung, Diagnose und Optimierung stehen **vier** Entscheidungen
+an. Sie sind unabhängig voneinander — du kannst einzeln zustimmen.
+
+### E1 — Kostenzahl korrigieren *(Empfehlung: ja)*
+
+`spread_bps` von 8,0 auf die gemessenen Werte, broker-getrennt
+(TTP 2,01 / BeyondIQ 0,73 / Tickmill 0,53). *Wirkung: Backtest und Realität
+stimmen überein, das Bein wird bei Portfolio-Gewichtungen nicht mehr
+benachteiligt. Risiko: gering.* **Haken:** die Phase-6-Referenz
+`CTNL_KILL_SWITCH_DD_THRESHOLD = −0,066` ist mit 8 bps gezogen und muss
+mit E4 zusammen neu gerechnet werden.
+
+### E2 — Regime-Filter einführen *(Empfehlung: ja, aber als Paper-Lauf zuerst)*
+
+Effizienz-Filter q50 auf `ctnl_reversal`. *Wirkung laut Monte Carlo: Median
+MaxDD −15,6 % → −8,4 %, Median Return +18,8 % → +32,2 %, Sharpe 0,25 → 0,56.
+Beide Achsen besser.* **Haken:** halbiert die Trade-Zahl und setzt in
+Trendphasen aus — 2022, 2024 und 2025 wäre er schlechter gewesen. Wer nur die
+letzten zwei Jahre anschaut, sieht einen Verschlechterer. Deshalb der
+Vorschlag, ihn erst mitlaufen zu lassen (Signal protokollieren, nicht
+handeln), bevor er scharf geschaltet wird.
+
+### E3 — `ctnl_continuation` stilllegen *(Empfehlung: ja)*
+
+Über 436 Trades und zehn Jahre: PF 0,94, 3 von 11 Jahren positiv, Monte Carlo
+bei 0,50 %/Trade Median Return **−16,4 %**. Keine der geprüften Varianten
+(TP, Signal-Parameter, Regime-Filter) dreht das. *Das einzige Gegenargument
+ist 2026 (+1,48 Ø R) — auf 20 Trades.* **Live-Trigger bleibt bei dir; ich
+bereite nur vor.**
+
+### E4 — Risikokalibrierung über die volle Historie neu ziehen *(Empfehlung: ja)*
+
+Die dokumentierten FK-Zahlen (Median MaxDD −3,5 %, P(MaxDD>6 %) = 7,8 %)
+stammen aus **einem** OOS-Jahr. Über zehn Jahre liegt allein das
+Reversal-Bein bei −15,6 % Median und P(>6 %) = 99,9 %. Solange das nicht neu
+gezogen ist, ist jede Aussage über Challenge-Verträglichkeit unbelegt.
+**Reihenfolge beachten** (Repo-Vorgabe): erst E1/E2/E3, dann E4 — die
+Risikozahl hängt von allen dreien ab.
+
+### Was NICHT geändert werden sollte
+
+| Schraube | Warum sie bleibt |
+|---|---|
+| `take_profit_r = 5.0` | flaches Plateau 5R–10R, Auswahl verliert OOS (1/8 Jahre) |
+| `stop_atr_mult = 3.0` | ein 0,5R-Stop hätte 49,5 % der Gewinner gekillt |
+| `REV_KWARGS` | `ohne_ema_reject` ist IS-Sieger in 8/8 Jahren und verliert OOS |
+| Ausführungstakt | real verkürzbar, aber P&L-Gewinn nicht belegt (Befund 8) |
 
 ## Noch offen
 

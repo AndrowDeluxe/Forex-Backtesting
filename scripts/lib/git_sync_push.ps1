@@ -95,7 +95,10 @@ function Sync-AndPush {
             Restore-SyncStash -Log $Log -Stashed $stashed
             return
         }
-    } else {
+    } elseif ($fetchExit -ne 0) {
+        # Nur bei ECHTEM Fetch-Fehler warnen. Dieser Zweig faengt seit dem
+        # 23.09. auch den Normalfall "nichts zu mergen" mit ab -- dort ist
+        # $fetchExit 0 und die Fehlermeldung waere schlicht falsch.
         & $Log "WARNUNG: git fetch fehlgeschlagen (Exit $fetchExit) - Push wird trotzdem versucht, kann bei zwischenzeitlicher Divergenz erneut fehlschlagen."
     }
 

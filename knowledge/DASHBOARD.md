@@ -68,15 +68,16 @@ Bedarf vor generischem Aufräumen.
   sind nicht drin -- die kommen zur Laufzeit aus den Bridge-configs ausserhalb
   des Repos).
 
-- **`ctnl_reversal` verdient nur long -- Entscheidung E6.** short: 591 Trades,
-  Ø R -0,207, ΣR **-122,3** gegen long +258,9. Monte Carlo (`long + Regime`):
-  Median MaxDD **-15,6 % -> -4,84 %**, P(MaxDD>6 %) **99,9 % -> 23,3 %**,
-  Sharpe 0,25 -> 0,83. Walk-Forward bestaetigt in 5 von 8 Jahren.
-  **Grosser Vorbehalt:** Gold ist ueber die GANZE Stichprobe gestiegen -- eine
-  Baisse fehlt, und 2022 haben die Shorts nachweislich gearbeitet. Long-only
-  ist eine Trendwette, keine Struktur-Erkenntnis. **Meine Empfehlung: erst
-  mitlaufen lassen, dann Long-only ohne scharfen Regime-Filter.** Details:
-  `projects/ctnl-kostenvalidierung.md` Befund 11.
+- **E6 laeuft mit (Nutzerentscheid) -- Auswertung per
+  `scripts/ctnl_shadow_eval.py`.** Der Struktur-gegen-Regime-Test ist
+  gerechnet: die Short-Schwaeche ist ein **Regime**-Effekt (fallende Jahre
+  Ø R +0,116, steigende -0,390, Korrelation -0,38), keine strukturelle.
+  **Long-only ist damit eine Trendwette** und muesste bei einer Gold-Wende
+  zurueckgedreht werden. Erster Schattenlauf: von 127 realen Trades waren nur
+  26 long, 20 haetten beide Filter bestanden. **Offen fuer dich:** wann
+  entscheiden? Vorschlag: nach ~50 abgeschlossenen Trades mit P&L, dann
+  E6-c (long-only ohne scharfen Regime-Filter). Skript regelmaessig laufen
+  lassen -- soll ich dafuer eine geplante Routine anlegen?
 
 - **EK-Mindestlot: E5-c umgesetzt, aber der Rest der Frage steht noch.**
   `ctnl_reversal` haelt auf EK jetzt hoechstens EINE Position

@@ -516,6 +516,76 @@ Ausstiegsregel wie für jede Richtungswette.
 
 ---
 
+## Befund 12 — Struktur oder Regime? Die Daten zeigen auf **Regime**
+
+`scripts/research_ctnl_direction_regime.py`. Der Test, den Befund 11 offen
+gelassen hatte: verdient die Short-Seite in Jahren, in denen Gold **fällt**?
+
+`ctnl_reversal`, Short-Ergebnis gegen die Gold-Jahresrendite:
+
+| Jahr | Gold | short Σ R | | Jahr | Gold | short Σ R |
+|---|---|---|---|---|---|---|
+| 2017 | +13,2 % | −54,7 | | **2021** | **−3,6 %** | **+18,2** |
+| **2018** | **−1,6 %** | **−19,1** | | **2022** | **−0,3 %** | **+7,1** |
+| 2019 | +18,3 % | −17,4 | | 2023 | +13,1 % | −27,7 |
+| 2020 | +25,1 % | −43,4 | | 2024 | +27,2 % | +0,1 |
+| | | | | 2025 | +64,6 % | −11,5 |
+| | | | | 2026 | +1,0 % | −2,6 |
+
+| | Jahre | short Ø R | short Σ R |
+|---|---|---|---|
+| Gold **fällt** | 3 | **+0,116** | **+6,2** |
+| Gold **steigt** | 7 | **−0,390** | **−157,1** |
+
+Korrelation Gold-Jahresrendite ↔ short Ø R: **−0,38**.
+
+**Die Short-Seite ist in fallenden Jahren etwa neutral bis leicht positiv und
+verliert praktisch den gesamten Schaden in steigenden Jahren.** Das ist ein
+**Regime-Effekt**, keine strukturelle Schwäche der Kaskade auf der
+Short-Seite.
+
+**Was das für E6 heißt:** Long-only ist bestätigt als **Trendwette**. Die
+Kaskade ist auf der Short-Seite nicht kaputt — sie wird vom
+Gold-Aufwärtstrend überfahren. Bei einer Trendwende müsste die Beschränkung
+zurückgedreht werden, sonst verliert man genau den Teil, der dann arbeitet.
+
+> **Grenzen dieser Aussage, deutlich:** nur **3** fallende Jahre im Sample,
+> und alle drei waren mild (−1,6 %, −3,6 %, −0,3 %) — eine echte Gold-Baisse
+> ist nicht enthalten. Eines der drei (2018) war für die Shorts trotzdem
+> negativ (−19,1). Eine Korrelation von −0,38 über n=10 ist ein Hinweis,
+> kein Beweis. Die Richtung der Datenlage ist klar, ihre Belastbarkeit nicht.
+
+---
+
+## Befund 13 — bei `ctnl_continuation` rettet keine Richtung etwas
+
+Dieselbe Aufteilung für das Continuation-Bein:
+
+| Variante | Trades | Ø R | Σ R | PF |
+|---|---|---|---|---|
+| beide (Baseline) | 436 | −0,060 | −26,2 | 0,94 |
+| nur long | 245 | −0,076 | −18,6 | 0,92 |
+| nur short | 191 | −0,040 | −7,6 | 0,96 |
+| long + Regime | 115 | −0,130 | −14,9 | 0,86 |
+
+**Alles negativ.** Anders als beim Reversal-Bein, wo die Long-Seite alles
+trägt, ist hier keine Seite profitabel. Der Walk-Forward macht es sogar
+schlechter: OOS **−24,7** gegen **−0,5** der Baseline, besser in **1 von 8**
+Jahren.
+
+Monte Carlo (0,50 %/Trade): jede Variante hat negative Median-Rendite
+(−5,4 % bis −16,4 %), negativen Sharpe und **P(MaxDD>6 %) ≈ 100 %**.
+
+Auch der Struktur-gegen-Regime-Test läuft hier ins Leere: Korrelation −0,04,
+und die Vorzeichen sind gegenüber dem Reversal-Bein invertiert (fallende
+Jahre −0,523, steigende +0,582) — bei 9 bis 27 Trades pro Jahr ist das
+Rauschen, kein Signal.
+
+**Das ist die vierte unabhängige Bestätigung für E3** (nach Jahresbilanz,
+TP-/Signal-Sweep und Eimer-Analyse): dieses Bein hat keinen Edge.
+
+---
+
 ## Was daraus folgt (Entscheidung steht bei dir)
 
 Nach Kostenvalidierung, Diagnose und Optimierung stehen **vier** Entscheidungen
@@ -598,14 +668,18 @@ eine Wette auf den fortgesetzten Aufwärtstrend, keine Struktur-Erkenntnis —
 | **c** | Long-only, Regime-Filter nur mitlaufend | Hälfte des Effekts, weniger Modellrisiko |
 | **d** | Erst mitlaufen lassen (beides protokollieren, nichts ändern) | Kostet Zeit, kostet nichts sonst |
 
-**Meine Empfehlung: d, dann c.** Der Effekt ist groß genug, dass ein paar
+**Befund 12 hat den offenen Punkt geklärt:** die Short-Seite ist ein
+**Regime**-Effekt, keine strukturelle Schwäche — in fallenden Jahren ist sie
+neutral bis positiv (+0,116 Ø R), in steigenden verliert sie alles
+(−0,390). Long-only ist damit **definitiv eine Trendwette** und muss bei
+einer Gold-Trendwende zurückgedreht werden.
+
+**Entschieden (2026-09-23): d — mitlaufen lassen.** Der Effekt ist groß genug, dass ein paar
 Wochen Mitschrift ihn nicht zerstören — und der Bull-Market-Vorbehalt ist
 groß genug, dass ich ihn nicht auf Basis dieser Stichprobe scharf schalten
 würde.
 
-**Offen und ungeprüft:** ob die Short-Seite jahresweise dort verdient, wo Gold
-fällt (2022 legt es nahe, gemessen habe ich es nicht). Das wäre der Test, der
-Struktur von Regime trennt — sag Bescheid, dann rechne ich ihn.
+**Erledigt:** der Struktur-gegen-Regime-Test ist gerechnet, siehe Befund 12.
 
 ### Was NICHT geändert werden sollte
 

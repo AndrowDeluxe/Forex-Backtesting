@@ -9,6 +9,48 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-23** [CTNL / Richtung + Regime] **Der Struktur-gegen-Regime-Test
+  ist gerechnet: die Short-Schwaeche ist ein REGIME-Effekt, keine
+  strukturelle.** Neues Skript `research_ctnl_direction_regime.py`,
+  Befunde 12+13 in `projects/ctnl-kostenvalidierung.md`, Rohdaten
+  `_data/ctnl_direction_regime.json`.
+  **`ctnl_reversal`, short gegen die Gold-Jahresrichtung:** in den 3
+  fallenden Jahren Ø R **+0,116** (ΣR +6,2), in den 7 steigenden Ø R
+  **-0,390** (ΣR **-157,1**). Korrelation Gold-Jahresrendite <-> short Ø R
+  **-0,38**. Die Kaskade ist auf der Short-Seite also NICHT kaputt -- sie
+  wird vom Gold-Aufwaertstrend ueberfahren. **Long-only ist damit bestaetigt
+  eine Trendwette und muesste bei einer Trendwende zurueckgedreht werden.**
+  **Grenzen deutlich:** nur 3 fallende Jahre, alle mild (-1,6 / -3,6 /
+  -0,3 %), eines davon (2018) auch fuer Shorts negativ. Korrelation -0,38
+  ueber n=10 ist ein Hinweis, kein Beweis.
+  **`ctnl_continuation` nach Richtung (Nutzerauftrag):** ALLES negativ --
+  beide -0,060, nur long -0,076, nur short -0,040, long+Regime -0,130.
+  Walk-Forward macht es schlechter (OOS -24,7 vs. -0,5, besser in 1/8
+  Jahren). Monte Carlo: jede Variante negative Median-Rendite (-5,4 bis
+  -16,4 %), negativer Sharpe, P(MaxDD>6 %) ~100 %. **Vierte unabhaengige
+  Bestaetigung fuer E3.**
+
+- **2026-09-23** [CTNL / E6] **"Mitlaufen lassen" umgesetzt -- ohne Eingriff
+  in eine Bridge.** Neues Skript `scripts/ctnl_shadow_eval.py`. Beide
+  Merkmale stehen im Nachhinein exakt fest (Richtung im Bridge-State, die
+  Regime-Kennzahl ist eine deterministische Funktion der Kursreihe), also
+  muss live nichts mitgeschrieben werden -- eine Bridge-Aenderung waere
+  reines Risiko ohne Informationsgewinn gewesen. Die Regime-Schwelle ist als
+  ABSOLUTER Wert eingefroren (0,082677, q50 ueber 2016-2026) statt
+  mitlaufendes Quantil, sonst waere die Auswertung nicht reproduzierbar.
+  **Erster Lauf (127 reale Trades, 17.-23.09.):** nur **26 (20,5 %) waren
+  long**, 90 (70,9 %) haetten den Regime-Filter bestanden, **20 (15,7 %)
+  beides**. 70 waeren allein wegen der Richtung weggefallen.
+  **Bemerkenswerte Rueckschau:** die Order-Flut, die ttp1 gebreacht hat,
+  bestand zu rund 80 % aus SHORTS in eine Gold-Rally -- also genau aus dem
+  Teil, der laut Befund 11/12 strukturell verliert. Der fehlende Live-Deckel
+  war die Ursache der Flut; die Richtung war der Grund, warum sie so teuer
+  wurde.
+  **Noch nicht enthalten:** ein P&L-Vergleich. Die Bridge-States haben fuer
+  die verwaisten Eintraege keine Exits (siehe 09-19), die Auswertung zeigt
+  deshalb die AUSWAHL, nicht das Ergebnis. Sobald genug abgeschlossene
+  Trades vorliegen, gehoert das ergaenzt.
+
 - **2026-09-23** [EK-Portfolio-Bridge / CTNL] **E5-c umgesetzt:
   `ctnl_reversal` haelt auf EK ab sofort hoechstens EINE gleichzeitige
   Position** (Nutzerentscheid; die Mindestlot-Anhebung bleibt ausdruecklich

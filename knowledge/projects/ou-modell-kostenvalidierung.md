@@ -802,3 +802,92 @@ Achtung: `BB_K` und `BB_LOOKBACK` sind globale Werte in
 `ou_paper_backtest/config.py` — sie wirken auf jeden Aufrufer dieses Pakets,
 nicht nur auf das OU-Bein der Bridges. Eine Aenderung gehoert als Parameter in
 den Aufruf, nicht in die Konstante.
+
+---
+
+# Umbau auf Logik D + BB_K 2,25 (2026-09-23)
+
+Nutzerfreigabe nach Plan `.claude/plans/quirky-painting-pancake.md`. Entschieden:
+Logik D umsetzen, `BB_K` 2,25, Mindest-Lot-Anhebung auf EK bewusst in Kauf
+nehmen, Risikobudget unveraendert lassen (FK-Konten werden separat neu
+kalibriert).
+
+## Was geaendert wurde
+
+| Stelle | Aenderung |
+|---|---|
+| `ou_paper_backtest/portfolio.py` | `simulate_bracket_portfolio(ma_exit=False)` neu -- Ausstieg beim Ruecklauf ans gleitende Mittel, nach SL/TP und vor `max_hold`. Default False, kein bestehender Aufrufer aendert sein Verhalten. |
+| `challenge_portfolio/paper_bot.py` | `OU_MODELL_STOP_SIGMA` 3,0 -> 8,0 · `OU_MODELL_BE_TRIGGER_R` 0,35 -> 0 · `OU_MODELL_BB_K` 2,25 neu · `rr_ratio=None` · `ma_exit=True`, `k=OU_MODELL_BB_K` im Aufruf |
+| `ou_paper_backtest/scanner.py` | lokales `OU_BB_K = 2,25` und `OU_STOP_SIGMA = 8,0` (NICHT die globalen Konstanten, die wirken auf jeden Aufrufer des Pakets) · kein TP mehr · **neu `ou_exit_levels.csv`** · Abdeckungswarnung |
+| `EK-Portfolio-Bridge/legs/ou_modell/` | Breakeven aus · MA20-Ausstieg · Max-Holding schliesst jetzt wirklich (vorher nur CRITICAL-Log) · Warnung bei fehlender Schwelle |
+| `ek_portfolio/paper_bot.py` | **nichts** -- dieser Bot simuliert die OU-Strategie nicht, er liest ihre realisierten Tagesrenditen aus `ou_modell_logs/daily_log.csv`. |
+
+## Warum `ou_exit_levels.csv` noetig war
+
+Der EK-Ausstieg haette sonst stillschweigend nie gefeuert. `scanner_signals.csv`
+enthaelt nur Titel mit einem EINSTIEGSsignal (Schlusskurs unter dem unteren
+Band). Eine gehaltene Position ist per Definition keiner davon mehr -- sie ist
+Richtung Mittel gelaufen, genau darauf wartet der Ausstieg. Die neue Datei
+fuehrt MA20 und `exit_now` fuer ALLE Universumstitel.
+
+## Was der Umbau tatsaechlich liefert
+
+Gemessen auf der Trade-Liste, die der Live-Pfad erzeugt (nicht auf der der
+Studie -- siehe unten), OOS 2023-2026, 764 Trades gesamt / 363 OOS:
+
+| | IS | OOS Ø R | PF | KI 95 % | Jahre positiv | MC Ertrag | negative Pfade | MaxDD | P(DD>7 %) |
+|---|---|---|---|---|---|---|---|---|---|
+| FK (TTP) | +0,0043 | **+0,0117** | 1,12 | [−0,018; +0,038] | 3 von 4 | +0,69 % | 25 % | −0,88 % | **0,00 %** |
+| EK (Tickmill) | +0,0095 | **+0,0165** | 1,17 | [−0,012; +0,044] | 3 von 4 | +2,18 % | 18 % | −1,80 % | 0,00 % |
+
+Zum Vergleich vorher: FK −0,052R (PF 0,83), EK −0,028R (PF 0,90), 0 von 4
+Jahren positiv.
+
+**Abweichung zur Studie, ehrlich ausgewiesen:** die Signalseiten-Studie vom
+23.09. erwartete +0,0148R (FK) und +0,0196R (EK). Der Live-Pfad liefert
++0,0117 / +0,0165. Ursache ist kein Fehler, sondern eine Stellungnahme zur
+Reihenfolge: die Studie hat den MA-Ausstieg im REPLAY angewandt (auf einer
+Trade-Liste, die mit `max_hold` erzeugt wurde), der Live-Pfad wendet ihn in der
+ENGINE an. Ein frueherer Ausstieg gibt den Risikodeckel frueher frei, dadurch
+kommen andere Signale zum Zug -- 764 statt 665 Trades, davon 104 in der Studie
+gar nicht enthalten. Die Richtung und alle Vorzeichen bleiben gleich, die
+Groessenordnung ist rund 20 % kleiner. Der Live-Pfad ist die belastbarere Zahl,
+weil er misst, was tatsaechlich laeuft.
+
+## Verifikation
+
+1. **Regression bestanden:** die alte Logik explizit gepinnt (sigma 3,0,
+   be 0,35, TP 1,5 fuer S&P) liefert weiter −0,0536R OOS bei 1.025 Trades
+   (erwartet ~−0,052). Der neue `ma_exit`-Zweig hat das Bestandsverhalten nicht
+   angefasst.
+2. **Scanner-Lauf:** 1 Signal (JPM), 8 Ausstiegsschwellen geschrieben, davon 3
+   mit erreichter Mean Reversion. `ou_exit_levels.csv` wird auch bei 0 Signalen
+   geschrieben.
+3. **EK-Datenquelle:** `signal_source.ma20_by_ticker()` laedt die Schwellen aus
+   der neuen Datei (7 Ticker im Test).
+
+## Zwei Betriebsbefunde aus dem Umbau
+
+**Der Scanner sieht abends nur einen Teil des Universums.** Von 57 gelieferten
+Titeln hatten am 23.09. um 22:20 Uhr **45 als juengsten Kurs erst den
+Vortagesschluss** -- yfinance stellt den Tagesschluss nach Handelsende nicht
+fuer alle Symbole sofort bereit. Der Scanner verwirft solche Titel bewusst
+(keine Signale auf veralteten Kursen). Folge fuer Logik D: `ou_exit_levels.csv`
+deckt je nach Laufzeitpunkt nur einen Teil ab. Die EK-Bridge haelt eine
+Position ohne Schwelle und meldet das einmal taeglich, statt still
+weiterzulaufen. **Nicht geaendert** -- die Staleness-Regel betrifft auch die
+Einstiegsseite und gehoert separat entschieden.
+
+**Der Scanner verschwieg fehlende Ticker.** `_refresh_universe_prices()` liess
+Titel ohne yfinance-Antwort still fallen: Ausgabe "scanning 58 tickers", danach
+Rechnung mit 6. Meldet jetzt die Abdeckung mit zwei Stufen (ab 80 % Warnung,
+darunter "SCAN UNVOLLSTAENDIG").
+
+## Offen
+
+- Der Umbau ist **nicht scharf geschaltet** -- `DRY_RUN` unveraendert, kein
+  Live-Lauf ausgeloest.
+- Der Trockenlauf der EK-Bridge gegen die echten offenen Positionen
+  (Plan-Verifikation 4) steht noch aus; er braucht eine MT5-Verbindung und
+  faellt unter die Echtgeld-Sperre des Auto-Modus.
+- Risiko-Neukalibrierung der FK-Konten (Teil 2 des Plans) noch nicht begonnen.

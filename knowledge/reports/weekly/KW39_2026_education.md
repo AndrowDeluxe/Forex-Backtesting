@@ -71,7 +71,8 @@ dorthin gehoert.
   und **erntet keine Risikopraemie** (Bondarenko/Muravyev); Europa erntet die
   Praemie und produziert keine Information fuer NY. Zwei Aussagen ueber
   dasselbe Fenster, beide fuer uns relevant.
-- [[eu-open-renditefenster]] (09-22, Status **Kandidat, nicht begonnen**) --
+- [[eu-open-renditefenster]] (09-22, Status am 09-23 **abgeschlossen/negativ**,
+  siehe Nachtrag unten) --
   neuer separater Edge-Kandidat: long Index 05:30-09:30 Berlin. Sharpe 1,67,
   in jedem der 15 Paper-Jahre positiv, MaxDD 8 %, besteht White-Reality-Check
   und Bonferroni, kausal ueber die Sommerzeit-Asymmetrie auf Europas Open
@@ -105,3 +106,56 @@ Dashboard-Rueckfrage gelandet, statt in der Inbox zu parken.
 obwohl `scripts/reports/mt5_2026-W38.json` da ist -- der Datenabzug lief also,
 der Report nicht. Nicht untersucht, hier nur festgehalten, damit es nicht
 unbemerkt bleibt.
+
+## Nachtrag 2026-09-23 abends: das EU-Open-Fenster ist durchgerechnet -- und tot
+
+Am selben Tag noch den Edge-Kandidaten aus Abschnitt 4 komplett durch die
+Schritte 0-4 gefahren ([[eu-open-renditefenster]] enthaelt alle Zahlen).
+Ergebnis: **ehrliches Negativergebnis, nichts gebaut.**
+
+**Die Lehre, die ich mitnehme, ist nicht "das Paper war falsch".** Das Paper
+ist sauber -- es besteht White-Reality-Check und Bonferroni, hat einen
+kausalen Sommerzeit-Test und 15 von 15 positiven Jahren. Und unser eigenes
+2020 (+24,3 %) trifft die +24,5 %, die die Autoren fuer ihr 2020-Out-of-Sample
+berichten, fast exakt. Die Messung stimmt auf beiden Seiten.
+
+**Die Lehre ist: das Sample endete Juli 2018.** In den acht Jahren danach ist
+der Effekt verschwunden. Ohne 2020 bleiben +0,67 / -0,29 / +2,07 % p.a. bei
+t unter 1,2 -- und damit **unter dem Spread**, den wir bezahlen wuerden.
+Ein Edge von 0,26 bps je Trade gegen 0,39 bps Kosten ist kein Edge.
+
+Drei Dinge, die ich daraus fuer kuenftige Papers behalte:
+
+1. **Zuerst fragen: wann endet das Sample?** Und dann die eigene
+   Jahresreihe rechnen, bevor irgendetwas gebaut wird. Das war hier der
+   gesamte Test -- er hat einen Abend gekostet statt einer Woche.
+2. **Immer das beste Jahr herausnehmen.** Die Vollsample-Zahl (+3,5 bis
+   +5,2 %, t bis 2,13) sah brauchbar aus. Erst der Blick auf die
+   Jahresreihe zeigte, dass **ein** Jahr alles traegt. Dasselbe gilt fuer
+   die konditionale Version: +8 % p.a. sieht stark aus, kollabiert ohne
+   2020 auf +0,9 % bei t=0,31 -- der Filter selektierte im Wesentlichen 2020.
+3. **Kosten waren diesmal NICHT der Killer** -- anders als bei CLS und CTNL.
+   Die Nacht-Spreads unserer Index-CFDs (05:30-09:30 Berlin) sind genauso
+   eng wie tagsueber: Tickmill 0,23-0,39 bps, TTP 0,49-0,83, fest quotiert.
+   Das ist ein **positiver Nebenbefund**, der jeder kuenftigen Idee in
+   diesem Fenster zugutekommt, und er war vorher nicht bekannt.
+
+**Und ein Fehler von mir, der fast durchgerutscht waere.** Beim Gegencheck
+"hat sich das Fenster nur verschoben?" hatte ich Fenster, die ueber
+Mitternacht laufen, mit dem Endzeitpunkt DESSELBEN Kalendertags gepaart --
+also minus 20 Stunden statt plus 4. Das Ergebnis waren ET-verankerte Fenster
+mit **-13 bis -19 % p.a.**, die wie ein spektakulaerer Short-Edge aussahen.
+Aufgefallen ist es nur, weil die Zahl zu gross war, um zu stimmen.
+Behoben durch Paarung ueber Bar-Zeitstempel statt ueber Kalendertage.
+Merksatz fuer mich: **eine ueberraschend grosse Zahl ist zuerst ein
+Bug-Verdacht, kein Fund.**
+
+Der saubere Gegencheck danach war dann eindeutig: ueber alle 42
+Vier-Stunden-Fenster des Tages erreicht **kein einziges** die
+White-Schwelle von |t| >= 3,7 -- und das EU-Fenster selbst rangiert ab 2021
+auf Rang 38/42 (SP500) bzw. 40/42 (US30). Es ist nicht verschoben, es ist
+weg.
+
+**Phase 6 habe ich bewusst nicht gerechnet.** Walk-Forward und Monte Carlo
+pruefen, ob ein positiver Edge robust ist -- hier gibt es nach Kosten
+keinen, den man stresstesten koennte. Das waere Theater gewesen.

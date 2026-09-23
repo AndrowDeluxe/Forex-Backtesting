@@ -35,6 +35,39 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **🟠 ORB-Break-Even im ALTEN Marktorder-Pfad (EK) sitzt auf dem
+  SIGNAL-Preis, nicht auf dem echten Fill -- reparieren oder Pfad
+  entfernen?** (Fund 2026-09-23 bei der BE-Pruefung.)
+  `legs/ny_open_orb/executor.py::manage_open_positions()` schiebt den Stop
+  nach dem Teilausstieg auf `state["entry_price"]`, und `_record_entry()`
+  speichert dort `signal["entry_price_signal"]` -- den Ausbruchs-Level aus
+  der M5-Historie, nicht den Preis, zu dem tatsaechlich gefuellt wurde.
+  **Belegt am 18.09., NASDAQ Ticket 269766479:** Fill 29.486,50 (short),
+  BE-Stop auf 29.497,04 gesetzt = **10,4 Punkte GEGEN die Position**; die
+  Restscheibe ging mit **-0,27 USD statt 0,00** raus. Weil ORB-Entries dem
+  Ausbruch hinterherlaufen, ist der Fill systematisch schlechter als der
+  Signal-Level -- der "Break-Even" ist damit strukturell ein kleiner
+  Verlust-Stop. **Aktuell nicht akut:** seit 2026-09-19 laufen alle
+  ORB-Entries ueber `pending_executor.py`, und der nimmt den echten Fill
+  (`p.price_open`, Zeile 297/379) -- ebenso die Funded-Bridge (dort schon am
+  01.09. gefixt). Der alte Pfad wird aber bei **jedem** Fast-Lauf noch
+  aufgerufen (`run_once_fast.py:113`) und wuerde bei einer Rueckkehr zu
+  Marktorders sofort wieder falsch stoppen. **Offen fuer dich:** echten Fill
+  in `_record_entry()` speichern (klein) oder den toten Marktorder-Pfad
+  ganz rausnehmen (sauberer)?
+
+- **🔴 `mt5_pull.py` und `soll_ist.py` sind NICHT in git -- soll ich sie
+  committen?** (Fund 2026-09-23 beim Fenster-Fix.) Beide Module tragen den
+  Weekly-Report und den Soll/Ist-Vergleich gegen die Echtgeld-Konten, beide
+  stehen als `??` im Status und sind **nicht** per `.gitignore` ausgeschlossen
+  -- sie wurden schlicht nie committet. Es gibt also keine Historie und keinen
+  Stand, auf den man zurueck koennte; der heutige Fenster-Fix liegt aktuell nur
+  auf der Platte. Die Auto-Tasks committen nur ihre eigenen Dateien, von selbst
+  wird das nie eingesammelt. **Gleiches Muster wie `data_lake/` am 06.09.**
+  **Offen fuer dich:** kurze Freigabe, dann committe ich beide (Zugangsdaten
+  sind nicht drin -- die kommen zur Laufzeit aus den Bridge-configs ausserhalb
+  des Repos).
+
 - **`ctnl_reversal` verdient nur long -- Entscheidung E6.** short: 591 Trades,
   Ø R -0,207, ΣR **-122,3** gegen long +258,9. Monte Carlo (`long + Regime`):
   Median MaxDD **-15,6 % -> -4,84 %**, P(MaxDD>6 %) **99,9 % -> 23,3 %**,
@@ -56,20 +89,6 @@ Bedarf vor generischem Aufräumen.
   Ich habe nichts geaendert. Details: `projects/ctnl-kostenvalidierung.md`
   Befund 10.
 
-- **🔴 `mt5_pull.py --to <Tag+1>` verliert die letzten Stunden des Tages --
-  darf ich das fixen?** (Fund 2026-09-23, **nicht umgesetzt**.) Derselbe Abzug,
-  nur mit anderer Obergrenze: `--from 2026-09-23 --to 2026-09-24` liefert EK
-  **13** Deals und TTP **11**; `--to 2026-09-25` liefert **22** bzw. **16**.
-  Gefehlt haben genau die Schliessungen ab ~22:40 Serverzeit. Die naive
-  Zeitgrenze wird also nicht in Serverzeit ausgewertet, das Fenster endet
-  effektiv ein bis drei Stunden zu frueh. **Folge:** ein Tages- oder
-  Zeitraum-Abzug weist die Ergebnisse des letzten Tages stillschweigend zu
-  niedrig aus -- mir ist es heute genau so passiert, bevor ich es gegengeprueft
-  habe. Der Weekly-Report ist NICHT betroffen: `week_bounds()` setzt die
-  Grenze auf den Folgemontag 00:00 und hat damit zwei Tage Puffer.
-  **Vorschlag:** Obergrenze intern um einen Tag erweitern und anschliessend auf
-  das gewuenschte Fenster filtern (rein lesend, keine Handelsfunktion).
-
 - **Paper-Screening 2026-09-22: ist das Zumachen der einen Tuer okay?**
   Drei Papers gesichtet (Details in
   [[24h-renditestruktur-und-informationskette]]). Zwei Dinge beruhen auf
@@ -86,8 +105,14 @@ Bedarf vor generischem Aufräumen.
   es testbar (dann aber als Risiko-Skalierung, nicht als binaerer Filter).
   Die vier ORB-Folgetests (Anteil `session_end`-Exits, Gegenprobe zur
   EMA-neutral-Mechanismushypothese, Zeit-Exit 15:45, EU-Feiertagscheck) stehen
-  als Vorschlag in [[ny-open-orb-sp500]], **keiner davon ist begonnen** --
-  das EU-Open-Fenster hat am 23.09. Vorrang bekommen.
+  als Vorschlag in [[ny-open-orb-sp500]], **keiner davon ist begonnen**.
+  **(3) Das EU-Open-Fenster ist am 23.09. durchgerechnet und negativ
+  abgeschlossen** ([[eu-open-renditefenster]]) -- ohne 2020 liegt der Edge
+  auf allen drei Instrumenten unter den Handelskosten, und ein Scan ueber
+  alle 42 Tagesfenster findet nirgends mehr eine Konzentration. Ich habe das
+  vorab festgelegte Abbruchkriterium angewandt und **Phase 6 bewusst nicht
+  gerechnet**. Falls du trotzdem eine Monte-Carlo-Sicht darauf willst, sag
+  Bescheid -- ich halte sie fuer nicht aussagekraeftig.
 
 *(Die folgenden vier Punkte wurden am 2026-09-23 aus `git stash@{71}` wiederhergestellt -- `git_sync_push` hatte sie am 21.09. beiseitegelegt.)*
 

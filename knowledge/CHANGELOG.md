@@ -9,6 +9,94 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-23** [OU-Modell / alle Bridges + Git-Sync] **Umbau auf Logik D +
+  BB_K 2,25 umgesetzt, Git-Sync repariert** (Nutzerfreigabe, Plan
+  `.claude/plans/quirky-painting-pancake.md`). **Nicht scharf geschaltet** --
+  DRY_RUN unveraendert, kein Live-Lauf ausgeloest.
+  **Code:** `portfolio.py::simulate_bracket_portfolio(ma_exit=...)` neu
+  (Default False, Bestandsverhalten unveraendert, Regression bestaetigt:
+  alte Logik gepinnt liefert weiter -0,0536R OOS); `paper_bot.py` auf
+  stop_sigma 8,0 / BE 0 / kein TP / ma_exit / k=2,25; `scanner.py` mit lokalem
+  BB_K 2,25 und Stop 8,0, ohne TP, plus **neu `ou_exit_levels.csv`**;
+  EK-Bridge mit MA20-Ausstieg, echtem Max-Holding-Schluss und Breakeven aus.
+  `ek_portfolio/paper_bot.py` blieb unangetastet -- der simuliert die Strategie
+  nicht, er liest ihre realisierten Tagesrenditen.
+  **Warum ou_exit_levels.csv:** `scanner_signals.csv` enthaelt nur Titel mit
+  EINSTIEGSsignal. Eine gehaltene Position ist keiner davon mehr -- der
+  MA-Ausstieg der EK-Bridge waere stillschweigend nie gefeuert.
+  **Ergebnis auf der Trade-Liste, die der Live-Pfad wirklich erzeugt:** FK
+  **+0,0117R (PF 1,12)**, EK **+0,0165R (PF 1,17)**, 3 von 4 OOS-Jahren
+  positiv, P(DD>7 %) = 0,00 %. Vorher: -0,052R (PF 0,83) bzw. -0,028R, 0 von 4
+  Jahren. Rund 20 % unter der Studienerwartung, weil der MA-Ausstieg jetzt in
+  der Engine statt im Replay greift -- andere Belegung des Risikodeckels, 764
+  statt 665 Trades. Ehrlich ausgewiesen statt die Studienzahl weiterzutragen.
+  **Git-Sync (Ursache der verschwindenden Arbeitsstaende):** `git_sync_push` und
+  `Bridge-Watchdog/watchdog.py` stashten bei JEDEM Lauf und setzten bei einem
+  kollidierenden Pop per `reset --hard` zurueck -- 93 Stashes, und am 23.09.
+  zweimal mitten in einer Session zugeschlagen (erst ein Dashboard-Eintrag,
+  dann zwei Code-Edits). Jetzt: kein Stash/Merge, wenn nichts eingeht (der
+  Normalfall), und bei echtem Konflikt eine Markierungsdatei
+  `knowledge/_handoff/GIT_STASH_KONFLIKT.md`. Beide Pfade getestet.
+  **Scanner-Befunde:** 45 von 57 Titeln hatten um 22:20 Uhr erst den
+  Vortagesschluss (yfinance liefert nach Handelsende nicht sofort alles) --
+  `ou_exit_levels.csv` deckt abends daher nur einen Teil ab, die EK-Bridge
+  meldet fehlende Schwellen jetzt taeglich. Und `_refresh_universe_prices()`
+  liess Ticker ohne Antwort still fallen ("scanning 58", Rechnung mit 6);
+  meldet die Abdeckung jetzt.
+
+- **2026-09-23** [Research / EU-Open-Fenster] **Edge-Kandidat durchgerechnet --
+  ehrliches Negativergebnis, nicht gebaut.** Nutzerauftrag "gehe alle Punkte
+  durch". Neu: `scripts/research_eu_open_window.py`, `_decay.py`,
+  `_windowscan.py`; Daten in `knowledge/_data/eu_open_*.json` +
+  `broker_spreads_indices_euopen.json`. Alles rein lesend, kein Bot beruehrt.
+  **Schritt 0 (Kosten) bestanden**: Nacht-Spreads 05:30-09:30 Berlin sind
+  NICHT weiter als tagsueber (Tickmill 0,23-0,39 bps, TTP 0,49-0,83) --
+  gegen eine Break-even-Schwelle von 3,08 bps waere das Faktor 4-13 Puffer
+  gewesen. **Schritt 1 (Decay) gescheitert**: ueber 2018-2026 nominal positiv
+  (SP500 +3,5 %, NASDAQ +5,2 %), aber **2020 allein traegt alles** (+24,3 /
+  +24,4 / +28,4 %); ohne 2020 bleiben +0,67 / **-0,29** / +2,07 % bei t<1,2,
+  also **unter den Handelskosten**. Unser 2020-Wert trifft die vom Paper
+  berichteten +24,5 % fast exakt -- die Pipeline misst richtig, der Zerfall
+  danach ist echt. Die konditionale Rettung des Papers (Tagesauswahl ueber
+  Overnight-Vol) sieht mit +8 % p.a. stark aus, **kollabiert ohne 2020 aber
+  auf +0,9 bis +1,8 % bei t=0,31-0,49** -- sie selektiert im Wesentlichen
+  2020. Gegenchecks: Berlin- und ET-Verankerung liefern dasselbe; ein Scan
+  ueber alle 42 Vier-Stunden-Fenster findet **kein einziges** ueber der
+  White-(2000)-Schwelle |t|>=3,7, und das EU-Fenster rangiert ab 2021 auf
+  Rang 38/42 (SP500) bzw. 40/42 (US30) -- nicht verschoben, sondern tot.
+  Phase 6 bewusst NICHT gerechnet (nichts Positives zum Stresstesten).
+  **Dabei ein eigener Bug gefunden und behoben**: Fenster ueber Mitternacht
+  wurden mit dem Endzeitpunkt DESSELBEN Kalendertags gepaart (minus 20 h
+  statt plus 4 h) und wiesen ET-Fenster faelschlich mit -13 bis -19 % p.a.
+  aus -- haette unentdeckt wie ein spektakulaerer Short-Edge ausgesehen.
+
+- **2026-09-23** [scripts/reports/mt5_pull.py] **Fenster-Fix: Tagesabzuege
+  verlieren die letzten Stunden nicht mehr** (Nutzerauftrag "fixe das").
+  `pull()` fragt `history_deals_get()` jetzt beidseitig um einen Tag geweitet ab
+  und filtert danach selbst gegen die Serverzeit (`frm <= ts < to`, obere Grenze
+  exklusiv wie bisher). Gefiltert wird gegen DIESELBE Zeitbasis, die als
+  `time_iso` rausgeht -- Unix-Zeitstempel als UTC gelesen == Serverzeit.
+  **Verifiziert:** (a) der gemeldete Fall -- `--from 2026-09-23 --to 2026-09-24`
+  gab vorher EK 13 / TTP 11 Deals, jetzt **22 / 14**; (b) `--to 2026-09-25`
+  liefert exakt dasselbe wie `--to 2026-09-24`, das Fenster ist also nicht mehr
+  von der Obergrenze abhaengig; (c) der alte Lauf war an BEIDEN Raendern
+  verschoben -- er zog Spaet-Deals des VORTAGS mit herein (deshalb TTP alt 16,
+  neu 14) und liess die des Zieltags fallen; (d) **Wochenabzug unveraendert**:
+  2026-W38 gegen den archivierten Report gerechnet, identische Deal-Zahlen und
+  Summen (EK 40/−227,31, TTP 89/−898,07, IQ 98/+1.411,14) -- `week_bounds()`
+  hatte durch die Montag-00:00-Grenze genug Puffer. `py_compile` sauber, Modul
+  bleibt rein lesend (keine Handelsfunktion, nur `account_info`,
+  `history_deals_get`, `positions_get`). Docstring von `week_bounds()`
+  entsprechend nachgezogen.
+  **Auswirkung auf die Auswertung vom 22.09.:** nur TTP am 22.09. +320,86 ->
+  +325,26 (der CF-Exit um 22:13 Serverzeit lag jenseits der alten Grenze),
+  Zwei-Tage-Summe +601,49 -> +605,89 USD. Alle Aussagen dieser Auswertung
+  bleiben unveraendert.
+  **Nebenbefund:** `mt5_pull.py` und `soll_ist.py` sind **nicht git-getrackt**
+  (`??` im Status, nicht per `.gitignore` ausgeschlossen) -- kein Backup, keine
+  Historie, gleiches Muster wie `data_lake/` am 06.09. In DASHBOARD.md zur
+  Freigabe gelegt, nicht eigenmaechtig committet.
+
 - **2026-09-23** [OU-Modell / Funded + EK] **Logik D + Signalseite UMGESETZT -- das Bein laeuft jetzt nach der validierten Konfiguration.** Nutzerfreigabe nach `projects/ou-modell-kostenvalidierung.md`. **Neu:** `stop_sigma` 3 -> 8, Break-Even-Stop aus, **kein TP mehr** (auch nicht fuer S&P), Ausstieg beim **Ruecklauf ans MA20**, `BB_K` 2,0 -> 2,25, `max_hold` 10 unveraendert. **Ergebnis OOS:** -0,052R (PF 0,83) -> **+0,008R (PF 1,08)** auf TTP-Kosten, -0,028R -> **+0,013R (PF 1,13)** auf Tickmill; schlechtester Trade -2,54R -> -0,90R (die Position ist bei gleichem Dollar-Risiko nur noch 37,5 % so gross). Phase 6: P(DD>7 %) = 0,00 %, negative MC-Pfade 30 % -> 18 %. **Ehrliche Lesart: von "verliert zuverlaessig" auf "verdient wenig" -- kein Edge-Nachweis, 2023 bleibt in jeder Variante negativ.**
   **Geaendert:** `ou_paper_backtest/scanner.py` (Stop 8 Sigma, kein TP, `BB_K` lokal 2,25 statt der globalen Konstante -- die wirkt auf jeden Paket-Nutzer; neue Spalte `ma20` als Ausstiegsschwelle fuer die Bridges), `challenge_portfolio/paper_bot.py` (Funded, live: Sigma/BE/rr_ratio + `ma_exit=True`, `k=2.25`), `EK-Portfolio-Bridge/config.py` (BE-Trigger 0) und `EK-Portfolio-Bridge/legs/ou_modell/` (`ma20_by_ticker()` im signal_source; Executor: Break-Even-Zweig entfernt, MA20-Ausstieg neu, **und `max_hold` schliesst jetzt wirklich** statt nur CRITICAL zu loggen -- am 23.09. musste der Nutzer 9 ueberfaellige Positionen von Hand schliessen).
   **Sizing/Risiko je Konto bewusst unveraendert** (Funded 1/6 bzw. 1/3, EK 1/8 x LEG_RISK_PCT). FK hat kein OU-Bein -- die FK-Zahlen im Bericht sind ein Kostenprofil, kein eigenes Bein.

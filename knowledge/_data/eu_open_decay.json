@@ -1,0 +1,255 @@
+{
+ "generated": "2026-09-23T22:21:31.653887+02:00",
+ "sample": {
+  "start": "2018-07-01",
+  "end": "2026-09-18"
+ },
+ "instruments": {
+  "SP500": {
+   "decay": {
+    "voll 2018-2026": {
+     "n": 2118,
+     "ann_pct": 3.52,
+     "t": 1.72,
+     "sharpe": 0.68,
+     "bps_per_trade": 1.4,
+     "max_dd_pct": -11.27
+    },
+    "OHNE 2020": {
+     "n": 1862,
+     "ann_pct": 0.67,
+     "t": 0.49,
+     "sharpe": 0.17,
+     "bps_per_trade": 0.26,
+     "max_dd_pct": -11.27
+    },
+    "ab 2021": {
+     "n": 1474,
+     "ann_pct": 0.45,
+     "t": 0.29,
+     "sharpe": 0.11,
+     "bps_per_trade": 0.18,
+     "max_dd_pct": -11.27
+    },
+    "ab 2023": {
+     "n": 957,
+     "ann_pct": 0.28,
+     "t": 0.16,
+     "sharpe": 0.08,
+     "bps_per_trade": 0.11,
+     "max_dd_pct": -7.04
+    },
+    "2020 COVID-Crash": {
+     "n": 19,
+     "error": "zu duenn"
+    },
+    "2020 ohne Crash": {
+     "n": 237,
+     "ann_pct": 12.2,
+     "t": 1.68,
+     "sharpe": 1.67,
+     "bps_per_trade": 4.84,
+     "max_dd_pct": -4.29
+    }
+   },
+   "conditional": {
+    "alle Tage (ab min_periods)": {
+     "n": 1998,
+     "ann_pct": 3.5,
+     "t": 1.64,
+     "sharpe": 0.67,
+     "bps_per_trade": 1.39,
+     "max_dd_pct": -11.27
+    },
+    "hohe Overnight-Vol (Top 40 %)": {
+     "n": 808,
+     "ann_pct": 8.02,
+     "t": 1.67,
+     "sharpe": 1.11,
+     "bps_per_trade": 3.18,
+     "max_dd_pct": -12.33
+    },
+    "niedrige Overnight-Vol": {
+     "n": 1190,
+     "ann_pct": 0.43,
+     "t": 0.3,
+     "sharpe": 0.13,
+     "bps_per_trade": 0.17,
+     "max_dd_pct": -3.88
+    },
+    "hohe Overnight-Vol OHNE 2020": {
+     "n": 647,
+     "ann_pct": 0.89,
+     "t": 0.31,
+     "sharpe": 0.17,
+     "bps_per_trade": 0.35,
+     "max_dd_pct": -12.33
+    }
+   }
+  },
+  "US30": {
+   "decay": {
+    "voll 2018-2026": {
+     "n": 2117,
+     "ann_pct": 2.69,
+     "t": 1.29,
+     "sharpe": 0.53,
+     "bps_per_trade": 1.07,
+     "max_dd_pct": -11.05
+    },
+    "OHNE 2020": {
+     "n": 1861,
+     "ann_pct": -0.29,
+     "t": -0.23,
+     "sharpe": -0.08,
+     "bps_per_trade": -0.12,
+     "max_dd_pct": -11.05
+    },
+    "ab 2021": {
+     "n": 1473,
+     "ann_pct": -0.44,
+     "t": -0.3,
+     "sharpe": -0.12,
+     "bps_per_trade": -0.17,
+     "max_dd_pct": -11.05
+    },
+    "ab 2023": {
+     "n": 956,
+     "ann_pct": -0.77,
+     "t": -0.5,
+     "sharpe": -0.25,
+     "bps_per_trade": -0.31,
+     "max_dd_pct": -7.88
+    },
+    "2020 COVID-Crash": {
+     "n": 19,
+     "error": "zu duenn"
+    },
+    "2020 ohne Crash": {
+     "n": 237,
+     "ann_pct": 11.94,
+     "t": 1.45,
+     "sharpe": 1.49,
+     "bps_per_trade": 4.74,
+     "max_dd_pct": -5.73
+    }
+   },
+   "conditional": {
+    "alle Tage (ab min_periods)": {
+     "n": 1997,
+     "ann_pct": 2.68,
+     "t": 1.23,
+     "sharpe": 0.52,
+     "bps_per_trade": 1.06,
+     "max_dd_pct": -11.05
+    },
+    "hohe Overnight-Vol (Top 40 %)": {
+     "n": 765,
+     "ann_pct": 8.57,
+     "t": 1.64,
+     "sharpe": 1.15,
+     "bps_per_trade": 3.4,
+     "max_dd_pct": -7.14
+    },
+    "niedrige Overnight-Vol": {
+     "n": 1232,
+     "ann_pct": -0.98,
+     "t": -0.68,
+     "sharpe": -0.32,
+     "bps_per_trade": -0.39,
+     "max_dd_pct": -8.76
+    },
+    "hohe Overnight-Vol OHNE 2020": {
+     "n": 611,
+     "ann_pct": 1.07,
+     "t": 0.39,
+     "sharpe": 0.23,
+     "bps_per_trade": 0.43,
+     "max_dd_pct": -7.14
+    }
+   }
+  },
+  "NASDAQ": {
+   "decay": {
+    "voll 2018-2026": {
+     "n": 2116,
+     "ann_pct": 5.23,
+     "t": 2.13,
+     "sharpe": 0.84,
+     "bps_per_trade": 2.08,
+     "max_dd_pct": -12.42
+    },
+    "OHNE 2020": {
+     "n": 1861,
+     "ann_pct": 2.07,
+     "t": 1.19,
+     "sharpe": 0.4,
+     "bps_per_trade": 0.82,
+     "max_dd_pct": -12.42
+    },
+    "ab 2021": {
+     "n": 1473,
+     "ann_pct": 2.14,
+     "t": 1.09,
+     "sharpe": 0.41,
+     "bps_per_trade": 0.85,
+     "max_dd_pct": -12.42
+    },
+    "ab 2023": {
+     "n": 956,
+     "ann_pct": 1.93,
+     "t": 0.86,
+     "sharpe": 0.41,
+     "bps_per_trade": 0.77,
+     "max_dd_pct": -7.57
+    },
+    "2020 COVID-Crash": {
+     "n": 18,
+     "error": "zu duenn"
+    },
+    "2020 ohne Crash": {
+     "n": 237,
+     "ann_pct": 14.53,
+     "t": 1.94,
+     "sharpe": 1.91,
+     "bps_per_trade": 5.76,
+     "max_dd_pct": -3.35
+    }
+   },
+   "conditional": {
+    "alle Tage (ab min_periods)": {
+     "n": 1996,
+     "ann_pct": 5.22,
+     "t": 2.04,
+     "sharpe": 0.84,
+     "bps_per_trade": 2.07,
+     "max_dd_pct": -12.42
+    },
+    "hohe Overnight-Vol (Top 40 %)": {
+     "n": 807,
+     "ann_pct": 8.26,
+     "t": 1.43,
+     "sharpe": 0.98,
+     "bps_per_trade": 3.28,
+     "max_dd_pct": -11.94
+    },
+    "niedrige Overnight-Vol": {
+     "n": 1189,
+     "ann_pct": 3.15,
+     "t": 1.73,
+     "sharpe": 0.75,
+     "bps_per_trade": 1.25,
+     "max_dd_pct": -5.36
+    },
+    "hohe Overnight-Vol OHNE 2020": {
+     "n": 668,
+     "ann_pct": 1.76,
+     "t": 0.49,
+     "sharpe": 0.28,
+     "bps_per_trade": 0.7,
+     "max_dd_pct": -11.94
+    }
+   }
+  }
+ }
+}

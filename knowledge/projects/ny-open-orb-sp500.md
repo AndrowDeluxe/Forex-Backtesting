@@ -1076,3 +1076,173 @@ demselben Datensatz gefunden wie er hier validiert wird (kein komplett
 frischer Drittdatensatz) - die grundsaetzliche Meta-Vorsicht (Parameter aus
 Stage 2/3 landen automatisch in Phase 6 desselben Zeitraums) bleibt bestehen,
 auch wenn die 3-Perioden-Konsistenz das Risiko mindert.
+
+---
+
+## Externe Paper-Einordnung 2026-09-22 (Phase 2/3, kein Backtest)
+
+Drei vom Nutzer geteilte Papers, destilliert in
+[[24h-renditestruktur-und-informationskette]]: Bondarenko/Muravyev
+"Market Return Around the Clock" (SSRN 3596245) und Kinoshitas beide
+Transmissions-Papers (SSRN 7276738 / 7091018). Screening-Ergebnis für
+diese Strategie: **kein neuer Entry-Filter, aber ein Mechanismus, eine
+Gegenprobe, ein Exit-Test und eine geschlossene Tür.**
+
+### Befund A -- Long-only ist hier KEIN verstecktes Beta (Reframe, kein Test)
+
+Der übliche Einwand gegen long-only-Aktienstrategien ("du erntest nur die
+Risikoprämie") **greift für diese Strategie nachweislich nicht**. Paper 1,
+Tab. IA.2: die US-Cash-Session 09:30-16:15 ET liefert im Mittel +3,44 % p.a.
+bei **t=0,89**, Sharpe 0,23 und MaxDD 44,6 % -- die gesamte
+Aktien-Risikoprämie sitzt nachts (EU-open, +7,60 %, t=6,35), nicht in
+unserem Handelsfenster. In dem Fenster, in dem wir long-only sind, gibt es
+also **schlicht keine Drift zum Ernten**.
+
+Das stärkt den bestehenden Stage-4b-Befund (long-only Sharpe 0,56 -> 0,81),
+statt ihn zu relativieren: der Vorteil muss **konditional** sein (welche
+Richtung, gegeben den Range-Bruch), weil unkonditional nichts da ist.
+**Keine Handlung nötig** -- aber diese Zahl gehört in die Dokumentation,
+falls die Frage je gestellt wird.
+
+### Befund B -- Mechanismus-Kandidat für den EMA-neutral-Filter (Hypothese)
+
+Der EMA-neutral-Filter ist das **mit Abstand stärkste bestätigte Signal
+dieses Projekts** (Sharpe 0,56 -> 1,05, Stage 4b) und hat bis heute
+**keine ökonomische Erklärung** -- nur Backtest-Evidenz. Nach
+[[edge-card-workflow]] Regel 4 ist das zu wenig: "Ein Backtest ist KEIN
+Mechanismus."
+
+Kinoshita liefert einen Kandidaten. Sein Leg-3-**Baseline**-Wert misst,
+wie gut ein US-Index seinen eigenen Opening-Gap aus dem eigenen
+Vortagsmomentum vorhersagt: **S&P 500 56,01 %, Dow 52,76 %, NDX 55,91 %**
+-- messbar über Zufall. Es gibt also an US-Indizes einen echten
+Eigenmomentum-Prior auf die Eröffnungsrichtung.
+
+**Hypothese (ausdrücklich unbewiesen)**: Der EMA-neutral-Filter wählt
+genau die Tage, an denen dieser Prior am schwächsten ist. Wenn die HTF-Lage
+neutral ist, ist die Eröffnungsrichtung nicht schon durch den Trend
+vorbestimmt -- und der Bruch der Opening Range trägt dann echte neue
+Information statt nur den Trend zu bestätigen. Auf Trendtagen wäre der
+Range-Bruch dagegen weitgehend redundant zu dem, was man ohnehin schon weiß.
+
+Das würde auch **NASDAQs Ausreißerverhalten** erklären (Filter schadet dort
+OOS, 0,59 -> 0,13): NDX hat mit 55,91 % einen der stärkeren
+Eigenmomentum-Priors -- dort ist "dem Trend folgen" eben nicht redundant.
+
+**Falsifizierbar mit Daten, die wir schon haben**: Ist der Vortagsmomentum-
+Prior auf den Opening-Gap an EMA-neutral-Tagen messbar schwächer als an
+Trendtagen? Wenn nein, ist die Erklärung falsch und der Filter bleibt
+unerklärt. Das ist ein billiger Test (kein neuer Datenbezug) und genau das,
+was Edge-Card-Feld 04 GEGENPROBE verlangt.
+
+### Befund C -- Zeitbasierter Ausstieg 15:45 statt 16:00 (testbar, aber klein)
+
+[[orb-exit-logik-neubewertung]] listet "zeitbasierter Ausstieg" ausdrücklich
+als **nicht getestet**. Paper 1 liefert dafür erstmals eine extern
+abgeleitete Uhrzeit mit Mechanismus statt eines frei gewählten Parameters:
+Der kumulative Index-Return hat seinen Tageshoch bei **15:45 ET** und fällt
+danach (Zig-Zag, Down-Leg t=-3,36). Erklärung der Autoren: Intraday-
+Arbitrageure lösen vor dem Close ihre gehebelten Positionen auf, das
+erzeugt Mispricing und negative Drift.
+
+Unser harter Ausstieg liegt bei **16:00 NY** (`engine.py:442`,
+`exit_reason="session_end"`) -- also 15 Minuten hinter diesem Hoch. Seit
+Variante C (SP500 ohne Teilausstieg/6R, NASDAQ ganz ohne Ziel) laufen
+**mehr** Trades bis zum Sessionende durch als früher, der Punkt wird also
+eher wichtiger.
+
+**Ehrliche Größenordnung -- klein**: Vom -5,44 % Down-Leg liegen -2,83 %
+erst nach 16:15 ET, also außerhalb unserer Haltedauer. Für uns relevant
+bleibt grob **-2,6 % p.a. Index-Drift**, und das nur für die Teilmenge der
+Trades, die um 15:45 überhaupt noch offen ist. Zusätzlich markiert das Paper
+den Zig-Zag selbst als seinen schwächsten, am stärksten data-gemineten
+Befund (Peak ±10 Min. halbiert ihn; nach Kosten t=0,38; 2018 negativ).
+
+**Empfehlung**: als eigene Ablation in das bestehende Gitter aufnehmen
+(`research_orb_exit_grid.py` um einen Zeit-Exit-Parameter erweitern,
+15:30/15:45/16:00 vergleichen), **nicht** als gesetzte Änderung. Vor jeder
+Umsetzung Phase 6 (Monte-Carlo über Kalendermonate), wie bei Variante C.
+Erster Schritt ist ohnehin billiger: **den Anteil der `session_end`-Exits
+messen.** Liegt er niedrig, erledigt sich die Frage von selbst.
+
+### Befund D -- Geschlossene Tür: kein Vorab-Filter aus Europa/Asien
+
+Die naheliegende Idee "Europas Close oder Asiens Close als Richtungs-Prior
+für den NY-Open nutzen" ist durch Kinoshitas Leg-3-Ergebnis **so sauber
+widerlegt, wie ein Preprint das kann**:
+
+- Boost Europa -> NY: **+0,07 pt** über die Eigenmomentum-Baseline
+  (12 Paare, Spanne -0,36 bis +0,48).
+- Die Null-Parameter-Regel (dem Vorzeichen der europäischen Rendite folgen)
+  erreicht **48,89 % -- unter Zufall, und unter 50 % für jedes Paar.**
+- Gleichzeitig sind alle anderen Legs deutlich lebendig (+10,6 bis +15,0 pt),
+  es ist also kein allgemeiner Abstands-/Zerfallseffekt, sondern **spezifisch
+  der Weg nach New York hinein**.
+- Reproduziert im Energie-Kanal (-0,33 pt).
+
+**Wichtiger Vorbehalt**: Kinoshitas Zielgröße ist der **Opening-Gap**
+(log(Open/Vorclose)), nicht die Richtung des Range-Bruchs danach. Streng
+genommen ist unsere Frage nicht dieselbe. Aber der Mechanismus (NY ist der
+Hub und hat ausländische Information bereits eingepreist) spricht in
+dieselbe Richtung, und Kinoshitas eigener Fallstrick ist eine Warnung: Leg 3
+sah zunächst nach DA~72 % aus und fiel erst bei Kontrolle auf
+NY-Eigenmomentum auf null zusammen. **Wer so einen Filter testet, muss
+gegen Eigenmomentum kontrollieren, sonst misst er eine Scheinkorrelation.**
+
+Einschätzung: **nicht bauen.** Das spart einen Stage-10-Zyklus.
+
+### Befund E -- EU-Feiertage als Mechanismus-Gegenprobe (dünn, aber echt)
+
+Paper 1, Tab. 4: An Tagen, an denen London UND Frankfurt zu sind, die USA
+aber offen, wird die Unsicherheit nachts **nicht** aufgelöst -- die Rendite
+verschiebt sich nach hinten in die US-Stunden (+9,49 % vs. -0,37 % normal).
+Übertragen: **ORB-Tage an EU-Feiertagen sollten überdurchschnittlich sein**,
+weil unser Fenster dann mehr unverarbeitete Information zu verarbeiten hat.
+
+**Zwei ehrliche Dämpfer:**
+1. Diese Differenz hat im Paper nur **t=1,5, ist also nicht signifikant**.
+   Nur der Rückgang IM EU-open ist signifikant (t=-2,2).
+2. **Die Stichprobe reicht bei uns nicht.** 81 Tage in 14,5 Jahren = ~5,6/Jahr,
+   über unser Sample ~55-60 Tage; nach dem long-only+EMA-neutral-Filter
+   (Durchlassquote ~18 %) blieben pro Instrument **etwa 10 Trades**. Als
+   Filter unbrauchbar.
+
+**Trotzdem wertvoll -- als Richtungscheck, nicht als Regel**: auf den
+**rohen** Entries über alle drei Instrumente kommt man auf ~150-170 Trades.
+Das reicht, um zu sehen, ob das Vorzeichen stimmt. Fällt der Test positiv
+aus, stützt er den Mechanismus aus Befund B/Paper 1; fällt er negativ aus,
+ist die Uncertainty-Resolution-Erzählung für unser Fenster wohl falsch.
+Das ist genau die Art Kontrollgruppe, die [[edge-card-workflow]] für
+Phase 6 vorsieht.
+
+### Was NICHT übertragbar ist
+
+- **Delta-VIX / Overnight-Vol als Tagesfilter**: verlockend, weil wir bisher
+  nur den VIX-**Level** per Median-Split getestet haben (Stage 4b, negativ,
+  und erst ab 2022-10-04 Datenlage) -- und Paper 1 zeigt, dass die
+  **Änderung** (t=4,1) viel stärker ist als der Level (t=1,2). ABER: das
+  gilt für die Vorhersage des **EU-open**. Für das einzige US-Session-Muster,
+  das das Paper testet, ist Delta-VIX **insignifikant (t=0,5)** und die
+  gesamte Vorhersagbarkeit konzentriert sich auf die 10 % höchsten VIX-Tage
+  (R2 2,0 % -> 0,2 % ohne sie). Der Transfer ist also **nicht paper-gestützt**,
+  bestenfalls eine Hypothese.
+- **Falls doch getestet**: nach Stage 8/9 **nur als Risiko-Skalierung, nie
+  als binärer Filter** -- jeder binäre Ein-/Ausschlussfilter hat hier auf
+  allen drei Instrumenten verloren, weil der Stichprobenverlust den
+  Qualitätsgewinn überwog. Und Overnight-Realized-Vol ist aus unseren
+  eigenen Index-Bars über die volle Historie berechenbar, braucht also
+  keinen VIX-Datenbezug -- das ist die testbarere Hälfte.
+- **Das Beta-Law** (Paper 3): braucht einen Querschnitt aus Sektoren
+  innerhalb eines Marktes. Wir handeln drei Indizes, keine Sektoren --
+  und das Paper zeigt selbst, dass es **auf Länder-/Indexebene versagt**
+  (n=9, p=0,21). Nicht anwendbar.
+
+### Priorisierung
+
+| # | Was | Aufwand | Erwartung | Phase |
+|---|---|---|---|---|
+| 1 | Anteil `session_end`-Exits messen | sehr klein | entscheidet, ob C überhaupt zählt | Vorfrage |
+| 2 | Gegenprobe Befund B (Momentum-Prior neutral vs. Trend) | klein | erklärt den stärksten Filter | 6 |
+| 3 | Zeit-Exit 15:30/15:45/16:00 als Gitter-Ablation | mittel | klein, aber sauber testbar | 4+6 |
+| 4 | EU-Feiertags-Richtungscheck auf rohen Entries | klein | Mechanismus-Beleg, keine Regel | 6 |
+| -- | Europa/Asien-Richtungsfilter | -- | **verworfen vor dem Bau** (Befund D) | -- |

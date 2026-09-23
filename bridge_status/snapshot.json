@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-09-23T20:31:24",
+  "generated_at": "2026-09-23T21:01:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-23T20:29:07",
+      "last_run": "2026-09-23T20:59:07",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-09-23 20:29:07 2026-09-23 20:29:01,964 INFO run_once: Konto-Equity 2942.35 EUR | Aggregiertes offenes Risiko (ganzes Konto): 320.42 (Deckel dieser Bridge: 882.70, 30%)",
+      "last_equity_line": "2026-09-23 20:59:07 2026-09-23 20:59:01,922 INFO run_once: Konto-Equity 2950.66 EUR | Aggregiertes offenes Risiko (ganzes Konto): 320.29 (Deckel dieser Bridge: 885.20, 30%)",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-23T20:28:16",
+      "last_run": "2026-09-23T20:58:17",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-23 20:28:16 Verbunden: Login 16054, Equity $98,770.68 USD",
+          "last_equity_line": "2026-09-23 20:58:17 Verbunden: Login 16054, Equity $98,835.79 USD",
           "recent_events": [
             "2026-09-23 16:43:17 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe BUY lots=0.05 risk=$150.00 sl=4257.39303 -- placed",
             "2026-09-23 16:28:16 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe BUY lots=0.06 risk=$150.00 sl=4256.72710 -- placed",
@@ -33,7 +33,7 @@
           ]
         },
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-23 20:28:16 Verbunden: Login 504072729, Equity $99,443.84 USD",
+          "last_equity_line": "2026-09-23 20:58:17 Verbunden: Login 504072729, Equity $99,389.26 USD",
           "recent_events": [
             "2026-09-23 17:13:16 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
             "2026-09-23 16:58:16 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
@@ -54,7 +54,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-09-23T20:14:10",
-      "minutes_since_last_run": 17.2,
+      "minutes_since_last_run": 47.2,
       "status": "ok",
       "last_equity_line": "2026-09-23 20:14:10 Verbunden: Login 17764, Equity $99,551.46",
       "last_error_line": "2026-09-18 22:18:33 gold_silver-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",

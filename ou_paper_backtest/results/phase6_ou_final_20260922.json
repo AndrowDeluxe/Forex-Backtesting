@@ -1,0 +1,224 @@
+{
+ "konfiguration": "stop_sigma 8.0, BE aus, kein TP, MA-Ausstieg, max_hold 10, Einstieg Folgetags-Eroeffnung, Risiko 1%/Trade",
+ "FK (TTP) | p6_2_monte_carlo_OOS": {
+  "n_trades": 421,
+  "n_sims": 5000,
+  "block": 10,
+  "endergebnis_median_pct": 3.36,
+  "endergebnis_p05_pct": -8.7,
+  "endergebnis_p95_pct": 16.61,
+  "anteil_pfade_negativ": 0.329,
+  "maxdd_median_pct": -6.47,
+  "maxdd_p95_pct": -13.19,
+  "maxdd_worst_pct": -23.8,
+  "P_dd_ueber_4pct": 0.88,
+  "P_dd_ueber_7pct": 0.429,
+  "P_dd_ueber_10pct": 0.161
+ },
+ "FK (TTP) | p6_4_jahre": {
+  "2018": {
+   "n": 109,
+   "avg_R": -0.054,
+   "sum_R": -5.8913
+  },
+  "2019": {
+   "n": 110,
+   "avg_R": 0.0599,
+   "sum_R": 6.5842
+  },
+  "2020": {
+   "n": 83,
+   "avg_R": -0.0273,
+   "sum_R": -2.2637
+  },
+  "2021": {
+   "n": 129,
+   "avg_R": 0.0489,
+   "sum_R": 6.3113
+  },
+  "2022": {
+   "n": 27,
+   "avg_R": -0.1111,
+   "sum_R": -2.9985
+  },
+  "2023": {
+   "n": 98,
+   "avg_R": -0.0326,
+   "sum_R": -3.1917
+  },
+  "2024": {
+   "n": 126,
+   "avg_R": -0.0145,
+   "sum_R": -1.831
+  },
+  "2025": {
+   "n": 108,
+   "avg_R": 0.0529,
+   "sum_R": 5.7081
+  },
+  "2026": {
+   "n": 89,
+   "avg_R": 0.0305,
+   "sum_R": 2.7133
+  }
+ },
+ "FK (TTP) | p6_7_hebel": {
+  "stopdistanz_median_pct": 16.88,
+  "stopdistanz_p05_pct": 7.43,
+  "nominal_median_x_konto": 0.06,
+  "nominal_p95_x_konto": 0.13,
+  "anteil_stop_unter_5pct": 0.008
+ },
+ "FK (TTP) | p6_8_stop_vs_kosten": {
+  "roundtrip_bps_median": 45.8,
+  "stop_in_vielfachen_der_kosten_median": 40.7,
+  "anteil_unter_3x": 0.0,
+  "avgR_unter_3x": null,
+  "n_unter_3x": 0
+ },
+ "EK (Tickmill) | p6_2_monte_carlo_OOS": {
+  "n_trades": 421,
+  "n_sims": 5000,
+  "block": 10,
+  "endergebnis_median_pct": 5.42,
+  "endergebnis_p05_pct": -6.96,
+  "endergebnis_p95_pct": 18.42,
+  "anteil_pfade_negativ": 0.245,
+  "maxdd_median_pct": -5.98,
+  "maxdd_p95_pct": -12.11,
+  "maxdd_worst_pct": -25.59,
+  "P_dd_ueber_4pct": 0.846,
+  "P_dd_ueber_7pct": 0.363,
+  "P_dd_ueber_10pct": 0.119
+ },
+ "EK (Tickmill) | p6_4_jahre": {
+  "2018": {
+   "n": 109,
+   "avg_R": -0.0491,
+   "sum_R": -5.3562
+  },
+  "2019": {
+   "n": 110,
+   "avg_R": 0.0654,
+   "sum_R": 7.1889
+  },
+  "2020": {
+   "n": 83,
+   "avg_R": -0.0224,
+   "sum_R": -1.861
+  },
+  "2021": {
+   "n": 129,
+   "avg_R": 0.0541,
+   "sum_R": 6.9841
+  },
+  "2022": {
+   "n": 27,
+   "avg_R": -0.1073,
+   "sum_R": -2.8969
+  },
+  "2023": {
+   "n": 98,
+   "avg_R": -0.0276,
+   "sum_R": -2.7041
+  },
+  "2024": {
+   "n": 126,
+   "avg_R": -0.0102,
+   "sum_R": -1.2796
+  },
+  "2025": {
+   "n": 108,
+   "avg_R": 0.0578,
+   "sum_R": 6.2416
+  },
+  "2026": {
+   "n": 89,
+   "avg_R": 0.0348,
+   "sum_R": 3.0992
+  }
+ },
+ "EK (Tickmill) | p6_7_hebel": {
+  "stopdistanz_median_pct": 16.88,
+  "stopdistanz_p05_pct": 7.43,
+  "nominal_median_x_konto": 0.06,
+  "nominal_p95_x_konto": 0.13,
+  "anteil_stop_unter_5pct": 0.008
+ },
+ "EK (Tickmill) | p6_8_stop_vs_kosten": {
+  "roundtrip_bps_median": 38.4,
+  "stop_in_vielfachen_der_kosten_median": 49.8,
+  "anteil_unter_3x": 0.0,
+  "avgR_unter_3x": null,
+  "n_unter_3x": 0
+ },
+ "p6_3_spread_sweep": [
+  {
+   "entry_bps": 0,
+   "swap_bps_day": 1.71,
+   "avg_R": 0.0171
+  },
+  {
+   "entry_bps": 8.45,
+   "swap_bps_day": 1.71,
+   "avg_R": 0.0114
+  },
+  {
+   "entry_bps": 16.9,
+   "swap_bps_day": 1.71,
+   "avg_R": 0.0058
+  },
+  {
+   "entry_bps": 25,
+   "swap_bps_day": 1.71,
+   "avg_R": 0.0006
+  },
+  {
+   "entry_bps": 34,
+   "swap_bps_day": 1.71,
+   "avg_R": -0.0052
+  },
+  {
+   "entry_bps": 50,
+   "swap_bps_day": 1.71,
+   "avg_R": -0.0152
+  },
+  {
+   "entry_bps": 70,
+   "swap_bps_day": 1.71,
+   "avg_R": -0.0274
+  }
+ ],
+ "p6_3_swap_sweep": [
+  {
+   "entry_bps": 16.9,
+   "swap_bps_day": 0,
+   "avg_R": 0.0185
+  },
+  {
+   "entry_bps": 16.9,
+   "swap_bps_day": 1.71,
+   "avg_R": 0.0058
+  },
+  {
+   "entry_bps": 16.9,
+   "swap_bps_day": 2.5,
+   "avg_R": 0.0
+  },
+  {
+   "entry_bps": 16.9,
+   "swap_bps_day": 3.5,
+   "avg_R": -0.0074
+  },
+  {
+   "entry_bps": 16.9,
+   "swap_bps_day": 5.0,
+   "avg_R": -0.0185
+  },
+  {
+   "entry_bps": 16.9,
+   "swap_bps_day": 7.0,
+   "avg_R": -0.0332
+  }
+ ]
+}

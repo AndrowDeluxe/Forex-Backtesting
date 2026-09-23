@@ -202,10 +202,17 @@ keine Planung (dafür ist `DASHBOARD.md`).
   +325,26 (der CF-Exit um 22:13 Serverzeit lag jenseits der alten Grenze),
   Zwei-Tage-Summe +601,49 -> +605,89 USD. Alle Aussagen dieser Auswertung
   bleiben unveraendert.
-  **Nebenbefund:** `mt5_pull.py` und `soll_ist.py` sind **nicht git-getrackt**
-  (`??` im Status, nicht per `.gitignore` ausgeschlossen) -- kein Backup, keine
-  Historie, gleiches Muster wie `data_lake/` am 06.09. In DASHBOARD.md zur
-  Freigabe gelegt, nicht eigenmaechtig committet.
+  **Nebenbefund, inzwischen erledigt:** `mt5_pull.py` und `soll_ist.py` waren
+  **nicht git-getrackt** (`??` im Status, nicht per `.gitignore`
+  ausgeschlossen) -- kein Backup, keine Historie, gleiches Muster wie
+  `data_lake/` am 06.09. Nach Freigabe des Nutzers wollte ich sie committen;
+  dabei stellte sich heraus, dass eine **parallele Session sie 22:49:45 bereits
+  mit eingesammelt hatte** -- sie stecken in `b7b1701` ("Research-Artefakte +
+  Scanner-Ausgabe nach dem OU-Umbau"), inkl. des Fenster-Fix, und sind gepusht.
+  **Merke fuer die Suche:** der Commit-Titel nennt die beiden Module NICHT,
+  ihre Herkunft ist nur ueber `git log -- scripts/reports/mt5_pull.py`
+  auffindbar. Nicht nachtraeglich umgeschrieben -- der Commit ist bereits auf
+  `origin/main`, und in diesem Repo laufen 11 automatische Push-Tasks.
 
 - **2026-09-23** [OU-Modell / Funded + EK] **Logik D + Signalseite UMGESETZT -- das Bein laeuft jetzt nach der validierten Konfiguration.** Nutzerfreigabe nach `projects/ou-modell-kostenvalidierung.md`. **Neu:** `stop_sigma` 3 -> 8, Break-Even-Stop aus, **kein TP mehr** (auch nicht fuer S&P), Ausstieg beim **Ruecklauf ans MA20**, `BB_K` 2,0 -> 2,25, `max_hold` 10 unveraendert. **Ergebnis OOS:** -0,052R (PF 0,83) -> **+0,008R (PF 1,08)** auf TTP-Kosten, -0,028R -> **+0,013R (PF 1,13)** auf Tickmill; schlechtester Trade -2,54R -> -0,90R (die Position ist bei gleichem Dollar-Risiko nur noch 37,5 % so gross). Phase 6: P(DD>7 %) = 0,00 %, negative MC-Pfade 30 % -> 18 %. **Ehrliche Lesart: von "verliert zuverlaessig" auf "verdient wenig" -- kein Edge-Nachweis, 2023 bleibt in jeder Variante negativ.**
   **Geaendert:** `ou_paper_backtest/scanner.py` (Stop 8 Sigma, kein TP, `BB_K` lokal 2,25 statt der globalen Konstante -- die wirkt auf jeden Paket-Nutzer; neue Spalte `ma20` als Ausstiegsschwelle fuer die Bridges), `challenge_portfolio/paper_bot.py` (Funded, live: Sigma/BE/rr_ratio + `ma_exit=True`, `k=2.25`), `EK-Portfolio-Bridge/config.py` (BE-Trigger 0) und `EK-Portfolio-Bridge/legs/ou_modell/` (`ma20_by_ticker()` im signal_source; Executor: Break-Even-Zweig entfernt, MA20-Ausstieg neu, **und `max_hold` schliesst jetzt wirklich** statt nur CRITICAL zu loggen -- am 23.09. musste der Nutzer 9 ueberfaellige Positionen von Hand schliessen).

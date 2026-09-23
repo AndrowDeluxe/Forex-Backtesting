@@ -56,18 +56,6 @@ Bedarf vor generischem Aufräumen.
   in `_record_entry()` speichern (klein) oder den toten Marktorder-Pfad
   ganz rausnehmen (sauberer)?
 
-- **🔴 `mt5_pull.py` und `soll_ist.py` sind NICHT in git -- soll ich sie
-  committen?** (Fund 2026-09-23 beim Fenster-Fix.) Beide Module tragen den
-  Weekly-Report und den Soll/Ist-Vergleich gegen die Echtgeld-Konten, beide
-  stehen als `??` im Status und sind **nicht** per `.gitignore` ausgeschlossen
-  -- sie wurden schlicht nie committet. Es gibt also keine Historie und keinen
-  Stand, auf den man zurueck koennte; der heutige Fenster-Fix liegt aktuell nur
-  auf der Platte. Die Auto-Tasks committen nur ihre eigenen Dateien, von selbst
-  wird das nie eingesammelt. **Gleiches Muster wie `data_lake/` am 06.09.**
-  **Offen fuer dich:** kurze Freigabe, dann committe ich beide (Zugangsdaten
-  sind nicht drin -- die kommen zur Laufzeit aus den Bridge-configs ausserhalb
-  des Repos).
-
 - **E6 laeuft mit (Nutzerentscheid) -- Auswertung per
   `scripts/ctnl_shadow_eval.py`.** Der Struktur-gegen-Regime-Test ist
   gerechnet: die Short-Schwaeche ist ein **Regime**-Effekt (fallende Jahre

@@ -235,6 +235,7 @@ def simulate_bracket_portfolio(
     portfolio_profit_lock_n_best: int | None = None,
     cost_bps: float = 0.0,
     include_open_positions: bool = False,
+    ma_exit: bool = False,
 ) -> tuple[pd.Series, list[dict]]:
     """Fixed-CRV bracket exit -- mirrors the live OU-Modell-MT5-Bridge bot's actual
     mechanism (not the paper's own "exit at MA" rule used by simulate_portfolio):
@@ -246,7 +247,19 @@ def simulate_bracket_portfolio(
     hard forced exit here for backtest tractability -- live treats it as a
     warn-only signal (check_max_holding_period()), so this is slightly more
     conservative than the real bot. `rr_ratio=None` disables the TP entirely
-    (only SL/breakeven/max_holding decide the exit). `trend_filter_window`, if
+    (only SL/breakeven/max_holding decide the exit).
+
+    `ma_exit=True` (2026-09-23) adds the paper's ORIGINAL exit back on top: close
+    once the price has returned to the moving average, i.e. once the mean
+    reversion the entry bets on has actually happened. It ranks after SL/TP and
+    before max_hold. Same rule as simulate_portfolio's "mean_revert", but usable
+    together with regime_filter/rr_ratio, which that function does not offer.
+    Why it matters (measured, knowledge/projects/ou-modell-kostenvalidierung.md):
+    the entry sits k*sigma BELOW the mean while a 1.5R TP sits 4.5 sigma ABOVE
+    it, so the TP fires in only 4.8 % of trades -- "MA exit OR TP 1.5R" is
+    numerically identical to "MA exit alone". The MA exit also shortens the
+    average hold by ~1.5 days, which on stock CFDs is a direct swap saving.
+    Default False, so no existing caller changes behavior. `trend_filter_window`, if
     set (e.g. 200), is a PER-STOCK pre-entry filter: a long signal is only taken
     when that stock's own price is above its N-day SMA -- found (2026-08-05) to
     hurt more than it helps, since individual names routinely dip below their own
@@ -349,11 +362,15 @@ def simulate_bracket_portfolio(
 
             exit_now, reason = False, None
             has_tp = pos.tp_price is not None
+            ma_t = data["ma"].loc[date] if ma_exit else None
+            ma_reached = ma_exit and pd.notna(ma_t)
             if pos.direction == 1:
                 if price_t <= pos.stop_price:
                     exit_now, reason = True, ("breakeven" if pos.be_moved else "stop_loss")
                 elif has_tp and price_t >= pos.tp_price:
                     exit_now, reason = True, "take_profit"
+                elif ma_reached and price_t >= ma_t:
+                    exit_now, reason = True, "mean_revert"
                 elif pos.days_held >= max_hold:
                     exit_now, reason = True, "max_holding"
             else:
@@ -361,6 +378,8 @@ def simulate_bracket_portfolio(
                     exit_now, reason = True, ("breakeven" if pos.be_moved else "stop_loss")
                 elif has_tp and price_t <= pos.tp_price:
                     exit_now, reason = True, "take_profit"
+                elif ma_reached and price_t <= ma_t:
+                    exit_now, reason = True, "mean_revert"
                 elif pos.days_held >= max_hold:
                     exit_now, reason = True, "max_holding"
 

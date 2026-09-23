@@ -72,17 +72,50 @@ def load_universe():
     return ou_config, ou_portfolio, uni
 
 
-def download(tickers):
-    raw = yf.download(sorted(set(tickers)), start=DL_START, end="2026-09-17", auto_adjust=True,
-                      progress=False, group_by="ticker", threads=True)
-    ohlc = {}
-    for t in set(tickers):
-        try:
-            d = raw[t][["Open", "High", "Low", "Close"]].dropna()
-        except KeyError:
-            continue
-        if len(d) > 300:
-            ohlc[t] = d
+CACHE_DIR = REPO / "ou_paper_backtest" / "data_cache" / "ou_research_ohlc"
+
+
+def download(tickers, refresh=False):
+    """Tages-OHLC je Ticker, mit Plattencache.
+
+    Der Cache ist am 2026-09-23 dazugekommen und loest zwei GEMESSENE Probleme:
+    (a) yfinance liefert bei vielen Abrufen in kurzer Folge einzelne Symbole gar
+        nicht mehr -- in einem Lauf blieben 58 von 66 leer. Ein Ergebnis, das
+        danach auf einer Teilmenge des Universums rechnet, sieht aus wie ein
+        normales Ergebnis. Jetzt wird gemeldet, was fehlt.
+    (b) `auto_adjust` bereinigt rueckwirkend um Dividenden, wodurch derselbe
+        Lauf an zwei Tagen um ~0,002R auseinanderlaeuft (dokumentiert in
+        knowledge/projects/ou-modell-kostenvalidierung.md). Mit Cache rechnet
+        jede Verifikation auf exakt denselben Kursen.
+
+    `refresh=True` holt neu und ueberschreibt den Cache."""
+    tickers = sorted(set(tickers))
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    ohlc, missing = {}, []
+    for t in tickers:
+        p = CACHE_DIR / f"{t}.parquet"
+        if p.exists() and not refresh:
+            ohlc[t] = pd.read_parquet(p)
+        else:
+            missing.append(t)
+
+    if missing:
+        raw = yf.download(missing, start=DL_START, end="2026-09-17", auto_adjust=True,
+                          progress=False, group_by="ticker", threads=True)
+        for t in missing:
+            try:
+                d = (raw[t] if len(missing) > 1 else raw)[["Open", "High", "Low", "Close"]].dropna()
+            except KeyError:
+                continue
+            if len(d) > 300:
+                d.to_parquet(CACHE_DIR / f"{t}.parquet")
+                ohlc[t] = d
+
+    fehlend = [t for t in tickers if t not in ohlc]
+    if fehlend:
+        print(f"WARNUNG: {len(fehlend)} von {len(tickers)} Tickern ohne Kurse "
+              f"(weder Cache noch Abruf): {', '.join(fehlend[:8])}"
+              f"{' ...' if len(fehlend) > 8 else ''}", flush=True)
     return ohlc
 
 

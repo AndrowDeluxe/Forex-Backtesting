@@ -1,0 +1,64 @@
+{
+ "account": {
+  "login": 17764,
+  "equity": 99844.41,
+  "balance": 99996.25,
+  "currency": "USD",
+  "margin": 1736.37,
+  "server": "BeyondIQCapital-Server",
+  "name": "IQ - André Gierhold IQIF100K-144048 Earning"
+ },
+ "deals": [
+  {
+   "ticket": 1242927,
+   "order": 1491080,
+   "time": "2026-09-11T15:31:46+00:00",
+   "type": 0,
+   "entry": 0,
+   "symbol": "EURUSD.gbe",
+   "volume": 0.75,
+   "price": 1.15758,
+   "profit": 0.0,
+   "commission": -3.75,
+   "swap": 0.0,
+   "comment": "",
+   "position_id": 1491080
+  }
+ ],
+ "positions": [
+  {
+   "ticket": 1491080,
+   "symbol": "EURUSD.gbe",
+   "volume": 0.75,
+   "type": 0,
+   "price_open": 1.15758,
+   "sl": 1.1543700000000001,
+   "tp": 1.17179,
+   "profit": -145.5,
+   "comment": "",
+   "time": "2026-09-11T15:31:46+00:00"
+  }
+ ],
+ "orders": [
+  {
+   "ticket": 1490353,
+   "symbol": "EURUSD.gbe",
+   "volume_initial": 0.75,
+   "price_open": 1.15665,
+   "sl": 1.148,
+   "state": 2,
+   "comment": "",
+   "time_setup": "2026-09-11T15:26:32+00:00"
+  },
+  {
+   "ticket": 1491080,
+   "symbol": "EURUSD.gbe",
+   "volume_initial": 0.75,
+   "price_open": 0.0,
+   "sl": 0.0,
+   "state": 4,
+   "comment": "",
+   "time_setup": "2026-09-11T15:31:46+00:00"
+  }
+ ]
+}

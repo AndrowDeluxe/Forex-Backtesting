@@ -1,2 +1,2 @@
-market,ticker,scan_date,close,lower_band,entry,sl,tp,tp_price,risk_pct_price,position_size_pct,regime_ok,tradeable,position_size_concentrated_pct,scanned_at
-"S&P 500 (volles Universum, 420 Ticker)",JPM,2026-09-22,340.0,344.38,340.0,326.06,360.92,360.92,4.1,20.0,False,False,12.5,2026-09-23T21:36:00
+market,ticker,scan_date,close,lower_band,entry,sl,tp,tp_price,risk_pct_price,position_size_pct,ma20,regime_ok,tradeable,position_size_concentrated_pct,scanned_at
+"S&P 500 (volles Universum, 420 Ticker)",JPM,2026-09-22,340.0,343.22,340.0,302.82,kein TP (finale Config),0.0,10.94,9.14,353.67,False,False,12.5,2026-09-23T22:20:58

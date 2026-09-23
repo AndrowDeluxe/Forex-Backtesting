@@ -514,13 +514,24 @@ def _scan_ctnl(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") 
 # positions()) -- die Bridge liest diese Werte jetzt direkt aus diesem Dict, Single Source
 # of Truth. Diese Datei bleibt damit auch fuer die reine PAPIER-Simulation (falls je
 # eigenstaendig gescanned) konsistent mit dem, was die Bridge nun wirklich ausfuehrt.
+# VARIANTE C (2026-09-21, Nutzerfreigabe; am 2026-09-23 nach einem
+# git-reset-Verlust erneut gesetzt) -- Teilausstieg und Break-Even neu bewertet
+# mit REALEN Kosten und dem Stop-Order-Einstieg. Details:
+# knowledge/projects/orb-exit-logik-neubewertung.md
+#   Teilausstiege kosten Edge, je frueher desto mehr; Break-Even senkt zwar den
+#   Drawdown, kostet aber mehr Ertrag als er spart -- ABER nur als Paket
+#   abschaltbar: NUR den BE zu entfernen waere schlechter als vorher (-10 %).
+#   US30 braucht ein Ziel (ohne kippt es OOS auf -0,101R), NASDAQ ist ohne am
+#   besten. Stop bleibt 0,6 ATR: das Gitter mag 0,4 leicht lieber, aber dort
+#   frisst die live gemessene Einstiegs-Slippage >15 % des Risikos.
+# Portfolio ueber alle 3 Beine, 2019-2026, Monte Carlo 3.000 Pfade:
+#   vorher  Ø R +0,198 | OOS +0,100 | Tail-DD -67,4R | Summe +463R
+#   jetzt   Ø R +0,337 | OOS +0,236 | Tail-DD -67,7R | Summe +789R (+71 %)
+# Risiko je Trade bleibt UNVERAENDERT.
 ORB_EXIT_CFG_BY_INSTRUMENT = {
-    "SP500": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0,
-                  partial_exit_r=2.0, partial_exit_fraction=0.5, move_stop_to_be_after_partial=True),
-    "US30": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=4.0,
-                 partial_exit_r=2.0, partial_exit_fraction=0.5, move_stop_to_be_after_partial=True),
-    "NASDAQ": dict(stop_atr_mult=0.6, target_mode=None,
-                   partial_exit_r=1.5, partial_exit_fraction=0.5, move_stop_to_be_after_partial=True),
+    "SP500": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=6.0, partial_exit_r=None, partial_exit_fraction=0.0, move_stop_to_be_after_partial=False),
+    "US30": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=6.0, partial_exit_r=3.0, partial_exit_fraction=0.5, move_stop_to_be_after_partial=False),
+    "NASDAQ": dict(stop_atr_mult=0.6, target_mode=None, target_r_mult=None, partial_exit_r=3.0, partial_exit_fraction=0.5, move_stop_to_be_after_partial=False),
 }
 ORB_HISTORY_LOOKBACK_DAYS = 500  # EMA-Ribbon-Bias (4H/1D/1W) braucht Monate an Vorlauf
 

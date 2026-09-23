@@ -35,6 +35,18 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **🔴 EK-Hebel: welcher Zeithorizont soll gelten?** (2026-09-23, komplette
+  Nachrechnung, nichts geaendert). Die 7,8 % der Kalibrierung und meine 33,9 %
+  sind beide richtig -- verschiedene Horizonte: 40 % Drawdown reissen binnen
+  1 Jahr 3,6 %, binnen 2 Jahren 7,8-9,8 % (= die dokumentierte Zahl), ueber die
+  volle 6-Jahres-Historie 39,3 %. **Faehrst du EK ueber Jahre, ist die hohe
+  Zahl die relevante** -- ein 20-%-Rueckgang ist dann praktisch sicher
+  (P = 100 %). Staffel: 100 % Hebel -> CAGR 228 %, P(DD>40 %) 39,3 % | 85 % ->
+  179 %, 17,9 % | **70 % -> 136 %, 4,6 %** | 60 % -> 111 %, 1,1 %.
+  **Zusatzbefund:** `ou_modell` laeuft mit Faktor 4,40x statt dokumentierter
+  2,20x -- soll ich es zurueckziehen? Details:
+  [[ek-risiko-kalibrierung-audit]].
+
 - **🔴 ttp1 (Echtgeld, TTP Konto 1) darf seit 2026-09-18 09:58 nicht mehr
   handeln -- bitte beim Anbieter klaeren.** `trade_allowed=False` vom Server,
   9 abgelehnte Entries (`10026 "AutoTrading disabled by server"`). Keine

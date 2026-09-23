@@ -1,0 +1,173 @@
+{
+  "start": "2023-01-01",
+  "end": "2026-09-20",
+  "szenarien": {
+    "angenommen_8bps": {
+      "spread_bps": 8.0,
+      "beine": {
+        "ctnl_continuation": {
+          "probe4": {
+            "trades": 173,
+            "kosten_median_preis": 1.9220188848000002,
+            "stopdistanz_median_preis": 4.08253668628322,
+            "stopdistanz_in_kosten_median": 2.0744898413270167,
+            "anteil_eng": 0.7572254335260116,
+            "n_eng": 131,
+            "avg_r_eng": -0.3121454631113496,
+            "avg_r_weit": 0.3207360849514502
+          },
+          "probe2_3": {
+            "0": {
+              "signale": 173,
+              "handelbar": 173,
+              "unhandelbar_kurs_jenseits_stop": 0,
+              "sl_bereits_beruehrt": 26,
+              "avg_r": -0.1584979196510072,
+              "summe_r": -27.42014009962425,
+              "trefferquote": 0.31213872832369943,
+              "profit_factor": 0.8452568480762653,
+              "hebel_median": 1.0,
+              "hebel_p90": 1.0000000000001075,
+              "hebel_max": 1.000000000000208
+            },
+            "1": {
+              "signale": 173,
+              "handelbar": 172,
+              "unhandelbar_kurs_jenseits_stop": 1,
+              "sl_bereits_beruehrt": 43,
+              "avg_r": -0.7183202992255754,
+              "summe_r": -123.55109146679897,
+              "trefferquote": 0.29069767441860467,
+              "profit_factor": 0.4839503885406569,
+              "hebel_median": 0.9745153652360254,
+              "hebel_p90": 2.2303354351298808,
+              "hebel_max": 49.72442706206245
+            },
+            "2": {
+              "signale": 173,
+              "handelbar": 164,
+              "unhandelbar_kurs_jenseits_stop": 9,
+              "sl_bereits_beruehrt": 56,
+              "avg_r": -0.7240414248238609,
+              "summe_r": -118.74279367111319,
+              "trefferquote": 0.3048780487804878,
+              "profit_factor": 0.4540038639195112,
+              "hebel_median": 0.9569459827633678,
+              "hebel_p90": 2.12463701904536,
+              "hebel_max": 50.65632483669475
+            },
+            "3": {
+              "signale": 173,
+              "handelbar": 158,
+              "unhandelbar_kurs_jenseits_stop": 15,
+              "sl_bereits_beruehrt": 65,
+              "avg_r": -0.5803330412329399,
+              "summe_r": -91.6926205148045,
+              "trefferquote": 0.31645569620253167,
+              "profit_factor": 0.5124237115456872,
+              "hebel_median": 0.9310934285496164,
+              "hebel_p90": 3.2070283982680774,
+              "hebel_max": 8.842225774979827
+            },
+            "4": {
+              "signale": 173,
+              "handelbar": 156,
+              "unhandelbar_kurs_jenseits_stop": 17,
+              "sl_bereits_beruehrt": 72,
+              "avg_r": -0.8307441230171818,
+              "summe_r": -129.59608319068036,
+              "trefferquote": 0.30128205128205127,
+              "profit_factor": 0.3874679483363519,
+              "hebel_median": 0.8599546853802155,
+              "hebel_p90": 4.355059748119928,
+              "hebel_max": 26.364842869451042
+            }
+          },
+          "lag_kurve_monoton": false,
+          "bar_minuten": 5
+        },
+        "ctnl_reversal": {
+          "probe4": {
+            "trades": 431,
+            "kosten_median_preis": 2.0872567632,
+            "stopdistanz_median_preis": 12.421791157112693,
+            "stopdistanz_in_kosten_median": 6.313722437926098,
+            "anteil_eng": 0.016241299303944315,
+            "n_eng": 7,
+            "avg_r_eng": -1.2811098203279092,
+            "avg_r_weit": 0.05596485695184731
+          },
+          "probe2_3": {
+            "0": {
+              "signale": 431,
+              "handelbar": 431,
+              "unhandelbar_kurs_jenseits_stop": 0,
+              "sl_bereits_beruehrt": 9,
+              "avg_r": 0.034249026926429546,
+              "summe_r": 14.761330605291135,
+              "trefferquote": 0.2853828306264501,
+              "profit_factor": 1.0380232525289625,
+              "hebel_median": 1.0,
+              "hebel_p90": 1.0000000000000346,
+              "hebel_max": 1.0000000000000533
+            },
+            "1": {
+              "signale": 431,
+              "handelbar": 426,
+              "unhandelbar_kurs_jenseits_stop": 5,
+              "sl_bereits_beruehrt": 20,
+              "avg_r": 0.0955152344349291,
+              "summe_r": 40.6894898692798,
+              "trefferquote": 0.2793427230046948,
+              "profit_factor": 1.1007091350340488,
+              "hebel_median": 1.05476242997327,
+              "hebel_p90": 1.6725106518018031,
+              "hebel_max": 15.497686319117427
+            },
+            "2": {
+              "signale": 431,
+              "handelbar": 423,
+              "unhandelbar_kurs_jenseits_stop": 8,
+              "sl_bereits_beruehrt": 30,
+              "avg_r": -0.08460606457494804,
+              "summe_r": -35.78836531520302,
+              "trefferquote": 0.27423167848699764,
+              "profit_factor": 0.9138278165316129,
+              "hebel_median": 1.0288056793033789,
+              "hebel_p90": 1.9935044589024011,
+              "hebel_max": 12.231091357790996
+            },
+            "3": {
+              "signale": 431,
+              "handelbar": 414,
+              "unhandelbar_kurs_jenseits_stop": 17,
+              "sl_bereits_beruehrt": 41,
+              "avg_r": -0.1361048778948266,
+              "summe_r": -56.34741944845821,
+              "trefferquote": 0.2753623188405797,
+              "profit_factor": 0.8624667847783701,
+              "hebel_median": 0.9957073053699212,
+              "hebel_p90": 2.1545043297077466,
+              "hebel_max": 155.0192770264661
+            },
+            "4": {
+              "signale": 431,
+              "handelbar": 414,
+              "unhandelbar_kurs_jenseits_stop": 17,
+              "sl_bereits_beruehrt": 50,
+              "avg_r": -0.22559779795115192,
+              "summe_r": -93.3974883517769,
+              "trefferquote": 0.28019323671497587,
+              "profit_factor": 0.7791528101822898,
+              "hebel_median": 0.9985466225021746,
+              "hebel_p90": 2.3131497210517176,
+              "hebel_max": 29.191184413092596
+            }
+          },
+          "lag_kurve_monoton": false,
+          "bar_minuten": 15
+        }
+      }
+    }
+  }
+}

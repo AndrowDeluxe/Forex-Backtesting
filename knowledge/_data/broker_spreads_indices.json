@@ -1,0 +1,1519 @@
+{
+  "measured_at": "2026-09-13T14:50:33",
+  "window_berlin": "15.5:00-17.5",
+  "lookback_days": 30,
+  "results": [
+    {
+      "portfolio": "Funded",
+      "account": "Funded Portfolio - TTP (Konto 2, Demo)",
+      "broker": "TTPMarkets-Server",
+      "symbol": "US500",
+      "spread": {
+        "days_with_data": 21,
+        "first_day": "2026-08-14",
+        "last_day": "2026-09-11",
+        "server_utc_offset_h": 3.0,
+        "pip_size": 0.01,
+        "per_day": [
+          {
+            "day": "2026-09-11",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-10",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-09",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-08",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-07",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-04",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-03",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-02",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-01",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-31",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-28",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-27",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-26",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-25",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-24",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-21",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-20",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-19",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-18",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-17",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-14",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          }
+        ],
+        "m1_samples": 2541,
+        "m1_median_pips": 64.0,
+        "m1_p75_pips": 64.0,
+        "m1_p90_pips": 64.0,
+        "m1_max_pips": 64.0,
+        "tick_samples": 295993,
+        "tick_median_pips": 65.99999999998545,
+        "tick_p75_pips": 67.00000000000728,
+        "tick_p90_pips": 67.99999999993815,
+        "tick_max_pips": 68.0000000000291,
+        "m1_median_bps": 0.8360570504429796,
+        "m1_p75_bps": 0.8360570504429796,
+        "m1_p90_bps": 0.8360570504429796,
+        "tick_median_bps": 0.8621838332691327,
+        "tick_p75_bps": 0.8752472246825893,
+        "tick_p90_bps": 0.888310616094858
+      },
+      "slippage": {
+        "deals": 0,
+        "note": "keine US500-Deals mit zuordenbarer Order"
+      }
+    },
+    {
+      "portfolio": "Funded",
+      "account": "Funded Portfolio - TTP (Konto 2, Demo)",
+      "broker": "TTPMarkets-Server",
+      "symbol": "US30",
+      "spread": {
+        "days_with_data": 21,
+        "first_day": "2026-08-14",
+        "last_day": "2026-09-11",
+        "server_utc_offset_h": 3.0,
+        "pip_size": 0.01,
+        "per_day": [
+          {
+            "day": "2026-09-11",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-10",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-09",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-08",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-07",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-04",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-03",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-02",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-01",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-31",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-28",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-27",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-26",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-25",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-24",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-21",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-20",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-19",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-18",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-17",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-14",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          }
+        ],
+        "m1_samples": 2541,
+        "m1_median_pips": 250.0,
+        "m1_p75_pips": 250.0,
+        "m1_p90_pips": 250.0,
+        "m1_max_pips": 251.0,
+        "tick_samples": 229770,
+        "tick_median_pips": 255.00000000029104,
+        "tick_p75_pips": 256.9999999999709,
+        "tick_p90_pips": 258.0000000001746,
+        "tick_max_pips": 260.0000000005821,
+        "m1_median_bps": 0.47570534734672487,
+        "m1_p75_bps": 0.47570534734672487,
+        "m1_p90_bps": 0.47570534734672487,
+        "tick_median_bps": 0.48521945429421315,
+        "tick_p75_bps": 0.48902509707237785,
+        "tick_p90_bps": 0.49092791846215234
+      },
+      "slippage": {
+        "deals": 1,
+        "detail": [
+          {
+            "position": 18235530,
+            "side": "entry",
+            "time": "2026-09-02T19:21:57",
+            "reference": 53149.16,
+            "fill": 53150.3,
+            "slippage_pips": 113.99999999994179,
+            "volume": 0.42,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_us30"
+          }
+        ],
+        "entry_n": 1,
+        "entry_median_pips": 113.99999999994179,
+        "entry_mean_pips": 113.99999999994179,
+        "entry_max_pips": 113.99999999994179,
+        "roundtrip_median_pips": 113.99999999994179,
+        "commission_positions": 1,
+        "commission_usd_per_lot_roundtrip": 0.0,
+        "commission_pips_roundtrip": 0.0
+      }
+    },
+    {
+      "portfolio": "Funded",
+      "account": "Funded Portfolio - TTP (Konto 2, Demo)",
+      "broker": "TTPMarkets-Server",
+      "symbol": "USTEC",
+      "spread": {
+        "days_with_data": 21,
+        "first_day": "2026-08-14",
+        "last_day": "2026-09-11",
+        "server_utc_offset_h": 3.0,
+        "pip_size": 0.01,
+        "per_day": [
+          {
+            "day": "2026-09-11",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-10",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-09",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-08",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-07",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-04",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-03",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-02",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-01",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-31",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-28",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-27",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-26",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-25",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-24",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-21",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-20",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-19",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-18",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-17",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-14",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          }
+        ],
+        "m1_samples": 2541,
+        "m1_median_pips": 160.0,
+        "m1_p75_pips": 160.0,
+        "m1_p90_pips": 160.0,
+        "m1_max_pips": 160.0,
+        "tick_samples": 397285,
+        "tick_median_pips": 165.00000000014552,
+        "tick_p75_pips": 166.99999999982538,
+        "tick_p90_pips": 168.0000000000291,
+        "tick_max_pips": 187.99999999973807,
+        "m1_median_bps": 0.5447937972502214,
+        "m1_p75_bps": 0.5447937972502214,
+        "m1_p90_bps": 0.5447937972502214,
+        "tick_median_bps": 0.5618186034147863,
+        "tick_p75_bps": 0.568628525879324,
+        "tick_p90_bps": 0.5720334871128315
+      },
+      "slippage": {
+        "deals": 0,
+        "note": "keine USTEC-Deals mit zuordenbarer Order"
+      }
+    },
+    {
+      "portfolio": "Funded",
+      "account": "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835)",
+      "broker": "BeyondIQCapital-Server",
+      "symbol": "SPX500.gbe",
+      "spread": {
+        "days_with_data": 21,
+        "first_day": "2026-08-14",
+        "last_day": "2026-09-11",
+        "server_utc_offset_h": 3.0,
+        "pip_size": 0.01,
+        "per_day": [
+          {
+            "day": "2026-09-11",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-09-10",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-09-09",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-09-08",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-09-07",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-09-04",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-09-03",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-09-02",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-09-01",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-08-31",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-08-28",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-08-27",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-08-26",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-08-25",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-08-24",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-08-21",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-08-20",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-08-19",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-08-18",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-08-17",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          },
+          {
+            "day": "2026-08-14",
+            "m1_bars": 121,
+            "median_pips": 40.0,
+            "p90_pips": 40.0
+          }
+        ],
+        "m1_samples": 2541,
+        "m1_median_pips": 40.0,
+        "m1_p75_pips": 40.0,
+        "m1_p90_pips": 40.0,
+        "m1_max_pips": 160.0,
+        "tick_samples": 119004,
+        "tick_median_pips": 39.99999999996362,
+        "tick_p75_pips": 40.00000000005457,
+        "tick_p90_pips": 40.00000000005457,
+        "tick_max_pips": 200.0,
+        "m1_median_bps": 0.5224182741912312,
+        "m1_p75_bps": 0.5224182741912312,
+        "m1_p90_bps": 0.5224182741912312,
+        "tick_median_bps": 0.522418274190756,
+        "tick_p75_bps": 0.522418274191944,
+        "tick_p90_bps": 0.522418274191944
+      },
+      "slippage": {
+        "deals": 0,
+        "note": "keine SPX500.gbe-Deals mit zuordenbarer Order"
+      }
+    },
+    {
+      "portfolio": "Funded",
+      "account": "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835)",
+      "broker": "BeyondIQCapital-Server",
+      "symbol": "US30.gbe",
+      "spread": {
+        "days_with_data": 21,
+        "first_day": "2026-08-14",
+        "last_day": "2026-09-11",
+        "server_utc_offset_h": 3.0,
+        "pip_size": 0.01,
+        "per_day": [
+          {
+            "day": "2026-09-11",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-09-10",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-09-09",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-09-08",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-09-07",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-09-04",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-09-03",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-09-02",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-09-01",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-08-31",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-08-28",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-08-27",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-08-26",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-08-25",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-08-24",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-08-21",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-08-20",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-08-19",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-08-18",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-08-17",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          },
+          {
+            "day": "2026-08-14",
+            "m1_bars": 121,
+            "median_pips": 320.0,
+            "p90_pips": 320.0
+          }
+        ],
+        "m1_samples": 2541,
+        "m1_median_pips": 320.0,
+        "m1_p75_pips": 320.0,
+        "m1_p90_pips": 320.0,
+        "m1_max_pips": 680.0,
+        "tick_samples": 204690,
+        "tick_median_pips": 319.99999999970896,
+        "tick_p75_pips": 319.99999999970896,
+        "tick_p90_pips": 320.00000000043656,
+        "tick_max_pips": 4029.9999999995634,
+        "m1_median_bps": 0.6088569661798983,
+        "m1_p75_bps": 0.6088569661798983,
+        "m1_p90_bps": 0.6088569661798983,
+        "tick_median_bps": 0.6088569661793445,
+        "tick_p75_bps": 0.6088569661793445,
+        "tick_p90_bps": 0.6088569661807288
+      },
+      "slippage": {
+        "deals": 1,
+        "detail": [
+          {
+            "position": 1334262,
+            "side": "entry",
+            "time": "2026-09-02T19:23:44",
+            "reference": 53131.6,
+            "fill": 53131.6,
+            "slippage_pips": 0.0,
+            "volume": 0.4,
+            "commission": 0.0,
+            "profit": 0.0,
+            "comment": "FP orb_us30"
+          }
+        ],
+        "entry_n": 1,
+        "entry_median_pips": 0.0,
+        "entry_mean_pips": 0.0,
+        "entry_max_pips": 0.0,
+        "roundtrip_median_pips": 0.0,
+        "commission_positions": 1,
+        "commission_usd_per_lot_roundtrip": 0.0,
+        "commission_pips_roundtrip": 0.0
+      }
+    },
+    {
+      "portfolio": "Funded",
+      "account": "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835)",
+      "broker": "BeyondIQCapital-Server",
+      "symbol": "NAS100.gbe",
+      "spread": {
+        "days_with_data": 21,
+        "first_day": "2026-08-14",
+        "last_day": "2026-09-11",
+        "server_utc_offset_h": 3.0,
+        "pip_size": 0.01,
+        "per_day": [
+          {
+            "day": "2026-09-11",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-09-10",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-09-09",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-09-08",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-09-07",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-09-04",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-09-03",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-09-02",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-09-01",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-08-31",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-08-28",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-08-27",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-08-26",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-08-25",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-08-24",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-08-21",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-08-20",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-08-19",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-08-18",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-08-17",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          },
+          {
+            "day": "2026-08-14",
+            "m1_bars": 121,
+            "median_pips": 100.0,
+            "p90_pips": 100.0
+          }
+        ],
+        "m1_samples": 2541,
+        "m1_median_pips": 100.0,
+        "m1_p75_pips": 100.0,
+        "m1_p90_pips": 100.0,
+        "m1_max_pips": 340.0,
+        "tick_samples": 296021,
+        "tick_median_pips": 100.0,
+        "tick_p75_pips": 100.0,
+        "tick_p90_pips": 100.0,
+        "tick_max_pips": 1779.9999999999272,
+        "m1_median_bps": 0.3404869644565658,
+        "m1_p75_bps": 0.3404869644565658,
+        "m1_p90_bps": 0.3404869644565658,
+        "tick_median_bps": 0.3404869644565658,
+        "tick_p75_bps": 0.3404869644565658,
+        "tick_p90_bps": 0.3404869644565658
+      },
+      "slippage": {
+        "deals": 0,
+        "note": "keine NAS100.gbe-Deals mit zuordenbarer Order"
+      }
+    },
+    {
+      "portfolio": "Funded",
+      "account": "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld)",
+      "broker": "TTPMarkets-Server",
+      "symbol": "US500",
+      "spread": {
+        "days_with_data": 21,
+        "first_day": "2026-08-14",
+        "last_day": "2026-09-11",
+        "server_utc_offset_h": 3.0,
+        "pip_size": 0.01,
+        "per_day": [
+          {
+            "day": "2026-09-11",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-10",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-09",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-08",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-07",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-04",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-03",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-02",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-09-01",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-31",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-28",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-27",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-26",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-25",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-24",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-21",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-20",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-19",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-18",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-17",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          },
+          {
+            "day": "2026-08-14",
+            "m1_bars": 121,
+            "median_pips": 64.0,
+            "p90_pips": 64.0
+          }
+        ],
+        "m1_samples": 2541,
+        "m1_median_pips": 64.0,
+        "m1_p75_pips": 64.0,
+        "m1_p90_pips": 64.0,
+        "m1_max_pips": 64.0,
+        "tick_samples": 295993,
+        "tick_median_pips": 65.99999999998545,
+        "tick_p75_pips": 67.00000000000728,
+        "tick_p90_pips": 67.99999999993815,
+        "tick_max_pips": 68.0000000000291,
+        "m1_median_bps": 0.8360570504429796,
+        "m1_p75_bps": 0.8360570504429796,
+        "m1_p90_bps": 0.8360570504429796,
+        "tick_median_bps": 0.8621838332691327,
+        "tick_p75_bps": 0.8752472246825893,
+        "tick_p90_bps": 0.888310616094858
+      },
+      "slippage": {
+        "deals": 0,
+        "note": "keine US500-Deals mit zuordenbarer Order"
+      }
+    },
+    {
+      "portfolio": "Funded",
+      "account": "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld)",
+      "broker": "TTPMarkets-Server",
+      "symbol": "US30",
+      "spread": {
+        "days_with_data": 21,
+        "first_day": "2026-08-14",
+        "last_day": "2026-09-11",
+        "server_utc_offset_h": 3.0,
+        "pip_size": 0.01,
+        "per_day": [
+          {
+            "day": "2026-09-11",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-10",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-09",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-08",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-07",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-04",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-03",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-02",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-09-01",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-31",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-28",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-27",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-26",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-25",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-24",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-21",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-20",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-19",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-18",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-17",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          },
+          {
+            "day": "2026-08-14",
+            "m1_bars": 121,
+            "median_pips": 250.0,
+            "p90_pips": 250.0
+          }
+        ],
+        "m1_samples": 2541,
+        "m1_median_pips": 250.0,
+        "m1_p75_pips": 250.0,
+        "m1_p90_pips": 250.0,
+        "m1_max_pips": 251.0,
+        "tick_samples": 229770,
+        "tick_median_pips": 255.00000000029104,
+        "tick_p75_pips": 256.9999999999709,
+        "tick_p90_pips": 258.0000000001746,
+        "tick_max_pips": 260.0000000005821,
+        "m1_median_bps": 0.47570534734672487,
+        "m1_p75_bps": 0.47570534734672487,
+        "m1_p90_bps": 0.47570534734672487,
+        "tick_median_bps": 0.48521945429421315,
+        "tick_p75_bps": 0.48902509707237785,
+        "tick_p90_bps": 0.49092791846215234
+      },
+      "slippage": {
+        "deals": 0,
+        "note": "keine US30-Deals mit zuordenbarer Order"
+      }
+    },
+    {
+      "portfolio": "Funded",
+      "account": "Funded Portfolio - TTP (Konto 1, ex-OU-Modell, echtes Geld)",
+      "broker": "TTPMarkets-Server",
+      "symbol": "USTEC",
+      "spread": {
+        "days_with_data": 21,
+        "first_day": "2026-08-14",
+        "last_day": "2026-09-11",
+        "server_utc_offset_h": 3.0,
+        "pip_size": 0.01,
+        "per_day": [
+          {
+            "day": "2026-09-11",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-10",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-09",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-08",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-07",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-04",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-03",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-02",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-09-01",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-31",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-28",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-27",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-26",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-25",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-24",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-21",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-20",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-19",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-18",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-17",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          },
+          {
+            "day": "2026-08-14",
+            "m1_bars": 121,
+            "median_pips": 160.0,
+            "p90_pips": 160.0
+          }
+        ],
+        "m1_samples": 2541,
+        "m1_median_pips": 160.0,
+        "m1_p75_pips": 160.0,
+        "m1_p90_pips": 160.0,
+        "m1_max_pips": 160.0,
+        "tick_samples": 397285,
+        "tick_median_pips": 165.00000000014552,
+        "tick_p75_pips": 166.99999999982538,
+        "tick_p90_pips": 168.0000000000291,
+        "tick_max_pips": 187.99999999973807,
+        "m1_median_bps": 0.5447937972502214,
+        "m1_p75_bps": 0.5447937972502214,
+        "m1_p90_bps": 0.5447937972502214,
+        "tick_median_bps": 0.5618186034147863,
+        "tick_p75_bps": 0.568628525879324,
+        "tick_p90_bps": 0.5720334871128315
+      },
+      "slippage": {
+        "deals": 0,
+        "note": "keine USTEC-Deals mit zuordenbarer Order"
+      }
+    },
+    {
+      "portfolio": "EK",
+      "account": "EK-Portfolio (Tickmill, echtes Geld)",
+      "broker": "TickmillEU-Live",
+      "symbol": "US500",
+      "error": "Verbindung zu EK-Portfolio (Tickmill, echtes Geld) fehlgeschlagen: initialize() fehlgeschlagen: (-10005, 'IPC timeout')"
+    },
+    {
+      "portfolio": "EK",
+      "account": "EK-Portfolio (Tickmill, echtes Geld)",
+      "broker": "TickmillEU-Live",
+      "symbol": "US30",
+      "error": "Verbindung zu EK-Portfolio (Tickmill, echtes Geld) fehlgeschlagen: initialize() fehlgeschlagen: (-10005, 'IPC timeout')"
+    },
+    {
+      "portfolio": "EK",
+      "account": "EK-Portfolio (Tickmill, echtes Geld)",
+      "broker": "TickmillEU-Live",
+      "symbol": "USTEC",
+      "error": "Verbindung zu EK-Portfolio (Tickmill, echtes Geld) fehlgeschlagen: initialize() fehlgeschlagen: (-10005, 'IPC timeout')"
+    }
+  ]
+}

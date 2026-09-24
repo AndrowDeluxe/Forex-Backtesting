@@ -5156,3 +5156,29 @@
 2026-09-24 16:35:23 S&P 500 (volles Universum, 420 Ticker)    JPM 2026-09-23 337.53      339.62 337.53 290.97 kein TP (finale Config)       0.0           13.80               7.25 352.72       True       True                            12.5 2026-09-24T16:35:23
 2026-09-24 16:35:23 S&P 500 (volles Universum, 420 Ticker)    TXT 2026-09-23  76.81       76.93  76.81  64.73 kein TP (finale Config)       0.0           15.73               6.36  80.33       True       True                            12.5 2026-09-24T16:35:23
 2026-09-24 16:35:23 S&P 500 (volles Universum, 420 Ticker)    WFC 2026-09-23  81.90       82.48  81.90  64.44 kein TP (finale Config)       0.0           21.32               4.69  87.39       True       True                            12.5 2026-09-24T16:35:23
+2026-09-24 16:35:24 [main b1c4f69] OU-Modell Scanner: Snapshot 2026-09-24 16:35
+2026-09-24 16:35:24  2 files changed, 36 insertions(+), 6 deletions(-)
+2026-09-24 16:35:24 Nichts zu mergen (0 eingehende Commits) - Stash und Merge uebersprungen.
+2026-09-24 16:35:32 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-09-24 16:35:32    70bec0a..b1c4f69  main -> main
+2026-09-24 16:35:32 Commit + Push erfolgreich.
+2026-09-24 16:35:32 === Scanner-Task beendet ===
+2026-09-24 17:35:00 === Scanner-Task gestartet ===
+2026-09-24 17:35:25 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-09-24 17:35:25 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-09-24 17:35:25 [sp500] 6 raw signal(s) as of 2026-09-23, regime_ok=True, 58 Ausstiegsschwellen
+2026-09-24 17:35:25 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-09-24 17:35:25 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-09-24 17:35:25 [nasdaq100] 0 raw signal(s) as of 2026-09-23, regime_ok=True, 8 Ausstiegsschwellen
+2026-09-24 17:35:25 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-09-24 17:35:25 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-09-24 17:35:25 66 Ausstiegsschwellen geschrieben (19 davon 'Mean Reversion erreicht')
+2026-09-24 17:35:25 
+2026-09-24 17:35:25 Saved 6 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-09-24T17:35:25)
+2026-09-24 17:35:25                                 market ticker  scan_date  close  lower_band  entry     sl                      tp  tp_price  risk_pct_price  position_size_pct   ma20  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
+2026-09-24 17:35:25 S&P 500 (volles Universum, 420 Ticker)    AXP 2026-09-23 301.96      302.69 301.96 226.91 kein TP (finale Config)       0.0           24.86               4.02 323.80       True       True                            12.5 2026-09-24T17:35:25
+2026-09-24 17:35:25 S&P 500 (volles Universum, 420 Ticker)    AMT 2026-09-23 170.78      171.26 170.78 155.53 kein TP (finale Config)       0.0            8.93              11.20 175.55       True       True                            12.5 2026-09-24T17:35:25
+2026-09-24 17:35:25 S&P 500 (volles Universum, 420 Ticker)      D 2026-09-23  61.17       61.82  61.17  50.55 kein TP (finale Config)       0.0           17.36               5.76  64.80       True       True                            12.5 2026-09-24T17:35:25
+2026-09-24 17:35:25 S&P 500 (volles Universum, 420 Ticker)    JPM 2026-09-23 337.53      339.62 337.53 290.97 kein TP (finale Config)       0.0           13.80               7.25 352.72       True       True                            12.5 2026-09-24T17:35:25
+2026-09-24 17:35:25 S&P 500 (volles Universum, 420 Ticker)    TXT 2026-09-23  76.81       76.93  76.81  64.73 kein TP (finale Config)       0.0           15.73               6.36  80.33       True       True                            12.5 2026-09-24T17:35:25
+2026-09-24 17:35:25 S&P 500 (volles Universum, 420 Ticker)    WFC 2026-09-23  81.90       82.48  81.90  64.44 kein TP (finale Config)       0.0           21.32               4.69  87.39       True       True                            12.5 2026-09-24T17:35:25

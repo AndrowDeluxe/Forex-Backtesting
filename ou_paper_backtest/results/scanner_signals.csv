@@ -1,7 +1,7 @@
 market,ticker,scan_date,close,lower_band,entry,sl,tp,tp_price,risk_pct_price,position_size_pct,ma20,regime_ok,tradeable,position_size_concentrated_pct,scanned_at
-"S&P 500 (volles Universum, 420 Ticker)",AXP,2026-09-23,301.96,302.69,301.96,226.91,kein TP (finale Config),0.0,24.86,4.02,323.8,True,True,12.5,2026-09-24T16:35:23
-"S&P 500 (volles Universum, 420 Ticker)",AMT,2026-09-23,170.78,171.26,170.78,155.53,kein TP (finale Config),0.0,8.93,11.2,175.55,True,True,12.5,2026-09-24T16:35:23
-"S&P 500 (volles Universum, 420 Ticker)",D,2026-09-23,61.17,61.82,61.17,50.55,kein TP (finale Config),0.0,17.36,5.76,64.8,True,True,12.5,2026-09-24T16:35:23
-"S&P 500 (volles Universum, 420 Ticker)",JPM,2026-09-23,337.53,339.62,337.53,290.97,kein TP (finale Config),0.0,13.8,7.25,352.72,True,True,12.5,2026-09-24T16:35:23
-"S&P 500 (volles Universum, 420 Ticker)",TXT,2026-09-23,76.81,76.93,76.81,64.73,kein TP (finale Config),0.0,15.73,6.36,80.33,True,True,12.5,2026-09-24T16:35:23
-"S&P 500 (volles Universum, 420 Ticker)",WFC,2026-09-23,81.9,82.48,81.9,64.44,kein TP (finale Config),0.0,21.32,4.69,87.39,True,True,12.5,2026-09-24T16:35:23
+"S&P 500 (volles Universum, 420 Ticker)",AXP,2026-09-23,301.96,302.69,301.96,226.91,kein TP (finale Config),0.0,24.86,4.02,323.8,True,True,12.5,2026-09-24T17:35:25
+"S&P 500 (volles Universum, 420 Ticker)",AMT,2026-09-23,170.78,171.26,170.78,155.53,kein TP (finale Config),0.0,8.93,11.2,175.55,True,True,12.5,2026-09-24T17:35:25
+"S&P 500 (volles Universum, 420 Ticker)",D,2026-09-23,61.17,61.82,61.17,50.55,kein TP (finale Config),0.0,17.36,5.76,64.8,True,True,12.5,2026-09-24T17:35:25
+"S&P 500 (volles Universum, 420 Ticker)",JPM,2026-09-23,337.53,339.62,337.53,290.97,kein TP (finale Config),0.0,13.8,7.25,352.72,True,True,12.5,2026-09-24T17:35:25
+"S&P 500 (volles Universum, 420 Ticker)",TXT,2026-09-23,76.81,76.93,76.81,64.73,kein TP (finale Config),0.0,15.73,6.36,80.33,True,True,12.5,2026-09-24T17:35:25
+"S&P 500 (volles Universum, 420 Ticker)",WFC,2026-09-23,81.9,82.48,81.9,64.44,kein TP (finale Config),0.0,21.32,4.69,87.39,True,True,12.5,2026-09-24T17:35:25

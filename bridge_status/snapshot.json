@@ -1,40 +1,23 @@
 {
-  "generated_at": "2026-09-24T12:01:24",
+  "generated_at": "2026-09-24T12:31:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-24T11:59:07",
+      "last_run": "2026-09-24T12:29:07",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-09-24 11:59:07 2026-09-24 11:59:01,968 INFO run_once: Konto-Equity 2858.98 EUR | Aggregiertes offenes Risiko (ganzes Konto): 103.59 (Deckel dieser Bridge: 857.69, 30%)",
+      "last_equity_line": "2026-09-24 12:29:07 2026-09-24 12:29:01,993 INFO run_once: Konto-Equity 2858.98 EUR | Aggregiertes offenes Risiko (ganzes Konto): 103.63 (Deckel dieser Bridge: 857.69, 30%)",
       "last_error_line": "2026-09-23 21:44:02 2026-09-23 21:44:01,900 ERROR core.telegram_notify: Telegram-Nachricht fehlgeschlagen: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8734642391:AAFgB2Clfv1colNa-js_Isi5R3UGV9O8blU/sendMessage (Caused by NameResolutionError(\"HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 11001] getaddrinfo failed)\"))",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-24T11:58:16",
+      "last_run": "2026-09-24T12:28:15",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
-        "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-24 11:58:16 Verbunden: Login 504072729, Equity $99,538.28 USD",
-          "recent_events": [
-            "2026-09-23 17:13:16 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
-            "2026-09-23 16:58:16 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
-            "2026-09-23 16:13:17 [TTP] ?? ENTRY ou_modell (AXP) AXP BUY lots=5.0 risk=$166.02 sl=275.71188 -- placed",
-            "2026-09-23 15:58:16 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.76R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 4.1-fache aufgeblaeht.",
-            "2026-09-23 15:43:17 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.58R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.4-fache aufgeblaeht.",
-            "2026-09-23 14:43:15 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.53R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.1-fache aufgeblaeht.",
-            "2026-09-23 13:43:16 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.67R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 3.0-fache aufgeblaeht.",
-            "2026-09-23 13:28:15 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
-            "2026-09-22 21:13:17 [TTP] ?? ENTRY ou_modell (AXP) AXP BUY lots=6.0 risk=$165.17 sl=279.28352 -- placed",
-            "2026-09-22 20:13:16 [TTP] ?? ENTRY ou_modell (CF) CF BUY lots=10.0 risk=$165.17 sl=104.36740 -- placed",
-            "2026-09-22 09:58:16 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.59R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.4-fache aufgeblaeht.",
-            "2026-09-22 09:58:16 [TTP] ?? EXIT ctnl_reversal XAUUSD (Ticket 18489832, stop) -- already_closed @ 4314.07 (P/L -69.40)"
-          ]
-        },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-24 11:58:16 Verbunden: Login 16054, Equity $98,289.81 USD",
+          "last_equity_line": "2026-09-24 12:28:15 Verbunden: Login 16054, Equity $98,289.81 USD",
           "recent_events": [
             "2026-09-24 11:43:16 [IQMARKETS] ?? EXIT ctnl_reversal XAUUSD.gbe (Ticket 1759780, stop) -- already_closed @ 4256.67 (P/L -130.38)",
             "2026-09-24 11:13:16 [IQMARKETS] ?? EXIT ctnl_reversal XAUUSD.gbe (Ticket 1759015, stop) -- already_closed @ 4262.98 (P/L -129.90)",
@@ -49,15 +32,32 @@
             "2026-09-23 14:43:15 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe: Kurs bereits 0.54R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.2-fache aufgeblaeht.",
             "2026-09-23 14:28:16 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe BUY lots=0.05 risk=$150.00 sl=4285.05644 -- placed"
           ]
+        },
+        "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
+          "last_equity_line": "2026-09-24 12:28:15 Verbunden: Login 504072729, Equity $99,549.56 USD",
+          "recent_events": [
+            "2026-09-23 17:13:16 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
+            "2026-09-23 16:58:16 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
+            "2026-09-23 16:13:17 [TTP] ?? ENTRY ou_modell (AXP) AXP BUY lots=5.0 risk=$166.02 sl=275.71188 -- placed",
+            "2026-09-23 15:58:16 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.76R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 4.1-fache aufgeblaeht.",
+            "2026-09-23 15:43:17 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.58R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.4-fache aufgeblaeht.",
+            "2026-09-23 14:43:15 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.53R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.1-fache aufgeblaeht.",
+            "2026-09-23 13:43:16 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.67R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 3.0-fache aufgeblaeht.",
+            "2026-09-23 13:28:15 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
+            "2026-09-22 21:13:17 [TTP] ?? ENTRY ou_modell (AXP) AXP BUY lots=6.0 risk=$165.17 sl=279.28352 -- placed",
+            "2026-09-22 20:13:16 [TTP] ?? ENTRY ou_modell (CF) CF BUY lots=10.0 risk=$165.17 sl=104.36740 -- placed",
+            "2026-09-22 09:58:16 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.59R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.4-fache aufgeblaeht.",
+            "2026-09-22 09:58:16 [TTP] ?? EXIT ctnl_reversal XAUUSD (Ticket 18489832, stop) -- already_closed @ 4314.07 (P/L -69.40)"
+          ]
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-24T11:14:10",
-      "minutes_since_last_run": 47.2,
+      "last_run": "2026-09-24T12:14:10",
+      "minutes_since_last_run": 17.2,
       "status": "ok",
-      "last_equity_line": "2026-09-24 11:14:10 Verbunden: Login 17764, Equity $99,344.91",
+      "last_equity_line": "2026-09-24 12:14:10 Verbunden: Login 17764, Equity $99,281.66",
       "last_error_line": "2026-09-18 22:18:33 gold_silver-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
       "recent_events": [
         "2026-09-18 22:18:33 gold_silver-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",

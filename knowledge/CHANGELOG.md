@@ -9,6 +9,28 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-25** [Reports] **KW38/2026 von Hand nachgebaut** (Nutzerauftrag) --
+  `reports/weekly/KW38_2026_performance.md` + `_education.md`. Quellen: die
+  beiden Abzuege, die die Automatik vor dem Ausfall noch geschrieben hatte
+  (`mt5_2026-W38.json`, `soll_ist_2026-W38.json`); **kein Nach-Abzug**, weil
+  die Kontostaende sich seither bewegt haben. Der Digest-Waechter meldet
+  KW38 jetzt korrekt als vollstaendig.
+  **Vier Befunde aus dem Nachbau, die vorher niemand hatte:**
+  (1) **TTP -935,90 USD gegen IQ +1.183,69 USD auf demselben Gold-Bein** in
+  derselben Woche -- ueber 2.100 USD Divergenz, bestaetigt den Inbox-Eintrag
+  vom 02.09. in groesserer Dimension als bisher gesehen.
+  (2) **EKs Soll/Ist-Zerlegung uebersieht das Gold-Bein** (`magic 990007`,
+  -153,67 EUR): `soll_ist` weist -74,48 EUR aus, der MT5-Abzug -224,96 --
+  **68 % des Wochenverlusts sind im Soll/Ist-Bericht unsichtbar.** Sollte
+  gefixt werden, bevor EK-Soll/Ist weiter als Entscheidungsgrundlage dient.
+  (3) **24 Risiko-Limit-Ereignisse** auf der Funded-Bridge am 17./18.09.
+  (IQ 16, TTP 8) -- kein Breach, der Deckel hat funktioniert, aber das
+  Portfolio stand zwei Tage am Anschlag; Ursache sind die 32 offenen
+  XAUUSD-Positionen auf TTP (Memory `ctnl_sim_filter_is_not_live_gate`).
+  (4) **FK Instant Funding: eine volle Echtgeld-Woche ohne Ist-Daten**
+  (`IPC timeout` beim Abzug), scharf seit 08.09.
+  EK realisierte **-224,96 EUR (-6,6 %)**, Funded **+501,01 USD (+0,25 %)**.
+
 - **2026-09-24** [Reports / Scheduler] **Fehlender KW38-Report: Ursache gefunden,
   Waechter eingebaut.** Nutzerauftrag. Der `Forex-Weekly-Report`-Task lief
   zuletzt am **14.09.** (`LastTaskResult 0`, `NumberOfMissedRuns 1`) -- das

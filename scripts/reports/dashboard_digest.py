@@ -169,7 +169,48 @@ def _health_lines() -> list[str]:
     except Exception:  # noqa: BLE001
         pass
 
+    lines.extend(_missing_weekly_reports())
     return lines
+
+
+def _missing_weekly_reports() -> list[str]:
+    """Meldet fehlende Weekly-Reports (Fund 2026-09-24).
+
+    Anlass: fuer KW38/2026 wurde nie ein Report erzeugt. Ursache war NICHT
+    das Skript, sondern der Scheduler -- der Rechner lag Sonntag 20.09. um
+    10:41 im Standby, der Trigger um 18:00 lief ins Leere, und `WakeToRun`
+    am Task ist wirkungslos, weil die Windows-Wake-Timer auf "nur wichtige"
+    stehen (powercfg SUB_SLEEP RTCWAKE = 0x2 im Netz-, 0x0 im Akkubetrieb).
+    `StartWhenAvailable` hat den Lauf auch nach dem Boot um 22:25 nicht
+    nachgeholt.
+
+    Warum die Meldung HIER haengt und nicht im Weekly-Task: ein Task, der
+    nicht laeuft, kann sich nicht selbst beschweren. Dieser Digest laeuft
+    taeglich um 08:00, also zu einer Zeit, zu der der Rechner erfahrungs-
+    gemaess laeuft. Und das Task-Scheduler-Operational-Log ist deaktiviert
+    (ohne Adminrechte nicht einschaltbar), es gibt also keine andere Spur.
+
+    Geprueft wird die ISO-Woche von vor 7 Tagen: die ist sicher abgelaufen
+    und ihr Report damit faellig, egal an welchem Wochentag der Digest
+    laeuft."""
+    out: list[str] = []
+    try:
+        weekly = REPO_ROOT / "knowledge" / "reports" / "weekly"
+        if not weekly.is_dir():
+            return out
+        faellig = (datetime.date.today() - datetime.timedelta(days=7)).isocalendar()
+        fehlen = [
+            art for art, muster in (("Education", "education"), ("Performance", "performance"))
+            if not (weekly / f"KW{faellig[1]}_{faellig[0]}_{muster}.md").exists()
+        ]
+        if fehlen:
+            out.append(
+                f"⚠️ Weekly-Report KW{faellig[1]}/{faellig[0]} fehlt "
+                f"({', '.join(fehlen)}) – Task lief nicht"
+            )
+    except Exception:  # noqa: BLE001 -- Health ist Beiwerk, nie ein Grund zu scheitern
+        pass
+    return out
 
 
 def _bold(text: str) -> str:

@@ -9,6 +9,21 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-24** [Task Scheduler / Beobachtung] **Kurztakt-Ausfall am 23.09.
+  nachgewiesen -- der zum 24.09. fällige Abschluss des Beobachtungspunkts ist
+  damit hinfällig.** `EK-Portfolio-Bridge-Fast` (2-Min-Takt) fiel am 23.09.
+  von 09:48:13 bis 10:21:07 aus (**33 Min., ~16 Läufe**). Der letzte Lauf
+  davor endete regulär (`=== EK-Portfolio-Bridge FAST-Task beendet ===`),
+  danach kein Eintrag bis 10:21 -- der Task wurde vom Scheduler nicht
+  gestartet, es gibt also weder Hänger noch Exception zum Nachlesen.
+  **Abgrenzung:** EK-Slow (09:59, 10:14) sowie Funded-Fast und FK-Fast
+  (09:53–10:13, 5-Min-Takt) liefen im selben Fenster durch -- der Ausfall
+  traf nur den 2-Min-Task. **Spur:** die 10:18-Läufe von Funded und FK
+  brauchten je ~2 Min. statt ~8 Sek. (Lastberg; am Vormittag liefen die
+  CTNL-Ribbon-Backtests auf derselben Maschine). Heute bis 10:10: 306 Läufe,
+  lückenlos. Nur gemessen und in `DASHBOARD.md` dokumentiert, **nichts
+  geändert**.
+
 - **2026-09-23** [CTNL / MTF-EMA-Ribbon] **🟢 Der eigene Ribbon als
   TRENDRICHTUNG ist der staerkste Hebel der gesamten Untersuchung -- und die
   einzige Variante, unter der die SHORT-Seite positiv wird.** Neues Skript

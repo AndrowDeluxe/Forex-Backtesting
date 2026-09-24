@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-09-23** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-09-24** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -277,6 +277,26 @@ Bedarf vor generischem Aufräumen.
   einzige Lücke** außer der Wochenendpause (Fr 18.09. 23:58 -> Mo 21.09. 00:03)
   und den 65 Min am 17.09. 04:13-05:18, also am Fix-Tag selbst. Läuft morgen
   ohne neue Lücke durch, kann der Punkt weg.
+  **🟠 Nachgemessen 2026-09-24 (Stichtag): der Punkt kann NICHT weg -- am
+  23.09. selbst gab es eine Lücke.** `EK-Portfolio-Bridge-Fast` (2-Min-Takt)
+  fehlt am 23.09. von **09:48:13 bis 10:21:07 = 33 Min., ~16 ausgefallene
+  Läufe**. Der 09:48-Lauf endete sauber (`FAST-Task beendet`), danach hat der
+  Task Scheduler schlicht nicht mehr gefeuert -- **kein hängender Prozess,
+  kein Absturz, keine Log-Zeile**. Die Zwischenstands-Messung vom 23.09. hat
+  das nicht gesehen (vermutlich vor 09:48 gezogen). **Nicht maschinenweit:**
+  die EK-Slow-Lane lief im selben Fenster normal (09:59, 10:14), ebenso die
+  5-Min-Lanes von Funded und FK (09:53/09:58/10:03/10:08/10:13) -- **nur der
+  2-Min-Task fiel aus**. **Ein Nebenbefund als Spur:** der Funded- UND der
+  FK-Fast-Lauf um 10:18 brauchten statt 8 Sek. rund **2 Min.** (erste
+  Log-Zeile erst 10:20:11 bzw. 10:20:09) -- ein Lastberg auf der Maschine
+  genau am Ende des Lücken-Fensters, und am Vormittag des 23.09. liefen die
+  CTNL-Ribbon-Backtests. **Heute (24.09.) bis 10:10: 306 Läufe, lückenlos.**
+  Damit ist die 09-11-Ursache weiter offen und der vorab vereinbarte
+  Abschluss hinfällig. **Offen für dich:** gezielt instrumentieren (wie am
+  17.09. vereinbart -- Task-Scheduler-Event-Log `TaskScheduler/Operational`
+  auf `Missed`/`LaunchFailure` für die Fast-Tasks auswerten), oder erst die
+  Lastspur verfolgen (schwere Backtests nicht parallel zu den Live-Takten
+  laufen lassen)? Nichts geändert.
 
 - **Lint 09-21: zwei mehrfach verlinkte, aber nie angelegte Notizen —
   anlegen und wo?** `[[bein-matrix-ist-soll-paper]]` (referenziert von

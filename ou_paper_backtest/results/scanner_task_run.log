@@ -5084,3 +5084,45 @@
 2026-09-24 14:30:24 S&P 500 (volles Universum, 420 Ticker)    JPM 2026-09-23 337.53      339.62 337.53 290.97 kein TP (finale Config)       0.0           13.80               7.25 352.72       True       True                            12.5 2026-09-24T14:30:24
 2026-09-24 14:30:24 S&P 500 (volles Universum, 420 Ticker)    TXT 2026-09-23  76.81       76.93  76.81  64.73 kein TP (finale Config)       0.0           15.73               6.36  80.33       True       True                            12.5 2026-09-24T14:30:24
 2026-09-24 14:30:24 S&P 500 (volles Universum, 420 Ticker)    WFC 2026-09-23  81.90       82.48  81.90  64.44 kein TP (finale Config)       0.0           21.32               4.69  87.39       True       True                            12.5 2026-09-24T14:30:24
+2026-09-24 14:30:24 [main 8fe9e62] OU-Modell Scanner: Snapshot 2026-09-24 14:30
+2026-09-24 14:30:24  2 files changed, 25 insertions(+), 1 deletion(-)
+2026-09-24 14:30:25 Nichts zu mergen (0 eingehende Commits) - Stash und Merge uebersprungen.
+2026-09-24 14:30:28 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-09-24 14:30:28    c4becc3..8fe9e62  main -> main
+2026-09-24 14:30:29 Commit + Push erfolgreich.
+2026-09-24 14:30:29 === Scanner-Task beendet ===
+2026-09-24 15:35:00 === Scanner-Task gestartet ===
+2026-09-24 15:35:28 $UPS: possibly delisted; no price data found  (1d 2025-08-20 -> 2026-09-24)
+2026-09-24 15:35:28 System.Management.Automation.RemoteException
+2026-09-24 15:35:28 1 Failed download:
+2026-09-24 15:35:28 ['UPS']: possibly delisted; no price data found  (1d 2025-08-20 -> 2026-09-24)
+2026-09-24 15:35:28 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-09-24 15:35:28 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-09-24 15:35:28 WARNUNG: nur 57/58 Ticker mit Kursen (98%). Ohne Kurse: UPS
+2026-09-24 15:35:28 Traceback (most recent call last):
+2026-09-24 15:35:28   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+2026-09-24 15:35:28     return self._engine.get_loc(casted_key)
+2026-09-24 15:35:28            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+2026-09-24 15:35:28   File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+2026-09-24 15:35:28   File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+2026-09-24 15:35:28   File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+2026-09-24 15:35:28   File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+2026-09-24 15:35:28 KeyError: 'UPS'
+2026-09-24 15:35:28 System.Management.Automation.RemoteException
+2026-09-24 15:35:28 The above exception was the direct cause of the following exception:
+2026-09-24 15:35:28 System.Management.Automation.RemoteException
+2026-09-24 15:35:28 Traceback (most recent call last):
+2026-09-24 15:35:28   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 346, in <module>
+2026-09-24 15:35:28     main()
+2026-09-24 15:35:28     ~~~~^^
+2026-09-24 15:35:28   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 305, in main
+2026-09-24 15:35:28     all_signals.append(scan_market(market_key))
+2026-09-24 15:35:28                        ~~~~~~~~~~~^^^^^^^^^^^^
+2026-09-24 15:35:28   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 172, in scan_market
+2026-09-24 15:35:28     price = panel[t].dropna()
+2026-09-24 15:35:28             ~~~~~^^^
+2026-09-24 15:35:28   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+2026-09-24 15:35:28     indexer = self.columns.get_loc(key)
+2026-09-24 15:35:28   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+2026-09-24 15:35:28     raise KeyError(key) from err
+2026-09-24 15:35:28 KeyError: 'UPS'

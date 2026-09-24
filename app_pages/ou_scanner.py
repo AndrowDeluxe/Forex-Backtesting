@@ -81,8 +81,22 @@ st.caption(
 )
 
 st.markdown(
+    "<div class='sc-alert' style='border-color:" + C_ORANGE + ";'>&#9888;&#65039; <b>Der Kasten "
+    "darunter ist seit 2026-09-23 ueberholt -- er beschreibt den Stand bis zum 22.09.</b> "
+    "Live gilt seit dem Umbau auf <b>Logik D</b>: <b>Stop 8 Sigma</b> statt 3, <b>kein "
+    "Take-Profit</b> (auch nicht fuer S&amp;P), <b>kein Breakeven-Stop</b>, Ausstieg beim "
+    "<b>Ruecklauf ans MA20</b>, Einstiegsband <b>2,25 Sigma</b> statt 2,0. Grund: das 1,5R-Ziel "
+    "lag 4,5 Sigma ueber dem Einstieg und wurde in 4,8 % der Trades erreicht, waehrend die Mean "
+    "Reversion bei 2 Sigma liegt. Out-of-sample 2023-2026: -0,052R (PF 0,83) &#8594; +0,0117R "
+    "(PF 1,12) auf TTP-Kosten. Herleitung: "
+    "<code>knowledge/projects/ou-modell-kostenvalidierung.md</code>.</div>",
+    unsafe_allow_html=True,
+)
+
+st.markdown(
     "<div class='sc-alert' style='border-color:" + C_GREEN + ";'>&#128274; <b>Risk-Management + "
-    "TP + Breakeven final aktualisiert (2026-08-07):</b> nach einem vollen Kreuzprodukt-Test "
+    "TP + Breakeven final aktualisiert (2026-08-07 &mdash; seit 23.09. ueberholt, siehe oben):</b> "
+    "nach einem vollen Kreuzprodukt-Test "
     "(13 Exit-Varianten x 12 Risk-Profile, 156 Kombinationen) plus einem Breakeven-Nachsweep "
     "gegen eine echte Funded-Challenge-Regel (max. 3% Tagesverlust, +10% Ziel) auf dem "
     "2025-heute-S&amp;P-Holdout gewinnt <b>festes 1:1,5-TP + 0,25% Risiko/Trade + 5% "

@@ -35,6 +35,23 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **🟠 8 verwaiste OU-Solo-Positionen: immer noch offen, Ausloesen liegt
+  bei dir** (2026-09-17, **am 2026-09-25 wiederhergestellt**). Dieser Punkt war
+  zwischenzeitlich aus dem Dashboard verschwunden, **ohne dass er erledigt
+  war** -- ein Opfer des `git_sync_push`-Stash-Problems. Er stand
+  ausdruecklich unter der Bedingung "Punkt erst entfernen, wenn Telegram
+  'OU-Solo-Waisen geschlossen' gemeldet hat", und genau das ist nie passiert.
+  **Nachgeprueft am 25.09.:** `scripts/close_ou_solo_orphans_once.py` ist
+  fertig und wurde **9-mal im VORSCHAU-Modus** gegen die echten Konten
+  gefahren, **kein einziges Mal mit `--live`** -- im Log steht keine einzige
+  Schliessung. Im MT5-Abzug vom 20.09. waren DAL (EK) sowie AFL/NUE/UAL/TXT
+  (TTP) weiterhin offen. Das automatische Einplanen hatte der Auto-Modus
+  blockiert; der letzte Live-Ausloeser gehoert ohnehin dir (siehe Memory
+  `auto_mode_classifier_live_money_boundary`).
+  **Was ich NICHT geprueft habe:** ob die Positionen heute, am 25.09., noch
+  offen sind -- dafuer braeuchte es einen frischen MT5-Abzug gegen die
+  Live-Konten.
+
 - **Zwei Freigaben zum Aufraeumen (beide unkritisch, beide deine Entscheidung).**
   **(1) KW38/2026 nachbauen?** Der Report fehlt, weil der Task am So 20.09. im
   Standby lag (Details im Changelog vom 24.09.). Die Rohdaten sind noch da

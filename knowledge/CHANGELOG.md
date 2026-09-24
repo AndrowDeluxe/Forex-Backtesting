@@ -9,6 +9,24 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-25** [Second Brain] **Stash-Triage praezisiert -- meine Entwarnung
+  vom 24.09. war zu optimistisch.** Die damalige Stichprobe traf zufaellig
+  Themen, die ueberlebt hatten. Genauere Pruefung: **kein einziger
+  CHANGELOG-Eintrag fehlt** (Vergleich aller Eintrags-Koepfe `- **Datum**
+  [Bereich]` aus vier inhaltsreichen Stashes gegen heute -> 0 Treffer), und
+  die meisten im DASHBOARD fehlenden Zeilen sind erledigte Punkte, die
+  korrekt entfernt wurden. **Eine Ausnahme gefunden und wiederhergestellt:**
+  der Punkt "8 verwaiste OU-Solo-Positionen" war verschwunden, **obwohl er
+  nicht erledigt war** -- er stand ausdruecklich unter der Bedingung "erst
+  entfernen, wenn Telegram 'geschlossen' gemeldet hat". Nachgeprueft:
+  `close_ou_solo_orphans_once.py` lief **9-mal in VORSCHAU, nie mit `--live`**,
+  im Log steht keine Schliessung, und im MT5-Abzug vom 20.09. waren DAL (EK)
+  sowie AFL/NUE/UAL/TXT (TTP) weiterhin offen. "Max-Holding" dagegen war
+  legitim erledigt (`0b2a2aa`), "MNST-Split" steht unveraendert.
+  **Lehre:** bei einem Living Document wie DASHBOARD.md heisst "Zeile fehlt"
+  nicht "verloren" -- aber eben auch nicht automatisch "erledigt". Es braucht
+  je Punkt einen Beleg, und der stand hier sogar in der Zeile selbst.
+
 - **2026-09-25** [Reports] **KW38/2026 von Hand nachgebaut** (Nutzerauftrag) --
   `reports/weekly/KW38_2026_performance.md` + `_education.md`. Quellen: die
   beiden Abzuege, die die Automatik vor dem Ausfall noch geschrieben hatte

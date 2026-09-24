@@ -35,6 +35,25 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **Zwei Freigaben zum Aufraeumen (beide unkritisch, beide deine Entscheidung).**
+  **(1) KW38/2026 nachbauen?** Der Report fehlt, weil der Task am So 20.09. im
+  Standby lag (Details im Changelog vom 24.09.). Die Rohdaten sind noch da
+  (`scripts/reports/mt5_2026-W38.json`, `soll_ist_2026-W38.json`), ein
+  Nachbau ist also moeglich -- aber er zieht Bridge-/MT5-Daten fuer eine
+  Woche, die vier Tage zurueckliegt, und ist ein groesseres Stueck Arbeit.
+  Ich habe ihn NICHT angefangen. Sag Bescheid, ob du ihn willst.
+  **(2) Die 93 Altstashes loeschen?** Ich habe alle gegen den heutigen Stand
+  geprueft: **keine nicht zurueckgeholte Arbeit** drin. Sie sind reine Halde
+  und machen echte Probleme unsichtbar. `git stash clear` waere der
+  Einzeiler -- ich fasse das ohne dein Okay nicht an, weil es nicht
+  umkehrbar ist.
+  **Nicht geaendert habe ich die Systemeinstellungen**: die Windows-Wake-Timer
+  (Ursache des Ausfalls) und das deaktivierte TaskScheduler-Log liessen sich
+  nur mit Adminrechten bzw. einem Eingriff ins Energieprofil aendern. Der
+  neue Waechter im 08:00-Digest macht kuenftige Ausfaelle sichtbar, verhindert
+  sie aber nicht -- falls du die Ursache selbst beheben willst, ist der
+  Hebel "Wake-Timer zulassen" in den Energieoptionen.
+
 - **🟠 ORB-Break-Even im ALTEN Marktorder-Pfad (EK) sitzt auf dem
   SIGNAL-Preis, nicht auf dem echten Fill -- reparieren oder Pfad
   entfernen?** (Fund 2026-09-23 bei der BE-Pruefung.)

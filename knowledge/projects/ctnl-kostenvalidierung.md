@@ -762,6 +762,157 @@ Kandidaten: `long + Regime` +170,8, `trendkonform` +201,4, **Ribbon +243,6**.
 
 ---
 
+## Befund 16 — Ribbon auf beiden Beinen, 2024–2026 im Vergleich, Strukturziel
+
+`research_ctnl_ribbon_both_legs.py` + `research_ctnl_strukturziel.py`.
+
+### 16a — Der Ribbon neutralisiert `ctnl_continuation`, er repariert es nicht
+
+Trennschärfe des Ribbons, Ø R je Feld:
+
+| | `ctnl_reversal` | `ctnl_continuation` |
+|---|---|---|
+| short im Abwärtstrend | n=104, **+0,174** | n=32, **+0,208** |
+| short im Aufwärtstrend | n=112, −0,519 | n=51, −0,694 |
+| long im Aufwärtstrend | n=371, **+0,842** | n=122, **−0,030** |
+| long im Abwärtstrend | n=19, +0,391 | n=27, **+0,408** |
+
+Beim Reversal ist das Bild **kohärent**: long stark im Aufwärts-, short
+positiv im Abwärtstrend. Beim Continuation ist die **Long-Seite invertiert** —
+es verdient long besser im *Abwärts*trend (+0,408 auf 27 Trades) als im
+Aufwärtstrend (−0,030). Für ein Trendfolge-Bein ist das inkohärent; die
+Short-Seite trennt sauber, die Long-Seite ist Rauschen.
+
+`ribbon-konform` hebt Continuation von Ø R −0,060 auf **+0,019** — von klar
+negativ auf exakt null. Walk-Forward OOS −13,6 gegen −0,5, besser in 1 von 8
+Jahren. Monte Carlo: Rendite +0,2 %, Sharpe 0,00, P(MaxDD>6 %) 98,6 %.
+**Kein Edge, nur weniger Schaden.**
+
+### 16b — 2024–2026: die Baseline führt in der Summe, der Ribbon in der Qualität
+
+`ctnl_reversal`:
+
+| Variante | 2016–2026 Σ R | PF | **2024–2026 Σ R** | **PF** | n |
+|---|---|---|---|---|---|
+| Baseline | +146,4 | 1,13 | **+169,3** | 1,75 | 290 |
+| nur long | +258,9 | 1,46 | **+173,6** | 2,62 | 149 |
+| long + Effizienz | +232,0 | 1,83 | +100,7 | 2,74 | 79 |
+| ribbon-konform | **+330,6** | 1,87 | +139,3 | 2,84 | 110 |
+| ribbon long-only | +312,5 | **2,08** | +143,3 | **3,00** | 104 |
+
+**Im jüngeren Fenster liegt die Baseline in der Summe vorn** — sie macht
+dreimal so viele Trades. Der Ribbon gewinnt dort nur bei der Qualität je
+Trade (PF 3,00 gegen 1,75). Über zehn Jahre ist er klar überlegen.
+
+Das ist das durchgängige Muster **aller** hier geprüften Filter: sie verdienen
+ihr Geld in den schlechten Jahren, nicht in den guten. Wer nur die letzten
+zwei Jahre betrachtet, sieht jeden einzelnen als Verschlechterer.
+
+### 16c — Das Strukturziel ist schlechter als das feste 5R
+
+Nutzerbeschreibung: Ziel an der nächsten Liquidität. Das ist implementiert —
+`use_vwap_target=True` setzt beim Reversal `h1_target`, laut Modul-Docstring
+„the opposing H4 liquidity level" (`reversal_cascade.py:602`). Die gesperrte
+Config nutzt stattdessen `take_profit_r=5.0`.
+
+| Variante | n | Ø R | Σ R | PF |
+|---|---|---|---|---|
+| **5R / ribbon-konform** | 475 | **+0,696** | **+330,6** | **1,87** |
+| Struktur / ribbon-konform | 704 | +0,201 | +141,8 | 1,38 |
+| Struktur+BE / ribbon-konform | 731 | +0,188 | +137,5 | 1,38 |
+
+Das Strukturziel erzeugt **mehr** Trades (1845 statt 1253 roh, weil
+Positionen früher freiwerden und die 3er-Parallelität nachrücken lässt), aber
+das Ø R fällt auf ein Drittel. Walk-Forward wählt in **6 von 8** Jahren
+`5R / konform`. **Das feste Ziel bleibt.**
+
+### 16d — Ein weiterer Continuation-Stop senkt den Schaden, schafft aber keinen Edge
+
+| `ctnl_continuation` | MC MedDD | P(>6 %) | Return | Sharpe |
+|---|---|---|---|---|
+| Struktur / stop 0,5 (heute) | −31,68 % | 100,0 % | −16,4 % | −0,20 |
+| Struktur / stop 2,0 + ribbon | **−9,75 %** | **87,1 %** | −1,3 % | −0,04 |
+
+Der Drawdown fällt um zwei Drittel, die Rendite bleibt bei null.
+Walk-Forward verworfen (3 von 8 Jahren, OOS −28,1 gegen −0,5).
+
+### 16e — Methodischer Nebenbefund: mehr Kandidaten machen die Auswahl schlechter
+
+Derselbe Walk-Forward lieferte **OOS +243,6**, als er aus **drei**
+Ribbon-Varianten wählen durfte, und nur **+185,8** mit **fünf** Varianten im
+Kandidatenkreis. Der einzige Unterschied ist die Auswahlmenge.
+
+Das ist Selektionsrauschen in Reinform: jede zusätzliche Option ist eine
+weitere Chance, in-sample zufällig gut auszusehen. **Der Kandidatenkreis
+gehört klein gehalten** — eine Regel, die für alle künftigen Sweeps in diesem
+Repo gilt, nicht nur hier.
+
+---
+
+## Befund 17 — Einstieg am Liquidity Spike: richtige Richtung, Test noch unvollständig
+
+Nutzerbeschreibung 2026-09-24: *„Mein Entry sind immer H4 und höhere Liquidity
+Spikes und interessante Preislevel wie z.B. OBs, Newscandles oder Wholelevel.
+M5 BOS und dann Entry bei Liq Spike — mit meiner Variante bin ich fast nicht
+groß im Drawdown und kann fast immer direkt BE setzen."*
+
+Die strukturelle Lücke dahinter ist real: die Engine steigt zum **Open der
+Folgebar** ein (`strategy/backtest.py`: `raw_entry = open_[entry_i]`,
+`entry_i` = Signalbar + 1). Der Spike passiert **während** der Signalbar; zum
+Open der Folgebar ist der Kurs davon zurückgelaufen. Befund 7d passt dazu: die
+MAE der Gewinner liegt bei Median 0,50R — beim Einstieg am Spike kann das
+strukturell nicht passieren.
+
+`scripts/research_ctnl_spike_entry.py` ersetzt die Marktorder durch eine
+**Limit-Order auf das gesweepte Extrem der Signalbar**, Fill nur bei Rückkehr
+innerhalb von N Bars. Stop-Niveau unverändert → besserer Einstieg = kleinere
+Risikodistanz.
+
+| Variante | Füllquote | n | Ø R | Σ R | PF | MC MedDD | P(>6 %) | Return |
+|---|---|---|---|---|---|---|---|---|
+| heute + ribbon | — | 475 | +0,696 | **+330,6** | 1,87 | −5,63 % | 42,4 % | **+58,0 %** |
+| Spike 1 + ribbon | 65,4 % | 289 | +0,713 | +206,0 | 1,82 | **−4,70 %** | **24,2 %** | +32,3 % |
+| Spike 2 + ribbon | 69,4 % | 307 | +0,725 | +222,5 | 1,84 | −4,90 % | 28,3 % | +35,5 % |
+| Spike 8 + ribbon | 80,2 % | 365 | +0,680 | +248,2 | 1,78 | −5,92 % | 48,0 % | +39,5 % |
+
+Der Limit-Einstieg **senkt den Drawdown deutlich** (P(MaxDD>6 %) von 42,4 %
+auf 24,2 %) — also genau in die beschriebene Richtung — kostet aber **ein
+Drittel der Signale** und liefert in der Summe weniger. Walk-Forward wählt in
+**allen acht** Jahren den heutigen Einstieg.
+
+2024–2026 ist die Trade-Qualität dagegen die beste der gesamten Untersuchung:
+`Spike 1 + ribbon` mit Ø R **+1,794** und **PF 3,49** (n=58).
+
+### Warum dieser Test die Kernaussage NICHT beantwortet
+
+> **Methodische Grenze, ausdrücklich:** die Simulation rechnet den
+> Einstiegspreis neu, übernimmt aber die **`mae_r` des ursprünglichen
+> Trades** — gemessen ab dem alten Einstieg. Auf das neue, kleinere Risiko
+> umgerechnet wird sie rechnerisch *größer* (≈1,23R), obwohl der reale
+> Verlauf ein anderer wäre.
+>
+> **Die BE-Zahlen dieses Laufs sind damit ein Artefakt, kein Befund**
+> (BE 0,25R → Ø R −0,447 entsteht nur dadurch, dass die umskalierte MAE die
+> Schwelle fast immer reißt). Sie werden hier bewusst nicht als Ergebnis
+> geführt.
+>
+> Für eine belastbare Aussage muss der Trade **Bar für Bar ab dem neuen
+> Einstieg neu durchgespielt** werden — ein Entry-Preis-Override in
+> `simulate_trades()`, nicht eine Umrechnung von Kennzahlen des alten
+> Trades. Offen.
+
+Ebenfalls offen und nicht simuliert: dass eine Limit-Order an einem
+durchlaufenen Level real gefüllt wird, sagt eine OHLC-Bar nicht („Tief
+berührt" ≠ „Order gefüllt"). Die Füllquoten sind damit **optimistisch**.
+
+Und: die **Entry-Merkmale** aus der Nutzerbeschreibung — H4-Liquidity-Spikes,
+Order Blocks, News-Candles, Whole Levels, M5-BOS — sind in der Pipeline gar
+nicht abgebildet. Die Kaskade nutzt H4-Exhaustion → H1-BOS → M15-Sweep. Ein
+Nachbau der beschriebenen Logik wäre ein eigenes Signalmodell, keine
+Parametrierung des bestehenden.
+
+---
+
 ## Was daraus folgt (Entscheidung steht bei dir)
 
 Nach Kostenvalidierung, Diagnose und Optimierung stehen **vier** Entscheidungen

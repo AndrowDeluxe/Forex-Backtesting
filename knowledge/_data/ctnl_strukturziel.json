@@ -1,0 +1,576 @@
+{
+  "ctnl_reversal": {
+    "vergleich": {
+      "5R / alle": {
+        "voll": {
+          "trades": 1253,
+          "avg_r": 0.1168598307832941,
+          "summe_r": 146.4253679714675,
+          "trefferquote": 0.27693535514764567,
+          "profit_factor": 1.128659351621218
+        },
+        "2024_2026": {
+          "trades": 290,
+          "avg_r": 0.5838835645895988,
+          "summe_r": 169.32623373098363,
+          "trefferquote": 0.3448275862068966,
+          "profit_factor": 1.7515189251941812
+        }
+      },
+      "5R / konform": {
+        "voll": {
+          "trades": 475,
+          "avg_r": 0.6959879225075664,
+          "summe_r": 330.594263191094,
+          "trefferquote": 0.3473684210526316,
+          "profit_factor": 1.8677833193057667
+        },
+        "2024_2026": {
+          "trades": 110,
+          "avg_r": 1.265935456030643,
+          "summe_r": 139.25290016337073,
+          "trefferquote": 0.41818181818181815,
+          "profit_factor": 2.843039391281885
+        }
+      },
+      "5R / long-only": {
+        "voll": {
+          "trades": 371,
+          "avg_r": 0.8422150776447185,
+          "summe_r": 312.46179380619054,
+          "trefferquote": 0.3692722371967655,
+          "profit_factor": 2.0792542526260576
+        },
+        "2024_2026": {
+          "trades": 104,
+          "avg_r": 1.3780275477304542,
+          "summe_r": 143.31486496396724,
+          "trefferquote": 0.4423076923076923,
+          "profit_factor": 3.00456764994759
+        }
+      },
+      "Struktur / alle": {
+        "voll": {
+          "trades": 1845,
+          "avg_r": -0.034561717800540355,
+          "summe_r": -63.76636934199695,
+          "trefferquote": 0.4184281842818428,
+          "profit_factor": 0.9471953865735561
+        },
+        "2024_2026": {
+          "trades": 439,
+          "avg_r": 0.02263039769925766,
+          "summe_r": 9.934744589974112,
+          "trefferquote": 0.4123006833712984,
+          "profit_factor": 1.0365705396674751
+        }
+      },
+      "Struktur / konform": {
+        "voll": {
+          "trades": 704,
+          "avg_r": 0.20138309792191464,
+          "summe_r": 141.7737009370279,
+          "trefferquote": 0.5213068181818182,
+          "profit_factor": 1.3786961123513353
+        },
+        "2024_2026": {
+          "trades": 155,
+          "avg_r": 0.29897538363202164,
+          "summe_r": 46.341184462963355,
+          "trefferquote": 0.5612903225806452,
+          "profit_factor": 1.675872274435942
+        }
+      },
+      "Struktur / long-only": {
+        "voll": {
+          "trades": 575,
+          "avg_r": 0.23014333604783824,
+          "summe_r": 132.332418227507,
+          "trefferquote": 0.5391304347826087,
+          "profit_factor": 1.4511793718840909
+        },
+        "2024_2026": {
+          "trades": 148,
+          "avg_r": 0.2839957654986068,
+          "summe_r": 42.031373293793806,
+          "trefferquote": 0.5675675675675675,
+          "profit_factor": 1.6432643415885155
+        }
+      },
+      "Struktur+BE / alle": {
+        "voll": {
+          "trades": 1926,
+          "avg_r": -0.03206513541775648,
+          "summe_r": -61.75745081459897,
+          "trefferquote": 0.407061266874351,
+          "profit_factor": 0.9475594498254871
+        },
+        "2024_2026": {
+          "trades": 453,
+          "avg_r": 0.01910327027153001,
+          "summe_r": 8.653781433003093,
+          "trefferquote": 0.4083885209713024,
+          "profit_factor": 1.0333243449816
+        }
+      },
+      "Struktur+BE / konform": {
+        "voll": {
+          "trades": 731,
+          "avg_r": 0.1880312167582806,
+          "summe_r": 137.45081945030313,
+          "trefferquote": 0.5047879616963065,
+          "profit_factor": 1.380039240671823
+        },
+        "2024_2026": {
+          "trades": 156,
+          "avg_r": 0.2673817984867918,
+          "summe_r": 41.711560563939514,
+          "trefferquote": 0.5384615384615384,
+          "profit_factor": 1.6389326587580142
+        }
+      },
+      "Struktur+BE / long-only": {
+        "voll": {
+          "trades": 592,
+          "avg_r": 0.22744149156388543,
+          "summe_r": 134.64536300582017,
+          "trefferquote": 0.5219594594594594,
+          "profit_factor": 1.4792642083643597
+        },
+        "2024_2026": {
+          "trades": 148,
+          "avg_r": 0.2715546791536843,
+          "summe_r": 40.190092514745274,
+          "trefferquote": 0.5472972972972973,
+          "profit_factor": 1.6483003298507901
+        }
+      }
+    },
+    "walkforward": {
+      "je_jahr": [
+        {
+          "jahr": 2019,
+          "gewaehlt": "5R / konform",
+          "oos_trades": 49,
+          "oos_summe_r": 33.09877793884776,
+          "baseline_summe_r": 21.389028509782626,
+          "differenz": 11.709749429065134
+        },
+        {
+          "jahr": 2020,
+          "gewaehlt": "5R / konform",
+          "oos_trades": 45,
+          "oos_summe_r": 33.86130499636293,
+          "baseline_summe_r": -18.52645303291468,
+          "differenz": 52.38775802927761
+        },
+        {
+          "jahr": 2021,
+          "gewaehlt": "5R / konform",
+          "oos_trades": 50,
+          "oos_summe_r": -26.052647517347108,
+          "baseline_summe_r": -2.85001173662514,
+          "differenz": -23.20263578072197
+        },
+        {
+          "jahr": 2022,
+          "gewaehlt": "5R / long-only",
+          "oos_trades": 14,
+          "oos_summe_r": 58.10511530514715,
+          "baseline_summe_r": 34.743155213970375,
+          "differenz": 23.361960091176776
+        },
+        {
+          "jahr": 2023,
+          "gewaehlt": "5R / konform",
+          "oos_trades": 29,
+          "oos_summe_r": 5.328040711150108,
+          "baseline_summe_r": -50.90731681575717,
+          "differenz": 56.23535752690728
+        },
+        {
+          "jahr": 2024,
+          "gewaehlt": "5R / konform",
+          "oos_trades": 43,
+          "oos_summe_r": 52.187154121177485,
+          "baseline_summe_r": 62.01183872701048,
+          "differenz": -9.824684605832992
+        },
+        {
+          "jahr": 2025,
+          "gewaehlt": "5R / konform",
+          "oos_trades": 40,
+          "oos_summe_r": 52.990822251465794,
+          "baseline_summe_r": 80.1770828925244,
+          "differenz": -27.186260641058603
+        },
+        {
+          "jahr": 2026,
+          "gewaehlt": "5R / konform",
+          "oos_trades": 27,
+          "oos_summe_r": 34.07492379072746,
+          "baseline_summe_r": 27.13731211144876,
+          "differenz": 6.9376116792786995
+        }
+      ],
+      "oos": {
+        "trades": 297,
+        "avg_r": 0.8201801063889953,
+        "summe_r": 243.5934915975316,
+        "trefferquote": 0.3838383838383838,
+        "profit_factor": 2.0676332572153266
+      },
+      "baseline": {
+        "trades": 871,
+        "avg_r": 0.17586066115894333,
+        "summe_r": 153.17463586943964,
+        "trefferquote": 0.2927669345579793,
+        "profit_factor": 1.1985678117780985
+      },
+      "jahre_besser": 5,
+      "jahre_gesamt": 8,
+      "gewaehlte_parameter": [
+        "5R / konform",
+        "5R / konform",
+        "5R / konform",
+        "5R / long-only",
+        "5R / konform",
+        "5R / konform",
+        "5R / konform",
+        "5R / konform"
+      ]
+    },
+    "monte_carlo": {
+      "5R / alle": {
+        "median_maxdd_pct": -15.49748105487026,
+        "P_maxdd_ueber_6pct": 0.9985,
+        "median_return_pct": 20.642873078743484,
+        "median_sharpe": 0.2704494698158331
+      },
+      "5R / konform": {
+        "median_maxdd_pct": -5.6300093050057125,
+        "P_maxdd_ueber_6pct": 0.4235,
+        "median_return_pct": 57.99478299329337,
+        "median_sharpe": 0.9501639701855329
+      },
+      "5R / long-only": {
+        "median_maxdd_pct": -4.7994811973103175,
+        "P_maxdd_ueber_6pct": 0.242,
+        "median_return_pct": 55.55584089863764,
+        "median_sharpe": 1.0219116254177827
+      },
+      "Struktur / alle": {
+        "median_maxdd_pct": -20.273965016714826,
+        "P_maxdd_ueber_6pct": 0.9995,
+        "median_return_pct": -9.866729253577184,
+        "median_sharpe": -0.19409343080861985
+      },
+      "Struktur / konform": {
+        "median_maxdd_pct": -5.776896003419091,
+        "P_maxdd_ueber_6pct": 0.455,
+        "median_return_pct": 22.494932856346196,
+        "median_sharpe": 0.6788291841647502
+      },
+      "Struktur / long-only": {
+        "median_maxdd_pct": -4.905548361362532,
+        "P_maxdd_ueber_6pct": 0.293,
+        "median_return_pct": 21.48004541937093,
+        "median_sharpe": 0.7431046233436545
+      },
+      "Struktur+BE / alle": {
+        "median_maxdd_pct": -20.085461864114805,
+        "P_maxdd_ueber_6pct": 1.0,
+        "median_return_pct": -9.206186938161782,
+        "median_sharpe": -0.1812201535224832
+      },
+      "Struktur+BE / konform": {
+        "median_maxdd_pct": -5.640959372248316,
+        "P_maxdd_ueber_6pct": 0.4375,
+        "median_return_pct": 22.64969440637166,
+        "median_sharpe": 0.6742543511386556
+      },
+      "Struktur+BE / long-only": {
+        "median_maxdd_pct": -4.676250843202029,
+        "P_maxdd_ueber_6pct": 0.2425,
+        "median_return_pct": 22.575647406744448,
+        "median_sharpe": 0.7852591633562052
+      }
+    }
+  },
+  "ctnl_continuation": {
+    "vergleich": {
+      "Struktur/stop0.5 / alle": {
+        "voll": {
+          "trades": 436,
+          "avg_r": -0.06012120480129937,
+          "summe_r": -26.212845293366527,
+          "trefferquote": 0.2981651376146789,
+          "profit_factor": 0.9402966061283249
+        },
+        "2024_2026": {
+          "trades": 100,
+          "avg_r": 0.31285263551651976,
+          "summe_r": 31.285263551651976,
+          "trefferquote": 0.38,
+          "profit_factor": 1.358443379317091
+        }
+      },
+      "Struktur/stop0.5 / konform": {
+        "voll": {
+          "trades": 154,
+          "avg_r": 0.019491330456862705,
+          "summe_r": 3.0016648903568566,
+          "trefferquote": 0.3181818181818182,
+          "profit_factor": 1.0204752095896437
+        },
+        "2024_2026": {
+          "trades": 43,
+          "avg_r": 0.3410484184870107,
+          "summe_r": 14.665081994941458,
+          "trefferquote": 0.3953488372093023,
+          "profit_factor": 1.4492400031134607
+        }
+      },
+      "Struktur/stop1 / alle": {
+        "voll": {
+          "trades": 421,
+          "avg_r": -0.12985420485398086,
+          "summe_r": -54.668620243525936,
+          "trefferquote": 0.3159144893111639,
+          "profit_factor": 0.8566851393883463
+        },
+        "2024_2026": {
+          "trades": 101,
+          "avg_r": 0.20708787506401036,
+          "summe_r": 20.915875381465046,
+          "trefferquote": 0.39603960396039606,
+          "profit_factor": 1.2747522032294443
+        }
+      },
+      "Struktur/stop1 / konform": {
+        "voll": {
+          "trades": 147,
+          "avg_r": -0.08827182104966441,
+          "summe_r": -12.975957694300668,
+          "trefferquote": 0.3401360544217687,
+          "profit_factor": 0.8992290824401103
+        },
+        "2024_2026": {
+          "trades": 45,
+          "avg_r": 0.16511206376735024,
+          "summe_r": 7.4300428695307605,
+          "trefferquote": 0.4,
+          "profit_factor": 1.2557992847530306
+        }
+      },
+      "Struktur/stop2 / alle": {
+        "voll": {
+          "trades": 393,
+          "avg_r": -0.06733441729184654,
+          "summe_r": -26.46242599569569,
+          "trefferquote": 0.35877862595419846,
+          "profit_factor": 0.9074987994932451
+        },
+        "2024_2026": {
+          "trades": 99,
+          "avg_r": 0.11846761017349466,
+          "summe_r": 11.728293407175972,
+          "trefferquote": 0.41414141414141414,
+          "profit_factor": 1.1821535294532795
+        }
+      },
+      "Struktur/stop2 / konform": {
+        "voll": {
+          "trades": 136,
+          "avg_r": -0.00735337658595742,
+          "summe_r": -1.000059215690209,
+          "trefferquote": 0.39705882352941174,
+          "profit_factor": 0.9895632710383897
+        },
+        "2024_2026": {
+          "trades": 43,
+          "avg_r": 0.09629249929331007,
+          "summe_r": 4.140577469612333,
+          "trefferquote": 0.4418604651162791,
+          "profit_factor": 1.1636629143515769
+        }
+      },
+      "3R/stop1.0 / alle": {
+        "voll": {
+          "trades": 415,
+          "avg_r": -0.15012045506882124,
+          "summe_r": -62.29998885356082,
+          "trefferquote": 0.30843373493975906,
+          "profit_factor": 0.8469519072434322
+        },
+        "2024_2026": {
+          "trades": 98,
+          "avg_r": 0.04255415411225915,
+          "summe_r": 4.170307103001397,
+          "trefferquote": 0.336734693877551,
+          "profit_factor": 1.0484216189695847
+        }
+      },
+      "3R/stop1.0 / konform": {
+        "voll": {
+          "trades": 145,
+          "avg_r": 0.024082508549599327,
+          "summe_r": 3.4919637396919025,
+          "trefferquote": 0.33793103448275863,
+          "profit_factor": 1.0262052770077235
+        },
+        "2024_2026": {
+          "trades": 43,
+          "avg_r": 0.047005520380693964,
+          "summe_r": 2.0212373763698404,
+          "trefferquote": 0.3023255813953488,
+          "profit_factor": 1.0554272671880673
+        }
+      }
+    },
+    "walkforward": {
+      "je_jahr": [
+        {
+          "jahr": 2019,
+          "gewaehlt": "Struktur/stop0.5 / alle",
+          "oos_trades": 45,
+          "oos_summe_r": -14.997958267555688,
+          "baseline_summe_r": -14.997958267555688,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2020,
+          "gewaehlt": "Struktur/stop2 / alle",
+          "oos_trades": 27,
+          "oos_summe_r": -7.948164876155603,
+          "baseline_summe_r": -8.210792719416887,
+          "differenz": 0.2626278432612832
+        },
+        {
+          "jahr": 2021,
+          "gewaehlt": "Struktur/stop2 / alle",
+          "oos_trades": 32,
+          "oos_summe_r": -4.229901988806099,
+          "baseline_summe_r": -1.6442809778583387,
+          "differenz": -2.5856210109477606
+        },
+        {
+          "jahr": 2022,
+          "gewaehlt": "Struktur/stop2 / alle",
+          "oos_trades": 39,
+          "oos_summe_r": -0.6642565354354302,
+          "baseline_summe_r": -1.9984835819808033,
+          "differenz": 1.3342270465453732
+        },
+        {
+          "jahr": 2023,
+          "gewaehlt": "Struktur/stop2 / alle",
+          "oos_trades": 40,
+          "oos_summe_r": -7.97060852792061,
+          "baseline_summe_r": -4.962949388630169,
+          "differenz": -3.007659139290441
+        },
+        {
+          "jahr": 2024,
+          "gewaehlt": "Struktur/stop2 / alle",
+          "oos_trades": 51,
+          "oos_summe_r": 2.7602563298670484,
+          "baseline_summe_r": -3.768579856310127,
+          "differenz": 6.528836186177175
+        },
+        {
+          "jahr": 2025,
+          "gewaehlt": "3R/stop1.0 / konform",
+          "oos_trades": 15,
+          "oos_summe_r": -2.337907164010301,
+          "baseline_summe_r": 5.499223756248957,
+          "differenz": -7.837130920259258
+        },
+        {
+          "jahr": 2026,
+          "gewaehlt": "3R/stop1.0 / konform",
+          "oos_trades": 6,
+          "oos_summe_r": 7.335864872112391,
+          "baseline_summe_r": 29.554619651713146,
+          "differenz": -22.218754779600754
+        }
+      ],
+      "oos": {
+        "trades": 255,
+        "avg_r": -0.11001049473687957,
+        "summe_r": -28.05267615790429,
+        "trefferquote": 0.3333333333333333,
+        "profit_factor": 0.8606648986059531
+      },
+      "baseline": {
+        "trades": 301,
+        "avg_r": -0.0017581441321924175,
+        "summe_r": -0.5292013837899177,
+        "trefferquote": 0.3023255813953488,
+        "profit_factor": 0.998238695724746
+      },
+      "jahre_besser": 3,
+      "jahre_gesamt": 8,
+      "gewaehlte_parameter": [
+        "Struktur/stop0.5 / alle",
+        "Struktur/stop2 / alle",
+        "Struktur/stop2 / alle",
+        "Struktur/stop2 / alle",
+        "Struktur/stop2 / alle",
+        "Struktur/stop2 / alle",
+        "3R/stop1.0 / konform",
+        "3R/stop1.0 / konform"
+      ]
+    },
+    "monte_carlo": {
+      "Struktur/stop0.5 / alle": {
+        "median_maxdd_pct": -31.67534835240862,
+        "P_maxdd_ueber_6pct": 1.0,
+        "median_return_pct": -16.362805291304756,
+        "median_sharpe": -0.2004876439447522
+      },
+      "Struktur/stop0.5 / konform": {
+        "median_maxdd_pct": -13.510894099406595,
+        "P_maxdd_ueber_6pct": 0.986,
+        "median_return_pct": 0.18205158302756486,
+        "median_sharpe": 0.0038171190955823865
+      },
+      "Struktur/stop1 / alle": {
+        "median_maxdd_pct": -34.16227805033131,
+        "P_maxdd_ueber_6pct": 1.0,
+        "median_return_pct": -26.497606589809315,
+        "median_sharpe": -0.4246681964030853
+      },
+      "Struktur/stop1 / konform": {
+        "median_maxdd_pct": -14.704563759158244,
+        "P_maxdd_ueber_6pct": 0.983,
+        "median_return_pct": -7.322754190794778,
+        "median_sharpe": -0.1845422695965227
+      },
+      "Struktur/stop2 / alle": {
+        "median_maxdd_pct": -22.951283064702572,
+        "P_maxdd_ueber_6pct": 1.0,
+        "median_return_pct": -13.586025752406593,
+        "median_sharpe": -0.2560646884386668
+      },
+      "Struktur/stop2 / konform": {
+        "median_maxdd_pct": -9.746058991115698,
+        "P_maxdd_ueber_6pct": 0.8705,
+        "median_return_pct": -1.3189675325678718,
+        "median_sharpe": -0.04175737059679181
+      },
+      "3R/stop1.0 / alle": {
+        "median_maxdd_pct": -35.12331556683829,
+        "P_maxdd_ueber_6pct": 1.0,
+        "median_return_pct": -28.192400320744753,
+        "median_sharpe": -0.46761543722549614
+      },
+      "3R/stop1.0 / konform": {
+        "median_maxdd_pct": -12.20849195901021,
+        "P_maxdd_ueber_6pct": 0.971,
+        "median_return_pct": 0.8640276650210499,
+        "median_sharpe": 0.020383463297958468
+      }
+    }
+  }
+}

@@ -1,0 +1,342 @@
+{
+  "flaeche": {
+    "heute: Markt Folgebar": {
+      "trades": 1253,
+      "avg_r": 0.1168598307832941,
+      "summe_r": 146.4253679714675,
+      "trefferquote": 0.27693535514764567,
+      "profit_factor": 1.128659351621218
+    },
+    "heute + ribbon": {
+      "trades": 475,
+      "avg_r": 0.6959879225075664,
+      "summe_r": 330.594263191094,
+      "trefferquote": 0.3473684210526316,
+      "profit_factor": 1.8677833193057667
+    },
+    "Spike (warte 1)": {
+      "trades": 886,
+      "avg_r": -0.009748814460275437,
+      "summe_r": -8.637449611804037,
+      "trefferquote": 0.22799097065462753,
+      "profit_factor": 0.9900602353473206
+    },
+    "Spike 1 + ribbon": {
+      "trades": 289,
+      "avg_r": 0.7129183083704815,
+      "summe_r": 206.03339111906917,
+      "trefferquote": 0.31833910034602075,
+      "profit_factor": 1.8228434588858307
+    },
+    "Spike (warte 2)": {
+      "trades": 940,
+      "avg_r": -0.020093786145974454,
+      "summe_r": -18.888158977215987,
+      "trefferquote": 0.225531914893617,
+      "profit_factor": 0.9796223705074442
+    },
+    "Spike 2 + ribbon": {
+      "trades": 307,
+      "avg_r": 0.7248904927169575,
+      "summe_r": 222.54138126410595,
+      "trefferquote": 0.31921824104234525,
+      "profit_factor": 1.8422815509135948
+    },
+    "Spike (warte 4)": {
+      "trades": 1015,
+      "avg_r": -0.0428157507843093,
+      "summe_r": -43.45798704607394,
+      "trefferquote": 0.22266009852216748,
+      "profit_factor": 0.957026228470036
+    },
+    "Spike 4 + ribbon": {
+      "trades": 335,
+      "avg_r": 0.6799621171198055,
+      "summe_r": 227.78730923513484,
+      "trefferquote": 0.31343283582089554,
+      "profit_factor": 1.7808326374374237
+    },
+    "Spike (warte 8)": {
+      "trades": 1087,
+      "avg_r": -0.025053397248847097,
+      "summe_r": -27.233042809496794,
+      "trefferquote": 0.22447102115915363,
+      "profit_factor": 0.9748072690984754
+    },
+    "Spike 8 + ribbon": {
+      "trades": 365,
+      "avg_r": 0.6800135162481616,
+      "summe_r": 248.20493343057902,
+      "trefferquote": 0.3095890410958904,
+      "profit_factor": 1.77831507573926
+    },
+    "Spike2+ribbon+BE0.25": {
+      "trades": 307,
+      "avg_r": -0.4474559641263917,
+      "summe_r": -137.36898098680226,
+      "trefferquote": 0.07166123778501629,
+      "profit_factor": 0.48008160237097464
+    },
+    "Spike2+ribbon+BE0.5": {
+      "trades": 307,
+      "avg_r": 0.025088035260050788,
+      "summe_r": 7.702026824835592,
+      "trefferquote": 0.16612377850162866,
+      "profit_factor": 1.0291508710081279
+    }
+  },
+  "jung": {
+    "heute: Markt Folgebar": {
+      "trades": 290,
+      "avg_r": 0.5838835645895988,
+      "summe_r": 169.32623373098363,
+      "trefferquote": 0.3448275862068966,
+      "profit_factor": 1.7515189251941812
+    },
+    "heute + ribbon": {
+      "trades": 110,
+      "avg_r": 1.265935456030643,
+      "summe_r": 139.25290016337073,
+      "trefferquote": 0.41818181818181815,
+      "profit_factor": 2.843039391281885
+    },
+    "Spike (warte 1)": {
+      "trades": 193,
+      "avg_r": 0.5075385220641682,
+      "summe_r": 97.95493475838445,
+      "trefferquote": 0.29533678756476683,
+      "profit_factor": 1.5863356494009884
+    },
+    "Spike 1 + ribbon": {
+      "trades": 58,
+      "avg_r": 1.7942632327824737,
+      "summe_r": 104.06726750138347,
+      "trefferquote": 0.41379310344827586,
+      "profit_factor": 3.4851989998658337
+    },
+    "Spike (warte 2)": {
+      "trades": 205,
+      "avg_r": 0.4474176973521369,
+      "summe_r": 91.72062795718806,
+      "trefferquote": 0.28292682926829266,
+      "profit_factor": 1.5062657548740166
+    },
+    "Spike 2 + ribbon": {
+      "trades": 62,
+      "avg_r": 1.6069958054573297,
+      "summe_r": 99.63373993835444,
+      "trefferquote": 0.3870967741935484,
+      "profit_factor": 3.151528598313279
+    },
+    "Spike (warte 4)": {
+      "trades": 216,
+      "avg_r": 0.4513397780138933,
+      "summe_r": 97.48939205100095,
+      "trefferquote": 0.2824074074074074,
+      "profit_factor": 1.5084536753613405
+    },
+    "Spike 4 + ribbon": {
+      "trades": 65,
+      "avg_r": 1.5972690386128507,
+      "summe_r": 103.8224875098353,
+      "trefferquote": 0.38461538461538464,
+      "profit_factor": 3.101545642359638
+    },
+    "Spike (warte 8)": {
+      "trades": 236,
+      "avg_r": 0.4290612690594311,
+      "summe_r": 101.25845949802574,
+      "trefferquote": 0.2796610169491525,
+      "profit_factor": 1.4838556771878828
+    },
+    "Spike 8 + ribbon": {
+      "trades": 73,
+      "avg_r": 1.5416632814097204,
+      "summe_r": 112.5414195429096,
+      "trefferquote": 0.3835616438356164,
+      "profit_factor": 3.0506089731643584
+    },
+    "Spike2+ribbon+BE0.25": {
+      "trades": 62,
+      "avg_r": 0.061215449849434,
+      "summe_r": 3.795357890664908,
+      "trefferquote": 0.12903225806451613,
+      "profit_factor": 1.0819583912804227
+    },
+    "Spike2+ribbon+BE0.5": {
+      "trades": 62,
+      "avg_r": 0.46115156049452444,
+      "summe_r": 28.591396750660515,
+      "trefferquote": 0.1935483870967742,
+      "profit_factor": 1.617413416507583
+    }
+  },
+  "walkforward": {
+    "je_jahr": [
+      {
+        "jahr": 2019,
+        "gewaehlt": "heute + ribbon",
+        "oos_trades": 49,
+        "oos_summe_r": 33.09877793884776,
+        "baseline_summe_r": 21.389028509782626,
+        "differenz": 11.709749429065134
+      },
+      {
+        "jahr": 2020,
+        "gewaehlt": "heute + ribbon",
+        "oos_trades": 45,
+        "oos_summe_r": 33.86130499636293,
+        "baseline_summe_r": -18.52645303291468,
+        "differenz": 52.38775802927761
+      },
+      {
+        "jahr": 2021,
+        "gewaehlt": "heute + ribbon",
+        "oos_trades": 50,
+        "oos_summe_r": -26.052647517347108,
+        "baseline_summe_r": -2.85001173662514,
+        "differenz": -23.20263578072197
+      },
+      {
+        "jahr": 2022,
+        "gewaehlt": "heute + ribbon",
+        "oos_trades": 35,
+        "oos_summe_r": 83.26870117151805,
+        "baseline_summe_r": 34.743155213970375,
+        "differenz": 48.52554595754767
+      },
+      {
+        "jahr": 2023,
+        "gewaehlt": "heute + ribbon",
+        "oos_trades": 29,
+        "oos_summe_r": 5.328040711150108,
+        "baseline_summe_r": -50.90731681575717,
+        "differenz": 56.23535752690728
+      },
+      {
+        "jahr": 2024,
+        "gewaehlt": "heute + ribbon",
+        "oos_trades": 43,
+        "oos_summe_r": 52.187154121177485,
+        "baseline_summe_r": 62.01183872701048,
+        "differenz": -9.824684605832992
+      },
+      {
+        "jahr": 2025,
+        "gewaehlt": "heute + ribbon",
+        "oos_trades": 40,
+        "oos_summe_r": 52.990822251465794,
+        "baseline_summe_r": 80.1770828925244,
+        "differenz": -27.186260641058603
+      },
+      {
+        "jahr": 2026,
+        "gewaehlt": "heute + ribbon",
+        "oos_trades": 27,
+        "oos_summe_r": 34.07492379072746,
+        "baseline_summe_r": 27.13731211144876,
+        "differenz": 6.9376116792786995
+      }
+    ],
+    "oos": {
+      "trades": 318,
+      "avg_r": 0.8451480423393162,
+      "summe_r": 268.75707746390253,
+      "trefferquote": 0.3836477987421384,
+      "profit_factor": 2.1008581045747086
+    },
+    "baseline": {
+      "trades": 871,
+      "avg_r": 0.17586066115894333,
+      "summe_r": 153.17463586943964,
+      "trefferquote": 0.2927669345579793,
+      "profit_factor": 1.1985678117780985
+    },
+    "jahre_besser": 5,
+    "jahre_gesamt": 8,
+    "gewaehlte_parameter": [
+      "heute + ribbon",
+      "heute + ribbon",
+      "heute + ribbon",
+      "heute + ribbon",
+      "heute + ribbon",
+      "heute + ribbon",
+      "heute + ribbon",
+      "heute + ribbon"
+    ]
+  },
+  "monte_carlo": {
+    "heute: Markt Folgebar": {
+      "median_maxdd_pct": -15.49748105487026,
+      "P_maxdd_ueber_6pct": 0.9985,
+      "median_return_pct": 20.642873078743484,
+      "median_sharpe": 0.2704494698158331
+    },
+    "heute + ribbon": {
+      "median_maxdd_pct": -5.6300093050057125,
+      "P_maxdd_ueber_6pct": 0.4235,
+      "median_return_pct": 57.99478299329337,
+      "median_sharpe": 0.9501639701855329
+    },
+    "Spike (warte 1)": {
+      "median_maxdd_pct": -17.126485936985613,
+      "P_maxdd_ueber_6pct": 0.9985,
+      "median_return_pct": -3.406270669354533,
+      "median_sharpe": -0.06459427645735127
+    },
+    "Spike 1 + ribbon": {
+      "median_maxdd_pct": -4.6981600992828,
+      "P_maxdd_ueber_6pct": 0.242,
+      "median_return_pct": 32.30241883113608,
+      "median_sharpe": 0.7814973524440805
+    },
+    "Spike (warte 2)": {
+      "median_maxdd_pct": -18.572047315468293,
+      "P_maxdd_ueber_6pct": 1.0,
+      "median_return_pct": -4.8298801746366635,
+      "median_sharpe": -0.08494919233007933
+    },
+    "Spike 2 + ribbon": {
+      "median_maxdd_pct": -4.900788770773201,
+      "P_maxdd_ueber_6pct": 0.2835,
+      "median_return_pct": 35.51310251932911,
+      "median_sharpe": 0.7881292493138666
+    },
+    "Spike (warte 4)": {
+      "median_maxdd_pct": -21.12883661986791,
+      "P_maxdd_ueber_6pct": 1.0,
+      "median_return_pct": -8.788747248456147,
+      "median_sharpe": -0.15070035018130423
+    },
+    "Spike 4 + ribbon": {
+      "median_maxdd_pct": -5.404762876075414,
+      "P_maxdd_ueber_6pct": 0.379,
+      "median_return_pct": 36.48897855157828,
+      "median_sharpe": 0.7645761461597049
+    },
+    "Spike (warte 8)": {
+      "median_maxdd_pct": -21.662614876589487,
+      "P_maxdd_ueber_6pct": 1.0,
+      "median_return_pct": -7.2694523463456555,
+      "median_sharpe": -0.11641592953939328
+    },
+    "Spike 8 + ribbon": {
+      "median_maxdd_pct": -5.915628618431623,
+      "P_maxdd_ueber_6pct": 0.4805,
+      "median_return_pct": 39.531497424548434,
+      "median_sharpe": 0.7689646301294104
+    },
+    "Spike2+ribbon+BE0.25": {
+      "median_maxdd_pct": -20.45452917852461,
+      "P_maxdd_ueber_6pct": 0.998,
+      "median_return_pct": -19.194214468253247,
+      "median_sharpe": -0.8943832524952833
+    },
+    "Spike2+ribbon+BE0.5": {
+      "median_maxdd_pct": -9.613956251004756,
+      "P_maxdd_ueber_6pct": 0.8745,
+      "median_return_pct": 0.06604969536629923,
+      "median_sharpe": 0.0021340896366960943
+    }
+  }
+}

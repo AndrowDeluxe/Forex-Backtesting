@@ -9,6 +9,37 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-24** [Reports / Scheduler] **Fehlender KW38-Report: Ursache gefunden,
+  Waechter eingebaut.** Nutzerauftrag. Der `Forex-Weekly-Report`-Task lief
+  zuletzt am **14.09.** (`LastTaskResult 0`, `NumberOfMissedRuns 1`) -- das
+  Skript ist in Ordnung, der Scheduler nicht: der Rechner ging So 20.09. um
+  10:41 in Standby, der Trigger um 18:00 lief ins Leere, um 22:25 folgte ein
+  unerwarteter Shutdown. **`WakeToRun: True` am Task ist wirkungslos**, weil
+  die Windows-Wake-Timer auf "nur wichtige" stehen (`powercfg SUB_SLEEP
+  RTCWAKE` = 0x2 im Netz-, 0x0 im Akkubetrieb) -- ein normaler Task darf den
+  Rechner damit nicht wecken. `StartWhenAvailable` holte den Lauf auch nach
+  dem Boot nicht nach. Erschwerend: das **TaskScheduler-Operational-Log ist
+  deaktiviert** und ohne Adminrechte nicht einschaltbar ("Zugriff verweigert"),
+  es gibt zu dem Ausfall also keinerlei Historie.
+  **Behoben repo-nativ statt an Systemeinstellungen zu drehen**:
+  `scripts/reports/dashboard_digest.py::_missing_weekly_reports()` meldet ab
+  sofort im taeglichen 08:00-Telegram-Digest, wenn der Report der abgelaufenen
+  ISO-Woche fehlt. Begruendung fuer den Ort: ein Task, der nicht laeuft, kann
+  sich nicht selbst beschweren -- der Digest lief heute um 08:00:02 durch.
+  Getestet: meldet korrekt "Weekly-Report KW38/2026 fehlt (Education,
+  Performance)", Digest baut weiterhin (2.033 Zeichen).
+  **KW38 selbst ist NICHT nachgebaut** -- braucht eine Nutzerentscheidung.
+
+- **2026-09-24** [Git-Sync] **Stash-Fix nachverifiziert + 93 Altstashes
+  triagiert.** Der Fix einer parallelen Session vom 23.09. (`a57de64`,
+  `bf06bfc`: kein Stash mehr, wenn 0 eingehende Commits) **wirkt** -- juengster
+  Stash ist 23.09. 21:55 (vor dem Fix), seither loggen die Tasks "Nichts zu
+  mergen ... uebersprungen". Triage aller 93 Stashes (Inhalt gegen heutige
+  Fassung, Zeilen als Menge, CRLF normalisiert): **keine nicht zurueckgeholte
+  Arbeit.** Die 16 auffaelligen Treffer waren Umformulierungen; gegengeprueft
+  an "Invalid stops", `capital_weight`, "VARIANTE C" -- alle Themen sind im
+  Repo. Die Stashes sind reine Halde, Loeschung braucht eine Freigabe.
+
 - **2026-09-24** [Task Scheduler / Beobachtung] **Kurztakt-Ausfall am 23.09.
   nachgewiesen -- der zum 24.09. fällige Abschluss des Beobachtungspunkts ist
   damit hinfällig.** `EK-Portfolio-Bridge-Fast` (2-Min-Takt) fiel am 23.09.

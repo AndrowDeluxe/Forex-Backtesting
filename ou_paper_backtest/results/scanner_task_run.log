@@ -5447,3 +5447,57 @@
 2026-09-25 20:35:26 S&P 500 (volles Universum, 420 Ticker)      D 2026-09-24  60.40       60.68  60.40  47.47 kein TP (finale Config)       0.0           21.41               4.67  64.32       True       True                            12.5 2026-09-25T20:35:26
 2026-09-25 20:35:26 S&P 500 (volles Universum, 420 Ticker)    TXT 2026-09-24  76.02       76.09  76.02  62.92 kein TP (finale Config)       0.0           17.23               5.81  79.77       True       True                            12.5 2026-09-25T20:35:26
 2026-09-25 20:35:26 S&P 500 (volles Universum, 420 Ticker)    UPS 2026-09-24  92.05       92.25  92.05  63.07 kein TP (finale Config)       0.0           31.48               3.18 100.40       True       True                            12.5 2026-09-25T20:35:26
+2026-09-25 20:35:27 [main 1d6ecc0] OU-Modell Scanner: Snapshot 2026-09-25 20:35
+2026-09-25 20:35:27  2 files changed, 28 insertions(+), 4 deletions(-)
+2026-09-25 20:35:27 Nichts zu mergen (0 eingehende Commits) - Stash und Merge uebersprungen.
+2026-09-25 20:35:30 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-09-25 20:35:30    a62e9ad..1d6ecc0  main -> main
+2026-09-25 20:35:30 Commit + Push erfolgreich.
+2026-09-25 20:35:30 === Scanner-Task beendet ===
+2026-09-25 21:35:00 === Scanner-Task gestartet ===
+2026-09-25 21:37:56 $KO: possibly delisted; no price data found  (1d 2025-08-21 -> 2026-09-25)
+2026-09-25 21:37:56 System.Management.Automation.RemoteException
+2026-09-25 21:37:56 1 Failed download:
+2026-09-25 21:37:56 ['KO']: possibly delisted; no price data found  (1d 2025-08-21 -> 2026-09-25)
+2026-09-25 21:37:56 $CTSH: possibly delisted; no price data found  (1d 2025-08-21 -> 2026-09-25)
+2026-09-25 21:37:56 System.Management.Automation.RemoteException
+2026-09-25 21:37:56 1 Failed download:
+2026-09-25 21:37:56 ['CTSH']: possibly delisted; no price data found  (1d 2025-08-21 -> 2026-09-25)
+2026-09-25 21:37:56 $DHR: possibly delisted; no price data found  (1d 2025-08-21 -> 2026-09-25)
+2026-09-25 21:37:56 System.Management.Automation.RemoteException
+2026-09-25 21:37:56 1 Failed download:
+2026-09-25 21:37:56 ['DHR']: possibly delisted; no price data found  (1d 2025-08-21 -> 2026-09-25)
+2026-09-25 21:37:56 $DE: possibly delisted; no price data found  (1d 2025-08-21 -> 2026-09-25)
+2026-09-25 21:37:56 System.Management.Automation.RemoteException
+2026-09-25 21:37:56 1 Failed download:
+2026-09-25 21:37:56 ['DE']: possibly delisted; no price data found  (1d 2025-08-21 -> 2026-09-25)
+2026-09-25 21:37:56 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-09-25 21:37:56 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-09-25 21:37:56 WARNUNG: nur 54/58 Ticker mit Kursen (93%). Ohne Kurse: KO, CTSH, DHR, DE
+2026-09-25 21:37:56 Traceback (most recent call last):
+2026-09-25 21:37:56   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+2026-09-25 21:37:56     return self._engine.get_loc(casted_key)
+2026-09-25 21:37:56            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+2026-09-25 21:37:56   File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+2026-09-25 21:37:56   File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+2026-09-25 21:37:56   File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+2026-09-25 21:37:56   File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+2026-09-25 21:37:56 KeyError: 'KO'
+2026-09-25 21:37:56 System.Management.Automation.RemoteException
+2026-09-25 21:37:56 The above exception was the direct cause of the following exception:
+2026-09-25 21:37:56 System.Management.Automation.RemoteException
+2026-09-25 21:37:56 Traceback (most recent call last):
+2026-09-25 21:37:56   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 346, in <module>
+2026-09-25 21:37:56     main()
+2026-09-25 21:37:56     ~~~~^^
+2026-09-25 21:37:56   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 305, in main
+2026-09-25 21:37:56     all_signals.append(scan_market(market_key))
+2026-09-25 21:37:56                        ~~~~~~~~~~~^^^^^^^^^^^^
+2026-09-25 21:37:56   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 172, in scan_market
+2026-09-25 21:37:56     price = panel[t].dropna()
+2026-09-25 21:37:56             ~~~~~^^^
+2026-09-25 21:37:56   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+2026-09-25 21:37:56     indexer = self.columns.get_loc(key)
+2026-09-25 21:37:56   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+2026-09-25 21:37:56     raise KeyError(key) from err
+2026-09-25 21:37:56 KeyError: 'KO'

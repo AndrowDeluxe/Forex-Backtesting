@@ -1,23 +1,23 @@
 {
-  "generated_at": "2026-09-25T13:31:25",
+  "generated_at": "2026-09-25T14:01:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-25T13:29:07",
+      "last_run": "2026-09-25T13:59:07",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-09-25 13:29:07 2026-09-25 13:29:02,041 INFO run_once: Konto-Equity 2760.75 EUR | Aggregiertes offenes Risiko (ganzes Konto): 218.74 (Deckel dieser Bridge: 828.23, 30%)",
+      "last_equity_line": "2026-09-25 13:59:07 2026-09-25 13:59:01,989 INFO run_once: Konto-Equity 2760.75 EUR | Aggregiertes offenes Risiko (ganzes Konto): 218.80 (Deckel dieser Bridge: 828.23, 30%)",
       "last_error_line": "2026-09-23 21:44:02 2026-09-23 21:44:01,900 ERROR core.telegram_notify: Telegram-Nachricht fehlgeschlagen: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8734642391:AAFgB2Clfv1colNa-js_Isi5R3UGV9O8blU/sendMessage (Caused by NameResolutionError(\"HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 11001] getaddrinfo failed)\"))",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-25T13:28:16",
+      "last_run": "2026-09-25T13:58:17",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-25 13:28:16 Verbunden: Login 16054, Equity $97,520.13 USD",
+          "last_equity_line": "2026-09-25 13:58:17 Verbunden: Login 16054, Equity $97,520.13 USD",
           "last_error_line": "2026-09-24 13:44:22 OU-Modell-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
           "recent_events": [
             "2026-09-25 11:13:17 [IQMARKETS] ?? EXIT gold_asb XAUUSD.gbe (Ticket 1798345, stop) -- already_closed @ 4296.29 (P/L -657.44)",
@@ -35,7 +35,7 @@
           ]
         },
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-25 13:28:16 Verbunden: Login 504072729, Equity $98,960.32 USD",
+          "last_equity_line": "2026-09-25 13:58:17 Verbunden: Login 504072729, Equity $98,971.78 USD",
           "last_error_line": "2026-09-24 13:44:22 OU-Modell-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
           "recent_events": [
             "2026-09-25 11:13:17 [TTP] ?? EXIT gold_asb XAUUSD (Ticket 18616997, stop) -- already_closed @ 4296.52 (P/L -332.22)",
@@ -57,7 +57,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-09-25T13:14:11",
-      "minutes_since_last_run": 17.2,
+      "minutes_since_last_run": 47.2,
       "status": "ok",
       "last_equity_line": "2026-09-25 13:14:11 Verbunden: Login 17764, Equity $99,025.12",
       "last_error_line": "2026-09-18 22:18:33 gold_silver-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",

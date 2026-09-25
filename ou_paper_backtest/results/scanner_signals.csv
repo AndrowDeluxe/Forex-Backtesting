@@ -1,5 +1,5 @@
 market,ticker,scan_date,close,lower_band,entry,sl,tp,tp_price,risk_pct_price,position_size_pct,ma20,regime_ok,tradeable,position_size_concentrated_pct,scanned_at
-"S&P 500 (volles Universum, 420 Ticker)",AMT,2026-09-24,167.26,169.26,167.26,147.02,kein TP (finale Config),0.0,12.1,8.26,174.96,True,True,12.5,2026-09-25T19:35:22
-"S&P 500 (volles Universum, 420 Ticker)",D,2026-09-24,60.4,60.68,60.4,47.47,kein TP (finale Config),0.0,21.41,4.67,64.32,True,True,12.5,2026-09-25T19:35:22
-"S&P 500 (volles Universum, 420 Ticker)",TXT,2026-09-24,76.02,76.09,76.02,62.92,kein TP (finale Config),0.0,17.23,5.81,79.77,True,True,12.5,2026-09-25T19:35:22
-"S&P 500 (volles Universum, 420 Ticker)",UPS,2026-09-24,92.05,92.25,92.05,63.07,kein TP (finale Config),0.0,31.48,3.18,100.4,True,True,12.5,2026-09-25T19:35:22
+"S&P 500 (volles Universum, 420 Ticker)",AMT,2026-09-24,167.26,169.26,167.26,147.02,kein TP (finale Config),0.0,12.1,8.26,174.96,True,True,12.5,2026-09-25T20:35:26
+"S&P 500 (volles Universum, 420 Ticker)",D,2026-09-24,60.4,60.68,60.4,47.47,kein TP (finale Config),0.0,21.41,4.67,64.32,True,True,12.5,2026-09-25T20:35:26
+"S&P 500 (volles Universum, 420 Ticker)",TXT,2026-09-24,76.02,76.09,76.02,62.92,kein TP (finale Config),0.0,17.23,5.81,79.77,True,True,12.5,2026-09-25T20:35:26
+"S&P 500 (volles Universum, 420 Ticker)",UPS,2026-09-24,92.05,92.25,92.05,63.07,kein TP (finale Config),0.0,31.48,3.18,100.4,True,True,12.5,2026-09-25T20:35:26

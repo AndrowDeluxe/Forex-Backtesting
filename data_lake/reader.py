@@ -29,9 +29,15 @@ import logging
 
 import pandas as pd
 
+from combined_strategy.data import validate_ohlc_numeric
 from data_lake import manifest, storage
 
 log = logging.getLogger(__name__)
+
+_OHLC_COLUMN_SETS = (
+    ["Open", "High", "Low", "Close"],
+    ["open", "high", "low", "close"],
+)
 
 
 class LakeMissingDataError(Exception):
@@ -63,6 +69,24 @@ def _require_fresh(source: str, key: str, timeframe: str) -> pd.DataFrame:
     df = storage.read_bars(source, key, timeframe)
     if df is None or df.empty:
         raise LakeMissingDataError(f"Keine Lake-Daten fuer {source}:{key}_{timeframe} -- Ingestion noch nicht gelaufen?")
+    # Fund 2026-09-28 (CTNL-Edge-/Trend-Pullback-/CLS-Practical-Scan erneut mit
+    # "'>' not supported between instances of 'str' and 'float'" gescheitert,
+    # identischer Fehlertyp wie 2026-09-02/03/07): ingest.py validiert nur das
+    # frisch geholte Fenster VOR dem Merge (siehe validate_ohlc_numeric-Aufruf
+    # dort), nie den gemergten/gelesenen Bestand -- eine einmal korrupt
+    # abgelegte Zeile (z.B. aus einer Datei von vor der Validierung, oder aus
+    # einem anderen Schreibpfad) wird seither bei jedem Lake-Read unveraendert
+    # weiterserviert. Hier wie bei ingest.py auf non-numeric OHLC pruefen und
+    # als "fehlend" behandeln, damit with_live_fallback() denselben Key per
+    # Live-Fetch neu zieht statt die kaputten Werte tief in der
+    # Indikator-Arithmetik der Beine crashen zu lassen.
+    for cols in _OHLC_COLUMN_SETS:
+        if all(c in df.columns for c in cols):
+            try:
+                validate_ohlc_numeric(df, cols)
+            except ValueError as e:
+                raise LakeMissingDataError(f"Lake-Daten fuer {source}:{key}_{timeframe} korrupt ({e}) -- Live-Fallback")
+            break
     if not manifest.is_fresh(source, key, timeframe):
         entry = manifest.get_entry(source, key, timeframe)
         raise LakeStaleDataError(

@@ -9,6 +9,47 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-28** [Bridge Error Monitor / Data Lake] **`str`/`float`-Fehler
+  erneut aufgetreten -- diesmal im Lake-Read-Pfad, nicht in den bereits
+  2026-09-02/03/07 gepatchten Dateien. Fix in `data_lake/reader.py`
+  ergaenzt.** Snapshot zeigte heute 02:35-02:37 Uhr `'>' not supported
+  between instances of 'str' and 'float'` in CTNL-Edge-Scan und
+  Trend-Pullback-Scan (Funded-Portfolio-Bridge, TTP + IQ Markets) sowie in
+  cls_practical-Scan (FKInstantFunding-MT5-Bridge) -- identischer
+  Fehlertext wie der am 2026-09-03 dokumentierte, damals als behoben
+  geltende Bug. **Root Cause:** `combined_strategy/data.py::
+  validate_ohlc_numeric()` (der 09-03-Fix) validiert nur die klassischen
+  Dukascopy-Cache-Dateien, nicht den seit 09-04/09-07 dazugekommenen
+  Data-Lake-Pfad. `data_lake/ingest.py::_validate()` prueft zwar das frisch
+  geholte Fenster vor dem Schreiben, aber NIE den bereits gemergten/
+  gespeicherten Bestand -- eine einmal korrupt abgelegte Zeile (z.B. aus
+  einer Datei von vor der Validierung, oder einem anderen Schreibpfad wie
+  dem Twelve-Data-Failover) wird bei jedem `data_lake/reader.py::
+  _require_fresh()`-Lesen seither unveraendert weiterserviert, bis sie tief
+  in der Indikator-Arithmetik eines Beins (z.B. `mt5_trend_pullback/
+  pipeline.py`'s `df["close"] > df["ema_trend"]`) crasht. **Fix:**
+  `_require_fresh()` prueft jetzt beim Lesen dieselbe `validate_ohlc_numeric()`
+  (wiederverwendet, keine Neuimplementierung) gegen die gaengigen
+  Groß-/Kleinschreibungs-Spaltennamen und wirft bei einem Treffer
+  `LakeMissingDataError` statt die Daten zurueckzugeben -- dadurch greift
+  der bestehende `with_live_fallback()`-Mechanismus (2026-09-07) und weicht
+  fuer genau diesen einen Aufruf auf den echten Live-Fetch aus, statt den
+  Scan mit einer kryptischen `TypeError` tief im Bein abstuerzen zu lassen.
+  **Keine Order-/Risiko-/Entry-Exit-Logik beruehrt**, reine
+  Lese-Validierung wie beim Vorbild-Fix. **Verifiziert:** `py_compile` auf
+  allen vier beteiligten Dateien (`data_lake/reader.py`, `data_lake/
+  ingest.py`, `data_lake/storage.py`, `combined_strategy/data.py`), dazu
+  ein synthetischer Test (korrupte Lake-Datei mit String-Spalte via
+  `storage.write_bars()` geschrieben, `_require_fresh()` wirft jetzt
+  `LakeMissingDataError` statt die Daten zurueckzugeben; ein sauberer
+  Datensatz derselben Form laeuft unveraendert durch; `with_live_fallback()`
+  faengt den neuen Fehlerfall nachweislich ab und ruft die Live-Funktion
+  auf). **Nicht live gegen die echten Bridges getestet** -- das braeuchte
+  Zugriff auf die laufenden Terminals, den ich nicht habe. Ob welcher Key
+  konkret korrupt war (Lake-Datei selbst nicht einsehbar von hier), bleibt
+  offen; der naechste Lauf zeigt, ob der Live-Fallback fuer diese Keys
+  greift.
+
 - **2026-09-28** [Reports] **Weekly Checkup KW39/2026 + Monthly Checkup
   September 2026** (geplanter Lauf, Mo 02:29 nachgeholt) -- `reports/weekly/
   KW39_2026_*`, `reports/monthly/2026-09_*`, PDFs + Telegram versandt.

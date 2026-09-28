@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-28T02:31:24",
+  "generated_at": "2026-09-28T02:32:43",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
       "last_run": "2026-09-28T02:29:06",
-      "minutes_since_last_run": 2.3,
+      "minutes_since_last_run": 3.6,
       "status": "ok",
       "last_equity_line": "2026-09-25 22:59:08 2026-09-25 22:59:02,159 INFO run_once: Konto-Equity 2804.22 EUR | Aggregiertes offenes Risiko (ganzes Konto): 219.02 (Deckel dieser Bridge: 841.27, 30%)",
       "last_error_line": "2026-09-23 21:44:02 2026-09-23 21:44:01,900 ERROR core.telegram_notify: Telegram-Nachricht fehlgeschlagen: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8734642391:AAFgB2Clfv1colNa-js_Isi5R3UGV9O8blU/sendMessage (Caused by NameResolutionError(\"HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 11001] getaddrinfo failed)\"))",
@@ -12,9 +12,9 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-25T23:58:19",
-      "minutes_since_last_run": 3033.1,
-      "status": "stale",
+      "last_run": "2026-09-28T02:32:40",
+      "minutes_since_last_run": 0.1,
+      "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
           "last_equity_line": "2026-09-25 23:58:19 Verbunden: Login 504072729, Equity $99,220.48 USD",
@@ -56,9 +56,9 @@
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-25T23:14:02",
-      "minutes_since_last_run": 3077.4,
-      "status": "stale",
+      "last_run": "2026-09-28T02:32:40",
+      "minutes_since_last_run": 0.1,
+      "status": "ok",
       "last_equity_line": "2026-09-25 22:14:11 Verbunden: Login 17764, Equity $99,565.57",
       "last_error_line": "2026-09-18 22:18:33 gold_silver-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
       "recent_events": [

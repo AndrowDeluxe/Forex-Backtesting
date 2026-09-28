@@ -6080,3 +6080,22 @@
 2026-09-28 17:35:02 0 Ausstiegsschwellen geschrieben (0 davon 'Mean Reversion erreicht')
 2026-09-28 17:35:02 
 2026-09-28 17:35:02 Saved 0 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-09-28T17:35:02)
+2026-09-28 17:35:03 [main 162c160] OU-Modell Scanner: Snapshot 2026-09-28 17:35
+2026-09-28 17:35:03  1 file changed, 293 insertions(+)
+2026-09-28 17:35:03 fatal: unable to access 'https://github.com/AndrowDeluxe/Forex-Backtesting.git/': Could not resolve host: github.com
+2026-09-28 17:35:03 WARNUNG: git fetch fehlgeschlagen (Exit 128) - Push wird trotzdem versucht, kann bei zwischenzeitlicher Divergenz erneut fehlschlagen.
+2026-09-28 17:35:03 fatal: unable to access 'https://github.com/AndrowDeluxe/Forex-Backtesting.git/': Could not resolve host: github.com
+2026-09-28 17:35:03 WARNUNG: git push fehlgeschlagen (Exit 128) trotz vorherigem Merge-Versuch - Commit liegt lokal vor, aber nicht auf GitHub bis zum naechsten erfolgreichen Push.
+2026-09-28 17:35:03 === Scanner-Task beendet ===
+2026-09-28 18:35:01 === Scanner-Task gestartet ===
+2026-09-28 18:35:18 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-09-28 18:35:18 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-09-28 18:35:18 [sp500] 0 raw signal(s) as of 2026-09-25, regime_ok=True, 58 Ausstiegsschwellen
+2026-09-28 18:35:18 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-09-28 18:35:18 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-09-28 18:35:18 [nasdaq100] 0 raw signal(s) as of 2026-09-25, regime_ok=True, 8 Ausstiegsschwellen
+2026-09-28 18:35:18 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-09-28 18:35:18 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-09-28 18:35:18 66 Ausstiegsschwellen geschrieben (25 davon 'Mean Reversion erreicht')
+2026-09-28 18:35:18 
+2026-09-28 18:35:18 Saved 0 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-09-28T18:35:18)

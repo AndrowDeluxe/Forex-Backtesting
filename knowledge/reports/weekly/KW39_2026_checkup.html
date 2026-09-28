@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Weekly Checkup KW39/2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --paper: #EDEEE7;
+    --paper-raised: #F6F6F1;
+    --ink: #1B2129;
+    --ink-soft: #4B5259;
+    --rule: #C9CCC2;
+    --accent: #2B6E6B;
+    --accent-soft: #E3ECEA;
+    --flag: #B23A2E;
+    --flag-soft: #F5E6E2;
+    --ok: #3F6B4F;
+    --ok-soft: #E5EEE6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12181A;
+      --paper-raised: #182022;
+      --ink: #E7E4DA;
+      --ink-soft: #A9B0AC;
+      --rule: #333B3A;
+      --accent: #5FB3AC;
+      --accent-soft: #1B2E2C;
+      --flag: #E2695A;
+      --flag-soft: #33201C;
+      --ok: #7CB78A;
+      --ok-soft: #1D2B20;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12181A;
+    --paper-raised: #182022;
+    --ink: #E7E4DA;
+    --ink-soft: #A9B0AC;
+    --rule: #333B3A;
+    --accent: #5FB3AC;
+    --accent-soft: #1B2E2C;
+    --flag: #E2695A;
+    --flag-soft: #33201C;
+    --ok: #7CB78A;
+    --ok-soft: #1D2B20;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    margin: 0;
+    padding: 3.5rem 1.25rem 6rem;
+    -webkit-font-smoothing: antialiased;
+  }
+  .sheet {
+    max-width: 760px;
+    margin: 0 auto;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    padding: 3rem 3.25rem 3.5rem;
+  }
+  @media (max-width: 640px) {
+    .sheet { padding: 2rem 1.25rem 2.5rem; }
+  }
+
+  /* masthead */
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.6rem;
+  }
+  h1.title {
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 2.35rem;
+    line-height: 1.1;
+    margin: 0 0 0.5rem;
+    text-wrap: balance;
+  }
+  .subtitle {
+    font-size: 1.02rem;
+    color: var(--ink-soft);
+    margin: 0 0 1.6rem;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.6rem;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--rule);
+  }
+  .meta-row span b { color: var(--ink); font-weight: 600; }
+
+  .note {
+    margin-top: 1.4rem;
+    padding: 0.9rem 1.1rem;
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+  .note b { color: var(--ink); }
+
+  /* part dividers */
+  .part {
+    margin-top: 3.2rem;
+    padding-top: 0.4rem;
+  }
+  .part-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+  .part-label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+  h2.part-title {
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.7rem;
+    margin: 0.1rem 0 0;
+  }
+
+  /* sections */
+  section.block { margin-top: 2.1rem; }
+  h3.sec {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.18rem;
+    margin: 0 0 0.85rem;
+    color: var(--ink);
+  }
+  h3.sec .num {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  p { margin: 0 0 0.9rem; }
+  ul.plain { margin: 0 0 0.9rem; padding-left: 1.2rem; }
+  ul.plain li { margin-bottom: 0.55rem; }
+  ul.plain li b { color: var(--ink); }
+
+  /* status chips */
+  .chip {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    padding: 0.1rem 0.45rem;
+    border-radius: 2px;
+    margin-right: 0.3rem;
+  }
+  .chip.live { background: var(--ok-soft); color: var(--ok); }
+  .chip.dry { background: var(--accent-soft); color: var(--accent); }
+  .chip.dead { background: var(--flag-soft); color: var(--flag); }
+
+  /* tables */
+  .table-wrap { overflow-x: auto; margin-bottom: 1rem; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.55rem 0.7rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  th {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  td.num, th.num {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  tr.sum td { font-weight: 600; border-top: 1px solid var(--ink-soft); background: var(--accent-soft); }
+  td.neg { color: var(--flag); }
+  td.pos { color: var(--ok); }
+  td.status-flag { color: var(--flag); }
+  td.status-ok { color: var(--ok); }
+
+  /* flag callouts */
+  .flag {
+    border-left: 3px solid var(--flag);
+    background: var(--flag-soft);
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 0.9rem;
+  }
+  .flag .flag-head {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--flag);
+    margin-bottom: 0.3rem;
+  }
+  .flag p { margin: 0; font-size: 0.92rem; }
+
+  /* activity bars */
+  .bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.55rem;
+    height: 90px;
+    margin: 0.4rem 0 0.6rem;
+    padding-top: 0.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+  .bar {
+    width: 100%;
+    max-width: 34px;
+    background: var(--accent);
+    opacity: 0.55;
+  }
+  .bar-col.peak .bar { opacity: 1; }
+  .bar-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+    margin-top: 0.4rem;
+  }
+  .bar-count {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+    margin-bottom: 0.2rem;
+  }
+
+  footer.colophon {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+  }
+
+  @media print {
+    body { padding: 0; background: var(--paper); }
+    .sheet { border: none; max-width: 100%; padding: 0.5in; }
+    section.block, .flag, .table-wrap { page-break-inside: avoid; }
+    .part { page-break-before: always; }
+    .part:first-of-type { page-break-before: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <p class="eyebrow">Weekly Checkup · Andre&nbsp;/&nbsp;Forex-Backtesting</p>
+  <h1 class="title">KW39 · 2026</h1>
+  <p class="subtitle">Trading-Bot-Flotte &amp; Baustelle — Performance und Education, Montag 21.09. bis Sonntag 27.09.2026</p>
+  <div class="meta-row">
+    <span>Erzeugt: <b>Mo, 28.09.2026</b></span>
+    <span>Erfasst: <b>3 Bridges / 4 Konten</b></span>
+    <span>Lauf: <b>nachgeholt (Sonntag verpasst)</b></span>
+  </div>
+
+  <div class="note">
+    <b>Der erste MT5-Abzug war still falsch.</b> Um 02:35 lieferte er für beide Funded-Konten <b>0 Deals</b>, obwohl TTP und IQ die ganze Woche gehandelt hatten. Der PC war erst um 02:29 hochgefahren, und die Terminals waren Sekunden vorher gestartet worden, ohne dass ihre Historie geladen war. <code>history_deals_get()</code> gibt dann eine leere Liste ohne Fehler zurück. Der Nach-Abzug ergab TTP 79 und IQ 66 Deals; Funded-Soll/Ist ist damit neu gerechnet.
+  </div>
+
+  <!-- ============ PART I — PERFORMANCE ============ -->
+  <div class="part">
+    <p class="part-label">Teil I</p>
+    <h2 class="part-title">Performance</h2>
+  </div>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">01</span> Wochenkontext</h3>
+    <ul class="plain">
+      <li><b>EK-Portfolio-Bridge</b> <span class="chip live">LIVE · Tickmill</span> — Hebel 1,2x und Einzeltrade-Deckel 5 % (23.09.); <code>ctnl_reversal</code> ab 23.09. 22:45 auf 1 gleichzeitige Position gedeckelt (E5-c), wirksam ab 24.09.</li>
+      <li><b>Funded-Portfolio-Bridge</b> <span class="chip live">LIVE · TTP + IQ, 2 Konten</span> — ttp1 endgültig ausgebaut. OU-Modell auf Logik D (23.09.), ORB Variante C mit Pending-Orders (21.09.).</li>
+      <li><b>FK Instant Funding</b> <span class="chip live">LIVE · BeyondIQCapital</span> — ORB Variante C. <b>CTNL-Kill-Switch die ganze Woche aktiv.</b></li>
+    </ul>
+    <p>Am 23.09. um 21:40 hat der Nutzer auf allen Konten von Hand aufgeräumt (verwaiste OU-Solo-Positionen, überfällige EK-OU-Titel, CTNL-Überbestand). Keine Bridge wurde gestartet oder gestoppt, keine hat ihren <code>DRY_RUN</code>-Stand geändert.</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">02</span> Risk-Management-Compliance</h3>
+    <p><b>Keine Regelverletzung, kein Drawdown-Halt. Ein Kill-Switch war die ganze Woche aktiv, aber nur auf einer von drei Bridges.</b></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Bridge / Konto</th><th>Mechanismus</th><th>Diese Woche</th></tr></thead>
+        <tbody>
+          <tr><td>EK-Portfolio</td><td>Trailing-DD 45 %</td><td class="status-ok">nicht ausgelöst — Woche −11,6 %</td></tr>
+          <tr><td>EK-Portfolio</td><td>Einzeltrade 5 % / gesamt 30 %</td><td class="status-ok">eingehalten — größter Verlust ~2,8 %</td></tr>
+          <tr><td>EK-Portfolio</td><td><code>ctnl_reversal</code> max. 1</td><td class="status-ok">greift ab 24.09. (vorher Grenze 3)</td></tr>
+          <tr><td>Funded / TTP Konto 2</td><td>Offenes Risiko 3,5 %</td><td class="status-flag">31 Ereignisse am 21.09., keine Verletzung</td></tr>
+          <tr><td>Funded / IQ Markets</td><td>6 % DD / 1 % je Position</td><td class="status-ok">inaktiv — schlechtester Tag −0,98 %</td></tr>
+          <tr><td>FK Instant Funding</td><td>5%-EOD-Trailing-DD</td><td class="status-ok">inaktiv — Konto −0,43 % seit Start</td></tr>
+          <tr><td>FK Instant Funding</td><td>CTNL-Standalone-Kill-Switch</td><td class="status-flag">ausgelöst 21.09. 00:04 (−6,70 %), aufgehoben 28.09. 02:37</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="flag">
+      <p class="flag-head">Wichtigster Befund — Asymmetrie</p>
+      <p>Der Kill-Switch hielt FK aus <b>7 CTNL-Trades (−8,74 R)</b> heraus. Dasselbe Bein lief auf IQ (<b>20 Trades, 2 Gewinner, −2.473,94 $</b>) und auf EK (<b>12 Trades, 0 Gewinner, −304,65 €</b>) ungebremst weiter. <code>ctnl_standalone_drawdown</code> gibt es nur in der FK-Bridge und im Repo-Paper-Bot, nicht in Funded oder EK. Das Funded-Log hat keinen einzigen Kill-Switch-Eintrag. „In alle 3 Portfolio-Bots nachgerüstet" (04.09.) bezog sich auf die Paper-Bots.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">03</span> Was hat funktioniert / nicht</h3>
+    <ul class="plain">
+      <li><b>EK:</b> dritte Verlustwoche in Folge und die größte bisher. Fast alles kommt aus Gold: <code>ctnl_reversal</code> −304,65 € (12 Longs in einen fallenden Goldpreis, 4.358 → 4.257) und <code>gold_asb</code> −87,24 €. Die übrigen Beine waren zusammen etwa neutral. E5-c kam am Mi-Abend, als der Schaden größtenteils schon da war.</li>
+      <li><b>Funded:</b> TTP +916,55 $ gegen IQ −2.612,76 $. Dieser Abstand ist <b>keine Exit-Divergenz</b>: TTPs Plus stammt zu zwei Dritteln aus Handschließungen (+617 $), und IQ nahm nach der Freigabe am 23.09. frische CTNL-Entries, die alle ausgestoppt wurden. Positiv waren <code>cls_practical</code> EURUSD (+695 / +1.001 $) und <code>orb_us30</code>; negativ CTNL, <code>gold_asb</code> und <code>orb_nasdaq</code>.</li>
+      <li><b>FK:</b> Die Bots brachten <b>+585,99 $</b> (23 Trades, 52 %), getragen von <code>cls_practical</code> und <code>orb_us30</code>. Zwei <b>von Hand eröffnete</b> Positionen (EURUSD, XAUUSD) wurden ausgestoppt: −576,25 $. Das Konto steht damit bei +9,74 $.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">04</span> Trades · Winrate · PnL</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Bridge</th><th class="num">Trades</th><th class="num">Winrate</th><th class="num">PnL</th><th class="num">%</th></tr></thead>
+        <tbody>
+          <tr><td>EK-Portfolio-Bridge (Tickmill)</td><td class="num">44</td><td class="num">27,3 %</td><td class="num neg">−367,72 €</td><td class="num neg">−11,6 %</td></tr>
+          <tr><td>Funded-Portfolio-Bridge (TTP + IQ)</td><td class="num">90</td><td class="num">38,9 %</td><td class="num neg">−1.696,21 $</td><td class="num neg">−0,85 %</td></tr>
+          <tr><td>FK Instant Funding (LIVE)</td><td class="num">25</td><td class="num">48,0 %</td><td class="num pos">+9,74 $</td><td class="num pos">+0,01 %</td></tr>
+          <tr class="sum"><td>Grand Total (alle 3, echtes Geld)</td><td class="num">159</td><td class="num">37,1 %</td><td class="num neg">−367,72 € / −1.686,47 $</td><td class="num neg">≈ −0,70 %</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.8rem; color:var(--ink-soft)">Nur geschlossene Positionen, netto inkl. Kommission und Swap; % bezogen auf den Kontostand zu Wochenbeginn. Keine Summe über beide Währungen; die Gesamtprozentzahl bleibt zwischen EUR/USD 1,05 und 1,25 bei −0,69 bis −0,71 %. <b>Die Zahlen enthalten Handeingriffe:</b> TTP +617 $ (25 Handschließungen), EK +53 €, IQ +56 $, FK −576 $ (Handeröffnungen). Nur Bot: Funded ≈ −2.369 $, FK +586 $.</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">05</span> Soll / Ist</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Bridge</th><th>Soll</th><th>Ist</th><th class="num">platziert</th><th class="num">nicht platz.</th><th class="num">nie gesehen</th></tr></thead>
+        <tbody>
+          <tr><td>EK-Portfolio</td><td>9 / +3,93 %</td><td class="neg">−367,72 € (−11,6 %)</td><td class="num">1 (+6,57 R)</td><td class="num">0</td><td class="num">0 · 8 n. ermittelbar (+9,54 R)</td></tr>
+          <tr><td>Funded</td><td>14 / +1,23 %</td><td class="neg">−1.626,95 $ (−0,82 %)</td><td class="num">8 (−0,06 R)</td><td class="num">2 (−2,34 R)</td><td class="num">4 (+8,84 R)</td></tr>
+          <tr><td>FK</td><td>12 / +2,47 %</td><td>+27,44 $ (+0,03 %)</td><td class="num">1 (+6,43 R)</td><td class="num">7 (−8,74 R)</td><td class="num">4 (+8,84 R)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="plain">
+      <li><b>Soll rechnet mit der heutigen Konfiguration.</b> EKs <code>ctnl_reversal</code> hat im Soll nur 3 Trades, weil es mit der Grenze 1 rechnet; live galt bis Mi-Abend Grenze 3 und EK nahm 12 Trades. Diese Lücke ist der Konfigurationsschnitt, kein Ausführungsfehler. Dasselbe gilt für OU Logik D und den Hebel 1,2x.</li>
+      <li><b>EK lässt sich nur grob zerlegen</b> (SQLite statt Signal-Ledger); <code>nicht_ermittelbar</code> heißt nicht „nie gesehen". <b>EKs Kosten sind geschätzt</b> (0,50 Pips), Funded und FK gemessen. EK deshalb nicht gegen die anderen beiden stellen.</li>
+      <li><b>FKs „nicht platziert" (−8,74 R) ist der Kill-Switch bei der Arbeit</b>, messbar positiv.</li>
+      <li><b>Die ORB-Zeilen sind vermutlich nicht belastbar:</b> Die 4 „nie gesehen" sind auf Funded und FK dieselben <code>orb_nasdaq</code>-Signale, obwohl beide live NASDAQ gehandelt haben; <code>orb_us30</code> hat im Soll kein Signal, live aber 12 bzw. 6 Deals. Vermutlich erkennt die Zuordnung die Pending-Orders von Variante C nicht. Nicht verifiziert.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">06</span> Auffälligkeiten</h3>
+    <div class="flag">
+      <p class="flag-head">Kritisch — Entscheidung</p>
+      <p><b>Der CTNL-Kill-Switch existiert nur auf FK.</b> In dieser Woche hat das IQ ca. 2.470 $ und EK ca. 305 € gekostet. Soll er auf Funded und EK nachgezogen werden? Auf Funded wirkt ein Commit an <code>challenge_portfolio/paper_bot.py</code> sofort auf echtes Geld. Ungeklärt ist auch der Sprung beim Aufheben von −6,70 % auf −2,88 % übers Wochenende.</p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">Tendenz — EK</p>
+      <p><b>Vier Verlustwochen in Folge, jede größer:</b> −0,2 / −3,1 / −6,6 / −11,6 %, im September zusammen −19,4 %. Der 45%-Kill-Switch ist weit weg. Zwei Drittel des Verlusts kommen aus dem Mindestlot-Bein, und der Hebel wurde am 23.09. erhöht. Formal ist das innerhalb der Regeln; es ist eine Frage an dich.</p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">Handtrades auf dem Bot-Konto</p>
+      <p>Auf FK gab es im September <b>vier Handeröffnungen, alle ausgestoppt: −1.232,82 $.</b> Die Bots stehen auf demselben Konto bei +798,39 $. Die Frage aus KW37 („Soll auf den Bot-Konten von Hand gehandelt werden?") ist offen.</p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">Dashboard überholt</p>
+      <p>Der Punkt <b>„8 verwaiste OU-Solo-Positionen: immer noch offen"</b> stimmt nicht mehr. DAL (EK) sowie AFL, NUE, UAL, TXT und APD (TTP) wurden am 23.09. um 21:40 von Hand geschlossen, am Broker belegt. Im Dashboard ist das vermerkt; entfernt habe ich den Punkt nicht, das Abhaken liegt bei dir.</p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">Werkzeugkette</p>
+      <p><b>Leere Deal-Historie auf kalt gestartetem Terminal:</b> Ohne den Abgleich mit dem Bridge-Log hätte der Report Funded mit „0 Trades" gemeldet. Vorschlag: <code>mt5_pull.py</code> soll bei 0 Deals trotz offener Positionen warnen oder wiederholen. Kleinere Punkte: ein <code>str/float</code>-Fehler im FK-CLS-Scan (21.09.), Lake-Frische-Fallbacks, ein <code>Authorization failed</code> auf EK (23.09. 21:44). Das IQ-Terminal, das dieser Lauf gestartet hat, blieb bewusst offen: Es ist das Live-Terminal der laufenden Funded-Bridge.</p>
+    </div>
+  </section>
+
+  <!-- ============ PART II — EDUCATION ============ -->
+  <div class="part">
+    <p class="part-label">Teil II</p>
+    <h2 class="part-title">Education</h2>
+  </div>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">01</span> Hauptfokus der Woche</h3>
+    <ul class="plain">
+      <li><b>CTNL durchleuchtet</b> (Befunde 10–17): Regime, Walk-Forward, Long/Short, MTF-Ribbon. Live umgesetzt nur E5-c.</li>
+      <li><b>OU-Modell umgebaut</b> auf Logik D + Signalseite, dazu die Scanner-Ausstiegsschwellen.</li>
+      <li><b>Risiko und Konten:</b> EK-Hebel 1,2x, ORB Variante C, ttp1 ausgebaut, Handaufräumen.</li>
+      <li><b>Fundament repariert:</b> Git-Sync-Stash abgestellt, verlorener Stand zurückgeholt, <code>mt5_pull</code>-Fenster-Fix, KW38 nachgebaut, Wächter für fehlende Reports.</li>
+      <li><b>Papers gesichtet</b> und das EU-Open-Fenster negativ abgeschlossen.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">02</span> Aktive Zeiten</h3>
+    <div class="bars">
+      <div class="bar-col"><span class="bar-count">2</span><div class="bar" style="height:9%"></div><span class="bar-label">Mo</span></div>
+      <div class="bar-col"><span class="bar-count">2</span><div class="bar" style="height:9%"></div><span class="bar-label">Di</span></div>
+      <div class="bar-col peak"><span class="bar-count">23</span><div class="bar" style="height:100%"></div><span class="bar-label">Mi</span></div>
+      <div class="bar-col"><span class="bar-count">6</span><div class="bar" style="height:26%"></div><span class="bar-label">Do</span></div>
+      <div class="bar-col"><span class="bar-count">0</span><div class="bar" style="height:2%"></div><span class="bar-label">Fr</span></div>
+      <div class="bar-col"><span class="bar-count">0</span><div class="bar" style="height:2%"></div><span class="bar-label">Sa</span></div>
+      <div class="bar-col"><span class="bar-count">0</span><div class="bar" style="height:2%"></div><span class="bar-label">So</span></div>
+    </div>
+    <p><b>Ein Tag hat die Woche getragen:</b> Der Mittwoch hatte einen Vormittagsblock und dann einen langen Abend von 21:39 bis 23:04 mit 19 Commits. Donnerstag inklusive der Nacht auf Freitag waren Nacharbeiten. Das Wochenende war zum ersten Mal wirklich frei, und auch die Bridges hielten ihre Wochenend-Pause ein.</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">03</span> Main Erkenntnisse</h3>
+    <ul class="plain">
+      <li><b>Ein Schutz, der nur auf einer von drei Bridges existiert, schützt das Portfolio nicht.</b> „Nachgerüstet in alle Bots" hieß „in alle Paper-Bots".</li>
+      <li><b>Die CTNL-Forschung vom Mittwoch hat die Woche vorhergesagt.</b> Der Edge liegt nur long, der Ribbon gehört als Trendrichtung verdrahtet, und Gold fiel um ca. 100 $. Die Erkenntnis lag Mittwochabend vor, die Verluste liefen weiter, weil die Freigabe bewusst bei dir liegt.</li>
+      <li><b>Erst die Verdrahtung vorhandener Bausteine prüfen, dann Parameter suchen.</b> Walk-Forward verwarf fast alle Parameter; den größten Hebel lieferte der schon vorhandene Ribbon.</li>
+      <li><b>Mindestlot dreht auf kleinen Konten die Risiko-Hierarchie um.</b> Diese Woche kamen 83 % des EK-Verlusts aus 12 Mindestlot-Trades.</li>
+      <li><b>„Keine Zeilen" ist kein Befund, solange die Quelle nicht bewiesen hat, dass sie geantwortet hat.</b> Drei Beispiele dafür: das abgeschnittene Tagesende, <code>git show</code> auf Stashes und die leere Historie auf kaltem Terminal.</li>
+      <li><b>Aus der Paper-Woche:</b> Im ORB-Fenster gibt es keine Risikoprämie (t=0,89), long-only ist dort also kein verstecktes Beta. Cross-Market-Filter müssen gegen Eigenmomentum kontrolliert werden. Eine überraschend große Zahl ist zuerst ein Bug-Verdacht.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">04</span> Neues Wissen (Papers / Ideen)</h3>
+    <ul class="plain">
+      <li><b>24h-Renditestruktur und Informationskette</b> (neu): New York produziert Information und erntet keine Prämie; Europa erntet die Prämie.</li>
+      <li><b>EU-Open-Renditefenster</b> (neu, negativ abgeschlossen): Das Sample endete 2018; ohne 2020 liegt der Edge unter dem Spread. Nebenbefund: Die Nacht-Spreads unserer Index-CFDs sind so eng wie tagsüber.</li>
+      <li><b>Bewusst nicht übernommen:</b> Richtungsfilter aus Europa/Asien, Delta-VIX für die US-Session, Beta-Law.</li>
+      <li><b>Geänderte Forschungsnotizen:</b> Gold-CTNL-Edge, CTNL-Kostenvalidierung, OU-Kostenvalidierung, EK-Risiko-Audit, ORB-Exit-Logik.</li>
+      <li><b>Ideen-Inbox:</b> kein neuer Eintrag diese Woche.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">05</span> Verbesserungen</h3>
+    <ul class="plain">
+      <li>E5-c: EK <code>ctnl_reversal</code> max. 1, live nachweisbar ab 24.09.</li>
+      <li>Git-Sync stasht nicht mehr ohne Grund; verlorene Arbeit ist zurückgeholt.</li>
+      <li><code>mt5_pull</code>-Fenster-Fix; Wächter für fehlende Weekly-Reports.</li>
+      <li>OU auf Logik D: OOS PF 0,83 → 1,08.</li>
+      <li>Alle verwaisten Positionen geschlossen; das Gold-Bein ist im EK-Soll/Ist wieder sichtbar.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">06</span> Verschlechterungen / offene Probleme</h3>
+    <ul class="plain">
+      <li>CTNL-Kill-Switch fehlt auf Funded und EK.</li>
+      <li>EK: vier Verlustwochen in Folge, −19 % im September, bei erhöhtem Hebel.</li>
+      <li>Soll/Ist für ORB seit Variante C vermutlich blind.</li>
+      <li>Handtrades auf dem FK-Bot-Konto: −1.232,82 $ im September.</li>
+      <li>Leere MT5-Historie auf kaltem Terminal ist nicht im Code abgesichert.</li>
+      <li>Report-Lauf erneut verspätet (Wake-Timer).</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">07</span> Optimierungsmöglichkeiten</h3>
+    <ul class="plain">
+      <li><b>CTNL-Kill-Switch auf Funded/EK: entscheiden.</b> Der Code liegt in der FK-Bridge fertig vor.</li>
+      <li><b>Ribbon-Frage (E6) entscheiden.</b> Sie trifft genau das Verlustmuster dieser Woche.</li>
+      <li><b>EK-Risiko als Ganzes neu bewerten:</b> Mindestlot, Hebel und Verlustserie gehören zusammen.</li>
+      <li><b>Reporting härten:</b> ORB-Zuordnung im Soll/Ist reparieren, Retry in <code>mt5_pull</code> bei 0 Deals.</li>
+      <li><b>Handtrade-Regel für die Bot-Konten festlegen.</b></li>
+      <li><b>Wake-Timer freigeben</b>, damit der Report wieder sonntags läuft.</li>
+    </ul>
+  </section>
+
+  <footer class="colophon">
+    Weekly Checkup · automatisch erzeugt · Forex-Backtesting/scripts/reports · lokal committet, nicht gepusht
+  </footer>
+
+</div>
+</body>
+</html>

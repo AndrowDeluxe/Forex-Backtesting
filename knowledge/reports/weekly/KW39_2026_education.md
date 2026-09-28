@@ -1,161 +1,215 @@
 # Weekly Checkup - Education - KW39/2026
 
-> **Zwischeneintrag von Hand, 2026-09-23 (Mittwoch).** Auf Nutzerwunsch
-> vorgezogen, weil die Paper-Auswertung nicht bis Sonntag warten soll.
-> Der geplante `Forex-Weekly-Report`-Lauf am Sonntagabend erzeugt diese
-> Datei neu und ersetzt damit diesen Eintrag -- der Inhalt geht dabei
-> **nicht** verloren: die Quellen, aus denen der Report Abschnitt 3 und 4
-> baut, sind beide gesetzt (Memory-Eintrag `us_cash_session_hat_keine_risikopraemie`
-> und die committeten PARA-Notizen in `1fc8645`). Abschnitte 1, 2, 5-7
-> bleiben hier leer, weil die Woche noch laeuft.
+**Abgedeckte Woche: Mo 2026-09-21 bis So 2026-09-27.** Erzeugt am Mo
+2026-09-28 durch den geplanten Report-Lauf. **Diese Fassung baut auf dem
+Zwischeneintrag vom 23.09. auf**, den der Nutzer vorgezogen hatte. Dessen
+Inhalt (Papers, EU-Open-Fenster) steht unten weitgehend unveraendert in
+Abschnitt 3 und 4. Neu hinzugekommen sind die Abschnitte 1, 2 und 5 bis 7
+sowie die Erkenntnisse vom Mittwochabend bis Freitag.
+
+## 1. Was stand die Woche an / Hauptfokus
+
+**Die dichteste Research-Woche seit Wochen, fast alles an einem Tag.** Von
+den rund 35 Commits von Hand fallen 23 auf Mittwoch, den 23.09. Inhaltlich
+waren es vier Straenge:
+
+1. **CTNL komplett durchleuchtet** (Befunde 10-17): Regime-Diagnose,
+   Walk-Forward beider Beine, Struktur-gegen-Regime-Test, Long/Short-Trennung,
+   MTF-Trendbestaetigung und der eigene EMA-Ribbon als Richtung. Umgesetzt
+   wurde live davon nur **E5-c**: EK haelt hoechstens eine `ctnl_reversal`-
+   Position. Der Rest laeuft als Schattenlauf bzw. wartet auf deine
+   Entscheidung.
+2. **OU-Modell umgebaut** auf Logik D + Signalseite (Funded + EK). Dazu die
+   Scanner-Ausstiegsschwellen fuer alle Universumstitel.
+3. **Risiko und Konten:** EK-Hebel 1,2x, ORB Variante C (Pending-Orders),
+   ttp1 endgueltig ausgebaut, verwaiste Positionen von Hand geschlossen.
+4. **Das Fundament repariert:** Der Git-Sync-Stash, der Arbeit frass, ist
+   abgestellt; der verlorene Stand wurde aus den Stashes zurueckgeholt;
+   `mt5_pull.py` hat einen Fenster-Fix; der fehlende KW38-Report wurde
+   gefunden, nachgebaut und ein Waechter dafuer gebaut.
+
+Dazu die Paper-Sichtung vom Montag/Dienstag und das EU-Open-Fenster (siehe
+Abschnitt 4).
+
+## 2. Aktive Zeiten
+
+Commits von Hand je Tag, ohne automatische Snapshots:
+
+| Mo | Di | Mi | Do | Fr | Sa | So |
+|---|---|---|---|---|---|---|
+| 2 | 2 | 23 | 3 (+3 kurz nach Mitternacht) | 0 | 0 | 0 |
+
+**Ein Tag hat die Woche getragen.** Der Mittwoch hatte einen Vormittagsblock
+(10:04-10:19) und dann einen langen Abend von 21:39 bis 23:04. Allein dort
+liegen 19 Commits. Do Vormittag und die Nacht auf Freitag (00:31-00:43)
+waren Nacharbeiten. **Fr bis So: nichts.** Das deckt sich mit dem Muster aus
+KW36/37: Viel wird an einem intensiven Abend gesammelt committet. Neu ist,
+dass das Wochenende diesmal wirklich frei war. Die Bridges hielten sich an
+ihre Wochenend-Pause (Logs Fr 23:xx bis Mo 02:29 still).
 
 ## 3. Meine Main Erkenntnisse
 
-**In unserem ORB-Handelsfenster gibt es gar keine Risikopraemie zu ernten --
-und das ist eine gute Nachricht.** Bondarenko/Muravyev (SSRN 3596245,
-E-mini-S&P-Futures 2004-2018) zeigen, dass die US-Cash-Session 09:30-16:15 ET
-im Mittel nur +3,44 % p.a. bei **t=0,89** liefert (Sharpe 0,23, MaxDD 44,6 %).
-Die gesamte durchschnittliche Aktienmarktrendite entsteht stattdessen in vier
-Nachtstunden, 23:30-03:30 ET.
+**Ein Schutzmechanismus, der nur auf einer von drei Bridges existiert, ist
+kein Schutzmechanismus fuer das Portfolio.** Das ist die wichtigste Lehre der
+Woche, und sie kam aus der Live-Auswertung, nicht aus der Forschung. Der
+CTNL-Kill-Switch hielt FK sieben CTNL-Trades (-8,74 R) vom Leib. IQ und EK
+haben ihn nicht und verloren auf demselben Bein ca. 2.470 USD bzw. 305 EUR.
+Das Muster kennen wir schon aus KW38 ("das System meldete X und tat Y"),
+hier in der Form: **"nachgeruestet in alle Bots" hiess "in alle
+Paper-Bots".**
 
-Warum das wichtig ist: Der Standardeinwand gegen eine long-only-Aktienstrategie
-lautet "du erntest doch nur die Marktrendite". Fuer unseren
-[[ny-open-orb-sp500]] **stimmt dieser Einwand nachweislich nicht** -- in dem
-Fenster, in dem wir long-only sind, ist schlicht keine Drift vorhanden. Der
-Stage-4b-Befund (long-only Sharpe 0,56 -> 0,81) wird dadurch nicht
-relativiert, sondern gestaerkt: der Vorteil muss konditional sein, weil
-unkonditional nichts da ist.
+**Die CTNL-Forschung vom Mittwoch hat genau diese Woche vorhergesagt.** Der
+Edge liegt auf der Long-Seite. Er ist im Kern eine Wette auf steigendes Gold,
+keine Struktur (Memory `ctnl_edge_nur_long`). Der eigene MTF-EMA-Ribbon war
+nur als Dehnungsfilter verdrahtet, obwohl er als **Trendrichtung** der
+staerkste Hebel ist (Memory `ctnl_ribbon_als_richtung`). Und Gold fiel von
+Mo bis Do um ca. 100 Dollar. Die Long-Reversals, die dabei ausgestoppt
+wurden, sind das Lehrbuchbeispiel fuer das, was der Ribbon-Filter verhindern
+soll. **Die Erkenntnis lag Mittwochabend vor, die Verluste liefen Mi/Do
+weiter.** Das ist kein Vorwurf. Es zeigt nur, wie lang der Weg von "Befund"
+zu "live" ist, wenn die Freigabe bewusst beim Nutzer liegt.
 
-**Der ORB hat nach fast zwei Monaten Arbeit immer noch keinen dokumentierten
-Mechanismus.** Das ist mir erst bei dieser Sichtung aufgefallen. Der
-EMA-neutral-Filter ist das mit Abstand staerkste bestaetigte Signal des
-Projekts (Sharpe 0,56 -> 1,05) und steht auf reiner Backtest-Evidenz --
-[[edge-card-workflow]] Regel 4 sagt dazu ausdruecklich: "Ein Backtest ist KEIN
-Mechanismus." Kinoshita liefert nun einen Kandidaten (US-Indizes sagen ihren
-eigenen Opening-Gap zu 52,8-56,0 % aus dem Vortagsmomentum vorher; der Filter
-koennte genau die Tage waehlen, an denen dieser Prior am schwaechsten ist).
-**Das ist eine Hypothese, kein Befund** -- aber eine mit vorhandenen Daten
-falsifizierbare.
+**Erst pruefen, ob vorhandene Bausteine richtig verwendet werden, dann
+Parameter suchen.** Die Walk-Forward-Optimierung verwarf fast alle
+TP/SL/Signal-Parameter; nur der Effizienz-Regime-Filter hielt stand (Memory
+`ctnl_regime_filter_einziger_hebel`). Den groessten Hebel fand erst der Blick
+auf die **Verdrahtung** eines schon vorhandenen Bausteins (Ribbon).
 
-**Ein "dieser Filter ist offensichtlich sinnvoll"-Reflex wurde teuer
-widerlegt -- bei jemand anderem.** Kinoshitas Leg Europa -> New York sah
-zunaechst nach 72 % Directional Accuracy aus. Erst die Kontrolle auf das
-Eigenmomentum des Zielmarkts liess ihn auf **+0,07 Punkte** zusammenfallen;
-die reine Vorzeichenregel erreicht dort **48,89 %, also unter Zufall**.
-Ursache war eine Scheinkorrelation (europaeische Handelszeit ueberlappt mit
-der Zeit NACH dem NY-Open). Lehre fuer uns: **wer einen Cross-Market-Filter
-misst, muss gegen Eigenmomentum kontrollieren**, sonst misst er sich selbst.
+**Auf einem kleinen Konto dreht der Mindestlot die Risiko-Hierarchie um.**
+0,01 Lot XAUUSD riskiert auf EK schon das 46-fache dessen, was
+`ctnl_reversal` riskieren sollte (Memory `ek_mindestlot_kehrt_hierarchie_um`).
+Das kleinste Bein wird dadurch zum groessten Risiko. Diese Woche war der
+Beweis: 12 Mindestlot-Trades machten 83 % des EK-Verlusts.
 
-**Parallele Sessions ueberschreiben weiterhin `knowledge/`.** Zwei am 22.09.
-geschriebene Eintraege (DASHBOARD-Rueckfrage, ORB-Abschnitt) waren am 23.09.
-spurlos verschwunden, ueberschrieben durch Commit `1fc8645` einer anderen
-Session. Wiederhergestellt. Das ist bereits der dokumentierte Fall aus
-Memory `parallele_sessions_ueberschreiben_knowledge` -- er ist also **nicht
-behoben**, und die dort notierte Gegenmassnahme (nach dem Eintrag per grep
-verifizieren) hat diesmal funktioniert, weil ich sie ein zweites Mal
-ausgefuehrt habe. Einmal pruefen reicht offenbar nicht, wenn zwischen
-Schreiben und Weiterarbeiten Stunden liegen.
+**Die Reporting-Kette kann still luegen, an drei verschiedenen Stellen:**
+- `mt5_pull.py` verlor die letzten Stunden des Tages. Behoben am 23.09.
+  (Memory `mt5_pull_fenster_kappt_tagesende`).
+- `git show stash@{N}` versteckt gestashte Zeilen. Richtig ist
+  `git diff stash@{N}^ stash@{N}` (Memory `git_stash_recovery_show_vs_diff`).
+- **Neu in diesem Lauf:** Ein frisch gestartetes Terminal liefert eine leere
+  Deal-Historie ohne Fehlermeldung (Performance-Report, Kasten oben).
+
+Gemeinsamer Nenner: **"Keine Zeilen" ist kein Befund, solange die Quelle
+nicht bewiesen hat, dass sie geantwortet hat.**
+
+**Git-Sync hat eine Woche lang Arbeit gefressen.** Die Auto-Tasks stashten
+den gemeinsamen Working Tree und machten bei Konflikten `reset --hard`
+(93 Stashes). Am 23.09. behoben (Memory `git_sync_stash_frisst_sessionarbeit`),
+am 24.09. nachverifiziert. **Die Nebenwirkung wirkt aber nach:** Der am 25.09.
+"wiederhergestellte" Dashboard-Punkt zu den OU-Solo-Waisen war da bereits
+erledigt. Er wurde zurueckgeholt, weil der Beleg fehlte, dass er geschlossen
+war (siehe Performance-Report, Punkt 6.2).
+
+**Aus dem Zwischeneintrag vom 23.09. (unveraendert gueltig):**
+
+- **In unserem ORB-Handelsfenster gibt es keine Risikopraemie zu ernten, und
+  das ist eine gute Nachricht.** Bondarenko/Muravyev: Die US-Cash-Session
+  09:30-16:15 ET bringt nur +3,44 % p.a. bei **t=0,89**. Die gesamte
+  Aktienrendite entsteht nachts. Der Einwand "long-only erntet nur Beta"
+  greift beim [[ny-open-orb-sp500]] also nachweislich nicht; der Vorteil
+  muss konditional sein (Memory `us_cash_session_hat_keine_risikopraemie`).
+- **Der ORB hat nach fast zwei Monaten immer noch keinen dokumentierten
+  Mechanismus.** Der EMA-neutral-Filter (Sharpe 0,56 -> 1,05) steht auf
+  reiner Backtest-Evidenz, und [[edge-card-workflow]] Regel 4 sagt dazu:
+  "Ein Backtest ist KEIN Mechanismus." Kinoshitas Opening-Gap-Befund liefert
+  einen Kandidaten. **Das ist eine Hypothese, kein Befund.**
+- **Wer einen Cross-Market-Filter misst, muss gegen Eigenmomentum
+  kontrollieren.** Kinoshitas Europa->NY-Leg fiel von scheinbar 72 %
+  Trefferquote auf +0,07 Punkte (Vorzeichenregel 48,89 %, also unter
+  Zufall).
+- **Eine ueberraschend grosse Zahl ist zuerst ein Bug-Verdacht, kein Fund.**
+  Die Paarung von Mitternachtsfenstern ueber den Kalendertag ergab eine
+  Scheinrendite von -13 bis -19 % p.a.
 
 ## 4. Neues Wissen diese Woche (Papers/Ideen)
 
-**Drei externe Papers vom Nutzer geteilt (2026-09-22), zwei neue PARA-Notizen.**
-Die Sichtung lief nach [[backtest-standard-process]] Phase 2 + 3
-(Sichtung/Screening) -- **kein Code, kein Backtest, kein Eingriff in einen
-laufenden Bot**. Bewusste Prozess-Abgrenzung: Papers laufen laut `CLAUDE.md`
-NICHT durch den [[edge-card-workflow]]; dessen Brille wurde stattdessen auf
-den ORB gelegt, der als haendisch entwickelte Nutzer-Strategie
-dorthin gehoert.
+**Drei externe Papers (22.09.), nach Phase 2+3 gesichtet, kein Code, kein
+Eingriff in laufende Bots.**
 
-- [[24h-renditestruktur-und-informationskette]] (09-22) -- Destillat aller
-  drei Papers. Kerngedanke: New York **produziert** Information (Kinoshita)
-  und **erntet keine Risikopraemie** (Bondarenko/Muravyev); Europa erntet die
-  Praemie und produziert keine Information fuer NY. Zwei Aussagen ueber
-  dasselbe Fenster, beide fuer uns relevant.
-- [[eu-open-renditefenster]] (09-22, Status am 09-23 **abgeschlossen/negativ**,
-  siehe Nachtrag unten) --
-  neuer separater Edge-Kandidat: long Index 05:30-09:30 Berlin. Sharpe 1,67,
-  in jedem der 15 Paper-Jahre positiv, MaxDD 8 %, besteht White-Reality-Check
-  und Bonferroni, kausal ueber die Sommerzeit-Asymmetrie auf Europas Open
-  eingegrenzt. Kollidiert zeitlich nicht mit dem ORB.
+- [[24h-renditestruktur-und-informationskette]] (neu, 22.09.): New York
+  **produziert** Information (Kinoshita) und **erntet keine Risikopraemie**
+  (Bondarenko/Muravyev). Europa erntet die Praemie und liefert NY keine
+  Information.
+- [[eu-open-renditefenster]] (neu 22.09., **am 23.09. negativ
+  abgeschlossen**): Das Paper ist sauber (15/15 Jahre positiv, White-RC,
+  Bonferroni), **aber das Sample endete 2018**. Ohne 2020 liegt der Edge
+  unter dem Spread (0,26 bps Edge gegen 0,39 bps Kosten). Phase 6 bewusst
+  nicht gerechnet. **Positiver Nebenbefund:** Die Nacht-Spreads unserer
+  Index-CFDs sind so eng wie tagsueber (Tickmill 0,23-0,39 bps). Details in
+  Memory `eu_open_edge_zerfallen`.
+- **Bewusst nicht uebernommen:** Richtungsfilter Europa/Asien fuer den
+  NY-Open (Leg tot), Delta-VIX als ORB-Filter (fuer die US-Session t=0,5),
+  Beta-Law (versagt auf Index-Ebene).
 
-**Was NICHT uebernommen wurde, und warum** (gehoert hier genauso hin wie die
-Funde):
+**Geaenderte PARA-Notizen der Woche** (Forschungsstand, keine neuen Papers):
+- [[gold-ctnl-edge-portfolio]] und [[ctnl-kostenvalidierung]]: Befunde 10-17
+  der CTNL-Untersuchung.
+- [[ou-modell-kostenvalidierung]]: Logik D + Signalseite, BB_K als einziger
+  Hebel.
+- [[ek-risiko-kalibrierung-audit]]: Die 7,8 % gegen 33,9 % sind zwei
+  Zeithorizonte, kein Fehler.
+- [[orb-exit-logik-neubewertung]] und [[ny-open-orb-sp500]]: Variante C und
+  Paper-Einordnung.
+- [[bein-matrix-ist-soll-paper]], [[realkosten-und-ausfuehrungs-probe]],
+  [[systemlandkarte]].
 
-- **Richtungsfilter aus Europa/Asien fuer den NY-Open: vor dem Bau
-  verworfen.** Siehe oben -- der Leg ist tot, und zwar spezifisch der Weg
-  nach New York hinein, waehrend alle anderen Legs +10,6 bis +15,0 Punkte
-  tragen. Ein sauber begruendeter Nicht-Bau ist hier ein Ergebnis, kein
-  verpasster Test.
-- **Delta-VIX als ORB-Tagesfilter: nicht weiterverfolgt**, obwohl wir bisher
-  nur den VIX-*Level* getestet haben und das Paper zeigt, dass die
-  *Aenderung* viel staerker ist (t=4,1 vs. t=1,2). Grund: das gilt fuer die
-  Vorhersage des Nachtfensters. Fuer das einzige US-Session-Muster, das das
-  Paper testet, ist Delta-VIX **insignifikant (t=0,5)**.
-- **Das Beta-Law** (Kinoshita, SSRN 7091018): braucht einen Sektoren-
-  Querschnitt innerhalb eines Marktes. Wir handeln drei Indizes, und das
-  Paper zeigt selbst, dass die Beziehung **auf Index-/Laenderebene versagt**
-  (n=9, p=0,21). Nicht anwendbar.
+**Ideen-Inbox:** In dieser Woche kam **kein neuer Eintrag** hinzu. Die
+verwertbaren Straenge sind direkt als PARA-Notiz oder Dashboard-Rueckfrage
+gelandet. Der aelteste unsortierte Punkt ("FK-CLS-Scan liefert einen Trade am
+Sonntag", 17.09.) ist weiterhin nicht untersucht.
 
-**Ideen-Inbox**: kein neuer Eintrag aus dieser Sichtung -- die beiden
-verwertbaren Straenge sind direkt als PARA-Notiz bzw. als
-Dashboard-Rueckfrage gelandet, statt in der Inbox zu parken.
+## 5. Verbesserungen
 
-## Offener Punkt zur Report-Automatik
+- **EK `ctnl_reversal` auf 1 gleichzeitige Position gedeckelt** (E5-c). Live
+  wirksam ab 24.09., im Log nachweisbar.
+- **Git-Sync stasht nicht mehr, wenn es nichts zu mergen gibt**
+  (`a57de64`, `bf06bfc`). Die Ursache der verlorenen Arbeit ist damit weg.
+- **Verlorener Arbeitsstand aus den Stashes zurueckgeholt** (`fd3809d`,
+  `26ffea3`).
+- **`mt5_pull.py` Fenster-Fix:** Tagesabzuege verlieren die letzten Stunden
+  nicht mehr.
+- **Waechter fuer fehlende Weekly-Reports** im 08:00-Digest (`3692f76`).
+- **OU-Modell auf die validierte Logik D umgestellt**: von "verliert
+  zuverlaessig" auf "verdient wenig" (OOS PF 0,83 -> 1,08).
+- **Alle verwaisten Positionen geschlossen** (Handaufraeumen am 23.09.).
+  Keine Position mehr ueber dem Haltelimit.
+- **Soll/Ist ordnet auf EK das Gold-Bein wieder zu** (in KW38 unsichtbar).
 
-**Fuer KW38/2026 existiert kein Education- und kein Performance-Report**,
-obwohl `scripts/reports/mt5_2026-W38.json` da ist -- der Datenabzug lief also,
-der Report nicht. Nicht untersucht, hier nur festgehalten, damit es nicht
-unbemerkt bleibt.
+## 6. Verschlechterungen / offene Probleme
 
-## Nachtrag 2026-09-23 abends: das EU-Open-Fenster ist durchgerechnet -- und tot
+- **CTNL-Kill-Switch nur auf FK**: Funded/EK handelten das Bein ungebremst
+  durch eine Gold-Schwaeche. Neu entdeckt, nicht behoben.
+- **EK: vierte Verlustwoche in Folge, -19 % im September.** Parallel wurde
+  der Hebel auf 1,2x erhoeht.
+- **Soll/Ist fuer ORB seit Variante C vermutlich blind:** Pending-Order-
+  Entries werden als "nie gesehen" gefuehrt, und `orb_us30` hat im Soll kein
+  Signal.
+- **Handtrades auf dem FK-Bot-Konto:** September -1.232,82 USD aus 4
+  Positionen. Die Frage aus KW37 ist offen.
+- **MT5-Abzug still leer auf kalt gestartetem Terminal.** In diesem Lauf
+  aufgefallen und umgangen, aber nicht im Code abgesichert.
+- **Dashboard-Punkt "OU-Solo-Waisen offen" ist ueberholt**, steht aber noch
+  drin (wartet auf deine Bestaetigung).
+- **Report-Lauf erneut verspaetet** (Mo 02:29 statt So 18:00). Die
+  Wake-Timer-Ursache ist unveraendert.
 
-Am selben Tag noch den Edge-Kandidaten aus Abschnitt 4 komplett durch die
-Schritte 0-4 gefahren ([[eu-open-renditefenster]] enthaelt alle Zahlen).
-Ergebnis: **ehrliches Negativergebnis, nichts gebaut.**
+## 7. Optimierungsmoeglichkeiten
 
-**Die Lehre, die ich mitnehme, ist nicht "das Paper war falsch".** Das Paper
-ist sauber -- es besteht White-Reality-Check und Bonferroni, hat einen
-kausalen Sommerzeit-Test und 15 von 15 positiven Jahren. Und unser eigenes
-2020 (+24,3 %) trifft die +24,5 %, die die Autoren fuer ihr 2020-Out-of-Sample
-berichten, fast exakt. Die Messung stimmt auf beiden Seiten.
+Nach Gewicht sortiert:
 
-**Die Lehre ist: das Sample endete Juli 2018.** In den acht Jahren danach ist
-der Effekt verschwunden. Ohne 2020 bleiben +0,67 / -0,29 / +2,07 % p.a. bei
-t unter 1,2 -- und damit **unter dem Spread**, den wir bezahlen wuerden.
-Ein Edge von 0,26 bps je Trade gegen 0,39 bps Kosten ist kein Edge.
-
-Drei Dinge, die ich daraus fuer kuenftige Papers behalte:
-
-1. **Zuerst fragen: wann endet das Sample?** Und dann die eigene
-   Jahresreihe rechnen, bevor irgendetwas gebaut wird. Das war hier der
-   gesamte Test -- er hat einen Abend gekostet statt einer Woche.
-2. **Immer das beste Jahr herausnehmen.** Die Vollsample-Zahl (+3,5 bis
-   +5,2 %, t bis 2,13) sah brauchbar aus. Erst der Blick auf die
-   Jahresreihe zeigte, dass **ein** Jahr alles traegt. Dasselbe gilt fuer
-   die konditionale Version: +8 % p.a. sieht stark aus, kollabiert ohne
-   2020 auf +0,9 % bei t=0,31 -- der Filter selektierte im Wesentlichen 2020.
-3. **Kosten waren diesmal NICHT der Killer** -- anders als bei CLS und CTNL.
-   Die Nacht-Spreads unserer Index-CFDs (05:30-09:30 Berlin) sind genauso
-   eng wie tagsueber: Tickmill 0,23-0,39 bps, TTP 0,49-0,83, fest quotiert.
-   Das ist ein **positiver Nebenbefund**, der jeder kuenftigen Idee in
-   diesem Fenster zugutekommt, und er war vorher nicht bekannt.
-
-**Und ein Fehler von mir, der fast durchgerutscht waere.** Beim Gegencheck
-"hat sich das Fenster nur verschoben?" hatte ich Fenster, die ueber
-Mitternacht laufen, mit dem Endzeitpunkt DESSELBEN Kalendertags gepaart --
-also minus 20 Stunden statt plus 4. Das Ergebnis waren ET-verankerte Fenster
-mit **-13 bis -19 % p.a.**, die wie ein spektakulaerer Short-Edge aussahen.
-Aufgefallen ist es nur, weil die Zahl zu gross war, um zu stimmen.
-Behoben durch Paarung ueber Bar-Zeitstempel statt ueber Kalendertage.
-Merksatz fuer mich: **eine ueberraschend grosse Zahl ist zuerst ein
-Bug-Verdacht, kein Fund.**
-
-Der saubere Gegencheck danach war dann eindeutig: ueber alle 42
-Vier-Stunden-Fenster des Tages erreicht **kein einziges** die
-White-Schwelle von |t| >= 3,7 -- und das EU-Fenster selbst rangiert ab 2021
-auf Rang 38/42 (SP500) bzw. 40/42 (US30). Es ist nicht verschoben, es ist
-weg.
-
-**Phase 6 habe ich bewusst nicht gerechnet.** Walk-Forward und Monte Carlo
-pruefen, ob ein positiver Edge robust ist -- hier gibt es nach Kosten
-keinen, den man stresstesten koennte. Das waere Theater gewesen.
+1. **Entscheiden, ob der CTNL-Kill-Switch auf Funded und EK nachgezogen
+   wird.** Der Code liegt in `FKInstantFunding-MT5-Bridge/run_once.py`
+   fertig vor, und die Woche hat seinen Wert in Dollar gezeigt. Auf Funded
+   wirkt ein Commit an `challenge_portfolio/paper_bot.py` sofort auf echtes
+   Geld, deshalb ist das eine Nutzerentscheidung.
+2. **Die offene Ribbon-Frage (E6) entscheiden.** Sie adressiert genau das
+   Verlustmuster dieser Woche (Long-Reversals gegen den Trend).
+3. **EK-Risiko als Ganzes ansehen:** Mindestlot, Hebel 1,2x und vier
+   Verlustwochen gehoeren zusammen betrachtet, nicht Bein fuer Bein.
+4. **Soll/Ist fuer ORB Variante C reparieren**, bevor der naechste Report
+   darauf aufbaut. Ausserdem **`mt5_pull.py` gegen leere Historie
+   absichern** (Retry oder Warnung bei 0 Deals trotz offener Positionen).
+5. **Die Handtrade-Frage fuer die Bot-Konten klaeren.** Entweder eigene
+   Konten fuer Handtrades, oder die Handpositionen im Risikodeckel mitzaehlen.
+6. **Den Wake-Timer freigeben** (Energieoptionen), damit der Report wieder
+   am Sonntag laeuft statt montags um halb drei.

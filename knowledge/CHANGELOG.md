@@ -9,6 +9,24 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-28** [Reports] **Weekly Checkup KW39/2026 + Monthly Checkup
+  September 2026** (geplanter Lauf, Mo 02:29 nachgeholt) -- `reports/weekly/
+  KW39_2026_*`, `reports/monthly/2026-09_*`, PDFs + Telegram versandt.
+  **Befunde:** (1) CTNL-Kill-Switch nur auf FK aktiv (21.-28.09.), Funded/EK
+  haben ihn nicht -- IQ -2.473,94 USD, EK -304,65 EUR auf demselben Bein
+  (-> Dashboard Bestaetigung). (2) EK -11,6 % in der Woche, -19,4 % im
+  September, vierte Verlustwoche in Folge. (3) Dashboard-Punkt
+  "OU-Solo-Waisen offen" ist ueberholt (am 23.09. von Hand geschlossen,
+  Nachtrag im Dashboard, nicht entfernt). (4) FK-Bot-Konto: 4 Handtrades im
+  September, alle ausgestoppt, -1.232,82 USD. (5) **Neuer stiller
+  Fehlermodus:** der erste `mt5_pull` lieferte fuer TTP/IQ 0 Deals, weil die
+  Terminals nach dem Boot Sekunden alt waren und ihre Historie noch nicht
+  geladen hatten -- Nach-Abzug ergab 79/66 Deals, Funded-Soll/Ist damit neu
+  gerechnet. (6) Soll/Ist fuer ORB seit Variante C vermutlich unzuverlaessig
+  (Pending-Entries als "nie gesehen", `orb_us30` ohne Soll-Signal).
+  Woche gesamt: EK -367,72 EUR, Funded -1.696,21 USD, FK +9,74 USD (Bot
+  +585,99 / Hand -576,25).
+
 - **2026-09-25** [Second Brain] **Stash-Triage praezisiert -- meine Entwarnung
   vom 24.09. war zu optimistisch.** Die damalige Stichprobe traf zufaellig
   Themen, die ueberlebt hatten. Genauere Pruefung: **kein einziger

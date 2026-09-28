@@ -51,6 +51,25 @@ Bedarf vor generischem Aufräumen.
   **Was ich NICHT geprueft habe:** ob die Positionen heute, am 25.09., noch
   offen sind -- dafuer braeuchte es einen frischen MT5-Abzug gegen die
   Live-Konten.
+  **✅ Nachtrag Weekly Checkup KW39 (28.09.): am Broker GESCHLOSSEN.** Der
+  MT5-Abzug zeigt DAL (EK) sowie AFL/NUE/UAL/TXT/APD (TTP) am 23.09.
+  21:40 Berlin von Hand geschlossen (`reason=1`, leerer Kommentar) -- deckt
+  sich mit dem CHANGELOG-Eintrag vom 23.09. "Alle verwaisten Positionen sind
+  geschlossen". Der Punkt war beim Wiederherstellen am 25.09. schon erledigt.
+  **Bitte bestaetigen, dann kann er raus.**
+
+- **🔴 CTNL-Kill-Switch laeuft nur auf FK, nicht auf Funded/EK -- nachziehen?**
+  (Fund Weekly Checkup KW39, 28.09.) FKs Standalone-Kill-Switch war vom
+  21.09. 00:04 bis 28.09. 02:37 aktiv und hielt FK aus 7 CTNL-Trades
+  (-8,74 R laut Soll/Ist) heraus. Auf demselben Bein verloren in derselben
+  Woche **IQ -2.473,94 USD** (20 Trades, 2 Gewinner) und **EK -304,65 EUR**
+  (12 Trades, 0 Gewinner). `ctnl_standalone_drawdown`/`CTNL_KILL_SWITCH`
+  kommt nur in `FKInstantFunding-MT5-Bridge/run_once.py` und im Repo-Paper-Bot
+  vor, nicht in `Funded-Portfolio-Bridge` oder `EK-Portfolio-Bridge`; das
+  Funded-Log hat keinen einzigen Kill-Switch-Eintrag. **Nichts geaendert**
+  (Funded wirkt direkt auf echtes Geld). Offen fuer dich: nachziehen, oder
+  ueber die Ribbon-Richtung (E6) loesen? Details:
+  `reports/weekly/KW39_2026_performance.md` Abschnitt 2.
 
 - **Zwei Freigaben zum Aufraeumen (beide unkritisch, beide deine Entscheidung).**
   **(1) KW38/2026 nachbauen?** Der Report fehlt, weil der Task am So 20.09. im

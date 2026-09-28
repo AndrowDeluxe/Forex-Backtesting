@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-28T04:31:24",
+  "generated_at": "2026-09-28T04:32:34",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-28T04:29:06",
-      "minutes_since_last_run": 2.3,
+      "last_run": "2026-09-28T04:32:33",
+      "minutes_since_last_run": 0.0,
       "status": "ok",
       "last_equity_line": "2026-09-28 04:29:06 2026-09-28 04:29:01,712 INFO run_once: Konto-Equity 2802.98 EUR | Aggregiertes offenes Risiko (ganzes Konto): 219.06 (Deckel dieser Bridge: 840.89, 30%)",
       "last_error_line": "2026-09-28 02:36:31     raise error[0]",
@@ -14,8 +14,8 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-28T04:28:15",
-      "minutes_since_last_run": 3.1,
+      "last_run": "2026-09-28T04:32:33",
+      "minutes_since_last_run": 0.0,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
@@ -58,8 +58,8 @@
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-28T04:14:09",
-      "minutes_since_last_run": 17.2,
+      "last_run": "2026-09-28T04:32:33",
+      "minutes_since_last_run": 0.0,
       "status": "ok",
       "last_equity_line": "2026-09-28 04:14:09 Verbunden: Login 17764, Equity $99,565.57",
       "last_error_line": "2026-09-28 02:37:10 trend_pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",

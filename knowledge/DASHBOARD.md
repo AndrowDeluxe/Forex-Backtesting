@@ -35,6 +35,39 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **🟡 EK-Portfolio-Bridge: unaufgefangener `LakeStaleDataError` um 02:36 Uhr --
+  der Daten-Lake-Fallback hat dort offenbar NICHT gegriffen.** (Bridge Error
+  Monitor, 28.09., 10:32-Snapshot.) `last_error_line`: `"2026-09-28 02:36:31
+  raise error[0]"`, direkt darüber in `recent_events` die Quellzeile
+  `f"Lake-Daten fuer {source}:{key}_{timeframe} zu alt
+  (last_success_at={entry and entry.get('last_success_at')})"` -- das ist
+  wortwörtlich die `LakeStaleDataError`-Zeile aus `data_lake/reader.py:93`
+  (`_require_fresh()`), hier als Traceback-Quelltext statt interpoliert (der
+  Watchdog sammelt offenbar Traceback-Frames ein). `raise error[0]` ist das
+  Muster aus `_call_with_timeout()` (identisch in drei Repo-Dateien, z.B.
+  `ek_portfolio/paper_bot.py:100`): ein Fehler aus einem Hintergrund-Thread
+  wird nach `join()` im Hauptthread erneut geworfen.
+  **Bedeutung:** für irgendein `(source, key, timeframe)` war der Lake-Eintrag
+  zu alt -- eigentlich sollte genau das `data_lake/reader.py::
+  with_live_fallback()` abfangen und ohne sichtbaren Fehler auf den
+  Live-Fetch ausweichen.
+  **Kann ich nicht abschliessend klären**, weil die EK-Portfolio-Bridge
+  ausserhalb des Repos läuft (siehe CLAUDE.md) -- `ek_portfolio/paper_bot.py`
+  im Repo treibt sie NICHT (das ist der pausierte Paper-Task), die Live-
+  Bridge hat vermutlich eine eigene, ähnliche Kopie dieser Scan-Logik, die ich
+  von hier nicht einsehen kann. Auffällig in der Repo-Kopie: `_scan_ctnl()`
+  hat -- anders als `_scan_gold_asb()`/`_scan_cls_practical()` -- gar keinen
+  `source`-Parameter und importiert seine vier Fetch-Funktionen immer direkt
+  (nie `with_live_fallback`-gewrapped); ob die Live-Bridge dieselbe Lücke hat,
+  kann ich nicht verifizieren, und die Statustabelle unten behauptet für EK
+  "ctnl x2 jetzt `source=\"lake\"`" -- falls das stimmt, muss die Live-Bridge
+  das anders verdrahtet haben als diese Repo-Kopie.
+  **Kein Folgefehler seit 02:36:31** -- Status jetzt "ok", der 10:32-Lauf
+  war sauber (aktuelle Equity-Zeile), also vermutlich einmalig/selbstheilend.
+  Nichts geändert. **Offen für dich:** soll ich mir (mit deinem Zugriff) die
+  tatsächliche EK-Portfolio-Bridge-Quelle ansehen, oder reicht es, das im
+  Auge zu behalten, falls es wiederkehrt?
+
 - **🟠 8 verwaiste OU-Solo-Positionen: immer noch offen, Ausloesen liegt
   bei dir** (2026-09-17, **am 2026-09-25 wiederhergestellt**). Dieser Punkt war
   zwischenzeitlich aus dem Dashboard verschwunden, **ohne dass er erledigt

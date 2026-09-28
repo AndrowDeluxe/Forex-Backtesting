@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-28T19:31:24",
+  "generated_at": "2026-09-28T19:32:34",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-28T19:29:06",
-      "minutes_since_last_run": 2.3,
+      "last_run": "2026-09-28T19:32:33",
+      "minutes_since_last_run": 0.0,
       "status": "ok",
       "last_equity_line": "2026-09-28 19:29:06 2026-09-28 19:29:01,636 INFO run_once: Konto-Equity 2896.41 EUR | Aggregiertes offenes Risiko (ganzes Konto): 166.75 (Deckel dieser Bridge: 868.92, 30%)",
       "last_error_line": "2026-09-28 18:34:58     raise error[0]",
@@ -15,8 +15,8 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-28T19:28:15",
-      "minutes_since_last_run": 3.2,
+      "last_run": "2026-09-28T19:32:33",
+      "minutes_since_last_run": 0.0,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
@@ -59,8 +59,8 @@
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-28T19:14:09",
-      "minutes_since_last_run": 17.2,
+      "last_run": "2026-09-28T19:32:34",
+      "minutes_since_last_run": 0.0,
       "status": "ok",
       "last_equity_line": "2026-09-28 19:14:09 Verbunden: Login 17764, Equity $99,687.87",
       "last_error_line": "2026-09-28 18:34:22 cls_practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",

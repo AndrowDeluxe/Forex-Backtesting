@@ -52641,3 +52641,25 @@
 2026-09-28 04:55:59   "ctnl_kill_switch_active": false,
 2026-09-28 04:55:59   "n_trades": 25
 2026-09-28 04:55:59 }
+2026-09-28 04:56:03 WARNUNG: die offenen Aenderungen liessen sich nach dem Merge nicht konfliktfrei zurueckholen (Remote hat dieselben Zeilen geaendert). Der Push ist durch, der Working Tree steht auf dem gemergten Stand OHNE Konfliktmarker. Die offene Arbeit liegt vollstaendig im Stash: mit 'git stash list' ansehen und 'git stash pop' von Hand zurueckholen/aufloesen.
+2026-09-28 04:56:03 === FK-Instant-Funding-Task beendet ===
+2026-09-28 05:32:33 === FK-Instant-Funding-Task gestartet ===
+2026-09-28 05:32:41 INFO:DUKASCRIPT:current timestamp :2026-09-27T02:00:00
+2026-09-28 05:32:41 INFO:DUKASCRIPT:current timestamp :2026-09-28T04:00:00
+2026-09-28 05:32:41 INFO:DUKASCRIPT:current timestamp :2026-09-28T04:00:00
+2026-09-28 05:32:41 INFO:DUKASCRIPT:current timestamp :2026-09-28T04:00:00
+2026-09-28 05:32:41 INFO:DUKASCRIPT:current timestamp :2026-09-27T22:00:00
+2026-09-28 05:32:41 INFO:DUKASCRIPT:current timestamp :2026-09-27T22:00:00
+2026-09-28 05:32:41 INFO:DUKASCRIPT:current timestamp :2026-09-27T22:00:00
+2026-09-28 05:32:41 INFO:DUKASCRIPT:current timestamp :2026-09-27T22:00:00
+2026-09-28 05:32:41 {
+2026-09-28 05:32:41   "date": "2026-09-28 03:32:35.209979",
+2026-09-28 05:32:41   "equity": 98916.98412610608,
+2026-09-28 05:32:41   "current_dd": -0.010830158738939222,
+2026-09-28 05:32:41   "consistency_ratio": 0.0,
+2026-09-28 05:32:41   "payout_safe": false,
+2026-09-28 05:32:41   "cum_profit": -1083.0158738939244,
+2026-09-28 05:32:41   "kill_switch_active": false,
+2026-09-28 05:32:41   "ctnl_kill_switch_active": false,
+2026-09-28 05:32:41   "n_trades": 25
+2026-09-28 05:32:41 }

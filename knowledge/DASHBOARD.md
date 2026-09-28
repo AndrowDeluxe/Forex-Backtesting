@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-09-24** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-09-28** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -362,6 +362,11 @@ Bedarf vor generischem Aufräumen.
   Ist-Vergleich der Beine je Bridge vs. Paper-Bot bzw. eine Gesamt-
   Systemübersicht "wo die Kette verliert"). Ob/wo diese Notizen angelegt
   werden (`areas/` vermutlich), liegt bei dir — nicht selbst angelegt.
+  **✅ Nachtrag Lint 28.09.: beide Notizen existieren jetzt**
+  (`areas/bein-matrix-ist-soll-paper.md`, `areas/systemlandkarte.md`) — der
+  aktuelle Lint-Lauf findet 0 tote Wikilinks. Nicht geprueft, wer/wann sie
+  angelegt hat oder ob das deine urspruengliche Frage (ob/wo) beantwortet.
+  Bitte bestaetigen, dann kann der Punkt raus.
 
 
 ### Offene Aufgaben
@@ -386,7 +391,7 @@ Bedarf vor generischem Aufräumen.
 
 **Mittel**
 - **14 unverarbeitete Clippings** in `knowledge/Clippings/` (Stand
-  2026-09-21-Lint, unveraendert seit 2026-09-09) — u.a. Edge-Genesis/-Decay,
+  2026-09-28-Lint, unveraendert seit 2026-09-09) — u.a. Edge-Genesis/-Decay,
   Risk-Factor-Investing, Sektor-Rotation, "Six Repos One System", "How
   system works" — noch nicht durch den CODE-Prozess.
 
@@ -395,6 +400,11 @@ Bedarf vor generischem Aufräumen.
   (Lint 09-21, erledigt 09-23 mit `1fc8645`). Die Notiz existierte seit dem
   17.09. nur im Arbeitsverzeichnis — untracked, daher kein Treffer in der
   Git-Historie. Jetzt getrackt, zusammen mit drei weiteren Research-Notizen.
+- **Statustabelle: "Zuletzt geprüft" bei `OU-Modell-ScannerHourly` ist
+  26 Tage alt** (Lint 28.09., Schwelle 21 Tage; Stand: 2026-09-02).
+  Reiner Alters-Hinweis aus dem Lint-Skript, kein inhaltlicher Befund —
+  Zeile bei Gelegenheit gegen den echten Task-Scheduler-/Scanner-Status
+  nachpruefen und Datum auffrischen (CLAUDE.md Punkt 4).
 
 ## Status — was läuft gerade wirklich
 
@@ -464,12 +474,12 @@ Live-Status aller drei Portfolio-Bridges jetzt auch als Streamlit-Seiten
 („Portfolio-Bridges" in der Sidebar) — lesen `bridge_status/snapshot.json`,
 das der Bridge-Watchdog alle 30 Min. committet.
 
-_Letzter Lint-Durchlauf: **2026-09-21** (geplant, `second-brain-lint`).
-Ergebnis: 6 tote Wikilinks (2 mehrfach referenzierte, nie angelegte Notizen
-→ Bestätigung; 1 isolierter toter Link → Niedrig), 0 verwaiste Seiten,
-0 veraltete Statustabellen-Daten; 14 unverarbeitete Clippings unverändert
-seit 09-09. Verweise nach außerhalb von `knowledge/` jetzt als Pfad in
-Backticks (siehe `README.md`)._
+_Letzter Lint-Durchlauf: **2026-09-28** (geplant, `second-brain-lint`).
+Ergebnis: 0 tote Wikilinks (die beiden am 09-21 gefundenen Notizen
+existieren jetzt, siehe Bestätigungspunkt oben), 0 verwaiste Seiten,
+1 veraltete Statustabellen-Zeile (`OU-Modell-ScannerHourly`, → Niedrig);
+14 unverarbeitete Clippings unverändert seit 09-09. Verweise nach
+außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
 
 ## Status — aktuell nicht aktiv
 

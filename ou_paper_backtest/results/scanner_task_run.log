@@ -5501,3 +5501,289 @@
 2026-09-25 21:37:56   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
 2026-09-25 21:37:56     raise KeyError(key) from err
 2026-09-25 21:37:56 KeyError: 'KO'
+2026-09-28 17:16:18 === Scanner-Task gestartet ===
+2026-09-28 17:16:23 $ACN: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['ACN']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $AFL: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['AFL']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $APD: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['APD']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $AXP: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['AXP']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $AIG: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['AIG']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $AMT: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['AMT']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $AMGN: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['AMGN']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $ADI: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['ADI']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $COF: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['COF']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $CAH: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['CAH']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $CCL: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['CCL']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $CF: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['CF']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $C: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['C']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $KO: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['KO']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $CTSH: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['CTSH']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $DHR: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['DHR']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $DE: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['DE']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $D: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['D']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $DHI: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['DHI']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $DD: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['DD']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $EBAY: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['EBAY']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $EOG: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['EOG']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $EXPE: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['EXPE']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $EXPD: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['EXPD']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $XOM: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['XOM']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $FAST: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['FAST']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $FLEX: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['FLEX']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $GRMN: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['GRMN']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $GIS: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['GIS']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $IBM: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['IBM']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $IVZ: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['IVZ']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $JPM: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['JPM']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $LEN: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['LEN']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $LLY: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['LLY']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $MRK: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['MRK']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $MDLZ: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['MDLZ']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $MSI: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['MSI']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $NEM: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['NEM']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $NUE: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['NUE']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $OXY: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['OXY']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $ORCL: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['ORCL']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $PEP: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['PEP']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $PG: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['PG']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $QCOM: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['QCOM']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $RL: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['RL']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $REG: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['REG']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $CRM: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['CRM']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $SPG: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['SPG']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $STT: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['STT']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $SYY: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['SYY']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $TROW: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['TROW']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $TXT: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['TXT']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $TJX: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['TJX']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $UAL: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['UAL']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $UPS: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['UPS']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $VRSK: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['VRSK']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $WBD: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['WBD']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $WFC: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['WFC']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $^GSPC: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['^GSPC']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $ADI: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['ADI']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $AMGN: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['AMGN']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $FAST: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['FAST']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $MDLZ: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['MDLZ']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $MSTR: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['MSTR']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $PEP: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['PEP']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $QCOM: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['QCOM']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $WBD: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['WBD']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 $^NDX: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 System.Management.Automation.RemoteException
+2026-09-28 17:16:23 1 Failed download:
+2026-09-28 17:16:23 ['^NDX']: possibly delisted; no price data found  (1d 2025-08-24 -> 2026-09-28)
+2026-09-28 17:16:23 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-09-28 17:16:23 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-09-28 17:16:23 ACHTUNG - SCAN UNVOLLSTAENDIG: nur 0/58 Ticker mit Kursen (0%). Ohne Kurse: ACN, AFL, APD, AXP, AIG, AMT, AMGN, ADI, COF, CAH ...
+2026-09-28 17:16:23 [sp500] no data returned, skipping
+2026-09-28 17:16:23 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-09-28 17:16:23 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-09-28 17:16:23 ACHTUNG - SCAN UNVOLLSTAENDIG: nur 0/8 Ticker mit Kursen (0%). Ohne Kurse: ADI, AMGN, FAST, MDLZ, MSTR, PEP, QCOM, WBD
+2026-09-28 17:16:23 [nasdaq100] no data returned, skipping
+2026-09-28 17:16:23 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-09-28 17:16:23 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-09-28 17:16:23 0 Ausstiegsschwellen geschrieben (0 davon 'Mean Reversion erreicht')
+2026-09-28 17:16:23 
+2026-09-28 17:16:23 Saved 0 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-09-28T17:16:22)

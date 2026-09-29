@@ -53671,3 +53671,56 @@
 2026-09-29 15:55:51   "ctnl_kill_switch_active": false,
 2026-09-29 15:55:51   "n_trades": 25
 2026-09-29 15:55:51 }
+2026-09-29 15:55:56 WARNUNG: die offenen Aenderungen liessen sich nach dem Merge nicht konfliktfrei zurueckholen (Remote hat dieselben Zeilen geaendert). Der Push ist durch, der Working Tree steht auf dem gemergten Stand OHNE Konfliktmarker. Die offene Arbeit liegt vollstaendig im Stash: mit 'git stash list' ansehen und 'git stash pop' von Hand zurueckholen/aufloesen.
+2026-09-29 15:55:56 === FK-Instant-Funding-Task beendet ===
+2026-09-29 16:55:23 === FK-Instant-Funding-Task gestartet ===
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-28T02:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T15:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T15:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-28T02:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T15:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T15:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T15:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T15:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T10:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T10:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T10:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T10:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-28T02:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T15:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T15:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T15:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T10:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T10:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-28T02:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T16:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T16:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T16:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T10:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-28T02:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T10:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T16:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T16:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T16:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-28T02:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T16:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T10:00:00
+2026-09-29 17:07:53 INFO:DUKASCRIPT:current timestamp :2026-09-29T16:00:00
+2026-09-29 17:07:54 INFO:DUKASCRIPT:current timestamp :2026-09-29T10:00:00
+2026-09-29 17:07:54 INFO:DUKASCRIPT:current timestamp :2026-09-29T16:00:00
+2026-09-29 17:07:54 INFO:DUKASCRIPT:current timestamp :2026-09-29T10:00:00
+2026-09-29 17:07:54 INFO:DUKASCRIPT:current timestamp :2026-09-29T10:00:00
+2026-09-29 17:07:54 INFO:DUKASCRIPT:current timestamp :2026-09-29T10:00:00
+2026-09-29 17:07:54 INFO:DUKASCRIPT:current timestamp :2026-09-29T10:00:00
+2026-09-29 17:07:54 INFO:DUKASCRIPT:current timestamp :2026-09-29T10:00:00
+2026-09-29 17:07:54 {
+2026-09-29 17:07:54   "date": "2026-09-29 14:55:24.123128",
+2026-09-29 17:07:54   "equity": 98916.98412610608,
+2026-09-29 17:07:54   "current_dd": -0.010830158738939222,
+2026-09-29 17:07:54   "consistency_ratio": 0.0,
+2026-09-29 17:07:54   "payout_safe": false,
+2026-09-29 17:07:54   "cum_profit": -1083.0158738939244,
+2026-09-29 17:07:54   "kill_switch_active": false,
+2026-09-29 17:07:54   "ctnl_kill_switch_active": false,
+2026-09-29 17:07:54   "n_trades": 25
+2026-09-29 17:07:54 }

@@ -35,6 +35,70 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **🟡 `'str'`/`'float'`-Fehler ist am 29.09. erneut aufgetreten -- diesmal in
+  Trend-Pullback-Scan (Funded, TTP+IQ) und CLS-Practical-Scan (FK), am Tag
+  NACH dem als behoben dokumentierten Fix vom 28.09.** (Bridge Error Monitor,
+  29.09., 23:01-Snapshot.) Beobachtet: `Funded-Portfolio-Bridge` beide Konten
+  `"2026-09-29 22:16:20 Trend-Pullback-Scan fehlgeschlagen: '>' not
+  supported between instances of 'str' and 'float'"` und erneut um 22:31:19;
+  `FKInstantFunding-MT5-Bridge` `"2026-09-29 22:17:44 cls_practical-Scan
+  fehlgeschlagen: '>' not supported between instances of 'str' and
+  'float'"` (und schon am 28.09. 18:34:22 identisch). Identischer Fehlertext
+  wie der am 28.09. dokumentierte, damals als behoben geltende Fund (Fix in
+  `data_lake/reader.py::_require_fresh()`).
+  **Nachgeprueft, warum der Fix das offenbar nicht abdeckt:** `_scan_trend_
+  pullback()`/`_scan_cls_practical()` (und alle anderen `_scan_*`) in
+  `challenge_portfolio/paper_bot.py` sowie `fk_instant_funding/paper_bot.py`
+  haben Default `source="live"` -- nur mit explizitem `source="lake"` (Code
+  der aufrufenden Bridge, liegt ausserhalb des Repos, siehe CLAUDE.md) greift
+  ueberhaupt der am 28.09. gepatchte `data_lake/reader.py`-Pfad. Ob die
+  echten Bridges `source="lake"` oder den Default `"live"` verwenden, kann
+  ich von hier nicht sehen.
+  Falls `"live"`: der Fehler kommt aus `combined_strategy/data.py::
+  fetch_timeframe()` bzw. `cls_practical/data.py`, die schon seit 09-02/03/06
+  alle fuenf OHLCV-Spalten sowohl beim Cache-Read als auch beim Frisch-Fetch
+  validieren (`validate_ohlc_numeric(..., ["Open","High","Low","Close",
+  "Volume"])`) -- dort duerfte eine korrupte Spalte eigentlich gar nicht
+  durchkommen. Auffaellig dabei: `combined_strategy/data.py::CACHE_DIR`
+  (`data_cache/combined/`) ist EIN gemeinsames Verzeichnis fuer alle drei
+  Bridges, und `df.to_parquet(path)` dort schreibt NICHT atomar (kein
+  temp+rename, anders als `data_lake/storage.py`, das genau das per Kommentar
+  ausdruecklich tut) -- zwei Bridges, die zeitgleich denselben
+  Instrument/Timeframe-Cache neu befuellen, koennten sich beim Schreiben
+  ueberschneiden. Die zeitliche Naehe der drei Fehlermeldungen (22:16, 22:17,
+  22:31) passt zu dieser Erklaerung, beweist sie aber nicht.
+  Falls `"lake"`: `data_lake/reader.py::_require_fresh()` und `data_lake/
+  ingest.py::_validate()` pruefen beide nur `["Open","High","Low","Close"]`/
+  `["open","high","low","close"]` per exaktem Spalten-Set-Match (kein
+  `Volume`) -- fuer die hier tatsaechlich betroffenen Vergleiche
+  (`mt5_trend_pullback/pipeline.py`: `df["close"] > df["ema_trend"]`,
+  `df["rsi"] > rsi_oversold`) waere `close` aber mitgeprueft, das erklaert
+  die Trend-Pullback-Faelle also NICHT direkt.
+  **Nichts geaendert** -- zu unsicher, welche der beiden Erklaerungen
+  zutrifft, um gezielt zu fixen, und beide Codepfade sind bereits mehrfach
+  gepatcht (09-02/03/06/07/28). **Offen fuer dich:** (a) weisst du, ob die
+  Funded-/FK-Bridges tatsaechlich mit `source="lake"` laufen? (b) soll ich
+  das nicht-atomare `to_parquet()` in `combined_strategy/data.py` auf
+  temp+rename umstellen (kleine, sichere Haertung, gleiches Muster wie
+  `data_lake/storage.py`, faellt in Tier 1) als vorsorgliche Massnahme, auch
+  ohne den genauen Beweis? Status jetzt wieder "ok" bei allen drei Bridges.
+
+- **🟡 EK-Portfolio-Bridge: neue, andere Fehlermeldung `cls_practical:
+  unerwarteter Fehler` -- kein `raise error[0]`/Lake-Traceback wie die
+  beiden Punkte darunter.** (Bridge Error Monitor, 29.09., 23:01-Snapshot.)
+  `last_error_line`: `"2026-09-29 22:36:22 ... ERROR run_once: cls_practical:
+  unerwarteter Fehler"`. `recent_events` enthaelt dazu keinen Traceback --
+  der einzige Eintrag dort ist weiterhin die alte, bereits dokumentierte
+  Lake-Zeile vom 28.09. 18:34:58 aus den beiden Punkten unten. Ob dieser neue
+  Fehler also derselbe Lake-Mechanismus ist (nur anders formatiert) oder
+  etwas komplett anderes, kann ich anhand der verfuegbaren Snapshot-Felder
+  nicht sagen -- mehr Text als die eine Zeile liefert der Snapshot nicht, und
+  die EK-Portfolio-Bridge-Quelle liegt ausserhalb des Repos. **Kein
+  Folgefehler seither**, Status jetzt "ok" (letzter Lauf 22:59:07, saubere
+  Equity-Zeile). Nichts geaendert. **Offen fuer dich:** falls das wiederkehrt,
+  waere der volle Traceback aus `EK-Portfolio-Bridge/logs/task_run.log` um
+  22:36:22 hilfreich, um zu sehen ob es dieselbe Lake-Ursache ist.
+
 - **🟡 EK-Portfolio-Bridge: unaufgefangener `LakeStaleDataError` um 02:36 Uhr --
   der Daten-Lake-Fallback hat dort offenbar NICHT gegriffen.** (Bridge Error
   Monitor, 28.09., 10:32-Snapshot.) `last_error_line`: `"2026-09-28 02:36:31

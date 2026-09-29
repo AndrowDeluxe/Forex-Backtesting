@@ -68,6 +68,28 @@ Bedarf vor generischem Aufräumen.
   tatsächliche EK-Portfolio-Bridge-Quelle ansehen, oder reicht es, das im
   Auge zu behalten, falls es wiederkehrt?
 
+- **🟡 EK-Portfolio-Bridge: derselbe `LakeStaleDataError` ist am selben Tag
+  noch einmal aufgetreten -- die "vermutlich einmalig/selbstheilend"-
+  Einschaetzung im Bulletpunkt oben ist damit ueberholt.** (Bridge Error
+  Monitor, 29.09., 11:01-Snapshot.) Neuer `last_error_line`: `"2026-09-28
+  18:34:58     raise error[0]"`, direkt darueber in `recent_events` wieder
+  die Quellzeile `f"Lake-Daten fuer {source}:{key}_{timeframe} zu alt
+  (last_success_at={entry and entry.get('last_success_at')})"` -- exakt
+  dasselbe Muster wie beim zuerst dokumentierten Fall um 02:36:31 Uhr
+  desselben Tages (28.09.), nur ~16 Stunden spaeter. Auch hier nur ein
+  einzelner Eintrag in `recent_events`, kein Folgefehler seither, und der
+  aktuelle Status ist wieder "ok" (letzter Lauf heute 10:59:07 mit sauberer
+  Equity-Zeile) -- also erneut vermutlich selbstheilend, aber eben NICHT
+  mehr einmalig. Damit bleibt offen, ob der `with_live_fallback()`-Mechanismus
+  fuer diesen Pfad auf der Live-Bridge tatsaechlich greift (siehe Analyse im
+  Bulletpunkt oben) oder ob hier zweimal an einem Tag echte Live-Daten fuer
+  einen Scan gefehlt haben. **Nichts geaendert** -- Root Cause liegt
+  moeglicherweise in der EK-Portfolio-Bridge-eigenen Kopie der Scan-Logik
+  ausserhalb des Repos, die von hier nicht einsehbar ist (siehe CLAUDE.md).
+  **Offen fuer dich:** dieselbe Frage wie oben, jetzt mit einem zweiten
+  Beleg -- lohnt sich ein Blick in die echte Bridge-Quelle, oder reicht
+  weiteres Beobachten?
+
 - **🟠 8 verwaiste OU-Solo-Positionen: immer noch offen, Ausloesen liegt
   bei dir** (2026-09-17, **am 2026-09-25 wiederhergestellt**). Dieser Punkt war
   zwischenzeitlich aus dem Dashboard verschwunden, **ohne dass er erledigt

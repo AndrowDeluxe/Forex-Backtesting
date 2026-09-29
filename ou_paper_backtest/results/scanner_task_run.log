@@ -6250,3 +6250,25 @@
 2026-09-29 19:35:21                                 market ticker  scan_date  close  lower_band  entry    sl                      tp  tp_price  risk_pct_price  position_size_pct   ma20  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
 2026-09-29 19:35:21 S&P 500 (volles Universum, 420 Ticker)    AIG 2026-09-28  72.78       73.24  72.78 66.11 kein TP (finale Config)       0.0            9.17              10.90  75.12       True       True                            12.5 2026-09-29T19:35:21
 2026-09-29 19:35:21 S&P 500 (volles Universum, 420 Ticker)    NEM 2026-09-28 116.05      117.20 116.05 90.13 kein TP (finale Config)       0.0           22.33               4.48 124.49       True       True                            12.5 2026-09-29T19:35:21
+2026-09-29 19:35:21 [main dea66d0] OU-Modell Scanner: Snapshot 2026-09-29 19:35
+2026-09-29 19:35:21  2 files changed, 19 insertions(+), 2 deletions(-)
+2026-09-29 19:35:22 Nichts zu mergen (0 eingehende Commits) - Stash und Merge uebersprungen.
+2026-09-29 19:35:24 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-09-29 19:35:24    fa0b900..dea66d0  main -> main
+2026-09-29 19:35:24 Commit + Push erfolgreich.
+2026-09-29 19:35:24 === Scanner-Task beendet ===
+2026-09-29 20:35:00 === Scanner-Task gestartet ===
+2026-09-29 20:35:18 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-09-29 20:35:18 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-09-29 20:35:18 [sp500] 2 raw signal(s) as of 2026-09-28, regime_ok=True, 58 Ausstiegsschwellen
+2026-09-29 20:35:18 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-09-29 20:35:18 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-09-29 20:35:18 [nasdaq100] 0 raw signal(s) as of 2026-09-28, regime_ok=True, 8 Ausstiegsschwellen
+2026-09-29 20:35:18 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-09-29 20:35:18 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-09-29 20:35:18 66 Ausstiegsschwellen geschrieben (24 davon 'Mean Reversion erreicht')
+2026-09-29 20:35:18 
+2026-09-29 20:35:18 Saved 2 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-09-29T20:35:18)
+2026-09-29 20:35:18                                 market ticker  scan_date  close  lower_band  entry    sl                      tp  tp_price  risk_pct_price  position_size_pct   ma20  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
+2026-09-29 20:35:18 S&P 500 (volles Universum, 420 Ticker)    AIG 2026-09-28  72.78       73.24  72.78 66.11 kein TP (finale Config)       0.0            9.17              10.90  75.12       True       True                            12.5 2026-09-29T20:35:18
+2026-09-29 20:35:18 S&P 500 (volles Universum, 420 Ticker)    NEM 2026-09-28 116.05      117.20 116.05 90.13 kein TP (finale Config)       0.0           22.33               4.48 124.49       True       True                            12.5 2026-09-29T20:35:18

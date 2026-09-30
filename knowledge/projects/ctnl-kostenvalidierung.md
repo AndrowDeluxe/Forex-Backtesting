@@ -911,6 +911,52 @@ nicht abgebildet. Die Kaskade nutzt H4-Exhaustion → H1-BOS → M15-Sweep. Ein
 Nachbau der beschriebenen Logik wäre ein eigenes Signalmodell, keine
 Parametrierung des bestehenden.
 
+## Befund 18 — Short-Serie 29./30.09.: welche Bestätigung trennt, welcher Kill-Switch hilft
+
+Anlass (Nutzerfrage 2026-09-30): Gegen den Gold-Rebound 4122 → 4219 hat
+`ctnl_reversal` seit 29.09. 17:00 UTC im 15-Min-Takt geshortet. Auf IQ gab es 8 SL
+(≈ −1.077 USD), auf TTP 6 SL (≈ −335 USD) und auf EK 2 SL (−51 EUR). Danach kam der
+Gewinner nach dem News-Spike um 12:30 UTC (M5-Range 27 Pkt., Hoch 4219,
+dreifacher Test 4216–4219, zurück unter die 4200). Er wurde um 13:13/13:28 UTC
+bei 4202/4196 eröffnet, der Kurs fiel bis ~4151. Derselbe Trade, den der Mentor nahm.
+Skript: `scripts/research_ctnl_confirmations.py`, Engine-R (next_open, ohne
+Live-Lag), 2016–2026, 1.367 Trades (Kappung auf 3 gleichzeitige), davon 503 ribbon-konform.
+
+**Der Ribbon hätte die Serie NICHT verhindert:** Er stand die ganze Zeit auf −1,
+alle Shorts waren trendkonform.
+
+| Merkmal (ribbon-konform) | Ergebnis |
+|---|---|
+| Signalbar-Range < 0,75 ATR | Ø R **+0,04** (n=126) gegen +0,67–0,98 darüber; 7/11 Jahre negativ. **Shorts: −0,57 gegen +0,43.** 5 der 6 Verlierer im Backtest-Abschnitt lagen darunter. |
+| Vorherige SL gleicher Richtung (48 h) | **KEIN Warnsignal:** Trades mit ≥1 vorherigem SL Ø R ~+1,0 gegen +0,46. Ohne Ribbon ist es umgekehrt (−0,2), das repariert der Ribbon. |
+| Wick-Anteil, Sweep-Tiefe, Stunde | keine Trennung |
+| Whole-Level (50er) gesweept + zurück | n=18–31, zu wenig für eine Aussage |
+
+| Kill-/Risiko-Variante (ribbon-konform) | ΣR | MaxDD | Ret/DD |
+|---|---|---|---|
+| heute (alles nehmen) | +309,9 | −46,4R | 6,7 |
+| DD-Kill 44R/22R (≈ heutige −6,6 %/−3,3 % bei 0,15 %) | +284,6 | −50,6R | 5,6 |
+| DD-Kill 20R/10R | +269,8 | −20,9R | 12,9 |
+| Tagesstopp nach 3 SL je Richtung | +274,8 | −44,2R | 6,2 |
+| **halbes Risiko nach 3 Verlusten in Folge** | **+344,4** | **−24,9R** | **13,8** |
+| Spike-Filter ≥ 0,75 ATR | +300,5 | −37,9R | 7,9 |
+
+Die Risikohalbierung ist über N=2…5 ein Plateau: 8–10 von 11 Jahren sind positiv,
+die betroffenen Trades haben Ø −0,30 bis −0,57 R. Gegenläufig sind 2022 und 2025.
+**Vorbehalt:** Die Werte 0,75 ATR und N=3 sind in-sample gesetzt, Walk-Forward
+und Monte Carlo stehen noch aus.
+
+**Kill-Switch-Konstruktion:** `ctnl_standalone_drawdown()` gewichtet continuation
+mit 0,5 % und reversal mit 0,15 % je Trade. Die Schwelle wird damit überwiegend
+vom continuation-Bein bestimmt, das über 10 Jahre keinen Edge hat (9e). Außerdem
+liefert eine leere Simulation 0,0 % DD. FK hat am 29.09. zweimal auf „erholt (0,00 %)“
+geflackert (22:10 und 22:35 Berlin), vermutlich wegen eines Scan-Aussetzers.
+
+**Wick-Einstieg, heute konkret:** Nach dem Schluss der Signalbar (13:00 UTC) kam
+der Kurs nicht mehr über 4214,6. Eine Limit-Order am Signalbar-Extrem wäre also
+NICHT gefüllt worden. Gebracht hätte nur ein kürzerer Versatz: EK stieg um
+12:59 bei 4208,8 ein, die Funded-Konten um 13:13 bei 4202.
+
 ---
 
 ## Was daraus folgt (Entscheidung steht bei dir)

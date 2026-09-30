@@ -9,6 +9,23 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-30** [EK-Portfolio-Bridge / OU] **Backup angelegt, restliche offene
+  Punkte auf Nutzerentscheid verworfen.**
+  `EK-Portfolio-Bridge/_backup_20260930/` -- 47 Dateien, Code und Config ohne
+  Logs, gleiches Muster wie `Funded-Portfolio-Bridge/_backup_20260917/`. Grund:
+  der Ordner liegt bewusst ausserhalb des Repos (echte Zugangsdaten) und ist
+  nicht versioniert; die zwei Drehtuer-Sperren, der 0-Tick-Fix und der gesamte
+  MA20-Ausstieg existierten nur auf der Platte. Inhalt stichprobenartig
+  geprueft.
+  **Verworfen (Nutzerentscheid, nicht vergessen -- bewusst fallengelassen):**
+  das Schliessen der 8 verwaisten OU-Solo-Positionen (Skript erreicht seit der
+  Entfernung von TTP Konto 1 ohnehin nur 5 davon), das Aufraeumen der 8
+  inhaltstragenden Stashes, die Risiko-Neukalibrierung der FK-Konten (TTP, IQ,
+  Instant Funding -- der Auftrag vom 23.09. ist damit zurueckgezogen) und die
+  Erweiterung des Tagesdigests um die drei OU-Beobachtungspunkte.
+  **Sachstand dazu, unveraendert:** die 8 verwaisten Positionen sind weiterhin
+  offen und zahlen Swap; verworfen wurde die Aufraeumarbeit, nicht der Bestand.
+
 - **2026-09-30** [EK / Risiko] **Mindestlot-Grenze durchgerechnet: 76 % des
   EK-Verlusts stammen aus der Groessenverzerrung** (Nutzerauftrag, reine
   Auswertung, nichts geaendert). Methode bewusst empirisch statt modelliert:

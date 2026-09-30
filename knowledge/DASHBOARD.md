@@ -227,29 +227,14 @@ Bedarf vor generischem Aufräumen.
   Beleg -- lohnt sich ein Blick in die echte Bridge-Quelle, oder reicht
   weiteres Beobachten?
 
-- **🟠 8 verwaiste OU-Solo-Positionen: immer noch offen, Ausloesen liegt
-  bei dir** (2026-09-17, **am 2026-09-25 wiederhergestellt**). Dieser Punkt war
-  zwischenzeitlich aus dem Dashboard verschwunden, **ohne dass er erledigt
-  war** -- ein Opfer des `git_sync_push`-Stash-Problems. Er stand
-  ausdruecklich unter der Bedingung "Punkt erst entfernen, wenn Telegram
-  'OU-Solo-Waisen geschlossen' gemeldet hat", und genau das ist nie passiert.
-  **Nachgeprueft am 25.09.:** `scripts/close_ou_solo_orphans_once.py` ist
-  fertig und wurde **9-mal im VORSCHAU-Modus** gegen die echten Konten
-  gefahren, **kein einziges Mal mit `--live`** -- im Log steht keine einzige
-  Schliessung. Im MT5-Abzug vom 20.09. waren DAL (EK) sowie AFL/NUE/UAL/TXT
-  (TTP) weiterhin offen. Das automatische Einplanen hatte der Auto-Modus
-  blockiert; der letzte Live-Ausloeser gehoert ohnehin dir (siehe Memory
-  `auto_mode_classifier_live_money_boundary`).
-  **Was ich NICHT geprueft habe:** ob die Positionen heute, am 25.09., noch
-  offen sind -- dafuer braeuchte es einen frischen MT5-Abzug gegen die
-  Live-Konten.
-  **✅ Nachtrag Weekly Checkup KW39 (28.09.): am Broker GESCHLOSSEN.** Der
-  MT5-Abzug zeigt DAL (EK) sowie AFL/NUE/UAL/TXT/APD (TTP) am 23.09.
-  21:40 Berlin von Hand geschlossen (`reason=1`, leerer Kommentar) -- deckt
-  sich mit dem CHANGELOG-Eintrag vom 23.09. "Alle verwaisten Positionen sind
-  geschlossen". Der Punkt war beim Wiederherstellen am 25.09. schon erledigt.
-  **Bitte bestaetigen, dann kann er raus.**
-
+- **⬜ 8 verwaiste OU-Solo-Positionen: Aufräumen verworfen (Nutzerentscheid
+  2026-09-30)** — die Positionen bleiben offen und zahlen weiter Swap, das ist
+  bewusst so entschieden. Kein offener Arbeitspunkt mehr; hier nur noch als
+  Sachstand. Falls es doch wieder aufgegriffen wird: das Skript
+  `scripts/close_ou_solo_orphans_once.py` lief 9-mal in der VORSCHAU, nie mit
+  `--live`, und erreicht seit der Entfernung von TTP Konto 1 (19.09.) nur noch
+  5 der 8 Positionen — DAL, UAL und NUE auf Konto 1 sind für das Skript
+  unerreichbar, es würde „5 geschlossen" melden.
 - **🔴 CTNL-Kill-Switch laeuft nur auf FK, nicht auf Funded/EK -- nachziehen?**
   (Fund Weekly Checkup KW39, 28.09.) FKs Standalone-Kill-Switch war vom
   21.09. 00:04 bis 28.09. 02:37 aktiv und hielt FK aus 7 CTNL-Trades

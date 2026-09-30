@@ -9,6 +9,51 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-30** [Ribbon-Gate / andere Beine] **Geprueft, ob das
+  Richtungsgate auch ausserhalb von CTNL traegt -- Ergebnis: nein, es bleibt
+  bei den beiden CTNL-Beinen.** Nutzerauftrag "implementiere die gesamte
+  Logik auf allen Beinen". Skript `research_ribbon_andere_beine.py`,
+  Rohdaten `_data/ribbon_andere_beine.json`.
+  **Warum nicht woertlich umsetzbar:** der Ribbon besteht aus H4-, D1- und
+  W1-EMAs auf **XAUUSD**. Auf `cls_practical` (EURUSD), `ou_modell`
+  (US-Einzelaktien), `orb_*` (Indizes) oder `btc_ema_cross` angewandt hiesse
+  er "der Gold-Trend entscheidet ueber einen Apple-Trade" -- ein
+  Kategorienfehler, keine Uebertragung. Die Uebertragung per Analogie ist in
+  diesem Projekt ausserdem zweimal widerlegt worden (Befund 16c Strukturziel,
+  Befund 9b Signal-Parameter).
+  **`gold_asb` (189 Trades, 2016-2026):** je Trade besser --
+  ribbon-konform Ø R +0,560 / PF 2,39 gegen Baseline +0,455 / PF 2,04, Monte
+  Carlo MedDD -12,19 % statt -15,62 % und Sharpe 1,21 statt 1,06. **Aber der
+  Anker-Walk-Forward waehlt in allen drei Fenstern die Baseline**, ΣR +85,2
+  gegen +86,0 -- out-of-sample bringt der Filter exakt nichts. Nach der
+  eigenen Regel (nur uebernehmen, wenn die Prozedur die Baseline OOS
+  schlaegt): **verworfen**. Die MC-Zahlen haetten sich herauspicken lassen;
+  das waere genau das Rosinenpicken, das hier mehrfach entlarvt wurde.
+  *Einschraenkung: nur 3 Walk-Forward-Fenster (vor 2024 keine 120
+  IS-Trades) -- schwache Evidenz in beide Richtungen.*
+  **`trend_pullback`:** nur **13** Trades auf Gold-Maerkten (XAUUSD/XAGUSD/
+  XPTUSD), alle aus 2025-2026. Zu wenig -- uebersprungen statt geraten. Die
+  Nicht-Gold-Maerkte des Beins (CHFJPY/USDJPY) blieben aussen vor.
+  **Nebenbefund, der die Wirkung erklaert:** der Ribbon steht **44 % der Zeit
+  auf neutral** (43 % aufwaerts, 12 % abwaerts). Fast die Haelfte der Zeit ist
+  gar kein trendkonformer Einstieg moeglich -- daher die ~60 % verworfenen
+  CTNL-Signale.
+  **Offen:** ein INSTRUMENTEIGENER Ribbon (gleiche Konstruktion, eigene
+  H4/D1/W1-Daten) fuer die Nicht-Gold-Beine. Machbar, aber je Instrument ein
+  eigenes Vorhaben -- nicht begonnen.
+
+- **2026-09-30** [Research / Paper-Screening] **Iwanaga/Sakemoto (SSRN
+  5807282, "Overnight-Rendite sagt Reversal der ersten halben Stunde
+  voraus") nach Standardprozess geprueft -- verworfen in Phase 4.**
+  Nutzerauftrag. Nachbau auf SP500/NASDAQ/US30 (Dukascopy M5, 2016-07 bis
+  2026-09): b = -1,2 / -3,5 / -3,3 statt -9,2 im Paper. Die Paper-Strategie
+  liegt ohne 2020 brutto bei ~0, mit 1 bp Kosten bei -1,3 bis -2,6 % p.a.
+  Einziger Lichtblick "nur long nach negativem ON" (t~2) ist bei Einstieg
+  eine M5-Bar spaeter (09:35) auf allen drei Indizes ~0: der Effekt sitzt
+  komplett im Open-Print. Phase 5/6 nicht begonnen. Rein lesend, kein
+  Bot beruehrt. Notiz: `projects/overnight-reversal-erste-halbe-stunde.md`,
+  Skript `scripts/research_overnight_reversal_fh.py`.
+
 - **2026-09-30** [FK Instant Funding] **Aufgeklaert, warum FK kaum CTNL
   handelt -- und behoben.** Nutzerfrage. **Korrektur der Fragestellung:** FK
   handelt CTNL durchaus (State: 5 geschlossene + 10 offene Reversal-Positionen,

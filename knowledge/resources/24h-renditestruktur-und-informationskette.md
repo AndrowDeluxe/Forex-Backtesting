@@ -157,3 +157,8 @@ Das sind zwei verschiedene Aussagen über dasselbe Fenster, und beide sind
 für unseren ORB relevant -- siehe [[ny-open-orb-sp500]], Abschnitt
 "Externe Paper-Einordnung 2026-09-22", und den neuen Edge-Kandidaten
 [[eu-open-renditefenster]].
+
+**Nachtrag 2026-09-30**: Ein viertes Paper zum selben Fenster, Iwanaga/
+Sakemoto (SSRN 5807282, Overnight-Rendite -> Reversal in 09:30-10:00 ET),
+ist auf unseren Daten ebenfalls tot. Der Rest liegt komplett in den ersten
+5 Minuten nach dem Open-Print, siehe [[overnight-reversal-erste-halbe-stunde]].

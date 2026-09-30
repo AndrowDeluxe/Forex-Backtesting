@@ -35,6 +35,26 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **CTNL-Ribbon-Gate ist seit 2026-09-30 auf allen drei Bridges scharf.**
+  Long nur im Aufwaerts-, short nur im Abwaertstrend des MTF-EMA-Ribbons.
+  **Was du in den naechsten Wochen sehen wirst und was NICHT
+  ueberraschen darf:** rund **60 % weniger CTNL-Signale**, und kurzfristig
+  **weniger Ertrag** (2024-2026 waeren es ΣR +139,3 statt +169,3 gewesen).
+  Der Gewinn liegt in den schlechten Jahren -- Monte Carlo ueber zehn Jahre:
+  Median-MaxDD -5,63 % statt -15,50 %, Rendite +58,0 % statt +18,8 %.
+  **Offen fuer dich:** nach ein paar Wochen gegenpruefen, ob die Live-Quote
+  der verworfenen Signale zur erwarteten passt (~60 %). Sag Bescheid, wenn
+  ich dafuer eine geplante Auswertung anlegen soll.
+
+- **🔴 Der Git-Sync-Stash frisst weiterhin Session-Arbeit.** Am 30.09. war
+  `strategy/backtest.py` erneut aus dem Working Tree verschwunden (lag in
+  `stash@{38}` vom 28.09., zurueckgeholt). Es gibt eine Handoff-Notiz
+  `_handoff/GIT_STASH_KONFLIKT.md` vom selben Tag. **Der Fix vom 23.09. hat
+  das Problem nicht beseitigt**, 39 Stashes sind aufgelaufen. **Offen fuer
+  dich:** soll ich der Ursache nochmal nachgehen? Bisherige Notmassnahme
+  (nach jeder Aenderung sofort committen) funktioniert, ist aber keine
+  Loesung.
+
 - **🟡 `'str'`/`'float'`-Fehler ist am 29.09. erneut aufgetreten -- diesmal in
   Trend-Pullback-Scan (Funded, TTP+IQ) und CLS-Practical-Scan (FK), am Tag
   NACH dem als behoben dokumentierten Fix vom 28.09.** (Bridge Error Monitor,

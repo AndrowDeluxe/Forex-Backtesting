@@ -1,0 +1,73 @@
+{
+  "stand": "2026-09-30",
+  "beine": {
+    "ctnl_reversal": {
+      "trades": 116,
+      "avg_r": 1.163762314167898,
+      "summe_r": 134.9964284434762,
+      "trefferquote": 0.39655172413793105,
+      "profit_factor": 2.6914177368713625
+    },
+    "ctnl_continuation": {
+      "trades": 43,
+      "avg_r": 0.3410484184870107,
+      "summe_r": 14.665081994941458,
+      "trefferquote": 0.3953488372093023,
+      "profit_factor": 1.4492400031134607
+    }
+  },
+  "konten": {
+    "Funded ttp (Demo)": {
+      "risiko_cont": 0.000833,
+      "risiko_rev": 0.00025,
+      "equity_referenz": 100000,
+      "dd_grenze": "6 % (TTP)",
+      "median_maxdd_pct": -0.7618197424123008,
+      "p5_maxdd_pct": -1.538074937525295,
+      "P_maxdd_ueber_6pct": 0.0,
+      "median_return_pct": 4.272734566758496,
+      "median_sharpe": 1.4616763072222767
+    },
+    "Funded iqmarkets (echt)": {
+      "risiko_cont": 0.001667,
+      "risiko_rev": 0.0005,
+      "equity_referenz": 100000,
+      "dd_grenze": "6 % (IQ)",
+      "median_maxdd_pct": -1.520578635320663,
+      "p5_maxdd_pct": -3.066606048663323,
+      "P_maxdd_ueber_6pct": 0.0,
+      "median_return_pct": 8.692663843020622,
+      "median_sharpe": 1.4667249973992071
+    },
+    "FK Instant Funding": {
+      "risiko_cont": 0.001263,
+      "risiko_rev": 0.000379,
+      "equity_referenz": 100000,
+      "dd_grenze": "Trailing",
+      "median_maxdd_pct": -1.1537292619957784,
+      "p5_maxdd_pct": -2.3270023756296307,
+      "P_maxdd_ueber_6pct": 0.0,
+      "median_return_pct": 6.53387656219021,
+      "median_sharpe": 1.4644440513719865
+    },
+    "EK (nominal)": {
+      "risiko_cont": 0.000625,
+      "risiko_rev": 0.000188,
+      "equity_referenz": 2900,
+      "dd_grenze": "keine",
+      "median_maxdd_pct": -0.5721249531546957,
+      "p5_maxdd_pct": -1.1550039596531507,
+      "P_maxdd_ueber_6pct": 0.0,
+      "median_return_pct": 3.1994222045452325,
+      "median_sharpe": 1.4606405180593196
+    },
+    "EK (real, Mindestlot)": {
+      "risiko_rev": 0.0086,
+      "median_maxdd_pct": -13.998547383863801,
+      "p5_maxdd_pct": -23.442664816148604,
+      "P_maxdd_ueber_6pct": 0.9935,
+      "median_return_pct": 156.81934658303288,
+      "median_sharpe": 1.527001360571405
+    }
+  }
+}

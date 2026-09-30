@@ -1,0 +1,634 @@
+{
+  "varianten": {
+    "heute": {
+      "trades": 484,
+      "summe_r": 329.13297715885386,
+      "maxdd_r": -43.47886749831604,
+      "ret_dd": 7.569952855179619,
+      "jahre_positiv": "9/11",
+      "mc_med_dd_pct": -5.694936289132207,
+      "mc_p_dd_6": 0.4345,
+      "mc_p_dd_4": 0.8875,
+      "mc_ret_pct": 58.62839241634653,
+      "mc_sharpe": 0.9494626797652914
+    },
+    "spike0.5": {
+      "trades": 453,
+      "summe_r": 313.2465458732064,
+      "maxdd_r": -40.13364240329462,
+      "ret_dd": 7.805086384272253,
+      "jahre_positiv": "9/11",
+      "mc_med_dd_pct": -5.32026707209517,
+      "mc_p_dd_6": 0.3595,
+      "mc_p_dd_4": 0.827,
+      "mc_ret_pct": 56.90487778353855,
+      "mc_sharpe": 0.9597048389774657
+    },
+    "spike0.6": {
+      "trades": 421,
+      "summe_r": 319.828494900396,
+      "maxdd_r": -38.25744906590404,
+      "ret_dd": 8.359901214256201,
+      "jahre_positiv": "9/11",
+      "mc_med_dd_pct": -4.860279856988287,
+      "mc_p_dd_6": 0.257,
+      "mc_p_dd_4": 0.7445,
+      "mc_ret_pct": 59.04400448940525,
+      "mc_sharpe": 1.0234892243427245
+    },
+    "spike0.75": {
+      "trades": 362,
+      "summe_r": 317.72687246335096,
+      "maxdd_r": -34.538194857072725,
+      "ret_dd": 9.199290054914,
+      "jahre_positiv": "10/11",
+      "mc_med_dd_pct": -4.367756542635226,
+      "mc_p_dd_6": 0.184,
+      "mc_p_dd_4": 0.6165,
+      "mc_ret_pct": 58.82086398794581,
+      "mc_sharpe": 1.0752533212281086
+    },
+    "spike0.9": {
+      "trades": 308,
+      "summe_r": 250.63915104378597,
+      "maxdd_r": -38.12905695077464,
+      "ret_dd": 6.573442174753129,
+      "jahre_positiv": "9/11",
+      "mc_med_dd_pct": -4.278103344935447,
+      "mc_p_dd_6": 0.1675,
+      "mc_p_dd_4": 0.5765,
+      "mc_ret_pct": 43.81746571826467,
+      "mc_sharpe": 0.9485543397378167
+    },
+    "half2": {
+      "trades": 484,
+      "summe_r": 198.2998039260448,
+      "maxdd_r": -27.57537633606316,
+      "ret_dd": 7.1911912102069016,
+      "jahre_positiv": "9/11",
+      "mc_med_dd_pct": -4.136760132138894,
+      "mc_p_dd_6": 0.145,
+      "mc_p_dd_4": 0.542,
+      "mc_ret_pct": 30.676384017729816,
+      "mc_sharpe": 0.7932594236711092
+    },
+    "half3": {
+      "trades": 484,
+      "summe_r": 228.93929716946406,
+      "maxdd_r": -30.010299545069834,
+      "ret_dd": 7.628690837478653,
+      "jahre_positiv": "9/11",
+      "mc_med_dd_pct": -4.245731900782824,
+      "mc_p_dd_6": 0.159,
+      "mc_p_dd_4": 0.5715,
+      "mc_ret_pct": 36.855456777679976,
+      "mc_sharpe": 0.864913932015027
+    },
+    "half4": {
+      "trades": 484,
+      "summe_r": 278.48741669555795,
+      "maxdd_r": -29.52840800635586,
+      "ret_dd": 9.4311693551381,
+      "jahre_positiv": "9/11",
+      "mc_med_dd_pct": -4.6019400276743,
+      "mc_p_dd_6": 0.2295,
+      "mc_p_dd_4": 0.6715,
+      "mc_ret_pct": 47.277594747386104,
+      "mc_sharpe": 0.9297915767132003
+    },
+    "half5": {
+      "trades": 484,
+      "summe_r": 288.0810266861429,
+      "maxdd_r": -30.176404374267406,
+      "ret_dd": 9.546565691298888,
+      "jahre_positiv": "9/11",
+      "mc_med_dd_pct": -4.735736994937778,
+      "mc_p_dd_6": 0.243,
+      "mc_p_dd_4": 0.6995,
+      "mc_ret_pct": 49.40744599666841,
+      "mc_sharpe": 0.9381039191001656
+    },
+    "spike0.6+half3": {
+      "trades": 421,
+      "summe_r": 222.2621679500811,
+      "maxdd_r": -26.356961984820124,
+      "ret_dd": 8.432768847869852,
+      "jahre_positiv": "9/11",
+      "mc_med_dd_pct": -3.5692868044748804,
+      "mc_p_dd_6": 0.067,
+      "mc_p_dd_4": 0.35,
+      "mc_ret_pct": 37.92651806318813,
+      "mc_sharpe": 0.946729359226059
+    },
+    "spike0.6+half4": {
+      "trades": 421,
+      "summe_r": 272.58699959725647,
+      "maxdd_r": -22.512994054781757,
+      "ret_dd": 12.107985234392181,
+      "jahre_positiv": "9/11",
+      "mc_med_dd_pct": -3.9298439747352254,
+      "mc_p_dd_6": 0.11,
+      "mc_p_dd_4": 0.48,
+      "mc_ret_pct": 48.76288332889091,
+      "mc_sharpe": 1.0096264261798664
+    },
+    "spike0.75+half3": {
+      "trades": 362,
+      "summe_r": 218.27317764727226,
+      "maxdd_r": -25.506457003413857,
+      "ret_dd": 8.557565545777603,
+      "jahre_positiv": "10/11",
+      "mc_med_dd_pct": -3.1388232784782923,
+      "mc_p_dd_6": 0.0295,
+      "mc_p_dd_4": 0.237,
+      "mc_ret_pct": 37.300392934953166,
+      "mc_sharpe": 1.0130642583500975
+    },
+    "spike0.75+half4": {
+      "trades": 362,
+      "summe_r": 269.618266723631,
+      "maxdd_r": -32.42563668739755,
+      "ret_dd": 8.314972172263314,
+      "jahre_positiv": "10/11",
+      "mc_med_dd_pct": -3.521033547563601,
+      "mc_p_dd_6": 0.067,
+      "mc_p_dd_4": 0.358,
+      "mc_ret_pct": 48.49675144972269,
+      "mc_sharpe": 1.0730660656378324
+    },
+    "ddkill44R": {
+      "trades": 484,
+      "summe_r": 329.13297715885386,
+      "maxdd_r": -43.47886749831604,
+      "ret_dd": 7.569952855179619,
+      "jahre_positiv": "9/11",
+      "mc_med_dd_pct": -5.694936289132207,
+      "mc_p_dd_6": 0.4345,
+      "mc_p_dd_4": 0.8875,
+      "mc_ret_pct": 58.62839241634653,
+      "mc_sharpe": 0.9494626797652914
+    },
+    "ddkill20R": {
+      "trades": 379,
+      "summe_r": 256.30165234048275,
+      "maxdd_r": -28.19450622386331,
+      "ret_dd": 9.090482035949037,
+      "jahre_positiv": "9/11",
+      "mc_med_dd_pct": -5.157292851980161,
+      "mc_p_dd_6": 0.317,
+      "mc_p_dd_4": 0.799,
+      "mc_ret_pct": 42.37383821841758,
+      "mc_sharpe": 0.8483180980397286
+    },
+    "ddkill10R": {
+      "trades": 270,
+      "summe_r": 191.7578540236922,
+      "maxdd_r": -33.11094117971814,
+      "ret_dd": 5.791374306845499,
+      "jahre_positiv": "9/11",
+      "mc_med_dd_pct": -4.979192860730574,
+      "mc_p_dd_6": 0.316,
+      "mc_p_dd_4": 0.7435,
+      "mc_ret_pct": 29.84017770954643,
+      "mc_sharpe": 0.7034876158212306
+    },
+    "tagesstopp3R": {
+      "trades": 424,
+      "summe_r": 264.9236957685904,
+      "maxdd_r": -43.54676466118005,
+      "ret_dd": 6.083659666334702,
+      "jahre_positiv": "9/11",
+      "mc_med_dd_pct": -6.031132516826532,
+      "mc_p_dd_6": 0.505,
+      "mc_p_dd_4": 0.92,
+      "mc_ret_pct": 44.11437593486225,
+      "mc_sharpe": 0.784628426808885
+    },
+    "tagesstopp4R": {
+      "trades": 456,
+      "summe_r": 280.01579371744583,
+      "maxdd_r": -51.91783107515733,
+      "ret_dd": 5.393441673479948,
+      "jahre_positiv": "9/11",
+      "mc_med_dd_pct": -6.043906435634628,
+      "mc_p_dd_6": 0.508,
+      "mc_p_dd_4": 0.9165,
+      "mc_ret_pct": 47.07319690868549,
+      "mc_sharpe": 0.8103979669781556
+    },
+    "wochenstopp5R": {
+      "trades": 461,
+      "summe_r": 289.9105930873724,
+      "maxdd_r": -40.27704639258204,
+      "ret_dd": 7.197910945643875,
+      "jahre_positiv": "9/11",
+      "mc_med_dd_pct": -6.104059318538447,
+      "mc_p_dd_6": 0.523,
+      "mc_p_dd_4": 0.9165,
+      "mc_ret_pct": 50.15622254193989,
+      "mc_sharpe": 0.8601164716060923
+    },
+    "wochenstopp8R": {
+      "trades": 481,
+      "summe_r": 316.6693268252591,
+      "maxdd_r": -43.47886749831604,
+      "ret_dd": 7.283292897118901,
+      "jahre_positiv": "9/11",
+      "mc_med_dd_pct": -5.959739692390204,
+      "mc_p_dd_6": 0.4925,
+      "mc_p_dd_4": 0.909,
+      "mc_ret_pct": 55.695844041459566,
+      "mc_sharpe": 0.9194864911361983
+    },
+    "spike0.75+half3+ddkill20R": {
+      "trades": 285,
+      "summe_r": 181.18786227699925,
+      "maxdd_r": -25.027229548462095,
+      "ret_dd": 7.239629217694738,
+      "jahre_positiv": "8/11",
+      "mc_med_dd_pct": -2.9241487927496257,
+      "mc_p_dd_6": 0.016,
+      "mc_p_dd_4": 0.175,
+      "mc_ret_pct": 29.746083292365313,
+      "mc_sharpe": 0.9388262871399642
+    }
+  },
+  "walkforward": {
+    "spike": {
+      "je_jahr": [
+        {
+          "jahr": 2019,
+          "gewaehlt": "spike0.75",
+          "oos_trades": 37,
+          "oos_summe_r": 31.941259458747542,
+          "baseline_summe_r": 33.09877793884776,
+          "differenz": -1.1575184801002187
+        },
+        {
+          "jahr": 2020,
+          "gewaehlt": "spike0.75",
+          "oos_trades": 29,
+          "oos_summe_r": 5.202320333712534,
+          "baseline_summe_r": 33.86130499636293,
+          "differenz": -28.658984662650397
+        },
+        {
+          "jahr": 2021,
+          "gewaehlt": "heute",
+          "oos_trades": 50,
+          "oos_summe_r": -26.052647517347108,
+          "baseline_summe_r": -26.052647517347108,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2022,
+          "gewaehlt": "heute",
+          "oos_trades": 35,
+          "oos_summe_r": 83.26870117151805,
+          "baseline_summe_r": 83.26870117151805,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2023,
+          "gewaehlt": "heute",
+          "oos_trades": 29,
+          "oos_summe_r": 5.328040711150108,
+          "baseline_summe_r": 5.328040711150108,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2024,
+          "gewaehlt": "heute",
+          "oos_trades": 43,
+          "oos_summe_r": 52.187154121177485,
+          "baseline_summe_r": 52.187154121177485,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2025,
+          "gewaehlt": "heute",
+          "oos_trades": 40,
+          "oos_summe_r": 52.990822251465794,
+          "baseline_summe_r": 52.990822251465794,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2026,
+          "gewaehlt": "heute",
+          "oos_trades": 36,
+          "oos_summe_r": 32.61363775848726,
+          "baseline_summe_r": 32.61363775848726,
+          "differenz": 0.0
+        }
+      ],
+      "oos": {
+        "trades": 299,
+        "avg_r": 0.7942451113341528,
+        "summe_r": 237.47928828891168,
+        "trefferquote": 0.3779264214046823,
+        "profit_factor": 2.0264570079593693
+      },
+      "baseline": {
+        "trades": 327,
+        "avg_r": 0.8174183224209856,
+        "summe_r": 267.2957914316623,
+        "trefferquote": 0.382262996941896,
+        "profit_factor": 2.066287408608145
+      },
+      "jahre_besser": 0,
+      "jahre_gesamt": 8,
+      "gewaehlte_parameter": [
+        "spike0.75",
+        "spike0.75",
+        "heute",
+        "heute",
+        "heute",
+        "heute",
+        "heute",
+        "heute"
+      ]
+    },
+    "half": {
+      "je_jahr": [
+        {
+          "jahr": 2019,
+          "gewaehlt": "heute",
+          "oos_trades": 49,
+          "oos_summe_r": 33.09877793884776,
+          "baseline_summe_r": 33.09877793884776,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2020,
+          "gewaehlt": "heute",
+          "oos_trades": 45,
+          "oos_summe_r": 33.86130499636293,
+          "baseline_summe_r": 33.86130499636293,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2021,
+          "gewaehlt": "heute",
+          "oos_trades": 50,
+          "oos_summe_r": -26.052647517347108,
+          "baseline_summe_r": -26.052647517347108,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2022,
+          "gewaehlt": "heute",
+          "oos_trades": 35,
+          "oos_summe_r": 83.26870117151805,
+          "baseline_summe_r": 83.26870117151805,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2023,
+          "gewaehlt": "heute",
+          "oos_trades": 29,
+          "oos_summe_r": 5.328040711150108,
+          "baseline_summe_r": 5.328040711150108,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2024,
+          "gewaehlt": "heute",
+          "oos_trades": 43,
+          "oos_summe_r": 52.187154121177485,
+          "baseline_summe_r": 52.187154121177485,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2025,
+          "gewaehlt": "heute",
+          "oos_trades": 40,
+          "oos_summe_r": 52.990822251465794,
+          "baseline_summe_r": 52.990822251465794,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2026,
+          "gewaehlt": "heute",
+          "oos_trades": 36,
+          "oos_summe_r": 32.61363775848726,
+          "baseline_summe_r": 32.61363775848726,
+          "differenz": 0.0
+        }
+      ],
+      "oos": {
+        "trades": 327,
+        "avg_r": 0.8174183224209856,
+        "summe_r": 267.2957914316623,
+        "trefferquote": 0.382262996941896,
+        "profit_factor": 2.066287408608145
+      },
+      "baseline": {
+        "trades": 327,
+        "avg_r": 0.8174183224209856,
+        "summe_r": 267.2957914316623,
+        "trefferquote": 0.382262996941896,
+        "profit_factor": 2.066287408608145
+      },
+      "jahre_besser": 0,
+      "jahre_gesamt": 8,
+      "gewaehlte_parameter": [
+        "heute",
+        "heute",
+        "heute",
+        "heute",
+        "heute",
+        "heute",
+        "heute",
+        "heute"
+      ]
+    },
+    "kombi": {
+      "je_jahr": [
+        {
+          "jahr": 2019,
+          "gewaehlt": "heute",
+          "oos_trades": 49,
+          "oos_summe_r": 33.09877793884776,
+          "baseline_summe_r": 33.09877793884776,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2020,
+          "gewaehlt": "heute",
+          "oos_trades": 45,
+          "oos_summe_r": 33.86130499636293,
+          "baseline_summe_r": 33.86130499636293,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2021,
+          "gewaehlt": "heute",
+          "oos_trades": 50,
+          "oos_summe_r": -26.052647517347108,
+          "baseline_summe_r": -26.052647517347108,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2022,
+          "gewaehlt": "heute",
+          "oos_trades": 35,
+          "oos_summe_r": 83.26870117151805,
+          "baseline_summe_r": 83.26870117151805,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2023,
+          "gewaehlt": "heute",
+          "oos_trades": 29,
+          "oos_summe_r": 5.328040711150108,
+          "baseline_summe_r": 5.328040711150108,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2024,
+          "gewaehlt": "heute",
+          "oos_trades": 43,
+          "oos_summe_r": 52.187154121177485,
+          "baseline_summe_r": 52.187154121177485,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2025,
+          "gewaehlt": "heute",
+          "oos_trades": 40,
+          "oos_summe_r": 52.990822251465794,
+          "baseline_summe_r": 52.990822251465794,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2026,
+          "gewaehlt": "heute",
+          "oos_trades": 36,
+          "oos_summe_r": 32.61363775848726,
+          "baseline_summe_r": 32.61363775848726,
+          "differenz": 0.0
+        }
+      ],
+      "oos": {
+        "trades": 327,
+        "avg_r": 0.8174183224209856,
+        "summe_r": 267.2957914316623,
+        "trefferquote": 0.382262996941896,
+        "profit_factor": 2.066287408608145
+      },
+      "baseline": {
+        "trades": 327,
+        "avg_r": 0.8174183224209856,
+        "summe_r": 267.2957914316623,
+        "trefferquote": 0.382262996941896,
+        "profit_factor": 2.066287408608145
+      },
+      "jahre_besser": 0,
+      "jahre_gesamt": 8,
+      "gewaehlte_parameter": [
+        "heute",
+        "heute",
+        "heute",
+        "heute",
+        "heute",
+        "heute",
+        "heute",
+        "heute"
+      ]
+    },
+    "killswitch": {
+      "je_jahr": [
+        {
+          "jahr": 2019,
+          "gewaehlt": "heute",
+          "oos_trades": 49,
+          "oos_summe_r": 33.09877793884776,
+          "baseline_summe_r": 33.09877793884776,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2020,
+          "gewaehlt": "heute",
+          "oos_trades": 45,
+          "oos_summe_r": 33.86130499636293,
+          "baseline_summe_r": 33.86130499636293,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2021,
+          "gewaehlt": "heute",
+          "oos_trades": 50,
+          "oos_summe_r": -26.052647517347108,
+          "baseline_summe_r": -26.052647517347108,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2022,
+          "gewaehlt": "heute",
+          "oos_trades": 35,
+          "oos_summe_r": 83.26870117151805,
+          "baseline_summe_r": 83.26870117151805,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2023,
+          "gewaehlt": "heute",
+          "oos_trades": 29,
+          "oos_summe_r": 5.328040711150108,
+          "baseline_summe_r": 5.328040711150108,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2024,
+          "gewaehlt": "heute",
+          "oos_trades": 43,
+          "oos_summe_r": 52.187154121177485,
+          "baseline_summe_r": 52.187154121177485,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2025,
+          "gewaehlt": "heute",
+          "oos_trades": 40,
+          "oos_summe_r": 52.990822251465794,
+          "baseline_summe_r": 52.990822251465794,
+          "differenz": 0.0
+        },
+        {
+          "jahr": 2026,
+          "gewaehlt": "heute",
+          "oos_trades": 36,
+          "oos_summe_r": 32.61363775848726,
+          "baseline_summe_r": 32.61363775848726,
+          "differenz": 0.0
+        }
+      ],
+      "oos": {
+        "trades": 327,
+        "avg_r": 0.8174183224209856,
+        "summe_r": 267.2957914316623,
+        "trefferquote": 0.382262996941896,
+        "profit_factor": 2.066287408608145
+      },
+      "baseline": {
+        "trades": 327,
+        "avg_r": 0.8174183224209856,
+        "summe_r": 267.2957914316623,
+        "trefferquote": 0.382262996941896,
+        "profit_factor": 2.066287408608145
+      },
+      "jahre_besser": 0,
+      "jahre_gesamt": 8,
+      "gewaehlte_parameter": [
+        "heute",
+        "heute",
+        "heute",
+        "heute",
+        "heute",
+        "heute",
+        "heute",
+        "heute"
+      ]
+    }
+  }
+}

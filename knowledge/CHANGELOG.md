@@ -9,6 +9,47 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-30** [CTNL / Rollout-Bilanz] **Aktivierung verifiziert und
+  Backtest je Konto gerechnet** (Nutzerfrage). Skript
+  `research_ctnl_je_konto_2024.py`, Rohdaten `_data/ctnl_je_konto_2024.json`.
+  **Aktivierungsstand (Code-Stand geprueft, nicht behauptet):** Ribbon-Gate
+  in `_process_leg()` bei Funded und FK, in `_send_entry()` bei EK -- also
+  jeweils an der Stelle, die JEDER Aufrufpfad durchlaeuft (nach dem Fehler
+  von heute, wo die Fast-Lanes es umgingen). Alle fuenf Einstiegspunkte
+  importieren, alle drei Bridges auf "Ready".
+  **FK repariert:** `ctnl_reversal` laeuft jetzt auf der Fast-Lane (PT5M)
+  statt nur auf der stuendlichen Slow-Lane; der Task-Plan blieb unberuehrt.
+  **EK-Deckel steht:** `CTNL_REV_MAX_CONCURRENT = 1`.
+  **NICHT verifiziert:** ein echter Live-Durchlauf mit Order -- das zeigt
+  erst der naechste CTNL-Signaltag.
+  **Wirkung des Gates auf 2024-heute:** `ctnl_reversal` 299 -> 116 Trades,
+  Ø R **+0,622 -> +1,164**, PF **1,81 -> 2,69**. `ctnl_continuation`
+  100 -> 43 Trades, Ø R +0,313 -> +0,341, PF 1,36 -> 1,45. Der Edge je Trade
+  verdoppelt sich, die Summe faellt (ΣR ~135 statt ~186) -- wie angekuendigt.
+  **Je Konto (159 Trades, ΣR +149,7, identische Trade-Liste, nur andere
+  Kapitalscheibe):**
+
+  | Konto | Median MaxDD | P5 | P(>6 %) | Median Return | Sharpe |
+  |---|---|---|---|---|---|
+  | Funded ttp (Demo) | -0,76 % | -1,54 % | **0,0 %** | +4,3 % | 1,46 |
+  | Funded iqmarkets (echt) | -1,52 % | -3,07 % | **0,0 %** | +8,7 % | 1,47 |
+  | FK Instant Funding | -1,15 % | -2,33 % | **0,0 %** | +6,5 % | 1,46 |
+  | EK (nominal) | -0,57 % | -1,16 % | 0,0 % | +3,2 % | 1,46 |
+
+  **Alle drei Funded-Konten liegen mit P(Bruch) = 0,0 % komfortabel
+  innerhalb ihrer 6-%-Grenze.** Vor dem Gate war das nicht so.
+  **EK ist die Ausnahme:** mit dem real erzwungenen Risiko der
+  Mindestlot-Anhebung (0,86 %/Trade statt nominal 0,019 %, Befund 10) wird
+  aus -0,57 % Median-Drawdown **-14,00 %**, P(>6 %) **99,4 %**, Median
+  Return **+156,8 %**, Sharpe 1,53. EK hat keine harte Grenze, also ist das
+  zulaessig -- aber es sind **24-fach** mehr Risiko als vorgesehen. Wer die
+  nominale Zeile liest, liest nicht EK.
+  **Einordnung, die dazugehoert:** 2024-heute ist das GUTE Regime. Ueber
+  zehn Jahre liegt derselbe Aufbau bei Median-Return +58 % und MaxDD
+  -5,63 % (0,15 %/Trade). Die Kontozahlen sind das Schaufenster, nicht der
+  Durchschnitt. Der Sharpe ist ueberall ~1,46, weil es dieselbe Trade-Folge
+  ist -- die Kontounterschiede sind reine Hebelunterschiede.
+
 - **2026-09-30** [OU-Modell] **Nutzerentscheid: Stopdeckel verworfen, aktuelle
   Risikologik bleibt, DD/EOG laufen weiter unter Beobachtung.**
   Der getestete Deckel auf die Stopdistanz (25-30 % waeren leicht besser

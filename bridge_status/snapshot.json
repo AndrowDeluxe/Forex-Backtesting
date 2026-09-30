@@ -1,25 +1,27 @@
 {
-  "generated_at": "2026-09-30T21:31:24",
+  "generated_at": "2026-09-30T22:01:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-30T21:29:08",
+      "last_run": "2026-09-30T21:59:08",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-09-30 21:29:08 2026-09-30 21:29:02,664 INFO run_once: Konto-Equity 2860.81 EUR | Aggregiertes offenes Risiko (ganzes Konto): 202.34 (Deckel dieser Bridge: 858.24, 30%)",
+      "last_equity_line": "2026-09-30 21:59:08 2026-09-30 21:59:02,564 INFO run_once: Konto-Equity 2859.41 EUR | Aggregiertes offenes Risiko (ganzes Konto): 202.45 (Deckel dieser Bridge: 857.82, 30%)",
       "last_error_line": "2026-09-29 22:36:22 2026-09-29 22:35:14,820 ERROR run_once: cls_practical: unerwarteter Fehler",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-09-30T21:28:22",
-      "minutes_since_last_run": 3.0,
+      "last_run": "2026-09-30T21:58:19",
+      "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-09-30 21:28:22 Verbunden: Login 504072729, Equity $99,362.92 USD",
+          "last_equity_line": "2026-09-30 21:58:19 Verbunden: Login 504072729, Equity $99,340.39 USD",
           "last_error_line": "2026-09-29 22:31:19 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
           "recent_events": [
+            "2026-09-30 21:58:19 ?? CTNL-KILL-SWITCH: Stand-alone Cont+Rev-Drawdown -7.01% unter der Phase-6-P5-Schwelle (-6.60%). Neue CTNL-Entries gestoppt. Offene Positionen laufen normal weiter.",
+            "2026-09-30 21:58:19 [TTP] ?? CTNL-KILL-SWITCH: Stand-alone Cont+Rev-Drawdown -7.01% unter der Phase-6-P5-Schwelle (-6.60%). Neue CTNL-Entries gestoppt. Offene Positionen laufen normal weiter.",
             "2026-09-30 20:13:16 [TTP] ?? ENTRY ou_modell (KO) KO BUY lots=31.0 risk=$165.68 sl=81.20934 -- placed",
             "2026-09-30 15:28:17 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4242.53119 -- placed",
             "2026-09-30 15:13:17 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.01 risk=$75.00 sl=4242.38140 -- placed",
@@ -29,15 +31,15 @@
             "2026-09-30 11:43:16 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
             "2026-09-30 11:28:16 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
             "2026-09-30 09:43:17 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.02 risk=$75.00 sl=4218.45076 -- placed",
-            "2026-09-30 09:28:16 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.03 risk=$75.00 sl=4215.39992 -- placed",
-            "2026-09-30 09:13:16 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.58R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.4-fache aufgeblaeht.",
-            "2026-09-30 08:58:15 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.62R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.6-fache aufgeblaeht."
+            "2026-09-30 09:28:16 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.03 risk=$75.00 sl=4215.39992 -- placed"
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-09-30 21:28:22 Verbunden: Login 16054, Equity $97,986.41 USD",
+          "last_equity_line": "2026-09-30 21:58:19 Verbunden: Login 16054, Equity $97,987.95 USD",
           "last_error_line": "2026-09-29 22:31:19 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
           "recent_events": [
+            "2026-09-30 21:58:19 ?? CTNL-KILL-SWITCH: Stand-alone Cont+Rev-Drawdown -7.01% unter der Phase-6-P5-Schwelle (-6.60%). Neue CTNL-Entries gestoppt. Offene Positionen laufen normal weiter.",
+            "2026-09-30 21:58:19 [IQMARKETS] ?? CTNL-KILL-SWITCH: Stand-alone Cont+Rev-Drawdown -7.01% unter der Phase-6-P5-Schwelle (-6.60%). Neue CTNL-Entries gestoppt. Offene Positionen laufen normal weiter.",
             "2026-09-30 15:28:17 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.03 risk=$150.00 sl=4242.53119 -- placed",
             "2026-09-30 15:13:17 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.03 risk=$150.00 sl=4242.38140 -- placed",
             "2026-09-30 14:58:16 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe war schon ausgestoppt (2026-09-30 12:35 UTC), bevor der Entry losgehen konnte -- uebersprungen statt in ein totes Signal zu entern.",
@@ -47,9 +49,7 @@
             "2026-09-30 11:28:16 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
             "2026-09-30 09:58:16 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.05 risk=$150.00 sl=4221.80290 -- placed",
             "2026-09-30 09:43:17 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.05 risk=$150.00 sl=4218.45076 -- placed",
-            "2026-09-30 09:28:16 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.07 risk=$150.00 sl=4215.39992 -- placed",
-            "2026-09-30 09:13:16 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe: Kurs bereits 0.58R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.4-fache aufgeblaeht.",
-            "2026-09-30 08:58:15 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe: Kurs bereits 0.63R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.7-fache aufgeblaeht."
+            "2026-09-30 09:28:16 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.07 risk=$150.00 sl=4215.39992 -- placed"
           ]
         }
       }
@@ -57,7 +57,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-09-30T21:14:10",
-      "minutes_since_last_run": 17.2,
+      "minutes_since_last_run": 47.2,
       "status": "ok",
       "last_equity_line": "2026-09-30 21:14:10 Verbunden: Login 17764, Equity $99,428.76",
       "last_error_line": "2026-09-29 22:17:44 ctnl-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",

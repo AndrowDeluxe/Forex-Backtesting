@@ -891,3 +891,87 @@ darunter "SCAN UNVOLLSTAENDIG").
   (Plan-Verifikation 4) steht noch aus; er braucht eine MT5-Verbindung und
   faellt unter die Echtgeld-Sperre des Auto-Modus.
 - Risiko-Neukalibrierung der FK-Konten (Teil 2 des Plans) noch nicht begonnen.
+
+---
+
+# Nacharbeiten (2026-09-30)
+
+## Wiedereinstiegs-Drehtuer (behoben)
+
+AIG wurde seit dem Umbau **sechsmal eroeffnet und sechsmal per MA20
+geschlossen**, am 29.09. dreimal in 30 Minuten -- Ausstieg und neuer Einstieg
+jeweils im selben Bridge-Lauf, Ertrag zusammen +1,22 EUR bei sechs Runden
+Spread.
+
+Ursache ist eine Annahme, die im Backtest gratis war: dort werden Ausstieg
+(`Kurs >= MA`) und Einstieg (`Kurs < MA - 2,25*sigma`) auf DEMSELBEN
+Tagesschluss geprueft und schliessen sich damit gegenseitig aus. Live kam der
+Ausstieg vom Live-Tick, der Einstieg vom Signal des Vortagesschlusses -- steigt
+der Kurs ueber Nacht ans Mittel, ist das Signal formal gueltig, der Trade laut
+Modell aber beendet. Die einzige Sperre war `position_already_open`, und die
+greift nur, solange die Position offen IST.
+
+Behoben mit zwei Sperren in `EK-Portfolio-Bridge/legs/ou_modell/executor.py`:
+Einstieg prueft dieselbe MA20-Marke wie der Ausstieg, und hoechstens ein
+Einstieg je Titel und Signaltag (das Modell entscheidet einmal taeglich, die
+Bridge prueft alle 15 Minuten). Gegen die echten Kurse vom 29.09.
+nachgespielt: Einstieg 74,60 erlaubt, alle drei Wiedereinstiege blockiert.
+Die Funded-Bridge ist nicht betroffen (geprueft: jeder Titel genau einmal) --
+dort kommen Einstiege aus der Trade-Liste des Modells selbst.
+
+## Deckel auf die Stopdistanz (getestet, NICHT umgesetzt)
+
+Anlass: 8 Sigma erzeugt bei volatilen Titeln absurde Stops -- AMGN 59 %,
+CRM 72 %. Ein solcher Stop schuetzt nichts, er macht die Position nur winzig.
+Replay-Test auf der Trade-Basis der Logik D (FK-Kosten, OOS):
+
+| Deckel | OOS Ø R | PF | Jahre + | schlechtester | betroffene Trades |
+|---|---|---|---|---|---|
+| keiner | +0,0148 | 1,16 | 3/4 | −0,90R | — |
+| **30 %** | **+0,0174** | **1,18** | 3/4 | −0,90R | 12 % |
+| **25 %** | **+0,0174** | 1,17 | 3/4 | −1,01R | 20 % |
+| 20 % | +0,0171 | 1,15 | 3/4 | −1,01R | 33 % |
+| 15 % | +0,0167 | 1,13 | **2/4** | −1,04R | 57 % |
+
+Der Deckel kostet bis 20 % nichts und ist bei 25-30 % sogar leicht besser.
+**Methodische Einschraenkung:** Replay-Test -- die Trade-Liste stammt aus der
+Engine mit 8 Sigma, der Deckel wirkt erst im Nachspielen. Live aendert er ueber
+die Positionsgroesse auch den Risikodeckel und damit die Trade-Auswahl. Vor
+einer Uebernahme gehoert der Engine-Lauf dazu (gleiche Lehre wie beim
+Signalseiten-Test, dort 665 vs. 764 Trades).
+
+**Was der Deckel NICHT loest:** den Risiko-Ueberschuss auf EK. Der kommt vom
+KURSNIVEAU, nicht von der Stopbreite -- AXP mit 305 USD riskiert selbst bei
+10 % Stop noch das 2,5-fache des Ziels. Noetige Kontogroesse fuer 90 % des
+Universums: 20.200 EUR ohne Deckel, 15.300 EUR mit 25 %. Auf dem heutigen
+Konto (2.850 EUR) aendert der Deckel praktisch nichts (19 % -> 20 % der Titel
+sizen korrekt).
+
+**Der wirksame Hebel auf kleinen Konten waere ein Preisfilter:**
+
+| Nur Titel bis ... x Zielrisiko | handelbare Titel | max. Einzelrisiko |
+|---|---|---|
+| 1,0x | 12 von 59 (20 %) | 0,32 % Konto |
+| 1,5x | 20 von 59 (34 %) | 0,54 % |
+| **2,0x** | **27 von 59 (46 %)** | **0,72 %** |
+| 3,0x | 39 von 59 (66 %) | 1,09 % |
+
+Heute ohne Filter: AXP allein 2,30 % Konto (6,3x Ziel), Summe 7,70 % statt
+4,76 % beabsichtigt. Entscheidung offen.
+
+## Zwei unverwaltete Funded-Positionen
+
+DD (Ticket 18444945) und EOG (18531211) fallen seit dem 23.09. bzw. **21.09.**
+aus dem Funded-Scan ("Titel fehlt im aktuellen Scan"). Geprueft und
+ausgeschlossen: beide sind im OU-Universum, bestehen den p_value-Filter, und
+der Data Lake liefert fuer beide aktuelle Kurse bis heute. Es ist also kein
+Datenausfall, sondern die pfadabhaengige Neusimulation -- `_scan_ou_modell`
+rechnet die ganze Historie bei jedem Lauf neu, und eine unter alten Parametern
+eroeffnete Position kann in der neuen Simulation schlicht fehlen. EOG begann
+ZWEI TAGE VOR unserem Umbau, ist also nicht dessen Folge; DD faellt mit dem
+Umbaudatum zusammen.
+
+Die Bridge schliesst solche Titel bewusst nicht (Datenausfall ist von "Modell
+ist draussen" nicht unterscheidbar). Konsequenz: beide Positionen laufen seit
+7 bzw. 9 Tagen nur noch mit Broker-SL, ohne Modellfuehrung. Braucht eine
+Entscheidung.

@@ -1,0 +1,504 @@
+{
+  "rohsignale": 19267,
+  "varianten": {},
+  "flaeche": {
+    "next_open/w0": {
+      "trades": 1253,
+      "avg_r": 0.1168598307832941,
+      "summe_r": 146.4253679714675,
+      "trefferquote": 0.27693535514764567,
+      "profit_factor": 1.128659351621218
+    },
+    "next_open/w0 +ribbon": {
+      "trades": 475,
+      "avg_r": 0.6959879225075664,
+      "summe_r": 330.594263191094,
+      "trefferquote": 0.3473684210526316,
+      "profit_factor": 1.8677833193057667
+    },
+    "limit_trigger_level/w0": {
+      "trades": 469,
+      "avg_r": 0.07352812368511588,
+      "summe_r": 34.48469000831935,
+      "trefferquote": 0.24733475479744135,
+      "profit_factor": 1.0773816637215405
+    },
+    "limit_trigger_level/w0 +ribbon": {
+      "trades": 169,
+      "avg_r": 0.4890925450425058,
+      "summe_r": 82.65664011218348,
+      "trefferquote": 0.30177514792899407,
+      "profit_factor": 1.5564490823869324
+    },
+    "limit_trigger_level/w2": {
+      "trades": 455,
+      "avg_r": 0.08070155912127858,
+      "summe_r": 36.719209400181754,
+      "trefferquote": 0.25054945054945055,
+      "profit_factor": 1.0849176151575008
+    },
+    "limit_trigger_level/w2 +ribbon": {
+      "trades": 170,
+      "avg_r": 0.5041933337975731,
+      "summe_r": 85.71286674558743,
+      "trefferquote": 0.3058823529411765,
+      "profit_factor": 1.5763240724287177
+    },
+    "limit_trigger_level/w6": {
+      "trades": 439,
+      "avg_r": 0.16852967863915716,
+      "summe_r": 73.98452892258999,
+      "trefferquote": 0.26651480637813213,
+      "profit_factor": 1.1795794570809057
+    },
+    "limit_trigger_level/w6 +ribbon": {
+      "trades": 164,
+      "avg_r": 0.5475100323214669,
+      "summe_r": 89.79164530072057,
+      "trefferquote": 0.3170731707317073,
+      "profit_factor": 1.6270171978192018
+    },
+    "limit_signal_extreme/w0": {
+      "trades": 469,
+      "avg_r": 0.07352812368511588,
+      "summe_r": 34.48469000831935,
+      "trefferquote": 0.24733475479744135,
+      "profit_factor": 1.0773816637215405
+    },
+    "limit_signal_extreme/w0 +ribbon": {
+      "trades": 169,
+      "avg_r": 0.4890925450425058,
+      "summe_r": 82.65664011218348,
+      "trefferquote": 0.30177514792899407,
+      "profit_factor": 1.5564490823869324
+    },
+    "limit_signal_extreme/w2": {
+      "trades": 455,
+      "avg_r": 0.08070155912127858,
+      "summe_r": 36.719209400181754,
+      "trefferquote": 0.25054945054945055,
+      "profit_factor": 1.0849176151575008
+    },
+    "limit_signal_extreme/w2 +ribbon": {
+      "trades": 170,
+      "avg_r": 0.5041933337975731,
+      "summe_r": 85.71286674558743,
+      "trefferquote": 0.3058823529411765,
+      "profit_factor": 1.5763240724287177
+    },
+    "limit_signal_extreme/w6": {
+      "trades": 439,
+      "avg_r": 0.16852967863915716,
+      "summe_r": 73.98452892258999,
+      "trefferquote": 0.26651480637813213,
+      "profit_factor": 1.1795794570809057
+    },
+    "limit_signal_extreme/w6 +ribbon": {
+      "trades": 164,
+      "avg_r": 0.5475100323214669,
+      "summe_r": 89.79164530072057,
+      "trefferquote": 0.3170731707317073,
+      "profit_factor": 1.6270171978192018
+    },
+    "limit_trigger_level/w2/BE0.25": {
+      "trades": 799,
+      "avg_r": 0.022169634183561226,
+      "summe_r": 17.71353771266542,
+      "trefferquote": 0.10638297872340426,
+      "profit_factor": 1.0473115838909788
+    },
+    "limit_trigger_level/w2/BE0.25 +ribbon": {
+      "trades": 279,
+      "avg_r": 0.3288854819291122,
+      "summe_r": 91.75904945822231,
+      "trefferquote": 0.15053763440860216,
+      "profit_factor": 1.906571363704683
+    },
+    "limit_trigger_level/w2/BE0.5": {
+      "trades": 661,
+      "avg_r": 0.04649371030088221,
+      "summe_r": 30.73234250888314,
+      "trefferquote": 0.1361573373676248,
+      "profit_factor": 1.0812153608708577
+    },
+    "limit_trigger_level/w2/BE0.5 +ribbon": {
+      "trades": 240,
+      "avg_r": 0.4126947050151888,
+      "summe_r": 99.04672920364531,
+      "trefferquote": 0.19166666666666668,
+      "profit_factor": 1.8987215764201122
+    },
+    "limit_trigger_level/w2/BE1": {
+      "trades": 544,
+      "avg_r": 0.04472853390433439,
+      "summe_r": 24.33232244395791,
+      "trefferquote": 0.17463235294117646,
+      "profit_factor": 1.0615970192031567
+    },
+    "limit_trigger_level/w2/BE1 +ribbon": {
+      "trades": 200,
+      "avg_r": 0.41589217290546954,
+      "summe_r": 83.17843458109391,
+      "trefferquote": 0.23,
+      "profit_factor": 1.6619992803945491
+    }
+  },
+  "jung": {
+    "next_open/w0": {
+      "trades": 290,
+      "avg_r": 0.5838835645895988,
+      "summe_r": 169.32623373098363,
+      "trefferquote": 0.3448275862068966,
+      "profit_factor": 1.7515189251941812
+    },
+    "next_open/w0 +ribbon": {
+      "trades": 110,
+      "avg_r": 1.265935456030643,
+      "summe_r": 139.25290016337073,
+      "trefferquote": 0.41818181818181815,
+      "profit_factor": 2.843039391281885
+    },
+    "limit_trigger_level/w0": {
+      "trades": 102,
+      "avg_r": 0.5965913916942086,
+      "summe_r": 60.85232195280928,
+      "trefferquote": 0.3333333333333333,
+      "profit_factor": 1.723944301629892
+    },
+    "limit_trigger_level/w0 +ribbon": {
+      "trades": 40,
+      "avg_r": 0.994552228356526,
+      "summe_r": 39.78208913426104,
+      "trefferquote": 0.35,
+      "profit_factor": 2.227728165768342
+    },
+    "limit_trigger_level/w2": {
+      "trades": 97,
+      "avg_r": 0.5889978125196252,
+      "summe_r": 57.13278781440365,
+      "trefferquote": 0.3402061855670103,
+      "profit_factor": 1.7278308154903361
+    },
+    "limit_trigger_level/w2 +ribbon": {
+      "trades": 38,
+      "avg_r": 0.9458033201773602,
+      "summe_r": 35.94052616673969,
+      "trefferquote": 0.34210526315789475,
+      "profit_factor": 2.163226823465509
+    },
+    "limit_trigger_level/w6": {
+      "trades": 96,
+      "avg_r": 0.5975034668692015,
+      "summe_r": 57.36033281944334,
+      "trefferquote": 0.3333333333333333,
+      "profit_factor": 1.735374830533369
+    },
+    "limit_trigger_level/w6 +ribbon": {
+      "trades": 38,
+      "avg_r": 0.9472072990247521,
+      "summe_r": 35.99387736294058,
+      "trefferquote": 0.34210526315789475,
+      "profit_factor": 2.1548819624658115
+    },
+    "limit_signal_extreme/w0": {
+      "trades": 102,
+      "avg_r": 0.5965913916942086,
+      "summe_r": 60.85232195280928,
+      "trefferquote": 0.3333333333333333,
+      "profit_factor": 1.723944301629892
+    },
+    "limit_signal_extreme/w0 +ribbon": {
+      "trades": 40,
+      "avg_r": 0.994552228356526,
+      "summe_r": 39.78208913426104,
+      "trefferquote": 0.35,
+      "profit_factor": 2.227728165768342
+    },
+    "limit_signal_extreme/w2": {
+      "trades": 97,
+      "avg_r": 0.5889978125196252,
+      "summe_r": 57.13278781440365,
+      "trefferquote": 0.3402061855670103,
+      "profit_factor": 1.7278308154903361
+    },
+    "limit_signal_extreme/w2 +ribbon": {
+      "trades": 38,
+      "avg_r": 0.9458033201773602,
+      "summe_r": 35.94052616673969,
+      "trefferquote": 0.34210526315789475,
+      "profit_factor": 2.163226823465509
+    },
+    "limit_signal_extreme/w6": {
+      "trades": 96,
+      "avg_r": 0.5975034668692015,
+      "summe_r": 57.36033281944334,
+      "trefferquote": 0.3333333333333333,
+      "profit_factor": 1.735374830533369
+    },
+    "limit_signal_extreme/w6 +ribbon": {
+      "trades": 38,
+      "avg_r": 0.9472072990247521,
+      "summe_r": 35.99387736294058,
+      "trefferquote": 0.34210526315789475,
+      "profit_factor": 2.1548819624658115
+    },
+    "limit_trigger_level/w2/BE0.25": {
+      "trades": 191,
+      "avg_r": 0.13952861818504922,
+      "summe_r": 26.6499660733444,
+      "trefferquote": 0.11518324607329843,
+      "profit_factor": 1.3323240168131165
+    },
+    "limit_trigger_level/w2/BE0.25 +ribbon": {
+      "trades": 55,
+      "avg_r": 0.6192110714082254,
+      "summe_r": 34.056608927452395,
+      "trefferquote": 0.18181818181818182,
+      "profit_factor": 3.147480285895151
+    },
+    "limit_trigger_level/w2/BE0.5": {
+      "trades": 159,
+      "avg_r": 0.1812138779894504,
+      "summe_r": 28.813006600322616,
+      "trefferquote": 0.1509433962264151,
+      "profit_factor": 1.344985111528807
+    },
+    "limit_trigger_level/w2/BE0.5 +ribbon": {
+      "trades": 52,
+      "avg_r": 0.6625093965383826,
+      "summe_r": 34.450488619995895,
+      "trefferquote": 0.21153846153846154,
+      "profit_factor": 2.7010111415671276
+    },
+    "limit_trigger_level/w2/BE1": {
+      "trades": 129,
+      "avg_r": 0.2488235406841055,
+      "summe_r": 32.09823674824961,
+      "trefferquote": 0.1937984496124031,
+      "profit_factor": 1.3910512883863952
+    },
+    "limit_trigger_level/w2/BE1 +ribbon": {
+      "trades": 46,
+      "avg_r": 0.5278271805073664,
+      "summe_r": 24.280050303338857,
+      "trefferquote": 0.21739130434782608,
+      "profit_factor": 1.8833671347716487
+    }
+  },
+  "walkforward": {
+    "je_jahr": [
+      {
+        "jahr": 2019,
+        "gewaehlt": "next_open/w0 +ribbon",
+        "oos_trades": 49,
+        "oos_summe_r": 33.09877793884776,
+        "baseline_summe_r": 21.389028509782626,
+        "differenz": 11.709749429065134
+      },
+      {
+        "jahr": 2020,
+        "gewaehlt": "next_open/w0 +ribbon",
+        "oos_trades": 45,
+        "oos_summe_r": 33.86130499636293,
+        "baseline_summe_r": -18.52645303291468,
+        "differenz": 52.38775802927761
+      },
+      {
+        "jahr": 2021,
+        "gewaehlt": "next_open/w0 +ribbon",
+        "oos_trades": 50,
+        "oos_summe_r": -26.052647517347108,
+        "baseline_summe_r": -2.85001173662514,
+        "differenz": -23.20263578072197
+      },
+      {
+        "jahr": 2022,
+        "gewaehlt": "next_open/w0 +ribbon",
+        "oos_trades": 35,
+        "oos_summe_r": 83.26870117151805,
+        "baseline_summe_r": 34.743155213970375,
+        "differenz": 48.52554595754767
+      },
+      {
+        "jahr": 2023,
+        "gewaehlt": "next_open/w0 +ribbon",
+        "oos_trades": 29,
+        "oos_summe_r": 5.328040711150108,
+        "baseline_summe_r": -50.90731681575717,
+        "differenz": 56.23535752690728
+      },
+      {
+        "jahr": 2024,
+        "gewaehlt": "next_open/w0 +ribbon",
+        "oos_trades": 43,
+        "oos_summe_r": 52.187154121177485,
+        "baseline_summe_r": 62.01183872701048,
+        "differenz": -9.824684605832992
+      },
+      {
+        "jahr": 2025,
+        "gewaehlt": "next_open/w0 +ribbon",
+        "oos_trades": 40,
+        "oos_summe_r": 52.990822251465794,
+        "baseline_summe_r": 80.1770828925244,
+        "differenz": -27.186260641058603
+      },
+      {
+        "jahr": 2026,
+        "gewaehlt": "next_open/w0 +ribbon",
+        "oos_trades": 27,
+        "oos_summe_r": 34.07492379072746,
+        "baseline_summe_r": 27.13731211144876,
+        "differenz": 6.9376116792786995
+      }
+    ],
+    "oos": {
+      "trades": 318,
+      "avg_r": 0.8451480423393162,
+      "summe_r": 268.75707746390253,
+      "trefferquote": 0.3836477987421384,
+      "profit_factor": 2.1008581045747086
+    },
+    "baseline": {
+      "trades": 871,
+      "avg_r": 0.17586066115894333,
+      "summe_r": 153.17463586943964,
+      "trefferquote": 0.2927669345579793,
+      "profit_factor": 1.1985678117780985
+    },
+    "jahre_besser": 5,
+    "jahre_gesamt": 8,
+    "gewaehlte_parameter": [
+      "next_open/w0 +ribbon",
+      "next_open/w0 +ribbon",
+      "next_open/w0 +ribbon",
+      "next_open/w0 +ribbon",
+      "next_open/w0 +ribbon",
+      "next_open/w0 +ribbon",
+      "next_open/w0 +ribbon",
+      "next_open/w0 +ribbon"
+    ]
+  },
+  "monte_carlo": {
+    "next_open/w0": {
+      "median_maxdd_pct": -15.49748105487026,
+      "P_maxdd_ueber_6pct": 0.9985,
+      "median_return_pct": 20.642873078743484,
+      "median_sharpe": 0.2704494698158331
+    },
+    "next_open/w0 +ribbon": {
+      "median_maxdd_pct": -5.6300093050057125,
+      "P_maxdd_ueber_6pct": 0.4235,
+      "median_return_pct": 57.99478299329337,
+      "median_sharpe": 0.9501639701855329
+    },
+    "limit_trigger_level/w0": {
+      "median_maxdd_pct": -6.361566838288724,
+      "P_maxdd_ueber_6pct": 0.563,
+      "median_return_pct": 5.777611315828968,
+      "median_sharpe": 0.21417303529316434
+    },
+    "limit_trigger_level/w0 +ribbon": {
+      "median_maxdd_pct": -2.5109139844439743,
+      "P_maxdd_ueber_6pct": 0.007,
+      "median_return_pct": 12.74653965941206,
+      "median_sharpe": 0.6830981448577016
+    },
+    "limit_trigger_level/w2": {
+      "median_maxdd_pct": -6.591413919410588,
+      "P_maxdd_ueber_6pct": 0.593,
+      "median_return_pct": 5.006700312967816,
+      "median_sharpe": 0.1866391851771922
+    },
+    "limit_trigger_level/w2 +ribbon": {
+      "median_maxdd_pct": -2.5440648304454747,
+      "P_maxdd_ueber_6pct": 0.0085,
+      "median_return_pct": 12.346726901779626,
+      "median_sharpe": 0.6732747644856867
+    },
+    "limit_trigger_level/w6": {
+      "median_maxdd_pct": -5.1821699882451,
+      "P_maxdd_ueber_6pct": 0.349,
+      "median_return_pct": 10.733097789449186,
+      "median_sharpe": 0.39199650138465947
+    },
+    "limit_trigger_level/w6 +ribbon": {
+      "median_maxdd_pct": -2.409568805664203,
+      "P_maxdd_ueber_6pct": 0.005,
+      "median_return_pct": 13.104157653689597,
+      "median_sharpe": 0.7066961869792406
+    },
+    "limit_signal_extreme/w0": {
+      "median_maxdd_pct": -6.361566838288724,
+      "P_maxdd_ueber_6pct": 0.563,
+      "median_return_pct": 5.777611315828968,
+      "median_sharpe": 0.21417303529316434
+    },
+    "limit_signal_extreme/w0 +ribbon": {
+      "median_maxdd_pct": -2.5109139844439743,
+      "P_maxdd_ueber_6pct": 0.007,
+      "median_return_pct": 12.74653965941206,
+      "median_sharpe": 0.6830981448577016
+    },
+    "limit_signal_extreme/w2": {
+      "median_maxdd_pct": -6.591413919410588,
+      "P_maxdd_ueber_6pct": 0.593,
+      "median_return_pct": 5.006700312967816,
+      "median_sharpe": 0.1866391851771922
+    },
+    "limit_signal_extreme/w2 +ribbon": {
+      "median_maxdd_pct": -2.5440648304454747,
+      "P_maxdd_ueber_6pct": 0.0085,
+      "median_return_pct": 12.346726901779626,
+      "median_sharpe": 0.6732747644856867
+    },
+    "limit_signal_extreme/w6": {
+      "median_maxdd_pct": -5.1821699882451,
+      "P_maxdd_ueber_6pct": 0.349,
+      "median_return_pct": 10.733097789449186,
+      "median_sharpe": 0.39199650138465947
+    },
+    "limit_signal_extreme/w6 +ribbon": {
+      "median_maxdd_pct": -2.409568805664203,
+      "P_maxdd_ueber_6pct": 0.005,
+      "median_return_pct": 13.104157653689597,
+      "median_sharpe": 0.7066961869792406
+    },
+    "limit_trigger_level/w2/BE0.25": {
+      "median_maxdd_pct": -6.332725586011112,
+      "P_maxdd_ueber_6pct": 0.5485,
+      "median_return_pct": 2.8634149535746167,
+      "median_sharpe": 0.11620960935141056
+    },
+    "limit_trigger_level/w2/BE0.25 +ribbon": {
+      "median_maxdd_pct": -1.8174653082493164,
+      "P_maxdd_ueber_6pct": 0.0005,
+      "median_return_pct": 14.414302436876048,
+      "median_sharpe": 0.876957088174352
+    },
+    "limit_trigger_level/w2/BE0.5": {
+      "median_maxdd_pct": -5.854842118110254,
+      "P_maxdd_ueber_6pct": 0.471,
+      "median_return_pct": 4.559175405838767,
+      "median_sharpe": 0.17691921610472797
+    },
+    "limit_trigger_level/w2/BE0.5 +ribbon": {
+      "median_maxdd_pct": -1.8995356989572776,
+      "P_maxdd_ueber_6pct": 0.0005,
+      "median_return_pct": 15.580525548789659,
+      "median_sharpe": 0.904032047956977
+    },
+    "limit_trigger_level/w2/BE1": {
+      "median_maxdd_pct": -6.244213094521484,
+      "P_maxdd_ueber_6pct": 0.541,
+      "median_return_pct": 3.379947942356809,
+      "median_sharpe": 0.13302133257000076
+    },
+    "limit_trigger_level/w2/BE1 +ribbon": {
+      "median_maxdd_pct": -2.270309648468316,
+      "P_maxdd_ueber_6pct": 0.0035,
+      "median_return_pct": 12.857783896792096,
+      "median_sharpe": 0.744173059967209
+    }
+  }
+}

@@ -36,6 +36,24 @@ class BacktestConfig:
     breakeven_trigger_r: float | None = None  # once confirmed-close profit >= this many R (R = initial entry-to-stop distance), move the stop to entry_price. None = disabled (default), matching every strategy that predates this field.
     trailing_atr_mult: float | None = None  # once enabled, the stop trails `trailing_atr_mult` ATRs behind the best confirmed-close seen so far in the trade's favour, ratcheting only (never loosens). Can combine with breakeven_trigger_r (breakeven simply becomes the trail's first, largest step). None = disabled (default).
     take_profit_r: float | None = None  # exit (exit_reason="target") once confirmed-close profit >= this many R. None = disabled (default). Mutually sensible with use_vwap_target=False (ORB has no VWAP target of its own).
+    # EINSTIEGSMODUS (2026-09-25). Default "next_open" = das bisherige,
+    # unveraenderte Verhalten: Marktorder zum Open der Bar NACH dem Signal.
+    #
+    # Warum es die Alternative braucht: der Liquidity Spike passiert WAEHREND
+    # der Signalbar; zum Open der Folgebar ist der Kurs davon zurueckgelaufen.
+    # Genau das zeigt sich in der MAE der Gewinner (Median 0,50R, siehe
+    # knowledge/projects/ctnl-kostenvalidierung.md Befund 7d) -- die Gewinner
+    # gehen routinemaessig tief ins Minus, bevor sie laufen.
+    #   "limit_signal_extreme" -- Limit auf das Extrem der SIGNALBAR
+    #                             (low bei long, high bei short): der Spike selbst.
+    #   "limit_trigger_level"  -- Limit auf das gesweepte Strukturlevel
+    #                             (prev_low/prev_high): realistischer, weil dort
+    #                             die Liquiditaet tatsaechlich liegt.
+    # Wird das Limit nicht innerhalb von entry_wait_bars Bars beruehrt, FAELLT
+    # DER TRADE AUS -- das ist der Preis dieser Variante, nicht ein spaeterer
+    # Markteinstieg.
+    entry_mode: str = "next_open"
+    entry_wait_bars: int = 0  # 0 = nur die Entry-Bar selbst
 
 
 def simulate_trades(df: pd.DataFrame, config: BacktestConfig = BacktestConfig()) -> pd.DataFrame:
@@ -51,6 +69,18 @@ def simulate_trades(df: pd.DataFrame, config: BacktestConfig = BacktestConfig())
     atr = df["atr"].to_numpy()
     prev_high = df["prev_high"].to_numpy()
     prev_low = df["prev_low"].to_numpy()
+    # high/low nur fuer die Limit-Einstiegsmodi noetig. Bewusst NICHT in
+    # `required` oben: Aufrufer, die weiterhin "next_open" fahren, sollen
+    # keine neuen Spaltenanforderungen bekommen.
+    if config.entry_mode != "next_open":
+        fehlend = {"high", "low"} - set(df.columns)
+        if fehlend:
+            raise ValueError(
+                f"entry_mode={config.entry_mode!r} braucht die Spalten {sorted(fehlend)} -- "
+                "ohne sie laesst sich nicht pruefen, ob das Limit beruehrt wurde."
+            )
+        high = df["high"].to_numpy()
+        low = df["low"].to_numpy()
     signal = df["signal"].to_numpy()
     session_codes = pd.factorize(df["session"].to_numpy())[0]
     times = df.index
@@ -67,13 +97,37 @@ def simulate_trades(df: pd.DataFrame, config: BacktestConfig = BacktestConfig())
 
         direction = int(sig)  # -1 short, +1 long
         entry_i = i + 1
-        entry_session = session_codes[entry_i]
-
-        raw_entry = open_[entry_i]
-        cost = raw_entry * half_cost_frac
-        entry_price = raw_entry - cost if direction == -1 else raw_entry + cost
 
         trigger_level = prev_high[entry_i] if direction == -1 else prev_low[entry_i]
+
+        if config.entry_mode == "next_open":
+            raw_entry = open_[entry_i]
+        else:
+            # Limit-Einstieg: Level bestimmen, dann auf Beruehrung warten.
+            if config.entry_mode == "limit_signal_extreme":
+                limit = low[i] if direction == 1 else high[i]
+            elif config.entry_mode == "limit_trigger_level":
+                limit = trigger_level
+            else:
+                raise ValueError(f"unbekannter entry_mode: {config.entry_mode!r}")
+            if not np.isfinite(limit):
+                i += 1
+                continue
+            fill_i = None
+            last = min(entry_i + config.entry_wait_bars, n - 1)
+            for k in range(entry_i, last + 1):
+                if (low[k] <= limit) if direction == 1 else (high[k] >= limit):
+                    fill_i = k
+                    break
+            if fill_i is None:
+                i += 1          # nie gefuellt -> kein Trade, NICHT spaeter zum Markt
+                continue
+            entry_i = fill_i    # ab hier laeuft alles ab der FUELLBAR
+            raw_entry = limit
+
+        entry_session = session_codes[entry_i]
+        cost = raw_entry * half_cost_frac
+        entry_price = raw_entry - cost if direction == -1 else raw_entry + cost
         stop_level = (
             trigger_level + config.stop_atr_mult * atr[entry_i]
             if direction == -1

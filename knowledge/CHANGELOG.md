@@ -9,6 +9,35 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-30** [EK-Portfolio-Bridge / OU-Modell] **Wiedereinstiegs-Drehtuer
+  geschlossen -- Einstieg und Ausstieg pruefen jetzt dieselbe Marke.**
+  Nutzerauftrag. **Befund:** seit dem Logik-D-Umbau wurde AIG **sechsmal
+  eroeffnet und sechsmal per MA20 geschlossen**, am 29.09. dreimal innerhalb
+  von 30 Minuten (20:29 / 20:44 / 20:59, jeweils Ausstieg UND neuer Einstieg
+  im selben Lauf). Ertrag zusammen +1,22 EUR bei sechs Runden Spread.
+  **Ursache:** im Backtest werden beide Bedingungen auf DEMSELBEN Tagesschluss
+  geprueft -- Ausstieg bei Kurs >= MA, Einstieg bei Kurs < MA - 2,25*sigma. Da
+  das Band unter dem Mittel liegt, schliessen sie sich gegenseitig aus; ein
+  Trade kann dort nie am selben Balken enden und neu beginnen. Live kamen die
+  beiden Seiten aus verschiedenen Quellen: der Ausstieg rechnet gegen den
+  Live-Tick, der Einstieg gegen das Signal vom Vortagesschluss. Steigt der Kurs
+  ueber Nacht ans Mittel, ist das Signal formal gueltig, der Trade laut Modell
+  aber laengst beendet. Die einzige Sperre war `position_already_open` -- die
+  greift nur, solange die Position offen IST.
+  **Fix (`legs/ou_modell/executor.py`):** (A) Einstieg wird gegen dieselbe
+  MA20-Schwelle geprueft wie der Ausstieg (`mean_reversion_bereits_erreicht`);
+  (B) hoechstens ein Einstieg je Titel und Signaltag, weil das Modell einmal
+  taeglich entscheidet, die Bridge aber alle 15 Minuten prueft. Marker ueber
+  den bestehenden Tages-Dedup (`already_notified`), gesetzt erst NACH
+  bestaetigtem Order-Send.
+  **Gegen die echten Kurse vom 29.09. nachgespielt:** Einstieg 74,60 erlaubt,
+  alle drei Wiedereinstiege (75,22 / 75,24 / 75,36 gegen MA20 75,12) von
+  Sperre A blockiert.
+  **Funded-Bridge NICHT betroffen und nicht geaendert** (geprueft: jeder Titel
+  genau einmal seit dem Umbau) -- dort kommen Einstiege aus der Trade-Liste des
+  Modells, und nach einem MA-Ausstieg steht die Zeile auf `mean_revert` statt
+  `data_end`, faellt als Kandidat also von selbst weg.
+
 - **2026-09-30** [Alle drei Bridges / CTNL] **MTF-EMA-Ribbon als
   Richtungs-Gate auf Funded, FK und EK scharf geschaltet** (Nutzerentscheid:
   "Ribbon jetzt, Limit-Entry spaeter"). Long nur im Aufwaerts-, short nur im

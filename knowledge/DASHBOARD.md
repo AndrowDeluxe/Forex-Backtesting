@@ -35,6 +35,14 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **CTNL faehrt seit 2026-09-30 nur noch `ctnl_reversal`** (beide
+  Richtungen, Ribbon-gefiltert). `ctnl_continuation` ist auf allen drei
+  Bridges stillgelegt -- keine Position war dabei offen, es blieb nichts
+  unverwaltet zurueck. **Kein Handlungsbedarf, nur zur Kenntnis:**
+  `cont_trades` wird weiter berechnet, weil der CTNL-Kill-Switch ueber die
+  kombinierte Kurve urteilt; und `check_and_execute_continuation()` bleibt
+  in EKs Executor stehen, damit ein Wiedereinschalten eine Zeile ist.
+
 - **🔴 EK-Mindestlot durchgerechnet: 76 % des Verlusts kommen aus der
   Groessenverzerrung, nicht aus den Strategien (2026-09-30, Nutzerauftrag).**
   Empirisch aus den echten Deals KW38+KW39: Ist **-669,48 EUR**, bei den

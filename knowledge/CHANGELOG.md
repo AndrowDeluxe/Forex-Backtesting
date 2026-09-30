@@ -9,6 +9,68 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-30** [Alle drei Bridges / CTNL] **`ctnl_continuation` auf allen
+  Konten stillgelegt (Nutzerentscheid E3) -- CTNL faehrt ab jetzt nur noch
+  `ctnl_reversal`, das dafuer in BEIDE Richtungen.**
+  **Begruendung, vierfach belegt:** ueber 436 Trades und zehn Jahre kein
+  Edge -- PF 0,94, nur 3 von 11 Jahren positiv, Monte-Carlo-Median-Rendite
+  **-16,4 %** bei 0,50 %/Trade. Vier unabhaengige Pruefungen kamen zum
+  selben Ergebnis (Jahresbilanz 7a, TP-/Signal-Sweep 9e, Richtungsanalyse
+  13, Ribbon 16a). Auch das Ribbon-Gate hob es nur von Ø R **-0,060 auf
+  +0,019** -- von klar negativ auf exakt null. Das einzige gute Jahr war
+  2026 mit 20 Trades.
+  **Vor dem Ausbau geprueft:** auf KEINEM Konto war eine
+  ctnl_continuation-Position offen (alle State-Dateien + EKs
+  `positions_get`). Es bleibt also nichts unverwaltet zurueck -- beim
+  ttp1-Ausbau am 09-19 war das anders (7 Positionen ohne Verwaltung), und
+  genau deshalb wurde hier zuerst nachgesehen.
+  **Was entfernt wurde:** die Entry-/Exit-Pfade in
+  `Funded-Portfolio-Bridge/run_once.py` + `run_once_fast.py`,
+  `FKInstantFunding-MT5-Bridge/run_once.py` + `run_once_fast.py` +
+  `config.py::LIVE_LEGS`, `EK-Portfolio-Bridge/run_once.py`.
+  **Was BEWUSST bleibt:** (a) `cont_trades` wird weiter berechnet und an
+  `_check_ctnl_kill_switch`/`_check_ctnl_gate` gereicht -- die urteilen
+  ueber die KOMBINIERTE CTNL-Kurve, ihre Drawdown-Referenz wuerde sich
+  sonst still verschieben; (b) `check_and_execute_continuation()` bleibt in
+  EKs Executor stehen, weil es auch BESTEHENDE Positionen verwaltet
+  (Ziel/stale_target) und ein Wiedereinschalten eine Zeile sein soll.
+  **Verifiziert:** alle fuenf Einstiegspunkte importieren, null verbleibende
+  Entry-Aufrufe fuer das Bein, FKs LIVE_LEGS enthaelt nur noch
+  `gold_asb, cls_practical, ctnl_reversal`.
+  **Nebenbefund beim Ausbau:** eine Parallel-Session hat heute
+  `gold_smc_htf_ltf/spike_gate.py` (Signalkerzen-Filter fuer ctnl_reversal,
+  Befunde 18/19) und einen CTNL-Kill-Switch ins Repo gebracht und in Funded
+  und FK verdrahtet -- inklusive `block_reason` an meinem
+  ctnl_reversal-Aufruf auf FKs Fast-Lane. Sauber integriert, nichts
+  kollidiert.
+
+- **2026-09-30** [Alle drei Bridges / CTNL] **Spike-Filter live, Kill-Switch auf
+  den gehandelten Satz umgestellt, Flacker-Fix, FK-Log-Zeile** (Nutzerentscheide,
+  Befund 19 in `projects/ctnl-kostenvalidierung.md`).
+  (1) **Signalkerzen-Filter >= 0,75 ATR fuer `ctnl_reversal`**, neues geteiltes
+  Modul `gold_smc_htf_ltf/spike_gate.py`. `_scan_ctnl()` in
+  `challenge_portfolio/` + `fk_instant_funding/paper_bot.py` haengt `signal_spike`
+  an, rein additiv. Gefiltert wird in `_process_leg()` von Funded und FK direkt
+  nach dem Ribbon, EK filtert in `legs/ctnl_edge/signal_source.py::scan_reversal`
+  (neuer Key `spike` in `live_signal.reversal_signal()`, Status
+  `spike_filtered` im EK-Log). **Bereits getrackte Signale bleiben immer
+  erhalten**, damit keine Position verwaist.
+  (2) **Kill-Switch rechnet auf Ribbon + Spike gefiltert** statt ungefiltert
+  (`ctnl_kill_switch._dd_gehandelt`): -7,01 % -> **-1,10 %**. Der Schalter hebt sich
+  beim naechsten Lauf auf allen Konten auf, CTNL handelt wieder. Schwelle
+  unveraendert. **FK haengt jetzt am geteilten Modul**, die eigene Kopie in
+  `_check_ctnl_gate` ist ersetzt.
+  (3) **Flacker-Fix:** Ein leerer Scan (Datenluecke) ist kein Urteil, der Zustand
+  bleibt, es gibt nur eine Log-Zeile und kein Telegram. Das war die Ursache fuer
+  "erholt (0,00 %)" am 29.09.
+  (4) **FK-Log-Zeile**, sobald ein frisches CTNL-Signal (<= 60 Min.) wegen eines
+  Gates nicht platziert wird, mit Klartext-Grund (`_gate_reasons`), auch auf der
+  Fast-Lane. **Verworfen:** Risikohalbierung nach Verlustserie (Lookahead-Artefakt
+  in Befund 18, sauber gerechnet kein Sharpe-Gewinn) sowie Tages-/Wochen-Kill-Switch.
+  **Tests:** 11 Einheitenpruefungen, dazu read-only gegen den echten Scan; alle
+  Einstiegspunkte importieren. Backups der Bridge-Dateien liegen im
+  Session-Scratchpad.
+
 - **2026-09-30** [EK-Portfolio-Bridge / OU] **Backup angelegt, restliche offene
   Punkte auf Nutzerentscheid verworfen.**
   `EK-Portfolio-Bridge/_backup_20260930/` -- 47 Dateien, Code und Config ohne

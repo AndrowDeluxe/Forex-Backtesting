@@ -941,10 +941,13 @@ alle Shorts waren trendkonform.
 | **halbes Risiko nach 3 Verlusten in Folge** | **+344,4** | **−24,9R** | **13,8** |
 | Spike-Filter ≥ 0,75 ATR | +300,5 | −37,9R | 7,9 |
 
-Die Risikohalbierung ist über N=2…5 ein Plateau: 8–10 von 11 Jahren sind positiv,
-die betroffenen Trades haben Ø −0,30 bis −0,57 R. Gegenläufig sind 2022 und 2025.
-**Vorbehalt:** Die Werte 0,75 ATR und N=3 sind in-sample gesetzt, Walk-Forward
-und Monte Carlo stehen noch aus.
+> **⚠️ KORREKTUR (Befund 19, gleicher Tag):** Die Zeile „halbes Risiko“ oben ist
+> ein **Lookahead-Artefakt**. Die Serie zählte auch Vorgänger, die zum
+> Einstiegszeitpunkt noch offen waren, also Ergebnisse, die live noch niemand
+> kennt. Sauber gerechnet (nur Trades mit exit_time ≤ entry_time) **kostet**
+> die Halbierung Ertrag: ΣR +329 → +229 bei N=3, der Sharpe steigt nicht. Auch
+> „5 der 6 Verlierer“ gilt nur für den Engine-Abschnitt. In der echten
+> Live-Serie hätte der Spike-Filter 3 von 9 SL verhindert (siehe Befund 19).
 
 **Kill-Switch-Konstruktion:** `ctnl_standalone_drawdown()` gewichtet continuation
 mit 0,5 % und reversal mit 0,15 % je Trade. Die Schwelle wird damit überwiegend
@@ -956,6 +959,52 @@ geflackert (22:10 und 22:35 Berlin), vermutlich wegen eines Scan-Aussetzers.
 der Kurs nicht mehr über 4214,6. Eine Limit-Order am Signalbar-Extrem wäre also
 NICHT gefüllt worden. Gebracht hätte nur ein kürzerer Versatz: EK stieg um
 12:59 bei 4208,8 ein, die Funded-Konten um 13:13 bei 4202.
+
+## Befund 19 — Walk-Forward + Monte Carlo: Spike-Filter live, Halbierung und Tages-/Wochen-Stopp verworfen, Kill-Switch umgestellt
+
+Skript `scripts/research_ctnl_confirm_wf.py`, Rohdaten `_data/ctnl_confirm_wf.json`.
+Grundlage ist der reale Betriebspunkt (`to_live`: Lag + R-Detektor), nur
+ribbon-konform, 2016–2026, 484 Trades. **Ohne Lookahead:** Alle Zustände
+(Serien, Kill-Switches, Tages-/Wochenverluste) sehen nur Trades mit
+exit_time ≤ entry_time. MC mit 0,15 %/Trade, 2.000 Pfade, Blocklänge 20.
+
+| Variante | n | ΣR | MaxDD | MC-MedDD | P(DD>6 %) | MC-Return | Sharpe |
+|---|---|---|---|---|---|---|---|
+| heute | 484 | +329,1 | −43,5R | −5,69 % | 43,5 % | 58,6 % | 0,95 |
+| **Spike ≥ 0,75 ATR** | 362 | +317,7 | −34,5R | **−4,37 %** | **18,4 %** | **58,8 %** | **1,08** |
+| Spike ≥ 0,6 | 421 | +319,8 | −38,3R | −4,86 % | 25,7 % | 59,0 % | 1,02 |
+| halbes Risiko nach 3 | 484 | +228,9 | −30,0R | −4,25 % | 15,9 % | 36,9 % | 0,86 |
+| halbes Risiko nach 4 | 484 | +278,5 | −29,5R | −4,60 % | 22,9 % | 47,3 % | 0,93 |
+| Spike 0,75 + halb 3 | 362 | +218,3 | −25,5R | −3,14 % | 2,9 % | 37,3 % | 1,01 |
+| DD-Kill 44R/22R (≈ heute) | 484 | +329,1 | −43,5R | identisch mit „heute“, löst nie aus | | | |
+| DD-Kill 20R/10R | 379 | +256,3 | −28,2R | −5,16 % | 31,7 % | 42,4 % | 0,85 |
+| Tagesstopp 3R | 424 | +264,9 | −43,5R | −6,03 % | 50,5 % | 44,1 % | 0,78 |
+| Wochenstopp 5R | 461 | +289,9 | −40,3R | −6,10 % | 52,3 % | 50,2 % | 0,86 |
+
+**Walk-Forward.** Nach ΣR gewählt gewinnt keine Risikoregel, was konstruktionsbedingt
+so ist, denn sie senken den Ertrag. Nach IS-Rendite/MaxDD gewählt nimmt der Anker-WF
+**Spike 0,75 in 8 von 8 Jahren**, OOS ΣR +242,7 gegen +267,3 (−9 %) und MaxDD
+−28,5R gegen −33,9R. Jahresweise hat Spike 0,75 in **10 von 11 Jahren** den kleineren
+DD. Teuerstes Jahr ist 2020 (−28,7R).
+
+**Urteile:**
+- **Spike-Filter ≥ 0,75 ATR: live** (Nutzerentscheid 2026-09-30). Als einzige
+  Variante verbessert er den Sharpe bei unveränderter Rendite.
+  `gold_smc_htf_ltf/spike_gate.py`, nur `ctnl_reversal`, alle drei Bridges.
+  Bereits getrackte Signale bleiben erhalten, damit keine Position verwaist.
+  Live-Serie 29./30.09.: gefiltert wären 17:00/17:15/17:30 UTC (0,51/0,38/0,70 ATR,
+  alle SL), durchgekommen die übrigen 6 SL (0,95–1,91 ATR) und **beide
+  Gewinner (1,67/1,68 ATR)**.
+- **Risikohalbierung: verworfen.** Sie senkt nur den DD und wirkt wie ein
+  pauschal kleineres Risiko, der Sharpe wird nicht besser.
+- **Tages-/Wochen-Kill-Switch: verworfen.** Alle Kennzahlen schlechter, P(DD>6 %) steigt.
+- **Bestehender Kill-Switch: umgestellt auf den gehandelten Satz** (Nutzerentscheid).
+  Vorher rechnete er auf der UNGEFILTERTEN Strategie: −7,01 % gegen −1,10 %
+  gehandelt (Ribbon + Spike). Er sperrte also die neue Variante für die
+  Verluste der alten. Schwelle −6,6 %/−3,3 % bleibt. Auf dem Ribbon-Set hätte
+  sie 2016–2026 nie ausgelöst, sie bleibt Notbremse gegen einen echten Bruch.
+  Flacker-Schutz: ein leerer Scan ist kein Urteil. FK hängt jetzt am geteilten
+  Modul `ctnl_kill_switch.py`.
 
 ---
 

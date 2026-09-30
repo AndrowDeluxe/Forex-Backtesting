@@ -71,22 +71,19 @@ Bedarf vor generischem Aufräumen.
   stehen: "N von M Signalen behalten; X gegen den Trend verworfen". Bleibt
   die Meldung aus, greift das Gate nicht.
 
-- **CTNL Short-Serie 29./30.09. ausgewertet -- vier Punkte für dich** (2026-09-30,
-  Befund 18 in `projects/ctnl-kostenvalidierung.md`). (a) **Hast du die SLs der
-  3 offenen IQ-Shorts von Hand verschoben?** Sie stehen auf 4214,24/4214,30/4202,51
-  statt 4221,8/4242,4/4242,5. Keine Bot-Logik setzt solche Werte (Breakeven
-  würde auf den Einstieg setzen), TTP ist unverändert. (b) **FK-Kill-Switch
-  flackert bei Scan-Aussetzern:** Eine leere Simulation liefert 0,00 % DD und hebt
-  den Schalter auf (29.09. 22:10 und 22:35). Dieselbe Funktion nutzt Funded
-  seit heute Abend. Fix: bei leerem Scan den alten Zustand halten. Soll ich das
-  bauen? (c) **Blockierte CTNL-Entries hinterlassen auf FK keine Logzeile**,
-  deshalb war „warum nicht auf Instant Funding“ nur über den State rekonstruierbar.
-  (d) **Kandidaten statt Serienstopp:** „halbes Risiko nach 3 Verlusten in Folge“
-  (MaxDD −46 → −25R bei MEHR ΣR, 9/11 Jahre) und ein Spike-Filter ≥ 0,75 ATR.
-  Beide Werte sind in-sample, Walk-Forward und Monte Carlo fehlen noch. Soll ich
-  das rechnen? Ein Serien-/Tagesstopp nach X SL wird von den Daten NICHT gestützt.
-  Nebenbei: **EK hat weiterhin keinen CTNL-Kill-Switch**, und ein CTNL-Trade
-  riskiert dort ~25 EUR = ~0,9 % Equity (Mindestlot, Befund 10).
+- **CTNL: Spike-Filter live + Kill-Switch umgestellt -- beim nächsten Lauf
+  kontrollieren** (2026-09-30, Befund 19). Nach deinen Entscheiden: (1) Der
+  Kill-Switch rechnet jetzt auf dem GEHANDELTEN Satz (Ribbon + Spike, −1,10 %
+  statt −7,01 %) und **hebt sich beim nächsten Lauf auf FK, TTP und IQ auf**,
+  CTNL handelt dort wieder. (2) `ctnl_reversal` nimmt nur noch Signalkerzen
+  ≥ 0,75 ATR. (3) Der Flacker-Fix und die FK-Log-Zeile sind drin.
+  **Meine Annahmen, bitte bestätigen:** (a) Die Schwelle −6,6 %/−3,3 % bleibt
+  unverändert, obwohl sie auf der ungefilterten Strategie kalibriert war. Auf dem
+  Ribbon-Set hätte sie in 10 Jahren nie ausgelöst, sie ist also reine Notbremse.
+  (b) Der Kerzenfilter gilt nur für reversal, nicht für continuation (dort nicht getestet).
+  **Zu prüfen:** Telegram meldet „CTNL-Drawdown erholt“ je Konto, und im FK-Log
+  erscheinen „Spike-Filter behaelt …“-Zeilen. Nebenbei unverändert offen:
+  auf EK riskiert ein CTNL-Trade ~25 EUR = ~0,9 % Equity (Mindestlot, Befund 10).
 
 - **CTNL-Ribbon-Gate ist seit 2026-09-30 auf allen drei Bridges scharf.**
   Long nur im Aufwaerts-, short nur im Abwaertstrend des MTF-EMA-Ribbons.
@@ -699,10 +696,11 @@ Kurz einfangen, was gerade auftaucht, ohne das aktuelle Thema zu verlassen —
 wird bei Gelegenheit einsortiert (Offene Aufgaben, PARA-Struktur, oder
 bewusst verworfen), nicht hier für immer liegen gelassen.
 
-- **CTNL Backtest vs. live um ~1 h versetzt?** (2026-09-30) Im Engine-Lauf liegen
-  die Short-Entries am 30.09. bei 08:15–08:45 UTC, live wurde 07:00–07:30 und
-  12:45/13:00 gehandelt. Möglicherweise wieder die Stempelverschiebung aus Memory
-  `lake_zeitstempel_verschiebung`, nicht geprüft.
+- **CTNL: Engine-Pfad und Live-Pfad laufen nach der ersten Welle auseinander**
+  (2026-09-30). Am 29.09. um 17:00–17:30 UTC sind sie deckungsgleich, danach
+  handelt die Engine 19:15–19:45 und am 30.09. 08:15–08:45, live dagegen
+  18:15–18:45, 07:00–07:30 und 12:45/13:00. Vermutlich sind die 3er-Kappung
+  (Sim) und die echten Positionen/Stops verschieden. Eine Zeitzone ist es nicht.
 
 - **FK-CLS-Scan liefert einen Trade am Sonntag** (2026-09-17): `_scan_cls_practical`
   (source=lake) zeigt Entry 2026-09-06 09:55 Berlin -- ein Sonntag, FX geschlossen.

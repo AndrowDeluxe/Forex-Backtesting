@@ -469,11 +469,26 @@ Bedarf vor generischem Aufräumen.
   wieder von Hand aufraeumt. Gehoert zur OU-Optimierung, nicht still geaendert. `legs/ou_modell/executor.py::
   manage_open_positions()` loggt nur CRITICAL. Weicht vom Backtest ab und
   verlaengert den Swap -- gehoert zur OU-Optimierung, nicht still geaendert.
-- **🟠 MNST-Split auf TTP nicht umgebucht: −2.492,56 $ auf Konto 1 (echtes
-  Geld)** (2026-08-11, gefunden 2026-09-17). Tickmill buchte die Position beim
-  2:1-Split korrekt um, TTP nicht — der alte SL wurde zum halbierten Kurs
-  ausgelöst, keine Ausgleichsbuchung. Kandidat für eine Support-Anfrage bei
-  TTP; ein Split-Schutz in der Bridge fehlt ebenfalls.
+- **✅ ERLEDIGT 2026-09-30: MNST-Split abgeschlossen (Nutzerauftrag).** Die
+  −2.492,56 $ lagen auf **TTP Konto 1 (ttp1)** — genau dem Konto, das am
+  2026-09-23 auf deinen Entscheid vollstaendig ausgebaut und als abgeschlossen
+  gewertet wurde. Die Forderung gehoert damit zum abgeschriebenen Konto; eine
+  Support-Anfrage waere eine Anfrage zu einer beendeten Challenge. **Nicht
+  weiterverfolgt.** Vorgang zur Dokumentation: Tickmill buchte die Position
+  beim 2:1-Split korrekt um, TTP nicht — der alte SL loeste zum halbierten
+  Kurs aus, ohne Ausgleichsbuchung.
+
+- **🟠 Split-Schutz fehlt weiterhin — abgetrennt vom MNST-Punkt (2026-09-30).**
+  Der Geldbetrag oben ist erledigt, **die Ursache nicht**: ich habe geprueft,
+  in `Funded-Portfolio-Bridge`, `EK-Portfolio-Bridge` und
+  `FKInstantFunding-MT5-Bridge` gibt es **keinerlei Behandlung von
+  Aktiensplits** (die Treffer auf "split" sind alle `leg.split()` bzw.
+  `executor.split_volume()`). Gleichzeitig handelt `ou_modell` auf Funded UND
+  EK Einzelaktien — dasselbe Ereignis kann sich also jederzeit auf einem der
+  aktiven Konten wiederholen. Den Punkt mit dem Konto zu schliessen waere
+  bequem, aber falsch. **Offen fuer dich:** soll ich einen Split-Check bauen
+  (Vergleich Positionspreis gegen aktuellen Kurs bei Einzelaktien, Alarm statt
+  Automatik)? Ich habe nichts geaendert.
 - **🟡 ORB-Stop-Orders (Demo ttp/iqmarkets): vier Annahmen von mir** (2026-09-17,
   Details `CHANGELOG.md` 2026-09-16/17). (1) Teilausstieg als zweite Order mit
   Broker-TP statt gepollt; (2) OCO-Whipsaw: spaeter gefuellte Seite sofort

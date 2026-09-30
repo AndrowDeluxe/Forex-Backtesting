@@ -60,18 +60,39 @@ function Sync-AndPush {
 
     $stashed = $false
     if ($fetchExit -eq 0 -and $incoming -ne '0') {
-        # Offene Aenderungen (andere Sessions) beiseitelegen, damit der Merge
-        # nicht an ihnen scheitert. --include-untracked bewusst NICHT: neue,
-        # noch nicht getrackte Dateien einer Session sollen unangetastet
-        # liegenbleiben, sie koennen einen Merge ohnehin nicht blockieren.
-        if (& git status --porcelain --untracked-files=no) {
-            & git stash push --quiet --message "git_sync_push: vor Merge beiseitegelegt" 2>&1 | ForEach-Object { & $Log $_ }
-            if ($LASTEXITCODE -eq 0) {
-                $stashed = $true
-                & $Log "HINWEIS: offene Aenderungen vor dem Merge gestasht (werden nach dem Push zurueckgeholt)."
-            } else {
-                & $Log "WARNUNG: git stash fehlgeschlagen - Merge wird trotzdem versucht."
+        # KEIN STASH MEHR AUF EINEM SCHMUTZIGEN BAUM (2026-09-30, Nutzerauftrag
+        # "wie loesen wir das final"). Das war die Ursache, nicht der Merge.
+        #
+        # Lage: ~14 Auto-Tasks plus Watchdog teilen sich EINEN Working Tree.
+        # Die "eingehenden" Commits stammen fast immer von den eigenen
+        # Nachbartasks (gepruefte origin/main-Historie: alles derselbe Autor),
+        # es ist also ein Wettlauf unter lokalen Prozessen. Wer in diesem
+        # Rennen den Baum wegstasht, stasht die Arbeit der anderen mit -- und
+        # bei einem Pop-Konflikt setzte das Skript hart zurueck. Ergebnis:
+        # 94 Stashes bis 23.09., danach 39 in fuenf Tagen, mehrfach mitten in
+        # einer laufenden Session zugeschlagen (siehe CHANGELOG 22.-30.09.).
+        #
+        # Der Fix vom 23.09. (nicht stashen, wenn nichts eingeht) hat die Rate
+        # halbiert, den Pfad aber nicht beseitigt. Jetzt gilt: ist der Baum
+        # schmutzig, wird NICHT gestasht und NICHT gemergt. Der lokale Commit
+        # bleibt liegen und geht beim naechsten Lauf raus, bei dem der Baum
+        # sauber ist -- und das ist der Normalfall, weil die Log-/Snapshot-
+        # Schreiber ihre Dateien selbst committen.
+        #
+        # Warum das ungefaehrlich ist: ein liegengebliebener lokaler Commit ist
+        # sichtbar und reversibel, verlorene Arbeit ist es nicht. Der Rueckstand
+        # faellt auf (Log unten + `git log origin/main..HEAD`), waehrend ein
+        # verschwundener Arbeitsstand genau das nicht tut -- das war die
+        # eigentliche Schaerfe des Problems.
+        $dirty = (& git status --porcelain --untracked-files=no)
+        if ($dirty) {
+            $n = ($dirty | Measure-Object).Count
+            & $Log "MERGE UEBERSPRUNGEN: Working Tree hat $n offene Aenderung(en) (andere Tasks/Session). Es wird NICHT gestasht -- der lokale Commit bleibt liegen und geht beim naechsten sauberen Lauf raus."
+            & git push 2>&1 | ForEach-Object { & $Log $_ }
+            if ($LASTEXITCODE -ne 0) {
+                & $Log "HINWEIS: Push abgelehnt (Remote ist weiter) - erwartet, solange nicht gemergt wurde. Rueckstand sichtbar ueber 'git log origin/main..HEAD'."
             }
+            return
         }
 
         # Ausgabe einsammeln statt direkt durchreichen: sie wird unten zur

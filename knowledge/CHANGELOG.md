@@ -9,6 +9,48 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-30** [Risk / Alle Bridges] **CTNL-Kill-Switch auf ALLE Konten
+  gezogen** (Nutzerauftrag). Neu: `gold_smc_htf_ltf/ctnl_kill_switch.py` --
+  EIN geteiltes Modul statt drei Kopien, gleiches Argument wie bei
+  `ribbon_gate` (Memory `three_bridges_not_same_state`). Verdrahtet in
+  `Funded-Portfolio-Bridge/run_once.py` **und `run_once_fast.py`** (ohne die
+  Fast-Lane waere das Gate wirkungslos: `ctnl_continuation` steigt dort alle
+  5 Min. ein) sowie in `EK-Portfolio-Bridge/legs/ctnl_edge/executor.py`.
+  FK bleibt unveraendert (funktioniert, ist die Referenz).
+  **Der Schalter greift SOFORT:** der Stand-alone-Drawdown liegt aktuell bei
+  **-7,01 %** gegen eine Schwelle von -6,60 % -- Funded und EK sperren ab dem
+  naechsten Lauf neue CTNL-Entries. Offene Positionen laufen normal weiter.
+  Getestet: Entscheidungslogik in 6 Faellen inkl. Hysterese, Live-Scan gegen
+  den Lake, und ein Bug im ersten Wurf gefunden (tz-bewusste Timestamp ->
+  "Invalid comparison"; das Fail-safe hat korrekt durchgelassen und gemeldet).
+  EK ist bewusst zustandslos (kein generischer Key-Value-Store), Meldung ueber
+  die vorhandene Tages-Dedup. **Commit nur fuer das Repo-Modul (`99605b1`) --
+  die Bridge-Dateien liegen ausserhalb und sind nicht git-getrackt.**
+
+- **2026-09-30** [Git-Sync] **Stash-Problem an der Ursache behoben: auf einem
+  schmutzigen Baum wird nicht mehr gestasht.** Analyse: die "eingehenden"
+  Commits stammen fast alle von den eigenen Nachbartasks (origin/main-Historie
+  durchgesehen, durchgaengig derselbe Autor) -- es ist ein Wettlauf unter
+  ~14 lokalen Prozessen, die sich EINEN Working Tree teilen, kein externer
+  Konflikt. Der Fix vom 23.09. halbierte die Rate (94 Stashes vorher, 39 in
+  fuenf Tagen danach), beseitigte den Pfad aber nicht. Jetzt gilt: ist der
+  Baum schmutzig, wird **weder gestasht noch gemergt** -- der lokale Commit
+  bleibt liegen und geht beim naechsten sauberen Lauf raus.
+  `git stash push` kommt im Skript nicht mehr vor, `$stashed` wird nie mehr
+  `true`, der `reset --hard`-Pfad ist damit unerreichbar. **Begruendung fuer
+  den Tausch:** ein liegengebliebener Commit ist sichtbar und reversibel
+  (`git log origin/main..HEAD`), verschwundene Arbeit ist es nicht -- genau
+  das war die Schaerfe des Problems.
+
+- **2026-09-30** [Second Brain] **MNST-Thema abgeschlossen, Split-Schutz
+  abgetrennt** (Nutzerauftrag). Die -2.492,56 $ lagen auf ttp1, dem am 23.09.
+  ausgebauten und abgeschriebenen Konto -- Forderung erledigt, keine
+  Support-Anfrage. **Aber die Ursache bleibt:** geprueft, in keiner der drei
+  Bridges gibt es eine Behandlung von Aktiensplits (alle "split"-Treffer sind
+  `leg.split()`/`split_volume()`), waehrend `ou_modell` auf Funded UND EK
+  Einzelaktien handelt. Als eigener Punkt im Dashboard offen gehalten statt
+  mit dem Konto stillschweigend mitgeschlossen.
+
 - **2026-09-30** [Ribbon-Gate / andere Beine] **Geprueft, ob das
   Richtungsgate auch ausserhalb von CTNL traegt -- Ergebnis: nein, es bleibt
   bei den beiden CTNL-Beinen.** Nutzerauftrag "implementiere die gesamte

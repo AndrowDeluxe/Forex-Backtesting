@@ -1,3 +1,3 @@
 market,ticker,scan_date,close,lower_band,entry,sl,tp,tp_price,risk_pct_price,position_size_pct,ma20,regime_ok,tradeable,position_size_concentrated_pct,scanned_at
-"S&P 500 (volles Universum, 420 Ticker)",MDLZ,2026-09-29,59.32,59.34,59.32,51.84,kein TP (finale Config),0.0,12.61,7.93,61.44,True,True,12.5,2026-09-30T18:35:21
-Nasdaq-100 (alle ~103 Ticker),MDLZ,2026-09-29,59.32,59.34,59.32,51.84,kein TP (finale Config),0.0,12.61,7.93,61.44,True,True,12.5,2026-09-30T18:35:21
+"S&P 500 (volles Universum, 420 Ticker)",MDLZ,2026-09-29,59.32,59.34,59.32,51.84,kein TP (finale Config),0.0,12.61,7.93,61.44,True,True,12.5,2026-09-30T19:35:20
+Nasdaq-100 (alle ~103 Ticker),MDLZ,2026-09-29,59.32,59.34,59.32,51.84,kein TP (finale Config),0.0,12.61,7.93,61.44,True,True,12.5,2026-09-30T19:35:20

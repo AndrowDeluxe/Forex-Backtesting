@@ -9,6 +9,16 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-30** [Reports / Weekly + Monthly Checkup] **Education-Teil
+  ausfuehrlicher (Nutzerwunsch).** `scripts/reports/weekly_report_prompt.md`:
+  jede Erkenntnis als Block Befund / Mechanismus / Wie aufgefallen / Lehre,
+  Papers mit Behauptung / unser Test / Urteil / Status, neue Box
+  "Vertiefung: ein Konzept der Woche". `monthly_report_prompt.md`: eigene
+  Struktur statt "wie weekly" (Top-Erkenntnisse, Muster ueber die Wochen,
+  Research-Bilanz-Tabelle, Vertiefung des Monats, Offen mit naechstem
+  Schritt). Wirkt ab dem naechsten Report-Lauf. Dazu Memory-Lernpunkt
+  "Open-Reversal-Edge nur im Open-Print" (Nutzer bestaetigt).
+
 - **2026-09-30** [Alle drei Bridges / CTNL] **`ctnl_continuation` auf allen
   Konten stillgelegt (Nutzerentscheid E3) -- CTNL faehrt ab jetzt nur noch
   `ctnl_reversal`, das dafuer in BEIDE Richtungen.**

@@ -41,10 +41,34 @@ Same structure as the weekly performance report, but:
 File: `knowledge/reports/monthly/<YYYY-MM>_education.md`. Title the
 document itself "Monthly Checkup - Education - <Month> <YYYY>".
 
-Same structure as the weekly education checkup, but summarizing the whole
-month: main themes across the weeks, the biggest 2-3 learnings of the month,
-net improvements vs. regressions, and what's still open going into next
-month.
+Read all of the month's weekly education reports first
+(`knowledge/reports/weekly/KW*_education.md`) - the monthly report is a
+synthesis that adds to them, not a concatenation. Depth follows the weekly
+rules (Nutzerwunsch 2026-09-30: Education-Teil ausfuehrlicher). Structure:
+
+1. **Der Monat in einem Absatz**: main themes across the weeks and how
+   the focus shifted from week to week.
+2. **Die 3-5 wichtigsten Erkenntnisse des Monats**: each as a sub-block
+   with Befund / Mechanismus / Wie es aufgefallen ist / Lehre (same four
+   parts as the weekly "Main Erkenntnisse", ~150-300 words each). Choose by
+   lasting weight, not by recency; where several weekly learnings are
+   really the same pattern (e.g. several "Entry-Lag frisst den Edge"
+   cases), merge them into one learning and say so - that pattern
+   recognition is the monthly report's main added value.
+3. **Muster ueber die Wochen**: recurring root causes or mistakes
+   (e.g. same class of bug in several bridges, same kind of paper edge
+   decaying) - name the pattern, list the instances, and state whether a
+   structural fix exists or is still open.
+4. **Research-Bilanz**: table of every paper/strategy candidate touched
+   this month - Quelle, Behauptung, unser Ergebnis (deciding number),
+   Status. Below it, 2-3 sentences on what the month taught about which
+   KINDS of edges survive our tests and which don't.
+5. **Vertiefung des Monats**: one concept explained in more depth than a
+   weekly box (~300-500 words), ideally one that tied several of the
+   month's findings together.
+6. **Netto-Bilanz**: improvements vs. regressions of the month.
+7. **Offen in den naechsten Monat**: open items, ordered by importance,
+   each with the concrete next step.
 
 ## Report 3: PDF (both parts combined, styled)
 

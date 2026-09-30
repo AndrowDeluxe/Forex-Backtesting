@@ -220,17 +220,48 @@ Structure (adapted from the user's mentor-style reflection journal):
    think about the system. Pull from new/updated files in
    C:\Users\andre\.claude\projects\c--Users-andre-Forex-Backtesting\memory\
    this week plus new `knowledge/` docs.
+   **Depth (Nutzerwunsch 2026-09-30: Education-Teil ausfuehrlicher):** not
+   one-liners. Give each learning its own short sub-block (typically 3-5,
+   the most important first) with four parts:
+   - **Befund** - what was found, with the 1-3 numbers that carry it (not
+     every number in the source note).
+   - **Mechanismus / Warum** - why it happens; the causal chain in plain
+     language, so it's understandable without having read the code.
+   - **Wie es aufgefallen ist** - how it surfaced and how it was verified
+     (which check, which counter-check, what almost fooled us). This is
+     often the most instructive part - don't skip it.
+   - **Lehre / Regel fuer die Zukunft** - the transferable rule, one or two
+     sentences, phrased so it applies beyond this one case.
+   Link the source note/memory with `[[slug]]`. Aim for roughly 120-250
+   words per learning; the whole Education report may be noticeably longer
+   than before (roughly 1.5-2x) - depth beats brevity here, but no filler:
+   if a week only had one real learning, write one good one.
 4. **Neues Wissen diese Woche (Papers/Ideen)** (Nutzerwunsch 2026-09-03 -
    this should show up regularly, not just get folded into "Main
    Erkenntnisse" above or mentioned only when a Clippings-batch happens to
    get processed): what Research-Wissen came in this week? Check `git log
    --since="7 days ago" --oneline -- knowledge/resources/ knowledge/projects/`
-   for new/changed PARA notes (name + one-line takeaway, not the full
-   content - link with `[[slug]]` since these ARE genuine knowledge-vault
-   notes) and scan `knowledge/DASHBOARD.md`'s "💡 Ideen-Inbox" section for
-   entries added since the last weekly report (even half-formed ones -
-   just note what came in and whether it's been sorted yet). If nothing
-   came in this week, say so plainly rather than omitting the section.
+   for new/changed PARA notes and scan `knowledge/DASHBOARD.md`'s
+   "💡 Ideen-Inbox" section for entries added since the last weekly report
+   (even half-formed ones - just note what came in and whether it's been
+   sorted yet). If nothing came in this week, say so plainly rather than
+   omitting the section.
+   **Depth (2026-09-30):** per paper/strategy note a short paragraph, not
+   just name + one line: (a) the claim of the source in one sentence incl.
+   its headline number, (b) what WE tested and on what data, (c) the
+   verdict with the deciding number (e.g. "ohne 2020 t=0,35"), (d) status
+   (verworfen / in Arbeit / live / geparkt) and why. Link with `[[slug]]`.
+   Ideen-Inbox entries stay one line each.
+4b. **Vertiefung: ein Konzept der Woche** (neu 2026-09-30): pick ONE
+   concept that came up this week and explain it properly, like a short
+   textbook box (~150-300 words): what it is, a small concrete example
+   with our own numbers, and why it matters for our bots. Good candidates:
+   a statistical tool used this week (Newey-West-t, Walk-Forward, Monte-
+   Carlo-Bootstrap, "ohne bestes Jahr"), a market-microstructure effect
+   (Entry-Lag, Spread zur Eroeffnung, Mindestlot-Verzerrung), or an
+   engineering pattern (Stash-Verlust, Fail-safe). Prefer something the
+   user met this week but that was only used, not explained. Don't repeat
+   a concept already explained in the last 4 weekly reports (check them).
 5. **Verbesserungen**: bugs fixed, infra improved, new validated strategies/
    features shipped this week.
 6. **Verschlechterungen / offene Probleme**: anything newly broken,

@@ -35,6 +35,24 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **EK: der Ribbon hilft, aber die Mindestlot-Anhebung bleibt das
+  dominante Risiko.** Backtest 2024-heute je Konto: die drei Funded-Konten
+  liegen mit **P(MaxDD>6 %) = 0,0 %** komfortabel innerhalb ihrer Grenze
+  (ttp -0,76 %, iqmarkets -1,52 %, FK -1,15 % Median-Drawdown). **EK
+  nominal -0,57 %, EK REAL aber -14,00 %** mit P(>6 %) = 99,4 % -- weil das
+  kleinste XAUUSD-Lot 0,86 %/Trade riskiert statt der vorgesehenen 0,019 %
+  (Faktor 46, Befund 10). Der Ertrag (+156,8 %) ist das Spiegelbild davon.
+  **Offen fuer dich:** EK hat keine harte DD-Grenze, das ist also zulaessig
+  -- willst du es so? Die Alternativen stehen in E5 (Anhebung fuer CTNL
+  abschalten = Bein verstummt auf EK, oder CTNL-Risiko anheben bis das Ziel
+  ueber dem Mindestlot liegt). Ich habe nichts geaendert.
+
+- **Gegenlesen beim naechsten CTNL-Signaltag.** Verifiziert ist der
+  Code-Stand (alle fuenf Einstiegspunkte, funktionaler Test mit gefaketem
+  Executor), NICHT ein echter Live-Durchlauf mit Order. Im Log sollte
+  stehen: "N von M Signalen behalten; X gegen den Trend verworfen". Bleibt
+  die Meldung aus, greift das Gate nicht.
+
 - **CTNL Short-Serie 29./30.09. ausgewertet -- vier Punkte für dich** (2026-09-30,
   Befund 18 in `projects/ctnl-kostenvalidierung.md`). (a) **Hast du die SLs der
   3 offenen IQ-Shorts von Hand verschoben?** Sie stehen auf 4214,24/4214,30/4202,51

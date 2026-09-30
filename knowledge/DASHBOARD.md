@@ -35,6 +35,24 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **🔴 EK-Mindestlot durchgerechnet: 76 % des Verlusts kommen aus der
+  Groessenverzerrung, nicht aus den Strategien (2026-09-30, Nutzerauftrag).**
+  Empirisch aus den echten Deals KW38+KW39: Ist **-669,48 EUR**, bei den
+  eigentlich gewollten Zielgroessen waeren es **-161,30 EUR** -- Differenz
+  **-508 EUR**, davon **-397 EUR allein `ctnl_reversal`** (19 Ausstiege,
+  Faktor 51x ueber Ziel). Auf ~3.389 EUR Startequity: -19,75 % statt -4,76 %.
+  **Noetige Kontogroesse, damit kein Bein mehr angehoben wird:**
+  `ctnl_reversal` **143.787 EUR** (bindend), `ctnl_continuation` 12.432,
+  `ou_modell` 8.161, `gold_asb` 2.057, ORB 61-403. **Ohne `ctnl_reversal`
+  sinkt die Anforderung auf 12.400 EUR**, ohne beide CTNL-Beine auf ~8.200.
+  **Offen fuer dich, drei Wege** (Details in [[ek-risiko-kalibrierung-audit]]):
+  (1) Konto auf ~12.400 bringen und `ctnl_reversal` streichen; (2) die
+  CTNL-Beine auf EK abschalten und den Rest weiterlaufen lassen; (3) alles
+  lassen und die invertierte Hierarchie akzeptieren. **Ich habe nichts
+  geaendert.** Einschraenkung: die Spalte "bei Zielgroesse" ist keine
+  erreichbare Alternative -- dort wuerden die Beine auf 0 Lot runden und gar
+  nicht handeln, genau deshalb gibt es die Anhebung seit 10.09.
+
 - **EK: der Ribbon hilft, aber die Mindestlot-Anhebung bleibt das
   dominante Risiko.** Backtest 2024-heute je Konto: die drei Funded-Konten
   liegen mit **P(MaxDD>6 %) = 0,0 %** komfortabel innerhalb ihrer Grenze

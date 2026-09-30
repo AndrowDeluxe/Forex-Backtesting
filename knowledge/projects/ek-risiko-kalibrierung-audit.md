@@ -105,3 +105,76 @@ Hebel-Staffel (volle Historie, Block-Bootstrap ueber Monate):
 - [[orb-exit-logik-neubewertung]] -- dort wurde die Differenz gefunden
 - `scripts/research_ek_calibration_audit.py` -- Nachrechnung
 - `scripts/research_ek_orb_risk_calibration.py` -- ORB-Kalibrierung (0,30 %)
+
+---
+
+## Mindestlot-Rechnung 2026-09-30 (Nutzerauftrag)
+
+Zwei Fragen: was kostet die Mindestlot-Anhebung wirklich, und wie gross
+muesste das Konto sein, damit sie entfaellt?
+
+**Methode.** Kein Modell der Kontraktgroessen (die waeren je Broker/Symbol
+geraten), sondern **empirisch aus den echten Deals** der MT5-Abzuege KW38+KW39:
+bei einem Bein, das am Mindestlot haengt, IST der realisierte Verlust eines
+Stop-Trades das Mindestlot-Risiko. Daraus folgt `loss_per_lot`, und damit die
+Zielgroesse, die `core/sizing.py` eigentlich gewollt haette.
+
+### Was die Anhebung gekostet hat
+
+| | Ist (angehoben) | bei Zielgroesse | Differenz |
+|---|---|---|---|
+| **Summe EK, KW38+KW39** | **-669,48 EUR** | **-161,30 EUR** | **-508,18 EUR** |
+| davon `ctnl_reversal` (19 Ausstiege) | -404,51 | -7,89 | **-396,62** |
+| davon `ou_modell` (7 Titel) | -102,43 | -71,89 | -30,54 |
+| `orb_us30` (Gegenrichtung) | +27,48 | +150,57 | -123,09 |
+
+Auf ~3.389 EUR Startequity: **-19,75 % statt -4,76 %.** Rund **76 % des
+Verlusts dieser beiden Wochen stammen nicht aus den Strategien, sondern aus
+der Groessenverzerrung.** `ctnl_reversal` allein erklaert 396 der 508 EUR.
+
+**Wichtige Einschraenkung:** die Spalte "bei Zielgroesse" ist KEINE erreichbare
+Alternative. Bei Zielrisiko wuerden diese Beine auf 0 Lot runden und gar nicht
+handeln -- genau deshalb wurde die Anhebung am 2026-09-10 eingefuehrt. Die Zahl
+misst die Verzerrung, sie ist kein Vorschlag.
+
+### Ab welcher Kontogroesse entfaellt das Problem?
+
+Bedingung aus `calc_lot_size_detailed()`: sauber ist ein Bein, sobald
+`raw_lots >= volume_min`, also
+
+    Equity >= volume_min x loss_per_lot / (CAPITAL_WEIGHT x LEG_RISK_PCT)
+
+| Bein | Risiko/Trade | Mindestlot-Risiko | noetige Equity |
+|---|---|---|---|
+| **`ctnl_reversal`** | 0,0187 % | 26,96 EUR | **143.787 EUR** |
+| `ctnl_continuation` | 0,0625 % | 7,77 EUR | **12.432 EUR** |
+| `ou_modell` (teuerster Titel APD) | 0,3663 % | 29,89 EUR | 8.161 EUR |
+| `gold_asb` | 3,5200 % | 72,40 EUR | 2.057 EUR |
+| `orb_sp500` / `nasdaq` / `us30` | 0,3600 % | 0,22-1,45 EUR | 61-403 EUR |
+
+**Bindend ist `ctnl_reversal` mit rund 144.000 EUR** -- das Bein ist mit
+0,0187 % Risiko je Trade so konservativ kalibriert, dass es auf jedem
+realistischen Konto unter das kleinste handelbare Gold-Lot faellt. **Ohne
+dieses eine Bein sinkt die Anforderung auf 12.400 EUR** (dann bindet
+`ctnl_continuation`), ohne beide CTNL-Beine auf rund **8.200 EUR**
+(dann bindet `ou_modell`).
+
+### Was daraus folgt
+
+Drei Wege, keiner davon ohne Preis:
+
+1. **Konto auf ~12.400 EUR bringen und `ctnl_reversal` streichen.** Dann
+   arbeiten alle uebrigen Beine in ihrer kalibrierten Groesse. `ctnl_reversal`
+   braeuchte das Zehnfache davon und ist auf diesem Konto strukturell nicht
+   darstellbar.
+2. **`ctnl_reversal` (und ggf. `ctnl_continuation`) auf EK abschalten**, den
+   Rest bei heutiger Kontogroesse weiterlaufen lassen. Bei ~2.800 EUR bleiben
+   dann noch `ou_modell` (bis Faktor 2,9x) und `gold_asb` leicht ueber der
+   Schwelle -- die ORB-Beine sind sauber.
+3. **Alles lassen.** Dann bleibt die Risiko-Hierarchie invertiert: das am
+   konservativsten kalibrierte Bein ist das groesste, und der Kontoverlauf
+   haengt an ihm.
+
+Nicht entschieden -- liegt beim Nutzer. Verwandt:
+Memory `ek_mindestlot_kehrt_hierarchie_um` (der Erstfund),
+[[ctnl-kostenvalidierung]].

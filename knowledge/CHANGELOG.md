@@ -9,6 +9,22 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-30** [EK / Risiko] **Mindestlot-Grenze durchgerechnet: 76 % des
+  EK-Verlusts stammen aus der Groessenverzerrung** (Nutzerauftrag, reine
+  Auswertung, nichts geaendert). Methode bewusst empirisch statt modelliert:
+  bei einem Bein am Mindestlot IST der realisierte Stop-Verlust das
+  Mindestlot-Risiko -- daraus `loss_per_lot` und die eigentlich gewollte
+  Zielgroesse. Ergebnis KW38+KW39: Ist -669,48 EUR gegen -161,30 EUR bei
+  Zielgroessen (-19,75 % statt -4,76 % auf ~3.389 Startequity); allein
+  `ctnl_reversal` -404,51 statt -7,89 (Faktor 51x). **Noetige Kontogroesse,
+  damit kein Bein mehr angehoben wird: `ctnl_reversal` 143.787 EUR (bindend),
+  `ctnl_continuation` 12.432, `ou_modell` 8.161, `gold_asb` 2.057, ORB
+  61-403.** Ohne `ctnl_reversal` faellt die Anforderung auf 12.400 EUR.
+  Bedingung hergeleitet aus `core/sizing.py::calc_lot_size_detailed()`:
+  sauber ab `Equity >= volume_min x loss_per_lot / (CAPITAL_WEIGHT x
+  LEG_RISK_PCT)`. Drei Optionen im Dashboard zur Entscheidung, Details in
+  `projects/ek-risiko-kalibrierung-audit.md`.
+
 - **2026-09-30** [CTNL / Rollout-Bilanz] **Aktivierung verifiziert und
   Backtest je Konto gerechnet** (Nutzerfrage). Skript
   `research_ctnl_je_konto_2024.py`, Rohdaten `_data/ctnl_je_konto_2024.json`.

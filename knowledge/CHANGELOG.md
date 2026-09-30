@@ -9,6 +9,24 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-30** [Second Brain] **Zwei veraltete Dashboard-Eintraege korrigiert --
+  einer davon ein erneuter Stash-Verlust.** Beim Statusabgleich gefunden:
+  (a) der Punkt **"🔴 ttp1 darf nicht mehr handeln"** stand weiterhin als
+  offenes Kritisch-Item, obwohl ttp1 am **23.09. auf Nutzerentscheid
+  vollstaendig ausgebaut** wurde -- der CHANGELOG-Eintrag dazu existiert,
+  **die zugehoerige Dashboard-Korrektur war verschwunden** (Dashboard erwaehnte
+  den Ausbau mit null Worten). Gleiche Ursache wie am 22.-25.09.:
+  `git_sync_push`-Stash. (b) Die Statustabelle fuehrte die Funded-Bridge
+  weiterhin mit **"alle 3 verbunden"** inkl. ttp1, obwohl die Bridge-Config
+  seit 19.09. nur noch TTP Konto 2 + IQ kennt. Beides berichtigt, Stand-Datum
+  auf 30.09. gezogen. Ausserdem den eigenen Punkt "Zwei Freigaben zum
+  Aufraeumen" als erledigt geschlossen (KW38 nachgebaut, Stashes geloescht).
+  **Offen und unveraendert:** der Stash-Mechanismus laeuft weiter -- seit dem
+  Loeschen am 25.09. sind in fuenf Tagen wieder **39 Stashes** entstanden
+  (vorher ~19/Tag, jetzt ~8/Tag; der Fix vom 23.09. hat die Rate halbiert,
+  das Problem nicht beseitigt). Ein frischer `GIT_STASH_KONFLIKT.md` vom
+  30.09. 20:56 liegt in `_handoff/` (Inhalt nur Logdateien, unkritisch).
+
 - **2026-09-28** [Bridge Error Monitor / Data Lake] **`str`/`float`-Fehler
   erneut aufgetreten -- diesmal im Lake-Read-Pfad, nicht in den bereits
   2026-09-02/03/07 gepatchten Dateien. Fix in `data_lake/reader.py`

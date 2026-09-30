@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-09-28** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-09-30** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -190,7 +190,7 @@ Bedarf vor generischem Aufräumen.
   ueber die Ribbon-Richtung (E6) loesen? Details:
   `reports/weekly/KW39_2026_performance.md` Abschnitt 2.
 
-- **Zwei Freigaben zum Aufraeumen (beide unkritisch, beide deine Entscheidung).**
+- **✅ ERLEDIGT 2026-09-25: beide Aufraeum-Freigaben umgesetzt.** KW38 wurde von Hand nachgebaut (`reports/weekly/KW38_2026_*.md`) und die 94 Altstashes geloescht -- vorher geprueft, dabei den faelschlich entfernten OU-Solo-Punkt gefunden und wiederhergestellt. Urspruengliche Frage:
   **(1) KW38/2026 nachbauen?** Der Report fehlt, weil der Task am So 20.09. im
   Standby lag (Details im Changelog vom 24.09.). Die Rohdaten sind noch da
   (`scripts/reports/mt5_2026-W38.json`, `soll_ist_2026-W38.json`), ein
@@ -360,8 +360,10 @@ Bedarf vor generischem Aufräumen.
   2,20x -- soll ich es zurueckziehen? Details:
   [[ek-risiko-kalibrierung-audit]].
 
-- **🔴 ttp1 (Echtgeld, TTP Konto 1) darf seit 2026-09-18 09:58 nicht mehr
-  handeln -- bitte beim Anbieter klaeren.** `trade_allowed=False` vom Server,
+- **✅ ERLEDIGT 2026-09-23 (Eintrag am 30.09. nachgezogen): ttp1 wurde vollstaendig ausgebaut.** Auf deinen Entscheid aus allen Systemen entfernt (Bridge-Config bereits am 19.09., dann Scripts + Reports), Challenge als abgeschlossen gewertet -- siehe CHANGELOG 2026-09-23. **Dieser Punkt stand bis heute faelschlich als offenes 🔴 im Dashboard**: die damalige Korrektur ging durch den `git_sync_push`-Stash verloren, der CHANGELOG-Eintrag ueberlebte. Der urspruengliche Text zur Dokumentation:
+
+  > 🔴 ttp1 (Echtgeld, TTP Konto 1) darf seit 2026-09-18 09:58 nicht mehr
+  > handeln -- bitte beim Anbieter klaeren. `trade_allowed=False` vom Server,
   9 abgelehnte Entries (`10026 "AutoTrading disabled by server"`). Keine
   eigene Regelverletzung erkennbar: Equity 94.711,78 (−2,0 % seit Kontostart,
   Tagesverlust −0,99 %, Peak-DD −2,2 %), Kill-Switch inaktiv; das TTP-**Demo**
@@ -537,7 +539,7 @@ Bedarf vor generischem Aufräumen.
 | OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner + Telegram (3x täglich: 15:35/18:35/21:35)                                           | Ready (Mo–Fr, US-Handelszeiten) | — | 2026-09-02      |
 | Forex-Weekly-Report                                     | —                                                                                        | Report-Generator (seit 09-15: Zeitlimit 4h statt 1h, Vollständigkeitsprüfung + 3x Wiederholung alle 4h bei unvollständigem Lauf) | Ready (So 18:00 — läuft am Wochenende bewusst weiter) | — | 2026-09-15      |
 | Bridge-Watchdog                                         | — (nur Log-Frische, kein Order-Bezug)                                                    | Heartbeat-Alarm + Status-Snapshot ins Repo                                                   | Ready (alle 30 Min, Mo–Fr)      | — | 2026-09-13      |
-| Funded-Portfolio-Bridge (TTP 6 Beine @1/6, IQ 5 Beine @1/3) | TTP Konto 2 (504072729) + TTP Konto 1 (504069845) + BeyondIQCapital (16054) — **alle 3 verbunden** (IQ 15514 am 2026-09-07 entfernt) | **LIVE — DRY_RUN=False** (alle 6 Beine `source="lake"`; **seit 09-13 kontospezifisch: IQ ohne `ou_modell`, Kapitalanteil 1/3 statt 1/6 — IQ handelt keine Aktien**; IPC-Timeouts 09-08 09:52-12:24 Uhr, seither stabil, siehe 🔍 Bestätigung) | Ready (alle 15 Min, Mo–Fr)      | **16.09.** orb_sp500 (TTP1) | 2026-09-13      |
+| Funded-Portfolio-Bridge (TTP 6 Beine @1/6, IQ 5 Beine @1/3) | TTP Konto 2 (504072729) + BeyondIQCapital (16054) — **2 Konten** (IQ 15514 am 2026-09-07 entfernt, **TTP Konto 1 / ttp1 am 2026-09-23 vollstaendig ausgebaut**) | **LIVE — DRY_RUN=False** (alle 6 Beine `source="lake"`; **seit 09-13 kontospezifisch: IQ ohne `ou_modell`, Kapitalanteil 1/3 statt 1/6 — IQ handelt keine Aktien**; IPC-Timeouts 09-08 09:52-12:24 Uhr, seither stabil, siehe 🔍 Bestätigung) | Ready (alle 15 Min, Mo–Fr)      | **16.09.** orb_sp500 (TTP1) | 2026-09-13      |
 | Funded-Portfolio-Bridge-Fast                            | Gleiche 3 Konten (geteilte Terminals)                                                    | **LIVE — DRY_RUN=False** (ctnl_continuation + orb_sp500/us30/nasdaq + cls_practical, `source="lake"`) | Ready (alle 5 Min, Mo–Fr)       | ↑ gleiche Konten | 2026-09-13      |
 | DataLake-Ingest-Fast                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt `data_lake_store/` für Funded-Portfolio-Bridge (19 Keys, 15-Min-Kadenz)                | Ready (alle 15 Min, Mo–Fr)      | — | 2026-09-13      |
 | DataLake-Ingest-Fast5                                   | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt 8 M5/M15-Timing-kritische Keys für ctnl_continuation/orb/cls_practical (EURUSD M5 seit 2026-09-07) | Ready (alle 5 Min, Mo–Fr)       | — | 2026-09-13      |

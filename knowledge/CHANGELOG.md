@@ -9,6 +9,37 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-30** [FK Instant Funding] **Aufgeklaert, warum FK kaum CTNL
+  handelt -- und behoben.** Nutzerfrage. **Korrektur der Fragestellung:** FK
+  handelt CTNL durchaus (State: 5 geschlossene + 10 offene Reversal-Positionen,
+  1 Continuation), aber viel zu selten.
+  **Zahlen:** FK handelt **31 %** seiner ctnl_reversal-Signale, Funded
+  **50-57 %** -- und FK sieht schon insgesamt weniger Signale (49 gegen
+  113/131). Verwurfsgruende: **25x "war bereits offen UND geschlossen, bevor
+  diese Bridge es je gesehen hat"**, 9x "Signal zu alt" (min. 74 Min.,
+  Median 1109), 3x Kurs schon >0,5R gegen das Signal.
+  **Ursache:** FKs Slow-Task laeuft **stuendlich** (`PT1H`), Funded alle
+  15 Minuten -- und `ctnl_reversal` war bewusst NICHT auf der 5-Min-Lane, mit
+  der Begruendung "keine M5-Timing-Abhaengigkeit". Die Begruendung ist
+  technisch richtig und im Ergebnis falsch: das Bein braucht keine
+  M5-Aufloesung, aber es arbeitet auf M15-Bars und wurde **viermal seltener
+  gescannt, als seine Signale entstehen**. Ein Reversal-Trade kann innerhalb
+  einer Stunde entstehen und ausgestoppt werden -- FK sah ihn nie.
+  **Behoben:** `ctnl_reversal` laeuft jetzt auf FKs Fast-Lane. `rev_trades`
+  lag dort ohnehin vor (der CTNL-Kill-Switch braucht es), es wurde nur nicht
+  weitergereicht. Zwei Zeilen.
+
+- **2026-09-30** [Alle Bridges / Ribbon-Gate] **Eigener Fehler im Rollout von
+  heute korrigiert: die FAST-LANES umgingen das Gate.** Beide Fast-Lanes rufen
+  `slow._process_leg()` direkt auf; mein Gate sass in `main()` der Slow-Lane.
+  `ctnl_continuation` lief auf der Fast-Lane damit **ungefiltert** -- auf
+  Funded und FK gleichermassen.
+  **Behoben** durch Verlagerung in `_process_leg()` selbst, gesteuert ueber
+  `RIBBON_GATED_LEGS`. Dort kann kein Aufrufpfad es mehr umgehen.
+  Funktional gegengeprueft: `ctnl_reversal` behaelt 1 von 2 Testsignalen
+  (den trendkonformen Short), `gold_asb` wird nicht angefasst. Alle fuenf
+  Einstiegspunkte (Funded slow/fast, FK slow/fast, EK) importieren.
+
 - **2026-09-30** [EK-Portfolio-Bridge / OU-Modell] **Wiedereinstiegs-Drehtuer
   geschlossen -- Einstieg und Ausstieg pruefen jetzt dieselbe Marke.**
   Nutzerauftrag. **Befund:** seit dem Logik-D-Umbau wurde AIG **sechsmal

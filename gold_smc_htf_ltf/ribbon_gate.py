@@ -218,3 +218,29 @@ def filter_trades(trades: pd.DataFrame, *, source: str = "lake",
                      "nicht Strategie (Lake-Historie zu kurz?)")
     hinweis = f"{leg}: {len(behalten)} von {len(trades)} Signalen behalten; " + "; ".join(teile) if teile else ""
     return behalten, hinweis
+
+
+def allows_now(direction: int, *, source: str = "live",
+               leg: str = "ctnl") -> tuple[bool, str]:
+    """Wie allows(), holt die Daten aber selbst -- fuer Bridges, die je
+    SIGNAL entscheiden statt ueber eine Trade-Tabelle (EK-Portfolio-Bridge).
+
+    Fuer die Live-Entscheidung zaehlt nur der JUENGSTE Ribbon-Wert; der
+    Vorlauf muss lediglich reichen, damit D1-EMA200 und W1-EMA50
+    eingeschwungen sind. RIBBON_LOOKBACK_DAYS deckt beides mit Reserve.
+
+    FAIL-SAFE wie ueberall: bei Datenproblemen False (kein Entry).
+    """
+    import pandas as _pd
+    ende = _pd.Timestamp.now(tz="UTC")
+    start = (ende - _pd.Timedelta(days=RIBBON_LOOKBACK_DAYS)).strftime("%Y-%m-%d")
+    end = (ende + _pd.Timedelta(days=1)).strftime("%Y-%m-%d")
+    for versuch in ([source, "live"] if source == "lake" else [source]):
+        try:
+            h4, d1 = _lade_bars(start, end, versuch)
+            erlaubt, grund = allows(direction, h4, d1)
+            return erlaubt, f"{leg}: {grund}"
+        except Exception as e:
+            log.warning("%s: Ribbon aus Quelle %s nicht abrufbar (%s: %s)",
+                        leg, versuch, type(e).__name__, e)
+    return False, f"{leg}: Ribbon-Daten nicht abrufbar -- Entry blockiert (fail-safe)"

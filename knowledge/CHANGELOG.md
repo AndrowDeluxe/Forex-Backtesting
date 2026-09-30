@@ -9,6 +9,61 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-30** [Alle drei Bridges / CTNL] **MTF-EMA-Ribbon als
+  Richtungs-Gate auf Funded, FK und EK scharf geschaltet** (Nutzerentscheid:
+  "Ribbon jetzt, Limit-Entry spaeter"). Long nur im Aufwaerts-, short nur im
+  Abwaertstrend des Ribbons (H4-EMA50 / D1-EMA50 / D1-EMA200 / W1-EMA50 aus
+  dem eigenen Pine-Script). Beleg: `projects/ctnl-kostenvalidierung.md`
+  Befund 15 (SigmaR +330,6 gegen +136,7, Walk-Forward OOS +243,6 gegen
+  +153,2, Monte-Carlo-MaxDD -5,63 % statt -15,50 %).
+  **EIN gemeinsames Modul** `gold_smc_htf_ltf/ribbon_gate.py` fuer alle drei
+  -- die Bridges sind schon einmal auseinandergelaufen. Funded und FK nutzen
+  `filter_trades()` (Trade-Tabelle), EK `allows_now()` in
+  `legs/ctnl_edge/executor.py::_send_entry` (je Signal, deckt damit beide
+  CTNL-Beine mit einem Eingriff ab).
+  **W1 wird aus D1 abgeleitet**, statt eine neue Ingest-Quelle aufzumachen:
+  99,6 % Uebereinstimmung der Richtungsaussage gegen gefetchte W1-Daten,
+  **null Vorzeichenwechsel** (alle 66 Abweichungen nur an der Grenze zu
+  neutral). `data_lake/reader.py` bekam dafuer einen D1-Leser -- die Quelle
+  `(dukascopy, GOLD, D1)` existierte, hatte aber keinen.
+  **Verifikation:** Live-Modul entscheidet **100,0 % identisch** zur
+  Backtest-Implementierung (17.181 H4-Punkte, null Abweichungen); alle drei
+  Bridges importieren; Tabellen-Pfad und Signal-Pfad erlauben dasselbe;
+  Lake- und Live-Quelle liefern dasselbe Ergebnis.
+  **Drei Fehler, die der Test VOR dem Scharfschalten aufdeckte:**
+  (a) `source="lake"` behielt nur 11 von 318 Signalen (3,5 %) statt 121
+  (38,1 %) -- der Lake haelt nur ~4 Monate H4 (1.060 Bars ab 2026-05-26),
+  aeltere Signale bekamen gar keinen Ribbon-Wert, und der Code deutete "kein
+  Wert" still als "nicht trendkonform". Jetzt **drei Zustaende statt zwei**
+  (konform / gegen den Trend / keine Daten) mit einmaligem Ausweichen auf den
+  Live-Fetch; das Ergebnis deckt sich jetzt mit dem Backtest (37,9 %).
+  (b) Der Fail-safe lief ins Leere: `trades.get("direction")` liefert bei
+  einer Spalte voller `None` nicht `None`, sondern die Spalte -- `None` wurde
+  zu "short" gemappt und 14 Zeilen durchgelassen. Jetzt explizit auf fehlende
+  Spalte UND NaN geprueft, beides blockiert vollstaendig.
+  (c) `data_lake/reader.py` hatte keinen D1-Leser (s.o.).
+  **ERWARTUNG, die nicht ueberraschen darf:** rund **60 % der Signale fallen
+  weg**, und kurzfristig kostet das Ertrag -- 2024-2026 SigmaR **+139,3
+  gegen +169,3** ungefiltert (Befund 16b). Der Gewinn liegt in den
+  schlechten Jahren. Wer in vier Wochen weniger Ertrag sieht, sieht das
+  Erwartete, keinen Fehler.
+  **EK bleibt bei max. 1 gleichzeitiger CTNL-Reversal-Position**
+  (`CTNL_REV_MAX_CONCURRENT = 1`, E5-c vom 23.09., unveraendert bestaetigt).
+  **NICHT umgesetzt (Nutzerentscheid):** der Limit-Entry am Liquidity Spike.
+  Der Override liegt getestet in `strategy/backtest.py` (`entry_mode`/
+  `entry_wait_bars`) und ist ungenutzt.
+
+- **2026-09-30** [Git-Sync] **Der Stash-Mechanismus hat erneut
+  Session-Arbeit gefressen.** `strategy/backtest.py` (Entry-Override vom
+  25.09.) war aus dem Working Tree verschwunden und lag in `stash@{38}`
+  (28.09.); konfliktfrei zurueckgeholt, weil HEAD die Datei seit der
+  Stash-Basis nicht angefasst hatte. Untracked angelegte Dateien
+  (`ribbon_gate.py`, die Research-Skripte, `_data/*.json`) waren wie immer
+  nicht betroffen. Es liegt ausserdem eine Handoff-Notiz
+  `_handoff/GIT_STASH_KONFLIKT.md` vom 30.09. 20:56 zum selben Vorgang.
+  **Der Fix vom 23.09. hat das Problem also nicht beseitigt.** 39 Stashes
+  aufgelaufen. Konsequenz weiterhin: nach jeder Aenderung sofort committen.
+
 - **2026-09-30** [Second Brain] **Zwei veraltete Dashboard-Eintraege korrigiert --
   einer davon ein erneuter Stash-Verlust.** Beim Statusabgleich gefunden:
   (a) der Punkt **"🔴 ttp1 darf nicht mehr handeln"** stand weiterhin als

@@ -497,6 +497,10 @@ def _scan_ctnl(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") 
     rev_sig = run_reversal(h4, h1, m15, **REV_KWARGS)
     rev_sig = rev_sig[_utc_naive(rev_sig.index) <= end]
     rev_trades = simulate_trades_concurrent(rev_sig, rev_cfg)
+    # Signalbar-Groesse (Range/ATR) fuer den Spike-Filter (2026-09-30) -- rein
+    # additiv, gefiltert wird erst in der Bridge, siehe gold_smc_htf_ltf/spike_gate.py.
+    from gold_smc_htf_ltf import spike_gate
+    rev_trades = spike_gate.annotate(rev_trades, rev_sig)
     rev_trades = _cap_concurrent_reversals(rev_trades, REV_MAX_CONCURRENT)
     return cont_trades, rev_trades
 

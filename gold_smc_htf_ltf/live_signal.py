@@ -179,6 +179,9 @@ def reversal_signal(as_of: pd.Timestamp | None = None, lookback_days: int = LOOK
         "date": str(merged.index[-1]), "has_signal": True, "direction": direction,
         "entry_ref": float(last["close"]), "stop": stop, "target": target, "atr": atr,
         "risk_pct": FK_RISK_REV, "max_concurrent": REV_MAX_CONCURRENT,
+        # Signalbar-Groesse (Range/ATR) fuer den Spike-Filter (2026-09-30),
+        # siehe gold_smc_htf_ltf/spike_gate.py -- rein informativ hier.
+        "spike": float(last["high"] - last["low"]) / atr if atr > 0 else float("nan"),
     }
 
 

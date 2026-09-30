@@ -91,7 +91,8 @@ def drawdown(cont_trades: pd.DataFrame | None = None,
     gescannt und das Ergebnis gecacht (Weg von EK, das signalbasiert arbeitet
     und keine Trade-Frames hat)."""
     if cont_trades is not None and rev_trades is not None:
-        return ctnl_standalone_drawdown(cont_trades, rev_trades)
+        _pruefe_nicht_leer(cont_trades, rev_trades)
+        return _dd_gehandelt(cont_trades, rev_trades)
 
     now = time.monotonic()
     if use_cache:
@@ -99,9 +100,64 @@ def drawdown(cont_trades: pd.DataFrame | None = None,
         if hit is not None and now - hit[0] < _CACHE_TTL_S:
             return hit[1]
 
-    dd = ctnl_standalone_drawdown(*_scan_trades(source))
+    cont, rev = _scan_trades(source)
+    _pruefe_nicht_leer(cont, rev)   # vor dem Cache: eine Luecke darf nicht 10 Min. kleben
+    dd = _dd_gehandelt(cont, rev)
     _cache[source] = (now, dd)
     return dd
+
+
+def _dd_gehandelt(cont_trades: pd.DataFrame, rev_trades: pd.DataFrame) -> float:
+    """Drawdown des TATSAECHLICH GEHANDELTEN Satzes (Nutzerentscheid 2026-09-30).
+
+    Bis dahin lief der Schalter auf der UNGEFILTERTEN Strategie -- seit dem
+    Ribbon-Gate wird die aber gar nicht mehr gehandelt. Gemessen am 30.09.:
+    ungefiltert -7,01 % (Schalter an), ribbon-gefiltert -2,13 % (Schalter aus).
+    Ein Schalter, der die Verluste einer abgeschalteten Variante zaehlt,
+    sperrt die gehandelte. Jetzt: Ribbon auf beiden Beinen, Spike-Filter auf
+    reversal -- dieselben Gates wie live. Schwelle/Hysterese unveraendert
+    (-6,6 %/-3,3 %); auf dem Ribbon-Set haette sie 2016-2026 nie ausgeloest
+    (MaxDD -43,5R = -6,5 % bei 0,15 %) -- sie bleibt Notbremse fuer einen
+    echten Strategiebruch, siehe ctnl-kostenvalidierung.md Befund 19."""
+    from gold_smc_htf_ltf import ribbon_gate, spike_gate
+
+    teile, gesperrt = [], False
+    for name, tr in (("ctnl_continuation", cont_trades), ("ctnl_reversal", rev_trades)):
+        if tr is None or tr.empty:
+            teile.append(tr)
+            continue
+        gef, hinweis = ribbon_gate.filter_trades(tr, source="lake", leg=name)
+        if name in spike_gate.GATED_LEGS and not gef.empty:
+            gef, hinweis2 = spike_gate.filter_trades(gef, lambda _r: False, leg=name)
+            hinweis = f"{hinweis} {hinweis2}".strip()
+        # Ribbon-/Spike-Filter verwarf ALLES wegen fehlender Daten -> kein Urteil
+        if gef.empty and ("blockiert" in hinweis):
+            gesperrt = True
+        teile.append(gef)
+    if gesperrt and all(t is None or t.empty for t in teile):
+        raise KeineDaten("Filter ohne Daten (Ribbon/Spike nicht berechenbar)")
+    if all(t is None or t.empty for t in teile):
+        return 0.0   # wirklich kein gehandelter Trade im Fenster -> kein Drawdown
+    leer = pd.DataFrame(columns=["entry_time", "exit_time", "r_multiple", "exit_reason"])
+    cont = teile[0] if teile[0] is not None and not teile[0].empty else leer
+    rev = teile[1] if teile[1] is not None and not teile[1].empty else leer
+    return ctnl_standalone_drawdown(cont, rev)
+
+
+class KeineDaten(Exception):
+    """Scan ohne einen einzigen Trade -- Datenluecke, kein Strategie-Urteil."""
+
+
+def _pruefe_nicht_leer(cont_trades, rev_trades) -> None:
+    """FLACKER-SCHUTZ (2026-09-30). `_scan_ctnl()` liefert bei fehlenden Bars
+    zwei LEERE Frames, und ein leerer Satz ergibt 0,00 % Drawdown. Genau das
+    hob FKs Schalter am 29.09. zweimal faelschlich auf ("erholt (0.00%)",
+    22:10 und 22:35 Berlin) und setzte ihn Minuten spaeter wieder. Ueber 90
+    Tage Historie ist ein wirklich leerer Scan nicht plausibel."""
+    def leer(d) -> bool:
+        return d is None or len(d) == 0
+    if leer(cont_trades) and leer(rev_trades):
+        raise KeineDaten("Scan ohne Trades (Datenluecke?)")
 
 
 def allows(state: dict,
@@ -118,6 +174,12 @@ def allows(state: dict,
 
     try:
         dd = drawdown(cont_trades, rev_trades, source=source)
+    except KeineDaten as e:
+        # Kein Urteil, letzter Zustand bleibt. Nur ins Log, NICHT nach Telegram:
+        # die Fast-Lanes wuerden eine Datenluecke sonst im 5-Min-Takt melden.
+        print(f"{praefix}CTNL-Kill-Switch: {e} -- kein Urteil, Zustand bleibt "
+              f"{'AKTIV' if state.get(STATE_KEY) else 'aus'}.")
+        return not state.get(STATE_KEY, False), messages
     except Exception as e:  # noqa: BLE001 -- jeder Scan-/Datenfehler, siehe FAIL-SAFE oben
         messages.append(f"{praefix}⚠️ CTNL-Kill-Switch-Check fehlgeschlagen: {e}")
         return not state.get(STATE_KEY, False), messages

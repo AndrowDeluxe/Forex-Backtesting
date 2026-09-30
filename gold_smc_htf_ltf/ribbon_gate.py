@@ -40,9 +40,13 @@ dass sie wieder durchkommt.
 
 from __future__ import annotations
 
+import logging
+
 import pandas as pd
 
 from .ema_ribbon import compute_ribbon
+
+log = logging.getLogger(__name__)
 
 _EMA_COLS = ("ema_h4", "ema_d1_fast", "ema_d1_slow", "ema_w1")
 
@@ -107,3 +111,110 @@ def allows(direction: int, h4_df: pd.DataFrame, d1_df: pd.DataFrame,
         return True, f"Ribbon {'aufwaerts' if stand > 0 else 'abwaerts'} (Stand {zeit}) -- trendkonform"
     return False, (f"Ribbon {'aufwaerts' if stand > 0 else 'abwaerts'} (Stand {zeit}), "
                    f"Signal {'long' if direction > 0 else 'short'} -- gegen den Trend, verworfen")
+
+
+# --------------------------------------------------------------- Bridge-Anbindung
+
+
+def _lade_bars(start: str, end: str, source: str):
+    """H4 + D1, je nach Bridge aus dem Lake (mit Live-Fallback) oder direkt.
+
+    Gleiches Muster wie challenge_portfolio/paper_bot.py::_scan_ctnl -- der
+    Lake-Pfad faellt bei veralteten Daten automatisch auf den Live-Fetch
+    zurueck, statt das Bein stillzulegen.
+    """
+    from .data import fetch_gold_d1 as live_d1, fetch_gold_h4 as live_h4
+    if source == "lake":
+        import data_lake.reader as _lake
+        h4_fn = _lake.with_live_fallback(_lake.fetch_gold_h4, live_h4)
+        d1_fn = _lake.with_live_fallback(_lake.fetch_gold_d1, live_d1)
+    else:
+        h4_fn, d1_fn = live_h4, live_d1
+    return h4_fn(start, end, force_refresh=False), d1_fn(start, end, force_refresh=False)
+
+
+# Vorlauf fuer den Ribbon: die langsamste EMA ist D1-200, dazu W1-50 (= 350
+# Kalendertage). 900 Tage geben beiden reichlich Einschwingzeit -- zu kurz
+# gewaehlt liefert der Ribbon am linken Rand Unsinn, und das faellt live
+# nicht auf, weil nur der letzte Wert gelesen wird.
+RIBBON_LOOKBACK_DAYS = 900
+
+
+def filter_trades(trades: pd.DataFrame, *, source: str = "lake",
+                  leg: str = "ctnl") -> tuple[pd.DataFrame, str]:
+    """Behaelt nur trendkonforme Zeilen: long im Aufwaerts-, short im
+    Abwaertstrend. Rueckgabe: (gefilterte Trades, Log-Zeile).
+
+    Fuer Funded-Portfolio-Bridge und FKInstantFunding-MT5-Bridge, die mit
+    Trade-TABELLEN arbeiten. EK geht ueber allows(), weil es je Signal
+    entscheidet.
+
+    DREI ZUSTAENDE, NICHT ZWEI (Fund 2026-09-30 beim Test gegen echte Daten):
+      trendkonform      -> behalten
+      gegen den Trend   -> verworfen, das ist die Risikoregel
+      KEIN RIBBON-WERT  -> ebenfalls verworfen, aber SEPARAT gemeldet
+    Der dritte Fall ist kein Strategie-Urteil, sondern eine Datenluecke. Er
+    darf nicht als "nicht trendkonform" durchgehen: der Lake haelt nur ~4
+    Monate H4 (gemessen 2026-09-30: 1.060 Bars ab 2026-05-26), und ohne
+    diese Trennung haette das Gate 96 % der Signale aus dem FALSCHEN Grund
+    verworfen, ohne dass es auffaellt.
+
+    Deckt der Lake die angefragte Spanne nicht ab, wird EINMAL auf den
+    Live-Fetch ausgewichen, bevor blockiert wird.
+    """
+    if trades is None or trades.empty:
+        return trades, ""
+
+    # Richtungsspalte zuerst pruefen -- eine Spalte voller None ist NICHT None
+    # (Fund 2026-09-30: `trades.get("direction")` lieferte eine None-Spalte,
+    # die stillschweigend zu "short" gemappt wurde).
+    if "direction" not in trades.columns:
+        return trades.iloc[0:0], f"{leg}: Trade-Tabelle ohne Spalte 'direction' -- alle Entries blockiert"
+    roh = trades["direction"]
+    if roh.isna().any():
+        return trades.iloc[0:0], (
+            f"{leg}: {int(roh.isna().sum())} von {len(trades)} Zeilen ohne Richtung "
+            "-- alle Entries blockiert (fail-safe)")
+    d = roh.map(lambda x: 1 if x in (1, "long") else -1).to_numpy()
+
+    t = pd.to_datetime(trades["entry_time"])
+    t_naive = t.dt.tz_convert(None) if t.dt.tz is not None else t
+    start = (t_naive.min() - pd.Timedelta(days=RIBBON_LOOKBACK_DAYS)).strftime("%Y-%m-%d")
+    end = (t_naive.max() + pd.Timedelta(days=2)).strftime("%Y-%m-%d")
+
+    stand = None
+    for versuch in ([source, "live"] if source == "lake" else [source]):
+        try:
+            h4, d1 = _lade_bars(start, end, versuch)
+            richtung = ribbon_direction(h4, d1)
+            r_idx = pd.to_datetime(richtung.index)
+            richtung.index = r_idx.tz_convert(None) if r_idx.tz is not None else r_idx
+            kandidat = richtung.reindex(t_naive, method="ffill")
+            if not kandidat.isna().any():
+                stand = kandidat.to_numpy()
+                break
+            fehlend = int(kandidat.isna().sum())
+            log.warning("%s: Ribbon deckt %d von %d Signalen nicht ab (Quelle %s, "
+                        "Historie ab %s)", leg, fehlend, len(trades), versuch, richtung.index.min())
+            stand = kandidat.to_numpy()   # als Fallback behalten, falls "live" auch nicht reicht
+        except Exception as e:
+            log.warning("%s: Ribbon aus Quelle %s nicht berechenbar (%s: %s)",
+                        leg, versuch, type(e).__name__, e)
+    if stand is None:
+        return trades.iloc[0:0], (
+            f"{leg}: Ribbon aus keiner Quelle berechenbar -- ALLE Entries blockiert "
+            "(fail-safe, siehe ribbon_gate.py)")
+
+    ohne_wert = pd.isna(stand)
+    konform = (~ohne_wert) & (((d == 1) & (stand > 0)) | ((d == -1) & (stand < 0)))
+    behalten = trades[konform]
+
+    teile = []
+    gegen = int((~ohne_wert).sum() - konform.sum())
+    if gegen:
+        teile.append(f"{gegen} gegen den Trend verworfen (Risikoregel, kein Fehler)")
+    if ohne_wert.any():
+        teile.append(f"{int(ohne_wert.sum())} OHNE Ribbon-Wert blockiert -- DATENLUECKE, "
+                     "nicht Strategie (Lake-Historie zu kurz?)")
+    hinweis = f"{leg}: {len(behalten)} von {len(trades)} Signalen behalten; " + "; ".join(teile) if teile else ""
+    return behalten, hinweis

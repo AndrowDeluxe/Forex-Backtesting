@@ -185,6 +185,19 @@ def fetch_gold_m5(start: str, end: str, force_refresh: bool = False) -> pd.DataF
     return _slice(_to_lower_tz(_require_fresh("dukascopy", "GOLD", "M5"), "America/New_York"), start, end)
 
 
+def fetch_gold_d1(start: str, end: str, force_refresh: bool = False) -> pd.DataFrame:
+    """D1 fuer den MTF-EMA-Ribbon (2026-09-30, siehe gold_smc_htf_ltf/
+    ribbon_gate.py). (dukascopy, GOLD, D1) lag schon als Quelle im Lake
+    (sources.py, lane "fast"), hatte hier aber keinen Leser -- das Bein
+    haette sonst still auf den Live-Fetch zurueckfallen muessen.
+
+    W1 wird NICHT ergaenzt: der Ribbon leitet die Wochenbars aus D1 ab
+    (ribbon_gate.w1_aus_d1). Gegen die gefetchten W1-Daten geprueft --
+    99,6 % Uebereinstimmung der Richtungsaussage, NULL Vorzeichenwechsel,
+    alle Abweichungen nur an der Grenze zu neutral."""
+    return _slice(_to_lower_tz(_require_fresh("dukascopy", "GOLD", "D1"), "America/New_York"), start, end)
+
+
 # ---------------------------------------------------------------- ny_open_orb.data.* (orb)
 def fetch_m5(instrument: str, start: str, end: str, force_refresh: bool = False) -> pd.DataFrame:
     # bereits in Original-Form gespeichert (sources.py::_orb ruft die echte Funktion direkt auf).

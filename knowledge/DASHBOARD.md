@@ -456,6 +456,14 @@ Bedarf vor generischem Aufräumen.
   zwei Sperren im EK-Executor: Einstieg prüft dieselbe MA20-Marke wie der
   Ausstieg, und höchstens ein Einstieg je Titel und Signaltag. Gegen die echten
   Kurse vom 29.09. nachgespielt. Funded war nicht betroffen (geprüft).
+  **Unter Beobachtung (Entscheid 30.09.):** Stopdeckel und Preisfilter
+  bewusst verworfen — weiter mit der aktuellen Risikologik. Damit akzeptiert:
+  **7,70 % offenes Risiko statt 4,76 %** auf EK (Mindestlot-Anhebung, AXP
+  allein 2,30 %). Zwei Funded-Positionen (**DD**, **EOG**) laufen seit dem
+  23.09. bzw. 21.09. ohne Modellführung nur mit Broker-SL, bewusst nicht
+  geschlossen. **Worauf schauen:** ob die Drehtür wirklich weg ist (Einstiege
+  je Titel ≤ 1 pro Tag), ob das offene Risiko über 8 % steigt, und ob DD/EOG
+  wieder im Scan auftauchen.
   Details: [[ou-modell-kostenvalidierung]].
 - **✅ EK/OU: Max-Holding schliesst jetzt wirklich** (offen seit 2026-09-17,
   **behoben 2026-09-23 im Logik-D-Umbau** — `manage_open_positions()` ruft

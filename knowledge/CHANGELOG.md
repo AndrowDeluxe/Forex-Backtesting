@@ -9,6 +9,22 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-09-30** [OU-Modell] **Nutzerentscheid: Stopdeckel verworfen, aktuelle
+  Risikologik bleibt, DD/EOG laufen weiter unter Beobachtung.**
+  Der getestete Deckel auf die Stopdistanz (25-30 % waeren leicht besser
+  gewesen, +0,0174 statt +0,0148R OOS) wird NICHT uebernommen -- weiter mit
+  der aktuellen Risikologik, um nicht zwei Variablen gleichzeitig zu bewegen.
+  Nicht erneut vorschlagen ohne neuen Anlass; die Messung steht in
+  `projects/ou-modell-kostenvalidierung.md` und ist jederzeit wieder
+  aufrufbar. Ebenfalls nicht uebernommen: der Preisfilter fuer kleine Konten
+  (nur Titel bis 2x Zielrisiko -> max. Einzelrisiko 0,72 % statt 2,30 %).
+  Bewusst akzeptiert bleibt damit der Mindestlot-Ueberschuss auf EK: 7,70 %
+  offenes Risiko statt der beabsichtigten 4,76 %.
+  Die zwei unverwalteten Funded-Positionen (DD, EOG -- seit 23.09. bzw. 21.09.
+  aus dem Scan gefallen, kein Datenproblem, sondern pfadabhaengige
+  Neusimulation) werden NICHT geschlossen, sondern weiter beobachtet. Sie
+  laufen mit Broker-SL.
+
 - **2026-09-30** [Risk / Alle Bridges] **CTNL-Kill-Switch auf ALLE Konten
   gezogen** (Nutzerauftrag). Neu: `gold_smc_htf_ltf/ctnl_kill_switch.py` --
   EIN geteiltes Modul statt drei Kopien, gleiches Argument wie bei

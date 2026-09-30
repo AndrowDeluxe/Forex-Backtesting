@@ -54433,3 +54433,15 @@
 2026-09-30 22:55:34   "ctnl_kill_switch_active": false,
 2026-09-30 22:55:34   "n_trades": 25
 2026-09-30 22:55:34 }
+2026-09-30 22:55:34 [main 8b28595] FK Instant Funding Bot: Snapshot 2026-09-30 22:55
+2026-09-30 22:55:34  3 files changed, 25 insertions(+), 1 deletion(-)
+2026-09-30 22:55:35 Nichts zu mergen (0 eingehende Commits) - Stash und Merge uebersprungen.
+2026-09-30 22:55:38 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-09-30 22:55:38    99b8573..8b28595  main -> main
+2026-09-30 22:55:38 Commit + Push erfolgreich.
+2026-09-30 22:55:38 === FK-Instant-Funding-Task beendet ===
+2026-09-30 23:55:23 === FK-Instant-Funding-Task gestartet ===
+2026-09-30 23:55:24 {
+2026-09-30 23:55:24   "date": "2026-09-30 21:55:24.240693",
+2026-09-30 23:55:24   "paused": true
+2026-09-30 23:55:24 }

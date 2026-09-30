@@ -35,13 +35,6 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
-- **Paper Iwanaga/Sakemoto (Overnight-Reversal 09:30-10:00) verworfen -- einverstanden?**
-  (2026-09-30, `projects/overnight-reversal-erste-halbe-stunde.md`). Mein Urteil
-  nach Phase 4, kein Nutzerentscheid: der Rest-Edge lebt nur bei Einstieg exakt
-  im 09:30-Print, mit einer Bar Verzoegerung ~0. Kosten habe ich als 0,5-1,5 bps
-  angenommen und nicht zur Cash-Eroeffnung gemessen. Das aendert das Urteil nicht,
-  weil schon brutto nichts uebrig bleibt.
-
 - **CTNL Short-Serie 29./30.09. ausgewertet -- vier Punkte für dich** (2026-09-30,
   Befund 18 in `projects/ctnl-kostenvalidierung.md`). (a) **Hast du die SLs der
   3 offenen IQ-Shorts von Hand verschoben?** Sie stehen auf 4214,24/4214,30/4202,51

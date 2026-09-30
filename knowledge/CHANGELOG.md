@@ -110,7 +110,8 @@ keine Planung (dafür ist `DASHBOARD.md`).
   eine M5-Bar spaeter (09:35) auf allen drei Indizes ~0: der Effekt sitzt
   komplett im Open-Print. Phase 5/6 nicht begonnen. Rein lesend, kein
   Bot beruehrt. Notiz: `projects/overnight-reversal-erste-halbe-stunde.md`,
-  Skript `scripts/research_overnight_reversal_fh.py`.
+  Skript `scripts/research_overnight_reversal_fh.py`. Verwerfen vom Nutzer
+  bestaetigt (2026-09-30, "schliesse ab").
 
 - **2026-09-30** [FK Instant Funding] **Aufgeklaert, warum FK kaum CTNL
   handelt -- und behoben.** Nutzerfrage. **Korrektur der Fragestellung:** FK

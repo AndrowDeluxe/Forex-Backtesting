@@ -35,6 +35,23 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **CTNL Short-Serie 29./30.09. ausgewertet -- vier Punkte für dich** (2026-09-30,
+  Befund 18 in `projects/ctnl-kostenvalidierung.md`). (a) **Hast du die SLs der
+  3 offenen IQ-Shorts von Hand verschoben?** Sie stehen auf 4214,24/4214,30/4202,51
+  statt 4221,8/4242,4/4242,5. Keine Bot-Logik setzt solche Werte (Breakeven
+  würde auf den Einstieg setzen), TTP ist unverändert. (b) **FK-Kill-Switch
+  flackert bei Scan-Aussetzern:** Eine leere Simulation liefert 0,00 % DD und hebt
+  den Schalter auf (29.09. 22:10 und 22:35). Dieselbe Funktion nutzt Funded
+  seit heute Abend. Fix: bei leerem Scan den alten Zustand halten. Soll ich das
+  bauen? (c) **Blockierte CTNL-Entries hinterlassen auf FK keine Logzeile**,
+  deshalb war „warum nicht auf Instant Funding“ nur über den State rekonstruierbar.
+  (d) **Kandidaten statt Serienstopp:** „halbes Risiko nach 3 Verlusten in Folge“
+  (MaxDD −46 → −25R bei MEHR ΣR, 9/11 Jahre) und ein Spike-Filter ≥ 0,75 ATR.
+  Beide Werte sind in-sample, Walk-Forward und Monte Carlo fehlen noch. Soll ich
+  das rechnen? Ein Serien-/Tagesstopp nach X SL wird von den Daten NICHT gestützt.
+  Nebenbei: **EK hat weiterhin keinen CTNL-Kill-Switch**, und ein CTNL-Trade
+  riskiert dort ~25 EUR = ~0,9 % Equity (Mindestlot, Befund 10).
+
 - **CTNL-Ribbon-Gate ist seit 2026-09-30 auf allen drei Bridges scharf.**
   Long nur im Aufwaerts-, short nur im Abwaertstrend des MTF-EMA-Ribbons.
   **Was du in den naechsten Wochen sehen wirst und was NICHT
@@ -420,21 +437,18 @@ Bedarf vor generischem Aufräumen.
   Balken). Empfehlung: erst die Zeitzonen-Frage klären, dann eine Woche
   Fallback-Zählung abwarten (`soll_ist.py` liefert den Vergleich).
 
-- **🟢 OU-Modell: Logik D + BB_K 2,25 ist umgesetzt** (2026-09-23,
-  Nutzerfreigabe). Stop 8 Sigma, kein Break-Even, kein TP, Ausstieg am MA20,
-  `max_hold` 10 (schliesst jetzt wirklich). **Nachgemessen auf der Trade-Liste,
-  die der Live-Pfad tatsächlich erzeugt** (764 Trades, 363 OOS): FK −0,052R
-  (PF 0,83) → **+0,0117R (PF 1,12)**, EK −0,028R → **+0,0165R (PF 1,17)**,
-  3 von 4 OOS-Jahren positiv, P(DD>7 %) = 0,00 %. Das liegt rund 20 % unter der
-  Studienerwartung (+0,0148/+0,0196): die Studie wandte den MA-Ausstieg im
-  Replay an, der Live-Pfad tut es in der Engine — der Risikodeckel wird früher
-  frei, dadurch kommen andere Signale zum Zug. Die Live-Zahl gilt.
-  **Noch nicht scharf:** `DRY_RUN` unverändert; der Trockenlauf der EK-Bridge
-  gegen die echten offenen Positionen steht aus (braucht MT5, fällt unter die
-  Echtgeld-Sperre des Auto-Modus). **Ehrliche Lesart: von "verliert
-  zuverlaessig" auf "verdient wenig"** -- 2023 bleibt negativ, der Edge-Nachweis
-  fehlt weiter. Ob das Bein den Platz im Risikobudget wert ist, bleibt deine
-  Portfolio-Entscheidung; sein Gewicht wurde bewusst NICHT mitskaliert.
+- **🟢 OU-Modell: Logik D läuft live, Wiedereinstiegs-Drehtür geschlossen**
+  (Umbau 23.09., Fix 30.09.). Stop 8 Sigma, kein Breakeven, kein TP, Ausstieg
+  am MA20, `BB_K` 2,25, `max_hold` 10 (schließt jetzt wirklich).
+  **Live bewährt:** beide Bridges steigen aus (EK per MA20-Ausstieg, Funded per
+  Abgleich „Modell ist ausgestiegen").
+  **Gefunden und behoben 30.09.:** AIG wurde **6× eröffnet und 6× geschlossen**,
+  am 29.09. dreimal in 30 Minuten. Ursache: im Backtest werden Ein- und
+  Ausstieg auf demselben Tagesschluss geprüft und schließen sich damit aus —
+  live kam der Ausstieg vom Live-Tick, der Einstieg vom Vortagessignal. Jetzt
+  zwei Sperren im EK-Executor: Einstieg prüft dieselbe MA20-Marke wie der
+  Ausstieg, und höchstens ein Einstieg je Titel und Signaltag. Gegen die echten
+  Kurse vom 29.09. nachgespielt. Funded war nicht betroffen (geprüft).
   Details: [[ou-modell-kostenvalidierung]].
 - **✅ EK/OU: Max-Holding schliesst jetzt wirklich** (offen seit 2026-09-17,
   **behoben 2026-09-23 im Logik-D-Umbau** — `manage_open_positions()` ruft
@@ -640,6 +654,11 @@ außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
 Kurz einfangen, was gerade auftaucht, ohne das aktuelle Thema zu verlassen —
 wird bei Gelegenheit einsortiert (Offene Aufgaben, PARA-Struktur, oder
 bewusst verworfen), nicht hier für immer liegen gelassen.
+
+- **CTNL Backtest vs. live um ~1 h versetzt?** (2026-09-30) Im Engine-Lauf liegen
+  die Short-Entries am 30.09. bei 08:15–08:45 UTC, live wurde 07:00–07:30 und
+  12:45/13:00 gehandelt. Möglicherweise wieder die Stempelverschiebung aus Memory
+  `lake_zeitstempel_verschiebung`, nicht geprüft.
 
 - **FK-CLS-Scan liefert einen Trade am Sonntag** (2026-09-17): `_scan_cls_practical`
   (source=lake) zeigt Entry 2026-09-06 09:55 Berlin -- ein Sonntag, FX geschlossen.

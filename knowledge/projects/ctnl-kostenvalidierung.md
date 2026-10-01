@@ -770,7 +770,7 @@ Kandidaten: `long + Regime` +170,8, `trendkonform` +201,4, **Ribbon +243,6**.
 
 Trennschärfe des Ribbons, Ø R je Feld. **Achtung:** dieser Lauf hatte noch
 `REV_MAX_CONCURRENT = 3`; beim live gefahrenen Deckel 2 verschiebt sich das
-Bild deutlich, siehe [[#20a]] — insbesondere schrumpft „long im Abwärtstrend"
+Bild deutlich, siehe 20a — insbesondere schrumpft „long im Abwärtstrend"
 von 19 auf 12 Trades und ist dann belanglos.
 
 | | `ctnl_reversal` | `ctnl_continuation` |
@@ -1021,7 +1021,7 @@ beides: **nein.** Beide Varianten verlieren gegen die heute gefahrene Regel.
 
 ### 20a — Korrektur zu Befund 16a: die Vier-Felder-Tabelle beim LIVE-Deckel
 
-Die Tabelle in [[#16a]] stammt aus einem Lauf mit `REV_MAX_CONCURRENT = 3`.
+Die Tabelle in Befund 16a stammt aus einem Lauf mit `REV_MAX_CONCURRENT = 3`.
 Live läuft seit 2026-10-01 der Deckel **2** (siehe Befund 19-Umfeld). Beim
 gehandelten Deckel sieht die Trennschärfe anders aus:
 
@@ -1089,7 +1089,7 @@ Und er irrt dort, wo es wehtut: 2017 wählte er `ungefiltert` → −23,0 statt
 2025 lag er richtig (+52,3 statt +45,9). Die Vorjahresperformance ist kein
 Prädiktor.
 
-Das ist das erwartbare Ergebnis und deckt sich mit [[#16e]]: derselbe
+Das ist das erwartbare Ergebnis und deckt sich mit Befund 16e: derselbe
 Walk-Forward lieferte OOS +243,6 mit DREI Kandidaten und nur +185,8 mit
 FÜNF — mehr Auswahlfreiheit hat das Ergebnis **verschlechtert**. Ein
 Umschalter ist eine Vorhersage zweiter Ordnung auf denselben ~1.250 Trades,

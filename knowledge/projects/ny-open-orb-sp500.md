@@ -1246,3 +1246,12 @@ Phase 6 vorsieht.
 | 3 | Zeit-Exit 15:30/15:45/16:00 als Gitter-Ablation | mittel | klein, aber sauber testbar | 4+6 |
 | 4 | EU-Feiertags-Richtungscheck auf rohen Entries | klein | Mechanismus-Beleg, keine Regel | 6 |
 | -- | Europa/Asien-Richtungsfilter | -- | **verworfen vor dem Bau** (Befund D) | -- |
+
+### 2026-10-01 — Order-Storno am SL, Haltedauer, M1-Nachprüfung
+
+Siehe [[orb-order-storno-und-haltedauer]]. Kurz: live (SP500/US30) handelt
+~60 % mehr Tage als der Backtest, weil die Long-Order nach einem Bruch nach
+unten liegen bleibt (MaxDD verdoppelt). Die M5-Ausführung überzeichnet den
+Edge um ~25–45 %, weil `simulate()` den Stop in der Füll-Bar nicht prüft
+(auf M1: US30 OOS ≈ 0). Storno am SL nur für NASDAQ ein Kandidat.
+Haltedauer bis 16:00 bestätigt.

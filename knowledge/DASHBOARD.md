@@ -35,6 +35,19 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **Gold ASB: drei Aenderungsvorschlaege nach Kosten-/Optimierungspruefung**
+  (01.10., [[gold-asb-kostenvalidierung]]). Das Bein ist kostenrobust, der
+  Live-Lag kostet nichts. BE, TP, Trailing und Teilausstieg sind durchweg
+  schlechter und bleiben aus. **Offen fuer dich:**
+  **(A)** Stop 1,0 -> 1,25-1,5x Range auf Funded/FK? Walk-Forward stabil,
+  Sharpe 1,02 -> 1,20, MaxDD -6,6 -> -4,5 R. Auf EK nicht ohne Weiteres:
+  bei 1,5x faellt `gold_asb` unters Mindestlot (braucht ~3.090 EUR Equity).
+  **(B)** Order-Storno 02:00 -> 03:00 NY (`GOLD_ASB_MAX_DELAY_BARS` 3 -> 7)?
+  Sharpe +0,14, aber die Zusatztrades tragen sich nur ueber 29 Shorts.
+  **(C)** EK-SL absolut statt am Live-Kurs neu verankert? Bringt +0,05 R/Trade
+  und senkt den DD -8,6 -> -5,9 R. Ich habe nichts geaendert --
+  `challenge_portfolio/paper_bot.py` wirkt direkt live.
+
 - **Positionsdeckel auf 2 gesenkt (01.10., erledigt) -- EK bleibt bei 1.**
   P(MaxDD>6 %) faellt von 43,5 % auf 9,9 %, Rendite 40 % statt 58,6 %.
   **Zur Kenntnis:** alle drei Konten halten gerade 3 Positionen, also eine
@@ -645,9 +658,9 @@ Bedarf vor generischem Aufräumen.
 
 | Bot/Bridge                                              | Konto/Broker                                                                             | Modus                                                                                        | Task Scheduler                  | Letzter echter Entry | Zuletzt geprüft |
 | ------------------------------------------------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------- | --- | --------------- |
-| EK-Portfolio-Bridge                                     | Tickmill Live (55918977)                                                                 | **LIVE — echtes Geld** (btc/ou_modell weiterhin direkt Dukascopy/yfinance; gold_asb/cls_practical/ctnl x2 jetzt `source="lake"`) | Ready (alle 15 Min, Mo–Fr)      | **16.09.** ou_modell (IVZ) | 2026-09-13      |
+| EK-Portfolio-Bridge                                     | Tickmill Live (55918977)                                                                 | **LIVE — echtes Geld** (btc/ou_modell weiterhin direkt Dukascopy/yfinance; gold_asb/cls_practical/ctnl_reversal jetzt `source="lake"`; ctnl_continuation am 01.10. stillgelegt) | Ready (alle 15 Min, Mo–Fr)      | **16.09.** ou_modell (IVZ) | 2026-09-13      |
 | EK-Portfolio-Bridge-Fast                                | Tickmill Live (55918977, geteiltes Terminal)                                             | **LIVE — echtes Geld** (3 MT5-native Beine: ORB/Gold-Silber/Trend-Pullback, kein Dukascopy)  | Ready (alle 2 Min, Mo–Fr)       | ↑ gleiches Konto | 2026-09-13      |
-| FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | **LIVE — echtes Geld** (7 Beine via `LIVE_LEGS`: orb_sp500/us30/nasdaq + gold_asb/cls_practical/ctnl_continuation/ctnl_reversal seit 09-09; trend_pullback/gold_silver bleiben geplant/geloggt) | Ready (stündlich, Mo–Fr)        | **14.09.** orb_nasdaq — erster echter Entry seit Livegang | 2026-09-13      |
+| FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | **LIVE — echtes Geld** (6 Beine via `LIVE_LEGS`: orb_sp500/us30/nasdaq + gold_asb/cls_practical/ctnl_reversal; ctnl_continuation am 01.10. stillgelegt, ctnl_reversal seit 30.09. auf der 5-Min-Lane; trend_pullback/gold_silver bleiben geplant/geloggt) | Ready (stündlich, Mo–Fr)        | **14.09.** orb_nasdaq — erster echter Entry seit Livegang | 2026-09-13      |
 | FKInstantFunding-MT5-Bridge-Fast                        | BeyondIQCapital (17764, geteiltes Terminal)                                              | **LIVE — echtes Geld** (ctnl_continuation + orb_sp500/us30/nasdaq + cls_practical, `source="lake"`, analog Funded-Fast) | Ready (alle 5 Min, Mo–Fr)       | ↑ gleiches Konto | 2026-09-13      |
 | FK-Instant-Funding-Paper                                | — (reine Simulation)                                                                     | Paper + Telegram, **nur noch trend_pullback/gold_silver** (die anderen 7 Beine laufen live über die Bridge, seit 09-09 hier entfernt) | Ready (stündlich, Mo–Fr)        | — | 2026-09-13      |
 | OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner + Telegram (3x täglich: 15:35/18:35/21:35)                                           | Ready (Mo–Fr, US-Handelszeiten) | — | 2026-09-02      |

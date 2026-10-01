@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-09-30** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-10-01** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -34,6 +34,29 @@ gold_asb-Cache-Bug oben läuft über "Als Nächstes"). Danach: Bestätigungs-
 Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
+
+- **🟡 Beide seit Langem bekannten Fehlermuster sind in der Nacht 30.09./01.10.
+  erstmals auch beim `gold_asb`-Bein aufgetreten -- vorher waren andere Beine
+  betroffen.** (Bridge Error Monitor, 01.10., 11:01-Snapshot.) (1)
+  **EK-Portfolio-Bridge** `last_error_line`: `"2026-10-01 02:21:39 ... ERROR
+  run_once: gold_asb: unerwarteter Fehler"` -- dasselbe traceback-lose Muster
+  wie der bereits dokumentierte `cls_practical: unerwarteter Fehler` vom
+  29.09. weiter oben, nur jetzt auf `gold_asb` statt `cls_practical`;
+  `recent_events` ist leer, also kein zusaetzlicher Kontext verfuegbar.
+  (2) **FKInstantFunding-MT5-Bridge** `last_error_line`: `"2026-10-01
+  02:15:06 gold_asb-Scan fehlgeschlagen: '>' not supported between instances
+  of 'str' and 'float'"` -- derselbe, weiter unten ausfuehrlich analysierte
+  `str`/`float`-Fehler (bisher `trend_pullback`/`cls_practical`), jetzt auch
+  bei `gold_asb`. Beide Faelle: **kein Folgefehler seither**, Status aktuell
+  wieder "ok" bei allen drei Bridges (saubere Equity-Zeilen im 10-11-Uhr-
+  Lauf), also vermutlich wieder selbstheilend. **Nichts geaendert** -- die
+  bereits offene Unsicherheit weiter unten (lake- vs. live-Pfad, nicht-
+  atomares `to_parquet()` in `combined_strategy/data.py::CACHE_DIR`,
+  geprueft: Zeile 133 ist weiterhin ohne temp+rename) ist dieselbe wie zuvor,
+  jetzt nur mit einem dritten betroffenen Bein als zusaetzlichem Datenpunkt.
+  **Offen fuer dich:** unveraendert dieselben zwei Fragen wie beim
+  `str`/`float`-Eintrag unten -- nichts Neues zu entscheiden, nur zur
+  Kenntnis, dass sich das Muster ausweitet.
 
 - **CTNL faehrt seit 2026-09-30 nur noch `ctnl_reversal`** (beide
   Richtungen, Ribbon-gefiltert). `ctnl_continuation` ist auf allen drei

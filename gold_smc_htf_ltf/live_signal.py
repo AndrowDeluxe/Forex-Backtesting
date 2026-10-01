@@ -38,7 +38,33 @@ CONT_STOP_ATR_MULT = 0.5
 REV_KWARGS = dict(h4_confirm_bars=30, h1_valid_bars=24, min_target_distance_atr=1.0, require_ema_reject=True, m15_entry_mode="repeat_sweep")
 REV_STOP_ATR_MULT = 3.0
 REV_TP_R = 5.0
-REV_MAX_CONCURRENT = 3
+# 2026-10-01 von 3 auf 2 gesenkt (Nutzerentscheid). Gemessen ueber
+# 2016-2026, ribbon-gefiltert, am realen Betriebspunkt (gemessene Kosten,
+# Lag 1, R-Detektor) -- knowledge/projects/ctnl-kostenvalidierung.md:
+#
+#   Deckel | Trades |    Ø R |   PF | MC MedDD | P(MaxDD>6%) | Return | Sharpe
+#      1   |   166  | +0,612 | 1,76 |  -2,24 % |      0,6 %  | +15,7% | 0,82
+#      2   |   329  | +0,722 | 1,90 |  -3,90 % |      9,9 %  | +40,0% | 0,98
+#      3   |   484  | +0,680 | 1,85 |  -5,69 % |     43,5 %  | +58,6% | 0,95
+#      5   |   789  | +0,587 | 1,72 |  -9,77 % |     95,1 %  | +88,5% | 0,83
+#   ohne   | 7.378  | +0,354 | 1,40 | -76,82 % |    100,0 %  | +892 % | 0,40
+#
+# 2 ist auf den gefundeten Konten die bessere Wahl: hoechster PF und
+# Sharpe, und vor allem **P(MaxDD>6 %) von 9,9 % statt 43,5 %** -- ein
+# Viertel des Reissrisikos gegen die harte 6-%-Grenze, bezahlt mit 40 %
+# statt 58,6 % Median-Rendite.
+#
+# Die Zeile ohne Deckel zeigt, warum er bleibt: 7.378 statt 484 Trades und
+# -76,8 % Median-Drawdown. Das Ribbon-Gate (Befund 15) hat ihn NICHT
+# ueberfluessig gemacht, auch wenn es den Drawdown bereits halbiert hat.
+#
+# Diese Konstante speist (a) den Simulationsfilter
+# _cap_concurrent_reversals() in den Paper-Bots und (b) als Default den
+# Live-Deckel der Bridges. EK ueberschreibt sie bewusst mit 1
+# (EK-Portfolio-Bridge/config.py::CTNL_REV_MAX_CONCURRENT): dort hebt die
+# Mindestlot-Anhebung das reale Risiko je Trade auf das 46-fache des
+# Ziels (Befund 10), deshalb dort nur EINE Position.
+REV_MAX_CONCURRENT = 2
 
 # FK-Challenge-Risiko-Split (chat 2026-08-20, "die als letzte validierte FK
 # Risiko Splittung" - siehe knowledge/projects/gold-ctnl-edge-portfolio.md):

@@ -9,6 +9,34 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-01** [Alle Bridges / CTNL] **Positionsdeckel von 3 auf 2 gesenkt
+  (Nutzerentscheid) -- EK bleibt ausdruecklich bei 1.**
+  **Geaendert an zwei Ebenen, weil der Deckel an zwei Stellen wirkt:**
+  (a) `gold_smc_htf_ltf/live_signal.py::REV_MAX_CONCURRENT` 3 -> 2 -- das ist
+  der SIMULATIONSFILTER (`_cap_concurrent_reversals` in den Paper-Bots), der
+  die Trade-Liste erzeugt; (b) `LEG_MAX_CONCURRENT["ctnl_reversal"]` 3 -> 2 in
+  Funded-Portfolio-Bridge und FKInstantFunding -- das ist der LIVE-Deckel
+  gegen die echten Broker-Positionen. **Beide, weil der Backtest auf
+  Simulationsebene gekappt hat** -- nur die eine zu aendern haette Live und
+  Getestetes auseinanderlaufen lassen.
+  **Begruendung (2016-2026, ribbon-gefiltert, realer Betriebspunkt):**
+  P(MaxDD>6 %) faellt von **43,5 % auf 9,9 %**, PF steigt 1,85 -> 1,90,
+  Sharpe 0,95 -> 0,98; bezahlt mit 40 % statt 58,6 % Median-Rendite. Fuer
+  Konten mit harter 6-%-Grenze der klar bessere Tausch.
+  **EK bleibt bei 1** (`config.CTNL_REV_MAX_CONCURRENT`): dort zaehlt nicht
+  die 6-%-Grenze (die gibt es nicht), sondern die Mindestlot-Anhebung --
+  das kleinste XAUUSD-Lot riskiert auf dem ~2.900-EUR-Konto rund das
+  46-fache des Ziels (Befund 10). Kommentar dort nachgezogen, damit er nicht
+  weiter auf die alte Vorgabe von 3 verweist.
+  **Lage beim Umschalten:** alle drei Konten halten aktuell **3** offene
+  ctnl_reversal-Positionen, also eine ueber dem neuen Deckel. Das blockiert
+  nur NEUE Entries; die bestehenden laufen mit ihrem Broker-SL normal aus
+  (eine Sperre darf nie einen Exit blockieren -- dasselbe Muster wie
+  Kill-Switch und Risiko-Deckel). Das Bein nimmt also erst wieder einen
+  Trade auf, wenn es auf 1 abgebaut hat.
+  **Wirksame Deckel nach der Aenderung, gegengeprueft:** Funded 2, FK 2,
+  EK 1 (bei Strategie-Vorgabe 2).
+
 - **2026-10-01** [CTNL Reversal / Research] **Haltedauer, Ein-/Ausstiegszeiten
   und Parallelitaets-Deckel durchgerechnet.** Nutzerauftraege. Skript
   `research_ctnl_haltedauer_zeiten.py`, Rohdaten

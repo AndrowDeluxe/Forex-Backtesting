@@ -35,17 +35,13 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
-- **Positionsdeckel: `max 2` statt `max 3` fuer die Funded-Konten?**
-  Ungesuchter Fund vom 01.10. Dein 3er-Deckel ist weiterhin
-  unverzichtbar (ohne ihn 7.378 statt 484 Trades, -76,8 % Drawdown) -- aber
-  **2 schlaegt 3** dort, wo eine harte 6-%-Grenze gilt: PF 1,90 statt 1,85,
-  Sharpe 0,98 statt 0,95 und **P(MaxDD>6 %) 9,9 % statt 43,5 %**. Preis:
-  40 % statt 58,6 % Rendite. **Offen fuer dich:** fuer TTP/IQ/FK auf 2
-  senken? Fuer EK (keine harte Grenze) wuerde ich 3 lassen -- dort ist
-  Ertrag der Zweck. Ich habe nichts geaendert.
-  *Haltedauer: `max_hold` bleibt bei 96 h -- "ohne Grenze" ist je Trade
-  besser, in der Summe aber schlechter, weil laengere Trades Plaetze
-  belegen (gegengeprueft ueber alle Deckel-Stufen).*
+- **Positionsdeckel auf 2 gesenkt (01.10., erledigt) -- EK bleibt bei 1.**
+  P(MaxDD>6 %) faellt von 43,5 % auf 9,9 %, Rendite 40 % statt 58,6 %.
+  **Zur Kenntnis:** alle drei Konten halten gerade 3 Positionen, also eine
+  ueber dem Deckel -- neue Entries sind gesperrt, bis auf 1 abgebaut ist.
+  Die bestehenden laufen mit Broker-SL normal aus, nichts wird
+  zwangsgeschlossen. `max_hold` bleibt bei 96 h (ohne Grenze je Trade
+  besser, in der Summe schlechter).
 
 - **🟡 Beide seit Langem bekannten Fehlermuster sind in der Nacht 30.09./01.10.
   erstmals auch beim `gold_asb`-Bein aufgetreten -- vorher waren andere Beine

@@ -9,6 +9,66 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-01** [CTNL Reversal / Research] **Haltedauer, Ein-/Ausstiegszeiten
+  und Parallelitaets-Deckel durchgerechnet.** Nutzerauftraege. Skript
+  `research_ctnl_haltedauer_zeiten.py`, Rohdaten
+  `_data/ctnl_haltedauer_zeiten.json`. Reine Auswertung.
+  **(1) Haltedauer -- die Beobachtung stimmt, die Schlussfolgerung nicht.**
+  Die `max_hold`-Ausstiege sind tatsaechlich abgeschnittene GEWINNER: 198
+  Trades (14,5 %) mit Ø R **+1,669**. Und die Gewinner laufen deutlich
+  laenger als die Verlierer (Median **56,2 h** gegen 12,2 h, p75 97,1 h
+  gegen 37,0 h) -- die heutige 96-h-Grenze liegt fast genau auf dem p75 der
+  Gewinner, schneidet also in den Tail.
+  **Trotzdem ist "ohne Grenze" in der Summe schlechter:** Ø R steigt von
+  +0,680 auf +0,743, ΣR faellt von **+329,1 auf +300,1**. Grund ist die
+  BELEGUNG -- laenger laufende Trades halten Plaetze besetzt, von 1.367
+  Trades bleiben 1.142, also 225 Signale kommen nicht mehr durch.
+  **Gegengeprueft ueber alle Deckel-Stufen** (2/3/5): bei JEDER ist "ohne
+  Grenze" je Trade besser und in der Summe schlechter, bei praktisch
+  gleichem Drawdown (-3,83 % vs. -3,90 % bei Deckel 2). Der Anker-Walk-
+  Forward waehlt in allen Jahren die 96 h. **max_hold bleibt.**
+  **(2) Der 3er-Deckel ist dringender noetig denn je -- die Risikohalbierung
+  hat ihn NICHT ueberfluessig gemacht:**
+
+  | Deckel | Trades | Ø R | PF | MC MedDD | P(>6 %) | Return | Sharpe |
+  |---|---|---|---|---|---|---|---|
+  | max 1 | 166 | +0,612 | 1,76 | -2,24 % | **0,6 %** | +15,7 % | 0,82 |
+  | **max 2** | 329 | **+0,722** | **1,90** | -3,90 % | **9,9 %** | +40,0 % | **0,98** |
+  | max 3 (heute) | 484 | +0,680 | 1,85 | -5,69 % | 43,5 % | +58,6 % | 0,95 |
+  | max 5 | 789 | +0,587 | 1,72 | -9,77 % | 95,1 % | +88,5 % | 0,83 |
+  | ohne Deckel | **7.378** | +0,354 | 1,40 | **-76,82 %** | 100 % | +892 % | 0,40 |
+
+  Ohne Deckel: 7.378 statt 484 Trades und **-76,8 %** Median-Drawdown.
+  **Ungesuchter Fund: `max 2` schlaegt `max 3` fuer die Funded-Konten** --
+  PF 1,90 statt 1,85, Sharpe 0,98 statt 0,95 und vor allem
+  **P(MaxDD>6 %) 9,9 % statt 43,5 %**, also ein Viertel des Reissrisikos,
+  bei 40 % statt 58,6 % Rendite. Fuer EK (keine harte Grenze) bleibt 3
+  oder mehr die ertragreichere Wahl.
+  **(3) Ein-/Ausstiegsstunden:** verrauscht ohne sauberes Muster (Stunde 2
+  Ø R -1,05 auf 51 Trades, Stunde 19 +1,26 auf 41). **Bewusst NICHT als
+  Filter vorgeschlagen** -- ohne Walk-Forward waere jede Ableitung Data
+  Mining, siehe Befund 9b.
+
+- **2026-10-01** [Alle Bridges / Telegram] **Sperr-Meldungen sind jetzt
+  flankengesteuert: eine Nachricht beim Uebergang, nicht je Lauf**
+  (Nutzerauftrag). Neues gemeinsames Modul
+  `gold_smc_htf_ltf/signal_notify.py`, verdrahtet in Funded und FK.
+  **Vorher:** die Zeile "N Signal(e) uebersprungen -- bereits X Position(en)
+  offen" ging bei vollem Korb in JEDEM Lauf ins Telegram -- bei
+  15-Minuten-Takt bis zu 96-mal am Tag, je Konto.
+  **Jetzt:** eine Nachricht, wenn das Bein anfaengt zu ueberspringen, und
+  eine, wenn es wieder annimmt. Ein WECHSEL DES GRUNDES (z.B. von
+  "Positionsdeckel" zu "gegen den Trend") gilt als neuer Wechsel und wird
+  gemeldet -- sonst wuerde eine echte Ursachenaenderung still untergehen.
+  Der Zustand liegt im `bridge_state`, weil jeder Lauf ein eigener Prozess
+  ist; eine Modulvariable waere danach weg.
+  **Absichtlich NICHT gedaempft:** Fehler und Ausnahmen (Datenausfall,
+  Order-Reject). Das Modul ist fuer erwartbare Sperren gedacht, nicht fuer
+  Stoerungen.
+  Logikprobe ueber acht Laeufe: Meldung nur bei Lauf 2 (Sperre beginnt),
+  5 (wieder angenommen) und 7 (neuer Grund) -- dazwischen still. Alle fuenf
+  Einstiegspunkte importieren.
+
 - **2026-09-30** [Reports / Weekly + Monthly Checkup] **Education-Teil
   ausfuehrlicher (Nutzerwunsch).** `scripts/reports/weekly_report_prompt.md`:
   jede Erkenntnis als Block Befund / Mechanismus / Wie aufgefallen / Lehre,

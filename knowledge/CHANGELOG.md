@@ -9,6 +9,46 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-01** [Git-Sync / Bridge-Watchdog] **Das Stash-Problem hatte ZWEI
+  Verursacher -- der zweite ist jetzt auch geschlossen.** Nutzerfrage "wie
+  loesen wir das".
+  **Befund:** sowohl `scripts/lib/git_sync_push.ps1` als auch
+  `Bridge-Watchdog/watchdog.py` legen vor dem Merge den Arbeitsbaum beiseite
+  und setzen bei kollidierendem `pop` per `reset --hard` zurueck. Beide
+  bekamen am 23.09. den Schutz "nichts zu mergen -> nicht anfassen" -- der
+  deckt aber nur die halbe Ursache: kommt etwas herein WAEHREND eine Session
+  arbeitet, wurde weiter gestasht. Genau so ging am 28.09. der
+  Entry-Override in `strategy/backtest.py` verloren (`stash@{38}`).
+  Das PS-Skript bekam den fehlenden Schutz am **30.09. 22:32** (`f53b6f7`),
+  der Watchdog hatte ihn noch nicht -- und der laeuft alle paar Minuten.
+  **Behoben:** derselbe Schutz jetzt auch im Watchdog. Ist der Baum
+  schmutzig, wird weder gestasht noch gemergt; der Snapshot-Commit bleibt
+  liegen und geht beim naechsten sauberen Lauf raus. Der Watchdog stasht
+  damit ueberhaupt nicht mehr.
+  **Begruendung:** ein liegengebliebener Commit ist sichtbar und
+  reversibel, verschwundene Arbeit ist beides nicht.
+  **Lage der 39 aufgelaufenen Stashes (durchgesehen):** 11 enthalten echten
+  Inhalt, davon 10-mal dieselbe Datei `ou_paper_backtest/results/
+  ou_exit_levels.csv` (nie committetes Research-Ergebnis) und einmal
+  zusaetzlich `strategy/backtest.py` (bereits zurueckgeholt). Die uebrigen
+  28 enthalten nur Logs und Snapshots. **Nicht geloescht** -- Vorschlag an
+  den Nutzer: `ou_exit_levels.csv` einmal committen, dann sind 38 der 39
+  gegenstandslos. Der juengste Stash ist vom 30.09. 20:56, also VOR dem
+  PS-Fix -- seitdem keiner mehr.
+
+- **2026-10-01** [Gold ASB / Research] **Realkosten-Probe (p6_5-p6_8) +
+  Optimierung von Einstieg, Order-Logik, Filtern und Ausstieg.**
+  Nutzerauftrag. Reine Auswertung, kein Bot geaendert. Skripte
+  `research_gold_asb_execution_costs.py`, `research_gold_asb_optimization.py`,
+  Kostenmessung im ASB-Fenster `_data/broker_spreads_xauusd_asb_{entry,exit}.json`.
+  Notiz: [[gold-asb-kostenvalidierung]]. **Kostenrobust** (TTP 2,08 bps: Ø R
+  +0,44 statt +0,51; Stop im Median 15x RT-Kosten). Live-Lag ist Rauschen.
+  EK-Neuverankerung des SL kostet ~0,05 R/Trade und hat mehr Drawdown.
+  **BE/TP/Trailing/Teilausstieg auf dem gefilterten Satz durchweg
+  schlechter.** Walk-Forward-stabile Kandidaten: Stop 1,5x Range
+  (Sharpe 1,02 -> 1,20) und Storno 03:00 statt 02:00 NY. Edge seit 2022 etwa
+  halbiert (OOS Ø R +0,25), aber 11/11 Jahre positiv, Shorts > Longs.
+
 - **2026-10-01** [Alle Bridges / CTNL] **Positionsdeckel von 3 auf 2 gesenkt
   (Nutzerentscheid) -- EK bleibt ausdruecklich bei 1.**
   **Geaendert an zwei Ebenen, weil der Deckel an zwei Stellen wirkt:**

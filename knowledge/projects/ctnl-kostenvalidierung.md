@@ -768,7 +768,10 @@ Kandidaten: `long + Regime` +170,8, `trendkonform` +201,4, **Ribbon +243,6**.
 
 ### 16a — Der Ribbon neutralisiert `ctnl_continuation`, er repariert es nicht
 
-Trennschärfe des Ribbons, Ø R je Feld:
+Trennschärfe des Ribbons, Ø R je Feld. **Achtung:** dieser Lauf hatte noch
+`REV_MAX_CONCURRENT = 3`; beim live gefahrenen Deckel 2 verschiebt sich das
+Bild deutlich, siehe [[#20a]] — insbesondere schrumpft „long im Abwärtstrend"
+von 19 auf 12 Trades und ist dann belanglos.
 
 | | `ctnl_reversal` | `ctnl_continuation` |
 |---|---|---|
@@ -1005,6 +1008,100 @@ DD. Teuerstes Jahr ist 2020 (−28,7R).
   sie 2016–2026 nie ausgelöst, sie bleibt Notbremse gegen einen echten Bruch.
   Flacker-Schutz: ein leerer Scan ist kein Urteil. FK hängt jetzt am geteilten
   Modul `ctnl_kill_switch.py`.
+
+---
+
+## Befund 20 — Asymmetrisches Gate und Meta-Umschalter: beide schlechter als heute
+
+Skript `scripts/research_ctnl_asymmetrisches_gate.py`, Rohdaten
+`_data/ctnl_asymmetrisches_gate.json`. Nutzerfrage: lässt sich ein Modell
+bauen, das erkennt, **wann** der Ribbon Sinn macht — oder das Edge
+asymmetrisch separieren, um „das Beste aus beiden" zu nutzen? Antwort auf
+beides: **nein.** Beide Varianten verlieren gegen die heute gefahrene Regel.
+
+### 20a — Korrektur zu Befund 16a: die Vier-Felder-Tabelle beim LIVE-Deckel
+
+Die Tabelle in [[#16a]] stammt aus einem Lauf mit `REV_MAX_CONCURRENT = 3`.
+Live läuft seit 2026-10-01 der Deckel **2** (siehe Befund 19-Umfeld). Beim
+gehandelten Deckel sieht die Trennschärfe anders aus:
+
+| Feld | n | Ø R | Σ R | PF |
+|---|---|---|---|---|
+| long / Aufwärts | 253 | **+0,885** | +223,9 | 2,13 |
+| short / Abwärts | 76 | +0,180 | +13,7 | 1,21 |
+| long / Abwärts | **12** | +0,788 | +9,5 | 1,97 |
+| short / Aufwärts | 78 | −0,393 | −30,6 | 0,64 |
+| **long / neutral** | **184** | **−0,253** | **−46,6** | 0,74 |
+| **short / neutral** | **259** | **−0,223** | **−57,8** | 0,77 |
+
+**Das kehrt die Deutung um.** Bei Deckel 3 wirkte „long im Abwärtstrend"
+mit +0,391 R auf 19 Trades wie eine verworfene Chance — ich hatte das als
+solche präsentiert. Beim gehandelten Deckel 2 sind es **12 Trades und
++9,5 Σ R**: belanglos. Die großen Verlustfelder sind die **neutralen**, also
+die Phasen, in denen der Preis INNERHALB des EMA-Bandes liegt: zusammen
+443 Trades und **−104,4 Σ R**.
+
+Daraus folgt eine andere Beschreibung des Mechanismus: **der Ribbon ist
+primär kein Richtungsfilter, sondern ein „gibt es überhaupt einen Trend"-
+Filter.** Das Verwerfen von Gegentrend-Trades trägt nur −30,6 Σ R bei, das
+Verwerfen richtungsloser Phasen −104,4. Das passt zur schon notierten
+Beobachtung, dass der Ribbon rund 44 % der Zeit neutral steht — was bis
+hierher als Nebenbefund dastand, ist der eigentliche Hebel.
+
+### 20b — Asymmetrisches Gate: verliert auf jeder Kennzahl
+
+| Variante | n | Ø R | Σ R | PF | 2024–26 n | Ø R | PF |
+|---|---|---|---|---|---|---|---|
+| ungefiltert | 862 | +0,130 | +111,9 | 1,14 | 208 | +0,640 | 1,83 |
+| **ribbon-konform (heute)** | 329 | **+0,722** | **+237,6** | **1,90** | 82 | **+1,260** | **2,81** |
+| A: long immer, short gefiltert | 525 | +0,382 | +200,4 | 1,45 | 113 | +1,051 | 2,43 |
+| B: nur Shorts im Aufwärts weg | 784 | +0,182 | +142,6 | 1,20 | 185 | +0,646 | 1,84 |
+
+Monte Carlo (0,15 %/Trade, 2.000 Pfade, Blocklänge 20):
+
+| Variante | MedDD | P(DD>6 %) | Return | Sharpe |
+|---|---|---|---|---|
+| ungefiltert | −10,80 % | 96,0 % | 16,4 % | 0,31 |
+| **ribbon-konform (heute)** | **−3,90 %** | **9,9 %** | **40,0 %** | **0,98** |
+| A | −5,92 % | 48,4 % | 33,6 % | 0,74 |
+| B | −9,34 % | 91,4 % | 21,8 % | 0,43 |
+
+Grund ist genau 20a: Variante A lässt die **184 neutralen Longs** wieder
+herein und holt sich damit −46,6 Σ R zurück, um 12 Gegentrend-Longs mit
++9,5 Σ R zu gewinnen. Der Anker-Walk-Forward wählt in **7 von 8 Jahren**
+`ribbon-konform`, OOS Σ R +193,9 gegen +115,9 Baseline, besser in 4 von 8
+Jahren.
+
+### 20c — Meta-Umschalter: schlägt die feste Variante nicht
+
+Getestet wurde der einfachste denkbare Umschalter — je Jahr die im **Vorjahr**
+beste der drei Varianten fahren. Das ist absichtlich die schwächste Form:
+schlägt sie die feste Regel nicht, ist ein komplexeres Modell auf dieser
+Datenmenge erst recht nicht zu rechtfertigen.
+
+| | Trades | Σ R | Ø R | PF |
+|---|---|---|---|---|
+| Umschalter (Vorjahrssieger) | 451 | **+138,5** | +0,307 | 1,35 |
+| ribbon-konform (fest) | 292 | **+209,8** | +0,719 | 1,90 |
+
+Und er irrt dort, wo es wehtut: 2017 wählte er `ungefiltert` → −23,0 statt
+−7,3. 2022 wieder → +25,3 statt +58,4. 2026 `A` → +10,1 statt +20,8. Nur
+2025 lag er richtig (+52,3 statt +45,9). Die Vorjahresperformance ist kein
+Prädiktor.
+
+Das ist das erwartbare Ergebnis und deckt sich mit [[#16e]]: derselbe
+Walk-Forward lieferte OOS +243,6 mit DREI Kandidaten und nur +185,8 mit
+FÜNF — mehr Auswahlfreiheit hat das Ergebnis **verschlechtert**. Ein
+Umschalter ist eine Vorhersage zweiter Ordnung auf denselben ~1.250 Trades,
+auf denen schon die erste Ordnung gewählt wurde.
+
+### Urteil
+
+**Keine Änderung.** Die heute live gefahrene Regel (`ribbon-konform`, Deckel 2,
+Spike ≥ 0,75 ATR) ist von allem Getesteten die beste. Der Ertrag dieses
+Befundes ist nicht ein Parameter, sondern das korrigierte Verständnis des
+Mechanismus aus 20a — und eine Zahl statt einer Meinung für zwei Ideen, die
+plausibel klangen.
 
 ---
 

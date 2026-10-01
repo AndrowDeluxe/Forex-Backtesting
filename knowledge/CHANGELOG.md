@@ -9,6 +9,40 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-01** [CTNL / Research] **Asymmetrisches Ribbon-Gate und
+  Meta-Umschalter geprueft -- beide schlechter als heute, NICHTS geaendert.**
+  Nutzerfrage ("Modell, das herausfiltert wann der Ribbon Sinn macht? Oder
+  das Edge separieren?"). Skript `research_ctnl_asymmetrisches_gate.py`,
+  Rohdaten `_data/ctnl_asymmetrisches_gate.json`, Befund 20 in
+  `projects/ctnl-kostenvalidierung.md`.
+  (1) **Eigene Zahl korrigiert:** "long gegen den Ribbon bringt +0,391 R"
+  stammte aus einem Lauf mit Deckel 3. Beim live gefahrenen Deckel 2 sind
+  es 12 Trades / +9,5 R -- belanglos.
+  (2) **Deutung des Ribbons gedreht:** die grossen Verlustfelder sind die
+  NEUTRALEN (long/neutral -46,6 R, short/neutral -57,8 R; 443 Trades,
+  zusammen -104,4 R), nicht die Gegentrend-Felder (-30,6 R). Der Ribbon ist
+  primaer ein "gibt es ueberhaupt einen Trend"-Filter, kein Richtungsfilter.
+  (3) Variante A (long immer, short gefiltert): Σ R +200,4 / PF 1,45 /
+  MC-MedDD -5,92 % / P(>6 %) 48,4 % gegen ribbon-konform +237,6 / 1,90 /
+  -3,90 % / 9,9 %. Walk-Forward waehlt ribbon-konform in 7 von 8 Jahren.
+  (4) Meta-Umschalter (Vorjahrssieger): Σ R +138,5 / PF 1,35 gegen
+  +209,8 / 1,90 fest. Deckt sich mit Befund 16e (mehr Kandidaten =
+  schlechteres OOS).
+
+- **2026-10-01** [ORB / Research] **Order-Storno am geplanten SL + Haltedauer
+  backgetestet, dabei zwei Abweichungen gefunden.** Nutzerauftrag. Skript
+  `scripts/research_orb_cancel_at_sl_and_hold.py`, Notiz
+  `projects/orb-order-storno-und-haltedauer.md`. **Nichts live geändert.**
+  (1) Live (Funded + EK) lässt die SP500/US30-Long-Order nach einem Bruch
+  nach unten liegen, der Backtest verwirft solche Tage: live ~60 % mehr
+  Trades, MaxDD doppelt so hoch. (2) Die M5-Ausführung überzeichnet den Edge
+  um ~25–45 %, weil `simulate()` den Stop in der Füll-Bar nicht prüft. Bei
+  ~70 % der Trades berührt sie den SL schon, auf M1 sind es ~22–33 %. M1 Ø R
+  (OOS): SP500 +0,49 (+0,29), US30 +0,24 (+0,005), NASDAQ +0,14 (+0,05).
+  (3) Storno am SL: US30 verwerfen, SP500 dünn, NASDAQ Kandidat (OOS +0,05
+  → +0,16, robust gegen die Füll-Bar-Mehrdeutigkeit, aber Σ R halbiert).
+  (4) Haltedauer: bis 16:00 bleibt für alle drei richtig.
+
 - **2026-10-01** [EK / Mindestlot] **Die Anhebung auf der echten Kontogroesse
   durchgerechnet -- und dabei eine eigene frueherere Zahl korrigiert.**
   Nutzerauftrag. Skript `research_ek_mindestlot_3jahre.py`, Rohdaten
@@ -93,6 +127,26 @@ keine Planung (dafür ist `DASHBOARD.md`).
   den Nutzer: `ou_exit_levels.csv` einmal committen, dann sind 38 der 39
   gegenstandslos. Der juengste Stash ist vom 30.09. 20:56, also VOR dem
   PS-Fix -- seitdem keiner mehr.
+
+- **2026-10-01** [Gold ASB / Umsetzung] **Stop-Order-Logik gebaut und getestet,
+  Deploy wartet auf den Nutzer.** Nutzerentscheide: Stop 1,5x Range, Storno
+  03:00 NY, EK mit absolutem SL (Mindestlot wird gehandelt), sofort scharf.
+  Neu im Repo: `asian_range_breakout/pending.py` (geteilte Entscheidungslogik
+  fuer alle drei Bridges, ADX kausal an der 00:45-Bar),
+  `scripts/research_gold_asb_pending_parity.py` (266 von 266 gemeinsamen
+  Trades identisch in Richtung/Level/Stop; Abweichungen nur bei Fills in der
+  01:00-Bar, die die Engine ueberspringt). Bridge-Aenderungen liegen
+  gestagt und per Trockenlauf gegen die echten Terminals geprueft (Funded
+  TTP/IQ, FK, EK; Broker-`order_check` ok). **Nicht deployt:** der Auto-
+  Mode-Classifier hat das Kopieren in die Echtgeld-Bridges blockiert, der
+  Nutzer startet `deploy_gold_asb.py` selbst (siehe DASHBOARD).
+  **Zwischenfall:** zwei Testlaeufe des Repo-Patches trafen durch einen hart
+  kodierten Pfad das echte Repo (`engine.py` + drei `paper_bot.py`), 13:45-
+  13:46:54 und ~13:48:30-13:48:56. Beide Male sofort aus Vorher-Kopien
+  zurueckgesetzt, per Pruefsumme bestaetigt. Kein Bridge-Lauf hat in den
+  Fenstern das Gold-ASB-Bein gescannt (EK 13:44:03 noch mit alten Dateien,
+  Funded 13:43, FK 13:16; Fast-Lanes scannen das Bein nicht). Patch-Skript
+  verlangt seitdem den Zielpfad als Argument plus `--live` fuers echte Repo.
 
 - **2026-10-01** [Gold ASB / Research] **Realkosten-Probe (p6_5-p6_8) +
   Optimierung von Einstieg, Order-Logik, Filtern und Ausstieg.**

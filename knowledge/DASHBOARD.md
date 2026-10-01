@@ -35,18 +35,36 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
-- **Gold ASB: drei Aenderungsvorschlaege nach Kosten-/Optimierungspruefung**
-  (01.10., [[gold-asb-kostenvalidierung]]). Das Bein ist kostenrobust, der
-  Live-Lag kostet nichts. BE, TP, Trailing und Teilausstieg sind durchweg
-  schlechter und bleiben aus. **Offen fuer dich:**
-  **(A)** Stop 1,0 -> 1,25-1,5x Range auf Funded/FK? Walk-Forward stabil,
-  Sharpe 1,02 -> 1,20, MaxDD -6,6 -> -4,5 R. Auf EK nicht ohne Weiteres:
-  bei 1,5x faellt `gold_asb` unters Mindestlot (braucht ~3.090 EUR Equity).
-  **(B)** Order-Storno 02:00 -> 03:00 NY (`GOLD_ASB_MAX_DELAY_BARS` 3 -> 7)?
-  Sharpe +0,14, aber die Zusatztrades tragen sich nur ueber 29 Shorts.
-  **(C)** EK-SL absolut statt am Live-Kurs neu verankert? Bringt +0,05 R/Trade
-  und senkt den DD -8,6 -> -5,9 R. Ich habe nichts geaendert --
-  `challenge_portfolio/paper_bot.py` wirkt direkt live.
+- **🟠 ORB: Live handelt andere Tage als der Backtest + M5 überzeichnet den
+  Edge** (01.10., [[orb-order-storno-und-haltedauer]]). Nichts geändert.
+  **Offen für dich:**
+  **(A)** SP500/US30-Long-Order live stornieren, sobald orb_low berührt
+  wird (= Backtest-Semantik)? Heute bleibt sie bis 16:00 liegen: ~60 % mehr
+  Trades, die nie validiert wurden, MaxDD doppelt so hoch (SP500 −22 → −44 R
+  auf M1). Betrifft `Funded-Portfolio-Bridge/run_once.py::manage_orb_pending`
+  und EK `legs/ny_open_orb/executor.py`.
+  **(B)** Dein Vorschlag „Storno am geplanten SL“: für NASDAQ ein Kandidat
+  (OOS Ø R +0,05 → +0,16, MaxDD −49 → −33 R, aber halb so viele Trades und
+  Σ R), für US30 verwerfen (OOS negativ), für SP500 zu dünn. Vor Live:
+  Phase 6 auf M1?
+  **(C)** Zur Kenntnis: auf M1 gerechnet ist US30 OOS praktisch ohne Edge
+  (+0,005 R), die bisherigen M5-Zahlen sind ~25–45 % zu hoch. Haltedauer
+  bis 16:00 bleibt richtig.
+
+- **Gold ASB Stop-Order: fertig gebaut und getestet -- DU musst den Deploy
+  starten** (01.10.). Deine Entscheide: Stop 1,5x Range, Storno 03:00 NY,
+  EK mit absolutem SL und Mindestlot, sofort scharf auf allen Bridges. Der
+  Auto-Mode-Classifier laesst mich Code in den Echtgeld-Bridges nicht selbst
+  austauschen. **Ein Befehl** (pruefen, Backup, deployen, kompilieren, bei
+  Fehler automatischer Rollback):
+  `python "C:\Users\andre\AppData\Local\Temp\claude\c--Users-andre-Forex-Backtesting-knowledge\24d4ba00-c88f-4f27-8905-8382ceb32030\scratchpad\staging\deploy_gold_asb.py"`
+  -- am besten **heute** (liegt im Temp-Ordner), spaetestens vor 06:55
+  morgen. Rueckweg: `rollback_gold_asb.py` im selben Ordner. Tests: Paritaet
+  266 von 266 gemeinsamen Trades identisch, Trockenlauf auf allen 4 Konten
+  ok, Broker-`order_check` ok. Details: [[gold-asb-kostenvalidierung]].
+  **Zur Kenntnis (FK):** bei 1,5x Range rundet FK auf 0,01 Lot ab -- real
+  ~60 $ statt ~120 $ Risiko. Kein neuer Fehler, aber das Bein laeuft dort
+  mit halbem Risiko. **EK:** 0,01 Lot = ~53 EUR (1,9 % der Equity).
 
 - **Positionsdeckel auf 2 gesenkt (01.10., erledigt) -- EK bleibt bei 1.**
   P(MaxDD>6 %) faellt von 43,5 % auf 9,9 %, Rendite 40 % statt 58,6 %.
@@ -344,11 +362,16 @@ Bedarf vor generischem Aufräumen.
   **Ø R +0,174** (generischer EMA-Stapel: -0,161). Walk-Forward OOS
   **+243,6 gegen +143,4**. Monte Carlo `ribbon long-only`: MedDD **-4,80 %**,
   **P(MaxDD>6 %) 24,2 %** statt 99,9 %, Sharpe **1,02** statt 0,25.
-  Keine Parametersuche, Script-Defaults. **Offen fuer dich:** weiter
-  mitlaufen lassen (mein Vorschlag, Schattenlauf um den Ribbon ergaenzen),
-  oder `ribbon long-only` fuer die Challenge-Konten / `ribbon-konform` fuer
-  EK scharf schalten? Vorbehalte: -62 % Trades, verliert in starken
-  Trendjahren, Gold-Baisse fehlt im Sample. Details: Befund 15.
+  Keine Parametersuche, Script-Defaults. **Erledigt:** `ribbon-konform` ist
+  seit 2026-09-30 auf allen drei Bridges scharf (Nutzerentscheid "Ribbon
+  jetzt, Limit-Entry spaeter"). Vorbehalte bleiben: -62 % Trades, verliert in
+  starken Trendjahren, Gold-Baisse fehlt im Sample. Details: Befund 15.
+  **Nachtrag 2026-10-01 (Befund 20):** asymmetrisches Gate (long immer, short
+  gefiltert) und ein Meta-Umschalter zwischen "mit"/"ohne" Ribbon sind
+  geprueft und BEIDE schlechter -- keine Aenderung. Dabei hat sich die
+  Deutung gedreht: der Ribbon verdient sein Geld damit, die NEUTRALEN Phasen
+  auszuschliessen (-104,4 Σ R auf 443 Trades), nicht die Gegentrend-Trades
+  (-30,6 Σ R). Er ist primaer ein Trendexistenz-Filter.
 
 - **EK-Mindestlot: E5-c umgesetzt, aber der Rest der Frage steht noch.**
   `ctnl_reversal` haelt auf EK jetzt hoechstens EINE Position

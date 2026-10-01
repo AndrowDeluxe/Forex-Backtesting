@@ -1,0 +1,36 @@
+{
+  "equity_start": 2843.35,
+  "jahre": 3.0,
+  "beine": {
+    "ctnl_reversal": {
+      "mit_anhebung": {
+        "trades_angeboten": 92,
+        "gehandelt": 92,
+        "abgelehnt_5pct": 0,
+        "gebumpt": 92,
+        "anteil_gebumpt": 1.0,
+        "faktor_median": 22.039536439666524,
+        "faktor_max": 72.75391233094524,
+        "risiko_median_eur": 15.227454738677416,
+        "risiko_median_pct": 0.004061947200019313,
+        "equity_ende": 4644.06178258138,
+        "rendite_pct": 63.33064106006576,
+        "max_dd_pct": -4.625657499190572
+      },
+      "ohne_anhebung": {
+        "trades_angeboten": 92,
+        "gehandelt": 92,
+        "abgelehnt_5pct": 0,
+        "gebumpt": 0,
+        "anteil_gebumpt": 0.0,
+        "faktor_median": null,
+        "faktor_max": null,
+        "risiko_median_eur": 0.5386524606735595,
+        "risiko_median_pct": 0.0001875364376448814,
+        "equity_ende": 2904.1545821398404,
+        "rendite_pct": 2.1384839059503946,
+        "max_dd_pct": -0.2248209394070333
+      }
+    }
+  }
+}

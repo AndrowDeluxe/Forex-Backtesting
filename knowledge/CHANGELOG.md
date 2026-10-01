@@ -9,6 +9,64 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-01** [EK / Mindestlot] **Die Anhebung auf der echten Kontogroesse
+  durchgerechnet -- und dabei eine eigene frueherere Zahl korrigiert.**
+  Nutzerauftrag. Skript `research_ek_mindestlot_3jahre.py`, Rohdaten
+  `_data/ek_mindestlot_3jahre.json`.
+  **Warum das nicht in R geht:** alle bisherigen CTNL-Rechnungen laufen
+  risikoneutral in R und blenden genau diesen Effekt aus. Die Anhebung ist
+  pfadabhaengig -- ihr Faktor haengt an der STOPDISTANZ des einzelnen Trades
+  UND an der Equity, die sich mit jedem Trade aendert. Faellt das Konto,
+  sinkt das Ziel-Risiko, das Mindestlot bleibt -- die Anhebung waechst
+  genau dann, wenn man sie am wenigsten brauchen kann. Hier Trade fuer
+  Trade mit Verzinsung nachgebildet, inklusive 5-%-Ablehnung.
+  **Ergebnis** (ctnl_reversal, 92 Trades, 3 Jahre, Start 2.843,35 EUR):
+
+  | | mit Anhebung (Realitaet) | ohne (Bruchteils-Lots) |
+  |---|---|---|
+  | angehoben | **92 (100 %)** | 0 |
+  | Risiko/Trade (Median) | **15,23 EUR = 0,41 %** | 0,54 EUR = 0,019 % |
+  | Faktor Median / max | **22x / 73x** | - |
+  | Endkapital | **4.644 EUR** | 2.904 EUR |
+  | Rendite | **+63,3 %** | +2,14 % |
+  | max. Drawdown | **-4,6 %** | -0,22 % |
+
+  **JEDER Trade wird angehoben** -- die Risikoformel kommt auf diesem Konto
+  nie zum Zug.
+  **KORREKTUR einer eigenen Zahl:** am 2026-09-30 hatte ich fuer EK
+  "Median-MaxDD -14,00 %, P(>6 %) 99,4 %" genannt. Das beruhte auf pauschal
+  0,86 %/Trade. Rechnet man die Anhebung pro Trade mit der jeweiligen
+  Stopdistanz, liegt der Median bei **0,41 %** -- etwa der Haelfte. Die
+  frueherere Zahl hat das Risiko **ueberzeichnet**. Was bleibt: der Faktor
+  ist nicht konstant (22x Median, 73x Maximum) und waechst mit fallender
+  Equity; und ein einzelner historischer Pfad ist keine Verteilung.
+  **Offen:** die Gegenprobe `gold_asb` (Bein, bei dem das Ziel ueber dem
+  Mindestlot liegt, die Anhebung also nie greift) scheiterte an einem
+  Datentyp-Fehler im Scan (`Invalid comparison between dtype=datetime64[ms]
+  and Timestamp`). Ohne sie fehlt der Vergleich zu einem Bein ohne Anhebung.
+
+- **2026-10-01** [CTNL / Bilanz 2026] **Der finale Edge seit Jahresanfang --
+  der gesamte Gewinn stammt aus Januar und Februar.** Finale Konfiguration
+  (Deckel 2, 5R, max_hold 96 h, Ribbon-Gate), 24 Trades:
+
+  | Monat | n | Ø R | Σ R | PF | kumuliert |
+  |---|---|---|---|---|---|
+  | 2026-01 | 8 | +2,512 | +20,1 | 7,15 | +20,1 R |
+  | 2026-02 | 4 | +1,503 | +6,0 | 2,68 | +26,1 R |
+  | 2026-03 | 2 | -1,136 | -2,3 | 0,00 | +23,8 R |
+  | 2026-07 | 2 | -0,280 | -0,6 | 0,00 | +23,3 R |
+  | 2026-08 | 2 | -1,032 | -2,1 | 0,00 | +21,2 R |
+  | 2026-09 | 6 | -0,071 | -0,4 | 0,90 | +20,8 R |
+
+  Gesamt Ø R +0,866, PF 2,29, Trefferquote 38 %.
+  **Unbequem, gehoert aber dazu:** seit Maerz sind es ueber sieben Monate
+  **-5,4 R**; in April/Mai/Juni gab es keinen einzigen trendkonformen Trade.
+  Und **ohne Ribbon-Gate waeren es 2026 mehr gewesen**: 53 Trades mit ΣR
+  **+34,0** gegen +20,8. Der Filter hob die Qualitaet (PF 2,29 statt 1,88)
+  und kostete in diesem Jahr Ertrag -- exakt das angekuendigte Muster
+  (Befund 16b): er verdient in den schlechten Jahren, und 2026 war bisher
+  keines.
+
 - **2026-10-01** [Git-Sync / Bridge-Watchdog] **Das Stash-Problem hatte ZWEI
   Verursacher -- der zweite ist jetzt auch geschlossen.** Nutzerfrage "wie
   loesen wir das".

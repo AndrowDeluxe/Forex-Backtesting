@@ -89,7 +89,13 @@ def simuliere(trades: pd.DataFrame, leg: str, *, anheben: bool,
     eq = start
     kurve, zeilen = [], []
     for _, t in trades.iterrows():
-        stop_punkte = float(t["initial_risk"])
+        # Stopdistanz in Kurspunkten. `effective_risk` ist der REALE Nenner,
+        # auf den die Bridge sized (|Live-Kurs - SL| nach dem Einstiegsversatz,
+        # siehe sizing.py) -- er liegt in der gegateten CTNL-Liste vor.
+        # `initial_risk` (geplante Distanz) ist der Rueckfall fuer Trade-Listen
+        # ohne Replay, z.B. gold_asb.
+        stop_punkte = float(t["effective_risk"] if "effective_risk" in t.index
+                            else t["initial_risk"])
         if stop_punkte <= 0:
             continue
         verlust_je_lot = stop_punkte * EUR_JE_PUNKT_JE_LOT

@@ -14,6 +14,8 @@ verlor das 2,2-fache seines Budgets.
 
 Zweiter vollstaendiger Durchlauf: [[ctnl-kostenvalidierung]] (2026-09-21, beide CTNL-Beine). Dort lagen die gegriffenen Kosten **zu hoch** statt zu niedrig — die Proben taugen also in beide Richtungen, nicht nur zur Entzauberung.
 
+Dritter Durchlauf: [[gold-asb-kostenvalidierung]] (2026-10-01). Weite Stops (Median 15x RT-Kosten) machen das Bein kostenrobust, der Lag ist Rauschen -- Befund: Proben bestanden, Optimierungshebel liegen bei Stopweite und Einstiegsfenster, nicht bei Kosten.
+
 Verwandt: [[broker-kostenmodell-eurusd]] (die gemessenen Werte),
 [[backtest-standard-process]] (der übergeordnete Prozess).
 

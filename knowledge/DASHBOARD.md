@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-10-01** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-10-02** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -96,6 +96,32 @@ Bedarf vor generischem Aufräumen.
   **Offen fuer dich:** unveraendert dieselben zwei Fragen wie beim
   `str`/`float`-Eintrag unten -- nichts Neues zu entscheiden, nur zur
   Kenntnis, dass sich das Muster ausweitet.
+
+- **🟡 Dasselbe Fehlermuster erneut, diesmal zeitgleich in ALLEN DREI
+  Bridges innerhalb von 5 Minuten -- staerkster Datenpunkt bisher fuer einen
+  gemeinsamen Ausloeser statt pro-Bridge-Zufall.** (Bridge Error Monitor,
+  02.10., 11:01-Snapshot.) `Funded-Portfolio-Bridge` (TTP + IQ, beide Konten
+  identisch) `last_error_line`: `"2026-10-01 13:15:36 CTNL-Edge-Scan
+  fehlgeschlagen: '>' not supported between instances of 'str' and 'float'"`,
+  `recent_events` zeigt denselben Fehler zur selben Sekunde zusaetzlich fuer
+  `Trend-Pullback-Scan` und `CLS-Practical-Scan`. `FKInstantFunding-MT5-Bridge`
+  `last_error_line`: `"2026-10-01 13:16:26 trend_pullback-Scan
+  fehlgeschlagen: ..."`, ebenfalls zeitgleich mit `cls_practical-Scan` und
+  `gold_asb-Scan` (letzteres damit zum zweiten Mal an diesem Tag, nach 02:15:06
+  oben). **Neu gegenueber den bisherigen Eintraegen:** `EK-Portfolio-Bridge`
+  zeigt `last_error_line` `"2026-10-01 13:20:29     raise error[0]"` --
+  dasselbe `LakeStaleDataError`-Muster wie die aelteren 09-28er Faelle weiter
+  unten -- nur **4 Minuten nach** dem Funded/FK-Ausbruch. EK haengt an einem
+  komplett anderen Codepfad (Lake-Frische-Check, kein `str`/`float`-Vergleich),
+  trotzdem fallen beide Fehlerarten in dasselbe knapp 5-Minuten-Fenster
+  (13:15:36-13:20:29) -- spricht eher fuer eine gemeinsame externe Ursache
+  (z. B. Datenquelle/Netzwerk kurz gestoert) als fuer die bisher favorisierte
+  Theorie der konkurrierenden Cache-Schreibzugriffe (die wuerde EKs getrennten
+  Lake-Pfad nicht erklaeren). **Kein Folgefehler seither**, Status aktuell
+  wieder "ok" bei allen drei Bridges. **Nichts geaendert** -- reine
+  Beobachtung, dieselben zwei offenen Fragen beim `str`/`float`-Eintrag unten
+  stehen weiterhin unbeantwortet, hier nur als zusaetzlicher Datenpunkt
+  (jetzt auch EK zeitlich korreliert, nicht nur Funded+FK).
 
 - **CTNL faehrt seit 2026-09-30 nur noch `ctnl_reversal`** (beide
   Richtungen, Ribbon-gefiltert). `ctnl_continuation` ist auf allen drei

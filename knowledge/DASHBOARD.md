@@ -35,6 +35,17 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **🟠 CTNL: Funded/FK jetzt auf EK-Takt, aber EKs SL-Logik bewusst NICHT
+  übernommen** (03.10., Befund 21 in [[ctnl-kostenvalidierung]]). Umgesetzt
+  ist nur der frühere Einstieg (−14 Min.). ✅ (1) „nur Timing“ vom Nutzer
+  bestätigt 03.10. ✅ Die Frage „EK auf absoluten Signal-SL?“ ist durch den
+  Exit-Standard vom 03.10. erledigt (Befund 22e). **Neu zu prüfen
+  Sonntagabend/Montag:** Hat der erste CTNL-Entry je Konto (EK, TTP, IQ, FK)
+  einen Broker-TP, und liegt EKs SL auf dem Signal-Niveau? Noch offen:
+  **(2)** Den Stop der
+  vorgezogenen Zeile rechne ich mit der ATR der Signalbar (wie EK); die
+  Abweichung zur Simulation liegt bei ~2 % der Distanz.
+
 - **🟠 ORB: Live handelt andere Tage als der Backtest + M5 überzeichnet den
   Edge** (01.10., [[orb-order-storno-und-haltedauer]]). Nichts geändert.
   **Offen für dich:**

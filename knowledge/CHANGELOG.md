@@ -9,6 +9,39 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-03** [Alle drei Bridges / CTNL Reversal] **Einheitliche Exit-Logik
+  (Funded-Standard) auf allen Konten, nur neue Positionen.** Nutzerentscheid
+  nach Befund 22 (240 Varianten SL/TP/Zeit-Exit unter Kosten, Swap,
+  Live-Timing, Walk-Forward, MC): Keine Variante schlaegt den Funded-Stand
+  signifikant, EKs Struktur verliert −0,17 R/Trade. Umgesetzt:
+  (1) **Funded/FK** `run_once.py::_broker_target`: TP 5R jetzt als echter
+  Broker-TP (bisher nur in der Simulation gepollt).
+  (2) **EK** `legs/ctnl_edge/executor.py` + `signal_source.py` + `config.py`:
+  SL auf das absolute Signal-Niveau statt Live-Kurs-Neuverankerung,
+  R-Detektor 0,50R, TP 5R ab Live-Kurs, NEUER Zeit-Exit nach 384
+  Broker-M15-Bars = 4 Handelstage (Wochenende zaehlt nicht), nur fuer
+  Positionen ab `CTNL_EXIT_STANDARD_AB_UTC` 2026-10-03 12:00.
+  Bridge-Dateien sind nicht git-getrackt, Backups in
+  `_backup_20261003_ctnl_exit`. Skripte `research_ctnl_exit_optimierung.py`,
+  `research_ctnl_exit_fokus.py`. Offline-Stub-Test gruen; erster echter Lauf
+  Sonntagabend.
+
+- **2026-10-03** [Funded + FK / CTNL Reversal] **Einstieg eine M15-Bar
+  frueher, auf EK-Takt.** Auftrag: "Ausfuehrungslogik auf EK-Niveau +
+  Versatz backtesten". Funded/FK stiegen seit 17.09. konstant **28 Min.**
+  nach dem Backtest-Fill ein, EK nach 14 Min. (02.10.: EK 12:59 UTC, IQ/FK
+  13:13, TTP gar nicht). Ursache: die Simulation erzeugt einen Trade erst,
+  wenn die Fuell-Bar geschlossen im Lake liegt. Neu:
+  `gold_smc_htf_ltf/signal_bar_entry.py`, aufgerufen in
+  `challenge_portfolio/paper_bot.py::_scan_ctnl` und
+  `fk_instant_funding/paper_bot.py::_scan_ctnl`. Die Zeile kommt schon an der
+  Signalbar, mit identischem State-Schluessel. **Absoluter Signal-SL und
+  R-Detektor bleiben**, EKs SL-Neuverankerung wurde bewusst NICHT
+  uebernommen (Backtest: −0,28 R/Trade). Wirkt ab dem naechsten Bridge-Lauf
+  (Wochenende -> Sonntagabend). Backtest 15 vs. 30 Min.: +0,091 R/Trade,
+  KI [+0,005; +0,187]. Skript `research_ctnl_entry_versatz.py`, Befund 21
+  in `projects/ctnl-kostenvalidierung.md`. Nicht committet.
+
 - **2026-10-01** [CTNL / Research] **Asymmetrisches Ribbon-Gate und
   Meta-Umschalter geprueft -- beide schlechter als heute, NICHTS geaendert.**
   Nutzerfrage ("Modell, das herausfiltert wann der Ribbon Sinn macht? Oder

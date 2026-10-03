@@ -497,6 +497,12 @@ def _scan_ctnl(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") 
     rev_sig = run_reversal(h4, h1, m15, **REV_KWARGS)
     rev_sig = rev_sig[_utc_naive(rev_sig.index) <= end]
     rev_trades = simulate_trades_concurrent(rev_sig, rev_cfg)
+    # Signal schon an der Signalbar handelbar, nicht erst nach Schluss der
+    # Fuell-Bar (2026-10-03): eine M15-Bar frueher, gleicher Takt wie EK.
+    # Gleicher State-Schluessel wie die spaetere Simulationszeile, siehe
+    # gold_smc_htf_ltf/signal_bar_entry.py.
+    from gold_smc_htf_ltf import signal_bar_entry
+    rev_trades = signal_bar_entry.append(rev_trades, rev_sig, rev_cfg, end)
     # Signalbar-Groesse (Range/ATR) fuer den Spike-Filter (2026-09-30) -- rein
     # additiv, gefiltert wird erst in der Bridge, siehe gold_smc_htf_ltf/spike_gate.py.
     from gold_smc_htf_ltf import spike_gate

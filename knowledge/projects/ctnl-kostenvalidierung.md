@@ -1105,6 +1105,148 @@ plausibel klangen.
 
 ---
 
+## Befund 21 — Einstiegsversatz: Funded/FK lagen eine Bar hinter EK, EKs SL-Logik kostet mehr als der Takt bringt
+
+Skript `scripts/research_ctnl_entry_versatz.py`, Rohdaten
+`_data/ctnl_entry_versatz.json`. Anlass: Am 02.10. stieg EK um 12:59 UTC ein,
+IQ/FK erst um 13:13 und TTP gar nicht. Signalbar war 12:30 UTC.
+
+**21a — Befund 1 hatte für Funded/FK den falschen Anker.** Die State-Schlüssel
+tragen die *Füll-Bar* (Signalbar+1), nicht die Signalbar. Über alle echten
+Fills seit 17.09. (State-Dateien Funded + FK) gilt:
+
+| | Versatz zum Backtest-Fill (open Signalbar+1) | ab Signalbar-Label |
+|---|---|---|
+| Funded / FK (bis 03.10.) | **28 Min.** (Median, über 10 Handelstage konstant) | 43 Min. |
+| EK | **14 Min.** | 29 Min. |
+
+Funded und FK liefen also bei ~Lag 2, nicht bei Lag 1. Alle bisherigen
+`to_live`-Rechnungen (`REAL_LAG = 1`) beschreiben EKs Takt.
+
+**Ursache:** `simulate_trades_concurrent()` läuft nur bis `n-1`, ein Trade
+entsteht also erst, wenn die Füll-Bar existiert. Der Lake führt nur
+geschlossene Bars: Die Füll-Bar schließt 15 Min. nach der Signalbar und wird
+~10 Min. später ingestet. EK liest das Signal direkt von der Signalbar
+(`live_signal.reversal_signal`). Deshalb half auch FKs 5-Min-Takt nicht. Der
+Engpass ist der M15-Ingest, nicht der Scan.
+
+**21b — was der Versatz kostet** (M5-genau, 2016–10/2026, 264 Signale:
+ribbon-konform, Spike ≥ 0,75, Deckel 2, 2,01 bps):
+
+| Versatz | Funded-Logik Ø R / Σ R / PF | EK-Logik Ø R / Σ R / PF |
+|---|---|---|
+| Backtest (Sim-Exit, Schlusskurs-Stop) | +0,788 / 208,1 / 2,04 | — |
+| 0 Min. | +0,625 / 164,9 / 1,90 | +0,457 / 120,7 / 1,60 |
+| 5 | +0,612 / 158,6 / 1,89 | +0,491 / 128,3 / 1,65 |
+| 15 (EK-Takt) | **+0,734 / 182,8 / 2,08** | +0,460 / 117,8 / 1,61 |
+| 30 (Funded/FK bisher) | +0,668 / 163,6 / 1,99 | +0,497 / 126,6 / 1,66 |
+| 60 | +0,565 / 135,7 / 1,84 | +0,344 / 86,8 / 1,44 |
+
+- **15 gegen 30 Min., gepaart (242 Trades):** +0,091 R je Trade, 95-%-KI
+  [+0,005; +0,187]. Knapp signifikant, 7 von 11 Jahren besser, über 10 Jahre
+  +19 R (≈ +12 %). Ein Gewinn in der richtigen Richtung, aber kein Durchbruch.
+- **Schneller als 15 Min. bringt nichts** (5 Min. ≈ 30 Min.). Die Kurve ist
+  nicht monoton. Bei 15 Min. greifen Restlaufzeit-Gate und „schon
+  geschlossen" bereits und werfen schnelle Verlierer aus (vgl. Memory
+  `live_ist_nicht_gleich_handelt`). Den M15-Ingest auf die 5-Min-Lane zu
+  legen, lohnt sich deshalb nicht.
+- **EKs SL-Logik ist deutlich schlechter:** SL-Distanz am Live-Kurs neu
+  verankert, Broker-TP 5R, kein Zeit-Exit. Bei gleichem Versatz (15 Min.)
+  kostet sie **−0,280 R je Trade**, KI [−0,47; −0,10], −65 R über 10 Jahre.
+  Damit bestätigt sich der Verdacht aus Befund 2 / der CLS-Messung jetzt auch
+  für CTNL. EK hat nur den besseren *Takt*, nicht die bessere *Logik*.
+- **Nebenbefund:** Schon bei Versatz 0 kostet der *berührungsbasierte*
+  Broker-SL gegenüber dem Schlusskurs-Stop des Backtests 0,16 R je Trade
+  (+0,788 → +0,625). Der Backtest-Edge ist live so nicht erreichbar, egal wie
+  schnell der Einstieg ist.
+
+**21c — umgesetzt (03.10.):** `gold_smc_htf_ltf/signal_bar_entry.py` hängt in
+beiden `_scan_ctnl` (Challenge + FK) für ein Signal auf der zuletzt
+geschlossenen Bar die Zeile an, die die Simulation 15 Min. später selbst
+erzeugen wird. Sie hat dieselbe `entry_time` und damit denselben
+State-Schlüssel, also keine Doppelorder. Funded/FK fahren damit EKs Takt und
+behalten den absoluten Signal-SL und den R-Detektor. Getestet am 02.10.-Fall:
+Der Scan um 12:58 UTC liefert den Schlüssel 12:45, unter dem IQ/FK real erst
+um 13:13 eingestiegen sind. Um 13:08 liefert die Simulation dieselbe Zeile.
+Der SL weicht um 0,76 Punkte ab (ATR der Signal- statt der Füll-Bar, bei
+~44 Punkten Distanz).
+
+---
+
+## Befund 22 — SL/TP/Zeit-Exit unter Kosten, Versatz und Live-Timing: der heutige Funded-Stand ist nicht schlagbar, EK schon
+
+Skripte `scripts/research_ctnl_exit_optimierung.py` (Grid + Walk-Forward + MC)
+und `scripts/research_ctnl_exit_fokus.py` (gepaarte Einzeländerungen). Rohdaten
+`_data/ctnl_exit_optimierung.json`, `_data/ctnl_exit_fokus.json`. Annahmen:
+Einstieg 15 Min. nach Backtest-Fill (Live-Takt seit 03.10.), TTP 2,01 bps,
+Swap 1,5 bps je Haltetag (Annahme, im Repo nicht gemessen), Restlaufzeit-Gate,
+R-Detektor, Broker-Deckel 2 mit den Exits der jeweiligen Variante.
+
+**22a — Signalauswahl muss live-getreu sein.** `_scan_ctnl` kappt auf 2
+Simulations-Trades **vor** Ribbon und Spike (261 Signale). Erst filtern, dann
+kappen ergibt 5.052 Kandidaten und ein völlig anderes Bild (dort verwarf der
+Walk-Forward jede Optimierung, 2 von 8 Jahren). Offene Nebenfrage: Kappt die
+Sim-Kappung vor dem Ribbon trendkonforme Signale zugunsten von Gegentrend-
+Phantomen? Das ist ein eigener Befund, hier nicht untersucht.
+
+**22b — warum die SL/TP-Setzung zwischen den Bridges so weit auseinanderliegt.**
+
+| | SL | TP | Zeit-Exit |
+|---|---|---|---|
+| Funded / FK | absolutes Signal-Niveau (3 ATR am Trigger), Broker | **kein Broker-TP**, die Simulation meldet „target" auf M15-Schluss, die Bridge schließt beim nächsten Poll | 4 Tage, über die Simulation gepollt |
+| EK | Signal-*Distanz* am Live-Kurs neu angesetzt | Broker-TP 5R ab Live-Kurs | **keiner** |
+
+Funded/FK führen die Exits über die Simulation (Re-Scan-Vergleich), EK über
+Broker-Orders. Die Bridges wurden getrennt gebaut und nie angeglichen.
+
+**22c — Randeffekte über das Grid (240 Varianten):** Ein Stop auf M15-Schluss
+schlägt den berührungsbasierten Stop (Ø R +0,47 gegen +0,37). SL 3–4 ATR ist
+besser als enger. TP unter 4R schadet, 5R/7R/keins liegen eng beieinander.
+Zeit-Exit nach 4 Tagen ist am besten (4 > 2 > 10 > 1 Tag).
+
+**22d — gepaart gegen den heutigen Funded-Stand** (Poll 1 M5-Bar; mit Poll 3
+gleiches Bild):
+
+| Variante | Ø R | Σ R | MaxDD R | Sharpe | schlimmster Trade | ΔR je Trade [95-%-KI] | Jahre besser |
+|---|---|---|---|---|---|---|---|
+| heute Funded/FK | +0,532 | 126,1 | −20,4 | 0,79 | −1,33 | — | — |
+| A: TP 5R als Broker-TP | +0,510 | 120,8 | −20,0 | 0,76 | −1,33 | −0,02 [−0,06; +0,04] | 2/11 |
+| B: Schlusskurs-Stop 3, TP 5 | +0,713 | 163,3 | −20,4 | 0,98 | **−2,27** | +0,15 [−0,02; +0,34] | 7/11 |
+| C: Schlusskurs-Stop 3, TP 7 | +0,794 | 180,2 | −21,5 | 1,03 | −2,27 | +0,22 [−0,02; +0,47] | 6/11 |
+| D: Broker-SL 4 ATR, TP 5 | +0,608 | 140,5 | −17,2 | 0,99 | −1,26 | +0,06 [−0,14; +0,26] | 6/11 |
+| E: Schlusskurs-Stop 4, TP 5 | +0,715 | 158,1 | −18,4 | 1,06 | −2,20 | +0,15 [−0,08; +0,38] | 9/11 |
+| **EK heute** | +0,451 | 105,5 | −19,7 | 0,67 | −1,78 | **−0,17 [−0,36; +0,02]** | 3/11 |
+
+- **Keine Änderung ist signifikant besser als heute.** Walk-Forward (Anker,
+  IS nach Σ R) wählt fast durchgehend „Schlusskurs-Stop 3, TP 7, 4 Tage". OOS
+  bringt das +116,1 R gegen +111,4 R, besser in 4 von 8 Jahren. Kein belastbarer
+  Gewinn. Das deckt sich mit den früheren Walk-Forward-Befunden dieser Notiz:
+  SL/TP-Parameter halten nicht.
+- **Der Schlusskurs-Stop ist der einzige Kandidat mit System dahinter** (Grid,
+  WF-Wahl, 7–9 von 11 Jahren). Er verändert aber das Risikoprofil: Gesized wird
+  auf 3 ATR, der Notfall-SL liegt bei 6 ATR. 33 von 229 Trades verlieren mehr als
+  1,5 R, der schlimmste 2,3 R. Das verletzt die harte 1-%-je-Position-Regel,
+  außer man sized auf den Notfall-SL, und dann halbiert sich der Ertrag in R.
+- **Broker-TP statt gepolltem TP kostet nichts.** Er macht Funded/FK aber
+  unabhängig vom Re-Scan: Verwaiste Positionen (09-17) hätten ein Ziel gehabt.
+- **EK ist der klare Ausreißer:** −0,17 R je Trade gegenüber Funded, nur 3 von
+  11 Jahren besser. Ursache sind neu verankerter SL und fehlender Zeit-Exit.
+
+**22e — Entscheidung und Umsetzung (03.10., Nutzerentscheid):** Funded-Standard
+auf allen Konten, nur für neue Positionen. Der Zeit-Exit zählt nur Handelstage.
+- **Funded/FK** (`run_once.py::_broker_target`): TP 5R als echter Broker-TP
+  (R = Live-Kurs → Signal-SL, auf das Tick-Raster gerundet). SL und Zeit-Exit
+  wie bisher (Signal-Niveau; Simulation `max_hold_bars=96*4`).
+- **EK** (`legs/ctnl_edge/executor.py`): SL auf das absolute Signal-Niveau,
+  R-Detektor 0,50R, TP 5R ab Live-Kurs, neuer Zeit-Exit nach 384
+  Broker-M15-Bars. Wochenende und Pause erzeugen keine Bars und zählen deshalb
+  nicht. Der Zeit-Exit gilt nur für Positionen ab
+  `config.CTNL_EXIT_STANDARD_AB_UTC`.
+- Backups: `_backup_20261003_ctnl_exit` in jeder Bridge. Offline-Test mit
+  MT5-Stubs grün. Erster echter Lauf: Sonntagabend.
+
+---
+
 ## Was daraus folgt (Entscheidung steht bei dir)
 
 Nach Kostenvalidierung, Diagnose und Optimierung stehen **vier** Entscheidungen

@@ -9,6 +9,15 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-03** [Dashboard] 16 erledigte/reine Info-Eintraege aus "Braucht
+  deine Bestaetigung" entfernt (Nutzerentscheid "Gruppe 1 alle abhaken"):
+  Positionsdeckel, CTNL nur reversal, Ribbon-Gate + E6, OU-Solo, vier
+  ERLEDIGT-Eintraege, ttp1-Broker-History, Lint-Notizen, Kill-Switch nur FK
+  (nachgeprueft: in Funded + EK verdrahtet), Order-Flut-Gate inkl. Annahme (b),
+  Paper-Screening 22.09. (drei Annahmen damit bestaetigt). CTNL E1-E4 auf den
+  offenen Rest E1 + E4 gekuerzt (`spread_bps` steht weiter auf 8,0). Frage
+  nach geplanter Ribbon-Quoten-Auswertung in die Ideen-Inbox verschoben.
+
 - **2026-10-03** [Alle drei Bridges / CTNL Reversal] **Einheitliche Exit-Logik
   (Funded-Standard) auf allen Konten, nur neue Positionen.** Nutzerentscheid
   nach Befund 22 (240 Varianten SL/TP/Zeit-Exit unter Kosten, Swap,
@@ -25,6 +34,43 @@ keine Planung (dafür ist `DASHBOARD.md`).
   `_backup_20261003_ctnl_exit`. Skripte `research_ctnl_exit_optimierung.py`,
   `research_ctnl_exit_fokus.py`. Offline-Stub-Test gruen; erster echter Lauf
   Sonntagabend.
+
+- **2026-10-03** [FK Instant Funding / Research] **Gesamtportfolio 2026 mit
+  FK-Kosten, Versatz und aktueller Ausfuehrungslogik backgetestet -- das
+  Konto haette die 5-%-Trailing-Grenze am 26.08. gerissen.** Nutzerauftrag.
+  Reine Auswertung, **nichts live geaendert**. Skript
+  `scripts/research_fk_gesamtportfolio_2026.py`, Rohdaten
+  `_data/fk_gesamtportfolio_2026.json` (+ `_ohne_sperre.json`), Trades
+  `portfolio_construction/results/fk_gesamtportfolio_2026_trades.csv`.
+  **Modelliert wie live (aus dem Bridge-Code gelesen):** 6 LIVE_LEGS, Sizing
+  CAPITAL_WEIGHT x LEG_RISK_PCT x Equity (Deckel 500 $), XAUUSD mit
+  Lot-Rundung/Mindestlot; BeyondIQ-Kosten (XAU 0,79 bps, EURUSD 1,30 Pips RT,
+  SPX/US30/NAS 0,40/3,20/1,00 Pkt + 0,45/0,30 bps Slippage); ORB als
+  Pending-Stop auf M1, Long-Order bleibt bis 16:00; Gold ASB Market +30 Min.,
+  0,50R-Detektor; CLS Lag 1 M5-Bar, TP per Re-Scan; CTNL Lag 1 M15 (= neuer
+  15-Min-Takt von heute), Ribbon + Spike + Deckel 2; EOD-Trailing-DD 5 %.
+  **Ergebnis 01.01.-02.10. (100k Start):**
+
+  | Variante | Rendite | MaxDD EOD | 5-%-Bruch |
+  |---|---|---|---|
+  | A live heute (Sperre ab Bruch) | -0,87 % | -5,24 % | **26.08.** |
+  | A ohne Sperre (voller Pfad) | -2,17 % | -7,19 % | 26.08. |
+  | B Gold ASB als Stop-Order 1,5x | -0,49 % | -5,14 % | 26.08. |
+  | C CLS Lag 2 statt 1 | -1,08 % | -5,17 % | 26.08. |
+  | D ORB-Storno bei Gegenbruch | -0,92 % | -5,09 % | 10.09. |
+  | ohne orb_sp500 + orb_us30 | **+2,28 %** | **-2,62 %** | nie |
+  | ohne ORB | +1,26 % | -0,73 % | nie |
+
+  **Je Bein (A):** orb_sp500 66 Trades Ø R -0,22 (-1.867 $), orb_us30 51 /
+  -0,20 (-1.285 $), orb_nasdaq 134 / +0,08 (+1.250 $), ctnl_reversal 15 /
+  +1,66 (+764 $), cls_practical 8 / +0,12 (+276 $), gold_asb 8 / -0,06 (-7 $).
+  Die Verluste kommen fast vollstaendig aus ORB SP500/US30; das deckt sich mit
+  der M1-Studie vom 01.10. (2026: SP500 Ø R -0,25, US30 -0,12 -- schlechtestes
+  Jahr seit 2019). Bootstrap auf die 2026-Tage: P(DD > 5 %) ~52 %.
+  **Gegenprobe echtes Konto seit 06.09.:** real -1.162 $ (98.838), Simulation
+  im selben Zeitraum rund -0,5 k -- gleiche Richtung, real schlechter;
+  Differenz nicht zerlegt. **Nicht modelliert:** Swap, Rejects,
+  Scan-Ausfaelle, Wochenend-/23-Uhr-Sperre.
 
 - **2026-10-03** [Funded + FK / CTNL Reversal] **Einstieg eine M15-Bar
   frueher, auf EK-Takt.** Auftrag: "Ausfuehrungslogik auf EK-Niveau +

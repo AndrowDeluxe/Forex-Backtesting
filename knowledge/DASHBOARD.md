@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-10-01** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-10-03** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -34,6 +34,17 @@ gold_asb-Cache-Bug oben läuft über "Als Nächstes"). Danach: Bestätigungs-
 Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
+
+- **🔴 FK-Gesamtportfolio 2026 (Backtest 03.10.): Konto wäre am 26.08. an
+  der 5-%-Trailing-Grenze gescheitert -- Ursache ORB SP500/US30.** Mit
+  FK-Kosten, Versatz und heutiger Logik: -0,87 % bis zum Bruch, MaxDD
+  -5,24 %. Ohne orb_sp500/orb_us30: +2,28 %, MaxDD -2,62 %, kein Bruch.
+  **Deine Entscheidung:** SP500/US30 auf FK pausieren oder Risiko senken --
+  oder weiterlaufen lassen, weil 2026 für beide das schlechteste Jahr seit
+  2019 ist (über 2019-2025 positiv)? **Meine Annahmen dabei, bitte
+  bestätigen:** CLS-Versatz 1 M5-Bar, Gold-ASB-Versatz 30 Min., CTNL 1
+  M15-Bar, ORB-Slippage aus Funded-Fills übernommen (FK hat keine eigenen
+  Index-Fills), Swap ignoriert. Details: CHANGELOG 03.10.
 
 - **🟠 CTNL: Funded/FK jetzt auf EK-Takt, aber EKs SL-Logik bewusst NICHT
   übernommen** (03.10., Befund 21 in [[ctnl-kostenvalidierung]]). Umgesetzt
@@ -69,21 +80,18 @@ Bedarf vor generischem Aufräumen.
   austauschen. **Ein Befehl** (pruefen, Backup, deployen, kompilieren, bei
   Fehler automatischer Rollback):
   `python "C:\Users\andre\AppData\Local\Temp\claude\c--Users-andre-Forex-Backtesting-knowledge\24d4ba00-c88f-4f27-8905-8382ceb32030\scratchpad\staging\deploy_gold_asb.py"`
-  -- am besten **heute** (liegt im Temp-Ordner), spaetestens vor 06:55
-  morgen. Rueckweg: `rollback_gold_asb.py` im selben Ordner. Tests: Paritaet
+  -- **Stand 03.10.: noch nicht ausgefuehrt, nichts davon ist live.** Staging
+  am 03.10. auf den aktuellen Stand neu aufgebaut (Funded/FK hatten durch den
+  CTNL-Broker-TP von 19:14 neue `run_once.py`; die bleiben erhalten). Liegt im
+  Temp-Ordner -- bald ausfuehren, sonst kann der Ordner weg sein. Aendert eine
+  andere Session vorher wieder Bridge-Dateien, bricht das Skript ab (gewollt),
+  dann `restage.py` im selben Ordner laufen lassen und erneut deployen.
+  Rueckweg: `rollback_gold_asb.py` im selben Ordner. Tests: Paritaet
   266 von 266 gemeinsamen Trades identisch, Trockenlauf auf allen 4 Konten
   ok, Broker-`order_check` ok. Details: [[gold-asb-kostenvalidierung]].
   **Zur Kenntnis (FK):** bei 1,5x Range rundet FK auf 0,01 Lot ab -- real
   ~60 $ statt ~120 $ Risiko. Kein neuer Fehler, aber das Bein laeuft dort
   mit halbem Risiko. **EK:** 0,01 Lot = ~53 EUR (1,9 % der Equity).
-
-- **Positionsdeckel auf 2 gesenkt (01.10., erledigt) -- EK bleibt bei 1.**
-  P(MaxDD>6 %) faellt von 43,5 % auf 9,9 %, Rendite 40 % statt 58,6 %.
-  **Zur Kenntnis:** alle drei Konten halten gerade 3 Positionen, also eine
-  ueber dem Deckel -- neue Entries sind gesperrt, bis auf 1 abgebaut ist.
-  Die bestehenden laufen mit Broker-SL normal aus, nichts wird
-  zwangsgeschlossen. `max_hold` bleibt bei 96 h (ohne Grenze je Trade
-  besser, in der Summe schlechter).
 
 - **🟡 Beide seit Langem bekannten Fehlermuster sind in der Nacht 30.09./01.10.
   erstmals auch beim `gold_asb`-Bein aufgetreten -- vorher waren andere Beine
@@ -107,14 +115,6 @@ Bedarf vor generischem Aufräumen.
   **Offen fuer dich:** unveraendert dieselben zwei Fragen wie beim
   `str`/`float`-Eintrag unten -- nichts Neues zu entscheiden, nur zur
   Kenntnis, dass sich das Muster ausweitet.
-
-- **CTNL faehrt seit 2026-09-30 nur noch `ctnl_reversal`** (beide
-  Richtungen, Ribbon-gefiltert). `ctnl_continuation` ist auf allen drei
-  Bridges stillgelegt -- keine Position war dabei offen, es blieb nichts
-  unverwaltet zurueck. **Kein Handlungsbedarf, nur zur Kenntnis:**
-  `cont_trades` wird weiter berechnet, weil der CTNL-Kill-Switch ueber die
-  kombinierte Kurve urteilt; und `check_and_execute_continuation()` bleibt
-  in EKs Executor stehen, damit ein Wiedereinschalten eine Zeile ist.
 
 - **🔴 EK-Mindestlot durchgerechnet: 76 % des Verlusts kommen aus der
   Groessenverzerrung, nicht aus den Strategien (2026-09-30, Nutzerauftrag).**
@@ -165,17 +165,6 @@ Bedarf vor generischem Aufräumen.
   **Zu prüfen:** Telegram meldet „CTNL-Drawdown erholt“ je Konto, und im FK-Log
   erscheinen „Spike-Filter behaelt …“-Zeilen. Nebenbei unverändert offen:
   auf EK riskiert ein CTNL-Trade ~25 EUR = ~0,9 % Equity (Mindestlot, Befund 10).
-
-- **CTNL-Ribbon-Gate ist seit 2026-09-30 auf allen drei Bridges scharf.**
-  Long nur im Aufwaerts-, short nur im Abwaertstrend des MTF-EMA-Ribbons.
-  **Was du in den naechsten Wochen sehen wirst und was NICHT
-  ueberraschen darf:** rund **60 % weniger CTNL-Signale**, und kurzfristig
-  **weniger Ertrag** (2024-2026 waeren es ΣR +139,3 statt +169,3 gewesen).
-  Der Gewinn liegt in den schlechten Jahren -- Monte Carlo ueber zehn Jahre:
-  Median-MaxDD -5,63 % statt -15,50 %, Rendite +58,0 % statt +18,8 %.
-  **Offen fuer dich:** nach ein paar Wochen gegenpruefen, ob die Live-Quote
-  der verworfenen Signale zur erwarteten passt (~60 %). Sag Bescheid, wenn
-  ich dafuer eine geplante Auswertung anlegen soll.
 
 - **🔴 Der Git-Sync-Stash frisst weiterhin Session-Arbeit.** Am 30.09. war
   `strategy/backtest.py` erneut aus dem Working Tree verschwunden (lag in
@@ -305,46 +294,6 @@ Bedarf vor generischem Aufräumen.
   Beleg -- lohnt sich ein Blick in die echte Bridge-Quelle, oder reicht
   weiteres Beobachten?
 
-- **⬜ 8 verwaiste OU-Solo-Positionen: Aufräumen verworfen (Nutzerentscheid
-  2026-09-30)** — die Positionen bleiben offen und zahlen weiter Swap, das ist
-  bewusst so entschieden. Kein offener Arbeitspunkt mehr; hier nur noch als
-  Sachstand. Falls es doch wieder aufgegriffen wird: das Skript
-  `scripts/close_ou_solo_orphans_once.py` lief 9-mal in der VORSCHAU, nie mit
-  `--live`, und erreicht seit der Entfernung von TTP Konto 1 (19.09.) nur noch
-  5 der 8 Positionen — DAL, UAL und NUE auf Konto 1 sind für das Skript
-  unerreichbar, es würde „5 geschlossen" melden.
-- **🔴 CTNL-Kill-Switch laeuft nur auf FK, nicht auf Funded/EK -- nachziehen?**
-  (Fund Weekly Checkup KW39, 28.09.) FKs Standalone-Kill-Switch war vom
-  21.09. 00:04 bis 28.09. 02:37 aktiv und hielt FK aus 7 CTNL-Trades
-  (-8,74 R laut Soll/Ist) heraus. Auf demselben Bein verloren in derselben
-  Woche **IQ -2.473,94 USD** (20 Trades, 2 Gewinner) und **EK -304,65 EUR**
-  (12 Trades, 0 Gewinner). `ctnl_standalone_drawdown`/`CTNL_KILL_SWITCH`
-  kommt nur in `FKInstantFunding-MT5-Bridge/run_once.py` und im Repo-Paper-Bot
-  vor, nicht in `Funded-Portfolio-Bridge` oder `EK-Portfolio-Bridge`; das
-  Funded-Log hat keinen einzigen Kill-Switch-Eintrag. **Nichts geaendert**
-  (Funded wirkt direkt auf echtes Geld). Offen fuer dich: nachziehen, oder
-  ueber die Ribbon-Richtung (E6) loesen? Details:
-  `reports/weekly/KW39_2026_performance.md` Abschnitt 2.
-
-- **✅ ERLEDIGT 2026-09-25: beide Aufraeum-Freigaben umgesetzt.** KW38 wurde von Hand nachgebaut (`reports/weekly/KW38_2026_*.md`) und die 94 Altstashes geloescht -- vorher geprueft, dabei den faelschlich entfernten OU-Solo-Punkt gefunden und wiederhergestellt. Urspruengliche Frage:
-  **(1) KW38/2026 nachbauen?** Der Report fehlt, weil der Task am So 20.09. im
-  Standby lag (Details im Changelog vom 24.09.). Die Rohdaten sind noch da
-  (`scripts/reports/mt5_2026-W38.json`, `soll_ist_2026-W38.json`), ein
-  Nachbau ist also moeglich -- aber er zieht Bridge-/MT5-Daten fuer eine
-  Woche, die vier Tage zurueckliegt, und ist ein groesseres Stueck Arbeit.
-  Ich habe ihn NICHT angefangen. Sag Bescheid, ob du ihn willst.
-  **(2) Die 93 Altstashes loeschen?** Ich habe alle gegen den heutigen Stand
-  geprueft: **keine nicht zurueckgeholte Arbeit** drin. Sie sind reine Halde
-  und machen echte Probleme unsichtbar. `git stash clear` waere der
-  Einzeiler -- ich fasse das ohne dein Okay nicht an, weil es nicht
-  umkehrbar ist.
-  **Nicht geaendert habe ich die Systemeinstellungen**: die Windows-Wake-Timer
-  (Ursache des Ausfalls) und das deaktivierte TaskScheduler-Log liessen sich
-  nur mit Adminrechten bzw. einem Eingriff ins Energieprofil aendern. Der
-  neue Waechter im 08:00-Digest macht kuenftige Ausfaelle sichtbar, verhindert
-  sie aber nicht -- falls du die Ursache selbst beheben willst, ist der
-  Hebel "Wake-Timer zulassen" in den Energieoptionen.
-
 - **🟠 ORB-Break-Even im ALTEN Marktorder-Pfad (EK) sitzt auf dem
   SIGNAL-Preis, nicht auf dem echten Fill -- reparieren oder Pfad
   entfernen?** (Fund 2026-09-23 bei der BE-Pruefung.)
@@ -366,24 +315,6 @@ Bedarf vor generischem Aufräumen.
   in `_record_entry()` speichern (klein) oder den toten Marktorder-Pfad
   ganz rausnehmen (sauberer)?
 
-- **🟢 E6 neu bewertet: dein MTF-EMA-Ribbon als Trendrichtung schlaegt alles
-  bisher Gepruefte -- und macht die Short-Seite positiv.** Der Ribbon
-  (`ema_ribbon.py`, aus deinem Pine-Script) war nur als DEHNUNGS-Filter
-  verdrahtet, nie als Richtung. Als Richtung: short im Ribbon-Abwaertstrend
-  **Ø R +0,174** (generischer EMA-Stapel: -0,161). Walk-Forward OOS
-  **+243,6 gegen +143,4**. Monte Carlo `ribbon long-only`: MedDD **-4,80 %**,
-  **P(MaxDD>6 %) 24,2 %** statt 99,9 %, Sharpe **1,02** statt 0,25.
-  Keine Parametersuche, Script-Defaults. **Erledigt:** `ribbon-konform` ist
-  seit 2026-09-30 auf allen drei Bridges scharf (Nutzerentscheid "Ribbon
-  jetzt, Limit-Entry spaeter"). Vorbehalte bleiben: -62 % Trades, verliert in
-  starken Trendjahren, Gold-Baisse fehlt im Sample. Details: Befund 15.
-  **Nachtrag 2026-10-01 (Befund 20):** asymmetrisches Gate (long immer, short
-  gefiltert) und ein Meta-Umschalter zwischen "mit"/"ohne" Ribbon sind
-  geprueft und BEIDE schlechter -- keine Aenderung. Dabei hat sich die
-  Deutung gedreht: der Ribbon verdient sein Geld damit, die NEUTRALEN Phasen
-  auszuschliessen (-104,4 Σ R auf 443 Trades), nicht die Gegentrend-Trades
-  (-30,6 Σ R). Er ist primaer ein Trendexistenz-Filter.
-
 - **EK-Mindestlot: E5-c umgesetzt, aber der Rest der Frage steht noch.**
   `ctnl_reversal` haelt auf EK jetzt hoechstens EINE Position
   (`config.CTNL_REV_MAX_CONCURRENT = 1`) -- Beitrag des Beins von 2,59 % auf
@@ -395,79 +326,11 @@ Bedarf vor generischem Aufräumen.
   ORB-Beine (10,58) trifft -- das habe ich NICHT nachgerechnet, die Ziele
   liegen aber niedrig genug, dass eine Anhebung plausibel ist.
 
-- **Paper-Screening 2026-09-22: ist das Zumachen der einen Tuer okay?**
-  Drei Papers gesichtet (Details in
-  [[24h-renditestruktur-und-informationskette]]). Zwei Dinge beruhen auf
-  meiner Einschaetzung, nicht auf deiner Anweisung:
-  **(1)** Ich habe den naheliegenden "Europas/Asiens Close als Richtungs-Prior
-  fuer den NY-Open"-Filter **vor dem Bau verworfen** (Kinoshita: Boost +0,07 pt,
-  Vorzeichenregel 48,89 % = unter Zufall, waehrend alle anderen Legs +10,6 bis
-  +15,0 pt tragen). Spart einen Stage-Zyklus -- sag Bescheid, wenn du ihn
-  trotzdem gemessen haben willst.
-  **(2)** Delta-VIX/Overnight-Vol als ORB-Tagesfilter habe ich NICHT
-  weiterverfolgt, obwohl bisher nur der VIX-*Level* getestet wurde -- weil das
-  Paper die *Aenderung* nur fuer das Nachtfenster belegt und sie fuer die
-  US-Session selbst insignifikant ist (t=0,5). Falls du das anders siehst, ist
-  es testbar (dann aber als Risiko-Skalierung, nicht als binaerer Filter).
-  Die vier ORB-Folgetests (Anteil `session_end`-Exits, Gegenprobe zur
-  EMA-neutral-Mechanismushypothese, Zeit-Exit 15:45, EU-Feiertagscheck) stehen
-  als Vorschlag in [[ny-open-orb-sp500]], **keiner davon ist begonnen**.
-  **(3) Das EU-Open-Fenster ist am 23.09. durchgerechnet und negativ
-  abgeschlossen** ([[eu-open-renditefenster]]) -- ohne 2020 liegt der Edge
-  auf allen drei Instrumenten unter den Handelskosten, und ein Scan ueber
-  alle 42 Tagesfenster findet nirgends mehr eine Konzentration. Ich habe das
-  vorab festgelegte Abbruchkriterium angewandt und **Phase 6 bewusst nicht
-  gerechnet**. Falls du trotzdem eine Monte-Carlo-Sicht darauf willst, sag
-  Bescheid -- ich halte sie fuer nicht aussagekraeftig.
-
-*(Die folgenden vier Punkte wurden am 2026-09-23 aus `git stash@{71}` wiederhergestellt -- `git_sync_push` hatte sie am 21.09. beiseitegelegt.)*
-
-- **CTNL-Reversal-Order-Flut: Ursache gefunden UND Fix gebaut (2026-09-21) --
-  bitte gegenlesen.** `_cap_concurrent_reversals()` im Scan war ein
-  Simulations-Filter, kein Live-Gate; Funded-Portfolio-Bridge und
-  FKInstantFunding hatten keinen Deckel gegen die ECHTE Zahl offener
-  Positionen. Eingebaut ist jetzt das EK-Gate (`LEG_MAX_CONCURRENT` +
-  `_count_open_leg_positions()`, gegen den Broker gezaehlt). Flut vom 09-17
-  nachgespielt: 32 Signale -> 3 Positionen statt 32. Details +
-  Testprotokoll in `CHANGELOG.md` 2026-09-21.
-  **Im Live-Betrieb bestaetigt (2026-09-23 nachgeprueft):** am 22.09. hat das
-  Gate ueber den ganzen Tag gegriffen und den Korb sauber abgebaut (8 -> 6 ->
-  4 -> 3 offene Positionen, jedes geblockte Signal als Sammelmeldung
-  protokolliert). Der Zaehler prueft dabei wirklich gegen den Broker
-  (`_count_open_leg_positions()` -> `positions_get(ticket=)`), nicht gegen den
-  State -- die 37 (TTP) bzw. 51 (IQ) verwaisten State-Eintraege blaehen ihn
-  also NICHT auf. Offen bleiben nur deine zwei Rueckmeldungen unten.
-  **Auf meiner Annahme, nicht auf deiner Ansage:** (a) der Deckel gilt auch
-  fuer `ctnl_continuation` (1) -- das Bein ist per Konstruktion
-  single-position, der Deckel ist reine Absicherung gegen denselben
-  `data_end`-Mechanismus; (b) ein geblocktes Signal bekommt bewusst KEINEN
-  "missed"-Eintrag, wird also nach dem naechsten Exit wieder handelbar,
-  statt endgueltig verworfen zu werden. Sag Bescheid, falls du eins von
-  beidem anders willst.
-
-- **CTNL: Kostenvalidierung + Diagnose + Optimierung fertig -- vier
-  Entscheidungen E1-E4 liegen bei dir** (`projects/ctnl-kostenvalidierung.md`).
-  **E1 Kostenzahl korrigieren** (`spread_bps` 8,0 -> gemessen 0,53-2,01,
-  broker-getrennt). **E2 Regime-Filter** auf `ctnl_reversal` -- der einzige
-  Hebel, den die Optimierung gefunden hat: Monte Carlo Median MaxDD
-  -15,6 % -> -8,4 % UND Median Return +18,8 % -> +32,2 %. Vorschlag: erst
-  mitlaufen lassen (protokollieren, nicht handeln). **E3
-  `ctnl_continuation` stilllegen** -- PF 0,94 ueber 436 Trades und 10 Jahre,
-  Monte Carlo Median Return -16,4 %; keine Variante dreht das.
-  **E4 Risikokalibrierung neu ziehen** -- die dokumentierten FK-Zahlen
-  (Median MaxDD -3,5 %) stammen aus EINEM OOS-Jahr; ueber zehn Jahre liegt
-  allein das Reversal-Bein bei -15,6 %. Reihenfolge: E1-E3 vor E4.
-  **Nicht anfassen:** TP (5R sitzt auf einem flachen Plateau), SL
-  (0,5R-Stop killt 49,5 % der Gewinner), Signal-Parameter (IS-Sieger in
-  8/8 Jahren, verliert OOS), Ausfuehrungstakt (verkuerzbar, aber
-  P&L-Gewinn nicht belegt).
-
-- **Broker-History von ttp1 konnte ich nicht ziehen** -- der Zugriff auf die
-  Zugangsdaten im Bridge-Backup wurde vom Auto-Mode-Classifier blockiert.
-  Die exakte realisierte CTNL-P/L auf dem gebreachten Konto ist damit offen;
-  meine Zahlen stammen aus Bridge-Log + State + Goldkurs. **Offen fuer
-  dich:** entweder im MT5-Terminal selbst nachsehen (Konto 504069845,
-  16.-19.09., Symbol XAUUSD) oder mir die Berechtigung geben.
+- **CTNL E1 + E4 noch offen** (Rest aus `projects/ctnl-kostenvalidierung.md`;
+  E2 ist durch den Ribbon, E3 durch die Stilllegung von `ctnl_continuation`
+  erledigt). **E1:** `spread_bps` 8,0 -> gemessen 0,53-2,01, broker-getrennt
+  (steht im Code weiterhin auf 8,0). **E4:** Risikokalibrierung ueber die
+  volle Historie neu ziehen -- erst nach E1.
 
 - **OU-Modell: Ticker in S&P UND Nasdaq-100 landen auf der Variante OHNE TP --
   welche Config soll gelten?** (Fund 2026-09-23, nichts geaendert.)
@@ -500,19 +363,6 @@ Bedarf vor generischem Aufräumen.
   **Zusatzbefund:** `ou_modell` laeuft mit Faktor 4,40x statt dokumentierter
   2,20x -- soll ich es zurueckziehen? Details:
   [[ek-risiko-kalibrierung-audit]].
-
-- **✅ ERLEDIGT 2026-09-23 (Eintrag am 30.09. nachgezogen): ttp1 wurde vollstaendig ausgebaut.** Auf deinen Entscheid aus allen Systemen entfernt (Bridge-Config bereits am 19.09., dann Scripts + Reports), Challenge als abgeschlossen gewertet -- siehe CHANGELOG 2026-09-23. **Dieser Punkt stand bis heute faelschlich als offenes 🔴 im Dashboard**: die damalige Korrektur ging durch den `git_sync_push`-Stash verloren, der CHANGELOG-Eintrag ueberlebte. Der urspruengliche Text zur Dokumentation:
-
-  > 🔴 ttp1 (Echtgeld, TTP Konto 1) darf seit 2026-09-18 09:58 nicht mehr
-  > handeln -- bitte beim Anbieter klaeren. `trade_allowed=False` vom Server,
-  9 abgelehnte Entries (`10026 "AutoTrading disabled by server"`). Keine
-  eigene Regelverletzung erkennbar: Equity 94.711,78 (−2,0 % seit Kontostart,
-  Tagesverlust −0,99 %, Peak-DD −2,2 %), Kill-Switch inaktiv; das TTP-**Demo**
-  am selben Server handelt normal. 7 Positionen offen, alle mit SL. Ich habe
-  nichts geaendert. **Offen fuer dich:** TTP-Dashboard/Mail pruefen (Konto
-  gesperrt, Challenge beendet, Regel-Review?). **Offen fuer mich, auf deine
-  Freigabe:** eine Sammelwarnung "Konto darf nicht mehr handeln" einbauen --
-  heute faellt so etwas nur als einzelne Entry-Fehler auf.
 
 - **Tick-Rundung in den gemeinsamen Order-Engpass von Funded + FK — darf ich?**
   (2026-09-17, Lückenliste Punkt 1, **nicht umgesetzt**.) Heute rundet jeder
@@ -562,26 +412,6 @@ Bedarf vor generischem Aufräumen.
   je Titel ≤ 1 pro Tag), ob das offene Risiko über 8 % steigt, und ob DD/EOG
   wieder im Scan auftauchen.
   Details: [[ou-modell-kostenvalidierung]].
-- **✅ EK/OU: Max-Holding schliesst jetzt wirklich** (offen seit 2026-09-17,
-  **behoben 2026-09-23 im Logik-D-Umbau** — `manage_open_positions()` ruft
-  `_close_position(pos, "maxhold")` statt nur CRITICAL zu loggen; dazu neu der
-  MA20-Ausstieg. Der Text unten beschreibt den Stand VOR dem Umbau). Der Rueckstand ist weg -- der Nutzer hat am 23.09.
-  gegen 21:41 alle 9 ueberfaelligen Positionen von Hand geschlossen (DAL 33
-  Tage, ADI/DHI/GRMN 20, AMGN/EXPE 12, LEN/COF/GIS 11; zusammen **+20,56 EUR**,
-  am Broker als `reason=1` belegt). **Die Ursache ist unveraendert:**
-  `legs/ou_modell/executor.py::manage_open_positions()` loggt nur CRITICAL und
-  schliesst nie -- der naechste Schwung altert genauso zu, bis das jemand
-  wieder von Hand aufraeumt. Gehoert zur OU-Optimierung, nicht still geaendert. `legs/ou_modell/executor.py::
-  manage_open_positions()` loggt nur CRITICAL. Weicht vom Backtest ab und
-  verlaengert den Swap -- gehoert zur OU-Optimierung, nicht still geaendert.
-- **✅ ERLEDIGT 2026-09-30: MNST-Split abgeschlossen (Nutzerauftrag).** Die
-  −2.492,56 $ lagen auf **TTP Konto 1 (ttp1)** — genau dem Konto, das am
-  2026-09-23 auf deinen Entscheid vollstaendig ausgebaut und als abgeschlossen
-  gewertet wurde. Die Forderung gehoert damit zum abgeschriebenen Konto; eine
-  Support-Anfrage waere eine Anfrage zu einer beendeten Challenge. **Nicht
-  weiterverfolgt.** Vorgang zur Dokumentation: Tickmill buchte die Position
-  beim 2:1-Split korrekt um, TTP nicht — der alte SL loeste zum halbierten
-  Kurs aus, ohne Ausgleichsbuchung.
 
 - **🟠 Split-Schutz fehlt weiterhin — abgetrennt vom MNST-Punkt (2026-09-30).**
   Der Geldbetrag oben ist erledigt, **die Ursache nicht**: ich habe geprueft,
@@ -635,25 +465,7 @@ Bedarf vor generischem Aufräumen.
   Lastspur verfolgen (schwere Backtests nicht parallel zu den Live-Takten
   laufen lassen)? Nichts geändert.
 
-- **Lint 09-21: zwei mehrfach verlinkte, aber nie angelegte Notizen —
-  anlegen und wo?** `[[bein-matrix-ist-soll-paper]]` (referenziert von
-  `areas/bridge-infrastruktur-vergleich.md` 2x + `reports/weekly/
-  KW37_2026_education.md`) und `[[systemlandkarte]]` (referenziert von
-  denselben zwei Dateien) zeigen beide ins Leere — kein Tippfehler, beide
-  klingen nach eigenständigen, wiederholt referenzierten Konzepten (Soll-
-  Ist-Vergleich der Beine je Bridge vs. Paper-Bot bzw. eine Gesamt-
-  Systemübersicht "wo die Kette verliert"). Ob/wo diese Notizen angelegt
-  werden (`areas/` vermutlich), liegt bei dir — nicht selbst angelegt.
-  **✅ Nachtrag Lint 28.09.: beide Notizen existieren jetzt**
-  (`areas/bein-matrix-ist-soll-paper.md`, `areas/systemlandkarte.md`) — der
-  aktuelle Lint-Lauf findet 0 tote Wikilinks. Nicht geprueft, wer/wann sie
-  angelegt hat oder ob das deine urspruengliche Frage (ob/wo) beantwortet.
-  Bitte bestaetigen, dann kann der Punkt raus.
-
-
 ### Offene Aufgaben
-
-
 
 - **FK SP500 „Invalid stops“: behoben 2026-09-17** (SL aufs Tick-Raster).
   Nur noch: ersten echten SP500-Entry im FK-Log gegenlesen, dann Punkt löschen.
@@ -678,10 +490,6 @@ Bedarf vor generischem Aufräumen.
   system works" — noch nicht durch den CODE-Prozess.
 
 **Niedrig**
-- **✅ `[[ou-modell-kostenvalidierung]]` war nie tot, nur nie committet**
-  (Lint 09-21, erledigt 09-23 mit `1fc8645`). Die Notiz existierte seit dem
-  17.09. nur im Arbeitsverzeichnis — untracked, daher kein Treffer in der
-  Git-Historie. Jetzt getrackt, zusammen mit drei weiteren Research-Notizen.
 - **Statustabelle: "Zuletzt geprüft" bei `OU-Modell-ScannerHourly` ist
   26 Tage alt** (Lint 28.09., Schwelle 21 Tage; Stand: 2026-09-02).
   Reiner Alters-Hinweis aus dem Lint-Skript, kein inhaltlicher Befund —
@@ -758,7 +566,7 @@ das der Bridge-Watchdog alle 30 Min. committet.
 
 _Letzter Lint-Durchlauf: **2026-09-28** (geplant, `second-brain-lint`).
 Ergebnis: 0 tote Wikilinks (die beiden am 09-21 gefundenen Notizen
-existieren jetzt, siehe Bestätigungspunkt oben), 0 verwaiste Seiten,
+existieren jetzt, am 03.10. vom Nutzer abgehakt), 0 verwaiste Seiten,
 1 veraltete Statustabellen-Zeile (`OU-Modell-ScannerHourly`, → Niedrig);
 14 unverarbeitete Clippings unverändert seit 09-09. Verweise nach
 außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
@@ -822,6 +630,9 @@ bewusst verworfen), nicht hier für immer liegen gelassen.
   Aktienindizes/US-Treasury-Futures über den aktuellen FX/Gold-Fokus
   hinaus -- bewusst zurückgestellt, kein Termin. FX-only-Teilmenge +
   Gold-Cross-Check laufen stattdessen jetzt als eigenes Project.
+- **Geplante Auswertung der Ribbon-Verwurf-Quote** (2026-10-03, beim
+  Dashboard-Aufraeumen ohne Entscheid abgehakt): nach ein paar Wochen pruefen,
+  ob live ~60 % der CTNL-Signale vom Ribbon verworfen werden wie erwartet.
 - **Agentisches Research-System + separater Self-Learning-Bot** (2026-09-07):
   Konzept steht (Kernentscheidungen geklärt — autonome Ideen-Findung,
   Hybrid ML/RL, Alpaca Paper-Trading, erst Agentensystem dann Lern-Bot),

@@ -35,23 +35,19 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
-- **🔴 Challenge + EK: neue Gewichtung gerechnet (04.10.) -- NICHTS
-  eingespielt, drei Entscheidungen offen.** Details: CHANGELOG 04.10.
-  **TTP:** heute zu vorsichtig (P(Ziel +10 %) 63 %). Vorschlag je Trade:
-  gold_asb 0,6 % · cls 0,15 % · ctnl_rev 0,10 % · trend 0,10 % · ou 0,05 % ·
-  SP500 0,075 % · US30 0,05 % · NASDAQ 0,10 %. Ergebnis: P(Ziel) 85 % in ~127
-  Tagen, P(Bruch) 1,6 %; Walk-Forward +94 % statt +69 %.
-  **IQ:** heute nah am Optimum für „Ziel erreichen“ (P(Ziel) 95 % in 72
-  Tagen), aber P(Bruch) 8,6 %/Jahr. Mit gold_asb 0,6 % und ORB 0,10/0,10/0,05 %
-  sinkt das auf 0,9 %, bei weniger Ertrag. Wie viel Bruchrisiko willst du
-  tragen? (IQ steht real schon −3,4 % vom Hoch, Grenze −6 %.)
-  **EK:** kein Vorschlag -- Modell sagt 2026 +114 %, real −18 %. Erst die
-  Lücke Bein für Bein zerlegen?
-  **Achtung, Lücke auch auf Funded:** seit Livegang Sim TTP +0,6 / IQ +1,4 %
-  gegen real −0,65 / −2,5 %.
+- **🟡 Challenge + EK Gewichtung (04.10.): entschieden -- TTP neu
+  eingespielt, IQ und EK bleiben wie gehabt.** Details: CHANGELOG 04.10.
+  **Zu prüfen:** der erste TTP-Entry nach dem Umschalten. Gold ASB sollte
+  ~600 $ Risiko zeigen (vorher ~333 $), ou_modell ~50 $ (vorher ~167 $).
+  Danach diesen Punkt löschen.
+  **Weiter offen, mit Zahlen unterlegt:** Seit dem Livegang liegt die
+  Simulation über den echten Konten: TTP +0,6 / IQ +1,4 / EK +1,3 % gegen
+  real −0,65 / −2,5 / −18,2 %. Die Lücke ist noch nicht Bein für Bein
+  zerlegt. IQ behält bewusst P(Bruch) ~8,6 %/Jahr (Nutzerentscheid).
   **Meine Annahmen, bitte bestätigen:** BTC-Kosten, Tickmill-EURUSD 0,8
   Pips, XAG/XPT/JPY-Kosten = Engine-Defaults, Kontraktgrößen für den
-  Mindestlot.
+  Mindestlot. Außerdem: Das Modell rechnete CLS ohne Zins-Multiplikator,
+  live wirkt er weiter (Median 1,75x).
 
 - **🔴 FK: neue Gewichtung gerechnet (MC + Walk-Forward, 03.10.) -- NICHT
   eingespielt, wartet auf dich.** Gerechnet mit der Logik von heute, also inkl.
@@ -103,29 +99,6 @@ Bedarf vor generischem Aufräumen.
   ~60 $ statt ~120 $ Risiko, das Bein laeuft dort mit halbem Risiko. **EK:**
   0,01 Lot = ~53 EUR (1,9 % der Equity).
 
-- **🟡 Beide seit Langem bekannten Fehlermuster sind in der Nacht 30.09./01.10.
-  erstmals auch beim `gold_asb`-Bein aufgetreten -- vorher waren andere Beine
-  betroffen.** (Bridge Error Monitor, 01.10., 11:01-Snapshot.) (1)
-  **EK-Portfolio-Bridge** `last_error_line`: `"2026-10-01 02:21:39 ... ERROR
-  run_once: gold_asb: unerwarteter Fehler"` -- dasselbe traceback-lose Muster
-  wie der bereits dokumentierte `cls_practical: unerwarteter Fehler` vom
-  29.09. weiter oben, nur jetzt auf `gold_asb` statt `cls_practical`;
-  `recent_events` ist leer, also kein zusaetzlicher Kontext verfuegbar.
-  (2) **FKInstantFunding-MT5-Bridge** `last_error_line`: `"2026-10-01
-  02:15:06 gold_asb-Scan fehlgeschlagen: '>' not supported between instances
-  of 'str' and 'float'"` -- derselbe, weiter unten ausfuehrlich analysierte
-  `str`/`float`-Fehler (bisher `trend_pullback`/`cls_practical`), jetzt auch
-  bei `gold_asb`. Beide Faelle: **kein Folgefehler seither**, Status aktuell
-  wieder "ok" bei allen drei Bridges (saubere Equity-Zeilen im 10-11-Uhr-
-  Lauf), also vermutlich wieder selbstheilend. **Nichts geaendert** -- die
-  bereits offene Unsicherheit weiter unten (lake- vs. live-Pfad, nicht-
-  atomares `to_parquet()` in `combined_strategy/data.py::CACHE_DIR`,
-  geprueft: Zeile 133 ist weiterhin ohne temp+rename) ist dieselbe wie zuvor,
-  jetzt nur mit einem dritten betroffenen Bein als zusaetzlichem Datenpunkt.
-  **Offen fuer dich:** unveraendert dieselben zwei Fragen wie beim
-  `str`/`float`-Eintrag unten -- nichts Neues zu entscheiden, nur zur
-  Kenntnis, dass sich das Muster ausweitet.
-
 - **Gegenlesen beim naechsten CTNL-Signaltag.** Verifiziert ist der
   Code-Stand (alle fuenf Einstiegspunkte, funktionaler Test mit gefaketem
   Executor), NICHT ein echter Live-Durchlauf mit Order. Im Log sollte
@@ -144,158 +117,6 @@ Bedarf vor generischem Aufräumen.
   **Zu prüfen:** Telegram meldet „CTNL-Drawdown erholt“ je Konto, und im FK-Log
   erscheinen „Spike-Filter behaelt …“-Zeilen. Nebenbei unverändert offen:
   auf EK riskiert ein CTNL-Trade ~25 EUR = ~0,9 % Equity (Mindestlot, Befund 10).
-
-- **🟡 `'str'`/`'float'`-Fehler ist am 29.09. erneut aufgetreten -- diesmal in
-  Trend-Pullback-Scan (Funded, TTP+IQ) und CLS-Practical-Scan (FK), am Tag
-  NACH dem als behoben dokumentierten Fix vom 28.09.** (Bridge Error Monitor,
-  29.09., 23:01-Snapshot.) Beobachtet: `Funded-Portfolio-Bridge` beide Konten
-  `"2026-09-29 22:16:20 Trend-Pullback-Scan fehlgeschlagen: '>' not
-  supported between instances of 'str' and 'float'"` und erneut um 22:31:19;
-  `FKInstantFunding-MT5-Bridge` `"2026-09-29 22:17:44 cls_practical-Scan
-  fehlgeschlagen: '>' not supported between instances of 'str' and
-  'float'"` (und schon am 28.09. 18:34:22 identisch). Identischer Fehlertext
-  wie der am 28.09. dokumentierte, damals als behoben geltende Fund (Fix in
-  `data_lake/reader.py::_require_fresh()`).
-  **Nachgeprueft, warum der Fix das offenbar nicht abdeckt:** `_scan_trend_
-  pullback()`/`_scan_cls_practical()` (und alle anderen `_scan_*`) in
-  `challenge_portfolio/paper_bot.py` sowie `fk_instant_funding/paper_bot.py`
-  haben Default `source="live"` -- nur mit explizitem `source="lake"` (Code
-  der aufrufenden Bridge, liegt ausserhalb des Repos, siehe CLAUDE.md) greift
-  ueberhaupt der am 28.09. gepatchte `data_lake/reader.py`-Pfad. Ob die
-  echten Bridges `source="lake"` oder den Default `"live"` verwenden, kann
-  ich von hier nicht sehen.
-  Falls `"live"`: der Fehler kommt aus `combined_strategy/data.py::
-  fetch_timeframe()` bzw. `cls_practical/data.py`, die schon seit 09-02/03/06
-  alle fuenf OHLCV-Spalten sowohl beim Cache-Read als auch beim Frisch-Fetch
-  validieren (`validate_ohlc_numeric(..., ["Open","High","Low","Close",
-  "Volume"])`) -- dort duerfte eine korrupte Spalte eigentlich gar nicht
-  durchkommen. Auffaellig dabei: `combined_strategy/data.py::CACHE_DIR`
-  (`data_cache/combined/`) ist EIN gemeinsames Verzeichnis fuer alle drei
-  Bridges, und `df.to_parquet(path)` dort schreibt NICHT atomar (kein
-  temp+rename, anders als `data_lake/storage.py`, das genau das per Kommentar
-  ausdruecklich tut) -- zwei Bridges, die zeitgleich denselben
-  Instrument/Timeframe-Cache neu befuellen, koennten sich beim Schreiben
-  ueberschneiden. Die zeitliche Naehe der drei Fehlermeldungen (22:16, 22:17,
-  22:31) passt zu dieser Erklaerung, beweist sie aber nicht.
-  Falls `"lake"`: `data_lake/reader.py::_require_fresh()` und `data_lake/
-  ingest.py::_validate()` pruefen beide nur `["Open","High","Low","Close"]`/
-  `["open","high","low","close"]` per exaktem Spalten-Set-Match (kein
-  `Volume`) -- fuer die hier tatsaechlich betroffenen Vergleiche
-  (`mt5_trend_pullback/pipeline.py`: `df["close"] > df["ema_trend"]`,
-  `df["rsi"] > rsi_oversold`) waere `close` aber mitgeprueft, das erklaert
-  die Trend-Pullback-Faelle also NICHT direkt.
-  **Nichts geaendert** -- zu unsicher, welche der beiden Erklaerungen
-  zutrifft, um gezielt zu fixen, und beide Codepfade sind bereits mehrfach
-  gepatcht (09-02/03/06/07/28). **Offen fuer dich:** (a) weisst du, ob die
-  Funded-/FK-Bridges tatsaechlich mit `source="lake"` laufen? (b) soll ich
-  das nicht-atomare `to_parquet()` in `combined_strategy/data.py` auf
-  temp+rename umstellen (kleine, sichere Haertung, gleiches Muster wie
-  `data_lake/storage.py`, faellt in Tier 1) als vorsorgliche Massnahme, auch
-  ohne den genauen Beweis? Status jetzt wieder "ok" bei allen drei Bridges.
-
-- **🟡 EK-Portfolio-Bridge: neue, andere Fehlermeldung `cls_practical:
-  unerwarteter Fehler` -- kein `raise error[0]`/Lake-Traceback wie die
-  beiden Punkte darunter.** (Bridge Error Monitor, 29.09., 23:01-Snapshot.)
-  `last_error_line`: `"2026-09-29 22:36:22 ... ERROR run_once: cls_practical:
-  unerwarteter Fehler"`. `recent_events` enthaelt dazu keinen Traceback --
-  der einzige Eintrag dort ist weiterhin die alte, bereits dokumentierte
-  Lake-Zeile vom 28.09. 18:34:58 aus den beiden Punkten unten. Ob dieser neue
-  Fehler also derselbe Lake-Mechanismus ist (nur anders formatiert) oder
-  etwas komplett anderes, kann ich anhand der verfuegbaren Snapshot-Felder
-  nicht sagen -- mehr Text als die eine Zeile liefert der Snapshot nicht, und
-  die EK-Portfolio-Bridge-Quelle liegt ausserhalb des Repos. **Kein
-  Folgefehler seither**, Status jetzt "ok" (letzter Lauf 22:59:07, saubere
-  Equity-Zeile). Nichts geaendert. **Offen fuer dich:** falls das wiederkehrt,
-  waere der volle Traceback aus `EK-Portfolio-Bridge/logs/task_run.log` um
-  22:36:22 hilfreich, um zu sehen ob es dieselbe Lake-Ursache ist.
-
-- **🟡 EK-Portfolio-Bridge: unaufgefangener `LakeStaleDataError` um 02:36 Uhr --
-  der Daten-Lake-Fallback hat dort offenbar NICHT gegriffen.** (Bridge Error
-  Monitor, 28.09., 10:32-Snapshot.) `last_error_line`: `"2026-09-28 02:36:31
-  raise error[0]"`, direkt darüber in `recent_events` die Quellzeile
-  `f"Lake-Daten fuer {source}:{key}_{timeframe} zu alt
-  (last_success_at={entry and entry.get('last_success_at')})"` -- das ist
-  wortwörtlich die `LakeStaleDataError`-Zeile aus `data_lake/reader.py:93`
-  (`_require_fresh()`), hier als Traceback-Quelltext statt interpoliert (der
-  Watchdog sammelt offenbar Traceback-Frames ein). `raise error[0]` ist das
-  Muster aus `_call_with_timeout()` (identisch in drei Repo-Dateien, z.B.
-  `ek_portfolio/paper_bot.py:100`): ein Fehler aus einem Hintergrund-Thread
-  wird nach `join()` im Hauptthread erneut geworfen.
-  **Bedeutung:** für irgendein `(source, key, timeframe)` war der Lake-Eintrag
-  zu alt -- eigentlich sollte genau das `data_lake/reader.py::
-  with_live_fallback()` abfangen und ohne sichtbaren Fehler auf den
-  Live-Fetch ausweichen.
-  **Kann ich nicht abschliessend klären**, weil die EK-Portfolio-Bridge
-  ausserhalb des Repos läuft (siehe CLAUDE.md) -- `ek_portfolio/paper_bot.py`
-  im Repo treibt sie NICHT (das ist der pausierte Paper-Task), die Live-
-  Bridge hat vermutlich eine eigene, ähnliche Kopie dieser Scan-Logik, die ich
-  von hier nicht einsehen kann. Auffällig in der Repo-Kopie: `_scan_ctnl()`
-  hat -- anders als `_scan_gold_asb()`/`_scan_cls_practical()` -- gar keinen
-  `source`-Parameter und importiert seine vier Fetch-Funktionen immer direkt
-  (nie `with_live_fallback`-gewrapped); ob die Live-Bridge dieselbe Lücke hat,
-  kann ich nicht verifizieren, und die Statustabelle unten behauptet für EK
-  "ctnl x2 jetzt `source=\"lake\"`" -- falls das stimmt, muss die Live-Bridge
-  das anders verdrahtet haben als diese Repo-Kopie.
-  **Kein Folgefehler seit 02:36:31** -- Status jetzt "ok", der 10:32-Lauf
-  war sauber (aktuelle Equity-Zeile), also vermutlich einmalig/selbstheilend.
-  Nichts geändert. **Offen für dich:** soll ich mir (mit deinem Zugriff) die
-  tatsächliche EK-Portfolio-Bridge-Quelle ansehen, oder reicht es, das im
-  Auge zu behalten, falls es wiederkehrt?
-
-- **🟡 EK-Portfolio-Bridge: derselbe `LakeStaleDataError` ist am selben Tag
-  noch einmal aufgetreten -- die "vermutlich einmalig/selbstheilend"-
-  Einschaetzung im Bulletpunkt oben ist damit ueberholt.** (Bridge Error
-  Monitor, 29.09., 11:01-Snapshot.) Neuer `last_error_line`: `"2026-09-28
-  18:34:58     raise error[0]"`, direkt darueber in `recent_events` wieder
-  die Quellzeile `f"Lake-Daten fuer {source}:{key}_{timeframe} zu alt
-  (last_success_at={entry and entry.get('last_success_at')})"` -- exakt
-  dasselbe Muster wie beim zuerst dokumentierten Fall um 02:36:31 Uhr
-  desselben Tages (28.09.), nur ~16 Stunden spaeter. Auch hier nur ein
-  einzelner Eintrag in `recent_events`, kein Folgefehler seither, und der
-  aktuelle Status ist wieder "ok" (letzter Lauf heute 10:59:07 mit sauberer
-  Equity-Zeile) -- also erneut vermutlich selbstheilend, aber eben NICHT
-  mehr einmalig. Damit bleibt offen, ob der `with_live_fallback()`-Mechanismus
-  fuer diesen Pfad auf der Live-Bridge tatsaechlich greift (siehe Analyse im
-  Bulletpunkt oben) oder ob hier zweimal an einem Tag echte Live-Daten fuer
-  einen Scan gefehlt haben. **Nichts geaendert** -- Root Cause liegt
-  moeglicherweise in der EK-Portfolio-Bridge-eigenen Kopie der Scan-Logik
-  ausserhalb des Repos, die von hier nicht einsehbar ist (siehe CLAUDE.md).
-  **Offen fuer dich:** dieselbe Frage wie oben, jetzt mit einem zweiten
-  Beleg -- lohnt sich ein Blick in die echte Bridge-Quelle, oder reicht
-  weiteres Beobachten?
-
-- **CTNL E1 + E4 noch offen** (Rest aus `projects/ctnl-kostenvalidierung.md`;
-  E2 ist durch den Ribbon, E3 durch die Stilllegung von `ctnl_continuation`
-  erledigt). **E1:** `spread_bps` 8,0 -> gemessen 0,53-2,01, broker-getrennt
-  (steht im Code weiterhin auf 8,0). **E4:** Risikokalibrierung ueber die
-  volle Historie neu ziehen -- erst nach E1.
-
-- **Tick-Rundung in den gemeinsamen Order-Engpass von Funded + FK — darf ich?**
-  (2026-09-17, Lückenliste Punkt 1, **nicht umgesetzt**.) Heute rundet jeder
-  Order-Pfad selbst oder gar nicht: Funded-Stop-Orders ja, Funded-Market-
-  Orders **nein**, FK-Market-Orders nur den SL. Das ist derzeit harmlos, weil
-  über den ungerundeten Pfad nur Symbole mit regulärem Raster laufen — die
-  einzige Ausnahme `SPX500.gbe` (Tick 0,1 bei 2 Nachkommastellen) geht auf
-  Funded über die rundenden Stop-Orders. Beim nächsten Umbau (z. B. Stop-Orders
-  aus, neues Symbol) geht die Lücke still wieder auf. Vorschlag:
-  `_send_order()` rundet `sl`/`tp`/`price` selbst, idempotent (Werte auf dem
-  Raster bleiben unverändert, also No-Op für die schon rundenden Pfade), SL
-  von der Position weg. **Mein Versuch wurde vom Auto-Mode-Classifier
-  blockiert — und zwar mittendrin:** das erste von zwei Edits ging durch, der
-  nötige `import math` nicht. Ich habe die Änderung daraufhin vollständig
-  zurückgenommen, `py_compile` + Log-Prüfung sauber, kein Lauf betroffen.
-  Wenn du willst, dass ich es baue: kurze Freigabe hier, und ich verifiziere
-  per `order_check` (legt keine Order ins Buch) gegen `SPX500.gbe`.
-- **Lake-Frischefenster: anpassen oder so lassen?** (2026-09-17, Lückenliste
-  Punkt 4, **nicht umgesetzt**, weil sich die Voraussetzung verschoben hat.)
-  Meine Annahme vom 09-14 war „35 Min. ist zu knapp". Belegt ist inzwischen,
-  dass die Stale-Fenster dort liegen, wo Ingest **und** Bridge gleichzeitig
-  ausfielen — springende Windows-Zeitzone (siehe Punkt darunter) und Schlaf.
-  Ein breiteres Fenster würde das verdecken, nicht beheben. Vertretbar bleibt
-  eine **Staffelung nach Timeframe**: M5/M15 bei 35 Min. lassen (timing-
-  kritisch), H1/H4 lockern (dort ist ein 40 Minuten alter Balken derselbe
-  Balken). Empfehlung: erst die Zeitzonen-Frage klären, dann eine Woche
-  Fallback-Zählung abwarten (`soll_ist.py` liefert den Vergleich).
 
 - **🟢 OU-Modell: Logik D läuft live, Wiedereinstiegs-Drehtür geschlossen**
   (Umbau 23.09., Fix 30.09.). Stop 8 Sigma, kein Breakeven, kein TP, Ausstieg
@@ -333,35 +154,6 @@ Bedarf vor generischem Aufräumen.
   muss anstehende Splits der gehaltenen Titel VORHER melden -- braucht eine
   Datenquelle fuer Split-Termine. Wird als eigenes kleines Vorhaben geplant.
 
-- **Kurztakt-Task-Ausfälle (1–2 h, 09-07 bis 09-11) beobachten bis ~2026-09-24**
-  (Nutzerentscheid 2026-09-17). Die Ausfälle lagen VOR den Zeitzonen-Sprüngen
-  (ab 09-15), Ursache also offen. Tritt nach dem Zeitzonen-Fix erneut eine
-  Lücke auf: Task-Scheduler-Verhalten gezielt instrumentieren. Sonst löschen.
-  **Zwischenstand 2026-09-23 (gemessen):** 1.275 Fast-Läufe seit 09-17, **keine
-  einzige Lücke** außer der Wochenendpause (Fr 18.09. 23:58 -> Mo 21.09. 00:03)
-  und den 65 Min am 17.09. 04:13-05:18, also am Fix-Tag selbst. Läuft morgen
-  ohne neue Lücke durch, kann der Punkt weg.
-  **🟠 Nachgemessen 2026-09-24 (Stichtag): der Punkt kann NICHT weg -- am
-  23.09. selbst gab es eine Lücke.** `EK-Portfolio-Bridge-Fast` (2-Min-Takt)
-  fehlt am 23.09. von **09:48:13 bis 10:21:07 = 33 Min., ~16 ausgefallene
-  Läufe**. Der 09:48-Lauf endete sauber (`FAST-Task beendet`), danach hat der
-  Task Scheduler schlicht nicht mehr gefeuert -- **kein hängender Prozess,
-  kein Absturz, keine Log-Zeile**. Die Zwischenstands-Messung vom 23.09. hat
-  das nicht gesehen (vermutlich vor 09:48 gezogen). **Nicht maschinenweit:**
-  die EK-Slow-Lane lief im selben Fenster normal (09:59, 10:14), ebenso die
-  5-Min-Lanes von Funded und FK (09:53/09:58/10:03/10:08/10:13) -- **nur der
-  2-Min-Task fiel aus**. **Ein Nebenbefund als Spur:** der Funded- UND der
-  FK-Fast-Lauf um 10:18 brauchten statt 8 Sek. rund **2 Min.** (erste
-  Log-Zeile erst 10:20:11 bzw. 10:20:09) -- ein Lastberg auf der Maschine
-  genau am Ende des Lücken-Fensters, und am Vormittag des 23.09. liefen die
-  CTNL-Ribbon-Backtests. **Heute (24.09.) bis 10:10: 306 Läufe, lückenlos.**
-  Damit ist die 09-11-Ursache weiter offen und der vorab vereinbarte
-  Abschluss hinfällig. **Offen für dich:** gezielt instrumentieren (wie am
-  17.09. vereinbart -- Task-Scheduler-Event-Log `TaskScheduler/Operational`
-  auf `Missed`/`LaunchFailure` für die Fast-Tasks auswerten), oder erst die
-  Lastspur verfolgen (schwere Backtests nicht parallel zu den Live-Takten
-  laufen lassen)? Nichts geändert.
-
 ### Offene Aufgaben
 
 - **FK SP500 „Invalid stops“: behoben 2026-09-17** (SL aufs Tick-Raster).
@@ -380,6 +172,21 @@ Bedarf vor generischem Aufräumen.
   CTNL; für Tagessignale wie OU nicht sinnvoll. Bis dahin begrenzen nur
   `volume_max` und der Margin-Deckel.
 
+- **🟠 Untersuchung: Lake veraltet → Läufe hängen bis ~1 h → Fehlerzeilen**
+  (Nutzerentscheid 04.10., fasst sechs alte Einzelpunkte zusammen: str/float-
+  Fehler, LakeStaleDataError ×2, „unerwarteter Fehler“ ×2, Kurztakt-Ausfälle,
+  Lake-Frischefenster). **Spur:** jede grössere Lücke im EK-Fast-Takt seit
+  24.09. (28.09. ~8 h, 29.09. ~1 h, 01.10. ~1 h) endet ZEITGLEICH mit einer
+  dieser Fehlerzeilen. 01.10.: Lake GOLD_M15 ab ~12:25 veraltet, Live-Fallback
+  (Dukascopy) ~19 s je Versuch in Schleife, Fast-Lauf 12:20 hing eine Stunde.
+  **Offen:** warum hängt der Fast-Lauf (er nutzt MT5-Daten, nicht den Lake)?
+  Warum fällt der Ingest aus? Danach: Frischefenster nach Timeframe staffeln?
+  Geklärt: Funded läuft mit `source="lake"`. Schon gehärtet 04.10.: Cache-
+  Schreiben atomar (`cbce4434`).
+- **CTNL E1 + E4 (Research):** E1 `spread_bps` 8,0 → gemessen 0,53-2,01,
+  broker-getrennt (steht im Code weiter auf 8,0); danach E4 Risikokalibrierung
+  über die volle Historie. E2/E3 erledigt. Details
+  `projects/ctnl-kostenvalidierung.md`.
 - **CTNL-Kill-Switch-Schwelle neu kalibrieren** (Nutzerentscheid 04.10.): die
   −6,6 %/−3,3 % stammen von der ungefilterten Strategie; auf dem heute
   gehandelten Satz (Ribbon + Spike-Filter) neu ziehen. Research-Auftrag, gilt

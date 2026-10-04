@@ -9,6 +9,50 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-04** [Funded-Portfolio-Bridge + FK / LIVE] **Zentrale Tick-Rundung
+  in `_send_order()`** (Nutzerfreigabe, Lückenliste 17.09. Punkt 1). Neue
+  `_round_request_to_tick()` in beiden `executor.py`: sl/tp/price jeder
+  Order-Anfrage aufs `trade_tick_size`-Raster, konservativ (SL/TP von der
+  Position weg, Buy-Stop auf, Sell-Stop ab, sonst nächster Tick), idempotent
+  (für schon rundende Pfade No-Op). SLTP-Änderungen holen die Richtung aus
+  `positions_get`. Wirft die Rundung, geht die Order unverändert raus (wie
+  bisher). Änderungen werden geloggt („Tick-Rundung …“). Tests offline mit
+  MT5-Attrappe, je Bridge 8/8 (Long/Short, Stop-Orders, Idempotenz, SLTP,
+  unbekanntes Symbol, SL<=0 weiter abgelehnt, Rundungsfehler, Schliessen).
+  Kein order_check (Wochenende), erster echter Lauf Mo 05.10. Backups
+  `<Bridge>/_backup_20261004_tick/`. Bridge-Dateien nicht git-getrackt.
+
+- **2026-10-04** [Repo / alle Live-Bridges] **Daten-Cache atomar schreiben**
+  (`cbce4434`, Nutzerfreigabe). `combined_strategy/data.py` bekommt
+  `write_cache_atomic()` (Temp-Datei je Prozess + `os.replace`; bei
+  Windows-Sperre durch einen Leser bleibt die alte Datei, kein Fehler), genutzt
+  an der einen Stelle dort und an den drei Stellen in `cls_practical/data.py`.
+  Verdacht beim wiederkehrenden str/float-Fehler: geteilter `data_cache`, zwei
+  Bridges schreiben gleichzeitig. Keine Logikänderung.
+  Dashboard: sechs Fehler-/Lake-/Takt-Punkte zu EINER Untersuchung
+  zusammengeführt (Spur: Fast-Takt-Lücken enden zeitgleich mit den
+  Fehlerzeilen); CTNL E1/E4 als Research-Aufgabe verschoben.
+
+- **2026-10-04** [Funded-Portfolio-Bridge / TTP] **Neue TTP-Gewichtung
+  eingespielt; IQ und EK bleiben unveraendert** (Nutzerentscheid nach der
+  MC/WF-Rechnung, Eintrag unten). Neues Feld
+  `config.py::AccountConfig.leg_risk_pct` (Risiko je Trade direkt in Anteilen
+  der Equity, je Basis-Bein). Ist ein Bein eingetragen, ersetzt es
+  `capital_weight x LEG_RISK_PCT` inkl. CTNL-300k-Boden. Der 1-%-Deckel und
+  der CLS-Zins-Multiplikator wirken weiter. Ausgewertet an allen drei
+  Sizing-Stellen in `run_once.py`: `_process_leg` (auch Fast-Lane), ORB-Pending,
+  Gold-ASB-Pending.
+  **TTP je Trade:** gold_asb 0,333 -> **0,60 %**, cls 0,167 -> 0,15 %,
+  ctnl_reversal 75 $ -> 0,10 %, trend_pullback 0,083 -> 0,10 %, ou_modell
+  0,167 -> **0,05 %**, ORB SP500/US30/NASDAQ je 0,056 -> 0,075 / 0,05 / 0,10 %.
+  IQ hat kein `leg_risk_pct`, rechnet also wie bisher (gegengeprueft: alle
+  8 Beine unveraendert).
+  **Geprueft:** offline, ohne Brokerkontakt. Importe und Kompilation ok,
+  Bein-Schluessel an allen Pfaden. **Noch kein echter Lauf.**
+  Backup `Funded-Portfolio-Bridge/_backup_20261004_ttp_gewichte/` (mit
+  SHA256SUMS). Bridge-Dateien sind nicht git-getrackt. Wirkt ab dem
+  naechsten Lauf (Sonntagabend), nur auf neue Entries.
+
 - **2026-10-04** [Git / Dashboard] **39 Alt-Stashes geloescht** (`git stash
   clear`, Nutzerfreigabe). Vorher geprueft: nur Logs, Scanner-Ausgaben
   (`scanner_last_run.json`, `ou_exit_levels.csv` -- inzwischen getrackt) und

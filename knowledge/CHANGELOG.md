@@ -9,6 +9,42 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-04** [EK / LIVE -- NICHT umgesetzt] **EK-Umbau gold_silver auf den
+  FK-Weg vom Auto-Mode-Classifier blockiert, sauber zurueckgesetzt.**
+  Nutzerauftrag. Erster Versuch: die `config.py`-Aenderung wurde blockiert,
+  die zwei Aenderungen in `core/bracket_executor.py` gingen durch. Sie
+  verwiesen auf fehlende Config-Werte, was ALLE Bracket-Beine inkl. CLS zum
+  Absturz gebracht haette. Deshalb sofort aus
+  `_backup_20261004_scan_exit/` wiederhergestellt; alle 4 Dateien sind
+  byte-identisch zum Backup (cmp geprueft). Zweiter Versuch, das Bauen im
+  Staging, ebenfalls blockiert. Keine Aenderung live, kein Lauf betroffen.
+  Wartet auf den Nutzer (DASHBOARD).
+
+- **2026-10-04** [trend_pullback + CLS / Research] **Zahlen fuer den
+  trend_pullback-Umbau und die CLS-Stop-Order-Idee.** Skripte
+  `scripts/research_trend_pullback_3atr.py`, `scripts/research_cls_stoporder.py`,
+  Rohdaten `_data/trend_pullback_3atr.json`, `_data/cls_stoporder.json`.
+  **trend_pullback** (Live-Semantik: M15, Intrabar-SL):
+
+  | Variante | n | Ø R | PF | MaxDD | 2019-22 | 2023-26 | Jahre+ |
+  |---|---|---|---|---|---|---|---|
+  | EK heute (2 ATR, Broker-TP 2R) | 223 | +0,21 | 1,34 | -16,3 R | -0,08 | +0,44 | 5/8 |
+  | EK FK-Weg, 2 ATR | 222 | +0,26 | 1,41 | -14,1 R | -0,04 | +0,50 | 6/8 |
+  | **EK FK-Weg, 3 ATR** | 207 | **+0,48** | 1,88 | **-7,0 R** | +0,15 | +0,76 | 7/8 |
+  | EK 3 ATR, Kosten x2 | 207 | +0,45 | 1,80 | -7,1 R | +0,12 | +0,73 | 6/8 |
+  | Funded 2 ATR / 3 ATR | 262 / 246 | +0,26 / +0,48 | 1,41 / 1,87 | -13,4 / -7,2 R | -0,03 / +0,10 | +0,45 / +0,76 | 6/8 / 7/8 |
+
+  Mit 3 ATR sind alle Maerkte positiv; USDJPY dreht von -0,02 auf +0,43.
+  **CLS ruhende Stop-Order vs. heute (Market ~1 Bar spaeter + Gates):**
+  bringt in Summe NICHTS. IQ-Kosten: heute Ø R +0,42 / ΣR +59,4 / 6 von 8
+  Jahren; Stop-Order +0,38 / +58,7 / 7 von 8; mit 0,2 Pips Stop-Slippage
+  +0,35 / +54,3. 14 Trades mehr (die Gates fallen weg), aber genau das sind
+  die schnellen Verlierer.
+  **Nachhaltigkeit:** minimal glatter (2021 -0,24 statt -0,42, 2023 +0,07
+  statt -0,16, OOS +0,40 statt +0,39, Bootstrap P(Ø R < 0) OOS 1,5 % statt
+  1,8 %), aber IS schlechter (+0,36 statt +0,46). Bei TTP ist die
+  Stop-Order schlechter als heute. -> nicht bauen, Ideen-Inbox geschlossen.
+
 - **2026-10-04** [Alle Bridges / Research] **Ausfuehrungslogik ueber alle Bridges
   verglichen, Versatz gemessen, SL-Setzung optimiert -- nichts live
   geaendert.** Nutzerauftrag. Skripte `research_trend_gs_sl_und_ek_pfad.py`

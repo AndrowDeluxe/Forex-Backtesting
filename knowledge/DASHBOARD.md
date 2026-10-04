@@ -77,15 +77,24 @@ Bedarf vor generischem Aufräumen.
 
 - **🟠 Ausführungslogik über alle Bridges + SL-Setzung (04.10.) -- zwei
   Entscheidungen offen.** Details: CHANGELOG 04.10.
-  **(1) EK gold_silver/trend_pullback auf den FK-Weg umstellen?** EK setzt
-  einen Broker-TP bei 2R und hat keinen R-Detektor. Das kostet bei gold_silver
-  ~0,2 R je Trade (+0,6 statt +0,83), auf einem Bein mit 3,5 % Risiko je
-  Trade. FK-Weg = Ziel per Scan schließen, also aktive Exit-Verwaltung in
-  `core/bracket_executor.py`; dazu der R-Detektor wie bei CLS. Mittlere
-  Code-Änderung an echtem Geld.
-  **(2) trend_pullback-Stop 2,0 → 3,0 ATR?** Der Walk-Forward wählt ab 2022
-  durchgehend 3,0, OOS +34,8 R. Das Bein läuft live auf EK (2,2 %/Trade)
-  und TTP/IQ. Ein Regime-Bein bleibt es trotzdem (2021/22 negativ).
+  **(1) EK gold_silver/trend_pullback auf den FK-Weg umstellen -- vom Nutzer
+  beauftragt 04.10., Umsetzung vom Auto-Mode-Classifier BLOCKIERT.**
+  Beim ersten Versuch kamen 2 von 3 Änderungen durch; ich habe sofort auf das
+  Backup zurückgesetzt. EK ist byte-identisch zum Stand vor dem Umbau (Backup
+  `EK-Portfolio-Bridge/_backup_20261004_scan_exit/`). Auch das Bauen im
+  Staging-Ordner wurde blockiert. **Du entscheidest:** Freigabe erteilen
+  oder selbst umsetzen. Geplant: `config.SCAN_EXIT_LEGS = {"gold_silver"}`
+  + `BRACKET_MAX_CONSUMED_R = 0.50`. In `core/bracket_executor.py` den
+  R-Detektor, kein Broker-TP für diese Beine, neu
+  `manage_scan_exits()`: schließt, sobald eine nach dem Entry geschlossene
+  H1/H4-Kerze jenseits des Ziels schließt. Aufruf in `run_once_fast.py` vor
+  den Entries, `signal_risk` in `run_once.py`.
+  **(2) trend_pullback 2,0 → 3,0 ATR + FK-Weg -- Zahlen liegen vor, wartet
+  auf deine Freigabe:** EK Ø R +0,21 → **+0,48**, MaxDD −16,3 → **−7,0 R**,
+  2019-22 −0,08 → +0,15, 7/8 Jahre positiv, alle 4 Märkte positiv, bei
+  doppelten Kosten +0,45. Funded +0,26 → +0,48. Vorbehalt: 3,0 ATR stammt
+  aus einer Gitterwahl. Der Walk-Forward bestätigt sie (OOS +34,8 R), aber
+  2021/22 bleiben ~0.
   **Bestätigt, nichts zu tun:** gold_silver-Stop 2,0 ATR (Walk-Forward jedes
   Jahr 2,0). Funded/FK im allgemeinen Pfad baugleich.
 
@@ -382,12 +391,9 @@ außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
 
-- (04.10.) **CLS als ruhende Stop-Order am Trigger-Level** statt Market ~3
-  Min. nach Bar-Schluss: Die Engine füllt intrabar am Trigger-Level, live
-  kommt der Einstieg eine Bar später. Gold ASB und ORB haben genau so ihren
-  Versatz auf 0 gebracht. CLS ist das letzte Market-Bein, bei dem der Versatz
-  nachweislich Edge kostet (Memory `cls_entry_lag_dominates_costs`). Erst
-  prüfen, ob das Level vor dem Ausbruch feststeht.
+- (04.10.) ~~CLS als ruhende Stop-Order~~ -- **am selben Tag gerechnet und
+  verworfen** (CHANGELOG 04.10.): Ø R sinkt sogar, ΣR gleich. Die heutigen
+  Gates filtern die schnellen Verlierer, die eine Stop-Order mitnehmen würde.
 
 Kurz einfangen, was gerade auftaucht, ohne das aktuelle Thema zu verlassen —
 wird bei Gelegenheit einsortiert (Offene Aufgaben, PARA-Struktur, oder

@@ -9,6 +9,46 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-04** [EK-Portfolio-Bridge / Risiko] **Nutzerentscheide, nichts am
+  Code geaendert:** (1) Mindestlot-Anhebung wird bewusst akzeptiert (Weg 3),
+  `ctnl_reversal` bleibt auf EK, obwohl es dort ~46x seines Ziels riskiert.
+  (2) `ou_modell` bleibt bei Faktor 4,40x. (3) Hebel bleibt bei 1,2x
+  (Entscheid 23.09., Ein-Jahres-Horizont) -- die Dashboard-Frage "welcher
+  Horizont" war seit 23.09. beantwortet und nur nicht geschlossen. Vier
+  EK-Risiko-Eintraege aus dem Dashboard entfernt; die offene Nachrechnung
+  cls/ou/ORB auf Mindestlot-Anhebung entfaellt damit.
+
+- **2026-10-04** [Challenge + EK / Research] **Neue Gewichtung per Monte Carlo
+  + Walk-Forward fuer TTP, IQ und EK gerechnet -- NICHTS eingespielt; EK-Ergebnis
+  nicht belastbar.** Nutzerauftrag, Plan `hidden-spinning-possum.md`.
+  Skripte `scripts/research_live_legs.py` (Trade-Listen 2019-2026 je Broker mit
+  echter Ausfuehrung, neu: trend_pullback, gold_silver, btc_ema_cross, ou_modell
+  Logik D) und `scripts/research_challenge_ek_gewichtung_mc_wf.py` (Mindestlot im
+  Optimierer, multiplikative Pfade, TTP-Tagesgrenze). Rohdaten
+  `_data/challenge_ek_gewichtung_mc_wf.json`, Trades
+  `portfolio_construction/results/live_trades_{ttp,iq,tickmill}_2019_2026.csv`.
+  **TTP** (heute: MC P(Bruch) 0 %, P(Ziel +10 % vor Bruch) 63 %, Median 179 Tage
+  -- zu vorsichtig). Kriterium A (Ertrag unter P(Bruch) <= 1 %): gold_asb 0,6 %,
+  cls 0,15 %, ctnl_rev 0,10 %, trend_pullback 0,10 %, ou 0,05 %, SP500 0,075 %,
+  US30 0,05 %, NASDAQ 0,10 % je Trade -> P(Ziel) 85 % in Median 127 Tagen,
+  P(Bruch) 1,6 %. WF OOS 2021-26: Σ +93,6 % gegen heute +69,1 %, 0 Bruchjahre.
+  Kriterium B (max. P(Ziel)): P(Ziel) 94 %, aber P(Bruch) 7 %, Ereignis-Sim
+  Bruch 21.08.2023, 1 WF-Bruchjahr -- verworfen.
+  **IQ** (heute: P(Bruch) 8,6 %/Jahr, P(Ziel +8 %) 94,6 % in 72 Tagen). WF: heute
+  schlaegt beide Optimierungen (Σ +157 % gegen A +103 % / B +127 %, B mit 2
+  Bruchjahren). A senkt P(Bruch) auf 0,9 % (gold_asb 0,6 statt 0,67 %, ORB
+  0,10/0,10/0,05 statt je 0,11 %, sonst wie heute) bei Median +19 % statt +25 %.
+  **EK -- nicht belastbar:** Optimum am Rasterrand (gold_asb/btc/gold_silver je
+  5 %), Modell 2026 mit heutiger Gewichtung +114 %.
+  **Gegenprobe gegen die echten Konten seit Livegang (Modell zu optimistisch):**
+  TTP Sim +0,6 % / real -0,65 %, IQ +1,4 % / real -2,5 %, EK +1,3 % / real
+  **-18,2 %**. Die EK-Luecke stammt vermutlich ueberwiegend aus inzwischen
+  geaenderten Live-Zustaenden (CTNL-Deckel 3 + Waisen, continuation bis 30.09.,
+  OU alte Logik bis 23.09., Mindestlot-Anhebung) -- nicht zerlegt.
+  **ANNAHMEN:** BTC-Kosten (0,1 %/Seite + 10 bps + 15 % p.a. Swap), Tickmill-
+  EURUSD 0,8 Pips RT, XAG/XPT/JPY-Kosten = Engine-Defaults, Kontraktgroessen fuer
+  den Mindestlot (XAG 5000 oz, Aktien 1 Stueck), USD->EUR 0,855.
+
 - **2026-10-04** [Funded-Portfolio-Bridge / State] **104 verwaiste
   `ctnl_reversal`-Eintraege auf `closed` gesetzt** (Nutzerentscheid, Dashboard-
   Durchgang). TTP 42, IQ 62 Eintraege standen auf `placed`, obwohl die Position

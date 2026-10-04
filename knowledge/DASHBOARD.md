@@ -35,6 +35,24 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **🔴 Challenge + EK: neue Gewichtung gerechnet (04.10.) -- NICHTS
+  eingespielt, drei Entscheidungen offen.** Details: CHANGELOG 04.10.
+  **TTP:** heute zu vorsichtig (P(Ziel +10 %) 63 %). Vorschlag je Trade:
+  gold_asb 0,6 % · cls 0,15 % · ctnl_rev 0,10 % · trend 0,10 % · ou 0,05 % ·
+  SP500 0,075 % · US30 0,05 % · NASDAQ 0,10 %. Ergebnis: P(Ziel) 85 % in ~127
+  Tagen, P(Bruch) 1,6 %; Walk-Forward +94 % statt +69 %.
+  **IQ:** heute nah am Optimum für „Ziel erreichen“ (P(Ziel) 95 % in 72
+  Tagen), aber P(Bruch) 8,6 %/Jahr. Mit gold_asb 0,6 % und ORB 0,10/0,10/0,05 %
+  sinkt das auf 0,9 %, bei weniger Ertrag. Wie viel Bruchrisiko willst du
+  tragen? (IQ steht real schon −3,4 % vom Hoch, Grenze −6 %.)
+  **EK:** kein Vorschlag -- Modell sagt 2026 +114 %, real −18 %. Erst die
+  Lücke Bein für Bein zerlegen?
+  **Achtung, Lücke auch auf Funded:** seit Livegang Sim TTP +0,6 / IQ +1,4 %
+  gegen real −0,65 / −2,5 %.
+  **Meine Annahmen, bitte bestätigen:** BTC-Kosten, Tickmill-EURUSD 0,8
+  Pips, XAG/XPT/JPY-Kosten = Engine-Defaults, Kontraktgrößen für den
+  Mindestlot.
+
 - **🔴 FK: neue Gewichtung gerechnet (MC + Walk-Forward, 03.10.) -- NICHT
   eingespielt, wartet auf dich.** Gerechnet mit der Logik von heute, also inkl.
   ORB-Storno bei Gegenbruch und CTNL-Broker-TP. Die heutige Gewichtung hat
@@ -107,36 +125,6 @@ Bedarf vor generischem Aufräumen.
   **Offen fuer dich:** unveraendert dieselben zwei Fragen wie beim
   `str`/`float`-Eintrag unten -- nichts Neues zu entscheiden, nur zur
   Kenntnis, dass sich das Muster ausweitet.
-
-- **🔴 EK-Mindestlot durchgerechnet: 76 % des Verlusts kommen aus der
-  Groessenverzerrung, nicht aus den Strategien (2026-09-30, Nutzerauftrag).**
-  Empirisch aus den echten Deals KW38+KW39: Ist **-669,48 EUR**, bei den
-  eigentlich gewollten Zielgroessen waeren es **-161,30 EUR** -- Differenz
-  **-508 EUR**, davon **-397 EUR allein `ctnl_reversal`** (19 Ausstiege,
-  Faktor 51x ueber Ziel). Auf ~3.389 EUR Startequity: -19,75 % statt -4,76 %.
-  **Noetige Kontogroesse, damit kein Bein mehr angehoben wird:**
-  `ctnl_reversal` **143.787 EUR** (bindend), `ctnl_continuation` 12.432,
-  `ou_modell` 8.161, `gold_asb` 2.057, ORB 61-403. **Ohne `ctnl_reversal`
-  sinkt die Anforderung auf 12.400 EUR**, ohne beide CTNL-Beine auf ~8.200.
-  **Offen fuer dich, drei Wege** (Details in [[ek-risiko-kalibrierung-audit]]):
-  (1) Konto auf ~12.400 bringen und `ctnl_reversal` streichen; (2) die
-  CTNL-Beine auf EK abschalten und den Rest weiterlaufen lassen; (3) alles
-  lassen und die invertierte Hierarchie akzeptieren. **Ich habe nichts
-  geaendert.** Einschraenkung: die Spalte "bei Zielgroesse" ist keine
-  erreichbare Alternative -- dort wuerden die Beine auf 0 Lot runden und gar
-  nicht handeln, genau deshalb gibt es die Anhebung seit 10.09.
-
-- **EK: der Ribbon hilft, aber die Mindestlot-Anhebung bleibt das
-  dominante Risiko.** Backtest 2024-heute je Konto: die drei Funded-Konten
-  liegen mit **P(MaxDD>6 %) = 0,0 %** komfortabel innerhalb ihrer Grenze
-  (ttp -0,76 %, iqmarkets -1,52 %, FK -1,15 % Median-Drawdown). **EK
-  nominal -0,57 %, EK REAL aber -14,00 %** mit P(>6 %) = 99,4 % -- weil das
-  kleinste XAUUSD-Lot 0,86 %/Trade riskiert statt der vorgesehenen 0,019 %
-  (Faktor 46, Befund 10). Der Ertrag (+156,8 %) ist das Spiegelbild davon.
-  **Offen fuer dich:** EK hat keine harte DD-Grenze, das ist also zulaessig
-  -- willst du es so? Die Alternativen stehen in E5 (Anhebung fuer CTNL
-  abschalten = Bein verstummt auf EK, oder CTNL-Risiko anheben bis das Ziel
-  ueber dem Mindestlot liegt). Ich habe nichts geaendert.
 
 - **Gegenlesen beim naechsten CTNL-Signaltag.** Verifiziert ist der
   Code-Stand (alle fuenf Einstiegspunkte, funktionaler Test mit gefaketem
@@ -306,17 +294,6 @@ Bedarf vor generischem Aufräumen.
   in `_record_entry()` speichern (klein) oder den toten Marktorder-Pfad
   ganz rausnehmen (sauberer)?
 
-- **EK-Mindestlot: E5-c umgesetzt, aber der Rest der Frage steht noch.**
-  `ctnl_reversal` haelt auf EK jetzt hoechstens EINE Position
-  (`config.CTNL_REV_MAX_CONCURRENT = 1`) -- Beitrag des Beins von 2,59 % auf
-  ~0,86 % der Equity. Die Mindestlot-Anhebung bleibt wie von dir entschieden.
-  **Weiterhin offen fuer dich:** (a) `ctnl_continuation` riskiert ebenfalls
-  das 14-fache seines Ziels und ist NICHT gedeckelt (es ist per Konstruktion
-  single-position, der Faktor bleibt aber); (b) ob dasselbe Muster
-  `cls_practical` (Ziel 19,40 EUR), `ou_modell` (10,77) und die drei
-  ORB-Beine (10,58) trifft -- das habe ich NICHT nachgerechnet, die Ziele
-  liegen aber niedrig genug, dass eine Anhebung plausibel ist.
-
 - **CTNL E1 + E4 noch offen** (Rest aus `projects/ctnl-kostenvalidierung.md`;
   E2 ist durch den Ribbon, E3 durch die Stilllegung von `ctnl_continuation`
   erledigt). **E1:** `spread_bps` 8,0 -> gemessen 0,53-2,01, broker-getrennt
@@ -335,18 +312,6 @@ Bedarf vor generischem Aufräumen.
   exakt die einzigen zwei der 21 EK-Positionen ohne TP. **Offen fuer dich:**
   soll bei doppelten Tickern die S&P-Zeile (mit validiertem TP) gewinnen, oder
   ist "kein TP" die gewollte konservative Variante?
-
-- **🔴 EK-Hebel: welcher Zeithorizont soll gelten?** (2026-09-23, komplette
-  Nachrechnung, nichts geaendert). Die 7,8 % der Kalibrierung und meine 33,9 %
-  sind beide richtig -- verschiedene Horizonte: 40 % Drawdown reissen binnen
-  1 Jahr 3,6 %, binnen 2 Jahren 7,8-9,8 % (= die dokumentierte Zahl), ueber die
-  volle 6-Jahres-Historie 39,3 %. **Faehrst du EK ueber Jahre, ist die hohe
-  Zahl die relevante** -- ein 20-%-Rueckgang ist dann praktisch sicher
-  (P = 100 %). Staffel: 100 % Hebel -> CAGR 228 %, P(DD>40 %) 39,3 % | 85 % ->
-  179 %, 17,9 % | **70 % -> 136 %, 4,6 %** | 60 % -> 111 %, 1,1 %.
-  **Zusatzbefund:** `ou_modell` laeuft mit Faktor 4,40x statt dokumentierter
-  2,20x -- soll ich es zurueckziehen? Details:
-  [[ek-risiko-kalibrierung-audit]].
 
 - **Tick-Rundung in den gemeinsamen Order-Engpass von Funded + FK — darf ich?**
   (2026-09-17, Lückenliste Punkt 1, **nicht umgesetzt**.) Heute rundet jeder

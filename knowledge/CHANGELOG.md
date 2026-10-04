@@ -9,6 +9,30 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-04** [Reports] **Weekly Checkup KW40/2026** (geplanter Lauf,
+  Sonntag puenktlich). Dateien: `reports/weekly/KW40_2026_*`, PDF, Telegram
+  versandt. Der MT5-Abzug lief auf warmen Terminals; es wurde kein Fenster
+  gestartet.
+  **Zahlen:**
+  - EK -15,65 EUR (-0,56 %).
+  - Funded -1.424,11 USD (-0,72 %).
+  - FK -840,44 USD (-0,84 %).
+  - Gesamt ca. -0,76 %, 75 Trades, 10,7 % Treffer.
+  - Keine Handeingriffe.
+  **Befunde:**
+  - (1) **Mo 28.09., 10:33-17:16: Modern Standby.** Laut Ereignisprotokoll
+    `Kernel-Power 506/507`. In dieser Zeit liefen alle Bridge-Lanes nicht,
+    auch der Watchdog nicht, und die NY-Eroeffnung wurde verpasst. Das
+    widerspricht der Dashboard-Spur, die die 28.09.-Luecke als Lake-Haenger
+    fuehrt (dort als Bestaetigungspunkt vermerkt).
+  - (2) ORB 32 von 32 ausgestoppt. Die SP500-Trades sind die
+    Live-Order-Luecke (ca. -630 USD), die der Fix vom 03.10. schliesst.
+  - (3) Soll/Ist erkennt ORB-Pending-Entries nicht. Das ist jetzt
+    minutengenau belegt.
+  - (4) Die EK-Soll-Rendite (+1,33 % bei -9,69 R) ist nicht
+    nachvollziehbar.
+  - (5) Erster Live-Beleg fuers Ribbon-Gate: 63-68 % Verwurf.
+
 - **2026-10-04** [Funded-Portfolio-Bridge + FK / LIVE] **Zentrale Tick-Rundung
   in `_send_order()`** (Nutzerfreigabe, Lückenliste 17.09. Punkt 1). Neue
   `_round_request_to_tick()` in beiden `executor.py`: sl/tp/price jeder

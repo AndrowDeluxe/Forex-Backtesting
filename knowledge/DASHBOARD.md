@@ -104,6 +104,11 @@ Bedarf vor generischem Aufräumen.
   Executor), NICHT ein echter Live-Durchlauf mit Order. Im Log sollte
   stehen: "N von M Signalen behalten; X gegen den Trend verworfen". Bleibt
   die Meldung aus, greift das Gate nicht.
+  **Beleg (Weekly KW40, 04.10.):** Die Meldung steht seit 30.09. in den Logs
+  von Funded und FK, z.B. "9 von 28 Signalen behalten; 19 gegen den Trend
+  verworfen". Die Verwurfquote liegt bei 63-68 %, erwartet waren ~60 %. Echte
+  Entries mit Gate gab es am 01.10. (FK) und 02.10. (IQ/FK/EK). Abhaken
+  liegt bei dir.
 
 - **CTNL: Spike-Filter live + Kill-Switch umgestellt -- beim nächsten Lauf
   kontrollieren** (2026-09-30, Befund 19). Nach deinen Entscheiden: (1) Der
@@ -183,6 +188,17 @@ Bedarf vor generischem Aufräumen.
   Warum fällt der Ingest aus? Danach: Frischefenster nach Timeframe staffeln?
   Geklärt: Funded läuft mit `source="lake"`. Schon gehärtet 04.10.: Cache-
   Schreiben atomar (`cbce4434`).
+  **🔍 Widerspruch aus dem Weekly KW40 (04.10.), bitte bestätigen:** Die
+  **28.09.-Lücke gehört nicht in diese Spur.** An dem Tag standen von 10:33 bis
+  17:16 ALLE Lanes still (Funded/FK/EK, jeweils Slow und Fast) **und** der
+  Watchdog. Das Windows-Ereignisprotokoll zeigt `Kernel-Power 506` um
+  10:32:54 und `507` um 17:16:09, der Rechner war also im **Modern
+  Standby**. Für den 01.10. zeigt das Protokoll nur Sekunden-Standby, dort
+  bleibt der Hänger ein Kandidat. Offen: warum Standby trotz
+  `standby-timeout-ac 0` (Akku? Deckel?). Außerdem kann der Watchdog den
+  Ausfall der eigenen Maschine nicht melden. Idee: ein Totmannschalter
+  außerhalb, z.B. ein Cloud-Check auf das Alter des letzten Snapshots auf
+  GitHub.
 - **CTNL E1 + E4 (Research):** E1 `spread_bps` 8,0 → gemessen 0,53-2,01,
   broker-getrennt (steht im Code weiter auf 8,0); danach E4 Risikokalibrierung
   über die volle Historie. E2/E3 erledigt. Details

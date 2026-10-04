@@ -558,10 +558,14 @@ def _scan_gold_silver(end: pd.Timestamp, force_refresh: bool, *, source: str = "
 #   vorher  Ø R +0,198 | OOS +0,100 | Tail-DD -67,4R | Summe +463R
 #   jetzt   Ø R +0,337 | OOS +0,236 | Tail-DD -67,7R | Summe +789R (+71 %)
 # Risiko je Trade bleibt UNVERAENDERT.
+# 2026-10-04 (Nutzerentscheid): NASDAQ OHNE Teilziel -- auf M1 + Tickdaten
+# halbiert das 3R-Teilziel den NASDAQ-Edge. Dazu Storno am geplanten SL in der
+# Bridge (orb_pending.ORB_CANCEL_AT_PLANNED_SL), US30 dort pausiert.
+# knowledge/projects/orb-order-storno-und-haltedauer.md, Nachtrag 04.10.
 ORB_EXIT_CFG_BY_INSTRUMENT = {
     "SP500": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=6.0, partial_exit_r=None, partial_exit_fraction=0.0, move_stop_to_be_after_partial=False),
     "US30": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=6.0, partial_exit_r=3.0, partial_exit_fraction=0.5, move_stop_to_be_after_partial=False),
-    "NASDAQ": dict(stop_atr_mult=0.6, target_mode=None, target_r_mult=None, partial_exit_r=3.0, partial_exit_fraction=0.5, move_stop_to_be_after_partial=False),
+    "NASDAQ": dict(stop_atr_mult=0.6, target_mode=None, target_r_mult=None, partial_exit_r=None, partial_exit_fraction=0.0, move_stop_to_be_after_partial=False),
 }
 ORB_HISTORY_LOOKBACK_DAYS = 500  # EMA-Ribbon-Bias (4H/1D/1W) braucht Monate an Vorlauf
 

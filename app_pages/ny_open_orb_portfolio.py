@@ -76,10 +76,13 @@ STARTING_EQUITY = 10_000.0
 #   vorher  Ø R +0,198 | OOS +0,100 | Tail-DD -67,4R | Summe +463R
 #   jetzt   Ø R +0,337 | OOS +0,236 | Tail-DD -67,7R | Summe +789R (+71 %)
 # Risiko je Trade bleibt UNVERAENDERT.
+# 2026-10-04: NASDAQ ohne Teilziel (live; dazu Storno am geplanten SL, den diese
+# Seite NICHT abbildet -- sie rechnet weiter M5 ohne Storno). US30 ist live
+# pausiert. knowledge/projects/orb-order-storno-und-haltedauer.md
 EXIT_CFG_BY_INSTRUMENT = {
     "SP500": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=6.0, partial_exit_r=None, partial_exit_fraction=0.0, move_stop_to_be_after_partial=False),
     "US30": dict(stop_atr_mult=0.6, target_mode="r_multiple", target_r_mult=6.0, partial_exit_r=3.0, partial_exit_fraction=0.5, move_stop_to_be_after_partial=False),
-    "NASDAQ": dict(stop_atr_mult=0.6, target_mode=None, target_r_mult=None, partial_exit_r=3.0, partial_exit_fraction=0.5, move_stop_to_be_after_partial=False),
+    "NASDAQ": dict(stop_atr_mult=0.6, target_mode=None, target_r_mult=None, partial_exit_r=None, partial_exit_fraction=0.0, move_stop_to_be_after_partial=False),
 }
 
 INSTRUMENT_CONFIG = {

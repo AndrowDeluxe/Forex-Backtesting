@@ -122,4 +122,72 @@ richtig. Ein Zeitstopp bringt nichts, was einer IS/OOS-Prüfung standhält.
    bisherigen M5-Zahlen (inkl. Variante C, Stage 6–9) sind um ~25–45 %
    zu hoch. US30 ist auf M1 OOS praktisch ohne Edge.
 
+## Nachtrag 2026-10-01 — Monte Carlo (Phase 6) zur SL-Storno-Regel
+
+`scripts/research_orb_cancel_at_sl_montecarlo.py`, M1, 3.000 Pfade,
+Block = Kalendermonat. Drei Bewertungen der mehrdeutigen Füll-Minuten:
+basis (wie `simulate()`), mitte (50 % Stop-out), pessim (immer Stop-out).
+Entscheidend ist Ertrag/MaxDD (skalierungsfrei, weil die Regel weniger
+Trades übrig lässt):
+
+| NASDAQ | basis | mitte | pessim |
+|---|---|---|---|
+| heute (kein Storno): Ertrag/DD Median | 4,03 | **−0,48** | −0,96 |
+| heute: P(Σ R < 0) | 1,0 % | **76 %** | 100 % |
+| Storno am SL: Ertrag/DD Median | 3,76 | **1,58** | 0,04 |
+| Storno am SL: P(Σ R < 0) | 1,2 % | **11 %** | 48 % |
+
+**NASDAQ: bestanden.** Im optimistischen Fall gleichwertig, in jedem
+anderen klar besser. Der heutige NASDAQ-Edge hängt komplett daran, dass
+die mehrdeutigen Füll-Minuten (1/3 aller Trades) fast alle gut ausgehen.
+**SP500:** „Gegenseite“ (jetzt umgesetzt) schlägt die SL-Regel in basis/
+mitte (7,35/5,11 vs. 5,30/4,62), nur pessimistisch nicht → keine SL-Regel.
+
+Nächster sinnvoller Schritt: die mehrdeutigen Füll-Minuten mit Tickdaten
+auflösen, dann ist der NASDAQ-Edge nicht mehr ein Bereich, sondern eine Zahl.
+
+## Nachtrag 2026-10-04 — Tick-Auflösung + M1-Exit-Gitter + Portfolio-MC
+
+Skripte: `research_orb_fill_minute_ticks.py`, `research_orb_exit_grid_m1.py`
+(eigener numpy-Simulator, Trade für Trade = `simulate()`, max |ΔR| = 0),
+`research_orb_m1_candidates_montecarlo.py`.
+
+**Füll-Minuten mit Ticks aufgelöst (1.225 von 1.225):** nur 12–22 % der
+mehrdeutigen Minuten (Stop 0,6) sind echte Stop-outs nach dem Fill, 78–88 %
+hatten den SL-Touch VOR dem Fill (Trade gültig). Tick-Korrektur Ø R:
+SP500 0,494 → 0,455, US30 0,244 → 0,230, NASDAQ 0,137 → 0,127. **M1 ist
+damit praktisch die Wahrheit**, die pessimistische Grenze war viel zu
+streng. M5 bleibt zu hoch (dort 70 % mehrdeutig).
+
+**NASDAQ — das Teilziel ist das Problem, nicht der Stop:**
+
+| Stop 0,6 | Trades | Ø R | OOS | Σ R | MaxDD | Jahre+ |
+|---|---|---|---|---|---|---|
+| heute (Teilziel 3R) | 1595 | 0,127 | 0,047 | 203 | −49 | 7/8 |
+| ohne Teilziel | 1595 | 0,254 | 0,139 | 404 | −65 | 7/8 |
+| Storno am SL + ohne Teilziel | 442 | 0,463 | 0,372 | 205 | −39 | **8/8** |
+
+Ohne Teilziel hängt 65 % des Ergebnisses an 2021/22 (2023: −26,5 R); mit
+Storno nur 40 %, schlechtestes Jahr +11,6 R.
+
+**Portfolio-MC (Monatsblöcke, 3.000 Pfade, 1 R je Trade):**
+
+| Portfolio | Σ R | OOS Σ R | MaxDD Median / P95 | Ertrag/DD |
+|---|---|---|---|---|
+| A heute (Variante C) | +459 | +88 | −54 / −100 | 8,5 |
+| B NASDAQ ohne Teilziel | +661 | +159 | −61 / −110 | 10,6 |
+| C NASDAQ Storno + ohne Teilziel | +457 | +138 | −41 / −74 | 11,0 |
+| E = C ohne US30 | +372 | +137 | −32 / −56 | **11,8** |
+
+**US30:** OOS (ab 2023) +1,0 R aus 197 Trades (Ø +0,005); nur 19 von 112
+Gitter-Varianten sind IS und OOS positiv. Kein belastbarer Edge mehr.
+**SP500:** heutige Config (0,6 / 6R / ohne Teilziel) bleibt — Nachbarn
+schwächer, nichts Besseres im Gitter.
+
+**UMGESETZT 2026-10-04 (Nutzerentscheid)** auf allen drei Bridges, siehe CHANGELOG. Live gepollt: Blitz-Trades (Fill zwischen SL-Touch und nächstem Lauf) kosten ~−21 R von +205 R (`research_orb_sl_cancel_poll_latency.py`). Ursprüngliche Empfehlung: NASDAQ auf Storno am SL + ohne
+Teilziel (Portfolio C); US30 pausieren (E). Beides keine frisch gefischten
+Parameter: „NASDAQ ohne Teilziel“ war schon Variante D vom 21.09., die
+Storno-Schwelle ist der bestehende Stop. Auf M5 sah das Teilziel nur besser
+aus, weil M5 die Füll-Bar falsch rechnet.
+
 Verwandt: [[ny-open-orb-sp500]], [[orb-exit-logik-neubewertung]].

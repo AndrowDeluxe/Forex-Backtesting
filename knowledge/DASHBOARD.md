@@ -35,16 +35,25 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
-- **🔴 FK-Gesamtportfolio 2026 (Backtest 03.10.): Konto wäre am 26.08. an
-  der 5-%-Trailing-Grenze gescheitert -- Ursache ORB SP500/US30.** Mit
-  FK-Kosten, Versatz und heutiger Logik: -0,87 % bis zum Bruch, MaxDD
-  -5,24 %. Ohne orb_sp500/orb_us30: +2,28 %, MaxDD -2,62 %, kein Bruch.
-  **Deine Entscheidung:** SP500/US30 auf FK pausieren oder Risiko senken --
-  oder weiterlaufen lassen, weil 2026 für beide das schlechteste Jahr seit
-  2019 ist (über 2019-2025 positiv)? **Meine Annahmen dabei, bitte
-  bestätigen:** CLS-Versatz 1 M5-Bar, Gold-ASB-Versatz 30 Min., CTNL 1
-  M15-Bar, ORB-Slippage aus Funded-Fills übernommen (FK hat keine eigenen
-  Index-Fills), Swap ignoriert. Details: CHANGELOG 03.10.
+- **🔴 FK: neue Gewichtung gerechnet (MC + Walk-Forward, 03.10.) -- NICHT
+  eingespielt, wartet auf dich.** Gerechnet mit der Logik von heute, also inkl.
+  ORB-Storno bei Gegenbruch und CTNL-Broker-TP. Die heutige Gewichtung hat
+  P(5-%-Trailing-Bruch) **11,9 %/Jahr**. In der Ereignis-Simulation
+  2019-2026 reißt sie die Grenze am 14.05.2024; 2026 bleibt sie knapp
+  darunter (MaxDD −4,74 %).
+  **Vorschlag CAPITAL_WEIGHT:** gold_asb 0,175 · cls_practical 0,30 ·
+  ctnl_reversal 0,375 · orb_sp500 0,30 · orb_us30 **0** · orb_nasdaq 0,15.
+  Ergebnis: P(Bruch) 1,1 %, MC-Median +10,8 %/Jahr (heute +11,9 %),
+  2019-2026 MaxDD −2,69 % statt −6,13 %.
+  **Vorbehalt:** das CLS-Gewicht springt im Walk-Forward (0,075-0,325). CLS
+  läge damit bei 0,45 % Risiko je Trade, nahe am 0,5-%-Deckel.
+  **Soll ich das in `fk_instant_funding/paper_bot.py` einspielen?** Wirkt
+  live auf FK beim nächsten Lauf.
+  ✅ Annahmen (CLS-Versatz 1 M5-Bar, Gold-ASB 30 Min., CTNL 1 M15-Bar,
+  ORB-Slippage aus Funded-Fills, Swap ignoriert) vom Nutzer bestätigt
+  04.10. Details: CHANGELOG 03.10.
+  **Korrektur:** die erste Meldung von heute („Konto 2026 am 26.08.
+  gescheitert“) galt für die ALTE ORB-Logik (Order bis 16:00).
 
 - **🟠 CTNL: Funded/FK jetzt auf EK-Takt, aber EKs SL-Logik bewusst NICHT
   übernommen** (03.10., Befund 21 in [[ctnl-kostenvalidierung]]). Umgesetzt
@@ -52,46 +61,29 @@ Bedarf vor generischem Aufräumen.
   bestätigt 03.10. ✅ Die Frage „EK auf absoluten Signal-SL?“ ist durch den
   Exit-Standard vom 03.10. erledigt (Befund 22e). **Neu zu prüfen
   Sonntagabend/Montag:** Hat der erste CTNL-Entry je Konto (EK, TTP, IQ, FK)
-  einen Broker-TP, und liegt EKs SL auf dem Signal-Niveau? Noch offen:
-  **(2)** Den Stop der
-  vorgezogenen Zeile rechne ich mit der ATR der Signalbar (wie EK); die
-  Abweichung zur Simulation liegt bei ~2 % der Distanz.
+  einen Broker-TP, und liegt EKs SL auf dem Signal-Niveau? ✅ (2) Stop der
+  vorgezogenen Zeile (ATR der Signalbar) laut Nutzer erledigt, 04.10.
 
-- **🟠 ORB: Live handelt andere Tage als der Backtest + M5 überzeichnet den
-  Edge** (01.10., [[orb-order-storno-und-haltedauer]]). Nichts geändert.
-  **Offen für dich:**
-  **(A)** SP500/US30-Long-Order live stornieren, sobald orb_low berührt
-  wird (= Backtest-Semantik)? Heute bleibt sie bis 16:00 liegen: ~60 % mehr
-  Trades, die nie validiert wurden, MaxDD doppelt so hoch (SP500 −22 → −44 R
-  auf M1). Betrifft `Funded-Portfolio-Bridge/run_once.py::manage_orb_pending`
-  und EK `legs/ny_open_orb/executor.py`.
-  **(B)** Dein Vorschlag „Storno am geplanten SL“: für NASDAQ ein Kandidat
-  (OOS Ø R +0,05 → +0,16, MaxDD −49 → −33 R, aber halb so viele Trades und
-  Σ R), für US30 verwerfen (OOS negativ), für SP500 zu dünn. Vor Live:
-  Phase 6 auf M1?
-  **(C)** Zur Kenntnis: auf M1 gerechnet ist US30 OOS praktisch ohne Edge
-  (+0,005 R), die bisherigen M5-Zahlen sind ~25–45 % zu hoch. Haltedauer
-  bis 16:00 bleibt richtig.
+- **🟡 ORB: Umstellung 04.10. — erster echter Lauf Montag 05.10. beobachten**
+  ([[orb-order-storno-und-haltedauer]]). Auf allen drei Bridges: SP500/US30
+  storniert wie im Backtest, NASDAQ Storno am geplanten SL + ohne Teilziel
+  (eine Order je Richtung), US30 pausiert, neue Telegram-Texte. Alles offline
+  getestet. **Zur Kenntnis:** Telegram meldet jetzt ggf. „Order storniert --
+  Kurs erreichte den geplanten SL vor dem Einstieg“ und gelegentlich
+  „gefüllt, obwohl ... -- sofort geschlossen“ (erwartet ~1× je 4 NASDAQ-Tage,
+  kleiner Verlust/Gewinn). Bestätigen, wenn der erste Tag sauber lief.
 
-- **Gold ASB Stop-Order: fertig gebaut und getestet -- DU musst den Deploy
-  starten** (01.10.). Deine Entscheide: Stop 1,5x Range, Storno 03:00 NY,
-  EK mit absolutem SL und Mindestlot, sofort scharf auf allen Bridges. Der
-  Auto-Mode-Classifier laesst mich Code in den Echtgeld-Bridges nicht selbst
-  austauschen. **Ein Befehl** (pruefen, Backup, deployen, kompilieren, bei
-  Fehler automatischer Rollback):
-  `python "C:\Users\andre\AppData\Local\Temp\claude\c--Users-andre-Forex-Backtesting-knowledge\24d4ba00-c88f-4f27-8905-8382ceb32030\scratchpad\staging\deploy_gold_asb.py"`
-  -- **Stand 03.10.: noch nicht ausgefuehrt, nichts davon ist live.** Staging
-  am 03.10. auf den aktuellen Stand neu aufgebaut (Funded/FK hatten durch den
-  CTNL-Broker-TP von 19:14 neue `run_once.py`; die bleiben erhalten). Liegt im
-  Temp-Ordner -- bald ausfuehren, sonst kann der Ordner weg sein. Aendert eine
-  andere Session vorher wieder Bridge-Dateien, bricht das Skript ab (gewollt),
-  dann `restage.py` im selben Ordner laufen lassen und erneut deployen.
-  Rueckweg: `rollback_gold_asb.py` im selben Ordner. Tests: Paritaet
-  266 von 266 gemeinsamen Trades identisch, Trockenlauf auf allen 4 Konten
-  ok, Broker-`order_check` ok. Details: [[gold-asb-kostenvalidierung]].
+- **Gold ASB laeuft seit 03.10. als Stop-Order -- erster echter Lauf Mo 05.10.
+  pruefen** (07:00 Berlin Platzierung bzw. Grund fuer "keine Order" im Log,
+  09:00 Storno, 17:00 Zeit-Exit; auf allen drei Bridges). Deployt vom Nutzer,
+  Details CHANGELOG 03.10. und [[gold-asb-kostenvalidierung]]. Die Bridge-
+  Aenderungen liegen ausserhalb von Git -- Rueckweg ueber die Backups
+  `<Bridge>/_backup_20261001_gold_asb/`. Pruefbefehl, ob die Verdrahtung noch
+  da ist: `grep -c manage_gold_asb_pending` in Funded/FK `run_once.py`
+  (erwartet >= 2) und `ls EK-Portfolio-Bridge/legs/gold_asb/pending_executor.py`.
   **Zur Kenntnis (FK):** bei 1,5x Range rundet FK auf 0,01 Lot ab -- real
-  ~60 $ statt ~120 $ Risiko. Kein neuer Fehler, aber das Bein laeuft dort
-  mit halbem Risiko. **EK:** 0,01 Lot = ~53 EUR (1,9 % der Equity).
+  ~60 $ statt ~120 $ Risiko, das Bein laeuft dort mit halbem Risiko. **EK:**
+  0,01 Lot = ~53 EUR (1,9 % der Equity).
 
 - **🟡 Beide seit Langem bekannten Fehlermuster sind in der Nacht 30.09./01.10.
   erstmals auch beim `gold_asb`-Bein aufgetreten -- vorher waren andere Beine
@@ -158,10 +150,9 @@ Bedarf vor generischem Aufräumen.
   statt −7,01 %) und **hebt sich beim nächsten Lauf auf FK, TTP und IQ auf**,
   CTNL handelt dort wieder. (2) `ctnl_reversal` nimmt nur noch Signalkerzen
   ≥ 0,75 ATR. (3) Der Flacker-Fix und die FK-Log-Zeile sind drin.
-  **Meine Annahmen, bitte bestätigen:** (a) Die Schwelle −6,6 %/−3,3 % bleibt
-  unverändert, obwohl sie auf der ungefilterten Strategie kalibriert war. Auf dem
-  Ribbon-Set hätte sie in 10 Jahren nie ausgelöst, sie ist also reine Notbremse.
-  (b) Der Kerzenfilter gilt nur für reversal, nicht für continuation (dort nicht getestet).
+  (a) Schwelle −6,6 %/−3,3 %: **Nutzerentscheid 04.10.: neu kalibrieren** auf
+  dem gehandelten Satz (Ribbon + Spike) -- steht unter Offene Aufgaben.
+  (b) Kerzenfilter nur für reversal -- erledigt, continuation ist stillgelegt.
   **Zu prüfen:** Telegram meldet „CTNL-Drawdown erholt“ je Konto, und im FK-Log
   erscheinen „Spike-Filter behaelt …“-Zeilen. Nebenbei unverändert offen:
   auf EK riskiert ein CTNL-Trade ~25 EUR = ~0,9 % Equity (Mindestlot, Befund 10).
@@ -345,13 +336,6 @@ Bedarf vor generischem Aufräumen.
   soll bei doppelten Tickern die S&P-Zeile (mit validiertem TP) gewinnen, oder
   ist "kein TP" die gewollte konservative Variante?
 
-- **Verwaiste State-Eintraege nach dem manuellen CTNL-Aufraeumen -- soll ich
-  sie nachziehen?** (2026-09-23.) Der Nutzer hat am 21.09. 18 CTNL-Positionen
-  von Hand geschlossen (bestaetigt). Im State stehen dadurch 37 (TTP) bzw. 51
-  (IQ) `ctnl_reversal`-Eintraege auf `status="placed"` ohne offene Position.
-  Fuer die Konkurrenzgrenze harmlos -- `_count_open_leg_positions()` prueft
-  gegen `positions_get()` --, aber als Historie/Soll-Ist-Grundlage unbrauchbar.
-
 - **🔴 EK-Hebel: welcher Zeithorizont soll gelten?** (2026-09-23, komplette
   Nachrechnung, nichts geaendert). Die 7,8 % der Kalibrierung und meine 33,9 %
   sind beide richtig -- verschiedene Horizonte: 40 % Drawdown reissen binnen
@@ -424,17 +408,6 @@ Bedarf vor generischem Aufräumen.
   bequem, aber falsch. **Offen fuer dich:** soll ich einen Split-Check bauen
   (Vergleich Positionspreis gegen aktuellen Kurs bei Einzelaktien, Alarm statt
   Automatik)? Ich habe nichts geaendert.
-- **🟡 ORB-Stop-Orders (Demo ttp/iqmarkets): vier Annahmen von mir** (2026-09-17,
-  Details `CHANGELOG.md` 2026-09-16/17). (1) Teilausstieg als zweite Order mit
-  Broker-TP statt gepollt; (2) OCO-Whipsaw: spaeter gefuellte Seite sofort
-  schliessen (Backtest verwirft solche Bars nur); (3) Ausbruch vor Platzierung
-  = Tag verpasst, kein spaeter Entry; (4) Fast-Lauf wartet ~2 Min bis 09:45:03
-  NY. Erster echter Test: 2026-09-17. **Nutzerentscheid 2026-09-17:** laeuft
-  der Tag fehlerfrei, wird die Logik auf ALLE anderen Bridges uebertragen
-  (ttp1, EK, FK) -- mit Rekalibrierung des Risikos je Bridge. **Risiko:** faellt der
-  Fast-Lauf um 15:43 wegen des Zeitzonen-Springens (Punkt darunter) aus, gibt
-  es keinen praezisen Pass -- dann Platzierung erst 15:48 und ~60 % der
-  Ausbrueche verpasst.
 
 - **Kurztakt-Task-Ausfälle (1–2 h, 09-07 bis 09-11) beobachten bis ~2026-09-24**
   (Nutzerentscheid 2026-09-17). Die Ausfälle lagen VOR den Zeitzonen-Sprüngen
@@ -483,6 +456,11 @@ Bedarf vor generischem Aufräumen.
   CTNL; für Tagessignale wie OU nicht sinnvoll. Bis dahin begrenzen nur
   `volume_max` und der Margin-Deckel.
 
+- **CTNL-Kill-Switch-Schwelle neu kalibrieren** (Nutzerentscheid 04.10.): die
+  −6,6 %/−3,3 % stammen von der ungefilterten Strategie; auf dem heute
+  gehandelten Satz (Ribbon + Spike-Filter) neu ziehen. Research-Auftrag, gilt
+  für alle drei Bridges.
+
 **Mittel**
 - **14 unverarbeitete Clippings** in `knowledge/Clippings/` (Stand
   2026-09-28-Lint, unveraendert seit 2026-09-09) — u.a. Edge-Genesis/-Decay,
@@ -501,15 +479,15 @@ Bedarf vor generischem Aufräumen.
 | Bot/Bridge                                              | Konto/Broker                                                                             | Modus                                                                                        | Task Scheduler                  | Letzter echter Entry | Zuletzt geprüft |
 | ------------------------------------------------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------- | --- | --------------- |
 | EK-Portfolio-Bridge                                     | Tickmill Live (55918977)                                                                 | **LIVE — echtes Geld** (btc/ou_modell weiterhin direkt Dukascopy/yfinance; gold_asb/cls_practical/ctnl_reversal jetzt `source="lake"`; ctnl_continuation am 01.10. stillgelegt) | Ready (alle 15 Min, Mo–Fr)      | **16.09.** ou_modell (IVZ) | 2026-09-13      |
-| EK-Portfolio-Bridge-Fast                                | Tickmill Live (55918977, geteiltes Terminal)                                             | **LIVE — echtes Geld** (3 MT5-native Beine: ORB/Gold-Silber/Trend-Pullback, kein Dukascopy)  | Ready (alle 2 Min, Mo–Fr)       | ↑ gleiches Konto | 2026-09-13      |
-| FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | **LIVE — echtes Geld** (6 Beine via `LIVE_LEGS`: orb_sp500/us30/nasdaq + gold_asb/cls_practical/ctnl_reversal; ctnl_continuation am 01.10. stillgelegt, ctnl_reversal seit 30.09. auf der 5-Min-Lane; trend_pullback/gold_silver bleiben geplant/geloggt) | Ready (stündlich, Mo–Fr)        | **14.09.** orb_nasdaq — erster echter Entry seit Livegang | 2026-09-13      |
-| FKInstantFunding-MT5-Bridge-Fast                        | BeyondIQCapital (17764, geteiltes Terminal)                                              | **LIVE — echtes Geld** (ctnl_continuation + orb_sp500/us30/nasdaq + cls_practical, `source="lake"`, analog Funded-Fast) | Ready (alle 5 Min, Mo–Fr)       | ↑ gleiches Konto | 2026-09-13      |
+| EK-Portfolio-Bridge-Fast                                | Tickmill Live (55918977, geteiltes Terminal)                                             | **LIVE — echtes Geld** (3 MT5-native Beine: ORB/Gold-Silber/Trend-Pullback, kein Dukascopy; **ORB-US30 seit 04.10. pausiert**)  | Ready (alle 2 Min, Mo–Fr)       | ↑ gleiches Konto | 2026-09-13      |
+| FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | **LIVE — echtes Geld** (6 Beine via `LIVE_LEGS`: orb_sp500/us30/nasdaq + gold_asb [**orb_us30 seit 04.10. pausiert**, `orb_pending.ORB_PAUSED_INSTRUMENTS`]/cls_practical/ctnl_reversal; ctnl_continuation am 01.10. stillgelegt, ctnl_reversal seit 30.09. auf der 5-Min-Lane; trend_pullback/gold_silver bleiben geplant/geloggt) | Ready (stündlich, Mo–Fr)        | **14.09.** orb_nasdaq — erster echter Entry seit Livegang | 2026-09-13      |
+| FKInstantFunding-MT5-Bridge-Fast                        | BeyondIQCapital (17764, geteiltes Terminal)                                              | **LIVE — echtes Geld** (ctnl_continuation + orb_sp500/nasdaq + cls_practical, `source="lake"`, analog Funded-Fast; **orb_us30 seit 04.10. pausiert**) | Ready (alle 5 Min, Mo–Fr)       | ↑ gleiches Konto | 2026-09-13      |
 | FK-Instant-Funding-Paper                                | — (reine Simulation)                                                                     | Paper + Telegram, **nur noch trend_pullback/gold_silver** (die anderen 7 Beine laufen live über die Bridge, seit 09-09 hier entfernt) | Ready (stündlich, Mo–Fr)        | — | 2026-09-13      |
 | OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner + Telegram (3x täglich: 15:35/18:35/21:35)                                           | Ready (Mo–Fr, US-Handelszeiten) | — | 2026-09-02      |
 | Forex-Weekly-Report                                     | —                                                                                        | Report-Generator (seit 09-15: Zeitlimit 4h statt 1h, Vollständigkeitsprüfung + 3x Wiederholung alle 4h bei unvollständigem Lauf) | Ready (So 18:00 — läuft am Wochenende bewusst weiter) | — | 2026-09-15      |
 | Bridge-Watchdog                                         | — (nur Log-Frische, kein Order-Bezug)                                                    | Heartbeat-Alarm + Status-Snapshot ins Repo                                                   | Ready (alle 30 Min, Mo–Fr)      | — | 2026-09-13      |
 | Funded-Portfolio-Bridge (TTP 6 Beine @1/6, IQ 5 Beine @1/3) | TTP Konto 2 (504072729) + BeyondIQCapital (16054) — **2 Konten** (IQ 15514 am 2026-09-07 entfernt, **TTP Konto 1 / ttp1 am 2026-09-23 vollstaendig ausgebaut**) | **LIVE — DRY_RUN=False** (alle 6 Beine `source="lake"`; **seit 09-13 kontospezifisch: IQ ohne `ou_modell`, Kapitalanteil 1/3 statt 1/6 — IQ handelt keine Aktien**; IPC-Timeouts 09-08 09:52-12:24 Uhr, seither stabil, siehe 🔍 Bestätigung) | Ready (alle 15 Min, Mo–Fr)      | **16.09.** orb_sp500 (TTP1) | 2026-09-13      |
-| Funded-Portfolio-Bridge-Fast                            | Gleiche 3 Konten (geteilte Terminals)                                                    | **LIVE — DRY_RUN=False** (ctnl_continuation + orb_sp500/us30/nasdaq + cls_practical, `source="lake"`) | Ready (alle 5 Min, Mo–Fr)       | ↑ gleiche Konten | 2026-09-13      |
+| Funded-Portfolio-Bridge-Fast                            | Gleiche 3 Konten (geteilte Terminals)                                                    | **LIVE — DRY_RUN=False** (ctnl_continuation + orb_sp500/nasdaq + cls_practical, `source="lake"`; **orb_us30 seit 04.10. pausiert**) | Ready (alle 5 Min, Mo–Fr)       | ↑ gleiche Konten | 2026-09-13      |
 | DataLake-Ingest-Fast                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt `data_lake_store/` für Funded-Portfolio-Bridge (19 Keys, 15-Min-Kadenz)                | Ready (alle 15 Min, Mo–Fr)      | — | 2026-09-13      |
 | DataLake-Ingest-Fast5                                   | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt 8 M5/M15-Timing-kritische Keys für ctnl_continuation/orb/cls_practical (EURUSD M5 seit 2026-09-07) | Ready (alle 5 Min, Mo–Fr)       | — | 2026-09-13      |
 | DataLake-Ingest-Slow                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt OU-Modell-Universum (~59 Ticker) via yfinance                                          | Ready (stündlich, Mo–Fr)        | — | 2026-09-13      |

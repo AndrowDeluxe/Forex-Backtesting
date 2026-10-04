@@ -9,6 +9,83 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-04** [Funded-Portfolio-Bridge / State] **104 verwaiste
+  `ctnl_reversal`-Eintraege auf `closed` gesetzt** (Nutzerentscheid, Dashboard-
+  Durchgang). TTP 42, IQ 62 Eintraege standen auf `placed`, obwohl die Position
+  beim Broker zu war (Rest vom manuellen Aufraeumen 21.09. + spaetere SL/TP).
+  Abgleich per read-only `mt5_pull.py` (14.09.-05.10.): jede der 104 hat einen
+  Schluss-Deal; die 9 echt offenen Positionen (TTP 7, IQ 2) unberuehrt. Nur das
+  Feld `status` geaendert (wie bei den bestehenden `closed`-Eintraegen),
+  Wochenende, kein Lauf aktiv. Backup:
+  `Funded-Portfolio-Bridge/_backup_20261004_state_cleanup/`.
+  Ausserdem Dashboard: ORB-Stop-Order-Annahmen 17.09. (2)-(4) bestaetigt, (1)
+  ueberholt -- Punkt entfernt; FK-Backtest-Annahmen bestaetigt; CTNL-Kill-
+  Switch-Schwelle soll neu kalibriert werden (neue Offene Aufgabe).
+
+- **2026-10-04** [Alle drei Bridges / ORB] **NASDAQ: Storno am geplanten SL +
+  ohne Teilziel; US30 pausiert.** Nutzerentscheid 04.10. nach dem M1-/Tick-
+  Nachtest (Eintrag darunter).
+  **Config** (`challenge_portfolio/paper_bot.py` = Funded live,
+  `fk_instant_funding/paper_bot.py`, `EK-Portfolio-Bridge/config.py`,
+  Dashboard-Seite): NASDAQ `partial_exit_r=None` → nur noch EINE Order je
+  Richtung. `ek_portfolio/paper_bot.py` bewusst unverändert (pausiert).
+  **US30:** `ORB_PAUSED_INSTRUMENTS = {"US30"}` in Funded/FK `orb_pending.py`
+  und EK `pending_source.py` → Status „paused“, keine neuen Orders, nicht
+  einmal ein Datenabruf. Config bleibt für Historie/Berichte.
+  **Storno am SL:** neuer Schritt 3c in allen drei `manage_*pending`,
+  `ORB_CANCEL_AT_PLANNED_SL = {"NASDAQ"}`. Pending-Seite mit SL-Touch →
+  storniert; offene Position mit SL-Touch (Touch kann nur VOR dem Fill
+  gelegen haben, sonst Broker-SL) → sofort geschlossen, Gegenseite bleibt
+  liegen (Schritt 4 wertet sie nicht als OCO-Gewinner). Kosten des Pollens
+  nachgerechnet (`research_orb_sl_cancel_poll_latency.py`): 5-Min-Takt 414
+  „Blitz-Trades“ in 8 Jahren, −21 R von +205 R; EK (2 Min) −18 R.
+  **Tests** (offline, Attrappen, kein Brokerkontakt): je Bridge 10–11
+  Prüfungen zu 3c + Pause grün, Regressionstests 3b + Erst-Ausbruch grün.
+  Noch kein echter Lauf — erster Handelstag Montag 05.10. Backups:
+  `*_20261004.py` in `_backup_20261001_orb/` (Funded, FK) bzw.
+  `EK-Portfolio-Bridge/_backup_20261003_orb/`.
+
+- **2026-10-04** [ORB / Research] **Beide offenen ORB-Punkte nachgetestet:
+  Ticks lösen die Füll-Minuten auf, NASDAQ-Teilziel kostet die Hälfte des
+  Edges, US30 ohne OOS-Edge.** Nutzerauftrag 03.10. Nichts live geändert.
+  1.225 mehrdeutige Füll-Minuten per Dukascopy-Ticks aufgelöst: nur 12–22 %
+  echte Stop-outs → M1-Zahlen stimmen (Tick-Korrektur −0,01 bis −0,04 R).
+  M1-Exit-Gitter (112 Varianten je Instrument, eigener Simulator = simulate()
+  exakt): NASDAQ ohne Teilziel verdoppelt Σ R; mit Storno am SL Ø R 0,463,
+  OOS 0,372, 8/8 Jahre. Portfolio-MC: Ertrag/DD heute 8,5 → 11,0 (NASDAQ
+  Storno + ohne Teilziel) → 11,8 (zusätzlich ohne US30). SP500-Config bleibt.
+  Details `projects/orb-order-storno-und-haltedauer.md`, Nachtrag 04.10.
+
+- **2026-10-03** [Alle drei Bridges / ORB] **SP500/US30: Long-Order wird
+  storniert, wenn der Kurs zuerst nach unten ausbricht (wie im Backtest) +
+  Telegram-Texte der Teil-Orders neu.** Nutzerentscheid (A) 01.10. + Auftrag
+  03.10.
+  **Storno:** neuer Schritt 3b in Funded `run_once.py::manage_orb_pending`,
+  FK `run_once.py::manage_orb_pending`, EK `legs/ny_open_orb/pending_executor.py
+  ::manage_pending`, je mit `first_break_direction()` in `orb_pending.py` bzw.
+  `pending_source.py` (nutzt unverändert `engine._find_stop_breakout` auf den
+  MT5-Bars, kein Zeitvergleich → keine Serverzeit-Falle). Erster Ausbruch nach
+  unten → Pendings stornieren, eine zwischenzeitlich gefüllte Position sofort
+  schliessen. NASDAQ (OCO) unberührt. EK nutzt als Merker die vorhandene Spalte
+  `oco_resolved` (bei einseitigen Zeilen sonst ungenutzt, keine Migration).
+  **Telegram:** „Teilausstieg geschlossen (SL)“ + „Rest geschlossen (SL)“ waren
+  KEIN Teilausstieg, sondern eine normal ausgestoppte Position aus zwei
+  Hälften mit demselben SL. Jetzt eine Meldung je Richtung: „Position (beide
+  Hälften) ausgestoppt (SL) | P/L gesamt“; echter Teilgewinn heisst
+  „Teilgewinn -- halbe Position am Teilziel“. Platzierung: „Hälfte 1
+  (Teilziel)/Hälfte 2“ statt „Teil/Rest“, SP500 „Ganze Position“ statt des
+  falschen „Voll (Teilausstieg gepollt)“.
+  **Tests (offline, kein Brokerkontakt):** `first_break_direction` gegen den
+  Backtest je Bridge 180 Prüfungen mit Live-Datenfenstern und Schnitt mitten
+  am Tag, 0 Abweichungen. Schritt 3b mit Attrappen je Bridge 10/10
+  (Storno, Schliessen, „eben gefüllt“, OCO unberührt, alte Marker,
+  Datenfehler, dry_run). Meldungstexte mit den echten Fällen vom 30.09.–02.10.
+  Noch NICHT in einem echten Lauf. Backups: `_backup_20261001_orb/`
+  (Funded, FK), `EK-Portfolio-Bridge/_backup_20261003_orb/`.
+  **Monte Carlo (B) zur Storno-am-SL-Regel:** NASDAQ besteht (Ertrag/DD in
+  allen Szenarien gleich oder besser, P(Σ<0) im mittleren Szenario 11 % statt
+  76 %), SP500 braucht sie nicht. Nicht live — Nutzerentscheid.
+
 - **2026-10-03** [Dashboard] 16 erledigte/reine Info-Eintraege aus "Braucht
   deine Bestaetigung" entfernt (Nutzerentscheid "Gruppe 1 alle abhaken"):
   Positionsdeckel, CTNL nur reversal, Ribbon-Gate + E6, OU-Solo, vier
@@ -34,6 +111,35 @@ keine Planung (dafür ist `DASHBOARD.md`).
   `_backup_20261003_ctnl_exit`. Skripte `research_ctnl_exit_optimierung.py`,
   `research_ctnl_exit_fokus.py`. Offline-Stub-Test gruen; erster echter Lauf
   Sonntagabend.
+
+- **2026-10-03** [FK Instant Funding / Research] **Neue Gewichtung per Monte
+  Carlo + Anker-Walk-Forward gerechnet -- NICHT eingespielt.** Nutzerauftrag.
+  Skript `scripts/research_fk_gewichtung_mc_wf.py`, Rohdaten
+  `_data/fk_gewichtung_mc_wf.json`, Trades
+  `portfolio_construction/results/fk_trades_2019_2026_live.csv` (2019-01 bis
+  2026-10, echte FK-Ausfuehrung inkl. der heute live gesetzten ORB-Storno-
+  Regel und CTNL-Broker-TP).
+  **Methode wie am 29.08.:** hoechster Median-Jahresertrag unter
+  P(5-%-Trailing-Bruch in 1 Jahr) <= 1 %, Block-Bootstrap 10 Tage, 2.000
+  Pfade. **Anders:** echte Ausfuehrung statt reibungsfreier Kurven,
+  2019-2026 statt 2024-08..2026-07, ORB je Instrument ein eigenes Gewicht.
+  **Heutige Gewichtung:** MC P(Bruch) **11,9 %/Jahr**. Ereignis-Simulation
+  2019-2026: +151 %, MaxDD -6,13 %, Bruch am 14.05.2024.
+  **Walk-Forward OOS 2021-2026:** optimiert Σ +53,6 %, schlechtestes
+  Jahres-MaxDD -4,20 % | heute Σ +68,0 %, -4,79 % | ohne SP500/US30 Σ
+  +48,0 %, -2,87 %. Im Jahresraster bricht keine Variante -- der Bruch der
+  heutigen Gewichtung 2024 kommt aus einem Drawdown ueber die Jahresgrenze.
+  **Vorschlag (volle Historie), CAPITAL_WEIGHT:** gold_asb 0,175, cls 0,30,
+  ctnl_reversal 0,375, orb_sp500 0,30, orb_us30 0, orb_nasdaq 0,15.
+  Risiko/Trade: 0,35 / 0,45 / 0,056 / 0,10 / 0 / 0,05 %. MC: P(Bruch) 1,1 %,
+  Median +10,8 %/Jahr (heute +11,9 %). Ereignis-Sim 2019-2026: +118 %,
+  MaxDD -2,69 %, kein Bruch; 2026: +2,05 %, MaxDD -3,11 %.
+  **Stabil im Walk-Forward:** gold_asb 0,125-0,2, sp500 0,1-0,175, us30
+  0-0,1, nasdaq 0,025-0,1. **Instabil:** cls 0,075-0,325.
+  **Konsistenzregel nicht optimiert.**
+  **KORREKTUR zum Eintrag darunter:** "Bruch am 26.08." galt fuer die alte
+  ORB-Logik (Order liegt bis 16:00). Mit Storno bei Gegenbruch und
+  CTNL-Broker-TP: 2026 heute +0,74 %, MaxDD -4,74 %, kein Bruch (knapp).
 
 - **2026-10-03** [FK Instant Funding / Research] **Gesamtportfolio 2026 mit
   FK-Kosten, Versatz und aktueller Ausfuehrungslogik backgetestet -- das
@@ -206,6 +312,21 @@ keine Planung (dafür ist `DASHBOARD.md`).
   den Nutzer: `ou_exit_levels.csv` einmal committen, dann sind 38 der 39
   gegenstandslos. Der juengste Stash ist vom 30.09. 20:56, also VOR dem
   PS-Fix -- seitdem keiner mehr.
+
+- **2026-10-03** [Gold ASB / LIVE] **Stop-Order-Logik auf allen drei Bridges
+  deployt** (Nutzer hat `deploy_gold_asb.py` ~19:28 selbst gestartet). Live
+  ab der naechsten Range (Mo 01:00 NY = 07:00 Berlin): ruhende Stop-Order am
+  Range-Level, Stop 1,5x Range, Storno 03:00 NY, Zeit-Exit 11:00 NY, ADX
+  kausal (00:45-Bar); EK mit absolutem SL statt Neuverankerung. Repo:
+  `engine.py` (ADX-Fix), drei `paper_bot.py` lesen die Parameter jetzt aus
+  `asian_range_breakout/pending.py` (Soll/Ist und Paper rechnen ab sofort mit
+  den neuen Parametern, auch rueckwirkend). Bridges: Funded/FK
+  `manage_gold_asb_pending` + Praezisions-Pass 01:00 NY, EK
+  `legs/gold_asb/pending_executor.py`. Marktorder-Pfad fuer gold_asb auf allen
+  Bridges abgeschaltet. Backups: `<Bridge>/_backup_20261001_gold_asb/`.
+  Vorher Staging auf den Stand nach dem CTNL-Broker-TP (03.10. 19:14) neu
+  aufgebaut, der bleibt erhalten. Verifiziert: alle Dateien = Staging, Import
+  aller drei Bridges ok. **Noch kein echter Lauf** (Wochenendpause).
 
 - **2026-10-01** [Gold ASB / Umsetzung] **Stop-Order-Logik gebaut und getestet,
   Deploy wartet auf den Nutzer.** Nutzerentscheide: Stop 1,5x Range, Storno

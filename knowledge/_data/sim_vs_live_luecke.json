@@ -1,0 +1,246 @@
+{
+  "ttp": {
+    "meta": {
+      "deals": 112,
+      "summe": -1637.99,
+      "abzug_bis": "2026-10-05T00:00:00"
+    },
+    "sim_summe": 624.12,
+    "tabelle": [
+      {
+        "leg": "FREMD",
+        "real_pos": 7,
+        "real_pnl": -603.39,
+        "real_swap": -65.67,
+        "sim_pos": 0.0,
+        "sim_pnl": 0.0,
+        "luecke": -603.39,
+        "topf": "fremd"
+      },
+      {
+        "leg": "ctnl_continuation",
+        "real_pos": 2,
+        "real_pnl": -531.31,
+        "real_swap": 0.0,
+        "sim_pos": 0.0,
+        "sim_pnl": 0.0,
+        "luecke": -531.31,
+        "topf": "nur_live"
+      },
+      {
+        "leg": "orb",
+        "real_pos": 29,
+        "real_pnl": -370.75,
+        "real_swap": 0.0,
+        "sim_pos": 29.0,
+        "sim_pnl": 113.18,
+        "luecke": -483.93,
+        "topf": "beide"
+      },
+      {
+        "leg": "gold_asb",
+        "real_pos": 3,
+        "real_pnl": 41.44,
+        "real_swap": 0.0,
+        "sim_pos": 3.0,
+        "sim_pnl": 432.65,
+        "luecke": -391.21,
+        "topf": "beide"
+      },
+      {
+        "leg": "ou_modell",
+        "real_pos": 15,
+        "real_pnl": -276.13,
+        "real_swap": -31.97,
+        "sim_pos": 3.0,
+        "sim_pnl": 9.85,
+        "luecke": -285.98,
+        "topf": "beide"
+      },
+      {
+        "leg": "cls_practical",
+        "real_pos": 2,
+        "real_pnl": 29.35,
+        "real_swap": 0.0,
+        "sim_pos": 1.0,
+        "sim_pnl": 60.89,
+        "luecke": -31.54,
+        "topf": "beide"
+      },
+      {
+        "leg": "ctnl_reversal",
+        "real_pos": 53,
+        "real_pnl": 72.8,
+        "real_swap": -41.12,
+        "sim_pos": 2.0,
+        "sim_pnl": 7.55,
+        "luecke": 65.25,
+        "topf": "beide"
+      }
+    ],
+    "toepfe": {
+      "beide": -1127.41,
+      "fremd": -603.39,
+      "nur_live": -531.31
+    }
+  },
+  "iq": {
+    "meta": {
+      "deals": 106,
+      "summe": -3101.67,
+      "abzug_bis": "2026-10-05T00:00:00"
+    },
+    "sim_summe": 1373.47,
+    "tabelle": [
+      {
+        "leg": "ctnl_reversal",
+        "real_pos": 75,
+        "real_pnl": -2602.72,
+        "real_swap": -2.63,
+        "sim_pos": 2.0,
+        "sim_pnl": -7.82,
+        "luecke": -2594.9,
+        "topf": "beide"
+      },
+      {
+        "leg": "gold_asb",
+        "real_pos": 3,
+        "real_pnl": 159.72,
+        "real_swap": 0.0,
+        "sim_pos": 3.0,
+        "sim_pnl": 974.01,
+        "luecke": -814.29,
+        "topf": "beide"
+      },
+      {
+        "leg": "ctnl_continuation",
+        "real_pos": 2,
+        "real_pnl": -756.38,
+        "real_swap": 0.0,
+        "sim_pos": 0.0,
+        "sim_pnl": 0.0,
+        "luecke": -756.38,
+        "topf": "nur_live"
+      },
+      {
+        "leg": "orb",
+        "real_pos": 24,
+        "real_pnl": -380.81,
+        "real_swap": 0.0,
+        "sim_pos": 29.0,
+        "sim_pnl": 263.07,
+        "luecke": -643.88,
+        "topf": "beide"
+      },
+      {
+        "leg": "cls_practical",
+        "real_pos": 2,
+        "real_pnl": 478.52,
+        "real_swap": 0.0,
+        "sim_pos": 1.0,
+        "sim_pnl": 144.21,
+        "luecke": 334.31,
+        "topf": "beide"
+      }
+    ],
+    "toepfe": {
+      "beide": -3718.76,
+      "nur_live": -756.38
+    }
+  },
+  "ek": {
+    "meta": {
+      "deals": 102,
+      "summe": -703.59,
+      "abzug_bis": "2026-10-05T00:00:00"
+    },
+    "sim_summe": 88.43,
+    "tabelle": [
+      {
+        "leg": "ctnl_reversal",
+        "real_pos": 22,
+        "real_pnl": -460.0,
+        "real_swap": -2.48,
+        "sim_pos": 2.0,
+        "sim_pnl": -4.96,
+        "luecke": -455.04,
+        "topf": "beide"
+      },
+      {
+        "leg": "ou_modell",
+        "real_pos": 22,
+        "real_pnl": -171.17,
+        "real_swap": -12.07,
+        "sim_pos": 3.0,
+        "sim_pnl": -1.97,
+        "luecke": -169.2,
+        "topf": "beide"
+      },
+      {
+        "leg": "gold_asb",
+        "real_pos": 2,
+        "real_pnl": 30.73,
+        "real_swap": 0.0,
+        "sim_pos": 3.0,
+        "sim_pnl": 132.78,
+        "luecke": -102.05,
+        "topf": "beide"
+      },
+      {
+        "leg": "orb",
+        "real_pos": 33,
+        "real_pnl": -43.76,
+        "real_swap": -0.91,
+        "sim_pos": 30.0,
+        "sim_pnl": 16.66,
+        "luecke": -60.42,
+        "topf": "beide"
+      },
+      {
+        "leg": "ctnl_continuation",
+        "real_pos": 3,
+        "real_pnl": -18.21,
+        "real_swap": 0.0,
+        "sim_pos": 0.0,
+        "sim_pnl": 0.0,
+        "luecke": -18.21,
+        "topf": "nur_live"
+      },
+      {
+        "leg": "gold_silver",
+        "real_pos": 1,
+        "real_pnl": -72.4,
+        "real_swap": -1.0,
+        "sim_pos": 1.0,
+        "sim_pnl": -64.68,
+        "luecke": -7.72,
+        "topf": "beide"
+      },
+      {
+        "leg": "cls_practical",
+        "real_pos": 1,
+        "real_pnl": 12.87,
+        "real_swap": 0.0,
+        "sim_pos": 1.0,
+        "sim_pnl": 10.6,
+        "luecke": 2.27,
+        "topf": "beide"
+      },
+      {
+        "leg": "FREMD",
+        "real_pos": 14,
+        "real_pnl": 18.35,
+        "real_swap": -10.7,
+        "sim_pos": 0.0,
+        "sim_pnl": 0.0,
+        "luecke": 18.35,
+        "topf": "fremd"
+      }
+    ],
+    "toepfe": {
+      "beide": -792.16,
+      "fremd": 18.35,
+      "nur_live": -18.21
+    }
+  }
+}

@@ -60,3 +60,37 @@
 2026-09-14 09:20:04 Nutze Claude Code: C:\Users\andre\.vscode\extensions\anthropic.claude-code-2.1.270-win32-arm64\resources\native-binary\claude.exe
 2026-09-14 09:32:31 You've hit your session limit -¿ resets 1:10pm (Europe/Berlin)
 2026-09-14 09:32:31 === Weekly-Report-Task beendet ===
+2026-10-04 18:00:02 === Weekly-Report-Task gestartet ===
+2026-10-04 18:00:02 Nutze Claude Code: C:\Users\andre\.vscode\extensions\anthropic.claude-code-2.1.287-win32-arm64\resources\native-binary\claude.exe
+2026-10-04 18:16:41 The KW40 Weekly Checkup (28.09.‘«Ù04.10.) is finished. It is committed locally as `32fc2ecf` (not pushed), the PDF is in `Documents\Trading Reports`, and Telegram confirmed it was sent. No monthly report this time, because next Sunday is still in October.
+2026-10-04 18:16:41 
+2026-10-04 18:16:41 **The week in numbers:** all three bridges lost money (closed trades only).
+2026-10-04 18:16:41 
+2026-10-04 18:16:41 | Bridge | Trades | Winrate | P&L | % |
+2026-10-04 18:16:41 |---|---|---|---|---|
+2026-10-04 18:16:41 | EK (Tickmill) | 21 | 19,0 % | ‘Í∆15,65 ‘Èº | ‘Í∆0,56 % |
+2026-10-04 18:16:41 | Funded (TTP + IQ) | 38 | 7,9 % | ‘Í∆1.424,11 $ | ‘Í∆0,72 % |
+2026-10-04 18:16:41 | FK Instant Funding | 16 | 6,3 % | ‘Í∆840,44 $ | ‘Í∆0,84 % |
+2026-10-04 18:16:41 | **Total, real money** | **75** | **10,7 %** | **‘Í∆15,65 ‘Èº / ‘Í∆2.264,55 $** | **‘ÎÍ ‘Í∆0,76 %** |
+2026-10-04 18:16:41 
+2026-10-04 18:16:41 - **Gold ASB** was the only leg that made money, and it won on every account.
+2026-10-04 18:16:41 - **ORB:** all 32 trades were stopped out. The SP500 trades (about ‘Í∆630 $) were orders that should have been cancelled after the price broke downward first; that fix starts Monday.
+2026-10-04 18:16:41 - **CTNL:** only 1 win in 28 closed trades. The kill-switch on Funded and EK fired at 21:58 on 30.09. (‘Í∆7,01 %) and switched itself off again at 22:53 after it was changed to measure only the trades actually taken (‘Í∆1,10 %).
+2026-10-04 18:16:41 - No risk-limit violations and no manual trades this week.
+2026-10-04 18:16:41 
+2026-10-04 18:16:41 **Most important new finding:** on Monday 28.09. the PC was in standby from 10:33 to 17:16. Every bridge and the watchdog itself were silent, so the New York open was missed on all accounts and no alarm was sent. The Windows event log confirms the sleep at those exact times. It cost nothing this time, because the two missed signals would have lost. It also means the Dashboard was wrong to count the 28.09. gap as a sign of hanging runs caused by stale data; I added that as a contradiction for you to confirm. The 01.10. gap was not standby and is still a real lead.
+2026-10-04 18:16:41 
+2026-10-04 18:16:41 **Other points flagged in the report:**
+2026-10-04 18:16:41 - The Soll/Ist tool doesn't match ORB pending-order entries to the backtest. Three trades it lists as "never seen" were placed at the exact same minute.
+2026-10-04 18:16:41 - I couldn't reproduce the EK Soll return of +1,33 %, since its trades sum to ‘Í∆9,69 R. Please don't treat that figure as reliable.
+2026-10-04 18:16:41 - Monday has many first live runs at once: Gold ASB stop orders, the CTNL exit rules, ORB order cancelling, the US30 pause and the new TTP weights. The report lists what to check and at what time.
+2026-10-04 18:16:41 
+2026-10-04 18:16:41 **Housekeeping:**
+2026-10-04 18:16:41 - The MT5 data pull ran on terminals that were already open, so no windows were left behind.
+2026-10-04 18:16:41 - Besides the reports, the commit includes this week's MT5 and Soll/Ist data files (earlier weeks are tracked too), a CHANGELOG entry, and two notes in the Dashboard.
+2026-10-04 18:16:41 - I also saved a memory note about the standby/watchdog problem.
+2026-10-04 18:16:41 - Other sessions' uncommitted changes were left untouched.
+2026-10-04 18:16:41 
+2026-10-04 18:16:41 Several MCP connectors (Asana, Atlassian, ClickUp, Linear, Monday, Notion, Slack) need authorization in their connector settings. This run didn't use them.
+2026-10-04 18:16:41 Vollstaendigkeitspruefung OK: KW40_2026_checkup.pdf (499.963 Bytes)
+2026-10-04 18:16:41 === Weekly-Report-Task beendet ===

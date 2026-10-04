@@ -28,3 +28,10 @@ knowledge/.obsidian/
 
 # Lokale XML-Sicherungen der Scheduled Tasks (maschinenspezifisch, s. scripts/weekend_pause.ps1)
 scripts/task_backups/
+
+# fusion_lab: privates Rohmaterial + Login-Caches (OneNote-Token, Telegram-Session)
+fusion_lab/raw/
+fusion_lab/.auth/
+
+# Zugangsdaten fusion_lab (2026-10-04 vorsorglich aus dem Commit genommen)
+fusion_lab/_secrets.py

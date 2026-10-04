@@ -227,91 +227,29 @@ def save_state(state: dict) -> None:
 # Engines selbst kennen kein FK/EK, nur die Risikostufen weiter unten
 # unterscheiden sich).
 
-GOLD_ASB_HISTORY_START = "2016-01-01"  # identisch zu app_pages/asian_range_breakout.py START -- die
-# Liquiditaets-Filterschwelle ist eine EXPANDING Quantile ueber die volle Historie (min_periods=250
-# Handelstage); ein kuerzeres Trailing-Fenster wuerde eine andere Schwelle berechnen als der echte Bot.
-GOLD_ASB_ADX_MIN = 15.0
-GOLD_ASB_TREND_SMA_WINDOW = 200
-GOLD_ASB_SILVER_ALIGNMENT_WINDOW = 5
-GOLD_ASB_LIQUIDITY_QUANTILE = 2 / 3
-GOLD_ASB_LIQUIDITY_MIN_PERIODS = 250
-GOLD_ASB_MAX_DELAY_BARS = 3
+# Gold-ASB-Parameter seit 2026-10-01 aus dem geteilten Modul (Single Source of
+# Truth fuer alle drei Paper-Bots UND die drei Bridges) -- vorher hier dreifach
+# kopiert. Stop 1,5x Range und Storno 03:00 NY (= 7 Delay-Bars) per
+# Nutzerentscheid 2026-10-01, knowledge/projects/gold-asb-kostenvalidierung.md.
+from asian_range_breakout import pending as _gold_asb_pending  # noqa: E402
+
+GOLD_ASB_HISTORY_START = _gold_asb_pending.HISTORY_START
+GOLD_ASB_ADX_MIN = _gold_asb_pending.ADX_MIN
+GOLD_ASB_TREND_SMA_WINDOW = _gold_asb_pending.TREND_SMA_WINDOW
+GOLD_ASB_SILVER_ALIGNMENT_WINDOW = _gold_asb_pending.SILVER_ALIGNMENT_WINDOW
+GOLD_ASB_LIQUIDITY_QUANTILE = _gold_asb_pending.LIQUIDITY_QUANTILE
+GOLD_ASB_LIQUIDITY_MIN_PERIODS = _gold_asb_pending.LIQUIDITY_MIN_PERIODS
+GOLD_ASB_MAX_DELAY_BARS = _gold_asb_pending.MAX_DELAY_BARS
+GOLD_ASB_STOP_FRAC = _gold_asb_pending.STOP_FRAC
 
 
 def _scan_gold_asb(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> pd.DataFrame:
-    """Repliziert die fuenf produktiv validierten Live-Filter der echten
-    GoldASB-MT5-Bridge (ADX, Trend-Bias, Fuellverzoegerung, Silber-Alignment,
-    Liquiditaet) -- Parameter und Filterkette 1:1 aus app_pages/asian_range_
-    breakout.py uebernommen. Volle Historie seit GOLD_ASB_HISTORY_START
-    noetig, weil die Liquiditaets-Schwelle eine expanding Quantile ist."""
-    from asian_range_breakout.data import fetch_gold_m15
-    from asian_range_breakout.engine import simulate_asian_breakout
-    from asian_range_breakout.filters import (
-        apply_adx_filter, apply_entry_delay_filter, apply_gold_liquidity_filter_causal,
-        apply_silver_alignment_filter, apply_trend_bias_filter,
-    )
-    from asian_range_breakout.sizing import simulate_equity
-    from bond_yield_indicator.friction import fetch_fx_friction
-    from combined_strategy.data import fetch_timeframe
-
-    # Nur die LIVE-Fenster (unten "_new") werden bei source="lake" ersetzt -- identisches
-    # Muster zu challenge_portfolio/paper_bot.py::_scan_gold_asb (2026-09-06-Erweiterung
-    # auf EK-Portfolio-Bridge: liest denselben, bereits laufenden Lake, keine neue Ingestion).
-    if source == "lake":
-        import data_lake.reader as _lake
-        fetch_gold_m15_new = _lake.with_live_fallback(_lake.fetch_gold_m15, fetch_gold_m15)
-        fetch_timeframe_new = _lake.with_live_fallback(_lake.fetch_timeframe, fetch_timeframe)
-        fetch_fx_friction_new = _lake.with_live_fallback(_lake.fetch_fx_friction, fetch_fx_friction)
-    else:
-        fetch_gold_m15_new, fetch_timeframe_new, fetch_fx_friction_new = fetch_gold_m15, fetch_timeframe, fetch_fx_friction
-
-    # fetch_timeframe() cached unter dem exakten (start, end)-Datumspaar -- mit end=jetzt wuerde JEDER
-    # stuendliche Lauf einen NEUEN Cache-Schluessel erzeugen und die vollen ~10 Jahre M15-Gold/Silber
-    # komplett frisch herunterladen. Fix: alte, laengst abgeschlossene Historie bis MONATSANFANG cachen
-    # (aendert sich nur 1x/Monat statt taeglich, identischer Fix wie challenge_portfolio/paper_bot.py
-    # 2026-09-06 -- derselbe Bug war hier unabhaengig vorhanden), nur der laufende Monat wird wirklich
-    # force_refresh=True abgerufen und angehaengt.
-    end_str = (end + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
-    stable_end_str = end.normalize().replace(day=1).strftime("%Y-%m-%d")
-
-    def _concat_fresh(old: pd.DataFrame | pd.Series, new: pd.DataFrame | pd.Series):
-        if old.empty:
-            return new
-        if new.empty:
-            return old
-        combined = pd.concat([old, new])
-        return combined[~combined.index.duplicated(keep="last")].sort_index()
-
-    gold_m15_old = fetch_gold_m15(GOLD_ASB_HISTORY_START, stable_end_str, force_refresh=False)
-    gold_m15_new = fetch_gold_m15_new(stable_end_str, end_str, force_refresh=force_refresh)
-    df = _concat_fresh(gold_m15_old, gold_m15_new)
-    if df.empty:
-        return pd.DataFrame(columns=["entry_time", "exit_time", "r_multiple", "exit_reason"])
-    trades = simulate_asian_breakout(df)
-    if trades.empty:
-        return trades
-
-    daily_close = df["close"].tz_localize(None).resample("D").last().dropna()
-    silver_m15_old = fetch_timeframe("SILVER", "M15", GOLD_ASB_HISTORY_START, stable_end_str, force_refresh=False)
-    silver_m15_new = fetch_timeframe_new("SILVER", "M15", stable_end_str, end_str, force_refresh=force_refresh)
-    silver_m15 = _concat_fresh(silver_m15_old, silver_m15_new)
-    daily_close_silver = silver_m15["Close"].tz_localize(None).resample("D").last().dropna()
-    gold_friction_old = fetch_fx_friction("GOLD", GOLD_ASB_HISTORY_START, stable_end_str, force_refresh=False)
-    gold_friction_new = fetch_fx_friction_new("GOLD", stable_end_str, end_str, force_refresh=force_refresh)
-    gold_friction = _concat_fresh(gold_friction_old, gold_friction_new)
-
-    trades = apply_adx_filter(trades, adx_min=GOLD_ASB_ADX_MIN)
-    trades = apply_trend_bias_filter(trades, daily_close, sma_window=GOLD_ASB_TREND_SMA_WINDOW)
-    trades = apply_entry_delay_filter(trades, max_delay_bars=GOLD_ASB_MAX_DELAY_BARS)
-    trades = apply_silver_alignment_filter(trades, daily_close_silver, window=GOLD_ASB_SILVER_ALIGNMENT_WINDOW)
-    trades = apply_gold_liquidity_filter_causal(
-        trades, gold_friction, quantile=GOLD_ASB_LIQUIDITY_QUANTILE, min_periods=GOLD_ASB_LIQUIDITY_MIN_PERIODS
-    )
-    if trades.empty:
-        return trades
-    trades = simulate_equity(trades, starting_equity=100_000.0, risk_pct=0.005)
-    trades = trades[_utc_naive(trades["entry_time"]) <= end]
-    return trades
+    """Simulierte Gold-ASB-Trades mit der Produktions-Filterkette -- fuer Paper-
+    Simulation, Soll/Ist und Reports. Rumpf seit 2026-10-01 in asian_range_
+    breakout/pending.py::scan_trades (vorher in allen drei Paper-Bots identisch
+    kopiert). Die Bridges handeln das Bein NICHT mehr hieraus, sondern als ruhende
+    Stop-Order ueber pending.todays_setup()."""
+    return _gold_asb_pending.scan_trades(end, force_refresh, source=source, utc_naive=_utc_naive)
 
 
 def _scan_cls_practical(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> pd.DataFrame:

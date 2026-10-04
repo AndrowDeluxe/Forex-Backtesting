@@ -1,0 +1,354 @@
+{
+  "beine": [
+    {
+      "leg": "cls_practical",
+      "n": 141,
+      "avg_r": 0.4213,
+      "sum_r": 59.4097,
+      "jahre_positiv": 6
+    },
+    {
+      "leg": "ctnl_reversal",
+      "n": 166,
+      "avg_r": 1.0503,
+      "sum_r": 174.3448,
+      "jahre_positiv": 7
+    },
+    {
+      "leg": "gold_asb",
+      "n": 203,
+      "avg_r": 0.3005,
+      "sum_r": 60.9967,
+      "jahre_positiv": 8
+    },
+    {
+      "leg": "gold_silver",
+      "n": 104,
+      "avg_r": 0.9507,
+      "sum_r": 98.8743,
+      "jahre_positiv": 8
+    },
+    {
+      "leg": "orb_nasdaq",
+      "n": 568,
+      "avg_r": 0.4379,
+      "sum_r": 248.7154,
+      "jahre_positiv": 8
+    },
+    {
+      "leg": "orb_sp500",
+      "n": 362,
+      "avg_r": 0.5113,
+      "sum_r": 185.0753,
+      "jahre_positiv": 7
+    },
+    {
+      "leg": "trend_pullback",
+      "n": 271,
+      "avg_r": 0.363,
+      "sum_r": 98.3864,
+      "jahre_positiv": 6
+    }
+  ],
+  "korrelation_mit_heute": {
+    "trend_pullback": 0.003462436052784129,
+    "gold_silver": 0.012522127094643109
+  },
+  "szenarien": {
+    "S1_heute": {
+      "risiko_je_trade_pct": {
+        "gold_asb": 0.1212,
+        "cls_practical": 0.2878,
+        "ctnl_reversal": 0.0379,
+        "orb_sp500": 0.1246,
+        "orb_nasdaq": 0.1246,
+        "trend_pullback": 0.0,
+        "gold_silver": 0.0
+      },
+      "mc": {
+        "median_return": 0.10580072146800146,
+        "p_breach": 0.0455,
+        "median_maxdd": -0.024848883583337977
+      },
+      "ereignis_2019_2026": {
+        "return_pct": 128.8252394262935,
+        "maxdd_pct": -3.7889599680774433,
+        "erster_bruch": null,
+        "ziel_erreicht": null,
+        "trades": 1440
+      },
+      "ereignis_2026": {
+        "return_pct": 9.05976851107897,
+        "maxdd_pct": -2.1509930287215817,
+        "erster_bruch": null,
+        "ziel_erreicht": null,
+        "trades": 163
+      }
+    },
+    "S2_heute_plus_paper_gewichte": {
+      "risiko_je_trade_pct": {
+        "gold_asb": 0.1212,
+        "cls_practical": 0.2878,
+        "ctnl_reversal": 0.0379,
+        "orb_sp500": 0.1246,
+        "orb_nasdaq": 0.1246,
+        "trend_pullback": 0.0303,
+        "gold_silver": 0.0606
+      },
+      "mc": {
+        "median_return": 0.11767732739936243,
+        "p_breach": 0.035,
+        "median_maxdd": -0.02382040330927071
+      },
+      "ereignis_2019_2026": {
+        "return_pct": 147.99513884166103,
+        "maxdd_pct": -3.4787422748499552,
+        "erster_bruch": null,
+        "ziel_erreicht": null,
+        "trades": 1815
+      },
+      "ereignis_2026": {
+        "return_pct": 10.104109595037336,
+        "maxdd_pct": -2.152741274295955,
+        "erster_bruch": null,
+        "ziel_erreicht": null,
+        "trades": 187
+      }
+    },
+    "S3_vorschlag_0310": {
+      "risiko_je_trade_pct": {
+        "gold_asb": 0.35,
+        "cls_practical": 0.45,
+        "ctnl_reversal": 0.056,
+        "orb_sp500": 0.1,
+        "orb_nasdaq": 0.05,
+        "trend_pullback": 0.0,
+        "gold_silver": 0.0
+      },
+      "mc": {
+        "median_return": 0.11190431817138946,
+        "p_breach": 0.009,
+        "median_maxdd": -0.01979298864371476
+      },
+      "ereignis_2019_2026": {
+        "return_pct": 138.603493360598,
+        "maxdd_pct": -3.8244278062212866,
+        "erster_bruch": null,
+        "ziel_erreicht": null,
+        "trades": 1440
+      },
+      "ereignis_2026": {
+        "return_pct": 6.344020835300945,
+        "maxdd_pct": -1.9648404568768152,
+        "erster_bruch": null,
+        "ziel_erreicht": null,
+        "trades": 163
+      }
+    },
+    "S4_neu_optimiert_mit_neuen_beinen": {
+      "risiko_je_trade_pct": {
+        "gold_asb": 0.15,
+        "cls_practical": 0.3,
+        "ctnl_reversal": 0.1,
+        "orb_sp500": 0.1,
+        "orb_nasdaq": 0.1,
+        "trend_pullback": 0.125,
+        "gold_silver": 0.25
+      },
+      "mc": {
+        "median_return": 0.1590110680693918,
+        "p_breach": 0.0145,
+        "median_maxdd": -0.022782841779309893
+      },
+      "ereignis_2019_2026": {
+        "return_pct": 239.67076104889676,
+        "maxdd_pct": -3.197584449750146,
+        "erster_bruch": null,
+        "ziel_erreicht": null,
+        "trades": 1815
+      },
+      "ereignis_2026": {
+        "return_pct": 12.144425262095492,
+        "maxdd_pct": -1.95659662554033,
+        "erster_bruch": null,
+        "ziel_erreicht": null,
+        "trades": 187
+      }
+    }
+  },
+  "walk_forward": {
+    "2021": {
+      "gewichte": {
+        "gold_asb": 0.0015,
+        "cls_practical": 0.003,
+        "ctnl_reversal": 0,
+        "orb_sp500": 0.00125,
+        "orb_nasdaq": 0.00125,
+        "trend_pullback": 0,
+        "gold_silver": 0.0015
+      },
+      "oos_opt": {
+        "return_pct": 11.782055891704534,
+        "maxdd_pct": -2.9998321093564373,
+        "breach": false
+      },
+      "oos_heute": {
+        "return_pct": 9.881100532523114,
+        "maxdd_pct": -2.9747212757149755,
+        "breach": false
+      },
+      "oos_vorschlag_0310": {
+        "return_pct": 5.8164638388151335,
+        "maxdd_pct": -3.03094910779077,
+        "breach": false
+      }
+    },
+    "2022": {
+      "gewichte": {
+        "gold_asb": 0.001,
+        "cls_practical": 0.002,
+        "ctnl_reversal": 0.00025,
+        "orb_sp500": 0.0015,
+        "orb_nasdaq": 0.00125,
+        "trend_pullback": 0,
+        "gold_silver": 0.002
+      },
+      "oos_opt": {
+        "return_pct": 16.32433028332423,
+        "maxdd_pct": -3.4682557646191436,
+        "breach": false
+      },
+      "oos_heute": {
+        "return_pct": 14.22515417180601,
+        "maxdd_pct": -3.642635991000187,
+        "breach": false
+      },
+      "oos_vorschlag_0310": {
+        "return_pct": 16.69600446195394,
+        "maxdd_pct": -2.6436321561570386,
+        "breach": false
+      }
+    },
+    "2023": {
+      "gewichte": {
+        "gold_asb": 0.00125,
+        "cls_practical": 0.003,
+        "ctnl_reversal": 0.00125,
+        "orb_sp500": 0.00125,
+        "orb_nasdaq": 0.001,
+        "trend_pullback": 0,
+        "gold_silver": 0.001
+      },
+      "oos_opt": {
+        "return_pct": 6.637908715791085,
+        "maxdd_pct": -3.2775382754967053,
+        "breach": false
+      },
+      "oos_heute": {
+        "return_pct": 3.710958236245143,
+        "maxdd_pct": -3.4677645859331974,
+        "breach": false
+      },
+      "oos_vorschlag_0310": {
+        "return_pct": 3.102364428533022,
+        "maxdd_pct": -3.8656404266541933,
+        "breach": false
+      }
+    },
+    "2024": {
+      "gewichte": {
+        "gold_asb": 0.0025,
+        "cls_practical": 0.003,
+        "ctnl_reversal": 0.001,
+        "orb_sp500": 0.0015,
+        "orb_nasdaq": 0.0005,
+        "trend_pullback": 0.00025,
+        "gold_silver": 0.0025
+      },
+      "oos_opt": {
+        "return_pct": 13.746114932006348,
+        "maxdd_pct": -1.8114710458026262,
+        "breach": false
+      },
+      "oos_heute": {
+        "return_pct": 7.589523692418454,
+        "maxdd_pct": -3.7241178640894823,
+        "breach": false
+      },
+      "oos_vorschlag_0310": {
+        "return_pct": 10.17076001586743,
+        "maxdd_pct": -1.3344720985340452,
+        "breach": false
+      }
+    },
+    "2025": {
+      "gewichte": {
+        "gold_asb": 0.00125,
+        "cls_practical": 0.003,
+        "ctnl_reversal": 0.001,
+        "orb_sp500": 0.0015,
+        "orb_nasdaq": 0.0005,
+        "trend_pullback": 0,
+        "gold_silver": 0.0035
+      },
+      "oos_opt": {
+        "return_pct": 25.75519617827622,
+        "maxdd_pct": -2.107850070725903,
+        "breach": false
+      },
+      "oos_heute": {
+        "return_pct": 15.020398007732073,
+        "maxdd_pct": -1.661301232887269,
+        "breach": false
+      },
+      "oos_vorschlag_0310": {
+        "return_pct": 20.95958752269389,
+        "maxdd_pct": -1.6602117581692277,
+        "breach": false
+      }
+    },
+    "2026": {
+      "gewichte": {
+        "gold_asb": 0.0025,
+        "cls_practical": 0.003,
+        "ctnl_reversal": 0.00125,
+        "orb_sp500": 0.0015,
+        "orb_nasdaq": 0.00075,
+        "trend_pullback": 0.00025,
+        "gold_silver": 0.002
+      },
+      "oos_opt": {
+        "return_pct": 9.955539519764155,
+        "maxdd_pct": -2.3248928858666473,
+        "breach": false
+      },
+      "oos_heute": {
+        "return_pct": 9.120443512674381,
+        "maxdd_pct": -2.152680473800239,
+        "breach": false
+      },
+      "oos_vorschlag_0310": {
+        "return_pct": 6.23036134121413,
+        "maxdd_pct": -1.974195480626062,
+        "breach": false
+      }
+    }
+  },
+  "wf_summe": {
+    "oos_opt": {
+      "summe_return_pct": 84.20114552086658,
+      "bruchjahre": 0,
+      "schlechtestes_maxdd_pct": -3.4682557646191436
+    },
+    "oos_heute": {
+      "summe_return_pct": 59.54757815339917,
+      "bruchjahre": 0,
+      "schlechtestes_maxdd_pct": -3.7241178640894823
+    },
+    "oos_vorschlag_0310": {
+      "summe_return_pct": 62.975541609077546,
+      "bruchjahre": 0,
+      "schlechtestes_maxdd_pct": -3.8656404266541933
+    }
+  }
+}

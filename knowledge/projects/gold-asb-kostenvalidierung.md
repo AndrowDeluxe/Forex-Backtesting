@@ -1,6 +1,6 @@
 # Projekt: Gold ASB — Kosten-, Ausführungs- und Optimierungsprüfung
 
-Status: **Proben + Optimierung abgeschlossen, Entscheidung offen** (2026-10-01).
+Status: **umgesetzt und deployt** (Entscheid 2026-10-01, live seit 2026-10-03).
 Dritter Durchlauf von [[realkosten-und-ausfuehrungs-probe]] nach
 [[cls-practical-kostenvalidierung]] und [[ctnl-kostenvalidierung]], plus
 Nutzerauftrag: Einstieg, Order-Logik, Filter, BE und Ziele prüfen.
@@ -226,3 +226,37 @@ sind deshalb optimistisch. Belastbar sind nur die Einzel-Walk-Forwards oben.
 
 Wichtig: `challenge_portfolio/paper_bot.py` wird von der Funded-Bridge
 **direkt importiert**. Jede Änderung an A oder B wirkt dort sofort live.
+
+---
+
+## Umsetzung (2026-10-01)
+
+Nutzerentscheide: Stop **1,5x Range**, Storno **03:00 NY**, EK mit
+**absolutem SL** (Mindestlot wird gehandelt), **sofort scharf** auf allen
+Bridges. Kein Rueckfall auf Market-Orders.
+
+- **Geteilte Logik:** `asian_range_breakout/pending.py`. Parameter als Single
+  Source of Truth (auch fuer die drei Paper-Bots), `todays_setup()` entscheidet
+  um 01:00 NY auf Broker-M15-Bars, Vortagsfilter (Trend/Silber/Liquiditaet)
+  aus dem Lake, einmal je Tag gecacht.
+- **Hoechstens eine Order je Tag:** Trend- und Silberfilter legen die Richtung
+  fest. Die OCO-Semantik des Backtests bildet ein Gegenseiten-Waechter nach:
+  bricht zuerst die Gegenseite, wird storniert; fuellt die Order erst danach,
+  wird sofort geschlossen.
+- **ADX kausal:** an der 00:45-Bar statt an der 01:00-Bar (die schliesst erst
+  01:15). Kippt den Filter an 3,1 % der Tage, Ergebnis gleich bis leicht
+  besser. `engine.py` wird im selben Deploy angeglichen.
+- **Platzierung puenktlich:** Funded/FK ueber einen Praezisions-Pass um 01:00 NY
+  (wie ORB). EK braucht keinen, sein 2-Min-Takt trifft 01:00:10.
+- **Paritaet:** 266 von 266 gemeinsamen Trades identisch (Richtung, Level,
+  Stop). 8 Trades nur live (Fill in der 01:00-Bar, die die Engine
+  ueberspringt), 1 nur in der Engine (der Spiegelfall).
+- **Trockenlauf 28.09. (Replay):** SELL_STOP 4.191,28, SL 4.251,45. Risiko
+  TTP 331 $, IQ 651 $, FK 120 $ Ziel bei real 0,01 Lot, EK 53 EUR bei 0,01 Lot.
+
+**Deployt am 2026-10-03** (vom Nutzer gestartet, der Auto-Mode-Classifier
+laesst Code-Austausch in den Echtgeld-Bridges nicht automatisch zu). Erster
+echter Lauf: Mo 2026-10-05, 01:00 NY.
+
+**Nebenbefund FK:** bei 1,5x Range rundet FK auf 0,01 Lot ab und laeuft damit
+mit etwa halbem Zielrisiko.

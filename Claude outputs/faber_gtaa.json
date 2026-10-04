@@ -1,0 +1,736 @@
+{
+ "ETF": {
+  "investiert": 67.5,
+  "wechsel_pro_jahr_gesamt": 9.14,
+  "gesamt": {
+   "timing": {
+    "n_m": 239,
+    "cagr": 5.41,
+    "vol": 6.62,
+    "sharpe": 0.59,
+    "maxdd": -11.16
+   },
+   "buyhold": {
+    "n_m": 239,
+    "cagr": 5.89,
+    "vol": 12.15,
+    "sharpe": 0.41,
+    "maxdd": -43.49
+   },
+   "von": "2006-12-31",
+   "bis": "2026-10-31"
+  },
+  "paper_oos_2006_2012": {
+   "timing": {
+    "n_m": 73,
+    "cagr": 4.18,
+    "vol": 8.02,
+    "sharpe": 0.41,
+    "maxdd": -11.16
+   },
+   "buyhold": {
+    "n_m": 73,
+    "cagr": 3.76,
+    "vol": 16.0,
+    "sharpe": 0.24,
+    "maxdd": -43.49
+   },
+   "von": "2006-12-31",
+   "bis": "2012-12-31"
+  },
+  "echtes_oos_2013_heute": {
+   "timing": {
+    "n_m": 164,
+    "cagr": 5.88,
+    "vol": 5.91,
+    "sharpe": 0.69,
+    "maxdd": -5.5
+   },
+   "buyhold": {
+    "n_m": 164,
+    "cagr": 6.76,
+    "vol": 10.1,
+    "sharpe": 0.52,
+    "maxdd": -17.7
+   },
+   "von": "2013-03-31",
+   "bis": "2026-10-31"
+  },
+  "ohne_2008": {
+   "timing": {
+    "n_m": 227,
+    "cagr": 5.86,
+    "vol": 6.52,
+    "sharpe": 0.66,
+    "maxdd": -11.16
+   },
+   "buyhold": {
+    "n_m": 227,
+    "cagr": 7.96,
+    "vol": 11.17,
+    "sharpe": 0.6,
+    "maxdd": -20.9
+   },
+   "von": "2006-12-31",
+   "bis": "2026-10-31"
+  },
+  "jahre": {
+   "2006": {
+    "timing": -0.18,
+    "buyhold": -0.18
+   },
+   "2007": {
+    "timing": 9.01,
+    "buyhold": 7.630000000000001
+   },
+   "2008": {
+    "timing": -2.62,
+    "buyhold": -26.47
+   },
+   "2009": {
+    "timing": 14.499999999999998,
+    "buyhold": 19.74
+   },
+   "2010": {
+    "timing": 3.9699999999999998,
+    "buyhold": 15.160000000000002
+   },
+   "2011": {
+    "timing": -0.06999999999999999,
+    "buyhold": 2.45
+   },
+   "2012": {
+    "timing": 1.77,
+    "buyhold": 12.139999999999999
+   },
+   "2013": {
+    "timing": 7.91,
+    "buyhold": 7.75
+   },
+   "2014": {
+    "timing": 7.55,
+    "buyhold": 2.17
+   },
+   "2015": {
+    "timing": -2.31,
+    "buyhold": -4.71
+   },
+   "2016": {
+    "timing": 3.6700000000000004,
+    "buyhold": 8.59
+   },
+   "2017": {
+    "timing": 9.11,
+    "buyhold": 11.57
+   },
+   "2018": {
+    "timing": -1.46,
+    "buyhold": -6.68
+   },
+   "2019": {
+    "timing": 8.4,
+    "buyhold": 20.44
+   },
+   "2020": {
+    "timing": 3.85,
+    "buyhold": 5.26
+   },
+   "2021": {
+    "timing": 22.15,
+    "buyhold": 23.0
+   },
+   "2022": {
+    "timing": -4.66,
+    "buyhold": -11.44
+   },
+   "2023": {
+    "timing": 4.44,
+    "buyhold": 10.69
+   },
+   "2024": {
+    "timing": 6.38,
+    "buyhold": 6.98
+   },
+   "2025": {
+    "timing": 9.1,
+    "buyhold": 13.61
+   },
+   "2026": {
+    "timing": 10.92,
+    "buyhold": 13.459999999999999
+   }
+  },
+  "sma_plateau_oos2013": {
+   "3": {
+    "n_m": 164,
+    "cagr": 5.04,
+    "vol": 5.69,
+    "sharpe": 0.58,
+    "maxdd": -10.4
+   },
+   "6": {
+    "n_m": 164,
+    "cagr": 4.71,
+    "vol": 5.61,
+    "sharpe": 0.53,
+    "maxdd": -9.22
+   },
+   "8": {
+    "n_m": 164,
+    "cagr": 5.82,
+    "vol": 6.06,
+    "sharpe": 0.67,
+    "maxdd": -5.86
+   },
+   "9": {
+    "n_m": 164,
+    "cagr": 5.88,
+    "vol": 6.1,
+    "sharpe": 0.67,
+    "maxdd": -5.46
+   },
+   "10": {
+    "n_m": 164,
+    "cagr": 5.88,
+    "vol": 5.91,
+    "sharpe": 0.69,
+    "maxdd": -5.5
+   },
+   "11": {
+    "n_m": 164,
+    "cagr": 5.47,
+    "vol": 5.91,
+    "sharpe": 0.63,
+    "maxdd": -7.9
+   },
+   "12": {
+    "n_m": 164,
+    "cagr": 5.64,
+    "vol": 6.05,
+    "sharpe": 0.64,
+    "maxdd": -8.08
+   }
+  },
+  "lag_1m_oos2013": {
+   "n_m": 164,
+   "cagr": 5.69,
+   "vol": 6.93,
+   "sharpe": 0.57,
+   "maxdd": -13.73
+  },
+  "kosten_oos2013": {
+   "0bps": {
+    "n_m": 164,
+    "cagr": 5.88,
+    "vol": 5.91,
+    "sharpe": 0.69,
+    "maxdd": -5.5
+   },
+   "10bps": {
+    "n_m": 164,
+    "cagr": 5.68,
+    "vol": 5.91,
+    "sharpe": 0.66,
+    "maxdd": -5.77
+   },
+   "25bps": {
+    "n_m": 164,
+    "cagr": 5.38,
+    "vol": 5.91,
+    "sharpe": 0.61,
+    "maxdd": -6.22
+   },
+   "50bps": {
+    "n_m": 164,
+    "cagr": 4.89,
+    "vol": 5.92,
+    "sharpe": 0.53,
+    "maxdd": -6.98
+   }
+  },
+  "kontrolle_tsmom12_oos2013": {
+   "n_m": 164,
+   "cagr": 5.06,
+   "vol": 6.19,
+   "sharpe": 0.54,
+   "maxdd": -10.66
+  },
+  "kontrolle_zufall71pct_oos2013": {
+   "sharpe_median": 0.5,
+   "maxdd_median": -14.73,
+   "anteil_zufall_sharpe_ge_timing": 0.045,
+   "anteil_zufall_maxdd_besser_timing": 0.0
+  },
+  "mechanismus_fig18": {
+   "SPY": {
+    "gesamt": {
+     "anteil_ueber": 75.9,
+     "ret_ueber_pa": 12.28,
+     "ret_unter_pa": 9.96,
+     "vol_ueber": 12.2,
+     "vol_unter": 21.65,
+     "n_unter": 92
+    },
+    "oos2013": {
+     "anteil_ueber": 85.4,
+     "ret_ueber_pa": 10.82,
+     "ret_unter_pa": 37.15,
+     "vol_ueber": 11.87,
+     "vol_unter": 22.84,
+     "n_unter": 24
+    }
+   },
+   "EFA": {
+    "gesamt": {
+     "anteil_ueber": 54.9,
+     "ret_ueber_pa": 10.51,
+     "ret_unter_pa": 1.44,
+     "vol_ueber": 13.02,
+     "vol_unter": 22.64,
+     "n_unter": 172
+    },
+    "oos2013": {
+     "anteil_ueber": 72.0,
+     "ret_ueber_pa": 9.38,
+     "ret_unter_pa": 5.29,
+     "vol_ueber": 12.24,
+     "vol_unter": 18.79,
+     "n_unter": 46
+    }
+   },
+   "IEF": {
+    "gesamt": {
+     "anteil_ueber": 49.9,
+     "ret_ueber_pa": 3.29,
+     "ret_unter_pa": 3.85,
+     "vol_ueber": 6.52,
+     "vol_unter": 6.92,
+     "n_unter": 191
+    },
+    "oos2013": {
+     "anteil_ueber": 59.8,
+     "ret_ueber_pa": 1.88,
+     "ret_unter_pa": -0.12,
+     "vol_ueber": 5.54,
+     "vol_unter": 7.39,
+     "n_unter": 66
+    }
+   },
+   "DBC": {
+    "gesamt": {
+     "anteil_ueber": 34.9,
+     "ret_ueber_pa": 8.56,
+     "ret_unter_pa": -0.12,
+     "vol_ueber": 17.98,
+     "vol_unter": 19.56,
+     "n_unter": 248
+    },
+    "oos2013": {
+     "anteil_ueber": 50.6,
+     "ret_ueber_pa": 12.17,
+     "ret_unter_pa": -4.35,
+     "vol_ueber": 16.44,
+     "vol_unter": 17.32,
+     "n_unter": 81
+    }
+   },
+   "VNQ": {
+    "gesamt": {
+     "anteil_ueber": 46.5,
+     "ret_ueber_pa": 7.91,
+     "ret_unter_pa": 12.05,
+     "vol_ueber": 17.76,
+     "vol_unter": 27.44,
+     "n_unter": 204
+    },
+    "oos2013": {
+     "anteil_ueber": 66.5,
+     "ret_ueber_pa": 5.08,
+     "ret_unter_pa": 11.88,
+     "vol_ueber": 14.85,
+     "vol_unter": 20.82,
+     "n_unter": 55
+    }
+   }
+  },
+  "bootstrap_sharpe_diff_oos2013": {
+   "p05": 0.07,
+   "median": 0.28,
+   "p95": 0.49,
+   "anteil_le_0": 0.011
+  }
+ },
+ "FONDS": {
+  "investiert": 70.1,
+  "wechsel_pro_jahr_gesamt": 8.77,
+  "gesamt": {
+   "timing": {
+    "n_m": 282,
+    "cagr": 7.32,
+    "vol": 6.82,
+    "sharpe": 0.82,
+    "maxdd": -7.53
+   },
+   "buyhold": {
+    "n_m": 282,
+    "cagr": 7.79,
+    "vol": 12.16,
+    "sharpe": 0.54,
+    "maxdd": -45.33
+   },
+   "von": "2003-05-31",
+   "bis": "2026-10-31"
+  },
+  "paper_oos_2006_2012": {
+   "timing": {
+    "n_m": 84,
+    "cagr": 6.61,
+    "vol": 7.22,
+    "sharpe": 0.7,
+    "maxdd": -7.53
+   },
+   "buyhold": {
+    "n_m": 84,
+    "cagr": 5.8,
+    "vol": 15.67,
+    "sharpe": 0.34,
+    "maxdd": -45.33
+   },
+   "von": "2006-01-31",
+   "bis": "2012-12-31"
+  },
+  "echtes_oos_2013_heute": {
+   "timing": {
+    "n_m": 164,
+    "cagr": 5.6,
+    "vol": 6.28,
+    "sharpe": 0.61,
+    "maxdd": -7.37
+   },
+   "buyhold": {
+    "n_m": 164,
+    "cagr": 6.46,
+    "vol": 10.75,
+    "sharpe": 0.47,
+    "maxdd": -20.75
+   },
+   "von": "2013-03-31",
+   "bis": "2026-10-31"
+  },
+  "ohne_2008": {
+   "timing": {
+    "n_m": 270,
+    "cagr": 7.72,
+    "vol": 6.88,
+    "sharpe": 0.86,
+    "maxdd": -7.37
+   },
+   "buyhold": {
+    "n_m": 270,
+    "cagr": 9.83,
+    "vol": 11.12,
+    "sharpe": 0.74,
+    "maxdd": -21.95
+   },
+   "von": "2003-05-31",
+   "bis": "2026-10-31"
+  },
+  "jahre": {
+   "2003": {
+    "timing": 19.57,
+    "buyhold": 22.78
+   },
+   "2004": {
+    "timing": 16.1,
+    "buyhold": 18.25
+   },
+   "2005": {
+    "timing": 12.35,
+    "buyhold": 12.85
+   },
+   "2006": {
+    "timing": 10.74,
+    "buyhold": 14.46
+   },
+   "2007": {
+    "timing": 5.970000000000001,
+    "buyhold": 5.91
+   },
+   "2008": {
+    "timing": -1.28,
+    "buyhold": -29.29
+   },
+   "2009": {
+    "timing": 16.6,
+    "buyhold": 25.36
+   },
+   "2010": {
+    "timing": 8.05,
+    "buyhold": 18.54
+   },
+   "2011": {
+    "timing": 1.6099999999999999,
+    "buyhold": 3.4799999999999995
+   },
+   "2012": {
+    "timing": 5.52,
+    "buyhold": 12.57
+   },
+   "2013": {
+    "timing": 5.050000000000001,
+    "buyhold": 3.1199999999999997
+   },
+   "2014": {
+    "timing": 10.530000000000001,
+    "buyhold": 8.260000000000002
+   },
+   "2015": {
+    "timing": -3.39,
+    "buyhold": -4.9399999999999995
+   },
+   "2016": {
+    "timing": 4.54,
+    "buyhold": 8.57
+   },
+   "2017": {
+    "timing": 10.66,
+    "buyhold": 12.620000000000001
+   },
+   "2018": {
+    "timing": -3.4299999999999997,
+    "buyhold": -7.46
+   },
+   "2019": {
+    "timing": 6.36,
+    "buyhold": 21.26
+   },
+   "2020": {
+    "timing": 7.8,
+    "buyhold": 8.83
+   },
+   "2021": {
+    "timing": 20.47,
+    "buyhold": 20.94
+   },
+   "2022": {
+    "timing": -6.34,
+    "buyhold": -16.16
+   },
+   "2023": {
+    "timing": 4.5,
+    "buyhold": 9.45
+   },
+   "2024": {
+    "timing": 4.04,
+    "buyhold": 6.76
+   },
+   "2025": {
+    "timing": 11.66,
+    "buyhold": 15.24
+   },
+   "2026": {
+    "timing": 9.46,
+    "buyhold": 10.86
+   }
+  },
+  "sma_plateau_oos2013": {
+   "3": {
+    "n_m": 164,
+    "cagr": 4.98,
+    "vol": 5.97,
+    "sharpe": 0.54,
+    "maxdd": -13.0
+   },
+   "6": {
+    "n_m": 164,
+    "cagr": 5.06,
+    "vol": 6.02,
+    "sharpe": 0.55,
+    "maxdd": -7.68
+   },
+   "8": {
+    "n_m": 164,
+    "cagr": 5.52,
+    "vol": 6.21,
+    "sharpe": 0.61,
+    "maxdd": -5.32
+   },
+   "9": {
+    "n_m": 164,
+    "cagr": 5.83,
+    "vol": 6.33,
+    "sharpe": 0.64,
+    "maxdd": -7.65
+   },
+   "10": {
+    "n_m": 164,
+    "cagr": 5.6,
+    "vol": 6.28,
+    "sharpe": 0.61,
+    "maxdd": -7.37
+   },
+   "11": {
+    "n_m": 164,
+    "cagr": 5.32,
+    "vol": 6.33,
+    "sharpe": 0.57,
+    "maxdd": -9.62
+   },
+   "12": {
+    "n_m": 164,
+    "cagr": 5.51,
+    "vol": 6.42,
+    "sharpe": 0.59,
+    "maxdd": -8.75
+   }
+  },
+  "lag_1m_oos2013": {
+   "n_m": 164,
+   "cagr": 5.86,
+   "vol": 7.1,
+   "sharpe": 0.59,
+   "maxdd": -12.12
+  },
+  "kosten_oos2013": {
+   "0bps": {
+    "n_m": 164,
+    "cagr": 5.6,
+    "vol": 6.28,
+    "sharpe": 0.61,
+    "maxdd": -7.37
+   },
+   "10bps": {
+    "n_m": 164,
+    "cagr": 5.39,
+    "vol": 6.28,
+    "sharpe": 0.58,
+    "maxdd": -7.54
+   },
+   "25bps": {
+    "n_m": 164,
+    "cagr": 5.09,
+    "vol": 6.28,
+    "sharpe": 0.53,
+    "maxdd": -7.79
+   },
+   "50bps": {
+    "n_m": 164,
+    "cagr": 4.58,
+    "vol": 6.28,
+    "sharpe": 0.46,
+    "maxdd": -8.21
+   }
+  },
+  "kontrolle_tsmom12_oos2013": {
+   "n_m": 164,
+   "cagr": 5.18,
+   "vol": 6.33,
+   "sharpe": 0.55,
+   "maxdd": -8.35
+  },
+  "kontrolle_zufall71pct_oos2013": {
+   "sharpe_median": 0.46,
+   "maxdd_median": -16.045,
+   "anteil_zufall_sharpe_ge_timing": 0.08,
+   "anteil_zufall_maxdd_besser_timing": 0.0
+  },
+  "mechanismus_fig18": {
+   "VFINX": {
+    "gesamt": {
+     "anteil_ueber": 75.6,
+     "ret_ueber_pa": 12.3,
+     "ret_unter_pa": 9.93,
+     "vol_ueber": 12.29,
+     "vol_unter": 21.59,
+     "n_unter": 93
+    },
+    "oos2013": {
+     "anteil_ueber": 85.4,
+     "ret_ueber_pa": 10.73,
+     "ret_unter_pa": 37.3,
+     "vol_ueber": 11.92,
+     "vol_unter": 22.81,
+     "n_unter": 24
+    }
+   },
+   "VGTSX": {
+    "gesamt": {
+     "anteil_ueber": 64.6,
+     "ret_ueber_pa": 8.77,
+     "ret_unter_pa": 3.95,
+     "vol_ueber": 13.83,
+     "vol_unter": 21.47,
+     "n_unter": 135
+    },
+    "oos2013": {
+     "anteil_ueber": 72.0,
+     "ret_ueber_pa": 8.8,
+     "ret_unter_pa": 6.51,
+     "vol_ueber": 12.04,
+     "vol_unter": 19.27,
+     "n_unter": 46
+    }
+   },
+   "VUSTX": {
+    "gesamt": {
+     "anteil_ueber": 63.3,
+     "ret_ueber_pa": 5.2,
+     "ret_unter_pa": 5.35,
+     "vol_ueber": 11.0,
+     "vol_unter": 11.35,
+     "n_unter": 140
+    },
+    "oos2013": {
+     "anteil_ueber": 52.4,
+     "ret_ueber_pa": 2.21,
+     "ret_unter_pa": -0.76,
+     "vol_ueber": 11.69,
+     "vol_unter": 13.17,
+     "n_unter": 78
+    }
+   },
+   "PCRIX": {
+    "gesamt": {
+     "anteil_ueber": 46.2,
+     "ret_ueber_pa": 9.62,
+     "ret_unter_pa": 1.64,
+     "vol_ueber": 16.69,
+     "vol_unter": 21.35,
+     "n_unter": 205
+    },
+    "oos2013": {
+     "anteil_ueber": 53.7,
+     "ret_ueber_pa": 9.34,
+     "ret_unter_pa": -3.76,
+     "vol_ueber": 15.1,
+     "vol_unter": 16.76,
+     "n_unter": 76
+    }
+   },
+   "FRESX": {
+    "gesamt": {
+     "anteil_ueber": 69.6,
+     "ret_ueber_pa": 13.62,
+     "ret_unter_pa": 4.37,
+     "vol_ueber": 15.24,
+     "vol_unter": 26.86,
+     "n_unter": 116
+    },
+    "oos2013": {
+     "anteil_ueber": 67.1,
+     "ret_ueber_pa": 5.57,
+     "ret_unter_pa": 11.25,
+     "vol_ueber": 14.94,
+     "vol_unter": 19.68,
+     "n_unter": 54
+    }
+   }
+  },
+  "bootstrap_sharpe_diff_oos2013": {
+   "p05": 0.02,
+   "median": 0.24,
+   "p95": 0.46,
+   "anteil_le_0": 0.04
+  }
+ }
+}

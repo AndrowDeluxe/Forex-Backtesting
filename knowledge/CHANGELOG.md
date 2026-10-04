@@ -9,6 +9,148 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-04** [FK Instant Funding / LIVE] **gold_silver live geschaltet
+  (0,20 % je Trade), trend_pullback bleibt Paper** (Nutzerentscheid nach der
+  Ausfuehrungsprobe). Geaendert:
+  (1) `FKInstantFunding-MT5-Bridge/config.py::LIVE_LEGS` + `"gold_silver"`;
+  (2) `fk_instant_funding/paper_bot.py::CAPITAL_WEIGHT["gold_silver"]`
+  0,0606 -> 0,20 (x LEG_RISK_PCT 0,01 = 0,20 %, 200 $ bei 100k, Deckel 500 $).
+  Der FK-Paper-Bot rechnet damit ebenfalls;
+  (3) `run_once.py::LEG_MAX_SIGNAL_AGE_MINUTES = {"gold_silver": 150}` plus
+  `_max_signal_age()`, statt fest 60 Min. -- sonst kostet beim H4-Signal auf
+  der stuendlichen Slow-Lane EIN ausgefallener Lauf das Signal.
+  Exit unveraendert per Scan (kein Broker-TP). Uebrige FK-Gewichte
+  unveraendert.
+  **Geprueft:** offline, ohne Brokerkontakt. Kompilation ok, LIVE_LEGS,
+  Risiko 0,2000 %, Altersgrenze 150 (andere Beine 60), Symbol XAUUSD.gbe.
+  **Noch kein echter Lauf.** Backup `_backup_20261004_gold_silver/` (mit
+  SHA256SUMS), Bridge nicht git-getrackt. Wirkt ab dem naechsten Slow-Lauf.
+  MC FK heute + gold_silver 0,20 %: Median +13,2 % statt +10,6 %/Jahr,
+  P(Trailing-Bruch) 3,0 statt 4,5 %.
+
+- **2026-10-04** [trend_pullback + gold_silver / Research] **Ausfuehrungsprobe
+  (p6_5-p6_8) vor der FK-Live-Schaltung.** Skript
+  `scripts/research_trend_gs_ausfuehrung.py`, Rohdaten
+  `_data/trend_gs_ausfuehrung.json`.
+  **Abweichung Backtest/Live:** `strategy/backtest.py::simulate_trades`
+  prueft SL und Ziel nur auf den SCHLUSSKURS der H1-/H4-Kerze. Live greift
+  der Broker-SL intrabar. Einen Broker-TP gibt es fuer beide Beine nicht,
+  das Ziel schliesst der naechste Slow-Lauf zum Marktkurs. Nachgespielt auf
+  M15.
+  **gold_silver** (103 Trades ab 2019): Engine Ø R +0,96 -> live +0,83.
+  Versatz 0-120 Min. flach (+0,81 bis +0,87), erst 140 Min. +0,77. Kosten
+  3x: +0,61 statt +0,62 (Stop = 123x RT-Kosten). Alle 8 Jahre positiv,
+  IS +0,85 / OOS +0,80. **Broker-TP 2R waere schlechter** (+0,62): der Scan
+  schliesst erst nach bestaetigtem Schluss jenseits 2R und laesst Gewinner
+  laufen. TP 3-4R sieht besser aus, liegt aber am Rasterrand -> nicht
+  uebernommen.
+  **trend_pullback** (262 Trades): Engine +0,37 -> live +0,26; Versatz egal.
+  **IS 2019-22 ohne Edge (-0,03), OOS 2023-26 +0,45.** Je Jahr 2019-22
+  +0,08/-0,06/+0,05/-0,11. Kostensensitiv (3x: +0,15, IS -0,14); gemessen
+  sind nur die Gold-Kosten. USDJPY -0,10, Silber +0,14. -> nicht "sicher"
+  live-faehig.
+  **Live-Befund:** gold_silver vom 18.09. "verpasst" wegen Datenausfall
+  (Lake veraltet ab 17:10 UTC + Dukascopy-Haenger, alle FK-Scans
+  fehlgeschlagen), nicht wegen des Altersfilters. Scan-Ausfallquote seit
+  07.09.: trend 1,9 %, gold_silver 0,8 %, cls 6,0 % (483 Slow-Laeufe).
+
+- **2026-10-04** [Dachprojekt / Quant × diskretionär] **Neues Dachprojekt
+  angelegt** (Nutzerauftrag, Plan-Modus freigegeben). Notizen
+  `projects/quant-diskretionaer-fusion.md` (8 Stränge, 3-stufige
+  Freigabe-Gates, Notion als Cockpit, Start mit Makro) und
+  `projects/aktien-analyse-und-bot.md` (geparkt bis Makro-Basis). Neuer
+  Ordner `fusion_lab/` mit Import-Gerüst für OneNote (Microsoft Graph) und
+  Telegram (Telethon), Rohdaten/Logins gitignored. Löst den Dashboard-Punkt
+  "Monatsjournal + Verschmelzung" ab. Noch kein Import gelaufen -- Zugänge
+  fehlen.
+
+- **2026-10-04** [FK Instant Funding / Research] **Offene Beine
+  (trend_pullback, gold_silver) durchgerechnet -- nichts live geaendert.**
+  Nutzerfrage. Skript `scripts/research_fk_offene_beine.py`, Rohdaten
+  `_data/fk_offene_beine.json`. Gerechnet mit dem FK-Stand ab 05.10.:
+  ORB-NASDAQ mit Storno am SL und ohne Teilziel (neu im Modell,
+  `research_fk_gesamtportfolio_2026.py::NASDAQ_RULE`), US30 pausiert, Gold
+  ASB als Stop-Order. Dazu Mindestlot, BeyondIQ-Kosten, Trailing 5 %.
+  **Beine 2019-2026:** gold_silver 104 Trades, Ø R +0,95, 8/8 Jahre
+  positiv. trend_pullback 271 Trades, Ø R +0,36, 6/8 Jahre (2021/22
+  negativ, USDJPY verliert). Korrelation zur Tages-P&L von FK: 0,003 / 0,013.
+  NASDAQ neu: Ø R +0,44 statt +0,16.
+
+  | Szenario | MC-Median/Jahr | P(Bruch) | 2019-26 | MaxDD | 2026 |
+  |---|---|---|---|---|---|
+  | heute live | +10,6 % | 4,6 % | +129 % | -3,8 % | +9,1 % |
+  | + beide mit Paper-Gewichten | +11,8 % | 3,5 % | +148 % | -3,5 % | +10,1 % |
+  | Vorschlag 03.10. (ohne neue) | +11,2 % | 0,9 % | +139 % | -3,8 % | +6,3 % |
+  | neu optimiert mit beiden | **+15,9 %** | 1,5 % | **+240 %** | -3,2 % | +12,1 % |
+
+  Neu optimiert, je Trade: gold_asb 0,15, cls 0,30, ctnl_rev 0,10, SP500
+  0,10, NASDAQ 0,10, gold_silver 0,25, trend 0,125 %.
+  Walk-Forward OOS 2021-26: +84 % (opt.) gegen +60 % (heute) und +63 %
+  (03.10.), kein Bruchjahr. gold_silver wird in jedem Jahr gewaehlt
+  (0,10-0,35 %), trend_pullback fast nie (0-0,025 %); dessen 0,125 % sind
+  nur in-sample.
+  **Der FK-Vorschlag vom 03.10. ist damit ueberholt** (vor den
+  ORB-Aenderungen vom 04.10. gerechnet).
+  **Live-Befunde:** beide Beine sind in der Bridge verdrahtet, aber nicht in
+  LIVE_LEGS. Seit 06.09. gab es 1 gold_silver-Signal (18.09., Sim: -1,05 R),
+  FK markierte es "missed". trend_pullback-Scan scheiterte 4x mit
+  `'>' not supported between 'str' and 'float'`.
+
+- **2026-10-04** [Research] **Faber SMA10 auf ^SP500TR nach
+  Nutzer-Spezifikation** (Tagesdaten ab 1988, eingefroren in
+  `scripts/frozen_data/sp500tr_daily_20261004.csv`; Skript
+  `scripts/research_faber_sp500tr.py`).
+  - MaxDD −27,4 % gegen −55,3 % (Buy & Hold); kein Zufallslauf von 2000 so
+    klein.
+  - CAGR 9,3 % gegen 11,4 % ohne Kosten, 7,1 % mit Swap 2,5 %.
+  - Ab 06/2006: 8,2 % gegen 11,3 %.
+  - Signal Ende 09/2026: long.
+
+  Details: `knowledge/projects/faber-gtaa-10-monats-sma.md`. Keine
+  Bot-Änderung.
+
+- **2026-10-04** [Research] **Faber GTAA / 10-Monats-SMA (SSRN 962461)**
+  nach dem Standardprozess geprüft (Phase 1-4 + Basis-Phase-6) und mit
+  Edge Card versehen (Nutzerwunsch, Ausnahme zur Paper-Regel).
+  Befund im echten OOS 2013-2026:
+  - Risiko-Reduktion hält (MaxDD −5,5 statt −17,7 %, Sharpe 0,69 statt
+    0,52, Bootstrap p05 > 0).
+  - Die Rendite liegt aber unter Buy & Hold.
+  - Cross-Check: Ein Monats-SMA-Filter hilft keinem unserer Beine.
+  - Kein Kandidat für die Prop-/Intraday-Portfolios.
+
+  Dateien: `knowledge/projects/faber-gtaa-10-monats-sma.md`,
+  `scripts/research_faber_gtaa.py`. Keine Änderung an Bots/Bridges.
+
+- **2026-10-04** [Alle Echtgeld-Konten / Research] **Luecke Simulation vs.
+  echte Konten Bein fuer Bein zerlegt -- sie stammt fast vollstaendig aus
+  inzwischen umgebauter Live-Logik.** Nutzerauftrag; Nutzer-Hypothese "viel
+  umgebaut, braucht Zeit" bestaetigt. Skript
+  `scripts/research_sim_vs_live_luecke.py`, Rohdaten
+  `_data/sim_vs_live_luecke.json`. Echte Deals aus den vorhandenen
+  MT5-Abzuegen (Sept. + KW40, kein Terminalzugriff), Zuordnung wie
+  `soll_ist.py`.
+
+  | Posten | TTP | IQ | EK |
+  |---|---|---|---|
+  | Luecke gesamt | -2.262 $ | -4.475 $ | -792 EUR |
+  | ctnl_reversal (live 53/75/22 Pos., Sim 2) | +65 | **-2.595** | **-455** |
+  | ctnl_continuation (seit 30.09. aus) | -531 | -756 | -18 |
+  | ou_modell (alte Logik bis 23.09.) | -286 | - | -169 |
+  | gold_asb (Market statt Stop-Order bis 01.10.) | -391 | -814 | -102 |
+  | ORB (Pending ab 17.09., Storno ab 03.10.) | -484 | -644 | -60 |
+  | OU-Altbestand vor Livegang (7 Pos.) | -603 | - | +18 |
+  | cls_practical / gold_silver | -32 | +334 | -6 |
+
+  Der CTNL-Posten zeigt das alte Verhalten vor Deckel 2, Ribbon- und
+  Spike-Filter: die Waisen-Flut vom 17./18.09. und den Deckel 3.
+  **Nicht bewiesen:** dass der neue Code live die Simulation trifft. Das
+  gilt besonders fuer Gold ASB und ORB. Wenn die Luecke dort bleibt, ist es
+  ein echter Ausfuehrungsverlust. Pruefen ueber den woechentlichen
+  Soll/Ist-Bericht.
+  **Vorbehalte:** EK-Sim mit den heutigen Gewichten (EK wurde am 10.09. und
+  23.09. umkalibriert). IQ lief bis 13.09. mit 1/6 statt 1/3.
+
 - **2026-10-04** [Reports] **Weekly Checkup KW40/2026** (geplanter Lauf,
   Sonntag puenktlich). Dateien: `reports/weekly/KW40_2026_*`, PDF, Telegram
   versandt. Der MT5-Abzug lief auf warmen Terminals; es wurde kein Fenster

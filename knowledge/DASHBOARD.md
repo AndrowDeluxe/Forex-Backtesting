@@ -18,10 +18,15 @@ passiert, was steht an.
 
 ## ▶️ Als Nächstes
 
-1. **Manuelles Monatsjournal + Quant-System-Verschmelzung** (Nutzerwunsch
-   2026-09-02): händisches Monatsjournal + Plan, wie manuelles Trading und
-   das Quant-System sinnvoll verschmolzen werden — braucht zuerst ein
-   klärendes Gespräch (Format, Kennzahlen). Noch nichts gebaut.
+1. **🧩 Dachprojekt Quant × diskretionäres Trading** (gestartet 2026-10-04,
+   löst "Monatsjournal + Verschmelzung" ab — Journal-Teil erledigt):
+   [[quant-diskretionaer-fusion]]. Eigene Analyse reproduzieren, testen,
+   automatisieren → selbstlernender Bot. 8 Stränge (0 Inventur … 7
+   Selbstlernen), Code in `fusion_lab/`.
+   **Aktuell: Strang 0 (Material-Import).** Wartet auf dich: Azure-App
+   (OneNote), Telegram-API-Zugang, Notion-Connector in claude.ai — Anleitung
+   in `fusion_lab/README.md`.
+   Separat geparkt bis Makro steht: [[aktien-analyse-und-bot]].
 
 ---
 
@@ -35,22 +40,68 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **🟢 Dachprojekt Quant × diskretionär (04.10.): meine Annahmen.** Details:
+  [[quant-diskretionaer-fusion]].
+  - Ordnername `fusion_lab/` und Notizname „quant-diskretionaer-fusion".
+  - Notion-Struktur: eine Seite „Trading Fusion Cockpit" mit den Datenbanken
+    Makro-Übersicht, Analysen, Entscheidungslog (Bot), Zwischenablage.
+  - Telegram-Import mit deinem eigenen Konto (Telethon), weil Bots fremde
+    Gruppen nicht lesen können; Zugangsdaten in `.streamlit/secrets.toml`.
+
+- **🟢 Faber GTAA (04.10.): Annahmen im Nachbau.** Details:
+  [[faber-gtaa-10-monats-sma]].
+  - Proxys: SPY/EFA/IEF/DBC/VNQ statt GSCI/NAREIT/GFD-Reihen; ^IRX als
+    T-Bill.
+  - „Close = SMA" wird als Cash gewertet.
+  - Die Edge Card ist trotz Paper-Ursprung erstellt (dein Wunsch), Phase 0
+    habe ich aus dem Paper abgeleitet statt sie mit dir abzustimmen.
+  - Urteil „kein Kandidat für die Prop-Portfolios". Passt das, oder soll
+    GTAA als Depot-Regel weiterverfolgt werden (Phase 8)?
+
 - **🟡 Challenge + EK Gewichtung (04.10.): entschieden -- TTP neu
   eingespielt, IQ und EK bleiben wie gehabt.** Details: CHANGELOG 04.10.
   **Zu prüfen:** der erste TTP-Entry nach dem Umschalten. Gold ASB sollte
   ~600 $ Risiko zeigen (vorher ~333 $), ou_modell ~50 $ (vorher ~167 $).
   Danach diesen Punkt löschen.
-  **Weiter offen, mit Zahlen unterlegt:** Seit dem Livegang liegt die
-  Simulation über den echten Konten: TTP +0,6 / IQ +1,4 / EK +1,3 % gegen
-  real −0,65 / −2,5 / −18,2 %. Die Lücke ist noch nicht Bein für Bein
-  zerlegt. IQ behält bewusst P(Bruch) ~8,6 %/Jahr (Nutzerentscheid).
+  **Lücke Simulation vs. echte Konten -- zerlegt 04.10.:** Fast die ganze
+  Lücke liegt in Beinen, deren Live-Logik im Zeitraum umgebaut wurde. Größter
+  Posten ist CTNL Reversal, das live 22-75 Positionen machte, im heutigen Code
+  nur 2. **Offen:** ob Gold ASB und ORB nach dem Umbau (Stop-Orders seit
+  01.10. bzw. 17.09., Storno seit 03.10.) die Simulation live treffen, zeigt
+  erst der wöchentliche Soll/Ist-Bericht der nächsten Wochen.
+  IQ behält bewusst P(Bruch) ~8,6 %/Jahr (Nutzerentscheid).
   **Meine Annahmen, bitte bestätigen:** BTC-Kosten, Tickmill-EURUSD 0,8
   Pips, XAG/XPT/JPY-Kosten = Engine-Defaults, Kontraktgrößen für den
   Mindestlot. Außerdem: Das Modell rechnete CLS ohne Zins-Multiplikator,
   live wirkt er weiter (Median 1,75x).
 
-- **🔴 FK: neue Gewichtung gerechnet (MC + Walk-Forward, 03.10.) -- NICHT
-  eingespielt, wartet auf dich.** Gerechnet mit der Logik von heute, also inkl.
+- **🔴 FK: offene Beine + Gewichtung neu gerechnet (04.10.) -- ersetzt den
+  Vorschlag vom 03.10. darunter.** Der 03.10.-Vorschlag ist durch die
+  ORB-Änderungen vom 04.10. überholt: US30 ist pausiert, NASDAQ hat jetzt
+  Storno am SL und kein Teilziel mehr. Mit dem heutigen Stand ist FK bereits
+  deutlich sicherer: P(Bruch) 4,6 %/Jahr statt 11,9 %, 2026 +9 %.
+  **Offene Beine:** gold_silver (Ø R +0,95, 8/8 Jahre positiv, Walk-Forward
+  wählt es in jedem Jahr) und trend_pullback (Ø R +0,36, 2021/22 negativ,
+  Walk-Forward wählt es fast nie). Beide sind zum Portfolio praktisch
+  unkorreliert.
+  **Vorschlag je Trade:** gold_asb 0,15 % · cls 0,30 % · ctnl_rev 0,10 % ·
+  SP500 0,10 % · NASDAQ 0,10 % · gold_silver 0,25 % · trend 0,125 %.
+  Ergebnis: P(Bruch) 1,5 %, MC-Median +15,9 % statt +10,6 %/Jahr.
+  Walk-Forward +84 % statt +60 %.
+  **✅ Entschieden 04.10.: gold_silver LIVE mit 0,20 % je Trade,
+  trend_pullback bleibt Paper.** Der übrige Gewichtungsvorschlag oben ist
+  NICHT eingespielt. Ausführungsprobe: CHANGELOG 04.10.
+  **Zu prüfen beim ersten gold_silver-Signal:** Entry auf XAUUSD.gbe mit
+  ~200 $ Risiko (Lot-Rundung kann weniger ergeben). Der Exit kommt per
+  Slow-Lauf, nicht über einen Broker-TP. Danach den Punkt kürzen.
+  **Klarstellung:** Der „verpasste“ Trade vom 18.09. lag nicht am
+  Altersfilter, sondern an einem Datenausfall (Lake veraltet +
+  Dukascopy-Hänger, alle FK-Scans fielen aus). Der gemeinsame Scan-Fehler
+  `'>' not supported between 'str' and 'float'` trifft cls/gold_asb/ctnl/
+  trend (Offene Aufgabe).
+
+- **⚪ (überholt, siehe oben) FK: neue Gewichtung gerechnet (MC + Walk-Forward, 03.10.) -- NICHT
+  eingespielt.** Gerechnet mit der Logik von heute, also inkl.
   ORB-Storno bei Gegenbruch und CTNL-Broker-TP. Die heutige Gewichtung hat
   P(5-%-Trailing-Bruch) **11,9 %/Jahr**. In der Ereignis-Simulation
   2019-2026 reißt sie die Grenze am 14.05.2024; 2026 bleibt sie knapp
@@ -161,6 +212,12 @@ Bedarf vor generischem Aufräumen.
 
 ### Offene Aufgaben
 
+- **Gemeinsamer Scan-Fehler `'>' not supported between instances of 'str'
+  and 'float'`** (gefunden 04.10.): FK-Slow-Lauf seit 07.09. bei cls_practical
+  8x, gold_asb 4x, trend_pullback 4x, ctnl 2x (von 483 Läufen). Er trifft
+  mehrere Beine, die Ursache liegt also vermutlich in gemeinsam genutzten Daten
+  (Lake-Spalte als Text?). Ursache suchen. Mittel.
+
 - **FK SP500 „Invalid stops“: behoben 2026-09-17** (SL aufs Tick-Raster).
   Nur noch: ersten echten SP500-Entry im FK-Log gegenlesen, dann Punkt löschen.
   **Stand 2026-09-23: noch kein Gegenbeweis moeglich** -- letzter Fehlschlag
@@ -227,7 +284,7 @@ Bedarf vor generischem Aufräumen.
 | ------------------------------------------------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------- | --- | --------------- |
 | EK-Portfolio-Bridge                                     | Tickmill Live (55918977)                                                                 | **LIVE — echtes Geld** (btc/ou_modell weiterhin direkt Dukascopy/yfinance; gold_asb/cls_practical/ctnl_reversal jetzt `source="lake"`; ctnl_continuation am 01.10. stillgelegt) | Ready (alle 15 Min, Mo–Fr)      | **16.09.** ou_modell (IVZ) | 2026-09-13      |
 | EK-Portfolio-Bridge-Fast                                | Tickmill Live (55918977, geteiltes Terminal)                                             | **LIVE — echtes Geld** (3 MT5-native Beine: ORB/Gold-Silber/Trend-Pullback, kein Dukascopy; **ORB-US30 seit 04.10. pausiert**)  | Ready (alle 2 Min, Mo–Fr)       | ↑ gleiches Konto | 2026-09-13      |
-| FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | **LIVE — echtes Geld** (6 Beine via `LIVE_LEGS`: orb_sp500/us30/nasdaq + gold_asb [**orb_us30 seit 04.10. pausiert**, `orb_pending.ORB_PAUSED_INSTRUMENTS`]/cls_practical/ctnl_reversal; ctnl_continuation am 01.10. stillgelegt, ctnl_reversal seit 30.09. auf der 5-Min-Lane; trend_pullback/gold_silver bleiben geplant/geloggt) | Ready (stündlich, Mo–Fr)        | **14.09.** orb_nasdaq — erster echter Entry seit Livegang | 2026-09-13      |
+| FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | **LIVE — echtes Geld** (6 Beine via `LIVE_LEGS`: orb_sp500/us30/nasdaq + gold_asb [**orb_us30 seit 04.10. pausiert**, `orb_pending.ORB_PAUSED_INSTRUMENTS`]/cls_practical/ctnl_reversal; ctnl_continuation am 01.10. stillgelegt, ctnl_reversal seit 30.09. auf der 5-Min-Lane; **gold_silver seit 04.10. LIVE** (0,20 %/Trade, Altersgrenze 150 Min.); trend_pullback bleibt geplant/geloggt) | Ready (stündlich, Mo–Fr)        | **14.09.** orb_nasdaq — erster echter Entry seit Livegang | 2026-10-04      |
 | FKInstantFunding-MT5-Bridge-Fast                        | BeyondIQCapital (17764, geteiltes Terminal)                                              | **LIVE — echtes Geld** (ctnl_continuation + orb_sp500/nasdaq + cls_practical, `source="lake"`, analog Funded-Fast; **orb_us30 seit 04.10. pausiert**) | Ready (alle 5 Min, Mo–Fr)       | ↑ gleiches Konto | 2026-09-13      |
 | FK-Instant-Funding-Paper                                | — (reine Simulation)                                                                     | Paper + Telegram, **nur noch trend_pullback/gold_silver** (die anderen 7 Beine laufen live über die Bridge, seit 09-09 hier entfernt) | Ready (stündlich, Mo–Fr)        | — | 2026-09-13      |
 | OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner + Telegram (3x täglich: 15:35/18:35/21:35)                                           | Ready (Mo–Fr, US-Handelszeiten) | — | 2026-09-02      |

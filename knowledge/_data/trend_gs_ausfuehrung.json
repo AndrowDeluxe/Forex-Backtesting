@@ -1,0 +1,561 @@
+{
+  "trend_pullback": {
+    "engine_mit_kosten": {
+      "n": 271,
+      "avg_r": 0.372,
+      "pf": 1.54,
+      "sum_r": 100.8,
+      "maxdd_r": -11.9,
+      "is": -0.088,
+      "oos": 0.681,
+      "verworfen": {}
+    },
+    "live_heute_lag0": {
+      "n": 271,
+      "avg_r": 0.27,
+      "pf": 1.43,
+      "sum_r": 73.1,
+      "maxdd_r": -15.0,
+      "is": -0.081,
+      "oos": 0.505,
+      "verworfen": {}
+    },
+    "live_heute_lag15": {
+      "n": 268,
+      "avg_r": 0.273,
+      "pf": 1.44,
+      "sum_r": 73.2,
+      "maxdd_r": -14.4,
+      "is": -0.074,
+      "oos": 0.511,
+      "verworfen": {
+        "sl_vor_entry": 2,
+        "r_gate": 1
+      }
+    },
+    "live_heute_lag20": {
+      "n": 262,
+      "avg_r": 0.263,
+      "pf": 1.42,
+      "sum_r": 69.0,
+      "maxdd_r": -12.5,
+      "is": -0.026,
+      "oos": 0.457,
+      "verworfen": {
+        "r_gate": 7,
+        "sl_vor_entry": 2
+      }
+    },
+    "live_heute_lag30": {
+      "n": 262,
+      "avg_r": 0.263,
+      "pf": 1.42,
+      "sum_r": 69.0,
+      "maxdd_r": -12.5,
+      "is": -0.026,
+      "oos": 0.457,
+      "verworfen": {
+        "r_gate": 7,
+        "sl_vor_entry": 2
+      }
+    },
+    "live_heute_lag45": {
+      "n": 258,
+      "avg_r": 0.256,
+      "pf": 1.41,
+      "sum_r": 66.0,
+      "maxdd_r": -14.8,
+      "is": -0.088,
+      "oos": 0.488,
+      "verworfen": {
+        "r_gate": 9,
+        "sl_vor_entry": 4
+      }
+    },
+    "live_heute_lag60": {
+      "n": 259,
+      "avg_r": 0.246,
+      "pf": 1.4,
+      "sum_r": 63.7,
+      "maxdd_r": -16.7,
+      "is": -0.098,
+      "oos": 0.48,
+      "verworfen": {
+        "r_gate": 8,
+        "sl_vor_entry": 4
+      }
+    },
+    "live_heute_lag75": {
+      "n": 0
+    },
+    "broker_tp1.5_lag20": {
+      "n": 262,
+      "avg_r": 0.184,
+      "pf": 1.35,
+      "sum_r": 48.3,
+      "maxdd_r": -9.6,
+      "is": -0.009,
+      "oos": 0.314,
+      "verworfen": {
+        "r_gate": 7,
+        "sl_vor_entry": 2
+      }
+    },
+    "broker_tp2.0_lag20": {
+      "n": 262,
+      "avg_r": 0.261,
+      "pf": 1.44,
+      "sum_r": 68.3,
+      "maxdd_r": -10.3,
+      "is": -0.028,
+      "oos": 0.454,
+      "verworfen": {
+        "r_gate": 7,
+        "sl_vor_entry": 2
+      }
+    },
+    "broker_tp2.5_lag20": {
+      "n": 262,
+      "avg_r": 0.28,
+      "pf": 1.43,
+      "sum_r": 73.3,
+      "maxdd_r": -15.1,
+      "is": -0.023,
+      "oos": 0.482,
+      "verworfen": {
+        "r_gate": 7,
+        "sl_vor_entry": 2
+      }
+    },
+    "broker_tp3.0_lag20": {
+      "n": 262,
+      "avg_r": 0.379,
+      "pf": 1.56,
+      "sum_r": 99.3,
+      "maxdd_r": -12.5,
+      "is": 0.086,
+      "oos": 0.575,
+      "verworfen": {
+        "r_gate": 7,
+        "sl_vor_entry": 2
+      }
+    },
+    "broker_tp4.0_lag20": {
+      "n": 262,
+      "avg_r": 0.43,
+      "pf": 1.58,
+      "sum_r": 112.7,
+      "maxdd_r": -15.3,
+      "is": 0.128,
+      "oos": 0.632,
+      "verworfen": {
+        "r_gate": 7,
+        "sl_vor_entry": 2
+      }
+    },
+    "kosten_x0.0": {
+      "n": 262,
+      "avg_r": 0.316,
+      "pf": 1.56,
+      "sum_r": 82.8,
+      "maxdd_r": -10.0,
+      "is": 0.029,
+      "oos": 0.508,
+      "verworfen": {
+        "r_gate": 7,
+        "sl_vor_entry": 2
+      }
+    },
+    "kosten_x1.0": {
+      "n": 262,
+      "avg_r": 0.261,
+      "pf": 1.44,
+      "sum_r": 68.3,
+      "maxdd_r": -10.3,
+      "is": -0.028,
+      "oos": 0.454,
+      "verworfen": {
+        "r_gate": 7,
+        "sl_vor_entry": 2
+      }
+    },
+    "kosten_x2.0": {
+      "n": 262,
+      "avg_r": 0.205,
+      "pf": 1.33,
+      "sum_r": 53.8,
+      "maxdd_r": -10.5,
+      "is": -0.085,
+      "oos": 0.399,
+      "verworfen": {
+        "r_gate": 7,
+        "sl_vor_entry": 2
+      }
+    },
+    "kosten_x3.0": {
+      "n": 262,
+      "avg_r": 0.15,
+      "pf": 1.23,
+      "sum_r": 39.3,
+      "maxdd_r": -10.8,
+      "is": -0.142,
+      "oos": 0.345,
+      "verworfen": {
+        "r_gate": 7,
+        "sl_vor_entry": 2
+      }
+    },
+    "stop_gegen_kosten": {
+      "stop_durch_rt_kosten_p5": 7.6,
+      "median": 22.3,
+      "anteil_unter_3x": 0.0
+    },
+    "hebel": {
+      "median": 0.98,
+      "max": 1.95
+    },
+    "je_markt_broker_tp2": {
+      "CHFJPY": {
+        "n": 31,
+        "avg_r": 0.584,
+        "pf": 2.21,
+        "sum_r": 18.1,
+        "maxdd_r": -4.4,
+        "is": 0.732,
+        "oos": 0.513,
+        "verworfen": {}
+      },
+      "GOLD": {
+        "n": 80,
+        "avg_r": 0.336,
+        "pf": 1.6,
+        "sum_r": 26.9,
+        "maxdd_r": -10.3,
+        "is": -0.132,
+        "oos": 0.682,
+        "verworfen": {
+          "r_gate": 6,
+          "sl_vor_entry": 1
+        }
+      },
+      "PLATINUM": {
+        "n": 46,
+        "avg_r": 0.34,
+        "pf": 1.59,
+        "sum_r": 15.7,
+        "maxdd_r": -5.5,
+        "is": -0.19,
+        "oos": 0.488,
+        "verworfen": {
+          "sl_vor_entry": 1
+        }
+      },
+      "SILVER": {
+        "n": 76,
+        "avg_r": 0.138,
+        "pf": 1.21,
+        "sum_r": 10.5,
+        "maxdd_r": -5.9,
+        "is": 0.012,
+        "oos": 0.263,
+        "verworfen": {}
+      },
+      "USDJPY": {
+        "n": 29,
+        "avg_r": -0.098,
+        "pf": 0.86,
+        "sum_r": -2.8,
+        "maxdd_r": -9.4,
+        "is": -0.335,
+        "oos": 0.095,
+        "verworfen": {
+          "r_gate": 1
+        }
+      }
+    },
+    "je_jahr_broker_tp2": {
+      "2019": {
+        "count": 21,
+        "mean": 0.075
+      },
+      "2020": {
+        "count": 27,
+        "mean": -0.055
+      },
+      "2021": {
+        "count": 19,
+        "mean": 0.054
+      },
+      "2022": {
+        "count": 38,
+        "mean": -0.107
+      },
+      "2023": {
+        "count": 35,
+        "mean": 0.399
+      },
+      "2024": {
+        "count": 38,
+        "mean": 0.437
+      },
+      "2025": {
+        "count": 68,
+        "mean": 0.489
+      },
+      "2026": {
+        "count": 16,
+        "mean": 0.466
+      }
+    }
+  },
+  "gold_silver": {
+    "engine_mit_kosten": {
+      "n": 104,
+      "avg_r": 0.956,
+      "pf": 2.75,
+      "sum_r": 99.4,
+      "maxdd_r": -7.1,
+      "is": 1.063,
+      "oos": 0.839,
+      "verworfen": {}
+    },
+    "live_heute_lag0": {
+      "n": 104,
+      "avg_r": 0.82,
+      "pf": 2.8,
+      "sum_r": 85.3,
+      "maxdd_r": -5.0,
+      "is": 0.865,
+      "oos": 0.771,
+      "verworfen": {}
+    },
+    "live_heute_lag15": {
+      "n": 103,
+      "avg_r": 0.842,
+      "pf": 2.87,
+      "sum_r": 86.7,
+      "maxdd_r": -5.0,
+      "is": 0.875,
+      "oos": 0.806,
+      "verworfen": {
+        "r_gate": 1
+      }
+    },
+    "live_heute_lag20": {
+      "n": 103,
+      "avg_r": 0.827,
+      "pf": 2.84,
+      "sum_r": 85.2,
+      "maxdd_r": -5.1,
+      "is": 0.854,
+      "oos": 0.798,
+      "verworfen": {
+        "sl_vor_entry": 1
+      }
+    },
+    "live_heute_lag30": {
+      "n": 103,
+      "avg_r": 0.827,
+      "pf": 2.84,
+      "sum_r": 85.2,
+      "maxdd_r": -5.1,
+      "is": 0.854,
+      "oos": 0.798,
+      "verworfen": {
+        "sl_vor_entry": 1
+      }
+    },
+    "live_heute_lag45": {
+      "n": 103,
+      "avg_r": 0.851,
+      "pf": 2.89,
+      "sum_r": 87.6,
+      "maxdd_r": -5.0,
+      "is": 0.874,
+      "oos": 0.824,
+      "verworfen": {
+        "sl_vor_entry": 1
+      }
+    },
+    "live_heute_lag60": {
+      "n": 103,
+      "avg_r": 0.807,
+      "pf": 2.79,
+      "sum_r": 83.1,
+      "maxdd_r": -5.0,
+      "is": 0.831,
+      "oos": 0.781,
+      "verworfen": {
+        "sl_vor_entry": 1
+      }
+    },
+    "live_heute_lag75": {
+      "n": 0
+    },
+    "broker_tp1.5_lag20": {
+      "n": 103,
+      "avg_r": 0.448,
+      "pf": 2.06,
+      "sum_r": 46.1,
+      "maxdd_r": -5.0,
+      "is": 0.473,
+      "oos": 0.421,
+      "verworfen": {
+        "sl_vor_entry": 1
+      }
+    },
+    "broker_tp2.0_lag20": {
+      "n": 103,
+      "avg_r": 0.623,
+      "pf": 2.35,
+      "sum_r": 64.1,
+      "maxdd_r": -5.1,
+      "is": 0.602,
+      "oos": 0.645,
+      "verworfen": {
+        "sl_vor_entry": 1
+      }
+    },
+    "broker_tp2.5_lag20": {
+      "n": 103,
+      "avg_r": 0.725,
+      "pf": 2.42,
+      "sum_r": 74.6,
+      "maxdd_r": -7.6,
+      "is": 0.547,
+      "oos": 0.921,
+      "verworfen": {
+        "sl_vor_entry": 1
+      }
+    },
+    "broker_tp3.0_lag20": {
+      "n": 103,
+      "avg_r": 0.817,
+      "pf": 2.49,
+      "sum_r": 84.1,
+      "maxdd_r": -7.1,
+      "is": 0.621,
+      "oos": 1.033,
+      "verworfen": {
+        "sl_vor_entry": 1
+      }
+    },
+    "broker_tp4.0_lag20": {
+      "n": 103,
+      "avg_r": 0.933,
+      "pf": 2.51,
+      "sum_r": 96.1,
+      "maxdd_r": -8.1,
+      "is": 0.843,
+      "oos": 1.033,
+      "verworfen": {
+        "sl_vor_entry": 1
+      }
+    },
+    "kosten_x0.0": {
+      "n": 103,
+      "avg_r": 0.631,
+      "pf": 2.38,
+      "sum_r": 65.0,
+      "maxdd_r": -5.0,
+      "is": 0.611,
+      "oos": 0.653,
+      "verworfen": {
+        "sl_vor_entry": 1
+      }
+    },
+    "kosten_x1.0": {
+      "n": 103,
+      "avg_r": 0.623,
+      "pf": 2.35,
+      "sum_r": 64.1,
+      "maxdd_r": -5.1,
+      "is": 0.602,
+      "oos": 0.645,
+      "verworfen": {
+        "sl_vor_entry": 1
+      }
+    },
+    "kosten_x2.0": {
+      "n": 103,
+      "avg_r": 0.614,
+      "pf": 2.32,
+      "sum_r": 63.3,
+      "maxdd_r": -5.2,
+      "is": 0.594,
+      "oos": 0.637,
+      "verworfen": {
+        "sl_vor_entry": 1
+      }
+    },
+    "kosten_x3.0": {
+      "n": 103,
+      "avg_r": 0.606,
+      "pf": 2.3,
+      "sum_r": 62.4,
+      "maxdd_r": -5.3,
+      "is": 0.585,
+      "oos": 0.629,
+      "verworfen": {
+        "sl_vor_entry": 1
+      }
+    },
+    "stop_gegen_kosten": {
+      "stop_durch_rt_kosten_p5": 76.9,
+      "median": 122.7,
+      "anteil_unter_3x": 0.0
+    },
+    "hebel": {
+      "median": 1.0,
+      "max": 1.31
+    },
+    "je_markt_broker_tp2": {
+      "GOLD": {
+        "n": 103,
+        "avg_r": 0.623,
+        "pf": 2.35,
+        "sum_r": 64.1,
+        "maxdd_r": -5.1,
+        "is": 0.602,
+        "oos": 0.645,
+        "verworfen": {
+          "sl_vor_entry": 1
+        }
+      }
+    },
+    "je_jahr_broker_tp2": {
+      "2019": {
+        "count": 15,
+        "mean": 0.59
+      },
+      "2020": {
+        "count": 18,
+        "mean": 0.659
+      },
+      "2021": {
+        "count": 9,
+        "mean": 0.323
+      },
+      "2022": {
+        "count": 12,
+        "mean": 0.742
+      },
+      "2023": {
+        "count": 9,
+        "mean": 0.324
+      },
+      "2024": {
+        "count": 14,
+        "mean": 0.706
+      },
+      "2025": {
+        "count": 19,
+        "mean": 0.729
+      },
+      "2026": {
+        "count": 7,
+        "mean": 0.709
+      }
+    }
+  }
+}

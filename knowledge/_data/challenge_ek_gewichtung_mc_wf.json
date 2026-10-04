@@ -1,0 +1,1303 @@
+{
+  "ttp": {
+    "current": {
+      "gold_asb": 0.0033333333333333335,
+      "cls_practical": 0.0016666666666666668,
+      "ctnl_reversal": 0.00075,
+      "trend_pullback": 0.0008333333333333334,
+      "ou_modell": 0.0016666666666666668,
+      "orb_sp500": 0.0005555555555555556,
+      "orb_us30": 0.0005555555555555556,
+      "orb_nasdaq": 0.0005555555555555556
+    },
+    "walk_forward": {
+      "A": {
+        "2021": {
+          "gewichte": {
+            "gold_asb": 0.0075,
+            "cls_practical": 0.004,
+            "ctnl_reversal": 0.00075,
+            "trend_pullback": 0.00075,
+            "ou_modell": 0,
+            "orb_sp500": 0.0015,
+            "orb_us30": 0.00125,
+            "orb_nasdaq": 0.0005
+          },
+          "is_mc": {
+            "median_return": 0.20276941820034466,
+            "p_breach": 0.0095,
+            "median_maxdd": -0.03177376524706349,
+            "p_target": 0.913,
+            "median_days_target": 114.0
+          },
+          "oos_opt": {
+            "return_pct": 17.958644474596277,
+            "maxdd_pct": -3.1661425822483436,
+            "breach": false,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 12.536543849953041,
+            "maxdd_pct": -1.918092328940546,
+            "breach": false,
+            "target_hit": true
+          }
+        },
+        "2022": {
+          "gewichte": {
+            "gold_asb": 0.004,
+            "cls_practical": 0.002,
+            "ctnl_reversal": 0.001,
+            "trend_pullback": 0.00025,
+            "ou_modell": 0.0015,
+            "orb_sp500": 0.002,
+            "orb_us30": 0.00075,
+            "orb_nasdaq": 0.00075
+          },
+          "is_mc": {
+            "median_return": 0.1831558572239702,
+            "p_breach": 0.01,
+            "median_maxdd": -0.0310295733797612,
+            "p_target": 0.8985,
+            "median_days_target": 121.0
+          },
+          "oos_opt": {
+            "return_pct": 27.178849494189162,
+            "maxdd_pct": -5.24825137472873,
+            "breach": false,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 17.82748141020447,
+            "maxdd_pct": -2.6027378783988975,
+            "breach": false,
+            "target_hit": true
+          }
+        },
+        "2023": {
+          "gewichte": {
+            "gold_asb": 0.0025,
+            "cls_practical": 0.002,
+            "ctnl_reversal": 0.00075,
+            "trend_pullback": 0,
+            "ou_modell": 0.0015,
+            "orb_sp500": 0.001,
+            "orb_us30": 0.001,
+            "orb_nasdaq": 0.001
+          },
+          "is_mc": {
+            "median_return": 0.1883214493854214,
+            "p_breach": 0.0095,
+            "median_maxdd": -0.03121696652428385,
+            "p_target": 0.895,
+            "median_days_target": 118.0
+          },
+          "oos_opt": {
+            "return_pct": 0.2176596108670381,
+            "maxdd_pct": -6.579789812034131,
+            "breach": false,
+            "target_hit": false
+          },
+          "oos_heute": {
+            "return_pct": 2.957395416456099,
+            "maxdd_pct": -3.5602968594513618,
+            "breach": false,
+            "target_hit": false
+          }
+        },
+        "2024": {
+          "gewichte": {
+            "gold_asb": 0.006,
+            "cls_practical": 0.002,
+            "ctnl_reversal": 0.00075,
+            "trend_pullback": 0.00075,
+            "ou_modell": 0,
+            "orb_sp500": 0.00125,
+            "orb_us30": 0.0005,
+            "orb_nasdaq": 0.00075
+          },
+          "is_mc": {
+            "median_return": 0.15297329581844354,
+            "p_breach": 0.01,
+            "median_maxdd": -0.030566603201147458,
+            "p_target": 0.8215,
+            "median_days_target": 138.0
+          },
+          "oos_opt": {
+            "return_pct": 14.360101634446742,
+            "maxdd_pct": -2.310078216796585,
+            "breach": false,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 10.460256375457199,
+            "maxdd_pct": -1.5977834248278144,
+            "breach": false,
+            "target_hit": true
+          }
+        },
+        "2025": {
+          "gewichte": {
+            "gold_asb": 0.003,
+            "cls_practical": 0.001,
+            "ctnl_reversal": 0.00125,
+            "trend_pullback": 0.001,
+            "ou_modell": 0.00075,
+            "orb_sp500": 0.0015,
+            "orb_us30": 0.00075,
+            "orb_nasdaq": 0.00075
+          },
+          "is_mc": {
+            "median_return": 0.1460262761942922,
+            "p_breach": 0.01,
+            "median_maxdd": -0.030912848741941,
+            "p_target": 0.79,
+            "median_days_target": 139.0
+          },
+          "oos_opt": {
+            "return_pct": 24.699526292438655,
+            "maxdd_pct": -1.9011175446165818,
+            "breach": false,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 19.524726288328953,
+            "maxdd_pct": -1.4748349040235587,
+            "breach": false,
+            "target_hit": true
+          }
+        },
+        "2026": {
+          "gewichte": {
+            "gold_asb": 0.005,
+            "cls_practical": 0.003,
+            "ctnl_reversal": 0.00125,
+            "trend_pullback": 0.001,
+            "ou_modell": 0.0015,
+            "orb_sp500": 0.00075,
+            "orb_us30": 0.00075,
+            "orb_nasdaq": 0.001
+          },
+          "is_mc": {
+            "median_return": 0.18298957595790888,
+            "p_breach": 0.01,
+            "median_maxdd": -0.03233922514802123,
+            "p_target": 0.901,
+            "median_days_target": 121.0
+          },
+          "oos_opt": {
+            "return_pct": 9.214380950994538,
+            "maxdd_pct": -3.4886730007582467,
+            "breach": false,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 5.8076152520108115,
+            "maxdd_pct": -2.1410043440819537,
+            "breach": false,
+            "target_hit": false
+          }
+        }
+      },
+      "B": {
+        "2021": {
+          "gewichte": {
+            "gold_asb": 0.01,
+            "cls_practical": 0.004,
+            "ctnl_reversal": 0.001,
+            "trend_pullback": 0.00075,
+            "ou_modell": 0,
+            "orb_sp500": 0.003,
+            "orb_us30": 0.00075,
+            "orb_nasdaq": 0.00025
+          },
+          "is_mc": {
+            "median_return": 0.2638105760243442,
+            "p_breach": 0.0385,
+            "median_maxdd": -0.03855220199955228,
+            "p_target": 0.952,
+            "median_days_target": 90.0
+          },
+          "oos_opt": {
+            "return_pct": 22.788671660255687,
+            "maxdd_pct": -4.21377491384426,
+            "breach": false,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 12.536543849953041,
+            "maxdd_pct": -1.918092328940546,
+            "breach": false,
+            "target_hit": true
+          }
+        },
+        "2022": {
+          "gewichte": {
+            "gold_asb": 0.006,
+            "cls_practical": 0.0015,
+            "ctnl_reversal": 0.00075,
+            "trend_pullback": 0.00025,
+            "ou_modell": 0.0015,
+            "orb_sp500": 0.003,
+            "orb_us30": 0.00125,
+            "orb_nasdaq": 0.00075
+          },
+          "is_mc": {
+            "median_return": 0.2502045940146299,
+            "p_breach": 0.0435,
+            "median_maxdd": -0.03886837851851971,
+            "p_target": 0.9525,
+            "median_days_target": 93.0
+          },
+          "oos_opt": {
+            "return_pct": 30.675326579637495,
+            "maxdd_pct": -6.879392873804346,
+            "breach": false,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 17.82748141020447,
+            "maxdd_pct": -2.6027378783988975,
+            "breach": false,
+            "target_hit": true
+          }
+        },
+        "2023": {
+          "gewichte": {
+            "gold_asb": 0.006,
+            "cls_practical": 0.003,
+            "ctnl_reversal": 0.00125,
+            "trend_pullback": 0,
+            "ou_modell": 0.0015,
+            "orb_sp500": 0.0015,
+            "orb_us30": 0.0005,
+            "orb_nasdaq": 0.00125
+          },
+          "is_mc": {
+            "median_return": 0.2580116631199172,
+            "p_breach": 0.056,
+            "median_maxdd": -0.0406018001587331,
+            "p_target": 0.9495,
+            "median_days_target": 90.0
+          },
+          "oos_opt": {
+            "return_pct": 1.645657147015278,
+            "maxdd_pct": -8.781348218793472,
+            "breach": true,
+            "target_hit": false
+          },
+          "oos_heute": {
+            "return_pct": 2.957395416456099,
+            "maxdd_pct": -3.5602968594513618,
+            "breach": false,
+            "target_hit": false
+          }
+        },
+        "2024": {
+          "gewichte": {
+            "gold_asb": 0.01,
+            "cls_practical": 0.002,
+            "ctnl_reversal": 0.00125,
+            "trend_pullback": 0.00125,
+            "ou_modell": 0,
+            "orb_sp500": 0.002,
+            "orb_us30": 0.00125,
+            "orb_nasdaq": 0.00075
+          },
+          "is_mc": {
+            "median_return": 0.23182486028369087,
+            "p_breach": 0.084,
+            "median_maxdd": -0.04211550514030815,
+            "p_target": 0.9215,
+            "median_days_target": 96.0
+          },
+          "oos_opt": {
+            "return_pct": 22.169739902101714,
+            "maxdd_pct": -3.5188727290916932,
+            "breach": false,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 10.460256375457199,
+            "maxdd_pct": -1.5977834248278144,
+            "breach": false,
+            "target_hit": true
+          }
+        },
+        "2025": {
+          "gewichte": {
+            "gold_asb": 0.01,
+            "cls_practical": 0.0015,
+            "ctnl_reversal": 0.00075,
+            "trend_pullback": 0.001,
+            "ou_modell": 0.0015,
+            "orb_sp500": 0.0025,
+            "orb_us30": 0.00075,
+            "orb_nasdaq": 0.001
+          },
+          "is_mc": {
+            "median_return": 0.2331630058975388,
+            "p_breach": 0.116,
+            "median_maxdd": -0.04624921056869047,
+            "p_target": 0.9125,
+            "median_days_target": 93.0
+          },
+          "oos_opt": {
+            "return_pct": 35.51307497700631,
+            "maxdd_pct": -3.586964800609005,
+            "breach": false,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 19.524726288328953,
+            "maxdd_pct": -1.4748349040235587,
+            "breach": false,
+            "target_hit": true
+          }
+        },
+        "2026": {
+          "gewichte": {
+            "gold_asb": 0.01,
+            "cls_practical": 0.004,
+            "ctnl_reversal": 0.0015,
+            "trend_pullback": 0.002,
+            "ou_modell": 0.0015,
+            "orb_sp500": 0.001,
+            "orb_us30": 0.0005,
+            "orb_nasdaq": 0.001
+          },
+          "is_mc": {
+            "median_return": 0.2525422223495607,
+            "p_breach": 0.043,
+            "median_maxdd": -0.03999924165269225,
+            "p_target": 0.9555,
+            "median_days_target": 93.0
+          },
+          "oos_opt": {
+            "return_pct": 15.148390960760171,
+            "maxdd_pct": -4.193215694358177,
+            "breach": false,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 5.8076152520108115,
+            "maxdd_pct": -2.1410043440819537,
+            "breach": false,
+            "target_hit": false
+          }
+        }
+      }
+    },
+    "voll": {
+      "A": {
+        "gewichte": {
+          "gold_asb": 0.006,
+          "cls_practical": 0.0015,
+          "ctnl_reversal": 0.001,
+          "trend_pullback": 0.001,
+          "ou_modell": 0.0005,
+          "orb_sp500": 0.00075,
+          "orb_us30": 0.0005,
+          "orb_nasdaq": 0.001
+        },
+        "mc": {
+          "median_return": 0.1655351909791959,
+          "p_breach": 0.0155,
+          "median_maxdd": -0.032009492499763315,
+          "p_target": 0.8465,
+          "median_days_target": 127.0
+        },
+        "ereignis_sim": {
+          "neu_2019": {
+            "return_pct": 245.1341547840613,
+            "maxdd_pct": -5.258724948122573,
+            "erster_bruch": null,
+            "ziel_erreicht": "2019-03-22",
+            "trades": 3797
+          },
+          "heute_2019": {
+            "return_pct": 133.61935053875408,
+            "maxdd_pct": -3.561602598277702,
+            "erster_bruch": null,
+            "ziel_erreicht": "2020-02-04",
+            "trades": 3797
+          },
+          "neu_2026": {
+            "return_pct": 9.596069004328346,
+            "maxdd_pct": -3.2293785190428026,
+            "erster_bruch": null,
+            "ziel_erreicht": "2026-08-04",
+            "trades": 387
+          },
+          "heute_2026": {
+            "return_pct": 5.8505787234098605,
+            "maxdd_pct": -2.1954946762024585,
+            "erster_bruch": null,
+            "ziel_erreicht": null,
+            "trades": 387
+          }
+        }
+      },
+      "B": {
+        "gewichte": {
+          "gold_asb": 0.01,
+          "cls_practical": 0.003,
+          "ctnl_reversal": 0.0025,
+          "trend_pullback": 0.002,
+          "ou_modell": 0.00075,
+          "orb_sp500": 0.002,
+          "orb_us30": 0.0005,
+          "orb_nasdaq": 0.00075
+        },
+        "mc": {
+          "median_return": 0.27338449256751196,
+          "p_breach": 0.0695,
+          "median_maxdd": -0.04181323897696948,
+          "p_target": 0.939,
+          "median_days_target": 83.0
+        },
+        "ereignis_sim": {
+          "neu_2019": {
+            "return_pct": 173.95308038284975,
+            "maxdd_pct": -7.251738064049573,
+            "erster_bruch": "2023-08-21",
+            "ziel_erreicht": "2019-01-31",
+            "trades": 2169
+          },
+          "heute_2019": {
+            "return_pct": 133.61935053875408,
+            "maxdd_pct": -3.561602598277702,
+            "erster_bruch": null,
+            "ziel_erreicht": "2020-02-04",
+            "trades": 3797
+          },
+          "neu_2026": {
+            "return_pct": 16.030750232642422,
+            "maxdd_pct": -4.482838448592707,
+            "erster_bruch": null,
+            "ziel_erreicht": "2026-02-09",
+            "trades": 387
+          },
+          "heute_2026": {
+            "return_pct": 5.8505787234098605,
+            "maxdd_pct": -2.1954946762024585,
+            "erster_bruch": null,
+            "ziel_erreicht": null,
+            "trades": 387
+          }
+        }
+      }
+    },
+    "current_mc": {
+      "median_return": 0.10913839366987921,
+      "p_breach": 0.0,
+      "median_maxdd": -0.02010801284064012,
+      "p_target": 0.631,
+      "median_days_target": 179.0
+    },
+    "wf_summary": {
+      "A": {
+        "opt": {
+          "summe_return_pct": 93.62916245753242,
+          "bruchjahre": 0,
+          "schlechtestes_maxdd_pct": -6.579789812034131,
+          "zieljahre": 5
+        },
+        "heute": {
+          "summe_return_pct": 69.11401859241057,
+          "bruchjahre": 0,
+          "schlechtestes_maxdd_pct": -3.5602968594513618,
+          "zieljahre": 4
+        }
+      },
+      "B": {
+        "opt": {
+          "summe_return_pct": 127.94086122677666,
+          "bruchjahre": 1,
+          "schlechtestes_maxdd_pct": -8.781348218793472,
+          "zieljahre": 5
+        },
+        "heute": {
+          "summe_return_pct": 69.11401859241057,
+          "bruchjahre": 0,
+          "schlechtestes_maxdd_pct": -3.5602968594513618,
+          "zieljahre": 4
+        }
+      }
+    }
+  },
+  "iq": {
+    "current": {
+      "gold_asb": 0.006666666666666667,
+      "cls_practical": 0.0033333333333333335,
+      "ctnl_reversal": 0.0015,
+      "trend_pullback": 0.0016666666666666668,
+      "orb_sp500": 0.0011111111111111111,
+      "orb_us30": 0.0011111111111111111,
+      "orb_nasdaq": 0.0011111111111111111
+    },
+    "walk_forward": {
+      "A": {
+        "2021": {
+          "gewichte": {
+            "gold_asb": 0.0075,
+            "cls_practical": 0.005,
+            "ctnl_reversal": 0.0015,
+            "trend_pullback": 0.0015,
+            "orb_sp500": 0.00125,
+            "orb_us30": 0.00125,
+            "orb_nasdaq": 0
+          },
+          "is_mc": {
+            "median_return": 0.22047720206243904,
+            "p_breach": 0.0095,
+            "median_maxdd": -0.028017567386818043,
+            "p_target": 0.9645,
+            "median_days_target": 88.0
+          },
+          "oos_opt": {
+            "return_pct": 9.459045205054718,
+            "maxdd_pct": -5.007928146982321,
+            "breach": false,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 27.10197198097386,
+            "maxdd_pct": -4.234989590166826,
+            "breach": false,
+            "target_hit": true
+          }
+        },
+        "2022": {
+          "gewichte": {
+            "gold_asb": 0.006,
+            "cls_practical": 0.003,
+            "ctnl_reversal": 0.0015,
+            "trend_pullback": 0,
+            "orb_sp500": 0.00125,
+            "orb_us30": 0.001,
+            "orb_nasdaq": 0.0005
+          },
+          "is_mc": {
+            "median_return": 0.18142444850923645,
+            "p_breach": 0.0095,
+            "median_maxdd": -0.027770068666396808,
+            "p_target": 0.9405,
+            "median_days_target": 102.0
+          },
+          "oos_opt": {
+            "return_pct": 30.32918579852368,
+            "maxdd_pct": -4.095784751067988,
+            "breach": false,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 40.506781348342514,
+            "maxdd_pct": -5.037252904032852,
+            "breach": false,
+            "target_hit": true
+          }
+        },
+        "2023": {
+          "gewichte": {
+            "gold_asb": 0.006,
+            "cls_practical": 0.0025,
+            "ctnl_reversal": 0.00075,
+            "trend_pullback": 0,
+            "orb_sp500": 0.001,
+            "orb_us30": 0.0005,
+            "orb_nasdaq": 0.00075
+          },
+          "is_mc": {
+            "median_return": 0.1966023023685416,
+            "p_breach": 0.01,
+            "median_maxdd": -0.026890924590436682,
+            "p_target": 0.96,
+            "median_days_target": 96.0
+          },
+          "oos_opt": {
+            "return_pct": 3.1875733539909357,
+            "maxdd_pct": -5.4064135474370385,
+            "breach": false,
+            "target_hit": false
+          },
+          "oos_heute": {
+            "return_pct": 9.100707418199105,
+            "maxdd_pct": -5.690595947572286,
+            "breach": false,
+            "target_hit": true
+          }
+        },
+        "2024": {
+          "gewichte": {
+            "gold_asb": 0.006,
+            "cls_practical": 0.0015,
+            "ctnl_reversal": 0.001,
+            "trend_pullback": 0.00075,
+            "orb_sp500": 0.00075,
+            "orb_us30": 0.0005,
+            "orb_nasdaq": 0.00075
+          },
+          "is_mc": {
+            "median_return": 0.15379552202251534,
+            "p_breach": 0.0095,
+            "median_maxdd": -0.02700535842177415,
+            "p_target": 0.9005,
+            "median_days_target": 115.0
+          },
+          "oos_opt": {
+            "return_pct": 14.649321966543006,
+            "maxdd_pct": -2.200636202826989,
+            "breach": false,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 22.89395374524046,
+            "maxdd_pct": -3.4535120705297406,
+            "breach": false,
+            "target_hit": true
+          }
+        },
+        "2025": {
+          "gewichte": {
+            "gold_asb": 0.006,
+            "cls_practical": 0.003,
+            "ctnl_reversal": 0.0015,
+            "trend_pullback": 0.0015,
+            "orb_sp500": 0.001,
+            "orb_us30": 0,
+            "orb_nasdaq": 0.0005
+          },
+          "is_mc": {
+            "median_return": 0.15346150699152328,
+            "p_breach": 0.0095,
+            "median_maxdd": -0.026203719775007406,
+            "p_target": 0.915,
+            "median_days_target": 115.0
+          },
+          "oos_opt": {
+            "return_pct": 35.434242580559314,
+            "maxdd_pct": -1.902317262739961,
+            "breach": false,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 44.50668396284219,
+            "maxdd_pct": -2.97791794926765,
+            "breach": false,
+            "target_hit": true
+          }
+        },
+        "2026": {
+          "gewichte": {
+            "gold_asb": 0.006,
+            "cls_practical": 0.003,
+            "ctnl_reversal": 0.0015,
+            "trend_pullback": 0.0015,
+            "orb_sp500": 0.001,
+            "orb_us30": 0.001,
+            "orb_nasdaq": 0.0005
+          },
+          "is_mc": {
+            "median_return": 0.19608711651190458,
+            "p_breach": 0.0095,
+            "median_maxdd": -0.02642915499804155,
+            "p_target": 0.9675,
+            "median_days_target": 97.0
+          },
+          "oos_opt": {
+            "return_pct": 9.84247922191097,
+            "maxdd_pct": -2.876894202236513,
+            "breach": false,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 13.094906622018886,
+            "maxdd_pct": -4.03318901046672,
+            "breach": false,
+            "target_hit": true
+          }
+        }
+      },
+      "B": {
+        "2021": {
+          "gewichte": {
+            "gold_asb": 0.01,
+            "cls_practical": 0.005,
+            "ctnl_reversal": 0.00125,
+            "trend_pullback": 0.0015,
+            "orb_sp500": 0.0015,
+            "orb_us30": 0.001,
+            "orb_nasdaq": 0
+          },
+          "is_mc": {
+            "median_return": 0.24478047601299457,
+            "p_breach": 0.0205,
+            "median_maxdd": -0.030658613975252158,
+            "p_target": 0.9735,
+            "median_days_target": 81.0
+          },
+          "oos_opt": {
+            "return_pct": 12.441876523073404,
+            "maxdd_pct": -5.4917917477420914,
+            "breach": false,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 27.10197198097386,
+            "maxdd_pct": -4.234989590166826,
+            "breach": false,
+            "target_hit": true
+          }
+        },
+        "2022": {
+          "gewichte": {
+            "gold_asb": 0.0075,
+            "cls_practical": 0.0015,
+            "ctnl_reversal": 0.001,
+            "trend_pullback": 0,
+            "orb_sp500": 0.0025,
+            "orb_us30": 0.0005,
+            "orb_nasdaq": 0.00075
+          },
+          "is_mc": {
+            "median_return": 0.24135308782223364,
+            "p_breach": 0.052,
+            "median_maxdd": -0.034624187960612784,
+            "p_target": 0.97,
+            "median_days_target": 79.0
+          },
+          "oos_opt": {
+            "return_pct": 32.029776285765934,
+            "maxdd_pct": -6.047471802825766,
+            "breach": true,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 40.506781348342514,
+            "maxdd_pct": -5.037252904032852,
+            "breach": false,
+            "target_hit": true
+          }
+        },
+        "2023": {
+          "gewichte": {
+            "gold_asb": 0.0075,
+            "cls_practical": 0.003,
+            "ctnl_reversal": 0.00075,
+            "trend_pullback": 0.00025,
+            "orb_sp500": 0.001,
+            "orb_us30": 0.0005,
+            "orb_nasdaq": 0.001
+          },
+          "is_mc": {
+            "median_return": 0.23918034185407488,
+            "p_breach": 0.034,
+            "median_maxdd": -0.0334311747316291,
+            "p_target": 0.9705,
+            "median_days_target": 78.0
+          },
+          "oos_opt": {
+            "return_pct": 3.4825294818233044,
+            "maxdd_pct": -6.027804766452416,
+            "breach": true,
+            "target_hit": false
+          },
+          "oos_heute": {
+            "return_pct": 9.100707418199105,
+            "maxdd_pct": -5.690595947572286,
+            "breach": false,
+            "target_hit": true
+          }
+        },
+        "2024": {
+          "gewichte": {
+            "gold_asb": 0.01,
+            "cls_practical": 0.003,
+            "ctnl_reversal": 0.0015,
+            "trend_pullback": 0.00125,
+            "orb_sp500": 0.001,
+            "orb_us30": 0.00125,
+            "orb_nasdaq": 0.00075
+          },
+          "is_mc": {
+            "median_return": 0.22910171885302966,
+            "p_breach": 0.089,
+            "median_maxdd": -0.03695889046140299,
+            "p_target": 0.952,
+            "median_days_target": 83.0
+          },
+          "oos_opt": {
+            "return_pct": 23.034220424516793,
+            "maxdd_pct": -3.3908671575970883,
+            "breach": false,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 22.89395374524046,
+            "maxdd_pct": -3.4535120705297406,
+            "breach": false,
+            "target_hit": true
+          }
+        },
+        "2025": {
+          "gewichte": {
+            "gold_asb": 0.0075,
+            "cls_practical": 0.003,
+            "ctnl_reversal": 0.002,
+            "trend_pullback": 0.0015,
+            "orb_sp500": 0.0015,
+            "orb_us30": 0.001,
+            "orb_nasdaq": 0.00075
+          },
+          "is_mc": {
+            "median_return": 0.22627110980457232,
+            "p_breach": 0.078,
+            "median_maxdd": -0.036422333354892145,
+            "p_target": 0.954,
+            "median_days_target": 83.0
+          },
+          "oos_opt": {
+            "return_pct": 44.479950942036695,
+            "maxdd_pct": -2.696778386603582,
+            "breach": false,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 44.50668396284219,
+            "maxdd_pct": -2.97791794926765,
+            "breach": false,
+            "target_hit": true
+          }
+        },
+        "2026": {
+          "gewichte": {
+            "gold_asb": 0.01,
+            "cls_practical": 0.004,
+            "ctnl_reversal": 0.00125,
+            "trend_pullback": 0.0015,
+            "orb_sp500": 0.001,
+            "orb_us30": 0.001,
+            "orb_nasdaq": 0.0005
+          },
+          "is_mc": {
+            "median_return": 0.23318391821402662,
+            "p_breach": 0.0255,
+            "median_maxdd": -0.032111854042374655,
+            "p_target": 0.977,
+            "median_days_target": 83.5
+          },
+          "oos_opt": {
+            "return_pct": 11.20100338654797,
+            "maxdd_pct": -3.5238767861126674,
+            "breach": false,
+            "target_hit": true
+          },
+          "oos_heute": {
+            "return_pct": 13.094906622018886,
+            "maxdd_pct": -4.03318901046672,
+            "breach": false,
+            "target_hit": true
+          }
+        }
+      }
+    },
+    "voll": {
+      "A": {
+        "gewichte": {
+          "gold_asb": 0.006,
+          "cls_practical": 0.003,
+          "ctnl_reversal": 0.0015,
+          "trend_pullback": 0.0015,
+          "orb_sp500": 0.001,
+          "orb_us30": 0.001,
+          "orb_nasdaq": 0.0005
+        },
+        "mc": {
+          "median_return": 0.19096517521463385,
+          "p_breach": 0.0085,
+          "median_maxdd": -0.026506270850923386,
+          "p_target": 0.9515,
+          "median_days_target": 99.0
+        },
+        "ereignis_sim": {
+          "neu_2019": {
+            "return_pct": 316.6345302355965,
+            "maxdd_pct": -3.935024307320345,
+            "erster_bruch": null,
+            "ziel_erreicht": "2019-02-19",
+            "trades": 3131
+          },
+          "heute_2019": {
+            "return_pct": 504.24750521507667,
+            "maxdd_pct": -5.65553219087469,
+            "erster_bruch": null,
+            "ziel_erreicht": "2019-02-04",
+            "trades": 3131
+          },
+          "neu_2026": {
+            "return_pct": 10.097907368963588,
+            "maxdd_pct": -2.8818696437332925,
+            "erster_bruch": null,
+            "ziel_erreicht": "2026-02-27",
+            "trades": 307
+          },
+          "heute_2026": {
+            "return_pct": 13.254906217285267,
+            "maxdd_pct": -4.00165723575191,
+            "erster_bruch": null,
+            "ziel_erreicht": "2026-02-12",
+            "trades": 307
+          }
+        }
+      },
+      "B": {
+        "gewichte": {
+          "gold_asb": 0.0075,
+          "cls_practical": 0.004,
+          "ctnl_reversal": 0.002,
+          "trend_pullback": 0.002,
+          "orb_sp500": 0.001,
+          "orb_us30": 0.001,
+          "orb_nasdaq": 0.00075
+        },
+        "mc": {
+          "median_return": 0.24927049219267272,
+          "p_breach": 0.043,
+          "median_maxdd": -0.03383837852554705,
+          "p_target": 0.963,
+          "median_days_target": 75.0
+        },
+        "ereignis_sim": {
+          "neu_2019": {
+            "return_pct": 515.1784310914916,
+            "maxdd_pct": -4.666111301081832,
+            "erster_bruch": null,
+            "ziel_erreicht": "2019-01-31",
+            "trades": 3131
+          },
+          "heute_2019": {
+            "return_pct": 504.24750521507667,
+            "maxdd_pct": -5.65553219087469,
+            "erster_bruch": null,
+            "ziel_erreicht": "2019-02-04",
+            "trades": 3131
+          },
+          "neu_2026": {
+            "return_pct": 14.527394844811138,
+            "maxdd_pct": -3.580981718603271,
+            "erster_bruch": null,
+            "ziel_erreicht": "2026-02-09",
+            "trades": 307
+          },
+          "heute_2026": {
+            "return_pct": 13.254906217285267,
+            "maxdd_pct": -4.00165723575191,
+            "erster_bruch": null,
+            "ziel_erreicht": "2026-02-12",
+            "trades": 307
+          }
+        }
+      }
+    },
+    "current_mc": {
+      "median_return": 0.2465324349456527,
+      "p_breach": 0.086,
+      "median_maxdd": -0.03736087433301649,
+      "p_target": 0.946,
+      "median_days_target": 72.0
+    },
+    "wf_summary": {
+      "A": {
+        "opt": {
+          "summe_return_pct": 102.90184812658262,
+          "bruchjahre": 0,
+          "schlechtestes_maxdd_pct": -5.4064135474370385,
+          "zieljahre": 5
+        },
+        "heute": {
+          "summe_return_pct": 157.20500507761702,
+          "bruchjahre": 0,
+          "schlechtestes_maxdd_pct": -5.690595947572286,
+          "zieljahre": 6
+        }
+      },
+      "B": {
+        "opt": {
+          "summe_return_pct": 126.6693570437641,
+          "bruchjahre": 2,
+          "schlechtestes_maxdd_pct": -6.047471802825766,
+          "zieljahre": 5
+        },
+        "heute": {
+          "summe_return_pct": 157.20500507761702,
+          "bruchjahre": 0,
+          "schlechtestes_maxdd_pct": -5.690595947572286,
+          "zieljahre": 6
+        }
+      }
+    }
+  },
+  "ek": {
+    "current": {
+      "gold_asb": 0.0352,
+      "btc_ema_cross": 0.0352,
+      "gold_silver": 0.0352,
+      "trend_pullback": 0.022,
+      "cls_practical": 0.0066,
+      "ou_modell": 0.0037,
+      "ctnl_reversal": 0.00019,
+      "orb_sp500": 0.0036,
+      "orb_us30": 0.0036,
+      "orb_nasdaq": 0.0036
+    },
+    "walk_forward": {
+      "EK": {
+        "2021": {
+          "gewichte": {
+            "gold_asb": 0.05,
+            "btc_ema_cross": 0.05,
+            "gold_silver": 0.05,
+            "trend_pullback": 0.01,
+            "cls_practical": 0.02,
+            "ou_modell": 0.004,
+            "ctnl_reversal": 0.015,
+            "orb_sp500": 0.02,
+            "orb_us30": 0.005,
+            "orb_nasdaq": 0.003
+          },
+          "is_mc": {
+            "median_return": 9.206905743498698,
+            "p_breach": 0.097,
+            "median_maxdd": -0.2782558628436475
+          },
+          "oos_opt": {
+            "return_pct": 1974.1241922387696,
+            "maxdd_pct": -20.814135717815873,
+            "breach": false
+          },
+          "oos_heute": {
+            "return_pct": 651.3386579517262,
+            "maxdd_pct": -13.671294925164856,
+            "breach": false
+          }
+        },
+        "2022": {
+          "gewichte": {
+            "gold_asb": 0.035,
+            "btc_ema_cross": 0.05,
+            "gold_silver": 0.05,
+            "trend_pullback": 0.01,
+            "cls_practical": 0.01,
+            "ou_modell": 0.01,
+            "ctnl_reversal": 0,
+            "orb_sp500": 0.015,
+            "orb_us30": 0.01,
+            "orb_nasdaq": 0.0075
+          },
+          "is_mc": {
+            "median_return": 10.874370699159496,
+            "p_breach": 0.0995,
+            "median_maxdd": -0.277159964875257
+          },
+          "oos_opt": {
+            "return_pct": 845.2692994264869,
+            "maxdd_pct": -36.804309873592025,
+            "breach": false
+          },
+          "oos_heute": {
+            "return_pct": 260.4227873949791,
+            "maxdd_pct": -20.695849187839745,
+            "breach": false
+          }
+        },
+        "2023": {
+          "gewichte": {
+            "gold_asb": 0.04,
+            "btc_ema_cross": 0.04,
+            "gold_silver": 0.05,
+            "trend_pullback": 0,
+            "cls_practical": 0.015,
+            "ou_modell": 0.002,
+            "ctnl_reversal": 0.002,
+            "orb_sp500": 0.0075,
+            "orb_us30": 0.0075,
+            "orb_nasdaq": 0.01
+          },
+          "is_mc": {
+            "median_return": 10.603405115935153,
+            "p_breach": 0.0965,
+            "median_maxdd": -0.280486732858598
+          },
+          "oos_opt": {
+            "return_pct": 66.43068005087297,
+            "maxdd_pct": -27.257297819605352,
+            "breach": false
+          },
+          "oos_heute": {
+            "return_pct": 177.39989262461074,
+            "maxdd_pct": -18.6572623952341,
+            "breach": false
+          }
+        },
+        "2024": {
+          "gewichte": {
+            "gold_asb": 0.05,
+            "btc_ema_cross": 0.05,
+            "gold_silver": 0.05,
+            "trend_pullback": 0.02,
+            "cls_practical": 0.0075,
+            "ou_modell": 0,
+            "ctnl_reversal": 0,
+            "orb_sp500": 0.01,
+            "orb_us30": 0.004,
+            "orb_nasdaq": 0.0075
+          },
+          "is_mc": {
+            "median_return": 6.6432128585323955,
+            "p_breach": 0.1,
+            "median_maxdd": -0.27221054022157043
+          },
+          "oos_opt": {
+            "return_pct": 1000.1438845583926,
+            "maxdd_pct": -20.717012144515255,
+            "breach": false
+          },
+          "oos_heute": {
+            "return_pct": 516.1434431851428,
+            "maxdd_pct": -11.386842384525542,
+            "breach": false
+          }
+        },
+        "2025": {
+          "gewichte": {
+            "gold_asb": 0.05,
+            "btc_ema_cross": 0.05,
+            "gold_silver": 0.05,
+            "trend_pullback": 0.02,
+            "cls_practical": 0.03,
+            "ou_modell": 0.0075,
+            "ctnl_reversal": 0.01,
+            "orb_sp500": 0.01,
+            "orb_us30": 0.005,
+            "orb_nasdaq": 0.0075
+          },
+          "is_mc": {
+            "median_return": 8.965523654324711,
+            "p_breach": 0.0985,
+            "median_maxdd": -0.27984854239593593
+          },
+          "oos_opt": {
+            "return_pct": 2000.3680304783459,
+            "maxdd_pct": -29.95169279249471,
+            "breach": false
+          },
+          "oos_heute": {
+            "return_pct": 514.2641547594092,
+            "maxdd_pct": -21.846209473321377,
+            "breach": false
+          }
+        },
+        "2026": {
+          "gewichte": {
+            "gold_asb": 0.05,
+            "btc_ema_cross": 0.04,
+            "gold_silver": 0.05,
+            "trend_pullback": 0.01,
+            "cls_practical": 0.03,
+            "ou_modell": 0.0075,
+            "ctnl_reversal": 0.015,
+            "orb_sp500": 0.0075,
+            "orb_us30": 0.0075,
+            "orb_nasdaq": 0.01
+          },
+          "is_mc": {
+            "median_return": 10.110146937751614,
+            "p_breach": 0.098,
+            "median_maxdd": -0.2866261520015281
+          },
+          "oos_opt": {
+            "return_pct": 115.77761061437224,
+            "maxdd_pct": -27.645847751849274,
+            "breach": false
+          },
+          "oos_heute": {
+            "return_pct": 91.41954959620907,
+            "maxdd_pct": -18.993890814602608,
+            "breach": false
+          }
+        }
+      }
+    },
+    "voll": {
+      "EK": {
+        "gewichte": {
+          "gold_asb": 0.05,
+          "btc_ema_cross": 0.05,
+          "gold_silver": 0.05,
+          "trend_pullback": 0.025,
+          "cls_practical": 0.025,
+          "ou_modell": 0.004,
+          "ctnl_reversal": 0.001,
+          "orb_sp500": 0.005,
+          "orb_us30": 0.005,
+          "orb_nasdaq": 0.0075
+        },
+        "mc": {
+          "median_return": 7.142717437144124,
+          "p_breach": 0.099,
+          "median_maxdd": -0.2748540049030871
+        },
+        "ereignis_sim": {
+          "neu_2019": {
+            "return_pct": 1912551315.8675518,
+            "maxdd_pct": -33.56719824710305,
+            "erster_bruch": null,
+            "ziel_erreicht": null,
+            "trades": 3838
+          },
+          "heute_2019": {
+            "return_pct": 10244778.81147744,
+            "maxdd_pct": -24.271729223093942,
+            "erster_bruch": null,
+            "ziel_erreicht": null,
+            "trades": 3838
+          },
+          "neu_2026": {
+            "return_pct": 178.2108198282732,
+            "maxdd_pct": -19.728878242856695,
+            "erster_bruch": null,
+            "ziel_erreicht": null,
+            "trades": 392
+          },
+          "heute_2026": {
+            "return_pct": 114.47403641572622,
+            "maxdd_pct": -13.761747928929836,
+            "erster_bruch": null,
+            "ziel_erreicht": null,
+            "trades": 392
+          }
+        }
+      }
+    },
+    "current_mc": {
+      "median_return": 3.0737368753801912,
+      "p_breach": 0.007,
+      "median_maxdd": -0.18476700296948884
+    },
+    "wf_summary": {
+      "EK": {
+        "opt": {
+          "summe_return_pct": 6002.11369736724,
+          "bruchjahre": 0,
+          "schlechtestes_maxdd_pct": -36.804309873592025
+        },
+        "heute": {
+          "summe_return_pct": 2210.988485512077,
+          "bruchjahre": 0,
+          "schlechtestes_maxdd_pct": -21.846209473321377
+        }
+      }
+    }
+  }
+}

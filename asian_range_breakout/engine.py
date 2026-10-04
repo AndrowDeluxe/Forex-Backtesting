@@ -234,7 +234,12 @@ def simulate_asian_breakout(
                 "direction": "long" if direction == 1 else "short",
                 "entry_price": entry_price,
                 "exit_price": exit_price,
-                "adx_at_entry": adx_series[window_end],
+                # window_end - 1 = letzte Bar IN der Range (00:45, schliesst 01:00).
+                # Bis 2026-10-01 stand hier window_end -- die 01:00-Bar schliesst aber
+                # erst 01:15, eine ruhende Order um 01:00 kennt diesen Wert noch nicht
+                # (eine Bar Lookahead). Gemessen: kippt den Filter an 3,1 % der Tage,
+                # Ergebnis gleich bis leicht besser. Siehe asian_range_breakout/pending.py.
+                "adx_at_entry": adx_series[window_end - 1],
                 "sl": sl,
                 "be_moved": be_moved,
                 "stop_distance": sd,

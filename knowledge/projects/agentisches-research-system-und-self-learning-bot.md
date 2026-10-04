@@ -17,7 +17,12 @@ frühestens in ein paar Wochen"). Kernentscheidungen sind geklärt (siehe
 unten), aber noch nichts gebaut — kein Code, kein neuer Skill/Agent, kein
 neues Repo-Paket. Diese Notiz sichert nur den Entscheidungs- und
 Rechercheanstand, damit er bei Wiederaufnahme nicht neu erarbeitet werden
-muss. Siehe auch Claude-Memory `ml-self-learning-idea` (ursprünglicher,
+muss.
+
+**Seit 2026-10-04 Teil des Dachprojekts [[quant-diskretionaer-fusion]]**:
+Strang A = dort Strang 6 (Agentenschicht), Strang B = dort Strang 7
+(Selbstlernen, lernt aus dem Entscheidungslog des Cockpits). Die Aktien-/
+Alpaca-Seite läuft separat in [[aktien-analyse-und-bot]]. Siehe auch Claude-Memory `ml-self-learning-idea` (ursprünglicher,
 noch ungescopter Parkpunkt vom 2026-08-12).
 
 ## Strang A: Agentensystem für den 8-Phasen-Prozess

@@ -589,3 +589,33 @@ wie der Rest der Engine) statt Market-Entry beim Breakout-Open, Fenster
   verankern, nicht am aktuellen Kurs -- bleibt als Exekutions-Fix in
   `BTC-EMA-Cross-Bridge/executor_mt5.py` bestehen; das ist eine
   Ausfuehrungsqualitaets-Frage, keine Aenderung am Entry-Signal selbst.
+
+---
+
+## A Quantitative Approach to Tactical Asset Allocation (Faber 2006/2013)
+
+**Capture**
+- Autor/Jahr: Mebane T. Faber, Working Paper 2006, J. Wealth Mgmt. 2007,
+  Update Feb. 2013. SSRN 962461.
+- Weg: manuell im Chat als PDF geteilt, erfasst am 2026-10-04.
+
+**Organize**
+- Tags: trend-following, 10-Monats-SMA, Asset-Allokation, Monatsdaten,
+  long-only, Volatility Clustering.
+- Project mit vollständigem Durchlauf und Edge Card:
+  [[faber-gtaa-10-monats-sma]].
+
+**Distill**
+- Regel: je Anlageklasse (US-Aktien, EAFE, 10J-Treasuries, GSCI, REITs)
+  am Monatsende über dem 10-Monats-SMA halten, darunter T-Bills, 1/N.
+- Behauptet: gleiche Rendite bei halber Vola und einstelligem MaxDD.
+
+**Express** (Details im Project)
+- Im echten OOS 2013-2026 auf ETFs: Sharpe 0,69 statt 0,52, MaxDD −5,5 %
+  statt −17,7 %. Die CAGR liegt aber ~0,9 Pp. UNTER Buy & Hold.
+- Das Signal schlägt Zufalls-Timing mit gleicher Investitionsquote.
+- Der Rendite-Teil des Mechanismus hält nur bei Rohstoffen. Beim S&P 500
+  ist der Filter ein reiner Vola-Filter.
+- Cross-Check auf unsere Beine: Ein Monats-SMA-Filter hilft nirgends, bei
+  den Index-ORBs sind die Monate unter dem SMA sogar die besseren.
+- Kein Strategie-Kandidat für die Prop-/Intraday-Portfolios.

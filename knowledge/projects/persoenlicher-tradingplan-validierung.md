@@ -21,6 +21,10 @@ validiert.
 5. Nicht validiert -> als verworfen dokumentieren (mit Grund), nicht
    stillschweigend löschen -- verworfene Ideen sind auch Erkenntnis.
 
+**Seit 2026-10-04**: Die Bestandteile-Liste wird aus Strang 0 (Inventur)
+des Dachprojekts [[quant-diskretionaer-fusion]] befüllt -- hier, nicht
+doppelt dort gepflegt.
+
 ## Bestandteile-Checklist
 
 <!-- Liste der einzelnen Tradingplan-Bestandteile -- wird gemeinsam befüllt,

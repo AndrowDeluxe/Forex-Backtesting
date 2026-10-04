@@ -1,0 +1,322 @@
+{
+  "legs": [
+    "gold_asb",
+    "cls_practical",
+    "ctnl_reversal",
+    "orb_sp500",
+    "orb_us30",
+    "orb_nasdaq"
+  ],
+  "unit_risk": {
+    "gold_asb": 0.02,
+    "cls_practical": 0.015,
+    "ctnl_reversal": 0.0015,
+    "orb_sp500": 0.01,
+    "orb_us30": 0.01,
+    "orb_nasdaq": 0.01
+  },
+  "aktuell": {
+    "gold_asb": 0.0606,
+    "cls_practical": 0.1919,
+    "ctnl_reversal": 0.2525,
+    "orb_sp500": 0.12456666666666666,
+    "orb_us30": 0.12456666666666666,
+    "orb_nasdaq": 0.12456666666666666
+  },
+  "walk_forward": {
+    "2021": {
+      "gewichte": {
+        "gold_asb": 0.15,
+        "cls_practical": 0.325,
+        "ctnl_reversal": 0.3,
+        "orb_sp500": 0.125,
+        "orb_us30": 0.075,
+        "orb_nasdaq": 0.025
+      },
+      "is_mc": {
+        "median_return": 0.1308726348066035,
+        "p_breach": 0.0095,
+        "median_maxdd": -0.020967071165520434
+      },
+      "oos": {
+        "opt": {
+          "return_pct": 11.081791387844419,
+          "maxdd_pct": -1.9659717858223957,
+          "breach": false
+        },
+        "aktuell": {
+          "return_pct": 18.308532151156598,
+          "maxdd_pct": -3.2376518098903073,
+          "breach": false
+        },
+        "ohne_sp500_us30": {
+          "return_pct": 9.628830610057815,
+          "maxdd_pct": -2.701691935572481,
+          "breach": false
+        }
+      }
+    },
+    "2022": {
+      "gewichte": {
+        "gold_asb": 0.175,
+        "cls_practical": 0.1,
+        "ctnl_reversal": 0.275,
+        "orb_sp500": 0.175,
+        "orb_us30": 0.05,
+        "orb_nasdaq": 0.05
+      },
+      "is_mc": {
+        "median_return": 0.13268970717087825,
+        "p_breach": 0.01,
+        "median_maxdd": -0.02007456784270395
+      },
+      "oos": {
+        "opt": {
+          "return_pct": 13.844281086692911,
+          "maxdd_pct": -3.248557197480484,
+          "breach": false
+        },
+        "aktuell": {
+          "return_pct": 21.343196808998186,
+          "maxdd_pct": -3.282431412887954,
+          "breach": false
+        },
+        "ohne_sp500_us30": {
+          "return_pct": 16.39043919090848,
+          "maxdd_pct": -1.7973078806234999,
+          "breach": false
+        }
+      }
+    },
+    "2023": {
+      "gewichte": {
+        "gold_asb": 0.125,
+        "cls_practical": 0.2,
+        "ctnl_reversal": 0.425,
+        "orb_sp500": 0.1,
+        "orb_us30": 0.025,
+        "orb_nasdaq": 0.1
+      },
+      "is_mc": {
+        "median_return": 0.14046458501510384,
+        "p_breach": 0.01,
+        "median_maxdd": -0.022599599514336655
+      },
+      "oos": {
+        "opt": {
+          "return_pct": 2.50698803098357,
+          "maxdd_pct": -3.115791366033449,
+          "breach": false
+        },
+        "aktuell": {
+          "return_pct": 1.7492078596280214,
+          "maxdd_pct": -4.768730820054579,
+          "breach": false
+        },
+        "ohne_sp500_us30": {
+          "return_pct": -1.1495434047594122,
+          "maxdd_pct": -2.866572389861133,
+          "breach": false
+        }
+      }
+    },
+    "2024": {
+      "gewichte": {
+        "gold_asb": 0.2,
+        "cls_practical": 0.175,
+        "ctnl_reversal": 0.375,
+        "orb_sp500": 0.1,
+        "orb_us30": 0.1,
+        "orb_nasdaq": 0.05
+      },
+      "is_mc": {
+        "median_return": 0.11653716481394338,
+        "p_breach": 0.0095,
+        "median_maxdd": -0.020956253482220744
+      },
+      "oos": {
+        "opt": {
+          "return_pct": 10.339457220025473,
+          "maxdd_pct": -3.048124094808524,
+          "breach": false
+        },
+        "aktuell": {
+          "return_pct": 8.264023561360156,
+          "maxdd_pct": -4.788361056928547,
+          "breach": false
+        },
+        "ohne_sp500_us30": {
+          "return_pct": 6.498761077301718,
+          "maxdd_pct": -2.368965476141194,
+          "breach": false
+        }
+      }
+    },
+    "2025": {
+      "gewichte": {
+        "gold_asb": 0.2,
+        "cls_practical": 0.075,
+        "ctnl_reversal": 0.475,
+        "orb_sp500": 0.125,
+        "orb_us30": 0.075,
+        "orb_nasdaq": 0.05
+      },
+      "is_mc": {
+        "median_return": 0.1095799546380739,
+        "p_breach": 0.01,
+        "median_maxdd": -0.02104353259409758
+      },
+      "oos": {
+        "opt": {
+          "return_pct": 14.297323589571365,
+          "maxdd_pct": -2.0685998490971857,
+          "breach": false
+        },
+        "aktuell": {
+          "return_pct": 17.578230447828535,
+          "maxdd_pct": -2.104809169477284,
+          "breach": false
+        },
+        "ohne_sp500_us30": {
+          "return_pct": 14.40301624757887,
+          "maxdd_pct": -1.8347279789150628,
+          "breach": false
+        }
+      }
+    },
+    "2026": {
+      "gewichte": {
+        "gold_asb": 0.2,
+        "cls_practical": 0.175,
+        "ctnl_reversal": 0.4,
+        "orb_sp500": 0.175,
+        "orb_us30": 0.0,
+        "orb_nasdaq": 0.05
+      },
+      "is_mc": {
+        "median_return": 0.12944778628881615,
+        "p_breach": 0.0095,
+        "median_maxdd": -0.021388512530179093
+      },
+      "oos": {
+        "opt": {
+          "return_pct": 1.4869570026611933,
+          "maxdd_pct": -4.196255115541692,
+          "breach": false
+        },
+        "aktuell": {
+          "return_pct": 0.7552365477887735,
+          "maxdd_pct": -4.624652553370723,
+          "breach": false
+        },
+        "ohne_sp500_us30": {
+          "return_pct": 2.2112018005139955,
+          "maxdd_pct": -2.5620878050430784,
+          "breach": false
+        }
+      }
+    }
+  },
+  "walk_forward_summary": {
+    "opt": {
+      "summe_return_pct": 53.55679831777893,
+      "schlechtestes_maxdd_pct": -4.196255115541692,
+      "jahre_mit_bruch": 0
+    },
+    "aktuell": {
+      "summe_return_pct": 67.99842737676028,
+      "schlechtestes_maxdd_pct": -4.788361056928547,
+      "jahre_mit_bruch": 0
+    },
+    "ohne_sp500_us30": {
+      "summe_return_pct": 47.98270552160147,
+      "schlechtestes_maxdd_pct": -2.866572389861133,
+      "jahre_mit_bruch": 0
+    }
+  },
+  "voll": {
+    "gewichte": {
+      "gold_asb": 0.175,
+      "cls_practical": 0.3,
+      "ctnl_reversal": 0.375,
+      "orb_sp500": 0.1,
+      "orb_us30": 0.0,
+      "orb_nasdaq": 0.05
+    },
+    "mc_kontrolle": {
+      "neu": {
+        "median_return_pct": 10.778710937546599,
+        "p_breach": 0.011,
+        "median_maxdd_pct": -2.033440885865345,
+        "risiko_je_trade_pct": {
+          "gold_asb": 0.35000000000000003,
+          "cls_practical": 0.44999999999999996,
+          "ctnl_reversal": 0.05625000000000001,
+          "orb_sp500": 0.1,
+          "orb_us30": 0.0,
+          "orb_nasdaq": 0.05
+        }
+      },
+      "aktuell": {
+        "median_return_pct": 11.848902512912174,
+        "p_breach": 0.119,
+        "median_maxdd_pct": -3.1647542482017843,
+        "risiko_je_trade_pct": {
+          "gold_asb": 0.1212,
+          "cls_practical": 0.28784999999999994,
+          "ctnl_reversal": 0.037875,
+          "orb_sp500": 0.12456666666666666,
+          "orb_us30": 0.12456666666666666,
+          "orb_nasdaq": 0.12456666666666666
+        }
+      },
+      "ohne_sp500_us30": {
+        "median_return_pct": 7.879702511801612,
+        "p_breach": 0.0525,
+        "median_maxdd_pct": -2.640780734478154,
+        "risiko_je_trade_pct": {
+          "gold_asb": 0.1212,
+          "cls_practical": 0.28784999999999994,
+          "ctnl_reversal": 0.037875,
+          "orb_sp500": 0.0,
+          "orb_us30": 0.0,
+          "orb_nasdaq": 0.12456666666666666
+        }
+      }
+    }
+  },
+  "capital_weight_bridge": {
+    "gold_asb": 0.175,
+    "cls_practical": 0.3,
+    "ctnl_reversal": 0.375,
+    "orb_sp500": 0.3,
+    "orb_us30": 0.0,
+    "orb_nasdaq": 0.15
+  },
+  "ereignis_sim": {
+    "neu_2019-2026": {
+      "return_pct": 117.9636656483831,
+      "maxdd_pct": -2.686098811342774,
+      "erster_bruch": "NaT",
+      "min_lot_bumps": 0
+    },
+    "neu_2026": {
+      "return_pct": 2.0548942919398248,
+      "maxdd_pct": -3.1077737148698326,
+      "erster_bruch": "NaT",
+      "min_lot_bumps": 3
+    },
+    "aktuell_2019-2026": {
+      "return_pct": 150.9592379945254,
+      "maxdd_pct": -6.132871818433417,
+      "erster_bruch": "2024-05-14 00:00:00",
+      "min_lot_bumps": 0
+    },
+    "aktuell_2026": {
+      "return_pct": 0.7421548206349835,
+      "maxdd_pct": -4.742839623471806,
+      "erster_bruch": "NaT",
+      "min_lot_bumps": 8
+    }
+  }
+}

@@ -1,0 +1,617 @@
+{
+ "datei": "sp500tr_daily_20261004.csv",
+ "daten_von": "1988-01-04",
+ "daten_bis": "2026-10-02",
+ "bewertung_bis": "2026-09-30",
+ "tagesrenditen_ueber_10pct": {
+  "2008-10-13": 11.58,
+  "2008-10-28": 10.79,
+  "2020-03-16": -11.98
+ },
+ "varianten": {
+  "sma10": {
+   "erster_trade_tag": "1988-11-01",
+   "gesamt": {
+    "zeit_im_markt_pct": 79.0,
+    "einstiege": 27,
+    "ausstiege": 26,
+    "strategie_ohne": {
+     "von": "1988-11-01",
+     "bis": "2026-09-30",
+     "jahre": 37.91,
+     "cagr_pct": 9.31,
+     "maxdd_pct": -27.43,
+     "endwert": 29.189
+    },
+    "strategie_mittel": {
+     "von": "1988-11-01",
+     "bis": "2026-09-30",
+     "jahre": 37.91,
+     "cagr_pct": 7.1,
+     "maxdd_pct": -28.45,
+     "endwert": 13.445
+    },
+    "strategie_hoch": {
+     "von": "1988-11-01",
+     "bis": "2026-09-30",
+     "jahre": 37.91,
+     "cagr_pct": 5.0,
+     "maxdd_pct": -29.23,
+     "endwert": 6.359
+    },
+    "maxdd_vor_kosten_pct": -27.43,
+    "buy_and_hold": {
+     "von": "1988-11-01",
+     "bis": "2026-09-30",
+     "jahre": 37.91,
+     "cagr_pct": 11.39,
+     "maxdd_pct": -55.25,
+     "endwert": 59.686
+    }
+   },
+   "vor_2006_06": {
+    "zeit_im_markt_pct": 77.9,
+    "einstiege": 11,
+    "ausstiege": 10,
+    "strategie_ohne": {
+     "von": "1988-11-01",
+     "bis": "2006-05-31",
+     "jahre": 17.58,
+     "cagr_pct": 10.58,
+     "maxdd_pct": -23.32,
+     "endwert": 5.862
+    },
+    "strategie_mittel": {
+     "von": "1988-11-01",
+     "bis": "2006-05-31",
+     "jahre": 17.58,
+     "cagr_pct": 8.39,
+     "maxdd_pct": -24.22,
+     "endwert": 4.121
+    },
+    "strategie_hoch": {
+     "von": "1988-11-01",
+     "bis": "2006-05-31",
+     "jahre": 17.58,
+     "cagr_pct": 6.3,
+     "maxdd_pct": -25.28,
+     "endwert": 2.927
+    },
+    "maxdd_vor_kosten_pct": -23.32,
+    "buy_and_hold": {
+     "von": "1988-11-01",
+     "bis": "2006-05-31",
+     "jahre": 17.58,
+     "cagr_pct": 11.46,
+     "maxdd_pct": -47.41,
+     "endwert": 6.735
+    }
+   },
+   "ab_2006_06": {
+    "zeit_im_markt_pct": 79.9,
+    "einstiege": 17,
+    "ausstiege": 16,
+    "strategie_ohne": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 8.15,
+     "maxdd_pct": -27.43,
+     "endwert": 4.919
+    },
+    "strategie_mittel": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 5.93,
+     "maxdd_pct": -28.45,
+     "endwert": 3.222
+    },
+    "strategie_hoch": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 3.83,
+     "maxdd_pct": -29.23,
+     "endwert": 2.145
+    },
+    "maxdd_vor_kosten_pct": -27.43,
+    "buy_and_hold": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 11.26,
+     "maxdd_pct": -55.25,
+     "endwert": 8.754
+    }
+   },
+   "zufall": {
+    "maxdd_strategie_pct": -27.43,
+    "monate_gemischt": 456,
+    "anteil_long_monate_pct": 78.9,
+    "anteil_zufall_dd_gleich_oder_kleiner": 0.0,
+    "zufall_maxdd_median_pct": -50.36,
+    "zufall_maxdd_p05_p95_pct": [
+     -59.84,
+     -40.68
+    ]
+   }
+  },
+  "sma8": {
+   "erster_trade_tag": "1988-09-01",
+   "gesamt": {
+    "zeit_im_markt_pct": 77.9,
+    "einstiege": 31,
+    "ausstiege": 30,
+    "strategie_ohne": {
+     "von": "1988-09-01",
+     "bis": "2026-09-30",
+     "jahre": 38.08,
+     "cagr_pct": 9.59,
+     "maxdd_pct": -27.43,
+     "endwert": 32.705
+    },
+    "strategie_mittel": {
+     "von": "1988-09-01",
+     "bis": "2026-09-30",
+     "jahre": 38.08,
+     "cagr_pct": 7.39,
+     "maxdd_pct": -28.45,
+     "endwert": 15.109
+    },
+    "strategie_hoch": {
+     "von": "1988-09-01",
+     "bis": "2026-09-30",
+     "jahre": 38.08,
+     "cagr_pct": 5.32,
+     "maxdd_pct": -29.23,
+     "endwert": 7.195
+    },
+    "maxdd_vor_kosten_pct": -27.43,
+    "buy_and_hold": {
+     "von": "1988-09-01",
+     "bis": "2026-09-30",
+     "jahre": 38.08,
+     "cagr_pct": 11.58,
+     "maxdd_pct": -55.25,
+     "endwert": 64.793
+    }
+   },
+   "vor_2006_06": {
+    "zeit_im_markt_pct": 76.6,
+    "einstiege": 16,
+    "ausstiege": 15,
+    "strategie_ohne": {
+     "von": "1988-09-01",
+     "bis": "2006-05-31",
+     "jahre": 17.74,
+     "cagr_pct": 10.03,
+     "maxdd_pct": -23.32,
+     "endwert": 5.449
+    },
+    "strategie_mittel": {
+     "von": "1988-09-01",
+     "bis": "2006-05-31",
+     "jahre": 17.74,
+     "cagr_pct": 7.85,
+     "maxdd_pct": -24.22,
+     "endwert": 3.821
+    },
+    "strategie_hoch": {
+     "von": "1988-09-01",
+     "bis": "2006-05-31",
+     "jahre": 17.74,
+     "cagr_pct": 5.81,
+     "maxdd_pct": -25.28,
+     "endwert": 2.721
+    },
+    "maxdd_vor_kosten_pct": -23.32,
+    "buy_and_hold": {
+     "von": "1988-09-01",
+     "bis": "2006-05-31",
+     "jahre": 17.74,
+     "cagr_pct": 11.86,
+     "maxdd_pct": -47.41,
+     "endwert": 7.311
+    }
+   },
+   "ab_2006_06": {
+    "zeit_im_markt_pct": 79.0,
+    "einstiege": 16,
+    "ausstiege": 15,
+    "strategie_ohne": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 9.15,
+     "maxdd_pct": -27.43,
+     "endwert": 5.928
+    },
+    "strategie_mittel": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 6.93,
+     "maxdd_pct": -28.45,
+     "endwert": 3.904
+    },
+    "strategie_hoch": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 4.84,
+     "maxdd_pct": -29.23,
+     "endwert": 2.611
+    },
+    "maxdd_vor_kosten_pct": -27.43,
+    "buy_and_hold": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 11.26,
+     "maxdd_pct": -55.25,
+     "endwert": 8.754
+    }
+   }
+  },
+  "sma9": {
+   "erster_trade_tag": "1988-10-03",
+   "gesamt": {
+    "zeit_im_markt_pct": 79.0,
+    "einstiege": 26,
+    "ausstiege": 25,
+    "strategie_ohne": {
+     "von": "1988-10-03",
+     "bis": "2026-09-30",
+     "jahre": 37.99,
+     "cagr_pct": 9.67,
+     "maxdd_pct": -27.43,
+     "endwert": 33.381
+    },
+    "strategie_mittel": {
+     "von": "1988-10-03",
+     "bis": "2026-09-30",
+     "jahre": 37.99,
+     "cagr_pct": 7.46,
+     "maxdd_pct": -28.45,
+     "endwert": 15.364
+    },
+    "strategie_hoch": {
+     "von": "1988-10-03",
+     "bis": "2026-09-30",
+     "jahre": 37.99,
+     "cagr_pct": 5.36,
+     "maxdd_pct": -29.23,
+     "endwert": 7.254
+    },
+    "maxdd_vor_kosten_pct": -27.43,
+    "buy_and_hold": {
+     "von": "1988-10-03",
+     "bis": "2026-09-30",
+     "jahre": 37.99,
+     "cagr_pct": 11.45,
+     "maxdd_pct": -55.25,
+     "endwert": 61.487
+    }
+   },
+   "vor_2006_06": {
+    "zeit_im_markt_pct": 78.0,
+    "einstiege": 11,
+    "ausstiege": 10,
+    "strategie_ohne": {
+     "von": "1988-10-03",
+     "bis": "2006-05-31",
+     "jahre": 17.66,
+     "cagr_pct": 10.66,
+     "maxdd_pct": -23.32,
+     "endwert": 5.978
+    },
+    "strategie_mittel": {
+     "von": "1988-10-03",
+     "bis": "2006-05-31",
+     "jahre": 17.66,
+     "cagr_pct": 8.46,
+     "maxdd_pct": -24.22,
+     "endwert": 4.194
+    },
+    "strategie_hoch": {
+     "von": "1988-10-03",
+     "bis": "2006-05-31",
+     "jahre": 17.66,
+     "cagr_pct": 6.37,
+     "maxdd_pct": -25.28,
+     "endwert": 2.974
+    },
+    "maxdd_vor_kosten_pct": -23.32,
+    "buy_and_hold": {
+     "von": "1988-10-03",
+     "bis": "2006-05-31",
+     "jahre": 17.66,
+     "cagr_pct": 11.6,
+     "maxdd_pct": -47.41,
+     "endwert": 6.938
+    }
+   },
+   "ab_2006_06": {
+    "zeit_im_markt_pct": 79.9,
+    "einstiege": 16,
+    "ausstiege": 15,
+    "strategie_ohne": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 8.76,
+     "maxdd_pct": -27.43,
+     "endwert": 5.516
+    },
+    "strategie_mittel": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 6.53,
+     "maxdd_pct": -28.45,
+     "endwert": 3.617
+    },
+    "strategie_hoch": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 4.42,
+     "maxdd_pct": -29.23,
+     "endwert": 2.409
+    },
+    "maxdd_vor_kosten_pct": -27.43,
+    "buy_and_hold": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 11.26,
+     "maxdd_pct": -55.25,
+     "endwert": 8.754
+    }
+   }
+  },
+  "sma11": {
+   "erster_trade_tag": "1988-12-01",
+   "gesamt": {
+    "zeit_im_markt_pct": 80.5,
+    "einstiege": 24,
+    "ausstiege": 23,
+    "strategie_ohne": {
+     "von": "1988-12-01",
+     "bis": "2026-09-30",
+     "jahre": 37.83,
+     "cagr_pct": 9.82,
+     "maxdd_pct": -27.43,
+     "endwert": 34.593
+    },
+    "strategie_mittel": {
+     "von": "1988-12-01",
+     "bis": "2026-09-30",
+     "jahre": 37.83,
+     "cagr_pct": 7.57,
+     "maxdd_pct": -28.45,
+     "endwert": 15.791
+    },
+    "strategie_hoch": {
+     "von": "1988-12-01",
+     "bis": "2026-09-30",
+     "jahre": 37.83,
+     "cagr_pct": 5.43,
+     "maxdd_pct": -29.23,
+     "endwert": 7.379
+    },
+    "maxdd_vor_kosten_pct": -27.43,
+    "buy_and_hold": {
+     "von": "1988-12-01",
+     "bis": "2026-09-30",
+     "jahre": 37.83,
+     "cagr_pct": 11.47,
+     "maxdd_pct": -55.25,
+     "endwert": 60.863
+    }
+   },
+   "vor_2006_06": {
+    "zeit_im_markt_pct": 81.2,
+    "einstiege": 9,
+    "ausstiege": 8,
+    "strategie_ohne": {
+     "von": "1988-12-01",
+     "bis": "2006-05-31",
+     "jahre": 17.49,
+     "cagr_pct": 11.72,
+     "maxdd_pct": -20.49,
+     "endwert": 6.952
+    },
+    "strategie_mittel": {
+     "von": "1988-12-01",
+     "bis": "2006-05-31",
+     "jahre": 17.49,
+     "cagr_pct": 9.43,
+     "maxdd_pct": -21.67,
+     "endwert": 4.838
+    },
+    "strategie_hoch": {
+     "von": "1988-12-01",
+     "bis": "2006-05-31",
+     "jahre": 17.49,
+     "cagr_pct": 7.24,
+     "maxdd_pct": -23.08,
+     "endwert": 3.395
+    },
+    "maxdd_vor_kosten_pct": -20.49,
+    "buy_and_hold": {
+     "von": "1988-12-01",
+     "bis": "2006-05-31",
+     "jahre": 17.49,
+     "cagr_pct": 11.64,
+     "maxdd_pct": -47.41,
+     "endwert": 6.868
+    }
+   },
+   "ab_2006_06": {
+    "zeit_im_markt_pct": 79.9,
+    "einstiege": 16,
+    "ausstiege": 15,
+    "strategie_ohne": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 8.15,
+     "maxdd_pct": -27.43,
+     "endwert": 4.915
+    },
+    "strategie_mittel": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 5.93,
+     "maxdd_pct": -28.45,
+     "endwert": 3.223
+    },
+    "strategie_hoch": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 3.83,
+     "maxdd_pct": -29.23,
+     "endwert": 2.146
+    },
+    "maxdd_vor_kosten_pct": -27.43,
+    "buy_and_hold": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 11.26,
+     "maxdd_pct": -55.25,
+     "endwert": 8.754
+    }
+   }
+  },
+  "sma12": {
+   "erster_trade_tag": "1989-01-03",
+   "gesamt": {
+    "zeit_im_markt_pct": 80.7,
+    "einstiege": 22,
+    "ausstiege": 21,
+    "strategie_ohne": {
+     "von": "1989-01-03",
+     "bis": "2026-09-30",
+     "jahre": 37.74,
+     "cagr_pct": 10.2,
+     "maxdd_pct": -21.01,
+     "endwert": 39.033
+    },
+    "strategie_mittel": {
+     "von": "1989-01-03",
+     "bis": "2026-09-30",
+     "jahre": 37.74,
+     "cagr_pct": 7.94,
+     "maxdd_pct": -21.67,
+     "endwert": 17.863
+    },
+    "strategie_hoch": {
+     "von": "1989-01-03",
+     "bis": "2026-09-30",
+     "jahre": 37.74,
+     "cagr_pct": 5.79,
+     "maxdd_pct": -23.64,
+     "endwert": 8.352
+    },
+    "maxdd_vor_kosten_pct": -21.01,
+    "buy_and_hold": {
+     "von": "1989-01-03",
+     "bis": "2026-09-30",
+     "jahre": 37.74,
+     "cagr_pct": 11.46,
+     "maxdd_pct": -55.25,
+     "endwert": 60.075
+    }
+   },
+   "vor_2006_06": {
+    "zeit_im_markt_pct": 81.1,
+    "einstiege": 9,
+    "ausstiege": 8,
+    "strategie_ohne": {
+     "von": "1989-01-03",
+     "bis": "2006-05-31",
+     "jahre": 17.4,
+     "cagr_pct": 11.7,
+     "maxdd_pct": -20.49,
+     "endwert": 6.862
+    },
+    "strategie_mittel": {
+     "von": "1989-01-03",
+     "bis": "2006-05-31",
+     "jahre": 17.4,
+     "cagr_pct": 9.42,
+     "maxdd_pct": -21.67,
+     "endwert": 4.786
+    },
+    "strategie_hoch": {
+     "von": "1989-01-03",
+     "bis": "2006-05-31",
+     "jahre": 17.4,
+     "cagr_pct": 7.23,
+     "maxdd_pct": -23.08,
+     "endwert": 3.366
+    },
+    "maxdd_vor_kosten_pct": -20.49,
+    "buy_and_hold": {
+     "von": "1989-01-03",
+     "bis": "2006-05-31",
+     "jahre": 17.4,
+     "cagr_pct": 11.62,
+     "maxdd_pct": -47.41,
+     "endwert": 6.779
+    }
+   },
+   "ab_2006_06": {
+    "zeit_im_markt_pct": 80.3,
+    "einstiege": 14,
+    "ausstiege": 13,
+    "strategie_ohne": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 8.86,
+     "maxdd_pct": -21.01,
+     "endwert": 5.619
+    },
+    "strategie_mittel": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 6.63,
+     "maxdd_pct": -21.64,
+     "endwert": 3.686
+    },
+    "strategie_hoch": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 4.51,
+     "maxdd_pct": -23.64,
+     "endwert": 2.45
+    },
+    "maxdd_vor_kosten_pct": -21.01,
+    "buy_and_hold": {
+     "von": "2006-06-01",
+     "bis": "2026-09-30",
+     "jahre": 20.33,
+     "cagr_pct": 11.26,
+     "maxdd_pct": -55.25,
+     "endwert": 8.754
+    }
+   }
+  }
+ },
+ "gegencheck_letzter_monat": {
+  "monat": "2026-09",
+  "monatsschluss_tag": "2026-09-30",
+  "schluss": 17160.41,
+  "durchschnitt_10m": 16148.79,
+  "signal": "long",
+  "gilt_ab_schluss": "2026-10-01"
+ }
+}

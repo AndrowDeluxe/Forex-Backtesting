@@ -14,7 +14,7 @@ import dukascopy_python
 import dukascopy_python.instruments as duka
 import pandas as pd
 
-from combined_strategy.data import OFFER_SIDE, fetch_timeframe, validate_ohlc_numeric
+from combined_strategy.data import OFFER_SIDE, fetch_timeframe, validate_ohlc_numeric, write_cache_atomic
 
 CACHE_DIR = Path(__file__).resolve().parents[1] / "data_cache" / "cls_practical"
 
@@ -49,8 +49,7 @@ def fetch_rate_instrument_m5_berlin(key: str, start: str, end: str, force_refres
         df = df.sort_index()
         df.index.name = "timestamp"
         validate_ohlc_numeric(df, ["open", "high", "low", "close", "volume"])
-        CACHE_DIR.mkdir(parents=True, exist_ok=True)
-        df.to_parquet(path)
+        write_cache_atomic(df, path)
 
     df.index = df.index.tz_convert("Europe/Berlin")
     return df
@@ -84,8 +83,7 @@ def fetch_2y_yield_daily(key: str, n_bars: int = 3650, force_refresh: bool = Fal
     df = df.sort_index()
     df = df[~df.index.duplicated(keep="last")]
     validate_ohlc_numeric(df, ["open", "high", "low", "close", "volume"])
-    CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    df.to_parquet(path)
+    write_cache_atomic(df, path)
     return df
 
 
@@ -144,8 +142,7 @@ def fetch_eurusd_entry_tf_berlin(timeframe: str, start: str, end: str, force_ref
         df = df.sort_index()
         df.index.name = "timestamp"
         validate_ohlc_numeric(df, ["open", "high", "low", "close", "volume"])
-        CACHE_DIR.mkdir(parents=True, exist_ok=True)
-        df.to_parquet(path)
+        write_cache_atomic(df, path)
 
     df.index = df.index.tz_convert("Europe/Berlin")
     return df

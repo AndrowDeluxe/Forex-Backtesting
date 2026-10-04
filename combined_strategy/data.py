@@ -8,6 +8,7 @@ gives the full ~10-year history at every timeframe, with real traded volume
 re-plumbing exercise.
 """
 
+import os
 from pathlib import Path
 
 import dukascopy_python
@@ -95,6 +96,25 @@ def validate_ohlc_numeric(df: pd.DataFrame, columns: list[str]) -> None:
             raise ValueError(f"fetched data has non-numeric column {col!r} (dtype {df[col].dtype}) - refusing to cache")
 
 
+def write_cache_atomic(df: pd.DataFrame, path: Path) -> None:
+    """Cache-Datei atomar schreiben (temp + rename, wie data_lake/storage.py).
+
+    2026-10-04: CACHE_DIR wird von allen drei Live-Bridges geteilt; ein direktes
+    to_parquet(path) konnte bei zwei gleichzeitigen Schreibern bzw. einem Leser
+    waehrend des Schreibens eine halbe Datei hinterlassen (Verdacht beim
+    wiederkehrenden str/float-Fehler, DASHBOARD). Temp-Name je Prozess, damit
+    sich zwei Schreiber nicht dieselbe Temp-Datei teilen. Scheitert das Ersetzen
+    (Windows: Ziel gerade von einem Leser geoeffnet), bleibt die alte Datei
+    stehen -- der Cache ist optional, der Aufrufer hat seine Daten schon."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path = path.with_name(f"{path.name}.{os.getpid()}.tmp")
+    try:
+        df.to_parquet(tmp_path)
+        os.replace(tmp_path, path)
+    except PermissionError:
+        tmp_path.unlink(missing_ok=True)
+
+
 def fetch_timeframe(key: str, timeframe: str, start: str, end: str, force_refresh: bool = False) -> pd.DataFrame:
     if key not in INSTRUMENTS:
         raise ValueError(f"unknown instrument key {key!r}, expected one of {list(INSTRUMENTS)}")
@@ -129,8 +149,7 @@ def fetch_timeframe(key: str, timeframe: str, start: str, end: str, force_refres
     # eine einzige Pruefstelle statt zwei synchron zu haltender Kopien.
     validate_ohlc_numeric(df, ["Open", "High", "Low", "Close", "Volume"])
 
-    CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    df.to_parquet(path)
+    write_cache_atomic(df, path)
     return df
 
 

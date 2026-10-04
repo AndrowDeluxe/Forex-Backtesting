@@ -9,6 +9,32 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-04** [Alle Bridges / Research] **Ausfuehrungslogik ueber alle Bridges
+  verglichen, Versatz gemessen, SL-Setzung optimiert -- nichts live
+  geaendert.** Nutzerauftrag. Skripte `research_trend_gs_sl_und_ek_pfad.py`
+  (SL-Gitter + Walk-Forward + EK-Pfad) und `research_trend_gs_ausfuehrung.py`.
+  **Gemessener Versatz** (Order nach Signal-Label, aus State/SQLite, seit
+  10.09.): CLS 8 Min. (~3 Min. nach M5-Schluss) auf TTP/IQ/FK/EK; CTNL rev
+  28 Min. (TTP/IQ/FK, seit 03.10. auf ~14 umgestellt, noch kein Lauf);
+  Gold ASB und ORB Stop-Order (0); gold_silver EK ~0-2 Min. nach H4-Schluss.
+  Die Zeiten in EKs SQLite sind Berlin-Lokalzeit (+2 h), beim Auswerten
+  beachten.
+  **Funded und FK sind im allgemeinen Pfad baugleich** (absoluter
+  Signal-SL, 0,50R-Detektor, 60 Min., Restlaufzeit-Gate).
+  **EK weicht bei gold_silver/trend_pullback ab**
+  (`core/bracket_executor.py`): Broker-TP 2R, KEIN R-Detektor, Signal bis
+  4 h. Der Kommentar in `run_once.py` ("setzen ihre Stops relativ zum
+  Live-Fuellpreis") stimmt dort nicht mehr; es ist der absolute Signal-SL.
+  **Der EK-Pfad kostet bei gold_silver ~0,2 R je Trade:** Ø R +0,58 bis
+  +0,65 (Versatz 0-240 Min.) gegen +0,83 mit Scan-Exit (FK).
+  **SL-Gitter (live Semantik, Walk-Forward ab 2021):**
+  gold_silver 1,5/2,0/2,5/3,0 ATR -> +0,57/**+0,83**/+0,74/+0,67; der
+  Walk-Forward waehlt jedes Jahr 2,0 -> **heutiger Stop bestaetigt**.
+  trend_pullback -> +0,05/+0,26/+0,38/**+0,49**/3,5-4,0 ATR +0,41; der
+  Walk-Forward waehlt ab 2022 durchgehend **3,0 ATR**, OOS +34,8 R gegen
+  2,0 ATR. Der Gewinn stammt aus den Trendjahren 2023/2025, 2021/22 bleiben
+  bei jedem Stop negativ.
+
 - **2026-10-04** [FK Instant Funding / LIVE] **gold_silver live geschaltet
   (0,20 % je Trade), trend_pullback bleibt Paper** (Nutzerentscheid nach der
   Ausfuehrungsprobe). Geaendert:

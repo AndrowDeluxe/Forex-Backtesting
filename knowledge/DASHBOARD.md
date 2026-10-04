@@ -75,6 +75,20 @@ Bedarf vor generischem Aufräumen.
   Mindestlot. Außerdem: Das Modell rechnete CLS ohne Zins-Multiplikator,
   live wirkt er weiter (Median 1,75x).
 
+- **🟠 Ausführungslogik über alle Bridges + SL-Setzung (04.10.) -- zwei
+  Entscheidungen offen.** Details: CHANGELOG 04.10.
+  **(1) EK gold_silver/trend_pullback auf den FK-Weg umstellen?** EK setzt
+  einen Broker-TP bei 2R und hat keinen R-Detektor. Das kostet bei gold_silver
+  ~0,2 R je Trade (+0,6 statt +0,83), auf einem Bein mit 3,5 % Risiko je
+  Trade. FK-Weg = Ziel per Scan schließen, also aktive Exit-Verwaltung in
+  `core/bracket_executor.py`; dazu der R-Detektor wie bei CLS. Mittlere
+  Code-Änderung an echtem Geld.
+  **(2) trend_pullback-Stop 2,0 → 3,0 ATR?** Der Walk-Forward wählt ab 2022
+  durchgehend 3,0, OOS +34,8 R. Das Bein läuft live auf EK (2,2 %/Trade)
+  und TTP/IQ. Ein Regime-Bein bleibt es trotzdem (2021/22 negativ).
+  **Bestätigt, nichts zu tun:** gold_silver-Stop 2,0 ATR (Walk-Forward jedes
+  Jahr 2,0). Funded/FK im allgemeinen Pfad baugleich.
+
 - **🔴 FK: offene Beine + Gewichtung neu gerechnet (04.10.) -- ersetzt den
   Vorschlag vom 03.10. darunter.** Der 03.10.-Vorschlag ist durch die
   ORB-Änderungen vom 04.10. überholt: US30 ist pausiert, NASDAQ hat jetzt
@@ -367,6 +381,13 @@ außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
 | EK-Portfolio-Paper                                      | —                                                                                        | pausiert (Paper-Zwilling von EK-Portfolio-Bridge, gehört zum Portfolio)                        | Disabled       | 2026-09-01      |
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
+
+- (04.10.) **CLS als ruhende Stop-Order am Trigger-Level** statt Market ~3
+  Min. nach Bar-Schluss: Die Engine füllt intrabar am Trigger-Level, live
+  kommt der Einstieg eine Bar später. Gold ASB und ORB haben genau so ihren
+  Versatz auf 0 gebracht. CLS ist das letzte Market-Bein, bei dem der Versatz
+  nachweislich Edge kostet (Memory `cls_entry_lag_dominates_costs`). Erst
+  prüfen, ob das Level vor dem Ausbruch feststeht.
 
 Kurz einfangen, was gerade auftaucht, ohne das aktuelle Thema zu verlassen —
 wird bei Gelegenheit einsortiert (Offene Aufgaben, PARA-Struktur, oder

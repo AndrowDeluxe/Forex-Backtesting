@@ -84,8 +84,8 @@ Bedarf vor generischem Aufräumen.
   jenseits des Ziels schließt. Im EK-Fast-Log stehen die Zeilen
   `gold_silver_scan_exit` / `trend_pullback_scan_exit` je Lauf (leere Liste =
   nichts zu tun).
-  (c) trend_pullback-SL liegt bei 3 ATR (doppelt so weit wie zuvor 2 ATR? nein:
-  1,5x), das Ziel bei 6 ATR -- auf EK, TTP und IQ.
+  (c) trend_pullback-SL liegt bei 3 ATR (1,5x so weit wie zuvor), das Ziel
+  bei 6 ATR -- auf EK, TTP und IQ.
   Danach den Punkt löschen. Rückweg: `EK-Portfolio-Bridge/_backup_20261004_scan_exit/`,
   `mt5_trend_pullback/pipeline.py` per git.
   **Bestätigt, nichts zu tun:** gold_silver-Stop 2,0 ATR (Walk-Forward jedes

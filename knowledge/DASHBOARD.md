@@ -327,9 +327,11 @@ Bedarf vor generischem Aufräumen.
   `executor.split_volume()`). Gleichzeitig handelt `ou_modell` auf Funded UND
   EK Einzelaktien — dasselbe Ereignis kann sich also jederzeit auf einem der
   aktiven Konten wiederholen. Den Punkt mit dem Konto zu schliessen waere
-  bequem, aber falsch. **Offen fuer dich:** soll ich einen Split-Check bauen
-  (Vergleich Positionspreis gegen aktuellen Kurs bei Einzelaktien, Alarm statt
-  Automatik)? Ich habe nichts geaendert.
+  bequem, aber falsch. **Nutzerentscheid 04.10.: Alarm bauen** (nur Meldung,
+  keine Automatik) -- noch nicht gebaut. Erkenntnis beim Planen: ein Alarm
+  NACH dem Kurssprung kommt zu spaet (MNST-SL loeste zur Eroeffnung aus), er
+  muss anstehende Splits der gehaltenen Titel VORHER melden -- braucht eine
+  Datenquelle fuer Split-Termine. Wird als eigenes kleines Vorhaben geplant.
 
 - **Kurztakt-Task-Ausfälle (1–2 h, 09-07 bis 09-11) beobachten bis ~2026-09-24**
   (Nutzerentscheid 2026-09-17). Die Ausfälle lagen VOR den Zeitzonen-Sprüngen

@@ -9,6 +9,18 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-04** [Git / Dashboard] **39 Alt-Stashes geloescht** (`git stash
+  clear`, Nutzerfreigabe). Vorher geprueft: nur Logs, Scanner-Ausgaben
+  (`scanner_last_run.json`, `ou_exit_levels.csv` -- inzwischen getrackt) und
+  `strategy/backtest.py`, dessen Stash-Fassung identisch mit HEAD ist. Seit
+  30.09. 20:56 kein neuer Stash -- der Fix vom 01.10. (Watchdog stasht nicht
+  mehr) haelt. Handoffs `GIT_STASH_KONFLIKT.md` und
+  `2026-09-30_kill-switch-und-mindestlot.md` entfernt (alles entschieden bzw.
+  in Memory/Dashboard). Dashboard geschlossen: Git-Stash-Punkt (geloest),
+  ORB-Break-Even im alten EK-Marktorder-Pfad (Nutzer: lassen, ohne
+  Teilausstieg irrelevant), OU-Doppel-Ticker (durch Logik D ohne TP
+  gegenstandslos).
+
 - **2026-10-04** [EK-Portfolio-Bridge / Risiko] **Nutzerentscheide, nichts am
   Code geaendert:** (1) Mindestlot-Anhebung wird bewusst akzeptiert (Weg 3),
   `ctnl_reversal` bleibt auf EK, obwohl es dort ~46x seines Ziels riskiert.

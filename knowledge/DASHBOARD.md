@@ -145,15 +145,6 @@ Bedarf vor generischem Aufräumen.
   erscheinen „Spike-Filter behaelt …“-Zeilen. Nebenbei unverändert offen:
   auf EK riskiert ein CTNL-Trade ~25 EUR = ~0,9 % Equity (Mindestlot, Befund 10).
 
-- **🔴 Der Git-Sync-Stash frisst weiterhin Session-Arbeit.** Am 30.09. war
-  `strategy/backtest.py` erneut aus dem Working Tree verschwunden (lag in
-  `stash@{38}` vom 28.09., zurueckgeholt). Es gibt eine Handoff-Notiz
-  `_handoff/GIT_STASH_KONFLIKT.md` vom selben Tag. **Der Fix vom 23.09. hat
-  das Problem nicht beseitigt**, 39 Stashes sind aufgelaufen. **Offen fuer
-  dich:** soll ich der Ursache nochmal nachgehen? Bisherige Notmassnahme
-  (nach jeder Aenderung sofort committen) funktioniert, ist aber keine
-  Loesung.
-
 - **🟡 `'str'`/`'float'`-Fehler ist am 29.09. erneut aufgetreten -- diesmal in
   Trend-Pullback-Scan (Funded, TTP+IQ) und CLS-Practical-Scan (FK), am Tag
   NACH dem als behoben dokumentierten Fix vom 28.09.** (Bridge Error Monitor,
@@ -273,45 +264,11 @@ Bedarf vor generischem Aufräumen.
   Beleg -- lohnt sich ein Blick in die echte Bridge-Quelle, oder reicht
   weiteres Beobachten?
 
-- **🟠 ORB-Break-Even im ALTEN Marktorder-Pfad (EK) sitzt auf dem
-  SIGNAL-Preis, nicht auf dem echten Fill -- reparieren oder Pfad
-  entfernen?** (Fund 2026-09-23 bei der BE-Pruefung.)
-  `legs/ny_open_orb/executor.py::manage_open_positions()` schiebt den Stop
-  nach dem Teilausstieg auf `state["entry_price"]`, und `_record_entry()`
-  speichert dort `signal["entry_price_signal"]` -- den Ausbruchs-Level aus
-  der M5-Historie, nicht den Preis, zu dem tatsaechlich gefuellt wurde.
-  **Belegt am 18.09., NASDAQ Ticket 269766479:** Fill 29.486,50 (short),
-  BE-Stop auf 29.497,04 gesetzt = **10,4 Punkte GEGEN die Position**; die
-  Restscheibe ging mit **-0,27 USD statt 0,00** raus. Weil ORB-Entries dem
-  Ausbruch hinterherlaufen, ist der Fill systematisch schlechter als der
-  Signal-Level -- der "Break-Even" ist damit strukturell ein kleiner
-  Verlust-Stop. **Aktuell nicht akut:** seit 2026-09-19 laufen alle
-  ORB-Entries ueber `pending_executor.py`, und der nimmt den echten Fill
-  (`p.price_open`, Zeile 297/379) -- ebenso die Funded-Bridge (dort schon am
-  01.09. gefixt). Der alte Pfad wird aber bei **jedem** Fast-Lauf noch
-  aufgerufen (`run_once_fast.py:113`) und wuerde bei einer Rueckkehr zu
-  Marktorders sofort wieder falsch stoppen. **Offen fuer dich:** echten Fill
-  in `_record_entry()` speichern (klein) oder den toten Marktorder-Pfad
-  ganz rausnehmen (sauberer)?
-
 - **CTNL E1 + E4 noch offen** (Rest aus `projects/ctnl-kostenvalidierung.md`;
   E2 ist durch den Ribbon, E3 durch die Stilllegung von `ctnl_continuation`
   erledigt). **E1:** `spread_bps` 8,0 -> gemessen 0,53-2,01, broker-getrennt
   (steht im Code weiterhin auf 8,0). **E4:** Risikokalibrierung ueber die
   volle Historie neu ziehen -- erst nach E1.
-
-- **OU-Modell: Ticker in S&P UND Nasdaq-100 landen auf der Variante OHNE TP --
-  welche Config soll gelten?** (Fund 2026-09-23, nichts geaendert.)
-  `ou_paper_backtest/scanner.py` schreibt je Universum eine eigene Zeile; das
-  validierte 1:1,5-TP gilt laut Code-Kommentar NUR fuer S&P, nasdaq100/dax
-  bleiben bewusst auf "kein TP". Steht ein Ticker in beiden Indizes (MDLZ,
-  PEP), stehen beide Zeilen als `tradeable=True` in `scanner_signals.csv`, und
-  EK nimmt faktisch die Nasdaq-Zeile: der erste Versuch scheitert am 0-Tick
-  frisch selektierter Symbole (`entry_deviation_too_large, deviation=1.0`), der
-  zweite geht durch. **Real passiert bei ADI (02.09.) und MDLZ (22.09.)** --
-  exakt die einzigen zwei der 21 EK-Positionen ohne TP. **Offen fuer dich:**
-  soll bei doppelten Tickern die S&P-Zeile (mit validiertem TP) gewinnen, oder
-  ist "kein TP" die gewollte konservative Variante?
 
 - **Tick-Rundung in den gemeinsamen Order-Engpass von Funded + FK — darf ich?**
   (2026-09-17, Lückenliste Punkt 1, **nicht umgesetzt**.) Heute rundet jeder

@@ -75,26 +75,19 @@ Bedarf vor generischem Aufräumen.
   Mindestlot. Außerdem: Das Modell rechnete CLS ohne Zins-Multiplikator,
   live wirkt er weiter (Median 1,75x).
 
-- **🟠 Ausführungslogik über alle Bridges + SL-Setzung (04.10.) -- zwei
-  Entscheidungen offen.** Details: CHANGELOG 04.10.
-  **(1) EK gold_silver/trend_pullback auf den FK-Weg umstellen -- vom Nutzer
-  beauftragt 04.10., Umsetzung vom Auto-Mode-Classifier BLOCKIERT.**
-  Beim ersten Versuch kamen 2 von 3 Änderungen durch; ich habe sofort auf das
-  Backup zurückgesetzt. EK ist byte-identisch zum Stand vor dem Umbau (Backup
-  `EK-Portfolio-Bridge/_backup_20261004_scan_exit/`). Auch das Bauen im
-  Staging-Ordner wurde blockiert. **Du entscheidest:** Freigabe erteilen
-  oder selbst umsetzen. Geplant: `config.SCAN_EXIT_LEGS = {"gold_silver"}`
-  + `BRACKET_MAX_CONSUMED_R = 0.50`. In `core/bracket_executor.py` den
-  R-Detektor, kein Broker-TP für diese Beine, neu
-  `manage_scan_exits()`: schließt, sobald eine nach dem Entry geschlossene
-  H1/H4-Kerze jenseits des Ziels schließt. Aufruf in `run_once_fast.py` vor
-  den Entries, `signal_risk` in `run_once.py`.
-  **(2) trend_pullback 2,0 → 3,0 ATR + FK-Weg -- Zahlen liegen vor, wartet
-  auf deine Freigabe:** EK Ø R +0,21 → **+0,48**, MaxDD −16,3 → **−7,0 R**,
-  2019-22 −0,08 → +0,15, 7/8 Jahre positiv, alle 4 Märkte positiv, bei
-  doppelten Kosten +0,45. Funded +0,26 → +0,48. Vorbehalt: 3,0 ATR stammt
-  aus einer Gitterwahl. Der Walk-Forward bestätigt sie (OOS +34,8 R), aber
-  2021/22 bleiben ~0.
+- **🟡 EK-Umbau + trend_pullback 3,0 ATR -- umgesetzt 04.10. (Nutzerfreigabe),
+  erster echter Lauf ausstehend.** Details: CHANGELOG 04.10.
+  **Zu prüfen beim ersten Signal:**
+  (a) EK gold_silver/trend_pullback-Entry **ohne TP** beim Broker, im
+  Telegram „Ziel … (Kerzenschluss, kein Broker-TP)“.
+  (b) Der Exit kommt als „EXIT (Ziel Kerzenschluss)“, sobald eine H1/H4-Kerze
+  jenseits des Ziels schließt. Im EK-Fast-Log stehen die Zeilen
+  `gold_silver_scan_exit` / `trend_pullback_scan_exit` je Lauf (leere Liste =
+  nichts zu tun).
+  (c) trend_pullback-SL liegt bei 3 ATR (doppelt so weit wie zuvor 2 ATR? nein:
+  1,5x), das Ziel bei 6 ATR -- auf EK, TTP und IQ.
+  Danach den Punkt löschen. Rückweg: `EK-Portfolio-Bridge/_backup_20261004_scan_exit/`,
+  `mt5_trend_pullback/pipeline.py` per git.
   **Bestätigt, nichts zu tun:** gold_silver-Stop 2,0 ATR (Walk-Forward jedes
   Jahr 2,0). Funded/FK im allgemeinen Pfad baugleich.
 

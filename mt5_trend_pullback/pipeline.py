@@ -34,7 +34,15 @@ TREND_LEN = 150
 RSI_LEN = 14
 RSI_OVERSOLD = 35.0
 ATR_LEN = 14
-ATR_STOP_MULT = 2.0
+# 2.0 -> 3.0 (2026-10-04, Nutzerentscheid "SL-Logik auf das Optimum"). Gemessen mit
+# Live-Semantik (Intrabar-SL auf M15, Scan-Exit, Gates), scripts/research_trend_pullback_3atr.py
+# + research_trend_gs_sl_und_ek_pfad.py: Gitter 1,5/2,0/2,5/3,0/3,5/4,0 ATR -> Ø R
+# +0,05/+0,26/+0,38/+0,49/../+0,41; Anker-Walk-Forward waehlt ab 2022 durchgehend 3,0
+# (OOS +34,8 R gegen 2,0). EK: Ø R +0,26 -> +0,48, MaxDD -14,1 -> -7,0 R, alle Maerkte
+# positiv. Wirkt ueberall, wo diese Konstante gelesen wird: Funded-Portfolio-Bridge (live
+# ueber challenge_portfolio/paper_bot.py), EK-Portfolio-Bridge/legs/trend_pullback, Paper-Bots.
+# RR_RATIO bleibt 2,0 -> das Ziel liegt jetzt bei 6 ATR (so getestet).
+ATR_STOP_MULT = 3.0
 RR_RATIO = 2.0
 
 

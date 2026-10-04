@@ -9,6 +9,38 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-04** [EK + Funded / LIVE] **EK-Bracket-Beine auf den FK-Weg
+  umgebaut, trend_pullback-Stop 2,0 -> 3,0 ATR** (Nutzerfreigabe nach der
+  Blockade weiter unten).
+  **(1) EK** (`EK-Portfolio-Bridge`, nicht git-getrackt, Backup
+  `_backup_20261004_scan_exit/` mit SHA256SUMS):
+  - `config.py`: `SCAN_EXIT_LEGS = {"gold_silver", "trend_pullback"}`,
+    `BRACKET_MAX_CONSUMED_R = 0.50`.
+  - `core/bracket_executor.py::check_and_execute`: neuer Parameter
+    `signal_risk`. Fuer Scan-Exit-Beine gilt der R-Detektor und es wird KEIN
+    Broker-TP gesetzt; das Ziel wird weiter gespeichert.
+  - Neu `manage_scan_exits()` (+ `_close_position`, `_target_for`): schliesst,
+    sobald eine NACH dem Entry geschlossene H1/H4-Kerze jenseits des Ziels
+    SCHLIESST (Engine-Semantik). Zeiten in MT5-Server-Epoch. Positionen mit
+    Broker-TP (Altbestand) bleiben unberuehrt.
+  - `run_once.py`: `signal_risk` an beide Beine; der falsche Kommentar
+    ("Stops relativ zum Live-Fuellpreis") ist korrigiert.
+  - `run_once_fast.py`: Exit-Pruefung je 2-Min-Lauf VOR den Entries.
+  CLS nutzt denselben Executor und ist unveraendert (nicht in der Menge).
+  **(2) `mt5_trend_pullback/pipeline.py::ATR_STOP_MULT` 2,0 -> 3,0** (RR
+  bleibt 2,0, Ziel also bei 6 ATR). Die Konstante wird ueberall gelesen: EK
+  live, Funded live (TTP/IQ ueber `challenge_portfolio/paper_bot.py`), die
+  Paper-Bots. Offene trend_pullback-Positionen: keine auf allen Konten
+  (geprueft).
+  **Erwartung (research_trend_pullback_3atr.py):** EK trend Ø R +0,21 ->
+  +0,48, MaxDD -16,3 -> -7,0 R; gold_silver auf EK +0,6 -> +0,83.
+  **Tests:** offline, ohne Brokerkontakt, DRY_RUN erzwungen, DB in-memory;
+  8/8 gruen (Schluss ueber dem Ziel -> Exit; nur Docht -> kein Exit; Kerze
+  vor dem Entry und noch offene Kerze zaehlen nicht; Altposition mit TP
+  unberuehrt; anderes Bein no-op; R-Detektor greift bei 0,60R, laesst
+  0,40R durch). Alle Einstiegspunkte importieren, `ATR_STOP_MULT` liest
+  ueberall 3,0. **Noch kein echter Lauf** (Wochenende).
+
 - **2026-10-04** [EK / LIVE -- NICHT umgesetzt] **EK-Umbau gold_silver auf den
   FK-Weg vom Auto-Mode-Classifier blockiert, sauber zurueckgesetzt.**
   Nutzerauftrag. Erster Versuch: die `config.py`-Aenderung wurde blockiert,

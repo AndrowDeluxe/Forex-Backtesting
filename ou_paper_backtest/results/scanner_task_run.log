@@ -6868,3 +6868,15 @@
 2026-10-02 21:35:27 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 2026-10-02 21:35:27 HINWEIS: Push abgelehnt (Remote ist weiter) - erwartet, solange nicht gemergt wurde. Rueckstand sichtbar ueber 'git log origin/main..HEAD'.
 2026-10-02 21:35:27 === Scanner-Task beendet ===
+2026-10-05 14:30:00 === Scanner-Task gestartet ===
+2026-10-05 14:30:19 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-10-05 14:30:19 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-10-05 14:30:19 [sp500] 0 raw signal(s) as of 2026-10-02, regime_ok=True, 58 Ausstiegsschwellen
+2026-10-05 14:30:19 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-10-05 14:30:19 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-10-05 14:30:19 [nasdaq100] 0 raw signal(s) as of 2026-10-02, regime_ok=True, 8 Ausstiegsschwellen
+2026-10-05 14:30:19 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-10-05 14:30:19 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-10-05 14:30:19 66 Ausstiegsschwellen geschrieben (20 davon 'Mean Reversion erreicht')
+2026-10-05 14:30:19 
+2026-10-05 14:30:19 Saved 0 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-10-05T14:30:19)

@@ -35,6 +35,28 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **🔴 Bridge-Watchdog hat seit Freitag 02.10. 11:01 Uhr (CEST) keinen neuen
+  Snapshot mehr gepusht -- auch nach dem Wochenende und dem heutigen
+  Montag-Handelsstart nicht.** (Bridge Error Monitor, 05.10., geprüft
+  09:13 UTC / 11:13 CEST.) `bridge_status/snapshot.json` steht unverändert
+  auf `generated_at: 2026-10-02T11:01:24` (Commit `666fe8e`). Seit Freitag
+  Mittag ist in diesem Repo **kein einziger** Commit mehr von Watchdog, EK-,
+  Funded- oder FK-Bridge eingegangen -- während der cloud-seitige
+  `Second-Brain-Lint`-Task heute um 06:19 UTC problemlos lief (der läuft
+  unabhängig vom Windows-PC). Das Wochenende ist laut Status-Tabelle für die
+  `Mo-Fr`-Tasks planmäßig still, der heutige Montag ist es nicht:
+  `Bridge-Watchdog` sollte seit 00:01:23 Uhr lokal alle 30 Min laufen, bei
+  jetzt über 11 Stunden Handelszeit also über 20 verpasste Läufe. **Von hier
+  nicht unterscheidbar, ob** (a) der PC/die Terminals seit Freitag aus sind
+  und nicht wieder hochgefahren wurden, (b) der Task Scheduler dort hängt,
+  oder (c) nur der Watchdog selbst abgestürzt ist, während die drei
+  Live-Bridges (EK, Funded TTP+IQ, FK -- alle echtes Geld) weiterlaufen, nur
+  das Snapshot-Schreiben/Pushen fehlschlägt. **Kann ich nicht prüfen, liegt
+  komplett außerhalb des Repos** (CLAUDE.md). **Offen für dich:** bitte PC
+  und Task-Scheduler-Historie prüfen -- falls die Bridges seit Freitag
+  tatsächlich nicht laufen, ist der heutige Montag-Handelsstart bisher
+  komplett ohne Gebote verstrichen.
+
 - **🟠 ORB: Live handelt andere Tage als der Backtest + M5 überzeichnet den
   Edge** (01.10., [[orb-order-storno-und-haltedauer]]). Nichts geändert.
   **Offen für dich:**

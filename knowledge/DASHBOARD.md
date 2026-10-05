@@ -57,6 +57,22 @@ Bedarf vor generischem Aufräumen.
   tatsächlich nicht laufen, ist der heutige Montag-Handelsstart bisher
   komplett ohne Gebote verstrichen.
 
+- **🔴 Update zum Punkt direkt darüber: der komplette Montag-Handelstag ist jetzt
+  vorbei, ohne dass sich am Snapshot irgendetwas geändert hat.** (Bridge Error
+  Monitor, 05.10., geprüft 21:12 UTC / 23:12 CEST -- zweite Prüfung desselben
+  Tages.) `bridge_status/snapshot.json` steht weiterhin unverändert auf
+  `generated_at: 2026-10-02T11:01:24` (Commit `666fe8e`), seit der ersten
+  Prüfung heute Morgen (09:13 UTC) ist **kein einziger neuer Commit** in
+  diesem Repo eingegangen -- weder Watchdog-Snapshot noch irgendetwas von
+  EK-, Funded- oder FK-Bridge. Das schließt eine kurze morgendliche Störung
+  aus: zwischen den beiden Prüfungen heute lag die komplette US-Handelssession
+  (ca. 13:30-20:00 UTC), auch die ist spurlos ohne jede Status-Meldung
+  verstrichen. **Nichts Neues an Information, nur Bestätigung, dass der
+  Ausfall andauert** -- die drei offenen Fragen (a/b/c) aus dem Punkt direkt
+  darüber bleiben unverändert offen. **Offen für dich:** unverändert bitte PC
+  und Task-Scheduler prüfen, jetzt mit dem zusätzlichen Gewicht, dass ein
+  ganzer Handelstag ohne jede Sichtbarkeit war.
+
 - **🟠 ORB: Live handelt andere Tage als der Backtest + M5 überzeichnet den
   Edge** (01.10., [[orb-order-storno-und-haltedauer]]). Nichts geändert.
   **Offen für dich:**

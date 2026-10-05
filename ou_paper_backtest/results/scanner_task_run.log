@@ -6975,3 +6975,27 @@
 2026-10-05 17:35:20   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
 2026-10-05 17:35:20     raise KeyError(key) from err
 2026-10-05 17:35:20 KeyError: 'JPM'
+2026-10-05 17:35:20 [main 3b41d8c] OU-Modell Scanner: Snapshot 2026-10-05 17:35
+2026-10-05 17:35:20  1 file changed, 47 insertions(+)
+2026-10-05 17:35:21 MERGE UEBERSPRUNGEN: Working Tree hat 12 offene Aenderung(en) (andere Tasks/Session). Es wird NICHT gestasht -- der lokale Commit bleibt liegen und geht beim naechsten sauberen Lauf raus.
+2026-10-05 17:35:22 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-10-05 17:35:22  ! [rejected]          main -> main (non-fast-forward)
+2026-10-05 17:35:22 error: failed to push some refs to 'https://github.com/AndrowDeluxe/Forex-Backtesting.git'
+2026-10-05 17:35:22 hint: Updates were rejected because the tip of your current branch is behind
+2026-10-05 17:35:22 hint: its remote counterpart. If you want to integrate the remote changes,
+2026-10-05 17:35:22 hint: use 'git pull' before pushing again.
+2026-10-05 17:35:22 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+2026-10-05 17:35:22 HINWEIS: Push abgelehnt (Remote ist weiter) - erwartet, solange nicht gemergt wurde. Rueckstand sichtbar ueber 'git log origin/main..HEAD'.
+2026-10-05 17:35:22 === Scanner-Task beendet ===
+2026-10-05 18:35:00 === Scanner-Task gestartet ===
+2026-10-05 18:35:23 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-10-05 18:35:23 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-10-05 18:35:23 [sp500] 0 raw signal(s) as of 2026-10-02, regime_ok=True, 58 Ausstiegsschwellen
+2026-10-05 18:35:23 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-10-05 18:35:23 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-10-05 18:35:23 [nasdaq100] 0 raw signal(s) as of 2026-10-02, regime_ok=True, 8 Ausstiegsschwellen
+2026-10-05 18:35:23 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-10-05 18:35:23 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-10-05 18:35:23 66 Ausstiegsschwellen geschrieben (20 davon 'Mean Reversion erreicht')
+2026-10-05 18:35:23 
+2026-10-05 18:35:23 Saved 0 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-10-05T18:35:23)

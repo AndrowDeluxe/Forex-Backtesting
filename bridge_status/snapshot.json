@@ -1,23 +1,22 @@
 {
-  "generated_at": "2026-10-06T10:01:24",
+  "generated_at": "2026-10-06T10:31:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-06T09:59:06",
+      "last_run": "2026-10-06T10:29:06",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-10-06 09:59:06 2026-10-06 09:59:02,160 INFO run_once: Konto-Equity 2827.06 EUR | Aggregiertes offenes Risiko (ganzes Konto): 76.44 (Deckel dieser Bridge: 848.12, 30%)",
-      "last_error_line": "2026-10-01 13:20:29     raise error[0]",
+      "last_equity_line": "2026-10-06 10:29:06 2026-10-06 10:29:02,117 INFO run_once: Konto-Equity 2821.47 EUR | Aggregiertes offenes Risiko (ganzes Konto): 76.52 (Deckel dieser Bridge: 846.44, 30%)",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-06T09:58:17",
+      "last_run": "2026-10-06T10:28:16",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-10-06 09:58:17 Verbunden: Login 504072729, Equity $99,171.46 USD",
+          "last_equity_line": "2026-10-06 10:28:16 Verbunden: Login 504072729, Equity $99,148.06 USD",
           "recent_events": [
             "2026-10-05 19:13:18 [TTP] ?? ENTRY ou_modell (LEN) LEN BUY lots=2.0 risk=$49.63 sl=56.51167 -- placed",
             "2026-10-05 16:13:18 [TTP] ?? ENTRY ou_modell (MRK) MRK BUY lots=2.0 risk=$49.56 sl=119.25782 -- placed",
@@ -28,7 +27,7 @@
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-10-06 09:58:17 Verbunden: Login 16054, Equity $97,121.67 USD",
+          "last_equity_line": "2026-10-06 10:28:16 Verbunden: Login 16054, Equity $97,097.63 USD",
           "recent_events": [
             "2026-10-05 08:13:17 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe: Kurs bereits 0.52R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.1-fache aufgeblaeht.",
             "2026-10-02 15:28:17 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.02 risk=$150.00 sl=4249.83636 -- placed",
@@ -42,10 +41,10 @@
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-06T09:14:10",
-      "minutes_since_last_run": 47.2,
+      "last_run": "2026-10-06T10:14:10",
+      "minutes_since_last_run": 17.2,
       "status": "ok",
-      "last_equity_line": "2026-10-06 09:14:10 Verbunden: Login 17764, Equity $98,716.24",
+      "last_equity_line": "2026-10-06 10:14:10 Verbunden: Login 17764, Equity $98,701.64",
       "last_error_line": "2026-10-01 13:16:26 trend_pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
       "recent_events": [
         "2026-10-05 08:14:11  LIVE ᴩ ctnl_reversal XAUUSD.gbe: Kurs bereits 0.52R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.1-fache aufgeblaeht.",

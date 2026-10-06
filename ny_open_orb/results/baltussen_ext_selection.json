@@ -1,0 +1,29 @@
+{
+  "winners": {
+    "SP500": {
+      "T": "15:45",
+      "sig": "hour",
+      "dirn": "momentum",
+      "mm": "gross",
+      "gam": "keine",
+      "stop": 0.2,
+      "tgt": null,
+      "hold": 30.0
+    },
+    "NASDAQ": {
+      "T": "15:45",
+      "sig": "hour",
+      "dirn": "momentum",
+      "mm": "gross",
+      "gam": "keine",
+      "stop": 0.4,
+      "tgt": null,
+      "hold": null
+    }
+  },
+  "dsr": {
+    "SP500": 2.952182860741128e-11,
+    "NASDAQ": 1.5370441710982639e-09
+  },
+  "n_trials": 9600
+}

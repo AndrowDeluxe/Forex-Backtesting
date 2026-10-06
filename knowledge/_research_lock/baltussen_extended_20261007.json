@@ -1,0 +1,41 @@
+{
+  "strategy": "baltussen_extended_20261007",
+  "split": {
+    "is_start": "2016-07-28",
+    "is_end": "2022-12-31",
+    "oos_end": "2026-09-30",
+    "tresor_end": null
+  },
+  "registered": "2026-10-06T22:06:20+00:00",
+  "trials": 19200,
+  "frozen": {
+    "hash": "229c87279c6dd4c150dfeab7d02dc5ac727101110e54e5cc64d4c7fd6c3c7acf",
+    "config": {
+      "SP500": {
+        "T": "15:45",
+        "sig": "hour",
+        "dirn": "momentum",
+        "mm": "gross",
+        "gam": "keine",
+        "stop": 0.2,
+        "tgt": null,
+        "hold": 30.0
+      },
+      "NASDAQ": {
+        "T": "15:45",
+        "sig": "hour",
+        "dirn": "momentum",
+        "mm": "gross",
+        "gam": "keine",
+        "stop": 0.4,
+        "tgt": null,
+        "hold": null
+      }
+    },
+    "ts": "2026-10-06T22:07:30+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-06T22:07:30+00:00"
+  },
+  "forward": null
+}

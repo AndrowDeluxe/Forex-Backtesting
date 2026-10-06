@@ -78,6 +78,12 @@ Quartal 2025Q4 bzw. 2026Q1.
 - **Querbefund Live-Version:** NASDAQ live hat keinen Ribbon und blieb
   positiv. SP500 live nutzt „neutral“ und lag bei ~0.
 
+**Korrektur (06.10. abends, echte Gamma-Daten von SqueezeMetrics):** 2026
+hatte nur an 4 % der Tage negatives SPX-Gamma, 2022 an 42 %, und 2022 hielt
+der Filter. Die Gamma-Erklaerung ist damit unwahrscheinlich, die Ursache bleibt
+offen. Eine Hypothese mit den echten Daten gegenzupruefen, statt sie mit der
+Literatur nur plausibel zu machen, war hier entscheidend.
+
 **Lehre:** Haengt ein Edge fast ganz an einem einzigen Regime-Filter, ist er
 so stabil wie das Regime. Filter-Vorzeichen live weiter beobachten, statt sie
 als Naturkonstante zu behandeln. [[orb-ribbon-filter-kippt-2026]]

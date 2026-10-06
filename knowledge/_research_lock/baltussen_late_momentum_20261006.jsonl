@@ -1,0 +1,4 @@
+{"ts": "2026-10-06T21:59:16+00:00", "event": "register_split", "is_start": "2016-07-28", "is_end": "2022-12-31", "oos_end": "2026-09-30", "tresor_end": null}
+{"ts": "2026-10-06T21:59:16+00:00", "event": "trials", "n": 5, "total": 5, "note": "Paper-Regel fix, 5 vorab festgelegte Gamma-/Bewegungs-Bedingungen"}
+{"ts": "2026-10-06T21:59:16+00:00", "event": "freeze", "hash": "e2d97218bafab81990d29d31c292e8201ac86fc65935cef79482a93d16d2671e"}
+{"ts": "2026-10-06T21:59:16+00:00", "event": "unseal", "stage": "oos", "hash": "e2d97218bafab81990d29d31c292e8201ac86fc65935cef79482a93d16d2671e"}

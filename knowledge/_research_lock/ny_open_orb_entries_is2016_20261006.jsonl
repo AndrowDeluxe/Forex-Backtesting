@@ -1,0 +1,4 @@
+{"ts": "2026-10-06T21:58:28+00:00", "event": "register_split", "is_start": "2016-07-28", "is_end": "2022-12-31", "oos_end": "2026-09-30", "tresor_end": null}
+{"ts": "2026-10-06T22:02:27+00:00", "event": "trials", "n": 576, "total": 576, "note": "beide Indizes, 6 Einstiegsarten x 3 Richtungen x 4 Stops x 4 Ziele"}
+{"ts": "2026-10-06T22:02:27+00:00", "event": "freeze", "hash": "8c1b63996d8dcbe0fefc5354ad2ce22c7df5ef272572fcf867a1bb4fffc8a856"}
+{"ts": "2026-10-06T22:02:27+00:00", "event": "unseal", "stage": "oos", "hash": "8c1b63996d8dcbe0fefc5354ad2ce22c7df5ef272572fcf867a1bb4fffc8a856"}

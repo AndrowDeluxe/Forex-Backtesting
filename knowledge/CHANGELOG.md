@@ -9,6 +9,16 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-07** [Dachprojekt / Strang 0] **Material-Import gelaufen.**
+  Telegram „SMH Trade & Invest“ komplett (10.427 Nachrichten, 2.658 Bilder,
+  03/2025-10/2026). OneNote: Zugang über Azure-App steht, Import auf
+  „Finanzielle Freiheit Neu / Smart Money Trading“ beschränkt (übrige
+  Abschnitte privat, versehentlich geladene private Seiten wieder
+  gelöscht); läuft noch, stark gedrosselt. Import-Skript dabei robuster
+  gemacht: eigenes Weiterblättern (OneNote liefert still nur 100
+  Einträge), gemeinsame Drossel-Pause, Token-Erneuerung, nur Zielabschnitt
+  durchlaufen. Rohdaten in `fusion_lab/raw/` (gitignored).
+
 - **2026-10-07** [Entscheidung] **Faber-Trend pausiert -- Weiterarbeit vorerst
   verworfen** (Nutzerentscheid).
   - Alles ist in `knowledge/projects/faber-gtaa-10-monats-sma.md`
@@ -18,6 +28,24 @@ keine Planung (dafür ist `DASHBOARD.md`).
   - Die beiden Bestätigungspunkte sind aus dem Dashboard entfernt; die
     Idee „Rotation mit Deckel" liegt in der Ideen-Inbox.
   - Code `faber_trend/` + Skripte + eingefrorene Daten committet.
+
+- **2026-10-07** [Research] **Gamma-Daten, Baltussen erweitert,
+  Einstiegsvarianten IS 2016.**
+  - **Echtes SPX-GEX/DIX** (SqueezeMetrics, frei, ab 2011) eingefroren.
+    2026 war kein Negativ-Gamma-Jahr; die Gamma-Erklaerung des Ribbon-Kipps
+    ist damit unwahrscheinlich.
+  - **Baltussen-Tagesend-Momentum:** 15:45 nach starker letzter Stunde,
+    IS +5–7 bps (t 3–3,6), 2025–26 weg. Lock `baltussen_extended_20261007`.
+  - **Einstiegsvarianten auf IS 2016:** Der 1. Ausbruch bleibt am besten,
+    SP500 ohne Filter ohne Edge.
+  - **Gamma-Mechanismen:** robust ist nur der Zusammenhang Volatilitaet ↔
+    Gamma, dazu ein schwaches Signal „kein ORB bei sehr viel Gamma“.
+  - Projekte: `gamma-mechanismen-gex`, `baltussen-tagesend-momentum`,
+    `orb-neues-regime-2026`. Keine Bot-Aenderung.
+
+- **2026-10-06** [Entscheidung] **ORB live bleibt, wie es war** (Nutzerentscheid,
+  kein Pausieren/keine Risikosenkung). Echter Test = Forward ab 05.10.
+  Overfitting-Sperre, IS-only- und Regime-2026-Runden committet: `fdab5a88`.
 
 - **2026-10-06** [Research] **ORB im neuen Regime: N-ter Ausbruch untersucht,
   neue Runde durchgefallen.**

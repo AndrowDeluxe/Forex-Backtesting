@@ -1,0 +1,29 @@
+{
+  "strategy": "baltussen_late_momentum_20261006",
+  "split": {
+    "is_start": "2016-07-28",
+    "is_end": "2022-12-31",
+    "oos_end": "2026-09-30",
+    "tresor_end": null
+  },
+  "registered": "2026-10-06T21:59:16+00:00",
+  "trials": 5,
+  "frozen": {
+    "hash": "e2d97218bafab81990d29d31c292e8201ac86fc65935cef79482a93d16d2671e",
+    "config": {
+      "regel": "sign(rest of day bis 15:30) -> 15:30-16:00",
+      "varianten": [
+        "A immer",
+        "B GEX<0",
+        "C GEX unteres Fuenftel",
+        "D grosse Tagesbewegung",
+        "E C+D"
+      ]
+    },
+    "ts": "2026-10-06T21:59:16+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-06T21:59:16+00:00"
+  },
+  "forward": null
+}

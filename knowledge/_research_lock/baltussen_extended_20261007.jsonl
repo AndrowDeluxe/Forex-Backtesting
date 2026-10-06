@@ -1,0 +1,4 @@
+{"ts": "2026-10-06T22:06:20+00:00", "event": "register_split", "is_start": "2016-07-28", "is_end": "2022-12-31", "oos_end": "2026-09-30", "tresor_end": null}
+{"ts": "2026-10-06T22:07:11+00:00", "event": "trials", "n": 19200, "total": 19200, "note": "2 Indizes x Baltussen-Erweiterung (8 Punkte)"}
+{"ts": "2026-10-06T22:07:30+00:00", "event": "freeze", "hash": "229c87279c6dd4c150dfeab7d02dc5ac727101110e54e5cc64d4c7fd6c3c7acf"}
+{"ts": "2026-10-06T22:07:30+00:00", "event": "unseal", "stage": "oos", "hash": "229c87279c6dd4c150dfeab7d02dc5ac727101110e54e5cc64d4c7fd6c3c7acf"}

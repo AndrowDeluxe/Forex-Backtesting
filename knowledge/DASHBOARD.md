@@ -23,9 +23,10 @@ passiert, was steht an.
    [[quant-diskretionaer-fusion]]. Eigene Analyse reproduzieren, testen,
    automatisieren → selbstlernender Bot. 8 Stränge (0 Inventur … 7
    Selbstlernen), Code in `fusion_lab/`.
-   **Aktuell: Strang 0 (Material-Import).** Wartet auf dich: Azure-App
-   (OneNote), Telegram-API-Zugang, Notion-Connector in claude.ai — Anleitung
-   in `fusion_lab/README.md`.
+   **Aktuell: Strang 0.** Telegram SMH importiert (10.427 Nachrichten),
+   OneNote „Smart Money Trading“ läuft noch (gedrosselt, ~1.200 Seiten),
+   danach Inventur. Wartet auf dich: Notion-Connector in claude.ai
+   (wirkt erst in einer neuen Session).
    Separat geparkt bis Makro steht: [[aktien-analyse-und-bot]].
 
 ---

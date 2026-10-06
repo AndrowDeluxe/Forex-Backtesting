@@ -100,3 +100,34 @@ passiert. Bis genug neue Daten da sind, bleibt nur der Forward-Test.
 
 **Für live relevant:** Die SP500-Live-Version liegt 2026 in beiden Fenstern
 im Minus (Ribbon-Kipp). NASDAQ live ist positiv, aber vorbelastet.
+
+## Einstiegsvarianten auf dem ursprünglichen IS 2016–2022 (07.10.)
+
+Skript `scripts/research_orb_entries_is2016.py`, Lock
+`ny_open_orb_entries_is2016_20261006`. Suchraum je Index: 6 Einstiegsarten
+× 3 Richtungen × 4 Stops × 4 Ziele, ohne Filter. Die Auswahl lief auf IS
+2016–2022, OOS wurde einmal geöffnet. Das OOS ist **nicht blind**, weil die
+Untersuchung vom 06.10. diese Jahre schon beschreibend gesehen hat.
+
+- **Nur 2 von 288 Varianten (NASDAQ) bestehen die IS-Bedingungen,** bei
+  SP500 keine. Ohne Filter hat SP500 in keiner Einstiegsart einen Edge (PF
+  im IS ≤ 1,15).
+- **Der IS-Gewinner (NASDAQ) ist der klassische 1. Ausbruch,** nur long,
+  Stop 0,6, Exit 16:00: IS +0,30 R (PF 1,34) → 2023–24 −0,01 → 2025–26
+  +0,12.
+- **Beste Variante je Einstiegsart, Ø R (IS / 2023–24 / 2025–09/26):**
+
+  | Einstiegsart | NASDAQ | SP500 |
+  |---|---|---|
+  | 1. Ausbruch | +0,30 / −0,01 / +0,12 | |
+  | nach Fehlausbruch | +0,19 / +0,04 / **+0,28** | |
+  | 2. Ausbruch | +0,07 / +0,05 / −0,11 | |
+  | 3. Ausbruch | +0,05 / +0,05 / −0,09 | |
+  | Fade | −0,03 / +0,04 / −0,06 | −0,04 / +0,05 / −0,07 |
+  | Retest | +0,01 / +0,02 / −0,19 | +0,03 / −0,04 / −0,15 |
+  | übrige Einstiegsarten | | alle zwischen −0,10 und +0,10 |
+
+**Befund:** Auf dem langen IS bleibt der 1. Ausbruch die beste
+Einstiegsmethodik. Der 2./3. Ausbruch, der Fade und der Retest sind nicht
+besser. Bei NASDAQ ist „nach Fehlausbruch“ die einzige Variante, die in allen
+drei Perioden positiv ist (PF 1,21 / 1,04 / 1,31), aber mit kleinen Werten.

@@ -73,6 +73,24 @@ Bedarf vor generischem Aufräumen.
   und Task-Scheduler prüfen, jetzt mit dem zusätzlichen Gewicht, dass ein
   ganzer Handelstag ohne jede Sichtbarkeit war.
 
+- **🔴 Dritte Prüfung, neuer Tag: der Ausfall geht jetzt in den Dienstag
+  06.10. -- immer noch kein neuer Commit.** (Bridge Error Monitor, 06.10.,
+  geprüft 09:13 UTC / 11:13 CEST.) `bridge_status/snapshot.json` steht
+  weiterhin unverändert auf `generated_at: 2026-10-02T11:01:24` (Commit
+  `666fe8e`) -- seit der letzten Prüfung gestern Abend (05.10., 21:12 UTC)
+  ist wieder **kein einziger neuer Commit** eingegangen, weder Watchdog noch
+  EK/Funded/FK. Das sind jetzt **über vier Tage** (Freitagmittag bis
+  Dienstagmorgen) ohne jede Sichtbarkeit auf drei Live-Bridges mit echtem
+  Geld, inklusive eines kompletten Montag-Handelstags und jetzt dem
+  Dienstag-Handelsstart. **Nichts Neues an Information** -- dieselben drei
+  offenen Fragen (a/b/c) aus den beiden Punkten darüber bleiben unverändert
+  offen, ich kann von hier aus nichts davon unterscheiden oder reparieren
+  (liegt komplett außerhalb des Repos). **Offen für dich, jetzt dringender:**
+  bitte den PC/die Terminals und die Task-Scheduler-Historie prüfen -- sollte
+  der Grund (a) oder (b) sein (PC aus oder Task Scheduler haengt), liefen die
+  Live-Bridges seit Freitag moeglicherweise durchgehend ohne Monitoring oder
+  ganz ohne neue Gebote.
+
 - **🟠 ORB: Live handelt andere Tage als der Backtest + M5 überzeichnet den
   Edge** (01.10., [[orb-order-storno-und-haltedauer]]). Nichts geändert.
   **Offen für dich:**

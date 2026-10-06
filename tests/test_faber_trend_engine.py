@@ -87,3 +87,22 @@ def test_weekend_swap_three_days():
     tue = pd.Timestamp("2020-02-11")
     assert eq[fri] - eq[mon] == pytest.approx(3 * 100.0, rel=1e-3)
     assert eq[mon] - eq[tue] == pytest.approx(1 * 100.0, rel=1e-3)
+
+
+def test_switch_to_other_instrument_closes_old_at_own_price():
+    a = _df([100.0] * 80)
+    b = _df([5000.0] * 80)
+    prep = E.prepare({"SP500": a, "GOLD": b})
+    for k in prep:
+        prep[k]["df"]["atr"] = 1.0
+    # GOLD einen Tag frueher handelbar machen: SP500 hat am 1. Handelstag Maerz keinen Bar
+    first_mar = pd.Timestamp("2020-03-02")
+    prep["SP500"]["df"] = prep["SP500"]["df"].drop(first_mar)
+    months = pd.period_range("2020-01", "2020-04", freq="M")
+    tg = pd.Series([("SP500", 1), ("GOLD", 1), ("GOLD", 1), ("GOLD", 1)], index=months)
+    res = E.run(prep, [E.Sleeve("s", tg)], E.StopRule("pct", 0.05), E.Sizing(0.01),
+                E.Costs(0, 0), E.Account("t", 100_000, False))
+    t = res["trades"]
+    sw = t[t.inst == "SP500"].iloc[0]
+    assert sw.reason == "switch" and sw.exit_px == pytest.approx(100.0)
+    assert res["equity"].iloc[-1] == pytest.approx(100_000, rel=1e-9)

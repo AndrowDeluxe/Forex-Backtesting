@@ -9,6 +9,16 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-07** [Entscheidung] **Faber-Trend pausiert -- Weiterarbeit vorerst
+  verworfen** (Nutzerentscheid).
+  - Alles ist in `knowledge/projects/faber-gtaa-10-monats-sma.md`
+    festgehalten (Edge Card, Phase 1-6, Funded/EK-Varianten, echte
+    MT5-Kosten, Öl-/Gold-Rotation).
+  - Keine Live-Umsetzung.
+  - Die beiden Bestätigungspunkte sind aus dem Dashboard entfernt; die
+    Idee „Rotation mit Deckel" liegt in der Ideen-Inbox.
+  - Code `faber_trend/` + Skripte + eingefrorene Daten committet.
+
 - **2026-10-06** [Research] **ORB im neuen Regime: N-ter Ausbruch untersucht,
   neue Runde durchgefallen.**
   - **Code:**

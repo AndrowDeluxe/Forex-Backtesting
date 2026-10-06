@@ -1,6 +1,8 @@
 # Project: Faber GTAA -- 10-Monats-SMA-Timing (SSRN 962461)
 
-**Status**: **Phase 1-4 + Basis-Phase-6 erledigt (2026-10-04). Befund: der
+**Status (2026-10-07): PAUSIERT -- Weiterarbeit vorerst verworfen (Nutzerentscheid).** Keine Live-Umsetzung. Alle Ergebnisse unten bleiben gültig. Bester Stand für einen späteren Neustart: EK, Cash only, SMA10, SL 20 %, 5 % Risiko je Position, ohne Öl, ~5,5 % p.a. bei −20 % MaxDD in beiden Zeitfenstern. Das Timing wirkt dabei als Versicherung, nicht als Renditetreiber. Offene, nicht getestete Idee: Rotation mit Deckel (siehe Ideen-Inbox).
+
+**Ursprünglicher Status**: **Phase 1-4 + Basis-Phase-6 erledigt (2026-10-04). Befund: der
 Risiko-Teil hält nach Veröffentlichung, der Rendite-Teil nicht. Kein
 Kandidat für die Prop-/Intraday-Portfolios** (monatliche, long-only
 Asset-Allokation, ~70 % investiert, kein Stop). Höchstens relevant als
@@ -431,3 +433,440 @@ einen ebenso kleinen Max Drawdown (Anteil 0,0). Der Median liegt bei
 - SMA12 hätte diese Phase ruhiger überstanden (MaxDD −21,0 %, aus
   2010). Das ist aber ein Einzelfall-Unterschied und kein Grund, auf 12
   umzustellen.
+
+## Nachtrag 2026-10-05 -- Funded-/EK-Variante: SL, Positionsclose, Filter, Cross-Asset
+
+**Auftrag (04.10.):** Die SMA-Regel mit SL und echtem Positionsclose für
+**EK (Tickmill)** und **Funded TTP** handelbar machen, dazu Filter und
+Modelle aus den 2013er-Befunden. Nutzerideen: SL aus dem maximalen
+Rückgang innerhalb der durchschnittlichen Trade-Dauer, ausgewertet je
+Jahr (A5), und ein Ersatz-Asset statt Cash (Gold/BTC, Variante D).
+
+Plan: `~/.claude/plans/binary-enchanting-breeze.md`.
+
+**Methodik:**
+- Auswahl nur auf Daten bis 2012 (Portfolio-Fenster 2001-2012).
+- Die Finalisten wurden geloggt, bevor 2013-01 bis 2026-09 einmal
+  gerechnet wurde.
+- Code: `faber_trend/` (`data`, `signals`, `engine`), Skript
+  `scripts/research_faber_trend_funded.py` (`is` / `oos`).
+- Tests: `tests/test_faber_trend_engine.py` (6 Tests). Abgedeckt sind:
+  SL intraday, Gap zum Open, Monats-Close, Mindestlot, Wochenend-Swap,
+  Instrumentwechsel.
+- Rohzahlen: `Claude outputs/faber_trend_funded_is.json` und `_oos.json`.
+- Regressionstest gegen den ^SP500TR-Lauf: exakt (9,31 % / −27,43 % /
+  27 Einstiege).
+
+**Engine-Regeln:**
+- Ausführung zum Schluss des 1. Handelstags nach dem Monatsschluss; Exit
+  bei Signal Cash ist ein echter Positionsclose.
+- SL broker-seitig auf Tages-High/Low; Gap durch den SL → Fill zum Open.
+- Nach SL: Re-Entry erst mit dem nächsten Monatssignal.
+- Sizing = Risiko / SL-Abstand, auf 0,01 Lot abgerundet. Liegt das
+  Ergebnis unter dem Mindestlot, wird **kein** Trade genommen (gezählt).
+- **Monatliches Rebalancing aufs Risikobudget** (Faber-FAQ). Ohne
+  Rebalancing wuchs das offene Risiko alter Gewinner (Kupfer 2003-06,
+  5-facher Kurs) auf −6 %-Tage. Das bricht das TTP-Tageslimit.
+- Spread 0,05 % je Ein-/Ausstieg, Swap 0 / 2,5 / 5 % p.a.
+  (Ersatzwerte, bis die echten MT5-Swaps vorliegen).
+
+**Daten:**
+- Eingefroren in `scripts/frozen_data/*_ohlc_daily_20261004.csv`.
+- SP500: ^SP500TR-Schluss + ^GSPC-Range.
+- NASDAQ/US30: Preisindizes ohne Dividenden.
+- DAX: Performance-Index.
+- Rohstoffe/Bonds: yfinance-Frontmonat ab 2000, mit Roll-Sprüngen.
+- FX ab 1996/2003; BTC ab 2014.
+
+Von Hand geprüft:
+- EURUSD/USDJPY 08.12.2008 waren Phantom-Balken. Sie werden im
+  Funded-Lauf durch den Vortagsschluss ersetzt (Liste `REPAIR` im
+  Skript).
+- T-Bond 23.03.2015: Roll-Sprung, belassen.
+- Öl 2020: Roll-/Negativpreis-Monat, unzuverlässig.
+
+### Ergebnisse auf den Daten bis 2012 (Auswahl)
+
+**Machbarkeit EK** (~3.300 $, Mindestlot 0,01; Kontraktgrößen sind
+Tickmill-Standard-Annahmen): Bei 1 % Risiko und 10 % SL passen nur
+SP500 (Mindestlot-Nominal 77 $), DAX (252 $) und NASDAQ (308 $). US30
+(512 $) passt erst ab 2 %. Gold (4.162 $), Silber, Öl, Kupfer, Bonds und
+FX (~900-4.200 $) gehen auf EK nicht.
+
+**Mechanismus je Instrument bis 2012 (C4):**
+- Aktienindizes zeigen dort Rendite- und Vola-Asymmetrie, anders als
+  nach 2013.
+- Gold und Silber zeigen keine Rendite-Asymmetrie.
+- Bonds zeigen nichts.
+- Aufgenommen: SP500, NASDAQ, US30, DAX, GOLD, OIL, COPPER, EURUSD,
+  USDJPY.
+
+**SL-Wahl (Stufe 1)**, Median Rendite/MaxDD über 12 Instrumente, TTP,
+0,5 % Risiko:
+- Sieger: **A5 MAE-SL, 90-%-Quantil in ATR (0,073)**. Knapp dahinter
+  A5 95 % (0,071), A0 ohne SL (0,067) und ATR6 (0,066).
+- Alle engeren Stopps waren schlechter: 5 % (0,038), ATR2 (0,039),
+  Trailing2 (0,018). Der SL taugt hier nur als Katastrophen-Stopp.
+- Die A5-Abstände liegen bei Indizes bei 13-24 ATR bzw. 16-30 %, bei
+  Gold bei 10 %.
+
+**Bausteine (Portfolio 2001-2012, gegen Basis Ratio 0,40):**
+
+| Baustein | Ratio | Urteil |
+|---|---|---|
+| C1 Ensemble SMA 8-12 | 0,475 | hilft |
+| C3 Vola-Filter (halbes Risiko bei hoher Vola) | 0,409 | hilft knapp |
+| D Gold statt Cash | 0,449 | hilft |
+| C2 + 12M-Momentum | 0,336 | schadet |
+| C5 Shorts | 0,285 | schadet |
+| D Bonds statt Cash | 0,060 | schadet stark |
+| B2 Deckel aufs offene Risiko | 0,308 | schadet |
+| B3 Vol-Targeting | 0,403 | neutral |
+| ohne Rebalancing | 0,254 | schadet (−7,7 % MaxDD) |
+| Kontrolle immer long | 0,209 | -- |
+
+**Finalisten** (Kombi = C1 + C3 + Gold statt Cash; MaxDD aus dem
+Backtest, P aus Monte Carlo 2.000 Pfade):
+
+| Finalist | CAGR | MaxDD | P(7 % trailing) |
+|---|---|---|---|
+| kombi_r0.5 | 1,77 % | −3,2 % | 0,05 % |
+| kombi_r0.25 | 0,76 % | −1,6 % | 0 |
+| kombi_alle_r0.5 | 1,97 % | −4,4 % | 0,25 % |
+
+kombi_r1 (3,8 %, −6,8 %) fiel mit P(7 % trailing) = 10,1 % knapp
+heraus.
+
+### Ergebnisse 2013-01 bis 2026-09 (einmal, unverändert)
+
+| Finalist | CAGR ohne / mittel / hoch | MaxDD (mittel) | Kontrolle immer long | Lag +1 Tag |
+|---|---|---|---|---|
+| **kombi_r0.5** | 1,08 / **0,50** / −0,04 % | −6,0 % | 0,17 % / −8,9 % | 0,59 % / −6,2 % |
+| kombi_r0.25 | 0,50 / 0,29 / 0,12 % | −2,0 % | 0,06 % / −4,4 % | 0,25 % / −2,1 % |
+| kombi_alle_r0.5 | 1,10 / 0,08 / −0,57 % | −6,9 % | −0,61 % / −13,0 % | 0,13 % / −8,3 % |
+
+- **Kein TTP-Regelbruch:** P(7 % trailing) 0-0,2 %, schlechtester Tag
+  −1,1 %. Wirtschaftlich ist das aber zu wenig: Die Ratio fällt von
+  0,545 auf 0,083. Die Jahre schwanken zwischen −2,7 % und +4,9 %, das
+  10-%-Ziel von TTP ist damit außer Reichweite.
+- **Swap halbiert die Rendite** (1,08 → 0,50 %). Die echten Swap-Sätze
+  entscheiden, ob überhaupt etwas übrig bleibt.
+- **Signal gegen Kontrolle:** Das Trendsignal schlägt „immer long" mit
+  denselben Stopps (Ratio 0,083 gegen 0,019) und 91 % der Zufallsläufe
+  bei der Ratio (100 Läufe, Seed 42, nur Hauptfinalist). Beim MaxDD liegt
+  es aber nicht vorne: 83 % der Zufallsläufe haben einen gleich kleinen
+  oder kleineren.
+- **EK: 0 Trades.** Alle 6.238 Einstiege liegen unter dem Mindestlot,
+  weil die Ensemble-Teile mit 0,1 % von 3.300 $ und weiten MAE-Stopps
+  zu klein sind. Selbst ein einzelnes SP500-Bein mit 1 % Risiko und
+  ~15 % SL hätte nur ~220 $ Nominal, gerade über dem Mindestlot von 77 $.
+- **Korrelation zu den bestehenden Beinen (täglich): 0,06-0,08.**
+  Diversifizierend, aber zu klein, um etwas zu bewegen.
+
+**A5 „hält er?"** SL-Quote je Jahr gegen die erwarteten 10 %
+(kombi_r0.5):
+- Erfüllt in 12 von 14 Jahren (0-11,6 %).
+- **Ausnahme 2018 mit 27 %** (Februar-Vola-Schock und Q4-Abverkauf).
+  2020 lag mit 10,8 % im Rahmen.
+- Der MAE-SL ist damit über die Jahre stabil, versagt aber im
+  Vola-Schock-Jahr.
+
+**D mit BTC (nur Testfenster, keine saubere Auswahl möglich, BTC-SL =
+Median-Faktor der anderen):**
+- BTC statt Cash: 1,67 % p.a., MaxDD −4,75 %, Ratio 0,35. Das ist der
+  beste Wert im Testfenster.
+- Gold+BTC: 0,79 %, −6,6 %.
+- Das ist Rückschau auf den BTC-Bullenmarkt 2014-2026 und kein Beleg.
+
+### Urteil
+
+- **Funded TTP:** regelkonform, aber nicht lohnend. Bei 0,5 % Risiko
+  bleiben 0,5 % p.a. nach mittleren Kosten. Höheres Risiko (1 %) bricht
+  schon im Lernfenster die 7-%-Schwelle mit ~10 %/Jahr. Die Strategie ist
+  ein Risiko-Reduzierer und passt nicht zu einem Konto, das +10 %
+  verdienen muss.
+- **EK:** in dieser Form nicht handelbar (Mindestlot). Denkbar wäre
+  höchstens ein einzelnes SP500-Bein, das aber ohne die Filter, die den
+  Effekt tragen.
+- **Was trägt:**
+  - Monatliches Rebalancing ist Pflicht.
+  - Der SL ist nur ein Katastrophen-SL (A5).
+  - Ensemble 8-12, Vola-Filter und Gold statt Cash.
+- **Was nicht trägt:** Shorts, Bonds statt Cash, enge oder trailing SLs,
+  ein Deckel aufs offene Risiko.
+- **Offene Hebel:** echte Swap-Werte (größter Einzeleffekt), echte
+  Kontraktgrößen. Live erst nach Freigabe (Phase 8).
+
+**Transparenz -- Engine-Fehler nach dem ersten Testfenster-Lauf
+behoben:**
+- Bei einem Wechsel in ein Instrument mit früherem Ausführungstag (BTC am
+  Wochenende, Feiertage) wurde die alte Position zum Kurs des neuen
+  Instruments geschlossen.
+- Nach der Korrektur (Test ergänzt) wurden beide Phasen mit unveränderten
+  Regeln neu gerechnet. Die Finalisten-Zahlen änderten sich nur in der
+  Rundung, BTC von unmöglich (−100 %) auf plausibel.
+- Die alten Dateien liegen als `*_vor_switchfix.json` vor.
+
+### Edge Card -- Nachtrag „Funded-Variante"
+
+02 REGEL (Ergänzung):
+9. Je Instrument werden fünf Teilpositionen geführt (SMA 8/9/10/11/12),
+   je 1/5 des Positionsrisikos.
+10. Ist die 20-Tage-Vola über ihrem expandierenden Median, gilt beim
+    Einstieg bzw. Rebalancing halbes Risiko.
+11. SL = 90-%-Quantil des größten Rückgangs innerhalb der
+    durchschnittlichen Haltedauer (in ATR20 beim Einstieg, je
+    Instrument aus Daten bis 2012). Broker-seitig, Gap → Open.
+12. Monatliches Rebalancing auf das Risikobudget (Stückzahl + SL neu).
+13. Cash-Monate gehen in Gold, wenn Gold selbst über seinem SMA10 liegt.
+14. Position < Mindestlot → kein Trade.
+
+04 GEGENPROBE (neu):
+- Hält der MAE-SL die erwartete Quote je Jahr? Befund: ja, außer 2018.
+- Schlägt das Signal „immer long" mit denselben Stopps? Befund: ja.
+- Schlägt es Zufall bei gleicher Zeit im Markt? Befund: bei der Ratio
+  ja (91 %), beim MaxDD nein.
+- Überlebt die Rendite den Swap? Befund: nur knapp bei 2,5 %, nicht
+  bei 5 %.
+
+## Nachtrag 2026-10-05 (2) -- Nachrechnung mit echten MT5-Werten
+
+**Woher die Werte kommen:** am 05.10. nur lesend aus den bereits
+laufenden Terminals (TTP 504072729, Tickmill-EK 55918977) gelesen, mit
+`scripts/read_faber_symbol_specs.py`. Kein Login und kein neues
+Terminal; ein Konto wird übersprungen, wenn sein Terminal nicht läuft.
+Eingefroren als `scripts/frozen_data/faber_symbol_specs_20261005.json`.
+
+Gelesen wurden:
+- Swap je Instrument und Richtung,
+- Spread,
+- Kontraktgröße, Mindestlot, Lot-Schritt,
+- Kontostand: TTP **99.134 $** (nicht 200k), EK **2.817 €** (≈ 3.156 $).
+
+Finalisten und Regeln sind unverändert; es gibt keine neue Auswahl.
+Skript `scripts/research_faber_trend_realkosten.py`, Rohzahlen
+`Claude outputs/faber_trend_realkosten.json`.
+
+**Echte Swap-Kosten long p.a.:**
+
+| | TTP | Tickmill (EK) |
+|---|---|---|
+| US500 | 4,8 % | 6,4 % |
+| USTEC | 6,8 % | 6,4 % |
+| US30 | 8,1 % | 6,4 % |
+| DE40 | 6,4 % | 4,6 % |
+| XAUUSD | 7,7 % | 5,1 % |
+| XAGUSD | 11,1 % | 6,4 % |
+| Kupfer | 9,7 % | 9,2 % |
+| Öl (XTIUSD) | Gutschrift 20,5 % | Gutschrift 8,7 % |
+| EURUSD | 4,1 % | 1,9 % |
+| USDJPY | Gutschrift 1,4 % | Gutschrift 1,6 % |
+| BTCUSD | **29 %** | 0 |
+
+**Weitere Befunde aus den Spezifikationen:**
+- Die Spreads liegen bei 0,001-0,03 % je Seite und spielen keine Rolle.
+- Bonds gibt es bei keinem der beiden Broker.
+- Öl und Kupfer haben ein Mindestlot von 1,0; bei Kupfer sind das
+  ~6.500 $ Nominal. DE40 hat bei TTP einen Lot-Schritt von 0,1.
+- Öl short zeigt bei TTP rechnerisch 88 % p.a. Kosten. Der Wert wurde
+  bei geschlossenem Markt gelesen (Bid 0) und ist möglicherweise veraltet.
+  Für den Finalisten ist das irrelevant, weil er keine Shorts hat.
+
+**Zwei Swap-Modelle:**
+- „heute": die heutigen Sätze über den ganzen Zeitraum (Stress).
+- „zinsangepasst": Für in USD finanzierte Instrumente gilt der heutige
+  Satz minus (IRX heute − IRX damals). FX und BTC bleiben unverändert.
+- ^IRX ist eingefroren als `irx_daily_20261005.csv`.
+
+**Ergebnis Hauptfinalist (kombi_r0.5):**
+
+| Konto / Modell | 2001-2012 CAGR / MaxDD | 2013-2026 CAGR / MaxDD | P(7 % trailing) |
+|---|---|---|---|
+| TTP heute | 1,24 % / −3,4 % | **0,45 % / −4,1 %** | 0 |
+| TTP zinsangepasst | 1,50 % / −3,3 % | **0,59 % / −4,2 %** | 0 |
+| TTP Kontrolle immer long | -- | 0,20 % / −7,7 % | -- |
+| EK (beide Modelle) | 19 Trades, −0,02 % | **0 Trades** | -- |
+
+- Die anderen Finalisten liegen im Testfenster bei 0,06-0,52 % p.a.
+- Gegenüber der Rechnung mit Ersatzkosten ändert sich am Urteil nichts.
+  Die echten Spreads sind kleiner, die echten Swaps bei Indizes und
+  Metallen höher. Durch das kleinere TTP-Konto (99k statt 200k) fallen
+  mehr Teilpositionen unter das Mindestlot.
+- **BTC statt Cash mit echtem TTP-Swap (29 %)**: 1,16 % / −4,2 %. Das
+  bleibt der beste Wert, ist aber weiter nur Rückschau. Auf EK (Swap 0):
+  0,35 % / −1,7 %, weil kaum etwas über das Mindestlot kommt.
+- **EK explorativ** (nicht vorab ausgewählt, SMA10, A5-SL, nur
+  Testfenster):
+
+  | Variante | CAGR | MaxDD |
+  |---|---|---|
+  | SP500 + NASDAQ, 2 % Risiko | 1,30 % | −5,4 % |
+  | SP500 + NASDAQ, 1 % Risiko | 0,40 % | −2,4 % |
+  | 4 Indizes, 2 % Risiko | 1,74 % | **−11,7 %** |
+
+  Auf 3.156 $ sind das ~40 $/Jahr.
+
+**Urteil bestätigt:** Mit echten Kosten ist die Regel auf TTP
+regelkonform, bringt aber ~0,5 % p.a. Auf EK ist sie nicht sinnvoll
+handelbar. Keine Empfehlung für eine Live-Umsetzung.
+
+## Nachtrag 2026-10-05 (3) -- Cash only + weiteste Stopps (Nutzerfrage, explorativ)
+
+Nicht vorab ausgewählt, daher eine nachträgliche Erkundung und kein
+sauberer Test. Hauptfinalist kombi_r0.5 (Ensemble 8-12, Vola-Filter,
+0,5 % Risiko) mit echten MT5-Kosten (zinsangepasst). Skript
+`scripts/research_faber_trend_cash_widestop.py`, Rohzahlen
+`Claude outputs/faber_trend_cash_widestop.json`.
+
+Median-Stoppweite der Instrumente des Finalisten:
+
+| Stopp | Median-Weite |
+|---|---|
+| A5 %-Quantil 95 | **23 %** (weitester getesteter) |
+| fester SL | 20 % |
+| ohne SL (fiktiv fürs Sizing) | 20 % |
+| A5 ATR-Quantil 95 | 16,8 % |
+| A5 ATR-Quantil 90 (gewählt) | 12,6 % |
+
+TTP 2013-2026 (2001-2012 in Klammern), CAGR / MaxDD:
+
+| Stopp | Gold statt Cash | Cash only |
+|---|---|---|
+| A5 ATR q90 (gewählt) | 0,59 % / −4,2 % (1,50 / −3,3) | 0,47 % / −3,6 % (0,85 / −1,8) |
+| **A5 % q95, weitester** | 0,25 % / −1,8 % | **0,25 % / −1,8 %** (0,61 / −1,3) |
+| A5 ATR q95 | 0,39 % / −2,9 % | 0,32 % / −2,5 % (0,69 / −1,5) |
+| fester 20 % | 0,56 % / −1,8 % | **0,56 % / −1,8 %** (0,54 / −1,7) |
+| ohne SL | 0,56 % / −1,75 % | 0,56 % / −1,75 % (0,57 / −1,5) |
+
+Was die Zahlen zeigen:
+- **Der Gold-Switch wirkt bei weiten Stopps nicht mehr.** Ein
+  Gold-Teilstück (0,1 % Risiko / 20-23 % SL ≈ 500 $ Nominal) liegt
+  unter dem Mindestlot (0,01 Lot ≈ 4.160 $) und wird nie gehandelt.
+  Deshalb sind die Gold- und Cash-Spalten dort identisch.
+- **Cash only + 20 % SL** bringt im Testfenster dieselbe Rendite wie der
+  gewählte Finalist (0,56 % gegen 0,59 %), bei weniger als halbem MaxDD
+  (−1,8 % gegen −4,2 %). Bis 2012 war sie schlechter (Ratio 0,33 gegen
+  0,47) und wurde deshalb nicht gewählt. Das ist ein Hinweis, dass der
+  Gold-Switch eher Glück im Lernfenster war (Gold-Hausse 2001-2011).
+- **Der weiteste A5-Stopp (q95, 23 %)** halbiert die Rendite (0,25 %).
+  Je weiter der SL, desto mehr Ensemble-Teile fallen unter das
+  Mindestlot.
+- **EK:** in allen Varianten 0 Trades.
+
+Am Urteil ändert sich nichts: Auch die beste Variante bringt ~0,5 % p.a.
+auf TTP.
+
+## Nachtrag 2026-10-06 -- Ganzes Edge auf EK mit 5-10 % Risiko je Position (Nutzerfrage, explorativ)
+
+Nicht vorab ausgewählt, daher eine Erkundung. EK-Konto 2.817 € (als
+3.156 $ gerechnet, EUR/USD-Effekt ignoriert), echte Tickmill-Kosten,
+Kontrakte und Mindestlots. Skript
+`scripts/research_faber_trend_ek_hochrisiko.py`, Rohzahlen
+`Claude outputs/faber_trend_ek_hochrisiko.json`. Neu in der Engine: der
+Bruttohebel (Nominal/Equity) je Tag.
+
+CAGR / MaxDD, Swap zinsangepasst (in Klammern: heutige Swaps,
+2013-2026):
+
+| Variante | Risiko | 2001-2012 | 2013-2026 | P(−45 %)/Jahr | Hebel Median/Max |
+|---|---|---|---|---|---|
+| **Cash only, SMA10, SL 20 %, 9 Instr.** | 5 % | 9,1 % / −25,9 % | **7,8 % / −27,1 %** (5,3 / −28,3) | 0 | 1,2 / 1,9 |
+| | 7,5 % | 14,4 % / −40,8 % | **12,5 % / −38,0 %** (8,8 / −37,0) | 0,2 % | 2,0 / 3,2 |
+| | 10 % | 18,4 % / −55,0 % | **15,9 % / −52,1 %** (12,1 / −52,3) | 2,3 % | 2,8 / 4,7 |
+| nur 4 Indizes, Cash, SL 20 % | 5 % | 2,8 % / −18,5 % | 5,1 % / −21,6 % | 0 | 0,9 / 1,0 |
+| | 10 % | 4,7 % / −36,0 % | 10,0 % / −39,9 % | 0,5 % | 1,9 / 2,3 |
+| Finalist (Ensemble + Vola + Gold, A5 q90) | 5 % | 7,5 % / −22,2 % | 2,6 % / −34,1 % (0,2 / −27,6) | 0 | 0,6 / 3,1 |
+| | 10 % | 31,5 % / −48,2 % | 7,5 % / **−62,7 %** (−0,3 / −67,2) | 6,9 % | 2,8 / 11,8 |
+| Ensemble + Vola, Cash | 10 % | 16,9 % / −31,8 % | 4,6 % / **−66,1 %** | 3,8 % | 2,4 / 8,5 |
+
+Was die Zahlen zeigen:
+- **Bei hohem Risiko kehrt sich die Rangfolge um.** Die einfache
+  Variante (Cash only, SMA10, 20 % SL) ist in beiden Zeitfenstern
+  ähnlich: 9,1 → 7,8 % bei 5 %. Der „optimierte" Finalist bricht im
+  Testfenster ein (MaxDD −34 bis −63 %).
+- Der enge A5-SL (q90) mit Ensemble-Teilen erzeugt bei großem Risiko
+  viele Ausstopper und hohe Spitzenhebel (bis 11,8x).
+- **Hebel:** Die einfache Variante bleibt bei max. 1,9x (5 %) bis 4,7x
+  (10 %), also klar unter den EU-Retail-Grenzen (Indizes 20:1, Gold
+  20:1, Rohstoffe 10:1). Der Finalist erreicht bei 10 % bis 11,8x und
+  verletzt damit die Rohstoff-Grenze potenziell.
+- **Einordnung:** 5 % Risiko bei 20 % SL heißt 25 % Nominal je
+  Position. Das ist im Kern ein ~1,2-fach gehebeltes, trendgefiltertes
+  Multi-Asset-Portfolio. Ein großer Teil der Rendite ist Marktrendite
+  (Beta), kein reiner Timing-Edge. Eine Kontrolle „immer long mit
+  gleichem Hebel" fehlt in diesem Lauf noch.
+- **Kosten:** Die heutigen Swaps kosten die einfache Variante bei 5 %
+  ~2,5 Pp. p.a. (7,8 → 5,3 %).
+- **Kill-Switch EK (−45 % trailing):** Die Auslösewahrscheinlichkeit
+  liegt bei 5 % bei 0 und bei 10 % bei ~2 %/Jahr. −20 % erreicht man bei
+  7,5 % Risiko in ~24 % der Jahre.
+- **Gold statt Cash** ist auf EK auch bei 5 % praktisch wirkungslos
+  (Mindestlot). Die Finalist- und Cash-Zeilen sind dort identisch.
+
+**Kontrolle „immer long, gleicher SL und gleiches Risiko"** (EK, Cash
+only, SL 20 %, Swap zinsangepasst; Skript
+`scripts/research_faber_trend_ek_kontrolle.py`, Rohzahlen
+`faber_trend_ek_kontrolle_immer_long*.json`):
+- Mit Öl hat „immer long" im Testfenster schlechteste Tage von −39 bis
+  −71 %. Das ist der Negativpreis-Monat April 2020 der
+  Öl-Futures-Reihe, ein Daten-Artefakt. Deshalb ist die Kontrolle auch
+  **ohne Öl** gerechnet.
+- **Ohne Öl** sinkt auch die SMA-Variante deutlich. Öl hat einen großen
+  Teil beigetragen (Futures-Roll in der Reihe plus Swap-Gutschrift long)
+  und ist nicht verlässlich.
+
+| ohne Öl, CAGR / MaxDD | Risiko | 2001-2012 | 2013-2026 |
+|---|---|---|---|
+| SMA10-Timing | 5 % | 5,6 % / −19,3 % | 5,5 % / −21,6 % |
+| immer long | 5 % | −0,9 % / −58,9 % | 11,0 % / −27,1 % |
+| SMA10-Timing | 7,5 % | 8,0 % / −29,5 % | 9,9 % / −30,5 % |
+| immer long | 7,5 % | −2,5 % / −76,2 % | 14,6 % / −47,6 % |
+| SMA10-Timing | 10 % | 11,0 % / −44,2 % | 10,7 % / −45,1 % |
+| immer long | 10 % | −6,1 % / −88,7 % | 18,9 % / −59,5 % |
+
+- **Das Timing ist eine Versicherung, kein Renditetreiber.** 2001-2012
+  (zwei Bärenmärkte) rettet es das Konto: +5,6 % statt −0,9 % und
+  −19 % statt −59 %. Im Bullenmarkt 2013-2026 kostet es die Hälfte der
+  Rendite (5,5 % statt 11,0 %), bei ähnlichem Drawdown bei 5 % Risiko.
+- **Ehrliche EK-Zahl (ohne Öl, 5 % Risiko):** ~5,5 % p.a. bei
+  −20 bis −22 % MaxDD, über beide Zeitfenster stabil. Mit Öl sind es
+  7,8-9,1 %; das ist optimistisch.
+
+## Nachtrag 2026-10-06 (2) -- Rotation in Öl statt Cash auf EK (Nutzerfrage, explorativ)
+
+Einfache Variante: SMA10, SL 20 %, 8 Instrumente; Öl nur als
+Rotationsziel. Cash-Monate gehen in OIL, wenn OIL über seinem SMA10
+liegt. Gold-Rotation zum Vergleich. Swap zinsangepasst (Tickmill: Öl
+long ist eine Gutschrift). Skript
+`scripts/research_faber_trend_ek_oelrotation.py`, Rohzahlen
+`faber_trend_ek_oelrotation.json`.
+
+CAGR / MaxDD:
+
+| Variante | Risiko | 2001-2012 | 2013-2026 | 2013-26 ohne 2020 | schlechtester Tag (OOS) |
+|---|---|---|---|---|---|
+| Cash | 5 % | 5,6 % / −19 % | **5,5 % / −22 %** | 5,3 % / −22 % | −4,3 % |
+| **Öl-Rotation** | 5 % | 16,3 % / −53 % | **4,4 % / −56 %** | 4,4 % / −56 % | **−19,7 %** |
+| Gold-Rotation | 5 % | 7,6 % / −34 % | 5,5 % / −22 % (= Cash) | -- | −4,3 % |
+| Cash | 10 % | 11,0 % / −44 % | 10,7 % / −45 % | 9,9 % / −42 % | −11,8 % |
+| **Öl-Rotation** | 10 % | 23,5 % / −84 % | **5,0 % / −83 %** | 4,8 % / −83 % | **−34,6 %** |
+| Gold-Rotation | 10 % | 13,9 % / −74 % | 14,0 % / −41 % | 10,8 % / −38 % | −11,0 % |
+
+- **Öl-Rotation schadet.** Bis 2012 ergibt sie mehr Rendite, aber mit
+  −53 % MaxDD schon bei 5 %. Ab 2013 verliert der Öl-Anteil Geld:
+  −117 % des Gesamt-P&L, d.h. Öl-Trades verlieren mehr, als die
+  restlichen Trades verdienen. Der MaxDD liegt bei −56 bis −83 %.
+- Ohne 2020 bleibt das Bild gleich. Es ist also kein Artefakt des
+  Negativpreis-Monats, sondern strukturell (Öl-Trendbrüche 2014/15,
+  2018, 2022).
+- **Ursache Konzentration:** Mehrere Instrumente können gleichzeitig auf
+  Cash springen. Dann rotieren alle ihre Slots gleichzeitig in dasselbe
+  Öl: bei 8 Instrumenten bis 8 × 5 % = 40 % Risiko in einem Markt.
+  Daraus kommen die Tage mit −20 bis −35 %.
+- **Gold-Rotation:** Bei 5 % Risiko ist sie identisch mit Cash (Gold
+  unter dem Mindestlot). Ab 7,5 % ist sie im Testfenster besser
+  (11,7 % / −34 %), bis 2012 aber deutlich schlechter (−59 bis −74 %
+  MaxDD). Auch sie leidet unter derselben Konzentration.
+- Würde man Rotation weiterverfolgen, bräuchte es einen Deckel: Höchstens
+  ein Slot (oder X % Risiko) darf in das Ersatz-Asset. Das ist nicht
+  getestet.

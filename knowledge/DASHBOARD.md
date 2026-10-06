@@ -68,22 +68,6 @@ Bedarf vor generischem Aufräumen.
     NASDAQ live +18 / +33 R (vorbelastet). Die Entscheidung SP500-ORB
     pausieren ja/nein bleibt offen.
 
-- **🟢 Faber-Trend Funded/EK (05.10.): Urteil bestätigen.** Details:
-  [[faber-gtaa-10-monats-sma]].
-  - **Erledigt:** Kontraktgrößen, Mindestlots, Spreads und Swaps sind
-    jetzt echte MT5-Werte (gelesen 05.10.).
-  - **Offene Annahmen:**
-    - Futures statt CFD-Kurse für Rohstoffe;
-    - Zinsanpassung der Swaps über ^IRX;
-    - BTC-SL als Median der anderen Instrumente;
-    - Zufallstest nur 100 Läufe.
-  - **Urteil:** „TTP regelkonform, aber ~0,5 % p.a.; EK nicht handelbar
-    → keine Live-Umsetzung". Bestätigen oder Richtung vorgeben.
-  - **Neu 06.10.:** Auf EK mit hohem Risiko (5 %/Position, Cash only, SMA10,
-    SL 20 %, ohne Öl) ergeben sich ~5,5 % p.a. bei −20 % MaxDD, stabil über
-    beide Zeitfenster. EK ist echtes Geld; ob überhaupt (und mit welchem
-    Risiko) ist deine Entscheidung. Vorher Phase 8.
-
 - **🟢 Dachprojekt Quant × diskretionär (04.10.): meine Annahmen.** Details:
   [[quant-diskretionaer-fusion]].
   - Ordnername `fusion_lab/` und Notizname „quant-diskretionaer-fusion".
@@ -91,16 +75,6 @@ Bedarf vor generischem Aufräumen.
     Makro-Übersicht, Analysen, Entscheidungslog (Bot), Zwischenablage.
   - Telegram-Import mit deinem eigenen Konto (Telethon), weil Bots fremde
     Gruppen nicht lesen können; Zugangsdaten in `.streamlit/secrets.toml`.
-
-- **🟢 Faber GTAA (04.10.): Annahmen im Nachbau.** Details:
-  [[faber-gtaa-10-monats-sma]].
-  - Proxys: SPY/EFA/IEF/DBC/VNQ statt GSCI/NAREIT/GFD-Reihen; ^IRX als
-    T-Bill.
-  - „Close = SMA" wird als Cash gewertet.
-  - Die Edge Card ist trotz Paper-Ursprung erstellt (dein Wunsch), Phase 0
-    habe ich aus dem Paper abgeleitet statt sie mit dir abzustimmen.
-  - Urteil „kein Kandidat für die Prop-Portfolios". Passt das, oder soll
-    GTAA als Depot-Regel weiterverfolgt werden (Phase 8)?
 
 - **🟡 Challenge + EK Gewichtung (04.10.): entschieden -- TTP neu
   eingespielt, IQ und EK bleiben wie gehabt.** Details: CHANGELOG 04.10.
@@ -428,6 +402,7 @@ außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
 
+- (07.10.) **Faber-Trend, falls wieder aufgenommen:** Rotation in ein Ersatz-Asset nur mit Deckel testen (z.B. höchstens ein Slot bzw. 5 % Risiko im Ersatz-Asset). Ohne Deckel landen alle Cash-Slots gleichzeitig im selben Markt (Öl: −20 %-Tage). Projekt pausiert, siehe [[faber-gtaa-10-monats-sma]].
 - (05.10.) **ORB-Mechanismus testen:** Ist der Edge an Tagen mit großem
   Eröffnungs-Ungleichgewicht (großer Gap, hohes Volumen der ersten
   15 Min.) größer? Das würde Feld 1/2 (Flows/Unterreaktion) stützen. Kommt

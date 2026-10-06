@@ -1,0 +1,415 @@
+{
+ "stopp": "A5_mae_atr_q90",
+ "fenster": [
+  "2013-01-01",
+  "2026-09-30"
+ ],
+ "finalisten": {
+  "kombi_r0.5": {
+   "ttp_ohne": {
+    "cagr_pct": 1.082,
+    "maxdd_pct": -4.73,
+    "ratio": 0.229,
+    "worst_day_pct": -1.0,
+    "vol_pct": 1.7,
+    "trades": 963,
+    "sl_exits": 64,
+    "skipped": 1415
+   },
+   "ttp_mittel": {
+    "cagr_pct": 0.5,
+    "maxdd_pct": -6.04,
+    "ratio": 0.083,
+    "worst_day_pct": -1.02,
+    "vol_pct": 1.7,
+    "trades": 943,
+    "sl_exits": 64,
+    "skipped": 1452,
+    "p_trailing7_pa": 0.0,
+    "p_tag3_pa": 0.0
+   },
+   "ttp_hoch": {
+    "cagr_pct": -0.038,
+    "maxdd_pct": -7.17,
+    "ratio": -0.005,
+    "worst_day_pct": -1.07,
+    "vol_pct": 1.72,
+    "trades": 936,
+    "sl_exits": 64,
+    "skipped": 1484
+   },
+   "kontrolle_immer_long": {
+    "cagr_pct": 0.167,
+    "maxdd_pct": -8.92,
+    "ratio": 0.019,
+    "worst_day_pct": -0.77,
+    "vol_pct": 1.89,
+    "trades": 30,
+    "sl_exits": 22,
+    "skipped": 13,
+    "p_trailing7_pa": 0.0015,
+    "p_tag3_pa": 0.0
+   },
+   "lag_1tag": {
+    "cagr_pct": 0.589,
+    "maxdd_pct": -6.17,
+    "ratio": 0.095,
+    "worst_day_pct": -0.9,
+    "vol_pct": 1.68
+   },
+   "ek": {
+    "cagr_pct": 0.0,
+    "maxdd_pct": 0.0,
+    "ratio": NaN,
+    "worst_day_pct": 0.0,
+    "vol_pct": 0.0,
+    "trades": 0,
+    "sl_exits": 0,
+    "skipped": 6238
+   },
+   "jahre_pct": {
+    "2013": 1.64,
+    "2014": -2.7,
+    "2015": -1.49,
+    "2016": -0.75,
+    "2017": 4.93,
+    "2018": -1.41,
+    "2019": 3.56,
+    "2020": 0.1,
+    "2021": 0.88,
+    "2022": 0.15,
+    "2023": -0.6,
+    "2024": 1.92,
+    "2025": 1.34,
+    "2026": -0.43
+   },
+   "zufall": {
+    "laeufe": 100,
+    "seed": 42,
+    "anteil_dd_gleich_oder_kleiner": 0.83,
+    "anteil_ratio_gleich_oder_besser": 0.09,
+    "median_dd": -5.59,
+    "median_ratio": 0.037
+   },
+   "korrelation_fk_beine_taeglich": 0.071,
+   "a5_sl_quote_je_jahr": {
+    "2013": 0.111,
+    "2014": 0.0,
+    "2015": 0.103,
+    "2016": 0.112,
+    "2017": 0.0,
+    "2018": 0.27,
+    "2019": 0.034,
+    "2020": 0.114,
+    "2021": 0.116,
+    "2022": 0.0,
+    "2023": 0.0,
+    "2024": 0.0,
+    "2025": 0.047,
+    "2026": 0.0
+   },
+   "a5_erwartet": 0.1
+  },
+  "kombi_r0.25": {
+   "ttp_ohne": {
+    "cagr_pct": 0.496,
+    "maxdd_pct": -1.84,
+    "ratio": 0.27,
+    "worst_day_pct": -0.44,
+    "vol_pct": 0.75,
+    "trades": 736,
+    "sl_exits": 32,
+    "skipped": 2610
+   },
+   "ttp_mittel": {
+    "cagr_pct": 0.286,
+    "maxdd_pct": -1.95,
+    "ratio": 0.147,
+    "worst_day_pct": -0.46,
+    "vol_pct": 0.75,
+    "trades": 713,
+    "sl_exits": 32,
+    "skipped": 2671,
+    "p_trailing7_pa": 0.0,
+    "p_tag3_pa": 0.0
+   },
+   "ttp_hoch": {
+    "cagr_pct": 0.117,
+    "maxdd_pct": -2.33,
+    "ratio": 0.05,
+    "worst_day_pct": -0.47,
+    "vol_pct": 0.75,
+    "trades": 710,
+    "sl_exits": 32,
+    "skipped": 2713
+   },
+   "kontrolle_immer_long": {
+    "cagr_pct": 0.063,
+    "maxdd_pct": -4.38,
+    "ratio": 0.015,
+    "worst_day_pct": -0.39,
+    "vol_pct": 0.9,
+    "trades": 66,
+    "sl_exits": 21,
+    "skipped": 58,
+    "p_trailing7_pa": 0.0,
+    "p_tag3_pa": 0.0
+   },
+   "lag_1tag": {
+    "cagr_pct": 0.254,
+    "maxdd_pct": -2.06,
+    "ratio": 0.123,
+    "worst_day_pct": -0.45,
+    "vol_pct": 0.74
+   },
+   "ek": {
+    "cagr_pct": 0.0,
+    "maxdd_pct": 0.0,
+    "ratio": NaN,
+    "worst_day_pct": 0.0,
+    "vol_pct": 0.0,
+    "trades": 0,
+    "sl_exits": 0,
+    "skipped": 6238
+   },
+   "jahre_pct": {
+    "2013": 0.76,
+    "2014": -0.28,
+    "2015": -0.7,
+    "2016": 0.17,
+    "2017": 2.21,
+    "2018": -0.45,
+    "2019": 1.42,
+    "2020": -0.25,
+    "2021": 0.22,
+    "2022": -0.02,
+    "2023": 0.21,
+    "2024": 0.36,
+    "2025": 0.57,
+    "2026": -0.23
+   },
+   "zufall": {},
+   "korrelation_fk_beine_taeglich": 0.084,
+   "a5_sl_quote_je_jahr": {
+    "2013": 0.0,
+    "2014": 0.0,
+    "2015": 0.059,
+    "2016": 0.0,
+    "2017": 0.0,
+    "2018": 0.205,
+    "2019": 0.04,
+    "2020": 0.12,
+    "2021": 0.0,
+    "2022": 0.0,
+    "2023": 0.0,
+    "2024": 0.0,
+    "2025": 0.0,
+    "2026": 0.0
+   },
+   "a5_erwartet": 0.1
+  },
+  "kombi_alle_r0.5": {
+   "ttp_ohne": {
+    "cagr_pct": 1.099,
+    "maxdd_pct": -5.2,
+    "ratio": 0.212,
+    "worst_day_pct": -1.05,
+    "vol_pct": 2.15,
+    "trades": 1400,
+    "sl_exits": 109,
+    "skipped": 2006
+   },
+   "ttp_mittel": {
+    "cagr_pct": 0.078,
+    "maxdd_pct": -6.85,
+    "ratio": 0.011,
+    "worst_day_pct": -1.13,
+    "vol_pct": 2.13,
+    "trades": 1335,
+    "sl_exits": 105,
+    "skipped": 2142,
+    "p_trailing7_pa": 0.002,
+    "p_tag3_pa": 0.0
+   },
+   "ttp_hoch": {
+    "cagr_pct": -0.569,
+    "maxdd_pct": -9.54,
+    "ratio": -0.06,
+    "worst_day_pct": -1.22,
+    "vol_pct": 2.11,
+    "trades": 1324,
+    "sl_exits": 105,
+    "skipped": 2216
+   },
+   "kontrolle_immer_long": {
+    "cagr_pct": -0.613,
+    "maxdd_pct": -13.02,
+    "ratio": -0.047,
+    "worst_day_pct": -1.1,
+    "vol_pct": 2.43,
+    "trades": 51,
+    "sl_exits": 40,
+    "skipped": 24,
+    "p_trailing7_pa": 0.0155,
+    "p_tag3_pa": 0.0
+   },
+   "lag_1tag": {
+    "cagr_pct": 0.13,
+    "maxdd_pct": -8.3,
+    "ratio": 0.016,
+    "worst_day_pct": -1.83,
+    "vol_pct": 2.13
+   },
+   "ek": {
+    "cagr_pct": 0.0,
+    "maxdd_pct": 0.0,
+    "ratio": NaN,
+    "worst_day_pct": 0.0,
+    "vol_pct": 0.0,
+    "trades": 0,
+    "sl_exits": 0,
+    "skipped": 7976
+   },
+   "jahre_pct": {
+    "2013": 0.73,
+    "2014": -4.02,
+    "2015": -1.21,
+    "2016": -1.11,
+    "2017": 4.44,
+    "2018": -2.02,
+    "2019": 6.06,
+    "2020": 0.2,
+    "2021": 0.41,
+    "2022": 0.11,
+    "2023": -2.01,
+    "2024": 0.18,
+    "2025": 1.03,
+    "2026": -1.28
+   },
+   "zufall": {},
+   "korrelation_fk_beine_taeglich": 0.063,
+   "a5_sl_quote_je_jahr": {
+    "2013": 0.145,
+    "2014": 0.0,
+    "2015": 0.069,
+    "2016": 0.154,
+    "2017": 0.058,
+    "2018": 0.202,
+    "2019": 0.058,
+    "2020": 0.084,
+    "2021": 0.072,
+    "2022": 0.0,
+    "2023": 0.051,
+    "2024": 0.059,
+    "2025": 0.036,
+    "2026": 0.082
+   },
+   "a5_erwartet": 0.1
+  }
+ },
+ "D_nur_oos_BTC": {
+  "cagr_pct": NaN,
+  "maxdd_pct": -100.91,
+  "ratio": NaN,
+  "worst_day_pct": -102.8,
+  "vol_pct": 37.8,
+  "trades": 758,
+  "sl_exits": 45,
+  "skipped": 2575,
+  "p_trailing7_pa": 0.1945,
+  "p_tag3_pa": 0.194
+ },
+ "D_btc_stopp_annahme": "BTC-SL-Faktor = Median der anderen Instrumente (kein Lernfenster)",
+ "D_nur_oos_GOLD_BTC": {
+  "cagr_pct": NaN,
+  "maxdd_pct": -133.46,
+  "ratio": NaN,
+  "worst_day_pct": -133.72,
+  "vol_pct": 35.51,
+  "trades": 887,
+  "sl_exits": 60,
+  "skipped": 2482,
+  "p_trailing7_pa": 0.103,
+  "p_tag3_pa": 0.112
+ },
+ "gegencheck": {
+  "SP500": {
+   "monat": "2026-09",
+   "schluss": 17160.4102,
+   "sma10": 16148.7899,
+   "signal": "long"
+  },
+  "NASDAQ": {
+   "monat": "2026-09",
+   "schluss": 30408.5,
+   "sma10": 27570.3787,
+   "signal": "long"
+  },
+  "US30": {
+   "monat": "2026-09",
+   "schluss": 50906.0508,
+   "sma10": 50185.5973,
+   "signal": "long"
+  },
+  "DAX": {
+   "monat": "2026-09",
+   "schluss": 25199.1895,
+   "sma10": 24847.2949,
+   "signal": "long"
+  },
+  "GOLD": {
+   "monat": "2026-09",
+   "schluss": 4186.7002,
+   "sma10": 4501.8,
+   "signal": "cash"
+  },
+  "SILVER": {
+   "monat": "2026-09",
+   "schluss": 60.098,
+   "sma10": 70.8333,
+   "signal": "cash"
+  },
+  "OIL": {
+   "monat": "2026-09",
+   "schluss": 90.42,
+   "sma10": 81.381,
+   "signal": "long"
+  },
+  "COPPER": {
+   "monat": "2026-09",
+   "schluss": 6.559,
+   "sma10": 6.1186,
+   "signal": "long"
+  },
+  "TNOTE10": {
+   "monat": "2026-09",
+   "schluss": 104.2031,
+   "sma10": 109.9844,
+   "signal": "cash"
+  },
+  "TBOND30": {
+   "monat": "2026-09",
+   "schluss": 102.6562,
+   "sma10": 112.2625,
+   "signal": "cash"
+  },
+  "EURUSD": {
+   "monat": "2026-09",
+   "schluss": 1.1341,
+   "sma10": 1.1619,
+   "signal": "cash"
+  },
+  "USDJPY": {
+   "monat": "2026-09",
+   "schluss": 157.404,
+   "sma10": 158.4361,
+   "signal": "cash"
+  },
+  "BTC": {
+   "monat": "2026-09",
+   "schluss": 83553.8516,
+   "sma10": 73471.8215,
+   "signal": "long"
+  }
+ }
+}

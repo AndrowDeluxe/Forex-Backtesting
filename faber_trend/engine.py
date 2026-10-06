@@ -35,12 +35,38 @@ class Account:
     name: str
     equity0: float
     min_lot_check: bool = True
+    specs: dict = None  # inst -> {"contract":, "min":, "step":} (echte MT5-Werte)
+
+    def spec(self, inst):
+        d = (self.specs or {}).get(inst)
+        if d:
+            return d["contract"], d["min"], d["step"]
+        return CONTRACT[inst], MIN_LOT, LOT_STEP
 
 
 @dataclass
 class Costs:
     spread: float = 0.0005
     swap_pa: float = 0.025
+    # optional je Instrument: spread_by[inst] (Anteil je Ein-/Ausstieg),
+    # swap_by[inst] = (Kosten long p.a., Kosten short p.a.); negativ = Gutschrift
+    spread_by: dict = None
+    swap_by: dict = None
+    # zeitvariabler Zinsaufschlag: shift[tag] = Zins_heute - Zins_damals (Anteil p.a.)
+    shift: dict = None
+    shift_insts: tuple = ()
+
+    def spr(self, inst):
+        return (self.spread_by or {}).get(inst, self.spread)
+
+    def swp(self, inst, direction, day=None):
+        v = (self.swap_by or {}).get(inst)
+        if v is None:
+            return self.swap_pa
+        c = v[0] if direction > 0 else v[1]
+        if self.shift is not None and inst in self.shift_insts and day is not None:
+            c -= direction * self.shift.get(day, 0.0)
+        return c
 
 
 @dataclass
@@ -161,12 +187,13 @@ def run(prep, sleeves, stop: StopRule, sizing: Sizing, costs: Costs, account: Ac
     eq = account.equity0
     open_pos: dict[str, Pos] = {}
     eq_curve, trades, skipped = [], [], 0
+    expo = []
     prev_bar = {}
 
     def close_pos(p, px, day, reason):
         nonlocal eq
         val = _notional_value(p.inst, p.units, px)
-        eq -= val * costs.spread
+        eq -= val * costs.spr(p.inst)
         r_risk = p.units * abs(p.entry_px - p.stop) if p.stop else p.units * p.entry_px * stop.sizing_pct_if_none
         pnl_total = _pnl(p.inst, p.units, (px - p.entry_px) * p.dir, px)
         trades.append({"sleeve": p.sleeve, "inst": p.inst, "dir": p.dir, "entry_day": p.entry_day,
@@ -190,7 +217,7 @@ def run(prep, sleeves, stop: StopRule, sizing: Sizing, costs: Costs, account: Ac
                 continue
             pday, pclose = prev_bar[p.sleeve]
             days = (day - pday).days
-            eq -= _notional_value(p.inst, p.units, pclose) * costs.swap_pa * days / 365.0
+            eq -= _notional_value(p.inst, p.units, pclose) * costs.swp(p.inst, p.dir, day) * days / 365.0
             adverse = (bar.low if p.dir > 0 else bar.high)
             p.mae = max(p.mae, (p.entry_px - adverse) * p.dir / p.entry_px)
             hit = p.stop and ((p.dir > 0 and bar.low <= p.stop) or (p.dir < 0 and bar.high >= p.stop))
@@ -226,6 +253,14 @@ def run(prep, sleeves, stop: StopRule, sizing: Sizing, costs: Costs, account: Ac
             if inst is None or direction == 0 or day not in rows[inst]:
                 continue
             cur = open_pos.get(sl.name)
+            if cur is not None and (cur.inst, cur.dir) != (inst, direction):
+                # Wechsel in ein anderes Instrument, dessen Ausfuehrungstag frueher liegt
+                # als der des alten (z.B. BTC am Wochenende, Feiertage): alte Position
+                # zuerst zum letzten bekannten eigenen Schluss schliessen.
+                od = dfs[cur.inst]
+                oc = od["close"].loc[:day].iloc[-1]
+                close_pos(cur, oc, day, "switch")
+                cur = None
             if cur is not None and not sizing.rebalance:
                 continue
             bar = dfs[inst].iloc[rows[inst][day]]
@@ -255,9 +290,10 @@ def run(prep, sleeves, stop: StopRule, sizing: Sizing, costs: Costs, account: Ac
                 units = min(units, room / per_unit)
             if account.min_lot_check:
                 ref_scale = bar.ref / px  # Broker-Preisniveau / Reihenpreis (SP500TR)
-                lots_per_unit = ref_scale / CONTRACT[inst]
-                lots = np.floor(units * lots_per_unit / LOT_STEP + 1e-9) * LOT_STEP
-                if lots < MIN_LOT:
+                c_size, m_lot, l_step = account.spec(inst)
+                lots_per_unit = ref_scale / c_size
+                lots = np.floor(units * lots_per_unit / l_step + 1e-9) * l_step
+                if lots < m_lot:
                     units = 0.0
                 else:
                     units = lots / lots_per_unit
@@ -273,18 +309,25 @@ def run(prep, sleeves, stop: StopRule, sizing: Sizing, costs: Costs, account: Ac
                 if stop.kind == "trail" and cur.stop:
                     stop_px = max(stop_px, cur.stop) if direction > 0 else min(stop_px, cur.stop)
                 delta = abs(units - cur.units)
-                eq += _notional_value(inst, cur.units, px) * costs.spread  # close_pos zieht Spread ab
+                eq += _notional_value(inst, cur.units, px) * costs.spr(inst)  # close_pos zieht Spread ab
                 close_pos(cur, px, day, "rebalance")
-                eq -= _notional_value(inst, delta, px) * costs.spread
+                eq -= _notional_value(inst, delta, px) * costs.spr(inst)
                 hi = max(cur.hi, px) if direction > 0 else min(cur.hi, px)
             else:
-                eq -= _notional_value(inst, units, px) * costs.spread
+                eq -= _notional_value(inst, units, px) * costs.spr(inst)
                 hi = px
             open_pos[sl.name] = Pos(inst, direction, units, px, day, stop_px, sl.name, hi)
             prev_bar[sl.name] = (day, px)
         eq_curve.append((day, eq))
+        gross = 0.0
+        for q in open_pos.values():
+            qd = dfs[q.inst]
+            qpx = qd["close"].iloc[rows[q.inst][day]] if day in rows[q.inst] else q.entry_px
+            gross += _notional_value(q.inst, q.units, qpx)
+        expo.append((day, gross / eq if eq > 0 else np.nan))
     eqs = pd.Series(dict(eq_curve))
     return {"equity": eqs, "trades": pd.DataFrame(trades), "skipped": skipped,
+            "exposure": pd.Series(dict(expo)),
             "open_at_end": len(open_pos)}
 
 

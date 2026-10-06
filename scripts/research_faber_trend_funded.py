@@ -304,7 +304,10 @@ def phase_oos():
     with open(OUT_IS, encoding="utf-8") as f:
         isr = json.load(f)
     prep = load_all(with_btc=True)
-    grid = stop_grid(isr["mae_params"])
+    mp = {q: dict(v) for q, v in isr["mae_params"].items()}
+    for q, v in mp.items():  # BTC hat kein Lernfenster -> Median der anderen (Annahme, markiert)
+        v.setdefault("BTC", float(np.median(list(v.values()))))
+    grid = stop_grid(mp)
     stop = grid[isr["finalisten_stopp"]]
     res = {"stopp": isr["finalisten_stopp"], "fenster": [OOS_START, END], "finalisten": {}}
 
@@ -334,10 +337,12 @@ def phase_oos():
         e = eq_main[eq_main.index.dayofweek < 5]
         out["jahre_pct"] = {int(y): round(float(v) * 100, 2) for y, v in
                             e.groupby(e.index.year).last().pct_change().fillna(e.groupby(e.index.year).last().iloc[0] / e.iloc[0] - 1).items()}
-        # Zufall: Monatsziele je Sleeve mischen (gleiche Zeit im Markt)
+        # Zufall: Monatsziele je Sleeve mischen (gleiche Zeit im Markt).
+        # Laufzeit ~10 s je Lauf -> nur fuer den Hauptfinalisten.
+        print(name, "ohne Zufall:", json.dumps({k: v for k, v in out.items() if k != "jahre_pct"}, default=float)[:1500], flush=True)
         rng = np.random.default_rng(42)
         dds, ratios = [], []
-        n_rand = int(os.environ.get("FABER_RAND", "300"))
+        n_rand = int(os.environ.get("FABER_RAND", "100")) if name == isr["finalisten"][0] else 0
         for _ in range(n_rand):
             rs = []
             for s in sl:
@@ -350,10 +355,12 @@ def phase_oos():
             rr = E.run(prep, rs, stop, sz_of(sp), MITTEL, TTP, start=OOS_START, end=END)
             mm = E.metrics(rr["equity"])
             dds.append(mm["maxdd_pct"]); ratios.append(mm["ratio"])
-        out["zufall"] = {"laeufe": n_rand, "seed": 42,
+            if len(dds) % 10 == 0:
+                print("  zufall", len(dds), flush=True)
+        out["zufall"] = {} if not n_rand else {"laeufe": n_rand, "seed": 42,
                          "anteil_dd_gleich_oder_kleiner": round(float(np.mean(np.array(dds) >= out["ttp_mittel"]["maxdd_pct"])), 4),
                          "anteil_ratio_gleich_oder_besser": round(float(np.mean(np.array(ratios) >= out["ttp_mittel"]["ratio"])), 4),
-                         "median_dd": float(np.median(dds)), "median_ratio": float(np.nanmedian(ratios))}
+                         "median_dd": float(np.median(dds)), "median_ratio": float(np.nanmedian(ratios))} if n_rand else {}
         # Korrelation zu bestehenden Beinen (taegliche P&L)
         try:
             fk = pd.read_csv(os.path.join(ROOT, "portfolio_construction/results/fk_trades_2019_2026_live.csv"),
@@ -371,6 +378,8 @@ def phase_oos():
                                          for y, g in t.groupby(t.exit_day.dt.year).reason}
             out["a5_erwartet"] = round(1 - q / 100, 2)
         res["finalisten"][name] = out
+        with open(OUT_OOS, "w", encoding="utf-8") as f:
+            json.dump(res, f, indent=1, ensure_ascii=False, default=float)
         print(name, json.dumps({k: v for k, v in out.items() if k not in ("jahre_pct",)}, default=float)[:1500])
 
     # D mit BTC: nur OOS, markiert (keine Auswahl moeglich)
@@ -379,6 +388,7 @@ def phase_oos():
         m, _ = evaluate(prep, sleeves_for(prep, sp["insts"], sp["mode"], sp["shorts"], alts), stop, sz_of(sp),
                         start=OOS_START, end=END, mc=True)
         res[f"D_nur_oos_{'_'.join(alts)}"] = m
+        res["D_btc_stopp_annahme"] = "BTC-SL-Faktor = Median der anderen Instrumente (kein Lernfenster)"
         print("D", alts, m)
     # Gegencheck letzter Monat je Instrument
     chk = {}

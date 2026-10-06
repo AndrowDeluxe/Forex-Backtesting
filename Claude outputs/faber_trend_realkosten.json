@@ -1,0 +1,625 @@
+{
+ "specs_datei": "2026-10-05",
+ "konten": {
+  "TTP": 99134.35,
+  "EK": 3156.0938144
+ },
+ "kosten_je_konto": {
+  "TTP": {
+   "SP500": {
+    "spread_je_seite_pct": 0.0045,
+    "kosten_long_pa_pct": 4.78,
+    "kosten_short_pa_pct": 2.85,
+    "contract": 1.0,
+    "min": 0.01,
+    "step": 0.01
+   },
+   "NASDAQ": {
+    "spread_je_seite_pct": 0.0027,
+    "kosten_long_pa_pct": 6.82,
+    "kosten_short_pa_pct": 0.72,
+    "contract": 1.0,
+    "min": 0.01,
+    "step": 0.01
+   },
+   "US30": {
+    "spread_je_seite_pct": 0.0025,
+    "kosten_long_pa_pct": 8.12,
+    "kosten_short_pa_pct": -0.44,
+    "contract": 1.0,
+    "min": 0.01,
+    "step": 0.01
+   },
+   "DAX": {
+    "spread_je_seite_pct": 0.025,
+    "kosten_long_pa_pct": 6.39,
+    "kosten_short_pa_pct": 0.06,
+    "contract": 1.0,
+    "min": 0.01,
+    "step": 0.1
+   },
+   "GOLD": {
+    "spread_je_seite_pct": 0.0062,
+    "kosten_long_pa_pct": 7.68,
+    "kosten_short_pa_pct": 0.36,
+    "contract": 100.0,
+    "min": 0.01,
+    "step": 0.01
+   },
+   "SILVER": {
+    "spread_je_seite_pct": 0.0268,
+    "kosten_long_pa_pct": 11.06,
+    "kosten_short_pa_pct": -0.69,
+    "contract": 5000.0,
+    "min": 0.01,
+    "step": 0.01
+   },
+   "OIL": {
+    "spread_je_seite_pct": 0.025,
+    "kosten_long_pa_pct": -20.49,
+    "kosten_short_pa_pct": 87.61,
+    "contract": 1.0,
+    "min": 1.0,
+    "step": 1.0
+   },
+   "COPPER": {
+    "spread_je_seite_pct": 0.025,
+    "kosten_long_pa_pct": 9.75,
+    "kosten_short_pa_pct": -1.46,
+    "contract": 1000.0,
+    "min": 1.0,
+    "step": 1.0
+   },
+   "EURUSD": {
+    "spread_je_seite_pct": 0.0013,
+    "kosten_long_pa_pct": 4.05,
+    "kosten_short_pa_pct": -0.13,
+    "contract": 100000.0,
+    "min": 0.01,
+    "step": 0.01
+   },
+   "USDJPY": {
+    "spread_je_seite_pct": 0.0016,
+    "kosten_long_pa_pct": -1.39,
+    "kosten_short_pa_pct": 5.55,
+    "contract": 100000.0,
+    "min": 0.01,
+    "step": 0.01
+   },
+   "BTC": {
+    "spread_je_seite_pct": 0.0013,
+    "kosten_long_pa_pct": 29.0,
+    "kosten_short_pa_pct": 28.0,
+    "contract": 1.0,
+    "min": 0.01,
+    "step": 0.01
+   }
+  },
+  "EK": {
+   "SP500": {
+    "spread_je_seite_pct": 0.0019,
+    "kosten_long_pa_pct": 6.39,
+    "kosten_short_pa_pct": -1.37,
+    "contract": 1.0,
+    "min": 0.01,
+    "step": 0.01
+   },
+   "NASDAQ": {
+    "spread_je_seite_pct": 0.0013,
+    "kosten_long_pa_pct": 6.37,
+    "kosten_short_pa_pct": -1.26,
+    "contract": 1.0,
+    "min": 0.01,
+    "step": 0.01
+   },
+   "US30": {
+    "spread_je_seite_pct": 0.0012,
+    "kosten_long_pa_pct": 6.42,
+    "kosten_short_pa_pct": -1.24,
+    "contract": 1.0,
+    "min": 0.01,
+    "step": 0.01
+   },
+   "DAX": {
+    "spread_je_seite_pct": 0.025,
+    "kosten_long_pa_pct": 4.63,
+    "kosten_short_pa_pct": 0.09,
+    "contract": 1.0,
+    "min": 0.01,
+    "step": 0.01
+   },
+   "GOLD": {
+    "spread_je_seite_pct": 0.003,
+    "kosten_long_pa_pct": 5.11,
+    "kosten_short_pa_pct": -3.74,
+    "contract": 100.0,
+    "min": 0.01,
+    "step": 0.01
+   },
+   "SILVER": {
+    "spread_je_seite_pct": 0.0341,
+    "kosten_long_pa_pct": 6.36,
+    "kosten_short_pa_pct": -2.67,
+    "contract": 5000.0,
+    "min": 0.01,
+    "step": 0.01
+   },
+   "OIL": {
+    "spread_je_seite_pct": 0.025,
+    "kosten_long_pa_pct": -8.65,
+    "kosten_short_pa_pct": 14.5,
+    "contract": 1.0,
+    "min": 1.0,
+    "step": 1.0
+   },
+   "COPPER": {
+    "spread_je_seite_pct": 0.025,
+    "kosten_long_pa_pct": 9.22,
+    "kosten_short_pa_pct": -3.55,
+    "contract": 1000.0,
+    "min": 1.0,
+    "step": 1.0
+   },
+   "EURUSD": {
+    "spread_je_seite_pct": 0.0071,
+    "kosten_long_pa_pct": 1.91,
+    "kosten_short_pa_pct": -1.08,
+    "contract": 100000.0,
+    "min": 0.01,
+    "step": 0.01
+   },
+   "USDJPY": {
+    "spread_je_seite_pct": 0.0051,
+    "kosten_long_pa_pct": -1.6,
+    "kosten_short_pa_pct": 3.24,
+    "contract": 100000.0,
+    "min": 0.01,
+    "step": 0.01
+   },
+   "BTC": {
+    "spread_je_seite_pct": 0.0058,
+    "kosten_long_pa_pct": -0.0,
+    "kosten_short_pa_pct": -0.0,
+    "contract": 1.0,
+    "min": 0.01,
+    "step": 0.01
+   }
+  }
+ },
+ "finalisten": {
+  "kombi_r0.5": {
+   "TTP_heute_is_2001_2012": {
+    "cagr_pct": 1.239,
+    "maxdd_pct": -3.39,
+    "ratio": 0.365,
+    "worst_day_pct": -1.1,
+    "vol_pct": 2.21,
+    "trades": 700,
+    "sl_exits": 40,
+    "skipped": 2248
+   },
+   "TTP_heute_oos_2013_2026": {
+    "cagr_pct": 0.45,
+    "maxdd_pct": -4.11,
+    "ratio": 0.11,
+    "worst_day_pct": -0.93,
+    "vol_pct": 1.49,
+    "trades": 654,
+    "sl_exits": 51,
+    "skipped": 3034,
+    "p_trailing7_pa": 0.0,
+    "p_tag3_pa": 0.0
+   },
+   "TTP_zinsangep_is_2001_2012": {
+    "cagr_pct": 1.502,
+    "maxdd_pct": -3.29,
+    "ratio": 0.456,
+    "worst_day_pct": -1.08,
+    "vol_pct": 2.21,
+    "trades": 694,
+    "sl_exits": 40,
+    "skipped": 2247
+   },
+   "TTP_zinsangep_oos_2013_2026": {
+    "cagr_pct": 0.588,
+    "maxdd_pct": -4.22,
+    "ratio": 0.139,
+    "worst_day_pct": -0.9,
+    "vol_pct": 1.5,
+    "trades": 678,
+    "sl_exits": 51,
+    "skipped": 2968,
+    "p_trailing7_pa": 0.0,
+    "p_tag3_pa": 0.0
+   },
+   "TTP_kontrolle_immer_long_zinsangep_oos": {
+    "cagr_pct": 0.203,
+    "maxdd_pct": -7.74,
+    "ratio": 0.026,
+    "worst_day_pct": -0.61,
+    "vol_pct": 1.71,
+    "trades": 96,
+    "sl_exits": 22,
+    "skipped": 173
+   },
+   "EK_heute_is_2001_2012": {
+    "cagr_pct": -0.016,
+    "maxdd_pct": -0.27,
+    "ratio": -0.059,
+    "worst_day_pct": -0.05,
+    "vol_pct": 0.06,
+    "trades": 19,
+    "sl_exits": 0,
+    "skipped": 5640
+   },
+   "EK_heute_oos_2013_2026": {
+    "cagr_pct": 0.0,
+    "maxdd_pct": 0.0,
+    "ratio": NaN,
+    "worst_day_pct": 0.0,
+    "vol_pct": 0.0,
+    "trades": 0,
+    "sl_exits": 0,
+    "skipped": 6238
+   },
+   "EK_zinsangep_is_2001_2012": {
+    "cagr_pct": -0.016,
+    "maxdd_pct": -0.27,
+    "ratio": -0.058,
+    "worst_day_pct": -0.05,
+    "vol_pct": 0.06,
+    "trades": 19,
+    "sl_exits": 0,
+    "skipped": 5640
+   },
+   "EK_zinsangep_oos_2013_2026": {
+    "cagr_pct": 0.0,
+    "maxdd_pct": 0.0,
+    "ratio": NaN,
+    "worst_day_pct": 0.0,
+    "vol_pct": 0.0,
+    "trades": 0,
+    "sl_exits": 0,
+    "skipped": 6238
+   },
+   "EK_kontrolle_immer_long_zinsangep_oos": {
+    "cagr_pct": 0.13,
+    "maxdd_pct": -2.32,
+    "ratio": 0.056,
+    "worst_day_pct": -0.33,
+    "vol_pct": 0.71,
+    "trades": 60,
+    "sl_exits": 9,
+    "skipped": 1211
+   }
+  },
+  "kombi_r0.25": {
+   "TTP_heute_is_2001_2012": {
+    "cagr_pct": 0.38,
+    "maxdd_pct": -1.53,
+    "ratio": 0.248,
+    "worst_day_pct": -0.45,
+    "vol_pct": 0.89,
+    "trades": 523,
+    "sl_exits": 22,
+    "skipped": 3113
+   },
+   "TTP_heute_oos_2013_2026": {
+    "cagr_pct": 0.061,
+    "maxdd_pct": -2.07,
+    "ratio": 0.029,
+    "worst_day_pct": -0.24,
+    "vol_pct": 0.52,
+    "trades": 469,
+    "sl_exits": 46,
+    "skipped": 4094,
+    "p_trailing7_pa": 0.0,
+    "p_tag3_pa": 0.0
+   },
+   "TTP_zinsangep_is_2001_2012": {
+    "cagr_pct": 0.461,
+    "maxdd_pct": -1.4,
+    "ratio": 0.329,
+    "worst_day_pct": -0.45,
+    "vol_pct": 0.88,
+    "trades": 523,
+    "sl_exits": 22,
+    "skipped": 3113
+   },
+   "TTP_zinsangep_oos_2013_2026": {
+    "cagr_pct": 0.142,
+    "maxdd_pct": -1.94,
+    "ratio": 0.073,
+    "worst_day_pct": -0.24,
+    "vol_pct": 0.52,
+    "trades": 479,
+    "sl_exits": 46,
+    "skipped": 4064,
+    "p_trailing7_pa": 0.0,
+    "p_tag3_pa": 0.0
+   },
+   "TTP_kontrolle_immer_long_zinsangep_oos": {
+    "cagr_pct": 0.14,
+    "maxdd_pct": -3.1,
+    "ratio": 0.045,
+    "worst_day_pct": -0.27,
+    "vol_pct": 0.76,
+    "trades": 72,
+    "sl_exits": 21,
+    "skipped": 411
+   },
+   "EK_heute_is_2001_2012": {
+    "cagr_pct": 0.0,
+    "maxdd_pct": 0.0,
+    "ratio": NaN,
+    "worst_day_pct": 0.0,
+    "vol_pct": 0.0,
+    "trades": 0,
+    "sl_exits": 0,
+    "skipped": 5678
+   },
+   "EK_heute_oos_2013_2026": {
+    "cagr_pct": 0.0,
+    "maxdd_pct": 0.0,
+    "ratio": NaN,
+    "worst_day_pct": 0.0,
+    "vol_pct": 0.0,
+    "trades": 0,
+    "sl_exits": 0,
+    "skipped": 6238
+   },
+   "EK_zinsangep_is_2001_2012": {
+    "cagr_pct": 0.0,
+    "maxdd_pct": 0.0,
+    "ratio": NaN,
+    "worst_day_pct": 0.0,
+    "vol_pct": 0.0,
+    "trades": 0,
+    "sl_exits": 0,
+    "skipped": 5678
+   },
+   "EK_zinsangep_oos_2013_2026": {
+    "cagr_pct": 0.0,
+    "maxdd_pct": 0.0,
+    "ratio": NaN,
+    "worst_day_pct": 0.0,
+    "vol_pct": 0.0,
+    "trades": 0,
+    "sl_exits": 0,
+    "skipped": 6238
+   },
+   "EK_kontrolle_immer_long_zinsangep_oos": {
+    "cagr_pct": 0.034,
+    "maxdd_pct": -0.47,
+    "ratio": 0.073,
+    "worst_day_pct": -0.1,
+    "vol_pct": 0.15,
+    "trades": 22,
+    "sl_exits": 1,
+    "skipped": 1414
+   }
+  },
+  "kombi_alle_r0.5": {
+   "TTP_heute_is_2001_2012": {
+    "cagr_pct": 1.164,
+    "maxdd_pct": -5.03,
+    "ratio": 0.231,
+    "worst_day_pct": -1.24,
+    "vol_pct": 2.75,
+    "trades": 1100,
+    "sl_exits": 50,
+    "skipped": 3071
+   },
+   "TTP_heute_oos_2013_2026": {
+    "cagr_pct": 0.309,
+    "maxdd_pct": -4.8,
+    "ratio": 0.064,
+    "worst_day_pct": -1.1,
+    "vol_pct": 1.73,
+    "trades": 887,
+    "sl_exits": 76,
+    "skipped": 4129,
+    "p_trailing7_pa": 0.0,
+    "p_tag3_pa": 0.0
+   },
+   "TTP_zinsangep_is_2001_2012": {
+    "cagr_pct": 1.546,
+    "maxdd_pct": -4.84,
+    "ratio": 0.32,
+    "worst_day_pct": -1.23,
+    "vol_pct": 2.76,
+    "trades": 1110,
+    "sl_exits": 50,
+    "skipped": 3048
+   },
+   "TTP_zinsangep_oos_2013_2026": {
+    "cagr_pct": 0.515,
+    "maxdd_pct": -4.39,
+    "ratio": 0.117,
+    "worst_day_pct": -1.07,
+    "vol_pct": 1.71,
+    "trades": 892,
+    "sl_exits": 76,
+    "skipped": 4109,
+    "p_trailing7_pa": 0.0,
+    "p_tag3_pa": 0.0
+   },
+   "TTP_kontrolle_immer_long_zinsangep_oos": {
+    "cagr_pct": -0.662,
+    "maxdd_pct": -11.32,
+    "ratio": -0.058,
+    "worst_day_pct": -0.94,
+    "vol_pct": 2.17,
+    "trades": 124,
+    "sl_exits": 40,
+    "skipped": 223
+   },
+   "EK_heute_is_2001_2012": {
+    "cagr_pct": -0.016,
+    "maxdd_pct": -0.27,
+    "ratio": -0.059,
+    "worst_day_pct": -0.05,
+    "vol_pct": 0.06,
+    "trades": 19,
+    "sl_exits": 0,
+    "skipped": 7578
+   },
+   "EK_heute_oos_2013_2026": {
+    "cagr_pct": 0.0,
+    "maxdd_pct": 0.0,
+    "ratio": NaN,
+    "worst_day_pct": 0.0,
+    "vol_pct": 0.0,
+    "trades": 0,
+    "sl_exits": 0,
+    "skipped": 7976
+   },
+   "EK_zinsangep_is_2001_2012": {
+    "cagr_pct": -0.016,
+    "maxdd_pct": -0.27,
+    "ratio": -0.058,
+    "worst_day_pct": -0.05,
+    "vol_pct": 0.06,
+    "trades": 19,
+    "sl_exits": 0,
+    "skipped": 7578
+   },
+   "EK_zinsangep_oos_2013_2026": {
+    "cagr_pct": 0.0,
+    "maxdd_pct": 0.0,
+    "ratio": NaN,
+    "worst_day_pct": 0.0,
+    "vol_pct": 0.0,
+    "trades": 0,
+    "sl_exits": 0,
+    "skipped": 7976
+   },
+   "EK_kontrolle_immer_long_zinsangep_oos": {
+    "cagr_pct": 0.13,
+    "maxdd_pct": -2.32,
+    "ratio": 0.056,
+    "worst_day_pct": -0.33,
+    "vol_pct": 0.71,
+    "trades": 60,
+    "sl_exits": 9,
+    "skipped": 1706
+   }
+  }
+ },
+ "explorativ_ek": {
+  "SP500_r1": {
+   "cagr_pct": 0.208,
+   "maxdd_pct": -1.57,
+   "ratio": 0.133,
+   "worst_day_pct": -0.27,
+   "vol_pct": 0.54,
+   "trades": 15,
+   "sl_exits": 1,
+   "skipped": 42,
+   "p_trailing7_pa": 0.0,
+   "p_tag3_pa": 0.0
+  },
+  "SP500_r2": {
+   "cagr_pct": 0.579,
+   "maxdd_pct": -3.85,
+   "ratio": 0.15,
+   "worst_day_pct": -0.55,
+   "vol_pct": 1.31,
+   "trades": 14,
+   "sl_exits": 1,
+   "skipped": 1,
+   "p_trailing7_pa": 0.0,
+   "p_tag3_pa": 0.0
+  },
+  "SP500+NASDAQ_r1": {
+   "cagr_pct": 0.398,
+   "maxdd_pct": -2.4,
+   "ratio": 0.166,
+   "worst_day_pct": -0.43,
+   "vol_pct": 0.99,
+   "trades": 28,
+   "sl_exits": 1,
+   "skipped": 90,
+   "p_trailing7_pa": 0.0,
+   "p_tag3_pa": 0.0
+  },
+  "SP500+NASDAQ_r2": {
+   "cagr_pct": 1.304,
+   "maxdd_pct": -5.42,
+   "ratio": 0.241,
+   "worst_day_pct": -1.0,
+   "vol_pct": 2.43,
+   "trades": 26,
+   "sl_exits": 1,
+   "skipped": 2,
+   "p_trailing7_pa": 0.0015,
+   "p_tag3_pa": 0.0
+  },
+  "SP500+NASDAQ+DAX+US30_r1": {
+   "cagr_pct": 0.712,
+   "maxdd_pct": -5.15,
+   "ratio": 0.138,
+   "worst_day_pct": -0.78,
+   "vol_pct": 1.61,
+   "trades": 58,
+   "sl_exits": 2,
+   "skipped": 198,
+   "p_trailing7_pa": 0.0,
+   "p_tag3_pa": 0.0
+  },
+  "SP500+NASDAQ+DAX+US30_r2": {
+   "cagr_pct": 1.737,
+   "maxdd_pct": -11.7,
+   "ratio": 0.148,
+   "worst_day_pct": -1.7,
+   "vol_pct": 4.2,
+   "trades": 51,
+   "sl_exits": 3,
+   "skipped": 6,
+   "p_trailing7_pa": 0.0755,
+   "p_tag3_pa": 0.0
+  }
+ },
+ "btc": {
+  "TTP_BTC": {
+   "cagr_pct": 1.159,
+   "maxdd_pct": -4.2,
+   "ratio": 0.276,
+   "worst_day_pct": -1.29,
+   "vol_pct": 1.77,
+   "trades": 828,
+   "sl_exits": 49,
+   "skipped": 2320
+  },
+  "EK_BTC": {
+   "cagr_pct": 0.35,
+   "maxdd_pct": -1.65,
+   "ratio": 0.212,
+   "worst_day_pct": -1.03,
+   "vol_pct": 0.86,
+   "trades": 134,
+   "sl_exits": 0,
+   "skipped": 5804
+  },
+  "TTP_GOLD_BTC": {
+   "cagr_pct": 0.708,
+   "maxdd_pct": -4.33,
+   "ratio": 0.163,
+   "worst_day_pct": -1.29,
+   "vol_pct": 1.77,
+   "trades": 790,
+   "sl_exits": 49,
+   "skipped": 3059
+  },
+  "EK_GOLD_BTC": {
+   "cagr_pct": 0.002,
+   "maxdd_pct": -1.65,
+   "ratio": 0.001,
+   "worst_day_pct": -1.03,
+   "vol_pct": 0.66,
+   "trades": 72,
+   "sl_exits": 0,
+   "skipped": 6393
+  }
+ }
+}

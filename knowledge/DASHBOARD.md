@@ -403,6 +403,12 @@ außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
 
+- (07.10.) **Gamma als Risikoregler für Intraday-Beine:** blind bestätigt,
+  dass viel SPX-Gamma die Tagesrange halbiert. Kandidat: Risiko an
+  Gamma-Extremen (Q1/Q5) halbieren. 2025–26 senkte das den MaxDD überall,
+  kostete bei NASDAQ live aber Ertrag. Vor einer Live-Umsetzung vorab
+  registrieren und forward prüfen. Siehe [[gamma-mechanismen-gex]].
+
 - (07.10.) **Faber-Trend, falls wieder aufgenommen:** Rotation in ein Ersatz-Asset nur mit Deckel testen (z.B. höchstens ein Slot bzw. 5 % Risiko im Ersatz-Asset). Ohne Deckel landen alle Cash-Slots gleichzeitig im selben Markt (Öl: −20 %-Tage). Projekt pausiert, siehe [[faber-gtaa-10-monats-sma]].
 - (05.10.) **ORB-Mechanismus testen:** Ist der Edge an Tagen mit großem
   Eröffnungs-Ungleichgewicht (großer Gap, hohes Volumen der ersten

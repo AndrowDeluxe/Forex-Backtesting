@@ -91,3 +91,17 @@ registrierte Gamma-Regeln dienen. Dazu kommt der Forward-Test ab 10/2026.
 
 Verwandt: [[baltussen-tagesend-momentum]], [[orb-neues-regime-2026]],
 [[orb-order-storno-und-haltedauer]].
+
+## Vorab-Registrierung blinder Test 06/2012–07/2016 (07.10., VOR dem Laden der Daten)
+
+Skript `scripts/research_gamma_rules_blind.py`, Lock `gamma_rules_blind_20261007`.
+Die M1-Daten beginnen bei Dukascopy im Mai 2012. Bisher hat keine Studie
+Daten vor dem 28.07.2016 genutzt. Getestet wird einmal; das Ergebnis zählt.
+
+| Regel | Bestanden, wenn … (für beide Indizes) |
+|---|---|
+| **R1 Volatilität** | Median-Tagesrange Q1 ≥ 1,5 × Q5 **und** Spearman(Quintil, Median) ≤ −0,9 |
+| **R2 Kein Ausbruch bei viel Gamma** | ORB 1. Ausbruch (beide Richtungen, Stop 1,0 ATR, Exit 16:00): Ø R(Q5) < Ø R(Q1–Q4); **stark**, wenn zusätzlich Ø R(Q5) < 0 |
+
+Nicht blind testbar und deshalb ausgelassen: die DIX-Regel (2012–2016 wurde
+schon angesehen).

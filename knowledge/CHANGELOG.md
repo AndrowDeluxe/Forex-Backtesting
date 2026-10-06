@@ -29,6 +29,19 @@ keine Planung (dafür ist `DASHBOARD.md`).
     Idee „Rotation mit Deckel" liegt in der Ideen-Inbox.
   - Code `faber_trend/` + Skripte + eingefrorene Daten committet.
 
+- **2026-10-07** [Research] **Blinder Gamma-Test 06/2012–07/2016 + Gamma als
+  ORB-Regler 2025–26.**
+  - Vorab registriert (`2593f8d4`), dann einmal geoeffnet. Lock
+    `gamma_rules_blind_20261007`.
+  - **R1 „viel Gamma = kleine Tagesrange“: BESTANDEN** (2,0× / 1,9×,
+    perfekt monoton).
+  - **R2 „kein ORB bei viel Gamma“: NICHT bestanden** (NASDAQ Q5 besser;
+    SP500 2012–13 Datenfehler, ATR viel zu klein).
+  - **Regler 2025–26 (beschreibend):** An den Gamma-Extremen aussetzen senkt
+    den MaxDD in jeder Version. Bei NASDAQ live kostet es aber Ertrag
+    (+73 → +35 R).
+  - Keine Bot-Aenderung. Projekt: `projects/gamma-mechanismen-gex.md`.
+
 - **2026-10-07** [Research] **Gamma-Daten, Baltussen erweitert,
   Einstiegsvarianten IS 2016.**
   - **Echtes SPX-GEX/DIX** (SqueezeMetrics, frei, ab 2011) eingefroren.

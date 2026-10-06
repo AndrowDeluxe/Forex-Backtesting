@@ -40,6 +40,50 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **✅ Entschieden 06.10. (Nutzer): ORB live bleibt, wie es war.** Kein Pausieren und
+  keine Risikosenkung. Der echte Test ist der Forward ab 05.10. (Lock-Regel:
+  ≥ 100 Trades je Index oder 31.03.2027). Hintergrund:
+- **ORB: IS-only-Version fällt im Tresor durch (06.10.). Was heißt das
+  für die live laufende ORB?** Details: [[orb-order-storno-und-haltedauer]]
+  (Nachtrag 06.10.).
+  - **Auswahl:** nur auf IS 2016–2022, 7 Punkte je Index (Richtwert max. 9),
+    SP500 + NASDAQ. Long+short bzw. long, Ribbon neutral, Stop 1,0 ATR, 8R.
+  - **Ergebnis:** OOS hielt (PF 1,34). Tresor 10/2025–09/2026: −87 R,
+    PF 0,52. 100k-Konto bei 1 % Risiko → 40,5k (−59,5 %).
+  - **Deflated Sharpe:** ~0.
+  - **Live-Version zum Vergleich:** im Tresor SP500 +5 R, NASDAQ +55 R. Sie
+    wurde aber mit Blick auf genau diesen Zeitraum gewählt, ist also kein
+    fairer Test.
+  - **Live wurde NICHT geändert.** Offen: ORB live weiterlaufen lassen,
+    Risiko senken oder pausieren? Annahme bis zur Entscheidung: alles bleibt,
+    wie es ist.
+  - **Diagnose (06.10.):** Gekippt ist der EMA-Ribbon-Filter, nicht die
+    ORB-Mechanik. „Neutral“ schlug „mit Trend“ in 16 von 18 Index-Jahren (Ausnahmen ~0);
+    im Tresor dreht es sich bei beiden Indizes um. **SP500 live nutzt
+    „neutral“, ist also direkt betroffen.** NASDAQ live hat keinen Ribbon.
+    Details im Projekt-Nachtrag „Diagnose“.
+  - **Neue-Regime-Runde (06.10.) auch durchgefallen** ([[orb-neues-regime-2026]]):
+    3. Ausbruch / Fehlausbruch, IS = der Bruch → OOS −31 R / ±0, Tresor
+    −8 / −13 R. **SP500 live im Backtest 2026: OOS −4,9 R, Tresor −8,5 R.**
+    NASDAQ live +18 / +33 R (vorbelastet). Die Entscheidung SP500-ORB
+    pausieren ja/nein bleibt offen.
+
+- **🟢 Faber-Trend Funded/EK (05.10.): Urteil bestätigen.** Details:
+  [[faber-gtaa-10-monats-sma]].
+  - **Erledigt:** Kontraktgrößen, Mindestlots, Spreads und Swaps sind
+    jetzt echte MT5-Werte (gelesen 05.10.).
+  - **Offene Annahmen:**
+    - Futures statt CFD-Kurse für Rohstoffe;
+    - Zinsanpassung der Swaps über ^IRX;
+    - BTC-SL als Median der anderen Instrumente;
+    - Zufallstest nur 100 Läufe.
+  - **Urteil:** „TTP regelkonform, aber ~0,5 % p.a.; EK nicht handelbar
+    → keine Live-Umsetzung". Bestätigen oder Richtung vorgeben.
+  - **Neu 06.10.:** Auf EK mit hohem Risiko (5 %/Position, Cash only, SMA10,
+    SL 20 %, ohne Öl) ergeben sich ~5,5 % p.a. bei −20 % MaxDD, stabil über
+    beide Zeitfenster. EK ist echtes Geld; ob überhaupt (und mit welchem
+    Risiko) ist deine Entscheidung. Vorher Phase 8.
+
 - **🟢 Dachprojekt Quant × diskretionär (04.10.): meine Annahmen.** Details:
   [[quant-diskretionaer-fusion]].
   - Ordnername `fusion_lab/` und Notizname „quant-diskretionaer-fusion".
@@ -383,6 +427,19 @@ außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
 | EK-Portfolio-Paper                                      | —                                                                                        | pausiert (Paper-Zwilling von EK-Portfolio-Bridge, gehört zum Portfolio)                        | Disabled       | 2026-09-01      |
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
+
+- (05.10.) **ORB-Mechanismus testen:** Ist der Edge an Tagen mit großem
+  Eröffnungs-Ungleichgewicht (großer Gap, hohes Volumen der ersten
+  15 Min.) größer? Das würde Feld 1/2 (Flows/Unterreaktion) stützen. Kommt
+  aus der Kriterien-PDF `Claude outputs/orb_profitabilitaets_kriterien_20261005.pdf`,
+  wo „Mechanismus erklärbar“ nur gelb ist. Literatur fand genau das:
+  Gao et al. (JFE 2018, stärker an Volumen-/News-Tagen) und Zarattini/Barbon/Aziz
+  (SSRN 2024, „Stocks in Play“ +0,38 R gegen −0,02 R).
+- (05.10.) **ORB-Gamma-Regime-Filter:** Baltussen et al. (JFE 2021) führen
+  Intraday-Momentum auf Short-Gamma-Hedging zurück. Eine Blog-Messung
+  (FirmTape, SPX 2022–26) findet seit 0DTE nur noch an Short-Gamma-Tagen
+  einen Effekt (t = 3,1). Prüfen, ob es GEX-Historie gibt, die man als
+  Filter testen könnte. Quelle: Seite 3 der Kriterien-PDF.
 
 - (04.10.) ~~CLS als ruhende Stop-Order~~ -- **am selben Tag gerechnet und
   verworfen** (CHANGELOG 04.10.): Ø R sinkt sogar, ΣR gleich. Die heutigen

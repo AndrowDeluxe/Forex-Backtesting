@@ -1,0 +1,54 @@
+{
+  "winners": {
+    "SP500": {
+      "mode": "nth_same",
+      "n": 3,
+      "range_bars": 1,
+      "dirs": "beide",
+      "ribbon": "kein",
+      "weekday": null,
+      "cutoff": "12:30",
+      "open_f": "kein",
+      "vix_f": "kein",
+      "stop": 0.6,
+      "target": 4.0,
+      "_is": {
+        "n": 114,
+        "pf": 1.6825779442610127,
+        "avg": 0.5118053036249766,
+        "t": 2.324806247369838,
+        "win": 0.32456140350877194,
+        "dsr_skew0": 0.0
+      }
+    },
+    "NASDAQ": {
+      "mode": "after_fail",
+      "n": 1,
+      "range_bars": 1,
+      "dirs": "beide",
+      "ribbon": "kein",
+      "weekday": null,
+      "cutoff": "16:00",
+      "open_f": "kein",
+      "vix_f": "kein",
+      "stop": 1.5,
+      "target": null,
+      "_is": {
+        "n": 58,
+        "pf": 2.2620166755302775,
+        "avg": 0.7678699221964747,
+        "t": 1.5162491209485078,
+        "win": 0.39655172413793105,
+        "dsr_skew0": 0.0
+      }
+    }
+  },
+  "n_trials": {
+    "SP500": 46656,
+    "NASDAQ": 46656
+  },
+  "sr_var_trials": {
+    "SP500": 8.329258413104213,
+    "NASDAQ": 44.6711157034373
+  }
+}

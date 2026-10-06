@@ -135,6 +135,11 @@ PHASES: list[tuple[str, str, list[tuple[str, str]]]] = [
         "phase4",
         ":material/construction: Phase 4 -- Vertiefung je Kandidat",
         [
+            # p4_0 + p6_9/p6_10: Overfitting-Sperre, ergaenzt 2026-10-05, nachdem die
+            # ORB-Konfiguration ab Stage 2 direkt auf OOS-Zahlen ausgewaehlt wurde.
+            # Regeln: knowledge/areas/overfitting-sperre.md, Code: research_lock.py
+            ("p4_0", "Split VOR dem ersten Test registrieren (`research_lock.Lock.register_split`): "
+                     "IS / OOS / Tresor = letzte 12 Monate -- danach unveraenderlich"),
             ("p4_1", "Eigenes Backend-Package anlegen (Muster: `asian_range_breakout/`)"),
             ("p4_2", "Echte Gold-Daten nutzen (Dukascopy XAUUSD, nicht nur den Screening-Proxy)"),
             ("p4_3", "Regeln 1:1 aus dem Paper umsetzen -- keine frei erfundenen Parameter"),
@@ -144,6 +149,8 @@ PHASES: list[tuple[str, str, list[tuple[str, str]]]] = [
         "phase5",
         ":material/merge: Phase 5 -- Kombination mit vorhandenen Bausteinen",
         [
+            ("p5_0", "Optimieren und Filter waehlen NUR auf IS (`Lock.is_only`) -- Skripte geben in "
+                     "Phase 4/5 keine OOS-Zahlen aus; jede Variante ins Trial-Register (`log_trials`)"),
             ("p5_1", "Kalman-Filter (`strategy/kalman_filter.py`) testen -- hilft/schadet?"),
             ("p5_2", "ADX-Filter / VWAP-Deviation aus `strategy/indicators.py` pruefen"),
             ("p5_3", "EMA200-Regimefilter (aus `ou_paper_backtest/`) als Marktregime-Gate testen"),
@@ -172,6 +179,10 @@ PHASES: list[tuple[str, str, list[tuple[str, str]]]] = [
                      "des erzeugten Hebels ausweisen, nicht nur den Median -- der Schaden sitzt im Tail"),
             ("p6_8", "Stop-Abstand gegen die Kosten stellen: Anteil der Trades mit SL < 3x Round-Trip-Kosten "
                      "und deren Ø R separat ausweisen"),
+            ("p6_9", "Konfiguration einfrieren (`Lock.freeze`), Deflated Sharpe gegen die Versuchsanzahl "
+                     "ausweisen (`research_lock.deflated_sharpe`, Ziel > 0,95)"),
+            ("p6_10", "OOS genau einmal, dann den Tresor genau einmal oeffnen (`Lock.unseal`) -- Ergebnis "
+                      "zaehlt, egal wie; danach Aenderungen nur noch mit Forward-/Live-Daten pruefen"),
         ],
     ),
     (

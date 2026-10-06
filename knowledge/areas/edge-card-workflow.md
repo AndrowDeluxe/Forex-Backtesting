@@ -30,6 +30,8 @@ Feld 01-04 laufen. Ab Phase 4 geht es im bestehenden Prozess weiter:
 - **Feld 05 TEST (Datenquelle/Zeitraum/Fallzahl) → Phase 4 + Phase 6**:
   legt fest, mit welchen Daten das Package in Phase 4 gebaut wird und
   über welchen Zeitraum/welche Marktphasen in Phase 6 geprüft wird.
+  Seit 2026-10-05 gehört dazu der Split IS / OOS / Tresor, der vor dem
+  ersten Test registriert wird ([[overfitting-sperre]]).
 - **Feld 04 GEGENPROBE → Phase 6 (Robustheit)**: die aus den Gegenproben
   abgeleiteten Kontrollgruppen (Feld 05 "Vergleich") werden zusätzlich zu
   Walk-Forward/Monte-Carlo/Kosten-Sensitivität als eigene Ablations-Tests

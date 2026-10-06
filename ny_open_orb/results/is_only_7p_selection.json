@@ -1,0 +1,42 @@
+{
+  "winners": {
+    "SP500": {
+      "dirs": "beide",
+      "ribbon": "neutral",
+      "weekday": null,
+      "rule": "none",
+      "stop": 1.0,
+      "target": 8.0,
+      "partial": null,
+      "range_bars": 1
+    },
+    "NASDAQ": {
+      "dirs": "long",
+      "ribbon": "neutral",
+      "weekday": null,
+      "rule": "none",
+      "stop": 1.0,
+      "target": 8.0,
+      "partial": null,
+      "range_bars": 1
+    }
+  },
+  "n_trials": {
+    "SP500": 3780,
+    "NASDAQ": 3780
+  },
+  "n_trials_round1": 22680,
+  "sr_var_trials": {
+    "SP500": 0.010552759834898104,
+    "NASDAQ": 0.005522498870641817
+  },
+  "optimized_points": [
+    "range_bars",
+    "dirs",
+    "ribbon",
+    "rule",
+    "stop",
+    "target",
+    "partial"
+  ]
+}

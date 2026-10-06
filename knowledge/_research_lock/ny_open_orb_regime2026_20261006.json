@@ -1,0 +1,52 @@
+{
+  "strategy": "ny_open_orb_regime2026_20261006",
+  "split": {
+    "is_start": "2025-10-01",
+    "is_end": "2026-03-31",
+    "oos_end": "2026-06-30",
+    "tresor_end": "2026-09-30"
+  },
+  "registered": "2026-10-06T20:45:47+00:00",
+  "trials": 93312,
+  "frozen": {
+    "hash": "e1b3ce093781bf563fce7be9903a63984dc80ec23849a665c842d67a1c65fe2a",
+    "config": {
+      "SP500": {
+        "mode": "nth_same",
+        "n": 3,
+        "range_bars": 1,
+        "dirs": "beide",
+        "ribbon": "kein",
+        "weekday": null,
+        "cutoff": "12:30",
+        "open_f": "kein",
+        "vix_f": "kein",
+        "stop": 0.6,
+        "target": 4.0
+      },
+      "NASDAQ": {
+        "mode": "after_fail",
+        "n": 1,
+        "range_bars": 1,
+        "dirs": "beide",
+        "ribbon": "kein",
+        "weekday": null,
+        "cutoff": "16:00",
+        "open_f": "kein",
+        "vix_f": "kein",
+        "stop": 1.5,
+        "target": null
+      }
+    },
+    "ts": "2026-10-06T21:26:35+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-06T21:26:35+00:00",
+    "tresor": "2026-10-06T21:36:02+00:00"
+  },
+  "forward": {
+    "start": "2026-10-05",
+    "eval_date": "2027-03-31",
+    "min_trades": 100
+  }
+}

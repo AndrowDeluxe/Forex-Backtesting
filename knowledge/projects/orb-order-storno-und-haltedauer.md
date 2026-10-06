@@ -191,3 +191,78 @@ Storno-Schwelle ist der bestehende Stop. Auf M5 sah das Teilziel nur besser
 aus, weil M5 die Füll-Bar falsch rechnet.
 
 Verwandt: [[ny-open-orb-sp500]], [[orb-exit-logik-neubewertung]].
+
+## Nachtrag 2026-10-06 — Nur auf IS optimiert: OOS hält, Tresor fällt durch
+
+Anlass: Die Live-Konfiguration wurde ab Stage 2 auf OOS ausgewählt (siehe
+[[overfitting-sperre]]). Dieser Test baut die Strategie neu auf, und zwar
+ausschließlich auf IS (07/2016–12/2022). Danach wurde sie eingefroren und
+OOS (01/2023–09/2025) sowie der Tresor (10/2025–09/2026) je einmal geöffnet.
+Die Öffnungen sind technisch gesperrt (`research_lock.py`).
+
+**Runde 1** (`scripts/research_orb_is_only_reopt.py`): 8 Punkte, 22.680
+Varianten je Index. Die Gewinner hatten einen Wochentag-Ausschluss und
+bestanden die Deflated Sharpe nicht. Die Runde wurde vor jeder OOS-/Tresor-
+Berechnung verworfen.
+
+**Runde 2** (`scripts/research_orb_is_only_7p.py`): Nutzerentscheid, nur
+SP500 + NASDAQ, je Index 7 Punkte (Richtwert max. 9), ohne Wochentag.
+
+| Index | Gewählt (nur IS) | IS PF | OOS PF | Tresor Σ R / PF |
+|---|---|---|---|---|
+| SP500 | long + short, Ribbon neutral, kein Storno, Stop 1,0 ATR, Ziel 8R | 1,41 | 1,38 | −54 / 0,48 |
+| NASDAQ | nur long, Ribbon neutral, kein Storno, Stop 1,0 ATR, Ziel 8R | 1,60 | 1,28 | −33 / 0,57 |
+
+- **100k-Konto, 1 % vom Kontostand je Trade, im Tresor:** 40,5k, MaxDD −62 %.
+- **Kein Datenfehler:** Die Trades sind normal über die Monate verteilt, die
+  Verluste bei −1 R gedeckelt. NASDAQ zerfällt schon seit 2022
+  (2022 −0,07; 2025 −0,08; 2026 −0,40 R je Trade).
+- **Deflated Sharpe ~0,** auch mit echter Schiefe. Die Varianz der Sharpe-
+  Werte über die Varianten ist so groß wie das Schätzrauschen.
+- **Live-Version im selben Tresor:** SP500 +5 R, NASDAQ +55 R (M1 ohne
+  Ticks). Sie wurde aber mit Blick darauf gewählt und ist kein fairer Test.
+
+**Folgerung:** Ohne Blick auf OOS führt der ORB-Prozess zu einer Version,
+die nach IS und OOS wie ein Treffer aussieht und im Tresor zusammenbricht.
+Das stützt den Overfitting-Verdacht gegen die ganze Familie. Was das für die
+Live-Version bedeutet, ist offen (DASHBOARD 🔍).
+
+Dateien:
+- `ny_open_orb/results/is_only_7p_*` (Auswahl, Reports, Trades, Konto)
+- PDF für die Gruppenarbeit: `Claude outputs/orb_profitabilitaets_kriterien_20261005.pdf`
+
+### Diagnose 2026-10-06: Woran der Tresor scheitert — der Trendfilter kippt
+
+Das ist reine Diagnose auf dem bereits geöffneten Tresor, keine neue Auswahl.
+Skript: `Claude outputs`-Scratch, Varianten über `run_config` aus
+`research_orb_is_only_reopt.py`.
+
+- **Der Trendfilter hat sich umgedreht.** Gemessen ist der Unterschied im Ø R
+  je Trade zwischen „Ribbon neutral“ und „Ribbon mit Trend“ (beide
+  Richtungen, Stop 1,0, 8R). Von 2017 bis 2025 ist er in 16 von 18 (Ausnahmen nahe null: NASDAQ 2019 −0,04, 2022 −0,01)
+  Index-Jahren positiv (SP500 +0,2 bis +0,7; NASDAQ +0,3 bis +0,7). Im
+  Tresor ist er erstmals bei beiden negativ: SP500 −0,65 (neutral −0,48,
+  Trend +0,17), NASDAQ −0,41 (−0,28 / +0,13). Je Topf sind es ~110 Trades,
+  über beide Indizes zusammen grob 2,4 σ.
+- **2022 (Zinsschock, Ölpreis) hat der Filter gehalten** (SP +0,38).
+  Makrostress allein erklärt den Kipp also nicht.
+- **Die Mechanik der Eröffnung selbst ist unverändert:** Folgen nach dem
+  ersten Ausbruch ~50 %, Range-Breite ~2,4/3,0 × ATR, Anteil Tage mit
+  Ausbruch in beide Richtungen normal. Das Intraday-Momentum (erste gegen
+  letzte 30 Min.) liegt im Tresor sogar bei +0,11 statt ~0.
+- **Der ungefilterte ORB war nie stark** (SP500 Ø +0,04 / −0,04 / +0,23 je
+  Periode). Fast der ganze Edge der IS-Version kam aus „nur neutrale Tage“.
+- **Das erklärt auch die Live-Version:** NASDAQ live hat keinen
+  Ribbon-Filter und blieb im Tresor positiv. SP500 live nutzt „neutral“ und
+  lag im Tresor bei ~0.
+- **Die Web-/SSRN-Erklärung ist eine Hypothese, nicht belegt:** Das
+  Dealer-Gamma-Regime hat sich verschoben.
+  - SpotGamma (03/2026): Das länger laufende Dealer-Gamma ist negativ bis
+    neutral, der Markt dreht von mean-reverting zu momentum-getrieben.
+  - Dim/Eraker/Vilkov: Positives Gamma stärkt Reversals, negatives
+    Momentum.
+  - Adams et al. (10/2025): 0DTE-Hedging dämpft das Momentum.
+  - Dazu kommen der Rekord-Anteil 0DTE (~63 % des SPX-Volumens, 02/2026)
+    und das Makro-Umfeld 2026: Iran-Krieg, Öl > 100 $, Q1 −9 %, Q2 bestes
+    Quartal seit 2020, Fed-Erhöhung 09/2026.
+  - Testbar nur mit GEX-Historie (Ideen-Inbox „ORB-Gamma-Regime-Filter“).

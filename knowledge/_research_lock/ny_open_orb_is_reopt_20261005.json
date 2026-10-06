@@ -1,0 +1,42 @@
+{
+  "strategy": "ny_open_orb_is_reopt_20261005",
+  "split": {
+    "is_start": "2016-07-28",
+    "is_end": "2022-12-31",
+    "oos_end": "2025-09-30",
+    "tresor_end": "2026-09-30"
+  },
+  "registered": "2026-10-05T18:46:34+00:00",
+  "trials": 68040,
+  "frozen": {
+    "hash": "44880984f69ca1597b7a9b058e3969dc27f70a9009f36a53ed96f54e462b6a6b",
+    "config": {
+      "SP500": {
+        "dirs": "long",
+        "ribbon": "neutral",
+        "weekday": "Wednesday",
+        "rule": "opposite",
+        "stop": 1.0,
+        "target": 8.0,
+        "partial": 3.0,
+        "range_bars": 1
+      },
+      "NASDAQ": {
+        "dirs": "long",
+        "ribbon": "neutral",
+        "weekday": "Friday",
+        "rule": "none",
+        "stop": 1.0,
+        "target": 8.0,
+        "partial": null,
+        "range_bars": 1
+      },
+      "US30": null
+    },
+    "ts": "2026-10-06T09:42:55+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-06T09:42:55+00:00",
+    "tresor": "2026-10-06T09:42:55+00:00"
+  }
+}

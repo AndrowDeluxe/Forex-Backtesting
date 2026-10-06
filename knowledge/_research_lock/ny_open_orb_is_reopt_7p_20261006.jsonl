@@ -1,0 +1,6 @@
+{"ts": "2026-10-06T09:48:53+00:00", "event": "register_split", "is_start": "2016-07-28", "is_end": "2022-12-31", "oos_end": "2025-09-30", "tresor_end": "2026-09-30"}
+{"ts": "2026-10-06T09:48:53+00:00", "event": "trials", "n": 3780, "total": 3780, "note": "SP500: 7-Punkte-Teilgitter (aus Runde 1, ohne Wochentag)"}
+{"ts": "2026-10-06T09:48:53+00:00", "event": "trials", "n": 3780, "total": 7560, "note": "NASDAQ: 7-Punkte-Teilgitter (aus Runde 1, ohne Wochentag)"}
+{"ts": "2026-10-06T09:49:09+00:00", "event": "freeze", "hash": "f83d0929c983d57433729f29437dc35c36724a969c02ce97e2ebf9e8b6de25db"}
+{"ts": "2026-10-06T09:49:09+00:00", "event": "unseal", "stage": "oos", "hash": "f83d0929c983d57433729f29437dc35c36724a969c02ce97e2ebf9e8b6de25db"}
+{"ts": "2026-10-06T09:56:10+00:00", "event": "unseal", "stage": "tresor", "hash": "f83d0929c983d57433729f29437dc35c36724a969c02ce97e2ebf9e8b6de25db"}

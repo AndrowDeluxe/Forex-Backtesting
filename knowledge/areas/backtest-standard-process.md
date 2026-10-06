@@ -14,6 +14,13 @@ verletzt (siehe [[gold-ctnl-edge-portfolio]]: Phase 6 wurde dort erst
 nachträglich auf Nutzer-Nachfrage nachgeholt, nachdem bereits Portfolio-/
 Risiko-Arbeit lief).
 
+**Overfitting-Sperre (seit 2026-10-05)**: Split IS / OOS / Tresor VOR
+Phase 4 registrieren, in Phase 4/5 nur auf IS optimieren, jede Variante
+zählen, einfrieren, dann OOS und Tresor je genau einmal öffnen -- Regeln und
+Code in [[overfitting-sperre]] (`research_lock.py`). Grund: die ORB-Strategie
+wurde ab Stage 2 direkt auf OOS ausgewählt, weil der OOS-Split bisher nur in
+Phase 6 als Prüfung stand.
+
 ## Die 8 Phasen
 
 1. **Recherche** -- Suchbegriff-Kategorien durchgehen, pro Kategorie 2-3
@@ -34,7 +41,8 @@ Risiko-Arbeit lief).
    Session-/Uhrzeit-Filter (Muster: CLS-Squeeze, Asian-Range-Breakout) je
    einzeln testen -- hilft/schadet?
 6. **Robustheit** -- Walk-Forward/echter Out-of-Sample-Split (anderer
-   Zeitraum als beim Fitting), Monte-Carlo-Bootstrap der Trade-Sequenz
+   Zeitraum als beim Fitting; seit 2026-10-05: der VORHER registrierte OOS,
+   erst nach `freeze`, genau einmal, siehe [[overfitting-sperre]]), Monte-Carlo-Bootstrap der Trade-Sequenz
    (Muster: `ou_paper_backtest/monte_carlo.py`), Kosten-Sensitivität
    (Spread/Slippage bis zum Breakeven), mehrere Jahre/Marktregime statt nur
    ein gutes Jahr. **Seit 2026-09-10 zusätzlich die vier Punkte der

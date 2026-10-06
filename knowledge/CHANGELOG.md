@@ -9,6 +9,116 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-06** [Research] **ORB im neuen Regime: N-ter Ausbruch untersucht,
+  neue Runde durchgefallen.**
+  - **Code:**
+    - `ny_open_orb/entries_nth.py` (2./3. Ausbruch, nach Fehlausbruch, Fade,
+      Retest) + 9 Tests
+    - `research_lock.py`: neue Forward-Stufe + 2 Tests
+    - Skripte `research_orb_nth_breakout_study.py` und
+      `research_orb_regime2026.py`
+  - **Befund:** Der 2./3. Ausbruch ist nicht besser als der erste. Im neuen
+    Regime drehen Umkehr-Einstiege ins Plus, aber nur im IS.
+  - **Runde mit IS = der Bruch (10/25–03/26), 9 Punkte, 46.656 Varianten je
+    Index:**
+    - OOS: SP500 −31 R, NASDAQ ±0
+    - Tresor (vorbelastet): −8 / −13 R
+  - Lock `ny_open_orb_regime2026_20261006`; Forward-Regel: ≥ 100 Trades oder
+    31.03.2027.
+  - Keine Bot-Änderung. Projekt: `projects/orb-neues-regime-2026.md`.
+
+- **2026-10-06** [Research] **Faber-Trend EK: Rotation in Öl statt Cash**
+  (Nutzerfrage, explorativ).
+  - Öl-Rotation schadet: 2013-2026 bei 5 % Risiko 4,4 % / −56 % statt
+    Cash 5,5 % / −22 %; der schlechteste Tag liegt bei −20 %.
+  - Ursache ist die Konzentration: Alle Cash-Slots landen gleichzeitig
+    im selben Öl.
+  - Das Bild bleibt ohne 2020 gleich.
+  - Keine Bot-Änderung.
+
+- **2026-10-06** [Research] **ORB nur auf IS neu optimiert, im Tresor
+  durchgefallen.** Skripte: `research_orb_is_only_reopt.py` (Runde 1) und
+  `research_orb_is_only_7p.py` (Runde 2).
+  - **Runde 1:** 8 Punkte inkl. Wochentag, 22.680 Varianten je Index.
+    Verworfen, bevor OOS oder Tresor berechnet wurden (Abbruch im
+    Lock-Protokoll vermerkt).
+  - **Runde 2:** nur SP500 + NASDAQ, 7 Punkte je Index. Neu: Hinweis
+    „max. 9 optimierte Punkte“ in der Sperre (Richtwert, keine harte Sperre).
+  - **Ergebnis:**
+
+    | | PF | Σ R |
+    |---|---|---|
+    | IS | 1,49 | |
+    | OOS | 1,34 | +120 |
+    | Tresor | 0,52 | −87 |
+
+    100k-Konto bei 1 % Risiko: 40,5k im Tresor. Deflated Sharpe ~0.
+  - **PDF für die Gruppenarbeit:** `Claude outputs/orb_profitabilitaets_kriterien_20261005.pdf`,
+    11 Seiten (Generator in `Claude outputs/orb_pdf_build/`).
+  - Keine Bot-Änderung.
+
+- **2026-10-06** [Research] **Faber-Trend auf EK mit 5-10 % Risiko**
+  (Nutzerfrage, explorativ, echte Tickmill-Kosten).
+  - Die einfache Variante (Cash only, SMA10, SL 20 %, 9 Instrumente)
+    liefert 2013-2026: 7,8 % p.a. / −27 % MaxDD (5 %), 12,5 % / −38 %
+    (7,5 %), 15,9 % / −52 % (10 %). Bis 2012 ähnlich.
+  - Der optimierte Finalist bricht bei hohem Risiko ein (−34 bis −66 %).
+  - Kontrolle „immer long", ohne Öl (Öl-Daten sind ein Artefakt):
+    Timing 5 %: 5,6 % / −19 % (2001-12) und 5,5 % / −22 % (2013-26);
+    immer long: −0,9 % / −59 % und 11,0 % / −27 %.
+  - Das Timing wirkt als Versicherung, nicht als Renditetreiber.
+  - Keine Bot-Änderung.
+
+- **2026-10-05** [Research] **Faber-Trend: Cash only + weiteste Stopps**
+  (Nutzerfrage, explorativ).
+  - Cash only + 20 % SL auf TTP 2013-2026: 0,56 % p.a. / −1,8 % MaxDD
+    (Finalist mit Gold: 0,59 % / −4,2 %).
+  - Der Gold-Switch läuft bei weiten Stopps nie über das Mindestlot.
+  - Weitester A5-Stopp (23 %): 0,25 % p.a.
+  - EK weiterhin 0 Trades; Urteil unverändert.
+
+- **2026-10-05** [Prozess] **Overfitting-Sperre als Standardprozess**
+  (Nutzerentscheid). Befund dazu: Die ORB-Konfiguration wurde ab Stage 2
+  direkt auf OOS ausgewählt, weil der OOS-Split nur in Phase 6 stand.
+  - **Neu:** `research_lock.py` (Split registrieren, `is_only`, Trial-Register,
+    `freeze`, OOS/Tresor je einmal `unseal`, Deflated Sharpe) +
+    `tests/test_research_lock.py` (10 Tests grün).
+  - **Doku:** `areas/overfitting-sperre.md`, Verweise in
+    `backtest-standard-process.md`, `edge-card-workflow.md` und `CLAUDE.md`.
+  - **Checkliste:** p4_0, p5_0, p6_9, p6_10 in `education_gold_intraday.py`.
+  - Kein festes Parameter-Limit.
+  - **Erste Anwendung:** `scripts/research_orb_is_only_reopt.py` (ORB nur auf
+    IS 2016-07 bis 2022-12 neu optimiert). Läuft noch, Ergebnis folgt.
+  - Keine Bot-Änderung. Noch nicht committet.
+
+- **2026-10-05** [Research] **Faber-Trend mit echten MT5-Kosten
+  nachgerechnet.** Swap, Spread, Kontrakt und Mindestlot wurden nur
+  lesend aus den laufenden TTP- und Tickmill-Terminals gelesen
+  (`scripts/read_faber_symbol_specs.py`, eingefroren).
+  - **TTP-Finalist 2013-2026:** 0,45 % p.a. (heutige Swaps) bzw. 0,59 %
+    (zinsangepasst), MaxDD ~−4 %.
+  - **EK:** 0 Trades.
+  - **Urteil bestätigt:** regelkonform, aber nicht lohnend; keine
+    Live-Empfehlung.
+  - Engine kann jetzt Kosten je Instrument und Richtung sowie
+    Zinsverschiebung.
+  - Keine Bot-Änderung.
+
+- **2026-10-05** [Research] **Faber-Trend für EK + Funded TTP**
+  (SL, Positionsclose, Filter, Cross-Asset). Neues Package
+  `faber_trend/`, Skript `scripts/research_faber_trend_funded.py`,
+  6 Engine-Tests.
+  - **Auswahl bis 2012:** A5-MAE-SL (Nutzeridee), Ensemble SMA 8-12,
+    Vola-Filter und Gold statt Cash.
+  - **Testfenster 2013-2026:** 0,5 % p.a. bei −6 % MaxDD (TTP, 0,5 %
+    Risiko, Swap 2,5 %); kein Regelbruch, aber nicht lohnend.
+  - **EK:** 0 Trades (Mindestlot).
+  - Engine-Fehler beim Instrumentwechsel gefunden und behoben; neu
+    gerechnet.
+  - Keine Bot-Änderung.
+
+  Details: `knowledge/projects/faber-gtaa-10-monats-sma.md`.
+
 - **2026-10-04** [EK + Funded / LIVE] **EK-Bracket-Beine auf den FK-Weg
   umgebaut, trend_pullback-Stop 2,0 -> 3,0 ATR** (Nutzerfreigabe nach der
   Blockade weiter unten).

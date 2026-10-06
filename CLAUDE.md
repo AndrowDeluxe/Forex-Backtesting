@@ -153,6 +153,27 @@ Neue Strategien durchlaufen den 8-Phasen-Prozess aus
 `app_pages/education_gold_intraday.py`. Phase 6 (Robustheit/Monte-Carlo)
 läuft VOR jeder Portfolio-/Risiko-Arbeit, nicht danach.
 
+## Overfitting-Sperre
+
+Seit 2026-10-05 (Nutzerentscheid, nachdem die ORB-Konfiguration ab Stage 2
+direkt auf OOS-Zahlen ausgewählt wurde). Gilt für jede Strategie, auch für
+händische nach der Edge Card:
+
+1. Vor dem ersten Test den Split IS / OOS / Tresor (= letzte 12 Monate)
+   registrieren (`research_lock.Lock.register_split`).
+2. In Phase 4/5 NUR auf IS optimieren und keine OOS-Zahlen ausgeben.
+3. Jede getestete Variante zählen (`log_trials`).
+4. Den Gewinner einfrieren (`freeze`) und Deflated Sharpe ausweisen.
+5. Erst dann OOS und danach den Tresor je genau einmal öffnen (`unseal`). Das
+   Ergebnis zählt, egal wie.
+6. Nach dem Livegang Änderungen nur noch mit Forward-Daten prüfen, nicht
+   erneut auf dem alten OOS.
+
+Es gibt keine harte Parameter-Sperre; die Korrektur über die
+Versuchsanzahl ersetzt sie. Als Hinweis gilt seit 2026-10-06 ein Richtwert
+von max. 9 optimierten Punkten je Index/Strategie; wer darüber geht,
+begründet es. Details: `knowledge/areas/overfitting-sperre.md`.
+
 ## Edge-Card-Workflow
 
 Will der Nutzer eine bestehende, händisch gebacktestete/getradete Strategie

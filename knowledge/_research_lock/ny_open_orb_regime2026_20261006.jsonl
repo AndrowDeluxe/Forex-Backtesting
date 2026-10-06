@@ -1,0 +1,7 @@
+{"ts": "2026-10-06T20:45:47+00:00", "event": "register_split", "is_start": "2025-10-01", "is_end": "2026-03-31", "oos_end": "2026-06-30", "tresor_end": "2026-09-30"}
+{"ts": "2026-10-06T20:45:47+00:00", "event": "register_forward", "start": "2026-10-05", "eval_date": "2027-03-31", "min_trades": 100}
+{"ts": "2026-10-06T21:00:17+00:00", "event": "trials", "n": 46656, "total": 46656, "note": "SP500: Regime-2026-Gitter (9 Punkte)"}
+{"ts": "2026-10-06T21:04:45+00:00", "event": "trials", "n": 46656, "total": 93312, "note": "NASDAQ: Regime-2026-Gitter (9 Punkte)"}
+{"ts": "2026-10-06T21:26:35+00:00", "event": "freeze", "hash": "e1b3ce093781bf563fce7be9903a63984dc80ec23849a665c842d67a1c65fe2a"}
+{"ts": "2026-10-06T21:26:35+00:00", "event": "unseal", "stage": "oos", "hash": "e1b3ce093781bf563fce7be9903a63984dc80ec23849a665c842d67a1c65fe2a"}
+{"ts": "2026-10-06T21:36:02+00:00", "event": "unseal", "stage": "tresor", "hash": "e1b3ce093781bf563fce7be9903a63984dc80ec23849a665c842d67a1c65fe2a"}

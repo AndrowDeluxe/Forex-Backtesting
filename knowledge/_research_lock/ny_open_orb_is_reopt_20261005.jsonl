@@ -1,0 +1,8 @@
+{"ts": "2026-10-05T18:46:34+00:00", "event": "register_split", "is_start": "2016-07-28", "is_end": "2022-12-31", "oos_end": "2025-09-30", "tresor_end": "2026-09-30"}
+{"ts": "2026-10-05T18:58:27+00:00", "event": "trials", "n": 22680, "total": 22680, "note": "SP500: IS-Gitter"}
+{"ts": "2026-10-05T19:08:36+00:00", "event": "trials", "n": 22680, "total": 45360, "note": "NASDAQ: IS-Gitter"}
+{"ts": "2026-10-05T19:24:55+00:00", "event": "trials", "n": 22680, "total": 68040, "note": "US30: IS-Gitter"}
+{"ts": "2026-10-06T09:42:55+00:00", "event": "freeze", "hash": "44880984f69ca1597b7a9b058e3969dc27f70a9009f36a53ed96f54e462b6a6b"}
+{"ts": "2026-10-06T09:42:55+00:00", "event": "unseal", "stage": "oos", "hash": "44880984f69ca1597b7a9b058e3969dc27f70a9009f36a53ed96f54e462b6a6b"}
+{"ts": "2026-10-06T09:42:55+00:00", "event": "unseal", "stage": "tresor", "hash": "44880984f69ca1597b7a9b058e3969dc27f70a9009f36a53ed96f54e462b6a6b"}
+{"ts": "2026-10-06T10:05:00+00:00", "event": "abort", "note": "evaluate-Lauf nach Unseal abgebrochen (Nutzer will neue IS-Runde mit max. 9 Punkten). KEINE OOS/Tresor-Ergebnisse berechnet oder angesehen (is_only_report/trades nie geschrieben). Konfiguration 44880984... verworfen, Nachfolger: ny_open_orb_is_reopt_7p_20261006."}

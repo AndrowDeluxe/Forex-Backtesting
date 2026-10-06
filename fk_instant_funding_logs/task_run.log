@@ -57092,3 +57092,35 @@
 2026-10-06 18:58:02   "ctnl_kill_switch_active": false,
 2026-10-06 18:58:02   "n_trades": 25
 2026-10-06 18:58:02 }
+2026-10-06 18:58:03 [main 9c3f9da] FK Instant Funding Bot: Snapshot 2026-10-06 18:58
+2026-10-06 18:58:03  1 file changed, 33 insertions(+)
+2026-10-06 18:58:04 MERGE UEBERSPRUNGEN: Working Tree hat 17 offene Aenderung(en) (andere Tasks/Session). Es wird NICHT gestasht -- der lokale Commit bleibt liegen und geht beim naechsten sauberen Lauf raus.
+2026-10-06 18:58:05 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-10-06 18:58:05  ! [rejected]          main -> main (non-fast-forward)
+2026-10-06 18:58:05 error: failed to push some refs to 'https://github.com/AndrowDeluxe/Forex-Backtesting.git'
+2026-10-06 18:58:05 hint: Updates were rejected because the tip of your current branch is behind
+2026-10-06 18:58:05 hint: its remote counterpart. If you want to integrate the remote changes,
+2026-10-06 18:58:05 hint: use 'git pull' before pushing again.
+2026-10-06 18:58:05 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+2026-10-06 18:58:05 HINWEIS: Push abgelehnt (Remote ist weiter) - erwartet, solange nicht gemergt wurde. Rueckstand sichtbar ueber 'git log origin/main..HEAD'.
+2026-10-06 18:58:05 === FK-Instant-Funding-Task beendet ===
+2026-10-06 19:55:23 === FK-Instant-Funding-Task gestartet ===
+2026-10-06 19:56:09 INFO:DUKASCRIPT:current timestamp :2026-10-05T02:00:00
+2026-10-06 19:56:09 INFO:DUKASCRIPT:current timestamp :2026-10-06T18:00:00
+2026-10-06 19:56:09 INFO:DUKASCRIPT:current timestamp :2026-10-06T18:00:00
+2026-10-06 19:56:09 INFO:DUKASCRIPT:current timestamp :2026-10-06T18:00:00
+2026-10-06 19:56:09 INFO:DUKASCRIPT:current timestamp :2026-10-06T14:00:00
+2026-10-06 19:56:09 INFO:DUKASCRIPT:current timestamp :2026-10-06T14:00:00
+2026-10-06 19:56:09 INFO:DUKASCRIPT:current timestamp :2026-10-06T14:00:00
+2026-10-06 19:56:09 INFO:DUKASCRIPT:current timestamp :2026-10-06T14:00:00
+2026-10-06 19:56:09 {
+2026-10-06 19:56:09   "date": "2026-10-06 17:55:24.053230",
+2026-10-06 19:56:09   "equity": 98768.33816378856,
+2026-10-06 19:56:09   "current_dd": -0.012316618362114395,
+2026-10-06 19:56:09   "consistency_ratio": 0.0,
+2026-10-06 19:56:09   "payout_safe": false,
+2026-10-06 19:56:09   "cum_profit": -1231.6618362114345,
+2026-10-06 19:56:09   "kill_switch_active": false,
+2026-10-06 19:56:09   "ctnl_kill_switch_active": false,
+2026-10-06 19:56:09   "n_trades": 25
+2026-10-06 19:56:09 }

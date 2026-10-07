@@ -1,5 +1,7 @@
 # Gamma-Mechanismen aus echten GEX-Daten (SqueezeMetrics)
 
+**Status: abgeschlossen (07.10.2026, Nutzerentscheid).** Weiter läuft nur der Forward-Test bis 31.12.2026.
+
 Untersucht 2026-10-07 (Nutzerauftrag: „Leite aus den Gamma-Werten
 Mechanismen/Regeln ab, vor allem nach dem Kippen, und wie wir sie für einen
 nachhaltigen Edge nutzen“). Skript `scripts/research_gex_mechanisms.py`,

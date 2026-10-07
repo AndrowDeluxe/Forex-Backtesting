@@ -1,5 +1,7 @@
 # ORB im neuen Regime (ab 10/2025): N-ter Ausbruch, Fade, IS = der Bruch
 
+**Status: abgeschlossen (07.10.2026, Nutzerentscheid).** Weiter läuft nur der Forward-Test bis 31.12.2026.
+
 Gestartet 2026-10-06 (Nutzerauftrag), unabhängig von der Mentor-PDF.
 Vorgeschichte: [[orb-order-storno-und-haltedauer]] (IS-only-Test, Tresor
 durchgefallen, Ribbon-Filter kippt) und [[overfitting-sperre]].

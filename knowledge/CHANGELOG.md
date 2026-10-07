@@ -9,6 +9,41 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-07** [Entscheidung] **ORB-Research-Ansatz beendet** (Nutzerentscheid).
+  - Keine weitere Neuoptimierung des ORB.
+  - Live-Bot laeuft unveraendert weiter.
+  - Der Forward-Test laeuft bis 31.12.2026 weiter (ORB live mit/ohne
+    Gamma-Regler, Lock `orb_live_gamma_forward_20261007`).
+  - Abschlussbefund: Der Tresor-Kipp ist ein vollstaendiger Edge-Bruch
+    (weniger und schneller scheiternde Ausbrueche), kein Exit-Problem.
+
+- **2026-10-07** [SMH Elite 3 / Gruppenarbeit] **Teamaufgabe „Mikrostruktur &
+  Liquidität“ gerechnet: alle drei Kandidaten scheitern ehrlich.** Gerechnet
+  wurden K1 runde Zahlen (Osler), K2 London-4pm-Fix (WM/R) und K3
+  Liquiditäts-Reversal (Nagel). Die Daten liegen in der Overfitting-Sperre:
+  IS 04/2018–03/2023, OOS 04/2023–09/2025, Tresor ab 10/2025 (Nutzervorgabe:
+  OOS mindestens 2,5 Jahre, IS doppelt so lang). Insgesamt 27 Versuche.
+  Tresor: K1 PF 0,65, K2 PF 1,31 (52 Trades, OOS negativ), K3
+  (Team-Kandidat nach OOS) PF 0,84. Neue M1-Daten 2018–heute für EURUSD,
+  GBPUSD, USDJPY, AUDUSD, SP500 und NASDAQ liegen in
+  `data_cache/smh_microstructure/`. Code: `smh_microstructure/` und
+  `scripts/research_smh_microstructure.py`. Fortschritt und Steckbrief
+  stehen auf der Notion-Seite in „🎓 ELITE 3“. Details:
+  [[smh-elite-mikrostruktur]].
+
+- **2026-10-07** [Dachprojekt / Strang 4] **Notion-Cockpit eingerichtet.**
+  Eigene Notion-API-Integration „Trading Fusion“ statt claude.ai-Connector
+  (wirkt sofort und erlaubt geplanten Bot-Läufen das Schreiben ohne offene
+  Session). Seite „Trading Fusion Cockpit“: Stränge-Übersicht + 5
+  Datenbanken (Gruppenarbeit Mentor, Makro-Übersicht, Analysen,
+  Entscheidungslog Bot, Zwischenablage). Code `fusion_lab/notion/`
+  (`setup_cockpit.py`, idempotent), IDs in `cockpit_ids.json`. Schreib-/
+  Lesetest bestanden, erste zwei Einträge im Entscheidungslog.
+  Nachtrag (Nutzerentscheid): Datenbank „Gruppenarbeit (Mentor)“ heißt jetzt
+  **„🎓 ELITE 3“** und wird der Haupt-Input für neues Wissen/Erkenntnisse/
+  Aufgaben (statt OneNote). Felder ergänzt: Art, „In knowledge/
+  übernommen“; Aufgabe→Titel, Abgabe→Fällig. Setup-Skript gleicht jetzt ab.
+
 - **2026-10-07** [Dachprojekt / Strang 0] **Material-Import gelaufen.**
   Telegram „SMH Trade & Invest“ komplett (10.427 Nachrichten, 2.658 Bilder,
   03/2025-10/2026). OneNote: Zugang über Azure-App steht, Import auf

@@ -173,6 +173,33 @@ handeln. Stattdessen Risiko senken oder pausieren und Forward-Daten sammeln.
 Ein IS unter einem Jahr mit vielen Stellschrauben ist ein Warnsignal.
 [[regimewechsel-nicht-aus-bruchphase-lernbar]] · [[orb-neues-regime-2026]]
 
+### 3.6 Echtes Dealer-Gamma: ein robuster Mechanismus, eine widerlegte Hypothese
+
+**Befund:** Das SPX-Gamma (SqueezeMetrics, gratis, taeglich ab 2011) bestaetigt
+**blind** (06/2012-07/2016, vorab registriert): Bei viel Gamma ist die
+Tagesrange halb so gross (2,0x / 1,9x, in allen 5 Stufen monoton). Dasselbe
+gilt 2016-22, 2023-24 und 2025-26.
+- **Widerlegt:** „2026 kippte der ORB-Filter wegen negativen Gammas“. 2026
+  hatte nur 4 % der Tage mit negativem Gamma, 2022 42 %.
+- **Nicht bestanden:** die Regel „kein ORB bei viel Gamma“.
+
+**Mechanismus / Warum:** Long-Gamma-Dealer hedgen gegen die Bewegung. Das
+daempft die Schwankung verlaesslich, sagt aber nicht verlaesslich, ob ein
+Ausbruch traegt.
+
+**Wie es aufgefallen ist:** Die Gamma-These stand zuerst nur auf Literatur
+und SpotGamma. Erst die echten Daten zeigten, dass 2026 kein
+Negativ-Gamma-Jahr war. Der Blindtest wurde vor dem Laden der Daten
+committet. Dabei fiel ein Datenfehler auf: Die Dukascopy-Indexdaten 2012-13
+haben ~37 % leere M15-Bars und einen viel zu kleinen ATR, die R-Werte waren
+dadurch aufgeblaeht. Bewusst gab es keinen Neutest nach dem Oeffnen.
+
+**Lehre:** Hypothesen mit echten Daten gegenpruefen, bevor man auf ihnen
+baut. Vor einem Blindtest die Datenqualitaet der Periode pruefen, nicht
+danach. Gamma taugt als Risiko-/Vola-Regler; als Ertragsfilter ist es nicht
+belegt. [[gamma-mechanismen-gex]] · [[echte-gamma-daten-sqzme]] ·
+[[dukascopy-index-daten-vor-2014-lueckenhaft]]
+
 ## 4. Neues Wissen diese Woche (Papers/Ideen)
 
 - **Gao, Han, Li, Zhou (JFE 2018):**

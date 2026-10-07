@@ -1,0 +1,30 @@
+{
+  "strategy": "orb_live_gamma_forward_20261007",
+  "split": {
+    "is_start": "2016-07-28",
+    "is_end": "2025-09-30",
+    "oos_end": "2026-09-30",
+    "tresor_end": null
+  },
+  "registered": "2026-10-07T07:57:08+00:00",
+  "trials": 0,
+  "frozen": {
+    "hash": "f383c759583cf999136bb3ab136961396690cec8a23380049d7c34502141a087",
+    "config": {
+      "strategien": "ORB-Live-Konfiguration Stand 04.10.2026 (research_orb_is_only_reopt.LIVE), SP500 + NASDAQ",
+      "A": "ohne Regler, 1 % vom Kontostand je Trade",
+      "B": "SPX-GEX Vortag im 252-Tage-Perzentil < 20 % oder > 80 % -> 0,5 %, sonst 1 %",
+      "gamma_quelle": "https://squeezemetrics.com/monitor/static/DIX.csv",
+      "konto": "100k je Variante ab 2026-10-05, Tages-Sizing"
+    },
+    "ts": "2026-10-07T07:57:08+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-07T07:57:09+00:00"
+  },
+  "forward": {
+    "start": "2026-10-05",
+    "eval_date": "2026-12-31",
+    "min_trades": 1000000
+  }
+}

@@ -29,6 +29,14 @@ keine Planung (dafür ist `DASHBOARD.md`).
     Idee „Rotation mit Deckel" liegt in der Ideen-Inbox.
   - Code `faber_trend/` + Skripte + eingefrorene Daten committet.
 
+- **2026-10-07** [Forward-Test] **Gamma-Risikoregler vorab registriert**
+  (Nutzerentscheid).
+  - ORB live A (ohne) gegen B (halbes Risiko an GEX-Extremtagen), je 100k
+    ab 05.10.2026.
+  - Auswertung frühestens 31.12.2026 (Lock `orb_live_gamma_forward_20261007`,
+    Öffnen vorher technisch gesperrt).
+  - Keine Bot-Änderung.
+
 - **2026-10-07** [Research] **Blinder Gamma-Test 06/2012–07/2016 + Gamma als
   ORB-Regler 2025–26.**
   - Vorab registriert (`2593f8d4`), dann einmal geoeffnet. Lock

@@ -41,6 +41,17 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **📅 31.12.2026: Forward-Vergleich ORB live mit und ohne Gamma-Regler**
+  (Nutzerentscheid 07.10.). Vorab registriert:
+  - A = ORB-Live wie bisher.
+  - B = halbes Risiko an Tagen, an denen das SPX-GEX vom Vortag im unteren
+    oder oberen Fünftel liegt.
+  - Je 100k ab 05.10.
+
+  Auswertung: `python scripts/forward_orb_gamma_regler.py --stage evaluate`
+  (öffnet erst ab dem Stichtag). Danach entscheiden, ob B live geht.
+  [[gamma-mechanismen-gex]]
+
 - **✅ Entschieden 06.10. (Nutzer): ORB live bleibt, wie es war.** Kein Pausieren und
   keine Risikosenkung. Der echte Test ist der Forward ab 05.10. (Lock-Regel:
   ≥ 100 Trades je Index oder 31.03.2027). Hintergrund:
@@ -403,11 +414,10 @@ außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
 
-- (07.10.) **Gamma als Risikoregler für Intraday-Beine:** blind bestätigt,
-  dass viel SPX-Gamma die Tagesrange halbiert. Kandidat: Risiko an
-  Gamma-Extremen (Q1/Q5) halbieren. 2025–26 senkte das den MaxDD überall,
-  kostete bei NASDAQ live aber Ertrag. Vor einer Live-Umsetzung vorab
-  registrieren und forward prüfen. Siehe [[gamma-mechanismen-gex]].
+- (07.10.) ~~Gamma als Risikoregler~~ → **einsortiert:** vorab registriert
+  im Forward-Test (`scripts/forward_orb_gamma_regler.py`, Lock
+  `orb_live_gamma_forward_20261007`), Auswertung am 31.12.2026 (siehe
+  „Braucht deine Bestätigung“).
 
 - (07.10.) **Faber-Trend, falls wieder aufgenommen:** Rotation in ein Ersatz-Asset nur mit Deckel testen (z.B. höchstens ein Slot bzw. 5 % Risiko im Ersatz-Asset). Ohne Deckel landen alle Cash-Slots gleichzeitig im selben Markt (Öl: −20 %-Tage). Projekt pausiert, siehe [[faber-gtaa-10-monats-sma]].
 - (05.10.) **ORB-Mechanismus testen:** Ist der Edge an Tagen mit großem

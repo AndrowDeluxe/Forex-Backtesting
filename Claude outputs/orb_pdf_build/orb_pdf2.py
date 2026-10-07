@@ -316,7 +316,7 @@ def build(pdf):
                 name = f"{c} · {label}" if p == "IS" else ""
                 rows.append([name, p, str(mm["n"]), (f(mm["pf"], 2, False), kind_pf(mm["pf"])), f(mm["avg"], 2), f(mm["sum"], 0),
                              f(mm["dd"], 0), f(mm["t"], 1), f"{mm['win'] * 100:.0f} %", f(mm["x2"], 2)])
-    rh = min(0.42, 5.4 / max(len(rows), 1))
+    rh = min(0.34, 5.4 / max(len(rows), 1))
     TW = sum(w for _, w in cols)
     yy = y
     for i, row in enumerate(rows):
@@ -338,6 +338,17 @@ def build(pdf):
             " · ".join(f"{i} {f(dsr.get(i, np.nan), 2, False)}" for i in LEGS) +
             "  |  gegen alle 22.680 aus Runde 1: " + " · ".join(f"{i} {f(dsr1.get(i, np.nan), 2, False)}" for i in LEGS) +
             "\nPF-Farbe: grün > 1,3 · gelb 1,0–1,3 · rot < 1,0.", fontsize=7.8, color=MUTED, va="top", linespacing=1.5)
+    # Kleiner Punkt: Warum kippte der Tresor? (Gamma-Daten, Diagnose 06./07.10.)
+    by = yy - 0.95
+    ax.add_patch(FancyBboxPatch((x0, by - 1.32), 10.6, 1.32, boxstyle="round,pad=0,rounding_size=0.08", fc="#eef3fb", ec="#c4d4ec"))
+    ax.text(x0 + 0.2, by - 0.2, "Warum kippte der Tresor? Was echtes Dealer-Gamma dazu sagt", fontsize=9.5, weight="bold", color=INK, va="center")
+    ax.text(x0 + 0.2, by - 0.38,
+            "• Fast der ganze Edge saß im Trendfilter „nur neutrale Tage“. Im Tresor drehte er sich erstmals bei beiden Indizes um (neutral −0,48 / mit Trend +0,17 R).\n"
+            "• Naheliegende These: Die Options-Market-Maker hatten 2026 negatives Gamma. Die echten SPX-Gamma-Daten (SqueezeMetrics) widerlegen das:\n"
+            "   2026 hatte nur an 4 % der Tage negatives Gamma (2022: 42 %, und dort hielt der Filter).\n"
+            "• Feiner zeigt sich: Der Kipp sitzt vor allem an Tagen mit relativ wenig Gamma (Ausbrüche an neutralen Tagen 2025–26 dort negativ).\n"
+            "• Blind bestätigt (2012–2016): Viel Gamma halbiert die Tagesrange. Gamma eignet sich als Risiko-Regler, nicht als Ausbruchs-Filter.",
+            fontsize=7.6, color=INK, va="top", linespacing=1.5)
     pdf.savefig(fig); plt.close(fig)
 
     # ============ Seite 4: Equity 10 Jahre ============

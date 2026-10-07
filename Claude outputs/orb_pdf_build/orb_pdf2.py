@@ -207,8 +207,8 @@ def build(pdf):
           "sl": "Order fällt weg, wenn zuerst der Stop-Kurs erreicht wird"}[WIN["NASDAQ"]["rule"]]],
     ]
     table(ax, cols, diff_rows, 0.55, yy - 0.4, 0.42)
-    ax.text(0.55, 0.45, "Warum das funktionieren könnte, steht auf Seite 8 (Mechanismus), warum genau diese Regeln, auf Seite 3 (Einstellungen)\n"
-            "und Seite 7 (Overfitting). Alle Zahlen in R: 1 R = Risiko je Trade, also der Abstand vom Einstieg zum Stop.",
+    ax.text(0.55, 0.45, "Warum das funktionieren könnte, steht auf Seite 7 (Mechanismus), welche Regeln genau gelten, auf Seite 3 (Einstellungen).\n"
+            "Alle Zahlen in R: 1 R = Risiko je Trade, also der Abstand vom Einstieg zum Stop.",
             fontsize=8, color=MUTED, linespacing=1.5)
     pdf.savefig(fig); plt.close(fig)
 
@@ -237,7 +237,7 @@ def build(pdf):
                          f"PF {f(mh['pf'], 2, False)} · {mh['n']} Trades"))
         else:
             r_ho.append(("–", A, "zu wenig Trades"))
-        r_me.append(("Plausibel", A, "Felder 1, 2, 4 gestützt (S. 8–9)"))
+        r_me.append(("Plausibel", A, "Felder 1, 2, 4 gestützt (S. 7–8)"))
     rows = [r_cost, r_n, r_pf, r_h, r_ho, r_me]
     y = table(ax, cols, rows, x0, y, 0.66)
     ax.text(x0, y - 0.35, "Grün = erfüllt · Gelb = teilweise/knapp · Rot = nicht erfüllt.  R = Vielfaches des Risikos je Trade.  "
@@ -434,49 +434,10 @@ def build(pdf):
             "gebucht (alle Trades schließen bis 16:00). Keine Kommission (beim genutzten Broker 0).", fontsize=7.8, color=MUTED, linespacing=1.5)
     pdf.savefig(fig); plt.close(fig)
 
-    # ============ Seite 5: Overfitting ============
-    fig, ax = page("Warum OOS angefasst wurde – und was jetzt gilt",
-                   "Die ursprüngliche Version entstand über Wochen in vielen Stufen. Dabei wurde ab Stage 2 direkt auf OOS-Zahlen ausgewählt.")
-    blocks = [
-        ("Was passiert ist", [
-            "Stage 3 wertete „alle Zahlen OOS“ aus, Stage 4a war ein „OOS-only-Scan“, die Exit-Gitter verlangten „IS und OOS positiv“,",
-            "    und das NASDAQ-Storno (04.10.) wurde mit Blick auf OOS gewählt. Jeder dieser Blicke macht OOS ein Stück weit zu IS.",
-            "Am Ende standen 15 auf den Daten gewählte Entscheidungen und mehrere hundert getestete Varianten, aber kein unberührter Zeitraum."]),
-        ("Warum es passiert ist", [
-            "Eine Prozesslücke: Der Standardprozess nannte den OOS-Split nur in Phase 6 als Prüfung („anderer Zeitraum als beim Fitting“).",
-            "Für Phase 4/5 gab es keine Regel, nur auf IS zu optimieren, und kein Skript hinderte daran, OOS-Zahlen mit auszugeben."]),
-        ("Was dieser Test leistet", [
-            "Die Strategie wurde nur auf IS 2016–2022 neu ausgewählt, nach einer vorher festgelegten Regel: ≥ 100 Trades, PF > 1,3, beide",
-            "    Hälften positiv, dann höchster t-Wert, geglättet über die Stop-/Ziel-Nachbarn (Plateau statt Spitze).",
-            "Runde 1 (8 Punkte inkl. Wochentag, 22.680 Varianten je Index) fand Gewinner mit Wochentag-Ausschluss, die die Deflated-",
-            "    Sharpe-Prüfung nicht bestanden. Daraufhin Runde 2: höchstens 9 optimierte Punkte je Index (Richtwert), genutzt 7, ohne Wochentag.",
-            "    Runde 1 wurde vor jeder OOS-/Tresor-Berechnung verworfen; nur Runde 2 wurde eingefroren und geöffnet.",
-            "Dann eingefroren und OOS sowie Tresor je genau einmal geöffnet (technisch gesperrt: ein zweites Öffnen bricht ab).",
-            "Ergebnis: OOS hielt (PF 1,34), der Tresor nicht (PF 0,52). Genau dafür gibt es den Tresor: Ohne ihn hätte die Strategie",
-            "    nach IS + OOS wie ein Treffer ausgesehen.",
-            "Grenze: Die Gitter-Grenzen entstanden mit Wissen bis 09/2026. Der Test prüft den Prozess, nicht ein jungfräuliches Datenset.",
-            "    Wirklich unberührt sind erst Forward-Daten ab dem 05.10.2026."]),
-        ("Die Overfitting-Sperre (Standardprozess seit 05.10.2026)", [
-            "1. Split IS / OOS / Tresor vor dem ersten Test registrieren, danach unveränderlich.",
-            "2. In Phase 4/5 nur auf IS optimieren, keine OOS-Zahlen ausgeben.",
-            "3. Jede Variante zählt (Trial-Register), der Gewinner braucht Deflated Sharpe > 0,95.",
-            "4. Einfrieren, dann OOS einmal öffnen. Kein Nachjustieren auf OOS.",
-            "5. Tresor einmal öffnen, das Ergebnis zählt, egal wie. 6. Nach dem Livegang nur Forward-Daten als Test.",
-            "Die Sperre ist als Code umgesetzt: Split, Einfrieren und Öffnen werden protokolliert, Verstöße brechen ab."]),
-    ]
-    y = H - 1.75
-    for head, lines in blocks:
-        ax.text(0.55, y, head, fontsize=10.5, weight="bold", color=INK); y -= 0.28
-        for ln in lines:
-            ax.text(0.75, y, ln if ln.startswith(("    ", "1.", "2.", "3.", "4.", "5.")) else "• " + ln, fontsize=8.4, color=INK)
-            y -= 0.235
-        y -= 0.12
-    pdf.savefig(fig); plt.close(fig)
-
     # ============ Seiten 6+7: Mechanismus + Literatur (aus v1) ============
     src = (HERE / "orb_pdf.py").read_text(encoding="utf-8")
     seg = src[src.index("    # ---------- Seite 2: Mechanismus-Felder"):src.index("    # ---------- Seite 4: Details")]
-    seg = seg.replace("(Details auf Seite 3)", "(Details auf Seite 9)")
+    seg = seg.replace("(Details auf Seite 3)", "(Details auf Seite 8)")
     seg = seg.replace("Größtes Risiko für Kriterium 1. Unser\\nBrutto-Edge liegt aber 4–5× höher (unten).",
                       "Größtes Risiko für Kriterium 1. Passt\\nzum Tresor-Ergebnis (Seite 4–6).")
     seg = seg.replace('"Ø R netto\\n(live, M1)"', '"Ø R netto\\n(IS-only, M1)"')

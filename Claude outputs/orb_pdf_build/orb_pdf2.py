@@ -254,8 +254,8 @@ def build(pdf):
 
     # ============ Seite 2: Uebernommene Einstellungen ============
     fig, ax = page("Welche Einstellungen die Strategie nutzt",
-                   "Nur die übernommenen Werte, keine verworfenen Alternativen. Links die nur auf IS gewählte Konfiguration, rechts zum Vergleich,\n"
-                   "die frühere Version (über Wochen mit Blick auf OOS optimiert, läuft seit 04.10.2026 live). Abweichungen sind markiert.")
+                   "Nur die übernommenen Werte der nur auf IS 2016–2022 gewählten Konfiguration, keine verworfenen Alternativen.\n"
+                   "Alles wurde vor dem Öffnen von OOS und Tresor eingefroren.")
     LIVECFG = {
         "SP500": dict(dirs="long", ribbon="neutral", weekday=None, rule="opposite", stop=0.6, target=6.0, partial=None, range_bars=1),
         "NASDAQ": dict(dirs="beide", ribbon="kein", weekday="Wednesday", rule="sl", stop=0.6, target=None, partial=None, range_bars=1),
@@ -275,8 +275,8 @@ def build(pdf):
         ("Ausstieg spätestens", lambda c: "16:00 NY"),
     ]
     insts = ["SP500", "NASDAQ"]
-    cols = [("Einstellung", 2.0)] + [(f"{i}\nIS-only  |  frühere Version", 4.3) for i in insts]
-    x0, y = 0.55, H - 2.15
+    cols = [("Einstellung", 2.8)] + [(i, 3.9) for i in insts]
+    x0, y = 0.55, H - 2.3
     header(ax, cols, x0, y, 0.5)
     y_rows = y
     rh = 0.44
@@ -286,19 +286,11 @@ def build(pdf):
             ax.add_patch(Rectangle((x0, y_rows), sum(w for _, w in cols), rh, fc="#f5f7fa", ec="none"))
         ax.plot([x0, x0 + sum(w for _, w in cols)], [y_rows, y_rows], color=LINE, lw=0.8)
         ax.text(x0 + 0.12, y_rows + rh / 2, name, fontsize=8.4, weight="bold", color=INK, va="center")
-        x = x0 + 2.0
+        x = x0 + 2.8
         for i in insts:
-            a_ = fn(WIN[i]) if WIN.get(i) else "—"
-            b_ = fn(LIVECFG[i]) if LIVECFG.get(i) else "pausiert"
-            diff = a_ != b_
-            if diff:
-                ax.add_patch(FancyBboxPatch((x + 0.05, y_rows + 0.05), 4.2, rh - 0.1, boxstyle="round,pad=0,rounding_size=0.05",
-                                            fc=A[0], ec="none"))
-            ax.text(x + 0.12, y_rows + rh / 2, a_, fontsize=7.6, color=A[1] if diff else INK, va="center",
-                    weight="bold" if diff else "normal")
-            ax.text(x + 2.25, y_rows + rh / 2, b_, fontsize=7.6, color=MUTED, va="center")
-            x += 4.3
-    ax.text(x0, y_rows - 0.35, "Gelb hinterlegt = Die IS-Auswahl weicht von der früheren Version ab. Die laufende Live-Version wurde noch nicht umgestellt.",
+            ax.text(x + 0.12, y_rows + rh / 2, fn(WIN[i]) if WIN.get(i) else "—", fontsize=8.2, color=INK, va="center")
+            x += 3.9
+    ax.text(x0, y_rows - 0.35, "Optimiert wurden 7 Punkte je Index (Range, Richtung, Trendfilter, Storno, Stop, Ziel, Teilziel); Richtwert max. 9.",
             fontsize=7.8, color=MUTED)
     ax.text(x0, y_rows - 0.6, f"Versuche je Instrument (Trial-Register): " +
             " · ".join(f"{i} {sel['n_trials'][i]:,}".replace(",", ".") for i in insts) +
@@ -307,14 +299,14 @@ def build(pdf):
 
     # ============ Seite 3: OOS + Tresor ============
     fig, ax = page("Was OOS und Tresor zeigen",
-                   "Kennzahlen je Zeitraum. Die IS-only-Konfiguration wurde vor dem Öffnen eingefroren; OOS und Tresor ließen sich technisch nur je einmal öffnen.\n"
-                   "Die frühere Version steht zum Vergleich darunter. Sie wurde mit Blick auf OOS und Tresor gewählt und ist deshalb kein fairer Test.")
+                   "Kennzahlen je Zeitraum. Die IS-only-Konfiguration wurde vor dem Öffnen eingefroren; OOS und Tresor ließen sich\n"
+                   "technisch nur je einmal öffnen. Das Ergebnis zählt, egal wie.")
     cols = [("", 2.3), ("Zeitraum", 1.0), ("Trades", 0.8), ("PF", 0.8), ("Ø R", 0.85), ("Σ R", 0.9), ("MaxDD R", 0.95),
             ("t-Wert", 0.85), ("Treffer", 0.85), ("Ø R bei\nKosten ×2", 1.3)]
     x0, y = 0.55, H - 2.25
     header(ax, cols, x0, y, 0.5)
     rows = []
-    for label, src, keys in (("IS-only", S, COLS), ("frühere Version", LIVE, ["SP500", "NASDAQ", "Portfolio"])):
+    for label, src, keys in (("IS-only", S, COLS),):
         for c in keys:
             r, k = src[c]
             for p in ("IS", "OOS", "Tresor"):
@@ -324,7 +316,7 @@ def build(pdf):
                 name = f"{c} · {label}" if p == "IS" else ""
                 rows.append([name, p, str(mm["n"]), (f(mm["pf"], 2, False), kind_pf(mm["pf"])), f(mm["avg"], 2), f(mm["sum"], 0),
                              f(mm["dd"], 0), f(mm["t"], 1), f"{mm['win'] * 100:.0f} %", f(mm["x2"], 2)])
-    rh = min(0.27, 5.4 / max(len(rows), 1))
+    rh = min(0.42, 5.4 / max(len(rows), 1))
     TW = sum(w for _, w in cols)
     yy = y
     for i, row in enumerate(rows):
@@ -350,8 +342,8 @@ def build(pdf):
 
     # ============ Seite 4: Equity 10 Jahre ============
     fig, ax = page("Equity-Kurve: 10 Jahre, IS / OOS / Tresor",
-                   "Kumuliert in R (1 R Risiko je Trade, ohne Zinseszins). Nur auf IS optimierte Strategie; gestrichelt grau zum Vergleich die\n"
-                   "frühere Version (über OOS optimiert).")
+                   "Kumuliert in R (1 R Risiko je Trade, ohne Zinseszins). Nur auf IS 2016–2022 optimierte Strategie,\n"
+                   "danach eingefroren: OOS 2023–09/2025 und Tresor 10/2025–09/2026 je einmal geöffnet.")
     r_all = S["Portfolio"][0]
     start, end = r_all.index.min(), r_all.index.max()
 
@@ -372,17 +364,13 @@ def build(pdf):
     a1 = fig.add_axes([0.06, 0.47, 0.8, 0.29])
     style(a1)
     eq = r_all.cumsum()
-    leq = LIVE["Portfolio"][0].cumsum()
-    a1.step(leq.index, leq.values, where="post", color="#9aa3af", lw=1.2, ls=(0, (4, 2)), zorder=2)
     a1.step(eq.index, eq.values, where="post", color=C_SP, lw=1.9, zorder=3)
-    top = max(eq.max(), leq.max())
+    top = eq.max()
     for x_, lab, c in ((start, "IS – optimiert", MUTED), (IS_END + pd.Timedelta(days=30), "OOS – einmal getestet", "#2b6cb0"),
                        (OOS_END + pd.Timedelta(days=20), "Tresor", A[1])):
         a1.text(x_, top * 1.02, lab, fontsize=8, color=c, weight="bold", va="bottom")
     a1.annotate(f"IS-only {f(eq.iloc[-1], 0)} R", (eq.index[-1], eq.iloc[-1]), xytext=(4, 0), textcoords="offset points",
                 fontsize=8, weight="bold", color=INK, va="center")
-    a1.annotate(f"frühere Version {f(leq.iloc[-1], 0)} R", (leq.index[-1], leq.iloc[-1]), xytext=(4, 0), textcoords="offset points",
-                fontsize=8, color=MUTED, va="center")
     a1.set_title("Portfolio (" + " + ".join(LEGS) + ")", fontsize=9.5, color=INK, loc="left", weight="bold", pad=16)
 
     a2 = fig.add_axes([0.06, 0.07, 0.8, 0.3])
@@ -437,7 +425,7 @@ def build(pdf):
 
     # ============ Seite 5: Overfitting ============
     fig, ax = page("Warum OOS angefasst wurde – und was jetzt gilt",
-                   "Die Live-Konfiguration entstand über Wochen in vielen Stufen. Dabei wurde ab Stage 2 direkt auf OOS-Zahlen ausgewählt.")
+                   "Die ursprüngliche Version entstand über Wochen in vielen Stufen. Dabei wurde ab Stage 2 direkt auf OOS-Zahlen ausgewählt.")
     blocks = [
         ("Was passiert ist", [
             "Stage 3 wertete „alle Zahlen OOS“ aus, Stage 4a war ein „OOS-only-Scan“, die Exit-Gitter verlangten „IS und OOS positiv“,",
@@ -456,7 +444,7 @@ def build(pdf):
             "Ergebnis: OOS hielt (PF 1,34), der Tresor nicht (PF 0,52). Genau dafür gibt es den Tresor: Ohne ihn hätte die Strategie",
             "    nach IS + OOS wie ein Treffer ausgesehen.",
             "Grenze: Die Gitter-Grenzen entstanden mit Wissen bis 09/2026. Der Test prüft den Prozess, nicht ein jungfräuliches Datenset.",
-            "    Wirklich unberührt sind erst Live-Daten ab dem 05.10.2026."]),
+            "    Wirklich unberührt sind erst Forward-Daten ab dem 05.10.2026."]),
         ("Die Overfitting-Sperre (Standardprozess seit 05.10.2026)", [
             "1. Split IS / OOS / Tresor vor dem ersten Test registrieren, danach unveränderlich.",
             "2. In Phase 4/5 nur auf IS optimieren, keine OOS-Zahlen ausgeben.",

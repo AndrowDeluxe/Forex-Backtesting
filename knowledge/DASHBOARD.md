@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-10-05** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-10-07** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -106,6 +106,27 @@ Bedarf vor generischem Aufräumen.
   ich von hier aus unterscheiden oder reparieren könnte (liegt komplett
   außerhalb des Repos). **Offen für dich, unverändert:** PC und
   Task-Scheduler-Historie prüfen.
+
+- **🔴 Fünfte Prüfung, dritter Handelstag: Ausfall läuft jetzt seit über
+  5 Tagen, bis in den Mittwoch 07.10. hinein.** (Bridge Error Monitor,
+  07.10., geprüft 09:12 UTC / 11:12 CEST.) `bridge_status/snapshot.json`
+  steht weiterhin unverändert auf `generated_at: 2026-10-02T11:01:24`
+  (Commit `666fe8e`, 2026-10-02 11:01:25 +0200) -- `git log` auf die Datei
+  bestätigt: kein einziger neuer Commit seit der vierten Prüfung gestern
+  Abend (06.10., 21:12 UTC). Der aktuelle HEAD des Repos ist weiterhin genau
+  der eigene Dashboard-Commit von gestern Abend (`10d5fbd`), nichts von
+  Watchdog/EK/Funded/FK ist seitdem dazwischengekommen. Der Ausfall läuft
+  damit seit **Freitag 02.10. 11:01 Uhr CEST über gut 5 Tage**, umfasst jetzt
+  **drei Handelstage ohne jede Sichtbarkeit (Mo, Di, und der laufende
+  Mittwoch)**. **Nichts Neues an Information** -- dieselben drei offenen
+  Fragen (a/b/c) aus den vier Punkten darüber bleiben unverändert offen,
+  weiterhin nichts, das ich von hier aus unterscheiden oder reparieren
+  könnte (liegt komplett außerhalb des Repos, siehe CLAUDE.md). **Offen für
+  dich, jetzt mit einer vollen Handelswoche als Gewicht:** bitte PC und
+  Task-Scheduler-Historie prüfen -- bei Grund (a) oder (b) (PC aus oder Task
+  Scheduler haengt) liefen die drei Live-Bridges (EK, Funded TTP+IQ, FK --
+  alle echtes Geld) möglicherweise die gesamte letzte Handelswoche ohne
+  Monitoring oder ganz ohne neue Gebote.
 
 - **🟠 ORB: Live handelt andere Tage als der Backtest + M5 überzeichnet den
   Edge** (01.10., [[orb-order-storno-und-haltedauer]]). Nichts geändert.

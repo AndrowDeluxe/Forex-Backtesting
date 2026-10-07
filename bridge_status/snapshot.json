@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-10-07T09:31:24",
+  "generated_at": "2026-10-07T10:01:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-07T09:29:06",
+      "last_run": "2026-10-07T09:59:07",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-10-07 09:29:06 2026-10-07 09:29:01,994 INFO run_once: Konto-Equity 2838.50 EUR | Aggregiertes offenes Risiko (ganzes Konto): 133.16 (Deckel dieser Bridge: 851.55, 30%)",
+      "last_equity_line": "2026-10-07 09:59:07 2026-10-07 09:59:02,078 INFO run_once: Konto-Equity 2840.43 EUR | Aggregiertes offenes Risiko (ganzes Konto): 133.49 (Deckel dieser Bridge: 852.13, 30%)",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-07T09:28:17",
+      "last_run": "2026-10-07T09:58:18",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-10-07 09:28:17 Verbunden: Login 16054, Equity $97,141.83 USD",
+          "last_equity_line": "2026-10-07 09:58:18 Verbunden: Login 16054, Equity $97,166.31 USD",
           "recent_events": [
             "2026-10-06 15:43:19 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
             "2026-10-06 10:43:17 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe: Kurs bereits 0.53R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.1-fache aufgeblaeht.",
@@ -24,7 +24,7 @@
           ]
         },
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-10-07 09:28:17 Verbunden: Login 504072729, Equity $99,267.78 USD",
+          "last_equity_line": "2026-10-07 09:58:18 Verbunden: Login 504072729, Equity $99,294.46 USD",
           "recent_events": [
             "2026-10-06 15:43:19 [TTP] ?? ENTRY ou_modell (DHI) DHI BUY lots=2.0 risk=$49.56 sl=113.93075 -- placed",
             "2026-10-06 15:43:19 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
@@ -39,7 +39,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-10-07T09:14:11",
-      "minutes_since_last_run": 17.2,
+      "minutes_since_last_run": 47.2,
       "status": "ok",
       "last_equity_line": "2026-10-07 09:14:11 Verbunden: Login 17764, Equity $98,717.50",
       "last_error_line": "2026-10-01 13:16:26 trend_pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",

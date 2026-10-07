@@ -1,23 +1,23 @@
 {
-  "generated_at": "2026-10-07T20:31:24",
+  "generated_at": "2026-10-07T21:01:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-07T20:29:07",
+      "last_run": "2026-10-07T20:59:06",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-10-07 20:29:07 2026-10-07 20:29:02,370 INFO run_once: Konto-Equity 2864.31 EUR | Aggregiertes offenes Risiko (ganzes Konto): 97.28 (Deckel dieser Bridge: 859.30, 30%)",
+      "last_equity_line": "2026-10-07 20:59:06 2026-10-07 20:59:02,147 INFO run_once: Konto-Equity 2864.71 EUR | Aggregiertes offenes Risiko (ganzes Konto): 97.26 (Deckel dieser Bridge: 859.41, 30%)",
       "last_error_line": "2026-10-07 11:17:57 2026-10-07 11:17:55,438 ERROR run_once: cls_practical: unerwarteter Fehler",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-07T20:28:20",
+      "last_run": "2026-10-07T20:58:18",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-10-07 20:28:20 Verbunden: Login 16054, Equity $97,234.75 USD",
+          "last_equity_line": "2026-10-07 20:58:18 Verbunden: Login 16054, Equity $97,243.83 USD",
           "last_error_line": "2026-10-07 11:45:17 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
           "recent_events": [
             "2026-10-07 11:45:17 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
@@ -35,7 +35,7 @@
           ]
         },
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-10-07 20:28:20 Verbunden: Login 504072729, Equity $99,304.63 USD",
+          "last_equity_line": "2026-10-07 20:58:18 Verbunden: Login 504072729, Equity $99,320.98 USD",
           "last_error_line": "2026-10-07 11:45:17 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
           "recent_events": [
             "2026-10-07 19:13:19 [TTP] ?? ENTRY ou_modell (SPG) SPG BUY lots=3.0 risk=$49.63 sl=183.39147 -- placed",
@@ -57,7 +57,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-10-07T20:14:12",
-      "minutes_since_last_run": 17.2,
+      "minutes_since_last_run": 47.2,
       "status": "ok",
       "last_equity_line": "2026-10-07 20:14:12 Verbunden: Login 17764, Equity $98,756.58",
       "last_error_line": "2026-10-07 11:16:53 cls_practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",

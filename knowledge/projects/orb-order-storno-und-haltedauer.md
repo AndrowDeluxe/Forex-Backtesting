@@ -266,3 +266,32 @@ Skript: `Claude outputs`-Scratch, Varianten über `run_config` aus
     und das Makro-Umfeld 2026: Iran-Krieg, Öl > 100 $, Q1 −9 %, Q2 bestes
     Quartal seit 2020, Fed-Erhöhung 09/2026.
   - Testbar nur mit GEX-Historie (Ideen-Inbox „ORB-Gamma-Regime-Filter“).
+
+### Anatomie des Tresor-Kipps + Exit-Varianten (07.10., Diagnose)
+
+Skript `scripts/research_orb_tresor_kipp_anatomie.py`; der Simulator ist
+paritätisch zu `sim()`, max |ΔR| = 0. Betrachtet wird die IS-only-7p-Version
+in IS 2016–22, OOS 2023–09/25 und Tresor.
+
+| | SP500 IS / OOS / Tresor | NASDAQ IS / OOS / Tresor |
+|---|---|---|
+| Trefferquote | 22 % / 22 % / **12 %** | 27 % / 23 % / **18 %** |
+| Ø Gewinner | 5,1 / 5,2 / **3,8 R** | 4,5 / 4,3 / **2,7 R** |
+| Ø Verlierer | −1,05 / −1,05 / −1,04 R | −1,03 / −1,02 / −1,01 R |
+| Anteil Stop | 77 % / 78 % / **88 %** | 73 % / 75 % / 80 % |
+| Median Minuten bis Stop | 14 / 12 / **7,5** | 17 / 12 / 14 |
+| Trades mit MFE ≥ 4R | 24 % / 24 % / **14 %** | 23 % / 19 % / **13 %** |
+| erst +1R, dann Stop | 29 % / 29 % / 30 % | 29 % / 27 % / 28 % |
+
+**Befund:** Der Edge kippt vollständig.
+- Die Verluste sind **nicht größer** (−1 R gedeckelt), sondern **häufiger und
+  schneller**.
+- Es gibt weniger Läufer, und die Gewinner sind kleiner.
+- „Gewinne wieder abgeben“ hat nicht zugenommen.
+- Long und Short sind beide negativ.
+
+**Exit-Varianten** (TP 2/3/4R, BE ab +1/+2R, 50 % bei 1R/2R + BE, Zeitstopp
+60/120 Min.): Keine macht den Tresor positiv. Die besten dämpfen ihn nur:
+SP500 −0,48 → −0,21 R (Zeitstopp), NASDAQ −0,36 → −0,13 R (TP 2R). Zugleich
+kosten alle Varianten in IS/OOS Edge. **Ein Exit-Problem ist es nicht.**
+Gekippt ist das Durchziehen der Ausbrüche selbst.

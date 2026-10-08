@@ -1,1 +1,2 @@
-
+market,ticker,scan_date,close,lower_band,entry,sl,tp,tp_price,risk_pct_price,position_size_pct,ma20,regime_ok,tradeable,position_size_concentrated_pct,scanned_at
+"S&P 500 (volles Universum, 420 Ticker)",SPG,2026-10-07,197.59,198.58,197.59,180.45,kein TP (finale Config),0.0,8.67,11.53,203.4,True,True,12.5,2026-10-08T14:30:25

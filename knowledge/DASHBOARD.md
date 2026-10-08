@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-10-07** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-10-08** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -127,6 +127,29 @@ Bedarf vor generischem Aufräumen.
   Scheduler haengt) liefen die drei Live-Bridges (EK, Funded TTP+IQ, FK --
   alle echtes Geld) möglicherweise die gesamte letzte Handelswoche ohne
   Monitoring oder ganz ohne neue Gebote.
+
+- **🔴 Sechste Prüfung, vierter Handelstag: Ausfall läuft jetzt seit über
+  6 Tagen, bis in den Donnerstag 08.10. hinein.** (Bridge Error Monitor,
+  08.10., geprüft 09:12 UTC / 11:12 CEST.) `bridge_status/snapshot.json`
+  steht weiterhin unverändert auf `generated_at: 2026-10-02T11:01:24`
+  (Commit `666fe8e`, 2026-10-02 11:01:25 +0200). `git log` auf die Datei
+  bestätigt weiterhin keinen neuen Commit; der aktuelle HEAD ist der eigene
+  Dashboard-Commit von gestern Morgen (`77a9402`, 07.10. 09:13 UTC) --
+  zwischen der fünften und dieser sechsten Prüfung liegt damit über ein
+  ganzer Tag (inklusive des kompletten Mittwoch-Handelstags) ohne jede
+  neue Aktivität von Watchdog/EK/Funded/FK. Der Ausfall läuft jetzt seit
+  **Freitag 02.10. 11:01 Uhr CEST über 6 Tage**, umfasst **vier
+  Handelstage ohne jede Sichtbarkeit (Mo, Di, Mi, und der laufende
+  Donnerstag)**. **Nichts Neues an Information** -- dieselben drei offenen
+  Fragen (a/b/c) aus den Punkten darüber bleiben unverändert offen,
+  weiterhin nichts, das ich von hier aus unterscheiden oder reparieren
+  könnte (liegt komplett außerhalb des Repos, siehe CLAUDE.md). **Offen für
+  dich, jetzt mit fast einer vollen weiteren Handelswoche als Gewicht:**
+  bitte PC und Task-Scheduler-Historie prüfen -- bei Grund (a) oder (b)
+  (PC aus oder Task Scheduler haengt) liefen die drei Live-Bridges (EK,
+  Funded TTP+IQ, FK -- alle echtes Geld) möglicherweise die gesamte letzte
+  und einen Teil dieser Handelswoche ohne Monitoring oder ganz ohne neue
+  Gebote.
 
 - **🟠 ORB: Live handelt andere Tage als der Backtest + M5 überzeichnet den
   Edge** (01.10., [[orb-order-storno-und-haltedauer]]). Nichts geändert.

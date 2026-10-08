@@ -1,25 +1,26 @@
 {
-  "generated_at": "2026-10-08T19:01:25",
+  "generated_at": "2026-10-08T19:31:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-08T18:59:08",
+      "last_run": "2026-10-08T19:29:07",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-10-08 18:59:08 2026-10-08 18:59:02,811 INFO run_once: Konto-Equity 2863.82 EUR | Aggregiertes offenes Risiko (ganzes Konto): 139.31 (Deckel dieser Bridge: 859.15, 30%)",
+      "last_equity_line": "2026-10-08 19:29:07 2026-10-08 19:29:03,122 INFO run_once: Konto-Equity 2857.42 EUR | Aggregiertes offenes Risiko (ganzes Konto): 128.91 (Deckel dieser Bridge: 857.23, 30%)",
       "last_error_line": "2026-10-07 11:17:57 2026-10-07 11:17:55,438 ERROR run_once: cls_practical: unerwarteter Fehler",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-08T18:58:20",
+      "last_run": "2026-10-08T19:28:21",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-10-08 18:58:20 Verbunden: Login 504072729, Equity $99,393.71 USD",
+          "last_equity_line": "2026-10-08 19:28:21 Verbunden: Login 504072729, Equity $99,368.39 USD",
           "last_error_line": "2026-10-08 17:13:20 [TTP] ?? Entry fehlgeschlagen ou_modell (DE) DE: Berechnete Lot-Groesse 0.0 unter volume_min 1.0 fuer DE (risk_dollars=49.69, loss_per_lot=121.91)",
           "recent_events": [
+            "2026-10-08 19:13:21 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.55R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.2-fache aufgeblaeht.",
             "2026-10-08 17:13:20 [TTP] ?? Entry fehlgeschlagen ou_modell (DE) DE: Berechnete Lot-Groesse 0.0 unter volume_min 1.0 fuer DE (risk_dollars=49.69, loss_per_lot=121.91)",
             "2026-10-08 16:13:21 [TTP] ?? Entry fehlgeschlagen ou_modell (GRMN) GRMN: Berechnete Lot-Groesse 0.0 unter volume_min 1.0 fuer GRMN (risk_dollars=49.67, loss_per_lot=63.38)",
             "2026-10-08 14:16:41 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
@@ -30,14 +31,17 @@
             "2026-10-07 11:30:11 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
             "2026-10-07 11:30:11 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
             "2026-10-07 11:15:12 CTNL-Edge-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-10-07 11:15:12 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-10-07 11:15:12 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'"
+            "2026-10-07 11:15:12 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'"
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-10-08 18:58:20 Verbunden: Login 16054, Equity $97,191.35 USD",
+          "last_equity_line": "2026-10-08 19:28:21 Verbunden: Login 16054, Equity $97,146.79 USD",
           "last_error_line": "2026-10-08 14:16:41 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
           "recent_events": [
+            "2026-10-08 19:28:21 [IQMARKETS] ? ctnl_reversal: Signal wieder angenommen (1 Entry/Entries).",
+            "2026-10-08 19:28:21 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.09 risk=$150.00 sl=4151.69369 -- placed",
+            "2026-10-08 19:13:21 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe: Kurs bereits 0.57R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.3-fache aufgeblaeht.",
+            "2026-10-08 19:13:21 [IQMARKETS] ?? EXIT ctnl_reversal XAUUSD.gbe (Ticket 1972346, max_hold) -- closed",
             "2026-10-08 14:16:41 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
             "2026-10-08 10:31:31 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
             "2026-10-07 11:45:17 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
@@ -45,23 +49,21 @@
             "2026-10-07 11:30:11 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
             "2026-10-07 11:30:11 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
             "2026-10-07 11:15:12 CTNL-Edge-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-10-07 11:15:12 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-10-07 11:15:12 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-10-07 10:59:58 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-10-07 10:59:58 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-10-07 10:44:22 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'"
+            "2026-10-07 11:15:12 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'"
           ]
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-08T18:14:13",
-      "minutes_since_last_run": 47.2,
+      "last_run": "2026-10-08T19:14:15",
+      "minutes_since_last_run": 17.2,
       "status": "ok",
-      "last_equity_line": "2026-10-08 18:14:13 Verbunden: Login 17764, Equity $98,762.12",
+      "last_equity_line": "2026-10-08 19:14:15 Verbunden: Login 17764, Equity $98,715.92",
       "last_error_line": "2026-10-08 14:16:46 cls_practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
       "recent_events": [
+        "2026-10-08 19:14:15  LIVE ԣ ctnl_reversal: Signal wieder angenommen (1 Entry/Entries).",
+        "2026-10-08 19:14:15  LIVE  ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.02 risk=$34.10 (Ziel $37.39) sl=4151.24674 -- placed",
         "2026-10-08 14:16:46 cls_practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
         "2026-10-07 11:16:53 cls_practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
         "2026-10-07 11:16:53 gold_asb-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
@@ -71,9 +73,7 @@
         "2026-10-01 13:16:26 cls_practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
         "2026-10-01 13:16:26 gold_asb-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
         "2026-10-01 02:15:06 gold_asb-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-        "2026-09-29 22:17:44 ctnl-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-        "2026-09-29 22:17:44 trend_pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-        "2026-09-29 22:17:44 cls_practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'"
+        "2026-09-29 22:17:44 ctnl-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)"
       ]
     }
   }

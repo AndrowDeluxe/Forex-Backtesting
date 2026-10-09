@@ -44,10 +44,21 @@ api_hash = "<api_hash aus Schritt 2>"
 chats = []   # nach dem ersten "--list" die IDs der Gruppen eintragen, z.B. [-1001234567890]
 ```
 
-### 4. Notion
+### 4. Notion (eigene Integration, damit auch geplante Bot-Läufe schreiben können)
 
-claude.ai → Einstellungen → Connectors → **Notion** verbinden und eine leere Seite
-„Trading Fusion Cockpit“ freigeben. Den Rest (Datenbanken) legt Claude an.
+1. <https://www.notion.so/profile/integrations> → **Neue Integration**: Name `Trading Fusion`,
+   Typ **Intern**, dein Workspace → Speichern → **Internes Integrations-Secret** kopieren.
+2. In Notion eine leere Seite **„Trading Fusion Cockpit“** anlegen →
+   oben rechts `•••` → **Verbindungen** → `Trading Fusion` hinzufügen.
+3. In `.streamlit/secrets.toml`:
+
+```toml
+[notion]
+token = "<Integrations-Secret, beginnt mit ntn_>"
+root_page = "<Link der Seite Trading Fusion Cockpit>"
+```
+
+4. `python -m fusion_lab.notion.setup_cockpit --test` legt Übersicht + Datenbanken an.
 
 ## Import ausführen (aus dem Repo-Ordner)
 

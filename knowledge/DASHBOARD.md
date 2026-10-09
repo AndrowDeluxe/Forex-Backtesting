@@ -25,9 +25,19 @@ passiert, was steht an.
    Selbstlernen), Code in `fusion_lab/`.
    **Aktuell: Strang 0.** Telegram SMH importiert (10.427 Nachrichten),
    OneNote „Smart Money Trading“ läuft noch (gedrosselt, ~1.200 Seiten),
-   danach Inventur. Wartet auf dich: Notion-Connector in claude.ai
-   (wirkt erst in einer neuen Session).
+   danach Inventur. Notion-Cockpit steht (07.10., eigene API-Integration):
+   Seite „Trading Fusion Cockpit“ — erste Nutzung: Gruppenarbeit Mentor.
    Separat geparkt bis Makro steht: [[aktien-analyse-und-bot]].
+2. **🎯 SMH-Elite-Teamaufgabe „Mikrostruktur & Liquidität“: gerechnet
+   07.10., alle drei Kandidaten ehrlich gescheitert.** Tresor: K1 PF 0,65,
+   K2 PF 1,31 (52 Trades), K3 (Team-Kandidat) PF 0,84. Steckbrief steht auf
+   der Notion-Seite in „🎓 ELITE 3“. Offen: Präsentation im nächsten Call;
+   entscheiden, ob vorher noch ein 4. Kandidat getestet wird.
+   **Nächster Schritt (Nutzer, 07.10.): Key-Level-Ansatz vertiefen.** Runde
+   Zahlen wirken wie ein Magnet, nicht wie eine Wand. OOS und Tresor von K1
+   sind schon geöffnet, deshalb braucht eine neue Regel einen eigenen Lock
+   und frische Prüfdaten (andere Märkte oder Forward).
+   [[smh-elite-mikrostruktur]]
 
 ---
 
@@ -413,6 +423,21 @@ außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
 | EK-Portfolio-Paper                                      | —                                                                                        | pausiert (Paper-Zwilling von EK-Portfolio-Bridge, gehört zum Portfolio)                        | Disabled       | 2026-09-01      |
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
+
+- (09.10.) **Sechs-Bot-Architektur als Zielbild für den Makro-Agenten**
+  (Vorlage „Six-Bot AI Trading Team With Grok“: Scout/News/Sentiment/
+  Charts/Risk/Decision, JSON je Bot, Risk-Gate nur verschärfend). Eigene
+  Abwandlung: Scout = G8-Nachbau, Sentiment = COT, Charts/Risk als Code,
+  nur Analyst + Trade-Übersetzer als LLM, zusätzlich Kontroll-Baustein;
+  Claude statt Grok. Erst nach Phase 1 (Test der alten SMH-Reports),
+  gehört zu [[quant-diskretionaer-fusion]] Strang 3/6.
+
+- (07.10.) **Copy-Trading-Bot aus den täglichen Marktupdates des Mentors**
+  (eigene Telegram-Gruppe, Nutzeridee). Vor jedem Bau: die Calls der
+  Vergangenheit aus dem Telegram-Verlauf extrahieren und nachtesten
+  (Trefferquote, R, Kosten, Verzögerung) — erst ein belegter Edge
+  rechtfertigt Automatisierung, live wäre es Gate 3. Gehört zum Dachprojekt
+  [[quant-diskretionaer-fusion]] (Strang 2/5).
 
 - (07.10.) ~~Gamma als Risikoregler~~ → **einsortiert:** vorab registriert
   im Forward-Test (`scripts/forward_orb_gamma_regler.py`, Lock

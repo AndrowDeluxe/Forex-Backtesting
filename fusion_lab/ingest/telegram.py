@@ -12,6 +12,7 @@ behandeln).
 
     python -m fusion_lab.ingest.telegram --list           # Chats mit ID anzeigen
     python -m fusion_lab.ingest.telegram                  # Chats aus secrets.toml
+    python -m fusion_lab.ingest.telegram --folder SMH     # ganzer Telegram-Ordner
     python -m fusion_lab.ingest.telegram --chat -100123   # einzelner Chat
     python -m fusion_lab.ingest.telegram --no-media       # nur Text
 """
@@ -33,6 +34,27 @@ SESSION = AUTH_DIR / "telegram"
 def _parse_chat(c):
     s = str(c).strip()
     return int(s) if s.lstrip("-").isdigit() else s
+
+
+async def chats_by_name(client, name: str) -> list:
+    """Alle Chats eines Telegram-Ordners (Chat-Filter) mit diesem Namen; gibt es
+    keinen solchen Ordner, alle Chats, deren Name den Text enthaelt."""
+    from telethon.tl.functions.messages import GetDialogFiltersRequest
+
+    res = await client(GetDialogFiltersRequest())
+    for f in getattr(res, "filters", res):
+        title = getattr(f, "title", None)
+        title = getattr(title, "text", title)
+        if isinstance(title, str) and title.strip().lower() == name.lower():
+            peers = list(getattr(f, "pinned_peers", [])) + list(getattr(f, "include_peers", []))
+            if any(getattr(f, k, False) for k in ("contacts", "non_contacts", "groups", "broadcasts", "bots")):
+                print(f"  Hinweis: Ordner '{title}' nutzt Regeln (z.B. 'alle Gruppen') -- "
+                      "nur die explizit hinzugefuegten Chats werden gelesen.", flush=True)
+            print(f"  Ordner '{title}': {len(peers)} Chats", flush=True)
+            return peers
+    hits = [d.entity async for d in client.iter_dialogs() if name.lower() in (d.name or "").lower()]
+    print(f"  Kein Ordner '{name}' -- {len(hits)} Chats mit '{name}' im Namen", flush=True)
+    return hits
 
 
 def message_record(msg) -> dict:
@@ -91,9 +113,12 @@ async def run(args) -> int:
                 print(f"{d.id:>16}  {kind:6}  {d.name}")
             return 0
         chats = [_parse_chat(c) for c in (args.chat or cfg.get("chats", []))]
+        folder = args.folder or cfg.get("folder")
+        if folder and not args.chat:
+            chats += await chats_by_name(client, folder)
         if not chats:
-            print("Keine Chats gewaehlt -- [telegram] chats = [...] in secrets.toml "
-                  "eintragen oder --chat angeben (IDs per --list).", file=sys.stderr)
+            print("Keine Chats gewaehlt -- [telegram] folder = \"SMH\" bzw. chats = [...] "
+                  "in secrets.toml eintragen oder --folder/--chat angeben.", file=sys.stderr)
             return 1
         state = load_json(STATE, {})
         for chat in chats:
@@ -106,6 +131,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--list", action="store_true", help="alle Chats mit ID auflisten")
     ap.add_argument("--chat", action="append", help="Chat-ID oder @username (mehrfach moeglich)")
+    ap.add_argument("--folder", help="alle Chats eines Telegram-Ordners, z.B. SMH")
     ap.add_argument("--no-media", action="store_true", help="keine Bilder/Dateien laden")
     return asyncio.run(run(ap.parse_args(argv)))
 

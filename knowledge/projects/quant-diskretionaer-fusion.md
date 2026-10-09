@@ -25,6 +25,12 @@ Verschmelzung" (2026-09-02) ab -- der Journal-Teil ist laut Nutzer erledigt.
   Makro-Analyse des Mentors soll künftig automatisiert werden.
 - **Aktienanalyse + Aktienbot = eigenes Projekt** ([[aktien-analyse-und-bot]]),
   startet erst, wenn die Makro-Basis steht.
+- **ELITE 3 = Haupt-Input für neues Wissen, Erkenntnisse und Aufgaben**
+  (Nutzer, 2026-10-07). ELITE 3 ist die aktuelle Mentoring-Gruppe; neue
+  Inhalte landet der Nutzer künftig direkt in der Notion-Datenbank
+  „🎓 ELITE 3“ statt in OneNote (OneNote = Altbestand, wird importiert).
+  Wissen dort ist erst verbindlich, wenn es nach `knowledge/` übernommen
+  ist (Häkchen „In knowledge/ übernommen“) -- Übernahme-Routine steht noch aus.
 - **Eigener Repo-Ordner `fusion_lab/`** statt separatem Repo -- vorhandene
   Makro-Bausteine bleiben direkt importierbar, ein Second Brain.
 
@@ -52,6 +58,36 @@ Verschmelzung" (2026-09-02) ab -- der Journal-Teil ist laut Nutzer erledigt.
   (`fusion_lab/ingest/`), Bestandteile der alten Analyse listen, je mit
   Quelle (eigenes Wissen / Mentor). Ergebnis befüllt die Checkliste in
   [[persoenlicher-tradingplan-validierung]].
+  - [x] Telegram „SMH Trade & Invest“ (07.10.): 10.427 Nachrichten,
+    ~660k Zeichen, 2.658 Bilder, 14.03.2025–02.10.2026.
+  - [x] OneNote „Finanzielle Freiheit Neu / Smart Money Trading“ (09.10.):
+    **3.224 Seiten**, ~16.000 Bilder, ~7 GB (Schätzung war 1.200). 368
+    Seiten mit doppeltem Dateinamen nachgeladen, Bestand vollständig: 3.225
+    Seiten, 11 GB, 0 Namensdopplungen (Fix
+    `onenote_fix_names.py`).
+    Fortsetzen: `python -m fusion_lab.ingest.onenote --notebook
+    "Finanzielle Freiheit Neu" --section "Smart Money Trading"`.
+  - [ ] Telegram „SMH Daily Update“ (Import 09.10. noch laufend, Stand
+    13.09.2026): ~100 Makro-Reports als PDF ab 06.08.2025, Sonntag +
+    Mittwoch. Drei Format-Generationen; seit 28.06.2026 einheitlich
+    „SMT Macro Desk“ (Regime, G8-Ranking Makro/Rates/Preis/Quant,
+    Szenarien, Trades mit 5 Gates/Aktivierung/Invalidierung) → Vorlage
+    für den Makro-Agenten. Ältere Reports teils Bild-PDFs (OCR nötig).
+  - [ ] „Währungsstärke G8“ (SMHxSMT, Thema „SMT & Markt“, täglich ab
+    24.08.2026, Bild): laut Fußzeile Zustandsmodell auf FRED/BIZ-Daten ab
+    1999. Score = Mittel der drei z-Werte 1W/1M/3M (nachgerechnet an
+    06.10.: USD, GBP, NZD stimmen). Damit **nachbaubar und über ~27
+    Jahre backtestbar**; die geposteten Tagesbilder dienen als
+    Kalibrierung. Inhaltlich Querschnitts-FX-Momentum (bekannte, eher
+    schwache Literatur-Anomalie) → Tresor/Overfitting-Sperre gilt.
+  - **Reihenfolge Makro (Nutzerentscheid 09.10.)**: (1) alte Reports
+    testen und klären, wie sich daraus automatisiert Trades erzeugen
+    lassen; (2) danach Agent, der genau diese Reports schreibt und mit dem
+    Nutzer interagieren kann. Agent nur vorwärts messbar (LLM kennt den
+    Ausgang der Vergangenheit).
+  - [ ] Inventur selbst (Material sichten → Bestandteile-Liste).
+  - Nur dieses Notizbuch/dieser Abschnitt ist Trading -- die übrigen
+    Notizbücher und Abschnitte sind privat und werden NICHT importiert.
 - [ ] **1 Edge Cards** je Bestandteil ([[edge-card-workflow]]).
 - [ ] **2 Reproduzieren + Testen** -- Phasen 4-6 ([[backtest-standard-process]]).
 - [ ] **3 Analyse automatisieren** -- zuerst Makro: tägliche Analyse,
@@ -59,6 +95,15 @@ Verschmelzung" (2026-09-02) ab -- der Journal-Teil ist laut Nutzer erledigt.
 - [ ] **4 Sichtbarkeit** -- Notion-Cockpit: Makro-Übersicht, Analysen,
   Entscheidungslog mit dem "Warum" jeder Handlung (gleichzeitig die
   Lerndaten für Strang 7).
+  - [x] Grundgerüst (07.10.): Seite „Trading Fusion Cockpit“, eigene
+    API-Integration (nicht der claude.ai-Connector -- geplante Bot-Läufe
+    müssen ohne Session schreiben können). 5 Datenbanken: ELITE 3
+    (Mentoring: Wissen/Erkenntnis/Aufgabe/Material/Session), Makro-Übersicht,
+    Analysen, Entscheidungslog (Bot), Zwischenablage.
+    `fusion_lab/notion/setup_cockpit.py` gleicht Titel/Felder idempotent ab.
+  - [ ] Übernahme-Routine: neue ELITE-3-Einträge regelmäßig lesen, Wissen
+    nach `knowledge/` überführen (bzw. als Edge-Card-Kandidat markieren),
+    Häkchen setzen. Aufgaben ggf. mit Bot-Beitrag vorbereiten.
 - [ ] **5 Ausführung auf Paper** -- FX/Rohstoffe über MT5-Demo (Aktien siehe
   [[aktien-analyse-und-bot]]).
 - [ ] **6 Agentenschicht** = Strang A in
@@ -79,6 +124,17 @@ Jeder Strang bekommt beim Start einen eigenen Plan-Modus-Durchlauf.
   Rahmen für die Makro-Automatisierung.
 
 ## Nächster Schritt
+
+**Agenda neue Session (Abend 07.10., Nutzer):**
+1. OneNote-Auswertung: Inhaltsverzeichnis „Smart Money Trading“ bauen
+   (Abschnitte, Titel, Themen), dann Bestandteile-Liste (Strang 0).
+2. Struktur: altes Wissen → Edge Cards → Tests (Strang 1/2), Reihenfolge
+   gemeinsam festlegen.
+3. Makro-Agent v1 auf Basis des Mentor-Materials (Strang 3) — eigener
+   Plan-Modus-Durchlauf.
+4. Idee Copy-Trading aus den täglichen Mentor-Updates → erst Calls aus dem
+   Verlauf nachtesten (Ideen-Inbox im Dashboard).
+
 
 Strang 0: Nutzer legt die Zugänge an (Anleitung in `fusion_lab/README.md`):
 Azure-App für OneNote, Telegram-API-Zugang, Notion-Connector in claude.ai.

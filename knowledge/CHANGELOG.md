@@ -9,6 +9,15 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-09** [Dachprojekt / Strang 0] **OneNote-Import abgeschlossen:
+  3.224 Seiten** „Smart Money Trading“ (~16.000 Bilder, 0 Fehler). Fehler
+  gefunden + behoben: Dateinamen nutzten das Ende der Seiten-ID, das bei
+  OneNote die Abschnitts-ID ist -> gleichnamige Seiten eines Abschnitts
+  überschrieben sich (368 Seiten). Jetzt Hash der vollen ID;
+  `fusion_lab/ingest/onenote_fix_names.py` hat 2.856 Seiten umbenannt, die
+  368 nachgeladen -> 3.225 Seiten vollständig, 0 Dopplungen. Außerdem:
+  Wiederholung bei Verbindungsabbrüchen.
+
 - **2026-10-07** [Entscheidung] **ORB-Research-Ansatz beendet** (Nutzerentscheid).
   - Keine weitere Neuoptimierung des ORB.
   - Live-Bot laeuft unveraendert weiter.

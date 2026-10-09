@@ -33,5 +33,6 @@ scripts/task_backups/
 fusion_lab/raw/
 fusion_lab/.auth/
 
-# Zugangsdaten fusion_lab (2026-10-04 vorsorglich aus dem Commit genommen)
-fusion_lab/_secrets.py
+# Notion-Datenbank-IDs: lokaler Zustand, erzeugt von fusion_lab/notion/setup_cockpit.py
+# (fusion_lab/_secrets.py ist NUR Lade-Code ohne Zugangsdaten -> wird committet)
+fusion_lab/notion/cockpit_ids.json

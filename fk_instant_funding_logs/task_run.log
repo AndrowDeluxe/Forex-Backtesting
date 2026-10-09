@@ -59373,3 +59373,20 @@
 2026-10-09 22:55:55   "ctnl_kill_switch_active": false,
 2026-10-09 22:55:55   "n_trades": 25
 2026-10-09 22:55:55 }
+2026-10-09 22:55:56 [main 3c82534] FK Instant Funding Bot: Snapshot 2026-10-09 22:55
+2026-10-09 22:55:56  3 files changed, 34 insertions(+), 1 deletion(-)
+2026-10-09 22:55:57 MERGE UEBERSPRUNGEN: Working Tree hat 9 offene Aenderung(en) (andere Tasks/Session). Es wird NICHT gestasht -- der lokale Commit bleibt liegen und geht beim naechsten sauberen Lauf raus.
+2026-10-09 22:55:58 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-10-09 22:55:58  ! [rejected]          main -> main (non-fast-forward)
+2026-10-09 22:55:58 error: failed to push some refs to 'https://github.com/AndrowDeluxe/Forex-Backtesting.git'
+2026-10-09 22:55:58 hint: Updates were rejected because the tip of your current branch is behind
+2026-10-09 22:55:58 hint: its remote counterpart. If you want to integrate the remote changes,
+2026-10-09 22:55:58 hint: use 'git pull' before pushing again.
+2026-10-09 22:55:58 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+2026-10-09 22:55:58 HINWEIS: Push abgelehnt (Remote ist weiter) - erwartet, solange nicht gemergt wurde. Rueckstand sichtbar ueber 'git log origin/main..HEAD'.
+2026-10-09 22:55:58 === FK-Instant-Funding-Task beendet ===
+2026-10-09 23:55:24 === FK-Instant-Funding-Task gestartet ===
+2026-10-09 23:55:25 {
+2026-10-09 23:55:25   "date": "2026-10-09 21:55:25.179017",
+2026-10-09 23:55:25   "paused": true
+2026-10-09 23:55:25 }

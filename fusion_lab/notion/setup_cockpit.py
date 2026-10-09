@@ -21,6 +21,8 @@ QUELLE = ["Mentor", "Eigene", "Bot", "Gruppe"]
 BIAS = [("Bullish", "green"), ("Bearish", "red"), ("Neutral", "gray")]
 ASSETS = ["USD", "EUR", "GBP", "JPY", "CHF", "AUD", "CAD", "NZD", "Gold", "Silber",
           "Öl", "Indizes", "Anleihen", "Aktien"]
+INSTRUMENTE = ["EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "USDCAD", "USDCHF", "XAUUSD",
+               "XAGUSD", "WTI", "US500", "NAS100", "US30", "DAX"]
 
 
 def _sel(options) -> dict:
@@ -69,8 +71,7 @@ DATABASES = {
     }),
     "analysen": ("📈 Analysen", {
         "Titel": T, "Datum": D,
-        "Instrument": S("EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "USDCAD", "USDCHF", "XAUUSD",
-                        "XAGUSD", "WTI", "US500", "NAS100", "US30", "DAX"),
+        "Instrument": S(*INSTRUMENTE),
         "Typ": S("Wochenanalyse", "Tagesanalyse", "Breakdown", "Bankreport", "Setup",
                  "Gruppenarbeit"),
         "Timeframe": M("MN", "W1", "D1", "H4", "H1", "M15", "M5"),
@@ -86,7 +87,17 @@ DATABASES = {
         "Gate": S(("1 autonom", "green"), ("2 autonom + Meldung", "yellow"),
                   ("3 Freigabe nötig", "red")),
         "Status": S(("ausgeführt", "green"), ("wartet auf Freigabe", "yellow"),
-                    ("abgelehnt", "red"), ("zurückgenommen", "gray")),
+                    ("abgelehnt", "red"), ("zurückgenommen", "gray"),
+                    ("unvollständig", "orange")),  # Pflichtangaben fehlen -> weder Freigabe noch Ablehnung
+        # Abgelehnte/unvollstaendige Setups werden genauso geloggt wie ausgefuehrte,
+        # sonst sind die Lerndaten fuer Strang 7 einseitig. Fakten (mit Quelle) und
+        # Analyse getrennt halten; was fehlt, steht in "Fehlende Infos".
+        "Instrument": S(*INSTRUMENTE),
+        "Richtung": S(("long", "green"), ("short", "red"), ("flat", "gray")),
+        "Fakten (Quelle)": R, "Fehlende Infos": R,
+        "Kosten / Slippage": R,
+        "Regeln befolgt": S(("ja", "green"), ("teilweise", "yellow"), ("nein", "red"),
+                            ("n. a.", "gray")),
         "Warum": R, "Ergebnis": R, "Link": U,
     }),
     "zwischenablage": ("📥 Zwischenablage", {

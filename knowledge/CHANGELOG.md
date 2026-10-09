@@ -9,6 +9,18 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-10** [Dachprojekt / Strang 4] **Entscheidungslog um
+  Prüffelder erweitert** (Nutzerauftrag nach Prüfung des Leitfadens „SebAI —
+  6 Claude Agents Trading Team“).
+  - Notion „🤖 Entscheidungslog (Bot)“: neuer Status „unvollständig“
+    (Pflichtangaben fehlen) sowie die Felder Instrument, Richtung,
+    Fakten (Quelle), Fehlende Infos, Kosten / Slippage und Regeln befolgt.
+  - Abgelehnte und unvollständige Setups werden mitgeloggt, damit die
+    Lerndaten für Strang 7 nicht einseitig sind.
+  - Notion abgeglichen und geprüft. Der Rest des Leitfadens (Agenten-JSON,
+    Testfälle für den Kontroll-Baustein) wartet bewusst auf den
+    Plan-Modus zu Strang 3/6, siehe Ideen-Inbox.
+
 - **2026-10-09** [Dachprojekt / Strang 0] **Inhaltsverzeichnis +
   Inventur-Entwurf.**
   - Neues Skript `fusion_lab/inventory/onenote_toc.py`. Es erzeugt

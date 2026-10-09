@@ -450,6 +450,14 @@ außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
   nur Analyst + Trade-Übersetzer als LLM, zusätzlich Kontroll-Baustein;
   Claude statt Grok. Erst nach Phase 1 (Test der alten SMH-Reports),
   gehört zu [[quant-diskretionaer-fusion]] Strang 3/6.
+  Ergänzung (09.10.): Leitfaden „SebAI — 6 Claude Agents Trading Team“
+  geprüft. Als System nicht übernehmen: Sechs Chats, die man per Hand
+  verbindet, je Lauf eine Entscheidung und kein Backtest. Die „historische“
+  Übung ist ein Lookahead (siehe Memory `llm-agent-nur-vorwaerts-testbar`).
+  Übernehmen: Status INCOMPLETE neben REJECT/APPROVE, Felder „fehlende
+  Infos“ und „Fakten vs. Analyse“ im Agenten-JSON, „Regeln befolgt“ und
+  abgelehnte Setups im Notion-Entscheidungslog, die „Quick Fixes“ als
+  Testfälle für den Kontroll-Baustein.
 
 - (07.10.) **Copy-Trading-Bot aus den täglichen Marktupdates des Mentors**
   (eigene Telegram-Gruppe, Nutzeridee). Vor jedem Bau: die Calls der

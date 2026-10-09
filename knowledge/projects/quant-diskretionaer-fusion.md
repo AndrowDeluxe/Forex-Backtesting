@@ -86,6 +86,17 @@ Verschmelzung" (2026-09-02) ab -- der Journal-Teil ist laut Nutzer erledigt.
     Nutzer interagieren kann. Agent nur vorwärts messbar (LLM kennt den
     Ausgang der Vergangenheit).
   - [ ] Inventur selbst (Material sichten → Bestandteile-Liste).
+    - [x] Inhaltsverzeichnis (09.10.): `python -m
+      fusion_lab.inventory.onenote_toc` → `raw/onenote/_toc.md` und
+      `_pages.csv`. Kategorien: Regeln & Edges 175 Seiten, Makro 216,
+      Technik 131, Mindset 402, Journals 2.014, Calls 287.
+    - [x] Entwurf Bestandteile-Liste A–F (09.10.) in
+      [[persoenlicher-tradingplan-validierung]], Basis „Tradingplan 1.1
+      2026“. Wartet auf die Durchsicht durch den Nutzer.
+    - [ ] Noch nicht gesichtet: Makro Education (675 kB), SMH Calls
+      2025/26, „Aufarbeitung GS Prozess“ (E4), Elite 2 „Settlements Ficker
+      Edge“, Telegram-Material. Acht Final-Edges bestehen nur aus
+      Chartbildern, der Nutzer muss ihre Regeln diktieren.
   - Nur dieses Notizbuch/dieser Abschnitt ist Trading -- die übrigen
     Notizbücher und Abschnitte sind privat und werden NICHT importiert.
 - [ ] **1 Edge Cards** je Bestandteil ([[edge-card-workflow]]).

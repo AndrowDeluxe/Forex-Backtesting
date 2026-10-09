@@ -23,9 +23,11 @@ passiert, was steht an.
    [[quant-diskretionaer-fusion]]. Eigene Analyse reproduzieren, testen,
    automatisieren → selbstlernender Bot. 8 Stränge (0 Inventur … 7
    Selbstlernen), Code in `fusion_lab/`.
-   **Aktuell: Strang 0.** Telegram SMH importiert (10.427 Nachrichten),
-   OneNote „Smart Money Trading“ läuft noch (gedrosselt, ~1.200 Seiten),
-   danach Inventur. Notion-Cockpit steht (07.10., eigene API-Integration):
+   **Aktuell: Strang 0.** OneNote vollständig importiert (3.225 Seiten),
+   Telegram bis auf „SMH Daily Update“ (läuft noch). **Inventur-Entwurf
+   steht (09.10.):** 30 Bestandteile in A–F, siehe
+   [[persoenlicher-tradingplan-validierung]] (wartet auf deine Durchsicht,
+   siehe „Braucht deine Bestätigung“). Notion-Cockpit steht (07.10., eigene API-Integration):
    Seite „Trading Fusion Cockpit“ — erste Nutzung: Gruppenarbeit Mentor.
    Separat geparkt bis Makro steht: [[aktien-analyse-und-bot]].
 2. **🎯 SMH-Elite-Teamaufgabe „Mikrostruktur & Liquidität“: gerechnet
@@ -89,6 +91,23 @@ Bedarf vor generischem Aufräumen.
     −8 / −13 R. **SP500 live im Backtest 2026: OOS −4,9 R, Tresor −8,5 R.**
     NASDAQ live +18 / +33 R (vorbelastet). Die Entscheidung SP500-ORB
     pausieren ja/nein bleibt offen.
+
+- **🟡 Inventur-Entwurf Tradingplan (09.10.): bitte durchsehen.** Die
+  Bestandteile-Liste in [[persoenlicher-tradingplan-validierung]] habe ich
+  aus „Tradingplan 1.1 2026“, „Meine Trading Edges“ und der Daily
+  Checklist 04/2026 gebaut. Dabei habe ich Folgendes angenommen:
+  - Tradingplan 1.1 2026 ist der gültige Plan. Er ist zwar auf 05/2025
+    datiert, liegt aber im Abschnitt „Oktober 2026“.
+  - „New London Edge EU only“ (08/2026) ist dasselbe wie das archivierte
+    [[london-range-bos-retest-eurusd]], also schon negativ getestet.
+  - Bei der Herkunft (Plan oder Kurs) habe ich nach Seitentitel und
+    Abschnitt geschätzt.
+  - Acht „Final“-Edges (Midnight Spike, Pre Manipulation, NY, 16:00 Uhr …)
+    bestehen nur aus Chartbildern. Ihre Regeln müsstest du diktieren.
+  - Mindset, Kontensystem und Payout-Regeln (Block F) habe ich als nicht
+    automatisierbar ausgeklammert.
+  **Frage:** Fehlt etwas, oder ist etwas falsch einsortiert? Danach legen
+  wir die Reihenfolge für Strang 1 (Edge Cards) fest.
 
 - **🟢 Dachprojekt Quant × diskretionär (04.10.): meine Annahmen.** Details:
   [[quant-diskretionaer-fusion]].

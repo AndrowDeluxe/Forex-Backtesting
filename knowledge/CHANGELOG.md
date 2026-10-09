@@ -9,6 +9,20 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-09** [Dachprojekt / Strang 0] **Inhaltsverzeichnis +
+  Inventur-Entwurf.**
+  - Neues Skript `fusion_lab/inventory/onenote_toc.py`. Es erzeugt
+    `raw/onenote/_toc.md` und `_pages.csv` (gitignored): 3.225 Seiten in
+    6 Kategorien vorsortiert.
+  - Die Journals stellen 2.014 Seiten. Viele davon sind Vorlagen, die
+    jeden Monat neu kopiert wurden (Wochenanalyse, Tradingplan).
+  - Bestandteile-Liste A–F mit 30 Punkten in
+    [[persoenlicher-tradingplan-validierung]], je mit Quelle und
+    Repo-Stand.
+  - Ergebnis des Abgleichs: 5 Bestandteile sind schon negativ getestet,
+    4 nur verwandt getestet, der Rest ist offen.
+  - Entwurf, noch nicht vom Nutzer bestätigt.
+
 - **2026-10-09** [Dachprojekt / Strang 0] **OneNote-Import abgeschlossen:
   3.224 Seiten** „Smart Money Trading“ (~16.000 Bilder, 0 Fehler). Fehler
   gefunden + behoben: Dateinamen nutzten das Ende der Seiten-ID, das bei

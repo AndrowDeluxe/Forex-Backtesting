@@ -5,6 +5,7 @@
 Gestartet 2026-10-06 (Nutzerauftrag), unabhängig von der Mentor-PDF.
 Vorgeschichte: [[orb-order-storno-und-haltedauer]] (IS-only-Test, Tresor
 durchgefallen, Ribbon-Filter kippt) und [[overfitting-sperre]].
+Nachtrag 11.10.: Gegenprobe mit Öl, siehe [[orb-gegenprobe-oel]].
 
 ## Split (Lock `ny_open_orb_regime2026_20261006`)
 

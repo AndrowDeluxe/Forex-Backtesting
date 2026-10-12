@@ -53,6 +53,47 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **CTNL-State: Altpositionen ohne Zeit-Exit + verwaiste `placed`-Einträge**
+  (12.10., Weekly Checkup KW41, Performance Abschnitt 6 Punkt 1; ECHTES
+  GELD, nichts angefasst). Offen ohne `max_hold`/TP: TTP 18696522 +
+  18696950 (30.09., 8 Handelstage), IQ 1973249 + FK 1973231 (02.10.,
+  Signal 13:00 – der 12:45-Zwilling wurde am 08.10. korrekt per `max_hold`
+  geschlossen). TTP blockiert damit den CTNL-Deckel (3 offen, Grenze 2).
+  Zusätzlich stehen ausgestoppte Shorts weiter als `placed` im State (FK:
+  7x vom 01.10., IQ/FK: 08.10. 17:00 + 09.10. 01:45). Meine Hypothese
+  (unbelegt): Signal-Schlüssel hat sich mit „eine M15-Bar früher“ (03.10.)
+  verschoben. Entscheidung nötig: Altpositionen schließen? Exit-Abgleich
+  gegen Broker statt Sim-Schlüssel?
+
+- **Zarattini-Noise-Area-Test: meine Annahmen** (11.10.,
+  [[zarattini-noise-area-momentum]]). (1) Nur SP500 + NASDAQ, kein US30.
+  (2) Phase-5-Raster selbst gewählt (VM, Lookback, echtes GEX-Gate statt des
+  RSI-Proxys aus dem Paper). (3) VWAP mit Dukascopy-Tick-Volumen gewichtet.
+  (4) OOS und Tresor gleich in derselben Session geöffnet, wie es der
+  Prozess vorsieht. Das Urteil (Tresor negativ) hängt an keiner dieser
+  Annahmen stark, weil der Bruttoertrag je Trade im Tresor schon vor
+  Kosten negativ ist.
+
+- **ORB-Gegenprobe Öl: meine Annahmen** (11.10., [[orb-gegenprobe-oel]]).
+  (1) Öl-Kosten 4,0 bps Spread + Index-Slippage (~0,15 R je Trade), nicht am
+  Broker gemessen. (2) April 2020 ausgelassen (WTI nahe null). (3) Öl-Uhr
+  09:00–14:30 (NYMEX) als zweite Variante, selbst gewählt. (4) Lesart
+  „ORB-Edge lebte vom Tag-zu-Tag-Umkehr-Regime“ ist eine Hypothese. PDF für
+  den Mentor: `Claude outputs/orb_profitabilitaets_kriterien_oel_20261011.pdf`.
+
+- **SMH-Makro-Reports: Stichprobe + meine Datenregeln** (10.10., Phase 1
+  Makro, [[quant-diskretionaer-fusion]]). 120 Reports extrahiert (800
+  Ideen). (1) Bitte 11 Reports gegen das PDF prüfen:
+  `fusion_lab/data/macro_reports/stichprobe.md` — erst danach läuft der
+  Backtest. (2) Eigene Annahmen, vor jedem Ergebnis festgelegt und im
+  Lock-Protokoll `smh_macro_reports` vermerkt: Zwei-Wege-Setups raus
+  (außer aktueller Call + Plan B), Reposts >7 Tage alt raus (4850),
+  Report-Level >20 % vom Einstieg ignoriert, Kosten 1,5–10 bps je Klasse,
+  Konfidenz x/5 auf hoch…niedrig gerundet. Passt das so?
+  (3) G8-Nachbau: Split abweichend vom Plan auf FRED-Historie ab 2000
+  gelegt (Plan: 2010-11 wegen Dukascopy-Lücken, die FRED nicht hat).
+  Ergebnis IS negativ — OOS/Tresor trotzdem einmal öffnen oder zu lassen?
+
 - **📅 31.12.2026: Forward-Vergleich ORB live mit und ohne Gamma-Regler**
   (Nutzerentscheid 07.10.). Vorab registriert:
   - A = ORB-Live wie bisher.

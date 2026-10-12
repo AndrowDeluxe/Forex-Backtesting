@@ -9,6 +9,56 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-11** [Research] **Paper „Beat the Market“ (Zarattini/Aziz/Barbon,
+  SSRN 4824172, Noise-Area-Intraday-Momentum) nach dem 8-Phasen-Prozess:
+  Tresor durchgefallen, verworfen** [[zarattini-noise-area-momentum]]. Neu:
+  `noise_area_momentum/engine.py`, `scripts/research_noise_area_momentum.py`,
+  Lock `zarattini_noise_area_20261011` (19 Versuche, eingefroren, OOS und
+  Tresor je einmal geöffnet). Die Nachbildung trifft das Paper (Jahres-Korr.
+  0,92/0,85). Netto-Sharpe 1x: SP500 IS 0,60 → OOS 0,45 → Tresor −1,29,
+  NASDAQ 1,45 → 0,59 → −0,62. Keine Bot-Änderung.
+
+- **2026-10-11** [Research] **ORB-Gegenprobe mit Öl (WTI)** (Hinweis aus der
+  Mentor-Gruppenarbeit) [[orb-gegenprobe-oel]]. Skript
+  `scripts/research_orb_oel_vergleich.py`, Lock `orb_oel_vergleich_20261011`
+  (8 feste Versuche, keine Optimierung). Öl hat keinen ORB-Edge (bester PF
+  1,03) und keinen Eröffnungsschock (1,5 statt 2,4–3,0 ATR). Der Kipp des
+  Trendfilters 2026 ist index-spezifisch, aber das Tag-zu-Tag-Verhalten dreht
+  bei allen drei Märkten von Umkehr zu Fortsetzung. PDF erweitert:
+  `Claude outputs/orb_profitabilitaets_kriterien_oel_20261011.pdf` (13 Seiten,
+  Original unverändert). Keine Bot-Änderung.
+
+- **2026-10-11** [Dachprojekt / Strang 4] **G8-Stärke im Notion-Cockpit**
+  (Nutzerwunsch). Neue DB „💱 G8-Stärke“ (`setup_cockpit.py`, Schlüssel
+  `g8`) + Erklärseite „G8-Modell — Währungsstärke (Nachbau)“. Befüllt per
+  `python -m fusion_lab.notion.sync_g8 --days 60` (idempotent über
+  „Datum · Quelle“): 23 SMH-Tabellen + Nachbau (FRED, jüngste Tage
+  Dukascopy) = 89 Zeilen. Noch kein geplanter Tageslauf.
+
+- **2026-10-10** [Dachprojekt / Strang 3, Phase 1 Makro] **G8-Stärke
+  nachgebaut + IS-Test: kein Edge.** `fusion_lab/g8/` (data, model,
+  calibrate, backtest), `scripts/research_g8_strength.py`,
+  `tests/test_g8_model.py` (3 grün). Kalibrierung gegen 23 veröffentlichte
+  Tabellen (24.08.–06.10.): Querschnitts-z (ddof 1) über 5/21/63 Tage aus
+  FRED trifft das Original mit Score-Korrelation 0,98 / Rang-Korrelation
+  0,95. Lock `g8_strength` (IS 2000–2017, OOS –02.10.2025, Tresor –02.10.2026,
+  4 Varianten): alle 4 negativ in IS (Sharpe −0,13 bis −0,42), Gewinner
+  k1_weekly eingefroren (DSR 0,06). OOS/Tresor noch zu.
+
+- **2026-10-10** [Dachprojekt / Strang 3, Phase 1 Makro] **SMH-Makro-Reports
+  extrahiert, Backtest vorbereitet** (Plan vom 09.10.). Neu:
+  `fusion_lab/macro_reports/` (inventory.py, schema.py, EXTRACTION.md,
+  backtest.py), `fusion_lab/g8/` (FRED-Panel + Score-Kandidaten),
+  `scripts/research_smh_macro_reports.py`,
+  `tests/test_macro_report_schema.py` (6 grün). 120 Reports
+  (03.08.2025–07.10.2026) per Claude-Unteragenten wörtlich in JSON
+  übersetzt (800 Ideen; erste Welle starb am Nutzungslimit, zweite mit
+  6 Agenten komplett). Research-Lock `smh_macro_reports` registriert und
+  eingefroren VOR jedem Ergebnis (4 Varianten, Bewertungsmodus; Ausnahme
+  begründet in `areas/overfitting-sperre.md`), 4 Datenregeln als
+  Ergänzung protokolliert. `fusion_lab/data/` gitignored, `pymupdf` in
+  requirements. Noch kein Backtest-Lauf — wartet auf Nutzer-Stichprobe.
+
 - **2026-10-10** [Dachprojekt / Strang 4] **Entscheidungslog um
   Prüffelder erweitert** (Nutzerauftrag nach Prüfung des Leitfadens „SebAI —
   6 Claude Agents Trading Team“).

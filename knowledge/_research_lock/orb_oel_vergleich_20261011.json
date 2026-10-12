@@ -1,0 +1,88 @@
+{
+  "strategy": "orb_oel_vergleich_20261011",
+  "split": {
+    "is_start": "2016-07-28",
+    "is_end": "2022-12-31",
+    "oos_end": "2025-09-30",
+    "tresor_end": "2026-09-30"
+  },
+  "registered": "2026-10-11T08:58:24+00:00",
+  "trials": 8,
+  "frozen": {
+    "hash": "574a95aa4513441d091d5542ebd63a9392f7ec5e2a3fcc4803a1d0eff89676e1",
+    "config": {
+      "configs": {
+        "SP500-Gewinner": {
+          "weekday": null,
+          "rule": "none",
+          "stop": 1.0,
+          "target": 8.0,
+          "partial": null,
+          "range_bars": 1,
+          "dirs": "beide",
+          "ribbon": "neutral"
+        },
+        "NASDAQ-Gewinner": {
+          "weekday": null,
+          "rule": "none",
+          "stop": 1.0,
+          "target": 8.0,
+          "partial": null,
+          "range_bars": 1,
+          "dirs": "long",
+          "ribbon": "neutral"
+        },
+        "ungefiltert": {
+          "weekday": null,
+          "rule": "none",
+          "stop": 1.0,
+          "target": 8.0,
+          "partial": null,
+          "range_bars": 1,
+          "dirs": "beide",
+          "ribbon": "kein"
+        },
+        "mit Trend": {
+          "weekday": null,
+          "rule": "none",
+          "stop": 1.0,
+          "target": 8.0,
+          "partial": null,
+          "range_bars": 1,
+          "dirs": "beide",
+          "ribbon": "mit_trend"
+        }
+      },
+      "clocks": {
+        "index": {
+          "open": [
+            9,
+            30
+          ],
+          "close": [
+            16,
+            0
+          ]
+        },
+        "oel": {
+          "open": [
+            9,
+            0
+          ],
+          "close": [
+            14,
+            30
+          ]
+        }
+      },
+      "spread_bps_oil": 4.0,
+      "min_price": 10.0
+    },
+    "ts": "2026-10-11T09:08:55+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-11T09:08:55+00:00",
+    "tresor": "2026-10-11T09:08:55+00:00"
+  },
+  "forward": null
+}

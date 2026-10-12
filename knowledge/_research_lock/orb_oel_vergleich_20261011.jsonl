@@ -1,0 +1,5 @@
+{"ts": "2026-10-11T08:58:24+00:00", "event": "register_split", "is_start": "2016-07-28", "is_end": "2022-12-31", "oos_end": "2025-09-30", "tresor_end": "2026-09-30"}
+{"ts": "2026-10-11T09:08:55+00:00", "event": "trials", "n": 8, "total": 8, "note": "OIL: 4 feste ORB-Konfigs x 2 Uhren, keine Auswahl (Kontrollgruppe)"}
+{"ts": "2026-10-11T09:08:55+00:00", "event": "freeze", "hash": "574a95aa4513441d091d5542ebd63a9392f7ec5e2a3fcc4803a1d0eff89676e1"}
+{"ts": "2026-10-11T09:08:55+00:00", "event": "unseal", "stage": "oos", "hash": "574a95aa4513441d091d5542ebd63a9392f7ec5e2a3fcc4803a1d0eff89676e1"}
+{"ts": "2026-10-11T09:08:55+00:00", "event": "unseal", "stage": "tresor", "hash": "574a95aa4513441d091d5542ebd63a9392f7ec5e2a3fcc4803a1d0eff89676e1"}

@@ -242,6 +242,30 @@ Bedarf vor generischem Aufräumen.
   die drei Live-Bridges möglicherweise seit fast zwei Wochen ohne jedes
   Monitoring oder ganz ohne neue Gebote.
 
+- **🔴 Elfte Prüfung: der komplette Montag der zweiten Handelswoche ist jetzt
+  auch ohne jede Sichtbarkeit verstrichen, Ausfall seit über 10,5 Tagen.**
+  (Bridge Error Monitor, 12.10., geprüft 21:12 UTC / 23:12 CEST -- zweite
+  Prüfung heute.) `bridge_status/snapshot.json` steht weiterhin unverändert
+  auf `generated_at: 2026-10-02T11:01:24` (Commit `666fe8e`, 2026-10-02
+  11:01:25 +0200). `git log` auf die Datei bestätigt: seit der zehnten
+  Prüfung heute Morgen (eigener Commit `2198897`, 09:13 UTC) ist wieder
+  **kein einziger neuer Commit** von Watchdog/EK/Funded/FK eingegangen --
+  der komplette Montag-Handelstag inklusive der gesamten US-Session liegt
+  damit ebenfalls spurlos. Der Ausfall läuft jetzt seit **Freitag 02.10.
+  11:01 Uhr CEST über 10,5 Tage**, und damit ist jetzt auch der **erste
+  Handelstag der zweiten Handelswoche** ohne jede Sichtbarkeit auf die drei
+  Live-Bridges (EK, Funded TTP+IQ, FK -- alle echtes Geld) verstrichen --
+  macht sechs komplette Handelstage am Stück ohne jedes Monitoring seit
+  Ausfallbeginn. **Nichts Neues an Information** -- dieselben drei offenen
+  Fragen (a/b/c) aus den Punkten darüber bleiben unverändert offen,
+  weiterhin nichts, das ich von hier aus unterscheiden oder reparieren
+  könnte (liegt komplett außerhalb des Repos, siehe CLAUDE.md). **Offen für
+  dich, jetzt mit sechs verstrichenen Handelstagen als Gewicht:** bitte PC
+  und Task-Scheduler-Historie prüfen, sobald du am PC bist -- bei Grund (a)
+  oder (b) (PC aus oder Task Scheduler haengt) liefen die drei Live-Bridges
+  möglicherweise seit über 10 Tagen ohne jedes Monitoring oder ganz ohne
+  neue Gebote.
+
 - **🟠 ORB: Live handelt andere Tage als der Backtest + M5 überzeichnet den
   Edge** (01.10., [[orb-order-storno-und-haltedauer]]). Nichts geändert.
   **Offen für dich:**

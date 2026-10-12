@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-12T09:31:24",
+  "generated_at": "2026-10-12T09:46:27",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-12T09:29:05",
-      "minutes_since_last_run": 2.3,
+      "last_run": "2026-10-12T09:46:27",
+      "minutes_since_last_run": 0.0,
       "status": "ok",
-      "last_equity_line": "2026-10-12 09:29:05 2026-10-12 09:29:01,675 INFO run_once: Konto-Equity 2797.97 EUR | Aggregiertes offenes Risiko (ganzes Konto): 74.94 (Deckel dieser Bridge: 839.39, 30%)",
+      "last_equity_line": "2026-10-12 09:44:05 2026-10-12 09:44:01,720 INFO run_once: Konto-Equity 2797.97 EUR | Aggregiertes offenes Risiko (ganzes Konto): 74.95 (Deckel dieser Bridge: 839.39, 30%)",
       "recent_events": [
         "2026-10-12 08:29:06 2026-10-12 08:29:05,981 INFO run_once: ctnl_reversal: {'status': 'skipped', 'reason': 'ribbon_gegen_trend', 'detail': 'ctnl_reversal: Ribbon neutral (Preis zwischen den EMAs, Stand 2026-10-11 20:00:00-04:00) -- kein trendkonformer Entry'}",
         "2026-10-12 08:29:06 2026-10-12 08:29:05,981 INFO legs.ctnl_edge.executor: CTNL-Rev: ctnl_reversal: Ribbon neutral (Preis zwischen den EMAs, Stand 2026-10-11 20:00:00-04:00) -- kein trendkonformer Entry",
@@ -24,12 +24,12 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-12T09:28:14",
-      "minutes_since_last_run": 3.2,
+      "last_run": "2026-10-12T09:46:26",
+      "minutes_since_last_run": 0.0,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-10-12 09:28:14 Verbunden: Login 504072729, Equity $99,048.62 USD",
+          "last_equity_line": "2026-10-12 09:43:14 Verbunden: Login 504072729, Equity $99,045.34 USD",
           "last_error_line": "2026-10-12 01:49:31 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
           "recent_events": [
             "2026-10-12 01:49:31 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
@@ -42,12 +42,11 @@
             "2026-10-09 03:28:24 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.76R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 4.1-fache aufgeblaeht.",
             "2026-10-08 19:13:21 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.55R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.2-fache aufgeblaeht.",
             "2026-10-08 17:13:20 [TTP] ?? Entry fehlgeschlagen ou_modell (DE) DE: Berechnete Lot-Groesse 0.0 unter volume_min 1.0 fuer DE (risk_dollars=49.69, loss_per_lot=121.91)",
-            "2026-10-08 16:13:21 [TTP] ?? Entry fehlgeschlagen ou_modell (GRMN) GRMN: Berechnete Lot-Groesse 0.0 unter volume_min 1.0 fuer GRMN (risk_dollars=49.67, loss_per_lot=63.38)",
-            "2026-10-08 14:16:41 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'"
+            "2026-10-08 16:13:21 [TTP] ?? Entry fehlgeschlagen ou_modell (GRMN) GRMN: Berechnete Lot-Groesse 0.0 unter volume_min 1.0 fuer GRMN (risk_dollars=49.67, loss_per_lot=63.38)"
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-10-12 09:28:14 Verbunden: Login 16054, Equity $96,625.35 USD",
+          "last_equity_line": "2026-10-12 09:43:14 Verbunden: Login 16054, Equity $96,623.57 USD",
           "last_error_line": "2026-10-12 01:49:31 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
           "recent_events": [
             "2026-10-12 01:49:31 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
@@ -68,8 +67,8 @@
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-12T09:14:09",
-      "minutes_since_last_run": 17.2,
+      "last_run": "2026-10-12T09:46:26",
+      "minutes_since_last_run": 0.0,
       "status": "ok",
       "last_equity_line": "2026-10-12 09:14:09 Verbunden: Login 17764, Equity $98,450.35",
       "last_error_line": "2026-10-12 01:47:32 cls_practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",

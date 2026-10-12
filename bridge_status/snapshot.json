@@ -1,13 +1,15 @@
 {
-  "generated_at": "2026-10-12T09:46:27",
+  "generated_at": "2026-10-12T17:09:50",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-12T09:46:27",
+      "last_run": "2026-10-12T17:09:48",
       "minutes_since_last_run": 0.0,
       "status": "ok",
-      "last_equity_line": "2026-10-12 09:44:05 2026-10-12 09:44:01,720 INFO run_once: Konto-Equity 2797.97 EUR | Aggregiertes offenes Risiko (ganzes Konto): 74.95 (Deckel dieser Bridge: 839.39, 30%)",
+      "last_equity_line": "2026-10-12 09:46:34 2026-10-12 09:46:28,498 INFO run_once: Konto-Equity 2797.97 EUR | Aggregiertes offenes Risiko (ganzes Konto): 74.95 (Deckel dieser Bridge: 839.39, 30%)",
       "recent_events": [
+        "2026-10-12 09:46:34 2026-10-12 09:46:34,171 INFO run_once: ctnl_reversal: {'status': 'skipped', 'reason': 'ribbon_gegen_trend', 'detail': 'ctnl_reversal: Ribbon neutral (Preis zwischen den EMAs, Stand 2026-10-11 20:00:00-04:00) -- kein trendkonformer Entry'}",
+        "2026-10-12 09:46:34 2026-10-12 09:46:34,171 INFO legs.ctnl_edge.executor: CTNL-Rev: ctnl_reversal: Ribbon neutral (Preis zwischen den EMAs, Stand 2026-10-11 20:00:00-04:00) -- kein trendkonformer Entry",
         "2026-10-12 08:29:06 2026-10-12 08:29:05,981 INFO run_once: ctnl_reversal: {'status': 'skipped', 'reason': 'ribbon_gegen_trend', 'detail': 'ctnl_reversal: Ribbon neutral (Preis zwischen den EMAs, Stand 2026-10-11 20:00:00-04:00) -- kein trendkonformer Entry'}",
         "2026-10-12 08:29:06 2026-10-12 08:29:05,981 INFO legs.ctnl_edge.executor: CTNL-Rev: ctnl_reversal: Ribbon neutral (Preis zwischen den EMAs, Stand 2026-10-11 20:00:00-04:00) -- kein trendkonformer Entry",
         "2026-10-12 08:16:32 2026-10-12 08:16:32,668 INFO run_once: ctnl_reversal: {'status': 'skipped', 'reason': 'ribbon_gegen_trend', 'detail': 'ctnl_reversal: Ribbon neutral (Preis zwischen den EMAs, Stand 2026-10-11 20:00:00-04:00) -- kein trendkonformer Entry'}",
@@ -17,19 +19,17 @@
         "2026-10-12 08:01:32 2026-10-12 08:01:32,582 INFO run_once: ctnl_reversal: {'status': 'skipped', 'reason': 'ribbon_gegen_trend', 'detail': 'ctnl_reversal: Ribbon neutral (Preis zwischen den EMAs, Stand 2026-10-11 20:00:00-04:00) -- kein trendkonformer Entry'}",
         "2026-10-12 08:01:32 2026-10-12 08:01:32,582 INFO legs.ctnl_edge.executor: CTNL-Rev: ctnl_reversal: Ribbon neutral (Preis zwischen den EMAs, Stand 2026-10-11 20:00:00-04:00) -- kein trendkonformer Entry",
         "2026-10-12 07:59:06 2026-10-12 07:59:06,153 INFO run_once: ctnl_reversal: {'status': 'skipped', 'reason': 'ribbon_gegen_trend', 'detail': 'ctnl_reversal: Ribbon neutral (Preis zwischen den EMAs, Stand 2026-10-11 20:00:00-04:00) -- kein trendkonformer Entry'}",
-        "2026-10-12 07:59:06 2026-10-12 07:59:06,153 INFO legs.ctnl_edge.executor: CTNL-Rev: ctnl_reversal: Ribbon neutral (Preis zwischen den EMAs, Stand 2026-10-11 20:00:00-04:00) -- kein trendkonformer Entry",
-        "2026-10-12 07:46:35 2026-10-12 07:46:35,114 INFO run_once: ctnl_reversal: {'status': 'skipped', 'reason': 'ribbon_gegen_trend', 'detail': 'ctnl_reversal: Ribbon neutral (Preis zwischen den EMAs, Stand 2026-10-11 20:00:00-04:00) -- kein trendkonformer Entry'}",
-        "2026-10-12 07:46:35 2026-10-12 07:46:35,113 INFO legs.ctnl_edge.executor: CTNL-Rev: ctnl_reversal: Ribbon neutral (Preis zwischen den EMAs, Stand 2026-10-11 20:00:00-04:00) -- kein trendkonformer Entry"
+        "2026-10-12 07:59:06 2026-10-12 07:59:06,153 INFO legs.ctnl_edge.executor: CTNL-Rev: ctnl_reversal: Ribbon neutral (Preis zwischen den EMAs, Stand 2026-10-11 20:00:00-04:00) -- kein trendkonformer Entry"
       ]
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-12T09:46:26",
+      "last_run": "2026-10-12T17:09:48",
       "minutes_since_last_run": 0.0,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-10-12 09:43:14 Verbunden: Login 504072729, Equity $99,045.34 USD",
+          "last_equity_line": "2026-10-12 09:46:43 Verbunden: Login 504072729, Equity $99,063.54 USD",
           "last_error_line": "2026-10-12 01:49:31 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
           "recent_events": [
             "2026-10-12 01:49:31 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
@@ -46,7 +46,7 @@
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-10-12 09:43:14 Verbunden: Login 16054, Equity $96,623.57 USD",
+          "last_equity_line": "2026-10-12 09:46:43 Verbunden: Login 16054, Equity $96,633.33 USD",
           "last_error_line": "2026-10-12 01:49:31 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
           "recent_events": [
             "2026-10-12 01:49:31 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
@@ -67,10 +67,10 @@
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-12T09:46:26",
+      "last_run": "2026-10-12T17:09:48",
       "minutes_since_last_run": 0.0,
       "status": "ok",
-      "last_equity_line": "2026-10-12 09:14:09 Verbunden: Login 17764, Equity $98,450.35",
+      "last_equity_line": "2026-10-12 09:46:39 Verbunden: Login 17764, Equity $98,455.54",
       "last_error_line": "2026-10-12 01:47:32 cls_practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
       "recent_events": [
         "2026-10-12 01:47:32 cls_practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",

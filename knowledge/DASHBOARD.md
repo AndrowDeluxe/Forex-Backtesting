@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-10-08** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-10-12** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -872,7 +872,7 @@ Bedarf vor generischem Aufräumen.
 
 **Mittel**
 - **14 unverarbeitete Clippings** in `knowledge/Clippings/` (Stand
-  2026-10-05-Lint, unveraendert seit 2026-09-09) — u.a. Edge-Genesis/-Decay,
+  2026-10-12-Lint, unveraendert seit 2026-09-09) — u.a. Edge-Genesis/-Decay,
   Risk-Factor-Investing, Sektor-Rotation, "Six Repos One System", "How
   system works" — noch nicht durch den CODE-Prozess. (`.gitkeep` im selben
   Ordner ist kein Clipping, False Positive, ignoriert.)
@@ -882,17 +882,20 @@ Bedarf vor generischem Aufräumen.
   (Lint 09-21, erledigt 09-23 mit `1fc8645`). Die Notiz existierte seit dem
   17.09. nur im Arbeitsverzeichnis — untracked, daher kein Treffer in der
   Git-Historie. Jetzt getrackt, zusammen mit drei weiteren Research-Notizen.
-- **Statustabelle: 13 "Zuletzt geprüft"-Zeilen sind jetzt > 21 Tage alt —
+- **Statustabelle: 14 "Zuletzt geprüft"-Zeilen sind jetzt > 21 Tage alt —
   betrifft praktisch die gesamte Tabelle, nicht mehr nur ein Bot** (Lint
-  05.10., Schwelle 21 Tage). `OU-Modell-ScannerHourly` (Stand 2026-09-02)
-  ist mit 33 Tagen am ältesten; die übrigen 12 Zeilen (EK-Portfolio-Bridge
-  [+Fast], FKInstantFunding-MT5-Bridge [+Fast], FK-Instant-Funding-Paper,
+  12.10., Schwelle 21 Tage; vorheriger Lauf 05.10.: 13 Zeilen). Neu seit dem
+  letzten Lauf: `Forex-Weekly-Report` (Stand 2026-09-15) ist jetzt auch
+  ueber der Schwelle (27 Tage) und kommt zu den bisherigen 13 Zeilen hinzu.
+  `OU-Modell-ScannerHourly` (Stand 2026-09-02) ist mit 40 Tagen weiterhin am
+  ältesten; die übrigen 12 Zeilen (EK-Portfolio-Bridge [+Fast],
+  FKInstantFunding-MT5-Bridge [+Fast], FK-Instant-Funding-Paper,
   Bridge-Watchdog, Funded-Portfolio-Bridge [+Fast], DataLake-Ingest-Fast/
-  -Fast5/-Slow, Dashboard-Telegram-Digest) stehen alle auf 2026-09-13 (22
-  Tage). Reiner Alters-Hinweis aus dem Lint-Skript, kein inhaltlicher
-  Befund — bei Gelegenheit gegen den echten Task-Scheduler-/Bridge-Status
-  nachpruefen und Datum auffrischen (CLAUDE.md Punkt 4), nicht einfach nur
-  das Datum ohne echte Prüfung hochsetzen.
+  -Fast5/-Slow, Dashboard-Telegram-Digest) stehen weiterhin alle auf
+  2026-09-13 (29 Tage). Reiner Alters-Hinweis aus dem Lint-Skript, kein
+  inhaltlicher Befund — bei Gelegenheit gegen den echten
+  Task-Scheduler-/Bridge-Status nachpruefen und Datum auffrischen (CLAUDE.md
+  Punkt 4), nicht einfach nur das Datum ohne echte Prüfung hochsetzen.
 
 ## Status — was läuft gerade wirklich
 
@@ -962,12 +965,12 @@ Live-Status aller drei Portfolio-Bridges jetzt auch als Streamlit-Seiten
 („Portfolio-Bridges" in der Sidebar) — lesen `bridge_status/snapshot.json`,
 das der Bridge-Watchdog alle 30 Min. committet.
 
-_Letzter Lint-Durchlauf: **2026-10-05** (geplant, `second-brain-lint`).
-Ergebnis: 0 tote Wikilinks, 0 verwaiste Seiten, 13 veraltete
-Statustabellen-Zeilen statt vorher 1 (→ Niedrig, Details oben); 14
-unverarbeitete Clippings unverändert seit 09-09 (`.gitkeep` als False
-Positive ignoriert). Verweise nach außerhalb von `knowledge/` als Pfad in
-Backticks (siehe `README.md`)._
+_Letzter Lint-Durchlauf: **2026-10-12** (geplant, `second-brain-lint`).
+Ergebnis: 0 tote Wikilinks, 0 verwaiste Seiten, 14 veraltete
+Statustabellen-Zeilen statt vorher 13 (→ Niedrig, Details oben, neu:
+`Forex-Weekly-Report`); 14 unverarbeitete Clippings unverändert seit 09-09
+(`.gitkeep` als False Positive ignoriert). Verweise nach außerhalb von
+`knowledge/` als Pfad in Backticks (siehe `README.md`)._
 
 ## Status — aktuell nicht aktiv
 

@@ -9,6 +9,24 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-12** [Research] **Öl als ORB-Filter** (Nutzerauftrag)
+  [[orb-gegenprobe-oel]]. Skript `scripts/research_orb_oel_filter.py`.
+  Option 1 (nur IS, Lock `orb_oel_filter_is_20261012`): Gewinner „Öl
+  09:00–09:45 gegen die Ausbruchsrichtung“, Tresor trotzdem negativ (S&P
+  −0,68, Nasdaq −0,18 R je Trade). Option 2 (an 2026 angepasst, explorativ,
+  Lock `orb_oel_filter_fit2026_20261012`, 1.524 Versuche): 2026 S&P +39 R,
+  Nasdaq +46 R, Deflated Sharpe ≈ 0. Beide eingefroren im Forward-Test ab
+  12.10., Stichtag 31.03.2027. PDF 15 Seiten:
+  `Claude outputs/orb_profitabilitaets_kriterien_oel_20261012.pdf`.
+  Keine Bot-Änderung.
+
+- **2026-10-12** [Dachprojekt / Strang 4] **Neuer Scheduled Task `G8-Notion-Sync`**
+  (Nutzerauftrag): täglich 07:00 (StartWhenAvailable, Limit 15 Min.),
+  `scripts/g8_notion_sync_task.ps1` → `python -m fusion_lab.notion.sync_g8
+  --days 10 --refresh` (FRED neu laden; Log `fusion_lab/data/logs/
+  g8_notion_sync.log`). Reiner Daten-/Anzeige-Task. Testlauf 12.10. 22:48:
+  Ergebnis 0, 1 neu / 39 aktualisiert.
+
 - **2026-10-11** [Research] **Paper „Beat the Market“ (Zarattini/Aziz/Barbon,
   SSRN 4824172, Noise-Area-Intraday-Momentum) nach dem 8-Phasen-Prozess:
   Tresor durchgefallen, verworfen** [[zarattini-noise-area-momentum]]. Neu:

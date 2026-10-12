@@ -49,3 +49,31 @@ durchgefallen) und [[orb-neues-regime-2026]]. Prozess: [[overfitting-sperre]].
 
 - Lesart 4 prüfen: Hängt der ORB-Edge auf neutralen Tagen am Tag-zu-Tag-
   Umkehr-Regime? Testbar auf weiteren Märkten (DAX, Gold) als frische Daten.
+
+## Öl als Filter (12.10.2026, Nutzerauftrag)
+
+Skript `scripts/research_orb_oel_filter.py`. Basis: eingefrorene IS-only-7p-ORB.
+Merkmale (alle vor 09:45 bekannt): Korrelation Öl↔Index (bis Vortag), Öl-Autokorrelation,
+Öl-Rendite 09:00→09:45 gegen/mit der Ausbruchsrichtung. Ergebnisse `ny_open_orb/results/oel_filter_*`.
+
+**Option 1 – nur IS (Lock `orb_oel_filter_is_20261012`, 16 Versuche):** Je Index erfüllt nur
+„nur handeln, wenn Öl 09:00–09:45 gegen die Ausbruchsrichtung lief“ die Kriterien; die
+Korrelations-Regeln (Hauptthese) machten es schon in IS schlechter.
+
+| | IS Ø R | OOS Ø R | Tresor Ø R (vorbelastet) |
+|---|---|---|---|
+| S&P Basis / + Öl-Filter | +0,33 / +0,41 | +0,32 / +0,25 | −0,48 / −0,68 |
+| Nasdaq Basis / + Öl-Filter | +0,45 / +0,51 | +0,22 / +0,41 | −0,36 / −0,18 |
+
+→ Rettet den Tresor nicht. Nasdaq-Hinweis (OOS besser, Tresor-Verlust halbiert) bleibt dünn.
+
+**Option 2 – an 2026 angepasst (Lock `orb_oel_filter_fit2026_20261012`, 1.524 Versuche,
+EXPLORATIV, KEIN BELEG):** Gewinner beider Indizes: Korrelation Öl↔Index (20 Tage) unter
++0,2 (S&P) bzw. 0 (Nasdaq) → Trend- statt neutrale Tage, plus Öl gegen den Ausbruch.
+2026: S&P +39 R (PF 2,04, 50 Trades), Nasdaq +46 R (PF 2,23, 53 Trades); Deflated Sharpe
+≈ 0. Rückblick: Nasdaq-Regel 2016–25 unschädlich (+0,33 / +0,31 R), S&P-Regel schwächer
+als die Basis (2023–25 +0,10 statt +0,32 R).
+
+**Forward:** beide eingefrorenen Varianten ab 12.10.2026, Auswertung frühestens
+31.03.2027 (`--stage forward-evaluate`). Kein Livegang.
+PDF: `Claude outputs/orb_profitabilitaets_kriterien_oel_20261012.pdf` (15 Seiten).

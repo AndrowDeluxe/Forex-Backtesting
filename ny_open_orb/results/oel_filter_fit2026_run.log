@@ -1,0 +1,71 @@
+
+--- SP500: Top 10 im 2026-Fit (n >= 50) ---
+                                regel  fit_n  fit_pf  fit_avg  fit_t  fit_sum  rueck_n  rueck_pf  rueck_avg  rueck_sum
+K20 < +0.2 -> trend | Oel gegen >0.1%     50   2.045    0.777  1.771   38.846      418     1.252      0.211     88.380
+ A_oel120 > -0.2 -> trend | Oel gegen     53   1.930    0.700  1.676   37.089      532     0.987     -0.011     -5.971
+  A_oel60 > -0.2 -> trend | Oel gegen     53   1.930    0.700  1.676   37.089      518     1.095      0.080     41.230
+ A_komb60 > -0.2 -> trend | Oel gegen     53   1.930    0.700  1.676   37.089      538     0.975     -0.021    -11.370
+ A_komb40 > -0.2 -> trend | Oel gegen     53   1.930    0.700  1.676   37.089      532     1.021      0.018      9.519
+  A_oel40 > -0.2 -> trend | Oel gegen     53   1.930    0.700  1.676   37.089      517     1.100      0.085     43.796
+  A_oel20 > -0.2 -> trend | Oel gegen     53   1.930    0.700  1.676   37.088      476     1.043      0.036     17.160
+      K20 < +0.2 -> trend | Oel gegen     53   1.939    0.698  1.674   36.975      494     1.250      0.210    103.707
+      K60 < +0.0 -> trend | Oel gegen     51   1.921    0.688  1.605   35.099      413     1.239      0.202     83.496
+K60 < +0.0 -> trend | Oel gegen >0.1%     50   1.913    0.696  1.591   34.778      361     1.257      0.216     78.092
+
+--- NASDAQ: Top 10 im 2026-Fit (n >= 50) ---
+                                    regel  fit_n  fit_pf  fit_avg  fit_t  fit_sum  rueck_n  rueck_pf  rueck_avg  rueck_sum
+          K20 < +0.0 -> trend | Oel gegen     53   2.232    0.865  2.005   45.841      376     1.415      0.322    121.138
+    K20 < +0.0 -> trend | Oel gegen >0.1%     52   2.176    0.842  1.916   43.763      326     1.368      0.287     93.585
+          K60 < +0.2 -> trend | Oel gegen     51   2.073    0.741  1.761   37.808      412     1.226      0.184     75.916
+          K20 < +0.2 -> trend | Oel gegen     53   1.956    0.674  1.652   35.697      410     1.284      0.226     92.461
+          K60 < +0.0 -> trend | Oel gegen     54   1.889    0.664  1.577   35.881      362     1.457      0.356    129.024
+    K60 < +0.0 -> trend | Oel gegen >0.1%     52   1.887    0.671  1.540   34.873      310     1.439      0.343    106.407
+           K20 < +0.0 -> alle | Oel gegen     75   1.609    0.461  1.412   34.581      448     1.451      0.350    156.659
+          K40 < +0.2 -> trend | Oel gegen     52   1.775    0.572  1.383   29.722      415     1.131      0.108     44.806
+A_komb20 > -0.2 -> alle | Oel gegen >0.2%     79   1.561    0.426  1.359   33.668      449     1.274      0.221     99.254
+ A_oel20 > -0.2 -> alle | Oel gegen >0.2%     79   1.561    0.426  1.359   33.668      437     1.224      0.183     79.880
+
+instrument variante                                 regel              periode   n    pf    avg      t     sum
+     SP500    Basis                                 Basis              2016-22 569 1.409  0.333  2.776 189.418
+     SP500    Basis                                 Basis           2023-09/25 242 1.383  0.315  1.700  76.235
+     SP500    Basis                                 Basis 2026-Fit 10/25-09/26 112 0.479 -0.481 -2.732 -53.868
+     SP500 2026-Fit K20 < +0.2 -> trend | Oel gegen >0.1%              2016-22 277 1.322  0.269  1.593  74.490
+     SP500 2026-Fit K20 < +0.2 -> trend | Oel gegen >0.1%           2023-09/25 141 1.116  0.099  0.460  13.890
+     SP500 2026-Fit K20 < +0.2 -> trend | Oel gegen >0.1% 2026-Fit 10/25-09/26  50 2.045  0.777  1.771  38.846
+    NASDAQ    Basis                                 Basis              2016-22 445 1.598  0.451  3.473 200.587
+    NASDAQ    Basis                                 Basis           2023-09/25 198 1.283  0.221  1.207  43.669
+    NASDAQ    Basis                                 Basis 2026-Fit 10/25-09/26  91 0.568 -0.360 -2.131 -32.720
+    NASDAQ 2026-Fit       K20 < +0.0 -> trend | Oel gegen              2016-22 252 1.418  0.327  1.939  82.389
+    NASDAQ 2026-Fit       K20 < +0.0 -> trend | Oel gegen           2023-09/25 124 1.408  0.312  1.346  38.748
+    NASDAQ 2026-Fit       K20 < +0.0 -> trend | Oel gegen 2026-Fit 10/25-09/26  53 2.232  0.865  2.005  45.841
+{
+  "winners": {
+    "SP500": {
+      "fam": "K",
+      "w": 20,
+      "thr": 0.2,
+      "action": "trend",
+      "s": "gegen",
+      "smin": 0.001
+    },
+    "NASDAQ": {
+      "fam": "K",
+      "w": 20,
+      "thr": 0.0,
+      "action": "trend",
+      "s": "gegen",
+      "smin": 0.0
+    }
+  },
+  "labels": {
+    "SP500": "K20 < +0.2 -> trend | Oel gegen >0.1%",
+    "NASDAQ": "K20 < +0.0 -> trend | Oel gegen"
+  },
+  "deflated_sharpe_fit": {
+    "SP500": 0.001044563469976593,
+    "NASDAQ": 2.4223885538945967e-07
+  },
+  "n_trials_je_index": 762,
+  "hash": "76992a6508ec3c1f394cf7ec0742947bb31f02733efa1d794f097fcded810c21",
+  "hinweis": "EXPLORATIV -- an 2026 angepasst, kein Beleg"
+}

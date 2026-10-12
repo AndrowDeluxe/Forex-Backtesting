@@ -1,0 +1,45 @@
+{
+  "strategy": "orb_oel_filter_is_20261012",
+  "split": {
+    "is_start": "2016-07-28",
+    "is_end": "2022-12-31",
+    "oos_end": "2025-09-30",
+    "tresor_end": "2026-09-30"
+  },
+  "registered": "2026-10-12T20:42:40+00:00",
+  "trials": 16,
+  "frozen": {
+    "hash": "598cbfd1838e746ec2df5efd106f383134961f04a984a3eccf13676804b78b53",
+    "config": {
+      "basis": "is_only_7p_selection.json",
+      "winners": {
+        "SP500": {
+          "fam": "base",
+          "w": null,
+          "thr": null,
+          "action": null,
+          "s": "gegen",
+          "smin": 0.0
+        },
+        "NASDAQ": {
+          "fam": "base",
+          "w": null,
+          "thr": null,
+          "action": null,
+          "s": "gegen",
+          "smin": 0.0
+        }
+      }
+    },
+    "ts": "2026-10-12T20:44:24+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-12T20:44:37+00:00",
+    "tresor": "2026-10-12T20:44:37+00:00"
+  },
+  "forward": {
+    "start": "2026-10-12",
+    "eval_date": "2027-03-31",
+    "min_trades": 1000000
+  }
+}

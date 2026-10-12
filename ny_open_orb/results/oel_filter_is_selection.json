@@ -1,0 +1,30 @@
+{
+  "winners": {
+    "SP500": {
+      "fam": "base",
+      "w": null,
+      "thr": null,
+      "action": null,
+      "s": "gegen",
+      "smin": 0.0
+    },
+    "NASDAQ": {
+      "fam": "base",
+      "w": null,
+      "thr": null,
+      "action": null,
+      "s": "gegen",
+      "smin": 0.0
+    }
+  },
+  "labels": {
+    "SP500": "Basis | Oel gegen",
+    "NASDAQ": "Basis | Oel gegen"
+  },
+  "deflated_sharpe_is": {
+    "SP500": 0.9597869059344182,
+    "NASDAQ": 0.9929310216269727
+  },
+  "n_trials_je_index": 8,
+  "hash": "598cbfd1838e746ec2df5efd106f383134961f04a984a3eccf13676804b78b53"
+}

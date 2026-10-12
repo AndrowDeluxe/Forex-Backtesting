@@ -53,6 +53,13 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **ORB-Öl-Filter: zwei Forward-Kandidaten, Stichtag 31.03.2027** (12.10.,
+  [[orb-gegenprobe-oel]]). (1) IS-Filter „Öl gegen Ausbruch“, (2) 2026-Fit
+  (Korrelationsregime → Trend-Tage + Öl gegen Ausbruch), ausdrücklich kein
+  Beleg. Meine Annahmen: Merkmalsfamilien und Gitter selbst gewählt; Option-2-
+  Split formal (OOS = leeres Fenster 01.–11.10., nur für die Lock-Regel).
+  Auswertung: `python scripts/research_orb_oel_filter.py --stage forward-evaluate`.
+  Bis dahin nur ~20–25 Trades je Index → höchstens ein Hinweis.
 - **CTNL-State: Altpositionen ohne Zeit-Exit + verwaiste `placed`-Einträge**
   (12.10., Weekly Checkup KW41, Performance Abschnitt 6 Punkt 1; ECHTES
   GELD, nichts angefasst). Offen ohne `max_hold`/TP: TTP 18696522 +
@@ -412,6 +419,7 @@ Bedarf vor generischem Aufräumen.
 | DataLake-Ingest-Fast5                                   | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt 8 M5/M15-Timing-kritische Keys für ctnl_continuation/orb/cls_practical (EURUSD M5 seit 2026-09-07) | Ready (alle 5 Min, Mo–Fr)       | — | 2026-09-13      |
 | DataLake-Ingest-Slow                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt OU-Modell-Universum (~59 Ticker) via yfinance                                          | Ready (stündlich, Mo–Fr)        | — | 2026-09-13      |
 | Dashboard-Telegram-Digest (neu)                         | — (nur Lesezugriff auf DASHBOARD.md, kein Order-Bezug)                                   | Schickt offene Punkte aus DASHBOARD.md per Telegram                                          | Ready (täglich 8:00, auch Sa/So — bewusst) | — | 2026-09-13      |
+| G8-Notion-Sync (neu)                                    | — (nur FRED/Dukascopy-Abruf + Notion-Schreiben, kein Order-Bezug)                       | Schreibt G8-Währungsstärke (Nachbau + SMH-Tabellen) in Notion-DB „💱 G8-Stärke“ (`scripts/g8_notion_sync_task.ps1`) | Ready (täglich 07:00, auch Sa/So) | — | 2026-10-12      |
 
 **Letzter echter Entry** (Spalte seit 2026-09-16): letzter Eröffnungs-Deal beim Broker, der **dieser Bridge zugeordnet** ist (EK über Magic, Funded/FK über die Tickets im `bridge_state`). Fremdpositionen zählen nicht mit — auf FK lagen am 14.09. zwei manuelle Positionen, die sonst wie Bridge-Aktivität ausgesehen hätten. Grund für die Spalte: der Modus LIVE hat fünf Tage lang verdeckt, dass FK nichts ausführte. Aktualisieren mit `python scripts/reports/soll_ist.py --last-entries`. Zeiten sind Broker-Serverzeit.
 

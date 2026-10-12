@@ -1,0 +1,31 @@
+{
+  "winners": {
+    "SP500": {
+      "fam": "K",
+      "w": 20,
+      "thr": 0.2,
+      "action": "trend",
+      "s": "gegen",
+      "smin": 0.001
+    },
+    "NASDAQ": {
+      "fam": "K",
+      "w": 20,
+      "thr": 0.0,
+      "action": "trend",
+      "s": "gegen",
+      "smin": 0.0
+    }
+  },
+  "labels": {
+    "SP500": "K20 < +0.2 -> trend | Oel gegen >0.1%",
+    "NASDAQ": "K20 < +0.0 -> trend | Oel gegen"
+  },
+  "deflated_sharpe_fit": {
+    "SP500": 0.001044563469976593,
+    "NASDAQ": 2.4223885538945967e-07
+  },
+  "n_trials_je_index": 762,
+  "hash": "76992a6508ec3c1f394cf7ec0742947bb31f02733efa1d794f097fcded810c21",
+  "hinweis": "EXPLORATIV -- an 2026 angepasst, kein Beleg"
+}

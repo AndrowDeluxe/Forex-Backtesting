@@ -1,13 +1,15 @@
-"""ORB-Kriterien-PDF v3: v2 (unveraendert) + 3 Seiten Gegenprobe Oel (11.10.2026).
+"""ORB-Kriterien-PDF v3: v2 (unveraendert) + 3 Seiten Gegenprobe Oel (11.10.2026)
++ 2 Seiten Oel als Filter (12.10.2026).
 
 Daten: scripts/research_orb_oel_vergleich.py -> ny_open_orb/results/oel_vergleich_*.csv
+       scripts/research_orb_oel_filter.py   -> ny_open_orb/results/oel_filter_*
 """
 import os
 import re
 from pathlib import Path
 
 HERE = Path(__file__).parent
-OUT3 = r"C:\Users\andre\Forex-Backtesting\Claude outputs\orb_profitabilitaets_kriterien_oel_20261011.pdf"
+OUT3 = r"C:\Users\andre\Forex-Backtesting\Claude outputs\orb_profitabilitaets_kriterien_oel_20261012.pdf"
 
 src = (HERE / "orb_pdf2.py").read_text(encoding="utf-8")
 src = src[: src.index("\nif PNG:")]          # nur Definitionen + Daten, kein Build
@@ -23,6 +25,7 @@ C_OIL = "#3d3d3d"
 W, H = g["W"], g["H"]
 FancyBboxPatch = g["FancyBboxPatch"]
 KICK = "NY-OPEN ORB · GEGENPROBE ÖL · STAND 11.10.2026"
+KICK2 = "NY-OPEN ORB · ÖL ALS FILTER · STAND 12.10.2026"
 
 perf = pd.read_csv(RES / "oel_vergleich_perf.csv")
 mech = pd.read_csv(RES / "oel_vergleich_mechanik.csv")
@@ -183,9 +186,87 @@ def page_years(pdf):
     pdf.savefig(fig); plt.close(fig)
 
 
+FIS = pd.read_csv(RES / "oel_filter_is_open.csv")
+FIS_GRID = pd.read_csv(RES / "oel_filter_is_grid.csv")
+FFIT = pd.read_csv(RES / "oel_filter_fit2026_perioden.csv")
+import json as _json
+SEL_IS = _json.loads((RES / "oel_filter_is_selection.json").read_text(encoding="utf-8"))
+SEL_FIT = _json.loads((RES / "oel_filter_fit2026_selection.json").read_text(encoding="utf-8"))
+NAMES = {"SP500": "S&P 500", "NASDAQ": "Nasdaq 100"}
+
+
+def regel_de(lbl):
+    lbl = lbl.replace("Basis | Oel gegen", "nur wenn Öl 09:00–09:45 gegen die Ausbruchsrichtung lief")
+    lbl = re.sub(r"K(\d+) < ([+−\-]?[\d.]+) -> trend", lambda m: f"Korrelation Öl↔Index ({m.group(1)} Tage) < {m.group(2).replace('.', ',')}: Trend- statt neutrale Tage", lbl)
+    lbl = lbl.replace(" | Oel gegen >0.1%", " · nur wenn Öl gegenläufig (> 0,1 %)").replace(" | Oel gegen", " · nur wenn Öl gegenläufig")
+    return lbl
+
+
+def period_rows(df, periods):
+    rows = []
+    for inst in ("SP500", "NASDAQ"):
+        for var in df[df.instrument == inst].variante.unique():
+            row = [NAMES[inst] if var == "Basis" else "", "Basis (IS-only-ORB)" if var == "Basis" else var]
+            for per in periods:
+                q = df[(df.instrument == inst) & (df.variante == var) & (df.periode == per)].iloc[0]
+                row.append((f"{de(q.pf, 2, False)}  ·  {de(q.avg)} R", pf_kind(q.pf), f"{int(q.n)} Trades · Σ {de(q["sum"], 0)} R · t {de(q.t, 1)}"))
+            rows.append(row)
+    return rows
+
+
+def page_filter_is(pdf):
+    fig, ax = page0("Öl als Filter (1): nur auf IS gewählt, dann eingefroren",
+                   "Overfitting-Sperre (Lock orb_oel_filter_is_20261012): 8 vorab feste Öl-Filter je Index, Auswahl nur auf IS 2016–2022,\n"
+                   "eingefroren, dann OOS und Tresor je einmal geöffnet. Der Tresor ist vorbelastet: der Öl-Kipp 2026 war vorher bekannt.", KICK2)
+    cols = [("Index", 1.4), ("Variante", 2.2), ("IS 2016–22\nPF · Ø R", 2.3), ("OOS 2023–09/25\nPF · Ø R", 2.3), ("Tresor 10/25–09/26\nPF · Ø R", 2.3)]
+    x0, y = 0.55, H - 2.25
+    header(ax, cols, x0, y, h=0.55)
+    rows = period_rows(FIS.assign(variante=FIS.variante.replace({"Oel-Filter (IS)": "+ Öl-Filter"})), ["IS", "OOS", "Tresor (vorbelastet)"])
+    yb = table(ax, cols, rows, x0, y, 0.5)
+    g_ = FIS_GRID[FIS_GRID.variante != "Basis"]
+    passed = {i: int(g_[(g_.instrument == i)].erfuellt.sum()) for i in ("SP500", "NASDAQ")}
+    ax.text(x0, yb - 0.25,
+            f"Gewählter Filter (beide Indizes): {regel_de(SEL_IS['labels']['SP500'])}. Kriterien erfüllt: S&P {passed['SP500']} von 8, Nasdaq {passed['NASDAQ']} von 8.\n"
+            "Die Korrelations-Regeln (Hauptthese) machten den ORB schon in IS schlechter. Deflated Sharpe in IS: "
+            f"S&P {de(SEL_IS['deflated_sharpe_is']['SP500'], 2, False)} · Nasdaq {de(SEL_IS['deflated_sharpe_is']['NASDAQ'], 2, False)} (nur gegen die 8 Filter, nicht gegen die 3.780 ORB-Varianten davor).",
+            fontsize=7.6, color=MUTED, va="top", linespacing=1.5)
+    box(ax, 0.55, 0.3, W - 1.1, 1.25, "Ergebnis: Der Öl-Filter rettet den Tresor nicht",
+        ["S&P 500: Im OOS ist er schwächer als ohne Filter, im Tresor noch schlechter (−0,68 statt −0,48 R je Trade).",
+         "Nasdaq 100: Im OOS ist er besser (+0,41 statt +0,22 R), im Tresor halbiert er den Verlust, bleibt aber negativ (−0,18 R, PF 0,79).",
+         "Er läuft trotzdem ab 12.10. im Forward-Test mit (Stichtag 31.03.2027). Kein Livegang."])
+    pdf.savefig(fig); plt.close(fig)
+
+
+def page_filter_fit(pdf):
+    fig, ax = page0("Öl als Filter (2): an 2026 angepasst, nur zur Ansicht",
+                   "Explorativ (Lock orb_oel_filter_fit2026_20261012): 762 Öl-Filter je Index, gewählt NUR auf 10/2025–09/2026.\n"
+                   "Das zeigt, was ein Öl-Filter 2026 hätte leisten können. Es ist kein Beleg, dass er künftig funktioniert.", KICK2)
+    ax.add_patch(FancyBboxPatch((0.55, H - 2.3), W - 1.1, 0.4, boxstyle="round,pad=0,rounding_size=0.06", fc=R[0], ec=R[1]))
+    ax.text(0.75, H - 2.1, "An 2026 angepasst · kein Beleg · nicht handeln, bevor der Forward-Test bis 31.03.2027 durch ist", fontsize=9.5,
+            weight="bold", color=R[1], va="center")
+    cols = [("Index", 1.4), ("Variante", 2.2), ("2016–2022\nPF · Ø R", 2.3), ("2023–09/2025\nPF · Ø R", 2.3), ("2026 (angepasst)\nPF · Ø R", 2.3)]
+    x0, y = 0.55, H - 3.0
+    header(ax, cols, x0, y, h=0.55)
+    rows = period_rows(FFIT.assign(variante=FFIT.variante.replace({"2026-Fit": "+ 2026-Filter"})), ["2016-22", "2023-09/25", "2026-Fit 10/25-09/26"])
+    yb = table(ax, cols, rows, x0, y, 0.5)
+    ax.text(x0, yb - 0.25,
+            f"Regel S&P 500: {regel_de(SEL_FIT['labels']['SP500'])}.\nRegel Nasdaq 100: {regel_de(SEL_FIT['labels']['NASDAQ'])}.\n"
+            f"Deflated Sharpe gegen 762 Versuche: S&P {de(SEL_FIT['deflated_sharpe_fit']['SP500'], 3, False)} · Nasdaq {de(SEL_FIT['deflated_sharpe_fit']['NASDAQ'], 3, False)} (Ziel > 0,95).",
+            fontsize=7.6, color=MUTED, va="top", linespacing=1.5)
+    box(ax, 0.55, 0.25, W - 1.1, 1.45, "Einordnung",
+        ["Ja, mit Öl lässt sich der ORB 2026 ins Plus filtern (S&P +39 R, Nasdaq +46 R statt −54 / −33 R). Aber: nur ~50 Trades je Index,",
+         "t-Wert unter 2,1 und nach 762 Versuchen statistisch nicht von Glück zu unterscheiden (Deflated Sharpe ≈ 0).",
+         "Beide Gewinner haben dieselbe Form: gegenläufige Öl-Aktien-Phasen → Trend- statt neutrale Tage, und Öl gegen den Ausbruch.",
+         "Beim Nasdaq hätte die Regel auch 2016–2025 nicht geschadet, beim S&P schon (2023–25: +0,10 statt +0,32 R).",
+         "Läuft ab 12.10. im Forward-Test. Bis 31.03.2027 kommen nur ~20–25 Trades je Index dazu: das reicht für einen Hinweis, nicht für einen Beweis."])
+    pdf.savefig(fig); plt.close(fig)
+
+
 with PdfPages(OUT3) as pdf:
     g["build"](pdf)
     page_result(pdf)
     page_mech(pdf)
     page_years(pdf)
+    page_filter_is(pdf)
+    page_filter_fit(pdf)
 print("ok", OUT3)

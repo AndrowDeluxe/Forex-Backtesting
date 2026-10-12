@@ -1,0 +1,5 @@
+{"ts": "2026-10-12T20:46:49+00:00", "event": "register_split", "is_start": "2025-10-01", "is_end": "2026-09-30", "oos_end": "2026-10-11", "tresor_end": null}
+{"ts": "2026-10-12T20:46:49+00:00", "event": "register_forward", "start": "2026-10-12", "eval_date": "2027-03-31", "min_trades": 1000000}
+{"ts": "2026-10-12T20:46:49+00:00", "event": "trials", "n": 1524, "total": 1524, "note": "EXPLORATIV: Oel-Filtergitter, optimiert nur auf 10/2025-09/2026"}
+{"ts": "2026-10-12T20:49:34+00:00", "event": "freeze", "hash": "76992a6508ec3c1f394cf7ec0742947bb31f02733efa1d794f097fcded810c21"}
+{"ts": "2026-10-12T20:49:34+00:00", "event": "unseal", "stage": "oos", "hash": "76992a6508ec3c1f394cf7ec0742947bb31f02733efa1d794f097fcded810c21"}

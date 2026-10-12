@@ -1,0 +1,6 @@
+{"ts": "2026-10-12T20:42:40+00:00", "event": "register_split", "is_start": "2016-07-28", "is_end": "2022-12-31", "oos_end": "2025-09-30", "tresor_end": "2026-09-30"}
+{"ts": "2026-10-12T20:42:40+00:00", "event": "register_forward", "start": "2026-10-12", "eval_date": "2027-03-31", "min_trades": 1000000}
+{"ts": "2026-10-12T20:42:40+00:00", "event": "trials", "n": 16, "total": 16, "note": "8 vorab feste Oel-Filter je Index (SP500, NASDAQ), nur IS"}
+{"ts": "2026-10-12T20:44:24+00:00", "event": "freeze", "hash": "598cbfd1838e746ec2df5efd106f383134961f04a984a3eccf13676804b78b53"}
+{"ts": "2026-10-12T20:44:37+00:00", "event": "unseal", "stage": "oos", "hash": "598cbfd1838e746ec2df5efd106f383134961f04a984a3eccf13676804b78b53"}
+{"ts": "2026-10-12T20:44:37+00:00", "event": "unseal", "stage": "tresor", "hash": "598cbfd1838e746ec2df5efd106f383134961f04a984a3eccf13676804b78b53"}

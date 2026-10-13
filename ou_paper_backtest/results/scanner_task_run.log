@@ -8622,3 +8622,54 @@
 2026-10-13 14:30:30 Saved 1 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-10-13T14:30:30)
 2026-10-13 14:30:30                                 market ticker  scan_date  close  lower_band  entry    sl                      tp  tp_price  risk_pct_price  position_size_pct  ma20  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
 2026-10-13 14:30:30 S&P 500 (volles Universum, 420 Ticker)    IVZ 2026-10-12  29.26       29.36  29.26 25.48 kein TP (finale Config)       0.0           12.92               7.74 30.43       True       True                            12.5 2026-10-13T14:30:30
+2026-10-13 14:30:31 [main 3e978f15] OU-Modell Scanner: Snapshot 2026-10-13 14:30
+2026-10-13 14:30:31  2 files changed, 28 insertions(+), 1 deletion(-)
+2026-10-13 14:30:31 MERGE UEBERSPRUNGEN: Working Tree hat 12 offene Aenderung(en) (andere Tasks/Session). Es wird NICHT gestasht -- der lokale Commit bleibt liegen und geht beim naechsten sauberen Lauf raus.
+2026-10-13 14:30:33 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-10-13 14:30:33  ! [rejected]          main -> main (non-fast-forward)
+2026-10-13 14:30:33 error: failed to push some refs to 'https://github.com/AndrowDeluxe/Forex-Backtesting.git'
+2026-10-13 14:30:33 hint: Updates were rejected because the tip of your current branch is behind
+2026-10-13 14:30:33 hint: its remote counterpart. If you want to integrate the remote changes,
+2026-10-13 14:30:33 hint: use 'git pull' before pushing again.
+2026-10-13 14:30:33 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+2026-10-13 14:30:33 HINWEIS: Push abgelehnt (Remote ist weiter) - erwartet, solange nicht gemergt wurde. Rueckstand sichtbar ueber 'git log origin/main..HEAD'.
+2026-10-13 14:30:33 === Scanner-Task beendet ===
+2026-10-13 15:35:01 === Scanner-Task gestartet ===
+2026-10-13 15:35:32 $UPS: possibly delisted; no price data found  (1d 2025-09-08 -> 2026-10-13)
+2026-10-13 15:35:32 System.Management.Automation.RemoteException
+2026-10-13 15:35:32 1 Failed download:
+2026-10-13 15:35:32 ['UPS']: possibly delisted; no price data found  (1d 2025-09-08 -> 2026-10-13)
+2026-10-13 15:35:32 $WBD: possibly delisted; no price data found  (1d 2025-09-08 -> 2026-10-13)
+2026-10-13 15:35:32 System.Management.Automation.RemoteException
+2026-10-13 15:35:32 1 Failed download:
+2026-10-13 15:35:32 ['WBD']: possibly delisted; no price data found  (1d 2025-09-08 -> 2026-10-13)
+2026-10-13 15:35:32 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-10-13 15:35:32 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-10-13 15:35:32 WARNUNG: nur 56/58 Ticker mit Kursen (97%). Ohne Kurse: UPS, WBD
+2026-10-13 15:35:32 Traceback (most recent call last):
+2026-10-13 15:35:32   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+2026-10-13 15:35:32     return self._engine.get_loc(casted_key)
+2026-10-13 15:35:32            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+2026-10-13 15:35:32   File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+2026-10-13 15:35:32   File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+2026-10-13 15:35:32   File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+2026-10-13 15:35:32   File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+2026-10-13 15:35:32 KeyError: 'UPS'
+2026-10-13 15:35:32 System.Management.Automation.RemoteException
+2026-10-13 15:35:32 The above exception was the direct cause of the following exception:
+2026-10-13 15:35:32 System.Management.Automation.RemoteException
+2026-10-13 15:35:32 Traceback (most recent call last):
+2026-10-13 15:35:32   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 346, in <module>
+2026-10-13 15:35:32     main()
+2026-10-13 15:35:32     ~~~~^^
+2026-10-13 15:35:32   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 305, in main
+2026-10-13 15:35:32     all_signals.append(scan_market(market_key))
+2026-10-13 15:35:32                        ~~~~~~~~~~~^^^^^^^^^^^^
+2026-10-13 15:35:32   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 172, in scan_market
+2026-10-13 15:35:32     price = panel[t].dropna()
+2026-10-13 15:35:32             ~~~~~^^^
+2026-10-13 15:35:32   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+2026-10-13 15:35:32     indexer = self.columns.get_loc(key)
+2026-10-13 15:35:32   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+2026-10-13 15:35:32     raise KeyError(key) from err
+2026-10-13 15:35:32 KeyError: 'UPS'

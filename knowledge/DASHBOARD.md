@@ -29,6 +29,9 @@ passiert, was steht an.
    [[persoenlicher-tradingplan-validierung]] (wartet auf deine Durchsicht,
    siehe „Braucht deine Bestätigung“). Notion-Cockpit steht (07.10., eigene API-Integration):
    Seite „Trading Fusion Cockpit“ — erste Nutzung: Gruppenarbeit Mentor.
+   **Neu 14.10.:** Dennis hat zwei neue Makro-Reports hochgeladen, einer
+   davon mit tieferem Ansatz. Sie fließen direkt in den Makro-Agenten ein;
+   vorher ist ein Telegram-Import nötig (Bestand endet am 08.10.).
    Separat geparkt bis Makro steht: [[aktien-analyse-und-bot]].
 2. **🎯 SMH-Elite-Teamaufgabe „Mikrostruktur & Liquidität“: gerechnet
    07.10., alle drei Kandidaten ehrlich gescheitert.** Tresor: K1 PF 0,65,
@@ -72,14 +75,25 @@ Bedarf vor generischem Aufräumen.
   verschoben. Entscheidung nötig: Altpositionen schließen? Exit-Abgleich
   gegen Broker statt Sim-Schlüssel?
 
-- **Zarattini-Noise-Area-Test: meine Annahmen** (11.10.,
-  [[zarattini-noise-area-momentum]]). (1) Nur SP500 + NASDAQ, kein US30.
-  (2) Phase-5-Raster selbst gewählt (VM, Lookback, echtes GEX-Gate statt des
-  RSI-Proxys aus dem Paper). (3) VWAP mit Dukascopy-Tick-Volumen gewichtet.
-  (4) OOS und Tresor gleich in derselben Session geöffnet, wie es der
-  Prozess vorsieht. Das Urteil (Tresor negativ) hängt an keiner dieser
-  Annahmen stark, weil der Bruttoertrag je Trade im Tresor schon vor
-  Kosten negativ ist.
+- **📅 31.03.2027: Forward Noise-Area-Momentum Regime 2026** (Nutzerentscheid
+  14.10., [[zarattini-noise-area-momentum]]). Breites Raster (9.216 Varianten
+  je Index) auf 10/25–03/26: Die Fade-Gewinner sind schon in OOS und Tresor
+  durchgefallen (DSR ~0). Sie laufen trotzdem mit, zusammen mit K1
+  Paper-Original und K2 „nur 1. Trade, halten bis 16:00“. K2 war auf NASDAQ
+  2026 in allen drei Fenstern positiv (vorbelastet, n 23–80). Erfolg vorab:
+  Netto-bps/Trade > 0 und besser als K1. Auswertung:
+  `python scripts/research_noise_area_regime2026.py evaluate`.
+  **+ Öl (14.10.):** zweiter Forward am selben Stichtag: SP500-Filter „nur
+  wenn Öl ruhig“ (Lock `noise_area_oel_filter_20261014`, Auswertung
+  `python scripts/research_noise_area_oel.py evaluate`). Annahmen vom
+  Nutzer am 14.10. bestätigt.
+  **+ Öl-Fit (14.10.):** NASDAQ K2 + Korr. 40 T. < −0,1 + Öl bewegt (Lock
+  `noise_area_oel_fit2026_20261014`, `research_noise_area_oel_fit2026.py evaluate`;
+  SP500-Fit formal mit, kein Kandidat).
+  **+ Hauptkandidat (Nutzerentscheid 14.10.): NASDAQ K2 + Öl-Index-Korr. 60 T. < 0**
+  (Lock `noise_area_oel_k60_forward_20261014`, `python scripts/forward_noise_area_k60.py
+  evaluate`; Sizing 1x / dyn / 1 % Risiko). Backtest auf 100k vorbelastet:
+  IS +40,6 %, OOS +9,2 %, Tresor +10,4 % (1x).
 
 - **ORB-Gegenprobe Öl: meine Annahmen** (11.10., [[orb-gegenprobe-oel]]).
   (1) Öl-Kosten 4,0 bps Spread + Index-Slippage (~0,15 R je Trade), nicht am
@@ -88,16 +102,13 @@ Bedarf vor generischem Aufräumen.
   „ORB-Edge lebte vom Tag-zu-Tag-Umkehr-Regime“ ist eine Hypothese. PDF für
   den Mentor: `Claude outputs/orb_profitabilitaets_kriterien_oel_20261011.pdf`.
 
-- **SMH-Makro-Reports: Stichprobe + meine Datenregeln** (10.10., Phase 1
-  Makro, [[quant-diskretionaer-fusion]]). 120 Reports extrahiert (800
-  Ideen). (1) Bitte 11 Reports gegen das PDF prüfen:
+- **SMH-Makro-Reports: Stichprobe** (10.10., Phase 1 Makro,
+  [[quant-diskretionaer-fusion]]). 120 Reports extrahiert (800 Ideen).
+  Bitte 11 Reports gegen das PDF prüfen:
   `fusion_lab/data/macro_reports/stichprobe.md` — erst danach läuft der
-  Backtest. (2) Eigene Annahmen, vor jedem Ergebnis festgelegt und im
-  Lock-Protokoll `smh_macro_reports` vermerkt: Zwei-Wege-Setups raus
-  (außer aktueller Call + Plan B), Reposts >7 Tage alt raus (4850),
-  Report-Level >20 % vom Einstieg ignoriert, Kosten 1,5–10 bps je Klasse,
-  Konfidenz x/5 auf hoch…niedrig gerundet. Passt das so?
-  (3) G8-Nachbau: Split abweichend vom Plan auf FRED-Historie ab 2000
+  Backtest. (Datenregeln — Zwei-Wege-Setups, Reposts >7 Tage, Level >20 %,
+  Kosten, Konfidenz-Rundung — vom Nutzer am 14.10. bestätigt.)
+  G8-Nachbau (eigener Punkt): Split abweichend vom Plan auf FRED-Historie ab 2000
   gelegt (Plan: 2010-11 wegen Dukascopy-Lücken, die FRED nicht hat).
   Ergebnis IS negativ — OOS/Tresor trotzdem einmal öffnen oder zu lassen?
 

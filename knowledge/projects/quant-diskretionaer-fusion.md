@@ -85,6 +85,16 @@ Verschmelzung" (2026-09-02) ab -- der Journal-Teil ist laut Nutzer erledigt.
     lassen; (2) danach Agent, der genau diese Reports schreibt und mit dem
     Nutzer interagieren kann. Agent nur vorwärts messbar (LLM kennt den
     Ausgang der Vergangenheit).
+  - **Neuer Input für den Makro-Agenten (Nutzer, 14.10.)**: Dennis hat am
+    14.10. zwei neue Makro-Reports hochgeladen. Einer davon ist ein sehr
+    ausführlicher, tieferer Ansatz. Nutzerentscheid: dieses Wissen direkt
+    in den Agenten integrieren.
+    - Noch nicht importiert: Der Telegram-Bestand endet am 08.10.
+    - Erst inkrementell importieren (`python -m fusion_lab.ingest.telegram`),
+      dann lesen.
+    - Den Ansatz als Baustein in [[makro-faktoren-katalog]] aufnehmen.
+      Messbar ist er nur vorwärts bzw. über regelbasierte Teile, siehe
+      Leitlinie unten.
   - **Leitlinie (Nutzer 10.10.)**: erst Daten + Makro-Analysen als
     einzelne Bausteine sammeln (G8-Stärke ist der erste, nachgebaut, als
     Signal allein negativ), erst später kombinieren und daraus einen Edge

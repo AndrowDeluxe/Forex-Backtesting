@@ -85,6 +85,17 @@ Verschmelzung" (2026-09-02) ab -- der Journal-Teil ist laut Nutzer erledigt.
     lassen; (2) danach Agent, der genau diese Reports schreibt und mit dem
     Nutzer interagieren kann. Agent nur vorwärts messbar (LLM kennt den
     Ausgang der Vergangenheit).
+  - **Leitlinie (Nutzer 10.10.)**: erst Daten + Makro-Analysen als
+    einzelne Bausteine sammeln (G8-Stärke ist der erste, nachgebaut, als
+    Signal allein negativ), erst später kombinieren und daraus einen Edge
+    bauen. Nächster Schwerpunkt: Makro-Report automatisieren, gestützt auf
+    das Makro-Wissen aus OneNote.
+  - [x] **Makro-Faktor-Katalog (12.10.)**: [[makro-faktoren-katalog]] -- OneNote
+    Makro Education / Bankreports / News+Quick Notes+Incentive entdoppelt:
+    49 Faktoren (mit Rolle im Report, Datenquelle, testbar), 13 Regime-
+    Schemata, 37 Regeln + 9 Widersprüche, 12 Testkandidaten. Lücke: ~33
+    Bild-Seiten (Endogene/Exogene Analyse, Gatekeeping, Reflektion) nicht
+    ausgewertet. Grundlage für den Makro-Agenten (Strang 3).
   - [ ] Inventur selbst (Material sichten → Bestandteile-Liste).
     - [x] Inhaltsverzeichnis (09.10.): `python -m
       fusion_lab.inventory.onenote_toc` → `raw/onenote/_toc.md` und
@@ -136,16 +147,22 @@ Jeder Strang bekommt beim Start einen eigenen Plan-Modus-Durchlauf.
 
 ## Nächster Schritt
 
-**Agenda neue Session (Abend 07.10., Nutzer):**
-1. OneNote-Auswertung: Inhaltsverzeichnis „Smart Money Trading“ bauen
-   (Abschnitte, Titel, Themen), dann Bestandteile-Liste (Strang 0).
-2. Struktur: altes Wissen → Edge Cards → Tests (Strang 1/2), Reihenfolge
-   gemeinsam festlegen.
-3. Makro-Agent v1 auf Basis des Mentor-Materials (Strang 3) — eigener
-   Plan-Modus-Durchlauf.
-4. Idee Copy-Trading aus den täglichen Mentor-Updates → erst Calls aus dem
-   Verlauf nachtesten (Ideen-Inbox im Dashboard).
-
+**Plan (Nutzer, 14.10.):**
+- **Läuft parallel (Nutzer):** Makro-Reports testen und Makro-Agent bauen
+  (Strang 3).
+- **Eigene Session, sobald alle Daten aus OneNote und Telegram da sind**
+  (wartet auf „SMH Daily Update“): Trading-Edges als Edge Cards (Strang 1),
+  neben der Makro-Analyse. Einstieg dort:
+  1. Durchsicht des Inventur-Entwurfs in
+     [[persoenlicher-tradingplan-validierung]] (A–F): Fehlt etwas? Ist
+     etwas falsch einsortiert?
+  2. Regeln für die 8 Final-Edges diktieren, die nur als Chartbilder
+     vorliegen.
+  3. Reihenfolge der Edge Cards festlegen. Kandidat zuerst: C1 (bringt ein
+     höherer Konfluenz-Score mehr Gewinn pro Trade?).
+- Erledigt 09.10.: Inhaltsverzeichnis + Inventur-Entwurf.
+- Offen aus 07.10.: Copy-Trading-Idee (erst Calls aus dem Verlauf
+  nachtesten, Ideen-Inbox).
 
 Strang 0: Nutzer legt die Zugänge an (Anleitung in `fusion_lab/README.md`):
 Azure-App für OneNote, Telegram-API-Zugang, Notion-Connector in claude.ai.

@@ -1,2 +1,3 @@
 market,ticker,scan_date,close,lower_band,entry,sl,tp,tp_price,risk_pct_price,position_size_pct,ma20,regime_ok,tradeable,position_size_concentrated_pct,scanned_at
-"S&P 500 (volles Universum, 420 Ticker)",IVZ,2026-10-12,29.26,29.36,29.26,25.48,kein TP (finale Config),0.0,12.92,7.74,30.43,True,True,12.5,2026-10-13T14:30:30
+"S&P 500 (volles Universum, 420 Ticker)",IVZ,2026-10-13,28.92,29.05,28.92,24.35,kein TP (finale Config),0.0,15.82,6.32,30.33,True,True,12.5,2026-10-14T14:30:23
+"S&P 500 (volles Universum, 420 Ticker)",TROW,2026-10-13,101.39,101.82,101.39,93.33,kein TP (finale Config),0.0,7.95,12.58,104.09,True,True,12.5,2026-10-14T14:30:23

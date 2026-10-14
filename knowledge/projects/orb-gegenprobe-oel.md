@@ -77,3 +77,31 @@ als die Basis (2023–25 +0,10 statt +0,32 R).
 **Forward:** beide eingefrorenen Varianten ab 12.10.2026, Auswertung frühestens
 31.03.2027 (`--stage forward-evaluate`). Kein Livegang.
 PDF: `Claude outputs/orb_profitabilitaets_kriterien_oel_20261012.pdf` (15 Seiten).
+
+### Option 2: wie der 2026-Filter funktioniert und woher sein Gewinn kommt (14.10.)
+
+**Funktionsweise** (Basis unverändert: 15-Min-Range, Stop-Order, 1 ATR, 8R, 16:00):
+1. Jeden Morgen Korrelation der Sitzungsrenditen Öl↔Index über die letzten 20 Tage (bis Vortag).
+   Unter +0,2 (S&P) bzw. 0 (Nasdaq) = „Öl-Regime“ → nur **Trend-Tage in Trendrichtung**
+   (Nasdaq: nur long an Aufwärtstrend-Tagen); sonst wie bisher nur neutrale Tage.
+2. Um 09:45: Trade nur, wenn Öl 09:00→09:45 **gegen** die Ausbruchsrichtung lief
+   (S&P zusätzlich > 0,1 %). Kein Lookahead (Vortags-Korrelation, Öl-Move vor dem Einstieg).
+
+**Zerlegung nach Bausteinen** (Σ R; Trades in Klammern):
+
+| Teilmenge | S&P 2026 | Nasdaq 2026 | S&P IS 16–22 | Nasdaq IS 16–22 |
+|---|---|---|---|---|
+| Öl-Regime + Trend-Tag + Öl gegen (Kern) | **+40,6 (33)** | **+42,8 (29)** | +3,2 (141) | +0,7 (70) |
+| kein Regime + neutral + Öl gegen | −1,8 (17) | +3,1 (24) | +71,3 (136) | +81,7 (182) |
+| Regime-Anteil der Tage | 70 % | 56 % | 40 % | 23 % |
+
+- **Der Kern, der 2026 trägt, ist in IS null** (Ø +0,02 / +0,01 R). Der Mechanismus existiert
+  nur 2026 → klarer Fit, kein Muster.
+- In IS lebt der Filter vom zweiten Baustein (= Option-1-Regel „Öl gegen“). Er wirft dafür die
+  guten neutralen Tage im Regime weg (S&P +54 R, Nasdaq +62 R).
+- IS gesamt: S&P 277 Trades / +74 R (Basis 569 / +189), Nasdaq 252 / +82 R (Basis 445 / +201).
+  Korrektur zur Aussage vom 12.10.: Beim Nasdaq „schadet nicht“ gilt nur für OOS 2023–09/25
+  (+0,31 statt +0,22 R je Trade); in IS kostet die Regel Edge (+0,33 statt +0,45 R).
+- Je Kalenderjahr (Σ R Basis → Filter), S&P: 2019 +23 → −27, 2024 +19 → −5, 2025 +32 → −12;
+  Nasdaq: 2021 +50 → −7. Rechnung: Ad-hoc-Zerlegung auf `research_orb_oel_filter.load/apply`,
+  keine neue Auswahl.

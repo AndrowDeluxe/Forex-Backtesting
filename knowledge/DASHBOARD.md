@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-10-12** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-10-14** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -289,6 +289,30 @@ Bedarf vor generischem Aufräumen.
   oder (b) (PC aus oder Task Scheduler haengt) liefen die drei Live-Bridges
   möglicherweise seit über 11 Tagen ohne jedes Monitoring oder ganz ohne
   neue Gebote.
+
+- **🔴 Dreizehnte Prüfung: Ausfall läuft jetzt seit über 12 Tagen, dritter
+  Handelstag der zweiten Woche (Mittwoch 14.10.) läuft gerade.** (Bridge
+  Error Monitor, 14.10., geprüft 15:12 UTC / 17:12 CEST.)
+  `bridge_status/snapshot.json` steht weiterhin unverändert auf
+  `generated_at: 2026-10-02T11:01:24` (Commit `666fe8e`, 2026-10-02 11:01:25
+  +0200). `git log`/`git fetch` bestätigen: der aktuelle HEAD ist weiterhin
+  der eigene Dashboard-Commit von gestern Morgen (`06b2e98`, 13.10. 09:13:45
+  UTC) -- seit der zwölften Prüfung gestern sind über 30 Stunden vergangen
+  (der gestrige Nachmittag/Abend inklusive der zweiten US-Session, die
+  gesamte Nacht und der bisherige Mittwochvormittag), ohne jede neue
+  Aktivität von Watchdog/EK/Funded/FK. Der Ausfall läuft jetzt seit
+  **Freitag 02.10. 11:01 Uhr CEST über 12 Tage**, und damit sind jetzt
+  **acht komplette Handelstage am Stück** (Mo-Fr Woche 1, Mo+Di Woche 2)
+  ohne jede Sichtbarkeit verstrichen, der neunte (Mi, heute) läuft gerade.
+  **Nichts Neues an Information** -- dieselben drei offenen Fragen (a/b/c)
+  aus den Punkten darüber bleiben unverändert offen, weiterhin nichts, das
+  ich von hier aus unterscheiden oder reparieren könnte (liegt komplett
+  außerhalb des Repos, siehe CLAUDE.md). **Offen für dich, jetzt mit acht
+  verstrichenen Handelstagen als Gewicht:** bitte PC und
+  Task-Scheduler-Historie prüfen, sobald du am PC bist -- bei Grund (a)
+  oder (b) (PC aus oder Task Scheduler haengt) liefen die drei Live-Bridges
+  (EK, Funded TTP+IQ, FK -- alle echtes Geld) möglicherweise seit über
+  12 Tagen ohne jedes Monitoring oder ganz ohne neue Gebote.
 
 - **🟠 ORB: Live handelt andere Tage als der Backtest + M5 überzeichnet den
   Edge** (01.10., [[orb-order-storno-und-haltedauer]]). Nichts geändert.

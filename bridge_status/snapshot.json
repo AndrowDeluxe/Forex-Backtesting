@@ -1,38 +1,38 @@
 {
-  "generated_at": "2026-10-15T00:01:24",
+  "generated_at": "2026-10-15T00:31:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-14T23:59:02",
+      "last_run": "2026-10-15T00:29:01",
       "minutes_since_last_run": 2.4,
       "status": "ok",
-      "last_equity_line": "2026-10-14 22:59:06 2026-10-14 22:59:02,323 INFO run_once: Konto-Equity 2787.23 EUR | Aggregiertes offenes Risiko (ganzes Konto): 68.10 (Deckel dieser Bridge: 836.17, 30%)",
+      "last_equity_line": "2026-10-15 00:14:28 2026-10-15 00:14:12,090 INFO run_once: Konto-Equity 2787.14 EUR | Aggregiertes offenes Risiko (ganzes Konto): 68.07 (Deckel dieser Bridge: 836.14, 30%)",
       "last_error_line": "2026-10-12 19:37:07 2026-10-12 19:36:24,815 ERROR run_once: cls_practical: unerwarteter Fehler",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-14T23:58:15",
+      "last_run": "2026-10-15T00:28:16",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-10-14 23:58:15 Verbunden: Login 16054, Equity $96,786.50 USD",
+          "last_equity_line": "2026-10-15 00:28:16 Verbunden: Login 16054, Equity $96,784.60 USD",
           "last_error_line": "2026-10-13 11:58:24 [IQMARKETS] ?? ORB-Setups nicht ermittelbar: Server-Zeitzonen-Verifikation fehlgeschlagen fuer Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835): erwartet Europe/Helsinki, gemessene Abweichung -8.4 Minuten (Toleranz 5.0). Abbruch -- die ORB-Session-Grenzen waeren sonst falsch berechnet.",
           "recent_events": []
         },
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-10-14 23:58:15 Verbunden: Login 504072729, Equity $99,457.22 USD",
+          "last_equity_line": "2026-10-15 00:28:16 Verbunden: Login 504072729, Equity $99,447.82 USD",
           "recent_events": []
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-14T23:14:02",
-      "minutes_since_last_run": 47.4,
+      "last_run": "2026-10-15T00:14:43",
+      "minutes_since_last_run": 16.7,
       "status": "ok",
-      "last_equity_line": "2026-10-14 22:14:12 Verbunden: Login 17764, Equity $98,536.30",
+      "last_equity_line": "2026-10-15 00:14:43 Verbunden: Login 17764, Equity $98,531.78",
       "last_error_line": "2026-10-12 19:17:23 ctnl-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
       "recent_events": [
         "2026-10-12 19:17:23  LIVE CTNL-Kill-Switch: Scan ohne Trades (Datenluecke?) -- kein Urteil, Zustand bleibt aus.",

@@ -1,0 +1,63 @@
+{
+  "strategy": "edge_monitor_20261014",
+  "split": {
+    "is_start": "2016-07-28",
+    "is_end": "2022-12-31",
+    "oos_end": "2026-09-30",
+    "tresor_end": null
+  },
+  "registered": "2026-10-14T21:41:17+00:00",
+  "trials": 13,
+  "frozen": {
+    "hash": "891cd5691d13a5eae802aaff9569e2de14a6352e7f9415ba527a5c7e19625a99",
+    "config": {
+      "regelwerk": {
+        "signale": [
+          "roll_mean",
+          "cusum",
+          "sprt",
+          "bayes",
+          "drawdown"
+        ],
+        "budgets": {
+          "streng": 0.2,
+          "locker": 0.5
+        },
+        "kombi": "2 von 5 (locker)",
+        "regime_orb": "Ribbon-Schatten-Spread 40 Trades je Modus",
+        "roll_n": 30,
+        "bayes_w": 60,
+        "bootstrap": {
+          "paths": 300,
+          "jahre": 5
+        },
+        "hysterese": "Freigabe auf halbem Weg Normalwert -> Schwelle",
+        "aktion": "Pause + Schattenkonto"
+      },
+      "schwellen_datei_faelle": [
+        "eu_open:NASDAQ",
+        "eu_open:SP500",
+        "eu_open:US30",
+        "live:btc_ema_cross",
+        "live:cls_practical",
+        "live:ctnl_reversal",
+        "live:gold_asb",
+        "live:gold_silver",
+        "live:orb_nasdaq",
+        "live:orb_sp500",
+        "live:orb_us30",
+        "live:ou_modell",
+        "live:trend_pullback",
+        "orb_is_only:NASDAQ",
+        "orb_is_only:SP500",
+        "zarattini:NASDAQ",
+        "zarattini:SP500"
+      ]
+    },
+    "ts": "2026-10-14T21:48:00+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-14T21:48:10+00:00"
+  },
+  "forward": null
+}

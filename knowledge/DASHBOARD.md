@@ -56,6 +56,13 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **ORB SP500 live: Kill-Switch-Ampel rot – weiterlaufen lassen?** (14.10.,
+  [[edge-fruehwarnung-kill-switch]], [[live-strategien-tresor-check]]). Alle 5
+  Signale rot, auch der Drawdown-Schalter (Bestwert der Auswertung). Tresor
+  +0,11 R je Trade, Ursache wie bei der IS-only-ORB (neutrale Tage kippen). Am
+  06.10. entschieden: „ORB live bleibt“ – neu bewerten? Meine Annahmen dabei:
+  Signalauswahl, Fehlalarm-Budget (1 je 5 Jahre), Kalibrierfenster 2019–2022,
+  Ampel auf der Broker-Liste vom 01.10.
 - **ORB-Öl-Filter: zwei Forward-Kandidaten, Stichtag 31.03.2027** (12.10.,
   [[orb-gegenprobe-oel]]). (1) IS-Filter „Öl gegen Ausbruch“, (2) 2026-Fit
   (Korrelationsregime → Trend-Tage + Öl gegen Ausbruch), ausdrücklich kein

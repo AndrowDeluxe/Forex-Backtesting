@@ -196,6 +196,22 @@ reporting for it.
      dort als `nicht_ermittelbar` steht, ist genau das - nicht "nie gesehen".
    - **EKs Kostenannahme ist geschätzt** (0,50 Pips), Funded/FK sind
      gemessen. EK-Zahlen deshalb nicht gegen die anderen beiden stellen.
+5b. **Edge-Ampel je Live-Bein** (seit 2026-10-14, Nutzerauftrag; Research,
+   kein automatischer Eingriff). Run:
+
+   ```
+   python scripts/research_edge_monitor.py --stage status
+   ```
+
+   Writes `edge_monitor/results/status.csv`. One row per leg, 5 signals
+   (roll_mean, cusum, sprt, bayes, drawdown) as gruen/gelb/rot plus
+   "2 von 5". **Leitsignal ist `drawdown`** (beste Bilanz in der Auswertung
+   vom 14.10., siehe `knowledge/projects/edge-fruehwarnung-kill-switch.md`);
+   die anderen sind Zusatzinfo. Caveats for the prose: the status reads the
+   broker trade lists in `portfolio_construction/results/live_trades_*`
+   (state their date - stale lists mean a stale Ampel); a red light is a
+   reason to raise the leg under "Braucht deine Bestätigung", never to
+   change a bot.
 6. **Auffälligkeiten / offene Punkte**: anything that looks wrong (a bot
    silently not running, a data source you couldn't trust, a discrepancy
    between bridge data and repo diagnostic) - flag it the way memory

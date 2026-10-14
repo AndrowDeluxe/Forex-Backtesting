@@ -1,0 +1,97 @@
+  broker            leg     periode    n    pf    avg     sum      t   win      dd
+tickmill  btc_ema_cross vor 10/2025   48 4.482  1.703  81.760  1.881 0.333  -6.457
+tickmill  btc_ema_cross      Tresor    6 0.188 -0.464  -2.787 -1.878 0.167  -2.787
+tickmill  cls_practical vor 10/2025  122 1.872  0.448  54.613  2.514 0.500  -8.302
+tickmill  cls_practical      Tresor   18 3.362  0.810  14.587  1.942 0.667  -2.069
+tickmill  ctnl_reversal vor 10/2025   85 2.514  1.077  91.527  3.315 0.435 -10.147
+tickmill  ctnl_reversal      Tresor   13 2.781  1.036  13.468  1.414 0.462  -3.450
+tickmill       gold_asb vor 10/2025  174 2.113  0.330  57.394  3.723 0.540  -3.202
+tickmill       gold_asb      Tresor   29 2.070  0.183   5.318  1.630 0.655  -2.301
+tickmill    gold_silver vor 10/2025   91 2.898  1.012  92.062  4.940 0.648  -7.012
+tickmill    gold_silver      Tresor   13 1.948  0.583   7.578  1.122 0.538  -2.738
+tickmill     orb_nasdaq vor 10/2025 1390 1.351  0.316 439.053  3.032 0.141 -59.172
+tickmill     orb_nasdaq      Tresor  205 1.124  0.116  23.693  0.412 0.112 -33.366
+tickmill      orb_sp500 vor 10/2025  302 1.757  0.601 181.644  3.552 0.248 -16.965
+tickmill      orb_sp500      Tresor   60 1.119  0.105   6.326  0.310 0.167 -21.048
+tickmill       orb_us30 vor 10/2025  337 1.501  0.357 120.344  2.932 0.323 -20.301
+tickmill       orb_us30      Tresor   55 0.632 -0.289 -15.914 -1.387 0.255 -15.914
+tickmill      ou_modell vor 10/2025  558 1.174  0.019  10.325  1.476 0.565  -7.943
+tickmill      ou_modell      Tresor  107 1.500  0.039   4.217  1.648 0.617  -3.475
+tickmill trend_pullback vor 10/2025  192 1.373  0.265  50.876  2.096 0.443 -16.144
+tickmill trend_pullback      Tresor   32 3.176  1.003  32.101  3.258 0.656  -5.107
+     ttp  cls_practical vor 10/2025  124 1.505  0.279  34.643  1.739 0.492 -11.486
+     ttp  cls_practical      Tresor   18 2.768  0.631  11.361  1.702 0.667  -2.167
+     ttp  ctnl_reversal vor 10/2025  144 2.286  0.958 137.996  3.902 0.431 -19.137
+     ttp  ctnl_reversal      Tresor   22 3.481  1.523  33.510  2.094 0.455  -3.840
+     ttp       gold_asb vor 10/2025  174 1.928  0.292  50.763  3.294 0.540  -3.571
+     ttp       gold_asb      Tresor   29 1.937  0.167   4.835  1.479 0.655  -2.433
+     ttp     orb_nasdaq vor 10/2025 1390 1.309  0.282 392.497  2.726 0.139 -64.859
+     ttp     orb_nasdaq      Tresor  205 1.106  0.099  20.388  0.355 0.112 -34.056
+     ttp      orb_sp500 vor 10/2025  302 1.705  0.574 173.485  3.393 0.245 -17.809
+     ttp      orb_sp500      Tresor   60 1.085  0.077   4.644  0.228 0.167 -21.986
+     ttp       orb_us30 vor 10/2025  337 1.458  0.332 111.941  2.736 0.323 -21.382
+     ttp       orb_us30      Tresor   55 0.617 -0.306 -16.813 -1.465 0.255 -16.813
+     ttp      ou_modell vor 10/2025  558 1.125  0.013   7.516  1.080 0.563  -8.008
+     ttp      ou_modell      Tresor  107 1.427  0.034   3.663  1.444 0.617  -3.550
+     ttp trend_pullback vor 10/2025  235 1.354  0.250  58.829  2.222 0.447 -22.852
+     ttp trend_pullback      Tresor   36 3.362  1.040  37.431  3.648 0.667  -3.909
+      iq  cls_practical vor 10/2025  123 1.708  0.375  46.183  2.204 0.496  -9.069
+      iq  cls_practical      Tresor   18 3.107  0.735  13.226  1.850 0.667  -2.110
+      iq  ctnl_reversal vor 10/2025  144 2.327  0.970 139.686  3.984 0.431 -18.411
+      iq  ctnl_reversal      Tresor   22 3.560  1.550  34.109  2.130 0.455  -3.761
+      iq       gold_asb vor 10/2025  174 2.058  0.319  55.522  3.602 0.540  -3.295
+      iq       gold_asb      Tresor   29 2.031  0.179   5.182  1.587 0.655  -2.338
+      iq     orb_nasdaq vor 10/2025 1390 1.345  0.311 432.947  2.991 0.141 -60.594
+      iq     orb_nasdaq      Tresor  205 1.120  0.112  22.867  0.398 0.112 -33.538
+      iq      orb_sp500 vor 10/2025  302 1.741  0.594 179.244  3.505 0.248 -17.214
+      iq      orb_sp500      Tresor   60 1.109  0.097   5.831  0.286 0.167 -21.324
+      iq       orb_us30 vor 10/2025  337 1.422  0.311 104.949  2.563 0.318 -24.354
+      iq       orb_us30      Tresor   55 0.609 -0.315 -17.298 -1.507 0.255 -17.298
+      iq trend_pullback vor 10/2025  235 1.366  0.259  60.763  2.287 0.447 -22.524
+      iq trend_pullback      Tresor   36 3.376  1.045  37.623  3.661 0.667  -3.909
+instrument dimension          wert      periode   n    pf    avg      sum        t   win       dd
+     SP500    ribbon   gegen Trend     IS 16-22  87 0.542 -0.433  -37.685   -2.084 0.115  -43.289
+     SP500    ribbon     mit Trend     IS 16-22 467 0.732 -0.268 -125.016   -2.518 0.133 -132.939
+     SP500    ribbon       neutral     IS 16-22 285 1.421  0.360  102.680    2.153 0.214  -25.150
+     SP500    ribbon   gegen Trend OOS 23-09/25  25 1.397  0.338    8.440    0.590 0.200   -6.534
+     SP500    ribbon     mit Trend OOS 23-09/25 226 0.785 -0.210  -47.566   -1.343 0.142  -53.568
+     SP500    ribbon       neutral OOS 23-09/25 117 1.457  0.385   45.019    1.488 0.231  -17.760
+     SP500    ribbon   gegen Trend       Tresor   2 0.000 -1.038   -2.076  -68.988 0.000   -2.076
+     SP500    ribbon     mit Trend       Tresor  71 1.159  0.148   10.481    0.457 0.183  -21.773
+     SP500    ribbon       neutral       Tresor  60 1.087  0.079    4.743    0.232 0.167  -21.931
+     SP500    vortag  gegenlaeufig     IS 16-22 168 1.225  0.199   33.407    0.954 0.190  -26.926
+     SP500    vortag gleichlaeufig     IS 16-22 117 1.724  0.592   69.274    2.143 0.248  -15.895
+     SP500    vortag  gegenlaeufig OOS 23-09/25  66 1.656  0.533   35.180    1.503 0.258  -13.542
+     SP500    vortag gleichlaeufig OOS 23-09/25  51 1.219  0.193    9.839    0.510 0.196  -12.495
+     SP500    vortag  gegenlaeufig       Tresor  42 0.906 -0.087   -3.663   -0.228 0.143  -24.484
+     SP500    vortag gleichlaeufig       Tresor  18 1.550  0.467    8.406    0.660 0.222   -6.583
+      US30    ribbon   gegen Trend     IS 16-22  85 0.508 -0.474  -40.303   -2.256 0.082  -46.765
+      US30    ribbon     mit Trend     IS 16-22 430 0.763 -0.227  -97.540   -2.063 0.135 -115.282
+      US30    ribbon       neutral     IS 16-22 304 1.752  0.603  183.427    3.572 0.250  -14.949
+      US30    ribbon   gegen Trend OOS 23-09/25  25 0.265 -0.713  -17.833   -2.499 0.080  -19.718
+      US30    ribbon     mit Trend OOS 23-09/25 177 1.348  0.299   52.843    1.448 0.215  -21.747
+      US30    ribbon       neutral OOS 23-09/25 142 1.162  0.144   20.474    0.647 0.176  -33.928
+      US30    ribbon   gegen Trend       Tresor   4 1.919  0.714    2.856    0.408 0.250   -2.067
+      US30    ribbon     mit Trend       Tresor  72 0.803 -0.184  -13.247   -0.669 0.139  -21.753
+      US30    ribbon       neutral       Tresor  56 0.459 -0.526  -29.464   -2.144 0.089  -29.464
+      US30    vortag  gegenlaeufig     IS 16-22 184 1.434  0.364   67.057    1.774 0.217  -27.885
+      US30    vortag gleichlaeufig     IS 16-22 120 2.300  0.970  116.370    3.374 0.300   -7.463
+      US30    vortag  gegenlaeufig OOS 23-09/25  84 0.897 -0.095   -7.984   -0.360 0.143  -37.592
+      US30    vortag gleichlaeufig OOS 23-09/25  58 1.586  0.491   28.458    1.268 0.224  -11.982
+      US30    vortag  gegenlaeufig       Tresor  43 0.571 -0.416  -17.874   -1.324 0.093  -17.874
+      US30    vortag gleichlaeufig       Tresor  13 0.100 -0.892  -11.590   -4.914 0.077  -11.815
+    NASDAQ    ribbon   gegen Trend     IS 16-22 107 0.414 -0.586  -62.671   -2.636 0.075  -62.671
+    NASDAQ    ribbon     mit Trend     IS 16-22 184 1.237  0.215   39.523    0.802 0.158  -36.949
+    NASDAQ    ribbon       neutral     IS 16-22 149 1.980  0.830  123.667    2.268 0.195  -19.510
+    NASDAQ    ribbon   gegen Trend OOS 23-09/25  61 0.595 -0.384  -23.442   -1.306 0.115  -32.802
+    NASDAQ    ribbon     mit Trend OOS 23-09/25  82 1.148  0.143   11.715    0.322 0.098  -37.503
+    NASDAQ    ribbon       neutral OOS 23-09/25  65 1.964  0.844   54.841    1.354 0.169  -13.832
+    NASDAQ    ribbon   gegen Trend       Tresor  18 0.000 -1.066  -19.182 -192.754 0.000  -19.182
+    NASDAQ    ribbon     mit Trend       Tresor  23 3.197  1.752   40.303    1.449 0.261   -7.599
+    NASDAQ    ribbon       neutral       Tresor  48 1.762  0.700   33.614    0.833 0.125  -11.553
+    NASDAQ    vortag  gegenlaeufig     IS 16-22 223 1.245  0.219   48.747    0.916 0.166  -25.226
+    NASDAQ    vortag gleichlaeufig     IS 16-22 217 1.258  0.239   51.771    0.908 0.134  -58.058
+    NASDAQ    vortag  gegenlaeufig OOS 23-09/25 102 1.053  0.049    4.949    0.157 0.147  -42.085
+    NASDAQ    vortag gleichlaeufig OOS 23-09/25 106 1.378  0.360   38.165    0.791 0.104  -21.401
+    NASDAQ    vortag  gegenlaeufig       Tresor  46 1.560  0.505   23.216    0.701 0.152  -25.508
+    NASDAQ    vortag gleichlaeufig       Tresor  43 1.785  0.733   31.518    0.851 0.116  -18.927

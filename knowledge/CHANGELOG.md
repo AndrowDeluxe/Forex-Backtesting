@@ -9,6 +9,31 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-14** [Research] **Tresor-Check aller Live-Beine** (Nutzerauftrag,
+  Tresor-Variante 10/2025–09/2026) [[live-strategien-tresor-check]]. Skript
+  `scripts/research_live_tresor_check.py`. Negativ: orb_us30 (−16 R, Zerfall seit
+  2023, pausiert), btc_ema_cross (6 Trades). Fast null: orb_sp500 (Ribbon-Kipp +
+  Umkehr-Muster über Tage weg). Nasdaq: Broker-Liste vom 04.10. rechnet noch ohne
+  Storno; heutige Version positiv (vorbelastet). Übrige Beine positiv.
+  Keine Bot-Änderung.
+
+- **2026-10-14** [Research] **Frühwarnung + Kill-Switch** (Nutzerauftrag)
+  [[edge-fruehwarnung-kill-switch]]. Paket `edge_monitor/`, Skript
+  `scripts/research_edge_monitor.py`, Tests `tests/test_edge_monitor.py` (6 grün),
+  Lock `edge_monitor_20261014` (13 Regeln, 17 Fälle). Kein Signal warnt verlässlich
+  vor dem Kipp; bester Schalter = Drawdown, per Bootstrap streng kalibriert (7/7
+  Brüche besser, Live-Beine Median −3,4 R, greift ~6 Monate nach dem Hoch).
+  Ampel als Schritt 5b im Weekly Report (`scripts/reports/weekly_report_prompt.md`).
+  Ampel 14.10.: orb_sp500 + orb_us30 rot. Keine Bot-Änderung.
+
+- **2026-10-12** [Dachprojekt / Strang 0+3] **Makro-Faktor-Katalog aus
+  OneNote** → `resources/makro-faktoren-katalog.md` (neu, CODE-Format).
+  Drei Teilinventuren per Unteragent (Makro Education 38 Seiten, Bankreports
+  84, News/Quick Notes/Incentive), Rohfassungen in `fusion_lab/data/
+  onenote_macro/` (gitignored), dann entdoppelt: 49 Faktoren, 13 Regime-
+  Schemata, 37 Regeln, 9 offene Widersprüche, 12 Testkandidaten. Nichts
+  davon getestet. ~33 Bild-only-Seiten nicht ausgewertet.
+
 - **2026-10-12** [Research] **Öl als ORB-Filter** (Nutzerauftrag)
   [[orb-gegenprobe-oel]]. Skript `scripts/research_orb_oel_filter.py`.
   Option 1 (nur IS, Lock `orb_oel_filter_is_20261012`): Gewinner „Öl
@@ -26,6 +51,42 @@ keine Planung (dafür ist `DASHBOARD.md`).
   --days 10 --refresh` (FRED neu laden; Log `fusion_lab/data/logs/
   g8_notion_sync.log`). Reiner Daten-/Anzeige-Task. Testlauf 12.10. 22:48:
   Ergebnis 0, 1 neu / 39 aktualisiert.
+
+- **2026-10-14** [Research] **Forward-Kandidat NASDAQ K2 + Öl-Korr. 60 T. < 0 registriert**
+  (Nutzerentscheid) [[zarattini-noise-area-momentum]]. `scripts/forward_noise_area_k60.py`,
+  Lock `noise_area_oel_k60_forward_20261014`, Forward 15.10.2026–31.03.2027. Backtest
+  100k (vorbelastet, 1x / 1 % Risiko): IS +40,6 / +29,1 %, OOS +9,2 / +7,0 %, Tresor
+  +10,4 / +13,4 %. `run_general` hat jetzt `vol_target` (Tests grün). Kein Bot.
+
+- **2026-10-14** [Research] **Noise-Area: Öl-Optimierung auf 2026 + Forward**
+  (Nutzerauftrag, Annahmen vom 11./14.10. bestätigt und aus dem Dashboard
+  entfernt) [[zarattini-noise-area-momentum]]. `scripts/research_noise_area_oel_fit2026.py`,
+  Lock `noise_area_oel_fit2026_20261014` (16.848 Versuche, Fit 10/25–09/26).
+  Tragender Faktor: negative Öl-Index-Korrelation + K2-Ausstieg, nur NASDAQ
+  (positiv in allen drei Perioden). Raster-Gewinner NASDAQ +28 bps/Trade
+  (DSR 0,03, 2023–25 −4,9); SP500 ohne Kandidat. Forward ab 15.10.,
+  Stichtag 31.03.2027. Kein Bot.
+
+- **2026-10-14** [Research] **Noise-Area-Momentum × Öl** (Nutzerauftrag)
+  [[zarattini-noise-area-momentum]]. `scripts/research_noise_area_oel.py`, Engine
+  längenflexibel (Öl-Uhr; Paper-Zahlen identisch). (A) Strategie auf Öl: kein
+  Edge, Tresor-Persistenz 28 % statt 39 % → Dämpfung marktweit (Lock
+  `noise_area_oel_gegenprobe_20261014`, 4 Versuche). (C) Öl-Index-Korrelation 2026
+  negativ (−0,45); Tresor-Gewinne nur an Tagen mit Korrelation < −0,2. (B) 9 Öl-Filter
+  (Lock `noise_area_oel_filter_20261014`): kein Filter rettet den Tresor; SP500
+  „Öl ruhig“ (−1,9 statt −3,0 bps) im Forward bis 31.03.2027. Kein Bot.
+
+- **2026-10-14** [Research] **Noise-Area-Momentum: Tresor-Diagnose +
+  Regime-2026-Raster + Forward registriert** [[zarattini-noise-area-momentum]]
+  (Nutzerauftrag 12.10., Plan freigegeben 14.10.). Diagnose: Die Gewinner
+  schrumpfen um ein Drittel, die Verlierer bleiben gleich; Bruch ~2σ.
+  Neu: `run_general()` in `noise_area_momentum/engine.py` (+
+  `tests/test_noise_area_engine.py`, 3 grün, reproduziert `run()` exakt),
+  `scripts/research_noise_area_regime2026.py`, Lock
+  `noise_area_regime2026_20261014` (18.432 Trials). Die IS-Gewinner
+  10/25–03/26 sind bei beiden Indizes Fade-short. OOS: SP500 −5,9,
+  NASDAQ −8,4 bps/Trade → durchgefallen. Forward ab 15.10., Stichtag
+  31.03.2027 (Gewinner + Kontrollen K1/K2). Kein Bot.
 
 - **2026-10-11** [Research] **Paper „Beat the Market“ (Zarattini/Aziz/Barbon,
   SSRN 4824172, Noise-Area-Intraday-Momentum) nach dem 8-Phasen-Prozess:

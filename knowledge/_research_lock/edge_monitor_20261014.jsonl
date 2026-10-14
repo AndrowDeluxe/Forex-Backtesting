@@ -1,0 +1,4 @@
+{"ts": "2026-10-14T21:41:17+00:00", "event": "register_split", "is_start": "2016-07-28", "is_end": "2022-12-31", "oos_end": "2026-09-30", "tresor_end": null}
+{"ts": "2026-10-14T21:43:29+00:00", "event": "trials", "n": 13, "total": 13, "note": "13 vorab feste Regeln, je Fall angewendet (17 Faelle); keine Auswahl am Bruch"}
+{"ts": "2026-10-14T21:48:00+00:00", "event": "freeze", "hash": "891cd5691d13a5eae802aaff9569e2de14a6352e7f9415ba527a5c7e19625a99"}
+{"ts": "2026-10-14T21:48:10+00:00", "event": "unseal", "stage": "oos", "hash": "891cd5691d13a5eae802aaff9569e2de14a6352e7f9415ba527a5c7e19625a99"}

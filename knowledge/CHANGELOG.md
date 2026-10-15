@@ -9,6 +9,22 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-16** [ORB / Research] **NASDAQ mit/ohne Storno am SL über 10 Jahre**
+  (Nutzerfrage) [[orb-order-storno-und-haltedauer]]. Skript
+  `scripts/research_orb_nasdaq_storno_vergleich.py`. Ohne Storno Σ +584 R (t 3,2),
+  mit Storno +198 R (t 1,8), ähnlicher MaxDD; nur im Tresor ist Storno besser
+  (+55 gegen +21 R). Die Wahl vom 04.10. beruhte auf dem Fenster 2019–2026 und
+  einem „OOS“, das 2026 enthielt (vor der Overfitting-Sperre). Keine Bot-Änderung.
+
+- **2026-10-15** [Research / Gruppenarbeit] **Gold ASB nur auf IS neu optimiert**
+  (Nutzerauftrag, Standardprozess wie ORB) [[gold-asb-is-only-neuanalyse]]. Skript
+  `scripts/research_gold_asb_is_only_reopt.py`, Lock `gold_asb_is_reopt_20261015`,
+  Split wie ORB, 9 Punkte, 20.736 Versuche, M5 mit TTP-Kosten. Gewinner: Stop 2,0x,
+  Storno 02:30, ADX 15, kein Trendfilter, Silber 5T, Liquidität q0,5. Ergebnis
+  IS +0,33 → OOS +0,18 (PF 1,71) → Tresor +0,04 R (PF 1,19, 18 Trades). Deflated
+  Sharpe 0,24. Nicht durchgefallen, aber ausgelaufen. PDF wartet auf das Go.
+  Keine Bot-Änderung.
+
 - **2026-10-14** [Research] **Tresor-Check aller Live-Beine** (Nutzerauftrag,
   Tresor-Variante 10/2025–09/2026) [[live-strategien-tresor-check]]. Skript
   `scripts/research_live_tresor_check.py`. Negativ: orb_us30 (−16 R, Zerfall seit
@@ -51,6 +67,26 @@ keine Planung (dafür ist `DASHBOARD.md`).
   --days 10 --refresh` (FRED neu laden; Log `fusion_lab/data/logs/
   g8_notion_sync.log`). Reiner Daten-/Anzeige-Task. Testlauf 12.10. 22:48:
   Ergebnis 0, 1 neu / 39 aktualisiert.
+
+- **2026-10-16** [Research] **Kombination K60 + Öl-ORB auf TTP** (Nutzerfrage)
+  [[zarattini-noise-area-momentum]]. `scripts/research_kombi_k60_orb_oel.py`, beschreibend.
+  Mit 1 % je Trade ist die Kombi nicht TTP-tauglich (ORB-DD 17–39 %). Beste Aufteilung:
+  ORB 0,25 % + K60 1 %, Bestehensquote 63–64 % (2016–25). O1 verliert im Tresor, O2
+  ist auf den Tresor angepasst. Korrelation K60 ↔ ORB ~+0,1. Kein Bot.
+
+- **2026-10-16** [Research] **K60-Kandidat auf TTP-Konto gerechnet** (Nutzerauftrag)
+  [[zarattini-noise-area-momentum]]. `scripts/research_noise_area_k60_ttp.py`: 1 %
+  Risiko, SL 1σ, Exit 15:55, TTP-USTEC-Kosten gemessen 1,32 bps. Endstand je
+  Periode ab 100k: IS 131.435 / OOS 102.783 / Tresor 109.716. Im OOS ein Bruch des
+  7-%-Trailing-Limits (intraday −7,2 %). Allein zu langsam für eine Challenge. Kein Bot.
+
+- **2026-10-15** [Research] **K60-Kandidat: SL/TP/Haltedauer geprüft** (Nutzerfrage)
+  [[zarattini-noise-area-momentum]]. `scripts/research_noise_area_k60_sltp.py`, Lock
+  `noise_area_k60_sltp_20261015` (27 Kombinationen, 9 Punkte). Basis (kein SL/TP,
+  bis 16:00) gewinnt IS und schlägt alle Varianten; der Ertrag entsteht in den
+  letzten Stunden, kürzeres Halten kostet in jeder Periode. Kein zusätzlicher
+  Forward. SL 1σ ergäbe echtes 1R (schlimmster Trade −1,0 statt −1,8 %) für ~3–4
+  Prozentpunkte weniger Ertrag. Kein Bot.
 
 - **2026-10-14** [Research] **Forward-Kandidat NASDAQ K2 + Öl-Korr. 60 T. < 0 registriert**
   (Nutzerentscheid) [[zarattini-noise-area-momentum]]. `scripts/forward_noise_area_k60.py`,

@@ -295,3 +295,35 @@ in IS 2016–22, OOS 2023–09/25 und Tresor.
 SP500 −0,48 → −0,21 R (Zeitstopp), NASDAQ −0,36 → −0,13 R (TP 2R). Zugleich
 kosten alle Varianten in IS/OOS Edge. **Ein Exit-Problem ist es nicht.**
 Gekippt ist das Durchziehen der Ausbrüche selbst.
+
+## Nachtrag 2026-10-16 — NASDAQ mit/ohne Storno, sauber über 10 Jahre
+
+Nutzerfrage: „Warum haben wir die Storno-Variante gewählt, wenn sie schlechter ist?“
+Skript `scripts/research_orb_nasdaq_storno_vergleich.py` (M1, gleicher Simulator, Live-Config
+sonst gleich: OCO, ohne Mittwoch, Stop 0,6, kein Ziel, 16:00). Zahlen
+`ny_open_orb/results/nasdaq_storno_vergleich*.csv`.
+
+| | IS 2016–22 | OOS 2023–09/25 | Tresor 10/25–09/26 | 10 Jahre gesamt |
+|---|---|---|---|---|
+| mit Storno: n / Ø R / Σ R | 440 / +0,23 / +101 | 208 / +0,21 / +43 | 89 / **+0,62** / **+55** | 737 / +0,27 / **+198** (t 1,8, DD −65) |
+| ohne Storno: n / Ø R / Σ R | 1.322 / +0,36 / **+477** | 566 / +0,15 / **+86** | 205 / +0,10 / +21 | 2.093 / +0,28 / **+584** (t 3,2, DD −64) |
+| durch Storno weggefallene Tage: Ø R | **+0,43** | +0,12 | **−0,29** | +0,28 |
+
+Je Jahr Σ R (mit / ohne): 2016 −24/+8 · 2017 −13/+73 · 2018 −7/+88 · 2019 +44/+30 ·
+2020 +20/+13 · 2021 +42/+125 · 2022 +39/+140 · 2023 +12/−27 · 2024 +13/+34 · 2025 +12/+64 · 2026 +61/+35.
+
+**Warum am 04.10. trotzdem gewählt:**
+1. **Fenster 2019–2026.** Die drei Jahre 2016–18, in denen die Storno-Variante verliert,
+   lagen nicht im Test. Ab 2019 ist sie 8/8 Jahre positiv; das war das Hauptargument.
+2. **„OOS“ ab 2023 enthielt 2026.** Genau dort glänzt sie (+61 R). Das war vor der
+   Overfitting-Sperre (eingeführt 05.10., einen Tag später) — heute wäre das ein Blick in den Tresor.
+3. **Robustheit gegen mehrdeutige Füll-Minuten** (MC 01.10.: ohne Storno P(Σ<0) 76 % im
+   mittleren Szenario). Dasselbe Ziel lösten die Ticks am 04.10. auf: 78–88 % der
+   mehrdeutigen Minuten waren gültige Trades. Damit fiel das Argument weitgehend weg.
+4. Bewertet wurde Ertrag/DD und Qualität je Trade, nicht Σ R. Über 10 Jahre ist aber auch
+   Σ R/DD ohne Storno besser (9,1 gegen 3,0).
+
+**Lesart:** Die Storno-Variante ist im Kern ein 2026-Fit. Über die saubere Historie ist die
+Variante ohne Storno klar besser; im Tresor schlechter. Die weggefallenen Tage drehen
+genau 2026 ins Minus — dasselbe Regime-Muster wie beim Ribbon-Kipp.
+Entscheidung offen (Dashboard 🔍).

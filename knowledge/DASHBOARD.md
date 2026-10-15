@@ -43,6 +43,10 @@ passiert, was steht an.
    sind schon geöffnet, deshalb braucht eine neue Regel einen eigenen Lock
    und frische Prüfdaten (andere Märkte oder Forward).
    [[smh-elite-mikrostruktur]]
+3. **🥇 Gruppenarbeit: Gold ASB IS-only gerechnet (15.10.), PDF wartet auf
+   dein Go.** IS +0,33 → OOS +0,18 → Tresor +0,04 R je Trade (PF 1,19,
+   18 Trades), Deflated Sharpe 0,24. Der Edge hält knapp, wird aber dünner.
+   [[gold-asb-is-only-neuanalyse]]
 
 ---
 
@@ -56,6 +60,12 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **ORB NASDAQ live: Storno am SL zurücknehmen?** (16.10.,
+  [[orb-order-storno-und-haltedauer]]). Über 10 Jahre ohne Storno klar besser
+  (+584 gegen +198 R, t 3,2 gegen 1,8); die Storno-Wahl vom 04.10. hing an
+  2019–2026 und an 2026 im „OOS“. Im Tresor ist Storno besser (+55 gegen +21 R).
+  Beide Wege beruhen auf schon gesehenen Daten; mein Vorschlag: beide Varianten
+  im Forward parallel messen (Schatten) und mit Stichtag entscheiden. Echtes Geld.
 - **ORB SP500 live: Kill-Switch-Ampel rot – weiterlaufen lassen?** (14.10.,
   [[edge-fruehwarnung-kill-switch]], [[live-strategien-tresor-check]]). Alle 5
   Signale rot, auch der Drawdown-Schalter (Bestwert der Auswertung). Tresor

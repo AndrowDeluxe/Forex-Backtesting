@@ -62223,3 +62223,32 @@
 2026-10-15 11:55:48   "ctnl_kill_switch_active": false,
 2026-10-15 11:55:48   "n_trades": 25
 2026-10-15 11:55:48 }
+2026-10-15 11:55:48 [main 70336da0] FK Instant Funding Bot: Snapshot 2026-10-15 11:55
+2026-10-15 11:55:48  1 file changed, 32 insertions(+)
+2026-10-15 11:55:49 MERGE UEBERSPRUNGEN: Working Tree hat 11 offene Aenderung(en) (andere Tasks/Session). Es wird NICHT gestasht -- der lokale Commit bleibt liegen und geht beim naechsten sauberen Lauf raus.
+2026-10-15 11:55:50 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-10-15 11:55:50  ! [rejected]          main -> main (non-fast-forward)
+2026-10-15 11:55:50 error: failed to push some refs to 'https://github.com/AndrowDeluxe/Forex-Backtesting.git'
+2026-10-15 11:55:50 hint: Updates were rejected because the tip of your current branch is behind
+2026-10-15 11:55:50 hint: its remote counterpart. If you want to integrate the remote changes,
+2026-10-15 11:55:50 hint: use 'git pull' before pushing again.
+2026-10-15 11:55:50 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+2026-10-15 11:55:50 HINWEIS: Push abgelehnt (Remote ist weiter) - erwartet, solange nicht gemergt wurde. Rueckstand sichtbar ueber 'git log origin/main..HEAD'.
+2026-10-15 11:55:50 === FK-Instant-Funding-Task beendet ===
+2026-10-15 12:55:23 === FK-Instant-Funding-Task gestartet ===
+2026-10-15 12:58:22 ERROR:fk_instant_funding.telegram_notify:Telegram-Nachricht fehlgeschlagen: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8734642391:AAFgB2Clfv1colNa-js_Isi5R3UGV9O8blU/sendMessage (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 11001] getaddrinfo failed)"))
+2026-10-15 12:58:22 {
+2026-10-15 12:58:22   "date": "2026-10-15 10:55:24.733473",
+2026-10-15 12:58:22   "equity": 98768.33816378856,
+2026-10-15 12:58:22   "current_dd": -0.012316618362114395,
+2026-10-15 12:58:22   "consistency_ratio": 0.0,
+2026-10-15 12:58:22   "payout_safe": false,
+2026-10-15 12:58:22   "cum_profit": -1231.6618362114345,
+2026-10-15 12:58:22   "kill_switch_active": false,
+2026-10-15 12:58:22   "ctnl_kill_switch_active": false,
+2026-10-15 12:58:22   "n_trades": 25
+2026-10-15 12:58:22 }
+2026-10-15 12:58:22 ---
+2026-10-15 12:58:22 ‘‹·¥©≈ Trend Pullback-Scan fehlgeschlagen: HTTPSConnectionPool(host='freeserv.dukascopy.com', port=443): Max retries exceeded with url: /2.0/index.php?path=chart%2Fjson3&splits=true&stocks=true&time_direction=N&jsonp=_callbacks____1tJWfo6i8&last_update=1766098800000&offer_side=B&instrument=XAU%2FUSD&interval=1DAY&limit=30000 (Caused by NameResolutionError("HTTPSConnection(host='freeserv.dukascopy.com', port=443): Failed to resolve 'freeserv.dukascopy.com' ([Errno 11001] getaddrinfo failed)")) (weitere Fehler heute nur noch im Tagesabschluss)
+2026-10-15 12:58:22 ---
+2026-10-15 12:58:22 ‘‹·¥©≈ Gold-Silber-Divergenz-Scan fehlgeschlagen: HTTPSConnectionPool(host='freeserv.dukascopy.com', port=443): Max retries exceeded with url: /2.0/index.php?path=chart%2Fjson3&splits=true&stocks=true&time_direction=N&jsonp=_callbacks____FtAtUQz8h&last_update=1774738800000&offer_side=B&instrument=XAU%2FUSD&interval=4HOUR&limit=30000 (Caused by NameResolutionError("HTTPSConnection(host='freeserv.dukascopy.com', port=443): Failed to resolve 'freeserv.dukascopy.com' ([Errno 11001] getaddrinfo failed)")) (weitere Fehler heute nur noch im Tagesabschluss)

@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-15T18:31:24",
+  "generated_at": "2026-10-15T19:01:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-15T18:29:06",
+      "last_run": "2026-10-15T18:59:06",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-10-15 18:29:06 2026-10-15 18:29:02,429 INFO run_once: Konto-Equity 2776.40 EUR | Aggregiertes offenes Risiko (ganzes Konto): 123.73 (Deckel dieser Bridge: 832.92, 30%)",
+      "last_equity_line": "2026-10-15 18:59:06 2026-10-15 18:59:02,470 INFO run_once: Konto-Equity 2777.58 EUR | Aggregiertes offenes Risiko (ganzes Konto): 108.11 (Deckel dieser Bridge: 833.27, 30%)",
       "last_error_line": "2026-10-15 17:20:24     raise error[0]",
       "recent_events": [
         "2026-10-15 17:20:24         f\"Lake-Daten fuer {source}:{key}_{timeframe} zu alt (last_success_at={entry and entry.get('last_success_at')})\"",
@@ -15,30 +15,12 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-15T18:28:16",
+      "last_run": "2026-10-15T18:58:17",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
-        "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-10-15 18:28:16 Verbunden: Login 16054, Equity $96,362.16 USD",
-          "last_error_line": "2026-10-15 17:14:50 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-          "recent_events": [
-            "2026-10-15 17:14:50 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-10-15 17:01:11 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-10-15 17:01:11 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-15 16:46:22 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-10-15 16:46:22 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-15 16:31:36 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-15 16:31:36 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-15 16:31:36 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-15 16:16:12 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-15 16:16:12 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-10-15 16:16:12 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-15 16:01:11 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'"
-          ]
-        },
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-10-15 18:28:16 Verbunden: Login 504072729, Equity $98,965.65 USD",
+          "last_equity_line": "2026-10-15 18:58:17 Verbunden: Login 504072729, Equity $98,961.94 USD",
           "last_error_line": "2026-10-15 17:14:50 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
           "recent_events": [
             "2026-10-15 17:28:18 [TTP] ?? ENTRY ou_modell (FLEX) FLEX BUY lots=1.0 risk=$49.47 sl=46.88790 -- placed",
@@ -54,13 +36,31 @@
             "2026-10-15 16:16:12 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
             "2026-10-15 16:16:12 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)"
           ]
+        },
+        "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
+          "last_equity_line": "2026-10-15 18:58:17 Verbunden: Login 16054, Equity $96,366.70 USD",
+          "last_error_line": "2026-10-15 17:14:50 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+          "recent_events": [
+            "2026-10-15 17:14:50 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+            "2026-10-15 17:01:11 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+            "2026-10-15 17:01:11 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-10-15 16:46:22 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+            "2026-10-15 16:46:22 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-10-15 16:31:36 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-10-15 16:31:36 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-10-15 16:31:36 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-10-15 16:16:12 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-10-15 16:16:12 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+            "2026-10-15 16:16:12 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-10-15 16:01:11 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'"
+          ]
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-10-15T18:14:11",
-      "minutes_since_last_run": 17.2,
+      "minutes_since_last_run": 47.2,
       "status": "ok",
       "last_equity_line": "2026-10-15 18:14:11 Verbunden: Login 17764, Equity $98,429.51",
       "last_error_line": "2026-10-15 17:18:08 ctnl-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",

@@ -62252,3 +62252,30 @@
 2026-10-15 12:58:22 ‘‹·¥©≈ Trend Pullback-Scan fehlgeschlagen: HTTPSConnectionPool(host='freeserv.dukascopy.com', port=443): Max retries exceeded with url: /2.0/index.php?path=chart%2Fjson3&splits=true&stocks=true&time_direction=N&jsonp=_callbacks____1tJWfo6i8&last_update=1766098800000&offer_side=B&instrument=XAU%2FUSD&interval=1DAY&limit=30000 (Caused by NameResolutionError("HTTPSConnection(host='freeserv.dukascopy.com', port=443): Failed to resolve 'freeserv.dukascopy.com' ([Errno 11001] getaddrinfo failed)")) (weitere Fehler heute nur noch im Tagesabschluss)
 2026-10-15 12:58:22 ---
 2026-10-15 12:58:22 ‘‹·¥©≈ Gold-Silber-Divergenz-Scan fehlgeschlagen: HTTPSConnectionPool(host='freeserv.dukascopy.com', port=443): Max retries exceeded with url: /2.0/index.php?path=chart%2Fjson3&splits=true&stocks=true&time_direction=N&jsonp=_callbacks____FtAtUQz8h&last_update=1774738800000&offer_side=B&instrument=XAU%2FUSD&interval=4HOUR&limit=30000 (Caused by NameResolutionError("HTTPSConnection(host='freeserv.dukascopy.com', port=443): Failed to resolve 'freeserv.dukascopy.com' ([Errno 11001] getaddrinfo failed)")) (weitere Fehler heute nur noch im Tagesabschluss)
+2026-10-15 12:58:22 [main 4d52d8b1] FK Instant Funding Bot: Snapshot 2026-10-15 12:58
+2026-10-15 12:58:22  2 files changed, 33 insertions(+), 1 deletion(-)
+2026-10-15 12:58:22 fatal: unable to access 'https://github.com/AndrowDeluxe/Forex-Backtesting.git/': Could not resolve host: github.com
+2026-10-15 12:58:22 WARNUNG: git fetch fehlgeschlagen (Exit 128) - Push wird trotzdem versucht, kann bei zwischenzeitlicher Divergenz erneut fehlschlagen.
+2026-10-15 12:58:22 fatal: unable to access 'https://github.com/AndrowDeluxe/Forex-Backtesting.git/': Could not resolve host: github.com
+2026-10-15 12:58:22 WARNUNG: git push fehlgeschlagen (Exit 128) trotz vorherigem Merge-Versuch - Commit liegt lokal vor, aber nicht auf GitHub bis zum naechsten erfolgreichen Push.
+2026-10-15 12:58:22 === FK-Instant-Funding-Task beendet ===
+2026-10-15 13:55:23 === FK-Instant-Funding-Task gestartet ===
+2026-10-15 13:55:55 INFO:DUKASCRIPT:current timestamp :2026-10-14T02:00:00
+2026-10-15 13:55:55 INFO:DUKASCRIPT:current timestamp :2026-10-15T12:00:00
+2026-10-15 13:55:55 INFO:DUKASCRIPT:current timestamp :2026-10-15T12:00:00
+2026-10-15 13:55:55 INFO:DUKASCRIPT:current timestamp :2026-10-15T12:00:00
+2026-10-15 13:55:55 INFO:DUKASCRIPT:current timestamp :2026-10-15T06:00:00
+2026-10-15 13:55:56 INFO:DUKASCRIPT:current timestamp :2026-10-15T06:00:00
+2026-10-15 13:55:56 INFO:DUKASCRIPT:current timestamp :2026-10-15T06:00:00
+2026-10-15 13:55:56 INFO:DUKASCRIPT:current timestamp :2026-10-15T06:00:00
+2026-10-15 13:55:56 {
+2026-10-15 13:55:56   "date": "2026-10-15 11:55:24.404776",
+2026-10-15 13:55:56   "equity": 98768.33816378856,
+2026-10-15 13:55:56   "current_dd": -0.012316618362114395,
+2026-10-15 13:55:56   "consistency_ratio": 0.0,
+2026-10-15 13:55:56   "payout_safe": false,
+2026-10-15 13:55:56   "cum_profit": -1231.6618362114345,
+2026-10-15 13:55:56   "kill_switch_active": false,
+2026-10-15 13:55:56   "ctnl_kill_switch_active": false,
+2026-10-15 13:55:56   "n_trades": 25
+2026-10-15 13:55:56 }

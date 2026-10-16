@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-16T08:01:24",
+  "generated_at": "2026-10-16T08:31:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-16T07:59:07",
+      "last_run": "2026-10-16T08:29:07",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-10-16 07:59:07 2026-10-16 07:59:02,981 INFO run_once: Konto-Equity 2782.85 EUR | Aggregiertes offenes Risiko (ganzes Konto): 152.68 (Deckel dieser Bridge: 834.85, 30%)",
+      "last_equity_line": "2026-10-16 08:29:07 2026-10-16 08:29:03,088 INFO run_once: Konto-Equity 2782.94 EUR | Aggregiertes offenes Risiko (ganzes Konto): 152.56 (Deckel dieser Bridge: 834.88, 30%)",
       "last_error_line": "2026-10-15 17:20:24     raise error[0]",
       "recent_events": [
         "2026-10-15 17:20:24         f\"Lake-Daten fuer {source}:{key}_{timeframe} zu alt (last_success_at={entry and entry.get('last_success_at')})\""
@@ -14,12 +14,12 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-16T07:58:17",
+      "last_run": "2026-10-16T08:28:16",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-10-16 07:58:17 Verbunden: Login 16054, Equity $96,292.77 USD",
+          "last_equity_line": "2026-10-16 08:28:16 Verbunden: Login 16054, Equity $96,313.37 USD",
           "last_error_line": "2026-10-16 00:29:28 CLS-Practical-Scan fehlgeschlagen: 0",
           "recent_events": [
             "2026-10-16 00:29:28 CLS-Practical-Scan fehlgeschlagen: 0",
@@ -37,7 +37,7 @@
           ]
         },
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-10-16 07:58:17 Verbunden: Login 504072729, Equity $98,859.20 USD",
+          "last_equity_line": "2026-10-16 08:28:16 Verbunden: Login 504072729, Equity $98,867.48 USD",
           "last_error_line": "2026-10-16 00:29:28 CLS-Practical-Scan fehlgeschlagen: 0",
           "recent_events": [
             "2026-10-16 00:29:28 CLS-Practical-Scan fehlgeschlagen: 0",
@@ -58,10 +58,10 @@
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-16T07:14:10",
-      "minutes_since_last_run": 47.2,
+      "last_run": "2026-10-16T08:14:10",
+      "minutes_since_last_run": 17.2,
       "status": "ok",
-      "last_equity_line": "2026-10-16 07:14:10 Verbunden: Login 17764, Equity $98,407.74",
+      "last_equity_line": "2026-10-16 08:14:10 Verbunden: Login 17764, Equity $98,406.78",
       "last_error_line": "2026-10-16 00:16:31 cls_practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
       "recent_events": [
         "2026-10-16 00:16:31 cls_practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",

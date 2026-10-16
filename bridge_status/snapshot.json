@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-16T23:01:24",
+  "generated_at": "2026-10-16T23:31:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-16T22:59:07",
-      "minutes_since_last_run": 2.3,
+      "last_run": "2026-10-16T23:29:02",
+      "minutes_since_last_run": 2.4,
       "status": "ok",
       "last_equity_line": "2026-10-16 22:59:07 2026-10-16 22:59:02,975 INFO run_once: Konto-Equity 2756.10 EUR | Aggregiertes offenes Risiko (ganzes Konto): 121.10 (Deckel dieser Bridge: 826.83, 30%)",
       "last_error_line": "2026-10-16 12:20:04     raise error[0]",
@@ -17,12 +17,12 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-16T22:58:16",
+      "last_run": "2026-10-16T23:28:16",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-10-16 22:58:16 Verbunden: Login 504072729, Equity $98,985.13 USD",
+          "last_equity_line": "2026-10-16 23:28:16 Verbunden: Login 504072729, Equity $98,984.64 USD",
           "last_error_line": "2026-10-16 18:43:17 [TTP] ?? Entry fehlgeschlagen ou_modell (MSTR) MSTR: Berechnete Lot-Groesse 0.0 unter volume_min 1.0 fuer MSTR (risk_dollars=49.49, loss_per_lot=61.28)",
           "recent_events": [
             "2026-10-16 21:43:18 [TTP] ?? ENTRY ou_modell (UAL) UAL BUY lots=1.0 risk=$49.48 sl=53.73071 -- placed",
@@ -40,7 +40,7 @@
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-10-16 22:58:16 Verbunden: Login 16054, Equity $96,190.71 USD",
+          "last_equity_line": "2026-10-16 23:28:16 Verbunden: Login 16054, Equity $96,191.29 USD",
           "last_error_line": "2026-10-16 12:16:16 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
           "recent_events": [
             "2026-10-16 12:16:16 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
@@ -61,8 +61,8 @@
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-16T22:14:12",
-      "minutes_since_last_run": 47.2,
+      "last_run": "2026-10-16T23:14:02",
+      "minutes_since_last_run": 17.4,
       "status": "ok",
       "last_equity_line": "2026-10-16 22:14:12 Verbunden: Login 17764, Equity $98,371.31",
       "last_error_line": "2026-10-16 12:17:55 gold_silver-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",

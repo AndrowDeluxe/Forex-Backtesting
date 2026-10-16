@@ -1,11 +1,11 @@
-bein,letzter_trade,roll_mean,cusum,sprt,bayes,drawdown,2 von 5
-btc_ema_cross,2026-08-13,rot,rot,rot,gruen,gelb,rot
-cls_practical,2026-09-22,gruen,gruen,gruen,gruen,gruen,gruen
-ctnl_reversal,2026-10-01,gruen,gruen,gruen,gruen,gruen,gruen
-gold_asb,2026-09-28,gelb,gruen,gruen,gelb,gruen,rot
-gold_silver,2026-09-22,rot,gruen,gruen,gruen,gruen,gruen
-orb_nasdaq,2026-10-01,gruen,rot,rot,gruen,gruen,rot
-orb_sp500,2026-09-16,rot,rot,rot,rot,rot,rot
-orb_us30,2026-09-28,rot,rot,rot,rot,rot,rot
-ou_modell,2026-09-16,gruen,gruen,gruen,gruen,gruen,gruen
-trend_pullback,2026-08-17,gruen,gruen,rot,gruen,gruen,gruen
+bein,letzter_trade,roll_mean,cusum,sprt,bayes,drawdown,warnstufe,drawdown_R,drawdown_schwelle_R
+orb_sp500,2026-10-02,rot,rot,rot,rot,rot,ROT,22.1,15.2
+orb_us30,2026-10-14,rot,rot,rot,rot,rot,ROT,24.5,13.2
+btc_ema_cross,2026-10-15,rot,rot,rot,gruen,gruen,GELB,2.0,5.4
+gold_silver,2026-09-22,rot,gruen,gruen,gruen,gruen,GELB,1.7,4.9
+gold_asb,2026-09-28,gelb,gruen,gruen,gelb,gruen,gruen,0.0,4.4
+ctnl_reversal,2026-10-09,gruen,gruen,gruen,gruen,gruen,gruen,3.5,9.5
+cls_practical,2026-09-22,gruen,gruen,gruen,gruen,gruen,gruen,1.6,6.2
+orb_nasdaq,2026-10-09,gruen,gruen,gruen,gruen,gruen,gruen,4.2,27.9
+ou_modell,2026-09-16,gruen,gruen,gruen,gruen,gruen,gruen,0.8,3.8
+trend_pullback,2026-08-19,gruen,gruen,gruen,gruen,gruen,gruen,0.0,12.3

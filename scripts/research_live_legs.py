@@ -23,6 +23,10 @@ je Preiseinheit fuer das MINDESTLOT des Brokers) -- daraus rechnet der Optimiere
 die Mindestlot-Anhebung (auf EK der dominante Effekt).
 
 Aufruf: python research_live_legs.py ttp|iq|tickmill [--refresh]
+        python research_live_legs.py tickmill --ampel   # bis heute, eigene Datei fuer die Edge-Ampel
+--ampel (seit 2026-10-16): rechnet bis gestern und schreibt
+live_trades_<broker>_ampel.csv; die Listen *_2019_2026.csv (Grundlage der
+Gewichtungen vom 04.10.) bleiben unveraendert.
 """
 from __future__ import annotations
 
@@ -216,8 +220,8 @@ def ou_trades(b: str) -> pd.DataFrame:
     return out[out["entry_time"] >= pd.Timestamp(H0)]
 
 
-def build(b: str, refresh: bool = False) -> pd.DataFrame:
-    path = OUT_DIR / f"live_trades_{b}_2019_2026.csv"
+def build(b: str, refresh: bool = False, path: Path | None = None) -> pd.DataFrame:
+    path = path or OUT_DIR / f"live_trades_{b}_2019_2026.csv"
     if path.exists() and not refresh:
         return pd.read_csv(path, parse_dates=["entry_time", "exit_time"])
     _set_broker(b)
@@ -254,5 +258,52 @@ def build(b: str, refresh: bool = False) -> pd.DataFrame:
     return t
 
 
+def _chunked_dukascopy_fetch() -> None:
+    """Nur fuer --ampel, nur in diesem Prozess: dukascopy_python.fetch in Jahresstuecke
+    mit je bis zu 5 Wiederholungen zerlegen. Lange Einzelabrufe (z. B. Gold-M5 ueber
+    8 Jahre) brechen sonst fast sicher mit KeyError: 0 ab (vgl. ny_open_orb/data.py).
+    Die gemeinsame Datenschicht (combined_strategy/data.py, von den Bridges genutzt)
+    bleibt unveraendert."""
+    import time
+
+    import dukascopy_python
+    orig = dukascopy_python.fetch
+
+    def fetch(instrument, interval, offer_side, start, end, *args, **kwargs):
+        start, end = pd.Timestamp(start), pd.Timestamp(end)
+        bounds = [start]
+        while bounds[-1] + pd.DateOffset(years=1) < end:
+            bounds.append(bounds[-1] + pd.DateOffset(years=1))
+        bounds.append(end)
+        parts = []
+        for a, b in zip(bounds[:-1], bounds[1:]):
+            for attempt in range(5):
+                try:
+                    parts.append(orig(instrument, interval, offer_side, a.to_pydatetime(), b.to_pydatetime(), *args, **kwargs))
+                    break
+                except Exception:  # noqa: BLE001 - sporadischer Stream-Fehler
+                    if attempt == 4:
+                        raise
+                    time.sleep(2 * (attempt + 1))
+        df = pd.concat(parts).sort_index()
+        return df[~df.index.duplicated()]
+
+    dukascopy_python.fetch = fetch
+
+
 if __name__ == "__main__":
-    build(sys.argv[1], refresh="--refresh" in sys.argv)
+    if "--ampel" in sys.argv:
+        _chunked_dukascopy_fetch()
+        END = (pd.Timestamp.today().normalize() - pd.Timedelta(days=1)).strftime("%Y-%m-%d")
+        # Dukascopy-Stream wirft sporadisch KeyError: 0 (siehe ny_open_orb/data.py) -- bis zu
+        # 3 Versuche; bereits geladene Daten liegen im Cache, ein Wiederholungslauf ist schneller.
+        for attempt in range(3):
+            try:
+                build(sys.argv[1], refresh=True, path=OUT_DIR / f"live_trades_{sys.argv[1]}_ampel.csv")
+                break
+            except Exception as exc:  # noqa: BLE001
+                print(f"Versuch {attempt + 1} fehlgeschlagen: {exc!r}")
+                if attempt == 2:
+                    raise
+    else:
+        build(sys.argv[1], refresh="--refresh" in sys.argv)

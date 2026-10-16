@@ -30,8 +30,12 @@ def _frame(entry, exit_, r) -> pd.DataFrame:
     return df.sort_values("entry_time").reset_index(drop=True)
 
 
-def live_legs(broker: str = "tickmill") -> dict:
-    d = pd.read_csv(PC / f"live_trades_{broker}_2019_2026.csv", parse_dates=["entry_time", "exit_time"])
+def live_legs(broker: str = "tickmill", ampel: bool = False) -> dict:
+    """ampel=True: aktuelle Liste aus `research_live_legs.py <broker> --ampel`, falls vorhanden."""
+    f = PC / f"live_trades_{broker}_ampel.csv"
+    if not (ampel and f.exists()):
+        f = PC / f"live_trades_{broker}_2019_2026.csv"
+    d = pd.read_csv(f, parse_dates=["entry_time", "exit_time"])
     return {f"live:{leg}": {"trades": _frame(g.entry_time, g.exit_time, g.r), "cal_end": "2022-12-31", "gruppe": "Live-Bein"}
             for leg, g in d.groupby("leg")}
 

@@ -73,3 +73,23 @@ Pause + Schattenkonto. Verwandt: [[live-strategien-tresor-check]], [[orb-gegenpr
 - Ampel braucht frische Trade-Listen (`python scripts/research_live_legs.py tickmill --refresh`),
   sonst ist sie so alt wie die Liste.
 - Bridge-Verdrahtung des Drawdown-Schalters nur nach eigener Freigabe (echtes Geld).
+
+## Warnstufen im Weekly Report (eingerichtet 16.10., Nutzerentscheid)
+
+Nutzer 16.10.: ORB bleibt erstmal so; Warnstufen im Weekly Report einrichten;
+Schutzmechanismen (Trailing-DD-Gate, Offenes-Risiko-Deckel) bleiben getrennt;
+automatischer Schalter je Bein „interessant“ → Ideen-Inbox (eigener Plan + Freigabe).
+
+- **Ablauf** (Weekly Report Schritt 5b, `scripts/reports/weekly_report_prompt.md`):
+  1. `python scripts/research_live_legs.py tickmill --ampel` — alle 10 Beine bis gestern
+     neu simuliert, eigene Datei `live_trades_tickmill_ampel.csv` (die `*_2019_2026.csv`
+     der Gewichtungen bleiben unverändert). Dukascopy-Abrufe in diesem Lauf in Jahresstücken
+     mit Wiederholung (lange Einzelabrufe brachen mit `KeyError: 0` ab).
+  2. `python scripts/research_edge_monitor.py --stage status` — kalibriert jedes Bein bei
+     jedem Lauf neu auf 2019–2022 **derselben** Liste (eingefrorene Methode). So misst die
+     Ampel die heute gehandelte Konfiguration (z. B. Nasdaq mit Storno), nicht eine alte.
+- **Stufen:** ROT = Drawdown-Schalter (streng) wäre aus → Dashboard 🔍. GELB = Drawdown
+  locker rot oder ein anderes Signal streng rot → beobachten. Sonst grün.
+- **Stand 16.10. (Liste bis 15.10.):** ROT orb_sp500 (DD 22,1 R / Schwelle 15,2, bewusst
+  weiter live), orb_us30 (pausiert; die Simulation handelt weiter). GELB btc_ema_cross,
+  gold_silver (je roll_mean). Nasdaq (mit Storno) grün, DD 4,2 / 27,9 R.

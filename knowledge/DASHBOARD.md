@@ -43,8 +43,8 @@ passiert, was steht an.
    sind schon geöffnet, deshalb braucht eine neue Regel einen eigenen Lock
    und frische Prüfdaten (andere Märkte oder Forward).
    [[smh-elite-mikrostruktur]]
-3. **🥇 Gruppenarbeit: Gold ASB IS-only gerechnet (15.10.), PDF wartet auf
-   dein Go.** IS +0,33 → OOS +0,18 → Tresor +0,04 R je Trade (PF 1,19,
+3. **🥇 Gruppenarbeit: Gold ASB IS-only gerechnet (15.10.), PDF vorerst
+   verworfen (Nutzer 16.10.).** IS +0,33 → OOS +0,18 → Tresor +0,04 R je Trade (PF 1,19,
    18 Trades), Deflated Sharpe 0,24. Der Edge hält knapp, wird aber dünner.
    [[gold-asb-is-only-neuanalyse]]
 
@@ -60,19 +60,6 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
-- **ORB NASDAQ live: Storno am SL zurücknehmen?** (16.10.,
-  [[orb-order-storno-und-haltedauer]]). Über 10 Jahre ohne Storno klar besser
-  (+584 gegen +198 R, t 3,2 gegen 1,8); die Storno-Wahl vom 04.10. hing an
-  2019–2026 und an 2026 im „OOS“. Im Tresor ist Storno besser (+55 gegen +21 R).
-  Beide Wege beruhen auf schon gesehenen Daten; mein Vorschlag: beide Varianten
-  im Forward parallel messen (Schatten) und mit Stichtag entscheiden. Echtes Geld.
-- **ORB SP500 live: Kill-Switch-Ampel rot – weiterlaufen lassen?** (14.10.,
-  [[edge-fruehwarnung-kill-switch]], [[live-strategien-tresor-check]]). Alle 5
-  Signale rot, auch der Drawdown-Schalter (Bestwert der Auswertung). Tresor
-  +0,11 R je Trade, Ursache wie bei der IS-only-ORB (neutrale Tage kippen). Am
-  06.10. entschieden: „ORB live bleibt“ – neu bewerten? Meine Annahmen dabei:
-  Signalauswahl, Fehlalarm-Budget (1 je 5 Jahre), Kalibrierfenster 2019–2022,
-  Ampel auf der Broker-Liste vom 01.10.
 - **ORB-Öl-Filter: zwei Forward-Kandidaten, Stichtag 31.03.2027** (12.10.,
   [[orb-gegenprobe-oel]]). (1) IS-Filter „Öl gegen Ausbruch“, (2) 2026-Fit
   (Korrelationsregime → Trend-Tage + Öl gegen Ausbruch), ausdrücklich kein
@@ -140,6 +127,11 @@ Bedarf vor generischem Aufräumen.
   (öffnet erst ab dem Stichtag). Danach entscheiden, ob B live geht.
   [[gamma-mechanismen-gex]]
 
+- **✅ Entschieden 16.10. (Nutzer): ORB bleibt erstmal so** — SP500 trotz roter
+  Edge-Ampel weiter live, NASDAQ behält das Storno am SL (obwohl über 10 Jahre
+  ohne Storno besser, siehe [[orb-order-storno-und-haltedauer]] Nachtrag 16.10.).
+  Schutzmechanismen (Trailing-DD-Gate, Offenes-Risiko-Deckel) bleiben getrennt
+  von der Edge-Ampel. Warnstufen laufen im Weekly Report (Schritt 5b).
 - **✅ Entschieden 06.10. (Nutzer): ORB live bleibt, wie es war.** Kein Pausieren und
   keine Risikosenkung. Der echte Test ist der Forward ab 05.10. (Lock-Regel:
   ≥ 100 Trades je Index oder 31.03.2027). Hintergrund:
@@ -520,6 +512,11 @@ außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
 
+- (16.10.) **Automatischer Drawdown-Schalter je Live-Bein** (Nutzer: „interessant“).
+  Gemeinsames Modul nach dem Muster `gold_smc_htf_ltf/ctnl_kill_switch.py`
+  (Schattenkonto, Hysterese, fail-open), Schwelle je Bein per Bootstrap aus
+  `edge_monitor/`. Wirkt auf echtes Geld in allen drei Bridges → eigener Plan +
+  Freigabe. Würde heute orb_sp500 pausieren. [[edge-fruehwarnung-kill-switch]]
 - (09.10.) **Sechs-Bot-Architektur als Zielbild für den Makro-Agenten**
   (Vorlage „Six-Bot AI Trading Team With Grok“: Scout/News/Sentiment/
   Charts/Risk/Decision, JSON je Bot, Risk-Gate nur verschärfend). Eigene

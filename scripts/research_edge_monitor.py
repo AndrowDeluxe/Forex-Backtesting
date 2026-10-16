@@ -108,7 +108,7 @@ def stage_calibrate() -> int:
             ncal = len(cal)
             cfg["signale"]["ribbon_spread"] = _empirical_thr(b[:ncal], years)
         cfg["cal_end"], cfg["gruppe"], cfg["n_cal"] = c["cal_end"], c["gruppe"], len(cal)
-        out[name] = cfg
+        out[name] = cfg  # gleiche Methode wie _calibrate_case
         print(name, "kalibriert:", len(cal), "Trades", flush=True)
     (RES / "schwellen.json").write_text(json.dumps(out, indent=2, ensure_ascii=False, default=float), encoding="utf-8")
     h = lk.freeze({"regelwerk": RULEBOOK, "schwellen_datei_faelle": sorted(out)})
@@ -184,19 +184,45 @@ def stage_evaluate() -> int:
     return 0
 
 
+def warnstufe(row: dict) -> str:
+    """Seit 2026-10-16 (Nutzerentscheid): rot = Leitsignal drawdown streng rot (der Schalter
+    waere aus); gelb = drawdown locker rot ODER ein anderes Signal streng rot; sonst gruen.
+    Nur Anzeige im Weekly Report, kein Eingriff in Bots."""
+    if row["drawdown"] == "rot":
+        return "ROT"
+    if row["drawdown"] == "gelb" or any(row[s] == "rot" for s in signals.SIGNALS if s != "drawdown"):
+        return "GELB"
+    return "gruen"
+
+
+def _calibrate_case(c: dict) -> dict:
+    t = c["trades"]
+    cal = t[t.exit_time <= pd.Timestamp(c["cal_end"]) + pd.Timedelta(days=1)]
+    years = max(0.5, (cal.entry_time.max() - cal.entry_time.min()).days / 365.25)
+    return calibrate.thresholds(cal.r.to_numpy(), len(cal) / years)
+
+
 def stage_status() -> int:
-    thr = json.loads((RES / "schwellen.json").read_text(encoding="utf-8"))
+    """Schwellen werden je Lauf aus DERSELBEN Liste neu kalibriert (eingefrorene Methode,
+    Fenster 2019-2022): der Schalter muss den gehandelten Satz messen (Memory
+    ctnl-serienstopp) -- z. B. NASDAQ mit Storno seit 04.10. statt der alten Version."""
     rows = []
-    for name, c in cases.live_legs().items():
-        cfg = thr[name]
+    legs = cases.live_legs(ampel=True)
+    for name, c in legs.items():
+        cfg = _calibrate_case(c)
         st, bvals = _states(name, c, cfg)
         row = {"bein": name.split(":", 1)[1], "letzter_trade": c["trades"].exit_time.max().date()}
         for s in signals.SIGNALS:
             row[s] = "rot" if st[(s, "streng")][-1] else ("gelb" if st[(s, "locker")][-1] else "gruen")
-        row["2 von 5"] = "rot" if st[("2 von 5", "locker")][-1] else "gruen"
+        row["warnstufe"] = warnstufe(row)
+        b = bvals["drawdown"]
+        row["drawdown_R"] = round(float(b[-1]), 1)
+        row["drawdown_schwelle_R"] = round(float(cfg["signale"]["drawdown"]["streng"][0]), 1)
         rows.append(row)
-    df = pd.DataFrame(rows)
+    df = pd.DataFrame(rows).sort_values("warnstufe", key=lambda x: x.map({"ROT": 0, "GELB": 1, "gruen": 2}))
+    src = "ampel" if (cases.PC / "live_trades_tickmill_ampel.csv").exists() else "2019_2026 (veraltet?)"
     df.to_csv(RES / "status.csv", index=False)
+    print(f"Quelle: live_trades_tickmill_{src}, letzter Trade gesamt {df.letzter_trade.max()}")
     print(df.to_string(index=False))
     return 0
 

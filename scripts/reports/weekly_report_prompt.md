@@ -196,22 +196,34 @@ reporting for it.
      dort als `nicht_ermittelbar` steht, ist genau das - nicht "nie gesehen".
    - **EKs Kostenannahme ist geschätzt** (0,50 Pips), Funded/FK sind
      gemessen. EK-Zahlen deshalb nicht gegen die anderen beiden stellen.
-5b. **Edge-Ampel je Live-Bein** (seit 2026-10-14, Nutzerauftrag; Research,
-   kein automatischer Eingriff). Run:
+5b. **Edge-Warnstufen je Live-Bein** (seit 2026-10-14, Warnstufen seit
+   2026-10-16, Nutzerentscheid; reine Anzeige, KEIN Eingriff in Bots).
+   Run in this order (the first command re-simulates all 10 legs up to
+   yesterday, takes a while - start it early):
 
    ```
+   python scripts/research_live_legs.py tickmill --ampel
    python scripts/research_edge_monitor.py --stage status
    ```
 
-   Writes `edge_monitor/results/status.csv`. One row per leg, 5 signals
-   (roll_mean, cusum, sprt, bayes, drawdown) as gruen/gelb/rot plus
-   "2 von 5". **Leitsignal ist `drawdown`** (beste Bilanz in der Auswertung
-   vom 14.10., siehe `knowledge/projects/edge-fruehwarnung-kill-switch.md`);
-   die anderen sind Zusatzinfo. Caveats for the prose: the status reads the
-   broker trade lists in `portfolio_construction/results/live_trades_*`
-   (state their date - stale lists mean a stale Ampel); a red light is a
-   reason to raise the leg under "Braucht deine Bestätigung", never to
-   change a bot.
+   The first writes `portfolio_construction/results/live_trades_tickmill_ampel.csv`
+   (the `*_2019_2026.csv` lists stay untouched). The second recalibrates
+   each leg on 2019-2022 of that same list (frozen method) and writes
+   `edge_monitor/results/status.csv` with a `warnstufe` column:
+
+   | Warnstufe | Bedeutung | Was du im Report tust |
+   |---|---|---|
+   | **ROT** | Leitsignal `drawdown` (streng) rot: der automatische Schalter wäre aus | eigene Zeile, Drawdown in R gegen Schwelle nennen, Bein unter „Braucht deine Bestätigung" in `knowledge/DASHBOARD.md` eintragen (falls nicht schon dort) |
+   | **GELB** | `drawdown` locker rot, oder ein anderes Signal (roll_mean/cusum/sprt/bayes) streng rot | nennen, mit dem Signal; „beobachten", keine Handlungsempfehlung |
+   | gruen | nichts davon | nur in der Sammelzeile |
+
+   Report a compact table (Bein, Warnstufe, Drawdown R / Schwelle R, welches
+   Signal) plus one sentence per ROT/GELB leg on what changed vs. last week
+   (read last week's `status.csv` from git if available). Caveats for the
+   prose: state the list's last trade date; legs that are paused on purpose
+   (e.g. orb_us30 since 04.10.) stay ROT - say "pausiert" instead of raising
+   them again; a warning is a reason to look, never to change a bot. Details:
+   `knowledge/projects/edge-fruehwarnung-kill-switch.md`.
 6. **Auffälligkeiten / offene Punkte**: anything that looks wrong (a bot
    silently not running, a data source you couldn't trust, a discrepancy
    between bridge data and repo diagnostic) - flag it the way memory

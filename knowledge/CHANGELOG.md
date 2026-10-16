@@ -9,6 +9,15 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-16** [Weekly Report / Edge-Ampel] **Warnstufen eingerichtet**
+  (Nutzerentscheid) [[edge-fruehwarnung-kill-switch]]. Schritt 5b im
+  `weekly_report_prompt.md`: `research_live_legs.py tickmill --ampel` (neu: bis gestern,
+  eigene Datei, Jahresstück-Abrufe mit Wiederholung) + `research_edge_monitor.py --stage
+  status` (neu: Spalte `warnstufe` ROT/GELB/grün, Schwellen je Lauf aus derselben Liste).
+  Stand 16.10.: ROT orb_sp500 + orb_us30, GELB btc_ema_cross + gold_silver.
+  Entscheide: ORB bleibt erstmal so (SP500 live, NASDAQ mit Storno); Schutzmechanismen
+  getrennt; Auto-Schalter je Bein in die Ideen-Inbox. Keine Bot-Änderung.
+
 - **2026-10-16** [ORB / Research] **NASDAQ mit/ohne Storno am SL über 10 Jahre**
   (Nutzerfrage) [[orb-order-storno-und-haltedauer]]. Skript
   `scripts/research_orb_nasdaq_storno_vergleich.py`. Ohne Storno Σ +584 R (t 3,2),
@@ -22,7 +31,8 @@ keine Planung (dafür ist `DASHBOARD.md`).
   Split wie ORB, 9 Punkte, 20.736 Versuche, M5 mit TTP-Kosten. Gewinner: Stop 2,0x,
   Storno 02:30, ADX 15, kein Trendfilter, Silber 5T, Liquidität q0,5. Ergebnis
   IS +0,33 → OOS +0,18 (PF 1,71) → Tresor +0,04 R (PF 1,19, 18 Trades). Deflated
-  Sharpe 0,24. Nicht durchgefallen, aber ausgelaufen. PDF wartet auf das Go.
+  Sharpe 0,24. Nicht durchgefallen, aber ausgelaufen. PDF vorerst verworfen
+  (Nutzer 16.10.).
   Keine Bot-Änderung.
 
 - **2026-10-14** [Research] **Tresor-Check aller Live-Beine** (Nutzerauftrag,

@@ -9,6 +9,73 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-18** [Prozess] **Vier-Fragen-Check eingeführt** (Nutzerentscheid,
+  aus SMH-Elite-Hausaufgabe „Rohling“) [[vier-fragen-check]]. Jedes neue Edge /
+  Paper: Warum verdient es Geld? Wo verliert es am meisten? Was ist dort anders?
+  Welche eine Regel könnte helfen? Neu `areas/vier-fragen-check.md`, verankert in
+  `CLAUDE.md`, [[paper-verarbeitung]], [[backtest-standard-process]]. Keine
+  Bot-Änderung.
+
+- **2026-10-18** [Dachprojekt / Strang 0] **Trade-Inventur 2025 gestartet**
+  (Nutzerauftrag, Plan freigegeben) [[quant-diskretionaer-fusion]]. Neu:
+  `fusion_lab/trades/axi_statement.py` liest Axi-MT4-Statements (PDF/.htm), prüft
+  gegen die Fußzeilen (Closed P/L, Kommission, Swap, Ein-/Auszahlungen) und fasst
+  Teilschließungen zu Positionen zusammen; `tests/test_axi_statement.py` (6 grün).
+  Nutzerentscheide: Bewertung in $ und % vom Konto (kein R, weil Statements nur
+  den letzten SL zeigen), 6059497 (EK-Kopierkonto) nur in Summen. Tradezella hat
+  keine öffentliche API → CSV-Export. Ordner `fusion_lab/raw/trades/` (gitignored).
+  Keine Bot-Änderung.
+
+- **2026-10-18** [Research / Gold ASB] **Paper-Filter + Blindtest 2010–2015**
+  (Nutzerauftrag, Plan + Hypothesen bestätigt) [[gold-asb-paper-filter]]. Skript
+  `scripts/research_gold_asb_paper_filters.py`, Lock `gold_asb_paper_filters_20261018`,
+  9 Varianten (H1 Range-Kompression, H2 NFP, H3 PM-Fix, H4 Asien-Drift). Kein Filter
+  schlägt die Basis, eingefroren ohne Filter. Blindtest 2010–2015 (einmal geöffnet):
+  143 Trades, Ø +0,239 R, t 2,85, PF 1,96, 5/6 Jahre positiv. `research_lock.py` um
+  Stufe `blind` erweitert (2 neue Tests, 14 grün). Daten Gold M5/M15/D1 2009–2015 und
+  Silber-Ersatz SI=F nachgeladen (`data_cache/combined/`). Keine Bot-Änderung.
+
+- **2026-10-18** [Reports] **Weekly Checkup KW42/2026** (geplanter Lauf, pünktlich).
+  `knowledge/reports/weekly/KW42_2026_{performance,education,checkup.html}`, PDF in
+  `Documents\Trading Reports\`. Woche: 13 Trades, EK −32,53 EUR (−1,16 %), Funded
+  −793,76 USD (−0,41 %), FK −99,73 USD (−0,10 %); kein Kill-Switch, keine Verletzung.
+  Hauptbefund: Standby Mo 09:55–17:09 und Do 14:49–15:53 (ORB-Fenster verpasst).
+  Edge-Ampel nicht frisch (Neuberechnung hing an Dukascopy), Soll/Ist ohne ORB für
+  EK/Funded. Drei Dashboard-Einträge (IQ-NASDAQ-Beobachtung, Gold-ASB-Fill fehlt in
+  Soll/Ist+Ampel, Report-Werkzeuge härten) + Standby-Nachtrag. Keine Bot-Änderung.
+
+- **2026-10-18** [SMH Elite 3 / Gruppenarbeit] **Mikrostruktur Runde 2:
+  SSRN-Screening → 4 Paper-Kandidaten gebacktestet, alle Tresore negativ,
+  daher keine PDF** (Nutzervorgabe: PDF nur bei positivem Tresor).
+  - **Screening:** 22 Papers plus arXiv, Raster vorab in
+    `smh_microstructure/screening_v2.json`, Notiz
+    [[mikrostruktur-paper-screening]]. SSRN blockt automatische Zugriffe
+    (403), die Volltexte kamen deshalb von BoC, NBER, NY Fed, SNB/QMUL und
+    anderen.
+  - **Getestet:**
+    - K4 Dollar-W Europa (Krohn/Mueller/Whelan JF 2024 + Breedon/Ranaldo)
+    - K5 Dollar-W Tokio (+ Gotobi)
+    - K6 Halbstunden-Periodizität (Heston/Korajczyk/Sadka)
+    - K7 Overnight Drift (Boyarchenko/Larsen/Whelan)
+  - **Ablauf:** gleicher Split wie Runde 1, Locks `smh_k4…k7_*`,
+    34 Versuche (61 über beide Runden).
+  - **Tresor netto in bps je Trade:** K4 −1,20 (Team-Kandidat nach OOS),
+    K5 −2,35, K6 −3,34, K7 −0,73.
+  - **Befund:** Das Dollar-W ist brutto im IS echt (Tokio +1,6 bps, t 4,8),
+    zerfällt aber und bleibt unter 1,1–1,3 bps Kosten.
+  - **Code:** `smh_microstructure/fix_windows.py`, `periodicity.py`,
+    `overnight_drift.py`, Runner ergänzt.
+  - Details: [[smh-elite-mikrostruktur]]. Keine Bot-Änderung.
+
+- **2026-10-18** [Research / Gruppenarbeit] **Gold-ASB-Kriterien-PDF für den Mentor erstellt**
+  (Nutzerauftrag, Kriterien wie ORB-PDF) [[gold-asb-is-only-neuanalyse]].
+  `Claude outputs/gold_asb_profitabilitaets_kriterien_20261018.pdf` (10 Seiten),
+  Build `Claude outputs/orb_pdf_build/gold_asb_pdf.py`. Kostenzerlegung derselben
+  eingefrorenen Konfiguration (bps=0 gegen TTP, kein neuer Versuch):
+  `asian_range_breakout/results/is_reopt_trades_cost.csv`, Ø 0,038 R je Trade.
+  Mechanismus-Seite + Literatur neu (Web-Recherche 18.10., Ebene Abstracts).
+  Keine Bot-Änderung.
+
 - **2026-10-16** [Research / Key Levels] **Edge Card „Key Levels“ fertig,
   Stufe-1-Backtest gerechnet (nur IS).**
   - Die Edge Card wurde mit dem Nutzer erarbeitet

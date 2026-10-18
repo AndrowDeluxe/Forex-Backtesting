@@ -1,0 +1,40 @@
+{
+  "test": "K4b -- Nachtest der eingefrorenen K4-Regel auf frischen Waehrungspaaren",
+  "festgelegt": "2026-10-18, vor jedem Blick auf Kursdaten von USDNOK/USDSEK",
+  "nutzerauftrag": "Sauberen Test mit neuen Waehrungspaaren durchfuehren (18.10.2026)",
+  "hypothese": "Das Vor-EZB-Bein des Dollar-W (Krohn/Mueller/Whelan, JF 2024) gilt auch fuer NOK und SEK, die im Paper zu den G9 gehoeren. Die Regel wurde auf EURUSD/GBPUSD/USDCHF ausgewaehlt, hier wird sie nur geprueft.",
+  "regel": {
+    "beschreibung": "Long USD (= Long USDNOK / Long USDSEK) zum Open der M1-Bar Frankfurt 08:00, Ausstieg zum Open Frankfurt 14:15 (EZB-Fix). Kein Stop, Zeit-Exit. Mo-Fr.",
+    "config": "identisch mit K4 eingefroren (Lock smh_k4_fix_europa, Hash 15021f21f812...), wird beim Einfrieren gegengeprueft"
+  },
+  "maerkte": {
+    "getestet": ["USDNOK", "USDSEK"],
+    "ausgeschlossen": {
+      "USDCAD": "frisch, aber Tresor-Paar des Key-Level-Tests (Lock keylevels_v1), dessen Tresor bleibt unberuehrt",
+      "EURGBP/EURJPY/GBPJPY": "kein USD-Bein, der Mechanismus sagt dort nichts voraus; zudem Key-Level-Tresor",
+      "bisher genutzte Paare": "EURUSD, GBPUSD, USDJPY, AUDUSD, USDCHF, NZDUSD -- OOS/Tresor bereits offen"
+    }
+  },
+  "split": {"is": "2018-04-01..2023-03-31", "oos": "2023-04-01..2025-09-30", "tresor": "2025-10-01..2026-10-16"},
+  "kosten": {
+    "methode": "Rundturn in bps = Median-Spread des Paars (Dukascopy Ask-Bid, Mittel aus 08:00- und 14:15-Bar Frankfurt) + Nicht-Spread-Aufschlag von EURUSD (1,2 Pips Modell minus EURUSD-Median-Spread, gleich gemessen). Kommission je Lot in USD ist bei USD-Basis-Paaren in bps gleich.",
+    "messfenster": "nur IS-Jahre 2019 und 2021 (Ask-Daten), kein Blick auf OOS/Tresor",
+    "status": "ANNAHME, nicht am Broker gemessen -> Dashboard"
+  },
+  "gezaehlte_versuche": {
+    "regel": 1,
+    "nachbarwerte": ["Beginn -75 Min", "Beginn +75 Min", "Ende 13:15", "Ende 15:15"],
+    "kosten_x2": 1,
+    "summe": 6
+  },
+  "nicht_gezaehlte_pruefungen": [
+    "Gegenprobe brutto: alle Zeiten -3 / +3 / +6 Stunden verschoben",
+    "Zufallstest brutto: 2.000 gleich lange Long-USD-Fenster mit zufaelligem Start je Tag",
+    "Haelften, ohne Top 5, je Jahr, je Paar"
+  ],
+  "ablauf": "Split registrieren -> 6 Versuche zaehlen -> einfrieren -> Kosten aus IS messen -> IS auswerten -> OOS einmal oeffnen -> Tresor einmal oeffnen. OOS und Tresor werden IMMER geoeffnet, auch wenn IS negativ ist.",
+  "bestanden_wenn": {
+    "folie_2": "Tresor netto: Ø > 0, PF > 1,3, >= 100 Trades; IS+OOS: beide Haelften im Plus",
+    "pdf": "Gruppen-PDF nach ORB-Vorlage nur, wenn der Tresor netto positiv ist (Nutzervorgabe)"
+  }
+}

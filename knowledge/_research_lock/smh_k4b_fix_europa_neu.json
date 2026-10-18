@@ -1,0 +1,36 @@
+{
+  "strategy": "smh_k4b_fix_europa_neu",
+  "split": {
+    "is_start": "2018-04-01",
+    "is_end": "2023-03-31",
+    "oos_end": "2025-09-30",
+    "tresor_end": "2026-10-16"
+  },
+  "registered": "2026-10-18T20:01:19+00:00",
+  "trials": 6,
+  "frozen": {
+    "hash": "9a85567e7cd4a105f236ff5ec26967e0c838c448a16ad4ef00407090895cb03b",
+    "config": {
+      "window": "europa",
+      "leg_pre": true,
+      "leg_post": false,
+      "pre_start": "",
+      "pre_end": "",
+      "post_start": "",
+      "post_end": "",
+      "breedon": false,
+      "gotobi_only": false,
+      "pre_start_shift_min": 0,
+      "post_end_shift_min": 0,
+      "shift_h": 0,
+      "cost_mult": 1.0,
+      "syms": [
+        "USDNOK",
+        "USDSEK"
+      ]
+    },
+    "ts": "2026-10-18T20:01:19+00:00"
+  },
+  "unsealed": {},
+  "forward": null
+}

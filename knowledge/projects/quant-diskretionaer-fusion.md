@@ -116,6 +116,13 @@ Verschmelzung" (2026-09-02) ab -- der Journal-Teil ist laut Nutzer erledigt.
     Schemata, 37 Regeln + 9 Widersprüche, 12 Testkandidaten. Lücke: ~33
     Bild-Seiten (Endogene/Exogene Analyse, Gatekeeping, Reflektion) nicht
     ausgewertet. Grundlage für den Makro-Agenten (Strang 3).
+  - [ ] **Trade-Inventur 2025** (gestartet 18.10.; Handoff
+    `_handoff/2026-10-18_2300_edge-aus-tradeliste-2025.md`). Erst Bestandsaufnahme:
+    welche Konten/Setups/Instrumente/Sessions trugen das Plus 2025 (Axi: 6059496
+    +18.289 $, 4690858 +9.561 $, 4667999 +1.563 $, 6059497 +798 $, 4698524
+    −1.073 $; 6. Konto + Tradezella offen). Bewertung in $ und % vom Konto, kein R.
+    Code `fusion_lab/trades/`. Danach eigener Plan für Kontextvergleich, Edge Card,
+    Lock (2025 nur Hypothese, Test 2018–24, Tresor 2026).
   - [ ] Inventur selbst (Material sichten → Bestandteile-Liste).
     - [x] Inhaltsverzeichnis (09.10.): `python -m
       fusion_lab.inventory.onenote_toc` → `raw/onenote/_toc.md` und

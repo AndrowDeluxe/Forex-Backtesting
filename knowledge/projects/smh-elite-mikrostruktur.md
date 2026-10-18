@@ -68,3 +68,70 @@ Signale enthält das Material nicht.
     wenige Montagsfälle). K1 wurde nicht neu gerechnet, weil es abgeschlossen
     und eingefroren ist.
   - Gefunden und behoben im Key-Level-Code (`keylevels/`, überall `as_unit("ns")`).
+
+## Runde 2 (18.10.2026): Paper-Screening SSRN → K4–K7, alle gescheitert
+
+Nutzerauftrag: SSRN systematisch nach dem Feld Mikrostruktur durchsuchen
+(Briefing Folie 5/6), filtern, extrahieren und backtesten. Eine PDF soll nur
+entstehen, wenn ein Tresor positiv ist. Screening (22 Papers + arXiv) mit
+Raster `smh_microstructure/screening_v2.json`, Details in
+[[mikrostruktur-paper-screening]].
+
+- **Kandidaten:**
+  - K4 Dollar-W Europa (Krohn/Mueller/Whelan JF 2024, Variante Breedon/Ranaldo),
+    EURUSD/GBPUSD/USDCHF.
+  - K5 Dollar-W Tokio (dasselbe Paper, Variante Gotobi nach Ito/Yamada),
+    USDJPY/AUDUSD/NZDUSD/EURUSD.
+  - K6 Halbstunden-Periodizität (Heston/Korajczyk/Sadka JF 2010), SP500/NASDAQ.
+  - K7 Overnight Drift nach Abverkauf (Boyarchenko/Larsen/Whelan, NY Fed),
+    SP500/NASDAQ.
+- **Split und Kosten wie Runde 1:** Locks `smh_k4…k7_*`, Tresor bis
+  16.10.2026. Je 4 deklarierte Varianten, 34 Versuche in Runde 2, 61 über
+  beide Runden. Der Deflated Sharpe wird über alle 61 Versuche gerechnet.
+- **Code:** `smh_microstructure/fix_windows.py`, `periodicity.py`,
+  `overnight_drift.py`. Runner `scripts/research_smh_microstructure.py`
+  (K4–K7 ergänzt).
+- **Team-Kandidat** nach OOS, vor dem Tresor festgelegt: K4
+  (`results/runde2_team_kandidat.json`).
+
+Netto-Ø in bps je Trade (in Klammern brutto):
+
+| Kandidat (eingefroren) | IS | OOS | Tresor |
+|---|---|---|---|
+| K4 nur vor EZB-Fix | −0,38 (+0,94), n 3.897 | −1,04 (+0,35) | −1,20 (+0,21), PF 0,87, n 810 |
+| K5 nur nach Tokio-Fix | −0,18 (+1,60, t 4,8) | −1,60 (+0,24) | −2,35 (−0,55), PF 0,72 |
+| K6 L40 | −3,08 (−0,64) | −2,70 (−0,26) | −3,34 (−0,89), PF 0,68 |
+| K7 starker Abverkauf | −0,09 (+2,36), n 361 | −3,56 (−1,10) | −0,73 (+1,71), n 76 |
+
+Ergebnis: **kein Tresor positiv, also keine PDF** (Nutzervorgabe).
+
+### Erkenntnisse
+- **Das Dollar-W gibt es, aber es zerfällt und bleibt unter den Kosten.**
+  - Nach dem Tokio-Fix ist es brutto im IS klar da (+1,6 bps, t 4,8). Die um
+    ±4 bzw. +8 Stunden verschobenen Kontrollfenster liegen bei +0,35 bis
+    −0,9 bps.
+  - Vor dem EZB-Fix liegt es bei +0,9 bps.
+  - Brutto zerfällt der Effekt über OOS auf den Tresor nahezu auf null.
+    Die Autoren zeigen selbst einen Knick nach 2013.
+  - Die Kosten von 1,1–1,3 bps je Rundturn fressen den Rest. Das Paper sagt
+    das selbst: positiv erst bei halbem Spread.
+- **Mikrostruktur-Prämien gehören dem, der Liquidität stellt.**
+  - Das zeigen 7 von 7 Kandidaten über zwei Runden.
+  - Jeder dokumentierte Effekt lag brutto bei 0–3 bps, also in der
+    Größenordnung des Spreads.
+  - Wer per Market-Order einsteigt, zahlt genau die Prämie, die er ernten will.
+- **K6:** Die Halbstunden-Fortsetzung kehrt sich auf den Index-CFDs um
+  (brutto t −2,7 im IS). Die Regel wurde nicht nachträglich umgedreht, das
+  wäre ein neuer, ungezählter Versuch.
+- **K7:** Der IS-Brutto-Effekt nach starkem Abverkauf ist nicht
+  fenster-spezifisch. 12–13 Uhr ist gleich gut, der Mechanismus ist also
+  nicht belegt.
+- **Datenfalle, behoben vor dem ersten gezählten Lauf:** Ausstiege um
+  17:00 New York fielen freitags weg, weil der Wochenschluss keine Bar mehr
+  liefert. Rückfall jetzt: Schluss der letzten Bar höchstens 5 Minuten davor.
+- **Ausführungsannahme:** Einstiege um 17:00 New York (Rollover, breitester
+  Spread) sind pauschal kostengerechnet, real wären sie teurer. Das betrifft
+  nur das ohnehin verworfene Vor-Tokio-Bein.
+- **Prüfliste Folie 8:**
+  - 5 Tresor-Trades von K4 per Hand nachgerechnet: 5 von 5 identisch.
+  - Jeder Lock zeigt genau ein Öffnen für OOS und eines für den Tresor.

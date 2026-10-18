@@ -174,6 +174,14 @@ Versuchsanzahl ersetzt sie. Als Hinweis gilt seit 2026-10-06 ein Richtwert
 von max. 9 optimierten Punkten je Index/Strategie; wer darüber geht,
 begründet es. Details: `knowledge/areas/overfitting-sperre.md`.
 
+## Vier-Fragen-Check
+
+Bei jedem neuen Edge und jedem neuen Paper (Nutzerentscheid 2026-10-18) je
+einen Satz zu: (1) Warum verdient es Geld? (2) Wo verliert es am meisten?
+(3) Was ist dort anders? (4) Welche eine Regel könnte helfen? Fragen 2-3 nur
+auf IS-Daten, die Regel aus Frage 4 ist eine gezählte Variante unter der
+Overfitting-Sperre. Details: `knowledge/areas/vier-fragen-check.md`.
+
 ## Edge-Card-Workflow
 
 Will der Nutzer eine bestehende, händisch gebacktestete/getradete Strategie

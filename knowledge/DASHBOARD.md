@@ -23,6 +23,12 @@ passiert, was steht an.
    [[quant-diskretionaer-fusion]]. Eigene Analyse reproduzieren, testen,
    automatisieren → selbstlernender Bot. 8 Stränge (0 Inventur … 7
    Selbstlernen), Code in `fusion_lab/`.
+   **Trade-Inventur 2025 läuft (seit 18.10., Plan freigegeben):** alle
+   händischen Trades 2025 einlesen und zeigen, welche Konten/Setups/Sessions
+   den Gewinn getragen haben. Axi-Parser steht (`fusion_lab/trades/`, 6 Tests).
+   **Wartet auf dich:** 5 Axi-Statements + Journal-CSV nach
+   `fusion_lab/raw/trades/axi|journal/` legen, 6. Konto benennen,
+   Tradezella-CSV-Export (keine API vorhanden) nach `…/tradezella/`.
    **Aktuell: Strang 0.** OneNote vollständig importiert (3.225 Seiten),
    Telegram bis auf „SMH Daily Update“ (läuft noch). **Inventur-Entwurf
    steht (09.10.):** 30 Bestandteile in A–F, siehe
@@ -36,8 +42,12 @@ passiert, was steht an.
 2. **🎯 SMH-Elite-Teamaufgabe „Mikrostruktur & Liquidität“: gerechnet
    07.10., alle drei Kandidaten ehrlich gescheitert.** Tresor: K1 PF 0,65,
    K2 PF 1,31 (52 Trades), K3 (Team-Kandidat) PF 0,84. Steckbrief steht auf
-   der Notion-Seite in „🎓 ELITE 3“. Offen: Präsentation im nächsten Call;
-   entscheiden, ob vorher noch ein 4. Kandidat getestet wird.
+   der Notion-Seite in „🎓 ELITE 3“. Offen: Präsentation im nächsten Call.
+   **Runde 2 (18.10.): SSRN-Screening (22 Papers) → K4–K7 gebacktestet, alle
+   4 Tresore negativ, darum keine PDF** (K4 Dollar-W Europa −1,20 bps,
+   K5 Tokio −2,35, K6 Periodizität −3,34, K7 Overnight Drift −0,73).
+   Befund: Mikrostruktur-Prämien liegen brutto bei 0–3 bps, also unter
+   unseren Kosten. [[mikrostruktur-paper-screening]]
    **Key Levels (16.10.): Edge Card fertig ([[keylevel-edge-card-final]], auch
    in Notion unter 📁 Edge Cards). Stufe 1 fertig: Magnet robust (Vorwoche >
    Session ≈ runde > halbe Zahl), Pivots und Engulfing ohne Effekt. Nur
@@ -48,9 +58,11 @@ passiert, was steht an.
    sind schon geöffnet, deshalb braucht eine neue Regel einen eigenen Lock
    und frische Prüfdaten (andere Märkte oder Forward).
    [[smh-elite-mikrostruktur]]
-3. **🥇 Gruppenarbeit: Gold ASB IS-only gerechnet (15.10.), PDF vorerst
-   verworfen (Nutzer 16.10.).** IS +0,33 → OOS +0,18 → Tresor +0,04 R je Trade (PF 1,19,
+3. **🥇 Gruppenarbeit: Gold ASB IS-only gerechnet (15.10.), PDF für den
+   Mentor steht (18.10.):** `Claude outputs/gold_asb_profitabilitaets_kriterien_20261018.pdf`. IS +0,33 → OOS +0,18 → Tresor +0,04 R je Trade (PF 1,19,
    18 Trades), Deflated Sharpe 0,24. Der Edge hält knapp, wird aber dünner.
+   **18.10. Paper-Filter:** keiner schlägt die Basis; Blindtest 2010–2015 bestanden
+   (Ø +0,239 R, t 2,85, 5/6 Jahre +). [[gold-asb-paper-filter]]
    [[gold-asb-is-only-neuanalyse]]
 
 ---
@@ -64,6 +76,40 @@ gold_asb-Cache-Bug oben läuft über "Als Nächstes"). Danach: Bestätigungs-
 Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
+
+- **Vier-Fragen-Check (18.10.): zwei eigene Festlegungen.** (a) Fragen 2-3 nur
+  auf IS-Daten, die Regel aus Frage 4 zählt als Variante unter der
+  Overfitting-Sperre. (b) Zeitpunkt: bei Papers in der Sichtung (Phase 2/3),
+  bei eigenen Edges nach dem ersten Basis-Backtest; die vier Sätze stehen als
+  `## Vier Fragen` am Kopf der Notiz. Passt das so? [[vier-fragen-check]]
+- **Trade-Inventur 2025 (18.10.): drei eigene Festlegungen.** (a) Axi-Buchung
+  „Data Truncation DDMMYYYY“ wird als Startsaldo zum Datum im Text gewertet, nicht
+  zum Buchungsdatum (bei 4667999/4690858 erst im August gebucht). Davon hängt das
+  Ergebnis in % vom Konto ab. (b) Statement-„Balance“ wird nicht gegengeprüft: Sie
+  ist der Stand von 07/2026, das Statement deckt nur 2025 ab. (c) Offene Position
+  6059496 EURUSD Buy 1,01 Lot seit 17.06.2026 ohne SL/TP (am 21.07. −1.614 $), nur
+  vermerkt, nicht angefasst. Ist sie noch offen und gewollt?
+  [[quant-diskretionaer-fusion]]
+
+- **Gold-ASB-Blindtest (18.10.): zwei eigene Festlegungen.** (a) Silber vor 08/2014 aus
+  COMEX-Futures `SI=F` statt Dukascopy (dort erst ab 07/2014), Messlatte deshalb +0,229
+  statt +0,271 R. (b) FOMC aus H2 gestrichen (14:00 NY liegt nach dem Exit).
+  [[gold-asb-paper-filter]]
+
+- **Mikrostruktur Runde 2 (18.10.): Screening-Punkte und Kandidatenwahl
+  K4–K7 sind meine Einschätzung** (Raster `smh_microstructure/screening_v2.json`).
+  Bewusst getestet: Overnight Drift (K7), obwohl die Autoren selbst den
+  Zerfall melden. Nicht getestet: Gold-Tageszeitmuster (nur Masterarbeit).
+  Bitte bestätigen oder fehlende Papers nennen. [[mikrostruktur-paper-screening]]
+- **Mikrostruktur Runde 2: Einstiege um 17:00 New York (Rollover) mit
+  pauschalen Kosten gerechnet, real teurer.** Gotobi-Tage sind ohne
+  japanische Feiertage bestimmt. Beides ändert kein Urteil, alle vier
+  Kandidaten sind negativ. [[smh-elite-mikrostruktur]]
+- **Gold-ASB-PDF (18.10.): zwei eigene Annahmen offen** ((a) Kriterien wie
+  ORB-PDF: vom Nutzer bestätigt 18.10., „perfekt“). (b) Die Bewertung der fünf Mechanismus-Felder (S. 7) ist meine Einschätzung,
+  Literatur nur auf Abstract-Ebene geprüft. (c) Die Notiz vom 15.10. spricht
+  von „9 Punkten“, im Skript sind es 8 Stellschrauben; die PDF nennt 8.
+  [[gold-asb-is-only-neuanalyse]]
 
 - **Key-Level-Backtest: Kosten der 6 frischen Paare sind geschätzt, nicht
   gemessen** (16.10.). Round-Turn in Pips: USDCAD 1,6, USDCHF 1,6, NZDUSD 1,8,
@@ -122,6 +168,18 @@ Bedarf vor generischem Aufräumen.
   Kommission auf USTEC ist mit 0 angenommen. (3) Der Optimierer rechnet additiv ohne
   Lot-Rundung; die Ereignis-Sim mit Zinseszins zeigte keine Brüche, die Lot-Rundung ist
   ungeprüft.
+  **Zu (1), Beobachtung aus dem Weekly KW42 (18.10.), bitte bestätigen:** IQ handelt
+  NASDAQ bereits: Die Funded-Bridge platzierte dort am 13.10. und 16.10. ORB-Orders auf
+  `NAS100.gbe` (Risiko je Seite ca. 107 USD). Ob Kosten und Haltedauer bis 16:00 für K60
+  passen, ist damit nicht geprüft.
+
+- **Gold-ASB-Fill vom 15.10. fehlt in Soll/Ist und Edge-Ampel** (Weekly KW42, 18.10.).
+  Live füllte die Stop-Order auf allen 4 Konten (zusammen ca. −765 USD, Zeit-Exit), das
+  Soll meldet „kein Signal“, die Ampel-Liste führt als letzten Gold-ASB-Trade den 28.09.
+  Meine Vermutung, ungeprüft: Liquiditätsfilter kippt beim Nachrechnen (Memory
+  `gold_asb_liquidity_filter_reproducibility`) oder die Nachrechnung modelliert die
+  Stop-Order-Variante nicht. Solange das offen ist, messen beide Werkzeuge das größte
+  EK/TTP-Bein nicht live-getreu.
 
 - **ORB-Gegenprobe Öl: meine Annahmen** (11.10., [[orb-gegenprobe-oel]]).
   (1) Öl-Kosten 4,0 bps Spread + Index-Slippage (~0,15 R je Trade), nicht am
@@ -423,6 +481,16 @@ Bedarf vor generischem Aufräumen.
   Ausfall der eigenen Maschine nicht melden. Idee: ein Totmannschalter
   außerhalb, z.B. ein Cloud-Check auf das Alter des letzten Snapshots auf
   GitHub.
+  **Nachtrag Weekly KW42 (18.10.): Standby kostet jetzt ORB-Tage.** Mo 12.10.
+  09:55–17:09 und Do 15.10. 14:49–15:53 (Range-Ende 15:45 → beide
+  Ausbruchsseiten schon durch, keine Order). Diesmal ohne Commit-Arbeit
+  tagsüber, das „Deckel/Arbeitsblock“-Muster passt also nicht. Ursache offen.
+- **Report-Werkzeuge härten** (Weekly KW42, 18.10.). Niedrig.
+  (a) `mt5_pull.py`: bei 0 Deals und offenen Positionen warten und
+  wiederholen (kaltes Terminal); FK-Terminal mit `/portable` starten wie
+  `executor.py` (sonst `IPC timeout`). (b) `research_live_legs.py --ampel`:
+  Dukascopy-Abruf ohne Timeout, hing am 18.10. dreimal an derselben Stelle,
+  die Ampel blieb auf dem Stand 16.10.
 - **CTNL E1 + E4 (Research):** E1 `spread_bps` 8,0 → gemessen 0,53-2,01,
   broker-getrennt (steht im Code weiter auf 8,0); danach E4 Risikokalibrierung
   über die volle Historie. E2/E3 erledigt. Details
@@ -535,6 +603,10 @@ außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
 | EK-Portfolio-Paper                                      | —                                                                                        | pausiert (Paper-Zwilling von EK-Portfolio-Bridge, gehört zum Portfolio)                        | Disabled       | 2026-09-01      |
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
+
+- (18.10.) **Dollar-W nach dem Tokio-Fix (K5) nur mit Limit-Orders als Maker
+  handelbar?** IS brutto +1,6 bps (t 4,8), aber zerfallend (OOS +0,24,
+  Tresor −0,55). Bezug [[smh-elite-mikrostruktur]] Runde 2. Eher verwerfen.
 
 - (16.10.) **Automatischer Drawdown-Schalter je Live-Bein** (Nutzer: „interessant“).
   Gemeinsames Modul nach dem Muster `gold_smc_htf_ltf/ctnl_kill_switch.py`

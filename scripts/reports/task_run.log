@@ -134,3 +134,37 @@
 2026-10-12 02:04:06 PDF: `C:\Users\andre\Documents\Trading Reports\KW41_2026_checkup.pdf`
 2026-10-12 02:04:06 Vollstaendigkeitspruefung OK: KW41_2026_checkup.pdf (520.136 Bytes)
 2026-10-12 02:04:06 === Weekly-Report-Task beendet ===
+2026-10-18 18:00:01 === Weekly-Report-Task gestartet ===
+2026-10-18 18:00:01 Nutze Claude Code: C:\Users\andre\.vscode\extensions\anthropic.claude-code-2.1.301-win32-arm64\resources\native-binary\claude.exe
+2026-10-18 18:54:22 Der Weekly Checkup KW42/2026 ist fertig und lokal committet (`9dcce668`, nicht gepusht). Das PDF liegt in `Documents\Trading Reports\KW42_2026_checkup.pdf` (557 KB) und ging per Telegram raus. Ein Monatsreport war nicht f+Òllig, weil der 25.10. noch im Oktober liegt.
+2026-10-18 18:54:22 
+2026-10-18 18:54:22 **Die Woche in Zahlen** (13 Trades, keine Regelverletzung, kein Kill-Switch ausgel+¬st):
+2026-10-18 18:54:22 
+2026-10-18 18:54:22 | Bridge | Trades | P&L |
+2026-10-18 18:54:22 |---|---|---|
+2026-10-18 18:54:22 | EK-Portfolio | 6 | ‘Í∆32,53 EUR (‘Í∆1,16 %) |
+2026-10-18 18:54:22 | Funded (TTP + IQ) | 5 | ‘Í∆793,76 USD (‘Í∆0,41 %) |
+2026-10-18 18:54:22 | FK Instant Funding | 2 | ‘Í∆99,73 USD (‘Í∆0,10 %) |
+2026-10-18 18:54:22 
+2026-10-18 18:54:22 - **Gold ASB** hat zum ersten Mal per Stop-Order gef++llt (Do 15.10.). Der Zeit-Exit schloss mit etwa ‘Í∆0,56 R; das war der gr+¬+Éte Verlust der Woche.
+2026-10-18 18:54:22 - **IQ** liegt jetzt bei ‘Í∆3,87 % seit Start. Bis zur 6-%-Grenze bleiben rund 2.130 USD (letzte Woche rund 2.600).
+2026-10-18 18:54:22 - An den Bridges wurde die zweite Woche in Folge nichts an der Konfiguration ge+Òndert.
+2026-10-18 18:54:22 
+2026-10-18 18:54:22 **Wichtigster Befund: Der Rechner ging zweimal w+Òhrend der Handelszeit in den Standby.** Montag von 09:55 bis 17:09 und Donnerstag von 14:49 bis 15:53. Am Donnerstag endete die ORB-Range um 15:45; danach waren beide Ausbruchsseiten schon durchlaufen, und es wurde keine Order platziert. Diesmal hat das zuf+Òllig Geld gespart, aber ORB holt ein verpasstes Fenster nie nach.
+2026-10-18 18:54:22 
+2026-10-18 18:54:22 **Was nicht vollst+Òndig geklappt hat (im Report so vermerkt):**
+2026-10-18 18:54:22 - **Edge-Ampel nicht aktuell:** Die Neuberechnung blieb dreimal an einem Dukascopy-Abruf ohne Timeout h+Òngen. Sie steht deshalb auf dem Stand 16.10. (letzter Trade 15.10.).
+2026-10-18 18:54:22 - **Soll/Ist ohne ORB f++r EK und Funded:** Dort lief der ORB-Teil der Nachrechnung ins Timeout. Au+Éerdem fehlen im Soll beide Live-Verlierer: der Gold-ASB-Fill und der CTNL-Short vom 15.10.
+2026-10-18 18:54:22 - **MT5-Abzug w+Òre zweimal fast falsch gewesen:** Die Terminals waren frisch gestartet und lieferten zuerst 0 Deals; ich habe so lange wiederholt, bis die Zahlen stabil waren. Das FK-Terminal antwortete erst, nachdem ich es mit `/portable` neu gestartet hatte, so wie die Bridge selbst es tut. Die Kontost+Ònde zu Wochenbeginn stimmen auf den Cent mit KW41 ++berein. Die vier Terminals hat dieser Lauf selbst gestartet und danach wieder geschlossen; an den Bots habe ich nichts angefasst.
+2026-10-18 18:54:22 
+2026-10-18 18:54:22 **Neu im Dashboard:**
+2026-10-18 18:54:22 1. *Braucht deine Best+Òtigung:* ‘«◊Zu (1), Beobachtung aus dem Weekly KW42: IQ handelt NASDAQ bereits. Die Funded-Bridge platzierte dort am 13.10. und 16.10. ORB-Orders auf `NAS100.gbe` (Risiko je Seite ca. 107 USD). Ob Kosten und Haltedauer bis 16:00 f++r K60 passen, ist damit nicht gepr++ft.‘«£
+2026-10-18 18:54:22 2. *Braucht deine Best+Òtigung:* ‘«◊Gold-ASB-Fill vom 15.10. fehlt in Soll/Ist und Edge-Ampel. Vermutung, ungepr++ft: Der Liquidit+Òtsfilter kippt beim Nachrechnen, oder die Nachrechnung modelliert die Stop-Order nicht.‘«£
+2026-10-18 18:54:22 3. *Offene Aufgaben (Nachtrag zum bestehenden Standby-Punkt):* ‘«◊Standby kostet jetzt ORB-Tage (Mo 12.10. 09:55‘«Ù17:09, Do 15.10. 14:49‘«Ù15:53). Das Muster ‘«‹Deckel/Arbeitsblock‘«ˇ passt diesmal nicht. Ursache offen.‘«£
+2026-10-18 18:54:22 4. *Offene Aufgaben, Niedrig:* ‘«◊Report-Werkzeuge h+Òrten: `mt5_pull.py` soll bei 0 Deals warten und wiederholen und das FK-Terminal mit `/portable` starten; der Ampel-Abruf braucht ein Timeout.‘«£
+2026-10-18 18:54:22 
+2026-10-18 18:54:22 Dazu ein CHANGELOG-Eintrag und eine neue Memory-Notiz `fk_terminal_braucht_portable`. DASHBOARD und CHANGELOG habe ich nicht committet, weil dort schon +‰nderungen anderer Sessions liegen.
+2026-10-18 18:54:22 
+2026-10-18 18:54:22 Weiter offen und unver+Òndert: F++nf alte CTNL-Positionen laufen ohne Zeit-Exit (TTP 3, IQ 1, FK 1). Wegen ihnen nimmt TTP weiter keine neuen CTNL-Trades.
+2026-10-18 18:54:22 Vollstaendigkeitspruefung OK: KW42_2026_checkup.pdf (557.298 Bytes)
+2026-10-18 18:54:22 === Weekly-Report-Task beendet ===

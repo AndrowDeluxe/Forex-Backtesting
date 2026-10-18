@@ -1,0 +1,19 @@
+{
+  "zweck": "SMH Elite 3, Team Mikrostruktur & Liquiditaet, Runde 2: Raster fuer das Paper-Screening. Festgelegt am 2026-10-18 VOR dem Lesen der Volltexte.",
+  "quelle_briefing": "fusion_lab/raw/telegram/SMH Elite 3__4355798601/media/1435_.pdf (Folie 2, 5, 6, 8, 17)",
+  "ko_kriterien": {
+    "K1_testbar": "Regel braucht nur M1-Bid-OHLC (Dukascopy) auf FX/SP500/NASDAQ/Gold. Orderbuch, echtes Volumen, Kundenflows -> KO.",
+    "K2_feld": "Mechanismus passt zu Folie 5 Mikrostruktur: wer sofort handeln will, zahlt (Liquiditaetsnachfrage, Haendlerbestand, Benchmark-Ausfuehrung).",
+    "K3_nicht_geprueft": "Nicht schon getestet: Osler (runde Zahlen/Stops), Evans + Melvin/Prins (4pm-Fix nur Monatsende), Nagel (Liquiditaets-Reversal), Caporale/Plastun (Gap-Fade), Zarattini (Fast Alpha, Noise-Area), Gao/Baltussen (Intraday-Momentum), Overnight-Reversal SSRN 5807282, Key Levels.",
+    "K4_regel": "Entry/Stop/Exit ohne Interpretation formulierbar, hoechstens 9 Parameter."
+  },
+  "punkte_0_bis_3": {
+    "P1_effekt_vs_kosten": "Paper-Effekt je Trade im Verhaeltnis zu unseren Rundturn-Kosten (costs.py). 3 = >3x Kosten, 0 = unter Kosten.",
+    "P2_menge": "Erwartete Trades im IS-Fenster 04/2018-03/2023. 3 = >500, 2 = 200-500, 1 = 100-200, 0 = <100.",
+    "P3_beleg": "Staerke des Belegs: Journal/Zentralbank, lange Stichprobe, mehrere Maerkte, natuerliches Experiment = 3.",
+    "P4_aktualitaet": "Gibt es Hinweise auf Zerfall nach Veroeffentlichung? 3 = keine, 0 = Autoren melden selbst Zerfall."
+  },
+  "auswahl": "KO-frei, Summe P1-P4 absteigend, die Top 3-5 gehen in den Backtest. Gleichstand: der mit klarerem Mechanismus.",
+  "split": {"is": "2018-04-01..2023-03-31", "oos": "2023-04-01..2025-09-30", "tresor": "2025-10-01..heute"},
+  "profitabel_folie2": "nach Kosten (Gebuehren + 1 Tick je Seite), >=100 Trades, PF > 1,3, beide Haelften im Plus, Tresor im Plus, Mechanismus erklaerbar"
+}

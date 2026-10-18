@@ -1,0 +1,11 @@
+{
+  "festgelegt": "2026-10-18T10:09:13+00:00",
+  "regel": "Team-Kandidat = bester OOS-Ø nach Kosten, festgelegt VOR dem Tresor (wie Runde 1)",
+  "oos_avg_bps": {
+    "K4": -1.042,
+    "K5": -1.599,
+    "K6": -2.705,
+    "K7": -3.558
+  },
+  "team_kandidat": "K4"
+}

@@ -1,6 +1,6 @@
 # Gold ASB: nur auf IS neu optimiert, dann OOS und Tresor (2026-10-15)
 
-**Status: gerechnet 15.10.2026. PDF vorerst verworfen (Nutzer 16.10.).**
+**Status: gerechnet 15.10.2026. PDF am 16.10. verworfen, am 18.10. auf Nutzerwunsch neu erstellt.**
 Nutzerauftrag: Gold ASB „nochmal nach unserem Standardprozess für die
 Gruppenarbeit“ analysieren, genauso wie ORB am 05.10.
 ([[orb-order-storno-und-haltedauer]], PDF `orb_profitabilitaets_kriterien_20261005.pdf`).
@@ -57,5 +57,15 @@ Plateau und kein Optimum.
   auf „beobachten“. Die Abschwächung deckt sich mit dem Tresor-Check (+0,33 → +0,18).
 - Für die Gruppe: Der Prozess zeigt beides, einen Edge, der den Holdout knapp
   übersteht, und dass 20k Versuche ohne Deflated Sharpe > 0,95 keinen Beweis ergeben.
-- PDF (6 Seiten, Layout wie ORB) vorerst verworfen (Nutzer 16.10.). Bei Bedarf
-  liegen alle Daten dafür in `asian_range_breakout/results/is_reopt_*`.
+- PDF für den Mentor (18.10., 10 Seiten, Kriterien und Layout wie ORB):
+  `Claude outputs/gold_asb_profitabilitaets_kriterien_20261018.pdf`, Build
+  `Claude outputs/orb_pdf_build/gold_asb_pdf.py`. Kosten je Trade aus
+  `is_reopt_trades_cost.csv` (bps=0 gegen TTP, Ø 0,038 R; Stop-Median IS 52,
+  OOS 73, Tresor 132 bps, deshalb verträgt der Edge auch dreifache Kosten).
+- Mechanismus (S. 7, Einschätzung, nicht getestet): stärkste Kandidaten Feld 4
+  (Stop-Kaskade an der engen Asien-Range) und Feld 1 (London-Open, LBMA-Fixes);
+  Feld 3 (Gold-Drift) widerlegt, weil Short in IS t 2,7 hat. Literatur:
+  Caminschi/Heaney 2014 (PM-Fix), Crain et al. 2020, Wei SSRN 2026 (Asien-Session
+  trägt Gold-Rendite), CBS-Thesis 2019 (Saisonalität gegen Long nach 01:00).
+  Testidee: Edge nach Range-Breite / London-Open-Volumen aufteilen.
+- Fortsetzung 18.10.: Paper-Filter + Blindtest 2010–2015 → [[gold-asb-paper-filter]].

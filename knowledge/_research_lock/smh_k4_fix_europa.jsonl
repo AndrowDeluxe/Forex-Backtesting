@@ -1,0 +1,6 @@
+{"ts": "2026-10-18T10:06:49+00:00", "event": "register_split", "is_start": "2018-04-01", "is_end": "2023-03-31", "oos_end": "2025-09-30", "tresor_end": "2026-10-16"}
+{"ts": "2026-10-18T10:06:50+00:00", "event": "trials", "n": 4, "total": 4, "note": "K4: deklarierte Basis-Varianten"}
+{"ts": "2026-10-18T10:06:57+00:00", "event": "trials", "n": 5, "total": 9, "note": "K4: Nachbarwerte + Kosten x2 (Robustheit)"}
+{"ts": "2026-10-18T10:08:37+00:00", "event": "freeze", "hash": "15021f21f812b8d15984e83492299e2aaaf534327cd596848167dd6ff5940e22"}
+{"ts": "2026-10-18T10:08:49+00:00", "event": "unseal", "stage": "oos", "hash": "15021f21f812b8d15984e83492299e2aaaf534327cd596848167dd6ff5940e22"}
+{"ts": "2026-10-18T10:09:13+00:00", "event": "unseal", "stage": "tresor", "hash": "15021f21f812b8d15984e83492299e2aaaf534327cd596848167dd6ff5940e22"}

@@ -1,0 +1,36 @@
+{
+  "strategy": "gold_asb_paper_filters_20261018",
+  "split": {
+    "is_start": "2016-11-02",
+    "is_end": "2026-09-30",
+    "oos_end": "2027-03-31",
+    "tresor_end": null
+  },
+  "registered": "2026-10-18T19:49:44+00:00",
+  "trials": 9,
+  "frozen": {
+    "hash": "4500ea42b07bf1731d9424c72b84c8a1c2cc9b8dda0f102f280127aac3d4a09a",
+    "config": {
+      "base": {
+        "stop": 2.0,
+        "cancel": "02:30",
+        "exit": "11:00",
+        "adx": 15.0,
+        "sma": null,
+        "silver": 5,
+        "liq": 0.5,
+        "dirs": "beide"
+      },
+      "filter": "Basis"
+    },
+    "ts": "2026-10-18T19:49:47+00:00"
+  },
+  "unsealed": {
+    "blind": "2026-10-18T19:49:57+00:00"
+  },
+  "forward": null,
+  "blind": {
+    "start": "2010-01-01",
+    "end": "2015-12-31"
+  }
+}

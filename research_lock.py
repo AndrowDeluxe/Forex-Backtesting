@@ -10,6 +10,9 @@ ausgewaehlt wurde). Kurzform:
    die Deflated-Sharpe-Korrektur (`deflated_sharpe`).
 4. Gewinner einfrieren (`freeze`), erst dann `unseal("oos")`, danach
    `unseal("tresor")`. Jede Stufe genau einmal; ein zweites Oeffnen bricht ab.
+5. Optional (seit 2026-10-18): ein Blindtest-Zeitraum VOR dem IS (`register_blind`,
+   vor dem Einfrieren), wenn OOS/Tresor einer Strategie schon verbraucht sind.
+   `unseal("blind")` nach `freeze`, genau einmal, unabhaengig von OOS/Tresor.
 
 Zustand liegt git-getrackt unter knowledge/_research_lock/<strategy>.json
 (+ .jsonl-Protokoll), damit die Sperre auch ueber Sessions hinweg haelt.
@@ -26,7 +29,7 @@ from pathlib import Path
 import pandas as pd
 
 LOCK_DIR = Path(__file__).resolve().parent / "knowledge" / "_research_lock"
-STAGES = ("oos", "tresor", "forward")
+STAGES = ("oos", "tresor", "forward", "blind")
 
 
 class LockError(RuntimeError):
@@ -100,6 +103,23 @@ class Lock:
             self._log("register_forward", **fw)
         return state
 
+    def register_blind(self, start: str, end: str) -> dict:
+        """Blindtest-Zeitraum vor dem IS (z. B. aeltere, nie benutzte Daten). Nur vor dem
+        Einfrieren registrierbar, danach unveraenderlich; muss vollstaendig vor is_start liegen."""
+        state = self._load()
+        bl = {"start": start, "end": end}
+        if not (pd.Timestamp(start) < pd.Timestamp(end) < pd.Timestamp(state["split"]["is_start"])):
+            raise LockError(f"{self.strategy}: Blindtest muss aufsteigend und vor is_start liegen: {bl}")
+        if state.get("blind") not in (None, bl):
+            raise LockError(f"{self.strategy}: Blindtest ist bereits {state['blind']} -- gesperrt")
+        if state.get("blind") is None:
+            if state["frozen"] is not None:
+                raise LockError(f"{self.strategy}: Blindtest nach dem Einfrieren registrieren ist gesperrt")
+            state["blind"] = bl
+            self._save(state)
+            self._log("register_blind", **bl)
+        return state
+
     @property
     def split(self) -> dict:
         return self._load()["split"]
@@ -163,6 +183,8 @@ class Lock:
             raise LockError(f"{self.strategy}: Tresor erst nach OOS")
         if stage in state["unsealed"]:
             raise LockError(f"{self.strategy}: {stage} wurde bereits am {state['unsealed'][stage]} geoeffnet")
+        if stage == "blind" and state.get("blind") is None:
+            raise LockError(f"{self.strategy}: kein Blindtest registriert")
         if stage == "forward":
             fw = state.get("forward")
             if fw is None:
@@ -181,6 +203,8 @@ class Lock:
             return (pd.Timestamp(s["is_end"]) + pd.Timedelta(days=1)).strftime("%Y-%m-%d"), s["oos_end"]
         if stage == "forward":
             return state["forward"]["start"], None
+        if stage == "blind":
+            return state["blind"]["start"], state["blind"]["end"]
         return (pd.Timestamp(s["oos_end"]) + pd.Timedelta(days=1)).strftime("%Y-%m-%d"), s["tresor_end"]
 
     def stage_slice(self, obj, stage: str):
@@ -189,6 +213,8 @@ class Lock:
         if stage not in state["unsealed"]:
             raise LockError(f"{self.strategy}: {stage} ist noch versiegelt")
         s = state["split"]
+        if stage == "blind":
+            return self._slice(obj, state["blind"]["start"], state["blind"]["end"])
         if stage == "oos":
             start = (pd.Timestamp(s["is_end"]) + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
             return self._slice(obj, start, s["oos_end"])

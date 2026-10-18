@@ -1,0 +1,4 @@
+{"ts": "2026-10-18T20:01:19+00:00", "event": "register_split", "is_start": "2018-04-01", "is_end": "2023-03-31", "oos_end": "2025-09-30", "tresor_end": "2026-10-16"}
+{"ts": "2026-10-18T20:01:19+00:00", "event": "trials", "n": 1, "total": 1, "note": "K4b: eingefrorene K4-Regel 1:1 auf USDNOK/USDSEK"}
+{"ts": "2026-10-18T20:01:19+00:00", "event": "trials", "n": 5, "total": 6, "note": "K4b: Nachbarwerte (4) + Kosten x2, vorregistriert"}
+{"ts": "2026-10-18T20:01:19+00:00", "event": "freeze", "hash": "9a85567e7cd4a105f236ff5ec26967e0c838c448a16ad4ef00407090895cb03b"}

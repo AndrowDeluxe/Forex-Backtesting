@@ -21,6 +21,10 @@ Code in [[overfitting-sperre]] (`research_lock.py`). Grund: die ORB-Strategie
 wurde ab Stage 2 direkt auf OOS ausgewählt, weil der OOS-Split bisher nur in
 Phase 6 als Prüfung stand.
 
+**Vier-Fragen-Check (seit 2026-10-18)**: jedes neue Paper/Edge bekommt je
+einen Satz zu Warum Geld / Wo Verlust / Was dort anders / Welche eine Regel,
+siehe [[vier-fragen-check]].
+
 ## Die 8 Phasen
 
 1. **Recherche** -- Suchbegriff-Kategorien durchgehen, pro Kategorie 2-3

@@ -1,0 +1,5 @@
+{"ts": "2026-10-18T19:49:44+00:00", "event": "register_split", "is_start": "2016-11-02", "is_end": "2026-09-30", "oos_end": "2027-03-31", "tresor_end": null}
+{"ts": "2026-10-18T19:49:44+00:00", "event": "register_blind", "start": "2010-01-01", "end": "2015-12-31"}
+{"ts": "2026-10-18T19:49:47+00:00", "event": "trials", "n": 9, "total": 9, "note": "9 Paper-Varianten, vorab festgelegt (H1 3, H2 2, H3 2, H4 2)"}
+{"ts": "2026-10-18T19:49:47+00:00", "event": "freeze", "hash": "4500ea42b07bf1731d9424c72b84c8a1c2cc9b8dda0f102f280127aac3d4a09a"}
+{"ts": "2026-10-18T19:49:57+00:00", "event": "unseal", "stage": "blind", "hash": "4500ea42b07bf1731d9424c72b84c8a1c2cc9b8dda0f102f280127aac3d4a09a"}

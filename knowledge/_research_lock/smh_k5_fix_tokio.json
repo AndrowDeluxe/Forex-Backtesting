@@ -1,0 +1,35 @@
+{
+  "strategy": "smh_k5_fix_tokio",
+  "split": {
+    "is_start": "2018-04-01",
+    "is_end": "2023-03-31",
+    "oos_end": "2025-09-30",
+    "tresor_end": "2026-10-16"
+  },
+  "registered": "2026-10-18T10:06:58+00:00",
+  "trials": 9,
+  "frozen": {
+    "hash": "196f1a948e6f92b570319043bd3f2cf5eefb2ab874ee686f39542512e7e14cc2",
+    "config": {
+      "window": "tokio",
+      "leg_pre": false,
+      "leg_post": true,
+      "pre_start": "",
+      "pre_end": "",
+      "post_start": "",
+      "post_end": "",
+      "breedon": false,
+      "gotobi_only": false,
+      "pre_start_shift_min": 0,
+      "post_end_shift_min": 0,
+      "shift_h": 0,
+      "cost_mult": 1.0
+    },
+    "ts": "2026-10-18T10:08:38+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-18T10:08:52+00:00",
+    "tresor": "2026-10-18T10:09:16+00:00"
+  },
+  "forward": null
+}

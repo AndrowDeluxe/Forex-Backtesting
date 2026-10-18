@@ -13,6 +13,7 @@ separates Aufschreiben durch den Nutzer nötig.
 1. Capture + Organize: Metadaten erfassen, passende Themendatei finden/anlegen,
    mit verwandten Notizen verlinken.
 2. Distill: Kernthese, Modell/Filter destillieren.
+   Dazu die vier Sätze aus [[vier-fragen-check]] (seit 2026-10-18).
 3. **Cross-Check**: aktiv prüfen, ob sich daraus ein Filter/Baustein ableiten
    lässt, der auf eine ANDERE bestehende Strategie im Repo anwendbar ist
    (nicht nur die im Paper behandelte) -- das ist der eigentliche Mehrwert

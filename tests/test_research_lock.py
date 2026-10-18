@@ -105,3 +105,29 @@ def test_forward_rule_is_immutable(lock):
     lock.register_forward("2026-10-05", "2027-03-31", 100)
     with pytest.raises(LockError):
         lock.register_forward("2026-10-05", "2027-01-31", 50)
+
+
+def test_blind_stage_before_is(lock):
+    with pytest.raises(LockError):
+        lock.register_blind("2010-01-01", "2016-12-31")          # ragt ins IS
+    lock.register_blind("2010-01-01", "2015-12-31")
+    with pytest.raises(LockError):
+        lock.register_blind("2011-01-01", "2015-12-31")          # unveraenderlich
+    with pytest.raises(LockError):
+        lock.unseal("blind", "abc")                              # erst freeze
+    h = lock.freeze({"stop": 0.6})
+    idx = pd.date_range("2010-01-01", "2026-09-30", freq="D", tz="America/New_York")
+    with pytest.raises(LockError):
+        lock.stage_slice(pd.Series(1.0, index=idx), "blind")
+    assert lock.unseal("blind", h) == ("2010-01-01", "2015-12-31")   # ohne OOS moeglich
+    s = lock.stage_slice(pd.Series(1.0, index=idx), "blind")
+    assert s.index.max().date() == pd.Timestamp("2015-12-31").date()
+    assert lock.is_only(pd.Series(1.0, index=idx)).index.min().date() == pd.Timestamp("2016-07-28").date()
+    with pytest.raises(LockError):
+        lock.unseal("blind", h)                                  # nur einmal
+
+
+def test_blind_not_after_freeze(lock):
+    lock.freeze({"stop": 0.6})
+    with pytest.raises(LockError):
+        lock.register_blind("2010-01-01", "2015-12-31")

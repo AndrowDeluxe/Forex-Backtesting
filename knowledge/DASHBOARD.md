@@ -77,11 +77,6 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
-- **Vier-Fragen-Check (18.10.): zwei eigene Festlegungen.** (a) Fragen 2-3 nur
-  auf IS-Daten, die Regel aus Frage 4 zählt als Variante unter der
-  Overfitting-Sperre. (b) Zeitpunkt: bei Papers in der Sichtung (Phase 2/3),
-  bei eigenen Edges nach dem ersten Basis-Backtest; die vier Sätze stehen als
-  `## Vier Fragen` am Kopf der Notiz. Passt das so? [[vier-fragen-check]]
 - **Trade-Inventur 2025 (18.10.): drei eigene Festlegungen.** (a) Axi-Buchung
   „Data Truncation DDMMYYYY“ wird als Startsaldo zum Datum im Text gewertet, nicht
   zum Buchungsdatum (bei 4667999/4690858 erst im August gebucht). Davon hängt das

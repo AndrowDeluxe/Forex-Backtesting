@@ -1,0 +1,30 @@
+{
+  "strategy": "gold_asb_is_reopt_20261015",
+  "split": {
+    "is_start": "2016-01-01",
+    "is_end": "2022-12-31",
+    "oos_end": "2025-09-30",
+    "tresor_end": "2026-09-30"
+  },
+  "registered": "2026-10-15T22:10:51+00:00",
+  "trials": 20736,
+  "frozen": {
+    "hash": "440e98f5f44408bc04eed65ab1170e00f7e0ca251f3853437fabf4ee98a6a15e",
+    "config": {
+      "stop": 2.0,
+      "cancel": "02:30",
+      "exit": "11:00",
+      "adx": 15.0,
+      "sma": null,
+      "silver": 5,
+      "liq": 0.5,
+      "dirs": "beide"
+    },
+    "ts": "2026-10-15T22:12:03+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-15T22:12:03+00:00",
+    "tresor": "2026-10-15T22:12:03+00:00"
+  },
+  "forward": null
+}

@@ -1,0 +1,87 @@
+{
+  "strategy": "challenge_k60_orb_oel_gewichtung_20261016",
+  "split": {
+    "is_start": "2016-07-28",
+    "is_end": "2025-09-30",
+    "oos_end": "2026-09-30",
+    "tresor_end": null
+  },
+  "registered": "2026-10-16T10:21:46+00:00",
+  "trials": 4368,
+  "frozen": {
+    "hash": "684e2f769f9ffe6ffd6da0817f9a46a689bb347b7e66930aef8da5e11bfde449",
+    "config": {
+      "TTP": {
+        "gewinner": "K60 ohne_stop 1.00% + ORB NASDAQ_O2 0.25% | max 2/Tag",
+        "ohne_o2": "K60 ohne_stop 1.00% + ORB NASDAQ_O1 0.25% | max 2/Tag",
+        "raw": {
+          "gewinner": {
+            "k60": "ohne_stop",
+            "sp500": "aus",
+            "nasdaq": "O2",
+            "cap": 2,
+            "r_k60_ohne_stop": 1.0,
+            "r_orb_NASDAQ_O2": 0.25,
+            "median_%": 8.174760046426965,
+            "p_bruch": 0.0495,
+            "p_ziel": 0.4605,
+            "median_tage_ziel": 167.0
+          },
+          "ohne_o2": {
+            "k60": "ohne_stop",
+            "sp500": "aus",
+            "nasdaq": "O1",
+            "cap": 2,
+            "r_k60_ohne_stop": 1.0,
+            "r_orb_NASDAQ_O1": 0.25,
+            "median_%": 7.778422860323531,
+            "p_bruch": 0.04,
+            "p_ziel": 0.421,
+            "median_tage_ziel": 173.0
+          },
+          "konservativ": "K60 ohne_stop 1.00% + ORB NASDAQ_O2 0.25% | max 1/Tag"
+        }
+      },
+      "IQ": {
+        "gewinner": "K60 ohne_stop 0.75% + ORB NASDAQ_O2 0.25% | max 2/Tag",
+        "ohne_o2": "K60 ohne_stop 0.75% + ORB NASDAQ_O1 0.25% | max 2/Tag",
+        "raw": {
+          "gewinner": {
+            "k60": "ohne_stop",
+            "sp500": "aus",
+            "nasdaq": "O2",
+            "cap": 2,
+            "r_k60_ohne_stop": 0.75,
+            "r_orb_NASDAQ_O2": 0.25,
+            "median_%": 7.14195429199806,
+            "p_bruch": 0.0495,
+            "p_ziel": 0.5305,
+            "median_tage_ziel": 162.0
+          },
+          "ohne_o2": {
+            "k60": "ohne_stop",
+            "sp500": "aus",
+            "nasdaq": "O1",
+            "cap": 2,
+            "r_k60_ohne_stop": 0.75,
+            "r_orb_NASDAQ_O1": 0.25,
+            "median_%": 6.674628371557723,
+            "p_bruch": 0.031,
+            "p_ziel": 0.4825,
+            "median_tage_ziel": 168.0
+          },
+          "konservativ": "K60 ohne_stop 0.75% + ORB NASDAQ_O2 0.25% | max 1/Tag"
+        }
+      }
+    },
+    "ts": "2026-10-16T10:34:58+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-16T10:34:58+00:00"
+  },
+  "forward": {
+    "start": "2026-10-19",
+    "eval_date": "2027-03-31",
+    "min_trades": 1000000
+  }
+}

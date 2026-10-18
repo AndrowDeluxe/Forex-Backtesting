@@ -1,0 +1,5 @@
+{"ts": "2026-10-14T20:41:47+00:00", "event": "register_split", "is_start": "2016-07-28", "is_end": "2022-12-31", "oos_end": "2025-09-30", "tresor_end": "2026-09-30"}
+{"ts": "2026-10-14T20:41:47+00:00", "event": "freeze", "hash": "165d939d309f823a0b26db12883fca726abdeb036ab6424afee18fcd73f139dd"}
+{"ts": "2026-10-14T20:41:47+00:00", "event": "unseal", "stage": "oos", "hash": "165d939d309f823a0b26db12883fca726abdeb036ab6424afee18fcd73f139dd"}
+{"ts": "2026-10-14T20:41:47+00:00", "event": "unseal", "stage": "tresor", "hash": "165d939d309f823a0b26db12883fca726abdeb036ab6424afee18fcd73f139dd"}
+{"ts": "2026-10-14T20:41:47+00:00", "event": "register_forward", "start": "2026-10-15", "eval_date": "2027-03-31", "min_trades": 1000000}

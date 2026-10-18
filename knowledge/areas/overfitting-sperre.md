@@ -52,6 +52,24 @@ Siehe [[ny-open-orb-sp500]] und [[orb-order-storno-und-haltedauer]].
    Strategie wird auf Forward-/Live-Daten geprüft, nicht erneut auf dem alten
    OOS.
 
+## Ausnahmen (begründet)
+
+- **`smh_macro_reports` (2026-10-09, Nutzerentscheid): Bewertungsmodus.**
+  Getestet werden die Calls aus ~120 Mentor-Reports (08/2025–10/2026). Nur
+  ~14 Monate Historie, ein 12-Monats-Tresor ließe nichts übrig. Da nichts
+  optimiert wird, gilt: 4 Varianten vorab festgelegt, gezählt und
+  eingefroren (vor dem ersten Lauf), alle Ergebnisse werden ausgewiesen,
+  plus Deflated Sharpe und Permutationstest. IS = ganze Historie, OOS =
+  Forward-Reports 08.10.2026–31.01.2027, kein Tresor. Eine *neue* Regel aus
+  den Ergebnissen abzuleiten wäre Optimierung und braucht dann den Forward-
+  Zeitraum als einzigen Test.
+  **Ersetzt am 16.10. durch `smh_macro_reports_v2`, ohne einen einzigen
+  Lauf** (kein Ergebnisordner): Die Nutzer-Stichprobe zeigte übersehene
+  Trade-Tabellen und eine falsche Status-Definition. v2 = Neu-Extraktion,
+  5 Varianten (zusätzlich D „Rücksetzer-Einstieg“, Einstiegsstil des
+  Nutzers), gleicher Split; Aufteilung nach Sternen/Gates/Herkunft ist
+  Auswertung, keine Auswahl.
+
 ## Technik
 
 `research_lock.py` im Repo-Root; Tests in `tests/test_research_lock.py`. Der

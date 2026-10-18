@@ -1,0 +1,812 @@
+{
+ "week": "2026-W41",
+ "window": [
+  "2026-10-05T00:00:00",
+  "2026-10-09T21:00:00"
+ ],
+ "bridges": {
+  "ek": {
+   "label": "EK-Portfolio-Bridge",
+   "soll": {
+    "trades": {
+     "orb_nasdaq_NASDAQ_2026-10-05T13:45:00_1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-10-05T13:45:00",
+      "exit_time": "2026-10-05T13:50:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0261168913033305,
+      "notified_exit": true
+     },
+     "orb_nasdaq_NASDAQ_2026-10-06T14:05:00_1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-10-06T14:05:00",
+      "exit_time": "2026-10-06T14:10:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0361250833492333,
+      "notified_exit": true
+     },
+     "orb_nasdaq_NASDAQ_2026-10-08T13:50:00_-1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-10-08T13:50:00",
+      "exit_time": "2026-10-08T14:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0312444967923629,
+      "notified_exit": true
+     },
+     "orb_nasdaq_NASDAQ_2026-10-09T13:45:00_-1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-10-09T13:45:00",
+      "exit_time": "2026-10-09T14:05:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0294740180673136,
+      "notified_exit": true
+     },
+     "orb_us30_US30_2026-10-06T13:45:00_1": {
+      "leg": "orb_us30",
+      "entry_time": "2026-10-06T13:45:00",
+      "exit_time": "2026-10-06T14:25:00",
+      "exit_reason": "stop",
+      "r_multiple": 0.9564410150513257,
+      "notified_exit": true
+     },
+     "orb_us30_US30_2026-10-08T13:45:00_1": {
+      "leg": "orb_us30",
+      "entry_time": "2026-10-08T13:45:00",
+      "exit_time": "2026-10-08T14:25:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0315093752119353,
+      "notified_exit": true
+     },
+     "orb_us30_US30_2026-10-09T13:50:00_1": {
+      "leg": "orb_us30",
+      "entry_time": "2026-10-09T13:50:00",
+      "exit_time": "2026-10-09T13:55:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.036793175463546,
+      "notified_exit": true
+     },
+     "ctnl_reversal__2026-10-06T12:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-10-06T12:30:00",
+      "exit_time": "2026-10-09T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1955911778101953,
+      "notified_exit": true
+     },
+     "ctnl_reversal__2026-10-08T16:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-10-08T16:45:00",
+      "exit_time": "2026-10-09T00:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0674017585308149,
+      "notified_exit": true
+     },
+     "ctnl_reversal__2026-10-09T00:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-10-09T00:30:00",
+      "exit_time": "2026-10-09T01:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0752499586757398,
+      "notified_exit": true
+     },
+     "ctnl_reversal__2026-10-09T01:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-10-09T01:30:00",
+      "exit_time": "2026-10-09T05:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1602786107370129,
+      "notified_exit": true
+     },
+     "ctnl_reversal__2026-10-09T05:00:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-10-09T05:00:00",
+      "exit_time": "2026-10-09T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.124397656279218,
+      "notified_exit": true
+     }
+    },
+    "per_leg": {
+     "orb_nasdaq": {
+      "trades": 4,
+      "sum_r_brutto": -4.123,
+      "sum_r_netto": -4.123,
+      "kosten_r": 0.0,
+      "kosten_quelle": "Engine-Annahme",
+      "live_bein": true
+     },
+     "orb_us30": {
+      "trades": 3,
+      "sum_r_brutto": -1.112,
+      "sum_r_netto": -1.112,
+      "kosten_r": 0.0,
+      "kosten_quelle": "Engine-Annahme",
+      "live_bein": true
+     },
+     "ctnl_reversal": {
+      "trades": 5,
+      "sum_r_brutto": -5.623,
+      "sum_r_netto": -5.623,
+      "kosten_r": 0.0,
+      "kosten_quelle": "Engine-Annahme",
+      "live_bein": true
+     }
+    },
+    "n_trades": 12,
+    "rel_return": -0.003231
+   },
+   "ist": {
+    "per_leg": {
+     "ou_modell": {
+      "deals": 10,
+      "pnl": -6.45
+     },
+     "orb_nasdaq": {
+      "deals": 2,
+      "pnl": -22.87
+     },
+     "ctnl_reversal": {
+      "deals": 4,
+      "pnl": 42.62
+     }
+    },
+    "unattributed": {
+     "deals": 0,
+     "pnl": 0.0
+    },
+    "total_pnl": 13.3,
+    "equity_bei_abzug": 2797.97,
+    "rel_return": 0.004753,
+    "accounts": [
+     "EK-Portfolio-Bridge / Tickmill"
+    ]
+   },
+   "zerlegung": {
+    "nie_gesehen": {
+     "n": 0,
+     "sum_r": 0,
+     "trades": []
+    },
+    "nicht_platziert": {
+     "n": 0,
+     "sum_r": 0,
+     "trades": []
+    },
+    "platziert": {
+     "n": 0,
+     "sum_r": 0,
+     "trades": []
+    },
+    "nicht_ermittelbar": {
+     "n": 12,
+     "sum_r": -10.87,
+     "trades": [
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-10-05T13:45:00",
+       "r": -1.03,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-10-06T14:05:00",
+       "r": -1.04,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-10-08T13:50:00",
+       "r": -1.03,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-10-09T13:45:00",
+       "r": -1.03,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_us30",
+       "entry_time": "2026-10-06T13:45:00",
+       "r": 0.96,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_us30",
+       "entry_time": "2026-10-08T13:45:00",
+       "r": -1.03,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_us30",
+       "entry_time": "2026-10-09T13:50:00",
+       "r": -1.04,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "ctnl_reversal",
+       "entry_time": "2026-10-06T12:30:00",
+       "r": -1.2,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "ctnl_reversal",
+       "entry_time": "2026-10-08T16:45:00",
+       "r": -1.07,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "ctnl_reversal",
+       "entry_time": "2026-10-09T00:30:00",
+       "r": -1.08,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "ctnl_reversal",
+       "entry_time": "2026-10-09T01:30:00",
+       "r": -1.16,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "ctnl_reversal",
+       "entry_time": "2026-10-09T05:00:00",
+       "r": -1.12,
+       "exit_reason": "stop"
+      }
+     ]
+    }
+   },
+   "kosten_pips": 0.5,
+   "kosten_quelle": "geschaetzt"
+  },
+  "funded": {
+   "label": "Funded-Portfolio-Bridge",
+   "soll": {
+    "trades": {
+     "orb_nasdaq_NASDAQ_2026-10-05T13:45:00_1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-10-05T13:45:00",
+      "exit_time": "2026-10-05T13:50:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0261168913033305,
+      "notified_exit": true
+     },
+     "orb_nasdaq_NASDAQ_2026-10-06T14:05:00_1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-10-06T14:05:00",
+      "exit_time": "2026-10-06T14:10:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0361250833492333,
+      "notified_exit": true
+     },
+     "orb_nasdaq_NASDAQ_2026-10-08T13:50:00_-1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-10-08T13:50:00",
+      "exit_time": "2026-10-08T14:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0312444967923629,
+      "notified_exit": true
+     },
+     "orb_nasdaq_NASDAQ_2026-10-09T13:45:00_-1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-10-09T13:45:00",
+      "exit_time": "2026-10-09T14:05:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0294740180673136,
+      "notified_exit": true
+     },
+     "orb_us30_US30_2026-10-06T13:45:00_1": {
+      "leg": "orb_us30",
+      "entry_time": "2026-10-06T13:45:00",
+      "exit_time": "2026-10-06T14:25:00",
+      "exit_reason": "stop",
+      "r_multiple": 0.9564410150513257,
+      "notified_exit": true
+     },
+     "orb_us30_US30_2026-10-08T13:45:00_1": {
+      "leg": "orb_us30",
+      "entry_time": "2026-10-08T13:45:00",
+      "exit_time": "2026-10-08T14:25:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0315093752119353,
+      "notified_exit": true
+     },
+     "orb_us30_US30_2026-10-09T13:50:00_1": {
+      "leg": "orb_us30",
+      "entry_time": "2026-10-09T13:50:00",
+      "exit_time": "2026-10-09T13:55:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.036793175463546,
+      "notified_exit": true
+     },
+     "ctnl_reversal__2026-10-06T12:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-10-06T12:30:00",
+      "exit_time": "2026-10-09T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1955911778101953,
+      "notified_exit": true
+     },
+     "ctnl_reversal__2026-10-08T16:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-10-08T16:45:00",
+      "exit_time": "2026-10-09T00:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0674017585308149,
+      "notified_exit": true
+     },
+     "ctnl_reversal__2026-10-09T00:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-10-09T00:30:00",
+      "exit_time": "2026-10-09T01:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0752499586757398,
+      "notified_exit": true
+     },
+     "ctnl_reversal__2026-10-09T01:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-10-09T01:30:00",
+      "exit_time": "2026-10-09T05:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1602786107370129,
+      "notified_exit": true
+     },
+     "ou_modell_DHI_2026-10-05T00:00:00_long": {
+      "leg": "ou_modell",
+      "entry_time": "2026-10-05T00:00:00",
+      "exit_time": "NaT",
+      "exit_reason": "data_end",
+      "r_multiple": 0.08549604202165484,
+      "notified_exit": false
+     },
+     "ou_modell_LEN_2026-10-05T00:00:00_long": {
+      "leg": "ou_modell",
+      "entry_time": "2026-10-05T00:00:00",
+      "exit_time": "NaT",
+      "exit_reason": "data_end",
+      "r_multiple": 0.1492009632006828,
+      "notified_exit": false
+     },
+     "ou_modell_SPG_2026-10-07T00:00:00_long": {
+      "leg": "ou_modell",
+      "entry_time": "2026-10-07T00:00:00",
+      "exit_time": "NaT",
+      "exit_reason": "data_end",
+      "r_multiple": 0.10678873851843738,
+      "notified_exit": false
+     },
+     "ou_modell_DE_2026-10-09T00:00:00_long": {
+      "leg": "ou_modell",
+      "entry_time": "2026-10-09T00:00:00",
+      "exit_time": "NaT",
+      "exit_reason": "data_end",
+      "r_multiple": 0.0,
+      "notified_exit": false
+     },
+     "ou_modell_IVZ_2026-10-09T00:00:00_long": {
+      "leg": "ou_modell",
+      "entry_time": "2026-10-09T00:00:00",
+      "exit_time": "NaT",
+      "exit_reason": "data_end",
+      "r_multiple": 0.0,
+      "notified_exit": false
+     }
+    },
+    "per_leg": {
+     "orb_nasdaq": {
+      "trades": 4,
+      "sum_r_brutto": -4.123,
+      "sum_r_netto": -4.123,
+      "kosten_r": 0.0,
+      "kosten_quelle": "Engine-Annahme",
+      "live_bein": true
+     },
+     "orb_us30": {
+      "trades": 3,
+      "sum_r_brutto": -1.112,
+      "sum_r_netto": -1.112,
+      "kosten_r": 0.0,
+      "kosten_quelle": "Engine-Annahme",
+      "live_bein": true
+     },
+     "ctnl_reversal": {
+      "trades": 4,
+      "sum_r_brutto": -4.499,
+      "sum_r_netto": -4.499,
+      "kosten_r": 0.0,
+      "kosten_quelle": "Engine-Annahme",
+      "live_bein": true
+     },
+     "ou_modell": {
+      "trades": 5,
+      "sum_r_brutto": 0.341,
+      "sum_r_netto": 0.341,
+      "kosten_r": 0.0,
+      "kosten_quelle": "Engine-Annahme",
+      "live_bein": true
+     }
+    },
+    "n_trades": 16,
+    "rel_return": -0.003459
+   },
+   "ist": {
+    "per_leg": {
+     "orb_nasdaq": {
+      "deals": 2,
+      "pnl": -231.31
+     },
+     "ou_modell": {
+      "deals": 4,
+      "pnl": 53.0
+     },
+     "ctnl_reversal": {
+      "deals": 4,
+      "pnl": -290.54
+     }
+    },
+    "unattributed": {
+     "deals": 0,
+     "pnl": 0.0
+    },
+    "total_pnl": -468.85,
+    "equity_bei_abzug": 195605.61,
+    "rel_return": -0.002397,
+    "accounts": [
+     "Funded / TTP Challenge (ttp)",
+     "Funded / IQ Challenge (iqmarkets)"
+    ]
+   },
+   "zerlegung": {
+    "nie_gesehen": {
+     "n": 7,
+     "sum_r": -5.24,
+     "trades": [
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-10-05T13:45:00",
+       "r": -1.03,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-10-06T14:05:00",
+       "r": -1.04,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-10-08T13:50:00",
+       "r": -1.03,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-10-09T13:45:00",
+       "r": -1.03,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_us30",
+       "entry_time": "2026-10-06T13:45:00",
+       "r": 0.96,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_us30",
+       "entry_time": "2026-10-08T13:45:00",
+       "r": -1.03,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_us30",
+       "entry_time": "2026-10-09T13:50:00",
+       "r": -1.04,
+       "exit_reason": "stop"
+      }
+     ]
+    },
+    "nicht_platziert": {
+     "n": 3,
+     "sum_r": -3.43,
+     "trades": [
+      {
+       "leg": "ctnl_reversal",
+       "entry_time": "2026-10-06T12:30:00",
+       "r": -1.2,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "ctnl_reversal",
+       "entry_time": "2026-10-08T16:45:00",
+       "r": -1.07,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "ctnl_reversal",
+       "entry_time": "2026-10-09T01:30:00",
+       "r": -1.16,
+       "exit_reason": "stop"
+      }
+     ]
+    },
+    "platziert": {
+     "n": 6,
+     "sum_r": -0.73,
+     "trades": [
+      {
+       "leg": "ctnl_reversal",
+       "entry_time": "2026-10-09T00:30:00",
+       "r": -1.08,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "ou_modell",
+       "entry_time": "2026-10-05T00:00:00",
+       "r": 0.09,
+       "exit_reason": "data_end"
+      },
+      {
+       "leg": "ou_modell",
+       "entry_time": "2026-10-05T00:00:00",
+       "r": 0.15,
+       "exit_reason": "data_end"
+      },
+      {
+       "leg": "ou_modell",
+       "entry_time": "2026-10-07T00:00:00",
+       "r": 0.11,
+       "exit_reason": "data_end"
+      },
+      {
+       "leg": "ou_modell",
+       "entry_time": "2026-10-09T00:00:00",
+       "r": 0.0,
+       "exit_reason": "data_end"
+      },
+      {
+       "leg": "ou_modell",
+       "entry_time": "2026-10-09T00:00:00",
+       "r": 0.0,
+       "exit_reason": "data_end"
+      }
+     ]
+    }
+   },
+   "kosten_pips": 2.05,
+   "kosten_quelle": "gemessen"
+  },
+  "fk": {
+   "label": "FKInstantFunding-MT5-Bridge",
+   "soll": {
+    "trades": {
+     "orb_nasdaq_NASDAQ_2026-10-05T13:45:00_1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-10-05T13:45:00",
+      "exit_time": "2026-10-05T13:50:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0261168913033305,
+      "notified_exit": true
+     },
+     "orb_nasdaq_NASDAQ_2026-10-06T14:05:00_1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-10-06T14:05:00",
+      "exit_time": "2026-10-06T14:10:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0361250833492333,
+      "notified_exit": true
+     },
+     "orb_nasdaq_NASDAQ_2026-10-08T13:50:00_-1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-10-08T13:50:00",
+      "exit_time": "2026-10-08T14:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0312444967923629,
+      "notified_exit": true
+     },
+     "orb_nasdaq_NASDAQ_2026-10-09T13:45:00_-1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-10-09T13:45:00",
+      "exit_time": "2026-10-09T14:05:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0294740180673136,
+      "notified_exit": true
+     },
+     "orb_us30_US30_2026-10-06T13:45:00_1": {
+      "leg": "orb_us30",
+      "entry_time": "2026-10-06T13:45:00",
+      "exit_time": "2026-10-06T14:25:00",
+      "exit_reason": "stop",
+      "r_multiple": 0.9564410150513257,
+      "notified_exit": true
+     },
+     "orb_us30_US30_2026-10-08T13:45:00_1": {
+      "leg": "orb_us30",
+      "entry_time": "2026-10-08T13:45:00",
+      "exit_time": "2026-10-08T14:25:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0315093752119353,
+      "notified_exit": true
+     },
+     "orb_us30_US30_2026-10-09T13:50:00_1": {
+      "leg": "orb_us30",
+      "entry_time": "2026-10-09T13:50:00",
+      "exit_time": "2026-10-09T13:55:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.036793175463546,
+      "notified_exit": true
+     },
+     "ctnl_reversal__2026-10-06T12:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-10-06T12:30:00",
+      "exit_time": "2026-10-09T05:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1955911778101953,
+      "notified_exit": true
+     },
+     "ctnl_reversal__2026-10-08T16:45:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-10-08T16:45:00",
+      "exit_time": "2026-10-09T00:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0674017585308149,
+      "notified_exit": true
+     },
+     "ctnl_reversal__2026-10-09T00:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-10-09T00:30:00",
+      "exit_time": "2026-10-09T01:30:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0752499586757398,
+      "notified_exit": true
+     },
+     "ctnl_reversal__2026-10-09T01:30:00_-1": {
+      "leg": "ctnl_reversal",
+      "entry_time": "2026-10-09T01:30:00",
+      "exit_time": "2026-10-09T05:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.1602786107370129,
+      "notified_exit": true
+     }
+    },
+    "per_leg": {
+     "orb_nasdaq": {
+      "trades": 4,
+      "sum_r_brutto": -4.123,
+      "sum_r_netto": -4.123,
+      "kosten_r": 0.0,
+      "kosten_quelle": "Engine-Annahme",
+      "live_bein": true
+     },
+     "orb_us30": {
+      "trades": 3,
+      "sum_r_brutto": -1.112,
+      "sum_r_netto": -1.112,
+      "kosten_r": 0.0,
+      "kosten_quelle": "Engine-Annahme",
+      "live_bein": true
+     },
+     "ctnl_reversal": {
+      "trades": 4,
+      "sum_r_brutto": -4.499,
+      "sum_r_netto": -4.499,
+      "kosten_r": 0.0,
+      "kosten_quelle": "Engine-Annahme",
+      "live_bein": true
+     }
+    },
+    "n_trades": 11,
+    "rel_return": -0.008197
+   },
+   "ist": {
+    "per_leg": {
+     "orb_nasdaq": {
+      "deals": 2,
+      "pnl": -261.09
+     },
+     "ctnl_reversal": {
+      "deals": 4,
+      "pnl": -21.7
+     }
+    },
+    "unattributed": {
+     "deals": 0,
+     "pnl": 0.0
+    },
+    "total_pnl": -282.79,
+    "equity_bei_abzug": 98440.26,
+    "rel_return": -0.002873,
+    "accounts": [
+     "FK Instant Funding"
+    ]
+   },
+   "zerlegung": {
+    "nie_gesehen": {
+     "n": 7,
+     "sum_r": -5.24,
+     "trades": [
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-10-05T13:45:00",
+       "r": -1.03,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-10-06T14:05:00",
+       "r": -1.04,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-10-08T13:50:00",
+       "r": -1.03,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-10-09T13:45:00",
+       "r": -1.03,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_us30",
+       "entry_time": "2026-10-06T13:45:00",
+       "r": 0.96,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_us30",
+       "entry_time": "2026-10-08T13:45:00",
+       "r": -1.03,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_us30",
+       "entry_time": "2026-10-09T13:50:00",
+       "r": -1.04,
+       "exit_reason": "stop"
+      }
+     ]
+    },
+    "nicht_platziert": {
+     "n": 3,
+     "sum_r": -3.43,
+     "trades": [
+      {
+       "leg": "ctnl_reversal",
+       "entry_time": "2026-10-06T12:30:00",
+       "r": -1.2,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "ctnl_reversal",
+       "entry_time": "2026-10-08T16:45:00",
+       "r": -1.07,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "ctnl_reversal",
+       "entry_time": "2026-10-09T01:30:00",
+       "r": -1.16,
+       "exit_reason": "stop"
+      }
+     ]
+    },
+    "platziert": {
+     "n": 1,
+     "sum_r": -1.08,
+     "trades": [
+      {
+       "leg": "ctnl_reversal",
+       "entry_time": "2026-10-09T00:30:00",
+       "r": -1.08,
+       "exit_reason": "stop"
+      }
+     ]
+    }
+   },
+   "kosten_pips": 1.3,
+   "kosten_quelle": "gemessen"
+  }
+ }
+}

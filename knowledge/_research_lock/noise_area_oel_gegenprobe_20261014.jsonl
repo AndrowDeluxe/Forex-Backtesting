@@ -1,0 +1,5 @@
+{"ts": "2026-10-14T20:06:50+00:00", "event": "register_split", "is_start": "2016-07-28", "is_end": "2022-12-31", "oos_end": "2025-09-30", "tresor_end": "2026-09-30"}
+{"ts": "2026-10-14T20:06:50+00:00", "event": "trials", "n": 4, "total": 4, "note": "2 feste Configs x 2 Uhren auf OIL, keine Optimierung"}
+{"ts": "2026-10-14T20:06:50+00:00", "event": "freeze", "hash": "2e684ba66039697f558a69d69d00f9535649381fa0fc2b0626f66f31e45c28c4"}
+{"ts": "2026-10-14T20:06:50+00:00", "event": "unseal", "stage": "oos", "hash": "2e684ba66039697f558a69d69d00f9535649381fa0fc2b0626f66f31e45c28c4"}
+{"ts": "2026-10-14T20:06:50+00:00", "event": "unseal", "stage": "tresor", "hash": "2e684ba66039697f558a69d69d00f9535649381fa0fc2b0626f66f31e45c28c4"}

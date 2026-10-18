@@ -4,6 +4,7 @@
 Öl abgleichen, welchen Mechanismus verfolgt Öl gegenüber S&P/Nasdaq“).
 Vorgeschichte: [[orb-order-storno-und-haltedauer]] (IS-only-ORB, Tresor
 durchgefallen) und [[orb-neues-regime-2026]]. Prozess: [[overfitting-sperre]].
+Querschnitt aller Öl-Befunde (ORB + Noise Area): [[oel-als-marktregime]].
 
 ## Aufbau
 

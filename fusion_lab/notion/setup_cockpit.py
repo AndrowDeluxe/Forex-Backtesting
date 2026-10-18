@@ -21,6 +21,7 @@ QUELLE = ["Mentor", "Eigene", "Bot", "Gruppe"]
 BIAS = [("Bullish", "green"), ("Bearish", "red"), ("Neutral", "gray")]
 ASSETS = ["USD", "EUR", "GBP", "JPY", "CHF", "AUD", "CAD", "NZD", "Gold", "Silber",
           "Öl", "Indizes", "Anleihen", "Aktien"]
+G8 = ["USD", "EUR", "GBP", "JPY", "CHF", "AUD", "CAD", "NZD"]
 INSTRUMENTE = ["EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "USDCAD", "USDCHF", "XAUUSD",
                "XAGUSD", "WTI", "US500", "NAS100", "US30", "DAX"]
 
@@ -51,7 +52,7 @@ DATABASES = {
     "elite3": ("🎓 ELITE 3", {
         "Titel": T,
         "Art": S(("Wissen", "blue"), ("Erkenntnis", "purple"), ("Aufgabe", "orange"),
-                 ("Material", "gray"), ("Session", "green")),
+                 ("Material", "gray"), ("Session", "green"), ("Edge Card", "red")),
         "Datum": D, "Fällig": D,
         "Thema": M("Makro", "Zinsen", "Inflation", "Notenbanken", "COT/Positionierung",
                    "Struktur/Liquidität", "Bankreports", "Sentiment", "CTNL", "Strategie",
@@ -104,6 +105,27 @@ DATABASES = {
         "Notiz": T, "Datum": D, "Typ": S("Idee", "Frage", "Notiz", "Material", "Aufgabe"),
         "Von": S("André", "Claude", "Bot"), "Inhalt": R,
         "In knowledge/ übernommen": C, "Link": U,
+    }),
+    # G8-Waehrungsstaerke (seit 10/2026): je Tag + Quelle eine Zeile. "SMH" = vom
+    # Mentor veroeffentlichte Tabelle, "Nachbau FRED/Dukascopy" = fusion_lab/g8.
+    # Befuellt von fusion_lab/notion/sync_g8.py.
+    "g8": ("💱 G8-Stärke", {
+        "Stand": T, "Datum": D,
+        "Quelle": S(("SMH", "purple"), ("Nachbau FRED", "blue"), ("Nachbau Dukascopy", "green")),
+        "Stärkste": S(*G8), "Schwächste": S(*G8),
+        **{ccy: {"number": {"format": "number"}} for ccy in G8},
+        "Rangfolge": R, "Gemeinsamer Treiber %": {"number": {"format": "number"}}, "Hinweis": R,
+    }),
+    # Lernkarten je Makro-Baustein der Analyse (seit 10/2026). Inhalt kommt aus
+    # fusion_lab/notion/makro_education.py, befuellt von sync_education.py.
+    "education": ("📚 Makro-Education", {
+        "Thema": T, "Nr": {"number": {"format": "number"}}, "Kurz erklärt": R, "Wie es wirkt": R,
+        "Rolle im Report": M(("Regime", "purple"), ("Ranking", "blue"), ("Szenario", "yellow"),
+                             ("Gate", "orange"), ("Kein-Trade", "red")),
+        "Datenquellen": R,
+        "Status": S(("ungetestet", "gray"), ("Baustein aktiv", "blue"), ("getestet: kein Edge", "red"),
+                    ("getestet: Edge", "green")),
+        "Widersprüche": R, "Quellen (OneNote/Repo)": R,
     }),
 }
 

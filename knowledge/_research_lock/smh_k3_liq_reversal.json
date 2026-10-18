@@ -1,0 +1,31 @@
+{
+  "strategy": "smh_k3_liq_reversal",
+  "split": {
+    "is_start": "2018-04-01",
+    "is_end": "2023-03-31",
+    "oos_end": "2025-09-30",
+    "tresor_end": "2026-10-07"
+  },
+  "registered": "2026-10-07T10:06:54+00:00",
+  "trials": 9,
+  "frozen": {
+    "hash": "7d40b6a26915a6273438c53aa287be35946dc3cd758e3c4d890df39b059292ba",
+    "config": {
+      "window_min": 30,
+      "first_check": "10:30",
+      "last_check": "15:00",
+      "z": 2.0,
+      "lookback_days": 20,
+      "hold_min": 30,
+      "high_vol_only": true,
+      "skip_news": true,
+      "cost_mult": 1.0
+    },
+    "ts": "2026-10-07T10:19:18+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-07T10:19:26+00:00",
+    "tresor": "2026-10-07T10:19:54+00:00"
+  },
+  "forward": null
+}

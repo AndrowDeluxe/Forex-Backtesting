@@ -1,0 +1,85 @@
+{
+  "strategy": "noise_area_regime2026_20261014",
+  "split": {
+    "is_start": "2025-10-01",
+    "is_end": "2026-03-31",
+    "oos_end": "2026-06-30",
+    "tresor_end": "2026-09-30"
+  },
+  "registered": "2026-10-14T19:26:36+00:00",
+  "trials": 18432,
+  "frozen": {
+    "hash": "1837f40289afe14179d9fc0d9c63baf3bbfc64e983f59f82b8e2038016b0f90f",
+    "config": {
+      "varianten": {
+        "SP500": {
+          "G Gewinner": {
+            "vm": 0.5,
+            "lookback": 90,
+            "direction": "fade",
+            "exit": "vwap",
+            "sides": "short",
+            "window": "all",
+            "gate": "none"
+          },
+          "K1 Paper-Original": {
+            "paper": true,
+            "vm": 1.0,
+            "lookback": 14,
+            "gate": "none"
+          },
+          "K2 Paper, nur 1. Trade, Exit 16:00": {
+            "vm": 1.0,
+            "lookback": 14,
+            "direction": "mom",
+            "exit": "none",
+            "sides": "both",
+            "window": "first",
+            "gate": "none"
+          }
+        },
+        "NASDAQ": {
+          "G Gewinner": {
+            "vm": 0.75,
+            "lookback": 90,
+            "direction": "fade",
+            "exit": "band",
+            "sides": "short",
+            "window": "all",
+            "gate": "none"
+          },
+          "K1 Paper-Original": {
+            "paper": true,
+            "vm": 1.0,
+            "lookback": 90,
+            "gate": "none"
+          },
+          "K2 Paper, nur 1. Trade, Exit 16:00": {
+            "vm": 1.0,
+            "lookback": 90,
+            "direction": "mom",
+            "exit": "none",
+            "sides": "both",
+            "window": "first",
+            "gate": "none"
+          }
+        }
+      },
+      "kosten_rt_bps": {
+        "SP500": 1.59,
+        "NASDAQ": 1.29
+      },
+      "auswahl": "Nachbarschafts-Score, >= 60 Trades"
+    },
+    "ts": "2026-10-14T19:27:32+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-14T19:27:32+00:00",
+    "tresor": "2026-10-14T19:27:32+00:00"
+  },
+  "forward": {
+    "start": "2026-10-15",
+    "eval_date": "2027-03-31",
+    "min_trades": 1000000
+  }
+}

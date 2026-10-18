@@ -1,0 +1,6 @@
+{"ts": "2026-10-14T19:26:36+00:00", "event": "register_split", "is_start": "2025-10-01", "is_end": "2026-03-31", "oos_end": "2026-06-30", "tresor_end": "2026-09-30"}
+{"ts": "2026-10-14T19:26:36+00:00", "event": "trials", "n": 18432, "total": 18432, "note": "breites Raster je Index (Nutzerentscheid 14.10.)"}
+{"ts": "2026-10-14T19:27:32+00:00", "event": "freeze", "hash": "1837f40289afe14179d9fc0d9c63baf3bbfc64e983f59f82b8e2038016b0f90f"}
+{"ts": "2026-10-14T19:27:32+00:00", "event": "unseal", "stage": "oos", "hash": "1837f40289afe14179d9fc0d9c63baf3bbfc64e983f59f82b8e2038016b0f90f"}
+{"ts": "2026-10-14T19:27:32+00:00", "event": "unseal", "stage": "tresor", "hash": "1837f40289afe14179d9fc0d9c63baf3bbfc64e983f59f82b8e2038016b0f90f"}
+{"ts": "2026-10-14T19:27:37+00:00", "event": "register_forward", "start": "2026-10-15", "eval_date": "2027-03-31", "min_trades": 1000000}

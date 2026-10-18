@@ -1,0 +1,6 @@
+{"ts": "2026-10-14T20:07:43+00:00", "event": "register_split", "is_start": "2016-07-28", "is_end": "2022-12-31", "oos_end": "2025-09-30", "tresor_end": "2026-09-30"}
+{"ts": "2026-10-14T20:07:43+00:00", "event": "trials", "n": 18, "total": 18, "note": "8 feste Oel-Filter + 1 nachtraeglicher (9 Oel bewegt, vorbelastet) je Index"}
+{"ts": "2026-10-14T20:07:50+00:00", "event": "freeze", "hash": "d032003909734eddd5f0ff0e0c33e3a4709b7a630e39ceed61d1d43eb2b1c333"}
+{"ts": "2026-10-14T20:07:50+00:00", "event": "unseal", "stage": "oos", "hash": "d032003909734eddd5f0ff0e0c33e3a4709b7a630e39ceed61d1d43eb2b1c333"}
+{"ts": "2026-10-14T20:07:50+00:00", "event": "unseal", "stage": "tresor", "hash": "d032003909734eddd5f0ff0e0c33e3a4709b7a630e39ceed61d1d43eb2b1c333"}
+{"ts": "2026-10-14T20:07:51+00:00", "event": "register_forward", "start": "2026-10-15", "eval_date": "2027-03-31", "min_trades": 1000000}

@@ -1,0 +1,40 @@
+{
+  "strategy": "zarattini_noise_area_20261011",
+  "split": {
+    "is_start": "2016-07-28",
+    "is_end": "2022-12-31",
+    "oos_end": "2025-09-30",
+    "tresor_end": "2026-09-30"
+  },
+  "registered": "2026-10-11T09:29:36+00:00",
+  "trials": 19,
+  "frozen": {
+    "hash": "b592225d17f50f37d7ed5c565fe9aa22cd53fb92897e1551ddf57b9cce80795f",
+    "config": {
+      "regel": "Zarattini Noise Area, Stop max(Band,VWAP), Entscheid HH:00/HH:30 10:00-15:30, Exit 16:00",
+      "configs": {
+        "SP500": {
+          "vm": 1.0,
+          "lookback": 14,
+          "gate": "none"
+        },
+        "NASDAQ": {
+          "vm": 1.0,
+          "lookback": 90,
+          "gate": "none"
+        }
+      },
+      "kosten_rt_bps": {
+        "SP500": 1.59,
+        "NASDAQ": 1.29
+      },
+      "sizing": "1x und dyn (2 %-Ziel, Deckel 4x)"
+    },
+    "ts": "2026-10-11T09:32:10+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-11T09:32:14+00:00",
+    "tresor": "2026-10-11T09:32:14+00:00"
+  },
+  "forward": null
+}

@@ -1,0 +1,29 @@
+{
+  "strategy": "noise_area_k60_sltp_20261015",
+  "split": {
+    "is_start": "2016-07-28",
+    "is_end": "2022-12-31",
+    "oos_end": "2025-09-30",
+    "tresor_end": "2026-09-30"
+  },
+  "registered": "2026-10-15T12:26:06+00:00",
+  "trials": 27,
+  "frozen": {
+    "hash": "62e3f371a427ff4d94bd3bad66f2fd27fac83ba8d78efd30b9bc1f393c84810e",
+    "config": {
+      "gewinner": {
+        "sl": null,
+        "tp": null,
+        "hold": null
+      },
+      "auswahl": "max IS-Sharpe",
+      "basis": "forward_noise_area_k60 (16:00, kein SL/TP)"
+    },
+    "ts": "2026-10-15T12:26:12+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-15T12:26:12+00:00",
+    "tresor": "2026-10-15T12:26:12+00:00"
+  },
+  "forward": null
+}

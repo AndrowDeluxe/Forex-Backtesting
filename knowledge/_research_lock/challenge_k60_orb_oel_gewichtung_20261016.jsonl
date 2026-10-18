@@ -1,0 +1,5 @@
+{"ts": "2026-10-16T10:21:46+00:00", "event": "register_split", "is_start": "2016-07-28", "is_end": "2025-09-30", "oos_end": "2026-09-30", "tresor_end": null}
+{"ts": "2026-10-16T10:21:46+00:00", "event": "trials", "n": 4368, "total": 4368, "note": "Struktur x Risiko je Challenge (TTP, IQ), MC P(Bruch)<=5 %"}
+{"ts": "2026-10-16T10:34:58+00:00", "event": "freeze", "hash": "684e2f769f9ffe6ffd6da0817f9a46a689bb347b7e66930aef8da5e11bfde449"}
+{"ts": "2026-10-16T10:34:58+00:00", "event": "unseal", "stage": "oos", "hash": "684e2f769f9ffe6ffd6da0817f9a46a689bb347b7e66930aef8da5e11bfde449"}
+{"ts": "2026-10-16T10:34:58+00:00", "event": "register_forward", "start": "2026-10-19", "eval_date": "2027-03-31", "min_trades": 1000000}

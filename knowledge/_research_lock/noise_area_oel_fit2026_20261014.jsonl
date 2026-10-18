@@ -1,0 +1,5 @@
+{"ts": "2026-10-14T20:27:58+00:00", "event": "register_split", "is_start": "2025-10-01", "is_end": "2026-09-30", "oos_end": "2026-10-14", "tresor_end": null}
+{"ts": "2026-10-14T20:27:58+00:00", "event": "trials", "n": 16848, "total": 16848, "note": "Oel-Faktor-Raster je Index, angepasst an 10/25-09/26 (explorativ)"}
+{"ts": "2026-10-14T20:28:39+00:00", "event": "freeze", "hash": "31d75c8c16cf18a2113e9b389e8ca284e48441b3f8bb315f01c7e44e0ed46226"}
+{"ts": "2026-10-14T20:28:39+00:00", "event": "unseal", "stage": "oos", "hash": "31d75c8c16cf18a2113e9b389e8ca284e48441b3f8bb315f01c7e44e0ed46226"}
+{"ts": "2026-10-14T20:28:39+00:00", "event": "register_forward", "start": "2026-10-15", "eval_date": "2027-03-31", "min_trades": 1000000}

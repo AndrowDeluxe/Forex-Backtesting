@@ -1,0 +1,42 @@
+{
+  "strategy": "noise_area_oel_filter_20261014",
+  "split": {
+    "is_start": "2016-07-28",
+    "is_end": "2022-12-31",
+    "oos_end": "2025-09-30",
+    "tresor_end": "2026-09-30"
+  },
+  "registered": "2026-10-14T20:07:43+00:00",
+  "trials": 18,
+  "frozen": {
+    "hash": "d032003909734eddd5f0ff0e0c33e3a4709b7a630e39ceed61d1d43eb2b1c333",
+    "config": {
+      "basis": "Paper-Config WINNERS 11.10.",
+      "gewinner": {
+        "SP500": "8 Oel ruhig",
+        "NASDAQ": null
+      },
+      "varianten": [
+        "1 K20<0 aus",
+        "2 K40<0 aus",
+        "3 K20>=0 aus",
+        "4 A60>0 aus",
+        "5 A60<=0 aus",
+        "6 Oel gleich",
+        "7 Oel gegen",
+        "8 Oel ruhig",
+        "9 Oel bewegt"
+      ]
+    },
+    "ts": "2026-10-14T20:07:50+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-14T20:07:50+00:00",
+    "tresor": "2026-10-14T20:07:50+00:00"
+  },
+  "forward": {
+    "start": "2026-10-15",
+    "eval_date": "2027-03-31",
+    "min_trades": 1000000
+  }
+}

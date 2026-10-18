@@ -5,6 +5,8 @@ Dritter Durchlauf von [[realkosten-und-ausfuehrungs-probe]] nach
 [[cls-practical-kostenvalidierung]] und [[ctnl-kostenvalidierung]], plus
 Nutzerauftrag: Einstieg, Order-Logik, Filter, BE und Ziele prüfen.
 **Kein Bot wurde geändert.**
+Folgeprüfung nach Overfitting-Sperre (nur IS optimiert, 15.10.):
+[[gold-asb-is-only-neuanalyse]].
 
 Skripte: `scripts/research_gold_asb_execution_costs.py` (Proben p6_5–p6_8),
 `scripts/research_gold_asb_optimization.py` (M5-Engine, Varianten). Kosten-

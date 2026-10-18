@@ -67,7 +67,8 @@ Verschmelzung" (2026-09-02) ab -- der Journal-Teil ist laut Nutzer erledigt.
     `onenote_fix_names.py`).
     Fortsetzen: `python -m fusion_lab.ingest.onenote --notebook
     "Finanzielle Freiheit Neu" --section "Smart Money Trading"`.
-  - [ ] Telegram „SMH Daily Update“ (Import 09.10. noch laufend, Stand
+  - [x] Telegram „SMH Daily Update“ (vollständig seit 16.10.: 6.579
+    Nachrichten bis 16.10.2026; früherer Hinweis: Import 09.10., Stand
     13.09.2026): ~100 Makro-Reports als PDF ab 06.08.2025, Sonntag +
     Mittwoch. Drei Format-Generationen; seit 28.06.2026 einheitlich
     „SMT Macro Desk“ (Regime, G8-Ranking Makro/Rates/Preis/Quant,
@@ -100,6 +101,15 @@ Verschmelzung" (2026-09-02) ab -- der Journal-Teil ist laut Nutzer erledigt.
     Signal allein negativ), erst später kombinieren und daraus einen Edge
     bauen. Nächster Schwerpunkt: Makro-Report automatisieren, gestützt auf
     das Makro-Wissen aus OneNote.
+  - **Anforderung Makro-Agent (Nutzer 16.10.)**: echte, tiefe Analyse vor
+    Report und vor jeder Trade-Freigabe. Dafür Datenschicht je G8-Währung
+    (Zinsen/Erwartungen, CPI inkl. Bestandteile, Arbeitsmarkt, Wachstum,
+    Exporte/Handel …) plus Wirtschaftskalender mit Konsens (Überraschung =
+    Ist minus Konsens; Konsensquelle ist der Engpass). Der Agent muss die
+    Daten, an denen ein Event-Trade hängt (z. B. „nach Kanada-CPI“), selbst
+    beobachten. Wirkketten „Event → Erwartung → Währung → Gate“ aus den
+    extrahierten Aktivierungstexten der 800 Report-Ideen ableiten. → Teil des
+    Plan-Modus Phase 2.
   - [x] **Makro-Faktor-Katalog (12.10.)**: [[makro-faktoren-katalog]] -- OneNote
     Makro Education / Bankreports / News+Quick Notes+Incentive entdoppelt:
     49 Faktoren (mit Rolle im Report, Datenquelle, testbar), 13 Regime-

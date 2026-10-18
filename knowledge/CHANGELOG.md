@@ -9,6 +9,30 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-16** [Research / Key Levels] **Edge Card „Key Levels“ fertig,
+  Stufe-1-Backtest gerechnet (nur IS).**
+  - Die Edge Card wurde mit dem Nutzer erarbeitet
+    ([[keylevel-edge-card-final]]) und liegt auch in Notion unter
+    „🎓 ELITE 3“ → „📁 Edge Cards“ (`fusion_lab/notion/edge_cards.py`).
+  - Lock `keylevels_v1`: IS 01/2016–03/2023, OOS bis 09/2025, Tresor bis
+    heute nur auf 6 frischen Paaren.
+  - M1-Daten 2016–heute für 10 Paare.
+  - Ergebnis: Der Magnet an runden Zahlen, Session- und Vorwochenleveln ist
+    über alle Paare robust. Pivots und Engulfing-Open zeigen keinen Effekt.
+  - Nur eine von 226 Zellen kommt weiter: Vorwoche, M1, G = 20, Durchlauf.
+    Netto ist sie knapp positiv und nicht signifikant.
+  - Code: `keylevels/`, `scripts/research_keylevels.py`. Die Kosten der
+    frischen Paare sind geschätzt (Dashboard).
+  - Unterwegs behoben: Zeiteinheiten ms/us/ns unter pandas 3. Derselbe
+    Fehler steckte in K1, dort war er wirkungslos und ist dokumentiert.
+
+- **2026-10-16** [Dachprojekt / Strang 0] **Telegram „SMH Daily Update“ nachimportiert**
+  (Nutzerauftrag) [[quant-diskretionaer-fusion]]. +87 Nachrichten (09.–16.10., ohne
+  Videos). Bestand jetzt 6.579 Nachrichten, 17.03.2025–16.10.2026, ~4.500 Chartbilder.
+  Befund für die Copy-Trading-Idee: Die Calls stehen fast nur im Bild. „Trade Idee“ =
+  TradingView-Positionswerkzeug mit Entry/SL/TP an der Achse (auslesbar), „Watch“ =
+  POI-Zone + gemalter Pfad, ohne Level. Keine Bot-Änderung.
+
 - **2026-10-16** [Weekly Report / Edge-Ampel] **Warnstufen eingerichtet**
   (Nutzerentscheid) [[edge-fruehwarnung-kill-switch]]. Schritt 5b im
   `weekly_report_prompt.md`: `research_live_legs.py tickmill --ampel` (neu: bis gestern,
@@ -77,6 +101,20 @@ keine Planung (dafür ist `DASHBOARD.md`).
   --days 10 --refresh` (FRED neu laden; Log `fusion_lab/data/logs/
   g8_notion_sync.log`). Reiner Daten-/Anzeige-Task. Testlauf 12.10. 22:48:
   Ergebnis 0, 1 neu / 39 aktualisiert.
+
+- **2026-10-16** [Wissen/Notion] **Öl-Wissen festgehalten + Notion-Ordner „📁 Optimierte Edges
+  und Tests“** (Nutzerauftrag). Neu: [[oel-als-marktregime]] (Querschnitt aller Öl-Befunde, Mechanismus,
+  Prüfregel), [[optimierte-edges-uebersicht]] (alle Forward-Tests mit Lock und Auswertungsbefehl).
+  `fusion_lab/notion/optimierte_edges.py` veröffentlicht beide + die Zarattini- und ORB-Öl-Projektnotiz
+  als Unterseiten der neuen Seite im Cockpit (Ersetzen statt Doppeln bei erneutem Lauf).
+
+- **2026-10-16** [Research] **Challenge-Gewichtung K60 + ORB-Öl für TTP und IQ** (Nutzerauftrag,
+  Plan freigegeben) [[zarattini-noise-area-momentum]]. `scripts/research_challenge_k60_orb_gewichtung.py`,
+  Lock `challenge_k60_orb_oel_gewichtung_20261016` (4.368 Versuche, MC + Walk-Forward). Gewinner TTP:
+  K60 ohne Stop 1 % + ORB NASDAQ O2 0,25 %, max. 2/Tag (MC +8,2 %/Jahr, P(Bruch) 5 %); IQ: dasselbe mit
+  K60 0,75 % (+7,1 %). Ohne O2 gleiche Struktur mit O1. Ereignis-Sim: kein Bruch, auch bei Kosten ×2.
+  `research_noise_area_k60_ttp.trades()` hat jetzt `sl_sigma` (Standard unverändert). Forward
+  19.10.2026–31.03.2027, kein Bot, keine Bridge-Änderung.
 
 - **2026-10-16** [Research] **Kombination K60 + Öl-ORB auf TTP** (Nutzerfrage)
   [[zarattini-noise-area-momentum]]. `scripts/research_kombi_k60_orb_oel.py`, beschreibend.

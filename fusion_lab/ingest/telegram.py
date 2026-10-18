@@ -15,6 +15,7 @@ behandeln).
     python -m fusion_lab.ingest.telegram --folder SMH     # ganzer Telegram-Ordner
     python -m fusion_lab.ingest.telegram --chat -100123   # einzelner Chat
     python -m fusion_lab.ingest.telegram --no-media       # nur Text
+    python -m fusion_lab.ingest.telegram --chat -100123 --skip-video   # Bilder+PDFs, keine Videos
 """
 
 import argparse
@@ -69,7 +70,7 @@ def message_record(msg) -> dict:
     }
 
 
-async def dump_chat(client, chat, state: dict, media: bool) -> tuple[str, int]:
+async def dump_chat(client, chat, state: dict, media: bool, skip_video: bool = False) -> tuple[str, int]:
     entity = await client.get_entity(chat)
     title = getattr(entity, "title", None) or getattr(entity, "username", None) or str(chat)
     key = str(entity.id)
@@ -83,7 +84,8 @@ async def dump_chat(client, chat, state: dict, media: bool) -> tuple[str, int]:
         # reverse=True: aelteste zuerst, damit ein Abbruch nur den Rest verliert
         async for msg in client.iter_messages(entity, min_id=last_id, reverse=True):
             rec = message_record(msg)
-            if media and msg.media and (msg.photo or msg.document):
+            is_video = bool(msg.video or msg.gif or msg.video_note)
+            if media and msg.media and (msg.photo or msg.document) and not (skip_video and is_video):
                 try:
                     path = await msg.download_media(file=str(folder / "media" / f"{msg.id}_"))
                     rec["media_file"] = Path(path).name if path else None
@@ -122,7 +124,7 @@ async def run(args) -> int:
             return 1
         state = load_json(STATE, {})
         for chat in chats:
-            title, n = await dump_chat(client, chat, state, media=not args.no_media)
+            title, n = await dump_chat(client, chat, state, media=not args.no_media, skip_video=args.skip_video)
             print(f"  {title}: {n} neue Nachrichten", flush=True)
     return 0
 
@@ -133,6 +135,8 @@ def main(argv=None) -> int:
     ap.add_argument("--chat", action="append", help="Chat-ID oder @username (mehrfach moeglich)")
     ap.add_argument("--folder", help="alle Chats eines Telegram-Ordners, z.B. SMH")
     ap.add_argument("--no-media", action="store_true", help="keine Bilder/Dateien laden")
+    ap.add_argument("--skip-video", action="store_true",
+                    help="Videos/GIFs nicht laden (Bilder + PDFs schon) -- grosse Videos blockierten den Abruf")
     return asyncio.run(run(ap.parse_args(argv)))
 
 

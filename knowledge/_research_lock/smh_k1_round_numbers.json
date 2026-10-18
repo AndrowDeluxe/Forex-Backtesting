@@ -1,0 +1,31 @@
+{
+  "strategy": "smh_k1_round_numbers",
+  "split": {
+    "is_start": "2018-04-01",
+    "is_end": "2023-03-31",
+    "oos_end": "2025-09-30",
+    "tresor_end": "2026-10-07"
+  },
+  "registered": "2026-10-07T10:06:54+00:00",
+  "trials": 11,
+  "frozen": {
+    "hash": "315e986b070d082f11ba9934d2e24adc2ddba85fe0a56e0c5143c1138986ae0a",
+    "config": {
+      "mode": "fade",
+      "step_pips": 100.0,
+      "offset_pips": 0.0,
+      "approach_pips": 20.0,
+      "stop_pips": 15.0,
+      "target_pips": 15.0,
+      "breach_pips": 3.0,
+      "hold_min": 60,
+      "cost_mult": 1.0
+    },
+    "ts": "2026-10-07T10:19:17+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-07T10:19:19+00:00",
+    "tresor": "2026-10-07T10:19:50+00:00"
+  },
+  "forward": null
+}

@@ -1,0 +1,2 @@
+{"ts": "2026-10-16T10:32:19+00:00", "event": "register_split", "is_start": "2016-01-01", "is_end": "2023-03-31", "oos_end": "2025-09-30", "tresor_end": "2026-10-16"}
+{"ts": "2026-10-16T11:16:39+00:00", "event": "trials", "n": 226, "total": 226, "note": "Stufe 1: Zellen Level x TF x G x Ereignistyp mit n>=100"}

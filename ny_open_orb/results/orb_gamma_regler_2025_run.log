@@ -1,0 +1,51 @@
+SP500 fertig
+NASDAQ fertig
+  inst version              regler  trades  sum_r   pf  konto_end  maxdd_pct
+ SP500    live                ohne      91  20.19 1.25  118391.14     -20.11
+ SP500    live             kein Q5      90  21.30 1.27  119730.16     -19.21
+ SP500    live Q1+Q5 halbes Risiko      91  16.09 1.25  114800.58     -15.30
+ SP500    live           nur Q2-Q4      53  12.00 1.25  110575.94     -10.55
+ SP500   basis                ohne     449   5.22 1.01   88357.57     -42.72
+ SP500   basis             kein Q5     344  11.24 1.04   96920.32     -29.40
+ SP500   basis Q1+Q5 halbes Risiko     449  26.17 1.09  113294.55     -30.16
+ SP500   basis           nur Q2-Q4     247  47.12 1.23  141581.09     -27.94
+NASDAQ    live                ohne     147  73.07 1.55  181315.97     -19.30
+NASDAQ    live             kein Q5     109  34.85 1.35  128771.20     -16.59
+NASDAQ    live Q1+Q5 halbes Risiko     147  55.20 1.55  157855.00     -16.64
+NASDAQ    live           nur Q2-Q4      77  37.32 1.54  133891.16     -14.84
+NASDAQ   basis                ohne     449  -9.98 0.97   78377.31     -51.74
+NASDAQ   basis             kein Q5     344  -4.58 0.98   85014.65     -41.41
+NASDAQ   basis Q1+Q5 halbes Risiko     449  -2.68 0.99   88057.55     -36.16
+NASDAQ   basis           nur Q2-Q4     247   4.63 1.02   96149.46     -25.09
+
+SP500 live – Σ R je Quartal
+quartal              2025Q1  2025Q2  2025Q3  2025Q4  2026Q1  2026Q2  2026Q3
+regler                                                                     
+Q1+Q5 halbes Risiko     1.3     5.1     2.5     9.0     9.6    -4.1    -7.4
+kein Q5                 5.9     7.0     2.5     9.0     9.1    -4.9    -7.4
+nur Q2-Q4              -3.3     3.2     2.5     9.0    10.1    -3.3    -6.2
+ohne                    5.9     7.0     2.5     9.0     9.1    -4.9    -8.5
+
+SP500 basis – Σ R je Quartal
+quartal              2025Q1  2025Q2  2025Q3  2025Q4  2026Q1  2026Q2  2026Q3
+regler                                                                     
+Q1+Q5 halbes Risiko    23.4     1.7     0.0   -23.6    20.5    13.7    -9.5
+kein Q5                22.0    10.6    -0.0   -25.6     6.5    12.7   -14.8
+nur Q2-Q4              27.1     1.2    -0.0   -24.6    34.4    19.6   -10.6
+ohne                   19.8     2.2     0.0   -22.6     6.5     7.8    -8.4
+
+NASDAQ live – Σ R je Quartal
+quartal              2025Q1  2025Q2  2025Q3  2025Q4  2026Q1  2026Q2  2026Q3
+regler                                                                     
+Q1+Q5 halbes Risiko    -9.1    11.9     6.3    -2.2    11.6    18.2    18.3
+kein Q5               -12.7    23.6    -0.3     0.6     9.8    12.1     1.8
+nur Q2-Q4              -4.3     4.5    -0.3     1.6    13.5    18.3     3.9
+ohne                  -13.8    19.4    12.8    -5.9     9.8    18.1    32.8
+
+NASDAQ basis – Σ R je Quartal
+quartal              2025Q1  2025Q2  2025Q3  2025Q4  2026Q1  2026Q2  2026Q3
+regler                                                                     
+Q1+Q5 halbes Risiko    20.2    -0.1     1.7   -10.2     5.3    -1.6   -18.0
+kein Q5                27.4     8.6    -1.8    -3.9    -4.3    -2.4   -28.2
+nur Q2-Q4              15.2     1.0    -1.8    -2.9    14.9     2.3   -24.1
+ohne                   25.3    -1.2     5.1   -17.5    -4.3    -5.5   -11.8

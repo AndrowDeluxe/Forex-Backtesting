@@ -1,0 +1,39 @@
+{
+  "strategy": "noise_area_oel_gegenprobe_20261014",
+  "split": {
+    "is_start": "2016-07-28",
+    "is_end": "2022-12-31",
+    "oos_end": "2025-09-30",
+    "tresor_end": "2026-09-30"
+  },
+  "registered": "2026-10-14T20:06:50+00:00",
+  "trials": 4,
+  "frozen": {
+    "hash": "2e684ba66039697f558a69d69d00f9535649381fa0fc2b0626f66f31e45c28c4",
+    "config": {
+      "configs": {
+        "Paper (VWAP-Stop)": {
+          "exit": "vwap",
+          "window": "all"
+        },
+        "K2 (1. Trade, bis Schluss)": {
+          "exit": "none",
+          "window": "first"
+        }
+      },
+      "vm": 1.0,
+      "lookback": 14,
+      "kosten_oil_rt_bps": 4.75,
+      "uhren": {
+        "index": "09:30-16:00",
+        "oel": "09:00-14:30, Entscheid 09:30-14:00"
+      }
+    },
+    "ts": "2026-10-14T20:06:50+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-14T20:06:50+00:00",
+    "tresor": "2026-10-14T20:06:50+00:00"
+  },
+  "forward": null
+}

@@ -1,0 +1,33 @@
+{
+  "strategy": "noise_area_oel_k60_forward_20261014",
+  "split": {
+    "is_start": "2016-07-28",
+    "is_end": "2022-12-31",
+    "oos_end": "2025-09-30",
+    "tresor_end": "2026-09-30"
+  },
+  "registered": "2026-10-14T20:41:47+00:00",
+  "trials": 0,
+  "frozen": {
+    "hash": "165d939d309f823a0b26db12883fca726abdeb036ab6424afee18fcd73f139dd",
+    "config": {
+      "inst": "NASDAQ",
+      "basis": "k2 (mom, beide, nur 1. Trade, Exit 16:00)",
+      "vm": 1.0,
+      "lookback": 90,
+      "oel_filter": "Korr(Oel, NASDAQ, 60 Tage bis Vortag) < 0",
+      "kosten_rt_bps": 1.29,
+      "konto": "100k, Sizing 1x und dyn"
+    },
+    "ts": "2026-10-14T20:41:47+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-14T20:41:47+00:00",
+    "tresor": "2026-10-14T20:41:47+00:00"
+  },
+  "forward": {
+    "start": "2026-10-15",
+    "eval_date": "2027-03-31",
+    "min_trades": 1000000
+  }
+}

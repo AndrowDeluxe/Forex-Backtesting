@@ -38,7 +38,12 @@ passiert, was steht an.
    K2 PF 1,31 (52 Trades), K3 (Team-Kandidat) PF 0,84. Steckbrief steht auf
    der Notion-Seite in „🎓 ELITE 3“. Offen: Präsentation im nächsten Call;
    entscheiden, ob vorher noch ein 4. Kandidat getestet wird.
-   **Nächster Schritt (Nutzer, 07.10.): Key-Level-Ansatz vertiefen.** Runde
+   **Key Levels (16.10.): Edge Card fertig ([[keylevel-edge-card-final]], auch
+   in Notion unter 📁 Edge Cards). Stufe 1 fertig: Magnet robust (Vorwoche >
+   Session ≈ runde > halbe Zahl), Pivots und Engulfing ohne Effekt. Nur
+   „Vorwoche, M1, G = 20, Durchlauf“ kommt weiter. Nächster Schritt: Stufe 2
+   (Kontext) auf dieser Zelle.**
+   Früherer Schritt (07.10.): Key-Level-Ansatz vertiefen. Runde
    Zahlen wirken wie ein Magnet, nicht wie eine Wand. OOS und Tresor von K1
    sind schon geöffnet, deshalb braucht eine neue Regel einen eigenen Lock
    und frische Prüfdaten (andere Märkte oder Forward).
@@ -60,6 +65,13 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **Key-Level-Backtest: Kosten der 6 frischen Paare sind geschätzt, nicht
+  gemessen** (16.10.). Round-Turn in Pips: USDCAD 1,6, USDCHF 1,6, NZDUSD 1,8,
+  EURGBP 1,6, EURJPY 1,8, GBPJPY 2,5. Grundlage: typische Raw-Spreads plus
+  dieselbe Kommission und Slippage wie bei den gemessenen Majors.
+  `smh_microstructure/costs.py`. Bitte bestätigen oder Broker-Werte nennen.
+  [[keylevel-edge-card]]
+
 - **ORB-Öl-Filter: zwei Forward-Kandidaten, Stichtag 31.03.2027** (12.10.,
   [[orb-gegenprobe-oel]]). (1) IS-Filter „Öl gegen Ausbruch“, (2) 2026-Fit
   (Korrelationsregime → Trend-Tage + Öl gegen Ausbruch), ausdrücklich kein
@@ -79,7 +91,8 @@ Bedarf vor generischem Aufräumen.
   verschoben. Entscheidung nötig: Altpositionen schließen? Exit-Abgleich
   gegen Broker statt Sim-Schlüssel?
 
-- **📅 31.03.2027: Forward Noise-Area-Momentum Regime 2026** (Nutzerentscheid
+- **📅 31.03.2027: Forward Noise-Area-Momentum Regime 2026** (Übersicht aller
+  Forward-Tests: [[optimierte-edges-uebersicht]]; Nutzerentscheid
   14.10., [[zarattini-noise-area-momentum]]). Breites Raster (9.216 Varianten
   je Index) auf 10/25–03/26: Die Fade-Gewinner sind schon in OOS und Tresor
   durchgefallen (DSR ~0). Sie laufen trotzdem mit, zusammen mit K1
@@ -98,6 +111,17 @@ Bedarf vor generischem Aufräumen.
   (Lock `noise_area_oel_k60_forward_20261014`, `python scripts/forward_noise_area_k60.py
   evaluate`; Sizing 1x / dyn / 1 % Risiko). Backtest auf 100k vorbelastet:
   IS +40,6 %, OOS +9,2 %, Tresor +10,4 % (1x).
+  **+ Challenge-Gewichtung (16.10., Nutzer: „so laufen lassen“):** TTP: K60 ohne Stop 1 % +
+  ORB-NASDAQ 0,25 %; IQ: K60 0,75 % + ORB-NASDAQ 0,25 %; je max. 2 Trades/Tag, mit O2 und
+  mit O1 (Lock `challenge_k60_orb_oel_gewichtung_20261016`, Forward ab 19.10.). Danach
+  entscheiden, ob und wie das auf die Challenge-Konten geht. Kein Livegang davor.
+
+- **Noise-Area / Challenge-Gewichtung: vor einem Livegang klären** (16.10.,
+  [[zarattini-noise-area-momentum]]). (1) Kann IQ (BeyondIQCapital) NASDAQ handeln? Für TTP
+  ist USTEC bekannt, für IQ ist kein Index-Symbol verifiziert (`check_symbols.py`). (2) TTP-
+  Kommission auf USTEC ist mit 0 angenommen. (3) Der Optimierer rechnet additiv ohne
+  Lot-Rundung; die Ereignis-Sim mit Zinseszins zeigte keine Brüche, die Lot-Rundung ist
+  ungeprüft.
 
 - **ORB-Gegenprobe Öl: meine Annahmen** (11.10., [[orb-gegenprobe-oel]]).
   (1) Öl-Kosten 4,0 bps Spread + Index-Slippage (~0,15 R je Trade), nicht am

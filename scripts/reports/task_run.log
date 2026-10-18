@@ -94,3 +94,43 @@
 2026-10-04 18:16:41 Several MCP connectors (Asana, Atlassian, ClickUp, Linear, Monday, Notion, Slack) need authorization in their connector settings. This run didn't use them.
 2026-10-04 18:16:41 Vollstaendigkeitspruefung OK: KW40_2026_checkup.pdf (499.963 Bytes)
 2026-10-04 18:16:41 === Weekly-Report-Task beendet ===
+2026-10-12 01:46:30 === Weekly-Report-Task gestartet ===
+2026-10-12 01:46:31 Nutze Claude Code: C:\Users\andre\.vscode\extensions\anthropic.claude-code-2.1.296-win32-arm64\resources\native-binary\claude.exe
+2026-10-12 02:04:06 Der Weekly Checkup f++r KW41/2026 (05.ÔÇô11.10.) ist fertig, lokal als `82713a11` committet (nicht gepusht) und per Telegram verschickt.
+2026-10-12 02:04:06 
+2026-10-12 02:04:06 **Versp+ñteter Lauf:** Der Rechner ging am So um 11:34 in den Standby und wurde danach unerwartet beendet. Neu gestartet ist er erst Mo um 01:42, deshalb lief der Report erst Montagnacht.
+2026-10-12 02:04:06 
+2026-10-12 02:04:06 **Die Woche in Zahlen (nur geschlossene Trades):**
+2026-10-12 02:04:06 
+2026-10-12 02:04:06 | Bridge | Trades | P&L | % |
+2026-10-12 02:04:06 |---|---|---|---|
+2026-10-12 02:04:06 | EK (Tickmill) | 16 | +13,30 EUR | +0,48 % |
+2026-10-12 02:04:06 | Funded (TTP + IQ) | 10 | ÔêÆ470,05 USD | ÔêÆ0,24 % |
+2026-10-12 02:04:06 | FK Instant Funding | 6 | ÔêÆ283,04 USD | ÔêÆ0,29 % |
+2026-10-12 02:04:06 
+2026-10-12 02:04:06 Keine Risikoregel wurde verletzt, kein Kill-Switch und kein Drawdown-Stopp hat ausgel+Âst. An den Bridges wurde die ganze Woche keine Einstellung ge+ñndert. Deshalb ist der Soll/Ist-Vergleich zum ersten Mal sauber: Auf allen drei Bridges lag das echte Ergebnis ++ber dem Backtest. Fast jede Abweichung war eine Schutzregel, die einen Verlust-Trade verhindert hat.
+2026-10-12 02:04:06 
+2026-10-12 02:04:06 **Was deine Entscheidung braucht** (echtes Geld, ich habe nichts angefasst; steht im Dashboard unter ÔÇ×Braucht deine Best+ñtigung"):
+2026-10-12 02:04:06 - **Vier alte CTNL-Shorts laufen ohne Zeit-Exit weiter.** TTP hat zwei seit 30.09., IQ und FK je einen seit 02.10. Der Zwilling auf IQ und FK, 15 Minuten fr++her er+Âffnet, wurde am 08.10. korrekt nach 4 Handelstagen geschlossen. Auf TTP sind so 3 Pl+ñtze belegt bei einer Grenze von 2, daher nimmt TTP keine neuen CTNL-Signale mehr.
+2026-10-12 02:04:06 - **Ausgestoppte Positionen stehen im State weiter als offen.** Die 104 Eintr+ñge, die am 04.10. bereinigt wurden, wachsen nach.
+2026-10-12 02:04:06 - **Ursache noch nicht belegt.** Meine Vermutung: Durch den fr++heren Einstieg seit 03.10. findet der Zeit-Exit seine Position nicht mehr.
+2026-10-12 02:04:06 
+2026-10-12 02:04:06 **Weitere Befunde:**
+2026-10-12 02:04:06 - **`soll_ist.py` z+ñhlt pausierte und stornierte Trades mit.** Das Skript kennt weder die US30-Pause noch die NASDAQ-Storno-Regel. Alle 7 ORB-Trades unter ÔÇ×nie gesehen" sind damit Fehler des Skripts, keine verpassten Trades. Ungekl+ñrt ist auch: Die Bridge schreibt bei ihren Stornos ÔÇ×wie im Backtest", der Backtest hat an diesen Tagen aber gehandelt.
+2026-10-12 02:04:06 - **TTP-OU scheitert bei teuren Aktien am Mindestlot.** Seit der neuen TTP-Gewichtung vom 04.10. reicht das Risiko bei GRMN und DE nicht f++r ein St++ck.
+2026-10-12 02:04:06 - **Standby am Do 08.10. von 10:22 bis 14:14.** Die Bridges und der Watchdog standen fast 4 Stunden still. Es lag kein Trade in dem Fenster, also kein Geldverlust.
+2026-10-12 02:04:06 - **Die Neuerungen vom 03./04.10. funktionieren:** Gold-ASB-Stop-Order, ORB-Storno, US30-Pause und die TTP-Gewichte. Ob CTNL auf Funded/FK das Kursziel bei 5R tats+ñchlich setzt, lie+ƒ sich nicht pr++fen, weil alle neuen Trades vorher ausgestoppt wurden.
+2026-10-12 02:04:06 - **Die Research-Ergebnisse vom 07.ÔÇô11.10. sind nicht committet,** darunter 14 Research-Lock-Dateien. Die Locks belegen, dass OOS und Tresor nur einmal ge+Âffnet wurden. Ich habe bewusst nur `knowledge/reports/` committet.
+2026-10-12 02:04:06 
+2026-10-12 02:04:06 **Education-Teil:** Er baut auf deinem Entwurf vom 06.10. auf. Neu sind die Abschnitte 1 und 2, die Erkenntnisse 3.7ÔÇô3.10 (Intraday-Momentum stirbt und die +ûl-Gegenprobe, runde Zahlen als Magnet, LLM-Agenten nur vorw+ñrts testbar, die erste saubere Live-Woche) sowie die Abschnitte 4ÔÇô7. Im Entwurf habe ich vier tote Wikilinks auf die Memory-Zitierform umgestellt.
+2026-10-12 02:04:06 
+2026-10-12 02:04:06 Das PDF hat 520 KB; den Seiteninhalt konnte ich nicht ansehen, weil hier kein PDF-Renderer installiert ist. Einen Monatsbericht gibt es diesmal nicht, weil der Monatswechsel erst nach dem n+ñchsten Sonntag kommt.
+2026-10-12 02:04:06 
+2026-10-12 02:04:06 Dateien in `knowledge/reports/weekly/`:
+2026-10-12 02:04:06 - KW41_2026_performance.md
+2026-10-12 02:04:06 - KW41_2026_education.md
+2026-10-12 02:04:06 - KW41_2026_checkup.html
+2026-10-12 02:04:06 
+2026-10-12 02:04:06 PDF: `C:\Users\andre\Documents\Trading Reports\KW41_2026_checkup.pdf`
+2026-10-12 02:04:06 Vollstaendigkeitspruefung OK: KW41_2026_checkup.pdf (520.136 Bytes)
+2026-10-12 02:04:06 === Weekly-Report-Task beendet ===

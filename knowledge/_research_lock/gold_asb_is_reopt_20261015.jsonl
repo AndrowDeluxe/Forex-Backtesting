@@ -1,0 +1,5 @@
+{"ts": "2026-10-15T22:10:51+00:00", "event": "register_split", "is_start": "2016-01-01", "is_end": "2022-12-31", "oos_end": "2025-09-30", "tresor_end": "2026-09-30"}
+{"ts": "2026-10-15T22:11:50+00:00", "event": "trials", "n": 20736, "total": 20736, "note": "IS-Gitter (9 Punkte)"}
+{"ts": "2026-10-15T22:12:03+00:00", "event": "freeze", "hash": "440e98f5f44408bc04eed65ab1170e00f7e0ca251f3853437fabf4ee98a6a15e"}
+{"ts": "2026-10-15T22:12:03+00:00", "event": "unseal", "stage": "oos", "hash": "440e98f5f44408bc04eed65ab1170e00f7e0ca251f3853437fabf4ee98a6a15e"}
+{"ts": "2026-10-15T22:12:03+00:00", "event": "unseal", "stage": "tresor", "hash": "440e98f5f44408bc04eed65ab1170e00f7e0ca251f3853437fabf4ee98a6a15e"}

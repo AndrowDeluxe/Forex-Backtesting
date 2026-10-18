@@ -1,0 +1,29 @@
+{
+  "strategy": "g8_strength",
+  "split": {
+    "is_start": "2000-01-03",
+    "is_end": "2017-12-29",
+    "oos_end": "2025-10-02",
+    "tresor_end": "2026-10-02"
+  },
+  "registered": "2026-10-10T14:53:13+00:00",
+  "trials": 4,
+  "frozen": {
+    "hash": "28dfe5c71b65254d4ce06fc6a40eddc1abee3a95984b064e973fb75e0f47b5d1",
+    "config": {
+      "variant": "k1_weekly",
+      "k": 1,
+      "rebalance": "weekly",
+      "norm": "xs",
+      "horizons": [
+        5,
+        21,
+        63
+      ],
+      "cost_bps_per_unit": 1.25
+    },
+    "ts": "2026-10-10T14:53:13+00:00"
+  },
+  "unsealed": {},
+  "forward": null
+}

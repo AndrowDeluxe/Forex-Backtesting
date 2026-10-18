@@ -1,0 +1,3 @@
+{"ts": "2026-10-10T14:53:13+00:00", "event": "register_split", "is_start": "2000-01-03", "is_end": "2017-12-29", "oos_end": "2025-10-02", "tresor_end": "2026-10-02"}
+{"ts": "2026-10-10T14:53:13+00:00", "event": "trials", "n": 4, "total": 4, "note": "k1/k2/k3 woechentlich, k2 taeglich -- vorab festgelegt"}
+{"ts": "2026-10-10T14:53:13+00:00", "event": "freeze", "hash": "28dfe5c71b65254d4ce06fc6a40eddc1abee3a95984b064e973fb75e0f47b5d1"}

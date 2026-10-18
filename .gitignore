@@ -32,6 +32,8 @@ scripts/task_backups/
 # fusion_lab: privates Rohmaterial + Login-Caches (OneNote-Token, Telegram-Session)
 fusion_lab/raw/
 fusion_lab/.auth/
+# Aus privatem Material abgeleitete Daten (Report-Extrakte, G8-Snapshots, Renderings)
+fusion_lab/data/
 
 # Notion-Datenbank-IDs: lokaler Zustand, erzeugt von fusion_lab/notion/setup_cockpit.py
 # (fusion_lab/_secrets.py ist NUR Lade-Code ohne Zugangsdaten -> wird committet)

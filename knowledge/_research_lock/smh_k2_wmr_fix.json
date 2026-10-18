@@ -1,0 +1,29 @@
+{
+  "strategy": "smh_k2_wmr_fix",
+  "split": {
+    "is_start": "2018-04-01",
+    "is_end": "2023-03-31",
+    "oos_end": "2025-09-30",
+    "tresor_end": "2026-10-07"
+  },
+  "registered": "2026-10-07T10:06:54+00:00",
+  "trials": 7,
+  "frozen": {
+    "hash": "9c11144ffd18b8726ef4a107c406c06a6267b1fd41d1a8bcb0223c978897efc6",
+    "config": {
+      "pre_start": "15:30",
+      "fix": "16:00",
+      "entry": "16:03",
+      "exit": "17:00",
+      "month_end_only": true,
+      "min_move_bps": 0.0,
+      "cost_mult": 1.0
+    },
+    "ts": "2026-10-07T10:19:17+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-07T10:19:22+00:00",
+    "tresor": "2026-10-07T10:19:52+00:00"
+  },
+  "forward": null
+}

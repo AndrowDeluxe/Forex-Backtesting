@@ -1,0 +1,15 @@
+{
+  "winner": {
+    "stop": 2.0,
+    "cancel": "02:30",
+    "exit": "11:00",
+    "adx": 15.0,
+    "sma": null,
+    "silver": 5,
+    "liq": 0.5,
+    "dirs": "beide"
+  },
+  "n_trials": 20736,
+  "sr_var_trials": 0.008034175404744045,
+  "n_eligible": 7661
+}

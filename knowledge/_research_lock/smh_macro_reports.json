@@ -1,0 +1,43 @@
+{
+  "strategy": "smh_macro_reports",
+  "split": {
+    "is_start": "2025-08-03",
+    "is_end": "2026-10-07",
+    "oos_end": "2027-01-31",
+    "tresor_end": null
+  },
+  "registered": "2026-10-09T19:26:56+00:00",
+  "trials": 4,
+  "frozen": {
+    "hash": "a6e7de8131989adcf28822e64f1aa12340bd3178cbf0ed7242dde65fb1844a8a",
+    "config": {
+      "variants": [
+        "A1",
+        "A2",
+        "B",
+        "C"
+      ],
+      "atr_mult": 1.5,
+      "default_target_r": 2.0,
+      "time_exit_days": 7,
+      "activation_window_days": 5,
+      "cost_bps": {
+        "fx_major": 1.5,
+        "fx_cross": 2.5,
+        "GOLD": 3.0,
+        "SILVER": 6.0,
+        "OIL": 5.0,
+        "BRENT": 5.0,
+        "index": 2.0,
+        "DXY": 2.0,
+        "COPPER": 6.0,
+        "BTCUSD": 10.0
+      },
+      "entry": "first H1 open after Telegram post time",
+      "stop_first_same_bar": true
+    },
+    "ts": "2026-10-09T19:26:56+00:00"
+  },
+  "unsealed": {},
+  "forward": null
+}

@@ -1,0 +1,8 @@
+{"ts": "2026-10-07T10:06:54+00:00", "event": "register_split", "is_start": "2018-04-01", "is_end": "2023-03-31", "oos_end": "2025-09-30", "tresor_end": "2026-10-07"}
+{"ts": "2026-10-07T10:07:14+00:00", "event": "trials", "n": 2, "total": 2, "note": "Basis fade+cascade, EURUSD IS"}
+{"ts": "2026-10-07T10:17:18+00:00", "event": "trials", "n": 9, "total": 11, "note": "K1: Nachbarwerte + Kosten x2 (Robustheit)"}
+{"ts": "2026-10-07T10:19:17+00:00", "event": "freeze", "hash": "315e986b070d082f11ba9934d2e24adc2ddba85fe0a56e0c5143c1138986ae0a"}
+{"ts": "2026-10-07T10:19:19+00:00", "event": "unseal", "stage": "oos", "hash": "315e986b070d082f11ba9934d2e24adc2ddba85fe0a56e0c5143c1138986ae0a"}
+{"ts": "2026-10-07T10:19:50+00:00", "event": "unseal", "stage": "tresor", "hash": "315e986b070d082f11ba9934d2e24adc2ddba85fe0a56e0c5143c1138986ae0a"}
+{"ts": "2026-10-07T10:20:27+00:00", "event": "reeval", "stage": "oos", "hash": "315e986b070d082f11ba9934d2e24adc2ddba85fe0a56e0c5143c1138986ae0a", "note": "Vorlauf-Daten (Warmup) ergaenzt, Regel unveraendert"}
+{"ts": "2026-10-07T10:20:30+00:00", "event": "reeval", "stage": "tresor", "hash": "315e986b070d082f11ba9934d2e24adc2ddba85fe0a56e0c5143c1138986ae0a", "note": "Vorlauf-Daten (Warmup) ergaenzt, Regel unveraendert"}

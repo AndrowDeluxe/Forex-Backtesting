@@ -1,0 +1,5 @@
+{"ts": "2026-10-15T12:26:06+00:00", "event": "register_split", "is_start": "2016-07-28", "is_end": "2022-12-31", "oos_end": "2025-09-30", "tresor_end": "2026-09-30"}
+{"ts": "2026-10-15T12:26:06+00:00", "event": "trials", "n": 27, "total": 27, "note": "SL x TP x Haltedauer (3x3x3) auf der K60-Forward-Regel"}
+{"ts": "2026-10-15T12:26:12+00:00", "event": "freeze", "hash": "62e3f371a427ff4d94bd3bad66f2fd27fac83ba8d78efd30b9bc1f393c84810e"}
+{"ts": "2026-10-15T12:26:12+00:00", "event": "unseal", "stage": "oos", "hash": "62e3f371a427ff4d94bd3bad66f2fd27fac83ba8d78efd30b9bc1f393c84810e"}
+{"ts": "2026-10-15T12:26:12+00:00", "event": "unseal", "stage": "tresor", "hash": "62e3f371a427ff4d94bd3bad66f2fd27fac83ba8d78efd30b9bc1f393c84810e"}

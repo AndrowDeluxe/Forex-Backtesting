@@ -1,0 +1,50 @@
+{
+  "strategy": "noise_area_oel_fit2026_20261014",
+  "split": {
+    "is_start": "2025-10-01",
+    "is_end": "2026-09-30",
+    "oos_end": "2026-10-14",
+    "tresor_end": null
+  },
+  "registered": "2026-10-14T20:27:58+00:00",
+  "trials": 16848,
+  "frozen": {
+    "hash": "31d75c8c16cf18a2113e9b389e8ca284e48441b3f8bb315f01c7e44e0ed46226",
+    "config": {
+      "gewinner": {
+        "SP500": {
+          "basis": "paper",
+          "k": "(20, -0.2)",
+          "rel": "any",
+          "mult": 0.0,
+          "gap": "any",
+          "ovol": "any",
+          "trend5": "gleich"
+        },
+        "NASDAQ": {
+          "basis": "k2",
+          "k": "(40, -0.1)",
+          "rel": "any",
+          "mult": 0.5,
+          "gap": "any",
+          "ovol": "any",
+          "trend5": "any"
+        }
+      },
+      "auswahl": ">= 50 Trades, hoechster t",
+      "kosten": {
+        "SP500": 1.59,
+        "NASDAQ": 1.29
+      }
+    },
+    "ts": "2026-10-14T20:28:39+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-14T20:28:39+00:00"
+  },
+  "forward": {
+    "start": "2026-10-15",
+    "eval_date": "2027-03-31",
+    "min_trades": 1000000
+  }
+}

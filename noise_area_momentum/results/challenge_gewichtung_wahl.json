@@ -1,0 +1,56 @@
+{
+  "TTP": {
+    "gewinner": {
+      "k60": "ohne_stop",
+      "sp500": "aus",
+      "nasdaq": "O2",
+      "cap": 2,
+      "r_k60_ohne_stop": 1.0,
+      "r_orb_NASDAQ_O2": 0.25,
+      "median_%": 8.174760046426965,
+      "p_bruch": 0.0495,
+      "p_ziel": 0.4605,
+      "median_tage_ziel": 167.0
+    },
+    "ohne_o2": {
+      "k60": "ohne_stop",
+      "sp500": "aus",
+      "nasdaq": "O1",
+      "cap": 2,
+      "r_k60_ohne_stop": 1.0,
+      "r_orb_NASDAQ_O1": 0.25,
+      "median_%": 7.778422860323531,
+      "p_bruch": 0.04,
+      "p_ziel": 0.421,
+      "median_tage_ziel": 173.0
+    },
+    "konservativ": "K60 ohne_stop 1.00% + ORB NASDAQ_O2 0.25% | max 1/Tag"
+  },
+  "IQ": {
+    "gewinner": {
+      "k60": "ohne_stop",
+      "sp500": "aus",
+      "nasdaq": "O2",
+      "cap": 2,
+      "r_k60_ohne_stop": 0.75,
+      "r_orb_NASDAQ_O2": 0.25,
+      "median_%": 7.14195429199806,
+      "p_bruch": 0.0495,
+      "p_ziel": 0.5305,
+      "median_tage_ziel": 162.0
+    },
+    "ohne_o2": {
+      "k60": "ohne_stop",
+      "sp500": "aus",
+      "nasdaq": "O1",
+      "cap": 2,
+      "r_k60_ohne_stop": 0.75,
+      "r_orb_NASDAQ_O1": 0.25,
+      "median_%": 6.674628371557723,
+      "p_bruch": 0.031,
+      "p_ziel": 0.4825,
+      "median_tage_ziel": 168.0
+    },
+    "konservativ": "K60 ohne_stop 0.75% + ORB NASDAQ_O2 0.25% | max 1/Tag"
+  }
+}

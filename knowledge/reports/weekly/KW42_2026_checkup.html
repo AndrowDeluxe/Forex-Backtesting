@@ -1,0 +1,567 @@
+<title>Weekly Checkup · KW42/2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --paper: #EDEEE7;
+    --paper-raised: #F6F6F1;
+    --ink: #1B2129;
+    --ink-soft: #4B5259;
+    --rule: #C9CCC2;
+    --accent: #2B6E6B;
+    --accent-soft: #E3ECEA;
+    --flag: #B23A2E;
+    --flag-soft: #F5E6E2;
+    --ok: #3F6B4F;
+    --ok-soft: #E5EEE6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12181A;
+      --paper-raised: #182022;
+      --ink: #E7E4DA;
+      --ink-soft: #A9B0AC;
+      --rule: #333B3A;
+      --accent: #5FB3AC;
+      --accent-soft: #1B2E2C;
+      --flag: #E2695A;
+      --flag-soft: #33201C;
+      --ok: #7CB78A;
+      --ok-soft: #1D2B20;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12181A;
+    --paper-raised: #182022;
+    --ink: #E7E4DA;
+    --ink-soft: #A9B0AC;
+    --rule: #333B3A;
+    --accent: #5FB3AC;
+    --accent-soft: #1B2E2C;
+    --flag: #E2695A;
+    --flag-soft: #33201C;
+    --ok: #7CB78A;
+    --ok-soft: #1D2B20;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    margin: 0;
+    padding: 3.5rem 1.25rem 6rem;
+    -webkit-font-smoothing: antialiased;
+  }
+  .sheet {
+    max-width: 760px;
+    margin: 0 auto;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    padding: 3rem 3.25rem 3.5rem;
+  }
+  @media (max-width: 640px) {
+    .sheet { padding: 2rem 1.25rem 2.5rem; }
+  }
+
+  /* masthead */
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.6rem;
+  }
+  h1.title {
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 2.35rem;
+    line-height: 1.1;
+    margin: 0 0 0.5rem;
+    text-wrap: balance;
+  }
+  .subtitle {
+    font-size: 1.02rem;
+    color: var(--ink-soft);
+    margin: 0 0 1.6rem;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.6rem;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--rule);
+  }
+  .meta-row span b { color: var(--ink); font-weight: 600; }
+
+  .note {
+    margin-top: 1.4rem;
+    padding: 0.9rem 1.1rem;
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+  .note b { color: var(--ink); }
+
+  /* part dividers */
+  .part {
+    margin-top: 3.2rem;
+    padding-top: 0.4rem;
+  }
+  .part-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+  .part-label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+  h2.part-title {
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.7rem;
+    margin: 0.1rem 0 0;
+  }
+
+  /* sections */
+  section.block { margin-top: 2.1rem; }
+  h3.sec {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.18rem;
+    margin: 0 0 0.85rem;
+    color: var(--ink);
+  }
+  h3.sec .num {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  p { margin: 0 0 0.9rem; }
+  ul.plain { margin: 0 0 0.9rem; padding-left: 1.2rem; }
+  ul.plain li { margin-bottom: 0.55rem; }
+  ul.plain li b { color: var(--ink); }
+
+  /* status chips */
+  .chip {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    padding: 0.1rem 0.45rem;
+    border-radius: 2px;
+    margin-right: 0.3rem;
+  }
+  .chip.live { background: var(--ok-soft); color: var(--ok); }
+  .chip.dry { background: var(--accent-soft); color: var(--accent); }
+  .chip.dead { background: var(--flag-soft); color: var(--flag); }
+
+  /* tables */
+  .table-wrap { overflow-x: auto; margin-bottom: 1rem; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.55rem 0.7rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  th {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  td.num, th.num {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  tr.sum td { font-weight: 600; border-top: 1px solid var(--ink-soft); background: var(--accent-soft); }
+  td.neg { color: var(--flag); }
+  td.pos { color: var(--ok); }
+  td.status-flag { color: var(--flag); }
+  td.status-ok { color: var(--ok); }
+
+  /* flag callouts */
+  .flag {
+    border-left: 3px solid var(--flag);
+    background: var(--flag-soft);
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 0.9rem;
+  }
+  .flag .flag-head {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--flag);
+    margin-bottom: 0.3rem;
+  }
+  .flag p { margin: 0; font-size: 0.92rem; }
+
+  /* activity bars */
+  .bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.55rem;
+    height: 90px;
+    margin: 0.4rem 0 0.6rem;
+    padding-top: 0.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+  .bar {
+    width: 100%;
+    max-width: 34px;
+    background: var(--accent);
+    opacity: 0.55;
+  }
+  .bar-col.peak .bar { opacity: 1; }
+  .bar-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+    margin-top: 0.4rem;
+  }
+  .bar-count {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+    margin-bottom: 0.2rem;
+  }
+
+  footer.colophon {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+  }
+
+  @media print {
+    body { padding: 0; background: var(--paper); }
+    .sheet { border: none; max-width: 100%; padding: 0.5in; }
+    section.block, .flag, .table-wrap { page-break-inside: avoid; }
+    .part { page-break-before: always; }
+    .part:first-of-type { page-break-before: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <p class="eyebrow">Weekly Checkup · Andre&nbsp;/&nbsp;Forex-Backtesting</p>
+  <h1 class="title">KW42 · 2026</h1>
+  <p class="subtitle">Trading-Bot-Flotte &amp; Baustelle — Performance und Education, Montag 12.10. bis Sonntag 18.10.2026</p>
+  <div class="meta-row">
+    <span>Erzeugt: <b>So, 18.10.2026 (abends)</b></span>
+    <span>Erfasst: <b>3 Bridges / 4 Konten</b></span>
+    <span>Lauf: <b>pünktlich</b></span>
+  </div>
+
+  <div class="note">
+    <b>Abzug zweimal fast falsch, dann belastbar.</b> Erster Abzug: EK/TTP/IQ <b>0 Deals</b> (kaltes Terminal, Sekunden alt) — nach 2,5 Min. 14 / 7 / 4 Deals, zweimal bestätigt. FK antwortete nur nach Neustart mit <code>/portable</code> (wie in der Bridge selbst), dann 4 Deals. Kontostände zu Wochenbeginn passen auf den Cent zu KW41. Die vier Terminals hat dieser Lauf selbst gestartet und wieder geschlossen. <b>Keine Handeingriffe</b>, keine Balance-Buchung.
+  </div>
+
+  <!-- ============ PART I — PERFORMANCE ============ -->
+  <div class="part">
+    <p class="part-label">Teil I</p>
+    <h2 class="part-title">Performance</h2>
+  </div>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">01</span> Wochenkontext</h3>
+    <ul class="plain">
+      <li><b>EK-Portfolio-Bridge</b> <span class="chip live">LIVE · Tickmill</span> — unverändert seit 04.10.</li>
+      <li><b>Funded-Portfolio-Bridge</b> <span class="chip live">LIVE · TTP + IQ, 2 Konten</span> — unverändert seit 04.10.</li>
+      <li><b>FK Instant Funding</b> <span class="chip live">LIVE · BeyondIQCapital</span> — unverändert seit 04.10.</li>
+    </ul>
+    <p><b>Zweite Woche in Folge ohne Konfigurationsänderung</b> (Bridge-Ordner und von den Bridges importierte Repo-Module geprüft). Live-relevant nur Entscheide: <b>16.10. ORB bleibt erstmal so</b> (SP500 trotz roter Ampel live, NASDAQ behält das Storno am SL) und <b>16.10. Challenge-Gewichtung K60 + ORB</b> eingefroren, nur Forward ab 19.10. Neuer Daten-Task <code>G8-Notion-Sync</code> (12.10., kein Order-Bezug).</p>
+    <p>Was die Woche live geprägt hat, war keine Änderung, sondern <b>Standby</b>: Mo 09:55–17:09 und Do 14:49–15:53 lief keine Bridge (Abschnitt 06).</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">02</span> Risk-Management-Compliance</h3>
+    <p><b>Keine Regelverletzung. Kein Kill-Switch ausgelöst, kein Drawdown-Halt.</b></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Bridge / Konto</th><th>Mechanismus</th><th>Diese Woche</th></tr></thead>
+        <tbody>
+          <tr><td>EK-Portfolio</td><td>Trailing-DD 45 % · CTNL-Kill-Switch</td><td class="status-ok">nicht ausgelöst</td></tr>
+          <tr><td>EK-Portfolio</td><td>Gold-ASB-Risiko je Order</td><td class="status-ok">61,49 € / 67,84 € = bis 2,4 % — konfiguriert sind effektiv 2,93 %, also im Rahmen (KW41 nannte das zu streng „Mindestlot-Verzerrung")</td></tr>
+          <tr><td>EK-Portfolio</td><td>CTNL-Risiko je Order</td><td class="status-flag">Mindestlot: Ziel 0,52 €, real 14,05 € (26,9×) — bekannt</td></tr>
+          <tr><td>Funded / TTP</td><td>7-%-DD / offenes Risiko 3,5 %</td><td class="status-ok">inaktiv — schlechtester Tag Do −333 $ (Gold ASB)</td></tr>
+          <tr><td>Funded / IQ</td><td>6 % DD / 1 % je Position</td><td class="status-flag">inaktiv — schlechtester Tag Do −334,56 $; <b>−3,87 % seit Start, ca. 2.130 $ bis zur Grenze</b> (KW41: 2.600)</td></tr>
+          <tr><td>Funded / TTP</td><td>CTNL-Deckel 2</td><td class="status-flag">hält 3 Altpositionen → wieder kein neuer CTNL-Entry</td></tr>
+          <tr><td>FK Instant Funding</td><td>5-%-EOD-Trailing-DD · Kill-Switch</td><td class="status-ok">inaktiv — −1,66 % seit Start; Schalter nie, „kein Urteil" bei Datenlücke (fail-safe)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">03</span> Was hat funktioniert / nicht</h3>
+    <ul class="plain">
+      <li><b>EK:</b> −32,53 € (−1,16 %), relativ die schwächste Bridge. Erster Gold-ASB-Fill (Zeit-Exit −29,15 €) und ein CTNL-Short mit 26,9-fachem Mindestlot-Risiko (−13,66 €); OU +10,28 €.</li>
+      <li><b>Funded:</b> −793,76 $. Gold ASB −667,68 $ auf beiden Konten, CTNL auf IQ −144,47 $, TTP-OU +18,39 $. Kein ORB-Trade: zweimal beide Seiten storniert, einmal Mittwochsfilter, zweimal durch Standby verpasst.</li>
+      <li><b>FK:</b> −99,73 $. Gold ASB −63,51 $, CTNL −36,22 $ — kleine Positionen halten den Schaden klein.</li>
+    </ul>
+    <p><b>Muster:</b> Sehr wenig Handel (13 statt 32 Trades). Beide neuen Trade-Typen liefen gegen uns: der Gold-ASB-Short vom 15.10. (Zeit-Exit ca. 21 $ höher, Stop nicht erreicht, ca. −0,56 R) und der CTNL-Short am selben Abend. <b>ORB NASDAQ: kein einziger Trade.</b></p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">04</span> Trades · Winrate · PnL</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Bridge</th><th class="num">Trades</th><th class="num">Winrate</th><th class="num">PnL</th><th class="num">%</th></tr></thead>
+        <tbody>
+          <tr><td>EK-Portfolio-Bridge (Tickmill)</td><td class="num">6</td><td class="num">66,7 %</td><td class="num neg">−32,53 €</td><td class="num neg">−1,16 %</td></tr>
+          <tr><td>Funded-Portfolio-Bridge (TTP + IQ)</td><td class="num">5</td><td class="num">40,0 %</td><td class="num neg">−793,76 $</td><td class="num neg">−0,41 %</td></tr>
+          <tr><td>FK Instant Funding (LIVE)</td><td class="num">2</td><td class="num">0,0 %</td><td class="num neg">−99,73 $</td><td class="num neg">−0,10 %</td></tr>
+          <tr class="sum"><td>Grand Total (alle 3, echtes Geld)</td><td class="num">13</td><td class="num">46,2 %</td><td class="num neg">−32,53 € / −893,49 $</td><td class="num neg">≈ −0,31 %</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.8rem; color:var(--ink-soft)">Nur geschlossene Positionen, netto inkl. Kommission und Swap; % auf den Kontostand zu Wochenbeginn. Keine Summe über beide Währungen; EK (2.795,74 €, ca. 3.270 $ bei angenommenen 1,17) macht rund 1 % des Buchs aus. <b>Die Winrate täuscht:</b> Alle 6 Gewinner sind OU-Schließungen (+0,06 bis +9,90); neue Gold-ASB- und CTNL-Trades gewannen <b>0 von 6</b>. Unrealisiert (nicht enthalten): EK −7 €, TTP +825 $ (davon +441 aus dem CTNL-Short vom 18.09., +318 aus OU-EOG), IQ +64 $, FK +32 $. TTP Konto 2 steht auf <code>trade_mode = 0</code>, das IQ-Konto heißt „Demo Challenge"; Echtgeld-Einordnung aus <code>CLAUDE.md</code>.</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">05</span> Soll / Ist</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Bridge</th><th>Soll</th><th>Ist</th><th class="num">platziert</th><th class="num">nicht platz.</th><th class="num">nie gesehen</th></tr></thead>
+        <tbody>
+          <tr><td>EK-Portfolio</td><td>3 / −0,07 % <i>(ohne ORB)</i></td><td class="neg">−32,53 € (−1,16 %)</td><td class="num">–</td><td class="num">–</td><td class="num">3 n. ermittelbar (−3,49 R)</td></tr>
+          <tr><td>Funded</td><td>3 / −0,09 % <i>(ohne ORB)</i></td><td class="neg">−792,13 $ (−0,41 %)</td><td class="num">0</td><td class="num">1 (−1,15 R)</td><td class="num">2 (−2,34 R)</td></tr>
+          <tr><td>FK</td><td>9 / −0,90 %</td><td class="neg">−99,48 $ (−0,10 %)</td><td class="num">0</td><td class="num">1 (−1,15 R)</td><td class="num">8 (−8,50 R)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="plain">
+      <li><b>Soll unvollständig:</b> Der ORB-Scan für EK und Funded brach mit <code>dukascopy_python</code>-Timeout ab. Konfiguration im Fenster unverändert, der Konfig-Vorbehalt greift also nicht.</li>
+      <li><b>Soll und Ist haben fast keine gemeinsamen Trades.</b> Kein Soll-Trade wurde live platziert — und die beiden Live-Verlierer stehen nicht im Soll: <b>Gold ASB 15.10.</b> (alle vier Konten, Soll „kein Signal") und der <b>CTNL-Short 15.10. abends</b> („Signal wieder angenommen"). Gold ASB ist das größte Bein auf EK und TTP — wichtigster offener Punkt hier. Möglich: Liquiditätsfilter kippt beim Nachrechnen (Memory) oder Soll modelliert die Stop-Order nicht. Nicht geprüft.</li>
+      <li><b>CTNL Mo 05:45/06:00 UTC (−2,34 R, „nie gesehen"):</b> Live wurden die neuen Montagssignale als „gegen den Trend" verworfen (behalten blieb bei 11), das Soll nimmt sie. Ursache offen (Hypothese: Trendfilter auf veralteten Daten nach dem Neustart). Beide Soll-Verlierer.</li>
+      <li><b>FK ORB NASDAQ (4 × −1 R):</b> zweimal Standby (Mo, Do), zweimal live beide Seiten storniert (Di, Fr) — Werkzeuglücke aus KW41. Gespart: ca. 4,1 R. US30 (2 Soll-Trades) ist pausiert.</li>
+      <li><b>EK nur grob zerlegbar, Kosten geschätzt</b> (0,50 Pips) — nicht gegen Funded/FK stellen.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">5b</span> Edge-Warnstufen je Live-Bein</h3>
+    <div class="flag">
+      <p class="flag-head">Ampel diese Woche nicht frisch</p>
+      <p>Die Neuberechnung hing in drei Versuchen (Dukascopy-Abruf ohne Timeout) und wurde abgebrochen. Stand: Liste vom 16.10., <b>letzter Trade 15.10.</b> — gegenüber letzter Woche fehlt nur Fr 16.10.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Bein</th><th>Warnstufe</th><th class="num">Drawdown R / Schwelle R</th><th>Signal</th></tr></thead>
+        <tbody>
+          <tr><td>orb_sp500</td><td class="status-flag">ROT</td><td class="num">22,1 / 15,2</td><td>alle fünf rot — entschieden 16.10. („bleibt erstmal so")</td></tr>
+          <tr><td>orb_us30</td><td class="status-flag">ROT · pausiert</td><td class="num">24,5 / 13,2</td><td>pausiert seit 04.10.</td></tr>
+          <tr><td>btc_ema_cross</td><td>GELB</td><td class="num">2,0 / 5,4</td><td>roll_mean, cusum, sprt</td></tr>
+          <tr><td>gold_silver</td><td>GELB</td><td class="num">1,7 / 4,9</td><td>roll_mean</td></tr>
+          <tr><td>übrige 6 Beine</td><td class="status-ok">grün</td><td class="num">–</td><td>gold_asb, ctnl_reversal, cls_practical, orb_nasdaq, ou_modell, trend_pullback</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.8rem; color:var(--ink-soft)">Unverändert gegenüber 16.10. <b>gold_asb grün, obwohl der Live-Fill vom 15.10. verlor:</b> Die Ampel-Liste führt als letzten Gold-ASB-Trade den 28.09. — dieselbe Lücke wie im Soll. Eine Warnung ist ein Grund hinzusehen, nie einer, einen Bot zu ändern.</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">06</span> Auffälligkeiten</h3>
+    <div class="flag">
+      <p class="flag-head">Wichtigster Befund — Standby in der Handelszeit, zweimal mit Folgen</p>
+      <p><b>Mo 12.10. 09:55–17:09</b> (<code>Kernel-Power 506/507</code>): über 7 Stunden kein Lauf auf allen Bridges, ORB NASDAQ verpasst. <b>Do 15.10. 14:49–15:53</b>: Die ORB-Range endet 15:45; der erste Lauf danach fand beide Ausbruchsseiten schon durchlaufen und platzierte nichts (<code>[ORB-PRAEZISE]</code>-Zeile fehlt an diesem Tag). Danach war der Data Lake bis mindestens 17:06 veraltet, alle Läufe fielen auf Live-Abrufe zurück, und auf EK kam der Gold-ASB-Zeit-Exit <b>13 Minuten zu spät</b> (diesmal zufällig zum besseren Kurs). Geldwert der verpassten ORB-Tage diesmal positiv (Soll-Verlierer) — aber ORB holt ein verpasstes Fenster nie nach. Anders als in KW40/41 fallen die Standbys diesmal <b>nicht</b> auf Arbeitsblöcke (keine Commits Mo/Do tagsüber). Ursache offen, Watchdog schlief mit.</p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">CTNL-Altpositionen weiter ohne Zeit-Exit</p>
+      <p>TTP 18498503 (18.09., +441 $ unrealisiert), 18696522 und 18696950 (30.09.); IQ 1973249 und FK 1973231 (02.10.) — alle offen, ohne TP, weit über dem 4-Tage-Standard. TTP nahm deshalb wieder keinen CTNL-Trade (Deckel 3/2), was am 15./16.10. zufällig wieder Geld sparte. Dashboard-Punkt seit 12.10., echtes Geld, nichts angefasst.</p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">Soll/Ist und Ampel sehen den Gold-ASB-Fill nicht</p>
+      <p>Der einzige Gold-ASB-Fill seit der Stop-Order-Umstellung fehlt in beiden Nachrechnungen. Solange das so ist, messen Soll/Ist und Ampel Gold ASB nicht so, wie es live handelt. Dazu die bekannten ORB-Lücken (US30-Pause, NASDAQ-Storno) und der ORB-Timeout → Soll/Ist ist diese Woche kaum lesbar.</p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">TTP-OU: STT fällt zwei Stunden nach dem eigenen Entry aus dem Scan</p>
+      <p>Neben DD und EOG (bekannt, bewusst offen) meldet der Lauf jetzt auch STT als „Titel fehlt im aktuellen Scan — NICHT automatisch geschlossen" (Entry 19:43, Meldung 21:43). Deutet auf einen Datenausfall im OU-Universum, nicht auf eine Modellentscheidung. Nicht geprüft.</p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">Kleineres</p>
+      <p><code>mt5_pull.py</code>: zwei stille Fehlerwege (0 Deals bei kaltem Terminal, FK nur mit <code>/portable</code>). Datenpfad nach jedem Aufwachen schlecht (<code>str/float</code>, Dukascopy-Hänger, IPC-Timeouts), sonst ruhig; FK am Di dreimal Zeitzonen-Verifikation −8 bis −18 Min. FK warnt weiter „Kontostand weicht von STARTING_EQUITY ab". <b>Nebenbei beantwortet:</b> IQ kann NASDAQ handeln — ORB-Orders auf <code>NAS100.gbe</code> am 13. und 16.10. Runde-2-Locks <code>smh_k4</code>–<code>k7</code> noch ungetrackt.</p>
+    </div>
+  </section>
+
+  <!-- ============ PART II — EDUCATION ============ -->
+  <div class="part">
+    <p class="part-label">Teil II</p>
+    <h2 class="part-title">Education</h2>
+  </div>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">01</span> Hauptfokus der Woche</h3>
+    <ul class="plain">
+      <li><b>Noise-Area-Momentum weitergedacht:</b> Tresor-Diagnose, Regime-2026-Raster, Öl als Filter und Gegenprobe → Forward-Kandidat K60 und Challenge-Gewichtung K60 + ORB-NASDAQ (TTP/IQ). Forward bis 31.03.2027, kein Livegang.</li>
+      <li><b>ORB:</b> Öl als Filter; NASDAQ-Storno über 10 Jahre — ein 2026-Fit. Entscheid 16.10.: bleibt erstmal.</li>
+      <li><b>Frühwarnung/Kill-Switch</b> und Tresor-Check aller Live-Beine, seit Fr als Ampel im Weekly Report.</li>
+      <li><b>SMH Elite 3:</b> Gold ASB IS-only + Mentor-PDF, Key-Level-Edge-Card, Mikrostruktur Runde 2 (22 Papers, 4 Backtests).</li>
+      <li><b>Dachprojekt:</b> Makro-Faktor-Katalog (49 Faktoren), Telegram-Nachimport, <code>G8-Notion-Sync</code>. <b>Keine Live-Änderung.</b></li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">02</span> Aktive Zeiten</h3>
+    <div class="bars">
+      <div class="bar-col"><span class="bar-count">1</span><div class="bar" style="height:25%"></div><span class="bar-label">Mo</span></div>
+      <div class="bar-col"><span class="bar-count">0</span><div class="bar" style="height:2%"></div><span class="bar-label">Di</span></div>
+      <div class="bar-col peak"><span class="bar-count">4</span><div class="bar" style="height:100%"></div><span class="bar-label">Mi</span></div>
+      <div class="bar-col"><span class="bar-count">0</span><div class="bar" style="height:2%"></div><span class="bar-label">Do</span></div>
+      <div class="bar-col"><span class="bar-count">2</span><div class="bar" style="height:50%"></div><span class="bar-label">Fr</span></div>
+      <div class="bar-col"><span class="bar-count">0</span><div class="bar" style="height:2%"></div><span class="bar-label">Sa</span></div>
+      <div class="bar-col"><span class="bar-count">1*</span><div class="bar" style="height:25%"></div><span class="bar-label">So</span></div>
+    </div>
+    <p>Gezählt sind manuelle Commits (ohne Watchdog/Snapshots). * Der So-Commit ist ein Sammel-Commit für den Research-Stand 11.–18.10.; viel Arbeit lief ohne eigenen Commit. Muster nach Commits und CHANGELOG: <b>Mo/Mi spätabends, Do/Fr nach Mitternacht, Fr Vormittag bis Mittag, So Vormittag</b>. Die langen Standbys (Mo, Do) lagen tagsüber an Werktagen ohne Commit.</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">03</span> Main Erkenntnisse</h3>
+
+    <p><b>1 · Einen Edge-Kipp sieht man nicht kommen; man kann nur den Schaden begrenzen.</b></p>
+    <ul class="plain">
+      <li><b>Befund:</b> Fünf Signale an 7 bekannten Brüchen und 10 Live-Beinen: keines warnt verlässlich vor dem letzten Hoch. Bester Schalter: Drawdown mit strengem Fehlalarm-Budget — verbessert <b>7/7</b> Brüche, kostet gesunde Beine im Median <b>−3,4 R</b>, greift ca. 6 Monate nach dem Hoch.</li>
+      <li><b>Mechanismus:</b> Ein Kipp sieht anfangs aus wie eine Pechsträhne. Bei niedriger Trefferquote (ORB) schlagen CUSUM/SPRT dauernd an (orb_nasdaq −157 R durch Fehlabschaltungen); Drawdown reagiert nur auf die Tiefe des Lochs.</li>
+      <li><b>Wie aufgefallen:</b> Schwellen nur vor dem Bruch kalibriert, per Bootstrap, alles vorab im Lock. Nebenbei: Die Broker-Liste vom 04.10. rechnet NASDAQ ohne Storno.</li>
+      <li><b>Lehre:</b> Nicht nach dem Frühwarnsignal suchen, sondern den Preis eines Schalters festlegen. Die Ampel ist Anzeige, kein Eingriff.</li>
+    </ul>
+
+    <p><b>2 · Die NASDAQ-Storno-Regel, die live läuft, ist ein 2026-Fit.</b></p>
+    <ul class="plain">
+      <li><b>Befund:</b> 10 Jahre M1: ohne Storno <b>Σ +584 R (t 3,2)</b>, mit Storno <b>+198 R (t 1,8)</b>; nur im Tresor ist Storno besser (+55 gegen +21 R).</li>
+      <li><b>Mechanismus:</b> Die Wahl vom 04.10. stand auf 2019–26 (Storno verliert 2016–18) und auf einem „OOS", das 2026 enthielt — ein Muster des Zieljahrs wurde zur „robusten" Regel.</li>
+      <li><b>Wie aufgefallen:</b> Deine Frage nach der Herkunft; sauberer Vergleich mit getrennten Fenstern. Live diese Woche: Di und Fr beide NASDAQ-Seiten storniert.</li>
+      <li><b>Lehre:</b> Jede Entscheidung von vor dem 05.10. ist verdächtig, bis sie über 2016–26 getrennt nachgerechnet ist.</li>
+    </ul>
+
+    <p><b>3 · Gold ASB verdünnt sich, statt zu brechen — und hatte den ersten echten Fill.</b></p>
+    <ul class="plain">
+      <li><b>Befund:</b> IS-only: Ø <b>+0,33 → +0,18 → +0,04 R</b> (Tresor PF 1,19, 18 Trades), DSR 0,24. Live 15.10.: erster Stop-Order-Fill, Zeit-Exit, TTP −333 $ (−0,56 R).</li>
+      <li><b>Mechanismus:</b> Kein Filter kippt; der Effekt wird stufenweise kleiner (Ursache Hypothese). Der Zeit-Exit wirkte wie geplant: Stop nicht erreicht, nur ein halbes R verloren.</li>
+      <li><b>Wie aufgefallen:</b> Tresor-Check (14.10.) zeigte schon +0,33 → +0,18. Fast täuschend: „alle 11 Jahre positiv" sagt nichts über die Größe.</li>
+      <li><b>Lehre:</b> „Überlebt den Tresor" ≠ „statistisch belegt". Sinkende Treppe → beobachten, nicht auf altem OOS nachjustieren.</li>
+    </ul>
+
+    <p><b>4 · Mikrostruktur-Prämien gehören dem Maker: 7 von 7 Kandidaten an den Kosten gescheitert.</b></p>
+    <ul class="plain">
+      <li><b>Befund:</b> Tresor netto: Dollar-W Europa −1,20, Tokio −2,35, Periodizität −3,34, Overnight Drift −0,73 bps. Das Tokio-Dollar-W ist brutto echt (<b>+1,6 bps, t 4,8</b>).</li>
+      <li><b>Mechanismus:</b> Alle Effekte liegen brutto bei 0–3 bps = unsere Rundturn-Kosten. Wer per Market-Order einsteigt, zahlt die Prämie, die er ernten will (Vertiefung 4b).</li>
+      <li><b>Wie aufgefallen:</b> Verschobene Kontrollfenster (±4/+8 h) schwächer → kein Artefakt; die Papers sagen die Kostenfrage selbst. Datenfalle (Rollover-Ausstiege) vor dem ersten gezählten Lauf behoben.</li>
+      <li><b>Lehre:</b> Brutto-Effekt des Papers vorab gegen <code>costs.py</code> halten; unter ca. 3× Kosten nur mit Maker-Ausführung testen.</li>
+    </ul>
+
+    <p><b>5 · Key Levels: Je sichtbarer das Level, desto stärker der Sog.</b></p>
+    <ul class="plain">
+      <li><b>Befund:</b> 10 FX-Paare, nur IS: Umkehrquote Vorwoche 43,3 % gegen 48,5 % Schein-Level (z −4,5), Session z −7,6, runde Zahl z −7,8; negativ in <b>38/40</b> Kombinationen. Pivots und Engulfing-Open wie Schein-Level.</li>
+      <li><b>Mechanismus:</b> Hinter sichtbaren Levels liegen Stops und Ausbruchs-Orders; sie lösen aus und ziehen den Kurs hindurch. In News-Phasen stärker.</li>
+      <li><b>Wie aufgefallen:</b> Edge Card mit dir Feld für Feld, Kontrollgruppe in jedem Vergleich; pandas-3-Zeiteinheitenfehler unterwegs gefunden.</li>
+      <li><b>Lehre:</b> Levels als Ziel, nicht als Einstieg gegen den Kurs. Netto trägt nur „Vorwoche, M1, G = 20, Durchlauf" knapp (t 0,9).</li>
+    </ul>
+
+    <p><b>6 · Live: Eine Stunde Standby reicht, um den ORB-Tag zu verlieren.</b></p>
+    <ul class="plain">
+      <li><b>Befund:</b> Do 14:49–15:53 Standby, Range-Ende 15:45 → beide Ausbruchsseiten schon durch, nichts platziert. Mo sogar 7 Stunden.</li>
+      <li><b>Mechanismus:</b> ORB hängt an einem Zeitpunkt pro Tag; andere Beine holen nach, ORB nicht. Danach Lake veraltet, Läufe langsam, EK-Zeit-Exit 13 Min. zu spät.</li>
+      <li><b>Wie aufgefallen:</b> Die <code>[ORB-PRAEZISE]</code>-Zeile fehlte nur an diesem Tag; das Energie-Protokoll zeigte die Lücke auf die Minute.</li>
+      <li><b>Lehre:</b> Für zeitpunktgebundene Beine ist Verfügbarkeit Teil der Strategie. ORB-Ergebnisse nie ohne Blick auf Standby-Lücken lesen.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">04</span> Neues Wissen (Papers / Ideen)</h3>
+    <ul class="plain">
+      <li><b>Zarattini/Aziz/Barbon, Folgerunden.</b> IS-Gewinner 10/25–03/26 fallen im OOS durch (−5,9/−8,4 bps); nur „NASDAQ K2 + Öl-Korr. 60 T. &lt; 0" in allen drei Fenstern positiv (vorbelastet). TTP: K60 1 % + ORB 0,25 %, MC-Median +8,2 %/Jahr, P(Bruch) 5 %. <b>Forward bis 31.03.2027.</b></li>
+      <li><b>Öl als ORB-Filter.</b> IS-Gewinner verliert im Tresor (−0,68/−0,18 R je Trade); 2026-Fit +39/+46 R, aber DSR ≈ 0. <b>Forward</b>, ausdrücklich kein Beleg.</li>
+      <li><b>Mikrostruktur Runde 2</b> (Krohn/Mueller/Whelan, Breedon/Ranaldo, Ito/Yamada, Heston/Korajczyk/Sadka, Boyarchenko/Larsen/Whelan): 22 Papers gescreent, 4 getestet, alle Tresore negativ. <b>Verworfen</b>, keine PDF.</li>
+      <li><b>Key-Level-Edge-Card</b> (eigene Strategie): These „Levels halten" — Ergebnis: Magnet. <b>In Arbeit</b> (Stufe 2).</li>
+      <li><b>Gold ASB IS-only:</b> Tresor +0,04 R, DSR 0,24. <b>Live unverändert</b>, Mentor-PDF steht.</li>
+      <li><b>Tresor-Check aller Live-Beine:</b> negativ orb_us30 (−16 R), btc_ema_cross (6 Trades); orb_sp500 fast null; Rest positiv. Läuft jetzt wöchentlich als Ampel.</li>
+      <li><b>Makro-Faktor-Katalog</b> aus OneNote: 49 Faktoren, 12 Testkandidaten, nichts getestet.</li>
+      <li><b>Ideen-Inbox neu:</b> Drawdown-Schalter je Live-Bein (16.10., offen, eigener Plan nötig) · Dollar-W nur als Maker? (18.10., eher verwerfen).</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">4b</span> Vertiefung · Maker und Taker — warum der Spread die Prämie ist</h3>
+    <p><b>Was es ist:</b> Der <b>Maker</b> stellt Liquidität (Limit-Order im Buch, wartet). Der <b>Taker</b> nimmt Liquidität (Market-/Stop-Order, sofort) und zahlt dafür den Spread plus Kommission — den Preis für Sofortigkeit. Viele Mikrostruktur-Effekte sind genau diese Bezahlung: Jemand muss jetzt handeln, und wer ihm die Gegenseite stellt, verdient eine kleine Prämie.</p>
+    <p><b>Beispiel:</b> Das Dollar-W nach dem Tokio-Fix bringt im IS brutto <b>+1,6 bps</b> (t 4,8). Unser FX-Rundturn kostet <b>1,1–1,3 bps</b>. Als Taker bleiben höchstens 0,3–0,5 bps; im OOS schrumpft der Bruttoeffekt auf +0,24 → netto −1,6 bps. Ein Maker bekäme den Spread statt ihn zu zahlen — das Paper sagt selbst: „positiv erst bei halbem Spread".</p>
+    <p><b>Warum es zählt:</b> Alle unsere Bridges handeln als Taker. Ein Edge ist für uns nur erntbar, wenn er deutlich größer ist als ein Rundturn — Faustregel: unter ca. <b>3× Kosten</b> gar nicht erst testen, außer eine Limit-Order-Ausführung ist realistisch. Dasselbe Prinzip steckt hinter dem CLS-Befund (Entry-Lag und Kosten fressen kleine Edges).</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">05</span> Verbesserungen</h3>
+    <ul class="plain">
+      <li>Edge-Frühwarnung mit Warnstufen (<code>edge_monitor/</code>, 6 Tests, vorab registriertes Lock), wöchentlich im Report.</li>
+      <li>Tresor-Check aller Live-Beine als wiederholbares Skript.</li>
+      <li>Overfitting-Sperre als Routine: ORB-Öl, Noise-Area (5 Locks), Gold ASB, Key Levels, K4–K7, K60-Gewichtung.</li>
+      <li>Research-Stand 07.–18.10. per Sammel-Commit gesichert.</li>
+      <li>Live ohne Codeänderung: erster Gold-ASB-Stop-Order-Fill mit Zeit-Exit sauber auf allen 4 Konten; NASDAQ-Storno greift wie konfiguriert.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">06</span> Verschlechterungen / offene Probleme</h3>
+    <ul class="plain">
+      <li>Standby in der Handelszeit schlimmer als KW41: Mo 7 h, Do genau über dem ORB-Fenster. Watchdog schläft mit.</li>
+      <li>CTNL-Altpositionen (TTP 3, IQ 1, FK 1) weiter ohne Zeit-Exit; TTP-Deckel blockiert.</li>
+      <li>Soll/Ist und Ampel sehen den Gold-ASB-Fill und den CTNL-Trade vom 15.10. nicht.</li>
+      <li>TTP-OU: STT fällt zwei Stunden nach dem Entry aus dem Scan (neben DD/EOG).</li>
+      <li>Datenpfad nach jedem Aufwachen schlecht; Ampel-Rechnung hängt ohne Timeout.</li>
+      <li>Drei Live-Entscheidungen auf schwachem Grund (ORB SP500 ROT, NASDAQ-Storno 2026-Fit, Gold ASB verdünnt) — bewusst so belassen, der Forward muss es zeigen.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">07</span> Optimierungsmöglichkeiten</h3>
+    <ul class="plain">
+      <li><b>Standby abstellen</b> (Energieplan/Deckel) oder Watchdog auf ein Gerät, das nicht mitschläft — für ORB ist Verfügbarkeit Teil der Strategie.</li>
+      <li><b>CTNL-Exit gegen Broker-Positionen abgleichen</b> und die fünf Altpositionen entscheiden (echtes Geld).</li>
+      <li><b>Gold ASB in Soll/Ist und Ampel</b> live-getreu machen (Stop-Order + Liquiditätsfilter), sonst misst beides das größte Bein falsch.</li>
+      <li><b><code>mt5_pull.py</code> härten:</b> Wiederholen bei 0 Deals mit offenen Positionen, FK mit <code>/portable</code> starten; <b>Ampel-Abruf mit Timeout</b>.</li>
+      <li><b>Runde-2-Dateien committen</b> (Locks <code>smh_k4</code>–<code>k7</code>, <code>smh_microstructure/*.py</code>).</li>
+      <li><b>Dashboard-Frage „Kann IQ NASDAQ handeln?"</b> als beantwortet bestätigen (NAS100.gbe, 13./16.10.).</li>
+    </ul>
+  </section>
+
+  <footer class="colophon">
+    Weekly Checkup · automatisch erzeugt · Forex-Backtesting/scripts/reports · lokal committet, nicht gepusht
+  </footer>
+
+</div>
+</body>
+</html>

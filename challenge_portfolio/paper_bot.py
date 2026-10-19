@@ -649,6 +649,30 @@ def _import_ou_paper_backtest():
     return ou_config, ou_portfolio, ou_scanner._load_ttp_tradable_tickers
 
 
+def _drop_unfinished_daily_bar(panel_df: pd.DataFrame, end: pd.Timestamp) -> pd.DataFrame:
+    """Fix 2026-10-19: nur abgeschlossene Tageskerzen an das OU-Modell geben.
+
+    Waehrend der US-Session enthaelt der Lake (yfinance D1) schon die Kerze des
+    laufenden Tages mit einem vorlaeufigen "Close". Lag der Kurs intraday unter
+    dem Bollinger-Band, meldete die Simulation einen offenen Trade, und die
+    Bridge eroeffnete echt. Schloss der Tag wieder ueber dem Band, verschwand
+    der Trade aus jedem spaeteren Scan, und die echte Position lief ohne
+    Modellfuehrung weiter ("Titel fehlt im aktuellen Scan", nur Broker-SL):
+    DD 15.09., EOG 21.09., STT 16.10. Validiert ist der Einstieg auf dem
+    Schlusskurs.
+
+    Deshalb fliegt jede Kerze ab dem aktuellen New-Yorker Kalendertag raus,
+    auch nach 16:00 ET. Das kostet keinen Einstieg: OU handelt live nur bei
+    offener NYSE (_nyse_is_open() in der Bridge), ein Signal vom Schlusskurs
+    wird also ohnehin fruehestens zur naechsten Eroeffnung ausgefuehrt, und
+    dann ist seine Kerze gestern. `end` ist UTC ohne Zeitzone (wie in der
+    Bridge) oder zeitzonenbehaftet."""
+    end_utc = end.tz_localize("UTC") if end.tzinfo is None else end.tz_convert("UTC")
+    ny_today = end_utc.tz_convert("America/New_York").date()
+    bar_dates = pd.DatetimeIndex(panel_df.index).date
+    return panel_df[bar_dates < ny_today]
+
+
 def _scan_ou_modell(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> pd.DataFrame:
     """OU-Modell, TTP-handelbare Teilmenge (SP500+Nasdaq100, DAX raus -- 0
     Ticker dort ueberhaupt handelbar, siehe ou_paper_backtest/scanner.py::
@@ -709,7 +733,9 @@ def _scan_ou_modell(end: pd.Timestamp, force_refresh: bool, *, source: str = "li
             panel[t] = close.dropna()
         if not panel:
             continue
-        panel_df = pd.DataFrame(panel).sort_index()
+        panel_df = _drop_unfinished_daily_bar(pd.DataFrame(panel).sort_index(), end)
+        if panel_df.empty:
+            continue
 
         bench_ticker = ou_config.UNIVERSES[market_key]["benchmark"]
         bench_df = yf.download(bench_ticker, start=start, end=end_str, auto_adjust=True, progress=False)

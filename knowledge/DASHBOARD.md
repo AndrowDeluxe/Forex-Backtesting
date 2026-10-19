@@ -26,9 +26,10 @@ passiert, was steht an.
    **Trade-Inventur 2025 läuft (seit 18.10., Plan freigegeben):** alle
    händischen Trades 2025 einlesen und zeigen, welche Konten/Setups/Sessions
    den Gewinn getragen haben. Axi-Parser steht (`fusion_lab/trades/`, 6 Tests).
-   **Wartet auf dich:** 5 Axi-Statements + Journal-CSV nach
-   `fusion_lab/raw/trades/axi|journal/` legen, 6. Konto benennen,
-   Tradezella-CSV-Export (keine API vorhanden) nach `…/tradezella/`.
+   Erste Auswertung steht (18.10.). **Jetzt: Edge Card „Dayli Trade mit IPDA“**
+   [[htf-daily-trade-edge-card]] -- Phase 0 wartet auf deine Antworten (Fragen im
+   Chat 18.10.). Parallel: Makrofaktoren einzeln gegen die echten Trades prüfen;
+   den Makro-Agenten führst du weiter. Offen: 6. Konto.
    **Aktuell: Strang 0.** OneNote vollständig importiert (3.225 Seiten),
    Telegram bis auf „SMH Daily Update“ (läuft noch). **Inventur-Entwurf
    steht (09.10.):** 30 Bestandteile in A–F, siehe
@@ -48,11 +49,16 @@ passiert, was steht an.
    K5 Tokio −2,35, K6 Periodizität −3,34, K7 Overnight Drift −0,73).
    Befund: Mikrostruktur-Prämien liegen brutto bei 0–3 bps, also unter
    unseren Kosten. [[mikrostruktur-paper-screening]]
+   **K4b-Nachtest (18.10.):** eingefrorene K4-Regel auf frischen Paaren
+   USDNOK/USDSEK, Tresor −3,63 bps netto, PF 0,76, durchgefallen. Der
+   IS-Brutto-Gewinn war Dollar-Drift (Zufallsfenster gleich gut).
    **Key Levels (16.10.): Edge Card fertig ([[keylevel-edge-card-final]], auch
    in Notion unter 📁 Edge Cards). Stufe 1 fertig: Magnet robust (Vorwoche >
    Session ≈ runde > halbe Zahl), Pivots und Engulfing ohne Effekt. Nur
    „Vorwoche, M1, G = 20, Durchlauf“ kommt weiter. Nächster Schritt: Stufe 2
    (Kontext) auf dieser Zelle.**
+   **18.10.: Doppel-BOS-Einstieg getestet – 0/240 Zellen, kein Effekt.
+   Offen: Wie weiter? (Magnet-Trade Richtung Level, siehe Ideen-Inbox.)**
    Früherer Schritt (07.10.): Key-Level-Ansatz vertiefen. Runde
    Zahlen wirken wie ein Magnet, nicht wie eine Wand. OOS und Tresor von K1
    sind schon geöffnet, deshalb braucht eine neue Regel einen eigenen Lock
@@ -77,6 +83,21 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **Key Levels, Doppel-BOS-Einstieg: 4 Annahmen von mir** (18.10.,
+  im Chat aufgelistet):
+  1. Beobachtungsfenster 8 h ab Levelberührung.
+  2. Swing-Fractal k = 2 auf M5 und M15.
+  3. Volumenprofil über die letzte H4-Range.
+  4. Druckschwelle z ≤ −1 (Short) bzw. ≥ +1 (Long).
+
+  Bitte bestätigen oder ändern; jede Änderung zählt als neue Variante.
+  [[keylevel-edge-card-final]]
+
+- **K4b-Nachtest (18.10.): Kosten USDNOK 3,47 bps / USDSEK 3,10 bps je
+  Rundturn sind geschätzt.** Grundlage: Dukascopy-Spread (Ask minus Bid,
+  IS 2019/2021) plus der Nicht-Spread-Aufschlag von EURUSD. Am Broker ist
+  das nicht gemessen. Am Urteil ändert es nichts, der Tresor ist schon
+  brutto negativ. [[smh-elite-mikrostruktur]]
 - **Trade-Inventur 2025 (18.10.): drei eigene Festlegungen.** (a) Axi-Buchung
   „Data Truncation DDMMYYYY“ wird als Startsaldo zum Datum im Text gewertet, nicht
   zum Buchungsdatum (bei 4667999/4690858 erst im August gebucht). Davon hängt das
@@ -86,10 +107,6 @@ Bedarf vor generischem Aufräumen.
   vermerkt, nicht angefasst. Ist sie noch offen und gewollt?
   [[quant-diskretionaer-fusion]]
 
-- **Gold-ASB-Blindtest (18.10.): zwei eigene Festlegungen.** (a) Silber vor 08/2014 aus
-  COMEX-Futures `SI=F` statt Dukascopy (dort erst ab 07/2014), Messlatte deshalb +0,229
-  statt +0,271 R. (b) FOMC aus H2 gestrichen (14:00 NY liegt nach dem Exit).
-  [[gold-asb-paper-filter]]
 
 - **Mikrostruktur Runde 2 (18.10.): Screening-Punkte und Kandidatenwahl
   K4–K7 sind meine Einschätzung** (Raster `smh_microstructure/screening_v2.json`).
@@ -100,11 +117,6 @@ Bedarf vor generischem Aufräumen.
   pauschalen Kosten gerechnet, real teurer.** Gotobi-Tage sind ohne
   japanische Feiertage bestimmt. Beides ändert kein Urteil, alle vier
   Kandidaten sind negativ. [[smh-elite-mikrostruktur]]
-- **Gold-ASB-PDF (18.10.): zwei eigene Annahmen offen** ((a) Kriterien wie
-  ORB-PDF: vom Nutzer bestätigt 18.10., „perfekt“). (b) Die Bewertung der fünf Mechanismus-Felder (S. 7) ist meine Einschätzung,
-  Literatur nur auf Abstract-Ebene geprüft. (c) Die Notiz vom 15.10. spricht
-  von „9 Punkten“, im Skript sind es 8 Stellschrauben; die PDF nennt 8.
-  [[gold-asb-is-only-neuanalyse]]
 
 - **Key-Level-Backtest: Kosten der 6 frischen Paare sind geschätzt, nicht
   gemessen** (16.10.). Round-Turn in Pips: USDCAD 1,6, USDCHF 1,6, NZDUSD 1,8,
@@ -131,6 +143,9 @@ Bedarf vor generischem Aufräumen.
   (unbelegt): Signal-Schlüssel hat sich mit „eine M15-Bar früher“ (03.10.)
   verschoben. Entscheidung nötig: Altpositionen schließen? Exit-Abgleich
   gegen Broker statt Sim-Schlüssel?
+  **Update 19.10. (Nutzer):** Altpositionen von Hand geschlossen, bis auf
+  eine, die der Nutzer auf Break-even gesetzt hat. Offen bleibt der
+  Code-Teil (Exit-Abgleich, verwaiste `placed`-Einträge).
 
 - **📅 31.03.2027: Forward Noise-Area-Momentum Regime 2026** (Übersicht aller
   Forward-Tests: [[optimierte-edges-uebersicht]]; Nutzerentscheid
@@ -414,6 +429,22 @@ Bedarf vor generischem Aufräumen.
   geschlossen. **Worauf schauen:** ob die Drehtür wirklich weg ist (Einstiege
   je Titel ≤ 1 pro Tag), ob das offene Risiko über 8 % steigt, und ob DD/EOG
   wieder im Scan auftauchen.
+  **Geklärt 19.10.: DD/EOG (und STT 16.10.) tauchen nie wieder auf.** Sie
+  wurden auf dem noch laufenden Tageskurs eröffnet: Intraday lag der Kurs
+  unter dem Bollinger-Band, zum Tagesschluss nicht mehr (DD 128,04 > 123,06,
+  EOG 141,38 > 140,35, STT 165,72 > 164,75). Mit fertigen Tageskursen
+  enthält kein Scan die Trades. Das Modell wäre ausgestiegen: DD am 22.09.
+  (131,80), EOG am 05.10. (144,08, jetzt 158). **Entscheidung nötig (echtes
+  Geld):** (a) DD/EOG/STT von Hand schließen oder weiterlaufen lassen?
+  (b) Code-Fix in `challenge_portfolio/paper_bot.py` (wirkt sofort live):
+  OU nur auf abgeschlossenen Tageskursen einsteigen lassen, wie validiert.
+  **(b) erledigt 19.10.:** live seit 11:05 (`7c26f58c` + Funded-`run_once.py`,
+  Details CHANGELOG 19.10.). Offen bleibt nur (a).
+  **Worauf schauen (neu, Niedrig):** Yahoo liefert `^GSPC`/`^NDX` zeitweise nicht
+  (19.10. vormittags, 15.10., 12.10., 18.09.); der OU-Scan hat dann 0 Trades und
+  meldet für jede offene Position „Titel fehlt im Scan“. Es wird dabei nichts
+  geschlossen, es entstehen aber auch keine Einstiege. Idee: Benchmark über den
+  Lake oder SPY/QQQ als Ersatz holen.
   Details: [[ou-modell-kostenvalidierung]].
 
 - **🟠 Split-Schutz fehlt weiterhin — abgetrennt vom MNST-Punkt (2026-09-30).**
@@ -480,6 +511,12 @@ Bedarf vor generischem Aufräumen.
   09:55–17:09 und Do 15.10. 14:49–15:53 (Range-Ende 15:45 → beide
   Ausbruchsseiten schon durch, keine Order). Diesmal ohne Commit-Arbeit
   tagsüber, das „Deckel/Arbeitsblock“-Muster passt also nicht. Ursache offen.
+  **Geklärt 19.10.:** Der Nutzer war mit dem Notebook im Akkubetrieb unterwegs.
+  Mo und Do: Zuklappen (`506 Grund: Lid`), Fr 11:36: Bildschirm-Aus nach 3 Min
+  im Akku (`Idle Timeout`). Zusätzlich starteten EK-Fast und alle drei Ingests
+  im Akku gar nicht, was den Lake veralten ließ und die str/float-Fehler im
+  Live-Fallback auslöste. Behoben: siehe CHANGELOG 19.10. Offen bleiben
+  der Totmannschalter und das 3-Min-Bildschirm-Aus im Akku (bewusst nicht geändert).
 - **Report-Werkzeuge härten** (Weekly KW42, 18.10.). Niedrig.
   (a) `mt5_pull.py`: bei 0 Deals und offenen Positionen warten und
   wiederholen (kaltes Terminal); FK-Terminal mit `/portable` starten wie
@@ -599,6 +636,21 @@ außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
 
+- **Bridges auf einen VPS statt aufs Notebook** (19.10., aus der Akku-Analyse
+  KW42): Unterwegs im Akkubetrieb schlafen alle Bridges beim Zuklappen bzw.
+  laufen nur weiter, solange das Notebook offen bleibt. Ein Windows-VPS mit
+  den MT5-Terminals hätte dieses Problem nicht. **Nutzer 19.10.: auf November
+  verschoben** (Paket „Windows L+“ 4 vCores/8 GB, 27 € für 3 Mon., danach 42 €).
+  Vorher klären: VPS/IP-Regeln bei TTP und BeyondIQ. Umzug im Plan-Modus mit
+  DRY_RUN-Probebetrieb, Notebook-Tasks im selben Schritt abschalten.
+
+- **Magnet-Trade Richtung Key Level** (18.10., aus der Key-Level-Edge-Card):
+  Der Magnet wirkt an und vor der Berührung, nicht nach einer BOS-
+  Bestätigung. Idee: Liegt der Kurs X Pips vor einem Vorwochen- oder
+  Session-Level oder einer runden Zahl, in Richtung Level einsteigen, Ziel
+  Level + Durchlauf. Das wäre ein neuer gezählter Versuch im Lock
+  `keylevels_v1`, nur IS. [[keylevel-edge-card]]
+
 - (18.10.) **Dollar-W nach dem Tokio-Fix (K5) nur mit Limit-Orders als Maker
   handelbar?** IS brutto +1,6 bps (t 4,8), aber zerfallend (OOS +0,24,
   Tresor −0,55). Bezug [[smh-elite-mikrostruktur]] Runde 2. Eher verwerfen.
@@ -624,7 +676,8 @@ außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
   abgelehnte Setups im Notion-Entscheidungslog, die „Quick Fixes“ als
   Testfälle für den Kontroll-Baustein.
 
-- (07.10.) **Copy-Trading-Bot aus den täglichen Marktupdates des Mentors**
+- (07.10.) **→ eingeordnet 19.10.: Edge Card in Arbeit,
+  [[copy-trading-dennis-edge-card]].** **Copy-Trading-Bot aus den täglichen Marktupdates des Mentors**
   (eigene Telegram-Gruppe, Nutzeridee). Vor jedem Bau: die Calls der
   Vergangenheit aus dem Telegram-Verlauf extrahieren und nachtesten
   (Trefferquote, R, Kosten, Verzögerung) — erst ein belegter Edge

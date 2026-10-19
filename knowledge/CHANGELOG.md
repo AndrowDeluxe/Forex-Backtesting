@@ -9,6 +9,62 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-19** [Challenge / Funded-Bridge, OU-Bein, ECHTES GELD] **OU steigt nur noch
+  auf abgeschlossenen Tageskerzen ein** (Nutzerfreigabe, eingespielt 11:05, NYSE zu).
+  - Ursache der verwaisten TTP-Positionen DD/EOG/STT: Einstieg intraday auf der
+    vorläufigen Tageskerze. Schloss der Tag wieder über dem Band, war der Trade aus
+    jedem Scan verschwunden, und die Bridge hat ihn (absichtlich) nie geschlossen.
+  - Repo `7c26f58c`: `paper_bot.py::_drop_unfinished_daily_bar()` lässt die Kerze des
+    laufenden NY-Tages weg, + `tests/test_ou_unfinished_daily_bar.py` (5 grün).
+  - `Funded-Portfolio-Bridge/run_once.py` (nicht git-getrackt): OU-Signalalter in
+    Handelstagen statt Kalendertagen (Grenze 2), sonst würden Freitagssignale am
+    Montag als „zu alt“ verworfen. Backup: `_backup_20261019_ou_fix/run_once.py`.
+  - Wirkung: Einstieg und MA-Ausstieg kommen zur NYSE-Eröffnung nach dem
+    Signaltag statt intraday. DD/EOG/STT selbst bleiben unberührt (Handentscheid).
+
+- **2026-10-19** [Infrastruktur / alle Bridges] **Akkubetrieb: Bridges laufen
+  unterwegs weiter** (Nutzerauftrag nach Weekly KW42).
+  - Ursache der Standby-Ausfälle Mo 12.10. und Do 15.10.: Notebook unterwegs
+    im Akku, zugeklappt → Modern Standby.
+  - Zweite, stille Lücke: `EK-Portfolio-Bridge-Fast` und
+    `DataLake-Ingest-Fast/-Fast5/-Slow` hatten „Nur bei Netzbetrieb starten“
+    und „Bei Akkubetrieb beenden“ gesetzt (die anderen 6 Bridge-Tasks nicht).
+    Im Akku ruhten also EK-ORB/Gold-Silber/Trend-Pullback, der Lake veraltete,
+    und die Bridges fielen auf Live-Abrufe zurück. Dort entstehen die
+    str/float-Fehler (zeitlich deckungsgleich mit allen Akku-Fenstern der Woche).
+  - Geändert: beide Flags bei den 4 Tasks aus; Energieoption „Zuklappen“ im
+    Akku = „Nichts unternehmen“ (im Netzbetrieb unverändert „Energie sparen“).
+    Nicht geändert: Bildschirm-Aus im Akku nach 3 Min (löst weiter Standby aus,
+    wenn das Notebook offen, aber unbenutzt ist), Aufwach-Timer im Akku aus.
+  - Nebenbefund TTP-OU STT (16.10.): kein Datenausfall, Lake-Daten frisch.
+    Wahrscheinlich hat sich die Kandidatenliste auf dem noch laufenden
+    Tagesbalken verschoben (UAL kam im selben Lauf neu hinzu). Nicht im
+    Einzelnen nachgerechnet. Keine Strategie-/Risiko-Änderung.
+
+- **2026-10-18** [Research / Key Levels] **Doppel-BOS-Einstieg an Key Levels
+  getestet (nur IS): kein Effekt.**
+  - Getestet: 2× M5- bzw. M15+M5-BOS, Stop-Order beim zweiten BOS, Umkehr
+    und Durchlauf, Volumen-Varianten.
+  - 10 Paare, etwa 1,05 Mio. Einstiege.
+  - 0 von 240 Zellen bestehen; Trefferquote ≈ Schein-Level ≈ Doppel-BOS
+    ohne Level; MFE ≈ MAE.
+  - Empfehlung: keine SL/TP-Optimierung auf diesem Einstieg.
+  - Code: `keylevels/bos.py`, `keylevels/volume.py`. Lock `keylevels_v1`
+    jetzt 466 Versuche.
+  - Edge Card um die Einstiegsregeln 25–30 ergänzt (auch in Notion).
+
+- **2026-10-18** [Dachprojekt / Strang 0→1] **HTF-Edge „Dayli Trade mit IPDA“ gestartet**
+  (Plan freigegeben). Tradezella-Playbooks über die geteilten Links gesichert (4 Playbooks
+  mit Regeln + 105 Trades, `fusion_lab/raw/trades/tradezella/playbooks/`). Sperre beschlossen:
+  IS 2016–21, OOS 2022–24, Blind 2010–15, Forward; 2025/26 nur Hypothesenquelle. Makro als
+  Richtungsfilter (3 Varianten) + stufenweise Faktor-Prüfung gegen echte Trades. Phase 0
+  in [[htf-daily-trade-edge-card]]. Keine Bot-Änderung.
+
+- **2026-10-18** [Research / Gold ASB] **H1-Filter „enge Asien-Range“ verworfen,
+  offene Bestätigungen erledigt** (Nutzerentscheid) [[gold-asb-paper-filter]]. Bestätigt:
+  Mechanismus-Bewertung der PDF, 8 Stellschrauben, Silber-Ersatz SI=F im Blindtest,
+  FOMC-Streichung in H2. Keine Bot-Änderung.
+
 - **2026-10-18** [Prozess] **Vier-Fragen-Check eingeführt** (Nutzerentscheid,
   aus SMH-Elite-Hausaufgabe „Rohling“) [[vier-fragen-check]]. Jedes neue Edge /
   Paper: Warum verdient es Geld? Wo verliert es am meisten? Was ist dort anders?
@@ -25,6 +81,10 @@ keine Planung (dafür ist `DASHBOARD.md`).
   den letzten SL zeigen), 6059497 (EK-Kopierkonto) nur in Summen. Tradezella hat
   keine öffentliche API → CSV-Export. Ordner `fusion_lab/raw/trades/` (gitignored).
   Keine Bot-Änderung.
+  Nachtrag: Nutzer hat Originale abgelegt (5 Axi-PDFs, Journal-CSV, Journal-PDF
+  15.08., Tradezella-CSV); alle 5 PDFs bestehen die Fußzeilen-Gegenprobe. Neu
+  `fusion_lab/trades/inventory_2025.py` → `fusion_lab/data/trades_2025.parquet`;
+  erste Aufschlüsselung in [[quant-diskretionaer-fusion]] (Strang 0).
 
 - **2026-10-18** [Research / Gold ASB] **Paper-Filter + Blindtest 2010–2015**
   (Nutzerauftrag, Plan + Hypothesen bestätigt) [[gold-asb-paper-filter]]. Skript
@@ -43,6 +103,21 @@ keine Planung (dafür ist `DASHBOARD.md`).
   Edge-Ampel nicht frisch (Neuberechnung hing an Dukascopy), Soll/Ist ohne ORB für
   EK/Funded. Drei Dashboard-Einträge (IQ-NASDAQ-Beobachtung, Gold-ASB-Fill fehlt in
   Soll/Ist+Ampel, Report-Werkzeuge härten) + Standby-Nachtrag. Keine Bot-Änderung.
+
+- **2026-10-18** [SMH Elite 3 / Gruppenarbeit] **K4b-Nachtest: eingefrorene
+  K4-Regel (Vor-EZB-Bein) auf frischen Paaren USDNOK/USDSEK, Tresor
+  durchgefallen, keine PDF.**
+  - **Aufbau:** Vorregistrierung `smh_microstructure/k4b_vorregistrierung.json`,
+    Lock `smh_k4b_fix_europa_neu`, Skript `scripts/research_smh_k4b.py`.
+    6 Versuche (67 gesamt).
+  - **Kosten (Annahme):** 3,47 / 3,10 bps, also Dukascopy-Spread aus IS plus
+    EURUSD-Aufschlag (`costs.py`, `results/K4b_kosten.json`).
+  - **Netto Ø je Trade:** IS −1,72, OOS −1,68, Tresor −3,63 bps
+    (PF 0,76, 540 Trades).
+  - **Befund:** Der IS-Brutto-Gewinn (+1,57) war Dollar-Drift. Zufällige
+    Fenster brachten +1,02, verschobene sogar mehr.
+  - Neu: Datenpaare USDNOK/USDSEK in `smh_microstructure/data.py`.
+  - Details: [[smh-elite-mikrostruktur]]. Keine Bot-Änderung.
 
 - **2026-10-18** [SMH Elite 3 / Gruppenarbeit] **Mikrostruktur Runde 2:
   SSRN-Screening → 4 Paper-Kandidaten gebacktestet, alle Tresore negativ,

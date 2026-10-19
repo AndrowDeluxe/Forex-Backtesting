@@ -444,7 +444,8 @@ Bedarf vor generischem Aufräumen.
   (19.10. vormittags, 15.10., 12.10., 18.09.); der OU-Scan hat dann 0 Trades und
   meldet für jede offene Position „Titel fehlt im Scan“. Es wird dabei nichts
   geschlossen, es entstehen aber auch keine Einstiege. Idee: Benchmark über den
-  Lake oder SPY/QQQ als Ersatz holen.
+  Lake oder SPY/QQQ als Ersatz holen. Häufig läuft der Scan dabei auch ins
+  20-s-Limit („OU-Modell-Scan fehlgeschlagen … 20s“, 19.10. 11:14, 18.09., 24.09.).
   Details: [[ou-modell-kostenvalidierung]].
 
 - **🟠 Split-Schutz fehlt weiterhin — abgetrennt vom MNST-Punkt (2026-09-30).**

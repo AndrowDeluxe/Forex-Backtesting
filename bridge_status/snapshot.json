@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-19T04:31:24",
+  "generated_at": "2026-10-19T05:01:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-19T04:29:06",
+      "last_run": "2026-10-19T04:59:06",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-10-19 04:29:06 2026-10-19 04:29:02,583 INFO run_once: Konto-Equity 2755.78 EUR | Aggregiertes offenes Risiko (ganzes Konto): 121.22 (Deckel dieser Bridge: 826.73, 30%)",
+      "last_equity_line": "2026-10-19 04:59:06 2026-10-19 04:59:02,275 INFO run_once: Konto-Equity 2755.78 EUR | Aggregiertes offenes Risiko (ganzes Konto): 121.25 (Deckel dieser Bridge: 826.73, 30%)",
       "last_error_line": "2026-10-16 12:20:04     raise error[0]",
       "recent_events": [
         "2026-10-16 12:20:04         f\"Lake-Daten fuer {source}:{key}_{timeframe} zu alt (last_success_at={entry and entry.get('last_success_at')})\"",
@@ -17,12 +17,12 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-19T04:28:20",
+      "last_run": "2026-10-19T04:58:18",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-10-19 04:28:20 Verbunden: Login 504072729, Equity $98,959.48 USD",
+          "last_equity_line": "2026-10-19 04:58:18 Verbunden: Login 504072729, Equity $98,938.92 USD",
           "last_error_line": "2026-10-16 18:43:17 [TTP] ?? Entry fehlgeschlagen ou_modell (MSTR) MSTR: Berechnete Lot-Groesse 0.0 unter volume_min 1.0 fuer MSTR (risk_dollars=49.49, loss_per_lot=61.28)",
           "recent_events": [
             "2026-10-16 21:43:18 [TTP] ?? ENTRY ou_modell (UAL) UAL BUY lots=1.0 risk=$49.48 sl=53.73071 -- placed",
@@ -40,7 +40,7 @@
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-10-19 04:28:20 Verbunden: Login 16054, Equity $96,174.69 USD",
+          "last_equity_line": "2026-10-19 04:58:18 Verbunden: Login 16054, Equity $96,164.51 USD",
           "last_error_line": "2026-10-16 12:16:16 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
           "recent_events": [
             "2026-10-16 12:16:16 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
@@ -62,7 +62,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-10-19T04:14:11",
-      "minutes_since_last_run": 17.2,
+      "minutes_since_last_run": 47.2,
       "status": "ok",
       "last_equity_line": "2026-10-19 04:14:11 Verbunden: Login 17764, Equity $98,356.87",
       "last_error_line": "2026-10-16 12:17:55 gold_silver-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",

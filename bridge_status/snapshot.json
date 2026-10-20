@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-20T11:31:26",
+  "generated_at": "2026-10-20T12:01:26",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-20T11:29:16",
+      "last_run": "2026-10-20T11:59:15",
       "minutes_since_last_run": 2.2,
       "status": "ok",
-      "last_equity_line": "2026-10-20 11:29:16 2026-10-20 11:29:04,187 INFO run_once: Konto-Equity 2747.68 EUR | Aggregiertes offenes Risiko (ganzes Konto): 179.56 (Deckel dieser Bridge: 824.30, 30%)",
+      "last_equity_line": "2026-10-20 11:59:15 2026-10-20 11:59:04,439 INFO run_once: Konto-Equity 2747.68 EUR | Aggregiertes offenes Risiko (ganzes Konto): 179.57 (Deckel dieser Bridge: 824.30, 30%)",
       "last_error_line": "2026-10-16 12:20:04     raise error[0]",
       "recent_events": [
         "2026-10-16 12:20:04         f\"Lake-Daten fuer {source}:{key}_{timeframe} zu alt (last_success_at={entry and entry.get('last_success_at')})\"",
@@ -16,20 +16,12 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-20T11:29:02",
-      "minutes_since_last_run": 2.4,
+      "last_run": "2026-10-20T11:59:21",
+      "minutes_since_last_run": 2.1,
       "status": "ok",
       "accounts": {
-        "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-10-20 11:29:02 Verbunden: Login 16054, Equity $96,164.37 USD",
-          "last_error_line": "2026-10-20 11:14:27 OU-Modell-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-          "recent_events": [
-            "2026-10-20 11:14:27 OU-Modell-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-19 11:14:23 OU-Modell-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)"
-          ]
-        },
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-10-20 11:29:02 Verbunden: Login 504072729, Equity $98,983.17 USD",
+          "last_equity_line": "2026-10-20 11:59:21 Verbunden: Login 504072729, Equity $98,989.93 USD",
           "last_error_line": "2026-10-20 11:14:27 OU-Modell-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
           "recent_events": [
             "2026-10-20 11:14:27 OU-Modell-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
@@ -39,13 +31,21 @@
             "2026-10-16 19:43:18 [TTP] ?? ENTRY ou_modell (STT) STT BUY lots=1.0 risk=$49.49 sl=123.69406 -- placed",
             "2026-10-16 18:43:17 [TTP] ?? Entry fehlgeschlagen ou_modell (MSTR) MSTR: Berechnete Lot-Groesse 0.0 unter volume_min 1.0 fuer MSTR (risk_dollars=49.49, loss_per_lot=61.28)"
           ]
+        },
+        "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
+          "last_equity_line": "2026-10-20 11:59:21 Verbunden: Login 16054, Equity $96,164.37 USD",
+          "last_error_line": "2026-10-20 11:14:27 OU-Modell-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+          "recent_events": [
+            "2026-10-20 11:14:27 OU-Modell-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-10-19 11:14:23 OU-Modell-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)"
+          ]
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-10-20T11:14:15",
-      "minutes_since_last_run": 17.2,
+      "minutes_since_last_run": 47.2,
       "status": "ok",
       "last_equity_line": "2026-10-20 11:14:15 Verbunden: Login 17764, Equity $98,360.91",
       "last_error_line": "2026-10-16 12:17:55 gold_silver-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",

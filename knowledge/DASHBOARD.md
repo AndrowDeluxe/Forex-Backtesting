@@ -457,6 +457,16 @@ Bedarf vor generischem Aufräumen.
   **Offen für dich, unverändert:** bitte PC und Task-Scheduler-Historie
   prüfen, sobald du am PC bist.
 
+- **🔴 Zwanzigste Prüfung, dritte Prüfung heute: unverändert, Ausfall seit
+  über 18,5 Tagen.** (Bridge Error Monitor, 20.10., geprüft 21:12 UTC / 23:12
+  CEST.) `bridge_status/snapshot.json` weiterhin auf `generated_at:
+  2026-10-02T11:01:24` (Commit `666fe8e`) -- per `git fetch` gegen
+  `origin/main` bestätigt, seit der neunzehnten Prüfung heute Mittag (15:12
+  UTC, Commit `5318f4d`) kein neuer Commit von Watchdog/EK/Funded/FK. Der
+  zwölfte Handelstag (Dienstag 20.10.) ist damit komplett ohne Sichtbarkeit
+  zu Ende gegangen. **Nichts Neues** -- dieselben drei offenen Fragen (a/b/c)
+  bleiben unverändert offen, siehe die Einträge darüber.
+
 - **🟠 ORB: Live handelt andere Tage als der Backtest + M5 überzeichnet den
   Edge** (01.10., [[orb-order-storno-und-haltedauer]]). Nichts geändert.
   **Offen für dich:**

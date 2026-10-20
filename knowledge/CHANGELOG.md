@@ -9,6 +9,20 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-20** [Fusion / Makro-Agent] **Regimekarte Wachstum × Inflation
+  nachgebaut** (Vorlage: PDF von A. Landi, Stand 20.09.2026).
+  - US-BIP- und CPI-YoY als Erstveröffentlichung (ALFRED), Vorzeichen und
+    Tempo, drei Linsen, Rendite/Vola/Sharpe von 7 Assets je Regime.
+  - Code `fusion_lab/macro_regime/`, Lauf `python -m fusion_lab.macro_regime`.
+  - Kalibrierung: Regime am 18.09. identisch, Tagesanteile ±1,5 pp.
+  - Aktuell g↑·slow × π↑·accel (seit 14.09.). Noch nicht mit Strategien
+    verknüpft, kein Einfluss auf Bots.
+  - Notion: Eintrag „Regime-Roadmap — Wachstum × Inflation“ in 🌍
+    Makro-Übersicht (`python -m fusion_lab.notion.sync_regime`).
+  - Zwei Ebenen festgehalten: die Karte als Bestätigung, eine Marktsicht
+    (Anleihen, Breakevens, GDPNow) als Frühwarnung. Den Automatikbetrieb
+    baut der Agent später. [[regimekarte-wachstum-inflation]]
+
 - **2026-10-19** [Challenge / Funded-Bridge, OU-Bein, ECHTES GELD] **OU steigt nur noch
   auf abgeschlossenen Tageskerzen ein** (Nutzerfreigabe, eingespielt 11:05, NYSE zu).
   - Ursache der verwaisten TTP-Positionen DD/EOG/STT: Einstieg intraday auf der

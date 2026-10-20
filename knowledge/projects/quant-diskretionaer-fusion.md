@@ -110,6 +110,11 @@ Verschmelzung" (2026-09-02) ab -- der Journal-Teil ist laut Nutzer erledigt.
     beobachten. Wirkketten „Event → Erwartung → Währung → Gate“ aus den
     extrahierten Aktivierungstexten der 800 Report-Ideen ableiten. → Teil des
     Plan-Modus Phase 2.
+  - [x] **Regimekarte Wachstum × Inflation (20.10.)**: Nachbau des Landi-Briefs
+    (First Prints aus ALFRED, 3 Linsen, Asset-Kennzahlen je Regime) in
+    `fusion_lab/macro_regime/`; Ausgabe `current.json` als Regime-Kontext für den
+    Agenten. Kalibriert gegen das PDF (gleiches Regime, Tagesanteile ±1,5 pp).
+    Verknüpfung mit Strategien/Trades später (Nutzer). [[regimekarte-wachstum-inflation]]
   - [x] **Makro-Faktor-Katalog (12.10.)**: [[makro-faktoren-katalog]] -- OneNote
     Makro Education / Bankreports / News+Quick Notes+Incentive entdoppelt:
     49 Faktoren (mit Rolle im Report, Datenquelle, testbar), 13 Regime-

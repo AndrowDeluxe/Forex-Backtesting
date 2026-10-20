@@ -83,6 +83,15 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **Regimekarte (20.10.): 3 Annahmen von mir beim Nachbau.**
+  1. Freie Ersatzdaten statt Bloomberg: UST als synthetische 5y-Anleihe,
+     Rohstoffe als yfinance-Front-Monat (ab 2000, ohne Rollrendite).
+  2. „Vorprint“ = Vorquartal/Vormonat aus derselben Veröffentlichung,
+     gewählt, weil es die PDF-Tageszahlen besser trifft.
+  3. Headline-CPI nicht saisonbereinigt (CPIAUCNS).
+
+  Bitte bestätigen oder ändern. [[regimekarte-wachstum-inflation]]
+
 - **Key Levels, Doppel-BOS-Einstieg: 4 Annahmen von mir** (18.10.,
   im Chat aufgelistet):
   1. Beobachtungsfenster 8 h ab Levelberührung.
@@ -636,6 +645,20 @@ außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
 | EK-Portfolio-Paper                                      | —                                                                                        | pausiert (Paper-Zwilling von EK-Portfolio-Bridge, gehört zum Portfolio)                        | Disabled       | 2026-09-01      |
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
+
+- (20.10.) **Regimekarte: Automatikbetrieb erst beim Bau des Makro-Agenten**
+  (Nutzerentscheid). Dann einbauen:
+  1. Täglicher Lauf nach den US-Releases (`--refresh`).
+  2. Wechsel-Log.
+  3. Telegram-Meldung nur bei einem Wechsel.
+  4. Abgleich Soll/Ist: Assets seit dem Wechsel gegen das Regime-Mittel.
+  5. Regime-Block im Wochenbericht.
+
+  Dazu die **Marktsicht zwischen den Prints** (Nutzerhinweis): Staatsanleihen
+  bewegen sich laufend, also ein zweiter Layer aus Renditen und
+  Erwartungen, der einen Wechsel vor dem nächsten Print anzeigt. Mögliche
+  Reihen: 2y/10y, Breakeven T10YIE, GDPNow. Die Karte selbst wechselt per
+  Definition nur an GDP-/CPI-Terminen. [[regimekarte-wachstum-inflation]]
 
 - **Bridges auf einen VPS statt aufs Notebook** (19.10., aus der Akku-Analyse
   KW42): Unterwegs im Akkubetrieb schlafen alle Bridges beim Zuklappen bzw.

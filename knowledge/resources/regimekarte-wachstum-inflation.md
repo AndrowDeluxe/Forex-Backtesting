@@ -40,6 +40,8 @@ Konsensdaten zu brauchen (dort der Engpass).
 | Gold, Kupfer, Öl, Weizen | Gold Spot, S&P GSCI Excess Return | yfinance-Front-Monat, **erst ab Aug. 2000, ohne Rollrendite** |
 | Cash | 3M T-Bill | FRED DTB3 |
 
+Die Annahmen in dieser Tabelle hat der Nutzer am 20.10.2026 bestätigt.
+
 ## Kalibrierung (Stichtag 18.09.2026)
 
 - Regime am Stichtag identisch: **g↑·slow × π↑·accel**.

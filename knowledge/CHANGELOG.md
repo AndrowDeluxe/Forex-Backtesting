@@ -9,6 +9,11 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-20** [Fusion / Makro-Agent] **Regimekarte: Nachbau-Annahmen vom
+  Nutzer bestätigt**: freie Ersatzdaten (UST synthetisch 5y, Rohstoffe als
+  Front-Monat ohne Rollrendite), „Vorprint“ = Vorperiode aus derselben
+  Veröffentlichung, CPI nicht saisonbereinigt. [[regimekarte-wachstum-inflation]]
+
 - **2026-10-20** [Fusion / Makro-Agent] **Regimekarte Wachstum × Inflation
   nachgebaut** (Vorlage: PDF von A. Landi, Stand 20.09.2026).
   - US-BIP- und CPI-YoY als Erstveröffentlichung (ALFRED), Vorzeichen und

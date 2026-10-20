@@ -83,15 +83,6 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
-- **Regimekarte (20.10.): 3 Annahmen von mir beim Nachbau.**
-  1. Freie Ersatzdaten statt Bloomberg: UST als synthetische 5y-Anleihe,
-     Rohstoffe als yfinance-Front-Monat (ab 2000, ohne Rollrendite).
-  2. „Vorprint“ = Vorquartal/Vormonat aus derselben Veröffentlichung,
-     gewählt, weil es die PDF-Tageszahlen besser trifft.
-  3. Headline-CPI nicht saisonbereinigt (CPIAUCNS).
-
-  Bitte bestätigen oder ändern. [[regimekarte-wachstum-inflation]]
-
 - **Key Levels, Doppel-BOS-Einstieg: 4 Annahmen von mir** (18.10.,
   im Chat aufgelistet):
   1. Beobachtungsfenster 8 h ab Levelberührung.

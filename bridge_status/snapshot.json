@@ -1,23 +1,22 @@
 {
-  "generated_at": "2026-10-21T16:31:24",
+  "generated_at": "2026-10-21T17:01:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-21T16:29:05",
+      "last_run": "2026-10-21T16:59:05",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-10-21 16:29:05 2026-10-21 16:29:01,952 INFO run_once: Konto-Equity 2765.84 EUR | Aggregiertes offenes Risiko (ganzes Konto): 196.72 (Deckel dieser Bridge: 829.75, 30%)",
-      "last_error_line": "2026-10-16 12:20:04     raise error[0]",
+      "last_equity_line": "2026-10-21 16:59:05 2026-10-21 16:59:01,973 INFO run_once: Konto-Equity 2772.38 EUR | Aggregiertes offenes Risiko (ganzes Konto): 196.77 (Deckel dieser Bridge: 831.71, 30%)",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-21T16:28:16",
+      "last_run": "2026-10-21T16:58:16",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-10-21 16:28:16 Verbunden: Login 504072729, Equity $98,995.43 USD",
+          "last_equity_line": "2026-10-21 16:58:16 Verbunden: Login 504072729, Equity $99,017.48 USD",
           "last_error_line": "2026-10-20 21:29:25 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
           "recent_events": [
             "2026-10-21 16:13:16 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
@@ -35,7 +34,7 @@
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-10-21 16:28:16 Verbunden: Login 16054, Equity $96,128.93 USD",
+          "last_equity_line": "2026-10-21 16:58:16 Verbunden: Login 16054, Equity $96,210.47 USD",
           "last_error_line": "2026-10-20 21:29:25 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
           "recent_events": [
             "2026-10-21 15:13:16 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.11 risk=$150.00 sl=4149.29413 -- placed",
@@ -55,7 +54,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-10-21T16:14:10",
-      "minutes_since_last_run": 17.2,
+      "minutes_since_last_run": 47.2,
       "status": "ok",
       "last_equity_line": "2026-10-21 16:14:10 Verbunden: Login 17764, Equity $98,378.45",
       "last_error_line": "2026-10-20 21:27:55 trend_pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",

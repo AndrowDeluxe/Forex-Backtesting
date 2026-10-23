@@ -1,33 +1,22 @@
 {
-  "generated_at": "2026-10-23T11:31:24",
+  "generated_at": "2026-10-23T12:01:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-23T11:29:06",
+      "last_run": "2026-10-23T11:59:07",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-10-23 11:29:06 2026-10-23 11:29:02,160 INFO run_once: Konto-Equity 2854.36 EUR | Aggregiertes offenes Risiko (ganzes Konto): 114.80 (Deckel dieser Bridge: 856.31, 30%)",
+      "last_equity_line": "2026-10-23 11:59:07 2026-10-23 11:59:02,870 INFO run_once: Konto-Equity 2854.36 EUR | Aggregiertes offenes Risiko (ganzes Konto): 114.75 (Deckel dieser Bridge: 856.31, 30%)",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-23T11:28:17",
-      "minutes_since_last_run": 3.1,
+      "last_run": "2026-10-23T11:58:44",
+      "minutes_since_last_run": 2.7,
       "status": "ok",
       "accounts": {
-        "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-10-23 11:28:17 Verbunden: Login 504072729, Equity $99,566.38 USD",
-          "recent_events": [
-            "2026-10-23 04:13:17 [TTP] ?? EXIT ctnl_reversal XAUUSD (Ticket 19072530, target) -- already_closed @ 4021.35 (P/L +427.24)",
-            "2026-10-21 23:58:15 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
-            "2026-10-21 21:43:17 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.74R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 3.8-fache aufgeblaeht.",
-            "2026-10-21 16:13:16 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
-            "2026-10-21 14:58:17 [TTP] ? ctnl_reversal: Signal wieder angenommen (1 Entry/Entries).",
-            "2026-10-21 14:58:17 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.04 risk=$99.01 sl=4149.77951 -- placed"
-          ]
-        },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-10-23 11:28:17 Verbunden: Login 16054, Equity $97,690.66 USD",
+          "last_equity_line": "2026-10-23 11:58:44 Verbunden: Login 16054, Equity $97,690.66 USD",
           "recent_events": [
             "2026-10-23 04:13:17 [IQMARKETS] ?? EXIT ctnl_reversal XAUUSD.gbe (Ticket 2472177, target) -- already_closed @ 4022.13 (P/L +744.24)",
             "2026-10-23 02:43:18 [IQMARKETS] ?? EXIT ctnl_reversal XAUUSD.gbe (Ticket 2473333, target) -- already_closed @ 4071.11 (P/L +716.98)",
@@ -36,13 +25,24 @@
             "2026-10-21 15:13:16 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.11 risk=$150.00 sl=4149.29413 -- placed",
             "2026-10-21 14:58:17 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.07 risk=$150.00 sl=4149.77951 -- placed"
           ]
+        },
+        "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
+          "last_equity_line": "2026-10-23 11:43:17 Verbunden: Login 504072729, Equity $99,566.38 USD",
+          "recent_events": [
+            "2026-10-23 04:13:17 [TTP] ?? EXIT ctnl_reversal XAUUSD (Ticket 19072530, target) -- already_closed @ 4021.35 (P/L +427.24)",
+            "2026-10-21 23:58:15 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
+            "2026-10-21 21:43:17 [TTP] ?? ctnl_reversal XAUUSD: Kurs bereits 0.74R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 3.8-fache aufgeblaeht.",
+            "2026-10-21 16:13:16 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (73 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
+            "2026-10-21 14:58:17 [TTP] ? ctnl_reversal: Signal wieder angenommen (1 Entry/Entries).",
+            "2026-10-21 14:58:17 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.04 risk=$99.01 sl=4149.77951 -- placed"
+          ]
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-10-23T11:14:11",
-      "minutes_since_last_run": 17.2,
+      "minutes_since_last_run": 47.2,
       "status": "ok",
       "last_equity_line": "2026-10-23 11:14:11 Verbunden: Login 17764, Equity $98,649.63",
       "last_error_line": "2026-10-20 21:27:55 trend_pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",

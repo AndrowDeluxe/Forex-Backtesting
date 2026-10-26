@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-10-23T23:31:24",
+  "generated_at": "2026-10-26T01:44:10",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-23T23:29:02",
-      "minutes_since_last_run": 2.4,
-      "status": "ok",
+      "last_run": "2026-10-23T23:59:02",
+      "minutes_since_last_run": 2985.1,
+      "status": "stale",
       "last_equity_line": "2026-10-23 22:59:05 2026-10-23 22:59:01,974 INFO run_once: Konto-Equity 2859.36 EUR | Aggregiertes offenes Risiko (ganzes Konto): 115.57 (Deckel dieser Bridge: 857.81, 30%)",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-23T23:28:15",
-      "minutes_since_last_run": 3.1,
+      "last_run": "2026-10-26T01:44:05",
+      "minutes_since_last_run": 0.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-10-23 23:28:15 Verbunden: Login 504072729, Equity $99,630.24 USD",
+          "last_equity_line": "2026-10-23 23:58:16 Verbunden: Login 504072729, Equity $99,630.24 USD",
           "recent_events": [
             "2026-10-23 15:43:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.03 risk=$99.56 sl=4055.92056 -- placed",
             "2026-10-23 14:13:20 [TTP] ? ctnl_reversal: Signal wieder angenommen (1 Entry/Entries).",
@@ -25,7 +25,7 @@
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-10-23 23:28:15 Verbunden: Login 16054, Equity $97,691.46 USD",
+          "last_equity_line": "2026-10-23 23:58:16 Verbunden: Login 16054, Equity $97,691.46 USD",
           "recent_events": [
             "2026-10-23 15:43:21 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.04 risk=$150.00 sl=4055.92056 -- placed",
             "2026-10-23 14:13:20 [IQMARKETS] ? ctnl_reversal: Signal wieder angenommen (1 Entry/Entries).",
@@ -38,8 +38,8 @@
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-23T23:14:02",
-      "minutes_since_last_run": 17.4,
+      "last_run": "2026-10-26T01:43:44",
+      "minutes_since_last_run": 0.4,
       "status": "ok",
       "last_equity_line": "2026-10-23 22:14:13 Verbunden: Login 17764, Equity $98,448.98",
       "last_error_line": "2026-10-20 21:27:55 trend_pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",

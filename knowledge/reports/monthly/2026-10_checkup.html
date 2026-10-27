@@ -1,0 +1,523 @@
+<meta charset="utf-8">
+<title>Monthly Checkup · Oktober 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --paper: #EDEEE7;
+    --paper-raised: #F6F6F1;
+    --ink: #1B2129;
+    --ink-soft: #4B5259;
+    --rule: #C9CCC2;
+    --accent: #2B6E6B;
+    --accent-soft: #E3ECEA;
+    --flag: #B23A2E;
+    --flag-soft: #F5E6E2;
+    --ok: #3F6B4F;
+    --ok-soft: #E5EEE6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12181A;
+      --paper-raised: #182022;
+      --ink: #E7E4DA;
+      --ink-soft: #A9B0AC;
+      --rule: #333B3A;
+      --accent: #5FB3AC;
+      --accent-soft: #1B2E2C;
+      --flag: #E2695A;
+      --flag-soft: #33201C;
+      --ok: #7CB78A;
+      --ok-soft: #1D2B20;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12181A;
+    --paper-raised: #182022;
+    --ink: #E7E4DA;
+    --ink-soft: #A9B0AC;
+    --rule: #333B3A;
+    --accent: #5FB3AC;
+    --accent-soft: #1B2E2C;
+    --flag: #E2695A;
+    --flag-soft: #33201C;
+    --ok: #7CB78A;
+    --ok-soft: #1D2B20;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    margin: 0;
+    padding: 3.5rem 1.25rem 6rem;
+    -webkit-font-smoothing: antialiased;
+  }
+  .sheet {
+    max-width: 760px;
+    margin: 0 auto;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    padding: 3rem 3.25rem 3.5rem;
+  }
+  @media (max-width: 640px) {
+    .sheet { padding: 2rem 1.25rem 2.5rem; }
+  }
+
+  /* masthead */
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.6rem;
+  }
+  h1.title {
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 2.35rem;
+    line-height: 1.1;
+    margin: 0 0 0.5rem;
+    text-wrap: balance;
+  }
+  .subtitle {
+    font-size: 1.02rem;
+    color: var(--ink-soft);
+    margin: 0 0 1.6rem;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.6rem;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--rule);
+  }
+  .meta-row span b { color: var(--ink); font-weight: 600; }
+
+  .note {
+    margin-top: 1.4rem;
+    padding: 0.9rem 1.1rem;
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+  .note b { color: var(--ink); }
+
+  /* part dividers */
+  .part {
+    margin-top: 3.2rem;
+    padding-top: 0.4rem;
+  }
+  .part-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+  .part-label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+  h2.part-title {
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.7rem;
+    margin: 0.1rem 0 0;
+  }
+
+  /* sections */
+  section.block { margin-top: 2.1rem; }
+  h3.sec {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.18rem;
+    margin: 0 0 0.85rem;
+    color: var(--ink);
+  }
+  h3.sec .num {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  p { margin: 0 0 0.9rem; }
+  ul.plain { margin: 0 0 0.9rem; padding-left: 1.2rem; }
+  ul.plain li { margin-bottom: 0.55rem; }
+  ul.plain li b { color: var(--ink); }
+
+  /* status chips */
+  .chip {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    padding: 0.1rem 0.45rem;
+    border-radius: 2px;
+    margin-right: 0.3rem;
+  }
+  .chip.live { background: var(--ok-soft); color: var(--ok); }
+  .chip.dry { background: var(--accent-soft); color: var(--accent); }
+  .chip.dead { background: var(--flag-soft); color: var(--flag); }
+
+  /* tables */
+  .table-wrap { overflow-x: auto; margin-bottom: 1rem; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.55rem 0.7rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  th {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  td.num, th.num {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  tr.sum td { font-weight: 600; border-top: 1px solid var(--ink-soft); background: var(--accent-soft); }
+  td.neg { color: var(--flag); }
+  td.pos { color: var(--ok); }
+  td.status-flag { color: var(--flag); }
+  td.status-ok { color: var(--ok); }
+
+  /* flag callouts */
+  .flag {
+    border-left: 3px solid var(--flag);
+    background: var(--flag-soft);
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 0.9rem;
+  }
+  .flag .flag-head {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--flag);
+    margin-bottom: 0.3rem;
+  }
+  .flag p { margin: 0; font-size: 0.92rem; }
+
+  /* activity bars */
+  .bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.55rem;
+    height: 90px;
+    margin: 0.4rem 0 0.6rem;
+    padding-top: 0.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+  .bar {
+    width: 100%;
+    max-width: 34px;
+    background: var(--accent);
+    opacity: 0.55;
+  }
+  .bar-col.peak .bar { opacity: 1; }
+  .bar-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+    margin-top: 0.4rem;
+  }
+  .bar-count {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+    margin-bottom: 0.2rem;
+  }
+
+  footer.colophon {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+  }
+
+  @media print {
+    body { padding: 0; background: var(--paper); }
+    .sheet { border: none; max-width: 100%; padding: 0.5in; }
+    section.block, .flag, .table-wrap { page-break-inside: avoid; }
+    .part { page-break-before: always; }
+    .part:first-of-type { page-break-before: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <p class="eyebrow">Monthly Checkup · Andre&nbsp;/&nbsp;Forex-Backtesting</p>
+  <h1 class="title">Oktober · 2026</h1>
+  <p class="subtitle">Trading-Bot-Flotte &amp; Baustelle — Performance und Education, 01.10. bis 27.10.2026</p>
+  <div class="meta-row">
+    <span>Erzeugt: <b>Di, 27.10.2026 (abends)</b></span>
+    <span>Erfasst: <b>3 Bridges / 4 Konten</b></span>
+    <span>Stand: <b>28.–31.10. fehlen</b></span>
+  </div>
+
+  <div class="note">
+    <b>Monatsstand, keine Monatsbilanz.</b> Frischer, read-only Monatsabzug <code>mt5_2026-10_mtd.json</code> (01.10. bis 27.10. abends, alle vier Live-Konten, keine Konto-Wechsel im Oktober) — nicht die Summe der Weeklies. Die letzten vier Handelstage (28.–31.10.) fehlen; große Bewegungen dort kommen als Nachtrag in den November-Report.
+  </div>
+
+  <!-- ============ PART I — PERFORMANCE ============ -->
+  <div class="part">
+    <p class="part-label">Teil I</p>
+    <h2 class="part-title">Performance</h2>
+  </div>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">01</span> Monatsbogen</h3>
+    <ul class="plain">
+      <li><b>KW40:</b> Schutzregeln (CTNL-Kill-Switch überall, Deckel 2, AIG-Drehtür zu, ORB US30 pausiert). ORB 32/32 ausgestoppt, FK sieben CTNL-Shorts in Folge.</li>
+      <li><b>KW41:</b> Overfitting-Sperre (05.10.), ORB-Tresor durchgefallen. 9/9 neue CTNL-Shorts und 6/6 ORB-NASDAQ-Fills ausgestoppt; EK erstmals seit fünf Wochen im Plus.</li>
+      <li><b>KW42:</b> Research-Woche (Ampel, NASDAQ-Storno als 2026-Fit, Gold ASB verdünnt). Zwei Standbys in der Handelszeit, erster Gold-ASB-Fill verliert überall.</li>
+      <li><b>KW43:</b> OU- und Akku-Fix, Altpositionen von Hand geräumt, <b>CTNL-Gewinntag 21./22.10.</b> dreht Funded ins Plus. Di 20.10. sieben Stunden Totalausfall.</li>
+      <li><b>KW44 bis 27.10.:</b> ORB zwei Tage aus (Serverzeit nach der Umstellung), behoben.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">02</span> Risk-Management-Compliance</h3>
+    <p><b>Im ganzen Monat keine Regelverletzung und kein Drawdown-Halt auf Kontoebene.</b></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Wann</th><th>Wo</th><th>Was</th></tr></thead>
+        <tbody>
+          <tr><td>30.09./01.10.</td><td>alle</td><td class="status-ok">CTNL-Kill-Switch auf EK + Funded nachgerüstet; seitdem nie ausgelöst</td></tr>
+          <tr><td>01.10.</td><td>FK</td><td class="status-flag">7 CTNL-Shorts nacheinander, alle gestoppt (−245,55 $) — Deckel greift nicht bei Serien</td></tr>
+          <tr><td>12.–19.10.</td><td>Funded / TTP</td><td class="status-flag">CTNL-Deckel durch drei Altpositionen belegt, bis zum Handschließen</td></tr>
+          <tr><td>ganzer Monat</td><td>EK</td><td class="status-flag">Mindestlot: CTNL-Risiko ein Vielfaches des Ziels — bekannt</td></tr>
+          <tr><td>Stand 27.10.</td><td>Funded / IQ</td><td class="status-flag"><b>−2,80 % seit Start (Grenze 6 %)</b> — kleinste Reserve; Tief −3,87 % nach KW42</td></tr>
+          <tr><td>Stand 27.10.</td><td>FK · TTP · EK</td><td class="status-ok">FK −1,69 % (5-%-Trailing), TTP 99.313 $, EK weit von 45 %</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">03</span> Trend je Bridge</h3>
+    <ul class="plain">
+      <li><b>EK — flach:</b> Wochen −43 / +13 / −33 / +93 / −33 €. CTNL +93, OU +22, ORB −69, Gold ASB −29 €. Stabilisiert nach dem September (−19,4 %), aber ohne Richtung.</li>
+      <li><b>Funded — knapp Null, nur dank der Handschließungen:</b> Wochen −915 / −470 / −794 / <b>+2.665</b> / −433 $. ORB <b>−1.049</b>, CTNL <b>+1.035</b>, Gold ASB −668 (ein Fill), OU +28, September-Positionen −273, Hand <b>+979</b>. Ohne Hand ca. −930 $ (−0,47 %).</li>
+      <li><b>FK — einziger klarer Verlust, aber von Woche zu Woche besser:</b> −704 / −283 / −100 / +54 / −82 $. ORB <b>−923</b>, CTNL −147, Gold ASB −64.</li>
+    </ul>
+    <p><b>Über alle Bridges ist ORB das teuerste Bein des Monats</b> (ca. −2.040 $ und −69 €) — passend zur roten Ampel bei orb_sp500 und zum durchgefallenen Tresor. Live bleibt ORB auf deinen Entscheid vom 16.10.</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">04</span> Trades · Winrate · PnL (Monat)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Bridge</th><th class="num">Trades</th><th class="num">Winrate</th><th class="num">PnL</th><th class="num">%</th></tr></thead>
+        <tbody>
+          <tr><td>EK-Portfolio-Bridge (Tickmill)</td><td class="num">42</td><td class="num">42,9 %</td><td class="num neg">−2,31 €</td><td class="num neg">−0,08 %</td></tr>
+          <tr><td>Funded-Portfolio-Bridge (TTP + IQ)</td><td class="num">48</td><td class="num">39,6 %</td><td class="num pos">+52,26 $</td><td class="num pos">+0,03 %</td></tr>
+          <tr><td>&nbsp;&nbsp;davon TTP Konto 2</td><td class="num">26</td><td class="num">53,8 %</td><td class="num pos">+372,25 $</td><td class="num pos">+0,38 %</td></tr>
+          <tr><td>&nbsp;&nbsp;davon IQ Markets</td><td class="num">22</td><td class="num">22,7 %</td><td class="num neg">−319,99 $</td><td class="num neg">−0,33 %</td></tr>
+          <tr><td>&nbsp;&nbsp;davon Handschließungen</td><td class="num">6</td><td class="num">100 %</td><td class="num pos">+979,24 $</td><td class="num pos">+0,50 %</td></tr>
+          <tr><td>FK Instant Funding (LIVE)</td><td class="num">29</td><td class="num">17,2 %</td><td class="num neg">−1.114,70 $</td><td class="num neg">−1,12 %</td></tr>
+          <tr class="sum"><td>Grand Total (echtes Geld)</td><td class="num">119</td><td class="num">35,3 %</td><td class="num neg">−2,31 € / −1.062,44 $</td><td class="num neg">≈ −0,36 %</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.8rem; color:var(--ink-soft)">Geschlossene Positionen, netto inkl. Kommission/Swap; % auf den Kontostand am 01.10. Keine Summe über beide Währungen; EK ca. 1 % des Buchs (angenommen 1,17). Vergleich September (bis 28.09.): ca. −1,4 %.</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">05</span> Portfolio vs. Einzelkonten</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Backtest 2024-08 bis 2026-07</th><th class="num">CAGR</th><th class="num">Sharpe</th><th class="num">Max DD</th></tr></thead>
+        <tbody>
+          <tr><td>6-Strategien-Portfolio</td><td class="num">24,81 %</td><td class="num">2,72</td><td class="num">−2,27 %</td></tr>
+          <tr><td>bestes Einzelbein ORB-Portfolio</td><td class="num">34,72 %</td><td class="num">1,66</td><td class="num">−9,26 %</td></tr>
+          <tr><td>CTNL Edge einzeln</td><td class="num">21,69 %</td><td class="num">1,82</td><td class="num">−7,95 %</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Der Backtest erwartet ca. +1,9 % pro Monat bei flacher Kurve. Live: <b>FK −1,12 %</b>, Kontostand fast monoton von 99.429 auf 98.314 $ (Höchststand am 01.10.). <b>Die Diversifikation hat nicht getragen, weil das größte Bein (ORB, 37 % Kapitalanteil) gleichzeitig mit dem Edge-Kipp 2026 verliert</b> und die Gold-Beine keinen Ausgleich lieferten. 29 Trades reichen nicht für Sharpe oder MaxDD — eine Beobachtung, kein Beweis gegen den Backtest.</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">06</span> Auffälligkeiten (Monat)</h3>
+    <div class="flag">
+      <p class="flag-head">Verfügbarkeit des Rechners — der teuerste operative Punkt</p>
+      <p>Ausfälle in der Handelszeit am 12.10. (7 h), 15.10. (1 h, ORB-Fenster), 20.10. (7 h, Akku leer, ORB-Gewinner +5,97 R verpasst). Der Akku-Fix vom 19.10. hat das Problem verschoben; der VPS ist auf November gelegt.</p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">ORB läuft auf schwachem Grund weiter — und ist das teuerste Bein</p>
+      <p>Ampel ROT (SP500), Tresor durchgefallen, NASDAQ-Storno als 2026-Fit — bewusst so entschieden (16.10.). Neu ansehen nur mit Forward-Daten.</p>
+    </div>
+    <div class="flag">
+      <p class="flag-head">Kleineres</p>
+      <p>Serverzeitfehler 26./27.10. (behoben; nächste kritische Phase Mitte März 2027). Soll/Ist für ORB nicht lesbar, CTNL zeitversetzt. TTP-OU: STT offen, FLEX/UAL ungeprüft. IQ mit kleinster Reserve. Research der zweiten Monatshälfte großteils nicht committet.</p>
+    </div>
+  </section>
+
+  <!-- ============ PART II — EDUCATION ============ -->
+  <div class="part">
+    <p class="part-label">Teil II</p>
+    <h2 class="part-title">Education</h2>
+  </div>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">01</span> Der Monat in einem Absatz</h3>
+    <p>Der Oktober begann als <b>Monat der Schutzregeln</b> und wurde am 05.10. zum <b>Monat der Prüfdisziplin</b>: Weil ORB auf OOS-Zahlen ausgewählt worden war, kam die Overfitting-Sperre, und danach lief jede Idee durch Lock, Trial-Zählung und einmaliges Öffnen. Die Sperre hat mehr verworfen als bestätigt (ORB-Tresor, Intraday-Momentum, sieben Mikrostruktur-Kandidaten, Key Levels). KW42 fragte, ob man einen Kipp kommen sieht (nein) und baute die Ampel; KW43 verschob den Fokus auf das <b>Dachprojekt</b> — Mentor-Material wurde ausgelesen und getestet, mit dem Ergebnis, dass die Richtung allein keinen Edge hat. Durch alle Wochen zog sich ein operativer Faden: <b>Der Rechner selbst</b> (Standby, Akku, Serverzeit) hat mehr Trades gekostet als jeder Code-Fehler.</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">02</span> Die wichtigsten Erkenntnisse</h3>
+
+    <p><b>1 · Wer auf dem Prüfdatensatz auswählt, misst am Ende sich selbst</b> <span class="chip">4 Fälle, ein Muster</span></p>
+    <ul class="plain">
+      <li><b>Befund:</b> ORB auf OOS ausgewählt → IS-only Tresor <b>PF 0,52</b>; NASDAQ-Storno 10 J. ohne <b>+584 R</b>, mit +198 R; Öl-2026-Fit DSR ≈ 0; Copy Trading t 2,9 aus offenen Gold-Longs (OOS −0,72 R).</li>
+      <li><b>Mechanismus:</b> Auswahl bevorzugt Rauschen, das zum Prüfzeitraum passt; wird derselbe Zeitraum als Beleg benutzt, misst er die Auswahl. Regeln, die nur im Zieljahr existieren, lassen sich trivial „profitabel" filtern.</li>
+      <li><b>Wie aufgefallen:</b> Fragen nach der Herkunft und der Tresor als letztes unberührtes Fenster; beim Copy Trading die Zerlegung nach Ausstiegsgrund.</li>
+      <li><b>Lehre:</b> Overfitting-Sperre ist der strukturelle Fix. Entscheidungen von vor dem 05.10. sind verdächtig, bis sie getrennt nachgerechnet sind; Haltegrenzen sind Parameter.</li>
+    </ul>
+
+    <p><b>2 · 2026 werden die Bot-Edges dünner — und man sieht es nicht kommen</b></p>
+    <ul class="plain">
+      <li><b>Befund:</b> Ribbon-Filter kippt 2026, drei Intraday-Momentum-Edges sterben gleichzeitig, Gold ASB <b>+0,33 → +0,18 → +0,04 R</b>; 0 von 5 Frühwarnsignalen warnen vor dem Hoch. Dein Hand-Trading trug 2025 (mehrtägige Positionen).</li>
+      <li><b>Mechanismus:</b> Die Live-Beine sind kurzfristige Effekte auf denselben Märkten — dreht das Regime, kippen sie zusammen; ein Kipp sieht anfangs aus wie Pech.</li>
+      <li><b>Wie aufgefallen:</b> Tresor-Check aller Live-Beine, Regimewechsel-Tests, Gamma als Gegenprobe; live ist ORB das teuerste Bein des Monats.</li>
+      <li><b>Lehre:</b> Den Preis eines Schalters festlegen statt auf Frühwarnung hoffen, und den Fokus dahin legen, wo der belegte Ertrag liegt (Edge Card „Dayli Trade mit IPDA").</li>
+    </ul>
+
+    <p><b>3 · Live wird eine andere Strategie, sobald Kerze, Zeitpunkt oder Reihenfolge nicht stimmen</b> <span class="chip">5 Fälle</span></p>
+    <ul class="plain">
+      <li><b>Befund:</b> AIG-Drehtür, Fill-Bar-Stop, Engine-SL auf Schlusskurs (live ca. 0,1 R/Trade schlechter), OU auf laufender Tageskerze (drei Waisen), Deckel durch Altpositionen blockiert.</li>
+      <li><b>Mechanismus:</b> Der Backtest sieht fertige Kerzen, führt sofort aus und kennt keine Nebenbedingungen; live läuft der Kurs weiter, Läufe kommen im 5–60-Min-Takt, alte Positionen blockieren neue.</li>
+      <li><b>Wie aufgefallen:</b> Fast immer über eine Log-Zeile, die nicht zur Erwartung passte, dann über die Broker-Deals.</li>
+      <li><b>Lehre:</b> Jede Backtest-Annahme live ausdrücklich erzwingen. Soll/Ist ist der Detektor — mit eigenen ORB-Lücken.</li>
+    </ul>
+
+    <p><b>4 · Kosten setzen die Untergrenze — und die Messgenauigkeit auch</b></p>
+    <ul class="plain">
+      <li><b>Befund:</b> 7/7 Mikrostruktur-Kandidaten netto negativ (stärkster brutto +1,6 bps, t 4,8, Kosten 1,1–1,3 bps); OmniGold 2026 lot-neutral +492 (Ticks) vs. −212 $ (OHLC).</li>
+      <li><b>Mechanismus:</b> Mikrostruktur-Prämien gehören dem Maker, wir sind Taker; Mikro-Ausstiege sind kleiner als die Datenunschärfe.</li>
+      <li><b>Lehre:</b> Unter ca. 3× Kosten nicht testen (außer Maker realistisch); ein Edge kleiner als die Datenunschärfe ist nicht messbar.</li>
+    </ul>
+
+    <p><b>5 · Die Maschine ist Teil der Strategie: Verfügbarkeit und Uhrzeit</b></p>
+    <ul class="plain">
+      <li><b>Befund:</b> Vier Ausfälle in der Handelszeit (28.09., 12.10., 15.10., 20.10.), ORB-Gewinner +5,97 R verpasst; ORB am 26./27.10. wegen falscher Serverzeit-Regel aus.</li>
+      <li><b>Mechanismus:</b> Das Notebook schläft unterwegs, der Watchdog mit; „Helsinki" war im Sommer nicht von „NY + 7" zu unterscheiden.</li>
+      <li><b>Lehre:</b> Ausfallerkennung außerhalb des Rechners; Zeitregeln je Broker an der Historie belegen.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">03</span> Muster über die Wochen</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Muster</th><th>Fälle</th><th>Struktureller Fix?</th></tr></thead>
+        <tbody>
+          <tr><td>Auswahl auf belasteten Daten</td><td>ORB-OOS, NASDAQ-Storno, Öl-Fit, Copy Trading</td><td class="status-ok">ja — Overfitting-Sperre; Altentscheide offen</td></tr>
+          <tr><td>Backtest-Annahme live nicht erzwungen</td><td>AIG, Fill-Bar, Engine-SL, OU-Tageskerze</td><td class="status-flag">teilweise — Einzelfixes, Soll/Ist mit Lücken</td></tr>
+          <tr><td>Maschine schläft</td><td>28.09., 12.10., 15.10., 20.10.</td><td class="status-flag">nein — VPS auf November</td></tr>
+          <tr><td>Zeitkonventionen</td><td>Lake-Stempel, Tester EET, Broker NY+7</td><td class="status-ok">ja für Bridges; Research-Skripte offen</td></tr>
+          <tr><td>Ausgelesenes Material fehlerhaft</td><td>SMH-Reports v1, Copy Trading 9/50</td><td class="status-ok">Regel: Nutzer-Stichprobe vor dem Einfrieren</td></tr>
+          <tr><td>Edges dünner 2026</td><td>ORB, Intraday-Momentum, EU-Open, Gold ASB</td><td class="status-flag">nur Anzeige (Ampel)</td></tr>
+          <tr><td>Kosten &gt; Effekt</td><td>Mikrostruktur K1–K7, OmniGold</td><td class="status-ok">Regel: 3×-Kosten-Schwelle</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">04</span> Research-Bilanz</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Kandidat</th><th>Entscheidende Zahl</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>ORB IS-only</td><td>Tresor PF 0,52, DSR ≈ 0</td><td>live unverändert, Ampel ROT</td></tr>
+          <tr><td>ORB NASDAQ-Storno</td><td>ohne +584 R / mit +198 R</td><td>live bleibt (Entscheid)</td></tr>
+          <tr><td>ORB + Öl-Filter</td><td>Tresor −0,68 / −0,18 R; Fit DSR ≈ 0</td><td>Forward bis 31.03.2027</td></tr>
+          <tr><td>Zarattini Noise-Area</td><td>Tresor negativ; nur K60 in allen Fenstern +</td><td>Forward bis 31.03.2027</td></tr>
+          <tr><td>Echte Gamma-Daten</td><td>erklärt den ORB-Kipp nicht</td><td>Kontext</td></tr>
+          <tr><td>Mikrostruktur K1–K7</td><td>alle Tresore netto negativ</td><td>verworfen</td></tr>
+          <tr><td>Key Levels</td><td>Magnet statt Wand; BOS 0/240, Magnet-Trade 0/16</td><td>geschlossen</td></tr>
+          <tr><td>Gold ASB IS-only + Filter</td><td>+0,33 → +0,18 → +0,04 R, DSR 0,24</td><td>live, beobachten</td></tr>
+          <tr><td>Edge-Frühwarnung</td><td>0/5 warnen vor dem Hoch</td><td>Anzeige im Weekly</td></tr>
+          <tr><td>G8-Stärke</td><td>kein Signal</td><td>Kontext</td></tr>
+          <tr><td>Copy Trading</td><td>OOS −0,72 R, t −3,65</td><td>verworfen</td></tr>
+          <tr><td>SMH-Makro-Reports v2</td><td>Richtung −0,027 R; Rücksetzer +0,060 R</td><td>Forward bis 31.01.2027</td></tr>
+          <tr><td>SMH CLS-Praxis-Call</td><td>V1 OOS +0,15 vs. Basis +0,31</td><td>verworfen</td></tr>
+          <tr><td>Quantum OmniGold</td><td>2026 OHLC −212 $/oz</td><td>in Arbeit</td></tr>
+          <tr><td>Monatstrend Faber</td><td>ca. 0,5 % p.a. auf TTP</td><td>pausiert</td></tr>
+          <tr><td>Regimekarte</td><td>kalibriert ±1,5 pp</td><td>Baustein</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><b>Was der Monat lehrt:</b> Kein neuer Kandidat hat als handelbarer Edge überlebt. Es sterben zuverlässig kleine Intraday-Effekte, die wir als Taker ernten müssten, Regeln, die ein bestimmtes Jahr beschreiben, und fremdes Material ohne eigene Statistik. Was trägt, ist dünn und alt (Gold ASB, CTNL long-seitig) — oder nicht bot-förmig: „Rücksetzer statt Markt" und „mehrtägig statt Scalp" tauchen unabhängig in den SMH-Reports und in deiner Trade-Inventur 2025 auf.</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">05</span> Vertiefung des Monats · Das erwartete Maximum</h3>
+    <p><b>Die Idee:</b> Testet man N Varianten ohne Edge, ist jede t-Statistik ungefähr standardnormal. Das Maximum von N solchen Zahlen wächst aber mit N, ungefähr wie <b>√(2 · ln N)</b>: bei 10 Versuchen ca. 2,1, bei 100 ca. 3,0, bei 1.000 ca. 3,7. Ein „t von 3" ist nach 100 Versuchen genau das, was Zufall liefert.</p>
+    <p><b>Mit unseren Zahlen:</b> <b>Copy Trading</b> 124 Versuche → Zufallsmaximum ca. <b>3,1</b>; gefunden t <b>2,9</b> (im OOS dann −3,65). <b>Key Levels</b> 482 Versuche → ca. <b>3,5</b>; beste Zelle t 0,9. <b>Mikrostruktur K5</b> t <b>4,8</b> bei wenigen Dutzend Versuchen → klar über dem Zufall: echt, aber an den Kosten gescheitert. <b>Gold ASB</b> 20.736 Varianten → ca. <b>4,5</b>; daher die Treppe +0,33 → +0,18 → +0,04 R und DSR 0,24.</p>
+    <p><b>Warum Tresor und Trial-Zählung zusammengehören:</b> Die Trial-Zahl sagt, wie hoch die Latte liegt; der Tresor misst, was nach der Auswahl übrig bleibt. Die Treppe IS → OOS → Tresor ist normal; alarmierend ist ein negativer Tresor (ORB PF 0,52) oder ein Fenster, das erst zum Auswählen und dann zum Bestätigen benutzt wurde. <b>Jede neue Live-Regel braucht drei Zahlen:</b> Versuche, IS-Wert gegen Zufallsmaximum, Tresor — fehlt eine, ist sie ein Fund, kein Edge.</p>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">06</span> Netto-Bilanz</h3>
+    <ul class="plain">
+      <li><b>+</b> Overfitting-Sperre als Routine; Schutzregeln live (Kill-Switch überall, Deckel 2, AIG zu, Fill-Bar-Stop, US30-Pause); Edge-Ampel; OU-, Akku- und Serverzeit-Fix; Altpositionen geräumt; Bausteine für den Makro-Agenten.</li>
+      <li><b>−</b> Vier Rechner-Ausfälle in der Handelszeit; drei Live-Entscheidungen bewusst auf schwachem Grund; ORB-Serverzeitfehler; Research nicht committet; Monat aller Bridges ca. −0,36 %, Funded nur durch Handschließungen im Plus.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h3 class="sec"><span class="num">07</span> Offen in den November</h3>
+    <ul class="plain">
+      <li><b>1 · VPS</b> — VPS/IP-Regeln bei TTP und BeyondIQ klären, dann Umzug im Plan-Modus mit DRY_RUN-Probebetrieb.</li>
+      <li><b>2 · Research committen</b> — Sammel-Commit, bevor ein Auto-Task den Working Tree anfasst.</li>
+      <li><b>3 · Edge Card „Dayli Trade mit IPDA"</b> — Phase-0-Fragen vom 18.10. beantworten.</li>
+      <li><b>4 · ORB neu ansehen, falls die Ampel ROT bleibt</b> — nur mit Forward-Daten.</li>
+      <li><b>5 · Soll/Ist für ORB reparieren</b> und die CTNL-Zeitversetzung klären.</li>
+      <li><b>6 · TTP-OU STT/FLEX/UAL</b> prüfen, Börsenzeiten-Gate entscheiden.</li>
+      <li><b>7 · Stichtage:</b> SMH-Reports 31.01.2027, ORB-Öl und Noise-Area/K60 31.03.2027.</li>
+    </ul>
+  </section>
+
+  <footer class="colophon">
+    Monthly Checkup · automatisch erzeugt · Forex-Backtesting/scripts/reports · lokal committet, nicht gepusht
+  </footer>
+
+</div>
+</body>
+</html>

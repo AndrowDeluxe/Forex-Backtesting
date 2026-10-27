@@ -482,6 +482,26 @@ Bedarf vor generischem Aufräumen.
   siehe CLAUDE.md). **Offen für dich, unverändert:** bitte PC und
   Task-Scheduler-Historie prüfen, sobald du am PC bist.
 
+- **🔴 Zweiundzwanzigste Prüfung, 17. Handelstag: Ausfall läuft jetzt seit
+  über 25 Tagen -- größter Prüfabstand seit Beginn (6 Tage Lücke statt
+  täglich).** (Bridge Error Monitor, 27.10., geprüft 15:15 UTC / 16:15 CET.)
+  `bridge_status/snapshot.json` weiterhin unverändert auf
+  `generated_at: 2026-10-02T11:01:24` (Commit `666fe8e`, 2026-10-02 11:01:25
+  +0200) -- per `git fetch` gegen `origin/main` bestätigt: seit der
+  einundzwanzigsten Prüfung am 21.10. (21:13 UTC, Commit `b183247`) ist
+  wieder **kein einziger neuer Commit** von Watchdog/EK/Funded/FK
+  eingegangen. Zwischen den beiden Prüfungen liegen vier weitere
+  Handelstage (Do 22.10., Fr 23.10., Mo 26.10., sowie der heutige Di
+  27.10. bis zur Prüfzeit) -- alle ohne jede Sichtbarkeit verstrichen.
+  **Nichts Neues an Information** -- dieselben drei offenen Fragen (a/b/c)
+  aus den Punkten darüber bleiben unverändert offen, weiterhin nichts, das
+  ich von hier aus unterscheiden oder reparieren könnte (liegt komplett
+  außerhalb des Repos, siehe CLAUDE.md). **Offen für dich, unverändert:**
+  bitte PC und Task-Scheduler-Historie prüfen, sobald du am PC bist --
+  nach jetzt 25+ Tagen und 17 Handelstagen ohne jedes Lebenszeichen von
+  drei Live-Bots mit echtem Geld wird eine manuelle Prüfung vor Ort
+  dringender, je länger das offenbleibt.
+
 - **🟠 ORB: Live handelt andere Tage als der Backtest + M5 überzeichnet den
   Edge** (01.10., [[orb-order-storno-und-haltedauer]]). Nichts geändert.
   **Offen für dich:**

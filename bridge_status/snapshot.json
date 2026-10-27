@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-27T17:11:55",
+  "generated_at": "2026-10-27T17:41:55",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-27T17:11:54",
+      "last_run": "2026-10-27T17:41:54",
       "minutes_since_last_run": 0.0,
       "status": "ok",
-      "last_equity_line": "2026-10-27 16:57:00 2026-10-27 16:56:55,336 INFO run_once: Konto-Equity 2813.68 EUR | Aggregiertes offenes Risiko (ganzes Konto): 12.10 (Deckel dieser Bridge: 844.10, 30%)",
+      "last_equity_line": "2026-10-27 17:27:00 2026-10-27 17:26:54,954 INFO run_once: Konto-Equity 2817.05 EUR | Aggregiertes offenes Risiko (ganzes Konto): 12.10 (Deckel dieser Bridge: 845.12, 30%)",
       "last_error_line": "2026-10-27 12:18:15     raise error[0]",
       "recent_events": [
         "2026-10-27 12:18:15         f\"Lake-Daten fuer {source}:{key}_{timeframe} zu alt (last_success_at={entry and entry.get('last_success_at')})\""
@@ -14,32 +14,15 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-27T17:11:53",
+      "last_run": "2026-10-27T17:41:54",
       "minutes_since_last_run": 0.0,
       "status": "ok",
       "accounts": {
-        "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-10-27 16:57:18 Verbunden: Login 16054, Equity $97,031.63 USD",
-          "last_error_line": "2026-10-27 16:57:18 [IQMARKETS] ?? ORB-Setups nicht ermittelbar: Server-Zeitzonen-Verifikation fehlgeschlagen fuer Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835): erwartet Europe/Helsinki, gemessene Abweichung +59.9 Minuten (Toleranz 5.0). Abbruch -- die ORB-Session-Grenzen waeren sonst falsch berechnet.",
-          "recent_events": [
-            "2026-10-27 16:42:20 [IQMARKETS] ?? EXIT ctnl_reversal XAUUSD.gbe (Ticket 2542720, stop) -- already_closed @ 4056.34 (P/L -130.80)",
-            "2026-10-27 16:12:25 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.08 risk=$150.00 sl=4073.54627 -- placed",
-            "2026-10-27 15:42:20 [IQMARKETS] ? ctnl_reversal: Signal wieder angenommen (1 Entry/Entries).",
-            "2026-10-27 15:42:20 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.08 risk=$150.00 sl=4066.44450 -- placed",
-            "2026-10-27 15:42:20 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe: Kurs bereits 0.51R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.0-fache aufgeblaeht.",
-            "2026-10-27 15:12:21 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe: Kurs bereits 0.51R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.0-fache aufgeblaeht.",
-            "2026-10-27 12:18:03 CTNL-Edge-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-10-27 12:18:03 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-10-27 12:18:03 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-10-23 15:43:21 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.04 risk=$150.00 sl=4055.92056 -- placed",
-            "2026-10-23 14:13:20 [IQMARKETS] ? ctnl_reversal: Signal wieder angenommen (1 Entry/Entries).",
-            "2026-10-23 14:13:20 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.05 risk=$150.00 sl=4049.19267 -- placed"
-          ]
-        },
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-10-27 16:57:18 Verbunden: Login 504072729, Equity $99,197.07 USD",
-          "last_error_line": "2026-10-27 16:57:18 [TTP] ?? ORB-Setups nicht ermittelbar: Server-Zeitzonen-Verifikation fehlgeschlagen fuer Funded Portfolio - TTP (Konto 2, Demo): erwartet Europe/Helsinki, gemessene Abweichung +59.9 Minuten (Toleranz 5.0). Abbruch -- die ORB-Session-Grenzen waeren sonst falsch berechnet.",
+          "last_equity_line": "2026-10-27 17:27:18 Verbunden: Login 504072729, Equity $99,239.42 USD",
+          "last_error_line": "2026-10-27 17:27:18 [TTP] ?? ORB-Setups nicht ermittelbar: Server-Zeitzonen-Verifikation fehlgeschlagen fuer Funded Portfolio - TTP (Konto 2, Demo): erwartet Europe/Helsinki, gemessene Abweichung +59.9 Minuten (Toleranz 5.0). Abbruch -- die ORB-Session-Grenzen waeren sonst falsch berechnet.",
           "recent_events": [
+            "2026-10-27 17:12:27 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (72 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
             "2026-10-27 16:42:20 [TTP] ?? EXIT ctnl_reversal XAUUSD (Ticket 19140600, stop) -- already_closed @ 4056.29 (P/L -97.77)",
             "2026-10-27 16:12:25 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.05 risk=$99.28 sl=4073.54627 -- placed",
             "2026-10-27 15:42:20 [TTP] ? ctnl_reversal: Signal wieder angenommen (1 Entry/Entries).",
@@ -50,19 +33,36 @@
             "2026-10-27 12:27:18 [TTP] ?? ctnl_reversal XAUUSD Signal zu alt fuer Live-Entry (5622 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
             "2026-10-27 12:18:03 CTNL-Edge-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
             "2026-10-27 12:18:03 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+            "2026-10-27 12:18:03 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'"
+          ]
+        },
+        "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
+          "last_equity_line": "2026-10-27 17:27:18 Verbunden: Login 16054, Equity $97,093.07 USD",
+          "last_error_line": "2026-10-27 17:27:18 [IQMARKETS] ?? ORB-Setups nicht ermittelbar: Server-Zeitzonen-Verifikation fehlgeschlagen fuer Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835): erwartet Europe/Helsinki, gemessene Abweichung +59.9 Minuten (Toleranz 5.0). Abbruch -- die ORB-Session-Grenzen waeren sonst falsch berechnet.",
+          "recent_events": [
+            "2026-10-27 17:12:27 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe Signal zu alt fuer Live-Entry (72 Min. seit Signalzeit, Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
+            "2026-10-27 16:42:20 [IQMARKETS] ?? EXIT ctnl_reversal XAUUSD.gbe (Ticket 2542720, stop) -- already_closed @ 4056.34 (P/L -130.80)",
+            "2026-10-27 16:12:25 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.08 risk=$150.00 sl=4073.54627 -- placed",
+            "2026-10-27 15:42:20 [IQMARKETS] ? ctnl_reversal: Signal wieder angenommen (1 Entry/Entries).",
+            "2026-10-27 15:42:20 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.08 risk=$150.00 sl=4066.44450 -- placed",
+            "2026-10-27 15:42:20 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe: Kurs bereits 0.51R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.0-fache aufgeblaeht.",
+            "2026-10-27 15:12:21 [IQMARKETS] ?? ctnl_reversal XAUUSD.gbe: Kurs bereits 0.51R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.0-fache aufgeblaeht.",
+            "2026-10-27 12:18:03 CTNL-Edge-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
+            "2026-10-27 12:18:03 Trend-Pullback-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
             "2026-10-27 12:18:03 CLS-Practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
-            "2026-10-23 15:43:21 [TTP] ?? ENTRY ctnl_reversal XAUUSD SELL lots=0.03 risk=$99.56 sl=4055.92056 -- placed"
+            "2026-10-23 15:43:21 [IQMARKETS] ?? ENTRY ctnl_reversal XAUUSD.gbe SELL lots=0.04 risk=$150.00 sl=4055.92056 -- placed",
+            "2026-10-23 14:13:20 [IQMARKETS] ? ctnl_reversal: Signal wieder angenommen (1 Entry/Entries)."
           ]
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-27T17:11:53",
-      "minutes_since_last_run": 0.0,
+      "last_run": "2026-10-27T17:12:24",
+      "minutes_since_last_run": 29.5,
       "status": "ok",
-      "last_equity_line": "2026-10-27 16:12:22 Verbunden: Login 17764, Equity $98,322.11",
-      "last_error_line": "2026-10-27 16:12:22  LIVE ᴩ ORB-Setups nicht ermittelbar: Server-Zeitzonen-Verifikation fehlgeschlagen: erwartet Europe/Helsinki, gemessene Abweichung +59.9 Minuten (Toleranz 5.0). Abbruch -- die ORB-Session-Grenzen waeren sonst falsch berechnet.",
+      "last_equity_line": "2026-10-27 17:12:24 Verbunden: Login 17764, Equity $98,307.36",
+      "last_error_line": "2026-10-27 17:12:24  LIVE ᴩ ORB-Setups nicht ermittelbar: Server-Zeitzonen-Verifikation fehlgeschlagen: erwartet Europe/Helsinki, gemessene Abweichung +59.9 Minuten (Toleranz 5.0). Abbruch -- die ORB-Session-Grenzen waeren sonst falsch berechnet.",
       "recent_events": [
         "2026-10-27 15:12:16  LIVE ᴩ ctnl_reversal XAUUSD.gbe: Kurs bereits 0.50R gegen das Signal gelaufen (Grenze 0.50R) -- uebersprungen. Ein Entry haette die Position um das 2.0-fache aufgeblaeht.",
         "2026-10-27 12:18:39  LIVE CTNL-Kill-Switch: Scan ohne Trades (Datenluecke?) -- kein Urteil, Zustand bleibt aus.",

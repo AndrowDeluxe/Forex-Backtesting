@@ -1,0 +1,31 @@
+{
+  "strategy": "cls_practical_smh_call",
+  "split": {
+    "is_start": "2018-12-01",
+    "is_end": "2022-05-31",
+    "oos_end": "2026-10-20",
+    "tresor_end": null
+  },
+  "registered": "2026-10-21T21:05:29+00:00",
+  "trials": 3,
+  "frozen": {
+    "hash": "eb86ad9a2145bb00169627716a34935be8120c26807cfb2c4a48cf931647137a",
+    "config": {
+      "winner": "V1 limit_0600",
+      "variants": [
+        "V1 limit_0600",
+        "V2 exit_1200",
+        "V3 tp_liq"
+      ],
+      "cost_pips": 2.05,
+      "lag": 1,
+      "gate_r": 0.5,
+      "min_sl_pips": 5
+    },
+    "ts": "2026-10-21T21:10:25+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-21T21:10:25+00:00"
+  },
+  "forward": null
+}

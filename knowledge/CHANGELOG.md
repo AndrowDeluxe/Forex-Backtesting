@@ -9,6 +9,35 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-27** [Research] **Kandidat A (Einstiegssperre vor 08:00/14:30)
+  ohne Test verworfen** → [[smh-session-pips-call]]. Bestandsaufnahme über die
+  Live-Trade-Listen (TTP 2019–2026, nur IS): nur 13 Einstiege in den 15 Minuten
+  vor einem Termin. Über die Termine gehaltene Positionen werden danach nicht
+  häufiger gestoppt (08:00 0 %, 14:30 0–3 %, CLS 2/12 vs. Kontrolle 11:00
+  5/37). Keine Versuche verbraucht. Skript
+  `scripts/research_termin_sperre_inventur.py`. Keine Bot-Änderung.
+
+- **2026-10-27** [Research] **SMH-Call "Session Pips und Wahrscheinlichkeiten"
+  ausgewertet und nachgerechnet** → [[smh-session-pips-call]]. Transkript neben
+  dem Video in OneDrive. `scripts/research_session_pips_heatmap.py` (EUR/USD M5,
+  12/2018–10/2026, rein beschreibend). Stundenprofil-Form bestätigt (r 0,98–0,99),
+  Niveau schwankt je Jahr 8–15 Pips. Ruck 08:00 1,56×, 14:30 1,50×, 16:00
+  1,31× bestätigt; **07:00 nur 1,10× (Kontrolle 11:00 1,16×)**, der behauptete
+  CLS-Effekt repliziert nicht. Tageshoch/-tief um 02–03 Uhr nicht gehäuft.
+  Zwei Testkandidaten notiert (Einstiegssperre vor 08:00/14:30,
+  Stunden-Ausschöpfung als Fade), nicht gerechnet. Keine Bot-Änderung.
+
+- **2026-10-21** [CLS Practical / Research] **SMH-CLS-Praxis-Call ausgewertet,
+  drei Ideen getestet, alle verworfen** → [[smh-cls-praxis-call]]. Call lokal
+  mit Whisper transkribiert (Transkript nur in OneDrive neben dem Video, nicht
+  im Repo). Lock `cls_practical_smh_call` (IS bis 31.05.2022, OOS bis
+  20.10.2026 auf Nutzerwunsch, 3 Versuche), Live-Konfiguration mit TTP-Kosten.
+  Basis Ø R IS +0,17 / OOS +0,31. V1 Limit am 06:00-Kurs = IS-Gewinner (+0,84,
+  aber n=12), im OOS +0,15 (n=51, PF 1,21) → durchgefallen. V2 Zeitausstieg
+  12:00: IS +0,05 / OOS +0,14, schlechter. V3 TP Liquidität/Range-Gegenseite:
+  IS +0,12 / OOS +0,34, im IS schlechter → nicht übernommen. Skript
+  `scripts/research_cls_practical_smh_call_variants.py`. Keine Bot-Änderung.
+
 - **2026-10-20** [Fusion / Makro-Agent] **Regimekarte: Nachbau-Annahmen vom
   Nutzer bestätigt**: freie Ersatzdaten (UST synthetisch 5y, Rohstoffe als
   Front-Monat ohne Rollrendite), „Vorprint“ = Vorperiode aus derselben

@@ -10,7 +10,8 @@ CLS-Punkte wurden dort am 2026-09-13 abgeräumt.
 
 Verwandt: [[broker-kostenmodell-eurusd]] (die Messwerte),
 [[challenge-portfolio-ttp-icapital]] (das betroffene Live-Portfolio),
-[[backtest-standard-process]] (Phase 6, nach der hier vorgegangen wurde).
+[[backtest-standard-process]] (Phase 6, nach der hier vorgegangen wurde),
+[[smh-cls-praxis-call]] (Abgleich mit dem Mentor-Call, 2026-10-21).
 
 ---
 

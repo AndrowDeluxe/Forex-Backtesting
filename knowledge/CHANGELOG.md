@@ -9,6 +9,14 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-28** [Research] **Kandidat B (Fade nach ausgeschöpfter Stunde) im IS
+  verworfen** → [[smh-session-pips-call]]. Lock `session_pips_fade` (1 Versuch,
+  Märkte/Stunden/Auslöser vorab vom Nutzer festgelegt: 6 FX-Majors + Gold, 08–17
+  Uhr, 20-Tage-Median). IS 2016–2022, 53.912 Ereignisse: brutto +0,019 T
+  (t +5,8, 0–0,36 Pips), netto −0,122 T (t −37), 0/7 Märkte positiv. Die Umkehr
+  ist die Market-Maker-Spanne. OOS/Tresor versiegelt. Skript
+  `scripts/research_session_pips_fade.py`. Keine Bot-Änderung.
+
 - **2026-10-27** [Research] **Kandidat A (Einstiegssperre vor 08:00/14:30)
   ohne Test verworfen** → [[smh-session-pips-call]]. Bestandsaufnahme über die
   Live-Trade-Listen (TTP 2019–2026, nur IS): nur 13 Einstiege in den 15 Minuten

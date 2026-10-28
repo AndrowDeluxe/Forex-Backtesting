@@ -1,0 +1,14 @@
+{
+  "strategy": "session_pips_fade",
+  "split": {
+    "is_start": "2016-01-01",
+    "is_end": "2022-12-31",
+    "oos_end": "2025-10-27",
+    "tresor_end": "2026-10-27"
+  },
+  "registered": "2026-10-28T09:09:32+00:00",
+  "trials": 1,
+  "frozen": null,
+  "unsealed": {},
+  "forward": null
+}

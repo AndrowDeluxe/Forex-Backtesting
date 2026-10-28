@@ -61,12 +61,25 @@ Verwandt: [[smh-cls-praxis-call]], [[cls-practical-kostenvalidierung]],
   Die Regel schützt enge Stops kurz vor Terminen. Diese Konstellation kommt
   bei unseren Beinen praktisch nicht vor. Wiedervorlage nur, wenn ein neues
   Bein mit engem Stop um 07:45–08:00 oder 14:15–14:30 dazukommt.
-- **Kandidat B: Stunden-Ausschöpfung als Fade-Signal** (Aussage 4): Ist
-  die laufende Stunde schon über ihrem aktuellen 20-Tage-Median, läuft der
-  Rest der Stunde dann gegen die Bewegung? Das ist eine eigene Hypothese
-  mit Edge Card / Vier-Fragen-Check. Vorsicht: [[keylevel-edge-card-final]]
-  hat bei Key Levels gezeigt, dass "Reaktion an der Grenze" oft das
-  Gegenteil ist.
+- **Kandidat B: Stunden-Ausschöpfung als Fade-Signal** (Aussage 4).
+  **Am 2026-10-28 im IS verworfen**: `scripts/research_session_pips_fade.py`,
+  Lock `session_pips_fade` mit 1 Versuch. Märkte, Stunden und Auslöser hat
+  der Nutzer vorab festgelegt: 6 FX-Majors + Gold, 08–17 Uhr, laufende
+  Spanne erreicht den 20-Tage-Median derselben Stunde. Einstieg zum
+  Schluss der Auslöse-Bar, Ausstieg zum Stundenende. IS 2016–2022 mit
+  53.912 Ereignissen.
+  - **Brutto existiert der Effekt:** +0,019 T (t +5,8, Tages-Cluster),
+    Trefferquote 51–54 %. Das sind aber nur 0,0–0,36 Pips je Ereignis
+    (Gold 0,01 bps).
+  - **Netto ist er negativ:** −0,122 T (t −37), 0/7 Märkte positiv. Auch
+    jede einzelne Stunde liegt bei −0,10 bis −0,17 T. Die Kosten für die
+    nicht gemessenen Majors sind angenommen, das Ergebnis hängt bei einem
+    Faktor 6–200 zwischen Kosten und Brutto aber nicht davon ab.
+  - **Vier-Fragen-Check:** (1) Geld verdient hier, wer Liquidität stellt:
+    Die Mini-Umkehr ist die Spanne des Market Makers, siehe
+    [[smh-elite-mikrostruktur]]. (2)–(4) entfallen, weil netto nirgends
+    ein Edge übrig ist. Eine Filterregel würde nur Rauschen auswählen.
+  - OOS und Tresor bleiben versiegelt.
 - **Nicht übernehmen:** Stunden-Pips als Stop/Ziel für CLS. Volatilitäts-
   und Session-Stops sowie TP-Varianten sind dort bereits verworfen
   ([[smh-cls-praxis-call]], Kostenvalidierung Befund 6).

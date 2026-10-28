@@ -1,0 +1,2 @@
+{"ts": "2026-10-28T09:09:32+00:00", "event": "register_split", "is_start": "2016-01-01", "is_end": "2022-12-31", "oos_end": "2025-10-27", "tresor_end": "2026-10-27"}
+{"ts": "2026-10-28T09:09:36+00:00", "event": "trials", "n": 1, "total": 1, "note": "Stufe 1: Fade nach Median-Ausschoepfung, 7 Maerkte, 08-17 Uhr"}

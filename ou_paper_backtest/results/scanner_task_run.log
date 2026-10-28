@@ -11892,3 +11892,50 @@
 2026-10-27 21:35:26   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
 2026-10-27 21:35:26     raise KeyError(key) from err
 2026-10-27 21:35:26 KeyError: 'WBD'
+2026-10-27 21:35:27 [main c635a2f2] OU-Modell Scanner: Snapshot 2026-10-27 21:35
+2026-10-27 21:35:27  1 file changed, 47 insertions(+)
+2026-10-27 21:35:28 MERGE UEBERSPRUNGEN: Working Tree hat 24 offene Aenderung(en) (andere Tasks/Session). Es wird NICHT gestasht -- der lokale Commit bleibt liegen und geht beim naechsten sauberen Lauf raus.
+2026-10-27 21:35:30 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-10-27 21:35:30  ! [rejected]          main -> main (non-fast-forward)
+2026-10-27 21:35:30 error: failed to push some refs to 'https://github.com/AndrowDeluxe/Forex-Backtesting.git'
+2026-10-27 21:35:30 hint: Updates were rejected because the tip of your current branch is behind
+2026-10-27 21:35:30 hint: its remote counterpart. If you want to integrate the remote changes,
+2026-10-27 21:35:30 hint: use 'git pull' before pushing again.
+2026-10-27 21:35:30 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+2026-10-27 21:35:30 HINWEIS: Push abgelehnt (Remote ist weiter) - erwartet, solange nicht gemergt wurde. Rueckstand sichtbar ueber 'git log origin/main..HEAD'.
+2026-10-27 21:35:30 === Scanner-Task beendet ===
+2026-10-28 14:30:00 === Scanner-Task gestartet ===
+2026-10-28 14:30:26 $WBD: possibly delisted; no price data found  (1d 2025-09-23 -> 2026-10-28)
+2026-10-28 14:30:26 System.Management.Automation.RemoteException
+2026-10-28 14:30:26 1 Failed download:
+2026-10-28 14:30:26 ['WBD']: possibly delisted; no price data found  (1d 2025-09-23 -> 2026-10-28)
+2026-10-28 14:30:26 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-10-28 14:30:26 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-10-28 14:30:26 WARNUNG: nur 57/58 Ticker mit Kursen (98%). Ohne Kurse: WBD
+2026-10-28 14:30:26 Traceback (most recent call last):
+2026-10-28 14:30:26   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+2026-10-28 14:30:26     return self._engine.get_loc(casted_key)
+2026-10-28 14:30:26            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+2026-10-28 14:30:26   File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+2026-10-28 14:30:26   File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+2026-10-28 14:30:26   File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+2026-10-28 14:30:26   File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+2026-10-28 14:30:26 KeyError: 'WBD'
+2026-10-28 14:30:26 System.Management.Automation.RemoteException
+2026-10-28 14:30:26 The above exception was the direct cause of the following exception:
+2026-10-28 14:30:26 System.Management.Automation.RemoteException
+2026-10-28 14:30:26 Traceback (most recent call last):
+2026-10-28 14:30:26   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 346, in <module>
+2026-10-28 14:30:26     main()
+2026-10-28 14:30:26     ~~~~^^
+2026-10-28 14:30:26   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 305, in main
+2026-10-28 14:30:26     all_signals.append(scan_market(market_key))
+2026-10-28 14:30:26                        ~~~~~~~~~~~^^^^^^^^^^^^
+2026-10-28 14:30:26   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 172, in scan_market
+2026-10-28 14:30:26     price = panel[t].dropna()
+2026-10-28 14:30:26             ~~~~~^^^
+2026-10-28 14:30:26   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+2026-10-28 14:30:26     indexer = self.columns.get_loc(key)
+2026-10-28 14:30:26   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+2026-10-28 14:30:26     raise KeyError(key) from err
+2026-10-28 14:30:26 KeyError: 'WBD'

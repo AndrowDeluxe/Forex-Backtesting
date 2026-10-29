@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-10-20** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-10-29** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -534,8 +534,26 @@ Bedarf vor generischem Aufräumen.
   siehe CLAUDE.md). **Offen für dich, unverändert:** bitte PC und
   Task-Scheduler-Historie prüfen, sobald du am PC bist -- nach jetzt 27+
   Tagen und 19 Handelstagen ohne jedes Lebenszeichen von drei Live-Bots mit
-  echtem Geld (über vier volle Handelswochen) bleibt eine manuelle Prüfung
-  vor Ort dringend.
+  echtem Geld bleibt eine manuelle Prüfung vor Ort dringend.
+
+- **🔴 Fünfundzwanzigste Prüfung, zweite Prüfung heute: unverändert, Ausfall
+  seit über 27 Tagen.** (Bridge Error Monitor, 29.10., geprüft 15:18 UTC /
+  16:18 CET.) `bridge_status/snapshot.json` weiterhin unverändert auf
+  `generated_at: 2026-10-02T11:01:24` (Commit `666fe8e`, 2026-10-02 11:01:25
+  +0200) -- per `git fetch` gegen `origin/main` bestätigt: seit der
+  vierundzwanzigsten Prüfung heute Morgen (09:12 UTC, Commit `4128612`) ist
+  wieder **kein einziger neuer Commit** von Watchdog/EK/Funded/FK
+  eingegangen. **Nichts Neues an Information** -- dieselben drei offenen
+  Fragen (a/b/c) aus den Punkten darüber bleiben unverändert offen,
+  weiterhin nichts, das ich von hier aus unterscheiden oder reparieren
+  könnte (liegt komplett außerhalb des Repos, siehe CLAUDE.md). Die beiden
+  Scan-Fehler im Snapshot (`'>' not supported between instances of 'str'
+  and 'float'`, `dukascopy_python-Hang`) sind bereits dokumentiert und
+  stammen von VOR Ausfallbeginn (01.10.) -- keine neue Information. **Offen
+  für dich, unverändert:** bitte PC und Task-Scheduler-Historie prüfen,
+  sobald du am PC bist -- nach jetzt über 27 Tagen (knapp vier volle
+  Handelswochen) ohne jedes Lebenszeichen von drei Live-Bots mit echtem
+  Geld bleibt eine manuelle Prüfung vor Ort dringend.
 
 - **🟠 ORB: Live handelt andere Tage als der Backtest + M5 überzeichnet den
   Edge** (01.10., [[orb-order-storno-und-haltedauer]]). Nichts geändert.

@@ -69038,3 +69038,22 @@
 2026-10-29 20:09:53   "ctnl_kill_switch_active": false,
 2026-10-29 20:09:53   "n_trades": 25
 2026-10-29 20:09:53 }
+2026-10-29 20:09:53 [main 99287c86] FK Instant Funding Bot: Snapshot 2026-10-29 20:09
+2026-10-29 20:09:53  2 files changed, 26 insertions(+)
+2026-10-29 20:10:04 fatal: unable to access 'https://github.com/AndrowDeluxe/Forex-Backtesting.git/': Could not resolve host: github.com
+2026-10-29 20:10:04 WARNUNG: git fetch fehlgeschlagen (Exit 128) - Push wird trotzdem versucht, kann bei zwischenzeitlicher Divergenz erneut fehlschlagen.
+2026-10-29 20:10:15 fatal: unable to access 'https://github.com/AndrowDeluxe/Forex-Backtesting.git/': Could not resolve host: github.com
+2026-10-29 20:10:15 WARNUNG: git push fehlgeschlagen (Exit 128) trotz vorherigem Merge-Versuch - Commit liegt lokal vor, aber nicht auf GitHub bis zum naechsten erfolgreichen Push.
+2026-10-29 20:10:15 === FK-Instant-Funding-Task beendet ===
+2026-10-29 20:55:23 === FK-Instant-Funding-Task gestartet ===
+2026-10-29 21:14:18 {
+2026-10-29 21:14:18   "date": "2026-10-29 19:55:25.012490",
+2026-10-29 21:14:18   "equity": 98768.33816378856,
+2026-10-29 21:14:18   "current_dd": -0.012316618362114395,
+2026-10-29 21:14:18   "consistency_ratio": 0.0,
+2026-10-29 21:14:18   "payout_safe": false,
+2026-10-29 21:14:18   "cum_profit": -1231.6618362114345,
+2026-10-29 21:14:18   "kill_switch_active": false,
+2026-10-29 21:14:18   "ctnl_kill_switch_active": false,
+2026-10-29 21:14:18   "n_trades": 25
+2026-10-29 21:14:18 }

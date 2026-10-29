@@ -519,6 +519,24 @@ Bedarf vor generischem Aufräumen.
   Tagen und 18 Handelstagen ohne jedes Lebenszeichen von drei Live-Bots mit
   echtem Geld bleibt eine manuelle Prüfung vor Ort dringend.
 
+- **🔴 Vierundzwanzigste Prüfung, 19. Handelstag: Ausfall läuft jetzt seit
+  über 27 Tagen.** (Bridge Error Monitor, 29.10., geprüft 09:12 UTC / 10:12
+  CET.) `bridge_status/snapshot.json` weiterhin unverändert auf
+  `generated_at: 2026-10-02T11:01:24` (Commit `666fe8e`, 2026-10-02 11:01:25
+  +0200) -- per `git fetch` gegen `origin/main` bestätigt: seit der
+  dreiundzwanzigsten Prüfung gestern (28.10., 15:26 UTC, Commit `5e6761a`)
+  ist wieder **kein einziger neuer Commit** von Watchdog/EK/Funded/FK
+  eingegangen. Der heutige Donnerstag-Handelstag (29.10.) ist damit bislang
+  ebenfalls ohne jede Sichtbarkeit verstrichen. **Nichts Neues an
+  Information** -- dieselben drei offenen Fragen (a/b/c) aus den Punkten
+  darüber bleiben unverändert offen, weiterhin nichts, das ich von hier aus
+  unterscheiden oder reparieren könnte (liegt komplett außerhalb des Repos,
+  siehe CLAUDE.md). **Offen für dich, unverändert:** bitte PC und
+  Task-Scheduler-Historie prüfen, sobald du am PC bist -- nach jetzt 27+
+  Tagen und 19 Handelstagen ohne jedes Lebenszeichen von drei Live-Bots mit
+  echtem Geld (über vier volle Handelswochen) bleibt eine manuelle Prüfung
+  vor Ort dringend.
+
 - **🟠 ORB: Live handelt andere Tage als der Backtest + M5 überzeichnet den
   Edge** (01.10., [[orb-order-storno-und-haltedauer]]). Nichts geändert.
   **Offen für dich:**

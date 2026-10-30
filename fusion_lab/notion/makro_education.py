@@ -27,6 +27,10 @@ TOPICS = [
                    "Bankreports: ING, Breakdowns USD/EUR.",
         "regeln": [
             "Abweichung vom eingepreisten Pfad bewegt -- das Niveau allein nicht.",
+            "Eingepreist ist bezahlt: Ist ein Zinsschritt zu mindestens 75 % gepreist, ist die Sitzung kein Grund "
+            "für einen Trade mehr, sondern ein Risiko für einen laufenden (kein Aufstocken in die Sitzung).",
+            "Die Veränderung ist das Signal: Entscheidend ist, wie sich die gepreiste Wahrscheinlichkeit in einer "
+            "Woche verändert hat (Beispiel BoC 30 auf 79 %), nicht ihr Stand.",
             "Divergenz handeln: Währung der Notenbank, die später/weniger senkt, gegen die, die früher senkt.",
             "Rhetorik und Daten vergleichen: passen sie nicht zusammen, folgt der Markt den Daten.",
             "Kein EUR-Long, solange die EZB vor der Fed senkt (Gate aus den Breakdowns).",
@@ -177,6 +181,9 @@ TOPICS = [
                    "Makro Education: Algos und Flows, Goldman Hedgefunds.",
         "regeln": [
             "Extreme Positionierung als Gegenfaktor-Gate, nicht als Einstieg.",
+            "F-Gate: Leveraged Funds (CFTC TFF) extrem in unsere Richtung = Konflikt, die Bewegung ist weitgehend "
+            "gelaufen. Extrem gegen uns = Treibstoff, aber nur mit einem Ereignis, das zum Eindecken zwingt.",
+            "Kleinanleger zu mindestens 75 % auf unserer Seite = Abschlag.",
             "Am Monatsende kurzfristige Dollar-Schwäche einplanen.",
         ],
     },

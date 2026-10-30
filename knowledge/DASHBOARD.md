@@ -85,6 +85,10 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **Valkyrie-Klon, 2 Annahmen von mir** (30.10., [[quantum-valkyrie-edge-card]]):
+  1. Split IS 2020-01-17 bis 2023-12-31, OOS bis 2025-10-27, Tresor bis 2026-10-16, Blindtest 2018-01-01 bis 2020-01-16.
+  2. Kriterium: je Stufe Ø R > 0 und t ≥ 2 nach 0,30 $ Kosten je Trade. Ich habe es vor dem ersten Lauf festgelegt, die 0,30 $ sind meine Wahl.
+
 - **Copy Trading Stufe 2, 4 Annahmen von mir** (28.10.,
   `projects/copy-trading-dennis-edge-card.md` Abschnitt Stufe 2):
   1. „BE ziehen“, während der Kurs unter unserem Entry steht → wir schließen zum Kurs.
@@ -92,19 +96,6 @@ Bedarf vor generischem Aufräumen.
   3. Zeitbezug der Anweisung: heute ≤ 24 h, gestern 6 h–4 Tage, letzte Woche 2–14 Tage, ohne
      Angabe ≤ 30 Tage nach dem Call, gleiches Symbol.
   4. „Invalide“ streicht nur wartende Orders, laufende Trades laufen weiter (Regel 7).
-
-- **Skill-Test ORB + CTNL, 6 Annahmen von mir** (28.10.,
-  `projects/skill-test-orb-ctnl.md`):
-  1. IS-Fenster der neuen Sperren: ORB 2019–2022 (TTP-Simulation statt Historie ab
-     2016), CTNL 2019-01 bis 2024-07.
-  2. Forward-Mindestzahl an Trades: ORB 150, CTNL 40.
-  3. Die CTNL-Richtung habe ich aus Gold-Kursen abgeleitet (Stop-Trades zu 100 %
-     konsistent).
-  4. Ersatzquellen, weil FMP im Free-Tier sperrt: FRED-Kalender statt FMP-Kalender, CFTC
-     statt FMP-COT.
-  5. Breadth ohne Zyklus- und Perzentil-Komponente (Lookahead in den Daten).
-  6. Den Drawdown-Breaker habe ich mit seinen 4 Standardregeln 1:1 nachgebildet, statt das
-     Skill-Skript aufzurufen.
 
 - **Skill `mt5-robot-tester` lokal angepasst** (28.10., eigene Annahme).
   - Deutsche Berichtsbezeichnungen ergänzt und den Zahlen-Abschneidefehler behoben (`~/.claude/skills/mt5-robot-tester/scripts/`, nicht in Git).
@@ -129,16 +120,6 @@ Bedarf vor generischem Aufräumen.
   letzten zwei; spätere Dukascopy-Korrekturen älterer Kerzen werden verworfen (mit Warnung).
   Offen, Niedrig: Warum der Failover ohne Logzeile lief (Vermutung: abgebrochene Läufe nach
   dem Aufwachen, Ausgabe wird erst am Ende geschrieben).
-
-- **Residual-Edge-Check, 4 Annahmen bzw. Abweichungen von mir** (28.10.,
-  `projects/residual-edge-check.md`):
-  1. gold_silver aus der Tickmill-Liste `ampel` statt TTP (fehlt dort).
-  2. Näherungs-Baselines: SPX für ou_modell (Aktienkorb), Gold für trend_pullback
-     (Multi-Markt).
-  3. Regime nach Wachstum × Inflation statt VIX: VIX endet lokal am 14.08. und deckt den
-     Tresor nicht ab.
-  4. Trend-Gegenprobe bei trend_pullback und CTNL entfällt, weil sie im Fenster identisch
-     mit dem Basiswert ist.
 
 - **Key Levels, Doppel-BOS-Einstieg: 4 Annahmen von mir** (18.10.,
   im Chat aufgelistet):
@@ -521,13 +502,15 @@ Bedarf vor generischem Aufräumen.
 
 ### Offene Aufgaben
 
-- **EK-CTNL: Live-Trades ohne Gegenstück in der Simulation** (gefunden 28.10.). Von
-  01.10. bis 23.10. finden sich 6 von 7 echten EK-`ctnl_reversal`-Trades nicht in der
-  Tickmill-Simulation (`live_trades_tickmill_ampel.csv`, ±60 Min., UTC). Die Simulation hat
-  im ganzen Zeitraum 01.09.–23.10. nur 5 CTNL-Trades, live waren es 27. Vor 30.09. erklärt
-  die bekannte Orderflut die Lücke, danach nicht. Prüfen, ob die EK-Bridge dieselben Gates
-  nutzt wie die Simulation (Ribbon, Spike, consumed_r) und ob der Deckel 3 statt 2 ist.
-  Echtes Geld, darum **Hoch**. Daten: `skill_test/results/ek_fills_orb_ctnl.csv`.
+- **Lücken Makro-Datenschicht für Schritt 7 (A2)** (30.10.). 2-jährige Renditen für GB, JP,
+  CH, AU, CA, NZ; aktuelle Kern-/Dienste-Inflation für JP, CH, CA; US-Dienste-Inflation.
+  Stand: `python -m fusion_lab.macro_data --coverage`.
+- **EK-CTNL: Live-Trades ohne Gegenstück in der Simulation** (gefunden 28.10., geprüft 30.10.).
+  01.–23.10.: 7 echte Trades, 3 in der neu gerechneten Tickmill-Simulation, nur 1 gemeinsam.
+  Gates und Deckel (1) sind in Bridge und Simulation gleich. Wahrscheinlichste Ursache: Live
+  rechnete auf den verfälschten Lake-Kerzen (Eintrag „Data Lake“ oben), je Trade aber nicht mehr
+  belegbar. **Nächster Schritt:** Ab der Lake-Reparatur (30.10.) Ist gegen Simulation neu
+  vergleichen. Bleibt die Lücke ab etwa 20 Trades bestehen, ist die Lake-Erklärung falsch. Hoch.
 - **Forward-Auswertung der zwei Skill-Filter am 31.03.2027** (oder früher, wenn die
   Mindestzahl an Trades erreicht ist): `unseal("forward")` für
   `orb_skill_filter_20261028` (ORB-H1) und `ctnl_skill_filter_20261028`
@@ -639,6 +622,7 @@ Bedarf vor generischem Aufräumen.
 | Dashboard-Telegram-Digest (neu)                         | — (nur Lesezugriff auf DASHBOARD.md, kein Order-Bezug)                                   | Schickt offene Punkte aus DASHBOARD.md per Telegram                                          | Ready (täglich 8:00, auch Sa/So — bewusst) | — | 2026-09-13      |
 | G8-Notion-Sync (neu)                                    | — (nur FRED/Dukascopy-Abruf + Notion-Schreiben, kein Order-Bezug)                       | Schreibt G8-Währungsstärke (Nachbau + SMH-Tabellen) in Notion-DB „💱 G8-Stärke“ (`scripts/g8_notion_sync_task.ps1`) | Ready (täglich 07:00, auch Sa/So) | — | 2026-10-12      |
 | Regime-Notion-Sync (neu)                                | — (nur FRED/ALFRED/yfinance-Abruf + Notion-Schreiben, kein Order-Bezug)                 | Regimekarte Wachstum×Inflation neu rechnen → Notion „Regime-Roadmap“ + Seite „Assets je Regime“ (`scripts/regime_notion_task.ps1`) | Ready (So 09:00, StartWhenAvailable) | — | 2026-10-28      |
+| Makro-Daten (neu)                                       | — (nur Datenabruf, kein Order-Bezug)                                                     | Makro-Agent Schicht 1: G8-Makrodaten und Kalender mit Abrufzeit nach `fusion_lab/data/macro_data/` (`scripts/macro_data_task.ps1`, Akku erlaubt) | Ready (täglich 00:50 + 07:30, auch Sa/So) | — | 2026-10-30 |
 | Telegram-Import-SMH-Daily                               | — (nur Telegram lesen + rechnen, kein Order-Bezug)                                       | Inkrementeller Import „SMH Daily Update“ ohne Videos; seit 28.10. zusätzlich Bild-/Anweisungs-Lesung per Claude-Abo + Forward-Stand Copy Trading Stufe 2 (`scripts/telegram_smh_daily_import_task.ps1`, Akku erlaubt) | Ready (täglich 23:00, auch Sa/So) | — | 2026-10-28      |
 
 **Letzter echter Entry** (Spalte seit 2026-09-16): letzter Eröffnungs-Deal beim Broker, der **dieser Bridge zugeordnet** ist (EK über Magic, Funded/FK über die Tickets im `bridge_state`). Fremdpositionen zählen nicht mit — auf FK lagen am 14.09. zwei manuelle Positionen, die sonst wie Bridge-Aktivität ausgesehen hätten. Grund für die Spalte: der Modus LIVE hat fünf Tage lang verdeckt, dass FK nichts ausführte. Aktualisieren mit `python scripts/reports/soll_ist.py --last-entries`. Zeiten sind Broker-Serverzeit.

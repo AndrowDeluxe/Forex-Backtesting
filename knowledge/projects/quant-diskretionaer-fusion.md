@@ -183,6 +183,15 @@ Verschmelzung" (2026-09-02) ab -- der Journal-Teil ist laut Nutzer erledigt.
     Notizbücher und Abschnitte sind privat und werden NICHT importiert.
 - [ ] **1 Edge Cards** je Bestandteil ([[edge-card-workflow]]).
 - [ ] **2 Reproduzieren + Testen** -- Phasen 4-6 ([[backtest-standard-process]]).
+- [x] **Makro-Agent Schritt 1, Datenschicht A1 (30.10.):** `fusion_lab/macro_data/`, je G8-Land
+  mit Abrufzeit. Abdeckung: `python -m fusion_lab.macro_data --coverage`. Quellenlage:
+  [[makro-datenquellen]]. Nächster Schritt: Analytik + Fact Sheet.
+  - **Offen aus dem Handoff 28.10.:** SMT-Reports ab 08.10. (6641, 6673, 6693, 6694, 6749,
+    6759, 6760, …) noch nicht extrahiert; das MT5-Demo-Konto für Schritt 6 stellt der Nutzer.
+  - **Lehren für Agentenläufe:** höchstens 3–6 parallele Lese-Agenten (mehr liefen zweimal
+    ins Session-Limit), nach jeder Datei speichern, und jede Rückmeldung gegen Nutzerurteile
+    prüfen (Fehler kamen trotz Zitatpflicht vor). Bild-PDFs mit pymupdf lesen, nicht pypdf.
+    Vor einem Parameterlauf die Zahl der gewählten Punkte gegen den Richtwert 9 prüfen.
 - [ ] **3 Analyse automatisieren** -- zuerst Makro: tägliche Analyse,
   noch ohne Handel.
 - [ ] **4 Sichtbarkeit** -- Notion-Cockpit: Makro-Übersicht, Analysen,

@@ -9,6 +9,38 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-30** [Research] **Quantum Valkyrie: Nachbau fertig, Klon verworfen.**
+  - Neu: `mt5_valkyrie/engine.py`, `replay.py`, `scripts/research_valkyrie.py`, `projects/quantum-valkyrie-edge-card.md`.
+  - Replay der echten Orders: 94–95 % der Ausstiege auf ±1 Min., Korrelation der Kapitalkurve bis 0,9996. Der Trailing-Modus hängt am TP der Order.
+  - Sperre `valkyrie_klon_20261030`: Blindtest 2018–01/2020 nach 0,30 $ Kosten Ø −0,000 R, Kriterium nicht bestanden. OOS +0,041 R, Tresor +0,059 R, aber Zufallseinstiege liegen ähnlich hoch, und auf echten Ticks ist der Tresor bei null.
+  - Der EA selbst bleibt auf echten Ticks positiv (+0,067 R, t 2,74, 17 Monate); sein Auslöser lässt sich nicht nachbauen.
+
+- **2026-10-30** [Research] **ORB-Simulation auf aktuelle Live-Regel umgestellt, Ist/Sim geprüft.**
+  - `skill_test/rebuild_orb_ctnl.py`: neue Listen `orb_ctnl_{ttp,tickmill}_storno.csv`
+    (NASDAQ-Storno am SL, SP500/US30 „opposite“). Die TTP-Liste vom 04.10. hatte NASDAQ noch ohne
+    Storno. Alte Dateien bleiben. `research_live_legs.py ttp --ampel` bricht an Platin-Daten ab.
+  - ORB gesamt (TTP): IS Ø R +0,56, OOS +0,23, Tresor +0,21. Residual NASDAQ t 1,16 (vorher 1,09).
+  - ORB-H1 auf IS mit Storno (keine neue Variante): Ø R 0,56 → 0,91, p 0,013; NASDAQ nur 0,53 → 0,55.
+  - Ist/Sim EK: ORB ab 05.10. 4 von 4 echten Trades in der Simulation; 3 nur simuliert (15. und
+    20.10. Rechner aus, 23.10. `breakout_passed`). CTNL 01.–23.10.: 1 gemeinsamer Trade.
+  - **Die 10 Annahmen aus Residual-Check und Skill-Test vom Nutzer bestätigt.**
+  Kein Bridge-Eingriff.
+- **2026-10-30** [Dachprojekt / Strang 3] **Makro-Agent Schritt 1: Datenschicht A1 steht**
+  (`fusion_lab/macro_data/`, Plan Phase 2).
+  - **Abruf:** FRED, BIS, OECD, EZB, Eurostat, CFTC, Fed-Funds-Futures, Yahoo, Dukascopy,
+    Forex-Factory-Feed und Myfxbook-RSS. Jeder Wert mit Abrufzeit; Revisionen überschreiben nichts.
+  - **Geprüft:** 12 Tests, Live-Lauf, zweiter Lauf ohne Scheinrevisionen.
+  - **Zwei Fehler im ersten Lauf behoben:** Euro-Mitgliedsländer überschrieben im Kalender die
+    Eurozone (5,4 % waren Italien); OECD und Eurostat lieferten für `EA.core_yoy` abweichende Werte.
+  - **Neuer Task `Makro-Daten`** (täglich 00:50 + 07:30), vom Nutzer angelegt, weil der
+    Auto-Modus das Anlegen blockiert hat. Das Skript `scripts/macro_data_task.ps1` lief direkt
+    mit Exit-Code 0.
+  - **Vom Nutzer bestätigt:** Ist-Werte aus dem Myfxbook-RSS, zusätzliche Quellen BIS, OECD
+    direkt, Eurostat und EZB, für die Eurozone Eurostat vor OECD.
+  - **Weitere Fäden:** Report 5305 geprüft, keine Korrektur. Lernkarten „Zinserwartungen“ und
+    „Positionierung“ um die Regeln aus SMT 21.10. ergänzt und nach Notion gespiegelt.
+  - Kein Bot-Eingriff.
+
 - **2026-10-30** [Data Lake / CTNL] **Twelve-Data-Failover hat 11 Lake-Reihen verfälscht;
   Schutzprüfungen beim Schreiben eingebaut, Reihen repariert.**
   - **Befund:** GOLD_H4 sprang nach der Reparatur vom 28.10. von 686 auf 1.084 Zeilen. Der Failover

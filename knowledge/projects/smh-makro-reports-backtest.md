@@ -54,5 +54,6 @@ Metalle positiv (B +0,38 R t 2,6; D +0,51 R t 2,7), FX-Kreuze negativ
 - [ ] 31.01.2027: OOS (Forward-Reports 08.10.2026–31.01.2027) einmal öffnen,
   dafür die neuen Reports mit EXTRACTION.md v2 extrahieren.
 - [ ] Agent soll die Kandidaten 1–4 vorwärts mitprotokollieren.
-- [ ] Report 5305: drei Event-Ideen passen laut Prüfer nicht zum Report
-  (laufen nicht im Richtungstest) — bei Gelegenheit nachsehen.
+- [x] Report 5305 (geprüft 30.10.): Die drei Event-Ideen (EUR/USD long, USD/JPY short,
+  USD/CAD short) stehen wörtlich im Report, als bedingte Ideen für „Phase 2“ („sobald die
+  BoC …“). Status `event` ist richtig, es fehlt nur ein Aktivierungstext. Keine Korrektur.

@@ -112,22 +112,23 @@ Bedarf vor generischem Aufräumen.
   - Alternative: das Tester-Terminal per Ansicht → Sprache auf Englisch stellen.
   - Details [[mt5-tester-portable]].
 
-- **Data Lake: Gold-H4/H1/M15 aus dem Zeitzonen-Chaos 15.–17.09. nie bereinigt → CTNL-
-  Nachrechnungen sehen bis zu 3 h in die Zukunft** (28.10., Befund, noch nichts geändert).
-  `GOLD_H4` und `USDJPY_H4` enthalten je 501 zusätzliche, um +1 h versetzte Kerzen
-  (27.06.–18.09.); `GOLD_H1` hat 271, `GOLD_M15` 179 Kerzen mit falschem Schlusskurs
-  (30.08.–15.09. bzw. 13.–15.09.). Seit 19.09. sauber. Folge: `reversal_cascade._bar_length()`
-  nimmt den häufigsten Abstand und kommt für Lake-H4 auf **1 h statt 4 h** – H4-Kerzen werden
-  in jeder Nachrechnung 3 h zu früh angehängt. Kausaltest 23.10.: Signale 10:00–11:45 UTC
-  stehen in der Nachrechnung, live erst um 12:00 sichtbar. Das erklärt den „CTNL 2–3 h
-  Versatz“ aus Weekly KW42/KW43. **Live-Einstiege im Oktober nicht betroffen** (Lake vs.
-  sauber bei korrekter Balkenlänge identisch; 5 von 30 Signal-Phasen weichen ab, alle im
-  September). Optimistisch verfälscht: Soll/Ist, simuliertes CTNL-Buch (Kill-Switch-
-  Drawdown), ggf. Edge-Ampel. Die CTNL-Validierung (direkt Dukascopy) ist sauber.
-  **(1) und (2) erledigt 28.10. (Nutzerfreigabe), siehe CHANGELOG.** Offen bleibt nur
-  **(3) Raster-Prüfung beim Ingest** (Zeitstempel auf dem TF-Raster, Zeilensprünge),
-  Niedrig. Damit ist der „CTNL 2–3 h Versatz“ aus den Weekly-Reports geklärt; das Soll
-  in KW42/KW43 war für CTNL zu optimistisch.
+- **Data Lake: CTNL-Daten waren durch Zeitzonen-Chaos UND Twelve-Data-Failover verfälscht**
+  (28./30.10., behoben; zwei Dinge brauchen deine Bestätigung). Zeitzonen-Duplikate: siehe
+  CHANGELOG 28.10. Neu am 30.10.: Der Failover schrieb pauschal 500 Kerzen (Volumen 0, eigenes
+  H4-Raster, Wochenenden) rückwirkend in 11 Reihen (Gold H4/H1/M15/M5, USDJPY H4, EURUSD M5,
+  5× M15-FX), ohne Logzeile. Belegt: 484 von 485 Vergleichskerzen = Twelve Data.
+  **Korrektur meiner Aussage vom 28.10.:** „Live-Einstiege im Oktober nicht betroffen“ ist so
+  nicht haltbar. Live-Scans rechneten nach einem Failover auf den Fremdkerzen; wann genau
+  welche Kerzen im Lake lagen, ist nicht rekonstruierbar. Nachrechnung ab 21.09., Stand heute
+  verfälscht vs. sauber: nur 9 gemeinsame von 23 bzw. 26 Signalen. Das ist die Obergrenze, nicht
+  was live ablief. Einzelne Oktober-Trades sind nicht zugeordnet. Das Soll der Weekly Reports
+  seit etwa Oktober ist unzuverlässig.
+  **Bitte bestätigen:** (a) Failover darf nur noch anhängen, nie Historie ändern, und H4 von
+  Twelve Data wird wegen des anderen Rasters ganz abgelehnt, bei Dukascopy-Ausfall steht H4
+  also still. (b) Bereits im Lake gespeicherte Kerzen sind jetzt unveränderlich bis auf die
+  letzten zwei; spätere Dukascopy-Korrekturen älterer Kerzen werden verworfen (mit Warnung).
+  Offen, Niedrig: Warum der Failover ohne Logzeile lief (Vermutung: abgebrochene Läufe nach
+  dem Aufwachen, Ausgabe wird erst am Ende geschrieben).
 
 - **Residual-Edge-Check, 4 Annahmen bzw. Abweichungen von mir** (28.10.,
   `projects/residual-edge-check.md`):

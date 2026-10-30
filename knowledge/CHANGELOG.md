@@ -9,6 +9,18 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-30** [Data Lake / CTNL] **Twelve-Data-Failover hat 11 Lake-Reihen verfälscht;
+  Schutzprüfungen beim Schreiben eingebaut, Reihen repariert.**
+  - **Befund:** GOLD_H4 sprang nach der Reparatur vom 28.10. von 686 auf 1.084 Zeilen. Der Failover
+    holt pauschal 500 Kerzen und schrieb sie über die Dukascopy-Historie (484 von 485 Vergleichskerzen
+    identisch mit Twelve Data). Keine Logzeile, Ursache dafür nicht geklärt.
+  - **Fix `data_lake/storage.py` + `ingest.py`:** Zeitstempel außerhalb des TF-Rasters → Schreiben
+    abgelehnt; gespeicherte Kerzen nur noch ab der vorletzten änderbar; Lücken nur im 2-Tage-Fenster
+    nachtragen; Failover nur anhängen. Offline getestet, Ingest 11:17 sauber.
+  - **Reparatur:** 11 Reihen ab 01.08. neu von Dukascopy (Backup
+    `data_lake_store/_backup_20261030_twelvedata/`). 13 weitere Reihen ohne Wertabweichung unverändert.
+  - **Korrektur:** „Live-Einstiege im Oktober nicht betroffen“ (28.10.) nicht haltbar, siehe Dashboard.
+
 - **2026-10-28** [Research] **Copy Trading Stufe 2 (Dennis' Anweisungen): IS-Vorab negativ,
   Forward-Test läuft.**
   - **Anweisungs-Lesung** per Claude-Abo (`fusion_lab/copy_trading/instructions.py`, v2 nach

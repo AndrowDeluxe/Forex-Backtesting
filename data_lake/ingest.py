@@ -79,7 +79,10 @@ def _try_twelvedata_failover(entry: "sources.LakeSource", label: str, n_failures
     try:
         df = twelvedata_source.fetch(entry.key, entry.timeframe)
         _validate(df, f"{label} (twelvedata-Failover)")
-        merged = storage.write_bars(entry.source, entry.key, entry.timeframe, df)
+        # Nur anhaengen (backfill=None): fetch() holt pauschal 500 Kerzen ohne Volumen, auf
+        # eigenem H4-Raster und mit Wochenend-Kerzen -- hat 2026-10 die Dukascopy-Historie
+        # von GOLD/USDJPY H4 bis August zurueck ueberschrieben (siehe storage._guard_intraday).
+        merged = storage.write_bars(entry.source, entry.key, entry.timeframe, df, backfill=None)
         manifest.record_success(entry.source, entry.key, entry.timeframe, merged.index.max(), len(merged), origin="twelvedata")
         log.warning("%s: Dukascopy %dx gescheitert -- Twelve-Data-Failover erfolgreich, %d Zeilen, letzter Balken %s",
                     label, n_failures, len(merged), merged.index.max())
@@ -97,7 +100,8 @@ def ingest_one(entry: "sources.LakeSource", now: pd.Timestamp) -> None:
         if df is None or df.empty:
             raise ValueError("leerer DataFrame")
         _validate(df, label)
-        merged = storage.write_bars(entry.source, entry.key, entry.timeframe, df)
+        merged = storage.write_bars(entry.source, entry.key, entry.timeframe, df,
+                                    backfill=pd.Timedelta(days=_OVERLAP_DAYS))
         manifest.record_success(entry.source, entry.key, entry.timeframe, merged.index.max(), len(merged))
         log.info("%s: OK, %d Zeilen gesamt, letzter Balken %s", label, len(merged), merged.index.max())
     except Exception as e:

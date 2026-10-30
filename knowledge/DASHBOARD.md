@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-10-29** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-10-30** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -552,6 +552,25 @@ Bedarf vor generischem Aufräumen.
   stammen von VOR Ausfallbeginn (01.10.) -- keine neue Information. **Offen
   für dich, unverändert:** bitte PC und Task-Scheduler-Historie prüfen,
   sobald du am PC bist -- nach jetzt über 27 Tagen (knapp vier volle
+  Handelswochen) ohne jedes Lebenszeichen von drei Live-Bots mit echtem
+  Geld bleibt eine manuelle Prüfung vor Ort dringend.
+
+- **🔴 Sechsundzwanzigste Prüfung, 20. Handelstag: Ausfall läuft jetzt seit
+  über 28 Tagen -- volle vier Handelswochen ohne Sichtbarkeit.** (Bridge
+  Error Monitor, 30.10., geprüft 09:13 UTC / 10:13 CET.)
+  `bridge_status/snapshot.json` weiterhin unverändert auf
+  `generated_at: 2026-10-02T11:01:24` (Commit `666fe8e`, 2026-10-02 11:01:25
+  +0200) -- per `git pull`/`git log` gegen `origin/main` bestätigt: seit der
+  fünfundzwanzigsten Prüfung gestern Nachmittag (29.10., 15:18 UTC, Commit
+  `b738a34`) ist wieder **kein einziger neuer Commit** von
+  Watchdog/EK/Funded/FK eingegangen. Der heutige Freitag-Handelstag (30.10.,
+  20. Handelstag seit Ausfallbeginn) ist damit bislang ebenfalls ohne jede
+  Sichtbarkeit verstrichen. **Nichts Neues an Information** -- dieselben
+  drei offenen Fragen (a/b/c) aus den Punkten darüber bleiben unverändert
+  offen, weiterhin nichts, das ich von hier aus unterscheiden oder
+  reparieren könnte (liegt komplett außerhalb des Repos, siehe CLAUDE.md).
+  **Offen für dich, unverändert:** bitte PC und Task-Scheduler-Historie
+  prüfen, sobald du am PC bist -- nach jetzt über 28 Tagen (vier volle
   Handelswochen) ohne jedes Lebenszeichen von drei Live-Bots mit echtem
   Geld bleibt eine manuelle Prüfung vor Ort dringend.
 

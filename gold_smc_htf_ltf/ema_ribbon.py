@@ -22,8 +22,9 @@ from strategy.indicators import compute_atr
 
 
 def _bar_length(index: pd.DatetimeIndex) -> pd.Timedelta:
+    # Never shorter than the 75th-percentile gap: see continuation.py::_bar_length (2026-10-28)
     diffs = pd.Series(index[1:] - index[:-1])
-    return diffs.mode().iloc[0]
+    return max(diffs.mode().iloc[0], diffs.quantile(0.75))
 
 
 def _ema_on_h4(h4_index: pd.DatetimeIndex, df: pd.DataFrame, length: int) -> pd.Series:

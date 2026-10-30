@@ -69,8 +69,9 @@ def _level_age(level: pd.Series) -> np.ndarray:
 
 
 def _bar_length(index: pd.DatetimeIndex) -> pd.Timedelta:
+    # Never shorter than the 75th-percentile gap: see continuation.py::_bar_length (2026-10-28)
     diffs = pd.Series(index[1:] - index[:-1])
-    return diffs.mode().iloc[0]
+    return max(diffs.mode().iloc[0], diffs.quantile(0.75))
 
 
 def _sweep_and_reject(df: pd.DataFrame) -> tuple[pd.Series, pd.Series]:

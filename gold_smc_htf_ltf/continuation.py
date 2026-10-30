@@ -57,9 +57,16 @@ from strategy.indicators import compute_adx
 def _bar_length(index: pd.DatetimeIndex) -> pd.Timedelta:
     """Modal (most common) gap between consecutive bars - robust to
     occasional weekend/holiday gaps that a single index[i+1]-index[i]
-    sample could land on."""
+    sample could land on.
+
+    Never shorter than the 75th percentile of the gaps (2026-10-28): the
+    mode alone returned 1h for the data-lake GOLD H4 series, whose
+    Jun-Sep history held duplicate bars stamped +1h (Windows time-zone
+    flips 2026-09-15..17) - every H4 bar was then merged 3h before it had
+    closed. Too short a shift is lookahead, too long only delays, so this
+    errs long. Identical to the plain mode on clean data."""
     diffs = pd.Series(index[1:] - index[:-1])
-    return diffs.mode().iloc[0]
+    return max(diffs.mode().iloc[0], diffs.quantile(0.75))
 
 
 def _sweep_and_reject(df: pd.DataFrame) -> tuple[pd.Series, pd.Series]:

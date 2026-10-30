@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-10-30T10:01:25",
+  "generated_at": "2026-10-30T10:31:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-30T09:59:01",
+      "last_run": "2026-10-30T10:29:01",
       "minutes_since_last_run": 2.4,
       "status": "ok",
-      "last_equity_line": "2026-10-30 08:53:54 2026-10-30 08:44:02,655 INFO run_once: Konto-Equity 2811.14 EUR | Aggregiertes offenes Risiko (ganzes Konto): 0.00 (Deckel dieser Bridge: 843.34, 30%)",
-      "last_error_line": "2026-10-30 08:53:54 2026-10-30 08:53:53,820 ERROR run_once: cls_practical: unerwarteter Fehler",
+      "last_equity_line": "2026-10-30 10:23:27 2026-10-30 10:14:03,359 INFO run_once: Konto-Equity 2811.14 EUR | Aggregiertes offenes Risiko (ganzes Konto): 0.00 (Deckel dieser Bridge: 843.34, 30%)",
+      "last_error_line": "2026-10-30 10:23:27 2026-10-30 10:23:27,100 ERROR run_once: cls_practical: unerwarteter Fehler",
       "recent_events": [
         "2026-10-30 03:05:21         f\"Lake-Daten fuer {source}:{key}_{timeframe} zu alt (last_success_at={entry and entry.get('last_success_at')})\"",
         "2026-10-30 02:53:28         f\"Lake-Daten fuer {source}:{key}_{timeframe} zu alt (last_success_at={entry and entry.get('last_success_at')})\""
@@ -15,68 +15,68 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-30T09:58:03",
+      "last_run": "2026-10-30T10:28:02",
       "minutes_since_last_run": 3.4,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-10-30 09:47:35 Verbunden: Login 504072729, Equity $99,143.51 USD",
-          "last_error_line": "2026-10-30 09:47:35 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+          "last_equity_line": "2026-10-30 10:18:10 Verbunden: Login 504072729, Equity $99,143.51 USD",
+          "last_error_line": "2026-10-30 10:18:10 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
           "recent_events": [
+            "2026-10-30 10:18:10 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-10-30 10:18:10 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-10-30 10:18:10 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-10-30 10:02:38 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-10-30 10:02:38 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-10-30 10:02:38 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
             "2026-10-30 09:47:35 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
             "2026-10-30 09:47:35 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
             "2026-10-30 09:47:35 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
             "2026-10-30 09:32:09 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
             "2026-10-30 09:32:09 Trend-Pullback-Scan fehlgeschlagen: HTTPSConnectionPool(host='freeserv.dukascopy.com', port=443): Max retries exceeded with url: /2.0/index.php?path=chart%2Fjson3&splits=true&stocks=true&time_direction=N&jsonp=_callbacks____yb8tDgc62&last_update=1767394800000&offer_side=B&instrument=XAG%2FUSD&interval=1HOUR&limit=30000 (Caused by NameResolutionError(\"HTTPSConnection(host='freeserv.dukascopy.com', port=443): Failed to resolve 'freeserv.dukascopy.com' ([Errno 11001] getaddrinfo failed)\"))",
-            "2026-10-30 09:32:09 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-30 09:18:10 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-30 09:18:10 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-30 09:18:10 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-30 09:03:39 OU-Modell-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-30 09:03:39 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-30 09:03:39 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)"
+            "2026-10-30 09:32:09 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)"
           ]
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-10-30 09:47:35 Verbunden: Login 16054, Equity $96,906.81 USD",
-          "last_error_line": "2026-10-30 09:47:35 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+          "last_equity_line": "2026-10-30 10:18:10 Verbunden: Login 16054, Equity $96,906.81 USD",
+          "last_error_line": "2026-10-30 10:18:10 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
           "recent_events": [
+            "2026-10-30 10:18:10 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-10-30 10:18:10 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-10-30 10:18:10 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-10-30 10:02:38 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-10-30 10:02:38 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+            "2026-10-30 10:02:38 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
             "2026-10-30 09:47:35 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
             "2026-10-30 09:47:35 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
             "2026-10-30 09:47:35 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
             "2026-10-30 09:32:09 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
             "2026-10-30 09:32:09 Trend-Pullback-Scan fehlgeschlagen: HTTPSConnectionPool(host='freeserv.dukascopy.com', port=443): Max retries exceeded with url: /2.0/index.php?path=chart%2Fjson3&splits=true&stocks=true&time_direction=N&jsonp=_callbacks____yb8tDgc62&last_update=1767394800000&offer_side=B&instrument=XAG%2FUSD&interval=1HOUR&limit=30000 (Caused by NameResolutionError(\"HTTPSConnection(host='freeserv.dukascopy.com', port=443): Failed to resolve 'freeserv.dukascopy.com' ([Errno 11001] getaddrinfo failed)\"))",
-            "2026-10-30 09:32:09 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-30 09:18:10 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-30 09:18:10 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-30 09:18:10 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-30 09:03:39 OU-Modell-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-30 09:03:39 CTNL-Edge-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-            "2026-10-30 09:03:39 Trend-Pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)"
+            "2026-10-30 09:32:09 CLS-Practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)"
           ]
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-10-30T09:19:36",
-      "minutes_since_last_run": 41.8,
+      "last_run": "2026-10-30T10:19:25",
+      "minutes_since_last_run": 12.0,
       "status": "ok",
-      "last_equity_line": "2026-10-30 09:19:36 Verbunden: Login 17764, Equity $98,299.49",
-      "last_error_line": "2026-10-30 09:19:36 gold_silver-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+      "last_equity_line": "2026-10-30 10:19:25 Verbunden: Login 17764, Equity $98,299.49",
+      "last_error_line": "2026-10-30 10:19:25 gold_silver-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
       "recent_events": [
+        "2026-10-30 10:19:25  LIVE CTNL-Kill-Switch: Scan ohne Trades (Datenluecke?) -- kein Urteil, Zustand bleibt aus.",
+        "2026-10-30 10:19:25 gold_silver-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+        "2026-10-30 10:19:25 ctnl-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+        "2026-10-30 10:19:25 trend_pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+        "2026-10-30 10:19:25 cls_practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
+        "2026-10-30 10:19:25 gold_asb-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
         "2026-10-30 09:19:36  LIVE CTNL-Kill-Switch: Scan ohne Trades (Datenluecke?) -- kein Urteil, Zustand bleibt aus.",
         "2026-10-30 09:19:36 gold_silver-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
         "2026-10-30 09:19:36 ctnl-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
         "2026-10-30 09:19:36 trend_pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
         "2026-10-30 09:19:36 cls_practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-        "2026-10-30 09:19:36 gold_asb-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-        "2026-10-30 08:18:31 gold_silver-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-        "2026-10-30 08:18:31 trend_pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-        "2026-10-30 08:18:31 cls_practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-        "2026-10-30 08:18:31 gold_asb-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-        "2026-10-30 07:19:22 gold_silver-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-        "2026-10-30 07:19:22 trend_pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)"
+        "2026-10-30 09:19:36 gold_asb-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)"
       ]
     }
   }

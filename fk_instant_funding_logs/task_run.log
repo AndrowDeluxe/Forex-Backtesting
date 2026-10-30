@@ -69403,3 +69403,23 @@
 2026-10-30 10:57:42 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 2026-10-30 10:57:42 HINWEIS: Push abgelehnt (Remote ist weiter) - erwartet, solange nicht gemergt wurde. Rueckstand sichtbar ueber 'git log origin/main..HEAD'.
 2026-10-30 10:57:42 === FK-Instant-Funding-Task beendet ===
+2026-10-30 11:55:23 === FK-Instant-Funding-Task gestartet ===
+2026-10-30 11:55:45 INFO:DUKASCRIPT:current timestamp :2026-10-29T01:00:00
+2026-10-30 11:55:45 INFO:DUKASCRIPT:current timestamp :2026-10-30T10:00:00
+2026-10-30 11:55:45 INFO:DUKASCRIPT:current timestamp :2026-10-30T10:00:00
+2026-10-30 11:55:45 INFO:DUKASCRIPT:current timestamp :2026-10-30T10:00:00
+2026-10-30 11:55:45 INFO:DUKASCRIPT:current timestamp :2026-10-30T05:00:00
+2026-10-30 11:55:45 INFO:DUKASCRIPT:current timestamp :2026-10-30T05:00:00
+2026-10-30 11:55:45 INFO:DUKASCRIPT:current timestamp :2026-10-30T05:00:00
+2026-10-30 11:55:45 INFO:DUKASCRIPT:current timestamp :2026-10-30T05:00:00
+2026-10-30 11:55:45 {
+2026-10-30 11:55:45   "date": "2026-10-30 10:55:24.277173",
+2026-10-30 11:55:45   "equity": 98768.33816378856,
+2026-10-30 11:55:45   "current_dd": -0.012316618362114395,
+2026-10-30 11:55:45   "consistency_ratio": 0.0,
+2026-10-30 11:55:45   "payout_safe": false,
+2026-10-30 11:55:45   "cum_profit": -1231.6618362114345,
+2026-10-30 11:55:45   "kill_switch_active": false,
+2026-10-30 11:55:45   "ctnl_kill_switch_active": false,
+2026-10-30 11:55:45   "n_trades": 25
+2026-10-30 11:55:45 }

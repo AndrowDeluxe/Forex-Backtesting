@@ -1,0 +1,57 @@
+{
+  "strategy": "copy_trading_stufe2_20261028",
+  "split": {
+    "is_start": "2025-03-17",
+    "is_end": "2026-03-31",
+    "oos_end": "2026-10-16",
+    "tresor_end": null
+  },
+  "registered": "2026-10-28T20:42:42+00:00",
+  "trials": 2,
+  "frozen": {
+    "hash": "6c6ce4d11ff67a68a1568bb329007c51ce42d65bb37d62041097684311267a07",
+    "config": {
+      "basis_hash": "71a02c43ead6f09d907f3d2640d1374adea64b391254b275591c0a60f3a46633",
+      "basis": {
+        "etype": "A2",
+        "validity": "update",
+        "sl": "atr1",
+        "tp": "struct",
+        "be": null,
+        "trail": null
+      },
+      "varianten": [
+        "fest",
+        "alle"
+      ],
+      "anweisungen_prompt_version": 2,
+      "scope_age": {
+        "today": [
+          "0 days 00:00:00",
+          "1 days 00:00:00"
+        ],
+        "yesterday": [
+          "0 days 06:00:00",
+          "4 days 00:00:00"
+        ],
+        "last_week": [
+          "2 days 00:00:00",
+          "14 days 00:00:00"
+        ],
+        "any": [
+          "0 days 00:00:00",
+          "30 days 00:00:00"
+        ]
+      },
+      "partial_default": 0.5
+    },
+    "ts": "2026-10-28T20:44:26+00:00"
+  },
+  "unsealed": {},
+  "forward": {
+    "start": "2026-10-17",
+    "eval_date": "2027-03-31",
+    "min_trades": 100
+  },
+  "oos_skipped": "OOS 01.04.-16.10.2026 durch A2 (Lock copy_trading_daily_update_20261020) am 27.10.2026 verbraucht; Stufe 2 nur IS-Vorab + Forward"
+}

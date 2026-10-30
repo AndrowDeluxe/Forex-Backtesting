@@ -168,3 +168,56 @@
 2026-10-18 18:54:22 Weiter offen und unver+Òndert: F++nf alte CTNL-Positionen laufen ohne Zeit-Exit (TTP 3, IQ 1, FK 1). Wegen ihnen nimmt TTP weiter keine neuen CTNL-Trades.
 2026-10-18 18:54:22 Vollstaendigkeitspruefung OK: KW42_2026_checkup.pdf (557.298 Bytes)
 2026-10-18 18:54:22 === Weekly-Report-Task beendet ===
+2026-10-26 01:43:43 === Weekly-Report-Task gestartet ===
+2026-10-26 01:43:50 Nutze Claude Code: C:\Users\andre\.vscode\extensions\anthropic.claude-code-2.1.310-win32-arm64\resources\native-binary\claude.exe
+2026-10-26 01:43:52 Heute ist der letzte Sonntag vor Monatswechsel - haenge Monats-Report-Prompt an.
+2026-10-26 01:46:08 You've hit your weekly limit -¿ resets 2am (Europe/Berlin)
+2026-10-26 01:46:08 FEHLER: Lauf unvollstaendig -- kein neues PDF in 'C:\Users\andre\Documents\Trading Reports' seit 01:43:52.
+2026-10-26 01:46:08 Haeufigste Ursachen: Claude-Session-/Wochenlimit erreicht, oder Zeitlimit des Tasks.
+2026-10-26 01:46:13 === Weekly-Report-Task beendet (UNVOLLSTAENDIG) ===
+2026-10-27 23:08:57 === Weekly-Report-Task gestartet ===
+2026-10-27 23:08:57 Nutze Claude Code: C:\Users\andre\.vscode\extensions\anthropic.claude-code-2.1.311-win32-arm64\resources\native-binary\claude.exe
+2026-10-27 23:08:57 Heute ist der letzte Sonntag vor Monatswechsel - haenge Monats-Report-Prompt an.
+2026-10-27 23:37:12 Ich warte jetzt auf das Ende der Edge-Ampel (oder einen H+Ònger nach 10 Min. Stillstand); danach kommen 5b, KW43-PDF, Telegram und Commit.
+2026-10-27 23:37:12 
+2026-10-27 23:37:12 The KW43 weekly checkup (19.‘«Ù25.10.) and the October monthly checkup are done. Both were committed locally as `dc3936a9` (not pushed) and both PDFs went out via Telegram. The run happened late, on Tuesday 27.10. No MT5 terminal was opened or closed, and nothing touched any orders.
+2026-10-27 23:37:12 
+2026-10-27 23:37:12 **Most important finding:** on Tue 20.10. no bridge ran at all from 13:50 to 21:03. The Windows event log shows standby at 13:46 with the battery at 2,300 mWh. At 20:58 there is a restart after an unclean shutdown. My reading is that the battery ran empty, but that is not proven. It cost an ORB SP500 trade that hit its target in the backtest (+5.97 R), roughly 1,500 USD across Funded and FK. This happened one day after the battery fix, so the fix seems to have moved the problem rather than solved it. That makes the VPS idea, which you postponed to November, more urgent.
+2026-10-27 23:37:12 
+2026-10-27 23:37:12 **Week (closed trades):**
+2026-10-27 23:37:12 
+2026-10-27 23:37:12 | Bridge | Trades | P&L | % |
+2026-10-27 23:37:12 |---|---|---|---|
+2026-10-27 23:37:12 | EK | 5 | +92.67 EUR | +3.35 % |
+2026-10-27 23:37:12 | Funded (TTP + IQ) | 15 | +2,664.87 USD | +1.37 % |
+2026-10-27 23:37:12 | FK | 6 | +53.56 USD | +0.05 % |
+2026-10-27 23:37:12 
+2026-10-27 23:37:12 - **Manual closes:** +979 USD of the Funded result came from 6 positions closed via the mobile app. These were the old CTNL positions on 19.10. and EOG, DD and the break-even gold position on 22.10.
+2026-10-27 23:37:12 - **Main driver:** the CTNL shorts from 21.10. hit their targets on every account. ORB lost money on all bridges.
+2026-10-27 23:37:12 - **Risk:** no kill-switch and no drawdown halt fired. IQ is at ‘Í∆2.54 % against its 6 % limit, about 3,460 USD of room.
+2026-10-27 23:37:12 - **Edge-Ampel:** it ran through fresh this time (last week it hung). orb_sp500 stays ROT and the hole got 1.1 R deeper. That is already on the dashboard and covered by your 16.10. decision.
+2026-10-27 23:37:12 
+2026-10-27 23:37:12 **October (01.‘«Ù27.10., fresh pull, 28.‘«Ù31.10. still missing):** EK ‘Í∆0.08 %, Funded +0.03 % (only positive because of the manual closes, about ‘Í∆0.47 % without them), FK ‘Í∆1.12 %, about ‘Í∆0.36 % overall. ORB was the most expensive leg on every bridge, about ‘Í∆2,040 USD and ‘Í∆69 EUR.
+2026-10-27 23:37:12 
+2026-10-27 23:37:12 **Other issues flagged in the reports:**
+2026-10-27 23:37:12 - **TTP-OU:** STT is still open as an orphaned position, along with FLEX and UAL. I did not check whether the model still manages FLEX and UAL.
+2026-10-27 23:37:12 - **OU exits:** since the 19.10. fix, exits are sent while the exchange is closed. LEN produced 94 rejected close orders. This is harmless but it clutters the logs.
+2026-10-27 23:37:12 - **Soll/Ist tool:** it does not match ORB fills to live trades, and it shows CTNL signals 2‘«Ù3 hours off from live for the second week running.
+2026-10-27 23:37:12 - **Uncommitted research:** this week's research is mostly sitting uncommitted in the working tree: Copy Trading, OmniGold, Key Levels code, 5 notes and 4 locks.
+2026-10-27 23:37:12 
+2026-10-27 23:37:12 **Other edits:**
+2026-10-27 23:37:12 - I added one entry under "Braucht deine Best+Òtigung" in `DASHBOARD.md` with my three readings that need your confirmation: the empty-battery explanation, your manual closes of DD/EOG, and a proposed market-hours check before OU exits (live money, so only with your approval).
+2026-10-27 23:37:12 - I added a `CHANGELOG.md` entry for this run and noted the 20.10. relapse in the standby memory note.
+2026-10-27 23:37:12 - I did not commit `DASHBOARD.md` or `CHANGELOG.md`. A parallel session had already edited both today, so the commit only contains `knowledge/reports/`.
+2026-10-27 23:37:12 
+2026-10-27 23:37:12 The Copy Trading status in the reports includes today's result from that parallel session: it failed its out-of-sample test (‘Í∆0.72 R, t ‘Í∆3.65) and is now rejected.
+2026-10-27 23:37:12 
+2026-10-27 23:37:12 Files are in `knowledge/reports/`:
+2026-10-27 23:37:12 - KW43_2026_performance.md
+2026-10-27 23:37:12 - KW43_2026_education.md
+2026-10-27 23:37:12 - KW43_2026_checkup.html
+2026-10-27 23:37:12 - 2026-10_performance.md
+2026-10-27 23:37:12 - 2026-10_education.md
+2026-10-27 23:37:12 - 2026-10_checkup.html
+2026-10-27 23:37:12 Vollstaendigkeitspruefung OK: KW43_2026_checkup.pdf (542.738 Bytes)
+2026-10-27 23:37:12 === Weekly-Report-Task beendet ===

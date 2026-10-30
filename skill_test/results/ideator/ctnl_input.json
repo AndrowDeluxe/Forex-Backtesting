@@ -1,0 +1,84 @@
+{
+ "objective": {
+  "goal": "Find a context filter that removes losing CTNL reversal regimes",
+  "focus_area": "Regime / timing filter",
+  "horizon": "forward test 2026-11 to 2027-03"
+ },
+ "strategy_context": {
+  "strategy_name": "ctnl_reversal",
+  "summary": "Gold H4->H1->M15 reversal cascade after failed continuation, stop 3 ATR, target 5R, max hold 96h; edge mostly long.",
+  "known_pain_points": [
+   "no clean OOS, walk-forward 2016-2024 negative",
+   "August 2026 0/14 streak",
+   "trials never counted"
+  ]
+ },
+ "constraints": {
+  "execution_constraints": [
+   "MT5 bridges, scan cadence 5-15 min",
+   "no change to live config before forward test"
+  ],
+  "risk_constraints": [
+   "risk_per_trade <= 1.0%",
+   "funded account daily loss limits"
+  ],
+  "data_constraints": [
+   "only in-sample data (OOS/vault consumed)",
+   "daily context data only: index/gold closes, VIX, growth x inflation regime"
+  ]
+ },
+ "market_context": {
+  "summary": "IS 2019-01..2024-07, TTP-cost simulation, 109 trades.",
+  "regime_tags": [
+   "growth x inflation quadrants",
+   "VIX terciles"
+  ],
+  "observations": [
+   "Regime growth accelerating x inflation accelerating avg R 0.02 (30 trades) vs 1.07-1.56 in slowing-inflation regimes",
+   "High VIX tercile avg R 1.34 vs 0.57-0.61",
+   "Friday entries avg R 0.01 (18 trades) vs 0.56-1.29 other weekdays",
+   "July -1.00 avg R (17 trades)"
+  ]
+ },
+ "performance_summary": {
+  "win_rate": 0.44,
+  "profit_factor": 2.12,
+  "max_drawdown": 0.19
+ },
+ "trade_log_summary": {
+  "common_winner_traits": [
+   "target 5R or max-hold exit",
+   "inflation slowing regime",
+   "high VIX"
+  ],
+  "common_loser_traits": [
+   "stop 3 ATR (61 of 109)",
+   "growth and inflation both accelerating",
+   "entered on Friday (weekend hold)"
+  ]
+ },
+ "feature_inventory": [
+  "macro_regime_joint",
+  "vix_close_prev",
+  "ret20_gold",
+  "weekday",
+  "hour",
+  "month"
+ ],
+ "journal_snippets": [
+  {
+   "date": "2026-10-02",
+   "note": "Regime filter is the only lever; walk-forward rejects TP/SL/signal parameters.",
+   "outcome": "promising"
+  },
+  {
+   "date": "2026-10-01",
+   "note": "Losing-streak stop and risk halving did not help; spike filter did.",
+   "outcome": "mixed"
+  }
+ ],
+ "qualitative_notes": [
+  "Edge sits on long side (short sum -122R)",
+  "Costs were overestimated 4-11x"
+ ]
+}

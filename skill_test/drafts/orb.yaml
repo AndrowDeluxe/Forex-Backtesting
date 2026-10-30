@@ -1,0 +1,45 @@
+id: orb_live_2026
+title: NY-Open Opening Range Breakout (SP500, NASDAQ, US30)
+thesis: >
+  The first 5-minute bar after the US cash open concentrates overnight order imbalance and
+  institutional participation; a breakout of that opening range starts intraday momentum that
+  continues because late liquidity follows the initial flow (Baltussen intraday momentum,
+  Zarattini ORB). Edge is a positive skew trend-continuation payoff, not a high hit rate.
+entry_family: breakout
+regime: Neutral
+entry:
+  conditions:
+    - "opening range = first M5 bar after 09:30 New York (range_bars=1)"
+    - "stop order at range high (long) / range low (short)"
+    - "NASDAQ long only, SP500 and US30 both directions"
+  trend_filter:
+    - "EMA ribbon state neutral required (ribbon=neutral)"
+exit:
+  stop_loss_pct: 0.003
+  stop_loss_rule: "1.0 x opening range beyond the entry"
+  take_profit_rr: 8.0
+  time_exit: "flat at US cash close"
+risk:
+  risk_per_trade: 0.01
+  max_positions: 3
+invalidation_signals:
+  - "Tresor PF 0.52 for IS-only re-optimisation (2025-10..2026-09)"
+  - "rolling 63-day residual alpha negative for two consecutive quarters"
+  - "forward ΣR < 0 at 2027-03-31"
+validation_plan: >
+  IS 2019-2022 only, OOS and vault already consumed, forward test 2026-11 to 2027-03,
+  cross-regime check over growth x inflation regimes, Deflated Sharpe over all trials.
+bias_checklist:
+  look_ahead: {addressed: false, note: "Fill-Bar-Stop wurde im Backtest nicht geprueft, Ein- und Ausstieg auf demselben Balken; 58-65 % der Entries in der ersten M5-Bar (Memory orb_first_bar, backtest_prueft_ein_und_ausstieg)"}
+  survivorship: {addressed: true, note: "Index-CFDs, kein Einzeltitel-Universum"}
+  universe_selection: {addressed: false, note: "Instrument- und Konfigurationsauswahl ab Stage 2 auf OOS-Zahlen (Anlass der Overfitting-Sperre); US30 nach OOS pausiert, NASDAQ-Storno als 2026-Fit"}
+  delisted_securities: {addressed: true, note: "nicht anwendbar"}
+  earnings_announcement_timing: {addressed: true, note: "nicht anwendbar fuer Index-CFDs"}
+  split_dividend_adjustment: {addressed: true, note: "Intraday, flat zum Close; Dividendenanpassung der CFDs irrelevant"}
+  transaction_costs_slippage: {addressed: true, note: "gemessene TTP/IQ/Tickmill-Kosten in der Simulation; Entry-Lag separat untersucht"}
+  short_borrow_availability: {addressed: true, note: "CFD, kein Leihbedarf"}
+  liquidity_capacity: {addressed: true, note: "Positionsgroessen weit unter Markttiefe der Indizes"}
+  parameter_multiplicity: {addressed: true, note: "7.560 gezaehlte Versuche in ny_open_orb_is_reopt_7p, DSR ~0"}
+  walk_forward_out_of_sample: {addressed: true, note: "IS-only-Reopt: Tresor PF 0,52 -- durchgefallen"}
+  benchmark_attribution: {addressed: true, note: "Residual-Check 28.10.2026: t 1,1-1,2, R2 < 0,01"}
+  regime_dependence: {addressed: true, note: "Ribbon-Filter kippt 2026 (neutral schlug Trend 16/18 Jahre, im Tresor umgekehrt)"}

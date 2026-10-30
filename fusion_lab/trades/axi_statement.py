@@ -176,6 +176,9 @@ def read_statement(path: Path) -> Statement:
     path = Path(path)
     if path.suffix.lower() in (".htm", ".html"):
         text = _htm_to_text(path.read_text(encoding="utf-8", errors="replace"))
+    elif path.suffix.lower() == ".txt":
+        # Textkopie eines Statements (z.B. aus einem Chat-Anhang uebernommen)
+        text = path.read_text(encoding="utf-8")
     elif path.suffix.lower() == ".pdf":
         from pypdf import PdfReader
         text = "\n".join(p.extract_text() or "" for p in PdfReader(str(path)).pages)

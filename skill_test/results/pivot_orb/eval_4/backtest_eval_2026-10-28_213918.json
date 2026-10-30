@@ -1,0 +1,68 @@
+{
+  "total_score": 46,
+  "quality_score": 46,
+  "decision": "REJECT",
+  "blocking_reasons": [
+    "excessive_drawdown",
+    "short_test_period"
+  ],
+  "verdict": "Abandon",
+  "dimensions": [
+    {
+      "name": "Sample Size",
+      "score": 20,
+      "max_score": 20
+    },
+    {
+      "name": "Expectancy",
+      "score": 6,
+      "max_score": 20
+    },
+    {
+      "name": "Risk Management",
+      "score": 0,
+      "max_score": 20
+    },
+    {
+      "name": "Robustness",
+      "score": 0,
+      "max_score": 20
+    },
+    {
+      "name": "Execution Realism",
+      "score": 20,
+      "max_score": 20
+    }
+  ],
+  "red_flags": [
+    {
+      "id": "excessive_drawdown",
+      "severity": "high",
+      "message": "Max drawdown 57.96% meets or exceeds the 50% hard ceiling — catastrophic risk."
+    },
+    {
+      "id": "over_optimized",
+      "severity": "medium",
+      "message": "8 parameters suggests over-optimization / curve-fitting risk."
+    },
+    {
+      "id": "short_test_period",
+      "severity": "medium",
+      "message": "Only 1 years tested — may miss regime changes (minimum 5 recommended)."
+    }
+  ],
+  "profit_factor": 1.1813662744372304,
+  "profit_factor_status": "FINITE",
+  "expectancy": 0.141124,
+  "inputs": {
+    "total_trades": 351,
+    "win_rate": 26.8,
+    "avg_win_pct": 3.43,
+    "avg_loss_pct": 1.063,
+    "max_drawdown_pct": 57.96,
+    "years_tested": 1,
+    "num_parameters": 8,
+    "slippage_tested": true,
+    "max_acceptable_drawdown_pct": 50
+  }
+}

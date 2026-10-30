@@ -61,4 +61,25 @@ bleibt die Schwachstelle; der Blindtest spricht eher für eine schwache Phase al
 
 - Keine Bot-Änderung. Forward-Fenster 10/2026–03/2027 ist im Lock als „OOS“ registriert.
 - Mechanismus-Kriterium der Mentor-PDF bleibt gelb (Paper-Filter brachten keinen Beleg).
-- Offene Idee: H1 (Range-Kompression) als eigene Forward-Hypothese.
+- H1 (Range-Kompression): vom Nutzer am 18.10. verworfen, siehe Nachtrag.
+
+## Nachtrag: H1 im Detail (18.10., nur bereits gesehene Daten, kein Beleg)
+
+Nutzerfrage „Wie würde H1 bis jetzt performen?“ Rechnung bis 30.09.2026, TTP-Kosten.
+
+| Zeitraum | Basis | H1 ≤ 1,0× Median |
+|---|---|---|
+| IS 11/2016–2022 | 211 · Ø +0,33 · Σ +69,9 | 110 · Ø +0,41 · Σ +45,3 |
+| OOS 2023–09/2025 | 96 · Ø +0,18 · Σ +17,6 | 43 · Ø +0,42 · Σ +18,1 |
+| Tresor 10/2025–09/2026 | 18 · Ø +0,04 · Σ +0,8 | 9 · Ø −0,12 · Σ −1,1 |
+| Gesamt | 325 · Ø +0,27 · t 5,0 · Σ +88,2 | 162 · Ø +0,39 · t 4,2 · Σ +62,3 |
+| 100k-Konto, 1 % | 237.700 $ · DD −5,4 % | 184.200 $ · DD −4,9 % |
+
+- H1 hält die Qualität im OOS (+0,42 statt +0,18 R je Trade), verdient aber wegen halb so
+  vieler Trades ~26 R weniger. 2026 hilft der Filter nicht (−0,9 R aus 6 Trades).
+  0,8× und 1,2× zeigen dasselbe Muster (Tresor −0,41 bzw. −0,12 R je Trade).
+- Kein Beleg: H1 ist einer von 9 auf diesen Daten getesteten Filtern.
+- **Nutzerentscheid 18.10.: H1 verworfen** (zuerst „erstmal so lassen“, dann verworfen). Festlegungen Silber-Ersatz SI=F und FOMC-Streichung vom Nutzer bestätigt. Optionen für später: (1) H1 in eigenem
+  Lock einfrieren und den Blindtest 2010–2015 ein zweites Mal öffnen (vorbelastet, weil das
+  Basis-Ergebnis dort bekannt ist; braucht ausdrückliche Zustimmung), (2) nur Forward
+  (bis 31.03.2027 nur ~5 H1-Trades).

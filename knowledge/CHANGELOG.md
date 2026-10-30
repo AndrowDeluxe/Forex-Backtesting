@@ -9,6 +9,127 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-28** [Research] **Copy Trading Stufe 2 (Dennis' Anweisungen): IS-Vorab negativ,
+  Forward-Test läuft.**
+  - **Anweisungs-Lesung** per Claude-Abo (`fusion_lab/copy_trading/instructions.py`, v2 nach
+    Nutzer-Stichprobe 20/20).
+  - **Neue Bausteine:** Ereignisse BE/Close/Teilschluss in `exits.run` und Hook in
+    `grid.evaluate`, beide ohne Ereignisse bitgleich.
+  - **Neues Skript `stage2.py`** (Varianten nackt/fest/alle).
+  - **IS-Ergebnis:**
+
+    | Variante | Ø R |
+    |---|---|
+    | A2 nackt | +0,47 |
+    | fest | +0,08 |
+    | alle | −0,04 |
+
+    BE rettet 17 Verlierer (+20 R) und kappt 11 große Gewinner (−75 R).
+  - **Sperre `copy_trading_stufe2_20261028`:** 2 Versuche, eingefroren 6c6ce4d1…, OOS
+    gesperrt, Forward 17.10.2026–31.03.2027.
+  - **`research_lock.skip_oos()` neu:** Forward ohne erneutes Öffnen eines schon verbrauchten
+    OOS.
+  - **23:00-Task erweitert:** `Telegram-Import-SMH-Daily` liest jetzt auch neue Bilder und
+    Anweisungen und schreibt den Forward-Stand fort.
+  - **Weitere Änderungen:**
+    - `data.fetch_tail` holt Kurse nach dem 16.10. inkrementell.
+    - `extract.pending` versucht Bilder ohne Antwort erneut.
+  - Kein Bot-Eingriff, nichts committet.
+- **2026-10-28** [Research] **Skill-Test über ORB + CTNL** (Ergebnis je Skill in
+  `projects/skill-test-orb-ctnl.md`). Zwei neue Sperren mit OOS gesperrt und Forward vom
+  02.11.2026 bis 31.03.2027:
+  - `orb_skill_filter_20261028` (13 Versuche): **ORB-H1 eingefroren** (nur nach fallendem
+    20-Tage-Index; IS Ø R 0,44 → 0,76, DSR 0,95, p 0,009).
+  - `ctnl_skill_filter_20261028` (14 Versuche): **News-Tag-Filter eingefroren** (keine
+    Entries an US-High-Impact-Tagen; IS Ø R 0,84 → 1,20, p 0,003).
+
+  Kein Live-Eingriff. Nebenbefund: Ab 01.10. haben 6 von 7 echten EK-CTNL-Trades kein
+  Gegenstück in der Tickmill-Simulation. Code in `skill_test/`.
+- **2026-10-28** [Research-Werkzeug] **`scripts/mt5_tester_lock.py`**: Brücke
+  `mt5-robot-tester` → `research_lock`.
+  - Der Tester-Zeitraum muss im IS liegen.
+  - Die Sperre darf nicht eingefroren sein.
+  - Alle 9 Terminals der `*-Bridge`-Ordner sind blockiert.
+  - Tester-Durchgänge werden per `log_trials` gezählt; über 9 optimierten Parametern gibt
+    es eine Warnung.
+
+  Mit einer Test-Sperre im Scratchpad geprüft.
+- **2026-10-28** [Research / Dachprojekt Strang 3] **Live-Beine je Wachstums-Inflations-Regime
+  (nur IS, Diagnose).** 9 Beine × 2 Linsen, Zufallstest per zirkulärer Regime-Verschiebung:
+  kein Bein regimeabhängig (alle p ≥ 0,08, 18 Tests). Auffällig, aber nicht gesichert: im
+  aktuellen Regime g↑·slow × π↑·accel ist ORB im IS am schwächsten (S&P −0,15 R, US30 −0,11 R),
+  trend_pullback am stärksten (+0,74 R). Keine Regel eingeführt, nichts an Bridges geändert.
+  `scripts/research_edges_by_regime.py`, Notiz [[edges-je-regime]]. Nicht committet.
+
+- **2026-10-28** [Data Lake + gold_smc_htf_ltf (wirkt live: CTNL auf allen Bridges, Ribbon-Filter)]
+  **Lake nach dem Zeitzonen-Chaos vom 15.–17.09. bereinigt und `_bar_length()` gehärtet**
+  (Nutzerfreigabe). Die Ursache für den „CTNL 2–3 h Versatz“ aus den Weekly-Reports KW42/KW43
+  war ein Vorgriff in die Zukunft. `GOLD_H4`/`USDJPY_H4` enthielten je 501 um +1 h versetzte
+  Doppelkerzen (27.06.–18.09.), dadurch lieferte `_bar_length()` (Modus) 1 h statt 4 h. In
+  jeder Nachrechnung auf Lake-Daten wurden H4-Kerzen so 3 h vor ihrem Schluss angehängt.
+  Kausaltest 23.10.: Die Signale 10:00–11:45 UTC waren live erst um 12:00 sichtbar.
+  (1) Neun Reihen im Fenster 20.06.–22.09. neu von Dukascopy geschrieben (gleiche
+  `sources.py`-Abrufe, Historie nicht verlängert): GOLD_H4/H1/M15, USDJPY_H4 sowie
+  GBPUSD/USDJPY/USDCHF/AUDUSD/USDCAD_M15 (je ~190 falsche Schlusskurse). Die übrigen 15
+  Intraday-Reihen hatten identische Werte und blieben unverändert. Backups in
+  `data_lake_store/_backup_20261028_tz_repair/`; danach exakt deckungsgleich mit Dukascopy,
+  und auch nach dem nächsten Ingest-Lauf wieder sauber. (2) `_bar_length()` in
+  `reversal_cascade.py`, `continuation.py`, `ema_ribbon.py`, `mean_reversion.py` gibt jetzt
+  `max(Modus, 75-%-Quantil)` zurück. Auf den Validierungsdaten 2016–2026 sind die Signale
+  bit-identisch (19.859 Reversal-, 159 Continuation-Signale), im Echtzeit-Nachbau vom 23.10.
+  gibt es keinen Vorgriff mehr. Live-Einstiege im Oktober waren nicht betroffen. Die
+  CTNL-Validierung (direkt Dukascopy) bleibt gültig. Nicht committet.
+
+- **2026-10-28** [Research / gekaufte EAs] **Quantum-Valkyrie-Nachbau begonnen** (`mt5_valkyrie/`).
+  - Parser für die drei Tester-Berichte: 3.084 Orders, 2.424 Positionen, Zuordnung fehlerfrei.
+  - Hergeleitet: Buy-/Sell-Stop zur M15-Grenze als Momentum-Fortsetzung auf ein ungebrochenes Hoch/Tief von vor 2–8 h. SL ≈ 3,5 × ATR(M15, ~100) in den Grenzen 15–60 $, TP 50 $.
+  - Der Auslöser-Zeitpunkt trifft erst 22 %.
+  - Notiz `projects/quantum-valkyrie-nachbau.md`. Keine Bridge berührt.
+- **2026-10-28** [Claude-Setup] **Portables MT5-Tester-Terminal + Skill `mt5-robot-tester`.**
+  - Kopie unter `C:\Users\andre\MT5-Terminals\Tester-Portable\`, Demo-Konto 5057577303, MaxBars unbegrenzt, Kursdaten übernommen.
+  - Skill-Parser um deutsche Berichtsbezeichnungen ergänzt und den Zahlen-Abschneidefehler (11009 → 110) behoben. Die Dateien liegen in `~/.claude/skills`, nicht in Git.
+  - Erster Lauf: Ultimate Breakout System, 10 Symbole, 2018–2026, M15, 1-Min-OHLC. Details `projects/mt5-tester-portable.md`.
+- **2026-10-28** [Research] **Residual-Edge-Check aller Live-Beine** (Skill
+  `residual-edge-analyzer`, OOS + Tresor, Hauptmodell „Basiswert halten“). Kein Bein ist
+  verkapptes Halten des Basiswerts (R² ≤ 0,09). Eigener Ertrag mit t > 2 haben
+  trend_pullback (2,96), gold_silver (2,59), gold_asb (2,42) und ctnl_reversal (2,15, nur
+  IS). Kein gesicherter eigener Ertrag bei orb_sp500 (1,24), orb_nasdaq (1,09), orb_us30
+  (0) und ou_modell (0,38). Bei den Gold-Beinen stammen 9–20 % des Ertrags aus dem
+  Gold-Beta. Rein diagnostisch, keine Änderung an Bridges oder Gewichten. Details:
+  `projects/residual-edge-check.md`, Code `portfolio_construction/residual_edge/`.
+- **2026-10-28** [Claude-Setup] FMP-API-Schlüssel als Benutzer-Umgebungsvariable
+  `FMP_API_KEY` gesetzt (Free-Tier, Test-Abruf SPY ok). Für die FMP-basierten
+  Trading-Skills.
+- **2026-10-28** [Dachprojekt / Strang 3] **Regimekarte: Richtungsbacktest
+  durchgefallen + wöchentlich in Notion.** Neu `fusion_lab/macro_regime/
+  universe.py` (G8-FX-Paare/Kreuze aus FRED, Silber, NDX, DJI, DAX),
+  `scripts/research_regime_direction.py`, Lock `regime_direction` (IS
+  2000-09–2014, OOS –2025-10-20, Tresor –2026-10-20; 3 Linsen, Richtung je
+  Regime = IS-Vorzeichen): IS Sharpe 1,60 → OOS 0,14 → Tresor −0,30 (250
+  gewählte Richtungen = Overfitting; nur Gold OOS 0,92). Notion: neue Seite
+  „Regime-Karte — Assets je Regime“ (`fusion_lab/notion/sync_regime_assets.py`,
+  ergänzt die bestehende Roadmap `sync_regime.py`). Neuer Scheduled Task
+  `Regime-Notion-Sync` (So 09:00), Testlauf 28.10. Ergebnis 0. Plan Phase 2
+  Makro-Agent vom Nutzer freigegeben (Datenschicht, Wirkketten, Fact Sheet,
+  claude -p, FF-Konsens, Paper + MT5-Demo).
+
+- **2026-10-28** [Dachprojekt / Strang 3] **Nutzer bestätigt:** G8-Lock
+  `g8_strength` mit FRED-Historie ab 2000 (statt 2010-11) bleibt, OOS/Tresor
+  bleiben wegen negativem IS geschlossen; SMH-Report 3332 EUR/JPY bleibt laut
+  Tabelle aktiv. Dashboard-Bestätigungspunkt entfernt.
+
+- **2026-10-28** [Funded-Portfolio-Bridge] **OU-Ausstiege warten auf die NYSE-Kassazeit**
+  (Nutzerfreigabe nach Weekly KW43). Bisher prüfte nur der Einstieg die Börsenzeit. Die Annahme
+  war, ein Ausstieg brauche keine offene Börse. TTP lehnt das Schließen von Aktien außerhalb der
+  Kassazeit aber mit 10018 ab; bei LEN gab es vom 20. bis 21.10. 94 Ablehnungen. Jetzt hat
+  `_process_leg()` den Schalter `exits_allowed`; ou_modell setzt ihn auf `_nyse_is_open()`. Ist
+  die Börse zu, wird nichts gesendet, die Position bleibt im State, und der erste Lauf in der
+  Session schließt sie. Die anderen Beine sind unverändert. `_reconcile_ou_positions()` und EK
+  hatten das Gate schon; FK hat kein OU-Bein. Offline getestet (echter Code, `close_position`
+  gestubbt): bei geschlossener Börse 0 Aufrufe, bei offener 1. Die Grenzen 09:30/16:00 NY gelten
+  auch nach der US-Umstellung am 01.11. Backup in `_backup_20261028_ou_exit_gate/`, nicht in Git.
+  Außerdem vom Nutzer bestätigt: 20.10. Akku leer; DD/EOG am 22.10. von Hand geschlossen.
+
 - **2026-10-28** [Research] **Kandidat B (Fade nach ausgeschöpfter Stunde) im IS
   verworfen** → [[smh-session-pips-call]]. Lock `session_pips_fade` (1 Versuch,
   Märkte/Stunden/Auslöser vorab vom Nutzer festgelegt: 6 FX-Majors + Gold, 08–17
@@ -16,6 +137,15 @@ keine Planung (dafür ist `DASHBOARD.md`).
   (t +5,8, 0–0,36 Pips), netto −0,122 T (t −37), 0/7 Märkte positiv. Die Umkehr
   ist die Market-Maker-Spanne. OOS/Tresor versiegelt. Skript
   `scripts/research_session_pips_fade.py`. Keine Bot-Änderung.
+
+- **2026-10-27** [Reports] **Weekly Checkup KW43/2026 + Monthly Checkup Oktober 2026**
+  (geplanter Lauf, verspätet am Di). `knowledge/reports/weekly/KW43_2026_*`,
+  `knowledge/reports/monthly/2026-10_*`, PDFs in `Documents\Trading Reports\`. Woche:
+  26 Trades, EK +92,67 EUR (+3,35 %), Funded +2.664,87 USD (+1,37 %, davon +979,34 aus
+  6 Handschließungen), FK +53,56 USD (+0,05 %); kein Kill-Switch, keine Verletzung.
+  Hauptbefund: Di 20.10. 13:50–21:03 Totalausfall (vermutlich Akku leer), ORB-SP500-
+  Gewinner verpasst. Monat 01.–27.10.: EK −0,08 %, Funded +0,03 %, FK −1,12 %; ORB
+  teuerstes Bein. Ein Dashboard-Eintrag (3 Lesarten). Keine Bot-Änderung.
 
 - **2026-10-27** [Research] **Kandidat A (Einstiegssperre vor 08:00/14:30)
   ohne Test verworfen** → [[smh-session-pips-call]]. Bestandsaufnahme über die
@@ -25,6 +155,25 @@ keine Planung (dafür ist `DASHBOARD.md`).
   5/37). Keine Versuche verbraucht. Skript
   `scripts/research_termin_sperre_inventur.py`. Keine Bot-Änderung.
 
+- **2026-10-27** [Dachprojekt / Strang 2] **Copy Trading: OOS durchgefallen, verworfen**
+  (Nutzerentscheid: A2 einfrieren + OOS einmal) [[copy-trading-dennis-edge-card]].
+  A2 (BOS, SL 1× ATR, Dennis' TP) IS +0,47 R (t 1,4, DSR 0,09, von 5 Ausreißern getragen);
+  OOS 01.04.–16.10.2026: 70 Trades, Ø −0,72 R, t −3,65. Lock
+  `copy_trading_daily_update_20261020` eingefroren, OOS geöffnet. Keine Bot-Änderung;
+  Telegram-Import-Aufgabe läuft weiter.
+
+- **2026-10-27** [Claude-Setup] **69 Trading-Skills von tradermonty/claude-trading-skills
+  installiert** (MIT, Commit `c9b84196`, Stand 26.10.). Ziel: `~/.claude/skills/`, also für
+  dich persönlich, nicht im Repo. Testordner entfernt; der Commit-Stand steht in
+  `~/.claude/skills/.tradermonty-commit`. Vorher geprüft: keine Order-Platzierung (Alpaca wird
+  nur gelesen), keine versteckte Ausführung, Netzwerk nur zu FMP, FINVIZ, SEC, CME, Alpaca,
+  CoinGecko, Binance, FXMacroData und tradermontys CSV-Repo. Nicht installiert:
+  `kanchi-dividend-us-tax-accounting` (US-Steuer), `skill-idea-miner` (schickt Session-Logs
+  über `claude -p`), `skill-integration-tester`, `dual-axis-skill-reviewer`, `skill-designer`
+  (Werkzeuge nur für das Quell-Repo). Dazu per pip `pyyaml` und `statsmodels`. Hinweis: Die
+  Skripte schreiben nach `reports/` im aktuellen Ordner. **28.10. von dir bestätigt:** Auswahl,
+  Ablage unter `~/.claude/skills/` und Vorrang deiner Prozesse (Skills nur als zweite Meinung,
+  nie an Live-Bridges, `mt5-robot-tester` nur mit eigenem Test-Terminal).
 - **2026-10-27** [Research] **SMH-Call "Session Pips und Wahrscheinlichkeiten"
   ausgewertet und nachgerechnet** → [[smh-session-pips-call]]. Transkript neben
   dem Video in OneDrive. `scripts/research_session_pips_heatmap.py` (EUR/USD M5,
@@ -34,6 +183,34 @@ keine Planung (dafür ist `DASHBOARD.md`).
   CLS-Effekt repliziert nicht. Tageshoch/-tief um 02–03 Uhr nicht gehäuft.
   Zwei Testkandidaten notiert (Einstiegssperre vor 08:00/14:30,
   Stunden-Ausschöpfung als Fade), nicht gerechnet. Keine Bot-Änderung.
+
+- **2026-10-27** [Funded-Portfolio-Bridge + FKInstantFunding-MT5-Bridge] **ORB-Zeitzonenfehler
+  nach der Winterzeitumstellung behoben.** Seit dem 26.10. 02:49 brach `verify_server_offset()`
+  jeden ORB-Scan auf TTP, IQ und FK ab („erwartet Europe/Helsinki, Abweichung +60 Min.“). Am
+  26. und 27.10. gab es dort also kein ORB. Ursache: TTPMarkets und BeyondIQCapital laufen auf
+  der „NY-Close“-Serverzeit (New York + 7 h), nicht auf der EU-Regel. Im Sommer ist beides
+  UTC+3; in den Wochen zwischen den Umstellungen (Mitte bis Ende März, 25.10. bis 01.11.)
+  liegt Helsinki eine Stunde daneben. Belegt an der M15-Historie beider Broker: der US-Cash-Open
+  liegt ganzjährig um 16:30 Serverzeit, auch vom 09. bis 27.03. und am 26./27.10. Ein festes
+  UTC+3 ist ausgeschlossen (Januar 16:30 statt 17:30). Fix in `orb_mt5_source.py` (beide) und
+  FK `config.py`: Umrechnung über `America/New_York` minus 7 h. Die Sicherung bleibt. Damit
+  werden auch Fill-Zeiten (`_to_ny_index`) richtig umgerechnet. Geprüft (read-only): alle drei
+  Konten weichen um −0,1 Min. ab, Range 09:30 NY sauber; `todays_setups()` meldet heute
+  korrekt `breakout_passed`, also keine verspätete Order. **EK nicht geändert:** Tickmill stellt
+  wirklich mit der EU um (heute Range-Ende 14:45 MEZ = 09:45 NY). Backups liegen in
+  `_backup_20261027_tz/`. Nicht in Git (Bridges außerhalb des Repos).
+  Rest-Check nach der Umstellung: Rechner-Zeitzone CET korrekt; Strategie-Code im Repo rechnet
+  überall tz-aware; Fast-Takte sind uhrzeitunabhängig. Unabhängig davon tritt sporadisch
+  `'>' not supported between 'str' and 'float'` in der Dukascopy-Bibliothek nach dem
+  Aufwachen auf (seit Wochen, harmlos).
+
+- **2026-10-26** [Dachprojekt / Strang 2] **Copy Trading: IS-Raster gerechnet, kein Edge**
+  [[copy-trading-dennis-edge-card]]. 2.784 IS-Setups (v3), 104 Varianten (Lock 124). Die
+  „besten“ Werte (bis +1,7 R, t 2,9) sind ein Artefakt offener Gold/Silber/US500-Longs 2025
+  bis zur angenommenen 90-Tage-Grenze; ohne sie negativ, Shorts negativ, 2026 ≈ 0. Mit
+  begrenztem Ziel bestes A2 +0,44 R (t 1,4), nicht signifikant. Pfad-Trade (Zone als Ziel)
+  klar negativ. Nichts eingefroren, OOS nicht geöffnet. Abo-Kontingent (429) unterbrach die
+  Auslesung 22.–26.10.; extract wartet jetzt bei leerem Kontingent. Keine Bot-Änderung.
 
 - **2026-10-21** [CLS Practical / Research] **SMH-CLS-Praxis-Call ausgewertet,
   drei Ideen getestet, alle verworfen** → [[smh-cls-praxis-call]]. Call lokal
@@ -45,6 +222,57 @@ keine Planung (dafür ist `DASHBOARD.md`).
   12:00: IS +0,05 / OOS +0,14, schlechter. V3 TP Liquidität/Range-Gegenseite:
   IS +0,12 / OOS +0,34, im IS schlechter → nicht übernommen. Skript
   `scripts/research_cls_practical_smh_call_variants.py`. Keine Bot-Änderung.
+
+- **2026-10-21** [Dachprojekt / Strang 2] **Copy Trading: Stichprobe 9/50 falsch → zwei
+  Lesarten für Watch-Charts** [[copy-trading-dennis-edge-card]]. Nutzer las die Zone oft als
+  Ziel statt Einstieg; Entscheid: Pfad-Trade und Zonen-Trade getrennt testen (Ergänzung in
+  [[copy-trading-dennis-edge-card-final]]). Anweisung v3 (Status, Ordertyp, Farbregel,
+  objektiver Pfad), Neuauslesung aller ~4.000 Bilder läuft. Raster `grid.py` + `exits.py`
+  (Gültigkeit 1–5 Tage, SL, TP, BE, Trailing; nur IS; Re-Entry-Regel) gebaut und
+  mechanisch geprüft, noch nicht gerechnet. Keine Bot-Änderung.
+
+- **2026-10-21** [Dachprojekt / Strang 3] **Backtest SMH-Makro-Reports v2
+  (IS, Bewertungsmodus)** → [[smh-makro-reports-backtest]]. Lock
+  `smh_macro_reports_v2`, 909 Ideen/116 Reports. Richtungs-Calls ohne Edge
+  (A1 −0,027 R, n 604; B −0,041 R); einzig Rücksetzer-Einstieg D positiv
+  (+0,060 R, Σ +24,6 R, n 413, Perm-p 0,06, DSR 0,47 — kein Beleg).
+  Aufteilungen: 5 Sterne und Edelmetalle positiv, 3–4 Sterne und FX-Kreuze
+  negativ (Hypothesen). OOS/Forward bis 31.01.2027.
+
+- **2026-10-21** [Dachprojekt / Strang 3] **Wissensnotiz Wirkketten +
+  Report-Status v2.** Neu `resources/makro-wirkketten-und-regeln.md`
+  (Ketten-Format, Regeln/Gates/Zustandsmaschine/Datenbedarf aus SMT
+  21.10. + OneNote-Katalog). SMH-Reports: Neu-Extraktion v2 (909 Ideen,
+  Sterne/Gates/Herkunft/Hedge), Stichprobe 2 vom Nutzer geprüft;
+  Status-Abgrenzung aktiv/event/watch festgelegt (EXTRACTION.md), 92
+  Event-Ideen werden danach nachklassifiziert. Lock `smh_macro_reports_v2`
+  eingefroren 16.10., noch kein Backtest-Lauf.
+
+- **2026-10-21** [Dachprojekt / Strang 2] **Copy Trading: Probelauf Stufe 1 gerechnet**
+  [[copy-trading-dennis-edge-card]]. 639 Bilder (16.07.–16.10.) gelesen, 375 Setups simuliert.
+  Vorläufig (n < 100 je Variante): Dennis' Trade-Ideen kopiert Ø −0,27 R netto (35 Trades,
+  nur 25 % der Limits gefüllt); beste Watch-Variante (2× ATR, 2R) +0,18 R, t 1,0. Keine
+  Variante belastbar positiv. Feeds Chart vs. Dukascopy stimmen (< 0,01 %). Extract wartet
+  jetzt bei Abo-Ratenlimit. Keine Bot-Änderung.
+
+- **2026-10-20** [Dachprojekt / Strang 2] **Copy Trading: Sperre, Auslesung, neue
+  geplante Aufgabe** (Plan freigegeben) [[copy-trading-dennis-edge-card]]. Lock
+  `copy_trading_daily_update_20261020`: IS 17.03.2025–31.03.2026, OOS bis 16.10.2026,
+  kein Tresor, Forward ab 17.10. (Auswertung 31.03.2027 oder 100 Trades), 20 Versuche
+  gezählt. Neuer Code `fusion_lab/copy_trading/` (extract über `claude.exe -p` Sonnet,
+  sim Stufe 1, review-Stichprobe, data Dukascopy M1 ab 2025). Probelauf: Bilder
+  16.07.–16.10.2026. Neue Aufgabe **Telegram-Import-SMH-Daily** täglich 23:00 (nur
+  lesen, Testlauf ok, 28 neue Nachrichten). Keine Bot-Änderung.
+
+- **2026-10-20** [Dachprojekt / Strang 2] **Edge Card „Copy Trading Daily Update“ fertig**
+  (mit dem Nutzer, 19./20.10.) [[copy-trading-dennis-edge-card-final]]. Kopiert werden
+  alle Chart-Calls der Gruppe: Typ A „Trade Idee“ (Level aus dem Positionswerkzeug) und
+  Typ B „Watch“ (Zone + Pfad). Zwei Einstiege je Typ (statisch / M5-Doppel-BOS), bei Typ B
+  3 SL × 3 TP, zusammen 20 vorab registrierte Varianten. Getestet auf dem Timeframe des
+  Chartbilds. Stufen: nackt → mit Nachfass-Anweisungen → eigene Optimierung + G8-Veto.
+  Sperre: Stufe 3 IS bis 31.03.2026, OOS 04–10/2026, Forward statt Tresor (bewusste
+  Abweichung, Nutzerentscheid). Vergleichsquelle: Dennis' geprüfter Track Record
+  (2025 +313 %, 2026 bis 17.09. +19 %). Noch nichts gerechnet, keine Bot-Änderung.
 
 - **2026-10-20** [Fusion / Makro-Agent] **Regimekarte: Nachbau-Annahmen vom
   Nutzer bestätigt**: freie Ersatzdaten (UST synthetisch 5y, Rohstoffe als
@@ -64,6 +292,24 @@ keine Planung (dafür ist `DASHBOARD.md`).
   - Zwei Ebenen festgehalten: die Karte als Bestätigung, eine Marktsicht
     (Anleihen, Breakevens, GDPNow) als Frühwarnung. Den Automatikbetrieb
     baut der Agent später. [[regimekarte-wachstum-inflation]]
+
+- **2026-10-19** [Research / Key Levels] **Linie abgeschlossen**
+  (Nutzerentscheid). Stufe 1, Doppel-BOS und Magnet-Trade sind ohne
+  handelbaren Kandidaten. Lock `keylevels_v1` bleibt mit 482 Versuchen
+  versiegelt. Die Notion-Seiten stehen auf „erledigt“.
+  [[keylevel-edge-card]]
+
+- **2026-10-19** [Research / Key Levels] **Magnet-Trade getestet (nur IS):
+  kein Effekt.**
+  - Einstieg D = 10/20 Pips vor dem Level in Richtung Level, Ziele Level und
+    Level + D, 10 Paare, etwa 917.000 Einstiege.
+  - Ergebnis: 0 von 16 Zellen. Session- und Vorwochen-Level werden aus der
+    Distanz sogar seltener erreicht als Schein-Level.
+  - Messregel in der Füll-Minute korrigiert (nur der Schluss entscheidet);
+    die Schein-Level treffen danach die Zufallsquote.
+  - Code `keylevels/magnet.py`. Lock `keylevels_v1` jetzt 482 Versuche.
+  - Gesamtfazit Key Levels: Der Magnet gilt nur ab der Berührung und ist
+    nach Kosten nicht erntbar. [[keylevel-edge-card]]
 
 - **2026-10-19** [Challenge / Funded-Bridge, OU-Bein, ECHTES GELD] **OU steigt nur noch
   auf abgeschlossenen Tageskerzen ein** (Nutzerfreigabe, eingespielt 11:05, NYSE zu).

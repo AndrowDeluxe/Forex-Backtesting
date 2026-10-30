@@ -1,0 +1,289 @@
+{
+  "analysis_type": "returns_based_residual_edge",
+  "data": {
+    "annualization_factor": 252,
+    "baseline_columns": [
+      "base_return",
+      "silver_return"
+    ],
+    "configured_minimum_observations": 60,
+    "declarations": {
+      "analysis_scope": "out_of_sample",
+      "baseline_return_basis": "gross",
+      "baseline_selection": "predeclared",
+      "strategy_return_basis": "net",
+      "universe_data": "not_applicable"
+    },
+    "effective_minimum_observations": 60,
+    "end_date": "2026-08-14",
+    "frequency": "daily",
+    "observation_count": 535,
+    "regime_columns": [
+      "regime"
+    ],
+    "return_unit_normalized": "decimal",
+    "start_date": "2024-07-01",
+    "strategy_column": "strategy_return"
+  },
+  "method_notes": [
+    "OLS includes an intercept.",
+    "Residual edge ratio is annualized alpha divided by annualized residual volatility.",
+    "HAC standard errors address heteroskedasticity and serial correlation asymptotically.",
+    "Results describe declared return-series exposure, not holdings-based Brinson attribution."
+  ],
+  "models": [
+    {
+      "adjusted_r_squared": 0.084208064,
+      "alpha": {
+        "annualized_arithmetic": 0.2340674353,
+        "hac_standard_error_periodic": 0.0003136943,
+        "periodic": 0.000928839,
+        "t_stat": 2.9609688371
+      },
+      "baseline_columns": [
+        "base_return"
+      ],
+      "coefficients": [
+        {
+          "estimate": 0.000928839,
+          "hac_standard_error": 0.0003136943,
+          "name": "intercept",
+          "t_stat": 2.9609688371
+        },
+        {
+          "estimate": 0.1688904481,
+          "hac_standard_error": 0.0302291426,
+          "name": "base_return",
+          "t_stat": 5.5870075646
+        }
+      ],
+      "diagnostic_status": "RESIDUAL_FRAGILE",
+      "hac_lags": 5,
+      "name": "hold_Gold",
+      "observation_count": 535,
+      "r_squared": 0.0859230301,
+      "residual": {
+        "active_return_max_drawdown": -0.0568241738,
+        "annualized_volatility": 0.1296103904,
+        "durbin_watson": 2.0548516006,
+        "lag_one_autocorrelation": -0.0274714573,
+        "periodic_volatility": 0.0081646871,
+        "residual_edge_ratio": 1.8059311031
+      },
+      "role": "primary",
+      "rolling": {
+        "enabled": true,
+        "failed_window_count": 9,
+        "latest": {
+          "annualized_alpha": 0.0815868336,
+          "end_index": 534,
+          "r_squared": 0.0167203547,
+          "residual_edge_ratio": 2.1150799507
+        },
+        "positive_alpha_fraction": 0.9202586207,
+        "r_squared": {
+          "max": 0.2815405721,
+          "median": 0.1047939746,
+          "min": 3.7772e-05
+        },
+        "residual_edge_ratio": {
+          "max": 4.0435423978,
+          "median": 1.5319148227,
+          "min": -1.2773656934
+        },
+        "window": 63,
+        "window_count": 464
+      },
+      "status_reasons": [
+        "9 rolling windows could not be estimated."
+      ],
+      "vif": {
+        "base_return": 1.0
+      }
+    },
+    {
+      "adjusted_r_squared": 0.0858975327,
+      "alpha": {
+        "annualized_arithmetic": 0.2346719279,
+        "hac_standard_error_periodic": 0.0003136297,
+        "periodic": 0.0009312378,
+        "t_stat": 2.9692267388
+      },
+      "baseline_columns": [
+        "base_return",
+        "silver_return"
+      ],
+      "coefficients": [
+        {
+          "estimate": 0.0009312378,
+          "hac_standard_error": 0.0003136297,
+          "name": "intercept",
+          "t_stat": 2.9692267388
+        },
+        {
+          "estimate": 0.129381724,
+          "hac_standard_error": 0.0409942087,
+          "name": "base_return",
+          "t_stat": 3.1560976099
+        },
+        {
+          "estimate": 0.0245124099,
+          "hac_standard_error": 0.0230252201,
+          "name": "silver_return",
+          "t_stat": 1.0645896001
+        }
+      ],
+      "diagnostic_status": "RESIDUAL_FRAGILE",
+      "hac_lags": 5,
+      "name": "gold_plus_silver",
+      "observation_count": 535,
+      "r_squared": 0.0893211374,
+      "residual": {
+        "active_return_max_drawdown": -0.0580444309,
+        "annualized_volatility": 0.1293692509,
+        "durbin_watson": 2.0608679342,
+        "lag_one_autocorrelation": -0.0304770038,
+        "periodic_volatility": 0.0081494968,
+        "residual_edge_ratio": 1.8139699059
+      },
+      "role": "sensitivity",
+      "rolling": {
+        "enabled": true,
+        "failed_window_count": 9,
+        "latest": {
+          "annualized_alpha": 0.0954090477,
+          "end_index": 534,
+          "r_squared": 0.0327674128,
+          "residual_edge_ratio": 2.4938442991
+        },
+        "positive_alpha_fraction": 0.8599137931,
+        "r_squared": {
+          "max": 0.3113324266,
+          "median": 0.1336171766,
+          "min": 0.0058310256
+        },
+        "residual_edge_ratio": {
+          "max": 4.0546734455,
+          "median": 1.3530617398,
+          "min": -1.2971750411
+        },
+        "window": 63,
+        "window_count": 464
+      },
+      "status_reasons": [
+        "9 rolling windows could not be estimated."
+      ],
+      "vif": {
+        "base_return": 2.3837203707,
+        "silver_return": 2.3837203707
+      }
+    }
+  ],
+  "primary_model": "hold_Gold",
+  "regime_analysis": {
+    "regime": [
+      {
+        "active_return_metrics": {
+          "annualized_arithmetic_return": 0.3913009171,
+          "annualized_volatility": 0.1567624503,
+          "max_drawdown": -0.0559554322,
+          "periodic_mean": 0.0015527814,
+          "periodic_volatility": 0.0098751062,
+          "sharpe_zero_rate": 2.496139327
+        },
+        "evidence_status": "ADEQUATE",
+        "label": "g\u2191\u00b7accel \u00d7 \u03c0\u2191\u00b7accel",
+        "observation_count": 154,
+        "positive_fraction": 0.461038961
+      },
+      {
+        "active_return_metrics": {
+          "annualized_arithmetic_return": 0.2087486185,
+          "annualized_volatility": 0.103430078,
+          "max_drawdown": -0.0235735406,
+          "periodic_mean": 0.0008283675,
+          "periodic_volatility": 0.0065154825,
+          "sharpe_zero_rate": 2.0182583496
+        },
+        "evidence_status": "ADEQUATE",
+        "label": "g\u2191\u00b7accel \u00d7 \u03c0\u2191\u00b7slow",
+        "observation_count": 96,
+        "positive_fraction": 0.4270833333
+      },
+      {
+        "active_return_metrics": {
+          "annualized_arithmetic_return": 0.1628656021,
+          "annualized_volatility": 0.1317719678,
+          "max_drawdown": -0.0526349926,
+          "periodic_mean": 0.0006462921,
+          "periodic_volatility": 0.0083008537,
+          "sharpe_zero_rate": 1.2359654693
+        },
+        "evidence_status": "ADEQUATE",
+        "label": "g\u2191\u00b7slow \u00d7 \u03c0\u2191\u00b7accel",
+        "observation_count": 162,
+        "positive_fraction": 0.462962963
+      },
+      {
+        "active_return_metrics": {
+          "annualized_arithmetic_return": 0.1507450547,
+          "annualized_volatility": 0.1062330035,
+          "max_drawdown": -0.0463696906,
+          "periodic_mean": 0.0005981947,
+          "periodic_volatility": 0.0066920502,
+          "sharpe_zero_rate": 1.4190039794
+        },
+        "evidence_status": "ADEQUATE",
+        "label": "g\u2191\u00b7slow \u00d7 \u03c0\u2191\u00b7slow",
+        "observation_count": 123,
+        "positive_fraction": 0.5040650407
+      }
+    ]
+  },
+  "schema_version": "1.0",
+  "source": {
+    "config_name": "trend_pullback_config.json",
+    "csv_name": "trend_pullback_returns.csv"
+  },
+  "strategy_metrics": {
+    "annualized_arithmetic_return": 0.2897274597,
+    "annualized_volatility": 0.1355652674,
+    "max_drawdown": -0.0501905635,
+    "periodic_mean": 0.0011497121,
+    "periodic_volatility": 0.0085398091,
+    "sharpe_zero_rate": 2.137180601
+  },
+  "verdict": {
+    "decision_eligibility": "REVIEW_REQUIRED",
+    "decision_grade": false,
+    "reasons": [
+      "9 rolling windows could not be estimated."
+    ],
+    "status": "RESIDUAL_FRAGILE",
+    "thresholds": {
+      "alpha_t_stat_min": 2.0,
+      "baseline_explained_r2_min": 0.75,
+      "residual_edge_ratio_min": 0.75,
+      "rolling_positive_fraction_min": 0.6,
+      "weak_edge_ratio_max": 0.5
+    },
+    "trade_authorization": "NOT_AUTHORIZED"
+  },
+  "warnings": [
+    {
+      "id": "RETURN_BASIS_MISMATCH",
+      "message": "Strategy and baseline returns use different gross/net cost bases.",
+      "severity": "high"
+    },
+    {
+      "id": "ROLLING_ANALYSIS_INCOMPLETE",
+      "message": "Model hold_Gold could not estimate 9 rolling windows.",
+      "severity": "high"
+    },
+    {
+      "id": "ROLLING_ANALYSIS_INCOMPLETE",
+      "message": "Model gold_plus_silver could not estimate 9 rolling windows.",
+      "severity": "high"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+variante,n,sum_r,avg_r,win_rate,pf,sharpe_trade,max_dd_pct,avg_win_pct,avg_loss_pct,dsr,delta_avg_r
+ungefiltert (Referenz),1205,528.7,0.4388,19.5,1.514,0.1215,53.56,6.628,1.061,0.503,0.0
+market-breadth-analyzer: Score < 40 -> aussetzen,765,270.65,0.3538,18.6,1.406,0.1002,48.82,6.596,1.069,0.281,-0.085
+ibd-distribution-day-monitor: HIGH/SEVERE -> aussetzen,248,1.48,0.006,12.5,1.006,0.0018,40.54,7.519,1.067,0.03,-0.433
+Wirtschaftskalender (FRED lokal): US-Release-Tag -> aussetzen,975,444.47,0.4559,19.2,1.531,0.1229,58.47,6.851,1.062,0.52,0.017
+drawdown-circuit-breaker Standardregeln,745,361.81,0.4857,20.4,1.576,0.1327,34.98,6.516,1.06,0.622,0.047
+ORB-H1: nur nach negativem 20-Tage-Index,460,347.92,0.7563,24.3,1.954,0.1983,25.11,6.364,1.048,0.949,0.317

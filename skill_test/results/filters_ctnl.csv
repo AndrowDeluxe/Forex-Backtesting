@@ -1,0 +1,8 @@
+variante,n,sum_r,avg_r,win_rate,pf,sharpe_trade,max_dd_pct,avg_win_pct,avg_loss_pct,dsr,delta_avg_r
+ungefiltert (Referenz),109,91.25,0.8372,44.0,2.122,0.2965,19.14,3.596,1.334,0.98,0.0
+cot-contrarian-detector: Gold crowded in Trade-Richtung -> aussetzen,99,70.61,0.7132,43.4,1.936,0.2608,19.14,3.396,1.347,0.947,-0.124
+macro-regime-detector: Contraction -> aussetzen,97,93.27,0.9616,43.3,2.27,0.3275,16.93,3.97,1.336,0.987,0.124
+Wirtschaftskalender (FRED lokal): US-Release-Tag -> aussetzen,85,102.06,1.2007,48.2,2.852,0.4137,11.7,3.834,1.253,0.998,0.364
+drawdown-circuit-breaker Standardregeln,96,82.69,0.8614,42.7,2.127,0.2979,21.16,3.807,1.334,0.974,0.024
+CTNL-H1: Regime Wachstum+Inflation beschleunigt -> aussetzen,77,80.86,1.0501,48.1,2.451,0.3653,19.59,3.692,1.393,0.989,0.213
+CTNL-H2: kein Entry am Freitag,91,91.11,1.0012,47.3,2.512,0.3616,11.38,3.52,1.255,0.993,0.164

@@ -1,0 +1,29 @@
+{"ts": "2026-10-20T19:31:23+00:00", "event": "register_split", "is_start": "2025-03-17", "is_end": "2026-03-31", "oos_end": "2026-10-16", "tresor_end": null}
+{"ts": "2026-10-20T19:31:23+00:00", "event": "register_forward", "start": "2026-10-17", "eval_date": "2027-03-31", "min_trades": 100}
+{"ts": "2026-10-20T19:31:23+00:00", "event": "trials", "n": 20, "total": 20, "note": "Edge Card Regel 14: A1/A2 + B1/B2 x 3 SL x 3 TP, vorab festgelegt, Stufe 1"}
+{"ts": "2026-10-26T02:21:42+00:00", "event": "trials", "n": 5, "total": 25, "note": "Stufe 3 A1 validity: ['update', 1, 2, 3, 5]"}
+{"ts": "2026-10-26T02:21:45+00:00", "event": "trials", "n": 5, "total": 30, "note": "Stufe 3 A1 sl: ['struct', 'swing', 'atr1', 'atr1.5', 'atr2']"}
+{"ts": "2026-10-26T02:21:48+00:00", "event": "trials", "n": 5, "total": 35, "note": "Stufe 3 A1 tp: ['struct', '1R', '2R', '3R', 'none']"}
+{"ts": "2026-10-26T02:21:50+00:00", "event": "trials", "n": 3, "total": 38, "note": "Stufe 3 A1 be: [None, 0.5, 1.0]"}
+{"ts": "2026-10-26T02:21:53+00:00", "event": "trials", "n": 4, "total": 42, "note": "Stufe 3 A1 trail: [None, ('atr', 1.5, 1.0), ('atr', 2.5, 1.0), ('swing',)]"}
+{"ts": "2026-10-26T02:22:27+00:00", "event": "trials", "n": 5, "total": 47, "note": "Stufe 3 A2 validity: ['update', 1, 2, 3, 5]"}
+{"ts": "2026-10-26T02:22:29+00:00", "event": "trials", "n": 5, "total": 52, "note": "Stufe 3 A2 sl: ['struct', 'swing', 'atr1', 'atr1.5', 'atr2']"}
+{"ts": "2026-10-26T02:22:31+00:00", "event": "trials", "n": 5, "total": 57, "note": "Stufe 3 A2 tp: ['struct', '1R', '2R', '3R', 'none']"}
+{"ts": "2026-10-26T02:22:33+00:00", "event": "trials", "n": 3, "total": 60, "note": "Stufe 3 A2 be: [None, 0.5, 1.0]"}
+{"ts": "2026-10-26T02:22:35+00:00", "event": "trials", "n": 4, "total": 64, "note": "Stufe 3 A2 trail: [None, ('atr', 1.5, 1.0), ('atr', 2.5, 1.0), ('swing',)]"}
+{"ts": "2026-10-26T02:23:01+00:00", "event": "trials", "n": 5, "total": 69, "note": "Stufe 3 B1 validity: ['update', 1, 2, 3, 5]"}
+{"ts": "2026-10-26T02:23:06+00:00", "event": "trials", "n": 5, "total": 74, "note": "Stufe 3 B1 sl: ['struct', 'swing', 'atr1', 'atr1.5', 'atr2']"}
+{"ts": "2026-10-26T02:23:11+00:00", "event": "trials", "n": 5, "total": 79, "note": "Stufe 3 B1 tp: ['struct', '1R', '2R', '3R', 'none']"}
+{"ts": "2026-10-26T02:23:14+00:00", "event": "trials", "n": 3, "total": 82, "note": "Stufe 3 B1 be: [None, 0.5, 1.0]"}
+{"ts": "2026-10-26T02:23:19+00:00", "event": "trials", "n": 4, "total": 86, "note": "Stufe 3 B1 trail: [None, ('atr', 1.5, 1.0), ('atr', 2.5, 1.0), ('swing',)]"}
+{"ts": "2026-10-26T02:24:01+00:00", "event": "trials", "n": 5, "total": 91, "note": "Stufe 3 B2 validity: ['update', 1, 2, 3, 5]"}
+{"ts": "2026-10-26T02:24:04+00:00", "event": "trials", "n": 5, "total": 96, "note": "Stufe 3 B2 sl: ['struct', 'swing', 'atr1', 'atr1.5', 'atr2']"}
+{"ts": "2026-10-26T02:24:07+00:00", "event": "trials", "n": 5, "total": 101, "note": "Stufe 3 B2 tp: ['struct', '1R', '2R', '3R', 'none']"}
+{"ts": "2026-10-26T02:24:09+00:00", "event": "trials", "n": 3, "total": 104, "note": "Stufe 3 B2 be: [None, 0.5, 1.0]"}
+{"ts": "2026-10-26T02:24:12+00:00", "event": "trials", "n": 4, "total": 108, "note": "Stufe 3 B2 trail: [None, ('atr', 1.5, 1.0), ('atr', 2.5, 1.0), ('swing',)]"}
+{"ts": "2026-10-26T02:24:26+00:00", "event": "trials", "n": 4, "total": 112, "note": "Stufe 3 P1 sl: ['swing', 'atr1', 'atr1.5', 'atr2']"}
+{"ts": "2026-10-26T02:24:37+00:00", "event": "trials", "n": 5, "total": 117, "note": "Stufe 3 P1 tp: ['struct', '1R', '2R', '3R', 'none']"}
+{"ts": "2026-10-26T02:24:43+00:00", "event": "trials", "n": 3, "total": 120, "note": "Stufe 3 P1 be: [None, 0.5, 1.0]"}
+{"ts": "2026-10-26T02:24:54+00:00", "event": "trials", "n": 4, "total": 124, "note": "Stufe 3 P1 trail: [None, ('atr', 1.5, 1.0), ('atr', 2.5, 1.0), ('swing',)]"}
+{"ts": "2026-10-27T22:17:46+00:00", "event": "freeze", "hash": "71a02c43ead6f09d907f3d2640d1374adea64b391254b275591c0a60f3a46633"}
+{"ts": "2026-10-27T22:17:46+00:00", "event": "unseal", "stage": "oos", "hash": "71a02c43ead6f09d907f3d2640d1374adea64b391254b275591c0a60f3a46633"}

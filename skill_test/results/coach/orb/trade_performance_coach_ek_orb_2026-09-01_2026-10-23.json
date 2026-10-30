@@ -1,0 +1,82 @@
+{
+  "behavioral_pattern_tags": [
+    {
+      "confidence": "low",
+      "evidence": "No behavior pattern was detected from the available evidence.",
+      "reflection_question": "Is there any additional journal context that should be added before finalizing this review?",
+      "tag": "no_pattern_detected"
+    }
+  ],
+  "coach_questions": [
+    "Is there any additional journal context that should be added before finalizing this review?"
+  ],
+  "disclaimer": "This review is for trading-process improvement only. It is not financial advice, investment advice, therapy, mental-health diagnosis, or a trading signal. The human trader remains responsible for all decisions and risk.",
+  "execution_quality_assessment": [
+    {
+      "evidence": "actual.entry_before_confirmation is false or absent",
+      "finding": "No explicit early-entry issue was detected from the provided record.",
+      "phase": "entry",
+      "severity": "info"
+    }
+  ],
+  "generated_at": "2026-10-28T20:50:05.450753+00:00",
+  "human_decision_gate": {
+    "allowed_actions": [
+      "accept_rules",
+      "modify_rules",
+      "defer",
+      "journal_only"
+    ],
+    "default_action": "journal_only",
+    "question": "Do you accept these temporary operating rules, modify them, defer the decision, or journal this review only?"
+  },
+  "next_session_operating_rules": [
+    {
+      "duration": "next_session",
+      "reason": "Repeated losses or revenge-trade evidence can escalate risk-taking.",
+      "rule": "Switch to review-only mode for the next session; do not add new risk until the rule review is journaled.",
+      "trigger": "possible revenge/cool-down condition"
+    }
+  ],
+  "overall_verdict": "COOL_DOWN",
+  "process_adherence_findings": [
+    {
+      "evidence": "A pre-entry thesis record is present",
+      "rule": "pre_entry_thesis_record",
+      "severity": "info",
+      "status": "met"
+    }
+  ],
+  "review_id": "ek_orb_2026-09-01_2026-10-23",
+  "review_type": "monthly_aggregate",
+  "risk_manager_notes": [
+    {
+      "evidence": "actual.risk_r=0.5, reference_r=1",
+      "finding": "Actual risk was within the provided risk limit.",
+      "severity": "info",
+      "topic": "position_size"
+    },
+    {
+      "evidence": "monthly.consecutive_losses=10",
+      "finding": "Consecutive losses are elevated; consider temporary review-only mode.",
+      "severity": "critical",
+      "topic": "drawdown"
+    }
+  ],
+  "schema_version": 1,
+  "scores": {
+    "execution_score": 100,
+    "process_score": 100,
+    "review_quality_score": 88,
+    "risk_score": 70
+  },
+  "source_records": [
+    "skill_test/results/coach/orb_input.json"
+  ],
+  "summary": {
+    "confidence": "high",
+    "outcome": "loss",
+    "primary_root_cause": "risk_sizing",
+    "secondary_root_causes": []
+  }
+}

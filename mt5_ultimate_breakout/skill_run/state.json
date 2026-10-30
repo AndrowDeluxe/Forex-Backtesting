@@ -1,0 +1,95 @@
+{
+  "schema_version": "2.0",
+  "started": "2026-10-28T20:12:44",
+  "bots": {
+    "Ultimate Breakout System": {
+      "status": "done",
+      "fingerprint": "41ddda40c61397985e40b6fcb3ffce03f90625acfbc8b8770796a439e641f9bb",
+      "round1_passes": [
+        {
+          "symbol": "XAUUSD",
+          "profit": 1511.45,
+          "drawdown_pct": 1.0,
+          "trades": 11009,
+          "status": "ok"
+        },
+        {
+          "symbol": "EURUSD",
+          "profit": -40.47,
+          "drawdown_pct": 0.21,
+          "trades": 18,
+          "status": "ok"
+        },
+        {
+          "symbol": "GBPUSD",
+          "profit": -109.2,
+          "drawdown_pct": 0.26,
+          "trades": 32,
+          "status": "ok"
+        },
+        {
+          "symbol": "USDJPY",
+          "profit": -84.22,
+          "drawdown_pct": 0.21,
+          "trades": 48,
+          "status": "ok"
+        },
+        {
+          "symbol": "USDCHF",
+          "profit": -6.56,
+          "drawdown_pct": 0.16,
+          "trades": 15,
+          "status": "ok"
+        },
+        {
+          "symbol": "AUDUSD",
+          "profit": -275.85,
+          "drawdown_pct": 0.38,
+          "trades": 13,
+          "status": "ok"
+        },
+        {
+          "symbol": "NZDUSD",
+          "profit": -180.23,
+          "drawdown_pct": 0.18,
+          "trades": 11,
+          "status": "ok"
+        },
+        {
+          "symbol": "USDCAD",
+          "profit": -132.58,
+          "drawdown_pct": 0.16,
+          "trades": 17,
+          "status": "ok"
+        },
+        {
+          "symbol": "AUDCAD",
+          "profit": -202.17,
+          "drawdown_pct": 0.25,
+          "trades": 14,
+          "status": "ok"
+        },
+        {
+          "symbol": "AUDJPY",
+          "profit": -99.49,
+          "drawdown_pct": 0.2,
+          "trades": 33,
+          "status": "ok"
+        }
+      ],
+      "round1": {
+        "passed": false,
+        "positive_symbols": 1,
+        "min_positive": 5,
+        "best_symbol": "XAUUSD",
+        "best_profit": 1511.45,
+        "profit_threshold": 300000.0,
+        "reason": "only 1/5 profitable symbols; best profit 1511.45 < threshold 300000"
+      },
+      "inputs": [],
+      "verdict": "rejected",
+      "reason": "R1: only 1/5 profitable symbols; best profit 1511.45 < threshold 300000",
+      "moved": true
+    }
+  }
+}

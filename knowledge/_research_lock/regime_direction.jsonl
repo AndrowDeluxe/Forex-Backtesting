@@ -1,0 +1,5 @@
+{"ts": "2026-10-28T18:30:29+00:00", "event": "register_split", "is_start": "2000-09-01", "is_end": "2014-12-31", "oos_end": "2025-10-20", "tresor_end": "2026-10-20"}
+{"ts": "2026-10-28T18:30:31+00:00", "event": "trials", "n": 3, "total": 3, "note": "Linsen joint/change/signs, Richtung = IS-Vorzeichen je Regime"}
+{"ts": "2026-10-28T18:30:31+00:00", "event": "freeze", "hash": "700c78ad114c5f4ee0ded0e4d8de24da0e988b9c4a4d0675e518285b51e9b2aa"}
+{"ts": "2026-10-28T18:30:43+00:00", "event": "unseal", "stage": "oos", "hash": "700c78ad114c5f4ee0ded0e4d8de24da0e988b9c4a4d0675e518285b51e9b2aa"}
+{"ts": "2026-10-28T18:30:46+00:00", "event": "unseal", "stage": "tresor", "hash": "700c78ad114c5f4ee0ded0e4d8de24da0e988b9c4a4d0675e518285b51e9b2aa"}

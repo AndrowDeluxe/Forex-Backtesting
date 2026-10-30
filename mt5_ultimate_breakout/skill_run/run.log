@@ -1,0 +1,30 @@
+2026-10-28T20:06:19  Terminal: C:\Users\andre\MT5-Terminals\Tester-Portable\terminal64.exe
+2026-10-28T20:06:19  Candidates: C:\Users\andre\AppData\Roaming\MetaQuotes\Terminal\D14881EC69F0F0B10655DE06FF95177D\MQL5\Experts\candidates (1 bots)
+2026-10-28T20:06:19  [Ultimate Breakout System] Round 1: backtests across 10 symbols
+2026-10-28T20:06:19  [Ultimate Breakout System] R1 1/10: XAUUSD
+2026-10-28T20:07:52  Leaderboard: mt5_ultimate_breakout\skill_run\leaderboard_2026-10-28_200752.md
+2026-10-28T20:07:52  Learnings:   mt5_ultimate_breakout\skill_run\learnings.json
+2026-10-28T20:07:52  Completed with bot errors: Ultimate Breakout System
+2026-10-28T20:08:45  Terminal: C:\Users\andre\MT5-Terminals\Tester-Portable\terminal64.exe
+2026-10-28T20:08:45  Candidates: C:\Users\andre\AppData\Roaming\MetaQuotes\Terminal\D14881EC69F0F0B10655DE06FF95177D\MQL5\Experts\candidates (1 bots)
+2026-10-28T20:08:45  [Ultimate Breakout System] Round 1: backtests across 10 symbols
+2026-10-28T20:08:45  [Ultimate Breakout System] R1 1/10: XAUUSD
+2026-10-28T20:10:11  Leaderboard: mt5_ultimate_breakout\skill_run\leaderboard_2026-10-28_201011.md
+2026-10-28T20:10:11  Learnings:   mt5_ultimate_breakout\skill_run\learnings.json
+2026-10-28T20:10:11  Completed with bot errors: Ultimate Breakout System
+2026-10-28T20:12:44  Terminal: C:\Users\andre\MT5-Terminals\Tester-Portable\terminal64.exe
+2026-10-28T20:12:44  Candidates: C:\Users\andre\AppData\Roaming\MetaQuotes\Terminal\D14881EC69F0F0B10655DE06FF95177D\MQL5\Experts\candidates (1 bots)
+2026-10-28T20:12:44  [Ultimate Breakout System] Round 1: backtests across 10 symbols
+2026-10-28T20:12:44  [Ultimate Breakout System] R1 1/10: XAUUSD
+2026-10-28T20:14:17  [Ultimate Breakout System] R1 2/10: EURUSD
+2026-10-28T20:15:35  [Ultimate Breakout System] R1 3/10: GBPUSD
+2026-10-28T20:16:54  [Ultimate Breakout System] R1 4/10: USDJPY
+2026-10-28T20:18:13  [Ultimate Breakout System] R1 5/10: USDCHF
+2026-10-28T20:19:31  [Ultimate Breakout System] R1 6/10: AUDUSD
+2026-10-28T20:21:10  [Ultimate Breakout System] R1 7/10: NZDUSD
+2026-10-28T20:22:26  [Ultimate Breakout System] R1 8/10: USDCAD
+2026-10-28T20:23:44  [Ultimate Breakout System] R1 9/10: AUDCAD
+2026-10-28T20:25:30  [Ultimate Breakout System] R1 10/10: AUDJPY
+2026-10-28T20:27:21  [Ultimate Breakout System] => REJECTED (R1: only 1/5 profitable symbols; best profit 1511.45 < threshold 300000)
+2026-10-28T20:27:21  Leaderboard: mt5_ultimate_breakout\skill_run\leaderboard_2026-10-28_202721.md
+2026-10-28T20:27:21  Learnings:   mt5_ultimate_breakout\skill_run\learnings.json

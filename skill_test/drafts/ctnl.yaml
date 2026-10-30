@@ -1,0 +1,46 @@
+id: ctnl_reversal_live_2026
+title: Gold CTNL Reversal Cascade (H4 -> H1 -> M15)
+thesis: >
+  After an extended H4 move in gold, a failed continuation (liquidity sweep beyond a prior
+  level that is rejected at the EMA) traps late trend traders; their stop-loss flow fuels a
+  reversal. The cascade H4 confirmation, H1 validity window and M15 repeat-sweep entry
+  times the exhaustion. Edge sits mainly on the long side.
+entry_family: mean_reversion
+regime: Neutral
+entry:
+  conditions:
+    - "H4 confirmation within 30 bars (h4_confirm_bars=30)"
+    - "H1 setup valid for 24 bars (h1_valid_bars=24)"
+    - "EMA rejection required (require_ema_reject=True)"
+    - "M15 entry on repeated liquidity sweep (m15_entry_mode=repeat_sweep)"
+  trend_filter:
+    - "regime / ribbon filter as kill-switch on all bridges"
+exit:
+  stop_loss_pct: 0.01
+  stop_loss_rule: "3.0 x ATR"
+  take_profit_rr: 5.0
+  time_exit: "max hold 96 h (384 M15 bars)"
+risk:
+  risk_per_trade: 0.01
+  max_positions: 2
+invalidation_signals:
+  - "August 2026 0/14 losing streak repeats (0.1st percentile)"
+  - "walk-forward 2016-2024 negative"
+  - "forward ΣR < 0 at 2027-03-31"
+validation_plan: >
+  IS 2019-01..2024-07, original sample 2024-08..2026-08 consumed, forward test 2026-11 to
+  2027-03, cross-regime check over growth x inflation regimes, Deflated Sharpe over all trials.
+bias_checklist:
+  look_ahead: {addressed: false, note: "Lake-H4-Duplikate: _bar_length 1 h statt 4 h, Soll/Sim sahen 3 h voraus; fruehere Risikohalbierung war Lookahead"}
+  survivorship: {addressed: true, note: "einzelnes Instrument XAUUSD"}
+  universe_selection: {addressed: false, note: "Gold gewaehlt, nachdem 6 FX-Paare und Continuation negativ waren -- Auswahl nach Ergebnis"}
+  delisted_securities: {addressed: true, note: "nicht anwendbar"}
+  earnings_announcement_timing: {addressed: true, note: "nicht anwendbar"}
+  split_dividend_adjustment: {addressed: true, note: "nicht anwendbar"}
+  transaction_costs_slippage: {addressed: true, note: "TTP-Kosten modelliert; 8 bps waren 4-11x zu hoch angesetzt"}
+  short_borrow_availability: {addressed: true, note: "CFD"}
+  liquidity_capacity: {addressed: true, note: "Gold-CFD, kleine Groessen"}
+  parameter_multiplicity: {addressed: false, note: "keine research_lock-Sperre, Versuche nie gezaehlt"}
+  walk_forward_out_of_sample: {addressed: false, note: "IS/OOS-Split lag komplett in 08/2024-08/2026; Walk-Forward 2016-2024 negativ"}
+  benchmark_attribution: {addressed: true, note: "Residual-Check 28.10.2026: t 2,15 (nur IS), 12 % Gold-Beta-Anteil"}
+  regime_dependence: {addressed: true, note: "Regime-Filter ist einziger Hebel; Edge nur long (short Summe -122 R)"}

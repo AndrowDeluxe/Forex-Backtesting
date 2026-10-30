@@ -1,0 +1,5 @@
+{"ts": "2026-10-28T20:42:42+00:00", "event": "register_split", "is_start": "2025-03-17", "is_end": "2026-03-31", "oos_end": "2026-10-16", "tresor_end": null}
+{"ts": "2026-10-28T20:42:42+00:00", "event": "register_forward", "start": "2026-10-17", "eval_date": "2027-03-31", "min_trades": 100}
+{"ts": "2026-10-28T20:42:42+00:00", "event": "skip_oos", "reason": "OOS 01.04.-16.10.2026 durch A2 (Lock copy_trading_daily_update_20261020) am 27.10.2026 verbraucht; Stufe 2 nur IS-Vorab + Forward"}
+{"ts": "2026-10-28T20:42:42+00:00", "event": "trials", "n": 2, "total": 2, "note": "Stufe 2: Anweisungen fest / alle (nackt = eingefrorenes A2, kein Versuch)"}
+{"ts": "2026-10-28T20:44:26+00:00", "event": "freeze", "hash": "6c6ce4d11ff67a68a1568bb329007c51ce42d65bb37d62041097684311267a07"}

@@ -60,8 +60,15 @@ Shorts etwas höher als der aktuelle Markt.
 - **aktiv** — Makro-Bild klar, Richtung steht; Einstieg nach technischer Validierung,
   auch wenn der Report „auf Rücksetzer/Rebound warten“, „technisch bestätigen“,
   „Long nur nach Konsolidierung“ sagt.
-- **event** — wartet auf ein bestimmtes Makro-Ereignis oder eine Makro-Bedingung
-  (CPI, NFP, Notenbank, Zollfrist, „erst nach Kanada-CPI“). Feld `event` setzen.
+- **event** — das Ereignis ENTSCHEIDET über den Trade (CPI, NFP, Notenbank-Rede,
+  Zollfrist): ohne passenden Ausgang kein Trade, oder die Richtung hängt am Ausgang.
+  Feld `event` setzen. Nutzerbeispiele: AUDUSD short „FOMC-Rede entscheidend“ (5822),
+  EURGBP short vor BoE-Entscheid (3561).
+  ABGRENZUNG (Nutzer 21.10.): Steht die Richtung fest und das Ereignis UNTERSTÜTZT sie
+  nur („BoE hält, Reaktion bestätigt schwächeres GBP“) → **aktiv**, Ereignis trotzdem
+  ins Feld `event` (Beispiele EURGBP long 5773 und 5822). Hängt die Idee von der
+  weiteren Makro-Entwicklung ab bzw. „abwarten nach dem Event“ ohne klare Richtung
+  → **watch** (EURUSD short und Gold long in 6392).
 - **watch** — Makro-Bild noch unklar oder ausdrücklich nur beobachten („Watch“,
   „unter Beobachtung“, „wait“ ohne klares Ereignis).
 - **bias** — nur Richtungseinschätzung ohne Trade-Charakter, oder ausdrücklich

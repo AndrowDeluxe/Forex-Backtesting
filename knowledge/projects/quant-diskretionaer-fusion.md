@@ -128,6 +128,45 @@ Verschmelzung" (2026-09-02) ab -- der Journal-Teil ist laut Nutzer erledigt.
     −1.073 $; 6. Konto + Tradezella offen). Bewertung in $ und % vom Konto, kein R.
     Code `fusion_lab/trades/`. Danach eigener Plan für Kontextvergleich, Edge Card,
     Lock (2025 nur Hypothese, Test 2018–24, Tresor 2026).
+    **Erste Auswertung (18.10., nur Axi, noch ohne Setup-Labels;**
+    `python -m fusion_lab.trades.inventory_2025`): 826 Positionen, netto +29.138 $
+    (= Summe der 5 Statements). Ohne Kopierkonto 6059497: 537 Positionen, +28.340 $.
+    - Haltedauer trennt am schärfsten: >1 Tag +60.841 $ (132 Pos., 71 % Treffer,
+      PF 7,5); <4 h −28.122 $ (306 Pos., 16 %, PF 0,30); 4–24 h −4.379 $. Gilt
+      in jedem Konto, auch im Intraday-Konto 4667999 (>1 Tag +13.867, <4 h −19.521).
+      **Vorbehalt:** Haltedauer ist teils Folge (Verlierer werden früh gestoppt),
+      nicht Absicht. Trennen kann das erst das Setup-Label aus dem Journal.
+    - Instrumente: Gold +17.922 $ (63 %), Silber +5.089, USDCAD +4.071 (7 Pos.),
+      USDJPY +3.243, Kupfer +2.266; EURUSD meistgehandelt (241 Pos.) mit −477 $.
+    - Richtung: Long +25.934 $, Short +2.406 $. Gegen den USD +28.986 $, für den
+      USD +1.809 $ (H1 −7.243, H2 +9.052). H1 kam der ganze Gewinn aus
+      USD-Short-Trades (+18.229 $) → Regime-Hypothese aus dem Handoff gestützt.
+    - Session (Eröffnung, Serverzeit): NY +16.847 $, nach 22 Uhr +9.088,
+      Asia +3.358, **London −953 $ bei 219 Positionen**.
+    - Tradezella-Export (467 Trades) deckt **11/2025–09/2026** ab, nicht 2025:
+      netto −15.981 $ (Jan. +13.827, danach jeden Monat negativ). Ohne Setup-Tags.
+    - **Tradezella-Playbooks** (geteilte Links, 18.10.; Rohdaten mit Regeln in
+      `fusion_lab/raw/trades/tradezella/playbooks/`, 11/2025–07/2026):
+      Dayli Trade mit IPDA Confi 11 Trades +8.315 $ (73 % Treffer, Median 4,6 Tage);
+      H4 Entry 5 Trades +1.619 $; HTF Entry 58 Trades −2.914 $ (davon HTF/H4-Konto
+      −5.429 $); LTF Session Engineering 31 Trades −948 $. Daily-Stichprobe klein und
+      teils dieselbe Idee auf mehreren Konten (27.01. EURUSD-Short 3×).
+    - **Nutzerentscheid 18.10.:** zuerst die HTF-Edges (Daily-Trade, H4-Entry)
+      angehen, verbunden mit dem Makro-Agenten (Strang 3). Folgeplan nötig.
+    - **Offen aus dem Handoff 18.10.** (am 20.10. hierher überführt):
+      (1) Kontext am Einstieg (IPDA 20/40/60, Sweeps, FVG, Session, Bias) gegen
+      zufällige Zeitpunkte vergleichen -- noch nicht gemacht. (2) OneNote-Kategorie
+      „Journals“ (2.014 Seiten) als Quelle rekonstruierter Trades noch nicht gesichtet.
+      (3) Nutzerentscheid 18.10.: **an Bots und Konten erstmal nichts ändern** (kein
+      Budget-Umbau, kein Abschalten von Beinen ohne neuen Auftrag).
+  - [x] **Wirkketten + Regeln (21.10.)**: [[makro-wirkketten-und-regeln]] --
+    Format (Kette / läuft sichtbar an / stoppt bei), Regeln aus SMT 21.10.
+    (≥ 75 % gepreist = kein Trigger, Wochenveränderung = Signal,
+    Positionierung als F-Gate), Gates M/R/P/B/F, Zustandsmaschine,
+    Datenbedarf. Basis für den Agenten-Plan.
+  - [x] **Report-Backtest (21.10.)**: [[smh-makro-reports-backtest]] -- Calls
+    allein ohne Edge, Rücksetzer-Einstieg D +0,06 R (DSR 0,47); Forward bis
+    31.01.2027.
   - [ ] Inventur selbst (Material sichten → Bestandteile-Liste).
     - [x] Inhaltsverzeichnis (09.10.): `python -m
       fusion_lab.inventory.onenote_toc` → `raw/onenote/_toc.md` und

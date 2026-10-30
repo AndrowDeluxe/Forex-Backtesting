@@ -13,6 +13,9 @@ ausgewaehlt wurde). Kurzform:
 5. Optional (seit 2026-10-18): ein Blindtest-Zeitraum VOR dem IS (`register_blind`,
    vor dem Einfrieren), wenn OOS/Tresor einer Strategie schon verbraucht sind.
    `unseal("blind")` nach `freeze`, genau einmal, unabhaengig von OOS/Tresor.
+6. Optional (seit 2026-10-28): `skip_oos(grund)`, wenn das OOS schon von einer Vorgaenger-
+   Sperre verbraucht ist (z. B. Copy Trading Stufe 2 auf dem bereits geoeffneten A2-OOS).
+   Das OOS bleibt dann fuer diese Sperre dauerhaft zu, Forward geht ohne OOS.
 
 Zustand liegt git-getrackt unter knowledge/_research_lock/<strategy>.json
 (+ .jsonl-Protokoll), damit die Sperre auch ueber Sessions hinweg haelt.
@@ -120,6 +123,18 @@ class Lock:
             self._log("register_blind", **bl)
         return state
 
+    def skip_oos(self, reason: str) -> dict:
+        """OOS dieser Sperre dauerhaft zu (schon anderweitig verbraucht). Nur vor dem Einfrieren."""
+        state = self._load()
+        if state.get("oos_skipped"):
+            return state
+        if state["frozen"] is not None or state["unsealed"]:
+            raise LockError(f"{self.strategy}: skip_oos nur vor dem Einfrieren/Oeffnen")
+        state["oos_skipped"] = reason
+        self._save(state)
+        self._log("skip_oos", reason=reason)
+        return state
+
     @property
     def split(self) -> dict:
         return self._load()["split"]
@@ -179,6 +194,8 @@ class Lock:
             raise LockError(f"{self.strategy}: erst freeze(), dann unseal({stage!r})")
         if state["frozen"]["hash"] != cfg_hash:
             raise LockError(f"{self.strategy}: Hash passt nicht zur eingefrorenen Konfiguration")
+        if stage in ("oos", "tresor") and state.get("oos_skipped"):
+            raise LockError(f"{self.strategy}: OOS/Tresor gesperrt -- {state['oos_skipped']}")
         if stage == "tresor" and "oos" not in state["unsealed"]:
             raise LockError(f"{self.strategy}: Tresor erst nach OOS")
         if stage in state["unsealed"]:
@@ -189,7 +206,7 @@ class Lock:
             fw = state.get("forward")
             if fw is None:
                 raise LockError(f"{self.strategy}: keine Forward-Regel registriert")
-            if "oos" not in state["unsealed"]:
+            if "oos" not in state["unsealed"] and not state.get("oos_skipped"):
                 raise LockError(f"{self.strategy}: Forward erst nach OOS")
             day = pd.Timestamp(today) if today else pd.Timestamp.now()
             if not ((n_forward_trades or 0) >= fw["min_trades"] or day >= pd.Timestamp(fw["eval_date"])):

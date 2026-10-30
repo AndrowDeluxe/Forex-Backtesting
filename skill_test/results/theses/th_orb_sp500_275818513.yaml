@@ -1,0 +1,29 @@
+thesis_id: th_orb_sp500_275818513
+ticker: US500
+created_at: '2026-10-01T19:51:05'
+updated_at: '2026-10-01T19:53:32'
+thesis_type: pivot_breakout
+status: CLOSED
+status_history:
+- status: ACTIVE
+  at: '2026-10-01T19:51:05'
+- status: CLOSED
+  at: '2026-10-01T19:53:32'
+thesis_statement: orb_sp500 long (EK Live-Bot)
+origin:
+  skill: orb_sp500
+  output_file: scripts/reports/mt5_2026-*.json
+  raw_provenance:
+    position_id: 275818513
+entry:
+  actual_price: 7680.42
+  actual_date: '2026-10-01T19:51:05'
+  conditions: []
+exit:
+  actual_price: 7674.58
+  actual_date: '2026-10-01T19:53:32'
+  exit_reason: stop_hit
+outcome:
+  pnl_dollars: -10.59
+  pnl_pct: -0.378
+  holding_days: 0

@@ -135,3 +135,44 @@ Ergebnis: **kein Tresor positiv, also keine PDF** (Nutzervorgabe).
 - **Prüfliste Folie 8:**
   - 5 Tresor-Trades von K4 per Hand nachgerechnet: 5 von 5 identisch.
   - Jeder Lock zeigt genau ein Öffnen für OOS und eines für den Tresor.
+
+## K4b-Nachtest (18.10.2026): eingefrorene K4-Regel auf frischen Paaren, Tresor durchgefallen
+
+Nutzerauftrag: sauberer Test mit neuen Währungspaaren. Vorregistriert vor
+jedem Datenblick in `smh_microstructure/k4b_vorregistrierung.json`, Lock
+`smh_k4b_fix_europa_neu`, Skript `scripts/research_smh_k4b.py`.
+
+- **Aufbau:**
+  - Regel 1:1 die eingefrorene K4-Regel: Long USD Frankfurt 08:00 → 14:15,
+    jetzt auf USDNOK und USDSEK. Beide sind G9-Paare im Paper und waren bei
+    uns noch nie gerechnet.
+  - USDCAD bleibt draußen, weil es Tresor-Paar des Key-Level-Tests ist.
+  - 6 gezählte Versuche (Regel, 4 Nachbarwerte, Kosten ×2), 67 über alle
+    Runden.
+- **Kosten (Annahme):**
+  - Dukascopy-Median-Spread, nur IS 2019/2021: USDNOK 2,67 bps,
+    USDSEK 2,30 bps (EURUSD zum Vergleich 0,25 bps).
+  - Dazu der EURUSD-Aufschlag von 0,80 bps.
+  - Ergibt einen Rundturn von **3,47 bzw. 3,10 bps**, gut dreimal so viel
+    wie bei EURUSD.
+
+| Stufe | n | netto Ø bps | brutto Ø | PF | Zufallsfenster besser |
+|---|---|---|---|---|---|
+| IS | 2.598 | −1,72 | +1,57 | 0,90 | 22 % (Zufall Ø +1,02) |
+| OOS | 1.296 | −1,68 | +1,60 | 0,90 | 3,7 % (Zufall Ø +0,03) |
+| Tresor | 540 | **−3,63** | −0,34 | 0,76 | 59 % |
+
+Ergebnis: Durchgefallen, nach Vorgabe keine PDF. Auch beide Hälften sind
+in jeder Stufe negativ.
+
+### Erkenntnisse
+- **Der IS-Brutto-Gewinn war Dollar-Drift, kein Fix-Effekt.** Die USD-Stärke
+  gegen die Skandinavier 2018–23 erntet jedes Long-USD-Fenster: Zufall
+  +1,02 bps, um −3 bzw. +6 Stunden verschobene Fenster +2,5 / +3,3 bps.
+  Ohne Zufallstest hätte +1,57 brutto wie eine Bestätigung ausgesehen.
+- **Im OOS war das Fenster einmal wirklich fix-spezifisch** (p ≈ 0,04
+  gegen Zufall). Im Tresor ist auch das weg. Das passt zum Zerfall in K4.
+- **Kosten:** NOK und SEK haben den dreifachen Spread der Majors. Selbst
+  ein echter Effekt von 1–2 bps wäre dort nie handelbar.
+- **Prüfliste:** 5 Tresor-Trades per Hand nachgerechnet, 5 von 5
+  identisch. Genau ein Öffnen für OOS und eines für den Tresor.

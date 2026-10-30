@@ -1,0 +1,29 @@
+thesis_id: th_ctnl_reversal_270970237
+ticker: XAUUSD
+created_at: '2026-09-22T07:44:04'
+updated_at: '2026-09-23T13:45:58'
+thesis_type: mean_reversion
+status: CLOSED
+status_history:
+- status: ACTIVE
+  at: '2026-09-22T07:44:04'
+- status: CLOSED
+  at: '2026-09-23T13:45:58'
+thesis_statement: ctnl_reversal long (EK Live-Bot)
+origin:
+  skill: ctnl_reversal
+  output_file: scripts/reports/mt5_2026-*.json
+  raw_provenance:
+    position_id: 270970237
+entry:
+  actual_price: 4309.27
+  actual_date: '2026-09-22T07:44:04'
+  conditions: []
+exit:
+  actual_price: 4284.18
+  actual_date: '2026-09-23T13:45:58'
+  exit_reason: stop_hit
+outcome:
+  pnl_dollars: -22.51
+  pnl_pct: -0.804
+  holding_days: 1

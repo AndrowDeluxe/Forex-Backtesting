@@ -1,0 +1,297 @@
+{
+  "strategy_id": "orb_live_2026",
+  "iterations": [
+    {
+      "iteration": 1,
+      "timestamp": "2026-10-28T20:39:17+00:00",
+      "changes_from_previous": "IS 2019-22 Live-Konfiguration (TTP-Sim)",
+      "eval": {
+        "total_score": 50,
+        "quality_score": 50,
+        "decision": "REJECT",
+        "blocking_reasons": [
+          "excessive_drawdown",
+          "short_test_period"
+        ],
+        "verdict": "Abandon",
+        "dimensions": [
+          {
+            "name": "Sample Size",
+            "score": 20,
+            "max_score": 20
+          },
+          {
+            "name": "Expectancy",
+            "score": 9,
+            "max_score": 20
+          },
+          {
+            "name": "Risk Management",
+            "score": 0,
+            "max_score": 20
+          },
+          {
+            "name": "Robustness",
+            "score": 1,
+            "max_score": 20
+          },
+          {
+            "name": "Execution Realism",
+            "score": 20,
+            "max_score": 20
+          }
+        ],
+        "red_flags": [
+          {
+            "id": "excessive_drawdown",
+            "severity": "high",
+            "message": "Max drawdown 53.56% meets or exceeds the 50% hard ceiling \u00e2\u20ac\u201d catastrophic risk."
+          },
+          {
+            "id": "over_optimized",
+            "severity": "medium",
+            "message": "7 parameters suggests over-optimization / curve-fitting risk."
+          },
+          {
+            "id": "short_test_period",
+            "severity": "medium",
+            "message": "Only 4 years tested \u00e2\u20ac\u201d may miss regime changes (minimum 5 recommended)."
+          }
+        ],
+        "profit_factor": 1.5132331504908647,
+        "profit_factor_status": "FINITE",
+        "expectancy": 0.438355,
+        "inputs": {
+          "total_trades": 1205,
+          "win_rate": 19.5,
+          "avg_win_pct": 6.628,
+          "avg_loss_pct": 1.061,
+          "max_drawdown_pct": 53.56,
+          "years_tested": 4,
+          "num_parameters": 7,
+          "slippage_tested": true,
+          "max_acceptable_drawdown_pct": 50
+        }
+      }
+    },
+    {
+      "iteration": 2,
+      "timestamp": "2026-10-28T20:39:18+00:00",
+      "changes_from_previous": "IS-only-Reopt 7p, OOS 2023-01..2025-09",
+      "eval": {
+        "total_score": 61,
+        "quality_score": 61,
+        "decision": "VALIDATION_REQUIRED",
+        "blocking_reasons": [
+          "short_test_period"
+        ],
+        "verdict": "Refine",
+        "dimensions": [
+          {
+            "name": "Sample Size",
+            "score": 20,
+            "max_score": 20
+          },
+          {
+            "name": "Expectancy",
+            "score": 7,
+            "max_score": 20
+          },
+          {
+            "name": "Risk Management",
+            "score": 13,
+            "max_score": 20
+          },
+          {
+            "name": "Robustness",
+            "score": 1,
+            "max_score": 20
+          },
+          {
+            "name": "Execution Realism",
+            "score": 20,
+            "max_score": 20
+          }
+        ],
+        "red_flags": [
+          {
+            "id": "over_optimized",
+            "severity": "medium",
+            "message": "7 parameters suggests over-optimization / curve-fitting risk."
+          },
+          {
+            "id": "short_test_period",
+            "severity": "medium",
+            "message": "Only 3 years tested \u00e2\u20ac\u201d may miss regime changes (minimum 5 recommended)."
+          }
+        ],
+        "profit_factor": 1.3397994768962511,
+        "profit_factor_status": "FINITE",
+        "expectancy": 0.272825,
+        "inputs": {
+          "total_trades": 440,
+          "win_rate": 22.5,
+          "avg_win_pct": 4.781,
+          "avg_loss_pct": 1.036,
+          "max_drawdown_pct": 17.79,
+          "years_tested": 3,
+          "num_parameters": 7,
+          "slippage_tested": true,
+          "max_acceptable_drawdown_pct": 50
+        }
+      }
+    },
+    {
+      "iteration": 3,
+      "timestamp": "2026-10-28T20:39:18+00:00",
+      "changes_from_previous": "IS-only-Reopt 7p, Tresor 2025-10..2026-09",
+      "eval": {
+        "total_score": 41,
+        "quality_score": 41,
+        "decision": "REJECT",
+        "blocking_reasons": [
+          "negative_expectancy",
+          "excessive_drawdown",
+          "short_test_period"
+        ],
+        "verdict": "Abandon",
+        "dimensions": [
+          {
+            "name": "Sample Size",
+            "score": 20,
+            "max_score": 20
+          },
+          {
+            "name": "Expectancy",
+            "score": 0,
+            "max_score": 20
+          },
+          {
+            "name": "Risk Management",
+            "score": 0,
+            "max_score": 20
+          },
+          {
+            "name": "Robustness",
+            "score": 1,
+            "max_score": 20
+          },
+          {
+            "name": "Execution Realism",
+            "score": 20,
+            "max_score": 20
+          }
+        ],
+        "red_flags": [
+          {
+            "id": "excessive_drawdown",
+            "severity": "high",
+            "message": "Max drawdown 94.81% meets or exceeds the 50% hard ceiling \u00e2\u20ac\u201d catastrophic risk."
+          },
+          {
+            "id": "over_optimized",
+            "severity": "medium",
+            "message": "7 parameters suggests over-optimization / curve-fitting risk."
+          },
+          {
+            "id": "short_test_period",
+            "severity": "medium",
+            "message": "Only 1 years tested \u00e2\u20ac\u201d may miss regime changes (minimum 5 recommended)."
+          },
+          {
+            "id": "negative_expectancy",
+            "severity": "high",
+            "message": "Negative expectancy (-0.426%) \u00e2\u20ac\u201d strategy loses money on average."
+          }
+        ],
+        "profit_factor": 0.5169614436873265,
+        "profit_factor_status": "FINITE",
+        "expectancy": -0.425969,
+        "inputs": {
+          "total_trades": 203,
+          "win_rate": 14.3,
+          "avg_win_pct": 3.188,
+          "avg_loss_pct": 1.029,
+          "max_drawdown_pct": 94.81,
+          "years_tested": 1,
+          "num_parameters": 7,
+          "slippage_tested": true,
+          "max_acceptable_drawdown_pct": 50
+        }
+      }
+    },
+    {
+      "iteration": 4,
+      "timestamp": "2026-10-28T20:39:18+00:00",
+      "changes_from_previous": "Regime-2026-Variante neu, Tresor 2025-10..2026-09",
+      "eval": {
+        "total_score": 46,
+        "quality_score": 46,
+        "decision": "REJECT",
+        "blocking_reasons": [
+          "excessive_drawdown",
+          "short_test_period"
+        ],
+        "verdict": "Abandon",
+        "dimensions": [
+          {
+            "name": "Sample Size",
+            "score": 20,
+            "max_score": 20
+          },
+          {
+            "name": "Expectancy",
+            "score": 6,
+            "max_score": 20
+          },
+          {
+            "name": "Risk Management",
+            "score": 0,
+            "max_score": 20
+          },
+          {
+            "name": "Robustness",
+            "score": 0,
+            "max_score": 20
+          },
+          {
+            "name": "Execution Realism",
+            "score": 20,
+            "max_score": 20
+          }
+        ],
+        "red_flags": [
+          {
+            "id": "excessive_drawdown",
+            "severity": "high",
+            "message": "Max drawdown 57.96% meets or exceeds the 50% hard ceiling \u00e2\u20ac\u201d catastrophic risk."
+          },
+          {
+            "id": "over_optimized",
+            "severity": "medium",
+            "message": "8 parameters suggests over-optimization / curve-fitting risk."
+          },
+          {
+            "id": "short_test_period",
+            "severity": "medium",
+            "message": "Only 1 years tested \u00e2\u20ac\u201d may miss regime changes (minimum 5 recommended)."
+          }
+        ],
+        "profit_factor": 1.1813662744372304,
+        "profit_factor_status": "FINITE",
+        "expectancy": 0.141124,
+        "inputs": {
+          "total_trades": 351,
+          "win_rate": 26.8,
+          "avg_win_pct": 3.43,
+          "avg_loss_pct": 1.063,
+          "max_drawdown_pct": 57.96,
+          "years_tested": 1,
+          "num_parameters": 8,
+          "slippage_tested": true,
+          "max_acceptable_drawdown_pct": 50
+        }
+      }
+    }
+  ]
+}

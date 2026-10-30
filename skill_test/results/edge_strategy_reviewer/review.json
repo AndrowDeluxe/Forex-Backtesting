@@ -1,0 +1,362 @@
+{
+  "generated_at_utc": "2026-10-28T20:36:35+00:00",
+  "source": {
+    "drafts_dir": "C:\\Users\\andre\\Forex-Backtesting\\skill_test\\drafts",
+    "draft_count": 2
+  },
+  "summary": {
+    "total": 2,
+    "PASS": 0,
+    "REVISE": 2,
+    "REJECT": 0,
+    "export_eligible": 0
+  },
+  "reviews": [
+    {
+      "draft_id": "ctnl_reversal_live_2026",
+      "verdict": "REVISE",
+      "confidence_score": 80,
+      "export_eligible": false,
+      "findings": [
+        {
+          "criterion": "C1_edge_plausibility",
+          "score": 95,
+          "severity": "pass",
+          "reason": "Thesis contains specific causal reasoning.",
+          "revision_instruction": null
+        },
+        {
+          "criterion": "C2_overfitting_risk",
+          "score": 80,
+          "severity": "pass",
+          "reason": "5 filters within acceptable range.",
+          "revision_instruction": null
+        },
+        {
+          "criterion": "C3_sample_adequacy",
+          "score": 83,
+          "severity": "pass",
+          "reason": "Estimated 87 annual opportunities.",
+          "revision_instruction": null
+        },
+        {
+          "criterion": "C4_regime_dependency",
+          "score": 80,
+          "severity": "pass",
+          "reason": "Strategy not restricted to single regime.",
+          "revision_instruction": null
+        },
+        {
+          "criterion": "C5_exit_calibration",
+          "score": 80,
+          "severity": "pass",
+          "reason": "Exit parameters acceptable (stop=1%, RR=5.0).",
+          "revision_instruction": null
+        },
+        {
+          "criterion": "C6_risk_concentration",
+          "score": 80,
+          "severity": "pass",
+          "reason": "Risk parameters within acceptable range.",
+          "revision_instruction": null
+        },
+        {
+          "criterion": "C7_execution_realism",
+          "score": 50,
+          "severity": "warn",
+          "reason": "No volume filter in entry conditions.",
+          "revision_instruction": "Add volume filter (e.g., avg_volume > 500000) for execution realism."
+        },
+        {
+          "criterion": "C8_invalidation_quality",
+          "score": 80,
+          "severity": "pass",
+          "reason": "3 invalidation signals defined.",
+          "revision_instruction": null
+        }
+      ],
+      "revision_instructions": [
+        "Declare how look_ahead, universe_selection, parameter_multiplicity, walk_forward_out_of_sample are addressed in the draft's bias_checklist block"
+      ],
+      "bias_review": [
+        {
+          "item_id": "look_ahead",
+          "title": "Look-ahead bias",
+          "required": true,
+          "addressed": false,
+          "noted_in_draft": false,
+          "note": "Lake-H4-Duplikate: _bar_length 1 h statt 4 h, Soll/Sim sahen 3 h voraus; fruehere Risikohalbierung war Lookahead"
+        },
+        {
+          "item_id": "survivorship",
+          "title": "Survivorship bias",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": false,
+          "note": "einzelnes Instrument XAUUSD"
+        },
+        {
+          "item_id": "universe_selection",
+          "title": "Universe selection",
+          "required": true,
+          "addressed": false,
+          "noted_in_draft": false,
+          "note": "Gold gewaehlt, nachdem 6 FX-Paare und Continuation negativ waren -- Auswahl nach Ergebnis"
+        },
+        {
+          "item_id": "delisted_securities",
+          "title": "Delisted securities",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": false,
+          "note": "nicht anwendbar"
+        },
+        {
+          "item_id": "earnings_announcement_timing",
+          "title": "Earnings announcement timing",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": false,
+          "note": "nicht anwendbar"
+        },
+        {
+          "item_id": "split_dividend_adjustment",
+          "title": "Split and dividend adjustment",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": false,
+          "note": "nicht anwendbar"
+        },
+        {
+          "item_id": "transaction_costs_slippage",
+          "title": "Transaction costs and slippage",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": false,
+          "note": "TTP-Kosten modelliert; 8 bps waren 4-11x zu hoch angesetzt"
+        },
+        {
+          "item_id": "short_borrow_availability",
+          "title": "Short borrow availability",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": false,
+          "note": "CFD"
+        },
+        {
+          "item_id": "liquidity_capacity",
+          "title": "Liquidity and capacity",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": true,
+          "note": "Gold-CFD, kleine Groessen"
+        },
+        {
+          "item_id": "parameter_multiplicity",
+          "title": "Parameter multiplicity",
+          "required": true,
+          "addressed": false,
+          "noted_in_draft": false,
+          "note": "keine research_lock-Sperre, Versuche nie gezaehlt"
+        },
+        {
+          "item_id": "walk_forward_out_of_sample",
+          "title": "Walk-forward and out-of-sample validation",
+          "required": true,
+          "addressed": false,
+          "noted_in_draft": true,
+          "note": "IS/OOS-Split lag komplett in 08/2024-08/2026; Walk-Forward 2016-2024 negativ"
+        },
+        {
+          "item_id": "benchmark_attribution",
+          "title": "Benchmark attribution",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": false,
+          "note": "Residual-Check 28.10.2026: t 2,15 (nur IS), 12 % Gold-Beta-Anteil"
+        },
+        {
+          "item_id": "regime_dependence",
+          "title": "Regime dependence",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": true,
+          "note": "Regime-Filter ist einziger Hebel; Edge nur long (short Summe -122 R)"
+        }
+      ]
+    },
+    {
+      "draft_id": "orb_live_2026",
+      "verdict": "REVISE",
+      "confidence_score": 83,
+      "export_eligible": false,
+      "findings": [
+        {
+          "criterion": "C1_edge_plausibility",
+          "score": 95,
+          "severity": "pass",
+          "reason": "Thesis contains specific causal reasoning.",
+          "revision_instruction": null
+        },
+        {
+          "criterion": "C2_overfitting_risk",
+          "score": 90,
+          "severity": "pass",
+          "reason": "4 filters within acceptable range.",
+          "revision_instruction": null
+        },
+        {
+          "criterion": "C3_sample_adequacy",
+          "score": 86,
+          "severity": "pass",
+          "reason": "Estimated 109 annual opportunities.",
+          "revision_instruction": null
+        },
+        {
+          "criterion": "C4_regime_dependency",
+          "score": 80,
+          "severity": "pass",
+          "reason": "Strategy not restricted to single regime.",
+          "revision_instruction": null
+        },
+        {
+          "criterion": "C5_exit_calibration",
+          "score": 80,
+          "severity": "pass",
+          "reason": "Exit parameters acceptable (stop=0%, RR=8.0).",
+          "revision_instruction": null
+        },
+        {
+          "criterion": "C6_risk_concentration",
+          "score": 80,
+          "severity": "pass",
+          "reason": "Risk parameters within acceptable range.",
+          "revision_instruction": null
+        },
+        {
+          "criterion": "C7_execution_realism",
+          "score": 50,
+          "severity": "warn",
+          "reason": "No volume filter in entry conditions.",
+          "revision_instruction": "Add volume filter (e.g., avg_volume > 500000) for execution realism."
+        },
+        {
+          "criterion": "C8_invalidation_quality",
+          "score": 80,
+          "severity": "pass",
+          "reason": "3 invalidation signals defined.",
+          "revision_instruction": null
+        }
+      ],
+      "revision_instructions": [
+        "Declare how look_ahead, universe_selection are addressed in the draft's bias_checklist block"
+      ],
+      "bias_review": [
+        {
+          "item_id": "look_ahead",
+          "title": "Look-ahead bias",
+          "required": true,
+          "addressed": false,
+          "noted_in_draft": false,
+          "note": "Fill-Bar-Stop wurde im Backtest nicht geprueft, Ein- und Ausstieg auf demselben Balken; 58-65 % der Entries in der ersten M5-Bar (Memory orb_first_bar, backtest_prueft_ein_und_ausstieg)"
+        },
+        {
+          "item_id": "survivorship",
+          "title": "Survivorship bias",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": false,
+          "note": "Index-CFDs, kein Einzeltitel-Universum"
+        },
+        {
+          "item_id": "universe_selection",
+          "title": "Universe selection",
+          "required": true,
+          "addressed": false,
+          "noted_in_draft": false,
+          "note": "Instrument- und Konfigurationsauswahl ab Stage 2 auf OOS-Zahlen (Anlass der Overfitting-Sperre); US30 nach OOS pausiert, NASDAQ-Storno als 2026-Fit"
+        },
+        {
+          "item_id": "delisted_securities",
+          "title": "Delisted securities",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": false,
+          "note": "nicht anwendbar"
+        },
+        {
+          "item_id": "earnings_announcement_timing",
+          "title": "Earnings announcement timing",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": false,
+          "note": "nicht anwendbar fuer Index-CFDs"
+        },
+        {
+          "item_id": "split_dividend_adjustment",
+          "title": "Split and dividend adjustment",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": false,
+          "note": "Intraday, flat zum Close; Dividendenanpassung der CFDs irrelevant"
+        },
+        {
+          "item_id": "transaction_costs_slippage",
+          "title": "Transaction costs and slippage",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": false,
+          "note": "gemessene TTP/IQ/Tickmill-Kosten in der Simulation; Entry-Lag separat untersucht"
+        },
+        {
+          "item_id": "short_borrow_availability",
+          "title": "Short borrow availability",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": false,
+          "note": "CFD, kein Leihbedarf"
+        },
+        {
+          "item_id": "liquidity_capacity",
+          "title": "Liquidity and capacity",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": true,
+          "note": "Positionsgroessen weit unter Markttiefe der Indizes"
+        },
+        {
+          "item_id": "parameter_multiplicity",
+          "title": "Parameter multiplicity",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": false,
+          "note": "7.560 gezaehlte Versuche in ny_open_orb_is_reopt_7p, DSR ~0"
+        },
+        {
+          "item_id": "walk_forward_out_of_sample",
+          "title": "Walk-forward and out-of-sample validation",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": true,
+          "note": "IS-only-Reopt: Tresor PF 0,52 -- durchgefallen"
+        },
+        {
+          "item_id": "benchmark_attribution",
+          "title": "Benchmark attribution",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": false,
+          "note": "Residual-Check 28.10.2026: t 1,1-1,2, R2 < 0,01"
+        },
+        {
+          "item_id": "regime_dependence",
+          "title": "Regime dependence",
+          "required": true,
+          "addressed": true,
+          "noted_in_draft": true,
+          "note": "Ribbon-Filter kippt 2026 (neutral schlug Trend 16/18 Jahre, im Tresor umgekehrt)"
+        }
+      ]
+    }
+  ]
+}

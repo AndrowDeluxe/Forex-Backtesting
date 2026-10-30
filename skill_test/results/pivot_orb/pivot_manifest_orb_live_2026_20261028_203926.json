@@ -1,0 +1,49 @@
+{
+  "generated_at_utc": "2026-10-28T20:39:26+00:00",
+  "strategy_id": "orb_live_2026",
+  "diagnosis_file": "C:\\Users\\andre\\Forex-Backtesting\\skill_test\\results\\pivot_orb\\pivot_diagnosis_orb_live_2026_20261028_203918.json",
+  "strategy_file": "C:\\Users\\andre\\Forex-Backtesting\\skill_test\\drafts\\orb.yaml",
+  "triggers_fired": [
+    "cost_defeat",
+    "tail_risk"
+  ],
+  "total_pivots_generated": 3,
+  "exportable_count": 0,
+  "research_only_count": 3,
+  "drafts": [
+    {
+      "id": "pivot_orb_live_2026_inv_tail_risk_statistical_pairs",
+      "path": "pivot_drafts\\research_only\\pivot_orb_live_2026_inv_tail_risk_statistical_pairs_20261028_203926.yaml",
+      "category": "research_only",
+      "ticket_path": null,
+      "scores": {
+        "quality_potential": 0.85,
+        "novelty": 0.8,
+        "combined": 0.83
+      }
+    },
+    {
+      "id": "pivot_orb_live_2026_inv_cost_defeat_mean_reversion_pullback",
+      "path": "pivot_drafts\\research_only\\pivot_orb_live_2026_inv_cost_defeat_mean_reversion_pullback_20261028_203926.yaml",
+      "category": "research_only",
+      "ticket_path": null,
+      "scores": {
+        "quality_potential": 0.8,
+        "novelty": 0.8,
+        "combined": 0.8
+      }
+    },
+    {
+      "id": "pivot_orb_live_2026_inv_cost_defeat_event_driven_fade",
+      "path": "pivot_drafts\\research_only\\pivot_orb_live_2026_inv_cost_defeat_event_driven_fade_20261028_203926.yaml",
+      "category": "research_only",
+      "ticket_path": null,
+      "scores": {
+        "quality_potential": 0.75,
+        "novelty": 0.8,
+        "combined": 0.77
+      }
+    }
+  ],
+  "errors": []
+}

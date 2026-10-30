@@ -1,0 +1,28 @@
+{
+  "strategy": "ctnl_skill_filter_20261028",
+  "split": {
+    "is_start": "2019-01-01",
+    "is_end": "2024-07-31",
+    "oos_end": "2026-09-30",
+    "tresor_end": null
+  },
+  "registered": "2026-10-28T19:19:08+00:00",
+  "trials": 14,
+  "frozen": {
+    "hash": "7ed6b83859d356231ef7b72ee838ee08d86bcc74fef5ddd7b679843423adc29c",
+    "config": {
+      "basis": "ctnl_reversal Live-Konfiguration unveraendert",
+      "filter": "kein neuer CTNL-Entry an Tagen mit US-High-Impact-Release (FRED: NFP, CPI, Retail Sales, GDP; news_calendar.fred_releases, Release-Tag selbst, window 0)",
+      "herkunft": "Ersatz fuer economic-calendar-fetcher (FMP-Kalender im Free-Tier gesperrt)",
+      "auswertung": "Forward 2026-11-02 bis 2027-03-31: gefiltert vs ungefiltert, Paper-Schatten, kein Live-Eingriff"
+    },
+    "ts": "2026-10-28T20:47:29+00:00"
+  },
+  "unsealed": {},
+  "forward": {
+    "start": "2026-11-02",
+    "eval_date": "2027-03-31",
+    "min_trades": 40
+  },
+  "oos_skipped": "Original-Stichprobe 2024-08..2026-08 bereits fuer Auswahl/Bewertung benutzt; Skill-Filter nur IS -> Forward"
+}

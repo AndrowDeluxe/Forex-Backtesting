@@ -69,3 +69,4 @@ Plateau und kein Optimum.
   trägt Gold-Rendite), CBS-Thesis 2019 (Saisonalität gegen Long nach 01:00).
   Testidee: Edge nach Range-Breite / London-Open-Volumen aufteilen.
 - Fortsetzung 18.10.: Paper-Filter + Blindtest 2010–2015 → [[gold-asb-paper-filter]].
+- PDF-Annahmen (Mechanismus-Bewertung S. 7, 8 statt 9 Stellschrauben) vom Nutzer am 18.10. bestätigt.

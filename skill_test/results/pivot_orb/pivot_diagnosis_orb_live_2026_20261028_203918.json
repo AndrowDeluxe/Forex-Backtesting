@@ -1,0 +1,60 @@
+{
+  "strategy_id": "orb_live_2026",
+  "stagnation_detected": true,
+  "triggers_fired": [
+    {
+      "trigger": "cost_defeat",
+      "severity": "medium",
+      "evidence": {
+        "expectancy": 0.141124,
+        "profit_factor": 1.1813662744372304,
+        "slippage_tested": true
+      },
+      "message": "Edge too thin after costs (expectancy=0.141, PF=1.18)"
+    },
+    {
+      "trigger": "tail_risk",
+      "severity": "high",
+      "evidence": {
+        "max_drawdown_pct": 57.96,
+        "risk_mgmt_score": 0
+      },
+      "message": "Structural risk: max_drawdown_pct=57.96% > 35%; Risk Management score=0 <= 5"
+    }
+  ],
+  "iteration_count": 4,
+  "score_trajectory": [
+    50,
+    61,
+    41,
+    46
+  ],
+  "latest_eval_summary": {
+    "total_score": 46,
+    "verdict": "Abandon",
+    "dimension_scores": {
+      "Sample Size": 20,
+      "Expectancy": 6,
+      "Risk Management": 0,
+      "Robustness": 0,
+      "Execution Realism": 20
+    },
+    "red_flag_ids": [
+      "excessive_drawdown",
+      "over_optimized",
+      "short_test_period"
+    ],
+    "expectancy": 0.141124,
+    "profit_factor": 1.1813662744372304,
+    "profit_factor_status": "FINITE",
+    "decision": "REJECT",
+    "blocking_reasons": [
+      "excessive_drawdown",
+      "short_test_period"
+    ],
+    "max_drawdown_pct": 57.96,
+    "slippage_tested": true
+  },
+  "recommendation": "pivot",
+  "diagnosed_at_utc": "2026-10-28T20:39:18+00:00"
+}

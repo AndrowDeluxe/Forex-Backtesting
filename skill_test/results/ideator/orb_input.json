@@ -1,0 +1,90 @@
+{
+ "objective": {
+  "goal": "Find a context filter that removes low-expectancy ORB days",
+  "focus_area": "Day selection / regime filter",
+  "horizon": "forward test 2026-11 to 2027-03"
+ },
+ "strategy_context": {
+  "strategy_name": "ny_open_orb",
+  "summary": "Breakout of first M5 bar after US cash open on SP500/NASDAQ/US30, stop 1x range, target 8R, flat at close; positive-skew trend continuation, 19.5 % hit rate.",
+  "known_pain_points": [
+   "OOS + vault show no significant residual alpha (t 1.1-1.2)",
+   "Ribbon filter flipped in 2026",
+   "Selection partly done on OOS in the past"
+  ]
+ },
+ "constraints": {
+  "execution_constraints": [
+   "MT5 bridges, scan cadence 5-15 min",
+   "no change to live config before forward test"
+  ],
+  "risk_constraints": [
+   "risk_per_trade <= 1.0%",
+   "funded account daily loss limits"
+  ],
+  "data_constraints": [
+   "only in-sample data (OOS/vault consumed)",
+   "daily context data only: index/gold closes, VIX, growth x inflation regime"
+  ]
+ },
+ "market_context": {
+  "summary": "IS 2019-2022, TTP-cost simulation, 1205 trades.",
+  "regime_tags": [
+   "growth x inflation quadrants",
+   "VIX terciles"
+  ],
+  "observations": [
+   "After a negative 20-day index return avg R 0.76 (470 trades) vs 0.23 after positive (735)",
+   "Mid VIX tercile avg R 0.11 vs 0.51 low / 0.69 high (non-monotone)",
+   "Regime growth slowing x inflation accelerating avg R 0.13 (249 trades) vs 0.44-0.67 elsewhere",
+   "February -0.10 and July -0.36 avg R; December 0.05"
+  ]
+ },
+ "performance_summary": {
+  "win_rate": 0.195,
+  "profit_factor": 1.51,
+  "max_drawdown": 0.54
+ },
+ "trade_log_summary": {
+  "common_winner_traits": [
+   "held to session end (avg 8.2R) or target",
+   "index fell over prior 20 days",
+   "high VIX tercile"
+  ],
+  "common_loser_traits": [
+   "stopped out within the day (985 of 1205 trades)",
+   "mid VIX tercile",
+   "prior 20-day uptrend"
+  ]
+ },
+ "feature_inventory": [
+  "ret20_index",
+  "ret5_index",
+  "vix_close_prev",
+  "macro_regime_joint",
+  "weekday",
+  "month",
+  "leg"
+ ],
+ "journal_snippets": [
+  {
+   "date": "2026-10-06",
+   "note": "IS-only re-optimisation failed in vault (PF 0.52, DSR ~0).",
+   "outcome": "rejected"
+  },
+  {
+   "date": "2026-10-12",
+   "note": "Oil-based filter fitted on 2026 rejected as fit; forward test only.",
+   "outcome": "rejected"
+  },
+  {
+   "date": "2026-10-07",
+   "note": "Real SPX gamma (SqueezeMetrics) does not explain the 2026 flip.",
+   "outcome": "rejected"
+  }
+ ],
+ "qualitative_notes": [
+  "US cash session has no risk premium in ORB window (t=0.89)",
+  "Edge flip not predictable; bootstrap drawdown switch best damage limiter"
+ ]
+}

@@ -1,0 +1,1269 @@
+{
+  "stand": "2026-10-28",
+  "scope": "IS je Bein",
+  "n_shift": 2000,
+  "legs": {
+    "orb_sp500": {
+      "is_end": "2023-01-01",
+      "n": 186,
+      "mean_r": 0.685,
+      "sum_r": 127.5,
+      "lenses": {
+        "change": {
+          "p_shift": 0.617,
+          "cells": [
+            {
+              "regime": "g↓ π↑",
+              "n": 55,
+              "mean_r": 0.218,
+              "t": 0.59,
+              "sum_r": 12.0,
+              "win": 0.182
+            },
+            {
+              "regime": "g↑ π↑",
+              "n": 52,
+              "mean_r": 0.788,
+              "t": 1.83,
+              "sum_r": 41.0,
+              "win": 0.269
+            },
+            {
+              "regime": "g↓ π↓",
+              "n": 40,
+              "mean_r": 1.029,
+              "t": 2.01,
+              "sum_r": 41.2,
+              "win": 0.3
+            },
+            {
+              "regime": "g↑ π↓",
+              "n": 39,
+              "mean_r": 0.854,
+              "t": 1.7,
+              "sum_r": 33.3,
+              "win": 0.282
+            }
+          ]
+        },
+        "joint": {
+          "p_shift": 0.464,
+          "cells": [
+            {
+              "regime": "g↑·accel × π↑·accel",
+              "n": 40,
+              "mean_r": 0.825,
+              "t": 1.66,
+              "sum_r": 33.0,
+              "win": 0.275
+            },
+            {
+              "regime": "g↑·slow × π↑·slow",
+              "n": 40,
+              "mean_r": 1.029,
+              "t": 2.01,
+              "sum_r": 41.2,
+              "win": 0.3
+            },
+            {
+              "regime": "g↑·slow × π↑·accel",
+              "n": 39,
+              "mean_r": -0.152,
+              "t": -0.4,
+              "sum_r": -5.9,
+              "win": 0.128
+            },
+            {
+              "regime": "g↑·accel × π↑·slow",
+              "n": 36,
+              "mean_r": 0.821,
+              "t": 1.58,
+              "sum_r": 29.6,
+              "win": 0.278
+            },
+            {
+              "regime": "g↓·slow × π↑·accel",
+              "n": 16,
+              "mean_r": 1.121,
+              "t": 1.34,
+              "sum_r": 17.9,
+              "win": 0.312
+            },
+            {
+              "regime": "g↓·accel × π↑·accel",
+              "n": 12,
+              "mean_r": 0.665,
+              "t": 0.73,
+              "sum_r": 8.0,
+              "win": 0.25
+            },
+            {
+              "regime": "g↓·accel × π↑·slow",
+              "n": 3,
+              "mean_r": 1.252,
+              "t": 0.53,
+              "sum_r": 3.8,
+              "win": 0.333
+            }
+          ]
+        },
+        "signs": {
+          "p_shift": 0.246,
+          "cells": [
+            {
+              "regime": "g↑ π↑",
+              "n": 155,
+              "mean_r": 0.631,
+              "t": 2.62,
+              "sum_r": 97.8,
+              "win": 0.245
+            },
+            {
+              "regime": "g↓ π↑",
+              "n": 31,
+              "mean_r": 0.957,
+              "t": 1.65,
+              "sum_r": 29.7,
+              "win": 0.29
+            }
+          ]
+        }
+      }
+    },
+    "orb_nasdaq": {
+      "is_end": "2023-01-01",
+      "n": 824,
+      "mean_r": 0.372,
+      "sum_r": 306.8,
+      "lenses": {
+        "change": {
+          "p_shift": 0.885,
+          "cells": [
+            {
+              "regime": "g↑ π↑",
+              "n": 236,
+              "mean_r": 0.518,
+              "t": 2.04,
+              "sum_r": 122.2,
+              "win": 0.169
+            },
+            {
+              "regime": "g↓ π↑",
+              "n": 224,
+              "mean_r": 0.194,
+              "t": 0.72,
+              "sum_r": 43.5,
+              "win": 0.116
+            },
+            {
+              "regime": "g↑ π↓",
+              "n": 186,
+              "mean_r": 0.478,
+              "t": 1.56,
+              "sum_r": 88.9,
+              "win": 0.167
+            },
+            {
+              "regime": "g↓ π↓",
+              "n": 178,
+              "mean_r": 0.294,
+              "t": 1.04,
+              "sum_r": 52.4,
+              "win": 0.135
+            }
+          ]
+        },
+        "joint": {
+          "p_shift": 0.446,
+          "cells": [
+            {
+              "regime": "g↑·slow × π↑·slow",
+              "n": 178,
+              "mean_r": 0.294,
+              "t": 1.04,
+              "sum_r": 52.4,
+              "win": 0.135
+            },
+            {
+              "regime": "g↑·slow × π↑·accel",
+              "n": 172,
+              "mean_r": 0.246,
+              "t": 0.75,
+              "sum_r": 42.4,
+              "win": 0.11
+            },
+            {
+              "regime": "g↑·accel × π↑·accel",
+              "n": 168,
+              "mean_r": 0.661,
+              "t": 2.07,
+              "sum_r": 111.0,
+              "win": 0.179
+            },
+            {
+              "regime": "g↑·accel × π↑·slow",
+              "n": 153,
+              "mean_r": 0.706,
+              "t": 1.94,
+              "sum_r": 108.0,
+              "win": 0.183
+            },
+            {
+              "regime": "g↓·accel × π↑·accel",
+              "n": 68,
+              "mean_r": 0.164,
+              "t": 0.42,
+              "sum_r": 11.1,
+              "win": 0.147
+            },
+            {
+              "regime": "g↓·slow × π↑·accel",
+              "n": 52,
+              "mean_r": 0.021,
+              "t": 0.05,
+              "sum_r": 1.1,
+              "win": 0.135
+            },
+            {
+              "regime": "g↓·accel × π↑·slow",
+              "n": 33,
+              "mean_r": -0.58,
+              "t": -1.91,
+              "sum_r": -19.2,
+              "win": 0.091
+            }
+          ]
+        },
+        "signs": {
+          "p_shift": 0.122,
+          "cells": [
+            {
+              "regime": "g↑ π↑",
+              "n": 671,
+              "mean_r": 0.468,
+              "t": 2.9,
+              "sum_r": 313.8,
+              "win": 0.151
+            },
+            {
+              "regime": "g↓ π↑",
+              "n": 153,
+              "mean_r": -0.045,
+              "t": -0.2,
+              "sum_r": -6.9,
+              "win": 0.131
+            }
+          ]
+        }
+      }
+    },
+    "orb_us30": {
+      "is_end": "2023-01-01",
+      "n": 195,
+      "mean_r": 0.484,
+      "sum_r": 94.4,
+      "lenses": {
+        "change": {
+          "p_shift": 0.901,
+          "cells": [
+            {
+              "regime": "g↑ π↑",
+              "n": 54,
+              "mean_r": 0.676,
+              "t": 1.98,
+              "sum_r": 36.5,
+              "win": 0.352
+            },
+            {
+              "regime": "g↓ π↑",
+              "n": 52,
+              "mean_r": 0.275,
+              "t": 0.92,
+              "sum_r": 14.3,
+              "win": 0.327
+            },
+            {
+              "regime": "g↓ π↓",
+              "n": 45,
+              "mean_r": 0.488,
+              "t": 1.41,
+              "sum_r": 22.0,
+              "win": 0.356
+            },
+            {
+              "regime": "g↑ π↓",
+              "n": 44,
+              "mean_r": 0.49,
+              "t": 1.39,
+              "sum_r": 21.6,
+              "win": 0.341
+            }
+          ]
+        },
+        "joint": {
+          "p_shift": 0.119,
+          "cells": [
+            {
+              "regime": "g↑·slow × π↑·slow",
+              "n": 45,
+              "mean_r": 0.488,
+              "t": 1.41,
+              "sum_r": 22.0,
+              "win": 0.356
+            },
+            {
+              "regime": "g↑·accel × π↑·accel",
+              "n": 42,
+              "mean_r": 0.34,
+              "t": 0.93,
+              "sum_r": 14.3,
+              "win": 0.286
+            },
+            {
+              "regime": "g↑·accel × π↑·slow",
+              "n": 42,
+              "mean_r": 0.434,
+              "t": 1.22,
+              "sum_r": 18.2,
+              "win": 0.333
+            },
+            {
+              "regime": "g↑·slow × π↑·accel",
+              "n": 38,
+              "mean_r": -0.105,
+              "t": -0.35,
+              "sum_r": -4.0,
+              "win": 0.263
+            },
+            {
+              "regime": "g↓·slow × π↑·accel",
+              "n": 14,
+              "mean_r": 1.306,
+              "t": 1.86,
+              "sum_r": 18.3,
+              "win": 0.5
+            },
+            {
+              "regime": "g↓·accel × π↑·accel",
+              "n": 12,
+              "mean_r": 1.854,
+              "t": 2.34,
+              "sum_r": 22.2,
+              "win": 0.583
+            },
+            {
+              "regime": "g↓·accel × π↑·slow",
+              "n": 2,
+              "mean_r": 1.675,
+              "t": 0.61,
+              "sum_r": 3.4,
+              "win": 0.5
+            }
+          ]
+        },
+        "signs": {
+          "p_shift": 0.0,
+          "cells": [
+            {
+              "regime": "g↑ π↑",
+              "n": 167,
+              "mean_r": 0.302,
+              "t": 1.76,
+              "sum_r": 50.5,
+              "win": 0.311
+            },
+            {
+              "regime": "g↓ π↑",
+              "n": 28,
+              "mean_r": 1.568,
+              "t": 3.13,
+              "sum_r": 43.9,
+              "win": 0.536
+            }
+          ]
+        }
+      }
+    },
+    "gold_asb": {
+      "is_end": "2023-01-01",
+      "n": 96,
+      "mean_r": 0.322,
+      "sum_r": 30.9,
+      "lenses": {
+        "change": {
+          "p_shift": 0.881,
+          "cells": [
+            {
+              "regime": "g↑ π↓",
+              "n": 28,
+              "mean_r": 0.267,
+              "t": 1.02,
+              "sum_r": 7.5,
+              "win": 0.464
+            },
+            {
+              "regime": "g↓ π↓",
+              "n": 26,
+              "mean_r": 0.388,
+              "t": 2.49,
+              "sum_r": 10.1,
+              "win": 0.654
+            },
+            {
+              "regime": "g↓ π↑",
+              "n": 22,
+              "mean_r": 0.213,
+              "t": 0.84,
+              "sum_r": 4.7,
+              "win": 0.5
+            },
+            {
+              "regime": "g↑ π↑",
+              "n": 20,
+              "mean_r": 0.435,
+              "t": 1.1,
+              "sum_r": 8.7,
+              "win": 0.5
+            }
+          ]
+        },
+        "joint": {
+          "p_shift": 0.887,
+          "cells": [
+            {
+              "regime": "g↑·slow × π↑·slow",
+              "n": 26,
+              "mean_r": 0.388,
+              "t": 2.49,
+              "sum_r": 10.1,
+              "win": 0.654
+            },
+            {
+              "regime": "g↑·accel × π↑·slow",
+              "n": 22,
+              "mean_r": 0.299,
+              "t": 0.95,
+              "sum_r": 6.6,
+              "win": 0.455
+            },
+            {
+              "regime": "g↑·slow × π↑·accel",
+              "n": 22,
+              "mean_r": 0.213,
+              "t": 0.84,
+              "sum_r": 4.7,
+              "win": 0.5
+            },
+            {
+              "regime": "g↑·accel × π↑·accel",
+              "n": 16,
+              "mean_r": 0.409,
+              "t": 0.84,
+              "sum_r": 6.5,
+              "win": 0.5
+            },
+            {
+              "regime": "g↓·accel × π↑·slow",
+              "n": 6,
+              "mean_r": 0.149,
+              "t": 0.35,
+              "sum_r": 0.9,
+              "win": 0.5
+            },
+            {
+              "regime": "g↓·accel × π↑·accel",
+              "n": 4,
+              "mean_r": 0.54,
+              "t": 1.06,
+              "sum_r": 2.2,
+              "win": 0.5
+            }
+          ]
+        },
+        "signs": {
+          "p_shift": 0.436,
+          "cells": [
+            {
+              "regime": "g↑ π↑",
+              "n": 86,
+              "mean_r": 0.324,
+              "t": 2.27,
+              "sum_r": 27.9,
+              "win": 0.535
+            },
+            {
+              "regime": "g↓ π↑",
+              "n": 10,
+              "mean_r": 0.306,
+              "t": 0.97,
+              "sum_r": 3.1,
+              "win": 0.5
+            }
+          ]
+        }
+      }
+    },
+    "gold_silver": {
+      "is_end": "2023-01-01",
+      "n": 54,
+      "mean_r": 1.066,
+      "sum_r": 57.5,
+      "lenses": {
+        "change": {
+          "p_shift": 0.805,
+          "cells": [
+            {
+              "regime": "g↑ π↑",
+              "n": 17,
+              "mean_r": 1.271,
+              "t": 2.56,
+              "sum_r": 21.6,
+              "win": 0.706
+            },
+            {
+              "regime": "g↓ π↑",
+              "n": 13,
+              "mean_r": 0.91,
+              "t": 1.7,
+              "sum_r": 11.8,
+              "win": 0.615
+            },
+            {
+              "regime": "g↓ π↓",
+              "n": 13,
+              "mean_r": 1.241,
+              "t": 2.34,
+              "sum_r": 16.1,
+              "win": 0.692
+            },
+            {
+              "regime": "g↑ π↓",
+              "n": 11,
+              "mean_r": 0.726,
+              "t": 1.27,
+              "sum_r": 8.0,
+              "win": 0.545
+            }
+          ]
+        },
+        "joint": {
+          "p_shift": 0.077,
+          "cells": [
+            {
+              "regime": "g↑·accel × π↑·accel",
+              "n": 13,
+              "mean_r": 1.403,
+              "t": 2.81,
+              "sum_r": 18.2,
+              "win": 0.692
+            },
+            {
+              "regime": "g↑·slow × π↑·slow",
+              "n": 13,
+              "mean_r": 1.241,
+              "t": 2.34,
+              "sum_r": 16.1,
+              "win": 0.692
+            },
+            {
+              "regime": "g↑·accel × π↑·slow",
+              "n": 10,
+              "mean_r": 0.591,
+              "t": 0.96,
+              "sum_r": 5.9,
+              "win": 0.5
+            },
+            {
+              "regime": "g↑·slow × π↑·accel",
+              "n": 10,
+              "mean_r": 1.556,
+              "t": 2.89,
+              "sum_r": 15.6,
+              "win": 0.8
+            },
+            {
+              "regime": "g↓·accel × π↑·accel",
+              "n": 4,
+              "mean_r": 0.841,
+              "t": 0.56,
+              "sum_r": 3.4,
+              "win": 0.75
+            },
+            {
+              "regime": "g↓·slow × π↑·accel",
+              "n": 3,
+              "mean_r": -1.246,
+              "t": -7.48,
+              "sum_r": -3.7,
+              "win": 0.0
+            },
+            {
+              "regime": "g↓·accel × π↑·slow",
+              "n": 1,
+              "mean_r": 2.069,
+              "t": null,
+              "sum_r": 2.1,
+              "win": 1.0
+            }
+          ]
+        },
+        "signs": {
+          "p_shift": 0.031,
+          "cells": [
+            {
+              "regime": "g↑ π↑",
+              "n": 46,
+              "mean_r": 1.214,
+              "t": 4.53,
+              "sum_r": 55.8,
+              "win": 0.674
+            },
+            {
+              "regime": "g↓ π↑",
+              "n": 8,
+              "mean_r": 0.212,
+              "t": 0.26,
+              "sum_r": 1.7,
+              "win": 0.5
+            }
+          ]
+        }
+      }
+    },
+    "ou_modell": {
+      "is_end": "2023-01-01",
+      "n": 301,
+      "mean_r": 0.022,
+      "sum_r": 6.6,
+      "lenses": {
+        "change": {
+          "p_shift": 0.856,
+          "cells": [
+            {
+              "regime": "g↑ π↑",
+              "n": 111,
+              "mean_r": -0.015,
+              "t": -0.45,
+              "sum_r": -1.7,
+              "win": 0.532
+            },
+            {
+              "regime": "g↓ π↑",
+              "n": 88,
+              "mean_r": 0.038,
+              "t": 1.17,
+              "sum_r": 3.3,
+              "win": 0.625
+            },
+            {
+              "regime": "g↑ π↓",
+              "n": 61,
+              "mean_r": 0.027,
+              "t": 0.72,
+              "sum_r": 1.7,
+              "win": 0.607
+            },
+            {
+              "regime": "g↓ π↓",
+              "n": 41,
+              "mean_r": 0.081,
+              "t": 2.16,
+              "sum_r": 3.3,
+              "win": 0.707
+            }
+          ]
+        },
+        "joint": {
+          "p_shift": 0.467,
+          "cells": [
+            {
+              "regime": "g↑·accel × π↑·accel",
+              "n": 75,
+              "mean_r": -0.07,
+              "t": -1.58,
+              "sum_r": -5.2,
+              "win": 0.48
+            },
+            {
+              "regime": "g↑·slow × π↑·accel",
+              "n": 65,
+              "mean_r": 0.034,
+              "t": 0.82,
+              "sum_r": 2.2,
+              "win": 0.646
+            },
+            {
+              "regime": "g↑·accel × π↑·slow",
+              "n": 52,
+              "mean_r": 0.0,
+              "t": 0.01,
+              "sum_r": 0.0,
+              "win": 0.577
+            },
+            {
+              "regime": "g↑·slow × π↑·slow",
+              "n": 41,
+              "mean_r": 0.081,
+              "t": 2.16,
+              "sum_r": 3.3,
+              "win": 0.707
+            },
+            {
+              "regime": "g↓·accel × π↑·accel",
+              "n": 36,
+              "mean_r": 0.098,
+              "t": 2.29,
+              "sum_r": 3.5,
+              "win": 0.639
+            },
+            {
+              "regime": "g↓·slow × π↑·accel",
+              "n": 23,
+              "mean_r": 0.05,
+              "t": 1.12,
+              "sum_r": 1.1,
+              "win": 0.565
+            },
+            {
+              "regime": "g↓·accel × π↑·slow",
+              "n": 9,
+              "mean_r": 0.183,
+              "t": 2.55,
+              "sum_r": 1.6,
+              "win": 0.778
+            }
+          ]
+        },
+        "signs": {
+          "p_shift": 0.107,
+          "cells": [
+            {
+              "regime": "g↑ π↑",
+              "n": 233,
+              "mean_r": 0.001,
+              "t": 0.06,
+              "sum_r": 0.3,
+              "win": 0.588
+            },
+            {
+              "regime": "g↓ π↑",
+              "n": 68,
+              "mean_r": 0.093,
+              "t": 3.22,
+              "sum_r": 6.3,
+              "win": 0.632
+            }
+          ]
+        }
+      }
+    },
+    "cls_practical": {
+      "is_end": "2022-06-01",
+      "n": 57,
+      "mean_r": 0.336,
+      "sum_r": 19.1,
+      "lenses": {
+        "change": {
+          "p_shift": 0.279,
+          "cells": [
+            {
+              "regime": "g↓ π↑",
+              "n": 21,
+              "mean_r": 0.661,
+              "t": 1.32,
+              "sum_r": 13.9,
+              "win": 0.571
+            },
+            {
+              "regime": "g↑ π↑",
+              "n": 16,
+              "mean_r": -0.077,
+              "t": -0.22,
+              "sum_r": -1.2,
+              "win": 0.438
+            },
+            {
+              "regime": "g↑ π↓",
+              "n": 11,
+              "mean_r": 1.069,
+              "t": 1.24,
+              "sum_r": 11.8,
+              "win": 0.545
+            },
+            {
+              "regime": "g↓ π↓",
+              "n": 9,
+              "mean_r": -0.586,
+              "t": -1.61,
+              "sum_r": -5.3,
+              "win": 0.222
+            }
+          ]
+        },
+        "joint": {
+          "p_shift": 0.231,
+          "cells": [
+            {
+              "regime": "g↑·slow × π↑·accel",
+              "n": 16,
+              "mean_r": 0.496,
+              "t": 0.85,
+              "sum_r": 7.9,
+              "win": 0.562
+            },
+            {
+              "regime": "g↑·accel × π↑·accel",
+              "n": 10,
+              "mean_r": -0.088,
+              "t": -0.18,
+              "sum_r": -0.9,
+              "win": 0.4
+            },
+            {
+              "regime": "g↑·accel × π↑·slow",
+              "n": 10,
+              "mean_r": 1.283,
+              "t": 1.39,
+              "sum_r": 12.8,
+              "win": 0.6
+            },
+            {
+              "regime": "g↑·slow × π↑·slow",
+              "n": 9,
+              "mean_r": -0.586,
+              "t": -1.61,
+              "sum_r": -5.3,
+              "win": 0.222
+            },
+            {
+              "regime": "g↓·accel × π↑·accel",
+              "n": 6,
+              "mean_r": -0.057,
+              "t": -0.11,
+              "sum_r": -0.3,
+              "win": 0.5
+            },
+            {
+              "regime": "g↓·slow × π↑·accel",
+              "n": 5,
+              "mean_r": 1.19,
+              "t": 1.14,
+              "sum_r": 6.0,
+              "win": 0.6
+            },
+            {
+              "regime": "g↓·accel × π↑·slow",
+              "n": 1,
+              "mean_r": -1.076,
+              "t": null,
+              "sum_r": -1.1,
+              "win": 0.0
+            }
+          ]
+        },
+        "signs": {
+          "p_shift": 0.359,
+          "cells": [
+            {
+              "regime": "g↑ π↑",
+              "n": 45,
+              "mean_r": 0.325,
+              "t": 1.0,
+              "sum_r": 14.6,
+              "win": 0.467
+            },
+            {
+              "regime": "g↓ π↑",
+              "n": 12,
+              "mean_r": 0.378,
+              "t": 0.72,
+              "sum_r": 4.5,
+              "win": 0.5
+            }
+          ]
+        }
+      }
+    },
+    "trend_pullback": {
+      "is_end": "2024-07-01",
+      "n": 169,
+      "mean_r": 0.2,
+      "sum_r": 33.9,
+      "lenses": {
+        "change": {
+          "p_shift": 0.595,
+          "cells": [
+            {
+              "regime": "g↑ π↓",
+              "n": 52,
+              "mean_r": -0.058,
+              "t": -0.25,
+              "sum_r": -3.0,
+              "win": 0.365
+            },
+            {
+              "regime": "g↓ π↓",
+              "n": 44,
+              "mean_r": 0.098,
+              "t": 0.36,
+              "sum_r": 4.3,
+              "win": 0.409
+            },
+            {
+              "regime": "g↑ π↑",
+              "n": 42,
+              "mean_r": 0.313,
+              "t": 1.2,
+              "sum_r": 13.2,
+              "win": 0.452
+            },
+            {
+              "regime": "g↓ π↑",
+              "n": 31,
+              "mean_r": 0.627,
+              "t": 1.96,
+              "sum_r": 19.4,
+              "win": 0.548
+            }
+          ]
+        },
+        "joint": {
+          "p_shift": 0.395,
+          "cells": [
+            {
+              "regime": "g↑·accel × π↑·slow",
+              "n": 50,
+              "mean_r": -0.007,
+              "t": -0.03,
+              "sum_r": -0.3,
+              "win": 0.38
+            },
+            {
+              "regime": "g↑·slow × π↑·slow",
+              "n": 44,
+              "mean_r": 0.098,
+              "t": 0.36,
+              "sum_r": 4.3,
+              "win": 0.409
+            },
+            {
+              "regime": "g↑·accel × π↑·accel",
+              "n": 36,
+              "mean_r": 0.48,
+              "t": 1.7,
+              "sum_r": 17.3,
+              "win": 0.5
+            },
+            {
+              "regime": "g↑·slow × π↑·accel",
+              "n": 27,
+              "mean_r": 0.74,
+              "t": 2.17,
+              "sum_r": 20.0,
+              "win": 0.593
+            },
+            {
+              "regime": "g↓·accel × π↑·accel",
+              "n": 6,
+              "mean_r": -0.689,
+              "t": -1.21,
+              "sum_r": -4.1,
+              "win": 0.167
+            },
+            {
+              "regime": "g↓·slow × π↑·accel",
+              "n": 4,
+              "mean_r": -0.137,
+              "t": -0.14,
+              "sum_r": -0.5,
+              "win": 0.25
+            },
+            {
+              "regime": "g↓·accel × π↑·slow",
+              "n": 2,
+              "mean_r": -1.343,
+              "t": -5.28,
+              "sum_r": -2.7,
+              "win": 0.0
+            }
+          ]
+        },
+        "signs": {
+          "p_shift": 0.115,
+          "cells": [
+            {
+              "regime": "g↑ π↑",
+              "n": 157,
+              "mean_r": 0.263,
+              "t": 1.9,
+              "sum_r": 41.2,
+              "win": 0.452
+            },
+            {
+              "regime": "g↓ π↑",
+              "n": 12,
+              "mean_r": -0.614,
+              "t": -1.48,
+              "sum_r": -7.4,
+              "win": 0.167
+            }
+          ]
+        }
+      }
+    },
+    "ctnl_reversal": {
+      "is_end": "2026-10-01",
+      "n": 166,
+      "mean_r": 1.033,
+      "sum_r": 171.5,
+      "lenses": {
+        "change": {
+          "p_shift": 0.672,
+          "cells": [
+            {
+              "regime": "g↑ π↓",
+              "n": 66,
+              "mean_r": 1.106,
+              "t": 3.05,
+              "sum_r": 73.0,
+              "win": 0.455
+            },
+            {
+              "regime": "g↑ π↑",
+              "n": 46,
+              "mean_r": 0.506,
+              "t": 1.11,
+              "sum_r": 23.3,
+              "win": 0.326
+            },
+            {
+              "regime": "g↓ π↑",
+              "n": 27,
+              "mean_r": 0.989,
+              "t": 1.9,
+              "sum_r": 26.7,
+              "win": 0.481
+            },
+            {
+              "regime": "g↓ π↓",
+              "n": 27,
+              "mean_r": 1.798,
+              "t": 2.85,
+              "sum_r": 48.5,
+              "win": 0.519
+            }
+          ]
+        },
+        "joint": {
+          "p_shift": 0.741,
+          "cells": [
+            {
+              "regime": "g↑·accel × π↑·slow",
+              "n": 64,
+              "mean_r": 1.0,
+              "t": 2.73,
+              "sum_r": 64.0,
+              "win": 0.438
+            },
+            {
+              "regime": "g↑·accel × π↑·accel",
+              "n": 45,
+              "mean_r": 0.544,
+              "t": 1.17,
+              "sum_r": 24.5,
+              "win": 0.333
+            },
+            {
+              "regime": "g↑·slow × π↑·slow",
+              "n": 27,
+              "mean_r": 1.798,
+              "t": 2.85,
+              "sum_r": 48.5,
+              "win": 0.519
+            },
+            {
+              "regime": "g↑·slow × π↑·accel",
+              "n": 23,
+              "mean_r": 1.109,
+              "t": 1.89,
+              "sum_r": 25.5,
+              "win": 0.478
+            },
+            {
+              "regime": "g↓·slow × π↑·accel",
+              "n": 4,
+              "mean_r": 0.299,
+              "t": 0.29,
+              "sum_r": 1.2,
+              "win": 0.5
+            },
+            {
+              "regime": "g↓·accel × π↑·slow",
+              "n": 2,
+              "mean_r": 4.52,
+              "t": 10.28,
+              "sum_r": 9.0,
+              "win": 1.0
+            },
+            {
+              "regime": "g↓·accel × π↑·accel",
+              "n": 1,
+              "mean_r": -1.224,
+              "t": null,
+              "sum_r": -1.2,
+              "win": 0.0
+            }
+          ]
+        },
+        "signs": {
+          "p_shift": 0.798,
+          "cells": [
+            {
+              "regime": "g↑ π↑",
+              "n": 159,
+              "mean_r": 1.022,
+              "t": 4.26,
+              "sum_r": 162.5,
+              "win": 0.428
+            },
+            {
+              "regime": "g↓ π↑",
+              "n": 7,
+              "mean_r": 1.288,
+              "t": 1.25,
+              "sum_r": 9.0,
+              "win": 0.571
+            }
+          ]
+        }
+      }
+    }
+  },
+  "gleichlauf_2019_2022H1": {
+    "change": {
+      "g↑ π↑": {
+        "cls_practical": -0.077,
+        "ctnl_reversal": 0.181,
+        "gold_asb": 0.435,
+        "gold_silver": 1.271,
+        "orb_nasdaq": 0.518,
+        "orb_sp500": 0.788,
+        "orb_us30": 0.676,
+        "ou_modell": -0.015,
+        "trend_pullback": -0.219
+      },
+      "g↑ π↓": {
+        "cls_practical": 1.069,
+        "ctnl_reversal": 0.838,
+        "gold_asb": 0.216,
+        "gold_silver": 0.771,
+        "orb_nasdaq": 0.516,
+        "orb_sp500": 1.015,
+        "orb_us30": 0.785,
+        "ou_modell": 0.044,
+        "trend_pullback": -0.351
+      },
+      "g↓ π↑": {
+        "cls_practical": 0.661,
+        "ctnl_reversal": 0.299,
+        "gold_asb": 0.207,
+        "gold_silver": 0.817,
+        "orb_nasdaq": 0.304,
+        "orb_sp500": 0.489,
+        "orb_us30": 0.351,
+        "ou_modell": 0.038,
+        "trend_pullback": 0.552
+      },
+      "g↓ π↓": {
+        "cls_practical": -0.586,
+        "ctnl_reversal": 0.118,
+        "gold_asb": 0.232,
+        "gold_silver": 1.064,
+        "orb_nasdaq": 0.17,
+        "orb_sp500": 1.27,
+        "orb_us30": 0.169,
+        "ou_modell": 0.07,
+        "trend_pullback": 0.169
+      }
+    },
+    "joint": {
+      "g↑·accel × π↑·accel": {
+        "cls_practical": -0.088,
+        "ctnl_reversal": 0.239,
+        "gold_asb": 0.409,
+        "gold_silver": 1.403,
+        "orb_nasdaq": 0.661,
+        "orb_sp500": 0.825,
+        "orb_us30": 0.34,
+        "ou_modell": -0.07,
+        "trend_pullback": -0.062
+      },
+      "g↑·accel × π↑·slow": {
+        "cls_practical": 1.283,
+        "ctnl_reversal": 0.555,
+        "gold_asb": 0.239,
+        "gold_silver": 0.609,
+        "orb_nasdaq": 0.783,
+        "orb_sp500": 0.993,
+        "orb_us30": 0.734,
+        "ou_modell": 0.019,
+        "trend_pullback": -0.235
+      },
+      "g↑·slow × π↑·accel": {
+        "cls_practical": 0.496,
+        "ctnl_reversal": 0.298,
+        "gold_asb": 0.207,
+        "gold_silver": 1.505,
+        "orb_nasdaq": 0.411,
+        "orb_sp500": 0.085,
+        "orb_us30": -0.163,
+        "ou_modell": 0.034,
+        "trend_pullback": 0.714
+      },
+      "g↑·slow × π↑·slow": {
+        "cls_practical": -0.586,
+        "ctnl_reversal": 0.118,
+        "gold_asb": 0.232,
+        "gold_silver": 1.064,
+        "orb_nasdaq": 0.17,
+        "orb_sp500": 1.27,
+        "orb_us30": 0.169,
+        "ou_modell": 0.07,
+        "trend_pullback": 0.169
+      },
+      "g↓·accel × π↑·accel": {
+        "cls_practical": -0.057,
+        "ctnl_reversal": -1.224,
+        "gold_asb": 0.54,
+        "gold_silver": 0.841,
+        "orb_nasdaq": 0.164,
+        "orb_sp500": 0.665,
+        "orb_us30": 1.854,
+        "ou_modell": 0.098,
+        "trend_pullback": -0.689
+      },
+      "g↓·accel × π↑·slow": {
+        "cls_practical": -1.076,
+        "ctnl_reversal": 4.52,
+        "gold_asb": 0.149,
+        "gold_silver": 2.069,
+        "orb_nasdaq": -0.58,
+        "orb_sp500": 1.252,
+        "orb_us30": 1.675,
+        "ou_modell": 0.183,
+        "trend_pullback": -1.343
+      },
+      "g↓·slow × π↑·accel": {
+        "cls_practical": 1.19,
+        "ctnl_reversal": 0.299,
+        "gold_asb": NaN,
+        "gold_silver": -1.246,
+        "orb_nasdaq": 0.021,
+        "orb_sp500": 1.121,
+        "orb_us30": 1.306,
+        "ou_modell": 0.05,
+        "trend_pullback": -0.137
+      }
+    }
+  }
+}

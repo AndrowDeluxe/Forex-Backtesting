@@ -1,0 +1,209 @@
+{
+ "review_type": "monthly_aggregate",
+ "trade_id": "ek_orb_2026-09-01_2026-10-23",
+ "ticker": "ORB",
+ "outcome": "loss",
+ "planned": {
+  "thesis": "orb Live-Bein EK, regelbasiert (Bot)",
+  "risk_r": 1.0,
+  "thesis_recorded_before_entry": true,
+  "setup_confirmed": true,
+  "market_regime": "unknown"
+ },
+ "actual": {
+  "risk_r": 0.5,
+  "portfolio_heat_r": 1.0,
+  "stop_moved": false,
+  "stop_move_planned": false,
+  "entry_before_confirmation": false,
+  "traded_against_regime": false
+ },
+ "risk_plan": {
+  "max_risk_per_trade_r": 1.0,
+  "max_portfolio_heat_r": 3.0,
+  "max_weekly_loss_r": 5.0
+ },
+ "postmortem": {
+  "root_cause": "risk_sizing",
+  "notes": [
+   "Geplantes Risiko 10.08 EUR/Trade (CAPITAL_WEIGHT x LEG_RISK_PCT), realer Stop-Verlust Median 4.99 EUR",
+   "34 Positionen, 26 im Stop, netto -59.00 EUR"
+  ]
+ },
+ "monthly": {
+  "trades": [
+   {
+    "trade_id": "260611665",
+    "outcome": "loss",
+    "pnl": -5.02
+   },
+   {
+    "trade_id": "260635110",
+    "outcome": "loss",
+    "pnl": -3.22
+   },
+   {
+    "trade_id": "262117522",
+    "outcome": "win",
+    "pnl": 23.73
+   },
+   {
+    "trade_id": "263484451",
+    "outcome": "loss",
+    "pnl": -3.6
+   },
+   {
+    "trade_id": "265611336",
+    "outcome": "loss",
+    "pnl": -0.71
+   },
+   {
+    "trade_id": "265611343",
+    "outcome": "loss",
+    "pnl": -0.46
+   },
+   {
+    "trade_id": "266307594",
+    "outcome": "loss",
+    "pnl": -1.28
+   },
+   {
+    "trade_id": "266316110",
+    "outcome": "loss",
+    "pnl": -1.58
+   },
+   {
+    "trade_id": "267125689",
+    "outcome": "loss",
+    "pnl": -1.42
+   },
+   {
+    "trade_id": "267125718",
+    "outcome": "win",
+    "pnl": 2.97
+   },
+   {
+    "trade_id": "268408480",
+    "outcome": "loss",
+    "pnl": -2.62
+   },
+   {
+    "trade_id": "269230743",
+    "outcome": "loss",
+    "pnl": -0.14
+   },
+   {
+    "trade_id": "269766479",
+    "outcome": "win",
+    "pnl": 0.98
+   },
+   {
+    "trade_id": "270504595",
+    "outcome": "loss",
+    "pnl": -0.23
+   },
+   {
+    "trade_id": "270504598",
+    "outcome": "loss",
+    "pnl": -0.21
+   },
+   {
+    "trade_id": "271223113",
+    "outcome": "loss",
+    "pnl": -0.47
+   },
+   {
+    "trade_id": "271223116",
+    "outcome": "loss",
+    "pnl": -0.71
+   },
+   {
+    "trade_id": "271858786",
+    "outcome": "loss",
+    "pnl": -4.61
+   },
+   {
+    "trade_id": "271858793",
+    "outcome": "loss",
+    "pnl": -4.61
+   },
+   {
+    "trade_id": "272489096",
+    "outcome": "loss",
+    "pnl": -5.22
+   },
+   {
+    "trade_id": "272489099",
+    "outcome": "loss",
+    "pnl": -5.21
+   },
+   {
+    "trade_id": "273090595",
+    "outcome": "loss",
+    "pnl": -5.3
+   },
+   {
+    "trade_id": "273090579",
+    "outcome": "loss",
+    "pnl": -5.47
+   },
+   {
+    "trade_id": "273090576",
+    "outcome": "win",
+    "pnl": 13.79
+   },
+   {
+    "trade_id": "273090577",
+    "outcome": "win",
+    "pnl": 23.35
+   },
+   {
+    "trade_id": "275818549",
+    "outcome": "loss",
+    "pnl": -5.45
+   },
+   {
+    "trade_id": "275818543",
+    "outcome": "loss",
+    "pnl": -4.99
+   },
+   {
+    "trade_id": "275818513",
+    "outcome": "loss",
+    "pnl": -10.59
+   },
+   {
+    "trade_id": "276573871",
+    "outcome": "loss",
+    "pnl": -7.88
+   },
+   {
+    "trade_id": "276573872",
+    "outcome": "loss",
+    "pnl": -7.05
+   },
+   {
+    "trade_id": "277322697",
+    "outcome": "loss",
+    "pnl": -11.41
+   },
+   {
+    "trade_id": "279728377",
+    "outcome": "loss",
+    "pnl": -11.46
+   },
+   {
+    "trade_id": "285336962",
+    "outcome": "loss",
+    "pnl": -2.39
+   },
+   {
+    "trade_id": "285887056",
+    "outcome": "loss",
+    "pnl": -10.51
+   }
+  ],
+  "consecutive_losses": 10,
+  "rule_violations": 0
+ }
+}

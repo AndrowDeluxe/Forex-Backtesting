@@ -38,3 +38,8 @@ fusion_lab/data/
 # Notion-Datenbank-IDs: lokaler Zustand, erzeugt von fusion_lab/notion/setup_cockpit.py
 # (fusion_lab/_secrets.py ist NUR Lade-Code ohne Zugangsdaten -> wird committet)
 fusion_lab/notion/cockpit_ids.json
+
+# Rohe Kurs-/Tickdumps der MT5-EA-Nachbauten (bis ~150 MB je Datei, GitHub-Limit 100 MB; neu ladbar)
+mt5_quantum_omnigold/results/ticks/
+mt5_quantum_omnigold/results/gold_m1_broker.parquet
+mt5_valkyrie/results/xau_m1_mq.parquet

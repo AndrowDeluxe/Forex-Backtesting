@@ -1,0 +1,54 @@
+{
+  "generated_at_utc": "2026-10-28T20:37:45Z",
+  "objective": {
+    "goal": "Find a context filter that removes low-expectancy ORB days",
+    "focus_area": "Day selection / regime filter",
+    "horizon": "forward test 2026-11 to 2027-03"
+  },
+  "evidence_summary": {
+    "primary_issues": [
+      "OOS + vault show no significant residual alpha (t 1.1-1.2)",
+      "Ribbon filter flipped in 2026",
+      "Selection partly done on OOS in the past"
+    ],
+    "regime_characteristics": [
+      "growth x inflation quadrants",
+      "VIX terciles",
+      "After a negative 20-day index return avg R 0.76 (470 trades) vs 0.23 after positive (735)",
+      "Mid VIX tercile avg R 0.11 vs 0.51 low / 0.69 high (non-monotone)",
+      "Regime growth slowing x inflation accelerating avg R 0.13 (249 trades) vs 0.44-0.67 elsewhere",
+      "February -0.10 and July -0.36 avg R; December 0.05"
+    ],
+    "winning_patterns": [
+      "held to session end (avg 8.2R) or target",
+      "index fell over prior 20 days",
+      "high VIX tercile"
+    ],
+    "losing_patterns": [
+      "stopped out within the day (985 of 1205 trades)",
+      "mid VIX tercile",
+      "prior 20-day uptrend"
+    ],
+    "available_features": [
+      "ret20_index",
+      "ret5_index",
+      "vix_close_prev",
+      "macro_regime_joint",
+      "weekday",
+      "month",
+      "leg"
+    ],
+    "rejected_directions": [
+      "[rejected] IS-only re-optimisation failed in vault (PF 0.52, DSR ~0).",
+      "[rejected] Oil-based filter fitted on 2026 rejected as fit; forward test only.",
+      "[rejected] Real SPX gamma (SqueezeMetrics) does not explain the 2026 flip."
+    ],
+    "execution_constraints": [
+      "MT5 bridges, scan cadence 5-15 min",
+      "no change to live config before forward test",
+      "risk_per_trade <= 1.0%",
+      "funded account daily loss limits"
+    ]
+  },
+  "prompt_ready_text": "## Primary issues\n- OOS + vault show no significant residual alpha (t 1.1-1.2)\n- Ribbon filter flipped in 2026\n- Selection partly done on OOS in the past\n\n## Regime characteristics\n- growth x inflation quadrants\n- VIX terciles\n- After a negative 20-day index return avg R 0.76 (470 trades) vs 0.23 after positive (735)\n- Mid VIX tercile avg R 0.11 vs 0.51 low / 0.69 high (non-monotone)\n- Regime growth slowing x inflation accelerating avg R 0.13 (249 trades) vs 0.44-0.67 elsewhere\n- February -0.10 and July -0.36 avg R; December 0.05\n\n## Winning patterns\n- held to session end (avg 8.2R) or target\n- index fell over prior 20 days\n- high VIX tercile\n\n## Losing patterns\n- stopped out within the day (985 of 1205 trades)\n- mid VIX tercile\n- prior 20-day uptrend\n\n## Available features\n- ret20_index\n- ret5_index\n- vix_close_prev\n- macro_regime_joint\n- weekday\n- month\n- leg\n\n## Rejected directions\n- [rejected] IS-only re-optimisation failed in vault (PF 0.52, DSR ~0).\n- [rejected] Oil-based filter fitted on 2026 rejected as fit; forward test only.\n- [rejected] Real SPX gamma (SqueezeMetrics) does not explain the 2026 flip.\n\n## Execution constraints\n- MT5 bridges, scan cadence 5-15 min\n- no change to live config before forward test\n- risk_per_trade <= 1.0%\n- funded account daily loss limits\n"
+}

@@ -317,3 +317,85 @@ gezählt, OOS und Tresor versiegelt. Live-Protokoll auf der Notion-Seite
   Durchlauf. Netto +0,016 G je Trade (t 0,9). Bei G = 10 fressen die Kosten
   den Magnet auf.
 - **Nächster Schritt:** Stufe 2 (Kontext einzeln) nur auf dieser Zelle.
+
+
+## Ergebnis Stufe B: Doppel-BOS-Einstieg (18.10.2026, nur IS)
+Nutzeridee: am Level zwei BOS abwarten (A: 2× M5, B: M15 + M5), Einstieg als
+Stop-Order beim zweiten BOS, beide Richtungen, Volumen als Varianten (HVN,
+Druck-Näherung). Code: `keylevels/bos.py`, `keylevels/volume.py`, Befehle
+`bos-events` und `bos-report`. Ergebnisse in `keylevels/results/bos_*`. Die
+Rechnung wurde von Hand und automatisch geprüft. Notion-Seite „Backtest: Key
+Levels – Doppel-BOS-Einstieg (IS)“.
+
+- **0 von 240 Zellen bestehen.** Die mittlere Trefferquote liegt bei 50,2 %
+  (Schein-Level 50,3 %), mit HVN bei 50,7 % (50,3 %), mit Druck bei 51,3 %
+  (51,2 %).
+- Der Anteil der Zellen mit z > 2 liegt bei 2,1 %, die Zufallsquote bei
+  2,3 %. Auch die Doppel-BOS-Folge ohne Level trifft nur etwa 50 %.
+- MFE ≈ MAE (Median-Verhältnis 1,03). Eine SL/TP-Optimierung auf diesem
+  Einstieg würde nur Rauschen anpassen.
+- **Deutung:** Der Magnet wirkt bei der Berührung. Bis zur Füllung des
+  zweiten BOS vergehen im Median etwa 105 Minuten, dann ist er verbraucht.
+- **Schwäche im Design:** Für die HVN-Zellen gibt es keine Vergleichsgruppe
+  „ohne Level“, weil Zufallszeitpunkte kein Level haben. Dort ist nur der
+  Vergleich mit Schein-Level möglich. Für das Urteil spielt das keine Rolle,
+  denn keine HVN-Zelle hat gegen Schein-Level z > 3.
+- **Versuche gesamt:** 466 im Lock `keylevels_v1`.
+
+## Vier Fragen (Stand 18.10.)
+1. **Warum verdient es Geld?** Durch den Magnet an sichtbaren Leveln: Stops
+   hinter dem Level ziehen den Kurs durch. Das ist belegt, aber klein.
+2. **Wo verliert es am meisten?** Bei kleinen G (10 Pips): Die Kosten fressen
+   den Vorteil. Nach einer Bestätigungsphase (Doppel-BOS) gibt es keinen
+   Vorteil mehr.
+3. **Was ist dort anders?** Der Zeitpunkt. Der Vorteil sitzt an und kurz vor
+   der Berührung, nicht Stunden danach.
+4. **Welche eine Regel könnte helfen?** In Richtung Level handeln, bevor es
+   berührt wird (Magnet-Trade). Neue Hypothese, noch ungetestet, in der
+   Ideen-Inbox.
+
+
+## Ergebnis Stufe C: Magnet-Trade (19.10.2026, nur IS)
+Einstieg vor dem Level, in Richtung Level (Regeln 31–34). Code
+`keylevels/magnet.py`, Befehle `magnet-events` und `magnet-report`.
+Ergebnisse in `keylevels/results/magnet_*`. Etwa 917.000 Einstiege.
+
+**Geprüft:** 600 Stichproben, unabhängig nachgerechnet, 0 Abweichungen.
+
+**Messregel korrigiert vor dem Lauf:** Ein Stop in der Füll-Minute wurde
+fälschlich gezählt, obwohl das Extrem vor der Füllung lag (9,8 %). Jetzt
+entscheidet in der Füll-Minute nur der Schluss. Danach liegen die
+Schein-Level exakt auf der Zufallsquote.
+
+Dieselbe Regel steckte im Doppel-BOS-Test, dort aber nur bei 0,5–4,5 % der
+Fälle und bei allen Gruppen gleich. Das Urteil bleibt.
+
+**Ergebnis: 0 von 16 Zellen.** Die Erreich-Quote gegen Schein-Level:
+
+| Level | Ziel Level (1:1), D = 10 | z |
+|---|---|---|
+| Vorwoche | 49,7 % gegen 52,5 % | −2,5 |
+| Session | 48,6 % gegen 50,2 % | −5,7 |
+| runde Zahl | gleich | +0,1 |
+| halbe Zahl | etwas weniger | −1,8 |
+
+- Einziger Ausreißer: runde Zahl, Ziel hinter dem Level. z = +3,0 bei
+  D = 10 und +2,4 bei D = 20. Netto liegt er bei −0,18 D, die Kosten sind
+  größer als der Effekt.
+- Versuche gesamt: 482.
+
+## Gesamtfazit Key Levels (Stand 19.10., nur IS)
+Der Magnet existiert nur **ab** der Berührung: Ein berührtes Level wird
+öfter durchstoßen als ein beliebiger Kurs.
+
+- **Vorher** zieht nichts (Stufe C).
+- **Nach einer Bestätigung** ist es vorbei (Stufe B).
+- **Im kurzen Fenster dazwischen** ist der Effekt zu klein für Taker-Kosten
+  (Stufe 1).
+
+Kein Kandidat darf OOS oder Tresor öffnen.
+
+**Praktischer Nutzen für das diskretionäre Trading:** Stops knapp hinter
+offensichtlichen Leveln werden überdurchschnittlich oft abgeholt.
+Gemeint sind Vorwoche, Session, runde Zahl. Das ist ein Hinweis für die
+Stop-Platzierung, noch kein Edge.

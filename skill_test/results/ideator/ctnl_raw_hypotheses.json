@@ -1,0 +1,223 @@
+{
+ "hypotheses": [
+  {
+   "hypothesis_id": "CTNL-H1",
+   "title": "Skip CTNL reversals when growth and inflation both accelerate",
+   "thesis": "Gold reversal setups fail when growth and inflation accelerate together because gold trends persist in reflation phases.",
+   "problem_target": "Losing regime with zero expectancy",
+   "mechanism": "Reflation drives persistent real-asset demand; failed-continuation signals are overrun by trend flow, so reversal stops get hit.",
+   "evidence_basis": [
+    "IS avg R 0.02 (30 trades) vs 1.07-1.56 when inflation slows",
+    "memory: regime filter is the only lever for CTNL"
+   ],
+   "proposed_rule_changes": [
+    {
+     "component": "entry_filter",
+     "change": "skip entry when macro regime joint == g↑·accel × π↑·accel"
+    }
+   ],
+   "expected_impact": "Removes ~28 % of trades, little R",
+   "key_risks": [
+    "30 trades only",
+    "overlaps with existing ribbon/regime kill-switch"
+   ],
+   "kill_criteria": [
+    "Forward 2026-11..2027-03: filtered ΣR not better than unfiltered",
+    "Deflated Sharpe over all trials of the lock < 0.5 on IS"
+   ],
+   "minimum_viable_experiment": {
+    "goal": "IS comparison filtered vs unfiltered, counted as one trial",
+    "setup": "IS only via research_lock, OOS skipped, then forward",
+    "metrics": [
+     "sum_R",
+     "profit_factor",
+     "sharpe_per_trade",
+     "trade_count"
+    ],
+    "sample_size": ">= 100 IS trades kept",
+    "duration": "IS now, forward 5 months"
+   },
+   "score_components": {
+    "evidence_strength": 3,
+    "mechanism_clarity": 4,
+    "feasibility": 5,
+    "expected_payoff": 3,
+    "novelty": 3,
+    "test_efficiency": 5
+   },
+   "priority_score": 3.83,
+   "recommendation": "pursue",
+   "rationale": "Plausible mechanism, consistent with known regime lever.",
+   "confidence": "medium",
+   "assumptions": [
+    "TTP simulation represents live fills closely enough"
+   ],
+   "dependencies": [
+    "daily index/gold closes, VIX, macro regime labels"
+   ]
+  },
+  {
+   "hypothesis_id": "CTNL-H2",
+   "title": "Avoid Friday entries (weekend hold)",
+   "thesis": "Reversal entries on Friday carry weekend gap risk inside a 96h hold.",
+   "problem_target": "Flat Friday expectancy",
+   "mechanism": "Weekend gaps jump past the 3-ATR stop and remove the time the reversal needs; Monday reopen often resumes the trend.",
+   "evidence_basis": [
+    "IS Friday avg R 0.01 (18 trades) vs 0.56-1.29"
+   ],
+   "proposed_rule_changes": [
+    {
+     "component": "entry_filter",
+     "change": "no new CTNL entries on Friday"
+    }
+   ],
+   "expected_impact": "Removes ~17 % of trades",
+   "key_risks": [
+    "18 trades only"
+   ],
+   "kill_criteria": [
+    "Forward 2026-11..2027-03: filtered ΣR not better than unfiltered",
+    "Deflated Sharpe over all trials of the lock < 0.5 on IS"
+   ],
+   "minimum_viable_experiment": {
+    "goal": "IS comparison filtered vs unfiltered, counted as one trial",
+    "setup": "IS only via research_lock, OOS skipped, then forward",
+    "metrics": [
+     "sum_R",
+     "profit_factor",
+     "sharpe_per_trade",
+     "trade_count"
+    ],
+    "sample_size": ">= 100 IS trades kept",
+    "duration": "IS now, forward 5 months"
+   },
+   "score_components": {
+    "evidence_strength": 2,
+    "mechanism_clarity": 4,
+    "feasibility": 5,
+    "expected_payoff": 2,
+    "novelty": 3,
+    "test_efficiency": 5
+   },
+   "priority_score": 3.5,
+   "recommendation": "pursue",
+   "rationale": "Simple, mechanistic, cheap to test.",
+   "confidence": "low-medium",
+   "assumptions": [
+    "TTP simulation represents live fills closely enough"
+   ],
+   "dependencies": [
+    "daily index/gold closes, VIX, macro regime labels"
+   ]
+  },
+  {
+   "hypothesis_id": "CTNL-H3",
+   "title": "Trade CTNL only in high-VIX tercile",
+   "thesis": "Reversals work better when cross-asset fear is high.",
+   "problem_target": "Low expectancy in calm markets",
+   "mechanism": "High VIX means forced deleveraging, gold sold for liquidity then reverses.",
+   "evidence_basis": [
+    "IS avg R 1.34 high vs ~0.6"
+   ],
+   "proposed_rule_changes": [
+    {
+     "component": "entry_filter",
+     "change": "only enter when VIX prev close in IS top tercile"
+    }
+   ],
+   "expected_impact": "Removes ~66 % of trades",
+   "key_risks": [
+    "keeps only 36 IS trades",
+    "both other terciles also positive"
+   ],
+   "kill_criteria": [
+    "Forward 2026-11..2027-03: filtered ΣR not better than unfiltered",
+    "Deflated Sharpe over all trials of the lock < 0.5 on IS"
+   ],
+   "minimum_viable_experiment": {
+    "goal": "IS comparison filtered vs unfiltered, counted as one trial",
+    "setup": "IS only via research_lock, OOS skipped, then forward",
+    "metrics": [
+     "sum_R",
+     "profit_factor",
+     "sharpe_per_trade",
+     "trade_count"
+    ],
+    "sample_size": ">= 100 IS trades kept",
+    "duration": "IS now, forward 5 months"
+   },
+   "score_components": {
+    "evidence_strength": 2,
+    "mechanism_clarity": 3,
+    "feasibility": 5,
+    "expected_payoff": 2,
+    "novelty": 3,
+    "test_efficiency": 4
+   },
+   "priority_score": 3.17,
+   "recommendation": "park",
+   "rationale": "Other terciles positive too, would discard edge.",
+   "confidence": "low",
+   "assumptions": [
+    "TTP simulation represents live fills closely enough"
+   ],
+   "dependencies": [
+    "daily index/gold closes, VIX, macro regime labels"
+   ]
+  },
+  {
+   "hypothesis_id": "CTNL-H4",
+   "title": "Skip July",
+   "thesis": "July weak.",
+   "problem_target": "Weak month",
+   "mechanism": "Calendar only.",
+   "evidence_basis": [
+    "July -1.00 avg R (17 trades)"
+   ],
+   "proposed_rule_changes": [
+    {
+     "component": "entry_filter",
+     "change": "no entries in July"
+    }
+   ],
+   "expected_impact": "Removes ~16 % of trades",
+   "key_risks": [
+    "calendar mining"
+   ],
+   "kill_criteria": [
+    "Forward 2026-11..2027-03: filtered ΣR not better than unfiltered",
+    "Deflated Sharpe over all trials of the lock < 0.5 on IS"
+   ],
+   "minimum_viable_experiment": {
+    "goal": "IS comparison filtered vs unfiltered, counted as one trial",
+    "setup": "IS only via research_lock, OOS skipped, then forward",
+    "metrics": [
+     "sum_R",
+     "profit_factor",
+     "sharpe_per_trade",
+     "trade_count"
+    ],
+    "sample_size": ">= 100 IS trades kept",
+    "duration": "IS now, forward 5 months"
+   },
+   "score_components": {
+    "evidence_strength": 1,
+    "mechanism_clarity": 1,
+    "feasibility": 5,
+    "expected_payoff": 2,
+    "novelty": 1,
+    "test_efficiency": 5
+   },
+   "priority_score": 2.5,
+   "recommendation": "reject",
+   "rationale": "Calendar mining.",
+   "confidence": "low",
+   "assumptions": [
+    "TTP simulation represents live fills closely enough"
+   ],
+   "dependencies": [
+    "daily index/gold closes, VIX, macro regime labels"
+   ]
+  }
+ ]
+}

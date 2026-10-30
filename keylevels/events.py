@@ -49,7 +49,7 @@ class Series:
             if name == "H4":
                 key = ((idx.tz_convert("America/New_York") + pd.Timedelta(hours=7)).tz_localize(None)).floor("4h")
             else:
-                key = idx.tz_localize(None).floor({"M15": "15min", "H1": "1h"}[name])
+                key = idx.tz_localize(None).floor({"M5": "5min", "M15": "15min", "H1": "1h"}[name])
             codes, uniq = pd.factorize(key, sort=True)
             starts = np.flatnonzero(np.r_[True, codes[1:] != codes[:-1]])
             ends = np.r_[starts[1:], len(codes)]

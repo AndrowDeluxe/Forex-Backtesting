@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Ultimate Breakout System",
+    "verdict": "rejected",
+    "reason": "R1: only 1/5 profitable symbols; best profit 1511.45 < threshold 300000",
+    "best_symbol": "XAUUSD",
+    "r2_profit": null,
+    "final_profit": null,
+    "final_dd_pct": null,
+    "lr": null
+  }
+]

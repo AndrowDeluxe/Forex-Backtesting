@@ -1,0 +1,31 @@
+{
+  "strategy": "copy_trading_daily_update_20261020",
+  "split": {
+    "is_start": "2025-03-17",
+    "is_end": "2026-03-31",
+    "oos_end": "2026-10-16",
+    "tresor_end": null
+  },
+  "registered": "2026-10-20T19:31:23+00:00",
+  "trials": 124,
+  "frozen": {
+    "hash": "71a02c43ead6f09d907f3d2640d1374adea64b391254b275591c0a60f3a46633",
+    "config": {
+      "etype": "A2",
+      "validity": "update",
+      "sl": "atr1",
+      "tp": "struct",
+      "be": null,
+      "trail": null
+    },
+    "ts": "2026-10-27T22:17:46+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-10-27T22:17:46+00:00"
+  },
+  "forward": {
+    "start": "2026-10-17",
+    "eval_date": "2027-03-31",
+    "min_trades": 100
+  }
+}

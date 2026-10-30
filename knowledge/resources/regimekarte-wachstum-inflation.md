@@ -70,7 +70,8 @@ negativ. Nächste Prints: GDP advance 29.10., CPI 10.11.
    deren Mittelwerte reines Rauschen sind, und direkt nach Wendepunkten, weil
    das BIP-Label bis zu drei Monate hinterherläuft.
 3. **Was ist dort anders?** Offen; erst nach der Verknüpfung mit
-   Strategien/Trades messbar, und nur auf IS-Daten.
+   Strategien/Trades messbar, und nur auf IS-Daten. Verknüpfung mit den
+   Live-Beinen am 28.10. gemacht: kein Bein regimeabhängig, siehe [[edges-je-regime]].
 4. **Welche eine Regel könnte helfen?** Offen. Jede Regel aus der Karte
    (z. B. „Bein X nur in Regime Y“) ist eine gezählte Variante unter der
    [[overfitting-sperre]].

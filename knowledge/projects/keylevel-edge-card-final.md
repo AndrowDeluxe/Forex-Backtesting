@@ -62,6 +62,22 @@ Ausschlüsse
 
 Die nach 22 und 23 ausgeschlossenen Ereignisse werden als Kontrollgruppe mitgemessen.
 
+Einstieg (ergänzt 18.10.2026, Nutzervorgabe, Stufe B)
+25. Auslöser ist eine frische M1-Berührung eines Levels mit einem Anlauf von mindestens 20 Pips. Ab der Berührung gilt ein Beobachtungsfenster von 8 Stunden.
+26. Variante A, zwei M5-BOS: BOS 1 ist der Schluss einer M5-Kerze jenseits des letzten bestätigten M5-Swings (Fractal k = 2). Danach wird eine Stop-Order am nächsten bestätigten M5-Swing in dieselbe Richtung gelegt, der erst nach BOS 1 entstanden ist. Die Füllung ist BOS 2. Bei einem Gap gilt der Eröffnungskurs.
+27. Variante B, M15 plus M5: BOS 1 auf M15, danach die Stop-Order am nächsten bestätigten M5-Swing wie in 26.
+28. Ein BOS 1 in Gegenrichtung storniert die offene Order. Je Berührung zählt der erste gefüllte Einstieg. Zeigt er gegen den Anlauf, heißt er Umkehr, zeigt er mit dem Anlauf, Durchlauf.
+29. Volumen-Varianten, jede einzeln gegen „ohne“:
+    - (a) Das Level liegt in der High-Volume-Zone der letzten H4-Range. Die Range reicht vom letzten Swing-Hoch bis zum letzten Swing-Tief (k = 3). Die Stufenbreite beträgt 2 Pips. Das Level muss zu den oberen 20 % der Stufen gehören, oder der POC liegt höchstens 5 Pips entfernt.
+    - (b) Druck-Näherung: Tick-Volumen, gewichtet nach der Schlussposition in der Kerze, auf M5 (Summe 15, z-Score 100). Gelesen wird der z-Wert der letzten geschlossenen Kerze vor der Füllung: z ≤ −1 bei Short, z ≥ +1 bei Long.
+30. Gemessen wird ab der Füllung: Kommt zuerst +G oder −G (G = 10, 20, 30 Pips)? Dazu MFE und MAE über einen Tag. SL und TP werden erst danach optimiert, nur auf IS.
+
+Magnet-Trade (ergänzt 19.10.2026, Nutzerfreigabe, Stufe C)
+31. Auslöser: Der Kurs war seit Gültigkeitsbeginn bzw. seit der letzten Berührung mindestens 2·D vom Level entfernt, und zwar auf der Anlaufseite. Dann erreicht er erstmals die Marke Level − D (beim Anlauf von unten; beim Anlauf von oben spiegelbildlich).
+32. Einstieg: Stop-Order an Level − D in Richtung Level, bei Gap zum Eröffnungskurs. Pro frischem Anlauf gibt es einen Einstieg. Rasterlevel werden nach einer Levelberührung wieder scharf.
+33. Stop D gegen uns. Gemessen werden zwei Ziele: Level (1:1) und Level + D (2:1). Fenster 1 Tag. In der Füll-Minute entscheidet nur der Schlusskurs.
+34. Level: Vorwoche, Session, runde Zahl, halbe Zahl. D = 10 und 20 Pips. Kontrollen: Pivot Tag und Schein-Level.
+
 Merksatz: Ein frischer Anlauf auf ein vorher definiertes, sichtbares Level, ein objektives Ereignis (Berührung, Kerzenschluss oder Retest), und dann die Frage, was zuerst kommt: G in die eine Richtung oder G in die andere.
 
 03 MECHANISMUS
@@ -113,6 +129,8 @@ Stufe 1: Verglichen wird die Trefferquote mit der an Schein-Leveln. Eine Kombina
 Stufe 2: Die Kontextfaktoren werden einzeln geprüft, nur auf den weitergegebenen Kombinationen. Jede Kombination zählt als Versuch, die Deflated Sharpe wird ausgewiesen. OOS und Tresor werden je genau einmal geöffnet.
 
 Heute noch nicht: Open Interest, Retail-Sentiment, Orderbuch und minutengenaue Uhrzeiten für Nicht-US-Daten.
+
+Annahmen Stufe B (18.10., noch zu bestätigen): Fenster 8 h, Fractal k = 2 auf M5 und M15, Profil über die letzte H4-Range, Druckschwelle ±1 z.
 
 Festgelegte Annahmen (vom Nutzer pauschal bestätigt, 16.10.):
 - Engulfing gültig 5 Kerzen

@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "updated": "2026-10-28T20:27:21",
+  "runs": 3,
+  "symbols": {},
+  "parameters": {},
+  "bots": {
+    "Ultimate Breakout System": {
+      "verdict": "rejected",
+      "reason": "R1: only 1/5 profitable symbols; best profit 1511.45 < threshold 300000",
+      "last_seen": "2026-10-28"
+    }
+  }
+}

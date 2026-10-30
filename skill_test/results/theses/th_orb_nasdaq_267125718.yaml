@@ -1,0 +1,29 @@
+thesis_id: th_orb_nasdaq_267125718
+ticker: USTEC
+created_at: '2026-09-14T13:50:12'
+updated_at: '2026-09-14T20:00:09'
+thesis_type: pivot_breakout
+status: CLOSED
+status_history:
+- status: ACTIVE
+  at: '2026-09-14T13:50:12'
+- status: CLOSED
+  at: '2026-09-14T20:00:09'
+thesis_statement: orb_nasdaq long (EK Live-Bot)
+origin:
+  skill: orb_nasdaq
+  output_file: scripts/reports/mt5_2026-*.json
+  raw_provenance:
+    position_id: 267125718
+entry:
+  actual_price: 29006.96
+  actual_date: '2026-09-14T13:50:12'
+  conditions: []
+exit:
+  actual_price: 29142.6
+  actual_date: '2026-09-14T20:00:09'
+  exit_reason: manual
+outcome:
+  pnl_dollars: 2.97
+  pnl_pct: 0.106
+  holding_days: 0

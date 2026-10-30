@@ -1,0 +1,21 @@
+{
+  "EURUSD": {
+    "spread_bps_median": 0.253,
+    "n": 1039,
+    "spread_bps_p75": 0.274
+  },
+  "USDNOK": {
+    "spread_bps_median": 2.665,
+    "n": 1039,
+    "spread_bps_p75": 4.056,
+    "rt_bps": 3.47
+  },
+  "USDSEK": {
+    "spread_bps_median": 2.295,
+    "n": 1039,
+    "spread_bps_p75": 3.5,
+    "rt_bps": 3.1
+  },
+  "_aufschlag_bps": 0.804,
+  "_eurusd_rt_bps": 1.057
+}

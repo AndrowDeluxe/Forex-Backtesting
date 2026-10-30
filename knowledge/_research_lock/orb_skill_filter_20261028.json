@@ -1,0 +1,28 @@
+{
+  "strategy": "orb_skill_filter_20261028",
+  "split": {
+    "is_start": "2019-01-01",
+    "is_end": "2022-12-31",
+    "oos_end": "2025-09-30",
+    "tresor_end": "2026-09-30"
+  },
+  "registered": "2026-10-28T19:19:08+00:00",
+  "trials": 13,
+  "frozen": {
+    "hash": "f78a37918588a1c84acf9b615ebe29c85849ea9405a05987cb10af064fe64791",
+    "config": {
+      "basis": "ORB-Live-Konfiguration (orb_sp500, orb_nasdaq, orb_us30) unveraendert",
+      "filter": "ORB-H1: Entry nur, wenn der eigene Index (SPX/NDX/DJI) vom Schlusskurs vor 28 Kalendertagen bis zum letzten Schluss VOR dem Entry-Tag <= 0 % gelaufen ist",
+      "datenquelle": "data_cache/macro_regime/yf_prices(.extra).parquet, Tagesschluss",
+      "auswertung": "Forward 2026-11-02 bis 2027-03-31: gefiltert vs ungefiltert, Paper-Schatten, kein Live-Eingriff"
+    },
+    "ts": "2026-10-28T20:44:10+00:00"
+  },
+  "unsealed": {},
+  "forward": {
+    "start": "2026-11-02",
+    "eval_date": "2027-03-31",
+    "min_trades": 150
+  },
+  "oos_skipped": "OOS 2023-01..2025-09 und Tresor bis 2026-09 bereits durch ny_open_orb_* geoeffnet; Skill-Filter nur IS -> Forward"
+}

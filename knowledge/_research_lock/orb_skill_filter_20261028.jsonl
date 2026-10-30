@@ -1,0 +1,10 @@
+{"ts": "2026-10-28T19:19:08+00:00", "event": "register_split", "is_start": "2019-01-01", "is_end": "2022-12-31", "oos_end": "2025-09-30", "tresor_end": "2026-09-30"}
+{"ts": "2026-10-28T19:19:08+00:00", "event": "skip_oos", "reason": "OOS 2023-01..2025-09 und Tresor bis 2026-09 bereits durch ny_open_orb_* geoeffnet; Skill-Filter nur IS -> Forward"}
+{"ts": "2026-10-28T19:19:08+00:00", "event": "register_forward", "start": "2026-11-02", "eval_date": "2027-03-31", "min_trades": 150}
+{"ts": "2026-10-28T20:43:25+00:00", "event": "trials", "n": 1, "total": 1, "note": "skill_test 2b: market-breadth-analyzer: Score < 40 -> aussetzen"}
+{"ts": "2026-10-28T20:43:25+00:00", "event": "trials", "n": 1, "total": 2, "note": "skill_test 2b: ibd-distribution-day-monitor: HIGH/SEVERE -> aussetzen"}
+{"ts": "2026-10-28T20:43:25+00:00", "event": "trials", "n": 1, "total": 3, "note": "skill_test 2b: Wirtschaftskalender (FRED lokal): US-Release-Tag -> aussetzen"}
+{"ts": "2026-10-28T20:43:25+00:00", "event": "trials", "n": 1, "total": 4, "note": "skill_test 2b: drawdown-circuit-breaker Standardregeln"}
+{"ts": "2026-10-28T20:43:25+00:00", "event": "trials", "n": 1, "total": 5, "note": "skill_test 2b: ORB-H1: nur nach negativem 20-Tage-Index"}
+{"ts": "2026-10-28T20:43:59+00:00", "event": "trials", "n": 8, "total": 13, "note": "skill_test 2a: IS-Merkmalsscan fuer Ideator (leg, weekday, exit_reason, vix_bucket, regime, trend20, ret5_bucket, month) -- Quelle von ORB-H1"}
+{"ts": "2026-10-28T20:44:10+00:00", "event": "freeze", "hash": "f78a37918588a1c84acf9b615ebe29c85849ea9405a05987cb10af064fe64791"}

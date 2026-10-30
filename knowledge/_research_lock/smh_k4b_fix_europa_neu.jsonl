@@ -2,3 +2,5 @@
 {"ts": "2026-10-18T20:01:19+00:00", "event": "trials", "n": 1, "total": 1, "note": "K4b: eingefrorene K4-Regel 1:1 auf USDNOK/USDSEK"}
 {"ts": "2026-10-18T20:01:19+00:00", "event": "trials", "n": 5, "total": 6, "note": "K4b: Nachbarwerte (4) + Kosten x2, vorregistriert"}
 {"ts": "2026-10-18T20:01:19+00:00", "event": "freeze", "hash": "9a85567e7cd4a105f236ff5ec26967e0c838c448a16ad4ef00407090895cb03b"}
+{"ts": "2026-10-18T21:43:18+00:00", "event": "unseal", "stage": "oos", "hash": "9a85567e7cd4a105f236ff5ec26967e0c838c448a16ad4ef00407090895cb03b"}
+{"ts": "2026-10-18T21:43:26+00:00", "event": "unseal", "stage": "tresor", "hash": "9a85567e7cd4a105f236ff5ec26967e0c838c448a16ad4ef00407090895cb03b"}

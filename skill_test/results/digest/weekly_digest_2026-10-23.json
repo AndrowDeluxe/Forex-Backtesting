@@ -1,0 +1,208 @@
+{
+  "generated_at": "2026-10-28T20:50:28Z",
+  "lessons": {
+    "process_improvements": [
+      "Source skill 'ctnl_reversal' had 21 losses (win rate 19%) this week \u2014 review its setups.",
+      "Source skill 'orb_nasdaq' had 16 losses (win rate 16%) this week \u2014 review its setups.",
+      "Source skill 'orb_sp500' had 7 losses (win rate 0%) this week \u2014 review its setups.",
+      "Source skill 'orb_us30' had 6 losses (win rate 25%) this week \u2014 review its setups.",
+      "48 trades exited via stop_hit \u2014 check entry timing/sizing."
+    ],
+    "top_losses": [
+      {
+        "exit_reason": "stop_hit",
+        "holding_days": 0,
+        "lessons_learned": null,
+        "pnl_dollars": -39.47,
+        "pnl_pct": -1.41,
+        "r_multiple": null,
+        "source_skill": "ctnl_reversal",
+        "thesis_id": "th_ctnl_reversal_270559762",
+        "thesis_type": "mean_reversion",
+        "ticker": "XAUUSD"
+      },
+      {
+        "exit_reason": "stop_hit",
+        "holding_days": 0,
+        "lessons_learned": null,
+        "pnl_dollars": -33.36,
+        "pnl_pct": -1.191,
+        "r_multiple": null,
+        "source_skill": "ctnl_reversal",
+        "thesis_id": "th_ctnl_reversal_268999246",
+        "thesis_type": "mean_reversion",
+        "ticker": "XAUUSD"
+      },
+      {
+        "exit_reason": "stop_hit",
+        "holding_days": 0,
+        "lessons_learned": null,
+        "pnl_dollars": -32.03,
+        "pnl_pct": -1.144,
+        "r_multiple": null,
+        "source_skill": "ctnl_reversal",
+        "thesis_id": "th_ctnl_reversal_278927629",
+        "thesis_type": "mean_reversion",
+        "ticker": "XAUUSD"
+      }
+    ],
+    "top_wins": [
+      {
+        "exit_reason": "target_hit",
+        "holding_days": 4,
+        "lessons_learned": null,
+        "pnl_dollars": 109.3,
+        "pnl_pct": 3.904,
+        "r_multiple": null,
+        "source_skill": "ctnl_reversal",
+        "thesis_id": "th_ctnl_reversal_276510163",
+        "thesis_type": "mean_reversion",
+        "ticker": "XAUUSD"
+      },
+      {
+        "exit_reason": "target_hit",
+        "holding_days": 1,
+        "lessons_learned": null,
+        "pnl_dollars": 91.13,
+        "pnl_pct": 3.255,
+        "r_multiple": null,
+        "source_skill": "ctnl_reversal",
+        "thesis_id": "th_ctnl_reversal_284624518",
+        "thesis_type": "mean_reversion",
+        "ticker": "XAUUSD"
+      },
+      {
+        "exit_reason": "target_hit",
+        "holding_days": 3,
+        "lessons_learned": null,
+        "pnl_dollars": 49.13,
+        "pnl_pct": 1.755,
+        "r_multiple": null,
+        "source_skill": "ctnl_reversal",
+        "thesis_id": "th_ctnl_reversal_269530083",
+        "thesis_type": "mean_reversion",
+        "ticker": "XAUUSD"
+      }
+    ]
+  },
+  "metrics": {
+    "avg_holding_days_losers": 0.0,
+    "avg_holding_days_winners": 1.5,
+    "avg_loser": -13.25,
+    "avg_mae_pct": null,
+    "avg_mfe_pct": null,
+    "avg_winner": 35.19,
+    "largest_loser": -39.47,
+    "largest_winner": 109.3,
+    "r_multiple_avg": null,
+    "r_multiple_stdev": null
+  },
+  "partial_trims": {
+    "count": 0,
+    "total_realized_pnl": 0,
+    "trims": []
+  },
+  "pattern_analysis": {
+    "by_exit_reason": {
+      "manual": {
+        "losses": 4,
+        "total": 8,
+        "win_rate": 0.5,
+        "wins": 4
+      },
+      "stop_hit": {
+        "losses": 46,
+        "total": 48,
+        "win_rate": 0.0417,
+        "wins": 2
+      },
+      "target_hit": {
+        "losses": 0,
+        "total": 4,
+        "win_rate": 1.0,
+        "wins": 4
+      }
+    },
+    "by_mechanism_tag": {
+      "unknown": {
+        "losses": 50,
+        "total": 60,
+        "win_rate": 0.1667,
+        "wins": 10
+      }
+    },
+    "by_screening_grade": {
+      "unknown": {
+        "losses": 50,
+        "total": 60,
+        "win_rate": 0.1667,
+        "wins": 10
+      }
+    },
+    "by_sector": {
+      "unknown": {
+        "losses": 50,
+        "total": 60,
+        "win_rate": 0.1667,
+        "wins": 10
+      }
+    },
+    "by_source_skill": {
+      "ctnl_reversal": {
+        "losses": 21,
+        "total": 26,
+        "win_rate": 0.1923,
+        "wins": 5
+      },
+      "orb_nasdaq": {
+        "losses": 16,
+        "total": 19,
+        "win_rate": 0.1579,
+        "wins": 3
+      },
+      "orb_sp500": {
+        "losses": 7,
+        "total": 7,
+        "win_rate": 0.0,
+        "wins": 0
+      },
+      "orb_us30": {
+        "losses": 6,
+        "total": 8,
+        "win_rate": 0.25,
+        "wins": 2
+      }
+    },
+    "by_thesis_type": {
+      "mean_reversion": {
+        "losses": 21,
+        "total": 26,
+        "win_rate": 0.1923,
+        "wins": 5
+      },
+      "pivot_breakout": {
+        "losses": 29,
+        "total": 34,
+        "win_rate": 0.1471,
+        "wins": 5
+      }
+    }
+  },
+  "period": {
+    "from": "2026-09-01",
+    "to": "2026-10-23"
+  },
+  "report_type": "weekly_performance_digest",
+  "schema_version": "1.0",
+  "summary": {
+    "breakeven": 0,
+    "expectancy": -5.18,
+    "losers": 50,
+    "profit_factor": 0.5312,
+    "total_realized_pnl": -310.55,
+    "total_realized_pnl_pct": -11.088,
+    "total_trades": 60,
+    "win_rate": 0.1667,
+    "winners": 10
+  }
+}

@@ -12,7 +12,11 @@ RT_PIPS = {"EURUSD": 1.2, "USDJPY": 1.4, "AUDUSD": 1.5, "GBPUSD": 1.6,
            # ANNAHME (16.10.2026, nicht gemessen): typische Raw-Spreads + gleiche
            # Kommission/Slippage wie oben, aufgerundet; Crosses breiter.
            "USDCAD": 1.6, "USDCHF": 1.6, "NZDUSD": 1.8, "EURGBP": 1.6, "EURJPY": 1.8, "GBPJPY": 2.5}
-RT_BPS = {"SP500": 2.6, "NASDAQ": 2.3}
+RT_BPS = {"SP500": 2.6, "NASDAQ": 2.3,
+          # ANNAHME (18.10.2026, K4b): Dukascopy-Median-Spread (Ask-Bid, 08:00/14:15 Frankfurt,
+          # nur IS-Jahre 2019+2021) + Nicht-Spread-Aufschlag von EURUSD (0,80 bps).
+          # Nicht am Broker gemessen. Herleitung: smh_microstructure/results/K4b_kosten.json
+          "USDNOK": 3.47, "USDSEK": 3.10}
 
 
 def roundtrip_cost(sym: str, price: float, mult: float = 1.0) -> float:

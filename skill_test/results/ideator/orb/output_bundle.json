@@ -1,0 +1,254 @@
+{
+  "generated_at_utc": "2026-10-28T20:38:22Z",
+  "summary": "Top hypothesis: ORB-H1 (Trade ORB only after a negative 20-day index return) with priority score 4.2.",
+  "state_assessment": "Ranked hypotheses validated against guardrails.",
+  "hypotheses": [
+    {
+      "hypothesis_id": "ORB-H1",
+      "title": "Trade ORB only after a negative 20-day index return",
+      "thesis": "Opening-range breakouts follow through more often after the index has fallen over the prior 20 days.",
+      "problem_target": "Many intraday stop-outs in calm uptrends",
+      "mechanism": "After declines realised volatility and dealer short-gamma rise, so intraday moves extend instead of mean-reverting; in grinding uptrends the open range is noise.",
+      "evidence_basis": [
+        "IS avg R 0.76 after negative 20d return (470 trades) vs 0.23 after positive (735)",
+        "high VIX tercile best (0.69)"
+      ],
+      "proposed_rule_changes": [
+        {
+          "component": "entry_filter",
+          "change": "skip ORB entry when index 20-day return up to prior close > 0"
+        }
+      ],
+      "expected_impact": "Fewer trades (~40 %), higher avg R",
+      "key_risks": [
+        "drops 60 % of trades incl. big winners",
+        "2019-2022 IS contains 2020 crash and 2022 bear market, overrepresenting declines"
+      ],
+      "kill_criteria": [
+        "Forward 2026-11..2027-03: filtered \u00ce\u00a3R not better than unfiltered",
+        "Deflated Sharpe over all trials of the lock < 0.5 on IS"
+      ],
+      "minimum_viable_experiment": {
+        "goal": "IS comparison filtered vs unfiltered, counted as one trial",
+        "setup": "IS only via research_lock, OOS skipped, then forward",
+        "metrics": [
+          "sum_R",
+          "profit_factor",
+          "sharpe_per_trade",
+          "trade_count"
+        ],
+        "sample_size": ">= 100 IS trades kept",
+        "duration": "IS now, forward 5 months"
+      },
+      "score_components": {
+        "evidence_strength": 4,
+        "mechanism_clarity": 4,
+        "feasibility": 5,
+        "expected_payoff": 4,
+        "novelty": 3,
+        "test_efficiency": 5
+      },
+      "priority_score": 4.2,
+      "recommendation": "pursue",
+      "rationale": "Largest IS difference with plausible volatility mechanism.",
+      "confidence": "medium",
+      "assumptions": [
+        "TTP simulation represents live fills closely enough"
+      ],
+      "dependencies": [
+        "daily index/gold closes, VIX, macro regime labels"
+      ]
+    },
+    {
+      "hypothesis_id": "ORB-H2",
+      "title": "Skip ORB in growth-slowing x inflation-accelerating regime",
+      "thesis": "ORB expectancy collapses when growth slows while inflation accelerates (stagflation tilt).",
+      "problem_target": "Low-expectancy macro phases",
+      "mechanism": "Rate-shock driven sessions reverse after the open as macro headlines dominate intraday flow.",
+      "evidence_basis": [
+        "IS avg R 0.13 (249 trades) vs 0.44-0.67 in other growth-up regimes"
+      ],
+      "proposed_rule_changes": [
+        {
+          "component": "entry_filter",
+          "change": "skip ORB entry when macro regime joint == g\u00e2\u2020\u2018\u00c2\u00b7slow \u00c3\u2014 \u00cf\u20ac\u00e2\u2020\u2018\u00c2\u00b7accel"
+        }
+      ],
+      "expected_impact": "Removes ~20 % of trades",
+      "key_risks": [
+        "regime labels are monthly macro data, slow and revised (first prints used)",
+        "mechanism loose"
+      ],
+      "kill_criteria": [
+        "Forward 2026-11..2027-03: filtered \u00ce\u00a3R not better than unfiltered",
+        "Deflated Sharpe over all trials of the lock < 0.5 on IS"
+      ],
+      "minimum_viable_experiment": {
+        "goal": "IS comparison filtered vs unfiltered, counted as one trial",
+        "setup": "IS only via research_lock, OOS skipped, then forward",
+        "metrics": [
+          "sum_R",
+          "profit_factor",
+          "sharpe_per_trade",
+          "trade_count"
+        ],
+        "sample_size": ">= 100 IS trades kept",
+        "duration": "IS now, forward 5 months"
+      },
+      "score_components": {
+        "evidence_strength": 3,
+        "mechanism_clarity": 2,
+        "feasibility": 5,
+        "expected_payoff": 3,
+        "novelty": 3,
+        "test_efficiency": 5
+      },
+      "priority_score": 3.4,
+      "recommendation": "park",
+      "rationale": "Evidence moderate, mechanism weak.",
+      "confidence": "low-medium",
+      "assumptions": [
+        "TTP simulation represents live fills closely enough"
+      ],
+      "dependencies": [
+        "daily index/gold closes, VIX, macro regime labels"
+      ]
+    },
+    {
+      "hypothesis_id": "ORB-H3",
+      "title": "Skip ORB in mid-VIX tercile",
+      "thesis": "Mid volatility days have neither trend persistence nor large ranges.",
+      "problem_target": "Non-monotone VIX pattern",
+      "mechanism": "None convincing; non-monotone pattern suggests noise.",
+      "evidence_basis": [
+        "IS avg R 0.11 mid vs 0.51 low / 0.69 high"
+      ],
+      "proposed_rule_changes": [
+        {
+          "component": "entry_filter",
+          "change": "skip when VIX prev close in IS middle tercile"
+        }
+      ],
+      "expected_impact": "Removes ~33 % of trades",
+      "key_risks": [
+        "tercile bounds are IS-fitted",
+        "non-monotone = likely noise"
+      ],
+      "kill_criteria": [
+        "Forward 2026-11..2027-03: filtered \u00ce\u00a3R not better than unfiltered",
+        "Deflated Sharpe over all trials of the lock < 0.5 on IS"
+      ],
+      "minimum_viable_experiment": {
+        "goal": "IS comparison filtered vs unfiltered, counted as one trial",
+        "setup": "IS only via research_lock, OOS skipped, then forward",
+        "metrics": [
+          "sum_R",
+          "profit_factor",
+          "sharpe_per_trade",
+          "trade_count"
+        ],
+        "sample_size": ">= 100 IS trades kept",
+        "duration": "IS now, forward 5 months"
+      },
+      "score_components": {
+        "evidence_strength": 2,
+        "mechanism_clarity": 1,
+        "feasibility": 5,
+        "expected_payoff": 2,
+        "novelty": 2,
+        "test_efficiency": 5
+      },
+      "priority_score": 2.7,
+      "recommendation": "reject",
+      "rationale": "No mechanism, classic data-mining pattern.",
+      "confidence": "low",
+      "assumptions": [
+        "TTP simulation represents live fills closely enough"
+      ],
+      "dependencies": [
+        "daily index/gold closes, VIX, macro regime labels"
+      ]
+    },
+    {
+      "hypothesis_id": "ORB-H4",
+      "title": "Skip ORB in February and July",
+      "thesis": "Seasonal weak months.",
+      "problem_target": "Weak months",
+      "mechanism": "None beyond calendar coincidence.",
+      "evidence_basis": [
+        "Feb -0.10, Jul -0.36 avg R"
+      ],
+      "proposed_rule_changes": [
+        {
+          "component": "entry_filter",
+          "change": "no entries in Feb and Jul"
+        }
+      ],
+      "expected_impact": "Removes ~16 % of trades",
+      "key_risks": [
+        "pure calendar mining over 4 IS years"
+      ],
+      "kill_criteria": [
+        "Forward 2026-11..2027-03: filtered \u00ce\u00a3R not better than unfiltered",
+        "Deflated Sharpe over all trials of the lock < 0.5 on IS"
+      ],
+      "minimum_viable_experiment": {
+        "goal": "IS comparison filtered vs unfiltered, counted as one trial",
+        "setup": "IS only via research_lock, OOS skipped, then forward",
+        "metrics": [
+          "sum_R",
+          "profit_factor",
+          "sharpe_per_trade",
+          "trade_count"
+        ],
+        "sample_size": ">= 100 IS trades kept",
+        "duration": "IS now, forward 5 months"
+      },
+      "score_components": {
+        "evidence_strength": 1,
+        "mechanism_clarity": 1,
+        "feasibility": 5,
+        "expected_payoff": 2,
+        "novelty": 1,
+        "test_efficiency": 5
+      },
+      "priority_score": 2.35,
+      "recommendation": "reject",
+      "rationale": "Calendar mining with 4 observations per month.",
+      "confidence": "low",
+      "assumptions": [
+        "TTP simulation represents live fills closely enough"
+      ],
+      "dependencies": [
+        "daily index/gold closes, VIX, macro regime labels"
+      ]
+    }
+  ],
+  "selected_next_actions": [
+    "Run MVE: IS comparison filtered vs unfiltered, counted as one trial"
+  ],
+  "warnings": [],
+  "logging_payload": {
+    "objective": "Find a context filter that removes low-expectancy ORB days",
+    "sources_used": [
+      "strategy_context",
+      "constraints",
+      "market_context",
+      "performance_summary",
+      "trade_log_summary",
+      "feature_inventory",
+      "journal_snippets",
+      "qualitative_notes"
+    ],
+    "hypothesis_ids": [
+      "ORB-H1",
+      "ORB-H2",
+      "ORB-H3",
+      "ORB-H4"
+    ],
+    "selected_next_actions": [
+      "Run MVE: IS comparison filtered vs unfiltered, counted as one trial"
+    ],
+    "warnings": []
+  }
+}

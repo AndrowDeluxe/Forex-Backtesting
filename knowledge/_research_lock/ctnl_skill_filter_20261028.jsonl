@@ -1,0 +1,11 @@
+{"ts": "2026-10-28T19:19:08+00:00", "event": "register_split", "is_start": "2019-01-01", "is_end": "2024-07-31", "oos_end": "2026-09-30", "tresor_end": null}
+{"ts": "2026-10-28T19:19:08+00:00", "event": "skip_oos", "reason": "Original-Stichprobe 2024-08..2026-08 bereits fuer Auswahl/Bewertung benutzt; Skill-Filter nur IS -> Forward"}
+{"ts": "2026-10-28T19:19:08+00:00", "event": "register_forward", "start": "2026-11-02", "eval_date": "2027-03-31", "min_trades": 40}
+{"ts": "2026-10-28T20:46:53+00:00", "event": "trials", "n": 8, "total": 8, "note": "skill_test 2a: IS-Merkmalsscan fuer Ideator (weekday, exit_reason, vix_bucket, regime, trend20, ret5_bucket, month, hour) -- Quelle von CTNL-H1/H2"}
+{"ts": "2026-10-28T20:46:58+00:00", "event": "trials", "n": 1, "total": 9, "note": "skill_test 2b: cot-contrarian-detector: Gold crowded in Trade-Richtung -> aussetzen"}
+{"ts": "2026-10-28T20:46:58+00:00", "event": "trials", "n": 1, "total": 10, "note": "skill_test 2b: macro-regime-detector: Contraction -> aussetzen"}
+{"ts": "2026-10-28T20:46:58+00:00", "event": "trials", "n": 1, "total": 11, "note": "skill_test 2b: Wirtschaftskalender (FRED lokal): US-Release-Tag -> aussetzen"}
+{"ts": "2026-10-28T20:46:58+00:00", "event": "trials", "n": 1, "total": 12, "note": "skill_test 2b: drawdown-circuit-breaker Standardregeln"}
+{"ts": "2026-10-28T20:46:58+00:00", "event": "trials", "n": 1, "total": 13, "note": "skill_test 2b: CTNL-H1: Regime Wachstum+Inflation beschleunigt -> aussetzen"}
+{"ts": "2026-10-28T20:46:58+00:00", "event": "trials", "n": 1, "total": 14, "note": "skill_test 2b: CTNL-H2: kein Entry am Freitag"}
+{"ts": "2026-10-28T20:47:29+00:00", "event": "freeze", "hash": "7ed6b83859d356231ef7b72ee838ee08d86bcc74fef5ddd7b679843423adc29c"}

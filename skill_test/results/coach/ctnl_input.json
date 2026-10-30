@@ -1,0 +1,174 @@
+{
+ "review_type": "monthly_aggregate",
+ "trade_id": "ek_ctnl_2026-09-01_2026-10-23",
+ "ticker": "CTNL",
+ "outcome": "loss",
+ "planned": {
+  "thesis": "ctnl Live-Bein EK, regelbasiert (Bot)",
+  "risk_r": 1.0,
+  "thesis_recorded_before_entry": true,
+  "setup_confirmed": true,
+  "market_regime": "unknown"
+ },
+ "actual": {
+  "risk_r": 46.99,
+  "portfolio_heat_r": 140.97,
+  "stop_moved": true,
+  "stop_move_planned": true,
+  "entry_before_confirmation": false,
+  "traded_against_regime": false
+ },
+ "risk_plan": {
+  "max_risk_per_trade_r": 1.0,
+  "max_portfolio_heat_r": 2.0,
+  "max_weekly_loss_r": 5.0
+ },
+ "postmortem": {
+  "root_cause": "risk_sizing",
+  "notes": [
+   "Geplantes Risiko 0.53 EUR/Trade (CAPITAL_WEIGHT x LEG_RISK_PCT), realer Stop-Verlust Median 24.67 EUR",
+   "27 Positionen, 23 im Stop, netto -251.88 EUR"
+  ]
+ },
+ "monthly": {
+  "trades": [
+   {
+    "trade_id": "268999246",
+    "outcome": "loss",
+    "pnl": -33.36
+   },
+   {
+    "trade_id": "269005974",
+    "outcome": "loss",
+    "pnl": -31.52
+   },
+   {
+    "trade_id": "269012554",
+    "outcome": "loss",
+    "pnl": -29.73
+   },
+   {
+    "trade_id": "269085168",
+    "outcome": "loss",
+    "pnl": -29.17
+   },
+   {
+    "trade_id": "269099922",
+    "outcome": "loss",
+    "pnl": -29.89
+   },
+   {
+    "trade_id": "269118888",
+    "outcome": "win",
+    "pnl": 4.68
+   },
+   {
+    "trade_id": "269530083",
+    "outcome": "win",
+    "pnl": 49.13
+   },
+   {
+    "trade_id": "269536570",
+    "outcome": "win",
+    "pnl": 32.87
+   },
+   {
+    "trade_id": "270450345",
+    "outcome": "loss",
+    "pnl": -24.51
+   },
+   {
+    "trade_id": "270547033",
+    "outcome": "loss",
+    "pnl": -23.07
+   },
+   {
+    "trade_id": "270559762",
+    "outcome": "loss",
+    "pnl": -39.47
+   },
+   {
+    "trade_id": "270777609",
+    "outcome": "loss",
+    "pnl": -23.61
+   },
+   {
+    "trade_id": "270888181",
+    "outcome": "loss",
+    "pnl": -23.14
+   },
+   {
+    "trade_id": "270910807",
+    "outcome": "loss",
+    "pnl": -28.98
+   },
+   {
+    "trade_id": "270970237",
+    "outcome": "loss",
+    "pnl": -22.51
+   },
+   {
+    "trade_id": "271712165",
+    "outcome": "loss",
+    "pnl": -19.27
+   },
+   {
+    "trade_id": "271756509",
+    "outcome": "loss",
+    "pnl": -19.06
+   },
+   {
+    "trade_id": "271856492",
+    "outcome": "loss",
+    "pnl": -29.09
+   },
+   {
+    "trade_id": "271880415",
+    "outcome": "loss",
+    "pnl": -27.11
+   },
+   {
+    "trade_id": "271901539",
+    "outcome": "loss",
+    "pnl": -24.83
+   },
+   {
+    "trade_id": "276510163",
+    "outcome": "win",
+    "pnl": 109.3
+   },
+   {
+    "trade_id": "278927629",
+    "outcome": "loss",
+    "pnl": -32.03
+   },
+   {
+    "trade_id": "279445706",
+    "outcome": "loss",
+    "pnl": -12.51
+   },
+   {
+    "trade_id": "279461017",
+    "outcome": "loss",
+    "pnl": -22.14
+   },
+   {
+    "trade_id": "282409190",
+    "outcome": "loss",
+    "pnl": -13.66
+   },
+   {
+    "trade_id": "284624518",
+    "outcome": "win",
+    "pnl": 91.13
+   },
+   {
+    "trade_id": "285828959",
+    "outcome": "loss",
+    "pnl": -0.33
+   }
+  ],
+  "consecutive_losses": 12,
+  "rule_violations": 0
+ }
+}

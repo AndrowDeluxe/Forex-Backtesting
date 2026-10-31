@@ -1,0 +1,7 @@
+{"ts": "2026-10-30T11:20:37+00:00", "event": "register_split", "is_start": "2020-01-17", "is_end": "2023-12-31", "oos_end": "2025-10-27", "tresor_end": "2026-10-16"}
+{"ts": "2026-10-30T11:20:37+00:00", "event": "register_blind", "start": "2018-01-01", "end": "2020-01-16"}
+{"ts": "2026-10-30T11:20:41+00:00", "event": "trials", "n": 1, "total": 1, "note": "Klon ohne Gewinn-Auswahl; Regeln nur auf Uebereinstimmung mit den MT5-Berichten"}
+{"ts": "2026-10-30T11:23:24+00:00", "event": "freeze", "hash": "7ff3cf35af2e9ca22d2a2627845ffee32d21858b1683c507895900bceaa71b40"}
+{"ts": "2026-10-30T11:23:24+00:00", "event": "unseal", "stage": "blind", "hash": "7ff3cf35af2e9ca22d2a2627845ffee32d21858b1683c507895900bceaa71b40"}
+{"ts": "2026-10-30T11:23:48+00:00", "event": "unseal", "stage": "oos", "hash": "7ff3cf35af2e9ca22d2a2627845ffee32d21858b1683c507895900bceaa71b40"}
+{"ts": "2026-10-30T11:23:52+00:00", "event": "unseal", "stage": "tresor", "hash": "7ff3cf35af2e9ca22d2a2627845ffee32d21858b1683c507895900bceaa71b40"}

@@ -76,6 +76,12 @@ negativ. Nächste Prints: GDP advance 29.10., CPI 10.11.
    (z. B. „Bein X nur in Regime Y“) ist eine gezählte Variante unter der
    [[overfitting-sperre]].
 
+## Stand 30.10.2026
+
+Nach dem GDP-Advance-Print vom 29.10. bleibt das Regime unverändert:
+**g↑·slow × π↑·accel** (seit 14.09.). BIP Q3 liegt bei 2,07 % nach 2,19 %. Nächste
+Prints: CPI 10.11., GDP 25.11.
+
 ## Für den Makro-Agenten
 
 **Zwei Ebenen (Nutzerentscheid 20.10.):**

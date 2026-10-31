@@ -1,6 +1,6 @@
 # Quantum Valkyrie EA: Nachbau + Edge Card
 
-Status: Schritt A3 läuft (Regeln herleiten). Stand 2026-10-28.
+Status: abgeschlossen am 2026-10-30, **Klon verworfen**. Ergebnis: [[quantum-valkyrie-edge-card]].
 Plan: `C:\Users\andre\.claude\plans\bubbly-coalescing-pumpkin.md`. Code: `mt5_valkyrie/`.
 Vorgeschichte und Schnelltest: [[quantum-omnigold-nachbau]] (Abschnitt Valkyrie).
 
@@ -10,6 +10,13 @@ Valkyrie ist der stärkste der drei gekauften Gold-EAs:
 - Datumssperre vor dem 17.01.2020
 
 Der Nachbau soll klären, worauf Einstieg, SL und TP beruhen. Er soll außerdem 2018–2019 testen, also genau die Jahre, die der EA verbirgt.
+
+## Ergebnis 2026-10-30
+- **Ausstieg gelöst:** Der Trailing-Modus hängt am TP der Order (TP 50: 0,22 × SL / 0,50 $; TP 12: 8 $ / 0,80 $; TP 22: 20 $ / 0,80 $). Der Replay der echten Orders trifft 94–95 % der Ausstiege (±1 Min.). Korrelation der Kapitalkurve 0,996–0,9996.
+- **Auslöser nicht lösbar:** Ein Klassifikator erreicht Test-AUC 0,94, aber bei 50 % Recall nur 11–14 % Präzision. Die Suche ist beendet.
+- **Klon:** Blindtest nach Kosten bei null, also nicht bestanden. Im Tresor auf echten Ticks ebenfalls bei null. Die Zufallskontrolle liegt im OHLC-Modell im Tresor gleichauf.
+- **Der EA selbst:** auf echten Ticks +0,067 R (t 2,74, 326 Trades, 05/2025–10/2026) gegen +0,104 R im OHLC-Modell.
+- Die Tabellen und Abschnitte unten sind der Stand vom 28.10. und durch die [[quantum-valkyrie-edge-card]] überholt.
 
 ## Daten
 - **`mt5_valkyrie/data_mt5.py`** liest die drei Berichte:

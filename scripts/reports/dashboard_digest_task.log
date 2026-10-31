@@ -2055,3 +2055,69 @@
 2026-10-30 08:00:08 
 2026-10-30 08:00:08 Voll: knowledge/DASHBOARD.md
 2026-10-30 08:00:08 === Dashboard-Telegram-Digest beendet ===
+2026-10-31 08:00:02 === Dashboard-Telegram-Digest gestartet ===
+2026-10-31 08:00:06 <b>?? Dashboard — Stand 2026-10-03</b>
+2026-10-31 08:00:06 ?? 18 aktive Bots/Bridges · 6 mit echtem Geld
+2026-10-31 08:00:06 ? EK: keine Scan-/Order-Fehler heute
+2026-10-31 08:00:06 ?? EK-Risiko 0 / 843 EUR (0% vom Deckel)
+2026-10-31 08:00:06 
+2026-10-31 08:00:06 <b>?? ALS NÄCHSTES (3)</b>
+2026-10-31 08:00:06  • ?? Dachprojekt Quant × diskretionäres Trading
+2026-10-31 08:00:06  • ?? SMH-Elite-Teamaufgabe „Mikrostruktur &amp; Liquidität“: gerechnet 07.10.,…
+2026-10-31 08:00:06  • ?? Gruppenarbeit: Gold ASB IS-only gerechnet (15.10.), PDF für den…
+2026-10-31 08:00:06 
+2026-10-31 08:00:06 <b>?? BRAUCHT DEINE BESTÄTIGUNG (34)</b>
+2026-10-31 08:00:06  • Valkyrie-Klon, 2 Annahmen von mir
+2026-10-31 08:00:06  • Copy Trading Stufe 2, 4 Annahmen von mir
+2026-10-31 08:00:06  • Skill mt5-robot-tester lokal angepasst
+2026-10-31 08:00:06  • Data Lake: CTNL-Daten waren durch Zeitzonen-Chaos UND…
+2026-10-31 08:00:06  • Key Levels, Doppel-BOS-Einstieg: 4 Annahmen von mir
+2026-10-31 08:00:06  • K4b-Nachtest (18.10.): Kosten USDNOK 3,47 bps / USDSEK 3,10 bps je…
+2026-10-31 08:00:06  • Trade-Inventur 2025 (18.10.): drei eigene Festlegungen
+2026-10-31 08:00:06  • Mikrostruktur Runde 2 (18.10.): Screening-Punkte und Kandidatenwahl…
+2026-10-31 08:00:06  • Mikrostruktur Runde 2: Einstiege um 17:00 New York (Rollover) mit…
+2026-10-31 08:00:06  • Key-Level-Backtest: Kosten der 6 frischen Paare sind geschätzt, nicht…
+2026-10-31 08:00:06  • ORB-Öl-Filter: zwei Forward-Kandidaten, Stichtag 31.03.2027
+2026-10-31 08:00:06  • CTNL-State: Altpositionen ohne Zeit-Exit + verwaiste placed-Einträge
+2026-10-31 08:00:06  • ?? 31.03.2027: Forward Noise-Area-Momentum Regime 2026
+2026-10-31 08:00:06  • Noise-Area / Challenge-Gewichtung: vor einem Livegang klären
+2026-10-31 08:00:06  • Gold-ASB-Fill vom 15.10. fehlt in Soll/Ist und Edge-Ampel
+2026-10-31 08:00:06  • ORB-Gegenprobe Öl: meine Annahmen
+2026-10-31 08:00:06  • ?? 31.01.2027: SMH-Makro-Reports Forward/OOS einmal öffnen
+2026-10-31 08:00:06  • ?? 31.12.2026: Forward-Vergleich ORB live mit und ohne Gamma-Regler
+2026-10-31 08:00:06  • ? Entschieden 16.10. (Nutzer): ORB bleibt erstmal so
+2026-10-31 08:00:06  • ? Entschieden 06.10. (Nutzer): ORB live bleibt, wie es war
+2026-10-31 08:00:06  • ORB: IS-only-Version fällt im Tresor durch (06.10.). Was heißt das für…
+2026-10-31 08:00:06  • ?? Inventur-Entwurf Tradingplan (09.10.): bitte durchsehen
+2026-10-31 08:00:06  • ?? Dachprojekt Quant × diskretionär (04.10.): meine Annahmen
+2026-10-31 08:00:06  • ?? Challenge + EK Gewichtung (04.10.): entschieden -- TTP neu…
+2026-10-31 08:00:06  • ?? EK-Umbau + trend_pullback 3,0 ATR -- umgesetzt 04.10.…
+2026-10-31 08:00:06  • ?? FK: offene Beine + Gewichtung neu gerechnet (04.10.) -- ersetzt den…
+2026-10-31 08:00:06  • ? (überholt, siehe oben) FK: neue Gewichtung gerechnet (MC +…
+2026-10-31 08:00:06  • ?? CTNL: Funded/FK jetzt auf EK-Takt, aber EKs SL-Logik bewusst NICHT…
+2026-10-31 08:00:06  • ?? ORB: Umstellung 04.10. — erster echter Lauf Montag 05.10. beobachten
+2026-10-31 08:00:06  • Gold ASB laeuft seit 03.10. als Stop-Order -- erster echter Lauf Mo…
+2026-10-31 08:00:06  • Gegenlesen beim naechsten CTNL-Signaltag
+2026-10-31 08:00:06  • CTNL: Spike-Filter live + Kill-Switch umgestellt -- beim nächsten Lauf…
+2026-10-31 08:00:06  • ?? OU-Modell: Logik D läuft live, Wiedereinstiegs-Drehtür geschlossen
+2026-10-31 08:00:06  • ?? Split-Schutz fehlt weiterhin — abgetrennt vom MNST-Punkt
+2026-10-31 08:00:06 
+2026-10-31 08:00:06 <b>?? OFFENE AUFGABEN (13)</b>
+2026-10-31 08:00:06  • Lücken Makro-Datenschicht für Schritt 7
+2026-10-31 08:00:06  • EK-CTNL: Live-Trades ohne Gegenstück in der Simulation
+2026-10-31 08:00:06  • Forward-Auswertung der zwei Skill-Filter am 31.03.2027
+2026-10-31 08:00:06  • Gemeinsamer Scan-Fehler '&gt;' not supported between instances of 'str'…
+2026-10-31 08:00:06  • FK SP500 „Invalid stops“: behoben 2026-09-17
+2026-10-31 08:00:06  • CLS-Bein auf Bewährung: Prüfung nach 30 Live-Trades
+2026-10-31 08:00:06  • Mindest-Stopabstand für weitere Beine: zurückgestellt bis nach den…
+2026-10-31 08:00:06  • ?? Untersuchung: Lake veraltet ? Läufe hängen bis ~1 h ? Fehlerzeilen
+2026-10-31 08:00:06  • Report-Werkzeuge härten
+2026-10-31 08:00:06  • CTNL E1 + E4
+2026-10-31 08:00:06  • CTNL-Kill-Switch-Schwelle neu kalibrieren
+2026-10-31 08:00:06  • 14 unverarbeitete Clippings
+2026-10-31 08:00:06  • Statustabelle: "Zuletzt geprüft" bei OU-Modell-ScannerHourly ist 26…
+2026-10-31 08:00:06 
+2026-10-31 08:00:06 ?? Zuletzt: 2026-09-09 — FK Instant Funding: Paper-Bot auf die 2 noch nicht live geschalteten Beine…
+2026-10-31 08:00:06 
+2026-10-31 08:00:06 Voll: knowledge/DASHBOARD.md
+2026-10-31 08:00:06 === Dashboard-Telegram-Digest beendet ===

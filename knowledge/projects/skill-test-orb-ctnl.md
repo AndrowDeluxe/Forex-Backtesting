@@ -8,6 +8,12 @@ Forward-Test (02.11.2026–31.03.2027). Live wurde nichts geändert.
 **Plan:** Overfitting-Sperre ([[overfitting-sperre]]). Gerechnet wurde nur auf IS, jede
 Variante ist gezählt.
 
+> **Korrektur 30.10.:** Die ORB-Zahlen unten stammen aus der TTP-Liste vom 04.10. ohne
+> NASDAQ-Storno. Mit Storno (`skill_test/results/orb_ctnl_ttp_storno.csv`): ORB-H1 auf IS
+> Ø R 0,56 → 0,91, PF 2,25, DD 31 → 17 %, p 0,013; je Bein SP500 0,69 → 1,57, US30 0,48 → 0,80,
+> **NASDAQ nur 0,53 → 0,55**. Die anderen Filter wurden nicht neu gerechnet. Der Deckel
+> der EK-Bridge für CTNL ist 1, die Überschreitungen liegen alle vor dem 01.10.
+
 ## Sperren
 
 | Sperre | IS | Versuche | Eingefroren | Forward |

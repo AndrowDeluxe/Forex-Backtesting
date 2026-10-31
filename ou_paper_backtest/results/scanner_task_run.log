@@ -13507,3 +13507,15 @@
 2026-10-30 21:35:17   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
 2026-10-30 21:35:17     raise KeyError(key) from err
 2026-10-30 21:35:17 KeyError: 'WBD'
+2026-10-30 21:35:18 [main e005c0af] OU-Modell Scanner: Snapshot 2026-10-30 21:35
+2026-10-30 21:35:18  1 file changed, 47 insertions(+)
+2026-10-30 21:35:18 MERGE UEBERSPRUNGEN: Working Tree hat 11 offene Aenderung(en) (andere Tasks/Session). Es wird NICHT gestasht -- der lokale Commit bleibt liegen und geht beim naechsten sauberen Lauf raus.
+2026-10-30 21:35:19 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-10-30 21:35:19  ! [rejected]          main -> main (non-fast-forward)
+2026-10-30 21:35:19 error: failed to push some refs to 'https://github.com/AndrowDeluxe/Forex-Backtesting.git'
+2026-10-30 21:35:19 hint: Updates were rejected because the tip of your current branch is behind
+2026-10-30 21:35:19 hint: its remote counterpart. If you want to integrate the remote changes,
+2026-10-30 21:35:19 hint: use 'git pull' before pushing again.
+2026-10-30 21:35:19 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+2026-10-30 21:35:19 HINWEIS: Push abgelehnt (Remote ist weiter) - erwartet, solange nicht gemergt wurde. Rueckstand sichtbar ueber 'git log origin/main..HEAD'.
+2026-10-30 21:35:19 === Scanner-Task beendet ===

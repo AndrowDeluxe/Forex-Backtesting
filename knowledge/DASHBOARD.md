@@ -104,7 +104,7 @@ Bedarf vor generischem Aufräumen.
   - Details [[mt5-tester-portable]].
 
 - **Data Lake: CTNL-Daten waren durch Zeitzonen-Chaos UND Twelve-Data-Failover verfälscht**
-  (28./30.10., behoben; zwei Dinge brauchen deine Bestätigung). Zeitzonen-Duplikate: siehe
+  (28./30.10., behoben). Zeitzonen-Duplikate: siehe
   CHANGELOG 28.10. Neu am 30.10.: Der Failover schrieb pauschal 500 Kerzen (Volumen 0, eigenes
   H4-Raster, Wochenenden) rückwirkend in 11 Reihen (Gold H4/H1/M15/M5, USDJPY H4, EURUSD M5,
   5× M15-FX), ohne Logzeile. Belegt: 484 von 485 Vergleichskerzen = Twelve Data.
@@ -114,10 +114,7 @@ Bedarf vor generischem Aufräumen.
   verfälscht vs. sauber: nur 9 gemeinsame von 23 bzw. 26 Signalen. Das ist die Obergrenze, nicht
   was live ablief. Einzelne Oktober-Trades sind nicht zugeordnet. Das Soll der Weekly Reports
   seit etwa Oktober ist unzuverlässig.
-  **Bitte bestätigen:** (a) Failover darf nur noch anhängen, nie Historie ändern, und H4 von
-  Twelve Data wird wegen des anderen Rasters ganz abgelehnt, bei Dukascopy-Ausfall steht H4
-  also still. (b) Bereits im Lake gespeicherte Kerzen sind jetzt unveränderlich bis auf die
-  letzten zwei; spätere Dukascopy-Korrekturen älterer Kerzen werden verworfen (mit Warnung).
+  Failover nur anhängen + Kerzen unveränderlich: vom Nutzer bestätigt 31.10.
   Offen, Niedrig: Warum der Failover ohne Logzeile lief (Vermutung: abgebrochene Läufe nach
   dem Aufwachen, Ausgabe wird erst am Ende geschrieben).
 

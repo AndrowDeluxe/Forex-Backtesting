@@ -9,6 +9,13 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-10-31** [Bridges / Data Lake / Git] **Ausfall-Analyse 28.-30.10., Rücknahme der Korrektur, Push-Stau gelöst.**
+  - Dukascopy-DNS-Ausfall erklärt die Scan-Fehler aller Beine; Gold ASB 30.10. verpasst (Sim +1,93 R),
+    Trend-Pullback-„verpasst“ vom 30.10. waren Twelve-Data-Phantome. Details im Dashboard.
+  - Aussage vom 30.10. zurückgenommen: Twelve-Data-Kerzen kamen erst mit dem Ausfall in den Lake.
+  - Git: lokal 1.618 Commits vor, Remote 29 Monitor-Commits (nur Dashboard) → Merge `-s ours`, Push `dd0ec740`.
+    Die „Watchdog-Ausfall“-Meldungen des Cloud-Monitors seit 02.10. kamen von diesem Stau.
+
 - **2026-10-30** [Research] **Quantum Valkyrie: Nachbau fertig, Klon verworfen.**
   - Neu: `mt5_valkyrie/engine.py`, `replay.py`, `scripts/research_valkyrie.py`, `projects/quantum-valkyrie-edge-card.md`.
   - Replay der echten Orders: 94–95 % der Ausstiege auf ±1 Min., Korrelation der Kapitalkurve bis 0,9996. Der Trailing-Modus hängt am TP der Order.

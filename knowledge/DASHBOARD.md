@@ -103,20 +103,23 @@ Bedarf vor generischem Aufräumen.
   - Alternative: das Tester-Terminal per Ansicht → Sprache auf Englisch stellen.
   - Details [[mt5-tester-portable]].
 
-- **Data Lake: CTNL-Daten waren durch Zeitzonen-Chaos UND Twelve-Data-Failover verfälscht**
-  (28./30.10., behoben). Zeitzonen-Duplikate: siehe
-  CHANGELOG 28.10. Neu am 30.10.: Der Failover schrieb pauschal 500 Kerzen (Volumen 0, eigenes
-  H4-Raster, Wochenenden) rückwirkend in 11 Reihen (Gold H4/H1/M15/M5, USDJPY H4, EURUSD M5,
-  5× M15-FX), ohne Logzeile. Belegt: 484 von 485 Vergleichskerzen = Twelve Data.
-  **Korrektur meiner Aussage vom 28.10.:** „Live-Einstiege im Oktober nicht betroffen“ ist so
-  nicht haltbar. Live-Scans rechneten nach einem Failover auf den Fremdkerzen; wann genau
-  welche Kerzen im Lake lagen, ist nicht rekonstruierbar. Nachrechnung ab 21.09., Stand heute
-  verfälscht vs. sauber: nur 9 gemeinsame von 23 bzw. 26 Signalen. Das ist die Obergrenze, nicht
-  was live ablief. Einzelne Oktober-Trades sind nicht zugeordnet. Das Soll der Weekly Reports
-  seit etwa Oktober ist unzuverlässig.
-  Failover nur anhängen + Kerzen unveränderlich: vom Nutzer bestätigt 31.10.
-  Offen, Niedrig: Warum der Failover ohne Logzeile lief (Vermutung: abgebrochene Läufe nach
-  dem Aufwachen, Ausgabe wird erst am Ende geschrieben).
+- **Dukascopy-Ausfall 28.10. ~22 Uhr bis 30.10. 10:55: Gold ASB verpasst, Lake verfälscht**
+  (Befund 31.10., Lake behoben, Filter-Fix offen). DNS-Fehler fast nur für
+  `freeserv.dukascopy.com` (358×, Telegram 2×), MT5 lief. Ob Dukascopy oder das lokale DNS schuld
+  war, ist offen. Folgen: Ingest hing bis zum Task-Limit (4/10 Min.) und wurde abgebrochen, daher
+  keine Logzeilen; Lake veraltet → Live-Fallback hängt → Scan-Fehler auf allen Beinen; Twelve Data
+  schrieb Fremdkerzen (behoben, Schutz seit 30.10., Nutzer bestätigt 31.10.).
+  **Gold ASB 30.10. verpasst auf EK, Funded und FK:** Short ab 02:00 NY, Sim +1,93 R. Der
+  Vortagsfilter braucht Dukascopy live und legte dann keine Order. **Vorschlag, noch nicht gebaut:**
+  Filter im Ausfall aus dem letzten Lake-Stand rechnen. Mittel, hängt an echtem Geld.
+  Trend Pullback: die „verpasst“-Meldungen vom 30.10. (USDJPY 27.09., XAUUSD 12.10.) waren Phantome
+  aus Twelve-Data-Kerzen; sauber seit 25.08. kein Signal. CTNL/CLS im Fenster: kein Signal.
+  **Offen, ungeprüft:** OU-Scan lieferte im Test eine leere Liste (Fehltrade nicht ausgeschlossen);
+  `^GSPC`/`^NDX` yfinance-Fehler seit mind. 20.10., unabhängig vom Ausfall; EK 29.10. abends
+  `can't start new thread`/OpenBLAS-Speicherfehler, Zusammenhang mit hängenden Aufrufen nur vermutet.
+  Backup 28.10. hatte 0 Volumen-0-Kerzen ab 19.09.: die Live-Einstiege vor dem Ausfall waren NICHT
+  betroffen, meine Korrektur vom 30.10. ist zurückgenommen. Das CTNL-Soll KW42/43 bleibt wegen der
+  Duplikate zu optimistisch.
 
 - **Key Levels, Doppel-BOS-Einstieg: 4 Annahmen von mir** (18.10.,
   im Chat aufgelistet):

@@ -33,7 +33,7 @@ Kein belegter Mechanismus. Die Asymmetrie aus enger Absicherung erzeugt die hohe
 Zufällige Kerze statt Auslöser, gleiche Pivots und gleiche Orderzahl. Bei einem echten Auslöser-Edge müsste die Kontrolle deutlich schlechter sein. Das ist sie nur im Blindtest und schwächer in IS und OOS, im Tresor nicht.
 
 ## 05 Test
-Sperre `valkyrie_klon_20261030`, 1 gezählte Variante (keine Auswahl auf Gewinn). Kriterium vor dem ersten Lauf: Blindtest, OOS und Tresor je Ø R > 0 und t ≥ 2 nach 0,30 $ Kosten. Skript: `scripts/research_valkyrie.py`. Alle Stufen laufen auf dem OHLC-Modell.
+Sperre `valkyrie_klon_20261030`, 1 gezählte Variante (keine Auswahl auf Gewinn). Kriterium vor dem ersten Lauf: Blindtest, OOS und Tresor je Ø R > 0 und t ≥ 2 nach 0,30 $ Kosten. Skript: `scripts/research_valkyrie.py`. Split und Kriterium vom Nutzer bestätigt am 02.11. Alle Stufen laufen auf dem OHLC-Modell.
 
 | Stufe | Klon brutto Ø R (t) | Klon nach 0,30 $ Ø R (t) | Kontrolle brutto Ø R (t) | Kriterium |
 |---|---|---|---|---|

@@ -9,6 +9,12 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-02** [Data Lake] **Tagesreihen-Ersatz bei Dukascopy-Ausfall: aus Intraday abgeleitet** (Nutzer: „wähle die beste Option“). `data_lake/ingest.py::_derive_d1_from_intraday`: nach 2 Fehlversuchen entstehen die Tageskerzen ab dem letzten vorhandenen Tag aus der Lake-H1-Reihe (sonst M15), geschnitten wie Dukascopy (UTC-Mitternacht), nur wenn H1 höchstens 2 h alt ist. Volume 0 = vorläufig; `_fetch_window` holt diese Tage nach dem Ausfall von Dukascopy neu (bis 60 Tage zurück). Weiterhin kein Twelve-Data-1day. Test auf Lake-Kopie: 4 entfernte Tage centgenau wie Dukascopy, Lake-Tests grün. Wirkt sofort für GOLD_D1 (Gold-ASB-Friktion, Trend-Pullback, CTNL-Ribbon). **Vom Nutzer bestätigt** („passt so perfekt“), ersetzt die frühere Bestätigung „Tageskerzen ein paar Stunden alt lassen“.
+- **2026-11-02** [Research] Copy Trading Stufe 2: Nutzer bestätigt alle 4 Annahmen (BE unter Entry = schließen, Teilschluss 50 %, Zeitbezug-Fenster, Invalide nur für wartende Orders); Dashboard-Punkt entfernt.
+- **2026-11-02** [Data Lake] **Vom Nutzer bestätigt:** Tagesreihen (D1) haben keinen
+  Twelve-Data-Failover mehr. Ein paar Stunden alte Dukascopy-Tageskerzen gelten als besser als
+  fremd geschnittene. Aus „Braucht deine Bestätigung“ entfernt, Code unverändert.
+
 - **2026-11-02** [Research / gekaufte EAs] **Offene Bot-Punkte geschlossen (Nutzer).** Bestätigt sind der Split und das Kostenkriterium des Valkyrie-Klons sowie die lokale Anpassung des Skills `mt5-robot-tester`. Beide Punkte sind aus dem Dashboard entfernt.
 
 - **2026-11-02** [Data Lake] **Schreibregeln vom Nutzer bestätigt:** Der Twelve-Data-Failover hängt

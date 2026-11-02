@@ -221,3 +221,39 @@
 2026-10-27 23:37:12 - 2026-10_checkup.html
 2026-10-27 23:37:12 Vollstaendigkeitspruefung OK: KW43_2026_checkup.pdf (542.738 Bytes)
 2026-10-27 23:37:12 === Weekly-Report-Task beendet ===
+2026-11-01 18:00:02 === Weekly-Report-Task gestartet ===
+2026-11-01 18:00:02 Nutze Claude Code: C:\Users\andre\.vscode\extensions\anthropic.claude-code-2.1.312-win32-arm64\resources\native-binary\claude.exe
+2026-11-01 19:53:56 Soll/Ist und Ampel laufen noch. Die Berichte schreibe ich, sobald die Abschlussmeldungen da sind, vorher gibt es f++r die Abschnitte 5 und 5b keine Zahlen.
+2026-11-01 19:53:56 
+2026-11-01 19:53:56 Das HTML l+Òsst sich schon erzeugen, nur der Ampel-Abschnitt fehlt noch. Ich warte auf den Ampel-Lauf. Falls er 20 Minuten lang nichts mehr schreibt, nehme ich den letzten Stand und kennzeichne das im Bericht.
+2026-11-01 19:53:56 
+2026-11-01 19:53:56 Der erste Ampel-Lauf wurde nach 50 Minuten vom Zeitlimit abgebrochen, also habe ich ihn neu gestartet, diesmal mit einer Stunde Limit. Sobald er fertig ist, trage ich das Ergebnis ein, oder im Fehlerfall den letzten Stand mit Kennzeichnung.
+2026-11-01 19:53:56 
+2026-11-01 19:53:56 Das war nur der W+Òchter des ersten, abgebrochenen Laufs. Der neue Ampel-Lauf rechnet noch, und auf dessen Abschlussmeldung warte ich.
+2026-11-01 19:53:56 
+2026-11-01 19:53:56 **Der Weekly Checkup KW44/2026 ist fertig, aber die Edge-Warnstufen sind nicht aktuell.** Die Berichte sind lokal committet (`23b0d52f`, nicht gepusht), das PDF liegt in `Documents\Trading Reports\` und ging per Telegram raus. Ein Monatsbericht war nicht f+Òllig. Es blieben keine zus+Òtzlichen Terminals offen (weiter 6), und an den Bots wurde nichts ge+Òndert.
+2026-11-01 19:53:56 
+2026-11-01 19:53:56 | Bridge | Trades | Winrate | P&L | % |
+2026-11-01 19:53:56 |---|---|---|---|---|
+2026-11-01 19:53:56 | EK | 9 | 44,4 % | ‘Í∆44,74 EUR | ‘Í∆1,57 % |
+2026-11-01 19:53:56 | Funded (TTP + IQ) | 11 | 9,1 % | ‘Í∆997,82 USD | ‘Í∆0,51 % |
+2026-11-01 19:53:56 | FK | 5 | 20,0 % | ‘Í∆96,33 USD | ‘Í∆0,10 % |
+2026-11-01 19:53:56 | **Gesamt** | **25** | **24,0 %** | **‘Í∆44,74 EUR / ‘Í∆1.094,15 USD** | **ca. ‘Í∆0,38 %** |
+2026-11-01 19:53:56 
+2026-11-01 19:53:56 Es gab keine Regelverletzung und keinen Kill-Switch. 92 % des USD-Verlusts kommen aus CTNL-Shorts gegen den Gold-Anstieg vom 27./28.10. IQ liegt noch ca. 2.907 USD ++ber der 6-%-Grenze (Vorwoche ca. 3.460).
+2026-11-01 19:53:56 
+2026-11-01 19:53:56 **Was nicht geklappt hat:**
+2026-11-01 19:53:56 - **Edge-Warnstufen:** Beide L+Òufe der Simulation brachen ab (nach 50 und 60 Minuten). Die Tabelle zeigt deshalb den Stand vom 27.10. ohne KW44 und ist im Bericht so gekennzeichnet.
+2026-11-01 19:53:56 
+2026-11-01 19:53:56 **Neue Befunde der Woche:**
+2026-11-01 19:53:56 - **Standby Mo/Di:** Ca. 25,6 Stunden lief nichts, und der Akku war dabei nicht leer; die Ursache ist offen. Das korrigiert KW43: ORB fiel am 26.10. auch auf EK aus.
+2026-11-01 19:53:57 - **Gold ASB am 30.10. verpasst:** Das ist der teuerste Punkt der Woche, grob 2.640 USD auf Funded und FK. Der neue Ausfall-Ersatz h+Òtte diese Order laut Changelog auch nicht gelegt.
+2026-11-01 19:53:57 - **Ausfall 28.‘«Ù30.10.:** Auch Binance fiel im selben Fenster aus (195 Fehler). Das spricht eher f++r das lokale Netz als f++r Dukascopy, bewiesen ist es nicht.
+2026-11-01 19:53:57 - **Soll +5,45 R bei CTNL:** Das ist sehr wahrscheinlich ein Modellartefakt, weil die Engine den Stop nur auf dem Kerzenschluss pr++ft. Die Zuordnung habe ich aus den Kursen erschlossen.
+2026-11-01 19:53:57 - **FK-Position 2624779:** Der Stop wurde ohne Spur im Bot-Log verschoben, vermutlich von Hand. Ich habe das zur Best+Òtigung ins Dashboard eingetragen.
+2026-11-01 19:53:57 
+2026-11-01 19:53:57 `CHANGELOG.md`, `DASHBOARD.md` und zwei Memory-Notizen sind nachgef++hrt, aber laut Auftrag nicht im Commit. Auch die uncommitteten +‰nderungen der anderen Session vom 01.11. bleiben unangetastet im Working Tree. Die neuen `mt5_2026-W44.json` und `soll_ist_2026-W44.json` liegen ebenfalls uncommittet dort.
+2026-11-01 19:53:57 
+2026-11-01 19:53:57 Offene Entscheidung f++r dich: den Gold-ASB-Ausfall-Ersatz behalten oder abschalten. Er ist aktiv und greift ab Montag; im Dashboard steht die Empfehlung, ihn abzuschalten.
+2026-11-01 19:53:57 Vollstaendigkeitspruefung OK: KW44_2026_checkup.pdf (594.173 Bytes)
+2026-11-01 19:53:57 === Weekly-Report-Task beendet ===

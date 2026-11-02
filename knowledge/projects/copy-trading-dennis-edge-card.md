@@ -395,7 +395,7 @@ bis 31.03.2027 mit min. 100 Trades, darunter wird nur beschrieben. Eingefroren i
   Gewinner, von denen A2 lebt. Bei A2s engem 1×-ATR-Stop ist ein Ziel von 10–20 R üblich,
   während Dennis' Trade schon früher „in Profit“ ist. Insgesamt rettet Stufe 2 den Call-Copy
   nicht. Die Entscheidung fällt vorwärts.
-- **Annahmen:**
+- **Annahmen (vom Nutzer bestätigt 02.11.2026):**
   - BE unter Entry = schließen zum Kurs.
   - Teilschluss ohne Anteil = 50 %.
   - Zeitbezug: heute ≤ 24 h, gestern 6 h–4 Tage, letzte Woche 2–14 Tage, ohne Angabe

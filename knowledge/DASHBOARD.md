@@ -85,8 +85,7 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
-- **Tagesreihen ohne Twelve-Data-Failover (02.11.):** meine Annahme, dass ein paar Stunden alte Tageskerzen besser sind als fremd geschnittene. Betrifft alle Dukascopy-D1-Reihen im Lake.
-- **EURUSD-Limit-Edge-Card, Phase 0 (01.11.):** Zusammenfassung des Trades vom 30.10. bestätigen und sagen, wann die Limit-Order gelegt wurde ([[eurusd-lower-high-limit-edge-card]]). Regelentwurf und Detektor-Parameter sind meine Annahmen.
+- **EURUSD-Limit-Edge-Card, Feld 01/02 (02.11.):** Phase 0 bestätigt, Limit lag vor 11:00. Offen: Fragenkatalog und 8 IS-Beispiele beurteilen ([[eurusd-lower-high-limit-edge-card]]). Detektor-Parameter sind weiter meine Annahmen.
 
 - **Weekly KW44 (01.11.), drei Lesarten von mir, bitte bestätigen:**
   1. FK-Position 2624779: SL stand laut Log auf 4.076,96, geschlossen am 28.10. bei `[sl 4058.00]` (+6,33 USD), ohne Bot-Logzeile. Vermutung: von Hand gezogen. Warst du das?
@@ -131,14 +130,6 @@ Bedarf vor generischem Aufräumen.
 - **Valkyrie-Klon, 2 Annahmen von mir** (30.10., [[quantum-valkyrie-edge-card]]):
   1. Split IS 2020-01-17 bis 2023-12-31, OOS bis 2025-10-27, Tresor bis 2026-10-16, Blindtest 2018-01-01 bis 2020-01-16.
   2. Kriterium: je Stufe Ø R > 0 und t ≥ 2 nach 0,30 $ Kosten je Trade. Ich habe es vor dem ersten Lauf festgelegt, die 0,30 $ sind meine Wahl.
-
-- **Copy Trading Stufe 2, 4 Annahmen von mir** (28.10.,
-  `projects/copy-trading-dennis-edge-card.md` Abschnitt Stufe 2):
-  1. „BE ziehen“, während der Kurs unter unserem Entry steht → wir schließen zum Kurs.
-  2. Teilschluss ohne genannten Anteil → 50 %.
-  3. Zeitbezug der Anweisung: heute ≤ 24 h, gestern 6 h–4 Tage, letzte Woche 2–14 Tage, ohne
-     Angabe ≤ 30 Tage nach dem Call, gleiches Symbol.
-  4. „Invalide“ streicht nur wartende Orders, laufende Trades laufen weiter (Regel 7).
 
 - **Dukascopy-Ausfall 28.10. ~22 Uhr bis 30.10. 10:55: Gold ASB verpasst, Lake verfälscht**
   (Befund 31.10., Lake behoben, Filter-Fix offen). DNS-Fehler fast nur für

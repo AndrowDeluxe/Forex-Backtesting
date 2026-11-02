@@ -65,7 +65,54 @@ def _fetch_window(entry: "sources.LakeSource", now: pd.Timestamp) -> tuple[str, 
         if getattr(last_bar_ts, "tzinfo", None) is not None:
             last_bar_ts = last_bar_ts.tz_localize(None)
         start = last_bar_ts - pd.Timedelta(days=_OVERLAP_DAYS)
+        if entry.timeframe == "D1" and "Volume" in existing.columns:
+            # Vorlaeufige, aus Intraday abgeleitete Tage (Volume 0, siehe _derive_d1_from_intraday)
+            # nach einem laengeren Ausfall vollstaendig von Dukascopy neu holen.
+            prov = existing.index[(existing["Volume"] == 0) & (existing.index >= existing.index.max() - pd.Timedelta(days=60))]
+            if len(prov):
+                first = prov.min().tz_localize(None) if prov.min().tzinfo is not None else prov.min()
+                start = min(start, first - pd.Timedelta(days=_OVERLAP_DAYS))
     return start.strftime("%Y-%m-%d"), end_str
+
+
+_D1_DERIVE_FROM = ("H1", "M15")
+_D1_DERIVE_MAX_AGE = pd.Timedelta(hours=2)
+
+
+def _derive_d1_from_intraday(entry: "sources.LakeSource", label: str) -> bool:
+    """Ausfall-Ersatz fuer Tagesreihen (2026-11-02, Nutzerauftrag "beste Option"): Tageskerzen ab
+    dem letzten vorhandenen Tag aus der Lake-Intraday-Reihe (H1, sonst M15) derselben Quelle,
+    geschnitten wie Dukascopy (UTC-Mitternacht). Twelve-Data-1day schneidet anders (GOLD bis 195 $
+    im Hoch, Samstagskerzen) und hatte GOLD_D1 bis 04/2025 zurueck ueberschrieben. Volume = 0
+    markiert die Tage als vorlaeufig; _fetch_window holt sie nach dem Ausfall von Dukascopy neu,
+    write_bars ersetzt sie je Kalendertag. Nur, wenn die Intraday-Reihe frisch ist."""
+    existing = storage.read_bars(entry.source, entry.key, "D1")
+    if existing is None or existing.empty or not {"Open", "High", "Low", "Close"} <= set(existing.columns):
+        return False
+    for tf in _D1_DERIVE_FROM:
+        intra = storage.read_bars(entry.source, entry.key, tf)
+        if intra is not None and not intra.empty and {"Open", "High", "Low", "Close"} <= set(intra.columns):
+            break
+    else:
+        log.info("%s: keine Intraday-Reihe im Lake -- Tageskerze bleibt alt.", label)
+        return False
+    now = pd.Timestamp.now(tz="UTC")
+    last_intra = intra.index.max() if intra.index.tz is not None else intra.index.max().tz_localize("UTC")
+    if now - last_intra > _D1_DERIVE_MAX_AGE:
+        log.info("%s: %s im Lake selbst %s alt -- Tageskerze bleibt alt.", label, tf, now - last_intra)
+        return False
+    last_day = existing.index.max()
+    part = intra[intra.index >= last_day]
+    days = (part.resample("1D").agg({"Open": "first", "High": "max", "Low": "min", "Close": "last"})
+            .dropna())
+    if days.empty:
+        return False
+    days["Volume"] = 0.0
+    merged = storage.write_bars(entry.source, entry.key, "D1", days[existing.columns.intersection(days.columns)])
+    manifest.record_success(entry.source, entry.key, "D1", merged.index.max(), len(merged), origin=f"derived_{tf}")
+    log.warning("%s: Dukascopy gescheitert -- %d Tageskerze(n) vorlaeufig aus %s abgeleitet, letzter Tag %s",
+                label, len(days), tf, days.index.max().date())
+    return True
 
 
 def _try_twelvedata_failover(entry: "sources.LakeSource", label: str, n_failures: int) -> bool:
@@ -74,10 +121,12 @@ def _try_twelvedata_failover(entry: "sources.LakeSource", label: str, n_failures
     if n_failures < FAILOVER_AFTER_N_FAILURES:
         return False
     if entry.timeframe == "D1":
-        # Twelve Data schneidet Tage anders (GOLD bis 195 $ Abweichung im Hoch, Samstagskerzen) und hat
-        # GOLD_D1 bis 04/2025 zurueck ueberschrieben -- Tageskerzen lieber ein paar Stunden alt lassen.
-        log.info("%s: %dx in Folge gescheitert -- kein Twelve-Data-Failover fuer Tagesreihen.", label, n_failures)
-        return False
+        # Kein Twelve-Data-1day (anderer Tagesschnitt), sondern aus der Lake-Intraday-Reihe abgeleitet.
+        try:
+            return _derive_d1_from_intraday(entry, label)
+        except Exception as e:  # noqa: BLE001
+            log.error("%s: Ableitung der Tageskerze gescheitert: %s", label, e)
+            return False
     if not twelvedata_source.is_covered(entry.key):
         log.info("%s: %dx in Folge gescheitert, aber Twelve Data deckt diesen Key nicht ab -- kein Failover moeglich.", label, n_failures)
         return False

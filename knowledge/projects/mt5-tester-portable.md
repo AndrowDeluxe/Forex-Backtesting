@@ -16,7 +16,7 @@ Angelegt am 2026-10-28 für automatisierte Strategietester-Läufe gekaufter EAs,
   - `parse_mt5_report.py`: Nettogewinn gesamt, Ersteinlage, Profitfaktor, LR Korrelation, Sharpe-Ratio, Gesamtanzahl Trades, Rückgang …, Kontostand/Zeit
   - `mt5_common.py`: Durchlauf, Ergebnis, Gewinn, Profitfaktor, Erwartetes Ergebnis, Erholungsfaktor
 - Dabei auch einen Fehler des Skills behoben: Zahlen ab 1000 ohne Tausender-Leerzeichen (z. B. 11009) wurden abgeschnitten (110).
-- Die Skill-Dateien liegen nicht in Git.
+- Die Skill-Dateien liegen nicht in Git. Die lokale Anpassung hat der Nutzer am 02.11. bestätigt. Bei einem Skill-Update gehen die Änderungen verloren und müssen neu eingespielt werden.
 - MT5 leert die Tester-Logs automatisch (am 24.10. beobachtet). Wichtige Läufe sofort auswerten oder sichern.
 
 ## Ergebnis Ultimate Breakout System (28.10.)

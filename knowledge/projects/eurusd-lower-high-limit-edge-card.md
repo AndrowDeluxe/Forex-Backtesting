@@ -1,7 +1,33 @@
 # Project: EURUSD Lower-High-Limit (Edge Card, Arbeitsstand)
 
-**Status**: Phase 0 von [[edge-card-workflow]], wartet auf Bestätigung durch den Nutzer. Noch kein Test,
-kein Lock registriert. Ausgangspunkt ist ein händischer Trade vom 30.10.2026.
+**Status**: Phase 0 am 02.11.2026 vom Nutzer bestätigt, Feld 01/02 in Arbeit (Fragenkatalog gestellt).
+Noch kein Test, kein Lock registriert. Ausgangspunkt ist ein händischer Trade vom 30.10.2026.
+
+## Nutzerangaben 02.11.
+
+- Die Zusammenfassung aus Phase 0 stimmt. Der Edge liegt sehr nahe am CTNL-Edge (Plan A1,
+  `gold_smc_htf_ltf/reversal_cascade.py`).
+- Das Limit lag vor 11:00 im Markt. Folge: Spike über $$$ (bis 1,12057) und Reaktion kamen nach der Füllung,
+  sie sind keine Einstiegsbedingung. Das „Lower High“ ist H1 (04:00) gegenüber H0 (02:15) und stand ab dem
+  BOS um 04:30 fest. Gegenlauf 2,9 Pips gilt damit.
+- Unterschied zu CTNL (Code): CTNL verlangt H4-Doppel-Sweep, H1-Doppel-BOS und auf M15 Sweep-and-Reject als
+  Einstieg. Hier ein M15-Limit ohne Bestätigung.
+
+## IS-Beispiele zur Beurteilung durch den Nutzer (ohne Ergebnis, UTC)
+
+Zufallsstichprobe (seed 7) aus 230 Treffern 2019–2022 des Entwurfs mit Stop 5–20 Pips, Rücklauf ≥ 20 Pips,
+Berührung 07–12 UTC. Nur IS, damit die Regelfindung den Tresor nicht berührt.
+
+| H0 | H1 = Entry | BOS | Berührung |
+|---|---|---|---|
+| 26.08.2019 14:30 1,11219 | 26.08.2019 16:30 1,11155 | 17:00 | 27.08.2019 08:45 |
+| 22.07.2020 13:30 1,16013 | 22.07.2020 14:45 1,15951 | 17:45 | 23.07.2020 07:00 |
+| 11.09.2020 09:45 1,18741 | 11.09.2020 13:00 1,18574 | 14:45 | 14.09.2020 07:15 |
+| 28.01.2021 19:30 1,21399 | 28.01.2021 22:15 1,21276 | 29.01. 00:15 | 29.01.2021 10:15 |
+| 24.01.2022 00:45 1,13406 | 24.01.2022 04:30 1,13312 | 05:00 | 24.01.2022 08:30 |
+| 18.03.2022 16:15 1,10722 | 18.03.2022 17:45 1,10640 | 18:00 | 21.03.2022 09:00 |
+| 17.06.2022 02:45 1,05394 | 17.06.2022 04:15 1,05300 | 06:00 | 17.06.2022 07:30 |
+| 09.12.2022 13:30 1,05663 | 09.12.2022 18:45 1,05557 | 20:45 | 12.12.2022 09:30 |
 
 ## Der Trade (Fakten)
 

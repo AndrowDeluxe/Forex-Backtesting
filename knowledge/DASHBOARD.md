@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-10-03** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-11-02** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -93,6 +93,44 @@ Bedarf vor generischem Aufräumen.
   2. Standby Mo 26.10. ca. 10:38 bis Di 27.10. 12:13 (alle Lanes, Akku ca. 46 Wh, also nicht leer): ORB 26.10. auch auf EK verpasst. Das korrigiert „2 Tage ohne ORB wegen Serverzeit / EK nicht betroffen“. Ursache offen; warst du unterwegs?
   3. Ausfall 28.–30.10.: auch `api.binance.com` 195 Fehler im selben Fenster, dazu MT5 `Authorization failed` um 22:16–22:18. Spricht eher für lokales Netz/DNS als für Dukascopy, kein Beweis.
   Außerdem: Das CTNL-Soll +5,45 R (27.10.) ist laut meinem Abgleich ein Schlusskurs-Stop-Artefakt (Hoch 4.081,96, SL 4.076,96, höchster Schluss 4.074,29), die Zuordnung ist erschlossen.
+
+- **Bridge-Watchdog seit 06:07 UTC (07:07 lokal) ohne neuen Snapshot — ~9,5 h
+  Lücke an einem normalen Handelsmontag** (gefunden 02.11. durch den
+  Cloud-Monitor, `bridge_status/snapshot.json`). Der Commit-Takt lief bis
+  `2026-11-02 07:07:47 +0100` im gewohnten 30-Min-Rhythmus (`...06:37, 07:01,
+  07:07`), danach kein einziger Watchdog-Commit mehr bis zu diesem Lauf
+  (`2026-11-02 15:32 UTC`). Der letzte gesehene Stand zeigt `"status": "ok"`
+  auf allen drei Bridges (EK, Funded TTP/IQ, FK) — die Lücke sagt also nichts
+  über einen Fehler der Bridges selbst, nur dass der Watchdog (und damit
+  vermutlich auch die anderen `Mo–Fr`-Tasks auf derselben Maschine) seit dem
+  Vormittag nichts mehr meldet. Passt zum bekannten Muster (Standby/Akku-
+  Fälle 28.09./12.10./15.10./20.10., siehe Eintrag „Untersuchung: Lake
+  veraltet…" oben) — mein unbelegter Verdacht von hier aus: Rechner im
+  Standby/aus oder Task Scheduler blockiert, da heute kein Wochenende und
+  kein Feiertag ist. Von diesem Repo aus kann ich nicht prüfen, ob die
+  Bridges in der Zwischenzeit trotzdem weiterliefen oder ebenfalls
+  stillstanden. **Kannst du kurz nachschauen, ob der Rechner/die Tasks seit
+  heute Vormittag liefen?**
+
+- **Second-Brain-Lint 02.11.: zwei Wikilink-Funde brauchen eine Entscheidung.**
+  1. **Inhaltliche Lücke:** `[[orb-ribbon-filter-kippt-2026]]` wird in
+     [[baltussen-tagesend-momentum]] und [[live-strategien-tresor-check]]
+     zitiert („die Hypothese ... kippte ..."), existiert aber nirgends als
+     eigene Notiz — beide Stellen verweisen auf denselben, nie geschriebenen
+     Befund zum ORB-Ribbon-Kipp. Eigene Notiz anlegen (wo? `projects/` oder
+     Abschnitt in [[orb-order-storno-und-haltedauer]]?) oder anders verlinken?
+  2. **Namenskonvention:** [[persoenlicher-tradingplan-validierung]] zitiert
+     `[[ctnl-serienstopp-vs-risikohalbierung]]` als Wikilink, der Fund
+     existiert aber nur als Memory-Slug `ctnl_serienstopp_vs_risikohalbierung`
+     (siehe `reports/weekly/KW40_2026_education.md`) sowie als „Befund 19" in
+     [[ctnl-kostenvalidierung]]. Der Wikilink auf das Memory-Ziel ist für
+     Obsidian tot — wie zitieren wir Memory-Funde künftig aus
+     `knowledge/`-Notizen (Backtick-Slug statt `[[...]]`, analog
+     `reports/weekly/`)?
+
+- **Valkyrie-Klon, 2 Annahmen von mir** (30.10., [[quantum-valkyrie-edge-card]]):
+  1. Split IS 2020-01-17 bis 2023-12-31, OOS bis 2025-10-27, Tresor bis 2026-10-16, Blindtest 2018-01-01 bis 2020-01-16.
+  2. Kriterium: je Stufe Ø R > 0 und t ≥ 2 nach 0,30 $ Kosten je Trade. Ich habe es vor dem ersten Lauf festgelegt, die 0,30 $ sind meine Wahl.
 
 - **Copy Trading Stufe 2, 4 Annahmen von mir** (28.10.,
   `projects/copy-trading-dennis-edge-card.md` Abschnitt Stufe 2):
@@ -591,17 +629,25 @@ Bedarf vor generischem Aufräumen.
   für alle drei Bridges.
 
 **Mittel**
-- **14 unverarbeitete Clippings** in `knowledge/Clippings/` (Stand
-  2026-09-28-Lint, unveraendert seit 2026-09-09) — u.a. Edge-Genesis/-Decay,
+- **14 unverarbeitete Clippings** in `knowledge/Clippings/` (Lint 02.11.,
+  unveraendert seit 2026-09-09) — u.a. Edge-Genesis/-Decay,
   Risk-Factor-Investing, Sektor-Rotation, "Six Repos One System", "How
   system works" — noch nicht durch den CODE-Prozess.
 
 **Niedrig**
-- **Statustabelle: "Zuletzt geprüft" bei `OU-Modell-ScannerHourly` ist
-  26 Tage alt** (Lint 28.09., Schwelle 21 Tage; Stand: 2026-09-02).
-  Reiner Alters-Hinweis aus dem Lint-Skript, kein inhaltlicher Befund —
-  Zeile bei Gelegenheit gegen den echten Task-Scheduler-/Scanner-Status
-  nachpruefen und Datum auffrischen (CLAUDE.md Punkt 4).
+- **Second-Brain-Lint 02.11.: toter Wikilink `[[eurusd-lower-high-limit-edge-card]]`**
+  in `reports/weekly/KW44_2026_education.md` — die Edge Card ist laut Text
+  selbst noch in Phase 0 (wartet auf deine Bestätigung), die Notiz existiert
+  deshalb erwartungsgemäß noch nicht. Kein Handlungsbedarf, nur zur Kenntnis.
+- **Statustabelle: 8 "Zuletzt geprüft"-Zeilen über 21 Tage alt** (Lint
+  02.11., Schwelle 21 Tage): `FK-Instant-Funding-Paper`,
+  `OU-Modell-ScannerHourly`, `Forex-Weekly-Report`, `Bridge-Watchdog`,
+  `DataLake-Ingest-Fast`, `DataLake-Ingest-Fast5`, `DataLake-Ingest-Slow`,
+  `Dashboard-Telegram-Digest` — alle zuletzt am 2026-09-02/-13/-15 geprüft
+  (50-61 Tage alt). Reiner Alters-Hinweis aus dem Lint-Skript, kein
+  inhaltlicher Befund — Zeilen bei Gelegenheit gegen den echten
+  Task-Scheduler-/Scanner-Status nachprüfen und Datum auffrischen
+  (CLAUDE.md Punkt 4).
 
 ## Status — was läuft gerade wirklich
 
@@ -675,12 +721,15 @@ Live-Status aller drei Portfolio-Bridges jetzt auch als Streamlit-Seiten
 („Portfolio-Bridges" in der Sidebar) — lesen `bridge_status/snapshot.json`,
 das der Bridge-Watchdog alle 30 Min. committet.
 
-_Letzter Lint-Durchlauf: **2026-09-28** (geplant, `second-brain-lint`).
-Ergebnis: 0 tote Wikilinks (die beiden am 09-21 gefundenen Notizen
-existieren jetzt, am 03.10. vom Nutzer abgehakt), 0 verwaiste Seiten,
-1 veraltete Statustabellen-Zeile (`OU-Modell-ScannerHourly`, → Niedrig);
-14 unverarbeitete Clippings unverändert seit 09-09. Verweise nach
-außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
+_Letzter Lint-Durchlauf: **2026-11-02** (geplant, `second-brain-lint`).
+Ergebnis: 4 tote Wikilinks — 1 inhaltliche Lücke (`orb-ribbon-filter-kippt-2026`,
+in 2 Notizen) + 1 Memory-Slug-Konvention (`ctnl-serienstopp-vs-risikohalbierung`)
+→ beide Braucht-Bestätigung; 1 isolierter toter Link
+(`eurusd-lower-high-limit-edge-card`, erwartungsgemäß weil Edge Card noch
+Phase 0) → Offene Aufgaben. 0 verwaiste Seiten. 8 veraltete
+Statustabellen-Zeilen (→ Offene Aufgaben, Niedrig). 14 unverarbeitete
+Clippings unverändert seit 09-09. Verweise nach außerhalb von `knowledge/`
+als Pfad in Backticks (siehe `README.md`)._
 
 ## Status — aktuell nicht aktiv
 

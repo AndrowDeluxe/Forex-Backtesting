@@ -69851,3 +69851,30 @@
 2026-11-02 02:55:28   "ctnl_kill_switch_active": false,
 2026-11-02 02:55:28   "n_trades": 25
 2026-11-02 02:55:28 }
+2026-11-02 02:55:29 [main 7b83ff23] FK Instant Funding Bot: Snapshot 2026-11-02 02:55
+2026-11-02 02:55:29  1 file changed, 27 insertions(+)
+2026-11-02 02:55:29 Nichts zu mergen (0 eingehende Commits) - Stash und Merge uebersprungen.
+2026-11-02 02:55:32 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-11-02 02:55:32    a3ee6efc..7b83ff23  main -> main
+2026-11-02 02:55:32 Commit + Push erfolgreich.
+2026-11-02 02:55:32 === FK-Instant-Funding-Task beendet ===
+2026-11-02 03:07:46 === FK-Instant-Funding-Task gestartet ===
+2026-11-02 03:07:52 INFO:DUKASCRIPT:current timestamp :2026-11-01T01:00:00
+2026-11-02 03:07:52 INFO:DUKASCRIPT:current timestamp :2026-11-02T02:00:00
+2026-11-02 03:07:52 INFO:DUKASCRIPT:current timestamp :2026-11-02T02:00:00
+2026-11-02 03:07:52 INFO:DUKASCRIPT:current timestamp :2026-11-02T02:00:00
+2026-11-02 03:07:52 INFO:DUKASCRIPT:current timestamp :2026-11-01T21:00:00
+2026-11-02 03:07:52 INFO:DUKASCRIPT:current timestamp :2026-11-01T21:00:00
+2026-11-02 03:07:52 INFO:DUKASCRIPT:current timestamp :2026-11-01T21:00:00
+2026-11-02 03:07:52 INFO:DUKASCRIPT:current timestamp :2026-11-01T21:00:00
+2026-11-02 03:07:52 {
+2026-11-02 03:07:52   "date": "2026-11-02 02:07:48.669795",
+2026-11-02 03:07:52   "equity": 98768.33816378856,
+2026-11-02 03:07:52   "current_dd": -0.012316618362114395,
+2026-11-02 03:07:52   "consistency_ratio": 0.0,
+2026-11-02 03:07:52   "payout_safe": false,
+2026-11-02 03:07:52   "cum_profit": -1231.6618362114345,
+2026-11-02 03:07:52   "kill_switch_active": false,
+2026-11-02 03:07:52   "ctnl_kill_switch_active": false,
+2026-11-02 03:07:52   "n_trades": 25
+2026-11-02 03:07:52 }

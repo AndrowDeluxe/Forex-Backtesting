@@ -73,6 +73,11 @@ def _try_twelvedata_failover(entry: "sources.LakeSource", label: str, n_failures
     muss dann NICHTS weiter tun -- Erfolg ist schon vollstaendig verbucht)."""
     if n_failures < FAILOVER_AFTER_N_FAILURES:
         return False
+    if entry.timeframe == "D1":
+        # Twelve Data schneidet Tage anders (GOLD bis 195 $ Abweichung im Hoch, Samstagskerzen) und hat
+        # GOLD_D1 bis 04/2025 zurueck ueberschrieben -- Tageskerzen lieber ein paar Stunden alt lassen.
+        log.info("%s: %dx in Folge gescheitert -- kein Twelve-Data-Failover fuer Tagesreihen.", label, n_failures)
+        return False
     if not twelvedata_source.is_covered(entry.key):
         log.info("%s: %dx in Folge gescheitert, aber Twelve Data deckt diesen Key nicht ab -- kein Failover moeglich.", label, n_failures)
         return False

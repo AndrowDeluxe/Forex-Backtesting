@@ -163,8 +163,18 @@ def _scan_all(pb, end: pd.Timestamp) -> dict[str, pd.DataFrame]:
             kwargs["source"] = "lake"
         return pb._retry(lambda: fn(end, False, **kwargs))
 
+    # Gold ASB (2026-11-02): Soll auf dem Live-Wissensstand der Liquiditaets-Friktion
+    # (01:00 NY), nicht mit vollem Folgetag -- sonst liegt das Soll ~0,14 R/Trade zu hoch.
+    # knowledge/projects/gold-asb-liquiditaetsfilter-vorgriff.md
+    if hasattr(pb, "_scan_gold_asb"):
+        from asian_range_breakout import pending as _gold_asb_pending
+        try:
+            out["gold_asb"] = pb._retry(lambda: _gold_asb_pending.scan_trades(
+                end, False, source="lake", utc_naive=pb._utc_naive, liquidity="live"))
+        except Exception as exc:  # noqa: BLE001
+            print(f"    ! gold_asb: {type(exc).__name__}: {exc}")
+
     simple = {
-        "gold_asb": "_scan_gold_asb",
         "cls_practical": "_scan_cls_practical",
         "trend_pullback": "_scan_trend_pullback",
         "gold_silver": "_scan_gold_silver",

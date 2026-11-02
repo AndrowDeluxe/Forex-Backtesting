@@ -43,6 +43,8 @@ TREND_SMA_WINDOW = 200
 SILVER_ALIGNMENT_WINDOW = 5
 LIQUIDITY_QUANTILE = 2 / 3
 LIQUIDITY_MIN_PERIODS = 250
+MAX_STALE_TRADING_DAYS = 2     # Ausfall-Ersatz: so viele Handelstage duerfen die Filterdaten hinterherhinken
+STALE_FALLBACK_ENABLED = False # Ausfall-Ersatz aus (Nutzerentscheid 2026-11-02: Backtest Oe +0,08 R, t 1,16)
 
 NY = "America/New_York"
 LEG = "gold_asb"
@@ -73,7 +75,7 @@ def session_times(day: pd.Timestamp) -> dict:
 
 # --- Daten fuer die Vortagsfilter (identisch zu frueher _scan_gold_asb) -------
 
-def load_inputs(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> dict:
+def load_inputs(end: pd.Timestamp, force_refresh: bool, *, source: str = "live", allow_stale: bool = False) -> dict:
     """Gold-M15 (Dukascopy + Lake-Frischteil), Tagesschluesse Gold/Silber und
     Corwin-Schultz-Friktion. Vorher in drei identischen Kopien in den Paper-Bots
     (challenge_portfolio/fk_instant_funding/ek_portfolio::_scan_gold_asb);
@@ -82,11 +84,14 @@ def load_inputs(end: pd.Timestamp, force_refresh: bool, *, source: str = "live")
     from bond_yield_indicator.friction import fetch_fx_friction
     from combined_strategy.data import fetch_timeframe
 
+    outage: dict = {}
     if source == "lake":
         import data_lake.reader as _lake
-        fetch_gold_m15_new = _lake.with_live_fallback(_lake.fetch_gold_m15, fetch_gold_m15)
-        fetch_timeframe_new = _lake.with_live_fallback(_lake.fetch_timeframe, fetch_timeframe)
-        fetch_fx_friction_new = _lake.with_live_fallback(_lake.fetch_fx_friction, fetch_fx_friction)
+        fallback = ((lambda lake, live: _lake.with_stale_fallback(lake, live, outage))
+                    if allow_stale and STALE_FALLBACK_ENABLED else _lake.with_live_fallback)
+        fetch_gold_m15_new = fallback(_lake.fetch_gold_m15, fetch_gold_m15)
+        fetch_timeframe_new = fallback(_lake.fetch_timeframe, fetch_timeframe)
+        fetch_fx_friction_new = fallback(_lake.fetch_fx_friction, fetch_fx_friction)
     else:
         fetch_gold_m15_new, fetch_timeframe_new, fetch_fx_friction_new = fetch_gold_m15, fetch_timeframe, fetch_fx_friction
 
@@ -112,13 +117,46 @@ def load_inputs(end: pd.Timestamp, force_refresh: bool, *, source: str = "live")
     daily_close_silver = (silver_m15["Close"].tz_localize(None).resample("D").last().dropna()
                           if not silver_m15.empty else pd.Series(dtype=float))
     return {"gold_m15": gold_m15, "daily_close": daily_close,
-            "daily_close_silver": daily_close_silver, "friction": friction}
+            "daily_close_silver": daily_close_silver, "friction": friction,
+            "stale": bool(outage.get("stale"))}
 
 
-def scan_trades(end: pd.Timestamp, force_refresh: bool, *, source: str = "live", utc_naive=None) -> pd.DataFrame:
+def live_state_friction(gold_m15: pd.DataFrame, d1: pd.DataFrame) -> pd.Series:
+    """Corwin-Schultz fuer Tag t mit Tag t+1 nur bis 01:00 NY -- der Wissensstand der
+    Bridges bei Range-Ende. corwin_schultz_spread nutzt den VOLLEN Tag t+1, der Backtest
+    sieht damit den Handelstag (+0,308 vs. live +0,168 R, 2026-11-01). Nur fuer
+    Sollwerte/Ampel (liquidity="live"); der Filter selbst bleibt unveraendert, die
+    Korrektur fiel im OOS durch (knowledge/projects/gold-asb-liquiditaetsfilter-vorgriff.md)."""
+    from bond_yield_indicator.friction import _K
+
+    m = gold_m15.tz_convert("UTC")
+    hp, lp = [], []
+    for bar in d1.index:
+        bar = bar.tz_convert("UTC")
+        re = (pd.Timestamp(bar.date()).tz_localize(NY) + pd.Timedelta(hours=1)).tz_convert("UTC")
+        w = m[(m.index >= bar) & (m.index < re)]
+        hp.append(w["high"].max() if len(w) else np.nan)
+        lp.append(w["low"].min() if len(w) else np.nan)
+    H, L = d1["High"], d1["Low"]
+    h2n, l2n = pd.Series(hp, index=d1.index).shift(-1), pd.Series(lp, index=d1.index).shift(-1)
+    h2 = pd.concat([H, h2n], axis=1).max(axis=1)
+    l2 = pd.concat([L, l2n], axis=1).min(axis=1)
+    gamma = np.log(h2 / l2) ** 2
+    beta = (np.log(H / L) + np.log(h2n / l2n)) ** 2
+    alpha = (np.sqrt(2 * beta) - np.sqrt(beta)) / _K - np.sqrt(gamma / _K)
+    s = (2 * (np.exp(alpha) - 1) / (1 + np.exp(alpha))).where(h2n.notna())
+    s.index = s.index.tz_localize(None)
+    return s
+
+
+def scan_trades(end: pd.Timestamp, force_refresh: bool, *, source: str = "live", utc_naive=None,
+                liquidity: str = "backtest") -> pd.DataFrame:
     """Simulierte Trades mit der Produktions-Filterkette -- frueher der Rumpf von
     _scan_gold_asb in allen drei Paper-Bots. Dient Paper-Simulation, Soll/Ist und
-    Reports; die Bridges handeln NICHT mehr daraus, sondern ueber todays_setup()."""
+    Reports; die Bridges handeln NICHT mehr daraus, sondern ueber todays_setup().
+
+    liquidity="live" (seit 2026-11-02, fuer Soll/Ist): Friktionswert auf dem
+    Wissensstand 01:00 NY statt mit vollem Folgetag, Schwelle unveraendert."""
     from asian_range_breakout.engine import simulate_asian_breakout
     from asian_range_breakout.filters import (
         apply_adx_filter, apply_entry_delay_filter, apply_gold_liquidity_filter_causal,
@@ -138,8 +176,27 @@ def scan_trades(end: pd.Timestamp, force_refresh: bool, *, source: str = "live",
     trades = apply_trend_bias_filter(trades, inp["daily_close"], sma_window=TREND_SMA_WINDOW)
     trades = apply_entry_delay_filter(trades, max_delay_bars=MAX_DELAY_BARS)
     trades = apply_silver_alignment_filter(trades, inp["daily_close_silver"], window=SILVER_ALIGNMENT_WINDOW)
-    trades = apply_gold_liquidity_filter_causal(trades, inp["friction"], quantile=LIQUIDITY_QUANTILE,
-                                                min_periods=LIQUIDITY_MIN_PERIODS)
+    if liquidity == "live":
+        from asian_range_breakout.filters import attach_series_level, rolling_liquidity_threshold
+        from combined_strategy.data import fetch_timeframe
+        fetch_d1 = fetch_timeframe
+        if source == "lake":
+            import data_lake.reader as _lake
+            fetch_d1 = _lake.with_live_fallback(_lake.fetch_timeframe, fetch_timeframe)
+        # Lake-D1 reicht nur ~1,5 Jahre zurueck: Historie aus dem Cache, Frischteil aus dem Lake
+        stable_end_str = end.normalize().replace(day=1).strftime("%Y-%m-%d")
+        d1 = pd.concat([fetch_timeframe("GOLD", "D1", HISTORY_START, stable_end_str, force_refresh=False),
+                        fetch_d1("GOLD", "D1", stable_end_str, (end + pd.Timedelta(days=1)).strftime("%Y-%m-%d"),
+                                 force_refresh=force_refresh)])
+        d1 = d1[~d1.index.duplicated(keep="last")].sort_index()
+        thr = rolling_liquidity_threshold(inp["friction"], quantile=LIQUIDITY_QUANTILE,
+                                          min_periods=LIQUIDITY_MIN_PERIODS)
+        trades = attach_series_level(trades, live_state_friction(df, d1), "friction_prior")
+        trades = attach_series_level(trades, thr, "friction_thr").dropna(subset=["friction_prior", "friction_thr"])
+        trades = trades[trades["friction_prior"] <= trades["friction_thr"]]
+    else:
+        trades = apply_gold_liquidity_filter_causal(trades, inp["friction"], quantile=LIQUIDITY_QUANTILE,
+                                                    min_periods=LIQUIDITY_MIN_PERIODS)
     if trades.empty:
         return trades
     trades = simulate_equity(trades, starting_equity=100_000.0, risk_pct=0.005)
@@ -167,7 +224,24 @@ def prior_day_filters(inputs: dict, day: pd.Timestamp) -> dict:
     vals = {k: (None if pd.isna(r[k]) else float(r[k]))
             for k in ("gold_close_prior", "gold_sma_prior", "silver_chg", "friction_prior", "friction_thr")}
     vals["day"] = pd.Timestamp(day).date().isoformat()
+    if inputs.get("stale"):
+        # Ausfall-Ersatz: aelterer Tagesstand von Gold/Silber, Tagesgrenze wie beim Filter. Friktion zaehlt
+        # nicht mit: ihr Wert von t braucht Tag t+1 und hinkt deshalb immer einen Tag hinterher.
+        cutoff = pd.Timestamp(day).normalize()
+        through = min(s[s.index < cutoff].index.max() for s in (inputs["daily_close"], inputs["daily_close_silver"]))
+        lag = int(np.busday_count(through.date(), cutoff.date())) - 1
+        if lag > MAX_STALE_TRADING_DAYS:
+            raise ValueError(f"Filterdaten {lag} Handelstage alt (Stand {through.date()}), "
+                             f"Grenze {MAX_STALE_TRADING_DAYS}")
+        vals.update(stale=True, data_through=through.date().isoformat(), stale_trading_days=lag)
     return vals
+
+
+def stale_note(filters: dict) -> str:
+    """Zusatz fuer die Telegram-Meldung, wenn die Order auf dem Ausfall-Ersatz beruht."""
+    if not filters.get("stale"):
+        return ""
+    return f" | ⚠️ Dukascopy-Ausfall: Filter auf Stand {filters['data_through']}"
 
 
 def allowed_direction(filters: dict) -> tuple[int | None, str]:

@@ -85,9 +85,14 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
-- **Valkyrie-Klon, 2 Annahmen von mir** (30.10., [[quantum-valkyrie-edge-card]]):
-  1. Split IS 2020-01-17 bis 2023-12-31, OOS bis 2025-10-27, Tresor bis 2026-10-16, Blindtest 2018-01-01 bis 2020-01-16.
-  2. Kriterium: je Stufe Ø R > 0 und t ≥ 2 nach 0,30 $ Kosten je Trade. Ich habe es vor dem ersten Lauf festgelegt, die 0,30 $ sind meine Wahl.
+- **Tagesreihen ohne Twelve-Data-Failover (02.11.):** meine Annahme, dass ein paar Stunden alte Tageskerzen besser sind als fremd geschnittene. Betrifft alle Dukascopy-D1-Reihen im Lake.
+- **EURUSD-Limit-Edge-Card, Phase 0 (01.11.):** Zusammenfassung des Trades vom 30.10. bestätigen und sagen, wann die Limit-Order gelegt wurde ([[eurusd-lower-high-limit-edge-card]]). Regelentwurf und Detektor-Parameter sind meine Annahmen.
+
+- **Weekly KW44 (01.11.), drei Lesarten von mir, bitte bestätigen:**
+  1. FK-Position 2624779: SL stand laut Log auf 4.076,96, geschlossen am 28.10. bei `[sl 4058.00]` (+6,33 USD), ohne Bot-Logzeile. Vermutung: von Hand gezogen. Warst du das?
+  2. Standby Mo 26.10. ca. 10:38 bis Di 27.10. 12:13 (alle Lanes, Akku ca. 46 Wh, also nicht leer): ORB 26.10. auch auf EK verpasst. Das korrigiert „2 Tage ohne ORB wegen Serverzeit / EK nicht betroffen“. Ursache offen; warst du unterwegs?
+  3. Ausfall 28.–30.10.: auch `api.binance.com` 195 Fehler im selben Fenster, dazu MT5 `Authorization failed` um 22:16–22:18. Spricht eher für lokales Netz/DNS als für Dukascopy, kein Beweis.
+  Außerdem: Das CTNL-Soll +5,45 R (27.10.) ist laut meinem Abgleich ein Schlusskurs-Stop-Artefakt (Hoch 4.081,96, SL 4.076,96, höchster Schluss 4.074,29), die Zuordnung ist erschlossen.
 
 - **Copy Trading Stufe 2, 4 Annahmen von mir** (28.10.,
   `projects/copy-trading-dennis-edge-card.md` Abschnitt Stufe 2):
@@ -96,12 +101,6 @@ Bedarf vor generischem Aufräumen.
   3. Zeitbezug der Anweisung: heute ≤ 24 h, gestern 6 h–4 Tage, letzte Woche 2–14 Tage, ohne
      Angabe ≤ 30 Tage nach dem Call, gleiches Symbol.
   4. „Invalide“ streicht nur wartende Orders, laufende Trades laufen weiter (Regel 7).
-
-- **Skill `mt5-robot-tester` lokal angepasst** (28.10., eigene Annahme).
-  - Deutsche Berichtsbezeichnungen ergänzt und den Zahlen-Abschneidefehler behoben (`~/.claude/skills/mt5-robot-tester/scripts/`, nicht in Git).
-  - Bei einem Skill-Update gehen die Änderungen verloren.
-  - Alternative: das Tester-Terminal per Ansicht → Sprache auf Englisch stellen.
-  - Details [[mt5-tester-portable]].
 
 - **Dukascopy-Ausfall 28.10. ~22 Uhr bis 30.10. 10:55: Gold ASB verpasst, Lake verfälscht**
   (Befund 31.10., Lake behoben, Filter-Fix offen). DNS-Fehler fast nur für
@@ -580,6 +579,8 @@ Bedarf vor generischem Aufräumen.
   `executor.py` (sonst `IPC timeout`). (b) `research_live_legs.py --ampel`:
   Dukascopy-Abruf ohne Timeout, hing am 18.10. dreimal an derselben Stelle,
   die Ampel blieb auf dem Stand 16.10.
+  **01.11. wieder:** zwei Läufe abgebrochen (50 und 60 Min.), Ampel im Weekly KW44 auf dem Stand 27.10.
+  (c) `soll_ist.py`: `ctnl_continuation` und `orb_us30` zählen im Soll, obwohl stillgelegt bzw. pausiert.
 - **CTNL E1 + E4 (Research):** E1 `spread_bps` 8,0 → gemessen 0,53-2,01,
   broker-getrennt (steht im Code weiter auf 8,0); danach E4 Risikokalibrierung
   über die volle Historie. E2/E3 erledigt. Details

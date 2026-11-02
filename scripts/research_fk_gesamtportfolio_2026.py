@@ -145,7 +145,9 @@ def orb_trades(rule: str = "opposite") -> pd.DataFrame:
 
 
 # ============================================================ Gold ASB
-def gold_asb_trades(variant: str) -> pd.DataFrame:
+def gold_asb_trades(variant: str, liquidity: str = "backtest") -> pd.DataFrame:
+    """liquidity="live" (nur "stoporder", 2026-11-02): Friktionswert auf dem Wissensstand
+    01:00 NY wie in den Bridges, statt mit vollem Folgetag (Backtest ~0,14 R/Trade zu hoch)."""
     import research_gold_asb_execution_costs as ec
     m15, m5, dc, dcs, fr = ec.load_all()
     if variant == "live":
@@ -166,7 +168,11 @@ def gold_asb_trades(variant: str) -> pd.DataFrame:
                            "stop_px": (f["sd"] / f["leverage"]).to_numpy()})
     else:
         import research_gold_asb_optimization as opt
-        days = opt.day_table(m15, m5, dc, dcs, fr)
+        fv = None
+        if liquidity == "live":
+            from asian_range_breakout.pending import live_state_friction
+            fv = live_state_friction(m15, pd.read_parquet(ec.CACHE / "GOLD_D1_2016-01-01_2026-10-01.parquet"))
+        days = opt.day_table(m15, m5, dc, dcs, fr, friction_value=fv)
         days = days[_naive(days["window_end"]) >= Y0 - pd.Timedelta(days=1)]
         t = opt.apply_filters(opt.simulate(days, m5, cancel="03:00", stop_frac=1.5, bps=XAU_BPS))
         status = {"filled": len(t)}

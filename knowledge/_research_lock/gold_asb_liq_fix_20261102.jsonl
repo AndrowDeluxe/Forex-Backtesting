@@ -1,0 +1,4 @@
+{"ts": "2026-11-02T08:27:17+00:00", "event": "register_split", "is_start": "2016-01-01", "is_end": "2022-12-31", "oos_end": "2025-09-30", "tresor_end": "2026-09-30"}
+{"ts": "2026-11-02T08:27:21+00:00", "event": "trials", "n": 3, "total": 3, "note": "V0 Live-Stand, V1 kausal vollstaendig, V2 Live-Stand eigene Schwelle"}
+{"ts": "2026-11-02T08:27:21+00:00", "event": "freeze", "hash": "ea366e8ea9761978d341ca8a2da9367ccbbc49bc7fae07766ba6d42be048051b"}
+{"ts": "2026-11-02T08:27:32+00:00", "event": "unseal", "stage": "oos", "hash": "ea366e8ea9761978d341ca8a2da9367ccbbc49bc7fae07766ba6d42be048051b"}

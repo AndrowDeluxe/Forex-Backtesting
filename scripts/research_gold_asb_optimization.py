@@ -37,9 +37,11 @@ TTP_BPS = 2.08
 IS_END = pd.Timestamp("2022-01-01", tz="America/New_York")
 
 
-def day_table(m15, m5, daily_close, daily_close_silver, friction) -> pd.DataFrame:
+def day_table(m15, m5, daily_close, daily_close_silver, friction, friction_value=None) -> pd.DataFrame:
     """Ein Eintrag je Asien-Fenster: Range aus M5 (21:00-01:00 NY), Filter-Merkmale
-    zum Range-Schluss (alle ohne Lookahead, gleiche Ausrichtung wie filters.py)."""
+    zum Range-Schluss (gleiche Ausrichtung wie filters.py). `friction_value`
+    (2026-11-02): eigener Vergleichswert, z. B. pending.live_state_friction; die
+    Schwelle kommt weiter aus `friction`. Ohne ihn sieht der Wert den Handelstag."""
     idx = m5.index
     mins = idx.hour * 60 + idx.minute
     ends = idx[(mins == 60)]  # 01:00-Bars = window_end
@@ -58,7 +60,7 @@ def day_table(m15, m5, daily_close, daily_close_silver, friction) -> pd.DataFram
     tmp = attach_series_level(tmp, daily_close, "gold_close_prior")
     tmp = attach_series_level(tmp, daily_close.rolling(200).mean(), "gold_sma_prior")
     tmp = attach_series_change(tmp, daily_close_silver, "silver_chg", window=5)
-    tmp = attach_series_level(tmp, friction, "friction_prior")
+    tmp = attach_series_level(tmp, friction if friction_value is None else friction_value, "friction_prior")
     tmp = attach_series_level(tmp, rolling_liquidity_threshold(friction, 2 / 3, 250), "friction_thr")
     days = tmp.drop(columns="entry_time")
     days["trend_up"] = days["gold_close_prior"] > days["gold_sma_prior"]

@@ -233,7 +233,9 @@ def build(b: str, refresh: bool = False, path: Path | None = None) -> pd.DataFra
         o["unit_usd"] = UNIT_USD["INDEX"]
         parts.append(o.drop(columns=["spread_bps"], errors="ignore"))
     if "gold_asb" in legs:   # Funded + EK: ruhende Stop-Order 1,5x Range / Storno 03:00
-        parts.append(fk.gold_asb_trades("stoporder").assign(unit_usd=UNIT_USD["XAU"]))
+        # liquidity="live" (2026-11-02): Friktion auf dem Wissensstand der Bridges, sonst
+        # liegt der Normalwert der Ampel ~0,14 R/Trade zu hoch (gold-asb-liquiditaetsfilter-vorgriff)
+        parts.append(fk.gold_asb_trades("stoporder", liquidity="live").assign(unit_usd=UNIT_USD["XAU"]))
     if "cls_practical" in legs:
         parts.append(fk.cls_trades().assign(unit_usd=UNIT_USD["EURUSD"]))
     if "ctnl_reversal" in legs:

@@ -9,6 +9,29 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-02** [Research / gekaufte EAs] **Offene Bot-Punkte geschlossen (Nutzer).** Bestätigt sind der Split und das Kostenkriterium des Valkyrie-Klons sowie die lokale Anpassung des Skills `mt5-robot-tester`. Beide Punkte sind aus dem Dashboard entfernt.
+
+- **2026-11-02** [Data Lake] **Schreibregeln vom Nutzer bestätigt:** Der Twelve-Data-Failover hängt
+  nur noch an (Twelve-Data-H4 scheitert an der Rasterprüfung, H4 steht bei Dukascopy-Ausfall still),
+  gespeicherte Kerzen bleiben bis auf die letzten zwei unveränderlich. Schon umgesetzt in
+  `data_lake/storage.py` (Commit e6016922), kein Code geändert.
+
+- **2026-11-02** [Gold ASB / Data Lake / Research] **Ausfall-Ersatz abgeschaltet, GOLD_D1 repariert, Liquiditätsfilter-Korrektur im OOS nicht bestätigt.**
+  - `asian_range_breakout/pending.py`: `STALE_FALLBACK_ENABLED = False`. Die Bridges übergeben weiter `allow_stale=True`, der Schalter überstimmt das. Im Ausfall wieder keine Order wie vor dem 01.11.
+  - `GOLD_D1` im Lake aus Dukascopy neu geschrieben: 558 → 480 Zeilen, 539 Twelve-Data-Kerzen ersetzt (bis 195 $ Abweichung, 81 Samstage). Backup `data_lake_store/_backup_20261102_gold_d1/`.
+  - `data_lake/ingest.py`: kein Twelve-Data-Failover mehr für Tagesreihen.
+  - Sperre `gold_asb_liq_fix_20261102`: V1 (letztes vollständiges Friktionsfenster) gewinnt IS (Ø +0,266 R, t 2,64), OOS +0,082 R (t 0,72) gegen Live-Stand +0,126 R. Live-Filter bleibt. Details `projects/gold-asb-liquiditaetsfilter-vorgriff.md`.
+  - **Sollwerte auf Live-Stand** (Nutzerauftrag): `pending.live_state_friction` + `scan_trades(liquidity="live")`, genutzt von `scripts/reports/soll_ist.py` (Soll Gold ASB +0,308 → +0,168 R, n 273 → 408) und `research_live_legs.py` → Edge-Ampel-Normalwert (+0,309 → +0,146 R, 2019–22 +0,365 → +0,164 R). Paper-Bots, Live-Orders und die Gewichtungs-Skripte (Default `liquidity="backtest"`) unverändert.
+
+- **2026-11-01** [Reports] **Weekly Checkup KW44/2026** (geplanter Lauf). `knowledge/reports/weekly/KW44_2026_*`, PDF in `Documents\Trading Reports\`. Woche: 25 Trades, EK −44,74 EUR (−1,57 %), Funded −997,82 USD (−0,51 %), FK −96,33 USD (−0,10 %); kein Kill-Switch, keine Verletzung. 92 % des USD-Verlusts aus CTNL-Shorts gegen den Gold-Anstieg 27./28.10. Edge-Ampel nicht aktualisiert (zwei Läufe abgebrochen, Stand 27.10.). Dashboard-Eintrag mit drei Lesarten. Keine Bot-Änderung.
+- **2026-11-01** [Research / Edge Card] EURUSD-Short vom 30.10. rekonstruiert, Phase 0 angelegt (`projects/eurusd-lower-high-limit-edge-card.md`). Nur Häufigkeit gezählt, kein Ergebnis-Test, kein Lock.
+- **2026-11-01** [Gold ASB / Bridges / Research] **Ausfall-Ersatz für den Vortagsfilter gebaut, Backtest ohne belegten Edge, Vorgriff im Liquiditätsfilter gefunden.**
+  - `asian_range_breakout/pending.py`, `data_lake/reader.py` (`with_stale_fallback`): Scheitern Lake und Live, rechnet der Filter mit dem letzten Lake-Stand, höchstens 2 Handelstage alt. Telegram kennzeichnet die Order, der Ersatz wird nicht über den Lauf hinaus gecacht. Normalpfad im Test identisch.
+  - Aktiv auf EK, Funded und FK (`allow_stale=True`, Backups `_backup_20261101_asb_stale/`). Repo-Änderung noch nicht committet.
+  - `scripts/research_gold_asb_stale_filter.py`: Rückstand 1/2/3 Handelstage Ø +0,082/+0,058/+0,038 R, n 311/311/301, t höchstens 1,16. Letzte 12 Monate −0,037/−0,042/+0,023 R. Der Ersatz hätte die Order vom 30.10. nicht gelegt (Friktion über Schwelle).
+  - Fund: Friktion nutzt das Fenster t, t+1. Backtest Ø +0,308 R (n 273), Live-Wissensstand 01:00 NY +0,168 R (n 408). Live-Filter unverändert.
+  - Fund: `GOLD_D1` im Lake hat 540 von 557 Zeilen mit Volumen 0 (seit 04/2025), Filter kippt im Oktober an 2 Tagen. Nicht repariert.
+
 - **2026-10-31** [Bridges / Data Lake / Git] **Ausfall-Analyse 28.-30.10., Rücknahme der Korrektur, Push-Stau gelöst.**
   - Dukascopy-DNS-Ausfall erklärt die Scan-Fehler aller Beine; Gold ASB 30.10. verpasst (Sim +1,93 R),
     Trend-Pullback-„verpasst“ vom 30.10. waren Twelve-Data-Phantome. Details im Dashboard.

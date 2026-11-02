@@ -26,6 +26,7 @@ KEIN generischer "Lake ignorieren"-Schalter, jeder andere Fehler (Netzwerk,
 Parsing) laeuft weiterhin ungefangen in den bestehenden _retry()-Pfad."""
 
 import logging
+from contextvars import ContextVar
 
 import pandas as pd
 
@@ -48,6 +49,9 @@ class LakeStaleDataError(Exception):
     pass
 
 
+_ALLOW_STALE: ContextVar[bool] = ContextVar("lake_allow_stale", default=False)
+
+
 def with_live_fallback(lake_fn, live_fn):
     """Wrappt eine Lake-Fetch-Funktion so, dass ein fehlender/veralteter
     Lake-Eintrag (Cold Start, siehe Moduldocstring) NICHT den ganzen
@@ -62,6 +66,31 @@ def with_live_fallback(lake_fn, live_fn):
         except (LakeMissingDataError, LakeStaleDataError) as e:
             log.warning("Lake-Fallback auf Live-Fetch (%s): %s", type(e).__name__, e)
             return live_fn(*args, **kwargs)
+    return _wrapped
+
+
+def with_stale_fallback(lake_fn, live_fn, outage: dict):
+    """Wie with_live_fallback, aber scheitert auch der Live-Fetch (Dukascopy-Ausfall
+    28.-30.10.2026), liefert es den letzten Lake-Stand statt des Fehlers und setzt
+    outage["stale"]. Nur fuer Vortagsfilter gedacht, deren Bridge den Stand kennzeichnet
+    (asian_range_breakout/pending.py) -- kein Ersatz fuer with_live_fallback bei Kursdaten.
+    Nach dem ersten gescheiterten Live-Versuch wird Live uebersprungen (`outage` teilen)."""
+    def _wrapped(*args, **kwargs):
+        try:
+            return lake_fn(*args, **kwargs)
+        except LakeStaleDataError as e:
+            if not outage.get("live_down"):
+                try:
+                    return live_fn(*args, **kwargs)
+                except Exception as live_err:
+                    outage["live_down"] = True
+                    log.warning("Live-Fetch gescheitert (%s), nutze letzten Lake-Stand: %s", live_err, e)
+        outage["stale"] = True
+        token = _ALLOW_STALE.set(True)
+        try:
+            return lake_fn(*args, **kwargs)
+        finally:
+            _ALLOW_STALE.reset(token)
     return _wrapped
 
 
@@ -87,7 +116,7 @@ def _require_fresh(source: str, key: str, timeframe: str) -> pd.DataFrame:
             except ValueError as e:
                 raise LakeMissingDataError(f"Lake-Daten fuer {source}:{key}_{timeframe} korrupt ({e}) -- Live-Fallback")
             break
-    if not manifest.is_fresh(source, key, timeframe):
+    if not _ALLOW_STALE.get() and not manifest.is_fresh(source, key, timeframe):
         entry = manifest.get_entry(source, key, timeframe)
         raise LakeStaleDataError(
             f"Lake-Daten fuer {source}:{key}_{timeframe} zu alt (last_success_at={entry and entry.get('last_success_at')})"

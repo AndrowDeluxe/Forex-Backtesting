@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-10-03** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-11-02** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -84,6 +84,24 @@ gold_asb-Cache-Bug oben läuft über "Als Nächstes"). Danach: Bestätigungs-
 Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
+
+- **Bridge-Watchdog seit 06:07 UTC (07:07 lokal) ohne neuen Snapshot — ~9,5 h
+  Lücke an einem normalen Handelsmontag** (gefunden 02.11. durch den
+  Cloud-Monitor, `bridge_status/snapshot.json`). Der Commit-Takt lief bis
+  `2026-11-02 07:07:47 +0100` im gewohnten 30-Min-Rhythmus (`...06:37, 07:01,
+  07:07`), danach kein einziger Watchdog-Commit mehr bis zu diesem Lauf
+  (`2026-11-02 15:32 UTC`). Der letzte gesehene Stand zeigt `"status": "ok"`
+  auf allen drei Bridges (EK, Funded TTP/IQ, FK) — die Lücke sagt also nichts
+  über einen Fehler der Bridges selbst, nur dass der Watchdog (und damit
+  vermutlich auch die anderen `Mo–Fr`-Tasks auf derselben Maschine) seit dem
+  Vormittag nichts mehr meldet. Passt zum bekannten Muster (Standby/Akku-
+  Fälle 28.09./12.10./15.10./20.10., siehe Eintrag „Untersuchung: Lake
+  veraltet…" oben) — mein unbelegter Verdacht von hier aus: Rechner im
+  Standby/aus oder Task Scheduler blockiert, da heute kein Wochenende und
+  kein Feiertag ist. Von diesem Repo aus kann ich nicht prüfen, ob die
+  Bridges in der Zwischenzeit trotzdem weiterliefen oder ebenfalls
+  stillstanden. **Kannst du kurz nachschauen, ob der Rechner/die Tasks seit
+  heute Vormittag liefen?**
 
 - **Second-Brain-Lint 02.11.: zwei Wikilink-Funde brauchen eine Entscheidung.**
   1. **Inhaltliche Lücke:** `[[orb-ribbon-filter-kippt-2026]]` wird in

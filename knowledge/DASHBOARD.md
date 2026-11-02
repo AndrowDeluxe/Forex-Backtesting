@@ -85,6 +85,22 @@ Bedarf vor generischem Aufräumen.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **Second-Brain-Lint 02.11.: zwei Wikilink-Funde brauchen eine Entscheidung.**
+  1. **Inhaltliche Lücke:** `[[orb-ribbon-filter-kippt-2026]]` wird in
+     [[baltussen-tagesend-momentum]] und [[live-strategien-tresor-check]]
+     zitiert („die Hypothese ... kippte ..."), existiert aber nirgends als
+     eigene Notiz — beide Stellen verweisen auf denselben, nie geschriebenen
+     Befund zum ORB-Ribbon-Kipp. Eigene Notiz anlegen (wo? `projects/` oder
+     Abschnitt in [[orb-order-storno-und-haltedauer]]?) oder anders verlinken?
+  2. **Namenskonvention:** [[persoenlicher-tradingplan-validierung]] zitiert
+     `[[ctnl-serienstopp-vs-risikohalbierung]]` als Wikilink, der Fund
+     existiert aber nur als Memory-Slug `ctnl_serienstopp_vs_risikohalbierung`
+     (siehe `reports/weekly/KW40_2026_education.md`) sowie als „Befund 19" in
+     [[ctnl-kostenvalidierung]]. Der Wikilink auf das Memory-Ziel ist für
+     Obsidian tot — wie zitieren wir Memory-Funde künftig aus
+     `knowledge/`-Notizen (Backtick-Slug statt `[[...]]`, analog
+     `reports/weekly/`)?
+
 - **Valkyrie-Klon, 2 Annahmen von mir** (30.10., [[quantum-valkyrie-edge-card]]):
   1. Split IS 2020-01-17 bis 2023-12-31, OOS bis 2025-10-27, Tresor bis 2026-10-16, Blindtest 2018-01-01 bis 2020-01-16.
   2. Kriterium: je Stufe Ø R > 0 und t ≥ 2 nach 0,30 $ Kosten je Trade. Ich habe es vor dem ersten Lauf festgelegt, die 0,30 $ sind meine Wahl.
@@ -590,17 +606,25 @@ Bedarf vor generischem Aufräumen.
   für alle drei Bridges.
 
 **Mittel**
-- **14 unverarbeitete Clippings** in `knowledge/Clippings/` (Stand
-  2026-09-28-Lint, unveraendert seit 2026-09-09) — u.a. Edge-Genesis/-Decay,
+- **14 unverarbeitete Clippings** in `knowledge/Clippings/` (Lint 02.11.,
+  unveraendert seit 2026-09-09) — u.a. Edge-Genesis/-Decay,
   Risk-Factor-Investing, Sektor-Rotation, "Six Repos One System", "How
   system works" — noch nicht durch den CODE-Prozess.
 
 **Niedrig**
-- **Statustabelle: "Zuletzt geprüft" bei `OU-Modell-ScannerHourly` ist
-  26 Tage alt** (Lint 28.09., Schwelle 21 Tage; Stand: 2026-09-02).
-  Reiner Alters-Hinweis aus dem Lint-Skript, kein inhaltlicher Befund —
-  Zeile bei Gelegenheit gegen den echten Task-Scheduler-/Scanner-Status
-  nachpruefen und Datum auffrischen (CLAUDE.md Punkt 4).
+- **Second-Brain-Lint 02.11.: toter Wikilink `[[eurusd-lower-high-limit-edge-card]]`**
+  in `reports/weekly/KW44_2026_education.md` — die Edge Card ist laut Text
+  selbst noch in Phase 0 (wartet auf deine Bestätigung), die Notiz existiert
+  deshalb erwartungsgemäß noch nicht. Kein Handlungsbedarf, nur zur Kenntnis.
+- **Statustabelle: 8 "Zuletzt geprüft"-Zeilen über 21 Tage alt** (Lint
+  02.11., Schwelle 21 Tage): `FK-Instant-Funding-Paper`,
+  `OU-Modell-ScannerHourly`, `Forex-Weekly-Report`, `Bridge-Watchdog`,
+  `DataLake-Ingest-Fast`, `DataLake-Ingest-Fast5`, `DataLake-Ingest-Slow`,
+  `Dashboard-Telegram-Digest` — alle zuletzt am 2026-09-02/-13/-15 geprüft
+  (50-61 Tage alt). Reiner Alters-Hinweis aus dem Lint-Skript, kein
+  inhaltlicher Befund — Zeilen bei Gelegenheit gegen den echten
+  Task-Scheduler-/Scanner-Status nachprüfen und Datum auffrischen
+  (CLAUDE.md Punkt 4).
 
 ## Status — was läuft gerade wirklich
 
@@ -674,12 +698,15 @@ Live-Status aller drei Portfolio-Bridges jetzt auch als Streamlit-Seiten
 („Portfolio-Bridges" in der Sidebar) — lesen `bridge_status/snapshot.json`,
 das der Bridge-Watchdog alle 30 Min. committet.
 
-_Letzter Lint-Durchlauf: **2026-09-28** (geplant, `second-brain-lint`).
-Ergebnis: 0 tote Wikilinks (die beiden am 09-21 gefundenen Notizen
-existieren jetzt, am 03.10. vom Nutzer abgehakt), 0 verwaiste Seiten,
-1 veraltete Statustabellen-Zeile (`OU-Modell-ScannerHourly`, → Niedrig);
-14 unverarbeitete Clippings unverändert seit 09-09. Verweise nach
-außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
+_Letzter Lint-Durchlauf: **2026-11-02** (geplant, `second-brain-lint`).
+Ergebnis: 4 tote Wikilinks — 1 inhaltliche Lücke (`orb-ribbon-filter-kippt-2026`,
+in 2 Notizen) + 1 Memory-Slug-Konvention (`ctnl-serienstopp-vs-risikohalbierung`)
+→ beide Braucht-Bestätigung; 1 isolierter toter Link
+(`eurusd-lower-high-limit-edge-card`, erwartungsgemäß weil Edge Card noch
+Phase 0) → Offene Aufgaben. 0 verwaiste Seiten. 8 veraltete
+Statustabellen-Zeilen (→ Offene Aufgaben, Niedrig). 14 unverarbeitete
+Clippings unverändert seit 09-09. Verweise nach außerhalb von `knowledge/`
+als Pfad in Backticks (siehe `README.md`)._
 
 ## Status — aktuell nicht aktiv
 

@@ -528,6 +528,24 @@ Bedarf vor generischem Aufräumen.
   muss anstehende Splits der gehaltenen Titel VORHER melden -- braucht eine
   Datenquelle fuer Split-Termine. Wird als eigenes kleines Vorhaben geplant.
 
+- **Ergänzung zur Watchdog-Lücke vom 02.11. (oben): zwei konkrete Fehler
+  mitten in der Lücke gefunden, zeitgleich auf verschiedenen Subsystemen.**
+  Snapshot von 22:07 UTC zeigt als `last_error_line`: EK-Portfolio-Bridge
+  um 14:30:07 einen Telegram-Versandfehler wegen DNS
+  (`HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries
+  exceeded ... Failed to resolve 'api.telegram.org' ([Errno 11001]
+  getaddrinfo failed)`), und auf Funded-Portfolio-Bridge bei BEIDEN Konten
+  (TTP und IQ Markets) um 14:30:40 je ein `mt5.initialize() fehlgeschlagen:
+  (-10005, 'IPC timeout')`. Danach kein weiterer Fehler mehr, Status jetzt
+  überall `ok`. Mein unbelegter Schluss: DNS-Auflösung UND MT5-IPC sind
+  unterschiedliche Subsysteme, dass beide zeitgleich ausfallen, spricht
+  eher für Netzwerk-/Rechner-Ausfall (Standby, Netz weg) in genau dem
+  Fenster als für einen reinen Watchdog-Blackout — passt zur Vermutung im
+  Eintrag oben. FKInstantFunding zeigt im selben Fenster keinen neuen
+  Fehler (nur altbekannte `dukascopy_python`-Hänger vom 30.10.). Nichts
+  für mich zu tun (außerhalb des Repos, hat sich selbst erholt) — passt
+  das zu dem, was der Rechner heute Vormittag/mittag gemacht hat?
+
 ### Offene Aufgaben
 
 - **Lücken Makro-Datenschicht für Schritt 7 (A2)** (30.10.). 2-jährige Renditen für GB, JP,

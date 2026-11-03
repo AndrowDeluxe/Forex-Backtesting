@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-11-02** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-11-03** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -545,6 +545,28 @@ Bedarf vor generischem Aufräumen.
   Fehler (nur altbekannte `dukascopy_python`-Hänger vom 30.10.). Nichts
   für mich zu tun (außerhalb des Repos, hat sich selbst erholt) — passt
   das zu dem, was der Rechner heute Vormittag/mittag gemacht hat?
+
+- **Neue, deutlich größere Watchdog-Lücke seit 02.11. 22:07 Uhr lokal —
+  ~24 h ohne jeden Commit von irgendeiner lokalen Routine** (gefunden
+  03.11. durch den Cloud-Monitor). Letzter `Bridge-Watchdog`-Commit
+  `c32b8d9` um `2026-11-02 22:07:48 +0100`, letzter `FK Instant Funding
+  Bot`-Snapshot-Commit `b20fcc1` um `22:07:54 +0100`, letzter `OU-Modell
+  Scanner`-Snapshot um `21:35:22 +0100` — danach **gar kein** Commit mehr
+  von irgendeiner dieser drei Routinen bis zu diesem Lauf (03.11., ca.
+  21:13 UTC / 22:13 lokal). Der zuletzt gesehene Snapshot-Inhalt
+  (`bridge_status/snapshot.json`, `generated_at` 22:07:48) zeigt
+  `"status": "ok"` auf allen drei Bridges (EK, Funded TTP/IQ, FK) — sagt
+  also nichts über einen Fehler der Bridges selbst, nur dass seither gar
+  nichts mehr committet wurde. Beide betroffenen Tage (02.11. Montag,
+  03.11. Dienstag) sind normale Handelstage, kein Wochenende/Feiertag —
+  gleiches Muster wie die früheren Standby-Fälle (28.09./12.10./15.10./
+  20.10., s. o.), aber mit ~24 h diesmal deutlich länger als die ~9,5 h
+  vom Vormittag des 02.11. Von diesem Repo aus kann ich nicht sehen, ob
+  der Rechner/Task Scheduler seitdem lief oder ob die Bridges selbst
+  (Telegram, offene Positionen) in der Zwischenzeit normal weiterliefen.
+  **Kannst du kurz nachschauen, ob der Rechner seit gestern Abend ca.
+  22 Uhr lief (Standby/aus?) und ob die Bridges zwischenzeitlich normal
+  weitergearbeitet haben?**
 
 ### Offene Aufgaben
 

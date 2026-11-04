@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-11-03** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-11-04** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -567,6 +567,22 @@ Bedarf vor generischem Aufräumen.
   **Kannst du kurz nachschauen, ob der Rechner seit gestern Abend ca.
   22 Uhr lief (Standby/aus?) und ob die Bridges zwischenzeitlich normal
   weitergearbeitet haben?**
+
+- **Dieselbe Watchdog-Lücke läuft weiter — jetzt ~42 h, drei Kalendertage
+  betroffen** (gefunden 04.11. durch den Cloud-Monitor, dieser Lauf).
+  Immer noch derselbe letzte Commit `c32b8d9` von `2026-11-02 22:07:48
+  +0100` — seitdem **kein einziger** neuer `Bridge-Watchdog`-Commit, auch
+  nicht zum Zeitpunkt dieses Laufs (04.11. ca. 15:13 UTC / 16:13 lokal).
+  Der im Repo sichtbare Snapshot-Inhalt ist exakt derselbe wie beim
+  letzten Fund (03.11.), also keine neue Information über den Zustand der
+  Bridges selbst — nur dass die Lücke sich seit dem letzten Cloud-Monitor-
+  Lauf nochmal um ca. 18 h verlängert hat. Betroffen sind damit drei
+  normale Handelstage in Folge (Mo 02.11. ab 22 Uhr, Di 03.11. komplett,
+  Mi 04.11. bis jetzt) ohne jedes Lebenszeichen von Watchdog, FK-Snapshot
+  oder OU-Scanner. Von diesem Repo aus weiterhin nicht prüfbar, ob die
+  Bridges selbst in der Zwischenzeit normal weitergelaufen sind. **Bitte
+  möglichst zeitnah nachschauen, ob der Rechner läuft — eine Lücke dieser
+  Länge ist deutlich über die früheren Standby-Fälle hinausgewachsen.**
 
 ### Offene Aufgaben
 

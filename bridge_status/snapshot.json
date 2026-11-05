@@ -1,27 +1,28 @@
 {
-  "generated_at": "2026-11-05T15:31:24",
+  "generated_at": "2026-11-05T16:01:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-11-05T15:29:06",
+      "last_run": "2026-11-05T15:59:07",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-11-05 15:29:06 2026-11-05 15:29:02,295 INFO run_once: Konto-Equity 2734.42 EUR | Aggregiertes offenes Risiko (ganzes Konto): 129.99 (Deckel dieser Bridge: 820.33, 30%)",
+      "last_equity_line": "2026-11-05 15:59:07 2026-11-05 15:59:02,314 INFO run_once: Konto-Equity 2746.28 EUR | Aggregiertes offenes Risiko (ganzes Konto): 139.16 (Deckel dieser Bridge: 823.88, 30%)",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-11-05T15:28:17",
+      "last_run": "2026-11-05T15:58:19",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-11-05 15:28:17 Verbunden: Login 16054, Equity $96,296.01 USD",
+          "last_equity_line": "2026-11-05 15:58:19 Verbunden: Login 16054, Equity $96,703.63 USD",
           "recent_events": []
         },
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-11-05 15:28:17 Verbunden: Login 504072729, Equity $98,507.25 USD",
+          "last_equity_line": "2026-11-05 15:58:19 Verbunden: Login 504072729, Equity $98,895.10 USD",
           "recent_events": [
+            "2026-11-05 15:43:22 [TTP] ?? ENTRY ou_modell (OXY) OXY BUY lots=3.0 risk=$49.25 sl=44.00265 -- placed",
             "2026-11-04 15:43:17 [TTP] ?? ENTRY ou_modell (SYY) SYY BUY lots=2.0 risk=$49.25 sl=54.24009 -- placed"
           ]
         }
@@ -30,7 +31,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-11-05T15:14:11",
-      "minutes_since_last_run": 17.2,
+      "minutes_since_last_run": 47.2,
       "status": "ok",
       "last_equity_line": "2026-11-05 15:14:11 Verbunden: Login 17764, Equity $98,197.69",
       "last_error_line": "2026-11-02 02:08:37 cls_practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",

@@ -73781,3 +73781,49 @@
 2026-11-06 16:57:06   "ctnl_kill_switch_active": false,
 2026-11-06 16:57:06   "n_trades": 26
 2026-11-06 16:57:06 }
+2026-11-06 16:57:06 [main 9329642e] FK Instant Funding Bot: Snapshot 2026-11-06 16:57
+2026-11-06 16:57:06  1 file changed, 38 insertions(+)
+2026-11-06 16:57:07 MERGE UEBERSPRUNGEN: Working Tree hat 9 offene Aenderung(en) (andere Tasks/Session). Es wird NICHT gestasht -- der lokale Commit bleibt liegen und geht beim naechsten sauberen Lauf raus.
+2026-11-06 16:57:08 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-11-06 16:57:08  ! [rejected]          main -> main (non-fast-forward)
+2026-11-06 16:57:08 error: failed to push some refs to 'https://github.com/AndrowDeluxe/Forex-Backtesting.git'
+2026-11-06 16:57:08 hint: Updates were rejected because the tip of your current branch is behind
+2026-11-06 16:57:08 hint: its remote counterpart. If you want to integrate the remote changes,
+2026-11-06 16:57:08 hint: use 'git pull' before pushing again.
+2026-11-06 16:57:08 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+2026-11-06 16:57:08 HINWEIS: Push abgelehnt (Remote ist weiter) - erwartet, solange nicht gemergt wurde. Rueckstand sichtbar ueber 'git log origin/main..HEAD'.
+2026-11-06 16:57:08 === FK-Instant-Funding-Task beendet ===
+2026-11-06 17:55:23 === FK-Instant-Funding-Task gestartet ===
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-05T01:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-06T16:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-06T16:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-06T16:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-06T13:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-05T01:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-06T13:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-06T16:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-05T01:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-06T16:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-06T16:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-06T13:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-05T01:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-06T13:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-05T01:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-06T17:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-05T01:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-06T17:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-06T17:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-06T13:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-06T13:00:00
+2026-11-06 18:05:40 INFO:DUKASCRIPT:current timestamp :2026-11-06T17:00:00
+2026-11-06 18:05:40 {
+2026-11-06 18:05:40   "date": "2026-11-06 16:55:24.757234",
+2026-11-06 18:05:40   "equity": 98684.41313738021,
+2026-11-06 18:05:40   "current_dd": -0.013155868626197886,
+2026-11-06 18:05:40   "consistency_ratio": 0.0,
+2026-11-06 18:05:40   "payout_safe": false,
+2026-11-06 18:05:40   "cum_profit": -1315.5868626197876,
+2026-11-06 18:05:40   "kill_switch_active": false,
+2026-11-06 18:05:40   "ctnl_kill_switch_active": false,
+2026-11-06 18:05:40   "n_trades": 26
+2026-11-06 18:05:40 }

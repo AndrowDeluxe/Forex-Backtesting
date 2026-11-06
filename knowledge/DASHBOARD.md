@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-11-04** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-11-06** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -619,6 +619,26 @@ Bedarf vor generischem Aufräumen.
   Eskalation dieses Funds in Folge ohne Reaktion — fast eine ganze
   Handelswoche ohne jedes Lebenszeichen vom Rechner. Bitte dringend
   nachschauen, ob der Rechner/die Task-Scheduler-Aufgaben noch laufen.**
+
+- **Dieselbe Watchdog-Lücke läuft weiter — jetzt ~96 h, und das war der
+  letzte Werktags-Lauf dieses Monitors vor dem Wochenende** (gefunden 06.11.
+  abends durch den Cloud-Monitor, dieser Lauf, ca. 21:12 UTC / 22:12 lokal).
+  Immer noch derselbe letzte Commit `c32b8d9` von `2026-11-02 22:07:48
+  +0100` — seitdem weiterhin **kein einziger** neuer `Bridge-Watchdog`-,
+  `FK Instant Funding Bot`- oder `OU-Modell Scanner`-Commit, auch der
+  15:xx-Lauf heute hat nichts Neues gefunden. Der im Repo sichtbare
+  Snapshot-Inhalt ist weiterhin exakt derselbe wie bei allen Funden seit
+  03.11. — keine neue Information über den Zustand der Bridges selbst.
+  Fünf normale Handelstage in Folge (Mo 02.11. ab 22 Uhr bis Fr 06.11. Abend)
+  ohne jedes Lebenszeichen vom Rechner. **Wichtig wegen des Timings: dieser
+  Monitor läuft nur werktags (9/15/21 Uhr UTC) — der nächste automatische
+  Check ist erst Montag 09:10 UTC. Wenn der Rechner übers Wochenende
+  weiterhin aus/im Standby bleibt, bekommst du bis Montagvormittag von hier
+  aus KEINE weitere Meldung mehr, egal was mit EK/Funded/FK in der
+  Zwischenzeit passiert. Das ist jetzt die fünfte Eskalation dieses Funds
+  ohne Reaktion — bitte vor dem Wochenende kurz nachschauen, ob der Rechner
+  läuft, damit die Live-Bots (echtes Geld) nicht unbeobachtet übers
+  Wochenende laufen.**
 
 ### Offene Aufgaben
 

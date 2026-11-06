@@ -602,6 +602,24 @@ Bedarf vor generischem Aufräumen.
   läuft, sonst kann von hier aus nicht mehr beurteilt werden, ob die
   Live-Bots noch wie gewollt arbeiten.**
 
+- **Dieselbe Watchdog-Lücke läuft weiter — jetzt ~84 h, fünf Kalendertage
+  betroffen** (gefunden 06.11. durch den Cloud-Monitor, dieser Lauf). Immer
+  noch derselbe letzte Commit `c32b8d9` von `2026-11-02 22:07:48 +0100` —
+  seitdem weiterhin **kein einziger** neuer `Bridge-Watchdog`-Commit, auch
+  nicht zum Zeitpunkt dieses Laufs (06.11. ca. 09:12 UTC / 10:12 lokal). Der
+  im Repo sichtbare Snapshot-Inhalt ist weiterhin exakt derselbe wie bei den
+  Funden vom 03.–05.11. — keine neue Information über den Zustand der
+  Bridges selbst, nur dass die Lücke sich nochmal um ca. 24 h verlängert hat.
+  Betroffen sind damit fünf normale Handelstage in Folge (Mo 02.11. ab 22
+  Uhr, Di 03.11., Mi 04.11., Do 05.11., Fr 06.11. bis jetzt) ohne jedes
+  Lebenszeichen von Watchdog, FK-Snapshot oder OU-Scanner. Von diesem Repo
+  aus weiterhin nicht prüfbar, ob die Bridges selbst (echtes Geld,
+  EK/Funded/FK) in der Zwischenzeit normal weitergelaufen sind oder ob der
+  Rechner die ganze Zeit aus/im Standby war. **Das ist jetzt die vierte
+  Eskalation dieses Funds in Folge ohne Reaktion — fast eine ganze
+  Handelswoche ohne jedes Lebenszeichen vom Rechner. Bitte dringend
+  nachschauen, ob der Rechner/die Task-Scheduler-Aufgaben noch laufen.**
+
 ### Offene Aufgaben
 
 - **Lücken Makro-Datenschicht für Schritt 7 (A2)** (30.10.). 2-jährige Renditen für GB, JP,

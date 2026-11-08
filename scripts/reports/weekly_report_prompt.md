@@ -290,6 +290,21 @@ Structure (adapted from the user's mentor-style reflection journal):
    engineering pattern (Stash-Verlust, Fail-safe). Prefer something the
    user met this week but that was only used, not explained. Don't repeat
    a concept already explained in the last 4 weekly reports (check them).
+4c. **Makro-Wochenprüfung** (Nutzerwunsch 2026-11-08): the user wants the
+   macro-review procedure that will later become the Makro-Agent's report
+   to show up every week. Source: `knowledge/areas/makro-agent-report-pruefung.md`.
+   (a) Restate the procedure briefly (six steps + the "Gegenwährung
+   wählen" guideline: strength from rates + fear only against commodity
+   currencies, never against CHF/JPY; each commodity currency has its own
+   commodity switch; same-driver trades are one risk). (b) Fill the
+   "Nachprüfung" table of the most recent example in that note with what
+   actually happened, using lake prices (`data_lake_store/validated/`) and
+   the week's macro data - write the filled values back into the note, then
+   summarize: which trades filled, R per trade, which reasoning held and
+   which did not (Dafür/Dagegen points that turned out right/wrong). Keep a
+   running tally (trades, hit rate, sum R; agent view vs. Dennis' view) in
+   the note. (c) If no example exists for the new week yet, say so plainly.
+   Forward-only measurement - never re-tune past examples.
 5. **Verbesserungen**: bugs fixed, infra improved, new validated strategies/
    features shipped this week.
 6. **Verschlechterungen / offene Probleme**: anything newly broken,

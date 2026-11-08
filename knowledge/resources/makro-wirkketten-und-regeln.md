@@ -69,6 +69,10 @@ schwächer; Liquidität → Risiko-Assets.
    Aktivierung nur per Tagesschluss; nicht nachlaufen (Rücklauf abwarten).
 5. **Ein Faktor, ein Trade:** Zwei Ideen mit demselben Treiber (z. B. EUR/USD-
    und EUR/GBP-Short über Frankreich) nicht gleichzeitig.
+6. **Gegenwährung wählen (seit 08.11., SMT-Sonderreport Dollar):** Stärke aus
+   Zinsen + Angst nur gegen Rohstoffwährungen handeln, nicht gegen Häfen
+   (CHF/JPY); je Rohstoffwährung den eigenen Rohstoff-Schalter führen (CAD ↔
+   Brent 105). Ausgearbeitet als Leitlinie in [[makro-agent-report-pruefung]].
 
 ### 4. Die fünf Gates (M/R/P/B/F)
 

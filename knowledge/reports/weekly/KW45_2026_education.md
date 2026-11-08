@@ -177,6 +177,32 @@ als ohne Ursache?") trennt Muster von Messartefakt. Dieselbe Logik steckt in den
 beim Valkyrie-Klon und im Zufallsfenster beim K4b-Nachtest. Grenze: Durchmischen zerstoert auch
 Volatilitaets-Cluster; fuer Fragen, die davon abhaengen, nimmt man Block-Permutationen.
 
+## 4c. Makro-Wochenprüfung (Nachtrag 08.11. abends)
+
+**Neu ab dieser Woche** (Nutzerentscheid 08.11.): Die Prüfung der SMT-Reports ist die Vorlage für den
+späteren Makro-Agent-Report ([[makro-agent-report-pruefung]]). Ab KW46 füllt der Weekly Report hier
+die Nachprüftabelle der Vorwoche aus.
+
+**Vorgehensweise.** (1) Report holen und ganz lesen, auch die Kanal-Nachrichten. (2) Jede prüfbare
+Zahl gegen eigene Daten: Die Kurse stimmten auf vier Stellen, und der G8-Score ließ sich als Mittel
+der z-Werte nachrechnen. (3) Widersprüche suchen: Das EUR/CHF-Ziel liegt in der SNB-Zone. Die
+Gold-Verwerfung („fällt bei steigenden Renditen“) passt nicht zur Woche, in der Gold um 5 % stieg.
+(4) Gegen die eigene Evidenz gewichten: Die Richtung allein bringt ≈ 0 R, nur ein Rücksetzer-Limit
+ist positiv. (5) Trade-Tabelle mit „auslassen“. (6) Mentor-Chart einarbeiten und eine Alarmliste
+erstellen.
+
+**Gegenwährung wählen (Rohstoffvergleich).** Eine These wie „Dollar stark“ ist noch kein Trade. Die
+Stärke kam aus Zinsen und Angst, also spielt man sie nur gegen Rohstoffwährungen. Gegen die
+Häfen CHF und JPY kämpft die Angst gegen den Trade. Die Woche zeigt es: USD +2,4 % gegen AUD,
++1,1 % gegen CAD, −0,5 % gegen CHF. Jede Rohstoffwährung hat ihren eigenen Schalter: CAD hängt
+an Brent über 105. Trades mit demselben Treiber zählen als ein Risiko. AUD/USD Short, EUR/USD
+Short und USD/CAD Long sind dreimal Dollar long, und ein schwacher Kern-CPI trifft alle drei. Auch
+Dennis' Chart-Trades laufen durch Dafür / Dagegen / Bündelung / Timing / Wertung.
+
+**Bewertet für KW46:** AUD/USD Short (Rang 1, Limit 0,6905), Dennis' EUR/USD Short (1,1192/1,1244/
+1,1000), Dennis' USD/CAD Long (1,4009/1,3951/1,4300, ≈ 5 R), Gold nur long (Alarm 4.030),
+EUR/CHF sichern bei 0,910. Das Ergebnis folgt im Weekly KW46.
+
 ## 5. Verbesserungen
 
 - **D1-Ersatz bei Dukascopy-Ausfall** (`67e0060b`): Tageskerzen werden aus Lake-H1 abgeleitet,

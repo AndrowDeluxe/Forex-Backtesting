@@ -35,14 +35,40 @@ einen Makro Report anfertigen, den ich dann prüfe“). Regeln und Wirkketten se
    Alarmliste für TradingView liefern (Symbol · Bedingung · Wert · Bedeutung · Auslöse-Art).
    Tagesschluss-Schwellen als „Bei Bar-Schluss“ auf D1.
 
+## Leitlinie: Gegenwährung wählen (Rohstoff- vs. Hafenvergleich)
+
+Nutzer 08.11.: „Die Begründungen und die Logik dahinter gefällt mir sehr.“ Eine Währungs-These
+(z. B. „Dollar stark“) ist noch kein Trade. Der Agent wählt die **Gegenwährung, bei der alle Kräfte
+in dieselbe Richtung zeigen**, und begründet die Wahl ausdrücklich.
+
+1. **Kräfte getrennt prüfen:** (a) Zinspfad-Differenz (wer erhöht mehr bis Herbst 2027),
+   (b) Risikostimmung (Angst → Rohstoffwährungen AUD/NZD/CAD fallen, Häfen CHF/JPY steigen),
+   (c) eigener Rohstoff der Gegenwährung, (d) Datenüberraschungen, (e) Positionierung.
+   Ein Trade ist sauber, wenn (a)–(d) gleich zeigen und (e) nicht extrem auf unserer Seite ist.
+2. **Dollar-Stärke aus Zinsen + Angst nur gegen Rohstoffwährungen**, nie gegen CHF/JPY – dort
+   kämpft die Angst gegen den Trade. Beleg 08.11.: Wochenbewegung USD +2,4 % gegen AUD, +1,6 % NZD,
+   +1,1 % CAD, aber −0,5 % gegen CHF.
+3. **Je Rohstoffwährung den eigenen Schalter nennen:** CAD ↔ Brent (über 105 stärkt den CAD,
+   Hormus), AUD ↔ Tech-/China-Risiko und Metalle, NZD ↔ Innenpolitik/Milch. Kippt der Rohstoff,
+   kippt der Trade, auch wenn die Dollar-These hält.
+4. **Währung mit eigenem Problem nicht als Vehikel:** Der Euro hat Frankreich; ein Euro-Short ist
+   eine eigene These (dann gegen CHF), keine Dollar-These.
+5. **Bündeln statt zählen:** Trades mit demselben Treiber sind ein Risiko. Dollar-Longs zusammen
+   deckeln (Vorschlag 1,5 Einheiten); Rangfolge: erfüllt Punkt 2 vor verletzt Punkt 4. Immer
+   nennen, welches eine Ereignis alle gleichzeitig trifft (08.11.: Kern-CPI ≤ 0,0 %).
+6. **Mentor-Trades durch denselben Filter:** Auch Dennis' Chart-Trades bekommen Dafür / Dagegen /
+   Bündelung / Timing / Wertung – unabhängig davon, wer sie vorschlägt.
+
 ## Ausgabeformat (Report an den Nutzer)
 
 1. Stimmen die Zahlen? (✓ / ≈ / ? mit Werten Report vs. eigene Daten)
 2. Widersprüche (nummeriert, je ein Satz + Beleg)
 3. Gewichtung (Stärke, Schwäche mit eigenen Zahlen, Szenario-Schätzung)
 4. Trades nächste Woche (Tabelle, Rang 1 zuerst, inkl. „auslassen“)
-5. Alarmliste (falls Chart/Limits)
-6. Quellen
+5. Je Einzeltrade (auch Mentor-Trades): Kennzahlen (Einstieg/Stop/Ziel, Pips, R) · **Dafür** ·
+   **Dagegen** · **Bündelung** · **Timing** (Termine, Sperrzeiten) · **Wertung** (Rang, Größe)
+6. Alarmliste (falls Chart/Limits)
+7. Quellen
 
 Kurz halten, Fazit in einem Satz unter der Tabelle. Keine Anlageberatung; Trades sind Hypothesen.
 

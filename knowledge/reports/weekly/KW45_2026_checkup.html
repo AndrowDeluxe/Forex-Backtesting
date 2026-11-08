@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="utf-8"><title>Weekly Checkup KW45/2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --paper: #EDEEE7;
+    --paper-raised: #F6F6F1;
+    --ink: #1B2129;
+    --ink-soft: #4B5259;
+    --rule: #C9CCC2;
+    --accent: #2B6E6B;
+    --accent-soft: #E3ECEA;
+    --flag: #B23A2E;
+    --flag-soft: #F5E6E2;
+    --ok: #3F6B4F;
+    --ok-soft: #E5EEE6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12181A;
+      --paper-raised: #182022;
+      --ink: #E7E4DA;
+      --ink-soft: #A9B0AC;
+      --rule: #333B3A;
+      --accent: #5FB3AC;
+      --accent-soft: #1B2E2C;
+      --flag: #E2695A;
+      --flag-soft: #33201C;
+      --ok: #7CB78A;
+      --ok-soft: #1D2B20;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12181A;
+    --paper-raised: #182022;
+    --ink: #E7E4DA;
+    --ink-soft: #A9B0AC;
+    --rule: #333B3A;
+    --accent: #5FB3AC;
+    --accent-soft: #1B2E2C;
+    --flag: #E2695A;
+    --flag-soft: #33201C;
+    --ok: #7CB78A;
+    --ok-soft: #1D2B20;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    margin: 0;
+    padding: 3.5rem 1.25rem 6rem;
+    -webkit-font-smoothing: antialiased;
+  }
+  .sheet {
+    max-width: 760px;
+    margin: 0 auto;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    padding: 3rem 3.25rem 3.5rem;
+  }
+  @media (max-width: 640px) {
+    .sheet { padding: 2rem 1.25rem 2.5rem; }
+  }
+
+  /* masthead */
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.6rem;
+  }
+  h1.title {
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 2.35rem;
+    line-height: 1.1;
+    margin: 0 0 0.5rem;
+    text-wrap: balance;
+  }
+  .subtitle {
+    font-size: 1.02rem;
+    color: var(--ink-soft);
+    margin: 0 0 1.6rem;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.6rem;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--rule);
+  }
+  .meta-row span b { color: var(--ink); font-weight: 600; }
+
+  .note {
+    margin-top: 1.4rem;
+    padding: 0.9rem 1.1rem;
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+  .note b { color: var(--ink); }
+
+  /* part dividers */
+  .part {
+    margin-top: 3.2rem;
+    padding-top: 0.4rem;
+  }
+  .part-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+  .part-label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+  h2.part-title {
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.7rem;
+    margin: 0.1rem 0 0;
+  }
+
+  /* sections */
+  section.block { margin-top: 2.1rem; }
+  h3.sec {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.18rem;
+    margin: 0 0 0.85rem;
+    color: var(--ink);
+  }
+  h3.sec .num {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  p { margin: 0 0 0.9rem; }
+  ul.plain { margin: 0 0 0.9rem; padding-left: 1.2rem; }
+  ul.plain li { margin-bottom: 0.55rem; }
+  ul.plain li b { color: var(--ink); }
+
+  /* status chips */
+  .chip {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    padding: 0.1rem 0.45rem;
+    border-radius: 2px;
+    margin-right: 0.3rem;
+  }
+  .chip.live { background: var(--ok-soft); color: var(--ok); }
+  .chip.dry { background: var(--accent-soft); color: var(--accent); }
+  .chip.dead { background: var(--flag-soft); color: var(--flag); }
+
+  /* tables */
+  .table-wrap { overflow-x: auto; margin-bottom: 1rem; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.55rem 0.7rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  th {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  td.num, th.num {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  tr.sum td { font-weight: 600; border-top: 1px solid var(--ink-soft); background: var(--accent-soft); }
+  td.neg { color: var(--flag); }
+  td.pos { color: var(--ok); }
+  td.status-flag { color: var(--flag); }
+  td.status-ok { color: var(--ok); }
+
+  /* flag callouts */
+  .flag {
+    border-left: 3px solid var(--flag);
+    background: var(--flag-soft);
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 0.9rem;
+  }
+  .flag .flag-head {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--flag);
+    margin-bottom: 0.3rem;
+  }
+  .flag p { margin: 0; font-size: 0.92rem; }
+
+  /* activity bars */
+  .bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.55rem;
+    height: 90px;
+    margin: 0.4rem 0 0.6rem;
+    padding-top: 0.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+  .bar {
+    width: 100%;
+    max-width: 34px;
+    background: var(--accent);
+    opacity: 0.55;
+  }
+  .bar-col.peak .bar { opacity: 1; }
+  .bar-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+    margin-top: 0.4rem;
+  }
+  .bar-count {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+    margin-bottom: 0.2rem;
+  }
+
+  footer.colophon {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+  }
+
+  @media print {
+    body { padding: 0; background: var(--paper); }
+    .sheet { border: none; max-width: 100%; padding: 0.5in; }
+    section.block, .flag, .table-wrap { page-break-inside: avoid; }
+    .part { page-break-before: always; }
+    .part:first-of-type { page-break-before: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <p class="eyebrow">Weekly Checkup · Andre&nbsp;/&nbsp;Forex-Backtesting</p>
+  <h1 class="title">KW45 · 2026</h1>
+  <p class="subtitle">Trading-Bot-Flotte &amp; Baustelle — Performance und Education, Montag 02.11. bis Sonntag 08.11.2026</p>
+  <div class="meta-row"><span>Erzeugt: <b>So, 08.11.2026</b></span><span>Erfasst: <b>3 Bridges / 4 Konten</b></span><span>Lauf: <b>planmäßig</b></span></div>
+  <div class="note"><b>Zum Abzug:</b><br>
+<ul class="plain"><li>Die Startstaende ergeben sich sauber: Endstand minus Wochen-P&amp;L trifft den</li></ul>
+KW44-Endstand auf <b>allen vier Konten auf den Cent</b> (EK 2.811,14 EUR, TTP 99.046,28, IQ 96.906,81, FK 98.299,49 USD).<br>
+<ul class="plain"><li><b>Diesmal gibt es Handschliessungen:</b> drei Ausstiege mit <code>reason</code> 1 (MT5-Mobile-App),</li></ul>
+alle am Do 05.11. an der NASDAQ-ORB-Position. Abschnitt 6, Punkt 1.<br>
+<ul class="plain"><li>Fuer den Abzug wurde kein Terminal neu gestartet: alle vier Terminals liefen schon</li></ul>
+(seit Mo 02.11. ca. 02:03), danach dieselben vier Prozesse, kein Fenster offen gelassen.<br>
+<ul class="plain"><li>Markt zu, die Kontostaende sind also auch der Wochenendstand.</li></ul></div>
+  <div class="part"><p class="part-label">Teil I</p><h2 class="part-title">Performance</h2></div>
+<section class="block"><h3 class="sec"><span class="num">01</span> Wochenkontext</h3>
+<p>Alle drei Portfolio-Bridges liefen mit echtem Geld (<code>DRY_RUN = False</code>, heute in allen drei <code>config.py</code> geprueft): <b>EK-Portfolio-Bridge</b> (Tickmill 55918977), <b>Funded-Portfolio-Bridge</b> (TTP Konto 2 504072729 + IQ Markets 16054) und <b>FK Instant Funding</b> (BeyondIQCapital 17764). Alle sechs Bridge-Tasks stehen auf <code>Bereit</code> (letzter Lauf Fr 06.11. kurz vor Mitternacht, Ergebnis 0), die Einzel-Bots bleiben <code>Deaktiviert</code>. Keine neuen <code>*-Bridge</code>/<code>*-Bot</code>-Ordner.</p>
+<p><b>Live-Aenderungen:</b></p>
+<ul class="plain"><li><b>Mo 02.11. 20:34, alle drei Bridges (ueber das Repo, <code>cd5e2358</code>):</b> Gold-ASB-Ausfall-Ersatz wieder <b>aus</b> (<code>STALE_FALLBACK_ENABLED = False</code>; die Bridges uebergeben weiter <code>allow_stale=True</code>, der Schalter ueberstimmt das). Damit ist die KW44-Entscheidung im Sinne der Dashboard-Empfehlung umgesetzt. Die Bridge-Dateien selbst sind seit 01.11. unveraendert.</li><li><b>Mo 02.11. 20:49, Data Lake (<code>67e0060b</code>):</b> Tageskerzen werden bei Dukascopy-Ausfall aus Lake-H1 abgeleitet. Wirkt auf GOLD_D1 (Gold-ASB-Friktion, Trend-Pullback, CTNL-Ribbon). In dieser Woche gab es keinen Ausfall, der Pfad wurde also nicht live benutzt.</li><li><b>Mo 02.11., <code>GOLD_D1</code> neu aus Dukascopy</b> (539 Twelve-Data-Kerzen ersetzt).</li></ul>
+<p><b>Stoerungen:</b> Unerwarteter Neustart <b>Mo 02.11. 02:01</b> (<code>Kernel-Power 41</code>), danach lief alles; ein kurzer Netz-/DNS-Aussetzer <b>Mo 14:20-14:35</b> (Telegram-DNS, IPC-Timeouts auf EK und FK). <b>Di bis Fr keine Luecke ueber 30 Minuten</b> in den EK-Laufprotokollen, kein Standby. Die Woche war also technisch die ruhigste seit Wochen; die "Watchdog-Luecke" des Cloud-Monitors war ein Fehlalarm (Abschnitt 6, Punkt 2).</p>
+</section>
+<section class="block"><h3 class="sec"><span class="num">02</span> Risk-Management-Compliance</h3>
+<p><b>Keine Regelverletzung. Kein Kill-Switch ausgeloest, kein Drawdown-Halt.</b> In den Logs aller drei Bridges keine Kill-/Halt-Meldung.</p>
+<div class="table-wrap"><table><thead><tr><th>Bridge / Konto</th><th class="num">Mechanismus</th><th class="num">Diese Woche</th></tr></thead><tbody><tr><td>EK-Portfolio</td><td class="num">Trailing-DD-Kill-Switch 45 %</td><td class="num neg">nicht ausgeloest; Balance 2.750,19 EUR (-2,17 % in der Woche)</td></tr><tr><td>EK-Portfolio</td><td class="num">Gesamtrisiko-Deckel 30 %</td><td class="num">eingehalten; hoechstes gesehenes offenes Risiko ca. 90 EUR (Deckel ca. 841 EUR)</td></tr><tr><td>EK-Portfolio</td><td class="num">Einzeltrade-Deckel 5 %</td><td class="num">eingehalten. <b>Gold ASB 03.11.: Risiko 90,38 EUR = 3,22 %</b>, Verlust -90,28 EUR. Gewollt (Bein auf effektiv 2,93 % kalibriert, 0,02 Lot aufgerundet)</td></tr><tr><td>EK-Portfolio</td><td class="num">CTNL-Kill-Switch</td><td class="num">nie ausgeloest (CTNL hat diese Woche nicht gehandelt)</td></tr><tr><td>Funded / TTP</td><td class="num">7-%-DD-Cap, offenes Risiko 3,5 %</td><td class="num">inaktiv; schlechtester Tag Di 03.11. -561,06 USD; Balance 99.675,45 = -0,32 % seit Start</td></tr><tr><td>Funded / IQ</td><td class="num">6 % Gesamt-DD / 1 % je Position</td><td class="num">inaktiv; schlechtester Tag Di 03.11. -610,80 USD (Gold ASB, 0,63 % &lt;= 1 %). Balance 96.906,81 -&gt; <b>97.666,89 USD = -2,33 % seit Start, ca. 3.667 USD Abstand</b> zur 6-%-Grenze (KW44: ca. 2.907)</td></tr><tr><td>Funded (beide)</td><td class="num">CTNL-Kill-Switch</td><td class="num">nie ausgeloest</td></tr><tr><td>FK Instant Funding</td><td class="num">5-%-EOD-Trailing-DD</td><td class="num neg">inaktiv; schlechtester Tag Fr 06.11. -586,42 USD; Balance 99.519,78 USD (-0,48 % seit Start)</td></tr><tr><td>FK Instant Funding</td><td class="num">CTNL-Kill-Switch</td><td class="num">nicht ausgeloest</td></tr></tbody></table></div>
+<p><b>Zur Kenntnis:</b> IQ hat 760 USD Abstand zurueckgewonnen. Die Handschliessung vom 05.11. (Abschnitt 6) war <b>kein</b> Risiko-Eingriff im Sinne einer Regel: Sie hat Gewinn mitgenommen, keine Grenze war nah.</p>
+</section>
+<section class="block"><h3 class="sec"><span class="num">03</span> Was hat gut / nicht gut funktioniert</h3>
+<ul class="plain"><li><b>EK-Portfolio-Bridge (Tickmill): -60,95 EUR (-2,17 %) bei 6 Trades.</b> Gold ASB (03.11., Short, -90,28) und Gold-Silber (05.11. Long, am 06.11. ausgestoppt, -73,79) tragen den Verlust; beide sind die hoch gewichteten Beine (je ca. 2,9 %). ORB NASDAQ-Short 05.11. <b>+144,07</b>, ORB-Longs 06.11. -21,98, CLS -18,97. OU eroeffnete drei Positionen (QCOM, SYY, OXY), alle noch offen (+2,42 offen).</li><li><b>Funded-Portfolio-Bridge (TTP + IQ): +1.389,25 USD (+0,71 %) bei 11 Trades.</b> Getragen vom <b>NASDAQ-ORB-Short 05.11. (TTP +1.527,84, IQ +1.949,30)</b>. Dagegen Gold ASB 03.11. (-1.171,86 auf beiden), CLS-Short 06.11. (-518,58) und die beiden ORB-Longs 06.11. (-411,41). OU: NEM von TTP per Modell-Abgleich geschlossen (+13,96), drei neue OU-Positionen nur auf TTP.</li><li><b>FK Instant Funding: +1.220,29 USD (+1,24 %) bei 5 Trades.</b> Gleiches Bild: NASDAQ-Short +1.908,51, sonst Gold ASB -101,80 (FK faehrt Gold klein), CLS -317,19, ORB-Longs -269,23.</li></ul>
+<p><b>Muster der Woche:</b> <b>Ein Trade traegt alles.</b> Der NASDAQ-Short vom 05.11. bringt auf den drei USD-Konten +5.386 USD; die uebrigen 13 USD-Trades zusammen -2.776 USD. Gold ASB verlor auf allen vier Konten am selben Tag (Gold lief nach dem Short-Fill von 3.917 auf 3.968). Auf drei der vier Konten wurde der NASDAQ-Gewinner <b>per Hand verkleinert</b>; das Konto ohne Eingriff (IQ) verdiente damit am meisten.</p>
+</section>
+<section class="block"><h3 class="sec"><span class="num">04</span> Trades, Winrate, Gewinn - Summary</h3>
+<p>Gezaehlt sind geschlossene Positionen (Ausstiegs-Deal in der Woche), netto inkl. Kommission und Swap. Eine Teilschliessung zaehlt nicht als eigener Trade. Die Prozentwerte beziehen sich auf den Kontostand zu Wochenbeginn.</p>
+<div class="table-wrap"><table><thead><tr><th>Bridge</th><th class="num">Trades</th><th class="num">Winrate</th><th class="num">P&amp;L</th><th class="num">%</th></tr></thead><tbody><tr><td>EK-Portfolio (Tickmill, echtes Geld)</td><td class="num">6</td><td class="num">16,7 %</td><td class="num neg"><b>-60,95 EUR</b></td><td class="num neg"><b>-2,17 %</b></td></tr><tr><td>Funded-Portfolio (TTP + IQ, echtes Geld)</td><td class="num">11</td><td class="num">27,3 %</td><td class="num"><b>+1.389,25 USD</b></td><td class="num"><b>+0,71 %</b></td></tr><tr><td>FK Instant Funding (LIVE, echtes Geld)</td><td class="num">5</td><td class="num">20,0 %</td><td class="num"><b>+1.220,29 USD</b></td><td class="num"><b>+1,24 %</b></td></tr><tr class="sum"><td><b>Gesamt (alle 3, echtes Geld)</b></td><td class="num"><b>22</b></td><td class="num"><b>22,7 %</b></td><td class="num neg"><b>-60,95 EUR / +2.609,54 USD</b></td><td class="num"><b>ca. +0,85 %</b></td></tr></tbody></table></div>
+<ul class="plain"><li><b>Keine Summe ueber beide Waehrungen.</b> Fuer die Gesamt-Prozentzahl ist EK mit 2.811,14 EUR (ca. 3.143 USD bei 1,118, dem EURUSD-Kurs der CLS-Fills am 06.11.) in ein Buch von ca. 297.400 USD eingerechnet.</li><li>Je Konto: TTP 6 Trades <b>+629,17 USD (+0,64 %)</b>, IQ 5 Trades <b>+760,08 USD (+0,78 %)</b>.</li><li><b>Noch offen:</b> EK QCOM/SYY/OXY (OU); TTP STT (seit 16.10.), QCOM, SYY, OXY (OU). IQ und FK flach.</li><li><b>TTP Konto 2</b> steht weiter auf <code>trade_mode = 0</code> (Demo-Server), das IQ-Konto heisst "BeyondIQCapital <b>Demo</b> Challenge". Die Einordnung als "echtes Geld" uebernehme ich unveraendert aus <code>CLAUDE.md</code>.</li></ul>
+</section>
+<section class="block"><h3 class="sec"><span class="num">05</span> Soll/Ist je Bridge</h3>
+<p><b>Soll</b> ist ein Backtest ueber das Fenster 02.11. 00:00 bis 06.11. 21:00 (UTC) mit Sizing und Kostenannahme der jeweiligen Bridge und der Konfiguration von HEUTE.</p>
+<div class="table-wrap"><table><thead><tr><th>Bridge</th><th class="num">Soll</th><th class="num">Ist</th><th class="num">platziert</th><th class="num">nicht platziert</th><th class="num">nie gesehen</th></tr></thead><tbody><tr><td>EK-Portfolio</td><td class="num neg">14 Trades / <b>-1,03 %</b></td><td class="num neg">-60,95 EUR (-2,21 %)</td><td class="num neg">1 (-1,09 R)</td><td class="num">-</td><td class="num">- (<b>13 nicht_ermittelbar, +12,35 R</b>)</td></tr><tr><td>Funded-Portfolio</td><td class="num">13 Trades / <b>+0,74 %</b></td><td class="num">+1.409,71 USD (+0,71 %)</td><td class="num neg">1 (-1,38 R)</td><td class="num">0</td><td class="num">12 (+18,12 R)</td></tr><tr><td>FK Instant Funding</td><td class="num">14 Trades / <b>+1,82 %</b></td><td class="num">+1.234,94 USD (+1,24 %)</td><td class="num neg">1 (-1,24 R)</td><td class="num neg">1 (-0,32 R)</td><td class="num">12 (+18,12 R)</td></tr></tbody></table></div>
+<p>(Die Ist-Werte liegen ca. 20 bzw. 15 USD ueber Abschnitt 4, weil das Werkzeug die Einstiegskommissionen von Gold ASB und CLS nicht mitzaehlt; die Prozentbasis ist dort der heutige Kontostand.)</p>
+<p><b>Hauptaussage: Auf Funded trifft Ist das Soll fast genau (+0,71 % gegen +0,74 %), auf FK fehlen ca. 0,6 Prozentpunkte - aber die Uebereinstimmung ist teilweise Zufall.</b> Drei Effekte heben sich gegenseitig auf: ein Gold-ASB-Verlust, den das Soll nicht kennt, ein verpasster ORB-Gewinner, und die Handschliessung auf NASDAQ.</p>
+<p><b>Pflicht-Vorbehalte:</b></p>
+<ol><li><b>Konfiguration:</b> Soll rechnet mit dem heutigen Stand. In der Woche gab es keine Bot-Aenderung nach Mo 02.11. 20:49 (Ausfall-Ersatz aus, D1-Ableitung, GOLD_D1 neu). Vor dem ersten Handelstag relevant ist nur die neu geschriebene <code>GOLD_D1</code>-Reihe (siehe Gold ASB unten).</li><li><b>EK laesst sich nur grob zerlegen</b> (SQLite statt Signal-Ledger). "13 nicht_ermittelbar" heisst genau das, nicht "nie gesehen". Die EK-Ist-Seite hat dazu 108,17 EUR "unattributed": das ist die Handschliessung vom 05.11. (Magic 0).</li><li><b>EKs Kostenannahme ist geschaetzt</b> (0,50 Pips), Funded (2,05) und FK (1,30) sind gemessen. EK-Zahlen deshalb nicht gegen die anderen beiden stellen.</li></ol>
+<p><b>Was hinter den Posten steckt:</b></p>
+<ul class="plain"><li><b>ORB, "nie gesehen" ist hier ueberwiegend falsch etikettiert</b> (Werkzeugluecke seit KW41/KW44: ORB-Fills werden nicht zugeordnet). Aus den Logs je Tag:<ul class="plain"><li><b>02.11. SP500 Long, Soll +5,96 R (Ziel): wirklich verpasst.</b> <code>breakout_passed (hoch=True)</code>: Der Kurs stand beim Platzierungs-Pass um 14:45 UTC schon ueber dem Trigger. Das ist das bekannte Erste-Bar-Problem (siehe Memory: <code>orb_first_bar_and_polled_exits</code>). Grob <b>ca. 600 USD je Funded-/FK-Konto</b> (Risiko je Seite TTP 99 USD, x 6 R), auf allen vier Konten. <b>Groesster Einzelposten der Woche.</b></li><li><b>02.11. NASDAQ, Soll -1,02 R:</b> platziert, beide Seiten vor dem Fill storniert ("Kurs erreichte den geplanten SL"). Gespart; das Soll kennt das Storno nicht.</li><li><b>03.11. SP500 + NASDAQ (je ca. -1,0 R) und 04.11. SP500 (-1,02 R):</b> <code>breakout_passed</code>, also nicht platziert. Drei Verlierer gespart. Am 04.11. lehnte TTP vorher einmal mit <code>10015 Invalid price</code> ab.</li><li><b>04.11. NASDAQ:</b> <code>filtered_out (Wednesday)</code>, im Soll gar nicht enthalten. Stimmig.</li><li><b>05.11. NASDAQ Short, Soll +17,9 R (Sessionende):</b> platziert und gefuellt. Ist auf IQ (nicht angefasst) +1.949 USD, auf TTP/FK durch die Handschliessung weniger (Abschnitt 6, Punkt 1).</li><li><b>06.11. SP500 + NASDAQ Long (je ca. -1,0 R):</b> platziert, beide ausgestoppt. Stimmig.</li><li>Netto: Durch <code>breakout_passed</code> fehlen dem Ist <b>+2,89 R</b> gegenueber dem Soll (+5,96 minus drei Verlierer).</li></ul></li><li><b><code>orb_us30</code> (3 Trades, +1,54 R) und <code>ctnl_continuation</code> (-1,16 R) zaehlen weiter im Soll</b>, obwohl US30 seit 04.10. pausiert und CTNL-Continuation seit 01.10. stillgelegt ist (auf FK korrekt "nicht live"). Werkzeugfehler, bekannt aus KW44. Netto +0,38 R zu viel im Soll.</li><li><b>Gold ASB 03.11., Short: live auf allen vier Konten gelegt (-1.274 USD + -90 EUR), im Soll "kein Signal".</b> Nachgerechnet: Der Trade (Fill 3.917, SL 3.968) uebersteht ADX-, Trend-, Verzoegerungs- und Silber-Filter und faellt <b>erst im Liquiditaetsfilter</b> heraus, sowohl im Backtest- als auch im Live-Modus des Solls. Live liess derselbe Filter ihn durch. <b>Ursache offen.</b> Zwei Kandidaten: (a) <code>GOLD_D1</code> wurde am Vorabend (02.11.) neu aus Dukascopy geschrieben, live rechnete der Lauf um 07:00 evtl. noch mit einem anderen Stand; (b) das bekannte Kippen des expandierenden Quantils beim Nachrechnen (siehe Memory: <code>gold_asb_liquidity_filter_reproducibility</code>, <code>gold_asb_friktion_vorgriff</code>). Die Bridge-Logs enthalten den Friktionswert nicht, deshalb nicht entscheidbar. <b>Im Dashboard eingetragen.</b></li><li><b>CLS 06.11. Short:</b> auf allen Konten platziert und wie im Soll ausgestoppt (-1,09 / -1,38 / -1,24 R). Stimmig.</li><li><b>Gold-Silber:</b> EK eroeffnete am 05.11., das Soll datiert das Signal auf 06.11. 00:00 (Datenende, -0,32 R). Auf FK (Bein seit 04.10. live) "nicht platziert" - kleiner Posten, nicht weiter geprueft.</li></ul>
+</section>
+<section class="block"><h3 class="sec"><span class="num">5b</span> Edge-Warnstufen je Live-Bein</h3>
+<p><b>Auch diese Woche NICHT frisch - zum dritten Mal in Folge.</b> <code>research_live_legs.py tickmill --ampel</code> lief ueber eine Stunde bis ca. 21:05, kam mit Dukascopy-Abrufen bis zu einem Instrument bei <b>2024-09-19 22:15</b> und stand dort ueber 10 Minuten still; das Zeitlimit hat den Lauf beendet (kein verwaister Prozess). <code>live_trades_tickmill_ampel.csv</code> stammt damit weiter vom <b>27.10. 23:35, letzter Trade gesamt 25.10.</b> <code>research_edge_monitor.py --stage status</code> lief sauber, rechnet aber auf dieser alten Liste. <b>KW44 und KW45 sind in der Tabelle nicht enthalten</b>, und die am 02.11. umgestellte Gold-ASB-Normale (Live-Wissensstand) wirkt erst mit einer neuen Liste.</p>
+<div class="table-wrap"><table><thead><tr><th>Bein</th><th class="num">Warnstufe</th><th class="num">Drawdown R / Schwelle R</th><th class="num">Signal</th></tr></thead><tbody><tr><td>orb_sp500</td><td class="num"><b>ROT</b></td><td class="num"><b>23,2</b> / 15,2</td><td class="num">alle fuenf rot</td></tr><tr><td>orb_us30</td><td class="num"><b>ROT</b> (pausiert)</td><td class="num">24,5 / 13,2</td><td class="num">alle fuenf rot</td></tr><tr><td>btc_ema_cross</td><td class="num">GELB</td><td class="num">2,0 / 5,4</td><td class="num">roll_mean, cusum, sprt streng rot</td></tr><tr><td>gold_silver</td><td class="num">GELB</td><td class="num">1,7 / 4,9</td><td class="num">roll_mean streng rot</td></tr><tr><td>gold_asb, ctnl_reversal, cls_practical, orb_nasdaq, ou_modell, trend_pullback</td><td class="num">gruen</td><td class="num">-</td><td class="num">-</td></tr></tbody></table></div>
+<ul class="plain"><li><b>orb_sp500 (ROT):</b> gegenueber KW44 unveraendert (gleiche Liste). Was die Liste nicht enthaelt: Laut Soll hatte SP500 in KW45 +5,96 R und drei Verlierer (netto ca. +2,9 R), das Loch waere danach grob 20-21 R statt 23,2 R (meine Ueberschlagsrechnung, kein Monitor-Lauf). Entschieden ("ORB bleibt erstmal so", 16.10.), kein neuer Dashboard-Eintrag.</li><li><b>orb_us30 (ROT):</b> pausiert seit 04.10., unveraendert.</li><li><b>btc_ema_cross, gold_silver (GELB):</b> unveraendert, beobachten. gold_silver verlor live diese Woche -73,79 EUR auf EK (ca. -0,3 R im Soll); nicht in der Liste.</li><li><b>Werkzeug:</b> Dritter Ausfall nach 18.10. und 01.11., immer an einem Dukascopy-Abruf ohne Timeout. Der Dashboard-Punkt "Report-Werkzeuge haerten" besteht; solange der nicht erledigt ist, ist diese Tabelle wertlos fuer Wochenaussagen. Eine Warnung ist ein Grund hinzusehen, kein Grund, einen Bot zu aendern.</li></ul>
+</section>
+<section class="block"><h3 class="sec"><span class="num">06</span> Auffaelligkeiten / offene Punkte</h3>
+<div class="flag"><p class="flag-head">NASDAQ-ORB 05.11.: Teilschliessung per Handy auf drei von vier Konten.</p>
+<ul class="plain"><li>Der Short (Fill 16:45 Serverzeit, ca. 27.570-27.581) wurde um <b>21:30-21:31 Serverzeit (ca. 20:30 Berlin, 14:30 New York)</b> teilweise geschlossen, mit MT5 <code>reason = 1</code> (<b>Mobile</b>) und Magic 0: FK 1,5 von 2,2 Lot (21:30:06), EK 0,15 von 0,19 (21:30:59), TTP 1,2 von 1,77 (21:31:43). Also 68-79 % je Konto, innerhalb von 97 Sekunden. IQ blieb unangetastet.</li><li>Die Bot-Logs haben dazu keine Zeile, und NASDAQ faehrt laut Konfiguration seit 04.10. <b>ohne Teilausstieg</b> (siehe Memory: <code>ny_open_orb_strategy_state</code>). Den Rest schloss der Bot zur Sessionende-Regel um ca. 23:00-23:03 Serverzeit bei ca. 26.551-26.571.</li><li><b>Wirkung (meine Rechnung aus den Fill-Kursen):</b> Der Kurs fiel nach der Teilschliessung noch ca. 200-230 Punkte. Ohne Eingriff waeren es grob <b>+276 USD (TTP), +320 USD (FK) und ca. +26 EUR (EK) mehr</b> gewesen, zusammen also ca. 600 USD. Das ist Rueckschau; in dem Moment war es eine Gewinnsicherung.</li><li><b>Kein Regelverstoss</b>, aber ein Eingriff in die Bot-Ausfuehrung, den Soll/Ist und Ampel nicht kennen. <b>Im Dashboard zur Bestaetigung eingetragen:</b> Warst du das, und ist das eine Regel (z. B. "um 14:30 NY Teilgewinn") oder ein Einzelfall? Und warum nicht auf IQ?</li></ul>
+</div>
+<div class="flag"><p class="flag-head">Cloud-Monitor: "Watchdog-Luecke ~96 h" ist ein Fehlalarm - der Push war blockiert.</p>
+<ul class="plain"><li>Auf GitHub stehen fuenf Eskalationen des Cloud-Monitors (02.11. bis Fr 06.11. 21:13 UTC, zuletzt "~96h, fuenfte Eskalation vor dem Wochenende"). Lokal lief der Watchdog durchgehend im 30-Min-Takt, und alle Bridges handelten (EK: 816 bis 1.441 Laeufe pro Tag, keine Luecke ueber 30 Min.).</li><li><b>Ursache, aus dem Watchdog-Log woertlich:</b> "Snapshot-Merge uebersprungen: Working Tree hat 5-9 offene Aenderung(en) ... Es wird NICHT gestasht". Ab 02.11. 22:31 <b>254-mal</b>. Der letzte Snapshot auf GitHub ist vom 02.11. 22:07. Lokal ist <code>main</code> <b>334 Commits voraus und 6 zurueck</b>.</li><li>Der offene Working Tree ist die uncommittete Session-Arbeit vom 02.11. (Daily-Edge, Filter, Locks, Dashboard/CHANGELOG) plus Logdateien. <b>Derselbe Mechanismus wie der Push-Stau 02.10.-31.10.</b> (CHANGELOG 31.10.). Die Dashboard-Frage vom 02.11. ("Kannst du nachschauen, ob der Rechner lief?") ist damit beantwortet: <b>Ja, er lief.</b> Im Dashboard ergaenzt.</li><li>Dieser Report pusht nicht (Vorgabe). Loesen wuerde es ein Commit der offenen Arbeit, danach der naechste Watchdog-Lauf.</li></ul>
+</div>
+<div class="flag"><p class="flag-head">Offene Session-Arbeit + Handoff seit 02.11.</p>
+<p>Die Handoff-Datei <code>_handoff/2026-11-02_2330_daily-edge-schichtenmodell.md</code> wurde nicht abgeholt; die Arbeit seit 18.10. (<code>htf_daily_trade/</code>, <code>fusion_lab/filters/</code>, Locks) ist nicht committet. Nur ein Hinweis: Seit dem Stash-Fix (23.09.) ist sie nicht mehr akut gefaehrdet, aber ohne Commit auch nicht gesichert.</p>
+</div>
+<div class="flag"><p class="flag-head">Neustart Mo 02:01 -&gt; EK-Fast-Lane 24 h doppelt.</p>
+<p>Nach dem unerwarteten Neustart (<code>Kernel-Power 41</code>, <code>EventLog 6008</code>; Ursache nicht ermittelt) liefen <b>zwei FAST-Ketten parallel</b> (Sekunde :12 und :46), bis Di 02:05 die nachgeholte Kette ablief (Wiederholungsdauer 23 h 58 min). Das erklaert 1.441 statt 816 Laeufe am Montag. Am Montag gab es auf EK keine Order, also keinen sichtbaren Doppel-Effekt. Ob die Fast-Lane zwei gleichzeitige Laeufe gegen Doppel-Orders absichert, habe ich nicht geprueft. <b>Nur beobachten</b>; wiederholt sich das bei jedem Neustart, lohnt ein Lauf-Lock auch fuer die EK-Fast-Lane (wie bei Funded).</p>
+</div>
+<div class="flag"><p class="flag-head">TTP-OU: STT ist seit 23 Tagen Waise.</p>
+<p>Taeglich "Titel fehlt im aktuellen Scan -- NICHT automatisch geschlossen" (16.10. eroeffnet, aktuell +1,36 USD, SL 123,69). EK hatte dieselbe Aktie am 27.10. per <code>max_hold</code> geschlossen. NEM (KW44 als Kandidat genannt) ist erledigt: am 05.11. per Modell-Abgleich geschlossen. <b>STT braucht eine Entscheidung</b> (schliessen oder bewusst laufen lassen); steht in KW43/KW44 schon, keine neue Info ausser der Dauer. Dazu ein harmloser Nebenbefund: IQ meldet "ou_modell (NEM) ... verpasst", obwohl IQ kein OU handelt (Log-Rauschen).</p>
+</div>
+<div class="flag"><p class="flag-head">Kleineres.</p>
+<ul class="plain"><li><code>Makro-Daten</code>-Task: letzter Lauf So 08.11. 07:32 mit Ergebnis <code>0x41306</code> (vom Scheduler beendet). Nicht naeher geprueft, kein Order-Bezug.</li><li>FK warnt weiter in jedem Lauf "Kontostand weicht von STARTING_EQUITY=100.000 ab" (bekannt).</li><li>Telegram-Bot-Token steht weiter im Klartext in den Bridge-Logs (DNS-Fehler am 02.11.). Nur lokal.</li><li>Dieser Report committet bewusst nur <code>knowledge/reports/</code>. Dashboard-/Changelog-Ergaenzungen bleiben im Working Tree, zusammen mit der Session-Arbeit vom 02.11.</li></ul>
+</div>
+</section>
+  <div class="part"><p class="part-label">Teil II</p><h2 class="part-title">Education</h2></div>
+<section class="block"><h3 class="sec"><span class="num">01</span> Was stand die Woche an / Hauptfokus</h3>
+<p>Eine <b>Ein-Tages-Woche</b>. Die gesamte eigene Arbeit faellt auf <b>Montag, 02.11.</b>, danach gibt es bis Sonntag keine Session-Spuren mehr (keine Commits ausser Automatik, keine neuen Memory-Eintraege, keine geaenderten Notizen). Was am Montag passierte, war dafuer dicht:</p>
+<ul class="plain"><li><b>Daily-Edge des Nutzers (Edge Card <i>htf-daily-trade-edge-card</i>):</b> Phase 0 abgeschlossen, dann in einer Kette getestet: Typ R (Reversal) allein, IPDA-Zyklen zweimal, Makro-Gates (Regime, G8), Typ C (Continuation), ein Raster aus Einstieg x Stop x Ziel und zuletzt C2 mit Gold-Filter. Ergebnis: kein Edge mit t &gt; 2; einzig "C2 mit Limit-Einstieg" ist durchgehend positiv.</li><li><b>Makro-Architektur:</b> Regime-Quellen verglichen, Recherche <i>regime-bestimmung-und-filter</i>, <b>Schichtenmodell beschlossen</b>, erster Baustein <i>filter-gold-zinskurve</i>.</li><li><b>Gold ASB / Data Lake:</b> Ausfall-Ersatz vom 01.11. wieder abgeschaltet, <code>GOLD_D1</code> aus Dukascopy neu geschrieben, D1-Ersatz aus Intraday gebaut (<code>67e0060b</code>), Liquiditaetsfilter-Korrektur im OOS verworfen, Sollwerte auf Live-Stand umgestellt (<code>cd5e2358</code>).</li><li><b>Mentor-Material:</b> Calls "Volumen und Delta" und "COT Teil 1" aus Bildern ausgewertet (<i>smh-volumen-delta-und-cot-calls</i>), Copy-Trading-Annahmen bestaetigt.</li></ul>
+<p><b>Was liegen blieb:</b> Die Handoff-Datei <code>knowledge/_handoff/2026-11-02_2330_daily-edge-schichtenmodell.md</code> wartet seit Montag. Sie beginnt mit "Nutzer wuenscht morgen zuerst einen Stand", dazu die offene und <b>irreversible</b> Frage, ob C2 + Gold-Filter in OOS/Blind geht. <b>Die gesamte Daily-Edge- und Makro-Arbeit seit 18.10. ist weiter nicht committet</b> (<code>htf_daily_trade/</code>, <code>fusion_lab/filters/</code>, fuenf Locks, drei Notizen). Siehe Performance-Report Abschnitt 6, Punkt 3: Genau dieser offene Working Tree hat auch den Watchdog-Push die ganze Woche blockiert.</p>
+</section>
+<section class="block"><h3 class="sec"><span class="num">02</span> Aktive Zeiten</h3>
+<div class="bars"><div class="bar-col peak"><span class="bar-count">23</span><div class="bar" style="height:100%"></div><span class="bar-label">Mo</span></div><div class="bar-col"><span class="bar-count">0</span><div class="bar" style="height:2%"></div><span class="bar-label">Di</span></div><div class="bar-col"><span class="bar-count">0</span><div class="bar" style="height:2%"></div><span class="bar-label">Mi</span></div><div class="bar-col"><span class="bar-count">1</span><div class="bar" style="height:4%"></div><span class="bar-label">Do</span></div><div class="bar-col"><span class="bar-count">0</span><div class="bar" style="height:2%"></div><span class="bar-label">Fr</span></div><div class="bar-col"><span class="bar-count">0</span><div class="bar" style="height:2%"></div><span class="bar-label">Sa</span></div><div class="bar-col"><span class="bar-count">0</span><div class="bar" style="height:2%"></div><span class="bar-label">So</span></div></div><p style="font-size:0.8rem;color:var(--ink-soft)">Gezaehlt: CHANGELOG-Eintraege und Memory-Notizen je Tag, dazu am Do die Handschliessung. Keine Stundenerfassung.</p><ul class="plain"><li><b>Mo 02.11. abends ca. 20:30 bis 23:30</b> (CHANGELOG, Memory 20:35-22:39, Handoff 23:30). Dazu live dabei im SMH-Call ca. 20:14-21:06.</li><li><b>Di bis So: keine eigenen Spuren im Repo.</b> Nur Automatik (Telegram-Import taeglich 22:00, Makro-Daten, Snapshots).</li><li><b>Eine Ausnahme am Do 05.11. ca. 20:30 (Berliner Zeit):</b> Die NASDAQ-ORB-Position wurde auf drei Konten innerhalb von 97 Sekunden <b>per Handy teilweise geschlossen</b> (MT5 <code>reason = 1</code>, Mobile). Details im Performance-Report, Abschnitt 6, Punkt 1.</li></ul>
+<p>Muster: wieder ein Abend, diesmal nur einer. Die restliche Woche lief das System allein.</p>
+</section>
+<section class="block"><h3 class="sec"><span class="num">03</span> Meine Main Erkenntnisse</h3>
+
+<h4 style="font-family:Spectral,serif;font-size:1.05rem;margin:1.1em 0 .3em">3.1 IPDA-Zyklen tragen nichts - die Zyklik steckt im Messwerkzeug</h4>
+<ul class="plain"><li><b>Befund:</b> Die Wendepunkt-Abstaende von 8 / 14 / 21 Tagen kommen auf sechs Maerkten (EURUSD, GBPUSD, USDJPY, AUDUSD, Gold, Silber, IS 2016-21) <b>nicht haeufiger vor als in durchgemischten Kursreihen</b>: echt 19,4 / 7,1 / 1,1 %, Zufall 20,1 / 6,7 / 1,5 %. Auch mit der Nutzer-Definition (Quartals-Nullpunkt) kein Effekt: +0,61 ATR gegen +0,21 in der Kontrolle, p 0,26.</li><li><b>Mechanismus / Warum:</b> Jede Kursreihe hat Schwuenge. Zeichnet man Mess-Boxen mit 8, 14 und 21 Tagen ein, findet man immer Schwuenge, die hineinpassen. Was fehlt, ist der Vergleich mit dem, was man ohnehin finden wuerde. Der faellt hier gleich aus.</li><li><b>Wie es aufgefallen ist:</b> Zwei Laeufe. Zuerst Fractal-ZigZag gegen 300 Zufallsreihen (1 von 18 Zellen mit p &lt; 0,05, also im Rahmen des Zufalls). Weil der Nutzer IPDA anders definiert, folgte ein zweiter Test mit seinem Nullpunkt gegen Anker ohne Quartalswechsel. Beide unter dem Lock <code>htf_ipda_zyklen</code>. Der Nutzer hat das Ergebnis angenommen: IPDA nur noch als optionale Bestaetigung.</li><li><b>Lehre:</b> Ein Muster, das man im Chart "sieht", braucht eine Kontrollgruppe, die dasselbe Werkzeug auf Zufallsdaten anwendet. Erst der Abstand zur Kontrolle ist der Edge (siehe Memory: <code>ipda_zyklen_kein_edge</code>; Vertiefung 4b).</li></ul>
+<h4 style="font-family:Spectral,serif;font-size:1.05rem;margin:1.1em 0 .3em">3.2 Die Regel trifft deine Trades - und hat trotzdem keinen Edge</h4>
+<ul class="plain"><li><b>Befund:</b> Die Typ-R-Regel (Fractal + RSI-Extrem) fand <b>7 von 7</b> deiner EURUSD-Signale 2025/26 ("sehr gute Stichproben"). Historisch (IS 2016-21, 32 Varianten) bringt die beste Variante aber nur <b>+0,116 R, t 1,10, DSR 0,16</b>. Das Confluence-Gate (mind. 5 Bestaetigungen) ist in 12 von 16 Paaren <b>schlechter</b> als "alle Signale". Im grossen Raster (152 Versuche je Typ) erreicht keine Variante t &gt; 2; einzig "C2 mit Limit auf 50 %" ist in allen 24 Kombinationen positiv (beste +0,176 R, t 1,74).</li><li><b>Mechanismus / Warum:</b> Dass eine Regel deine Trades wiederfindet, zeigt nur, dass sie deine Auswahl beschreibt. Ob die Auswahl Geld verdient, ist eine zweite Frage. Deine Beispiele stammen aus 2025/26, einer Phase mit starkem Gold- und USD-Trend; ueber 2016-21 verteilt sich derselbe Aufbau auf Phasen ohne diesen Rueckenwind. Mehr Bestaetigungen heisst oft: spaeter einsteigen, weniger Restweg.</li><li><b>Wie es aufgefallen ist:</b> Erst der Nachbau an deinen Chart-Beispielen (Kerzen-Tabelle zum Gegenlesen), dann der Test strikt nur auf IS. Fast haette ein Stop am Vortages-Extrem mit Limit-Einstieg getaeuscht: winziges Risiko, absurde R-Werte. Das ist im Handoff als Falle notiert.</li><li><b>Lehre:</b> "Die Regel trifft meine Trades" ist Validierung der Regel-Beschreibung, nicht des Edges. Und Confluence-Zaehlen ist kein Qualitaetsfilter, solange es nicht gezaehlt getestet wurde (siehe Memory: <code>daily_edge_regel_trifft_nutzertrades</code>, <code>daily_edge_typ_r_ohne_makro_kein_edge</code>).</li></ul>
+<h4 style="font-family:Spectral,serif;font-size:1.05rem;margin:1.1em 0 .3em">3.3 "Regime" ist nicht ein Ding - daher das Schichtenmodell</h4>
+<ul class="plain"><li><b>Befund:</b> Die Landi-Karte (Wachstum x Inflation) und das Zinskurven-Regime nach Angelo stimmen nur zu <b>26,6 %</b> ueberein, Zufall waere <b>25,2 %</b>. Das rohe Zinskurven-Regime wechselt <b>69x pro Jahr</b>. Die Dennis-Matrix sagt die USD-Richtung mit keiner Quelle vorher (t -1,4 bis +0,7). Einzig Gold mit 5 Tage bestaetigtem Zinskurven-Regime: <b>+93 bp in 20 Tagen, t 2,16</b>.</li><li><b>Mechanismus / Warum:</b> Beide "Regime" messen Verschiedenes: das eine langsame Konjunktur, das andere die kurzfristige Bewegung der Zinskurve. FX-Kurse haengen ausserdem an <b>Differenzen</b> zwischen Laendern, ein US-Regime allein kann sie nicht erklaeren.</li><li><b>Wie es aufgefallen ist:</b> Der Daily-Edge wurde mit Regime-Gate kaum besser (+0,120 R, t 0,91). Statt weitere Gates zu stapeln, wurden die Quellen gegeneinander gestellt. Die Uebereinstimmung auf Zufallsniveau war der Hinweis, dass "das Regime" nicht existiert.</li><li><b>Lehre:</b> Bevor man einen Filter aus einer Quelle baut, pruefen, ob die Quellen fuer "dasselbe" ueberhaupt uebereinstimmen. Beschlossen: Schichten (Kontext, Zinsen, FX relativ, Risiko) als Veto, nicht ein Regime als Schalter (siehe Memory: <code>regime_quellen_unabhaengig</code>, <code>schichtenmodell_makro_beschlossen</code>; <i>filter-gold-zinskurve</i>).</li></ul>
+<h4 style="font-family:Spectral,serif;font-size:1.05rem;margin:1.1em 0 .3em">3.4 Die Korrektur eines Vorgriffs kann schlechter sein als der Vorgriff</h4>
+<ul class="plain"><li><b>Befund:</b> Der Gold-ASB-Liquiditaetsfilter sieht im Backtest den ganzen Handelstag (Fenster t, t+1). Die naheliegende Korrektur V1 ("letztes vollstaendiges Fenster") gewinnt das IS (+0,266 R, t 2,64), faellt im OOS aber auf <b>+0,082 R (t 0,72)</b>, gegen <b>+0,126 R</b> fuer den heutigen Live-Stand. Der Live-Filter bleibt.</li><li><b>Mechanismus / Warum:</b> Live wird ohnehin schon "kausal" gerechnet, nur eben mit dem halben Tag. V1 ist eine dritte Variante, nicht die Live-Wahrheit. Sie war im IS gut, weil sie im IS gewaehlt wurde.</li><li><b>Wie es aufgefallen ist:</b> Unter einer eigenen Sperre (<code>gold_asb_liq_fix_20261102</code>) mit eingefrorenem IS-Gewinner, OOS genau einmal geoeffnet. Gleichzeitig wurden Soll/Ist und Ampel auf den Live-Wissensstand umgestellt (Soll +0,308 -&gt; +0,168 R; Ampel-Normalwert +0,146 R).</li><li><b>Lehre:</b> Ein gefundener Bug im Backtest heisst nicht "Live-Code aendern". Erst die Messlatte (Soll, Ampel) auf das setzen, was live wirklich passiert; jede Code-Korrektur ist eine gezaehlte Variante (siehe Memory: <code>gold_asb_friktion_vorgriff</code>).</li></ul>
+<h4 style="font-family:Spectral,serif;font-size:1.05rem;margin:1.1em 0 .3em">3.5 Ein Fail-safe kann einen Fehlalarm erzeugen, der fuenfmal eskaliert</h4>
+<ul class="plain"><li><b>Befund:</b> Der Cloud-Monitor meldete ab Mo 02.11. eine "Watchdog-Luecke" und eskalierte bis Fr auf <b>~96 h</b> (fuenf Commits auf GitHub). <b>Lokal lief der Watchdog die ganze Woche</b> im 30-Min-Takt; die Bridges handelten normal.</li><li><b>Mechanismus / Warum:</b> Der Watchdog committet seine Snapshots lokal, mergt und pusht aber nur bei sauberem Working Tree. Das ist absichtlich so (seit dem Stash-Verlust 23.09. wird nie mehr gestasht, siehe Memory: <code>git_sync_stash_frisst_sessionarbeit</code>). Seit Montagabend liegen 5-9 uncommittete Aenderungen im Working Tree, also wurde ab 02.11. 22:31 <b>254-mal</b> "Snapshot-Merge uebersprungen" geloggt; der letzte Snapshot auf GitHub ist vom 02.11. 22:07. Lokal 334 Commits voraus, 6 zurueck (die 6 sind die Eskalations-Commits des Monitors).</li><li><b>Wie es aufgefallen ist:</b> In diesem Report. Die EK-Laufprotokolle zeigen 816+ Laeufe pro Tag ohne Luecke ueber 30 Min., das Watchdog-Log nennt den Grund woertlich. Es ist <b>derselbe Mechanismus wie der Push-Stau vom 02.10. bis 31.10.</b>, nur diesmal nach drei Tagen statt einem Monat bemerkt.</li><li><b>Lehre:</b> Ein Schutz, der still "spaeter" sagt, braucht eine Obergrenze und eine eigene Meldung. Sonst sieht ein entfernter Beobachter nur Schweigen und deutet es als Ausfall.</li></ul>
+</section>
+<section class="block"><h3 class="sec"><span class="num">04</span> Neues Wissen diese Woche (Papers/Ideen)</h3>
+<ul class="plain"><li><b>SMH-Calls "Volumen und Delta" + "COT Teil 1"</b> (<i>smh-volumen-delta-und-cot-calls</i>). (a) Aussage: Sweeps unter Tiefs mit grossem Verkaufs-Delta (Absorption) markieren Wenden; Profile laufen "vom Extrem zum POC"; COT flach in der Range kuendigt das Auseinanderlaufen nach dem Sweep an. Keine Zahlen gezeigt. (b) Getestet: nichts, nur aus Bildern gelesen, weil beide Aufnahmen nach 9 bzw. 20 s keinen Ton mehr haben. (c) Urteil: keins. (d) <b>Geparkt</b>, vier Kandidaten A-D; D (Absorption) braucht Footprint-Daten. Die Lesarten warten im Dashboard auf dich.</li><li><b>Recherche Regime-Bestimmung</b> (<i>regime-bestimmung-und-filter</i>). (a) Aussage der Literatur: FX wird von relativen Makrodaten (Zins-/Wachstumsdifferenzen) getrieben, ein Regime-Schalter fuer alle Assets ist zu grob. (b) Getestet: drei Quellen auf IS 2016-21 (Lock <code>regime_quelle_vergleich</code>, 3 Versuche). (c) Urteil: USD-Richtung mit keiner Quelle, Gold mit geglaetteter Zinskurve t 2,16. (d) <b>In Arbeit</b> als Schichtenmodell.</li><li><b>Filter "Gold-Zinskurve"</b> (<i>filter-gold-zinskurve</i>). (a) Aussage: In Goldilocks/Reflation nur Gold-Long, in Inflation nur Short. (b) Getestet an Daily-Edge C2, nur Gold: mit Filter +0,70 / +0,64 R, gegen den Filter -0,22 / -0,07 R. (c) n ~24, t &lt;= 1,6, DSR 0,12-0,16: Richtung stimmt, Beleg fehlt. (d) <b>In Arbeit</b>; naechster Schritt Pruefung an Gold ASB / CTNL / Trend-Pullback (Trendrichtungs-Strategien).</li><li><b>Zinsdaten-Quellen</b> (siehe Memory: <code>zinsdaten_zentralbanken_quellen</code>): EZB, MoF Japan, BoC, BoE liefern taeglich frei, die RBA blockt (403). Grundlage fuer die FX-Schicht. Status: Loader noch nicht gebaut.</li></ul>
+<p><b>Ideen-Inbox, neu seit KW44:</b></p>
+<ul class="plain"><li>(02.11.) LTF-/Scalping-Edge nur in Richtung eines frischen Typ-C-Signals, Kandidat Tradezella- Playbook "LTF Session Engineering". <b>Noch nicht einsortiert</b>, erst nach der Daily-Edge-Card.</li></ul>
+</section>
+<section class="block"><h3 class="sec"><span class="num">4b</span> Vertiefung: Permutationstest - die Kontrollgruppe aus gemischten Kursen</h3>
+<p><b>Was es ist.</b> Ein Permutationstest fragt: Wie oft wuerde ich mein Muster finden, wenn es keins gaebe? Dazu nimmt man die echten Daten und zerstoert gezielt nur die Eigenschaft, die man testen will. Bei IPDA ist das die zeitliche Ordnung: Die Tagesrenditen werden durchgemischt und wieder zu einer Kursreihe aufsummiert. Volatilitaet und Renditeverteilung bleiben gleich, jede echte Zyklik ist weg. Auf jede dieser Reihen laesst man <b>dasselbe Messwerkzeug</b> laufen (hier Fractal-ZigZag) und zaehlt. 300 Wiederholungen ergeben die Verteilung "so viel findet man auch ohne Effekt".</p>
+<p><b>Beispiel mit unseren Zahlen.</b> Wendepunkt-Abstaende von 14 (+-1) Tagen: echt 7,1 %, Mittel der 300 Zufallsreihen 6,7 %. Der p-Wert ist der Anteil Zufallsreihen mit mindestens 7,1 %, hier deutlich ueber 5 %. Bei 18 geprueften Zellen (3 Laengen x 6 Maerkte) waere schon rein zufaellig etwa eine mit p &lt; 0,05 zu erwarten, und genau eine wurde gefunden.</p>
+<p><b>Warum das fuer uns wichtig ist.</b> Viele diskretionaere Konzepte (Zyklen, Key Levels, Sessions) werden mit Werkzeugen "gesehen", die auf jeder Kursreihe etwas finden. Der Vergleich gegen Null ("kommt das vor?") ist dann wertlos; der Vergleich gegen die Permutation ("kommt das <b>oefter</b> vor als ohne Ursache?") trennt Muster von Messartefakt. Dieselbe Logik steckt in den Zufallseinstiegen beim Valkyrie-Klon und im Zufallsfenster beim K4b-Nachtest. Grenze: Durchmischen zerstoert auch Volatilitaets-Cluster; fuer Fragen, die davon abhaengen, nimmt man Block-Permutationen.</p>
+</section>
+<section class="block"><h3 class="sec"><span class="num">05</span> Verbesserungen</h3>
+<ul class="plain"><li><b>D1-Ersatz bei Dukascopy-Ausfall</b> (<code>67e0060b</code>): Tageskerzen werden aus Lake-H1 abgeleitet, centgenau wie Dukascopy, spaeter automatisch ersetzt. Schliesst die Luecke, die am 30.10. Gold ASB gekostet hat.</li><li><b><code>GOLD_D1</code> repariert</b> (539 Twelve-Data-Kerzen ersetzt) und kein Twelve-Data-Failover mehr fuer Tagesreihen.</li><li><b>Ehrlichere Messlatte fuer Gold ASB:</b> Soll/Ist und Edge-Ampel rechnen auf dem Live-Wissensstand.</li><li><b>Makro-Architektur entschieden</b> (Schichtenmodell), erster wiederverwendbarer Filterbaustein mit Pruefprotokoll.</li><li>Mehrere Dashboard-Bestaetigungen geschlossen (Copy Trading Stufe 2, Lake-Schreibregeln, Valkyrie).</li></ul>
+</section>
+<section class="block"><h3 class="sec"><span class="num">06</span> Verschlechterungen / offene Probleme</h3>
+<ul class="plain"><li><b>Daily-Edge-Arbeit seit 18.10. nicht committet</b> und Handoff seit 02.11. offen (Abschnitt 1).</li><li><b>Watchdog-Push blockiert seit 02.11.</b> -&gt; Cloud-Monitor-Fehlalarm (3.5). Wiederholung des Oktober-Staus.</li><li><b>Unerwarteter Neustart Mo 02.11. 02:01</b> (<code>Kernel-Power 41</code>, <code>EventLog 6008</code>); danach lief der EK-Fast-Takt 24 h doppelt (Performance-Report 6.4).</li><li><b>Gold ASB im Ausfall wieder ohne Ersatz</b> (Ersatz bewusst abgeschaltet). Durch den D1-Ersatz entschaerft, aber nur fuer die Tagesreihe; im echten Ausfall kommen die H1-Kurse von Twelve Data, ungetestet.</li><li><b>Edge-Ampel zum dritten Mal nicht aktualisiert</b> (Dukascopy-Abruf ohne Timeout haengt); Stand weiter 25.10.</li><li><b>Daily-Edge ohne Edge:</b> Die zwei Jahre Kern-Edge (IPDA) sind widerlegt; tragend bleibt bisher nur eine schwache Familie (C2, t 1,74).</li></ul>
+</section>
+<section class="block"><h3 class="sec"><span class="num">07</span> Optimierungsmoeglichkeiten</h3>
+<ol><li><b>Den Handoff abarbeiten und committen</b>, dann die C2-OOS-Frage bewusst entscheiden (irreversibel). Ein Commit loest nebenbei den Watchdog-Push.</li><li><b>Watchdog: Obergrenze fuer "Merge uebersprungen"</b> (z. B. nach 6 h Telegram-Meldung "Push blockiert, Working Tree offen") statt stiller Wiederholung. Und dem Cloud-Monitor beibringen, "kein Push" von "kein Lauf" zu unterscheiden.</li><li><b>Gold-Zinskurven-Filter an Gold ASB / CTNL-Continuation / Trend-Pullback pruefen</b>, als gezaehlte Variante in je eigenem Lock (Pruefprotokoll steht).</li><li><b>FX-Zinsdaten-Loader</b> (EZB, MoF, BoC, BoE) fuer die FX-Schicht.</li><li><b>Manuelle Teilschliessung vom 05.11. einordnen</b> (Performance 6.1): bewusste Regel oder Einzelfall? Wenn Regel, waere sie als Variante testbar.</li></ol>
+</section>
+  <footer class="colophon">Weekly Checkup · automatisch erzeugt · Forex-Backtesting/scripts/reports · lokal committet, nicht gepusht</footer>
+</div>
+</body></html>

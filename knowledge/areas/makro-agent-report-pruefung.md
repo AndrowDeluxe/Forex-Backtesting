@@ -142,6 +142,34 @@ Erwartet A-B-C aufwärts in die Zone 1,1192–1,1218, dann Abverkauf.
 | EURUSD | kreuzt abwärts | 1,1100 | Teilgewinn |
 | EURUSD | kreuzt abwärts | 1,1000 | Ziel |
 
+### Nachtrag: Dennis' USD/CAD Long (Live-Call 08.11., 8h-Chart)
+
+Long-Limit 1,4009 · Stop 1,3951 · Ziel 1,4300 (Oktober-Hochs) → 58 Pips Risiko, 291 Pips Ziel,
+≈ 5 R. Einstieg = Retest der Ausbruchszone 1,4010–1,4070 (altes Spannen-Hoch), Kurs Fr 1,4128.
+
+- **Dafür:** Regel 1 des Sonderreports (Dollar-Stärke nur gegen Rohstoffwährungen). CAD mit den
+  schwächsten Datenüberraschungen der G8, Arbeitslosigkeit 6,7 %, BoC-Dezember von 56 % auf 37 %
+  gefallen. Fügt sich in Dennis' DXY-Pfad (C-Welle bringt den Retest, danach DXY Richtung 103).
+  Rücksetzer-Limit statt Markt.
+- **Dagegen:** Laut Report kein aktives Setup (CAD „neutral“, Rang 4). Hedgefonds schon stark short
+  CAD (F-Gate-Konflikt). Ölrisiko: Brent über 105 (Hormus-Eskalation) stärkt den CAD – das ist der
+  Report-Schalter. Das Limit liegt 119 Pips unter Schluss (~1,5–2 Tages-ATR); eine DXY-Delle auf 101,8
+  bringt USD/CAD rechnerisch nur auf ~1,406 → Füllung unsicher.
+- **Bündelung:** Mit AUD/USD Short und EUR/USD Short = **dreimal Dollar long ins CPI**. Kern ≤ 0,0 %
+  trifft alle drei gleichzeitig. Dollar-Risiko insgesamt deckeln (Vorschlag: zusammen höchstens
+  1,5 Einheiten).
+- **Wertung:** Bestes Chance-Risiko-Verhältnis der Woche, aber ohne Report-Gates. Halbe Größe; wenn
+  nur zwei Dollar-Longs, dann AUD/USD und USD/CAD (beide Rohstoffwährungen, Regel 1) vor EUR/USD
+  (widerspricht Regel 2).
+
+| Symbol | Bedingung | Wert | Bedeutung |
+|---|---|---|---|
+| USDCAD | kreuzt abwärts | 1,4070 | Zone erreicht |
+| USDCAD | kreuzt abwärts | 1,4009 | Long-Limit |
+| USDCAD | kreuzt abwärts | 1,3951 | Stop |
+| USDCAD | kreuzt aufwärts | 1,4300 | Ziel |
+| UKOIL | kreuzt aufwärts | 105 | Report-Schalter: CAD-Stärke, Long prüfen |
+
 ### Nachprüfung (nach Fr 13.11. ausfüllen)
 
 | Punkt | Erwartet | Eingetreten | Urteil |
@@ -152,3 +180,4 @@ Erwartet A-B-C aufwärts in die Zone 1,1192–1,1218, dann Abverkauf.
 | Gold 4.030 erreicht, Schluss < 4.000? | | | |
 | EUR/CHF 0,910 erreicht | | | |
 | EUR/USD (Dennis) Limit 1,1192 gefüllt / Ergebnis R | | | |
+| USD/CAD (Dennis) Limit 1,4009 gefüllt / Ergebnis R | | | |

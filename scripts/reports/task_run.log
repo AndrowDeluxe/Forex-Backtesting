@@ -257,3 +257,37 @@
 2026-11-01 19:53:57 Offene Entscheidung f++r dich: den Gold-ASB-Ausfall-Ersatz behalten oder abschalten. Er ist aktiv und greift ab Montag; im Dashboard steht die Empfehlung, ihn abzuschalten.
 2026-11-01 19:53:57 Vollstaendigkeitspruefung OK: KW44_2026_checkup.pdf (594.173 Bytes)
 2026-11-01 19:53:57 === Weekly-Report-Task beendet ===
+2026-11-08 20:08:22 === Weekly-Report-Task gestartet ===
+2026-11-08 20:08:23 Nutze Claude Code: C:\Users\andre\.vscode\extensions\anthropic.claude-code-2.1.318-win32-arm64\resources\native-binary\claude.exe
+2026-11-08 21:21:09 Warning: this sign-in ends between 2026-11-14 and 2026-11-17 (in 6 days at the earliest). Renewing it does not move those dates. Run claude auth login before then, or use claude setup-token for unattended jobs.
+2026-11-08 21:21:09 The KW45 Weekly Checkup is finished. Both reports and the HTML are committed locally (`64e2258f`, not pushed), the PDF is in `Documents\Trading Reports\`, and it went out on Telegram. One thing failed again: the Edge-Ampel could not be refreshed for the third week running, so that table is still from 25.10. No monthly report this time, because 15.11. is still in November.
+2026-11-08 21:21:09 
+2026-11-08 21:21:09 **Week overview (Mo 02.11.‘«ÙSo 08.11.)**
+2026-11-08 21:21:09 - **EK:** ‘Í∆60,95 EUR (‘Í∆2,17 %), 6 trades. The losses came from Gold ASB and Gold-Silber.
+2026-11-08 21:21:09 - **Funded (TTP + IQ):** +1.389,25 USD (+0,71 %), 11 trades.
+2026-11-08 21:21:09 - **FK:** +1.220,29 USD (+1,24 %), 5 trades.
+2026-11-08 21:21:09 - **Rules:** No kill-switch fired and no limit was broken. IQ is now 3.667 USD away from its 6 % limit (KW44: about 2.907).
+2026-11-08 21:21:09 - **One trade carried the week:** the NASDAQ-ORB short on 05.11. made +5.386 USD on the three USD accounts. The other 13 USD trades together lost 2.776 USD.
+2026-11-08 21:21:09 
+2026-11-08 21:21:09 **Points that need your input (I added both to the Dashboard):**
+2026-11-08 21:21:09 1. **NASDAQ-ORB 05.11. was partly closed by hand.** On FK, EK and TTP, 68‘«Ù79 % of the position was closed from the MT5 phone app within 97 seconds (ca. 14:30 New York). IQ was left alone. NASDAQ runs without a partial exit, so this was not the bot. In hindsight it cost about 600 USD + 26 EUR compared with letting the bot finish. Was that you, and is it a rule or a one-off?
+2026-11-08 21:21:09 2. **Gold ASB 03.11. was traded live on all four accounts (‘Í∆1.274 USD / ‘Í∆90 EUR), but the Soll calculation has no such trade.** I re-ran the filters: the trade passes all of them except the liquidity filter. The cause is unclear. Possibly the GOLD_D1 series that was rewritten the evening before, or the same quantile flip as on 01.09. The bridge logs don't record the friction value, so I can't decide it. I suggest logging that value with every ASB order.
+2026-11-08 21:21:09 
+2026-11-08 21:21:09 **Other findings:**
+2026-11-08 21:21:09 - **The cloud monitor's "watchdog gap" (escalated five times, up to ~96 h) was a false alarm.** The PC and the bridges ran normally all week. The watchdog only pushes when the working tree is clean, and the uncommitted work from 02.11. has kept it dirty. Since 02.11. 22:31 it logged "Snapshot-Merge uebersprungen" 254 times. This is the same thing that happened 02.10.‘«Ù31.10. Committing the open work fixes it. I saved this as a new memory entry.
+2026-11-08 21:21:09 - **Soll/Ist:** Funded comes out almost exactly on Soll (+0,71 % vs +0,74 %), but partly by luck: three separate effects happen to cancel each other out. The biggest single miss was the SP500 long on 02.11. (+5,96 R, roughly 600 USD per account): the price had already broken out before the order could be placed. The tool also still mislabels ORB fills as "nie gesehen" and still counts the paused US30 and the retired CTNL-Continuation legs.
+2026-11-08 21:21:09 - **Edge-Ampel:** The re-run got stuck again on a Dukascopy download (no progress for over 10 minutes at 2024-09-19) and was stopped by the time limit. No stray process was left behind. The status table is therefore identical to KW44.
+2026-11-08 21:21:09 - **Minor:**
+2026-11-08 21:21:09   - An unexpected restart on Mo 02:01 made the EK fast lane run twice in parallel for 24 hours. There were no EK orders that day, so no visible double effect.
+2026-11-08 21:21:09   - The TTP OU position in STT has had no matching scan signal for 23 days.
+2026-11-08 21:21:09   - The handoff file from 02.11. has not been picked up yet, and the Daily-Edge work since 18.10. is still uncommitted.
+2026-11-08 21:21:09 
+2026-11-08 21:21:09 **Side effects of this run:**
+2026-11-08 21:21:09 - **Commit:** only `knowledge/reports/` went into the commit.
+2026-11-08 21:21:09 - **Uncommitted edits:** `CHANGELOG.md` and `DASHBOARD.md` (two confirmation items, a KW45 update on the watchdog item, "Zuletzt gepr++ft" set to 08.11.) are edited but left uncommitted with the other open work. That open work is also what keeps blocking the watchdog push.
+2026-11-08 21:21:09 - **MT5:** No new terminals were opened, because all four were already running.
+2026-11-08 21:21:09 - **PDF:** The second render attempt failed because of a path-escaping mistake in my script and overwrote the first good PDF with an empty 870-byte file. I fixed it and re-rendered; the final file is 347 KB with the same fonts as KW44's.
+2026-11-08 21:21:09 
+2026-11-08 21:21:09 That notification is only my own helper that was waiting for the Edge-Ampel job. It hit its time limit and was stopped. The Ampel job itself had already stalled and been stopped before that, and I've covered that in the report. Nothing else is affected: the KW45 Weekly Checkup is finished and committed locally (`64e2258f`), and the PDF has been sent.
+2026-11-08 21:21:09 Vollstaendigkeitspruefung OK: KW45_2026_checkup.pdf (347.085 Bytes)
+2026-11-08 21:21:09 === Weekly-Report-Task beendet ===

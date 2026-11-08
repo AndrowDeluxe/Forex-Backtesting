@@ -20,7 +20,7 @@ der [[overfitting-sperre]] (vorwärts messen, siehe Memory „LLM-Agent nur vorw
 ## Organize
 
 Tags: Makro, Wirkkette, Gate, Positionierung, Zinspricing, Szenario, Agent.
-Verwandt: [[makro-faktoren-katalog]], [[quant-diskretionaer-fusion]],
+Verwandt: [[makro-agent-report-pruefung]] (Ablauf/Ausgabeformat), [[makro-faktoren-katalog]], [[quant-diskretionaer-fusion]],
 [[bond-yield-spread-indikator]], [[overfitting-sperre]].
 
 ## Distill

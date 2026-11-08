@@ -9,6 +9,64 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-08** [Dachprojekt / Makro-Agent] **Vorlage für den Makro-Agent-Report festgehalten** (Nutzerentscheid: „Genau so soll der Makro Agent später arbeiten“). Neue Notiz [[makro-agent-report-pruefung]]: sechs Schritte (Quelle → Faktencheck gegen Lake/Web → Widersprüche → Gewichtung gegen eigene Evidenz → Trades → Mentor-Chart + TradingView-Alarme), festes Ausgabeformat, erstes Beispiel = Prüfung der SMT-Reports vom 08.11. (Macro-Report + Sonderreport Dollar) inkl. Dennis' DXY-Pfad und EUR/USD-Short (1,1192/1,1244/1,1000) und Nachprüftabelle für Fr 13.11. Telegram-Kanal „SMH Daily Update“ aktualisiert. Keine Bot-Änderung.
+
+- **2026-11-08** [Reports] **Weekly Checkup KW45/2026** (geplanter Lauf). `knowledge/reports/weekly/KW45_2026_*`, PDF in `Documents\Trading Reports\`. Woche: 22 Trades, EK −60,95 EUR (−2,17 %), Funded +1.389,25 USD (+0,71 %), FK +1.220,29 USD (+1,24 %); kein Kill-Switch, keine Verletzung. Getragen vom NASDAQ-ORB-Short 05.11. (+5.386 USD), der auf FK/EK/TTP per Handy teilweise geschlossen wurde (`reason` 1). Gold ASB 03.11. live auf allen Konten, im Soll gefiltert (Ursache offen). Cloud-Monitor-„Watchdog-Lücke“ = blockierter Push (offener Working Tree), Rechner lief. Edge-Ampel zum dritten Mal nicht aktualisiert (Dukascopy-Abruf hängt). Zwei Dashboard-Einträge, Statustabelle „Zuletzt geprüft“ auf 08.11. Keine Bot-Änderung.
+
+- **2026-11-02** [Dachprojekt / HTF-Edge] **C2 mit Gold-Filter im IS** (Nutzerauftrag):
+  `htf_daily_trade/c2_goldfilter.py`, 6 Märkte, Gold gefiltert: 254 Trades, +0,209 R, t 1,81, DSR 0,19
+  (Lock C 155 Versuche). Nicht eingefroren; OOS/Blind warten auf Freigabe. Keine Bot-Änderung.
+
+- **2026-11-02** [Dachprojekt / Makro] **Schichtenmodell beschlossen + Gold-Zinskurven-Filter als
+  Baustein** (Nutzerentscheid). `fusion_lab/filters/zinskurve_regime.py` (Regime-Logik aus
+  `htf_daily_trade/macro.py` dorthin verschoben, Ergebnis unverändert) + [[filter-gold-zinskurve]] mit
+  Prüfprotokoll. Test nur Gold (Locks R/C je +2 Versuche): Typ C2 mit Filter +0,70/+0,64 R vs. gegen
+  −0,22/−0,07 R (n ~24, t ≤ 1,6); Typ R uneinheitlich. Zinsdaten-Quellen recherchiert und getestet
+  (EZB, MoF Japan, BoC, BoE ok; RBA blockt). Keine Bot-Änderung.
+
+- **2026-11-02** [Dachprojekt / HTF-Edge] **Einstieg/Stop/Ziel-Raster getestet** (Nutzerauftrag):
+  `htf_daily_trade/backtest_varianten.py`, je Typ 96/128 Kombinationen (Locks jetzt je 152 Versuche),
+  IS 2016–21. Keine Variante t > 2. Typ R beste +0,189 R (t 1,23). Typ C: Familie „C2 mit Limit-
+  Einstieg“ in allen 24 Kombinationen mit S1–S3 positiv, beste +0,176 R (t 1,74, DSR 0,175).
+  Aktuelles Regime: Zinskurve Goldilocks (roh) / Reflation (bestätigt), Landi g↓ π↑. Keine Bot-Änderung.
+
+- **2026-11-02** [Dachprojekt / Makro] **Regime-Quellen verglichen + Recherche** (Nutzerauftrag)
+  [[regime-bestimmung-und-filter]]. Landi-Karte vs. Zinskurven-Regime: Übereinstimmung 26,6 % (Zufall
+  25,2 %); rohes Zinskurven-Regime wechselt 69×/Jahr. Lock `regime_quelle_vergleich` (3 Versuche, IS
+  2016–21): Matrix-USD-Richtung mit keiner Quelle; Gold mit 5-Tage-bestätigtem Zinskurven-Regime
+  +93 bp/20 T, t 2,16. Empfehlung Schichtenmodell mit Veto-Logik. Keine Bot-Änderung.
+
+- **2026-11-02** [Dachprojekt / HTF-Edge] **Makro-Filter (Regime Angelo/Dennis-Matrix, G8) + Typ C
+  getestet: kein Edge** (Nutzerauftrag). `htf_daily_trade/macro.py`, `backtest_macro.py`; Locks
+  `htf_daily_trade_r` (56 Versuche) und `htf_daily_trade_c` (24 Versuche), nur IS 2016–21: Typ R mit
+  Regime +0,120 R (t 0,91), G8 verschlechtert; Typ C beste +0,051 R (t 0,85). Regime leicht über
+  gegen-Regime, nicht signifikant. Nichts eingefroren. Keine Bot-Änderung.
+
+- **2026-11-02** [Dachprojekt / HTF-Edge] **Daily-Edge Typ R im IS getestet: kein Edge ohne Makro**
+  (Nutzerauftrag; Edge Card [[htf-daily-trade-edge-card]] Phase 0 abgeschlossen: Typ R/Typ C an
+  Nutzer-Beispielen bestätigt, Confis als Regeln, POI/POC definiert). `htf_daily_trade/backtest_r.py`,
+  Lock `htf_daily_trade_r` (IS 2016–21, Blind 2010–15 registriert, 32 Versuche): beste Variante
+  +0,116 R, t 1,10, DSR 0,16; Confi-Gate in 12/16 Paaren schlechter. Nicht eingefroren, OOS/Blind zu.
+  Keine Bot-Änderung.
+
+- **2026-11-02** [Research / SMH-Calls] **Calls „Volumen und Delta“ + „COT Teil 1“ ausgewertet** (Nutzerauftrag).
+  Beide Aufnahmen haben nur 9 bzw. 20 s Ton, daher kein Transkript, nur Bildauswertung. Notiz
+  [[smh-volumen-delta-und-cot-calls]]: 4 Kandidaten (A COT-Richtung als Filter für HTF Daily-Trade,
+  B „vom Extrem zum POC“, C COT-Range-Ausbruch als HTF-Edge, D Absorption/Marketmaker-Low = ohne
+  Footprint-Daten nicht testbar). Nichts getestet, keine Versuche verbraucht, keine Bot-Änderung.
+
+- **2026-11-02** [Dachprojekt / HTF-Edge] **IPDA-Nullpunkt (Nutzer-Definition) getestet: kein Edge.**
+  `htf_daily_trade/ipda_nullpunkt.py` (Lock `htf_ipda_zyklen`, Versuche 2+3, IS 2016–21): Quartals-
+  richtung ab bestätigtem Nullpunkt +0,61 ATR vs. Kontrolle +0,21 (p 0,26); Wendepunkte Tag 8/14/
+  18–22 nicht häufiger als an Nicht-Wechsel-Ankern. Dazu `htf_daily_trade/rules.py`: Typ-R- und
+  Typ-C-Scanner (Entwurf), Typ R findet das Nutzer-Beispiel 09/2026. Keine Bot-Änderung.
+
+- **2026-11-02** [Dachprojekt / HTF-Edge] **IPDA-Zyklen getestet: kein Edge** (Nutzerauftrag,
+  Edge Card [[htf-daily-trade-edge-card]]). `htf_daily_trade/ipda_cycles.py`, Lock
+  `htf_ipda_zyklen` (IS 2016–21, 1 Versuch): Fractal-ZigZag-Dauern 8/14/21 Tage auf 6 Märkten
+  nicht häufiger als in 300 Zufallsreihen (gepoolt 0,97 / 1,06 / 0,74). Nutzer: IPDA nur noch
+  optionale Bestätigung. MA Cross laut Nutzer-Einstellung 12/20 (nicht 20/50). Keine Bot-Änderung.
+
 - **2026-11-02** [Data Lake] **Tagesreihen-Ersatz bei Dukascopy-Ausfall: aus Intraday abgeleitet** (Nutzer: „wähle die beste Option“). `data_lake/ingest.py::_derive_d1_from_intraday`: nach 2 Fehlversuchen entstehen die Tageskerzen ab dem letzten vorhandenen Tag aus der Lake-H1-Reihe (sonst M15), geschnitten wie Dukascopy (UTC-Mitternacht), nur wenn H1 höchstens 2 h alt ist. Volume 0 = vorläufig; `_fetch_window` holt diese Tage nach dem Ausfall von Dukascopy neu (bis 60 Tage zurück). Weiterhin kein Twelve-Data-1day. Test auf Lake-Kopie: 4 entfernte Tage centgenau wie Dukascopy, Lake-Tests grün. Wirkt sofort für GOLD_D1 (Gold-ASB-Friktion, Trend-Pullback, CTNL-Ribbon). **Vom Nutzer bestätigt** („passt so perfekt“), ersetzt die frühere Bestätigung „Tageskerzen ein paar Stunden alt lassen“.
 - **2026-11-02** [Research] Copy Trading Stufe 2: Nutzer bestätigt alle 4 Annahmen (BE unter Entry = schließen, Teilschluss 50 %, Zeitbezug-Fenster, Invalide nur für wartende Orders); Dashboard-Punkt entfernt.
 - **2026-11-02** [Data Lake] **Vom Nutzer bestätigt:** Tagesreihen (D1) haben keinen

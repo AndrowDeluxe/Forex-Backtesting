@@ -115,6 +115,9 @@ Verschmelzung" (2026-09-02) ab -- der Journal-Teil ist laut Nutzer erledigt.
     `fusion_lab/macro_regime/`; Ausgabe `current.json` als Regime-Kontext für den
     Agenten. Kalibriert gegen das PDF (gleiches Regime, Tagesanteile ±1,5 pp).
     Verknüpfung mit Strategien/Trades später (Nutzer). [[regimekarte-wachstum-inflation]]
+  - [x] **Regime-Vergleich + Recherche (02.11.)**: [[regime-bestimmung-und-filter]] -- Landi-Karte und
+    Zinskurven-Regime (Angelo) messen Verschiedenes; Vorschlag Schichtenmodell (strategisch / Zinsen /
+    FX relativ / Risiko) mit Veto-Logik für den Makro-Agenten.
   - [x] **Makro-Faktor-Katalog (12.10.)**: [[makro-faktoren-katalog]] -- OneNote
     Makro Education / Bankreports / News+Quick Notes+Incentive entdoppelt:
     49 Faktoren (mit Rolle im Report, Datenquelle, testbar), 13 Regime-
@@ -217,6 +220,8 @@ Jeder Strang bekommt beim Start einen eigenen Plan-Modus-Durchlauf.
 
 ## Wiederverwendbare Bausteine (für Strang 3)
 
+- [[makro-agent-report-pruefung]] -- Ablauf + Ausgabeformat des Makro-Agent-Reports
+  (Nutzerentscheid 08.11.2026, erstes Beispiel KW 46)
 - `bond_yield_indicator/fred.py` -- FRED-Loader
 - `asian_range_breakout/cot.py` -- CFTC-COT-Positionierung
 - `news_calendar/` (`fred_releases.py`, `eurostat_calendar.py`, `filter.py`) -- Wirtschaftskalender

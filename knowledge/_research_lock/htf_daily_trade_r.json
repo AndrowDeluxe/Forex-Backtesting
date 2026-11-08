@@ -1,0 +1,18 @@
+{
+  "strategy": "htf_daily_trade_r",
+  "split": {
+    "is_start": "2016-01-01",
+    "is_end": "2021-12-31",
+    "oos_end": "2024-12-31",
+    "tresor_end": null
+  },
+  "registered": "2026-11-02T21:12:00+00:00",
+  "trials": 154,
+  "frozen": null,
+  "unsealed": {},
+  "forward": null,
+  "blind": {
+    "start": "2010-01-01",
+    "end": "2015-12-31"
+  }
+}

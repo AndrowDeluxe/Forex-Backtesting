@@ -1,0 +1,6 @@
+{"ts": "2026-11-02T21:12:00+00:00", "event": "register_split", "is_start": "2016-01-01", "is_end": "2021-12-31", "oos_end": "2024-12-31", "tresor_end": null}
+{"ts": "2026-11-02T21:12:00+00:00", "event": "register_blind", "start": "2010-01-01", "end": "2015-12-31"}
+{"ts": "2026-11-02T21:12:00+00:00", "event": "trials", "n": 32, "total": 32, "note": "Typ R ohne Makro: E1/E2 x S1/S2 x alle/gate x X1-X4 (02.11.)"}
+{"ts": "2026-11-02T21:27:15+00:00", "event": "trials", "n": 24, "total": 56, "note": "Typ R + Makro-Filter (Regime Angelo/Matrix, G8, beide) 02.11."}
+{"ts": "2026-11-02T21:34:01+00:00", "event": "trials", "n": 96, "total": 152, "note": "Typ R Varianten E1-E3 x S1-S4 x T1-T8 ohne Gate/Makro (02.11.)"}
+{"ts": "2026-11-02T21:37:59+00:00", "event": "trials", "n": 2, "total": 154, "note": "Gold-Zinskurven-Filter (5T bestaetigt) auf 2 vorab gewaehlte Kandidaten, nur Gold (02.11.)"}

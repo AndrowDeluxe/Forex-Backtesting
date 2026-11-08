@@ -1,0 +1,2 @@
+{"ts": "2026-11-02T21:30:38+00:00", "event": "register_split", "is_start": "2016-01-01", "is_end": "2021-12-31", "oos_end": "2024-12-31", "tresor_end": null}
+{"ts": "2026-11-02T21:30:38+00:00", "event": "trials", "n": 3, "total": 3, "note": "Matrix-USD/Gold-Richtung je Regimequelle (Zinskurve roh, Zinskurve 5-Tage-bestaetigt, Landi change) vs. 20-Tage-Folgerendite, 02.11."}

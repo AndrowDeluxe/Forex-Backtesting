@@ -100,6 +100,26 @@ Bedarf vor generischem Aufräumen.
      geschrieben? Quantil-Kippen wie 01.09.?). Vorschlag: Friktionswert + Schwelle bei jeder ASB-Order
      ins Bridge-Log schreiben, damit das kuenftig entscheidbar ist. Details KW45-Report Abschnitt 5.
 
+- **Bridge-Watchdog seit 06:01 UTC (07:01 lokal) wieder ohne neuen Snapshot — ~9,3 h
+  Lücke an einem normalen Handelsmontag** (gefunden 09.11. durch den Cloud-Monitor,
+  `bridge_status/snapshot.json`). Der Commit-Takt lief bis
+  `2026-11-09 07:01:26 +0100` im gewohnten 30-Min-Rhythmus, danach kein einziger
+  Watchdog-Commit mehr bis zu diesem Lauf (`2026-11-09 15:17 UTC`). Der letzte
+  gesehene Stand zeigt `"status": "ok"` auf allen drei Bridges (EK, Funded
+  TTP/IQ, FK) — die Lücke sagt also wie beim letzten Mal nichts über einen
+  Fehler der Bridges selbst, nur dass der Watchdog seit dem Vormittag nichts
+  mehr meldet. **Das ist dieselbe Musterlücke wie der Eintrag „Bridge-Watchdog
+  seit 06:07 UTC … ~9,5 h Lücke" oben vom 02.11.**, dessen Update vom 08.11.
+  als Ursache einen blockierten Push (offener Working Tree auf dem Rechner)
+  nennt und noch auf deine Bestätigung/Entfernung wartet — das ist bislang
+  nicht passiert, und jetzt tritt exakt dasselbe Muster erneut auf. Von hier
+  aus kann ich wie letztes Mal nicht prüfen, ob Rechner/Bridges in der
+  Zwischenzeit weiterliefen. **Zwei Fragen:** (1) War es wieder ein offener
+  Working Tree / blockierter Push, oder doch Standby/Task-Scheduler-Problem?
+  (2) Soll ich den alten 02.11.-Eintrag jetzt als bestätigt/erledigt markieren
+  (dann würde ich ihn beim nächsten Lauf durchstreichen), oder ist die Ursache
+  noch offen?
+
 - **Regime-Lesarten (02.11.):** Goldilocks = USD short laut Matrix (von dir bestätigt). Offen sind
   noch meine Lesarten: Deflation ohne Gold-Angabe = beide Richtungen erlaubt; Twist = kein Filter;
   G8 für Gold/Silber = USD-Score unter 0; „bestätigt“ = Regime hält ≥ 5 Tage. [[regime-bestimmung-und-filter]]

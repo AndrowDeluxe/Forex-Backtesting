@@ -883,6 +883,10 @@ als Pfad in Backticks (siehe `README.md`)._
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
 
+- (09.11.) **E-Book Remy King „Top 1 %" ausgewertet**: kein belegter Edge, 11 Kandidaten-Bausteine in
+  [[remy-king-trading-strategie-top1]]. Vorschlag: Währungs-Netto-Exposure-Deckel über alle Beine
+  (ohne Test), Zinsdifferenz-Fair-Value + Carry-Korb nach dem 2J-Loader, FVG mechanisch sofort testbar.
+
 - (02.11.) **Profitables LTF-/Scalping-Edge aus dem eigenen Trading** (Nutzerwunsch).
   **Konkret seit 02.11.:** Nutzer will die Daily-Continuation (Typ C) als Validierung für einen
   LTF-Scalp nutzen -- LTF-Einstieg nur in Richtung eines frischen Typ-C-Signals.

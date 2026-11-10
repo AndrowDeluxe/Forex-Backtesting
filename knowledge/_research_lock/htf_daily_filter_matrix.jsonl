@@ -1,0 +1,9 @@
+{"ts": "2026-11-10T22:32:00+00:00", "event": "register_split", "is_start": "2016-01-01", "is_end": "2021-12-31", "oos_end": "2024-12-31", "tresor_end": null}
+{"ts": "2026-11-10T22:32:00+00:00", "event": "register_blind", "start": "2010-01-01", "end": "2015-12-31"}
+{"ts": "2026-11-10T22:32:00+00:00", "event": "trials", "n": 56, "total": 56, "note": "Stufe 1: R/C2 x 14 Filter x mit/gegen, 9 Maerkte (10.11.)"}
+{"ts": "2026-11-10T22:32:47+00:00", "event": "trials", "n": 323, "total": 379, "note": "Stufe 2: UND-Kombinationen bis 3 Filter aus Stufe-1-Kandidaten (10.11.)"}
+{"ts": "2026-11-10T22:58:25+00:00", "event": "trials", "n": 52, "total": 431, "note": "Stufe 1b: 12 uebrige Repo-Filter (VIX, DXY, Realzins, COT-Index, Kalman, Triple-MA, Vol, Jump, Cross-Pair, Partner, Volumenprofil, News) (10.11.)"}
+{"ts": "2026-11-10T22:59:12+00:00", "event": "trials", "n": 6, "total": 437, "note": "Stufe 2b: T6 gegen x {X2,X5,X6,X10,X11 mit, X12 ruhig} fuer C2 (10.11.)"}
+{"ts": "2026-11-10T23:10:29+00:00", "event": "trials", "n": 12, "total": 449, "note": "C2 + Faber gegen x Carry-/Rohstoff-Veto (Buch) x DXY/Kalman/COT, max. 10 Param. (11.11.)"}
+{"ts": "2026-11-10T23:16:22+00:00", "event": "trials", "n": 119, "total": 568, "note": "Kandidat C2+Faber gegen+COT mit+Rohstoff-Veto: Stop x Ausstieg/Teilgewinne x BE (11.11.)"}
+{"ts": "2026-11-10T23:27:50+00:00", "event": "freeze", "hash": "6c55e525f093389e1a1f61f862b350b8477909e96e64431719a83050c9543f4b"}

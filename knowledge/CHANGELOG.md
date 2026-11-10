@@ -9,6 +9,12 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-11** [Dachprojekt / HTF-Edge] **C2-Kandidat eingefroren** (Nutzerentscheid): C2 + Faber gegen + COT-Fluss mit
+  + Rohstoff-Veto, Stop Struktur, 10 Tage, kein BE, festes Risiko; Lock `htf_daily_filter_matrix` Hash `6c55e525`,
+  568 Versuche, 10 Parameter. Neu Swap-Modell (Leitzinsdifferenz + an MT5 kalibrierter Aufschlag) in
+  `htf_daily_trade/c2_kandidat_report.py` → Bericht `c2_kandidat_report.md`. Mit TTP-Swap IS +0,55 / OOS +0,40 R;
+  Konto 1/2/5/10 %: CAGR 9,8/19,3/44,9/72,3 %, DD −8,2/−15,9/−35,7/−60,0 %. Blind 2010–15 noch zu. Keine Bot-Änderung.
+
 - **2026-11-11** [Dachprojekt / HTF-Edge] **C2-Kandidat × Stop/Ziel/BE/Teilgewinne/Risiko** (Nutzerauftrag).
   `htf_daily_trade/c2_exit_varianten.py`, 120 Varianten, Lock `htf_daily_filter_matrix` 568 Versuche. Basis (Strukturstop,
   Zeitausstieg 10 Tage, kein BE) bleibt am besten (IS +0,62 / OOS +0,44 R); feste Ziele, Trail, Twin-Trade, Teilgewinne

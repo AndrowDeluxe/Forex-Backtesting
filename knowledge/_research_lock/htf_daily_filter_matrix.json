@@ -1,0 +1,73 @@
+{
+  "strategy": "htf_daily_filter_matrix",
+  "split": {
+    "is_start": "2016-01-01",
+    "is_end": "2021-12-31",
+    "oos_end": "2024-12-31",
+    "tresor_end": null
+  },
+  "registered": "2026-11-10T22:32:00+00:00",
+  "trials": 568,
+  "frozen": {
+    "hash": "6c55e525f093389e1a1f61f862b350b8477909e96e64431719a83050c9543f4b",
+    "config": {
+      "setup": "C2 EL (Limit 50 % Ausloese-Schluss/Strukturstop, 3 Tage), Sweep 7 Tage, 3 Vorkerzen, MA 12/20",
+      "filter": {
+        "T6": "Faber 10 Monate GEGEN die Trade-Richtung",
+        "M7": "COT-Fluss Non-Commercials 4 Berichte MIT",
+        "RS": "Rohstoff-Veto 20 Tage (AUDUSD~Kupfer, USDCAD~Oel)"
+      },
+      "stop": "S1 Struktur",
+      "ausstieg": "10 Handelstage",
+      "be": null,
+      "teilgewinne": null,
+      "risiko": "fest je Trade",
+      "maerkte": [
+        "AUDUSD",
+        "EURUSD",
+        "GBPUSD",
+        "NZDUSD",
+        "USDCAD",
+        "USDCHF",
+        "USDJPY",
+        "XAGUSD",
+        "XAUUSD"
+      ],
+      "parameter": 10,
+      "params": {
+        "faber_monate": 10,
+        "cot_berichte": 4,
+        "rohstoff_tage": 20,
+        "rohstoff": {
+          "AUDUSD": "HG=F",
+          "USDCAD": "CL=F"
+        },
+        "c2": {
+          "sweep_window": 7,
+          "vorkerzen": 3,
+          "ma": [
+            12,
+            20
+          ],
+          "limit_anteil": 0.5,
+          "limit_tage": 3,
+          "haltedauer": 10
+        }
+      },
+      "kosten": "Spread+Kommission je Markt (filter_matrix.MARKETS) + Swap-Modell TTP (c2_kandidat_report)",
+      "code": [
+        "htf_daily_trade/filter_matrix.py",
+        "htf_daily_trade/c2_veto_combos.py",
+        "htf_daily_trade/c2_exit_varianten.py",
+        "htf_daily_trade/c2_kandidat_report.py"
+      ]
+    },
+    "ts": "2026-11-10T23:27:50+00:00"
+  },
+  "unsealed": {},
+  "forward": null,
+  "blind": {
+    "start": "2010-01-01",
+    "end": "2015-12-31"
+  }
+}

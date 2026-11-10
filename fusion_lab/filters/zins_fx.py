@@ -22,7 +22,8 @@ import pandas as pd
 from fusion_lab.macro_data import store
 
 # Markt -> (Land der Basiswaehrung, +1 wenn Basis gegen USD notiert, −1 wenn USD die Basis ist)
-FX = {"EURUSD": ("EA", +1), "GBPUSD": ("GB", +1), "AUDUSD": ("AU", +1), "USDJPY": ("JP", -1)}
+FX = {"EURUSD": ("EA", +1), "GBPUSD": ("GB", +1), "AUDUSD": ("AU", +1), "USDJPY": ("JP", -1),
+      "NZDUSD": ("NZ", +1), "USDCAD": ("CA", -1), "USDCHF": ("CH", -1)}  # letzte 3 seit 10.11. (Filter-Matrix)
 METALS = ("XAUUSD", "XAGUSD")
 
 

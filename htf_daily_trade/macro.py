@@ -32,8 +32,10 @@ REGIME_DIR = {  # Regime -> Markt -> erlaubte Richtung (None = keine Angabe, bei
 MARKET_KIND = {  # wie die Matrix-Zeile auf den Markt wirkt
     "EURUSD": ("usd", -1), "GBPUSD": ("usd", -1), "AUDUSD": ("usd", -1), "USDJPY": ("usd", +1),
     "XAUUSD": ("gold", +1), "XAGUSD": ("industrie", +1),
+    "NZDUSD": ("usd", -1), "USDCAD": ("usd", +1), "USDCHF": ("usd", +1),  # seit 10.11. (Filter-Matrix)
 }
-G8_BASE = {"EURUSD": ("EUR", "USD"), "GBPUSD": ("GBP", "USD"), "AUDUSD": ("AUD", "USD"), "USDJPY": ("USD", "JPY")}
+G8_BASE = {"EURUSD": ("EUR", "USD"), "GBPUSD": ("GBP", "USD"), "AUDUSD": ("AUD", "USD"), "USDJPY": ("USD", "JPY"),
+           "NZDUSD": ("NZD", "USD"), "USDCAD": ("USD", "CAD"), "USDCHF": ("USD", "CHF")}
 
 
 def regime_series(lag: int = 20) -> pd.Series:

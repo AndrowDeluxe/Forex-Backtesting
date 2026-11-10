@@ -16225,3 +16225,10 @@
 2026-11-10 21:35:21   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
 2026-11-10 21:35:21     raise KeyError(key) from err
 2026-11-10 21:35:21 KeyError: 'WBD'
+2026-11-10 21:35:22 [main 19de2ab6] OU-Modell Scanner: Snapshot 2026-11-10 21:35
+2026-11-10 21:35:22  1 file changed, 42 insertions(+)
+2026-11-10 21:35:22 Nichts zu mergen (0 eingehende Commits) - Stash und Merge uebersprungen.
+2026-11-10 21:35:25 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-11-10 21:35:25    b2ace51f..19de2ab6  main -> main
+2026-11-10 21:35:25 Commit + Push erfolgreich.
+2026-11-10 21:35:25 === Scanner-Task beendet ===

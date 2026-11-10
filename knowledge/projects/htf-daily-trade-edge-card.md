@@ -411,3 +411,134 @@ Fest 1.000 $/R: Ende 179.424 $ (CAGR 5,1 %, max. DD −6,5 %). 1 % vom Kontostan
 (CAGR 6,6 %, max. DD −7,6 %). Negative Jahre: 2015 (−3,8 R), 2025 (−3,8 R); 2025/26 zusammen
 (vorher ungesehen) +4,5 R. Max. 4 Trades gleichzeitig offen, längste Verlustserie 10. DD auf
 Schlusskursbasis der Trades (ohne Zwischenverluste offener Positionen).
+
+## Filter-Matrix: alle Filter mit/gegen den Trend (10.11.2026, Lock `htf_daily_filter_matrix`)
+
+Nutzerauftrag 10.11. (Plan freigegeben): alle bisher gebauten Trend- und Makrofilter im Daily-Kontext,
+Typ R und C2 je mit/gegen den Trend, 9 Märkte (alte 6 + NZDUSD, USDCAD, USDCHF). Basis unverändert:
+R = E3 S1 T7, C2 = EL S1 T8 ohne Gold-Filter. Reproduktion auf den alten 6 Märkten exakt
+(R n 261 +0,189 R, C2 n 269 +0,185 R). `python -m htf_daily_trade.filter_matrix [--stufe2]` →
+`filter_matrix.csv`, `filter_matrix_stufe2.csv`, `filter_matrix_trades.csv`. Lock 379 Versuche
+(Stufe 1: 56, Stufe 2: 323). OOS 2022–24 frei angesehen (Regel 10.11.), Blind 2010–15 zu.
+
+Filter: T1 MA 12/20, T2 Weekly SMA 20/50, T3 SMA 200, T4 ADX ≥ 20 + DI, T5 Ribbon D50/D200/W50,
+T6 Faber 10 Monate, T7 Weekly EMA 9/21; M1 Zins-Momentum, M2 Carry, M3 Regime-Matrix, M4 Regimekarte,
+M5 Gold-Zinskurve, M6 G8-Stärke, M7 COT-Fluss.
+
+**Befund C2 (Continuation): Die Kontrollgruppe „C-gegen-HTF“ ist der Gewinner.** C2 läuft im Daily-Trend
+(MA 12/20), trägt aber nur, wenn der *übergeordnete* technische Trend **dagegen** steht:
+- T6 Faber gegen: IS n 198 +0,36 R (t 2,61), OOS n 109 +0,33 R (t 1,87); mit: IS +0,08, OOS −0,03.
+  „T6 gegen“ ist in **allen 9 Jahren und auf allen 9 Märkten positiv**.
+- Gleiches Bild für T2, T3, T7 (gegen IS t 2,5–2,6, OOS t 1,3–1,5; mit jeweils nahe null).
+- Makro wirkt umgekehrt, also **mit** der Trade-Richtung: COT-Fluss (IS t 3,05), Zins-Momentum (2,80),
+  Regime-Matrix (2,69), Carry (2,34; als einziger Makrofilter auch OOS t 2,23).
+- Lesart: C2 handelt den Rücklauf-Schenkel gegen den Wochen-/Monatstrend, getragen von Makro-Fluss.
+- Stufe 2: 189 von 218 Kombinationen mit IS t > 2 haben OOS Ø > 0. Bestes IS T6 gegen + M1 + M3:
+  IS +1,24 R (n 47, t 3,65), OOS +0,40 R (n 27). T2 gegen + T6 gegen + M3: IS +0,87 / OOS +0,56 R,
+  alle 9 Jahre und alle 9 Märkte positiv, aber 11 Parameter.
+- **Unter der 9-Parameter-Grenze (Nutzer 10.11.)** wäre der IS-Beste M1 + M7 (IS t 3,13, OOS −0,06 R).
+  Die OOS-stabilen Kandidaten enthalten alle T6 gegen: T6 gegen + M7 (IS +0,55 / OOS +0,37 R),
+  T6 gegen + M6 (+0,44 / +0,34), T3 gegen + T6 gegen (+0,49 / +0,37). **Auswahl offen (Nutzer).**
+- **Warnung zum bisherigen Kandidaten C2 + F1/F3 (= M1 + M3):** auf den 3 neuen Märkten im OOS
+  n 18, −0,71 R (alte 6: +0,40 R). Der Forward-Kandidat überträgt sich nicht auf neue Märkte.
+
+**Befund Typ R (Reversal): kein robuster Filter.** Mit 9 Märkten IS +0,29 R (t 1,70), OOS −0,08 R.
+R-gegen (echte Wende gegen MA 12/20) besser als R-mit (OOS −0,53 R). Bestes Stufe 2 T1 gegen + T5 gegen
++ M7 gegen: IS +0,65 R (t 2,34), OOS +0,18 R (t 0,69), DSR 0,27. Weekly-Filter (T2/T6) „mit“ im IS
+stark (+0,56), im OOS negativ (−0,30/−0,39) → instabil.
+
+### Stufe 1b: übrige Repo-Filter (10.11.2026, gleicher Lock, jetzt 437 Versuche)
+
+`python -m htf_daily_trade.filter_matrix --stufe1b` → `filter_matrix_1b.csv`. Gerichtet (mit/gegen): X2 DXY
+synthetisch (ICE-Gewichte ohne SEK, 20 Tage), X3 US-Realzins 20 Tage, X4 COT-Index 3 Jahre konträr (>80/<20),
+X5 Kalman-Trend (Q/R aus Daten vor 2016), X6 Triple-MA 10/20/50, X9 breite USD-Bewegung (≥ 5/7 Paare, 5 Tage),
+X10 Partner-Momentum 5 Tage, X11 Lage zum 20-Tage-Volumen-POC (H1). Regime: X1 VIX über/unter 1-Jahres-Median,
+X7 ATR20/ATR250 (ruhig < 0,85 < normal < 1,15 < nervös), X8 Jump-Anteil H1 (rollende Terzile),
+X12 News-Tag US/EUR am Fülltag.
+
+- **C2:** kein neuer Filter schlägt „Faber gegen“. Kurzfristige Trendfilter mit (Kalman, Triple-MA,
+  Partner, POC) heben nur leicht (Basis +0,22 → +0,20…+0,27 R), denn C2 ist bereits ein Daily-Trend-Setup.
+  Bester neuer: **DXY 20 Tage mit** IS +0,26 R (t 2,55), OOS +0,28 R (t 2,02); gegen OOS −0,37 R.
+  **News-Tag meiden** hält: Einstieg an News-Tagen OOS −0,05 R vs. ruhig +0,27 R. VIX tief, Vol ruhig,
+  Realzins: nur IS. COT-Index konträr n zu klein (59/25).
+- **Stufe 2b mit Faber gegen** (6 Versuche): T6 gegen + X2 DXY mit IS +0,29 R (t 1,93) / **OOS +0,51 R
+  (t 2,53, n 91)**; T6 gegen + X5 Kalman mit IS +0,44 (t 2,82) / OOS +0,34; T6 gegen + X12 ruhig
+  IS +0,37 / OOS +0,35. Alle unter 9 Parametern.
+- **Typ R:** weiter nichts Robustes. Auffällig nur Vol-Regime „ruhig“ (IS +1,07 R, n 93; OOS +0,40 R, n 40),
+  t 1,7 → Hypothese, kein Kandidat.
+
+### Carry- und Rohstoff-Veto aus dem Remy-King-Buch (11.11.2026, Lock jetzt 449 Versuche)
+
+`python -m htf_daily_trade.c2_veto_combos`. Veto = Trade fällt nur bei „gegen“ weg. Carry-Veto = M2;
+Rohstoff-Veto = B6 (AUDUSD ~ Kupfer, USDCAD ~ Öl, 20 Tage). Parametergrenze für diesen Test 10 (Nutzer 11.11.).
+
+| Variante (C2 + …) | Param. | IS | OOS | Jahre+ / Märkte+ |
+|---|---|---|---|---|
+| Faber gegen + COT-Fluss mit + Rohstoff-Veto | 10 | +0,62 R (n 120, t 3,12) | +0,44 R (n 58) | 9/9, 9/9 |
+| Faber gegen + Kalman mit + Rohstoff-Veto | 10 | +0,47 (152, t 2,92) | +0,35 (83) | 9/9, 9/9 |
+| Faber gegen + COT-Fluss mit | 9 | +0,55 (129, t 2,90) | +0,37 (65) | 9/9, 9/9 |
+| Faber gegen + Rohstoff-Veto | 9 | +0,40 (187, t 2,78) | +0,36 (97) | 9/9, 9/9 |
+| Faber gegen + Carry- + Rohstoff-Veto | 10 | +0,52 (99, t 2,68) | +0,61 (48, t 2,15) | 8/9, 8/9 |
+| Faber gegen (Referenz) | 8 | +0,36 (198, t 2,61) | +0,33 (109) | 9/9, 9/9 |
+| Faber gegen + Carry-Veto | 9 | +0,47 (104, t 2,51) | +0,58 (55, t 2,25) | 8/9, 8/9 |
+| Faber gegen + DXY mit + Carry-Veto | 10 | +0,56 (78, t 2,56) | +0,67 (49, t 2,50) | 7/9, 8/9 |
+
+Carry-Veto halbiert die Trades und hebt vor allem das OOS. Das Rohstoff-Veto wirkt nur auf AUD/CAD
+(IS „mit“ +0,89 R vs. „gegen“ +0,03 R; OOS +0,08 vs. −0,12) und kostet kaum Trades. Nach IS-Regel vorne:
+Faber gegen + COT-Fluss mit + Rohstoff-Veto (DSR 0,54). Einfrieren wartet auf die Nutzerwahl.
+
+### Kandidat × Stop / Ziel / BE / Teilgewinne / Risiko (11.11.2026, Lock jetzt 568 Versuche)
+
+`python -m htf_daily_trade.c2_exit_varianten` → `c2_exit_varianten.csv`. Kandidat C2 + Faber gegen + COT-Fluss mit
++ Rohstoff-Veto, Einstiege fest (IS n 120, OOS n 58), 4 Stops × 10 Ausstiege × 3 BE = 120 Varianten.
+
+- **Basis bleibt am besten:** Strukturstop (S1), alles nach 10 Tagen schließen (A0), kein BE: IS +0,62 R
+  (t 3,12), OOS +0,44 R. Der reine Zeitausstieg schlägt jedes feste Ziel (2 R/3 R: OOS +0,13), die externe
+  Liquidität (+0,07) und den Trail (−0,04).
+- **Teilgewinne kosten:** Twin ½ 2 R + ½ 10 Tage IS +0,39 / OOS +0,29; ⅓-Staffel +0,26 / +0,17; ½ bei 1 R
+  +0,32 / +0,18. **BE ab 1 R senkt** im Schnitt (OOS +0,12 vs. +0,19 ohne). Gleiches Muster wie bei Copy
+  Trading: Management kappt die großen Gewinner.
+- **Stop 2× ATR (S2)** hat das höchste t (IS 3,36, OOS 2,19, Treffer 56–62 %), aber nur halb so viel R je
+  Risikoeinheit; Konto 1 %: CAGR 6,3 % / DD −5,0 % vs. S1 11,1 % / −7,6 %. Rendite je Drawdown spricht für S1.
+- **Konfluenz-Staffel (Plan C1)** nicht bestätigt: Score 0–1 IS +1,43 R (n 11) / OOS −0,55 R (n 6); 2–3 IS
+  +0,07 / OOS +0,59; 4–5 IS +1,17 / OOS +0,53. Keine Ordnung → festes Risiko. (Konto mit Staffel 2016–24
+  CAGR 18,3 % vs. 11,1 %, aber nur weil 4–5 zufällig gut lief; nicht übernehmen.)
+- Konto 100k, fest 1 % je Trade, 2016–2024: 256.753 $, CAGR 11,1 %, max. DD −7,6 %; max. 4 Einstiege je Woche
+  (Plan C4: 6/Woche greift nie).
+
+### EINGEFROREN 11.11.2026: C2 + Faber gegen + COT-Fluss mit + Rohstoff-Veto (Hash `6c55e525`)
+
+Lock `htf_daily_filter_matrix`, 568 Versuche, 10 Parameter (Nutzerfreigabe für diesen Test). Regeln: C2 EL,
+Faber 10 Monate **gegen** die Trade-Richtung, COT-Fluss (Non-Commercials, 4 Berichte) **mit**, Rohstoff-Veto
+20 Tage (AUDUSD ~ Kupfer, USDCAD ~ Öl), Stop Struktur, Ausstieg nach 10 Handelstagen, kein BE, keine Teilgewinne,
+festes Risiko, 9 Märkte. Ausführlicher Bericht: `htf_daily_trade/c2_kandidat_report.md`, Trades
+`c2_kandidat_trades.csv` (`python -m htf_daily_trade.c2_kandidat_report`). **Blind 2010–15 noch zu**
+(Rohstoffdaten dafür ab 2009 nachladen).
+
+**Kosten:** Bisher Spread + Kommission, **Swap war nicht modelliert**. Neu: Swap aus Leitzinsdifferenz +
+Broker-Aufschlag, kalibriert an echten MT5-Swaps (05.10.): TTP FX 2,0 % / Metalle 4,0 % p. a., Tickmill 0,4 % /
+0,7 %. Ø je Trade: Spread+Kommission 0,036 R, Swap Tickmill 0,009 R, Swap TTP 0,061 R (Ø 13,6 Kalendertage).
+
+| Szenario | IS Ø R (t) | OOS Ø R (t) | gesamt n / Ø R / PF |
+|---|---|---|---|
+| brutto | +0,65 (3,30) | +0,46 (1,79) | 178 / +0,59 / 2,12 |
+| Spread+Komm. (bisher) | +0,62 (3,12) | +0,44 (1,71) | 178 / +0,56 / 2,03 |
+| + Swap TTP | +0,55 (2,81) | +0,40 (1,55) | 178 / +0,50 / 1,89 |
+| Stress Spread ×2 + TTP-Swap | +0,51 (2,62) | +0,38 (1,47) | 178 / +0,47 / 1,80 |
+
+Mit TTP-Swap: Treffer 44 %, Ø Gewinn +2,42 R, Ø Verlust −1,00 R, bester +7,4 R, längste Verlustserie 10,
+max. DD −9,0 R. Jahre: 2019 −0,04 R, sonst positiv (2024 nur +0,07). Märkte: EURUSD −0,03 R, sonst positiv
+(AUD +1,44, CHF +1,31). Long +0,81 R (n 85) vs. Short +0,22 R (n 93).
+
+**Konto 100k, Zinseszins, TTP-Swap, 2016–2024** (max. 4 Trades gleichzeitig offen):
+
+| Risiko je Trade | Endkapital | CAGR | max. DD |
+|---|---|---|---|
+| 1 % | 230.974 $ | 9,8 % | −8,2 % |
+| 2 % | 485.739 $ | 19,3 % | −15,9 % |
+| 5 % | 2.776.237 $ | 44,9 % | −35,7 % |
+| 10 % | 13.159.082 $ | 72,3 % | −60,0 % |
+
+Drawdown nur auf Schlusskursbasis der Trades. Bei 4 offenen Trades liegt das offene Risiko beim 4-Fachen des
+Risikos je Trade. Funded-Limit 10 % → schon 1 % je Trade liegt mit −8,2 % nahe an der Grenze.
+Nächster Schritt (Nutzer 11.11.): Stand sichern, dann LTF-Bestätigungen für den Einstieg prüfen (neuer Lock, da eingefroren).

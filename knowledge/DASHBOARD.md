@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-11-10** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-11-11** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -36,7 +36,10 @@ passiert, was steht an.
    **Neu 10.11. (vor H4, Nutzerentscheid): Daily-Filter-Matrix + Indikatoren.** 14 Filter × Typ R/C2 × mit/gegen,
    9 Märkte: **C2 trägt nur gegen den HTF-Trend** (Faber gegen IS +0,36 / OOS +0,33 R, alle Jahre/Märkte positiv),
    Makro mit; Typ R ohne robusten Filter; **F1+F3 auf den 3 neuen Märkten OOS −0,71 R**. Stufe 1b (12 weitere
-   Repo-Filter): nichts schlägt Faber gegen; bester Zusatz DXY 20T mit (zusammen OOS +0,51 R). Wartet auf deine
+   Repo-Filter): nichts schlägt Faber gegen; bester Zusatz DXY 20T mit (zusammen OOS +0,51 R).
+   **11.11.: EINGEFROREN** C2 + Faber gegen + COT-Fluss mit + Rohstoff-Veto (Hash `6c55e525`): mit TTP-Swap
+   IS +0,55 / OOS +0,40 R, Konto 1 % CAGR 9,8 %, DD −8,2 %. Blind 2010–15 noch zu. Nächster Schritt:
+   LTF-Bestätigungen für den Einstieg (neuer Lock). Wartet auf deine
    Kandidatenwahl (≤ 9 Parameter). Parallel: Indikatoren einzeln durchgehen (Steckbriefe, dann Edge-Test je
    Indikator), Reihenfolge RSI → Multi Length → Stoch RSI → MACD → BB → NW → MA-Cross → Fractals → Pivots →
    Volumen → SVP/VRVP → Money Flow Profile → COT. H4 zurückgestellt.

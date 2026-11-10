@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-11-08** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-11-09** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -100,6 +100,26 @@ Bedarf vor generischem Aufräumen.
      geschrieben? Quantil-Kippen wie 01.09.?). Vorschlag: Friktionswert + Schwelle bei jeder ASB-Order
      ins Bridge-Log schreiben, damit das kuenftig entscheidbar ist. Details KW45-Report Abschnitt 5.
 
+- **Bridge-Watchdog seit 06:01 UTC (07:01 lokal) wieder ohne neuen Snapshot — ~9,3 h
+  Lücke an einem normalen Handelsmontag** (gefunden 09.11. durch den Cloud-Monitor,
+  `bridge_status/snapshot.json`). Der Commit-Takt lief bis
+  `2026-11-09 07:01:26 +0100` im gewohnten 30-Min-Rhythmus, danach kein einziger
+  Watchdog-Commit mehr bis zu diesem Lauf (`2026-11-09 15:17 UTC`). Der letzte
+  gesehene Stand zeigt `"status": "ok"` auf allen drei Bridges (EK, Funded
+  TTP/IQ, FK) — die Lücke sagt also wie beim letzten Mal nichts über einen
+  Fehler der Bridges selbst, nur dass der Watchdog seit dem Vormittag nichts
+  mehr meldet. **Das ist dieselbe Musterlücke wie der Eintrag „Bridge-Watchdog
+  seit 06:07 UTC … ~9,5 h Lücke" oben vom 02.11.**, dessen Update vom 08.11.
+  als Ursache einen blockierten Push (offener Working Tree auf dem Rechner)
+  nennt und noch auf deine Bestätigung/Entfernung wartet — das ist bislang
+  nicht passiert, und jetzt tritt exakt dasselbe Muster erneut auf. Von hier
+  aus kann ich wie letztes Mal nicht prüfen, ob Rechner/Bridges in der
+  Zwischenzeit weiterliefen. **Zwei Fragen:** (1) War es wieder ein offener
+  Working Tree / blockierter Push, oder doch Standby/Task-Scheduler-Problem?
+  (2) Soll ich den alten 02.11.-Eintrag jetzt als bestätigt/erledigt markieren
+  (dann würde ich ihn beim nächsten Lauf durchstreichen), oder ist die Ursache
+  noch offen?
+
 - **Regime-Lesarten (02.11.):** Goldilocks = USD short laut Matrix (von dir bestätigt). Offen sind
   noch meine Lesarten: Deflation ohne Gold-Angabe = beide Richtungen erlaubt; Twist = kein Filter;
   G8 für Gold/Silber = USD-Score unter 0; „bestätigt“ = Regime hält ≥ 5 Tage. [[regime-bestimmung-und-filter]]
@@ -160,6 +180,15 @@ Bedarf vor generischem Aufräumen.
      Obsidian tot — wie zitieren wir Memory-Funde künftig aus
      `knowledge/`-Notizen (Backtick-Slug statt `[[...]]`, analog
      `reports/weekly/`)?
+
+- **Second-Brain-Lint 09.11.: zwei weitere Wikilinks im Unterstrich-Format
+  (Memory-Slug-Muster) in `resources/regime-bestimmung-und-filter.md`**
+  — `[[regime_richtung_je_asset_ueberangepasst]]` (Abschnitt 5, Punkt 1) und
+  `[[oecd_reihen_auf_fred_tot]]` (Abschnitt 5, Datenlücke). Beide existieren
+  nicht als Notiz unter `knowledge/`; die Unterstrich-Schreibweise passt zum
+  Memory-Slug-Muster wie bei `ctnl-serienstopp-vs-risikohalbierung` oben,
+  nicht zur sonst üblichen Bindestrich-Notizbenennung — selbe offene Frage
+  (Backtick-Slug statt `[[...]]`?), hier nur zusätzliche Fundstellen.
 
 - **Valkyrie-Klon, 2 Annahmen von mir** (30.10., [[quantum-valkyrie-edge-card]]):
   1. Split IS 2020-01-17 bis 2023-12-31, OOS bis 2025-10-27, Tresor bis 2026-10-16, Blindtest 2018-01-01 bis 2020-01-16.
@@ -772,18 +801,29 @@ Bedarf vor generischem Aufräumen.
   system works" — noch nicht durch den CODE-Prozess.
 
 **Niedrig**
-- **Second-Brain-Lint 02.11.: toter Wikilink `[[eurusd-lower-high-limit-edge-card]]`**
-  in `reports/weekly/KW44_2026_education.md` — die Edge Card ist laut Text
-  selbst noch in Phase 0 (wartet auf deine Bestätigung), die Notiz existiert
-  deshalb erwartungsgemäß noch nicht. Kein Handlungsbedarf, nur zur Kenntnis.
-- **Statustabelle: 8 "Zuletzt geprüft"-Zeilen über 21 Tage alt** (Lint
-  02.11., Schwelle 21 Tage): `FK-Instant-Funding-Paper`,
-  `OU-Modell-ScannerHourly`, `Forex-Weekly-Report`, `Bridge-Watchdog`,
-  `DataLake-Ingest-Fast`, `DataLake-Ingest-Fast5`, `DataLake-Ingest-Slow`,
-  `Dashboard-Telegram-Digest` — alle zuletzt am 2026-09-02/-13/-15 geprüft
-  (50-61 Tage alt). Reiner Alters-Hinweis aus dem Lint-Skript, kein
-  inhaltlicher Befund — Zeilen bei Gelegenheit gegen den echten
-  Task-Scheduler-/Scanner-Status nachprüfen und Datum auffrischen
+- **Second-Brain-Lint 09.11.: zwei isolierte tote Wikilinks ohne weitere
+  Bedeutung** in `resources/regime-bestimmung-und-filter.md` (Abschnitt 2):
+  `[[residual-edge-gold-traegt-orb-ou-nicht]]` (Zeile 39, Beleg für den
+  Gold-Zinskurven-Befund) und `[[daily-edge-typ-r-ohne-makro-kein-edge]]`
+  (Zeile 40, Verweis auf den bereits im Dashboard unter „Als Nächstes"
+  erwähnten Daily-Edge-Befund vom 02.11.). Beide je nur einmal referenziert,
+  keine Notiz existiert dazu. Kein Entscheidungsbedarf erkennbar, nur
+  Aufräumen (Notiz anlegen oder Link entfernen).
+- **Verwaiste Seite ohne eingehende Links:**
+  `projects/gold-asb-liquiditaetsfilter-vorgriff.md` (Lint 09.11.) — inhaltlich
+  passt sie zum offenen Bestätigungspunkt „Gold ASB 03.11. live..." oben
+  (Liquiditätsfilter-Lookahead-Fix), aber nichts verlinkt sie bisher. Bei
+  Gelegenheit von dort aus verlinken.
+- **Statustabelle: 9 "Zuletzt geprüft"-Zeilen über 21 Tage alt** (Lint
+  09.11., Schwelle 21 Tage): `FK-Instant-Funding-Paper` (57 Tage),
+  `OU-Modell-ScannerHourly` (68 Tage), `Forex-Weekly-Report` (55 Tage),
+  `Bridge-Watchdog` (57 Tage), `DataLake-Ingest-Fast` (57 Tage),
+  `DataLake-Ingest-Fast5` (57 Tage), `DataLake-Ingest-Slow` (57 Tage),
+  `Dashboard-Telegram-Digest` (57 Tage) — alle zuletzt am 2026-09-02/-13/-15
+  geprüft, unverändert seit dem letzten Lint. **Neu über der Schwelle:**
+  `G8-Notion-Sync` (zuletzt 2026-10-12, 28 Tage). Reiner Alters-Hinweis aus
+  dem Lint-Skript, kein inhaltlicher Befund — Zeilen bei Gelegenheit gegen
+  den echten Task-Scheduler-/Scanner-Status nachprüfen und Datum auffrischen
   (CLAUDE.md Punkt 4).
 
 ## Status — was läuft gerade wirklich
@@ -858,15 +898,24 @@ Live-Status aller drei Portfolio-Bridges jetzt auch als Streamlit-Seiten
 („Portfolio-Bridges" in der Sidebar) — lesen `bridge_status/snapshot.json`,
 das der Bridge-Watchdog alle 30 Min. committet.
 
-_Letzter Lint-Durchlauf: **2026-11-02** (geplant, `second-brain-lint`).
-Ergebnis: 4 tote Wikilinks — 1 inhaltliche Lücke (`orb-ribbon-filter-kippt-2026`,
-in 2 Notizen) + 1 Memory-Slug-Konvention (`ctnl-serienstopp-vs-risikohalbierung`)
-→ beide Braucht-Bestätigung; 1 isolierter toter Link
-(`eurusd-lower-high-limit-edge-card`, erwartungsgemäß weil Edge Card noch
-Phase 0) → Offene Aufgaben. 0 verwaiste Seiten. 8 veraltete
-Statustabellen-Zeilen (→ Offene Aufgaben, Niedrig). 14 unverarbeitete
-Clippings unverändert seit 09-09. Verweise nach außerhalb von `knowledge/`
-als Pfad in Backticks (siehe `README.md`)._
+_Letzter Lint-Durchlauf: **2026-11-09** (geplant, `second-brain-lint`).
+Ergebnis: 10 tote Wikilink-Fundstellen — die beiden 02.11.-Funde
+(`orb-ribbon-filter-kippt-2026` in jetzt 2 Notizen + DASHBOARD,
+`ctnl-serienstopp-vs-risikohalbierung`) unverändert offen in
+Braucht-Bestätigung, dazu neu 2 Unterstrich-Wikilinks nach demselben
+Memory-Slug-Muster (`regime_richtung_je_asset_ueberangepasst`,
+`oecd_reihen_auf_fred_tot` in `resources/regime-bestimmung-und-filter.md`)
+→ Braucht-Bestätigung; 2 neue isolierte tote Links ohne Entscheidungsbedarf
+(`residual-edge-gold-traegt-orb-ou-nicht`, `daily-edge-typ-r-ohne-makro-kein-edge`,
+selbe Notiz) → Offene Aufgaben; 1 `[[...]]` in DASHBOARD.md:161 war literaler
+Text (kein echter Link), ignoriert; der 02.11.-Fund
+`eurusd-lower-high-limit-edge-card` ist erledigt (Notiz existiert jetzt) und
+aus Offene Aufgaben entfernt. 1 neue verwaiste Seite
+(`gold-asb-liquiditaetsfilter-vorgriff.md`) → Offene Aufgaben. 9 veraltete
+Statustabellen-Zeilen, neu über der Schwelle: `G8-Notion-Sync`
+(→ Offene Aufgaben, Niedrig). 14 unverarbeitete Clippings unverändert seit
+09-09. Verweise nach außerhalb von `knowledge/` als Pfad in Backticks
+(siehe `README.md`)._
 
 ## Status — aktuell nicht aktiv
 

@@ -9,6 +9,7 @@ Filter je Trade, nur COT-Stand vor dem Fuelltag (Dienstag-Stichtag, Freitag vero
   NR   zusaetzlich: Non-Reportables (Retail) in derselben Zeit NICHT in Trade-Richtung (Dennis 5.6:
        Hedgefonds gegen Retail).
   Richtung je Markt: Future = Basiswaehrung/Metall gegen USD; USDJPY invertiert (JPY-Future).
+Filter-Logik: fusion_lab/filters/cot_flow.py (Baustein, seit 10.11.).
 Varianten N in (2, 4, 8) x NR (aus, an) = 6, gezaehlt unter Sperre `dennis_cot_trend`.
 """
 
@@ -19,46 +20,18 @@ import pandas as pd
 
 from htf_daily_trade.backtest_r import stats
 from htf_daily_trade.c2_goldfilter import evaluate
+from fusion_lab.filters.cot_flow import CotFlowFilter, load_cot as cot_table
 from research_lock import Lock, deflated_sharpe
 
 LOCK = Lock("dennis_cot_trend")
-COT = {"EURUSD": ("099741", 1), "GBPUSD": ("096742", 1), "AUDUSD": ("232741", 1),
-       "USDJPY": ("097741", -1), "XAUUSD": ("088691", 1), "XAGUSD": ("084691", 1)}
 VARIANTS = [(n, nr) for n in (2, 4, 8) for nr in (False, True)]
-
-
-def cot_table() -> pd.DataFrame:
-    d = pd.read_parquet("data_cache/smh/cot_legacy_nr.parquet")
-    d["avail"] = pd.to_datetime(d["report_date_as_yyyy_mm_dd"]) + pd.Timedelta(days=3)
-    num = lambda c: pd.to_numeric(d[c])
-    d["nc"] = num("noncomm_positions_long_all") - num("noncomm_positions_short_all")
-    d["nr"] = num("nonrept_positions_long_all") - num("nonrept_positions_short_all")
-    return d.drop_duplicates(["cftc_contract_market_code", "avail"]).sort_values("avail")
-
-
-def deltas(cot: pd.DataFrame, code: str, day: pd.Timestamp, n: int) -> tuple[float, float] | None:
-    s = cot[(cot["cftc_contract_market_code"] == code) & (cot["avail"] < day)]
-    if len(s) <= n:
-        return None
-    return s["nc"].iloc[-1] - s["nc"].iloc[-1 - n], s["nr"].iloc[-1] - s["nr"].iloc[-1 - n]
 
 
 def tag(trades: pd.DataFrame, cot: pd.DataFrame) -> pd.DataFrame:
     t = trades.copy()
     for n, nr in VARIANTS:
-        keep = []
-        for _, row in t.iterrows():
-            code, inv = COT[row["markt"]]
-            dd = deltas(cot, code, pd.Timestamp(row["datum"]), n)
-            if dd is None:
-                keep.append(False)
-                continue
-            want = (1 if row["seite"] == "long" else -1) * inv
-            ok = np.sign(dd[0]) == want
-            if nr:
-                ok = ok and np.sign(dd[1]) != want
-            keep.append(bool(ok))
-        t[f"N{n}{'+NR' if nr else ''}"] = keep
+        f = CotFlowFilter(n, nr, cot)
+        t[f"N{n}{'+NR' if nr else ''}"] = [f.allows(r["markt"], r["seite"], r["datum"]) for _, r in t.iterrows()]
     return t
 
 

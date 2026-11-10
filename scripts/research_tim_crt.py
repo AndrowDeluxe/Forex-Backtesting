@@ -17,6 +17,7 @@ Vorab festgelegte Definitionen (knowledge/resources/tim-oc-crt-call.md, Abschnit
   Kerzen     aus M15 gebaut; H4/D1 an der Broker-Serverzeit (New York + 7 h) ausgerichtet.
   T4         (Eroeffnung jenseits des Vorschlusses) entfaellt: FX/Gold intraday praktisch ohne Gaps.
 
+Muster-Erkennung: fusion_lab/patterns/crt.py (Baustein, seit 10.11.).
 Overfitting-Sperre `tim_crt`: 4 Timeframes x (T1, T2, T3) = 12 gezaehlte Varianten.
 """
 
@@ -25,52 +26,19 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+from fusion_lab.patterns.crt import detect, resample_server as resample
 from research_lock import Lock, deflated_sharpe
 
 LOCK = Lock("tim_crt")
 MARKETS = {"XAUUSD": ("data_cache/combined/GOLD_M15_2016-01-01_2026-08-01.parquet", 0.30),
            "EURUSD": ("data_cache/combined/EURUSD_M15_2016-01-01_2026-07-29.parquet", 0.00010)}
 TFS = ("M15", "H1", "H4", "D1")
-MAX_HOLD, SWING_N, SWING_LOOKBACK, BE_AT = 12, 2, 20, 0.5
+MAX_HOLD, BE_AT = 12, 0.5
 
 
 def load(path: str) -> pd.DataFrame:
     d = pd.read_parquet(path)[["Open", "High", "Low", "Close"]].sort_index()
     return d[~d.index.duplicated(keep="last")]
-
-
-def resample(m15: pd.DataFrame, tf: str) -> pd.DataFrame:
-    if tf == "M15":
-        return m15
-    rule = {"H1": "1h", "H4": "4h", "D1": "1D"}[tf]
-    srv = m15.tz_convert("America/New_York")
-    srv.index = srv.index.tz_localize(None) + pd.Timedelta(hours=7)  # Broker-Serverzeit
-    out = srv.resample(rule).agg({"Open": "first", "High": "max", "Low": "min", "Close": "last"}).dropna()
-    out.index = (out.index - pd.Timedelta(hours=7)).tz_localize("America/New_York", ambiguous="NaT",
-                                                                    nonexistent="shift_forward").tz_convert("UTC")
-    return out[out.index.notna()]
-
-
-def swings(h: np.ndarray, l: np.ndarray, n: int) -> tuple[np.ndarray, np.ndarray]:
-    """Fractal-Hoch/-Tief an Kerze i (n links/rechts); bekannt erst ab Kerze i+n."""
-    sh = np.zeros(len(h), bool)
-    sl = np.zeros(len(h), bool)
-    for i in range(n, len(h) - n):
-        win_h, win_l = h[i - n:i + n + 1], l[i - n:i + n + 1]
-        sh[i] = h[i] == win_h.max() and (win_h == h[i]).sum() == 1
-        sl[i] = l[i] == win_l.min() and (win_l == l[i]).sum() == 1
-    return sh, sl
-
-
-def early_level(i0: int, side: str, h, l, sh, sl) -> float | None:
-    """Juengstes vor C1 bestaetigtes Swing-Extrem jenseits von C1 (short: ueber C1.high)."""
-    lo = max(0, i0 - SWING_LOOKBACK)
-    for j in range(i0 - SWING_N, lo - 1, -1):  # Swing an j ist ab j+SWING_N <= i0 bekannt
-        if side == "short" and sh[j] and h[j] > h[i0]:
-            return h[j]
-        if side == "long" and sl[j] and l[j] < l[i0]:
-            return l[j]
-    return None
 
 
 def trade(i1: int, side: str, stop: float, target: float, o, h, l, c, cost: float, be: bool) -> dict | None:
@@ -100,35 +68,15 @@ def trade(i1: int, side: str, stop: float, target: float, o, h, l, c, cost: floa
 
 def scan(x: pd.DataFrame, cost: float) -> pd.DataFrame:
     o, h, l, c = (x[k].to_numpy() for k in ("Open", "High", "Low", "Close"))
-    sh, sl = swings(h, l, SWING_N)
     rows = []
-    for i1 in range(1, len(c) - 1):
-        i0 = i1 - 1
-        up, dn = h[i1] > h[i0], l[i1] < l[i0]
-        if up == dn:  # keine oder beide Seiten gesweept
-            continue
-        side = "short" if up else "long"
-        inside = l[i0] < c[i1] < h[i0]
-        broke = c[i1] > h[i0] if up else c[i1] < l[i0]
-        if not (inside or broke):
-            continue
-        stop = h[i1] if up else l[i1]
-        target = l[i0] if up else h[i0]
-        lvl = early_level(i0, side, h, l, sh, sl)
-        if lvl is None:
-            grp = "kein"
-        elif (h[i1] > lvl) if up else (l[i1] < lvl):
-            grp = "geholt"
-        else:
-            grp = "fehlt"
+    for _, sig in detect(x).iterrows():
         for be in (False, True):
-            if broke and be:
+            if sig["typ"] == "Bruch" and be:
                 continue
-            t = trade(i1, side, stop, target, o, h, l, c, cost, be)
+            t = trade(sig["i1"], sig["side"], sig["stop"], sig["target"], o, h, l, c, cost, be)
             if t is None:
                 continue
-            rows.append({"t": x.index[i1], "side": side, "typ": "CRT" if inside else "Bruch",
-                         "grp": grp, "be": be, **t})
+            rows.append({"t": sig["t"], "side": sig["side"], "typ": sig["typ"], "grp": sig["grp"], "be": be, **t})
     return pd.DataFrame(rows).set_index("t")
 
 

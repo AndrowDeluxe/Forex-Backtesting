@@ -78,8 +78,9 @@ jeweiligen Thema weiterarbeiten (Nutzerentscheid 10.11.).
 - **Dennis' COT-/Volumen-Calls (02.11., mit Ton am 10.11.):** Die drei neuen Aufnahmen bestätigen
   meine Bild-Lesarten von 02.11. („vom Extrem zum POC“, Manipulation als Hedge). **A′ getestet
   (10.11.):** Hedgefonds-Aufbau als C2-Filter IS +0,38 R statt +0,21, im OOS nur +0,18 statt +0,13,
-  Retail-Gegenseite schadet. Kein Filter. Offen: B/E/F (Volumenprofil) brauchen erst deine
-  Festlegung von Range und Profil. Sollen wir die testen? Meine Annahmen: Testdefinitionen von A′
+  Retail-Gegenseite schadet. Kein Filter, als Baustein geparkt. **Nächster Schritt (Nutzerauftrag
+  10.11.):** B/E/F (Volumenprofil) und D (Delta) mit Ersatzdaten testen. Du lieferst Daten und
+  Festlegungen (Liste im Chat vom 10.11.). Meine Annahmen: Testdefinitionen von A′
   (N = 2/4/8 Berichte, Retail „nicht mitlaufend“), Commercials-Netto redundant.
   [[smh-dennis-cot-volumen-calls]], [[smh-volumen-delta-und-cot-calls]]
 
@@ -613,6 +614,11 @@ Statustabellen-Zeilen, neu über der Schwelle: `G8-Notion-Sync`
 | EK-Portfolio-Paper                                      | —                                                                                        | pausiert (Paper-Zwilling von EK-Portfolio-Bridge, gehört zum Portfolio)                        | Disabled       | 2026-09-01      |
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
+
+- (10.11.) **CRT (Tim) und COT-Fluss (Dennis) als Bausteine geparkt** (Nutzerentscheid): allein ohne
+  Edge, aber evtl. in anderem Kontext nutzbar. CRT als Einstiegs-Timing an HTF-/Makro-Levels,
+  COT-Fluss als Positionierungs-Schicht. Code: `fusion_lab/patterns/crt.py`,
+  `fusion_lab/filters/cot_flow.py`. [[tim-oc-crt-call]], [[smh-dennis-cot-volumen-calls]]
 
 - (10.11.) **Eigenes „SMT-Terminal“ / Trading-Jarvis** (Nutzerwunsch): ein Dashboard, das alle
   Makrodaten und alle Trade-Umsetzungen live auf einen Blick zeigt. Baut auf dem Fact Sheet

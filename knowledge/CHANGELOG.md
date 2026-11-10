@@ -9,6 +9,11 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-10** [Research / Bausteine] CRT (Tim) und COT-Fluss (Dennis) als wiederverwendbare
+  Bausteine geparkt (Nutzerentscheid): `fusion_lab/patterns/crt.py`, `fusion_lab/filters/cot_flow.py`.
+  Testskripte nutzen sie jetzt, Ergebnisse unverändert nachgerechnet (keine neuen Versuche). Ideen-Inbox
+  ergänzt. Nächster Auftrag: Dennis' Volumen-/Delta-Ideen mit Ersatzdaten.
+
 - **2026-11-10** [Research / Elite-Coaching-Calls, Tests] Testbare Kandidaten geprüft (Nutzerauftrag).
   Tim CRT (`scripts/research_tim_crt.py`, Sperre `tim_crt`, 12 Versuche): kein Edge, auch brutto
   negativ; „Early Ones geholt“ senkt die Stopquote nur über die weitere Stopweite. Dennis A′

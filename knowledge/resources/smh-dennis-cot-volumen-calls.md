@@ -204,3 +204,8 @@ von der CFTC (`data_cache/smh/cot_legacy_nr.parquet`), Stand jeweils Freitag vor
 Fazit: Kein Filter für C2. Höchstens als Beobachtungsgröße im laufenden C2-Forward mitschreiben.
 B, E, F (Volumenprofil) sind nicht getestet: Dafür müssen Range und Profil erst festgelegt
 werden (Entscheidung offen). D bleibt ohne Footprint-Daten untestbar.
+
+**A′ als Baustein festgehalten (Nutzerentscheid 10.11.):** `fusion_lab/filters/cot_flow.py`
+(`CotFlowFilter(n, retail)`, gleiche Schnittstelle wie `ZinsFxFilter`). Allein kein Filter, aber
+denkbar als Positionierungs-Schicht in einer Kombination (Schichtenmodell, Makro-Agent Gate F).
+Neue Einsätze zählen als Varianten.

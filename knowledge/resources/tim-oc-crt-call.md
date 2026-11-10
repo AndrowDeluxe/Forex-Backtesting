@@ -152,3 +152,8 @@ IS 2016–2021, OOS 2022–2024. Tresor (ab 2025) bleibt zu.
 
 Fazit: Weder als Einstieg noch als Regel für Stop und Break-even liefert die CRT hier
 etwas, das über die Geometrie hinausgeht. Das deckt sich mit „Key Levels: Magnet statt Wand“.
+
+**Als Baustein festgehalten (Nutzerentscheid 10.11.):** `fusion_lab/patterns/crt.py` (`detect`,
+`resample_server`, `swings`, `early_level`). Allein kein Edge, aber denkbar als Einstiegs-Timing in
+einem anderen Kontext (z. B. an einem HTF-/Makro-Level oder nach einem Makro-Filter). Neue Einsätze
+zählen als Varianten unter `tim_crt` bzw. der Sperre des neuen Kontexts.

@@ -55,7 +55,7 @@ Echtes GEX je Jahr (SPX, Vortag):
 | 2026 | **4 %** | 5,5 |
 
 **2026 war kein Jahr mit negativem Gamma.** Die Hypothese „der Ribbon-Filter
-kippte, weil das Dealer-Gamma negativ wurde“ ([[orb-ribbon-filter-kippt-2026]])
+kippte, weil das Dealer-Gamma negativ wurde“ (`memory/orb_ribbon_filter_kippt_2026.md`)
 wird von den echten Daten **nicht gestützt**. 2022 hatte viel mehr negatives
 Gamma, und dort hielt der Filter. Die Ursache des Kipps bleibt offen.
 Kandidaten sind das makrogetriebene Trendregime (Iran, Öl, Fed) oder etwas,

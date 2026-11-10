@@ -62,8 +62,6 @@ def test_no_trials_after_freeze(lock):
 
 def test_stages_open_once_and_in_order(lock):
     h = lock.freeze({"stop": 0.6})
-    with pytest.raises(LockError):
-        lock.unseal("tresor", h)                     # Tresor erst nach OOS
     assert lock.unseal("oos", h) == ("2023-01-01", "2025-09-30")
     with pytest.raises(LockError):
         lock.unseal("oos", h)                        # zweites Mal gesperrt
@@ -131,3 +129,28 @@ def test_blind_not_after_freeze(lock):
     lock.freeze({"stop": 0.6})
     with pytest.raises(LockError):
         lock.register_blind("2010-01-01", "2015-12-31")
+
+
+def test_oos_free_before_freeze_and_repeatable(lock):
+    for _ in range(2):
+        s = lock.oos_only(_series())
+        assert s.index.min().date() == pd.Timestamp("2023-01-01").date()
+        assert s.index.max().date() == pd.Timestamp("2025-09-30").date()
+
+
+def test_tresor_without_oos_unseal_but_once(lock):
+    h = lock.freeze({"stop": 0.6})
+    assert lock.unseal("tresor", h) == ("2025-10-01", "2026-09-30")
+    with pytest.raises(LockError):
+        lock.unseal("tresor", h)
+
+
+def test_move_tresor_start_only_while_sealed(lock):
+    lock.move_tresor_start("2026-03-31")
+    assert lock.split["oos_end"] == "2026-03-31"
+    with pytest.raises(LockError):
+        lock.move_tresor_start("2022-06-30")                     # vor IS-Ende
+    h = lock.freeze({"stop": 0.6})
+    lock.unseal("tresor", h)
+    with pytest.raises(LockError):
+        lock.move_tresor_start("2026-01-31")

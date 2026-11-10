@@ -29,8 +29,14 @@ passiert, was steht an.
    **Stand 02.11.:** Daily-Edge geprüft -- Technik allein und mit Makro kein IS-Edge; einzig Typ C2
    mit Limit-Einstieg robust positiv (t ≤ 1,7). **Schichtenmodell für den Makro-Agenten beschlossen**
    [[regime-bestimmung-und-filter]]; erster Baustein [[filter-gold-zinskurve]] (wirkt bei Gold-
-   Continuation). Nächste Schritte: Gold-Filter an Gold ASB/CTNL prüfen; FX-Zinsdaten-Loader (EZB,
-   MoF, BoC, BoE) bauen; Entscheidung, ob C2-Limit in OOS/Blind geht.
+   Continuation). **10.11.: C2 eingefroren, OOS 2022–24 +0,127 R, t 0,88 → kein bestätigter Edge**
+   (Blind versiegelt). **Mit Zins-Momentum + Regime-Matrix (F1+F3) OOS +0,50 R, t 1,68, n 45 →
+   vielversprechend**; **Blind 2010–15 +0,25 R (t 1,07); gesamt 2010–24 +0,49 R, t 3,34, 13/15 Jahre
+   positiv** → bester HTF-Kandidat, nächster Schritt Forward-Test.
+   Inventur-Entwurf bestätigt (10.11.). Reihenfolge (Nutzer 10.11., „stabiles Fundament“):
+   (1) Inventur: die ~15 Strategien aus „Meine Trading Edges“ einzeln aufnehmen + Makro-Quellen
+   (SMH Calls, Zusatzeducation, Makro Education, Elite, Incentive) sichten, (2) FX-Zinsdaten-Loader
+   (EZB, MoF, BoC, BoE, inkl. Historie ab 2009 für den Blindtest), (3) Gold-Filter an Gold ASB/CTNL.
    Erste Auswertung steht (18.10.). **Edge Card „Dayli Trade mit IPDA“**
    [[htf-daily-trade-edge-card]] -- Phase 0 wartet auf deine Antworten (Fragen im
    Chat 18.10.). Parallel: Makrofaktoren einzeln gegen die echten Trades prüfen;
@@ -45,7 +51,57 @@ passiert, was steht an.
    davon mit tieferem Ansatz. Sie fließen direkt in den Makro-Agenten ein;
    vorher ist ein Telegram-Import nötig (Bestand endet am 08.10.).
    Separat geparkt bis Makro steht: [[aktien-analyse-und-bot]].
-2. **🎯 SMH-Elite-Teamaufgabe „Mikrostruktur & Liquidität“: gerechnet
+## 📋 Offene Punkte (nach Priorität)
+
+**Fokus seit 10.11. (Nutzerentscheid): Inventur, Dachprojekt, Makro-Agent.** Alles andere steht unten
+unter „🧊 Geparkt“. Es läuft ohne dich weiter, der Weekly-Report prüft es, echte Alarme kommen per
+Telegram. Der tägliche Digest zeigt nur die Fokus-Abschnitte.
+
+
+### 🔍 Braucht deine Bestätigung
+
+### ⏳ Wartet auf Themen-Session
+
+Lesarten und Annahmen aus laufender Research. Sie brauchen deine Bestätigung erst, wenn wir am
+jeweiligen Thema weiterarbeiten (Nutzerentscheid 10.11.).
+
+- **Regime-Lesarten (02.11.):** Goldilocks = USD short laut Matrix (von dir bestätigt). Offen sind
+  noch meine Lesarten: Deflation ohne Gold-Angabe = beide Richtungen erlaubt; Twist = kein Filter;
+  G8 für Gold/Silber = USD-Score unter 0; „bestätigt“ = Regime hält ≥ 5 Tage. [[regime-bestimmung-und-filter]]
+
+- **Calls „Volumen und Delta“ / „COT Teil 1“ (02.11.): Inhalt nur aus dem Bild gelesen.** Beide
+  Aufnahmen sind nach 9 bzw. 20 s stumm. Stimmen meine Lesarten („vom Extrem zum POC“, COT flach in
+  der Range → Auseinanderlaufen nach dem Sweep)? Welchen Kandidaten (A–D) testen?
+  [[smh-volumen-delta-und-cot-calls]]
+
+- **Edge Card Daily-Trade (02.11.): meine Lesarten (V) im Regel-Entwurf** (RSI 20 Tage / 70/30
+  hast du bestätigt). MA-Cross bis 5 Tage nach dem Fractal; Typ-R-Einstieg beim Schluss über/unter der Fractal-Kerze;
+  IPDA-Nullpunkt = 40-Tage-Extrem, bei zwei Kandidaten das spätere. [[htf-daily-trade-edge-card]]
+
+- **EURUSD-Limit-Edge-Card, Feld 01/02 (02.11.):** Phase 0 bestätigt, Limit lag vor 11:00. Offen: Fragenkatalog und 8 IS-Beispiele beurteilen ([[eurusd-lower-high-limit-edge-card]]). Detektor-Parameter sind weiter meine Annahmen.
+
+- **Trade-Inventur 2025 (18.10.): zwei eigene Festlegungen.** (a) Axi-Buchung
+  „Data Truncation DDMMYYYY“ wird als Startsaldo zum Datum im Text gewertet, nicht
+  zum Buchungsdatum (bei 4667999/4690858 erst im August gebucht). Davon hängt das
+  Ergebnis in % vom Konto ab. (b) Statement-„Balance“ wird nicht gegengeprüft: Sie
+  ist der Stand von 07/2026, das Statement deckt nur 2025 ab.
+  [[quant-diskretionaer-fusion]]
+
+### Offene Aufgaben
+
+- **Lücken Makro-Datenschicht für Schritt 7 (A2)** (30.10.). ~~2-jährige Renditen für GB, JP,
+  CH, AU, CA, NZ~~ erledigt 10.11. (2J + 10J täglich für alle G8; CH mit ~10 Tagen Verzug).
+  Offen: aktuelle Kern-/Dienste-Inflation für JP, CH, CA; US-Dienste-Inflation.
+  Stand: `python -m fusion_lab.macro_data --coverage`.
+
+## 🧊 Geparkt: Betrieb & Nebenthemen (außerhalb des Fokus)
+
+Bewusst aus dem Blick genommen (Nutzerentscheid 10.11.), nicht gelöscht. Neue Betriebs-/Bot-Punkte
+landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
+
+### Weitere Projekte
+
+- **🎯 SMH-Elite-Teamaufgabe „Mikrostruktur & Liquidität“: gerechnet
    07.10., alle drei Kandidaten ehrlich gescheitert.** Tresor: K1 PF 0,65,
    K2 PF 1,31 (52 Trades), K3 (Team-Kandidat) PF 0,84. Steckbrief steht auf
    der Notion-Seite in „🎓 ELITE 3“. Offen: Präsentation im nächsten Call.
@@ -71,7 +127,8 @@ passiert, was steht an.
    sind schon geöffnet, deshalb braucht eine neue Regel einen eigenen Lock
    und frische Prüfdaten (andere Märkte oder Forward).
    [[smh-elite-mikrostruktur]]
-3. **🥇 Gruppenarbeit: Gold ASB IS-only gerechnet (15.10.), PDF für den
+
+- **🥇 Gruppenarbeit: Gold ASB IS-only gerechnet (15.10.), PDF für den
    Mentor steht (18.10.):** `Claude outputs/gold_asb_profitabilitaets_kriterien_20261018.pdf`. IS +0,33 → OOS +0,18 → Tresor +0,04 R je Trade (PF 1,19,
    18 Trades), Deflated Sharpe 0,24. Der Edge hält knapp, wird aber dünner.
    **18.10. Paper-Filter:** keiner schlägt die Basis; Blindtest 2010–2015 bestanden
@@ -80,119 +137,14 @@ passiert, was steht an.
 
 ---
 
-## 📋 Offene Punkte (nach Priorität)
+### Bestätigungen (Betrieb/Research)
 
-Zusammengeführt aus "Braucht deine Bestätigung" + "Offene Aufgaben" — nach
-Priorität sortiert, erledigte Punkte pro Kategorie unten. Höchste Priorität:
-offene Projekte mit konkretem nächstem Schritt (aktuell keins offen — der
-gold_asb-Cache-Bug oben läuft über "Als Nächstes"). Danach: Bestätigungs-
-Bedarf vor generischem Aufräumen.
-
-### 🔍 Braucht deine Bestätigung
-
-- **Weekly KW45 (08.11.), zwei Punkte zur Bestaetigung:**
-  1. **NASDAQ-ORB 05.11.: Teilschliessung per Handy** (MT5 `reason = 1`, Magic 0) auf FK, EK und TTP um
-     21:30-21:31 Serverzeit (ca. 14:30 NY), 68-79 % der Position; IQ nicht angefasst. NASDAQ faehrt laut
-     Konfiguration ohne Teilausstieg. Ohne Eingriff grob +600 USD und +26 EUR mehr (Rueckschau). Warst du
-     das, und ist es eine Regel oder ein Einzelfall? (Soll/Ist und Ampel kennen solche Eingriffe nicht.)
-  2. **Gold ASB 03.11. live auf allen 4 Konten gelegt (-1.274 USD / -90 EUR), im Soll gefiltert.** Erst der
+- **Weekly KW45 (08.11.): Gold ASB 03.11. live auf allen 4 Konten gelegt (-1.274 USD / -90 EUR), im Soll gefiltert.** Erst der
      Liquiditaetsfilter wirft den Trade beim Nachrechnen raus. Ursache offen (GOLD_D1 am 02.11. neu
      geschrieben? Quantil-Kippen wie 01.09.?). Vorschlag: Friktionswert + Schwelle bei jeder ASB-Order
      ins Bridge-Log schreiben, damit das kuenftig entscheidbar ist. Details KW45-Report Abschnitt 5.
-
-- **Bridge-Watchdog seit 06:01 UTC (07:01 lokal) wieder ohne neuen Snapshot — ~9,3 h
-  Lücke an einem normalen Handelsmontag** (gefunden 09.11. durch den Cloud-Monitor,
-  `bridge_status/snapshot.json`). Der Commit-Takt lief bis
-  `2026-11-09 07:01:26 +0100` im gewohnten 30-Min-Rhythmus, danach kein einziger
-  Watchdog-Commit mehr bis zu diesem Lauf (`2026-11-09 15:17 UTC`). Der letzte
-  gesehene Stand zeigt `"status": "ok"` auf allen drei Bridges (EK, Funded
-  TTP/IQ, FK) — die Lücke sagt also wie beim letzten Mal nichts über einen
-  Fehler der Bridges selbst, nur dass der Watchdog seit dem Vormittag nichts
-  mehr meldet. **Das ist dieselbe Musterlücke wie der Eintrag „Bridge-Watchdog
-  seit 06:07 UTC … ~9,5 h Lücke" oben vom 02.11.**, dessen Update vom 08.11.
-  als Ursache einen blockierten Push (offener Working Tree auf dem Rechner)
-  nennt und noch auf deine Bestätigung/Entfernung wartet — das ist bislang
-  nicht passiert, und jetzt tritt exakt dasselbe Muster erneut auf. Von hier
-  aus kann ich wie letztes Mal nicht prüfen, ob Rechner/Bridges in der
-  Zwischenzeit weiterliefen. **Zwei Fragen:** (1) War es wieder ein offener
-  Working Tree / blockierter Push, oder doch Standby/Task-Scheduler-Problem?
-  (2) Soll ich den alten 02.11.-Eintrag jetzt als bestätigt/erledigt markieren
-  (dann würde ich ihn beim nächsten Lauf durchstreichen), oder ist die Ursache
-  noch offen?
-
-- **Regime-Lesarten (02.11.):** Goldilocks = USD short laut Matrix (von dir bestätigt). Offen sind
-  noch meine Lesarten: Deflation ohne Gold-Angabe = beide Richtungen erlaubt; Twist = kein Filter;
-  G8 für Gold/Silber = USD-Score unter 0; „bestätigt“ = Regime hält ≥ 5 Tage. [[regime-bestimmung-und-filter]]
-
-- **Calls „Volumen und Delta“ / „COT Teil 1“ (02.11.): Inhalt nur aus dem Bild gelesen.** Beide
-  Aufnahmen sind nach 9 bzw. 20 s stumm. Stimmen meine Lesarten („vom Extrem zum POC“, COT flach in
-  der Range → Auseinanderlaufen nach dem Sweep)? Welchen Kandidaten (A–D) testen?
-  [[smh-volumen-delta-und-cot-calls]]
-
-- **Edge Card Daily-Trade (02.11.): meine Lesarten (V) im Regel-Entwurf** (RSI 20 Tage / 70/30
-  hast du bestätigt). MA-Cross bis 5 Tage nach dem Fractal; Typ-R-Einstieg beim Schluss über/unter der Fractal-Kerze;
-  IPDA-Nullpunkt = 40-Tage-Extrem, bei zwei Kandidaten das spätere. [[htf-daily-trade-edge-card]]
-
-- **EURUSD-Limit-Edge-Card, Feld 01/02 (02.11.):** Phase 0 bestätigt, Limit lag vor 11:00. Offen: Fragenkatalog und 8 IS-Beispiele beurteilen ([[eurusd-lower-high-limit-edge-card]]). Detektor-Parameter sind weiter meine Annahmen.
-
-- **Weekly KW44 (01.11.), drei Lesarten von mir, bitte bestätigen:**
-  1. FK-Position 2624779: SL stand laut Log auf 4.076,96, geschlossen am 28.10. bei `[sl 4058.00]` (+6,33 USD), ohne Bot-Logzeile. Vermutung: von Hand gezogen. Warst du das?
-  2. Standby Mo 26.10. ca. 10:38 bis Di 27.10. 12:13 (alle Lanes, Akku ca. 46 Wh, also nicht leer): ORB 26.10. auch auf EK verpasst. Das korrigiert „2 Tage ohne ORB wegen Serverzeit / EK nicht betroffen“. Ursache offen; warst du unterwegs?
-  3. Ausfall 28.–30.10.: auch `api.binance.com` 195 Fehler im selben Fenster, dazu MT5 `Authorization failed` um 22:16–22:18. Spricht eher für lokales Netz/DNS als für Dukascopy, kein Beweis.
-  Außerdem: Das CTNL-Soll +5,45 R (27.10.) ist laut meinem Abgleich ein Schlusskurs-Stop-Artefakt (Hoch 4.081,96, SL 4.076,96, höchster Schluss 4.074,29), die Zuordnung ist erschlossen.
-
-- **Bridge-Watchdog seit 06:07 UTC (07:07 lokal) ohne neuen Snapshot — ~9,5 h
-  Lücke an einem normalen Handelsmontag** (gefunden 02.11. durch den
-  Cloud-Monitor, `bridge_status/snapshot.json`). Der Commit-Takt lief bis
-  `2026-11-02 07:07:47 +0100` im gewohnten 30-Min-Rhythmus (`...06:37, 07:01,
-  07:07`), danach kein einziger Watchdog-Commit mehr bis zu diesem Lauf
-  (`2026-11-02 15:32 UTC`). Der letzte gesehene Stand zeigt `"status": "ok"`
-  auf allen drei Bridges (EK, Funded TTP/IQ, FK) — die Lücke sagt also nichts
-  über einen Fehler der Bridges selbst, nur dass der Watchdog (und damit
-  vermutlich auch die anderen `Mo–Fr`-Tasks auf derselben Maschine) seit dem
-  Vormittag nichts mehr meldet. Passt zum bekannten Muster (Standby/Akku-
-  Fälle 28.09./12.10./15.10./20.10., siehe Eintrag „Untersuchung: Lake
-  veraltet…" oben) — mein unbelegter Verdacht von hier aus: Rechner im
-  Standby/aus oder Task Scheduler blockiert, da heute kein Wochenende und
-  kein Feiertag ist. Von diesem Repo aus kann ich nicht prüfen, ob die
-  Bridges in der Zwischenzeit trotzdem weiterliefen oder ebenfalls
-  stillstanden. **Kannst du kurz nachschauen, ob der Rechner/die Tasks seit
-  heute Vormittag liefen?**
-  **Update Weekly KW45 (08.11., Claude):** Der Rechner lief. Lokal hat der Watchdog die ganze Woche
-  im 30-Min-Takt Snapshots committet, die Bridges handelten (EK-Laufprotokolle ohne Luecke > 30 Min.
-  Di-Fr). Der Push war blockiert: Watchdog-Log ab 02.11. 22:31 254x "Snapshot-Merge uebersprungen:
-  Working Tree hat 5-9 offene Aenderung(en)" (uncommittete Session-Arbeit vom 02.11.). Die fuenf
-  Monitor-Eskalationen bis "~96 h" sind damit Fehlalarm, gleicher Mechanismus wie der Push-Stau
-  02.10.-31.10. Loest sich mit einem Commit der offenen Arbeit. Bitte bestaetigen/entfernen.
-
-- **Second-Brain-Lint 02.11.: zwei Wikilink-Funde brauchen eine Entscheidung.**
-  1. **Inhaltliche Lücke:** `[[orb-ribbon-filter-kippt-2026]]` wird in
-     [[baltussen-tagesend-momentum]] und [[live-strategien-tresor-check]]
-     zitiert („die Hypothese ... kippte ..."), existiert aber nirgends als
-     eigene Notiz — beide Stellen verweisen auf denselben, nie geschriebenen
-     Befund zum ORB-Ribbon-Kipp. Eigene Notiz anlegen (wo? `projects/` oder
-     Abschnitt in [[orb-order-storno-und-haltedauer]]?) oder anders verlinken?
-  2. **Namenskonvention:** [[persoenlicher-tradingplan-validierung]] zitiert
-     `[[ctnl-serienstopp-vs-risikohalbierung]]` als Wikilink, der Fund
-     existiert aber nur als Memory-Slug `ctnl_serienstopp_vs_risikohalbierung`
-     (siehe `reports/weekly/KW40_2026_education.md`) sowie als „Befund 19" in
-     [[ctnl-kostenvalidierung]]. Der Wikilink auf das Memory-Ziel ist für
-     Obsidian tot — wie zitieren wir Memory-Funde künftig aus
-     `knowledge/`-Notizen (Backtick-Slug statt `[[...]]`, analog
-     `reports/weekly/`)?
-
-- **Second-Brain-Lint 09.11.: zwei weitere Wikilinks im Unterstrich-Format
-  (Memory-Slug-Muster) in `resources/regime-bestimmung-und-filter.md`**
-  — `[[regime_richtung_je_asset_ueberangepasst]]` (Abschnitt 5, Punkt 1) und
-  `[[oecd_reihen_auf_fred_tot]]` (Abschnitt 5, Datenlücke). Beide existieren
-  nicht als Notiz unter `knowledge/`; die Unterstrich-Schreibweise passt zum
-  Memory-Slug-Muster wie bei `ctnl-serienstopp-vs-risikohalbierung` oben,
-  nicht zur sonst üblichen Bindestrich-Notizbenennung — selbe offene Frage
-  (Backtick-Slug statt `[[...]]`?), hier nur zusätzliche Fundstellen.
-
-- **Valkyrie-Klon, 2 Annahmen von mir** (30.10., [[quantum-valkyrie-edge-card]]):
-  1. Split IS 2020-01-17 bis 2023-12-31, OOS bis 2025-10-27, Tresor bis 2026-10-16, Blindtest 2018-01-01 bis 2020-01-16.
-  2. Kriterium: je Stufe Ø R > 0 und t ≥ 2 nach 0,30 $ Kosten je Trade. Ich habe es vor dem ersten Lauf festgelegt, die 0,30 $ sind meine Wahl.
+     **Nutzerentscheid 10.11.: so umbauen, dass Soll und Ist auf demselben Stand sind** (in Arbeit,
+     siehe [[gold-asb-liquiditaetsfilter-vorgriff]]).
 
 - **Dukascopy-Ausfall 28.10. ~22 Uhr bis 30.10. 10:55: Gold ASB verpasst, Lake verfälscht**
   (Befund 31.10., Lake behoben, Filter-Fix offen). DNS-Fehler fast nur für
@@ -201,8 +153,9 @@ Bedarf vor generischem Aufräumen.
   keine Logzeilen; Lake veraltet → Live-Fallback hängt → Scan-Fehler auf allen Beinen; Twelve Data
   schrieb Fremdkerzen (behoben, Schutz seit 30.10., Nutzer bestätigt 31.10.).
   **Gold ASB 30.10. verpasst auf EK, Funded und FK:** Short ab 02:00 NY, Sim +1,93 R. Der
-  Vortagsfilter braucht Dukascopy live und legte dann keine Order. **Vorschlag, noch nicht gebaut:**
-  Filter im Ausfall aus dem letzten Lake-Stand rechnen. Mittel, hängt an echtem Geld.
+  Vortagsfilter braucht Dukascopy live und legte dann keine Order. **Ausfall-Ersatz gebaut 01.11.,
+  aus seit 02.11. (Nutzerentscheid, Backtest Ø +0,08 R, t 1,16; am 10.11. bestätigt: bleibt aus).**
+  `asian_range_breakout/pending.py::STALE_FALLBACK_ENABLED = False`. Im Ausfall legt Gold ASB keine Order.
   Trend Pullback: die „verpasst“-Meldungen vom 30.10. (USDJPY 27.09., XAUUSD 12.10.) waren Phantome
   aus Twelve-Data-Kerzen; sauber seit 25.08. kein Signal. CTNL/CLS im Fenster: kein Signal.
   **Offen, ungeprüft:** OU-Scan lieferte im Test eine leere Liste (Fehltrade nicht ausgeschlossen);
@@ -212,48 +165,6 @@ Bedarf vor generischem Aufräumen.
   betroffen, meine Korrektur vom 30.10. ist zurückgenommen. Das CTNL-Soll KW42/43 bleibt wegen der
   Duplikate zu optimistisch.
 
-- **Key Levels, Doppel-BOS-Einstieg: 4 Annahmen von mir** (18.10.,
-  im Chat aufgelistet):
-  1. Beobachtungsfenster 8 h ab Levelberührung.
-  2. Swing-Fractal k = 2 auf M5 und M15.
-  3. Volumenprofil über die letzte H4-Range.
-  4. Druckschwelle z ≤ −1 (Short) bzw. ≥ +1 (Long).
-
-  Bitte bestätigen oder ändern; jede Änderung zählt als neue Variante.
-  [[keylevel-edge-card-final]]
-
-- **K4b-Nachtest (18.10.): Kosten USDNOK 3,47 bps / USDSEK 3,10 bps je
-  Rundturn sind geschätzt.** Grundlage: Dukascopy-Spread (Ask minus Bid,
-  IS 2019/2021) plus der Nicht-Spread-Aufschlag von EURUSD. Am Broker ist
-  das nicht gemessen. Am Urteil ändert es nichts, der Tresor ist schon
-  brutto negativ. [[smh-elite-mikrostruktur]]
-- **Trade-Inventur 2025 (18.10.): drei eigene Festlegungen.** (a) Axi-Buchung
-  „Data Truncation DDMMYYYY“ wird als Startsaldo zum Datum im Text gewertet, nicht
-  zum Buchungsdatum (bei 4667999/4690858 erst im August gebucht). Davon hängt das
-  Ergebnis in % vom Konto ab. (b) Statement-„Balance“ wird nicht gegengeprüft: Sie
-  ist der Stand von 07/2026, das Statement deckt nur 2025 ab. (c) Offene Position
-  6059496 EURUSD Buy 1,01 Lot seit 17.06.2026 ohne SL/TP (am 21.07. −1.614 $), nur
-  vermerkt, nicht angefasst. Ist sie noch offen und gewollt?
-  [[quant-diskretionaer-fusion]]
-
-
-- **Mikrostruktur Runde 2 (18.10.): Screening-Punkte und Kandidatenwahl
-  K4–K7 sind meine Einschätzung** (Raster `smh_microstructure/screening_v2.json`).
-  Bewusst getestet: Overnight Drift (K7), obwohl die Autoren selbst den
-  Zerfall melden. Nicht getestet: Gold-Tageszeitmuster (nur Masterarbeit).
-  Bitte bestätigen oder fehlende Papers nennen. [[mikrostruktur-paper-screening]]
-- **Mikrostruktur Runde 2: Einstiege um 17:00 New York (Rollover) mit
-  pauschalen Kosten gerechnet, real teurer.** Gotobi-Tage sind ohne
-  japanische Feiertage bestimmt. Beides ändert kein Urteil, alle vier
-  Kandidaten sind negativ. [[smh-elite-mikrostruktur]]
-
-- **Key-Level-Backtest: Kosten der 6 frischen Paare sind geschätzt, nicht
-  gemessen** (16.10.). Round-Turn in Pips: USDCAD 1,6, USDCHF 1,6, NZDUSD 1,8,
-  EURGBP 1,6, EURJPY 1,8, GBPJPY 2,5. Grundlage: typische Raw-Spreads plus
-  dieselbe Kommission und Slippage wie bei den gemessenen Majors.
-  `smh_microstructure/costs.py`. Bitte bestätigen oder Broker-Werte nennen.
-  [[keylevel-edge-card]]
-
 - **ORB-Öl-Filter: zwei Forward-Kandidaten, Stichtag 31.03.2027** (12.10.,
   [[orb-gegenprobe-oel]]). (1) IS-Filter „Öl gegen Ausbruch“, (2) 2026-Fit
   (Korrelationsregime → Trend-Tage + Öl gegen Ausbruch), ausdrücklich kein
@@ -261,6 +172,7 @@ Bedarf vor generischem Aufräumen.
   Split formal (OOS = leeres Fenster 01.–11.10., nur für die Lock-Regel).
   Auswertung: `python scripts/research_orb_oel_filter.py --stage forward-evaluate`.
   Bis dahin nur ~20–25 Trades je Index → höchstens ein Hinweis.
+
 - **CTNL-State: Altpositionen ohne Zeit-Exit + verwaiste `placed`-Einträge**
   (12.10., Weekly Checkup KW41, Performance Abschnitt 6 Punkt 1; ECHTES
   GELD, nichts angefasst). Offen ohne `max_hold`/TP: TTP 18696522 +
@@ -275,6 +187,10 @@ Bedarf vor generischem Aufräumen.
   **Update 19.10. (Nutzer):** Altpositionen von Hand geschlossen, bis auf
   eine, die der Nutzer auf Break-even gesetzt hat. Offen bleibt der
   Code-Teil (Exit-Abgleich, verwaiste `placed`-Einträge).
+  **10.11.: State bereinigt** (Nutzerauftrag): 37 verwaiste `placed`-Einträge (FK 24, IQ 6, TTP 7) gegen
+  `positions_get()` geprüft und auf `closed` (`exit_reason: abgleich_broker_20261110`) gesetzt, Sicherung
+  `*.bak_20261110_placed`. Der CTNL-Deckel zählt ohnehin gegen den Broker, hat also nichts blockiert.
+  Offen bleibt nur die Ursache (Exit-Abgleich über Sim-Schlüssel), Niedrig.
 
 - **📅 31.03.2027: Forward Noise-Area-Momentum Regime 2026** (Übersicht aller
   Forward-Tests: [[optimierte-edges-uebersicht]]; Nutzerentscheid
@@ -301,17 +217,6 @@ Bedarf vor generischem Aufräumen.
   mit O1 (Lock `challenge_k60_orb_oel_gewichtung_20261016`, Forward ab 19.10.). Danach
   entscheiden, ob und wie das auf die Challenge-Konten geht. Kein Livegang davor.
 
-- **Noise-Area / Challenge-Gewichtung: vor einem Livegang klären** (16.10.,
-  [[zarattini-noise-area-momentum]]). (1) Kann IQ (BeyondIQCapital) NASDAQ handeln? Für TTP
-  ist USTEC bekannt, für IQ ist kein Index-Symbol verifiziert (`check_symbols.py`). (2) TTP-
-  Kommission auf USTEC ist mit 0 angenommen. (3) Der Optimierer rechnet additiv ohne
-  Lot-Rundung; die Ereignis-Sim mit Zinseszins zeigte keine Brüche, die Lot-Rundung ist
-  ungeprüft.
-  **Zu (1), Beobachtung aus dem Weekly KW42 (18.10.), bitte bestätigen:** IQ handelt
-  NASDAQ bereits: Die Funded-Bridge platzierte dort am 13.10. und 16.10. ORB-Orders auf
-  `NAS100.gbe` (Risiko je Seite ca. 107 USD). Ob Kosten und Haltedauer bis 16:00 für K60
-  passen, ist damit nicht geprüft.
-
 - **Gold-ASB-Fill vom 15.10. fehlt in Soll/Ist und Edge-Ampel** (Weekly KW42, 18.10.).
   Live füllte die Stop-Order auf allen 4 Konten (zusammen ca. −765 USD, Zeit-Exit), das
   Soll meldet „kein Signal“, die Ampel-Liste führt als letzten Gold-ASB-Trade den 28.09.
@@ -319,13 +224,6 @@ Bedarf vor generischem Aufräumen.
   `gold_asb_liquidity_filter_reproducibility`) oder die Nachrechnung modelliert die
   Stop-Order-Variante nicht. Solange das offen ist, messen beide Werkzeuge das größte
   EK/TTP-Bein nicht live-getreu.
-
-- **ORB-Gegenprobe Öl: meine Annahmen** (11.10., [[orb-gegenprobe-oel]]).
-  (1) Öl-Kosten 4,0 bps Spread + Index-Slippage (~0,15 R je Trade), nicht am
-  Broker gemessen. (2) April 2020 ausgelassen (WTI nahe null). (3) Öl-Uhr
-  09:00–14:30 (NYMEX) als zweite Variante, selbst gewählt. (4) Lesart
-  „ORB-Edge lebte vom Tag-zu-Tag-Umkehr-Regime“ ist eine Hypothese. PDF für
-  den Mentor: `Claude outputs/orb_profitabilitaets_kriterien_oel_20261011.pdf`.
 
 - **📅 31.01.2027: SMH-Makro-Reports Forward/OOS einmal öffnen** (Lock
   `smh_macro_reports_v2`, [[smh-makro-reports-backtest]]). IS 21.10.: Calls
@@ -345,69 +243,8 @@ Bedarf vor generischem Aufräumen.
   (öffnet erst ab dem Stichtag). Danach entscheiden, ob B live geht.
   [[gamma-mechanismen-gex]]
 
-- **✅ Entschieden 16.10. (Nutzer): ORB bleibt erstmal so** — SP500 trotz roter
-  Edge-Ampel weiter live, NASDAQ behält das Storno am SL (obwohl über 10 Jahre
-  ohne Storno besser, siehe [[orb-order-storno-und-haltedauer]] Nachtrag 16.10.).
-  Schutzmechanismen (Trailing-DD-Gate, Offenes-Risiko-Deckel) bleiben getrennt
-  von der Edge-Ampel. Warnstufen laufen im Weekly Report (Schritt 5b).
-- **✅ Entschieden 06.10. (Nutzer): ORB live bleibt, wie es war.** Kein Pausieren und
-  keine Risikosenkung. Der echte Test ist der Forward ab 05.10. (Lock-Regel:
-  ≥ 100 Trades je Index oder 31.03.2027). Hintergrund:
-- **ORB: IS-only-Version fällt im Tresor durch (06.10.). Was heißt das
-  für die live laufende ORB?** Details: [[orb-order-storno-und-haltedauer]]
-  (Nachtrag 06.10.).
-  - **Auswahl:** nur auf IS 2016–2022, 7 Punkte je Index (Richtwert max. 9),
-    SP500 + NASDAQ. Long+short bzw. long, Ribbon neutral, Stop 1,0 ATR, 8R.
-  - **Ergebnis:** OOS hielt (PF 1,34). Tresor 10/2025–09/2026: −87 R,
-    PF 0,52. 100k-Konto bei 1 % Risiko → 40,5k (−59,5 %).
-  - **Deflated Sharpe:** ~0.
-  - **Live-Version zum Vergleich:** im Tresor SP500 +5 R, NASDAQ +55 R. Sie
-    wurde aber mit Blick auf genau diesen Zeitraum gewählt, ist also kein
-    fairer Test.
-  - **Live wurde NICHT geändert.** Offen: ORB live weiterlaufen lassen,
-    Risiko senken oder pausieren? Annahme bis zur Entscheidung: alles bleibt,
-    wie es ist.
-  - **Diagnose (06.10.):** Gekippt ist der EMA-Ribbon-Filter, nicht die
-    ORB-Mechanik. „Neutral“ schlug „mit Trend“ in 16 von 18 Index-Jahren (Ausnahmen ~0);
-    im Tresor dreht es sich bei beiden Indizes um. **SP500 live nutzt
-    „neutral“, ist also direkt betroffen.** NASDAQ live hat keinen Ribbon.
-    Details im Projekt-Nachtrag „Diagnose“.
-  - **Neue-Regime-Runde (06.10.) auch durchgefallen** ([[orb-neues-regime-2026]]):
-    3. Ausbruch / Fehlausbruch, IS = der Bruch → OOS −31 R / ±0, Tresor
-    −8 / −13 R. **SP500 live im Backtest 2026: OOS −4,9 R, Tresor −8,5 R.**
-    NASDAQ live +18 / +33 R (vorbelastet). Die Entscheidung SP500-ORB
-    pausieren ja/nein bleibt offen.
-
-- **🟡 Inventur-Entwurf Tradingplan (09.10.): bitte durchsehen.** Die
-  Bestandteile-Liste in [[persoenlicher-tradingplan-validierung]] habe ich
-  aus „Tradingplan 1.1 2026“, „Meine Trading Edges“ und der Daily
-  Checklist 04/2026 gebaut. Dabei habe ich Folgendes angenommen:
-  - Tradingplan 1.1 2026 ist der gültige Plan. Er ist zwar auf 05/2025
-    datiert, liegt aber im Abschnitt „Oktober 2026“.
-  - „New London Edge EU only“ (08/2026) ist dasselbe wie das archivierte
-    [[london-range-bos-retest-eurusd]], also schon negativ getestet.
-  - Bei der Herkunft (Plan oder Kurs) habe ich nach Seitentitel und
-    Abschnitt geschätzt.
-  - Acht „Final“-Edges (Midnight Spike, Pre Manipulation, NY, 16:00 Uhr …)
-    bestehen nur aus Chartbildern. Ihre Regeln müsstest du diktieren.
-  - Mindset, Kontensystem und Payout-Regeln (Block F) habe ich als nicht
-    automatisierbar ausgeklammert.
-  **Frage:** Fehlt etwas, oder ist etwas falsch einsortiert? Danach legen
-  wir die Reihenfolge für Strang 1 (Edge Cards) fest.
-
-- **🟢 Dachprojekt Quant × diskretionär (04.10.): meine Annahmen.** Details:
-  [[quant-diskretionaer-fusion]].
-  - Ordnername `fusion_lab/` und Notizname „quant-diskretionaer-fusion".
-  - Notion-Struktur: eine Seite „Trading Fusion Cockpit" mit den Datenbanken
-    Makro-Übersicht, Analysen, Entscheidungslog (Bot), Zwischenablage.
-  - Telegram-Import mit deinem eigenen Konto (Telethon), weil Bots fremde
-    Gruppen nicht lesen können; Zugangsdaten in `.streamlit/secrets.toml`.
-
 - **🟡 Challenge + EK Gewichtung (04.10.): entschieden -- TTP neu
   eingespielt, IQ und EK bleiben wie gehabt.** Details: CHANGELOG 04.10.
-  **Zu prüfen:** der erste TTP-Entry nach dem Umschalten. Gold ASB sollte
-  ~600 $ Risiko zeigen (vorher ~333 $), ou_modell ~50 $ (vorher ~167 $).
-  Danach diesen Punkt löschen.
   **Lücke Simulation vs. echte Konten -- zerlegt 04.10.:** Fast die ganze
   Lücke liegt in Beinen, deren Live-Logik im Zeitraum umgebaut wurde. Größter
   Posten ist CTNL Reversal, das live 22-75 Positionen machte, im heutigen Code
@@ -455,85 +292,15 @@ Bedarf vor generischem Aufräumen.
   **Zu prüfen beim ersten gold_silver-Signal:** Entry auf XAUUSD.gbe mit
   ~200 $ Risiko (Lot-Rundung kann weniger ergeben). Der Exit kommt per
   Slow-Lauf, nicht über einen Broker-TP. Danach den Punkt kürzen.
+  **10.11.: Ursache gefunden, warum gold_silver auf FK nie handelte:** Lake hat nur abgeschlossene
+  H4-Kerzen → jedes Signal ≥ 240 Min. alt (Grenze 150). Behoben (`ce42e5ef` + FK-`run_once.py`
+  `forming_bar=True`, Backup `_backup_20261110_gold_silver/`). Prüfen beim nächsten Signal: Entry
+  ≤ 150 Min. nach Kerzenschluss, SL = Schluss − 2 ATR der Signalkerze.
   **Klarstellung:** Der „verpasste“ Trade vom 18.09. lag nicht am
   Altersfilter, sondern an einem Datenausfall (Lake veraltet +
   Dukascopy-Hänger, alle FK-Scans fielen aus). Der gemeinsame Scan-Fehler
   `'>' not supported between 'str' and 'float'` trifft cls/gold_asb/ctnl/
   trend (Offene Aufgabe).
-
-- **⚪ (überholt, siehe oben) FK: neue Gewichtung gerechnet (MC + Walk-Forward, 03.10.) -- NICHT
-  eingespielt.** Gerechnet mit der Logik von heute, also inkl.
-  ORB-Storno bei Gegenbruch und CTNL-Broker-TP. Die heutige Gewichtung hat
-  P(5-%-Trailing-Bruch) **11,9 %/Jahr**. In der Ereignis-Simulation
-  2019-2026 reißt sie die Grenze am 14.05.2024; 2026 bleibt sie knapp
-  darunter (MaxDD −4,74 %).
-  **Vorschlag CAPITAL_WEIGHT:** gold_asb 0,175 · cls_practical 0,30 ·
-  ctnl_reversal 0,375 · orb_sp500 0,30 · orb_us30 **0** · orb_nasdaq 0,15.
-  Ergebnis: P(Bruch) 1,1 %, MC-Median +10,8 %/Jahr (heute +11,9 %),
-  2019-2026 MaxDD −2,69 % statt −6,13 %.
-  **Vorbehalt:** das CLS-Gewicht springt im Walk-Forward (0,075-0,325). CLS
-  läge damit bei 0,45 % Risiko je Trade, nahe am 0,5-%-Deckel.
-  **Soll ich das in `fk_instant_funding/paper_bot.py` einspielen?** Wirkt
-  live auf FK beim nächsten Lauf.
-  ✅ Annahmen (CLS-Versatz 1 M5-Bar, Gold-ASB 30 Min., CTNL 1 M15-Bar,
-  ORB-Slippage aus Funded-Fills, Swap ignoriert) vom Nutzer bestätigt
-  04.10. Details: CHANGELOG 03.10.
-  **Korrektur:** die erste Meldung von heute („Konto 2026 am 26.08.
-  gescheitert“) galt für die ALTE ORB-Logik (Order bis 16:00).
-
-- **🟠 CTNL: Funded/FK jetzt auf EK-Takt, aber EKs SL-Logik bewusst NICHT
-  übernommen** (03.10., Befund 21 in [[ctnl-kostenvalidierung]]). Umgesetzt
-  ist nur der frühere Einstieg (−14 Min.). ✅ (1) „nur Timing“ vom Nutzer
-  bestätigt 03.10. ✅ Die Frage „EK auf absoluten Signal-SL?“ ist durch den
-  Exit-Standard vom 03.10. erledigt (Befund 22e). **Neu zu prüfen
-  Sonntagabend/Montag:** Hat der erste CTNL-Entry je Konto (EK, TTP, IQ, FK)
-  einen Broker-TP, und liegt EKs SL auf dem Signal-Niveau? ✅ (2) Stop der
-  vorgezogenen Zeile (ATR der Signalbar) laut Nutzer erledigt, 04.10.
-
-- **🟡 ORB: Umstellung 04.10. — erster echter Lauf Montag 05.10. beobachten**
-  ([[orb-order-storno-und-haltedauer]]). Auf allen drei Bridges: SP500/US30
-  storniert wie im Backtest, NASDAQ Storno am geplanten SL + ohne Teilziel
-  (eine Order je Richtung), US30 pausiert, neue Telegram-Texte. Alles offline
-  getestet. **Zur Kenntnis:** Telegram meldet jetzt ggf. „Order storniert --
-  Kurs erreichte den geplanten SL vor dem Einstieg“ und gelegentlich
-  „gefüllt, obwohl ... -- sofort geschlossen“ (erwartet ~1× je 4 NASDAQ-Tage,
-  kleiner Verlust/Gewinn). Bestätigen, wenn der erste Tag sauber lief.
-
-- **Gold ASB laeuft seit 03.10. als Stop-Order -- erster echter Lauf Mo 05.10.
-  pruefen** (07:00 Berlin Platzierung bzw. Grund fuer "keine Order" im Log,
-  09:00 Storno, 17:00 Zeit-Exit; auf allen drei Bridges). Deployt vom Nutzer,
-  Details CHANGELOG 03.10. und [[gold-asb-kostenvalidierung]]. Die Bridge-
-  Aenderungen liegen ausserhalb von Git -- Rueckweg ueber die Backups
-  `<Bridge>/_backup_20261001_gold_asb/`. Pruefbefehl, ob die Verdrahtung noch
-  da ist: `grep -c manage_gold_asb_pending` in Funded/FK `run_once.py`
-  (erwartet >= 2) und `ls EK-Portfolio-Bridge/legs/gold_asb/pending_executor.py`.
-  **Zur Kenntnis (FK):** bei 1,5x Range rundet FK auf 0,01 Lot ab -- real
-  ~60 $ statt ~120 $ Risiko, das Bein laeuft dort mit halbem Risiko. **EK:**
-  0,01 Lot = ~53 EUR (1,9 % der Equity).
-
-- **Gegenlesen beim naechsten CTNL-Signaltag.** Verifiziert ist der
-  Code-Stand (alle fuenf Einstiegspunkte, funktionaler Test mit gefaketem
-  Executor), NICHT ein echter Live-Durchlauf mit Order. Im Log sollte
-  stehen: "N von M Signalen behalten; X gegen den Trend verworfen". Bleibt
-  die Meldung aus, greift das Gate nicht.
-  **Beleg (Weekly KW40, 04.10.):** Die Meldung steht seit 30.09. in den Logs
-  von Funded und FK, z.B. "9 von 28 Signalen behalten; 19 gegen den Trend
-  verworfen". Die Verwurfquote liegt bei 63-68 %, erwartet waren ~60 %. Echte
-  Entries mit Gate gab es am 01.10. (FK) und 02.10. (IQ/FK/EK). Abhaken
-  liegt bei dir.
-
-- **CTNL: Spike-Filter live + Kill-Switch umgestellt -- beim nächsten Lauf
-  kontrollieren** (2026-09-30, Befund 19). Nach deinen Entscheiden: (1) Der
-  Kill-Switch rechnet jetzt auf dem GEHANDELTEN Satz (Ribbon + Spike, −1,10 %
-  statt −7,01 %) und **hebt sich beim nächsten Lauf auf FK, TTP und IQ auf**,
-  CTNL handelt dort wieder. (2) `ctnl_reversal` nimmt nur noch Signalkerzen
-  ≥ 0,75 ATR. (3) Der Flacker-Fix und die FK-Log-Zeile sind drin.
-  (a) Schwelle −6,6 %/−3,3 %: **Nutzerentscheid 04.10.: neu kalibrieren** auf
-  dem gehandelten Satz (Ribbon + Spike) -- steht unter Offene Aufgaben.
-  (b) Kerzenfilter nur für reversal -- erledigt, continuation ist stillgelegt.
-  **Zu prüfen:** Telegram meldet „CTNL-Drawdown erholt“ je Konto, und im FK-Log
-  erscheinen „Spike-Filter behaelt …“-Zeilen. Nebenbei unverändert offen:
-  auf EK riskiert ein CTNL-Trade ~25 EUR = ~0,9 % Equity (Mindestlot, Befund 10).
 
 - **🟢 OU-Modell: Logik D läuft live, Wiedereinstiegs-Drehtür geschlossen**
   (Umbau 23.09., Fix 30.09.). Stop 8 Sigma, kein Breakeven, kein TP, Ausstieg
@@ -569,6 +336,8 @@ Bedarf vor generischem Aufräumen.
   **(a) teilweise erledigt 22.10. (Nutzer, bestätigt 28.10.):** DD und EOG von Hand
   geschlossen. **STT ist weiter offen**, ebenso FLEX (15.10.) und UAL (16.10.);
   ob FLEX/UAL vom Modell geführt werden, ist nicht geprüft.
+  **Nutzerentscheid 10.11.: STT, FLEX, UAL bei US-Börsenöffnung schließen (Tradingplan).** Broker-Abgleich
+  10.11. 01:50: FLEX und UAL sind schon zu, offen ist nur noch **STT (TTP, Ticket 18988548)**.
   **Worauf schauen (neu, Niedrig):** Yahoo liefert `^GSPC`/`^NDX` zeitweise nicht
   (19.10. vormittags, 15.10., 12.10., 18.09.); der OU-Scan hat dann 0 Trades und
   meldet für jede offene Position „Titel fehlt im Scan“. Es wird dabei nichts
@@ -591,129 +360,26 @@ Bedarf vor generischem Aufräumen.
   muss anstehende Splits der gehaltenen Titel VORHER melden -- braucht eine
   Datenquelle fuer Split-Termine. Wird als eigenes kleines Vorhaben geplant.
 
-- **Ergänzung zur Watchdog-Lücke vom 02.11. (oben): zwei konkrete Fehler
-  mitten in der Lücke gefunden, zeitgleich auf verschiedenen Subsystemen.**
-  Snapshot von 22:07 UTC zeigt als `last_error_line`: EK-Portfolio-Bridge
-  um 14:30:07 einen Telegram-Versandfehler wegen DNS
-  (`HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries
-  exceeded ... Failed to resolve 'api.telegram.org' ([Errno 11001]
-  getaddrinfo failed)`), und auf Funded-Portfolio-Bridge bei BEIDEN Konten
-  (TTP und IQ Markets) um 14:30:40 je ein `mt5.initialize() fehlgeschlagen:
-  (-10005, 'IPC timeout')`. Danach kein weiterer Fehler mehr, Status jetzt
-  überall `ok`. Mein unbelegter Schluss: DNS-Auflösung UND MT5-IPC sind
-  unterschiedliche Subsysteme, dass beide zeitgleich ausfallen, spricht
-  eher für Netzwerk-/Rechner-Ausfall (Standby, Netz weg) in genau dem
-  Fenster als für einen reinen Watchdog-Blackout — passt zur Vermutung im
-  Eintrag oben. FKInstantFunding zeigt im selben Fenster keinen neuen
-  Fehler (nur altbekannte `dukascopy_python`-Hänger vom 30.10.). Nichts
-  für mich zu tun (außerhalb des Repos, hat sich selbst erholt) — passt
-  das zu dem, was der Rechner heute Vormittag/mittag gemacht hat?
+- **Noise-Area / Challenge-Gewichtung: vor einem Livegang klären** (16.10.,
+  [[zarattini-noise-area-momentum]]). (1) Kann IQ (BeyondIQCapital) NASDAQ handeln? Für TTP
+  ist USTEC bekannt, für IQ ist kein Index-Symbol verifiziert (`check_symbols.py`). (2) TTP-
+  Kommission auf USTEC ist mit 0 angenommen. (3) Der Optimierer rechnet additiv ohne
+  Lot-Rundung; die Ereignis-Sim mit Zinseszins zeigte keine Brüche, die Lot-Rundung ist
+  ungeprüft.
+  **Zu (1), Beobachtung aus dem Weekly KW42 (18.10.), bitte bestätigen:** IQ handelt
+  NASDAQ bereits: Die Funded-Bridge platzierte dort am 13.10. und 16.10. ORB-Orders auf
+  `NAS100.gbe` (Risiko je Seite ca. 107 USD). Ob Kosten und Haltedauer bis 16:00 für K60
+  passen, ist damit nicht geprüft.
 
-- **Neue, deutlich größere Watchdog-Lücke seit 02.11. 22:07 Uhr lokal —
-  ~24 h ohne jeden Commit von irgendeiner lokalen Routine** (gefunden
-  03.11. durch den Cloud-Monitor). Letzter `Bridge-Watchdog`-Commit
-  `c32b8d9` um `2026-11-02 22:07:48 +0100`, letzter `FK Instant Funding
-  Bot`-Snapshot-Commit `b20fcc1` um `22:07:54 +0100`, letzter `OU-Modell
-  Scanner`-Snapshot um `21:35:22 +0100` — danach **gar kein** Commit mehr
-  von irgendeiner dieser drei Routinen bis zu diesem Lauf (03.11., ca.
-  21:13 UTC / 22:13 lokal). Der zuletzt gesehene Snapshot-Inhalt
-  (`bridge_status/snapshot.json`, `generated_at` 22:07:48) zeigt
-  `"status": "ok"` auf allen drei Bridges (EK, Funded TTP/IQ, FK) — sagt
-  also nichts über einen Fehler der Bridges selbst, nur dass seither gar
-  nichts mehr committet wurde. Beide betroffenen Tage (02.11. Montag,
-  03.11. Dienstag) sind normale Handelstage, kein Wochenende/Feiertag —
-  gleiches Muster wie die früheren Standby-Fälle (28.09./12.10./15.10./
-  20.10., s. o.), aber mit ~24 h diesmal deutlich länger als die ~9,5 h
-  vom Vormittag des 02.11. Von diesem Repo aus kann ich nicht sehen, ob
-  der Rechner/Task Scheduler seitdem lief oder ob die Bridges selbst
-  (Telegram, offene Positionen) in der Zwischenzeit normal weiterliefen.
-  **Kannst du kurz nachschauen, ob der Rechner seit gestern Abend ca.
-  22 Uhr lief (Standby/aus?) und ob die Bridges zwischenzeitlich normal
-  weitergearbeitet haben?**
+### Aufgaben (Betrieb)
 
-- **Dieselbe Watchdog-Lücke läuft weiter — jetzt ~42 h, drei Kalendertage
-  betroffen** (gefunden 04.11. durch den Cloud-Monitor, dieser Lauf).
-  Immer noch derselbe letzte Commit `c32b8d9` von `2026-11-02 22:07:48
-  +0100` — seitdem **kein einziger** neuer `Bridge-Watchdog`-Commit, auch
-  nicht zum Zeitpunkt dieses Laufs (04.11. ca. 15:13 UTC / 16:13 lokal).
-  Der im Repo sichtbare Snapshot-Inhalt ist exakt derselbe wie beim
-  letzten Fund (03.11.), also keine neue Information über den Zustand der
-  Bridges selbst — nur dass die Lücke sich seit dem letzten Cloud-Monitor-
-  Lauf nochmal um ca. 18 h verlängert hat. Betroffen sind damit drei
-  normale Handelstage in Folge (Mo 02.11. ab 22 Uhr, Di 03.11. komplett,
-  Mi 04.11. bis jetzt) ohne jedes Lebenszeichen von Watchdog, FK-Snapshot
-  oder OU-Scanner. Von diesem Repo aus weiterhin nicht prüfbar, ob die
-  Bridges selbst in der Zwischenzeit normal weitergelaufen sind. **Bitte
-  möglichst zeitnah nachschauen, ob der Rechner läuft — eine Lücke dieser
-  Länge ist deutlich über die früheren Standby-Fälle hinausgewachsen.**
-
-- **Dieselbe Watchdog-Lücke läuft weiter — jetzt ~60 h, vier Kalendertage
-  betroffen** (gefunden 05.11. durch den Cloud-Monitor, dieser Lauf). Immer
-  noch derselbe letzte Commit `c32b8d9` von `2026-11-02 22:07:48 +0100` —
-  seitdem weiterhin **kein einziger** neuer `Bridge-Watchdog`-Commit, auch
-  nicht zum Zeitpunkt dieses Laufs (05.11. ca. 09:12 UTC / 10:12 lokal). Der
-  im Repo sichtbare Snapshot-Inhalt ist weiterhin exakt derselbe wie bei den
-  Funden vom 03.11. und 04.11. — keine neue Information über den Zustand der
-  Bridges selbst, nur dass die Lücke sich nochmal um ca. 18 h verlängert hat.
-  Betroffen sind damit vier normale Handelstage in Folge (Mo 02.11. ab 22
-  Uhr, Di 03.11., Mi 04.11., Do 05.11. bis jetzt) ohne jedes Lebenszeichen von
-  Watchdog, FK-Snapshot oder OU-Scanner. Von diesem Repo aus weiterhin nicht
-  prüfbar, ob die Bridges selbst (echtes Geld, EK/Funded/FK) in der
-  Zwischenzeit normal weitergelaufen sind oder ob der Rechner die ganze Zeit
-  aus/im Standby war. **Das ist jetzt die dritte Eskalation dieses Funds in
-  Folge ohne Reaktion — bitte möglichst dringend nachschauen, ob der Rechner
-  läuft, sonst kann von hier aus nicht mehr beurteilt werden, ob die
-  Live-Bots noch wie gewollt arbeiten.**
-
-- **Dieselbe Watchdog-Lücke läuft weiter — jetzt ~84 h, fünf Kalendertage
-  betroffen** (gefunden 06.11. durch den Cloud-Monitor, dieser Lauf). Immer
-  noch derselbe letzte Commit `c32b8d9` von `2026-11-02 22:07:48 +0100` —
-  seitdem weiterhin **kein einziger** neuer `Bridge-Watchdog`-Commit, auch
-  nicht zum Zeitpunkt dieses Laufs (06.11. ca. 09:12 UTC / 10:12 lokal). Der
-  im Repo sichtbare Snapshot-Inhalt ist weiterhin exakt derselbe wie bei den
-  Funden vom 03.–05.11. — keine neue Information über den Zustand der
-  Bridges selbst, nur dass die Lücke sich nochmal um ca. 24 h verlängert hat.
-  Betroffen sind damit fünf normale Handelstage in Folge (Mo 02.11. ab 22
-  Uhr, Di 03.11., Mi 04.11., Do 05.11., Fr 06.11. bis jetzt) ohne jedes
-  Lebenszeichen von Watchdog, FK-Snapshot oder OU-Scanner. Von diesem Repo
-  aus weiterhin nicht prüfbar, ob die Bridges selbst (echtes Geld,
-  EK/Funded/FK) in der Zwischenzeit normal weitergelaufen sind oder ob der
-  Rechner die ganze Zeit aus/im Standby war. **Das ist jetzt die vierte
-  Eskalation dieses Funds in Folge ohne Reaktion — fast eine ganze
-  Handelswoche ohne jedes Lebenszeichen vom Rechner. Bitte dringend
-  nachschauen, ob der Rechner/die Task-Scheduler-Aufgaben noch laufen.**
-
-- **Dieselbe Watchdog-Lücke läuft weiter — jetzt ~96 h, und das war der
-  letzte Werktags-Lauf dieses Monitors vor dem Wochenende** (gefunden 06.11.
-  abends durch den Cloud-Monitor, dieser Lauf, ca. 21:12 UTC / 22:12 lokal).
-  Immer noch derselbe letzte Commit `c32b8d9` von `2026-11-02 22:07:48
-  +0100` — seitdem weiterhin **kein einziger** neuer `Bridge-Watchdog`-,
-  `FK Instant Funding Bot`- oder `OU-Modell Scanner`-Commit, auch der
-  15:xx-Lauf heute hat nichts Neues gefunden. Der im Repo sichtbare
-  Snapshot-Inhalt ist weiterhin exakt derselbe wie bei allen Funden seit
-  03.11. — keine neue Information über den Zustand der Bridges selbst.
-  Fünf normale Handelstage in Folge (Mo 02.11. ab 22 Uhr bis Fr 06.11. Abend)
-  ohne jedes Lebenszeichen vom Rechner. **Wichtig wegen des Timings: dieser
-  Monitor läuft nur werktags (9/15/21 Uhr UTC) — der nächste automatische
-  Check ist erst Montag 09:10 UTC. Wenn der Rechner übers Wochenende
-  weiterhin aus/im Standby bleibt, bekommst du bis Montagvormittag von hier
-  aus KEINE weitere Meldung mehr, egal was mit EK/Funded/FK in der
-  Zwischenzeit passiert. Das ist jetzt die fünfte Eskalation dieses Funds
-  ohne Reaktion — bitte vor dem Wochenende kurz nachschauen, ob der Rechner
-  läuft, damit die Live-Bots (echtes Geld) nicht unbeobachtet übers
-  Wochenende laufen.**
-
-### Offene Aufgaben
-
-- **Lücken Makro-Datenschicht für Schritt 7 (A2)** (30.10.). 2-jährige Renditen für GB, JP,
-  CH, AU, CA, NZ; aktuelle Kern-/Dienste-Inflation für JP, CH, CA; US-Dienste-Inflation.
-  Stand: `python -m fusion_lab.macro_data --coverage`.
 - **EK-CTNL: Live-Trades ohne Gegenstück in der Simulation** (gefunden 28.10., geprüft 30.10.).
   01.–23.10.: 7 echte Trades, 3 in der neu gerechneten Tickmill-Simulation, nur 1 gemeinsam.
   Gates und Deckel (1) sind in Bridge und Simulation gleich. Wahrscheinlichste Ursache: Live
   rechnete auf den verfälschten Lake-Kerzen (Eintrag „Data Lake“ oben), je Trade aber nicht mehr
   belegbar. **Nächster Schritt:** Ab der Lake-Reparatur (30.10.) Ist gegen Simulation neu
   vergleichen. Bleibt die Lücke ab etwa 20 Trades bestehen, ist die Lake-Erklärung falsch. Hoch.
+
 - **Forward-Auswertung der zwei Skill-Filter am 31.03.2027** (oder früher, wenn die
   Mindestzahl an Trades erreicht ist): `unseal("forward")` für
   `orb_skill_filter_20261028` (ORB-H1) und `ctnl_skill_filter_20261028`
@@ -725,18 +391,16 @@ Bedarf vor generischem Aufräumen.
   8x, gold_asb 4x, trend_pullback 4x, ctnl 2x (von 483 Läufen). Er trifft
   mehrere Beine, die Ursache liegt also vermutlich in gemeinsam genutzten Daten
   (Lake-Spalte als Text?). Ursache suchen. Mittel.
-
-- **FK SP500 „Invalid stops“: behoben 2026-09-17** (SL aufs Tick-Raster).
-  Nur noch: ersten echten SP500-Entry im FK-Log gegenlesen, dann Punkt löschen.
-  **Stand 2026-09-23: noch kein Gegenbeweis moeglich** -- letzter Fehlschlag
-  16.09. 15:53, seit dem Fix ist schlicht kein SP500-Signal mehr aufgetreten
-  (21./22.09. beide `filtered_out (Bias 1.0)`). Punkt bleibt bis zum ersten
-  echten Entry offen.
+  **10.11.:** tritt nur im Live-Fallback (Lake veraltet) auf, v.a. montags 00:04–00:09 und bei Ingest-
+  Ausfällen; historisch nicht reproduzierbar, Verdacht Dukascopy-Bibliothek bei `end` nahe jetzt.
+  Diagnose live seit `f95f3c8e`: `_retry` schreibt den vollen Traceback („str/float-Diagnose“) ins
+  Task-Log. Nach dem nächsten Montag auswerten.
 
 - **CLS-Bein auf Bewährung: Prüfung nach 30 Live-Trades** (Kriterium festgelegt
   2026-09-17, Nutzerentscheid). Dann: Live-Ø R < 0 oder außerhalb des
   Monte-Carlo-Bands → pausieren. Hintergrund: Edge real, CAGR nur 0,78 %
   (`projects/cls-practical-kostenvalidierung.md` Befund 7).
+
 - **Mindest-Stopabstand für weitere Beine: zurückgestellt bis nach den
   Kosten-Checks je Bein** (Nutzerentscheid 2026-09-17). Kandidat vor allem
   CTNL; für Tagessignale wie OU nicht sinnvoll. Bis dahin begrenzen nur
@@ -777,6 +441,7 @@ Bedarf vor generischem Aufräumen.
   **Rückfall 20.10. (Weekly KW43, Ursache vom Nutzer bestätigt 28.10.):** Akku leer,
   13:50–21:03 lief keine Bridge. Verpasst: ORB SP500 (Soll +5,97 R) und NASDAQ
   (−1,02 R), grob +1.500 USD auf Funded+FK. Spricht für den VPS (Ideen-Inbox 19.10.).
+
 - **Report-Werkzeuge härten** (Weekly KW42, 18.10.). Niedrig.
   (a) `mt5_pull.py`: bei 0 Deals und offenen Positionen warten und
   wiederholen (kaltes Terminal); FK-Terminal mit `/portable` starten wie
@@ -785,35 +450,31 @@ Bedarf vor generischem Aufräumen.
   die Ampel blieb auf dem Stand 16.10.
   **01.11. wieder:** zwei Läufe abgebrochen (50 und 60 Min.), Ampel im Weekly KW44 auf dem Stand 27.10.
   (c) `soll_ist.py`: `ctnl_continuation` und `orb_us30` zählen im Soll, obwohl stillgelegt bzw. pausiert.
+
 - **CTNL E1 + E4 (Research):** E1 `spread_bps` 8,0 → gemessen 0,53-2,01,
   broker-getrennt (steht im Code weiter auf 8,0); danach E4 Risikokalibrierung
   über die volle Historie. E2/E3 erledigt. Details
   `projects/ctnl-kostenvalidierung.md`.
+
 - **CTNL-Kill-Switch-Schwelle neu kalibrieren** (Nutzerentscheid 04.10.): die
   −6,6 %/−3,3 % stammen von der ungefilterten Strategie; auf dem heute
   gehandelten Satz (Ribbon + Spike-Filter) neu ziehen. Research-Auftrag, gilt
   für alle drei Bridges.
 
 **Mittel**
+
+- **Watchdog-Push-Stau ≠ Rechner aus** (10.11.): Offene Session-Arbeit im Working Tree blockiert den
+  Snapshot-Push. Der Cloud-Monitor meldet dann „Lücke“, obwohl alles läuft (02.–08.11. und ab 09.11.).
+  Vorschlag: Der Watchdog committet `bridge_status/` auch bei offenem Tree auf einen eigenen Branch,
+  oder der Monitor prüft den Zeitstempel im Snapshot statt den Commit. Mittel.
+
 - **14 unverarbeitete Clippings** in `knowledge/Clippings/` (Lint 02.11.,
   unveraendert seit 2026-09-09) — u.a. Edge-Genesis/-Decay,
   Risk-Factor-Investing, Sektor-Rotation, "Six Repos One System", "How
   system works" — noch nicht durch den CODE-Prozess.
 
 **Niedrig**
-- **Second-Brain-Lint 09.11.: zwei isolierte tote Wikilinks ohne weitere
-  Bedeutung** in `resources/regime-bestimmung-und-filter.md` (Abschnitt 2):
-  `[[residual-edge-gold-traegt-orb-ou-nicht]]` (Zeile 39, Beleg für den
-  Gold-Zinskurven-Befund) und `[[daily-edge-typ-r-ohne-makro-kein-edge]]`
-  (Zeile 40, Verweis auf den bereits im Dashboard unter „Als Nächstes"
-  erwähnten Daily-Edge-Befund vom 02.11.). Beide je nur einmal referenziert,
-  keine Notiz existiert dazu. Kein Entscheidungsbedarf erkennbar, nur
-  Aufräumen (Notiz anlegen oder Link entfernen).
-- **Verwaiste Seite ohne eingehende Links:**
-  `projects/gold-asb-liquiditaetsfilter-vorgriff.md` (Lint 09.11.) — inhaltlich
-  passt sie zum offenen Bestätigungspunkt „Gold ASB 03.11. live..." oben
-  (Liquiditätsfilter-Lookahead-Fix), aber nichts verlinkt sie bisher. Bei
-  Gelegenheit von dort aus verlinken.
+
 - **Statustabelle: 9 "Zuletzt geprüft"-Zeilen über 21 Tage alt** (Lint
   09.11., Schwelle 21 Tage): `FK-Instant-Funding-Paper` (57 Tage),
   `OU-Modell-ScannerHourly` (68 Tage), `Forex-Weekly-Report` (55 Tage),
@@ -935,6 +596,12 @@ Statustabellen-Zeilen, neu über der Schwelle: `G8-Notion-Sync`
 - (09.11.) **E-Book Remy King „Top 1 %" ausgewertet**: kein belegter Edge, 11 Kandidaten-Bausteine in
   [[remy-king-trading-strategie-top1]]. Vorschlag: Währungs-Netto-Exposure-Deckel über alle Beine
   (ohne Test), Zinsdifferenz-Fair-Value + Carry-Korb nach dem 2J-Loader, FVG mechanisch sofort testbar.
+  **10.11.:** A1 Fair Value verworfen (IS t 1,08). **A2 Carry als Baustein festgehalten** (IS Sharpe 0,47,
+  t 1,75 – allein zu schwach, Nutzer will ihn später kombinieren; OOS versiegelt, Kombinationen zählen im
+  Lock `remy_a2_carry`). A3 Konsens-Drift läuft (ForexFactory-Historie ab 2007 lädt).
+  **Kombis K1–K4 (neue Regel, OOS frei):** Carry im OOS 2017–05/2026 negativ (Sharpe −0,18); bester Zusatz
+  COT-Crowding (IS t 2,60, OOS-DD −28 → −21 %), bleibt aber negativ → Carry nur noch als Veto-Schicht
+  „nicht in überfüllten Carry-Trade“.
 
 - (02.11.) **Profitables LTF-/Scalping-Edge aus dem eigenen Trading** (Nutzerwunsch).
   **Konkret seit 02.11.:** Nutzer will die Daily-Continuation (Typ C) als Validierung für einen

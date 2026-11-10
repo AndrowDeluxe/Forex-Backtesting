@@ -1,0 +1,14 @@
+{
+  "strategy": "remy_a2_carry",
+  "split": {
+    "is_start": "2003-01-01",
+    "is_end": "2016-12-31",
+    "oos_end": "2026-05-09",
+    "tresor_end": "2026-11-09"
+  },
+  "registered": "2026-11-10T00:04:35+00:00",
+  "trials": 14,
+  "frozen": null,
+  "unsealed": {},
+  "forward": null
+}

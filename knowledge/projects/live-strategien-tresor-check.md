@@ -44,7 +44,7 @@ Zerlegung der Live-Konfiguration (Research-Simulator, nur 1. Trade je Tag):
 | US30, neutrale Tage (gehandelt) | +0,60 | +0,14 | **−0,53** |
 | Nasdaq, neutral / mit Trend / gegen Trend (alle gehandelt) | +0,83 / +0,21 / −0,59 | +0,84 / +0,14 / −0,38 | +0,70 / +1,75 / −1,07 |
 
-1. **S&P:** derselbe Kipp wie bei der IS-only-ORB ([[orb-ribbon-filter-kippt-2026]]):
+1. **S&P:** derselbe Kipp wie bei der IS-only-ORB (`memory/orb_ribbon_filter_kippt_2026.md`):
    neutrale Tage verlieren ihren Vorteil, Trend-Tage werden besser. Dazu verschwindet
    das Umkehr-Muster über Tage (Kauf nach einem Minus-Tag), passend zum marktweiten
    Wechsel Umkehr → Fortsetzung ([[orb-gegenprobe-oel]]).

@@ -10,6 +10,12 @@ ausgewaehlt wurde). Kurzform:
    die Deflated-Sharpe-Korrektur (`deflated_sharpe`).
 4. Gewinner einfrieren (`freeze`), erst dann `unseal("oos")`, danach
    `unseal("tresor")`. Jede Stufe genau einmal; ein zweites Oeffnen bricht ab.
+   SEIT 2026-11-10 (Nutzerentscheid): OOS ist frei -- `oos_only(...)` zeigt das OOS
+   jederzeit, auch vor `freeze` und beliebig oft (jeder Blick wird protokolliert).
+   Versuche weiter zaehlen, aber nur als Info fuer die DSR. Einmalig bleibt nur der
+   Tresor (`freeze` + `unseal("tresor")`, kein OOS-Unseal mehr noetig). Tresor fuer
+   neue Splits = letzte 6 Monate; `move_tresor_start` verschiebt die Grenze, solange
+   der Tresor zu ist.
 5. Optional (seit 2026-10-18): ein Blindtest-Zeitraum VOR dem IS (`register_blind`,
    vor dem Einfrieren), wenn OOS/Tresor einer Strategie schon verbraucht sind.
    `unseal("blind")` nach `freeze`, genau einmal, unabhaengig von OOS/Tresor.
@@ -92,6 +98,21 @@ class Lock:
         self._log("register_split", **split)
         return state
 
+    def move_tresor_start(self, oos_end: str) -> dict:
+        """Grenze OOS/Tresor verschieben (Regel 2026-11-10: Tresor 6 statt 12 Monate).
+        Nur solange der Tresor zu ist; IS-Ende und Tresor-Ende bleiben unveraendert."""
+        state = self._load()
+        if "tresor" in state["unsealed"]:
+            raise LockError(f"{self.strategy}: Tresor wurde bereits geoeffnet -- Grenze fest")
+        s = state["split"]
+        if not (pd.Timestamp(s["is_end"]) < pd.Timestamp(oos_end) < pd.Timestamp(s["tresor_end"])):
+            raise LockError(f"{self.strategy}: oos_end {oos_end} liegt nicht zwischen IS-Ende und Tresor-Ende")
+        old = s["oos_end"]
+        s["oos_end"] = oos_end
+        self._save(state)
+        self._log("move_tresor_start", old=old, new=oos_end)
+        return state
+
     def register_forward(self, start: str, eval_date: str, min_trades: int) -> dict:
         """Echter blinder Test auf Live-/Forward-Daten ab `start`. Oeffnen erst,
         wenn `min_trades` erreicht sind ODER `eval_date` erreicht ist -- vorab
@@ -157,6 +178,16 @@ class Lock:
         s = self.split
         return self._slice(obj, s["is_start"], s["is_end"])
 
+    def oos_only(self, obj):
+        """OOS frei ansehen (Regel seit 2026-11-10), ohne freeze, beliebig oft."""
+        state = self._load()
+        if state.get("oos_skipped"):
+            raise LockError(f"{self.strategy}: OOS gesperrt -- {state['oos_skipped']}")
+        self._log("oos_view")
+        s = state["split"]
+        start = (pd.Timestamp(s["is_end"]) + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
+        return self._slice(obj, start, s["oos_end"])
+
     # --- 3. Trial-Register -------------------------------------------------
     def log_trials(self, n: int, note: str = "") -> int:
         state = self._load()
@@ -196,8 +227,6 @@ class Lock:
             raise LockError(f"{self.strategy}: Hash passt nicht zur eingefrorenen Konfiguration")
         if stage in ("oos", "tresor") and state.get("oos_skipped"):
             raise LockError(f"{self.strategy}: OOS/Tresor gesperrt -- {state['oos_skipped']}")
-        if stage == "tresor" and "oos" not in state["unsealed"]:
-            raise LockError(f"{self.strategy}: Tresor erst nach OOS")
         if stage in state["unsealed"]:
             raise LockError(f"{self.strategy}: {stage} wurde bereits am {state['unsealed'][stage]} geoeffnet")
         if stage == "blind" and state.get("blind") is None:

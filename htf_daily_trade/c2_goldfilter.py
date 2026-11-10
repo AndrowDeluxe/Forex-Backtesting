@@ -65,6 +65,7 @@ def show(title: str, t: pd.DataFrame, n_trials: int | None = None) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--oeffnen", action="store_true")
+    ap.add_argument("--stufen", default="oos,blind", help="z. B. 'oos' -- Blind bleibt dann versiegelt")
     a = ap.parse_args()
     lock = Lock("htf_daily_trade_c")
     if lock.trials < 155:
@@ -77,6 +78,8 @@ def main() -> None:
         return
     h = lock.freeze(CONFIG)
     for stage, warm in (("oos", "2021-01-01"), ("blind", "2009-01-01")):
+        if stage not in a.stufen.split(","):
+            continue
         start, end = lock.unseal(stage, h)
         t = evaluate(start, end, warm)
         show(f"{stage.upper()} {start}..{end} (eingefroren {h[:8]})", t)

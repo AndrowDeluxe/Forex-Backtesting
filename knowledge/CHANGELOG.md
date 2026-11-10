@@ -9,6 +9,95 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-10** [FK / Funded / Dashboard] **Runde 3** (Nutzeraufträge).
+  - **FK gold_silver handelbar gemacht** (`ce42e5ef`): `_scan_gold_silver(forming_bar=True)` hängt die laufende
+    H4-Kerze als Platzhalter an (Eröffnung = letzter Schluss, Spanne = letzte ATR → ATR unverändert). Vorher war
+    jedes Signal ≥ 240 Min. alt (Grenze 150), das Bein hat seit 04.10. nie gehandelt. Nachgespielt 06.11.: Trade
+    jetzt 74 Min. nach Signalschluss sichtbar statt 254, Risiko 78,5 $ (ATR Signalkerze, wie MT5-Bot) statt 82,6 $
+    (Backtest nimmt die ATR der Einstiegskerze). FK-`run_once.py` Zeile 1613 umgestellt, Backup
+    `_backup_20261110_gold_silver/`. 2 neue Tests, Suite 186 grün. **Wirkt live auf FK.**
+  - **str/float-Diagnose** (`f95f3c8e`): `_retry` in challenge/fk `paper_bot.py` schreibt beim TypeError den
+    vollen Traceback ins Task-Log. Nur Logging.
+  - **Verwaiste `placed`-Einträge bereinigt**: 37 Einträge (FK 24, IQ 6, TTP 7) per Broker-Abgleich auf `closed`,
+    Sicherung `*.bak_20261110_placed`. Offen beim Broker: TTP STT/QCOM/SYY/OXY, EK SYY/OXY/gold_silver.
+    FLEX/UAL waren schon zu.
+  - **Dashboard auf Fokus umgebaut** (Nutzerentscheid): oben nur Inventur/Dachprojekt/Makro-Agent, 30 Punkte
+    nach „🧊 Geparkt: Betrieb & Nebenthemen“. CLAUDE.md Regel 8 (nach Entscheidung Dashboard durchsuchen) und
+    Regel 9 (Fokus-Regel). Ausfall-Ersatz-Text korrigiert (bleibt aus, Nutzer 10.11.).
+
+- **2026-11-10** [Research / Regel] **Overfitting-Sperre gelockert** (Nutzerentscheid): OOS frei ansehbar
+  (`Lock.oos_only`, protokolliert), Tresor = letzte **6 Monate** und weiter einmalig (`freeze` +
+  `unseal("tresor")`, kein OOS-Unseal mehr nötig), Versuche zählen nur als DSR-Info. Strenge Regeln gelten
+  für aktive Filter/Bestandteile. `research_lock.py` (+ `move_tresor_start`), Tests 17/17 grün, CLAUDE.md
+  und [[overfitting-sperre]] angepasst. Bestehende Sperren behalten ihren Split.
+
+- **2026-11-10** [Research] **Remy-King-Kandidaten getestet** ([[remy-king-trading-strategie-top1]]):
+  A1 Zinsdifferenz-Fair-Value verworfen (IS t 1,08); A2 Carry IS Sharpe 0,47 / OOS −0,18; Kombis K1–K4
+  (Typ R in Carry-Richtung, Regimekarte, COT, Zinskurve): nur COT-Crowding hebt IS (t 2,60) und senkt den
+  OOS-Drawdown, OOS bleibt negativ. Neue Daten: `data_cache/remy/` (Zins-Langhistorie ab 2003, Legacy-COT
+  ab 2000, H1 FX ab 2007). A3 Konsens-Drift: ForexFactory-Historie lädt. Keine Bot-Änderung.
+
+- **2026-11-10** [Dashboard / Knowledge] **Abbau Runde 2** (Nutzerantworten). Gelöscht: 8 Annahmen ohne
+  Einfluss aufs Urteil (K4b, Mikrostruktur ×2, Key-Level ×2, ORB-Öl, Dachprojekt, Valkyrie, FK-Gewichtung 03.10.),
+  KW44-Lesarten (Nutzer: SL von Hand gezogen, am 26./27.10. unterwegs), NASDAQ-Teilschließung 05.11. (Nutzer:
+  händisch, emotional, Einzelfall), Axi-Position 6059496 (längst geschlossen). Neuer Unterabschnitt „⏳ Wartet
+  auf Themen-Session“ mit 7 Research-Lesarten. Lint: 7 Memory-Wikilinks in 4 Notizen nach der README-Regel
+  vom 17.09. auf Backtick-Pfade `memory/….md` umgestellt, Lint jetzt ohne echte tote Links/Waisen.
+  Nutzerentscheid OU: STT/FLEX/UAL bei US-Börsenöffnung schließen (noch nicht ausgeführt).
+  Befund: FK gold_silver kann strukturell nie einsteigen (Lake-H4 nur abgeschlossene Bars → Signal ≥240 Min.
+  alt, Grenze 150). Keine Bot-Änderung.
+
+- **2026-11-10** [Dashboard] **Abbau „Braucht deine Bestätigung“, Block A: 17 Einträge gelöscht** (Nutzer
+  bestätigt). In Logs geprüft: Watchdog-Lücken 02.–06.11. und 09.11. waren Push-Stau, kein Ausfall
+  (7 Einträge, ersetzt durch Aufgabe „Watchdog-Push-Stau ≠ Rechner aus“); ORB-Umstellung 05.10. und
+  Gold-ASB-Stop-Order laufen; CTNL-Gate, Spike-Filter, Kill-Switch belegt; TTP-Risiko Gold ASB 595,76 $ /
+  OU 49,25 $ wie geplant; FK SP500 entert wieder (06./09.11.); CTNL-Broker-TP auf EK getroffen (07.10.);
+  ORB-IS-only-Frage seit 16.10. entschieden. Vorher die fertige 09.11.-Arbeit committet (`fc60e1f2`)
+  und origin gemergt. Keine Bot-Änderung.
+
+- **2026-11-10** [Dachprojekt / Makro-Agent] **Datenschicht: 2J- und 10J-Renditen täglich für alle G8**
+  (Handoff 08.11., nächster Schritt). `fusion_lab/macro_data/sources.py`: JP über MoF, CA über BoC
+  Valet, CH über SNB `rendeiduebd` (~10 Tage Verzug), AU über DBnomics-Spiegel RBA F2 (RBA blockt),
+  GB/NZ über TradingView (BoE 2J nur als xlsx, RBNZ blockt). Neue Jobs `renditen_*` laufen im Task
+  „Makro-Daten“ automatisch mit. Die monatlichen OECD-10J-Reihen (FRED, seit 09/2026 still) entfernt,
+  846 Altzeilen aus `macro.parquet` gelöscht (Sicherung `macro.parquet.bak_20261110`). TVC gegen
+  amtlich abgeglichen: US/JP/CA Tages-Korrelation 0,90–0,96. 4 neue Tests. Keine Bot-Änderung.
+
+- **2026-11-10** [Dachprojekt / HTF-Edge] **C2 + Zins-Momentum + Regime-Matrix: Blind 2010–15 geöffnet**
+  (Nutzerfreigabe, Lock `htf_daily_trade_c2_filter`, `aea4189b`): n 70, +0,253 R, t 1,07 (Basis +0,079 R).
+  Gesamt 2010–24 n 195, +0,495 R, t 3,34, 13/15 Jahre positiv. Filter verbessert die Basis in allen drei
+  Zeiträumen; Markt-Rangfolge wechselt (USDJPY im Blind −0,58). Nächster Schritt Forward.
+  `c2_filter_overlap.py` neu `--stufe blind`. Keine Bot-Änderung.
+
+- **2026-11-10** [Makro-Daten] **2y/10y-Renditen ab 2009 nachgeladen** (für den Blindtest).
+  `python -m fusion_lab.macro_data --start 2009-01-01 --only …` (neu `--start`: einmaliges Nachladen,
+  schreibt `last_run.json` nicht). US/EA/GB/JP ab 2009; AU: RBA/DBnomics erst ab 2013, darum neue
+  Reihe `AU.2y_tvc` (TradingView AU02Y, ab 2007) im Job `renditen_gb_nz`, **läuft damit auch im
+  täglichen Makro-Daten-Task**; `zins_fx.py` nutzt sie nur vor dem ersten RBA-Wert. TVC-Abruf holt
+  Bars passend zu `START`.
+
+- **2026-11-10** [Dachprojekt / HTF-Edge] **C2 × Makro-Filter: Zins-Momentum + Regime-Matrix trägt im
+  OOS** (Nutzerauftrag, Plan freigegeben). Neu `fusion_lab/filters/zins_fx.py` (Zins-Momentum + Carry je
+  Markt, Test `tests/test_zins_fx.py`) und `htf_daily_trade/c2_filter_overlap.py`. Vier Filter, alle 19
+  Kombinationen im IS; Nutzerwahl F1+F3, Lock `htf_daily_trade_c2_filter` (Hash `aea4189b`, 2 Versuche).
+  IS n 80, +0,70 R, t 2,88; **OOS 2022–24 n 45, +0,50 R, t 1,68, PF 1,96** (Basis +0,13 R). USDJPY trägt
+  den Großteil. **Nutzerentscheid: Abweichung von der Overfitting-Sperre nur für diesen Test**: Varianten
+  nicht gezählt (nur finale Faktoren), OOS trotz Basis-OOS als nicht vorbelastet. Blind 2010–15
+  versiegelt. [[htf-daily-trade-edge-card]]. Keine Bot-Änderung.
+
+- **2026-11-10** [Dachprojekt / Inventur] **Inventur-Entwurf vom Nutzer im Grundsatz bestätigt.** Ergänzungen:
+  Setups = die ~15 Strategievarianten unter OneNote „Meine Trading Edges“ (18 Seiten, 3 leer); Confis
+  sind Zusatzbestätigungen; Risiko/Management als Basis ok; Makro-Wissen zusätzlich in SMH Calls
+  (151 Seiten), Zusatzeducation (11), Makro Education (38), Elite (195), Incentive (77).
+  [[persoenlicher-tradingplan-validierung]].
+
+- **2026-11-10** [Dachprojekt / HTF-Edge] **C2 + Gold-Filter eingefroren, OOS 2022–24 geöffnet: kein
+  bestätigter Edge** (Nutzerfreigabe; Lock `htf_daily_trade_c`, Hash `ff93efd9`, 155 Versuche). OOS 138
+  Trades, Ø +0,127 R, t 0,88, PF 1,21 (IS war +0,209 R, t 1,81); Markt-Rangfolge kippt. Vorab-Kriterium
+  t > 2 war schon im IS verfehlt, Einfrieren trotzdem auf Nutzerwunsch. Blind 2010–15 bleibt versiegelt.
+  `htf_daily_trade/c2_goldfilter.py` neu `--stufen` (öffnet nur die genannten Stufen).
+  [[htf-daily-trade-edge-card]]. Keine Bot-Änderung.
+
 - **2026-11-08** [Dachprojekt / Makro-Agent / Reports] **Leitlinie „Gegenwährung wählen“ + Makro-Wochenprüfung im Weekly Report** (Nutzerentscheid). [[makro-agent-report-pruefung]]: Rohstoff- vs. Hafenvergleich (Stärke aus Zinsen + Angst nur gegen AUD/NZD/CAD, Rohstoff-Schalter je Währung, gleiche Treiber = ein Risiko), Einzeltrade-Raster Dafür/Dagegen/Bündelung/Timing/Wertung; Regel 6 in [[makro-wirkketten-und-regeln]]. `scripts/reports/weekly_report_prompt.md` neuer Abschnitt 4c: füllt wöchentlich die Nachprüftabelle (vorwärts, Agent vs. Dennis). Nachtrag 4c in KW45-Education (PDF nicht neu erzeugt). Keine Bot-Änderung.
 
 - **2026-11-08** [Dachprojekt / Makro-Agent] **Vorlage für den Makro-Agent-Report festgehalten** (Nutzerentscheid: „Genau so soll der Makro Agent später arbeiten“). Neue Notiz [[makro-agent-report-pruefung]]: sechs Schritte (Quelle → Faktencheck gegen Lake/Web → Widersprüche → Gewichtung gegen eigene Evidenz → Trades → Mentor-Chart + TradingView-Alarme), festes Ausgabeformat, erstes Beispiel = Prüfung der SMT-Reports vom 08.11. (Macro-Report + Sonderreport Dollar) inkl. Dennis' DXY-Pfad und EUR/USD-Short (1,1192/1,1244/1,1000) und Nachprüftabelle für Fr 13.11. Telegram-Kanal „SMH Daily Update“ aktualisiert. Keine Bot-Änderung.

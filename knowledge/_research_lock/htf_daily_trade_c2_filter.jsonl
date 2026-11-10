@@ -1,0 +1,6 @@
+{"ts": "2026-11-10T00:32:12+00:00", "event": "register_split", "is_start": "2016-01-01", "is_end": "2021-12-31", "oos_end": "2024-12-31", "tresor_end": null}
+{"ts": "2026-11-10T00:32:12+00:00", "event": "register_blind", "start": "2010-01-01", "end": "2015-12-31"}
+{"ts": "2026-11-10T00:32:12+00:00", "event": "trials", "n": 2, "total": 2, "note": "C2 + F1+F3; Nutzerregel 10.11.: nur finale Faktoren zaehlen (19 Kombinationen im IS angesehen)"}
+{"ts": "2026-11-10T00:32:12+00:00", "event": "freeze", "hash": "aea4189bbd443fcbbbccc9a62a646ea1f82e2f58368a086d071c45792364981f"}
+{"ts": "2026-11-10T00:32:12+00:00", "event": "unseal", "stage": "oos", "hash": "aea4189bbd443fcbbbccc9a62a646ea1f82e2f58368a086d071c45792364981f"}
+{"ts": "2026-11-10T01:03:43+00:00", "event": "unseal", "stage": "blind", "hash": "aea4189bbd443fcbbbccc9a62a646ea1f82e2f58368a086d071c45792364981f"}

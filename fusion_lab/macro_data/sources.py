@@ -33,12 +33,9 @@ FRED = {
     "US.unemployment": "UNRATE", "US.payrolls": "PAYEMS", "US.gdp_real": "GDPC1",
     "US.retail_sales": "RSAFS", "US.trade_balance": "BOPGSTB",
     "EA.ecb_deposit": "ECBDFR",
-    "GB.3m": "IR3TIB01GBM156N", "GB.10y": "IRLTLT01GBM156N",
-    "JP.3m": "IR3TIB01JPM156N", "JP.10y": "IRLTLT01JPM156N",
-    "CH.3m": "IR3TIB01CHM156N", "CH.10y": "IRLTLT01CHM156N",
-    "AU.3m": "IR3TIB01AUM156N", "AU.10y": "IRLTLT01AUM156N",
-    "CA.3m": "IR3TIB01CAM156N", "CA.10y": "IRLTLT01CAM156N",
-    "NZ.3m": "IR3TIB01NZM156N", "NZ.10y": "IRLTLT01NZM156N",
+    # 10y ausserhalb US/EA kommt taeglich aus fetch_yields_*; die OECD-Monatsreihen stehen seit 09/2026 still
+    "GB.3m": "IR3TIB01GBM156N", "JP.3m": "IR3TIB01JPM156N", "CH.3m": "IR3TIB01CHM156N",
+    "AU.3m": "IR3TIB01AUM156N", "CA.3m": "IR3TIB01CAM156N", "NZ.3m": "IR3TIB01NZM156N",
     "GB.exports": "XTEXVA01GBM667S", "JP.exports": "XTEXVA01JPM667S", "CH.exports": "XTEXVA01CHM667S",
     "AU.exports": "XTEXVA01AUM667S", "CA.exports": "XTEXVA01CAM667S", "NZ.exports": "XTEXVA01NZM667S",
     "GB.trade_balance": "XTNTVA01GBM667S", "JP.trade_balance": "XTNTVA01JPM667S",
@@ -48,6 +45,18 @@ FRED = {
     "MKT.nfci": "NFCI", "MKT.usd_broad": "DTWEXBGS", "MKT.wti": "DCOILWTICO",
 }
 ECB_YIELDS = {"EA.2y": "SR_2Y", "EA.10y": "SR_10Y"}
+# Staatsanleihen-Renditen je Land, gepruefter Stand 10.11.2026 (Verzug in Klammern):
+# MoF Japan (1-3 Tage), BoC Valet (1 Tag), SNB rendeiduebd (woechentlich, ~10 Tage),
+# RBA F2 ueber DBnomics (RBA selbst blockt mit 403, ~4 Tage). GB/NZ ueber TradingView:
+# BoE hat 2y nur als Excel-Kurve, RBNZ blockt automatisierte Abrufe.
+MOF_URL = "https://www.mof.go.jp/english/policy/jgbs/reference/interest_rate"
+MOF_YIELDS = {"JP.2y": "2Y", "JP.10y": "10Y"}
+BOC_YIELDS = {"CA.2y": "BD.CDN.2YR.DQ.YLD", "CA.10y": "BD.CDN.10YR.DQ.YLD"}
+SNB_YIELDS = {"CH.2y": "2J", "CH.10y": "10J"}
+RBA_YIELDS = {"AU.2y": "FCMYGBAG2D", "AU.10y": "FCMYGBAG10D"}
+TVC_YIELDS = {"GB.2y": "GB02Y", "GB.10y": "GB10Y", "NZ.2y": "NZ02Y", "NZ.10y": "NZ10Y",
+              # RBA (auch DBnomics F2.1) erst ab 2013; eigene Reihe als Historie, kein Ersatz fuer AU.2y
+              "AU.2y_tvc": "AU02Y"}
 EUROSTAT_API = "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data"
 # Zusammensetzung aendert sich: une_rt_m fuehrt EA21 (EA/EA20 leer), prc_hicp_manr endet 2025
 # und wird von prc_hicp_minr abgeloest. Reihenfolge wichtig: das Spaetere gewinnt bei Ueberlappung.
@@ -171,6 +180,104 @@ def fetch_ecb() -> pd.DataFrame:
         df = pd.read_csv(io.StringIO(r.text))
         s = pd.Series(pd.to_numeric(df["OBS_VALUE"], errors="coerce").values, index=pd.to_datetime(df["TIME_PERIOD"]))
         out.append(_long(key, s.dropna()))
+    return pd.concat(out, ignore_index=True)
+
+
+def parse_mof(text: str) -> pd.DataFrame:
+    """JGB-Referenzrenditen: Titelzeile, dann Date,1Y,2Y,...; fehlende Werte als '-'."""
+    df = pd.read_csv(io.StringIO(text), skiprows=1)
+    dates = pd.to_datetime(df["Date"], format="%Y/%m/%d", errors="coerce")
+    out = []
+    for key, col in MOF_YIELDS.items():
+        s = pd.Series(pd.to_numeric(df[col], errors="coerce").values, index=dates)
+        out.append(_long(key, s[s.index.notna()].dropna()))
+    return pd.concat(out, ignore_index=True)
+
+
+def fetch_yields_mof() -> pd.DataFrame:
+    """Historie bis Vormonat + laufender Monat; der laufende gewinnt bei Ueberlappung."""
+    parts = []
+    for name in ("historical/jgbcme_all.csv", "jgbcme.csv"):
+        r = requests.get(f"{MOF_URL}/{name}", timeout=TIMEOUT)
+        r.raise_for_status()
+        parts.append(parse_mof(r.content.decode("latin-1")))
+    df = pd.concat(parts, ignore_index=True).drop_duplicates(["key", "date"], keep="last")
+    return df[df["date"] >= START].reset_index(drop=True)
+
+
+def parse_boc(text: str) -> pd.DataFrame:
+    """Valet-CSV: Kopfteil mit Bedingungen und Reihenbeschreibung, Daten nach "OBSERVATIONS"."""
+    body = text.split('"OBSERVATIONS"', 1)[1]
+    df = pd.read_csv(io.StringIO(body.strip()))
+    out = []
+    for key, series in BOC_YIELDS.items():
+        s = pd.Series(pd.to_numeric(df[series], errors="coerce").values, index=pd.to_datetime(df["date"]))
+        out.append(_long(key, s.dropna()))
+    return pd.concat(out, ignore_index=True)
+
+
+def fetch_yields_boc() -> pd.DataFrame:
+    r = requests.get(f"https://www.bankofcanada.ca/valet/observations/{','.join(BOC_YIELDS.values())}/csv",
+                     params={"start_date": START}, timeout=TIMEOUT)
+    r.raise_for_status()
+    return parse_boc(r.text)
+
+
+def parse_snb(text: str) -> pd.DataFrame:
+    """SNB-Wuerfel rendeiduebd: Date;D0 (Waehrung/Segment);D1 (Laufzeit);Value, zwei Kopfzeilen."""
+    df = pd.read_csv(io.StringIO(text), sep=";", skiprows=3)
+    df = df[df["D0"] == "CHF"]
+    out = []
+    for key, tenor in SNB_YIELDS.items():
+        part = df[df["D1"] == tenor]
+        s = pd.Series(pd.to_numeric(part["Value"], errors="coerce").values, index=pd.to_datetime(part["Date"]))
+        out.append(_long(key, s.dropna()))
+    return pd.concat(out, ignore_index=True)
+
+
+def fetch_yields_snb() -> pd.DataFrame:
+    r = requests.get("https://data.snb.ch/api/cube/rendeiduebd/data/csv/en", params={"fromDate": START},
+                     timeout=TIMEOUT)
+    r.raise_for_status()
+    return parse_snb(r.content.decode("utf-8-sig"))
+
+
+def fetch_yields_rba() -> pd.DataFrame:
+    out = []
+    for key, series in RBA_YIELDS.items():
+        r = requests.get(f"https://api.db.nomics.world/v22/series/RBA/F2/{series}",
+                         params={"observations": 1}, timeout=TIMEOUT)
+        r.raise_for_status()
+        doc = r.json()["series"]["docs"][0]
+        s = pd.Series(pd.to_numeric(pd.Series(doc["value"]), errors="coerce").values,
+                      index=pd.to_datetime(doc["period"]))
+        out.append(_long(key, s[s.index >= START].dropna()))
+    return pd.concat(out, ignore_index=True)
+
+
+def tvc_session_date(index: pd.DatetimeIndex) -> pd.DatetimeIndex:
+    """TradingView stempelt Tagesbars mit dem Sitzungsbeginn in Ortszeit: Asien/Pazifik am Vorabend
+    (NZ02Y 23:00 = Handelstag danach), Europa morgens. +6 h bringt alle auf ihren Handelstag."""
+    return (index + pd.Timedelta(hours=6)).normalize()
+
+
+def fetch_yields_tvc() -> pd.DataFrame:
+    """Letzter Bar ist der laufende Tag; der naechste Lauf speichert den Schlusswert als Revision."""
+    sys.path.insert(0, str(ROOT))
+    from tradingview.data import fetch_ohlcv
+    out = []
+    n_bars = max(3500, len(pd.bdate_range(START, pd.Timestamp.now())) + 50)  # reicht auch fuer --start
+    for key, symbol in TVC_YIELDS.items():
+        for attempt in range(3):  # tvDatafeed verliert ohne Login gelegentlich die Verbindung
+            try:
+                df = fetch_ohlcv(symbol, "TVC", interval="1d", n_bars=n_bars)
+                break
+            except Exception:
+                if attempt == 2:
+                    raise
+        s = pd.Series(df["close"].values, index=tvc_session_date(df.index))
+        s = s[~s.index.duplicated(keep="last")]
+        out.append(_long(key, s[s.index >= START]))
     return pd.concat(out, ignore_index=True)
 
 

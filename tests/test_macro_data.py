@@ -109,3 +109,30 @@ def test_fed_contracts_rolls_over_year():
 def test_period_start_handles_all_frequencies():
     out = sources.period_start(pd.Series(["2026-09", "2026-Q3", "2026-09-14"]))
     assert out.tolist() == [pd.Timestamp("2026-09-01"), pd.Timestamp("2026-07-01"), pd.Timestamp("2026-09-14")]
+
+
+def test_parse_mof_skips_title_and_dashes():
+    text = ("Interest Rate,,,,(Unit : %)\nDate,1Y,2Y,3Y,10Y\n"
+            "1974/9/24,10.3,9.36,8.83,-\n2026/11/5,1.658,1.86,1.953,2.806\n")
+    df = sources.parse_mof(text)
+    assert df[df["key"] == "JP.2y"]["value"].tolist() == [9.36, 1.86]
+    assert df[df["key"] == "JP.10y"]["date"].tolist() == [pd.Timestamp("2026-11-05")]
+
+
+def test_parse_boc_reads_after_observations():
+    text = ('"TERMS AND CONDITIONS"\n"x"\n\n"SERIES"\n"id","label"\n\n"OBSERVATIONS"\n'
+            '"date","BD.CDN.10YR.DQ.YLD","BD.CDN.2YR.DQ.YLD"\n"2026-11-06","3.65","3.12"\n')
+    df = sources.parse_boc(text).set_index("key")
+    assert df.loc["CA.2y", "value"] == 3.12 and df.loc["CA.10y", "value"] == 3.65
+
+
+def test_parse_snb_only_chf_tenors():
+    text = ('"CubeId";"rendeiduebd"\n"PublishingDate";"2026-11-02 14:30"\n\n"Date";"D0";"D1";"Value"\n'
+            '"2026-10-30";"CHF";"2J";"0.238"\n"2026-10-30";"EUR";"2J";"2.1"\n"2026-10-30";"CHF";"10J";"0.505"\n')
+    df = sources.parse_snb(text).set_index("key")
+    assert df.loc["CH.2y", "value"] == 0.238 and df.loc["CH.10y", "value"] == 0.505
+
+
+def test_tvc_session_date_moves_evening_bars_forward():
+    idx = pd.DatetimeIndex(["2026-11-09 23:00", "2026-11-09 08:00", "2026-11-09 12:00"])
+    assert list(sources.tvc_session_date(idx).day) == [10, 9, 9]

@@ -155,8 +155,103 @@ Varianten zählen.
   (z. B. Zahl zustimmender Schichten), so wie im Schichtenmodell schon
   vorgesehen.
 
+## Test-Ergebnisse (10.11.2026, nur IS)
+
+Alle drei Kandidaten unter [[overfitting-sperre]], Splits vorab registriert
+(`knowledge/_research_lock/remy_a*.json`), OOS/Tresor **versiegelt**. Daten:
+Zins-Langhistorie ab 2003 in `data_cache/remy/rates_history.parquet`
+(`scripts/remy_rates_history.py`: BIS-Leitzinsen, FRED, EZB, MoF, BoC, BoE-GLC);
+JP-Leitzins vor 03/2006 = 0,0 gesetzt (BIS-Lücke, Mengensteuerung).
+
+### A2 Carry-Korb → **Baustein „Carry-Signal"** (Nutzer 10.11.: festhalten für Kombinationen)
+
+`scripts/research_remy_a2_carry.py`, IS 2003–2016, 6 Varianten. Monatsende nach
+Leitzins sortieren, long Top-k / short Bottom-k, Kurs + Zinsdifferenz − 1 % p.a.
+Swap-Aufschlag − Spread.
+
+| Variante | Rendite p.a. | Vol p.a. | Sharpe | t | MaxDD | Schiefe |
+|---|---|---|---|---|---|---|
+| k=1, Risk-off an | 5,0 % | 10,7 % | **0,47** | 1,75 | −19 % | −1,0 |
+| k=1, Risk-off aus | 5,0 % | 14,0 % | 0,36 | 1,35 | −27 % | −2,4 |
+| k=2, Risk-off an | 3,5 % | 8,5 % | 0,41 | 1,53 | −22 % | −0,5 |
+| k=3 | ≈ 0 | | 0,03–0,10 | | | |
+
+- DSR 0,81, aber t 1,75 < 2 → nach dem vorab gesetzten Kriterium **kein
+  eigenständiger Edge**; OOS bewusst nicht geöffnet.
+- Inhalt: praktisch AUD/NZD long gegen JPY (CHF) short. Schlechteste IS-Jahre
+  2008 (−6 %), 2015, 2007. Risk-off (halbe Größe bei VIX-Vortag > 21,2 = IS-p75)
+  halbiert die Schiefe und verbessert jede Variante.
+- **Warum Baustein statt Verwerfung:** Die Prämie ist positiv, breit literatur-
+  gestützt und nahezu unabhängig von unseren Intraday-Beinen. Zu schwach allein,
+  aber als **Richtungs-/Größenschicht** kombinierbar, z. B.: Daily-Edge/Typ R
+  nur in Carry-Richtung, Carry × Regimekarte (Risk-on), Carry × COT-Extrem,
+  Carry × Zinskurven-Schicht aus dem Schichtenmodell ([[regime-bestimmung-und-filter]]).
+- **Regel für die Kombination:** Jede Kombination ist eine weitere gezählte
+  Variante im Lock `remy_a2_carry` (Trials steigen → DSR strenger). Erst die
+  fertige Kombination einfrieren, dann OOS einmal öffnen.
+- Wiederverwendbar: `month_end_weights(pr, k)` liefert die Monatsgewichte je
+  Währung (+1/k long, −1/k short, Abstand < 0,25 Pp → flat).
+
+#### Carry-Kombinationen K1–K4 (10.11.2026, IS + OOS nach neuer Regel)
+
+`scripts/research_remy_carry_combos.py`. Neue Sperr-Regel (OOS frei, Tresor 6 Monate,
+siehe [[overfitting-sperre]]); Lock-Grenze OOS/Tresor auf 09.05.2026 verschoben.
+OOS = 2017-01-01 … 2026-05-09. Versuche im Lock: 14.
+
+| Variante | aktiv (IS) | IS Rend. p.a. | IS Sharpe | IS t | IS DSR | OOS Rend. p.a. | OOS Sharpe | OOS MaxDD |
+|---|---|---|---|---|---|---|---|---|
+| Carry Basis (k=1, Risk-off) | 100 % | 5 % | 0,47 | 1,75 | 0,87 | −1 % | **−0,18** | −28 % |
+| K2 Wachstum fällt → halb | 93 % | 4 % | 0,44 | 1,65 | 0,84 | −1 % | −0,19 | −29 % |
+| K2 Wachstum fällt → flat | 93 % | 4 % | 0,40 | 1,49 | 0,80 | −1 % | −0,21 | −30 % |
+| K3 COT überfüllt → halb | 72 % | 6 % | 0,60 | 2,24 | 0,94 | −1 % | −0,18 | −24 % |
+| **K3 COT überfüllt → flat** | 72 % | 6 % | **0,69** | **2,60** | 0,97 | −1 % | −0,17 | **−21 %** |
+| K4 Deflation → halb | 88 % | 5 % | 0,51 | 1,93 | 0,90 | −1 % | −0,17 | −29 % |
+| K4 Deflation → flat | 88 % | 5 % | 0,54 | 2,05 | 0,92 | −1 % | −0,16 | −29 % |
+
+- **Carry selbst kippt im OOS** (Sharpe 0,47 → −0,18). Schwerstes Jahr 2022 (−11,6 %,
+  Zinswende: NZD long fiel mit), bestes 2023 (+11,8 %). Deckt sich mit der Literatur:
+  G10-Carry war nach 2008 rund ein Jahrzehnt flach bis negativ.
+- **COT-Filter (K3)** ist der einzige Zusatz, der IS deutlich hebt (t 1,75 → 2,60,
+  DSR 0,97) und im OOS den Drawdown senkt (−28 → −21 %), aber das OOS bleibt negativ.
+  Hilft gegen Crashs (überfüllte Carry-Trades), schafft keine Prämie.
+- **Regimekarte (K2)** schadet leicht; **Zinskurve (K4)** hilft minimal (IS t 2,05, OOS −0,16).
+- Kombinationen K2–K4 untereinander noch nicht getestet.
+
+| K1 Daily-Edge Typ R (E2 S1 alle X4), FX | IS n | IS Ø R | IS t | OOS n | OOS Ø R | OOS t |
+|---|---|---|---|---|---|---|
+| Typ R alle | 615 | −0,13 | −2,58 | 432 | +0,08 | 1,15 |
+| nur Carry-Richtung | 259 | −0,15 | −1,98 | 131 | **+0,21** | 1,39 |
+| ohne Gegen-Carry | 389 | −0,19 | −3,11 | 281 | +0,11 | 1,15 |
+| nur Gegen-Carry | 226 | −0,03 | −0,33 | 151 | +0,04 | 0,36 |
+
+- Typ R ist 2004–2016 klar negativ. Im OOS liegt der Carry-Richtungs-Filter vorn
+  (+0,21 R gegen +0,04 R gegen Carry), im IS nicht → kein stabiler Zusammenhang.
+- Achtung: Typ R wurde auf 2016–2021 ausgewählt, das liegt in diesem OOS
+  (Kontamination, OOS von K1 ist zu optimistisch).
+
+**Fazit Carry-Baustein:** Als eigenständige Prämie seit 2017 nicht vorhanden; der
+COT-Crowding-Filter ist der wertvollste Teil (Crash-Schutz). Weiter verwendbar als
+Risiko-/Veto-Schicht („keinen Trade in einen überfüllten Carry-Trade“), nicht als
+Richtungsgeber.
+
+### A1 Zinsdifferenz-Fair-Value → verworfen
+
+`scripts/research_remy_a1_fairvalue.py`, IS 2005–2018, 4 Paare, 9 Varianten.
+Beste (|z| ≥ 1,5, 10 Tage): 390 Trades, Ø +12,9 bp, Sharpe 0,28, t 1,08,
+DSR 0,54. Längere Haltedauer/höhere Schwelle durchgehend schlechter, ein Tag
+Verzögerung → Sharpe 0,06. Schlechteste Jahre 2013/14 (Abenomics, USD-Rally:
+Kurs löst sich monatelang vom Zins-Fair-Value). Deckt sich mit
+[[bond-yield-spread-indikator]] (V1 ohne Edge).
+
+### A3 Konsens-Überraschung → läuft
+
+ForexFactory-Wochenhistorie ab 2007 (Ist/Konsens/Vorwert, `scripts/remy_ff_history.py`
+→ `data_cache/remy/ff_calendar.parquet`), H1 ab 2007 von Dukascopy. Test:
+`scripts/research_remy_a3_surprise.py`.
+
 ## Status
 
-Nichts getestet (09.11.2026). Die Reihenfolge, wenn der Nutzer zustimmt:
+10.11.2026: A1 verworfen, A2 als Baustein festgehalten, A3 läuft.
+Ursprüngliche Planung (09.11.2026): Die Reihenfolge, wenn der Nutzer zustimmt:
 zuerst 4 (Exposure-Deckel, ohne Test machbar), dann 1/2/5 (warten auf den
 2J-Loader), dann 9 (FVG, mit vorhandenen Daten sofort testbar).

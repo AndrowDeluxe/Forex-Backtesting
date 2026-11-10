@@ -8,8 +8,34 @@
   },
   "registered": "2026-11-02T21:27:15+00:00",
   "trials": 155,
-  "frozen": null,
-  "unsealed": {},
+  "frozen": {
+    "hash": "ff93efd9d35abdb0c11679f3a62d1ded0c84cd0a61811b97c9e56fcc6411b13c",
+    "config": {
+      "typ": "C2",
+      "einstieg": "EL",
+      "stop": "S1",
+      "ziel": "T8",
+      "rsi": null,
+      "maerkte": [
+        "AUDUSD",
+        "EURUSD",
+        "GBPUSD",
+        "USDJPY",
+        "XAGUSD",
+        "XAUUSD"
+      ],
+      "gold_filter": {
+        "lag": 20,
+        "confirm": 5
+      },
+      "sweep_window": 7,
+      "limit_tage": 3
+    },
+    "ts": "2026-11-10T00:03:44+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-11-10T00:03:44+00:00"
+  },
   "forward": null,
   "blind": {
     "start": "2010-01-01",

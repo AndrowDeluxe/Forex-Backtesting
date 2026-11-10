@@ -49,11 +49,17 @@ Tägliche Staatsanleihen-Renditen, kostenlos, ohne Schlüssel (Abruf am 02.11. g
 |---|---|---|---|
 | USD | FRED DGS2 / DGS10 | `fusion_lab.g8.data.fetch_fred` | läuft |
 | EUR | EZB Data Portal, Euro-Zinskurve (AAA), Reihe `YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_2Y` (10Y: `SR_10Y`), ab 09/2004 | `https://data-api.ecb.europa.eu/service/data/...?format=csvdata` | ✅ |
-| JPY | Japanisches Finanzministerium, JGB-Referenzrenditen 1–40 J. ab 1974 | `mof.go.jp/english/policy/jgbs/reference/interest_rate/jgbcme.csv` (+ `jgbcme_all.csv`) | ✅ |
-| CAD | Bank of Canada Valet API, `BD.CDN.2YR.DQ.YLD` (2y), weitere Laufzeiten | `bankofcanada.ca/valet/observations/<Reihe>/csv` | ✅ |
-| GBP | Bank of England Datenbank (IADB), Par-Renditen `IUDSNPY`/`IUDMNPY`/`IUDLNPY` (kurz/mittel/lang -- Laufzeit noch prüfen); 2y-Spot in den Anderson-Sleath-Kurven (ZIP) | `bankofengland.co.uk/boeapps/database/...` | ✅ (Laufzeit klären) |
-| AUD | RBA Tabelle F2 (täglich) | `rba.gov.au/statistics/tables/csv/f2-data.csv` | ❌ blockt automatisierte Abrufe (403); Spiegel DBnomics `RBA/F2` prüfen oder manueller Download |
-| CHF / NZD | SNB-Datenportal, RBNZ Tabelle B2 | -- | noch nicht geprüft |
+| JPY | Japanisches Finanzministerium, JGB-Referenzrenditen 1–40 J. ab 1974 | `mof.go.jp/.../interest_rate/jgbcme.csv` (laufender Monat) + `historical/jgbcme_all.csv` | ✅ im Loader (10.11.) |
+| CAD | Bank of Canada Valet API, `BD.CDN.2YR.DQ.YLD` / `BD.CDN.10YR.DQ.YLD` | `bankofcanada.ca/valet/observations/<Reihe>/csv` | ✅ im Loader (10.11.) |
+| GBP | BoE IADB: `IUDSNPY`/`IUDMNPY`/`IUDLNPY` = 5/10/20 J. Par (M = 10 J. bestätigt: 5,14 % = TVC GB10Y); 2y nur in der Spotkurven-ZIP (xlsx) | im Loader stattdessen TradingView `TVC:GB02Y`/`GB10Y` | ✅ über TVC (10.11.) |
+| AUD | RBA Tabelle F2; RBA selbst blockt (403), Spiegel DBnomics `RBA/F2` (`FCMYGBAG2D`/`10D`), ~4 Tage Verzug | `api.db.nomics.world/v22/series/RBA/F2/<Reihe>` | ✅ im Loader (10.11.) |
+| CHF | SNB-Würfel `rendeiduebd` (D0 = CHF, `2J`/`10J`), täglich, aber wöchentlich veröffentlicht (~10 Tage Verzug). `rendoblid` ist monatlich. TVC CH02Y als Ersatz verworfen: Wochen-Korrelation zur SNB nur 0,51 | `data.snb.ch/api/cube/rendeiduebd/data/csv/en` | ✅ im Loader, Verzug |
+| NZD | RBNZ B2 blockt (403, nicht umgehen) | TradingView `TVC:NZ02Y`/`NZ10Y` | ✅ über TVC (10.11.) |
+
+Abgleich TVC gegen amtlich (10.11., 2024–26, 2J): Tagesänderungen korrelieren bei US/JP/CA mit
+0,90–0,96 ohne Tagesversatz (Datumszuordnung stimmt), AU nur 0,52 (anderer Schnappschuss-Zeitpunkt,
+Woche 0,87), CH 0,15 (Woche 0,51). GB/NZ sind darum über TVC brauchbar für Wochenveränderungen,
+Tageswerte mit Vorsicht.
 | EUR (DE) | Bundesbank-Zeitreihen | `api.bundesbank.de` | Abruf brach ab (Zeitüberschreitung); EZB reicht |
 
 ## Quellen

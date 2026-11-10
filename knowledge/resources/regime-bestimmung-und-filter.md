@@ -36,8 +36,8 @@ Bestimmung. Bezug: [[htf-daily-trade-edge-card]], [[quant-diskretionaer-fusion]]
   relativ; ein reines US-Regime sagt nichts über die Gegenwährung.
 - **Gold mit bestätigtem Zinskurven-Regime** ist die einzige auffällige Zelle (1 von 6 -- bei 6
   Prüfungen nicht frei von Zufall). Mechanismus vorhanden: Bull-Phasen (fallende Renditen) stützen
-  Gold, deckt sich mit WGC-Daten (Bear-Steepener belasten Gold) und mit [[residual-edge-gold-traegt-orb-ou-nicht]].
-- Zusammen mit dem Daily-Edge-Test ([[daily-edge-typ-r-ohne-makro-kein-edge]]): Regime-Gate hob
+  Gold, deckt sich mit WGC-Daten (Bear-Steepener belasten Gold) und mit `memory/residual_edge_gold_traegt_orb_ou_nicht.md`.
+- Zusammen mit dem Daily-Edge-Test (`memory/daily_edge_typ_r_ohne_makro_kein_edge.md`): Regime-Gate hob
   Typ R kaum (+0,120 vs +0,116 R), in Typ C nur knapp über „gegen Regime“.
 
 ## 3b. Aktueller Stand (FRED bis 30.10.2026)
@@ -73,7 +73,7 @@ Nicht zu *einem* Regime verschmelzen (sie widersprechen sich statistisch), sonde
 klarer Rolle -- und als **Veto** statt Pflicht-Bestätigung, damit die Fallzahl bleibt:
 
 1. **Strategisch (langsam):** Landi-Karte (change-Linse) → Assetklassen-Kontext für den Makro-
-   Agenten, angezeigt, nicht gehandelt ([[regime_richtung_je_asset_ueberangepasst]]).
+   Agenten, angezeigt, nicht gehandelt (`memory/regime_richtung_je_asset_ueberangepasst.md`).
 2. **Taktisch Zinsen (mittel):** Zinskurven-Regime nach Angelo, **geglättet** (Bestätigung ≥ 5
    Tage oder längerer Vergleich, z. B. 60 Tage, plus Mindestbewegung in bp gegen Twist-Rauschen).
    Einsatz zuerst für **Gold** (einzige tragende Zelle) und zinssensible Assets.
@@ -91,7 +91,7 @@ gezählte Variante; erst IS, dann OOS/Blind je einmal, dann Forward.
 Japan, Bank of Canada, Bank of England ✅; RBA blockt automatisierte Abrufe).
 
 **Datenlücke (ursprünglich):** Tägliche 2y-Renditen für DE/UK/JP/AU sind auf FRED nicht frei (nur monatlich, und
-OECD-Reihen enden still, [[oecd_reihen_auf_fred_tot]]) → Quelle klären, bevor Schicht 3 gebaut wird.
+OECD-Reihen enden still, `memory/oecd_reihen_auf_fred_tot.md`) → Quelle klären, bevor Schicht 3 gebaut wird.
 
 ## Quellen
 

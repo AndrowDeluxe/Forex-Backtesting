@@ -1,7 +1,10 @@
 # Project: Edge Card „Dayli Trade mit IPDA Confi“ (HTF)
 
-**Status**: Phase 0 weitgehend abgeschlossen (02.11.): Typ R und Typ C definiert und an Nutzer-
-Beispielen bestätigt, IPDA ohne Gewicht. **Offen: POI/POC-Definition, dann Felder 03–05.** Prozess: [[edge-card-workflow]]. Teil von Strang 0/1
+**Status**: 10.11.: Kandidat C2 + Gold-Filter eingefroren, **OOS 2022–24 ohne Bestätigung**
+(+0,127 R, t 0,88), Blind versiegelt. **Mit Zins-Momentum + Regime-Matrix (F1+F3): OOS +0,50 R,
+t 1,68, n 45; Blind 2010–15 +0,25 R, t 1,07, n 70; gesamt 2010–24 +0,49 R, t 3,34 → Forward
+ausstehend** -- siehe Abschnitte unten. Phase 0 weitgehend abgeschlossen
+(02.11.): Typ R und Typ C definiert und an Nutzer-Beispielen bestätigt, IPDA ohne Gewicht. **Offen: POI/POC-Definition, dann Felder 03–05.** Prozess: [[edge-card-workflow]]. Teil von Strang 0/1
 im [[quant-diskretionaer-fusion]]. Plan freigegeben 18.10. (Sperre: IS 2016–2021,
 OOS 2022–2024, Blind 2010–2015, danach Forward; 2025/26 nur Hypothesenquelle).
 
@@ -348,3 +351,56 @@ Typ C2 Limit: mit Filter +0,70 / +0,64 R (n 24/23, t 1,47/1,61), gegen Filter �
 Jahren positiv (2016 −0,12). Je Markt: AUDUSD +0,67, Gold +0,70, EURUSD +0,34, GBPUSD −0,05, USDJPY
 −0,09, Silber −0,11. Bestes bisheriges Ergebnis, Kriterium t > 2 knapp verfehlt. Einfrieren und
 OOS/Blind öffnen (`--oeffnen`) erst nach Nutzerfreigabe.
+
+## OOS 2022–2024 geöffnet (10.11.2026, Nutzerfreigabe; eingefroren `ff93efd9`)
+
+`python -m htf_daily_trade.c2_goldfilter --oeffnen --stufen oos` → `c2_goldfilter_oos.csv`. Einmalig,
+zählt. **138 Trades, Ø +0,127 R, t 0,88, PF 1,21, Treffer 38 %**; 2022 +0,28, 2023 −0,03, 2024 +0,15.
+Je Markt: USDJPY +0,63, GBPUSD +0,23, AUDUSD +0,14, Gold +0,14, Silber −0,14, EURUSD −0,27.
+
+**Urteil: kein bestätigter Edge.** Vorzeichen hält, Höhe fällt um ~40 %, nicht signifikant. Die
+Rangfolge der Märkte kippt (IS-Träger AUDUSD/EURUSD/Gold schwach, IS-Verlierer USDJPY/GBPUSD vorn) →
+Marktunterschiede sind Rauschen; keine Marktauswahl daraus ableiten (wäre Schnüffeln am OOS).
+Freigabe galt dem Einfrieren trotz verfehltem Vorab-Kriterium (t > 2); Abweichung bewusst.
+**Blind 2010–15 bleibt versiegelt** (nur OOS freigegeben). Folge: C2 nicht automatisieren; Typ R/C
+höchstens als Kontext für den Makro-Agenten. Nach Livegang/Forward nur noch Forward-Daten.
+
+## C2 × Makro-Filter: Zins-Momentum + Regime-Matrix (10.11.2026, Lock `htf_daily_trade_c2_filter`)
+
+`python -m htf_daily_trade.c2_filter_overlap` (IS) / `--oeffnen --kombi F1+F3` (OOS, einmal geöffnet,
+eingefroren `aea4189b`). Basis = eingefrorenes C2 unverändert; vier Filter je Trade (Daten bis Vortag):
+F1 Zins-Momentum (2y-Spread Basis−USD, 20 T; Metalle: US-2y fällt = long,
+`fusion_lab/filters/zins_fx.py`), F2 Carry (2y-Differenz; Metalle: Realzins fällt), F3 Zinskurven-
+Regime-Matrix (5 T bestätigt), F4 Landi-Karte (Linse signs, Richtung je Regime aus IS-Tagesrendite).
+
+**Nutzervorgaben (Abweichung von der Overfitting-Sperre, nur für diesen Test):** alle Kombinationen;
+gezählt nur die finalen Faktoren (Lock: 2 Versuche); OOS 2022–24 gilt trotz Basis-OOS als nicht
+vorbelastet. Auswahl trotzdem nur auf IS, OOS nur für die eine gewählte Kombination.
+
+IS 2016–21: alle vier „wirken“ (dafür > Basis > dagegen), aber nur F1 und F3 trennen scharf
+(dagegen −0,06 / −0,02 R; F2/F4 dagegen noch +0,16 / +0,05). F1 und F3 sind fast unabhängig
+(übereinstimmend in ~50 %). Beste Kombination **F1+F3: n 80, +0,70 R, t 2,88, PF 2,44**, alle 6
+Märkte und Jahre positiv, DSR 0,99 (n = 2) bzw. 0,84 (alle 19 Varianten). Score ≥ 2 von 4: n 197,
++0,34 R, t 2,50. Alle vier zusammen: n 24 (zu dünn).
+
+**OOS 2022–24 (Nutzerwahl F1+F3): n 45, Ø +0,501 R, t 1,68, PF 1,96** gegen Basis +0,127 R im
+selben Zeitraum. Alle 3 Jahre positiv (+0,53 / +0,13 / +1,15). Je Markt: USDJPY +1,42 (n 12,
+trägt 17 von 23 R), AUDUSD +0,99 (n 3), GBPUSD +0,55, Gold +0,29, EURUSD −0,35, Silber −0,66.
+
+Bau-Annahmen vom Nutzer bestätigt (10.11.): 2y-Renditen statt Leitzins; Metalle über US-2y bzw.
+US-Realzins, Silber wie Gold; Regimekarte mit Linse „signs“; neutral lässt durch.
+
+**Urteil OOS: vielversprechend, noch nicht bestätigt.** Der Filter vervierfacht die Basis im OOS
+und hält ~70 % der IS-Höhe; t < 2 wegen kleiner Stichprobe, und USDJPY trägt den Großteil.
+
+**Blind 2010–15 (10.11.2026, Nutzerfreigabe, einmal geöffnet): n 70, Ø +0,253 R, t 1,07, PF 1,43**
+gegen Basis +0,079 R (n 204). Jahre: 2010 −0,14, 2011 +0,05, 2012 +0,87, 2013 +0,31, 2014 +0,86,
+2015 −0,30. Je Markt: EURUSD +0,89, Gold +0,33, AUDUSD +0,27, GBPUSD +0,10, Silber −0,35 (n 3),
+**USDJPY −0,58** (im OOS noch der Träger). Zinsdaten dafür ab 2009 nachgeladen; AU-2y vor 09/2013
+aus TradingView (`AU.2y_tvc`), weil RBA/DBnomics erst ab 2013 liefern.
+
+**Gesamtbild 2010–2024 (IS + OOS + Blind): n 195, Ø +0,495 R, t 3,34, 13 von 15 Jahren positiv**;
+Basis C2 im selben Zeitraum n 596, +0,146 R, t 1,97. Der Filter verbessert die Basis in allen drei
+Zeiträumen (×3,4 / ×3,9 / ×3,2). Jeder Prüfzeitraum für sich bleibt unter t 2, und die Markt-
+Rangfolge wechselt jedes Mal → keine Marktauswahl ableiten (Silber gesamt −0,12 R, n 22, nur als
+Forward-Beobachtung). **Stand: bester HTF-Kandidat bisher; nächster Schritt Forward-Test.**

@@ -27,8 +27,25 @@ doppelt dort gepflegt.
 
 ## Bestandteile-Checklist
 
-**Entwurf vom 09.10.2026 (Inventur, Strang 0). Noch nicht vom Nutzer
-bestätigt.** Hauptquelle ist die OneNote-Seite „⭕️Tradingplan 1.1 2026“
+**Entwurf vom 09.10.2026 (Inventur, Strang 0), Teststände nachgeführt am
+10.11.2026. Vom Nutzer im Grundsatz bestätigt am 10.11.2026**, mit diesen Ergänzungen:
+- **Setups (A):** Maßgeblich ist OneNote „Journals und Progress/Meine Trading Edges“ mit rund 15
+  Strategievarianten. Es sind 18 Strategie-Seiten, davon 3 leer: Asia Session Edge, Scalping
+  Edge LTF, HTF Limit Entry Advanced. Mit Inhalt: HTF Entry (Inducement + Fib), Settlements +
+  Nadaraya/Bollis, Time and Price (London), Fundamentals Edge, Liq Spike in sentimentalen Zeiten,
+  16:00 Reversal, 16:00 Continuation/Manipulation, Midnight Spike, Pre Range London Manipulation,
+  Pre Continuation, Pre Manipulation, H4 HTF Entry Model, NY Continuation, NY Reversal, Daily Entry
+  Advanced (= [[htf-daily-trade-edge-card]]). Block A wird danach je Strategie neu gegliedert (offen).
+- **Confis (B):** zusätzliche bzw. allgemeine Bestätigung, kein eigenes Setup (wie oben).
+- **Risiko und Management (C, D):** passen als Basis.
+- **Makro (E):** weiteres Wissen in OneNote „SMH Calls 2025/2026“ (151 Seiten), „Zusatzeducation“
+  (11), „Makro Education“ (38), Elite (195) und Incentive (77, inkl. Endogene/Exogene Analyse,
+  Gatekeeping, Reflektion). Noch zu sichten.
+- **Restannahmen bestätigt (Nutzer 10.11.):** „New London Edge EU only“ = archiviertes
+  [[london-range-bos-retest-eurusd]]; „Final“-Edges ohne Text brauchen vor der Edge Card die
+  diktierten Regeln.
+
+Hauptquelle ist die OneNote-Seite „⭕️Tradingplan 1.1 2026“
 (Abschnitt „Oktober 2026“, inhaltlich gleich mit „Final Tradingplan
 2025/2026“). Ergänzt wird sie durch den Abschnitt „Meine Trading Edges“,
 die „Dayli Checklist und Great Reset“ (Stand 04/2026) und „Elite 3/Tracking“.
@@ -67,6 +84,7 @@ Im Plan bekommt jedes Setup einen Punktestand, aus dem das Risiko folgt
   Letztere ist identisch mit „New London Edge EU only“ (Elite 3, 08/2026);
   dort hat der Nutzer selbst notiert, sie sei 6 Monate profitabel und
   kippe dann. ○ Die Manipulations-/Spike-Umkehr selbst ist ungetestet.
+  Trade-Inventur 2025: London-Eröffnungen −953 $ bei 219 Positionen.
 - [ ] **A4 NY- und Killzone-Edge** (Plan; „Final NY Continuation/Reversal
   Entry Edge“, Seiten „16:00 Uhr Continuation/Reversal“, „NY Entry Model
   mit Tim“): London holt externe Liquidität, NY-Liquiditätsspike,
@@ -77,16 +95,20 @@ Im Plan bekommt jedes Setup einen Punktestand, aus dem das Risiko folgt
   mindestens 2 BOS, nur der dritte Impuls, Premium/Discount-Fib in einem
   POI, Inducement mit direkter Reaktion, Limit oder Stop nach Spike. Ziel
   ist die nächste Liquidität bzw. der nächste POC. ◐ Ähnlich wie
-  [[mt5-haupt-bot-trend-pullback]], aber nicht dasselbe.
+  [[mt5-haupt-bot-trend-pullback]], aber nicht dasselbe. Tradezella-Playbook
+  „HTF Entry“ (11/2025–07/2026): 58 Trades, −2.914 $.
 - [ ] **A6 H4 Entry** (Kurs/Plan, „H4 Entry Strategie Jakob“): Bias, dann
   mindestens 2 H4-Kerzen ausmanipuliert (großer Docht). Einstieg zum
   Schlusskurs oder eine Kerze später, SL hinter der Manipulation. Die
   Beispiel-Trades für EU 2023 liegen nur als Chartbilder vor. ○
+  Tradezella-Playbook „H4 Entry“: 5 Trades, +1.619 $ (zu klein für ein Urteil).
 - [ ] **A7 Daily Entry Advanced** (Plan): IPDA-Shift (Tag 8/14),
   Makro-Bias, 3 Daily-Kerzen ausmanipuliert (für Fortsetzung) oder ein
   Fractal (für Wende), Einstieg nach dem Daily-Close. ⛔ Der IPDA-Teil ist
-  negativ ([[ipda-zyklus-eurusd]]). ○ Die Manipulationsregel selbst ist
-  ungetestet.
+  negativ ([[ipda-zyklus-eurusd]]). ⛔ **Getestet als Edge Card
+  [[htf-daily-trade-edge-card]]** (Typ R Wende / Typ C Fortsetzung): IS ohne
+  Edge, mit Makro-Filtern ebenfalls; bester Kandidat C2 + Gold-Filter
+  eingefroren, OOS 2022–24 +0,127 R, t 0,88 → nicht bestätigt (10.11.).
 - [ ] **A8 Spike-/Manipulations-Edges** (Plan, alle mit „Final“
   markiert): Midnight Spike, Liquiditätsspike in sentimentalen Zeiten, Pre
   Continuation, Pre Manipulation. ○ Nur Chartbilder, der Nutzer muss die
@@ -99,7 +121,8 @@ Im Plan bekommt jedes Setup einen Punktestand, aus dem das Risiko folgt
 - [ ] **A10 Uhrzeit-Statistik** (Plan): Uhrzeiten mit der höchsten
   Wahrscheinlichkeit für Tageshoch/-tief, z. B. Hoch um 1:00 Uhr 14 %, um
   9:00 Uhr 10,5 %; Tief um 16:00 Uhr 12,4 %. Herkunft der Zahlen ist
-  unklar. ○ Lässt sich mit Daten direkt nachzählen.
+  unklar. ◐ Nachgezählt für EURUSD in [[smh-session-pips-call]]: Hoch/Tief
+  häufen sich bei 08–09 und 14–16 Uhr, nicht bei 1–2 Uhr. Als Setup offen.
 
 ### B Bestätigungen (Confis)
 
@@ -111,7 +134,9 @@ getestet, nicht als eigenes Setup.
   Divergenz. ○
 - [ ] **B2 Fib Premium/Discount, Pivots, POI/POC (Volumenprofil)**. ○
 - [ ] **B3 Runde Zahlen („Wholelevel“)**. ⛔ Als Fade negativ: Sie wirken
-  eher als Magnet ([[smh-elite-mikrostruktur]], K1).
+  eher als Magnet ([[smh-elite-mikrostruktur]], K1). Bestätigt für alle Key
+  Levels (Vorwoche, Session, runde/halbe Zahl) in [[keylevel-edge-card-final]]:
+  nur für Stop-Platzierung nutzbar.
 - [ ] **B4 Einstieg erst nach Kerzenschluss**, doppelter BOS M5,
   CHOCH/BOS. ◐ Teilweise in der CTNL- und CLS-Fractal-Logik enthalten.
 
@@ -130,7 +155,7 @@ getestet, nicht als eigenes Setup.
 - [ ] **C3 Risiko aus Gewinnen**: Es werden höchstens 50 % der Gewinne aus
   Tag, Woche oder Monat neu riskiert, im Drawdown wird nie aufgestockt (im
   HTF ist es erlaubt). ◐ Bei CTNL brachten Serienstopp und Halbierung
-  nichts ([[ctnl-serienstopp-vs-risikohalbierung]]).
+  nichts (`memory/ctnl_serienstopp_vs_risikohalbierung.md`).
 - [ ] **C4 Handelslimits**: höchstens 2 Ideen und 2 SL pro Tag, 6 Trades
   pro Woche, 20 pro Monat, 3 Handelstage pro Woche. „SL SL Stopp / TP TP
   Stopp“, 3 h Pause nach 2 Trades. ○ Lässt sich als Portfolio-Simulation
@@ -158,10 +183,14 @@ Strang 3 des Dachprojekts.
   ◐ Der Zins-Spread allein war negativ ([[bond-yield-spread-indikator]]).
 - [ ] **E2 Weekly-IPDA, Regimeshift, ZB1!, Inflation, Taylor-Regel**
   („DIE BASIS“ im Plan; „Taylor Zins Regel“ unter Makro Education).
-  ⛔ IPDA-Zyklus negativ. ○ Der Rest ist offen.
+  ⛔ IPDA-Zyklus negativ. ◐ Regime: [[regimekarte-wachstum-inflation]] und
+  Zinskurven-Regime verglichen ([[regime-bestimmung-und-filter]]); einziger
+  Baustein bisher [[filter-gold-zinskurve]] (Gold, t 2,16). Taylor-Regel offen.
 - [ ] **E3 G8-Währungsstärke und SMT Macro Desk** (Kurs: SMHxSMT bzw. SMH
   Daily Update, Telegram). Lässt sich nachbauen, siehe
-  [[quant-diskretionaer-fusion]]. ○
+  [[quant-diskretionaer-fusion]]. ⛔ G8-Stärke nachgebaut, als Signal allein
+  kein Edge. ◐ SMT-Reports: Richtung ohne Edge, Rücksetzer-Einstieg +0,06 R
+  ([[smh-makro-reports-backtest]], Forward bis 31.01.2027).
 - [ ] **E4 Gatekeeping-Prozess / endogene und exogene Analyse** (Kurs:
   Incentive 3, „Aufarbeitung GS Prozess“, 100 kB). ○ Noch nicht gesichtet.
 

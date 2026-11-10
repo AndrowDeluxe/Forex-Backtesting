@@ -20,6 +20,11 @@ JOBS = {
     "oecd": ("macro", sources.fetch_oecd),
     "ecb": ("macro", sources.fetch_ecb),
     "eurostat": ("macro", sources.fetch_eurostat),
+    "renditen_jp": ("macro", sources.fetch_yields_mof),
+    "renditen_ca": ("macro", sources.fetch_yields_boc),
+    "renditen_ch": ("macro", sources.fetch_yields_snb),
+    "renditen_au": ("macro", sources.fetch_yields_rba),
+    "renditen_gb_nz": ("macro", sources.fetch_yields_tvc),
     "cftc": ("positioning", sources.fetch_cftc),
     "fed_futures": ("markets", sources.fetch_fed_futures),
     "maerkte": ("markets", sources.fetch_yf_markets),
@@ -78,10 +83,14 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--only", help="kommagetrennt: " + ",".join(JOBS))
     parser.add_argument("--coverage", action="store_true", help="nur Abdeckung zeigen, nichts abrufen")
+    parser.add_argument("--start", help="einmaliges Nachladen ab Datum (z. B. 2009-01-01); "
+                                        "schreibt last_run.json nicht, damit der Task-Status stimmt")
     args = parser.parse_args()
     if args.coverage:
         print(coverage().to_string())
         return 0
+    if args.start:
+        sources.START = args.start
 
     names = args.only.split(",") if args.only else list(JOBS)
     status = {"lauf": pd.Timestamp.now().isoformat(timespec="seconds"), "quellen": {}}
@@ -89,6 +98,8 @@ def main() -> int:
         status["quellen"][name] = run_with_timeout(name)
         print(name, status["quellen"][name], flush=True)
     store.DATA_DIR.mkdir(parents=True, exist_ok=True)
+    if args.start:
+        return 1 if any("fehler" in s for s in status["quellen"].values()) else 0
     (store.DATA_DIR / "last_run.json").write_text(json.dumps(status, ensure_ascii=False, indent=1), encoding="utf-8")
     return 1 if any("fehler" in s for s in status["quellen"].values()) else 0
 

@@ -1,0 +1,52 @@
+{
+  "strategy": "htf_daily_trade_c2_filter",
+  "split": {
+    "is_start": "2016-01-01",
+    "is_end": "2021-12-31",
+    "oos_end": "2024-12-31",
+    "tresor_end": null
+  },
+  "registered": "2026-11-10T00:32:12+00:00",
+  "trials": 2,
+  "frozen": {
+    "hash": "aea4189bbd443fcbbbccc9a62a646ea1f82e2f58368a086d071c45792364981f",
+    "config": {
+      "typ": "C2",
+      "einstieg": "EL",
+      "stop": "S1",
+      "ziel": "T8",
+      "rsi": null,
+      "maerkte": [
+        "AUDUSD",
+        "EURUSD",
+        "GBPUSD",
+        "USDJPY",
+        "XAGUSD",
+        "XAUUSD"
+      ],
+      "gold_filter": {
+        "lag": 20,
+        "confirm": 5
+      },
+      "sweep_window": 7,
+      "limit_tage": 3,
+      "makro_filter": "F1+F3",
+      "filter_params": {
+        "zins_lag": 20,
+        "regime_lag": 20,
+        "regime_confirm": 5,
+        "landi_linse": "signs"
+      }
+    },
+    "ts": "2026-11-10T00:32:12+00:00"
+  },
+  "unsealed": {
+    "oos": "2026-11-10T00:32:12+00:00",
+    "blind": "2026-11-10T01:03:43+00:00"
+  },
+  "forward": null,
+  "blind": {
+    "start": "2010-01-01",
+    "end": "2015-12-31"
+  }
+}

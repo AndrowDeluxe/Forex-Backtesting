@@ -4,3 +4,5 @@
 {"ts": "2026-11-02T21:34:01+00:00", "event": "trials", "n": 128, "total": 152, "note": "Typ C Varianten C1/C2 x EO/EL x S1-S4 x T1-T8 ohne Makro (02.11.)"}
 {"ts": "2026-11-02T21:37:59+00:00", "event": "trials", "n": 2, "total": 154, "note": "Gold-Zinskurven-Filter (5T bestaetigt) auf 2 vorab gewaehlte Kandidaten, nur Gold (02.11.)"}
 {"ts": "2026-11-02T21:39:37+00:00", "event": "trials", "n": 1, "total": 155, "note": "C2 EL S1 T8 alle 6 Maerkte, Gold mit Zinskurven-Filter (Kandidat, 02.11.)"}
+{"ts": "2026-11-10T00:03:44+00:00", "event": "freeze", "hash": "ff93efd9d35abdb0c11679f3a62d1ded0c84cd0a61811b97c9e56fcc6411b13c"}
+{"ts": "2026-11-10T00:03:44+00:00", "event": "unseal", "stage": "oos", "hash": "ff93efd9d35abdb0c11679f3a62d1ded0c84cd0a61811b97c9e56fcc6411b13c"}

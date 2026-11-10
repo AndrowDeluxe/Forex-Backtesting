@@ -18,7 +18,25 @@ Prüfung („anderer Zeitraum als beim Fitting“). Keine Regel verbot, schon in
 Phase 4/5 auf OOS zu schauen, und technisch hielt einen nichts davon ab.
 Siehe [[ny-open-orb-sp500]] und [[orb-order-storno-und-haltedauer]].
 
-## Die Regeln
+## Lockerung 2026-11-10 (Nutzerentscheid, geht den Regeln unten vor)
+
+- **OOS ist frei.** Nach der IS-Optimierung darf OOS beliebig oft angeschaut
+  und zum Vergleich von Varianten/Kombinationen genutzt werden
+  (`Lock.oos_only`, jeder Blick protokolliert). Kein `freeze` davor nötig.
+- **Tresor = letzte 6 Monate** (statt 12), bleibt einmalig: `freeze` +
+  `unseal("tresor")` vor dem Livegang. „Tresor erst nach OOS“ entfällt.
+  `Lock.move_tresor_start` verschiebt die Grenze, solange der Tresor zu ist.
+- **Versuche zählen nur noch zur Info** (DSR), sie sperren nichts.
+- Die strengen Regeln (Forward-only nach Livegang) gelten für **aktive** Filter
+  und Bestandteile, nicht fürs Bauen und Kombinieren eines Edges.
+- Anlass: Carry-Baustein aus [[remy-king-trading-strategie-top1]] soll
+  kombiniert und dabei auf OOS beobachtet werden.
+- Preis der Lockerung: OOS-Zahlen nach mehrfacher Nutzung sind keine
+  unabhängige Prüfung mehr; diese Rolle trägt allein der Tresor.
+- Bestehende Sperren behalten ihren Split (12-Monats-Tresor), neue Splits
+  nutzen 6 Monate.
+
+## Die Regeln (Stand 2026-10-05, durch die Lockerung oben teils ersetzt)
 
 1. **Split zuerst.** Vor dem ersten Test werden drei Zeiträume festgelegt und
    registriert:

@@ -14,7 +14,8 @@ einen Makro Report anfertigen, den ich dann prüfe“). Regeln und Wirkketten se
 2. **Faktencheck.** Jede Zahl, die sich prüfen lässt, gegen eigene Daten prüfen: Kurse und
    Wochenveränderungen gegen den Data Lake (`data_lake_store/validated/`), Renditen gegen
    US02Y/DE02Y bzw. FRED, Modellwerte nachrechnen (G8-Score = Mittel der z-Werte je Zeitraum).
-   Termine/Konsens/Ereignisse per Websuche. Ergebnis in drei Körbe: ✓ bestätigt · ≈ leichte
+   Termine/Konsens/Ereignisse per Websuche. ATR für Kreuze nur aus echten Kreuzkursen, nie aus
+   den Hochs/Tiefs der Dollar-Paare multipliziert (EUR/CHF so ~2,5× zu hoch, 08.11.). Ergebnis in drei Körbe: ✓ bestätigt · ≈ leichte
    Abweichung · ? nicht prüfbar (Zinsmarkt aus Bezahl-Terminal, Positionierung, Bank-Calls).
 3. **Widersprüche suchen.** Innerhalb eines Reports, zwischen den Reports, zwischen Report und
    Kanal-Nachrichten, zwischen Begründung und Daten (Beispiel 08.11.: „Gold fällt bei steigenden
@@ -207,3 +208,49 @@ Long-Limit 1,4009 · Stop 1,3951 · Ziel 1,4300 (Oktober-Hochs) → 58 Pips Risi
 | EUR/CHF 0,910 erreicht | | | |
 | EUR/USD (Dennis) Limit 1,1192 gefüllt / Ergebnis R | | | |
 | USD/CAD (Dennis) Limit 1,4009 gefüllt / Ergebnis R | | | |
+
+---
+
+## Beispiel 2: CPI-Preview Di 10.11.2026 (Sonderreport msg 7000 + Kanal 08./09.11.)
+
+Quellen: SMT-Sonderreport „Die Zahl, die zwei Ziffern hat“ (Datenstand Mo 15:30), Dennis' Setups
+So 22:20 (EU, GU, XAU, AU, DXY, UCAD, NU), Kanal Mo (Cluster-Warnung, GU gefüllt, USDCHF).
+Charts 7006–7010 sind von einem anderen Autor (timothyespagnole8), nicht von Dennis. Msg 7003 =
+Agrar-/El-Niño-Deep-Dive, ohne CPI-Bezug. Kurse: Yahoo 1h, Stand Di 00:00.
+
+**Stand vor der Zahl:** DXY 101,68 (Zone 101,55–101,82 schon erreicht, die C-Welle kam vor dem CPI).
+EUR/USD 1,1226: Dennis' Short 1,1192 gefüllt, 18 Pips vor dem Stop 1,1244. GBP/USD 1,3441: Short
+1,3420 gefüllt, Stop 1,3482. AUD/USD 0,6924 (Report-Short 0,6862, Stop 0,6990). NZD/USD: Hoch 0,56386
+> Stop 0,56365 → vermutlich ausgestoppt. USD/CAD-Limits (1,4060/1,4009) nicht gefüllt, Tief 1,4073.
+Gold 4.147, also an der Report-Schwelle 4.150, Dennis' Limit 4.040 nicht gefüllt. Brent 92,3, Tief 90,6,
+nahe am Kipppunkt „unter 90“.
+
+**Widersprüche:** (1) Der Report sagt „kein Trade vor der Zahl“ und „EUR/USD nur bei heiß + Schluss
+< 1,1100“, Dennis' Chart-Short 1,1192 ist aber schon offen. (2) Fed-Pricing 77 % ≥ 75 % = bezahlt, das
+Risiko ist laut Report asymmetrisch gegen den Dollar. Trotzdem sind 4–5 Dollar-Long-Beine offen (EU, GU,
+AU, NU, UCHF), genau das Cluster, vor dem Dennis Mo selbst warnt. (3) Das Gold-Chart-Limit 4.040 füllt nur
+bei heißer Zahl, und genau dann erwartet der Report Gold < 4.000. (4) „Dollar fest“ (Teil 1) ist durch
+den Montag überholt (DXY −0,6 %).
+
+**Szenario-Schätzung (ohne Modell):** weich (Kern < 0,20) ~30 %, im Rahmen (0,20–0,24) ~50 %,
+heiß (≥ 0,25) ~20 %.
+
+| # | Trade | Bedingung | Umsetzung |
+|---|---|---|---|
+| 1 | Gold long | weich + D1-Schluss > 4.150 | Rücksetzer-Limit (~0,5 ATR D1), Stop unter 4.060, Zinskurven-Filter long |
+| 2 | USD/JPY short | weich + Schluss < 157,40 | halbe Größe, Stop über dem Tageshoch nach 14:30 |
+| 3 | AUD/USD short | heiß oder im Rahmen | Bestand halten, kein Nachkaufen; neu nur nach Spike in 0,6950–0,6970 |
+| 4 | EUR/USD short | heiß + Schluss < 1,1100 | Report-Variante; den Chart-Short vor 14:15 halbieren/schließen |
+| – | NZD, USD/CAD, GBP/USD, EUR/CHF | – | auslassen (ausgestoppt / nicht gefüllt / Cluster / Kreuz) |
+
+### Nachprüfung CPI (nach Mi 11.11. ausfüllen)
+
+| Punkt | Erwartet | Eingetreten | Urteil |
+|---|---|---|---|
+| Kern ungerundet | 0,20–0,24 (Basis) | | |
+| DXY-Schluss Di | 101,5–103 | | |
+| Dollar-Cluster (EU/GU/AU) bei weicher Zahl ausgestoppt? | ja | | |
+| Gold-Schluss > 4.150 / Long gefüllt / R | | | |
+| USD/JPY-Schluss < 157,40 | | | |
+| Limit Gold long 4.045 (SL 3.970, TP 4.150/4.220) gefüllt / R | | | |
+| Limit AUD/USD short 0,6968 (SL 0,7030, TP 0,6900/0,6835) gefüllt / R | | | |

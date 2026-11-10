@@ -1,0 +1,14 @@
+{
+  "strategy": "remy_a3_surprise",
+  "split": {
+    "is_start": "2007-01-01",
+    "is_end": "2018-12-31",
+    "oos_end": "2026-05-09",
+    "tresor_end": "2026-11-09"
+  },
+  "registered": "2026-11-10T00:10:28+00:00",
+  "trials": 0,
+  "frozen": null,
+  "unsealed": {},
+  "forward": null
+}

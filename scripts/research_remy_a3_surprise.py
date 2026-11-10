@@ -114,16 +114,19 @@ def main() -> None:
     sig = surprises(ev, split["is_end"])
     is_sig = sig[(sig["time"] >= pd.Timestamp(split["is_start"], tz="UTC"))
                  & (sig["time"] <= pd.Timestamp(split["is_end"], tz="UTC") + pd.Timedelta(days=1))]
-    print(f"IS-Signale: {len(is_sig)} (Indikatoren mit >= {MIN_IS_EVENTS} IS-Terminen)")
+    oos_sig = LOCK.oos_only(sig.set_index("time")).reset_index()  # Regel 10.11.: OOS frei
+    print(f"IS-Signale: {len(is_sig)}, OOS-Signale: {len(oos_sig)} (Indikatoren mit >= {MIN_IS_EVENTS} IS-Terminen)")
     h1 = load_h1()
-    rows, tl = {}, {}
+    rows, tl, orows = {}, {}, {}
     for zmin, hold in VARIANTS:
         tr = trades(is_sig, h1, zmin, hold)
         key = f"|z|>={zmin} H={hold}h"
         rows[key], tl[key] = summary(tr), tr
+        o = summary(trades(oos_sig, h1, zmin, hold))
+        orows[key] = {"OOS n": o["n"], "OOS react_bp": o["react_bp"], "OOS avg_bp": o["avg_bp"], "OOS t": o["t"]}
     LOCK.log_trials(len(VARIANTS), "A3 IS-Sweep |z| x Haltedauer")
     tab = pd.DataFrame(rows).T
-    print(tab[["n", "react_bp", "avg_bp", "hit", "t"]].astype(float).round(3).to_string())
+    print(tab[["n", "react_bp", "avg_bp", "hit", "t"]].join(pd.DataFrame(orows).T).astype(float).round(3).to_string())
     best = tab["t"].astype(float).idxmax()
     b = rows[best]
     dsr = deflated_sharpe(b["sr"], int(b["n"]), LOCK.trials, b["skew"], b["kurt"],
@@ -136,7 +139,7 @@ def main() -> None:
     print(tr.groupby(tr["time"].dt.year)["ret"].agg(n="size", avg_bp=lambda r: r.mean() * 1e4).round(2).to_string())
     print("\nGroesste Indikatoren (IS):")
     print(tr.groupby("names")["ret"].agg(n="size", avg_bp=lambda r: r.mean() * 1e4).sort_values("n").tail(10).round(2).to_string())
-    zmin, hold = float(best.split()[0][4:]), int(best.split()[1][2:-1])
+    zmin, hold = float(best.split()[0][5:]), int(best.split()[1][2:-1])
     print("Konfig-Hash (noch nicht eingefroren):", config_hash({"zmin": zmin, "hold": hold, "delay": DELAY_H}))
 
 

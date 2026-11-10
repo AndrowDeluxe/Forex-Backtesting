@@ -243,15 +243,70 @@ Verzögerung → Sharpe 0,06. Schlechteste Jahre 2013/14 (Abenomics, USD-Rally:
 Kurs löst sich monatelang vom Zins-Fair-Value). Deckt sich mit
 [[bond-yield-spread-indikator]] (V1 ohne Edge).
 
-### A3 Konsens-Überraschung → läuft
+### A3 Konsens-Überraschung → verworfen (Drift existiert nicht, eher leichter Rücklauf)
 
-ForexFactory-Wochenhistorie ab 2007 (Ist/Konsens/Vorwert, `scripts/remy_ff_history.py`
-→ `data_cache/remy/ff_calendar.parquet`), H1 ab 2007 von Dukascopy. Test:
-`scripts/research_remy_a3_surprise.py`.
+ForexFactory-Wochenhistorie 2007–11/2026 (87.129 Termine, Ist/Konsens/Vorwert,
+`scripts/remy_ff_history.py` → `data_cache/remy/ff_calendar.parquet`), H1 ab 2007
+(Dukascopy). `scripts/research_remy_a3_surprise.py`, IS 2007–2018, OOS 2019–05/2026,
+6 Varianten. High-Impact, Überraschung je Indikator auf IS-Streuung normiert,
+Einstieg 1 h nach dem Termin in Überraschungsrichtung, Kosten 1,5× Spread.
+
+| Variante | IS n | 1. Stunde (bp) | IS Ø danach (bp) | IS t | OOS n | OOS Ø (bp) | OOS t |
+|---|---|---|---|---|---|---|---|
+| \|z\| ≥ 1,0, 4 h | 1660 | +13,8 | −2,8 | **−3,24** | 575 | −3,8 | **−3,18** |
+| \|z\| ≥ 1,0, 24 h | 1660 | +13,8 | −2,8 | −1,56 | 575 | +1,0 | 0,48 |
+| \|z\| ≥ 1,5, 4 h | 755 | +16,3 | −3,6 | −2,67 | 338 | −1,8 | −1,28 |
+| \|z\| ≥ 2,0, 4 h | 312 | +20,3 | −3,1 | −1,41 | 219 | −1,7 | −0,94 |
+| \|z\| ≥ 2,0, 24 h | 312 | +20,3 | −3,6 | −0,76 | 219 | −2,7 | −0,77 |
+
+- **Daten plausibel:** Die erste Stunde läuft klar in Überraschungsrichtung
+  (+14 bis +20 bp, größer bei größerer Überraschung) → Vorzeichen und Zeiten stimmen.
+- **Danach keine Drift:** Der Markt preist die Überraschung in der ersten Stunde ein;
+  in den 4 h danach läuft er leicht zurück (IS und OOS je t ≈ −3,2). Das Buch-Versprechen
+  „nach der Zahl in Richtung handeln“ ist damit widerlegt.
+- **Gegenrichtung (Fade) kein Edge:** Die −2,8 bp sind schon nach ~2 bp Kosten; brutto
+  läuft der Kurs nur ≈ 1 bp zurück. Ein Fade zahlt dieselben Kosten und bleibt negativ.
+- Datenquelle für künftige News-Tests wiederverwendbar (z. B. Termin-Sperre, Spike-Filter).
+
+### Filter B4–B8 (11.11.2026)
+
+Nutzer wählte B4, B5, B6, B8 (B7 blockiert: OIS-Daten kostenpflichtig). B5 und B8 hatte
+die parallele Session schon in der Filter-Matrix getestet (`htf_daily_trade/filter_matrix.py`,
+Setups C2 und Typ R, 9 Märkte, IS 2016–21 / OOS 2022–24) – übernommen statt neu gerechnet.
+
+- **B4 Exposure-Deckel (nur gemessen,** `scripts/research_remy_b4_exposure.py`, MT5-Abzüge
+  W38–W45 aller Live-Konten): Gestapelt wird fast nur **Gold gegen USD**. W38/W39 bis zu
+  **22 gleichgerichtete Gold-Shorts je Konto** (TTP/IQ, `ctnl_reversal` alle 15 Min. neu –
+  der bekannte Sim-Filter-≠-Live-Gate-Fehler, inzwischen behoben). Seit W40 max. 2–4
+  (TTP W42: 4), W45: 1. FX-Beine überschneiden sich kaum. → Ein Deckel wäre heute ein
+  **Gold-Deckel je Konto** (z. B. max. 2 gleichgerichtete Gold-Positionen über alle Beine);
+  Eingriff in Live-Bridges = Nutzerentscheid, nicht umgesetzt.
+- **B5 2J-Differenz-Veto** (Matrix M1 Zins-Momentum): C2 „mit“ IS +0,39 R (t 2,8), OOS nur
+  +0,06; „gegen“ OOS +0,32 → allein **nicht stabil**. Trägt nur zusammen mit der
+  Regime-Matrix (C2 + F1 + F3, OOS +0,50 R, siehe Memory `c2_zins_momentum_regime_filter.md`).
+- **B8 COT-Crowding-Veto** (Matrix X4 COT-Index konträr): Trades *in* eine überfüllte
+  Position: R OOS −0,73 R (n 8), C2 IS −0,07 R (n 82, OOS +0,23). Richtung bei R plausibel,
+  Stichprobe zu klein → als Veto-Kandidat behalten, kein Beleg. Carry als Veto auf C2
+  (Matrix M2) dagegen deutlich: „mit Carry“ OOS **+0,39 R (t 2,2)**, „gegen“ −0,13 R.
+- **B6 Rohstoff-Veto** (`scripts/research_remy_b6_rohstoff_veto.py`, Lock
+  `remy_b6_rohstoff_veto`, AUDUSD ~ Kupfer, USDCAD ~ Öl, Trend bis Vortag; NZD fehlt mangels
+  GDT-Historie):
+
+  | Setup, Fenster | IS mit | IS gegen | OOS mit | OOS gegen |
+  |---|---|---|---|---|
+  | C2, 20 T | +0,89 R (n 55, t 3,0) | +0,03 (21) | +0,08 (29) | −0,12 (18) |
+  | C2, 60 T | +0,78 (44) | +0,47 (33) | +0,36 (24) | −0,38 (23) |
+  | R, 20 T | +0,91 (25) | +0,11 (64) | −0,89 (9) | +0,07 (21) |
+
+  Bei **C2 in allen vier Zellen „mit“ > „gegen“** (Rohstoff als Veto plausibel), bei R
+  ungeordnet. OOS-Stichprobe klein (47 Trades), t < 1,5 → Kandidat für die C2-Stufe-2-
+  Kombination, kein eigener Beleg.
 
 ## Status
 
-10.11.2026: A1 verworfen, A2 als Baustein festgehalten, A3 läuft.
+10.11.2026: A1 verworfen, A2 nur als Veto-/Crowding-Schicht, A3 verworfen.
+11.11.2026: B4 gemessen (Gold-Stapelung, Deckel = Nutzerentscheid), B5/B8 aus der
+Filter-Matrix übernommen, B6 als C2-Veto-Kandidat; Carry-Veto auf C2 der stärkste Fund.
 Ursprüngliche Planung (09.11.2026): Die Reihenfolge, wenn der Nutzer zustimmt:
 zuerst 4 (Exposure-Deckel, ohne Test machbar), dann 1/2/5 (warten auf den
 2J-Loader), dann 9 (FVG, mit vorhandenen Daten sofort testbar).

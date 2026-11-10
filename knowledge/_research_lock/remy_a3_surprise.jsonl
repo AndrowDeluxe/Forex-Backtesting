@@ -1,2 +1,4 @@
 {"ts": "2026-11-10T00:10:28+00:00", "event": "register_split", "is_start": "2007-01-01", "is_end": "2018-12-31", "oos_end": "2025-11-09", "tresor_end": "2026-11-09"}
 {"ts": "2026-11-10T00:21:06+00:00", "event": "move_tresor_start", "old": "2025-11-09", "new": "2026-05-09"}
+{"ts": "2026-11-10T01:14:46+00:00", "event": "oos_view"}
+{"ts": "2026-11-10T01:14:48+00:00", "event": "trials", "n": 6, "total": 6, "note": "A3 IS-Sweep |z| x Haltedauer"}

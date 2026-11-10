@@ -1,0 +1,14 @@
+{
+  "strategy": "remy_b6_rohstoff_veto",
+  "split": {
+    "is_start": "2016-01-01",
+    "is_end": "2021-12-31",
+    "oos_end": "2024-12-31",
+    "tresor_end": "2025-06-30"
+  },
+  "registered": "2026-11-10T23:02:33+00:00",
+  "trials": 2,
+  "frozen": null,
+  "unsealed": {},
+  "forward": null
+}

@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-11-09** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-11-10** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -33,6 +33,13 @@ passiert, was steht an.
    (Blind versiegelt). **Mit Zins-Momentum + Regime-Matrix (F1+F3) OOS +0,50 R, t 1,68, n 45 →
    vielversprechend**; **Blind 2010–15 +0,25 R (t 1,07); gesamt 2010–24 +0,49 R, t 3,34, 13/15 Jahre
    positiv** → bester HTF-Kandidat, nächster Schritt Forward-Test.
+   **Neu 10.11. (vor H4, Nutzerentscheid): Daily-Filter-Matrix + Indikatoren.** 14 Filter × Typ R/C2 × mit/gegen,
+   9 Märkte: **C2 trägt nur gegen den HTF-Trend** (Faber gegen IS +0,36 / OOS +0,33 R, alle Jahre/Märkte positiv),
+   Makro mit; Typ R ohne robusten Filter; **F1+F3 auf den 3 neuen Märkten OOS −0,71 R**. Stufe 1b (12 weitere
+   Repo-Filter): nichts schlägt Faber gegen; bester Zusatz DXY 20T mit (zusammen OOS +0,51 R). Wartet auf deine
+   Kandidatenwahl (≤ 9 Parameter). Parallel: Indikatoren einzeln durchgehen (Steckbriefe, dann Edge-Test je
+   Indikator), Reihenfolge RSI → Multi Length → Stoch RSI → MACD → BB → NW → MA-Cross → Fractals → Pivots →
+   Volumen → SVP/VRVP → Money Flow Profile → COT. H4 zurückgestellt.
    Inventur-Entwurf bestätigt (10.11.). Reihenfolge (Nutzer 10.11., „stabiles Fundament“):
    (1) Inventur: die ~15 Strategien aus „Meine Trading Edges“ einzeln aufnehmen + Makro-Quellen
    (SMH Calls, Zusatzeducation, Makro Education, Elite, Incentive) sichten, (2) FX-Zinsdaten-Loader
@@ -635,7 +642,11 @@ Statustabellen-Zeilen, neu über der Schwelle: `G8-Notion-Sync`
   **Kombis K1–K4 (neue Regel, OOS frei):** Carry im OOS 2017–05/2026 negativ (Sharpe −0,18); bester Zusatz
   COT-Crowding (IS t 2,60, OOS-DD −28 → −21 %), bleibt aber negativ → Carry nur noch als Veto-Schicht
   „nicht in überfüllten Carry-Trade“. **A3 verworfen:** Überraschung wird in der 1. Stunde eingepreist
-  (+14–20 bp), danach leichter Rücklauf statt Drift. Nächster Schritt: Filter B4–B8 mit dem Nutzer durchgehen.
+  (+14–20 bp), danach leichter Rücklauf statt Drift. **11.11. Filter:** B5/B8 aus der Filter-Matrix
+  übernommen (B5 allein instabil, B8 n zu klein); B6 Rohstoff-Veto auf C2 in allen Zellen „mit“ > „gegen“,
+  OOS n 47 → Kandidat für C2-Stufe 2, ebenso Carry-Veto auf C2 (OOS +0,39 R, t 2,2). B4 gemessen: Stapelung
+  fast nur Gold/USD, W38/39 bis 22 Gold-Shorts je Konto (alter CTNL-Fehler), seit W40 max. 2–4 → Gold-Deckel
+  je Konto wäre ein Live-Eingriff, offen für Nutzerentscheid.
 
 - (02.11.) **Profitables LTF-/Scalping-Edge aus dem eigenen Trading** (Nutzerwunsch).
   **Konkret seit 02.11.:** Nutzer will die Daily-Continuation (Typ C) als Validierung für einen

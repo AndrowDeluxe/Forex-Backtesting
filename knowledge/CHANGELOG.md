@@ -9,6 +9,26 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-11** [Research] **Remy-King-Filter B4–B8** ([[remy-king-trading-strategie-top1]]): B4 Exposure aus
+  MT5-Abzügen W38–45 gemessen (`scripts/research_remy_b4_exposure.py`): Stapelung fast nur Gold/USD, W38/39
+  bis 22 gleichgerichtete Gold-Shorts je Konto (alter CTNL-Gate-Fehler), seit W40 max. 2–4. B5/B8 aus der
+  Filter-Matrix übernommen. B6 Rohstoff-Veto (`scripts/research_remy_b6_rohstoff_veto.py`, Lock
+  `remy_b6_rohstoff_veto`): auf C2 „mit“ > „gegen“ in allen Zellen, OOS n 47. Keine Bot-Änderung.
+
+- **2026-11-10** [Dachprojekt / HTF-Edge] **Daily-Filter-Matrix Stufe 1b: 12 übrige Repo-Filter** (Nutzerauftrag):
+  VIX, DXY synthetisch, US-Realzins, COT-Index konträr, Kalman, Triple-MA, Vol-Regime, Jump-Regime (H1), Cross-Pair USD,
+  Partner-Momentum, Volumen-POC (H1), News-Tag. `filter_matrix.py --stufe1b`, Lock jetzt 437 Versuche. Kein neuer Filter
+  schlägt „Faber gegen“; bester Zusatz DXY 20T mit (T6 gegen + DXY: OOS +0,51 R, n 91); News-Tag meiden hält im OOS.
+  Typ R weiter ohne robusten Filter. [[htf-daily-trade-edge-card]]. Keine Bot-Änderung.
+
+- **2026-11-10** [Dachprojekt / HTF-Edge] **Daily-Filter-Matrix: alle Trend- und Makrofilter mit/gegen den Trend**
+  (Nutzerauftrag, Plan freigegeben). Neu `htf_daily_trade/filter_matrix.py` (14 Filter, Typ R + C2, 9 Märkte;
+  Lock `htf_daily_filter_matrix`, 379 Versuche). NZDUSD/USDCAD/USDCHF ergänzt in `zins_fx.FX`, `macro.MARKET_KIND`/
+  `G8_BASE`, `cot_flow.CODES` (COT CAD/CHF/NZD ab 2005 von der CFTC nachgeladen: `python -m fusion_lab.filters.cot_flow`).
+  Ergebnis: C2 trägt nur **gegen** den HTF-Trend (Faber gegen: IS +0,36 / OOS +0,33 R, alle 9 Jahre und Märkte
+  positiv), Makro **mit**; Typ R ohne robusten Filter. Bisheriger Kandidat F1+F3 auf den 3 neuen Märkten OOS −0,71 R
+  (n 18). Kandidatenwahl unter 9 Parametern offen. [[htf-daily-trade-edge-card]]. Keine Bot-Änderung.
+
 - **2026-11-10** [Research / Bausteine] CRT (Tim) und COT-Fluss (Dennis) als wiederverwendbare
   Bausteine geparkt (Nutzerentscheid): `fusion_lab/patterns/crt.py`, `fusion_lab/filters/cot_flow.py`.
   Testskripte nutzen sie jetzt, Ergebnisse unverändert nachgerechnet (keine neuen Versuche). Ideen-Inbox

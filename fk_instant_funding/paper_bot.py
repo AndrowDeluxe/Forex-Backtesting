@@ -112,6 +112,13 @@ def _retry(fn, attempts: int = 6, delay_seconds: float = 8.0, timeout_seconds: f
             last_exc = e
             if attempt < attempts - 1:
                 time.sleep(delay_seconds)
+    if isinstance(last_exc, TypeError) and "not supported between" in str(last_exc):
+        # Diagnose str/float-Fehler (Nutzerauftrag 2026-11-10): tritt nur im Live-
+        # Fallback auf (montags ~00:05, Ingest-Ausfaelle) und war im Nachhinein
+        # nicht reproduzierbar -- vollen Traceback einmal ins Task-Log schreiben.
+        import traceback
+        print("str/float-Diagnose:" + chr(10) + "".join(
+            traceback.format_exception(type(last_exc), last_exc, last_exc.__traceback__)), flush=True)
     raise last_exc
 
 REPO_DIR = Path(__file__).resolve().parents[1]

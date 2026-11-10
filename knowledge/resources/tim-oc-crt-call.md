@@ -130,3 +130,25 @@ OHLC. T1 als billige Vorstufe mitlaufen lassen. Der M1-Teil (sehr enge
 Stops) erst mit echten Ticks oder Kostenzuschlag. Alles unter der
 Overfitting-Sperre mit vorab festgelegter Swing- und Sweep-Definition.
 Nichts davon ist bisher getestet.
+
+## 6. Testergebnis (2026-11-10, Sperre `tim_crt`, 12 Varianten)
+Skript `scripts/research_tim_crt.py`, Tabellen `scripts/research_tim_crt_is.csv` / `_oos.csv`.
+Gold und EURUSD, M15/H1/H4/D1 aus Dukascopy-M15 gebaut, H4/D1 an Serverzeit NY+7.
+IS 2016–2021, OOS 2022–2024. Tresor (ab 2025) bleibt zu.
+
+- **T1 CRT als Einstieg: kein Edge.** Ziel (anderes Extrem von Kerze 1) wird in ~40 % erreicht,
+  der Stop in ~58 %. Schon brutto ist das Ergebnis −0,02 bis −0,07 R auf M15–H4, und zwar in
+  beiden Märkten, in IS und OOS. Netto liegt M15 bei −0,5 bis −0,7 R, weil der Spread den
+  engen Stop frisst. Einzige Ausnahme: Gold D1 im IS (+0,08 R netto, t 1,15, DSR 0,30), im OOS
+  dann −0,17 R. Die Kontrolle (Kerze 2 schließt jenseits) ist netto noch schlechter.
+- **T2 „Early Ones geholt“: Effekt ist Mechanik.** Roh sieht Tims Aussage bestätigt aus:
+  Mit geholter Manipulation liegt die Stopquote bei 48–52 %, ohne bei 58–62 %. Die geholten
+  Fälle haben aber einen ~1,8-mal so weiten Stop (Median 0,72 statt 0,41 ATR) und ein kleineres
+  CRV (1,0 statt 1,4). Vergleicht man innerhalb gleicher Stopweiten- und CRV-Klassen (IS),
+  schrumpft der Abstand auf −1,5 bis +3,7 Prozentpunkte, mit wechselndem Vorzeichen.
+  R brutto ist uneinheitlich. Der lange Docht macht den Stop weiter, mehr steckt nicht dahinter.
+- **T3 Break-even nach +0,5 R:** senkt die Stopquote, verbessert R aber nirgends verlässlich.
+- **T4** nicht getestet (FX/Gold intraday praktisch ohne Gaps).
+
+Fazit: Weder als Einstieg noch als Regel für Stop und Break-even liefert die CRT hier
+etwas, das über die Geometrie hinausgeht. Das deckt sich mit „Key Levels: Magnet statt Wand“.

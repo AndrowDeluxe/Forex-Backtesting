@@ -9,6 +9,15 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-10** [Research / Elite-Coaching-Calls, Tests] Testbare Kandidaten geprüft (Nutzerauftrag).
+  Tim CRT (`scripts/research_tim_crt.py`, Sperre `tim_crt`, 12 Versuche): kein Edge, auch brutto
+  negativ; „Early Ones geholt“ senkt die Stopquote nur über die weitere Stopweite. Dennis A′
+  (`scripts/research_dennis_cot_trend.py`, Sperre `dennis_cot_trend`, 7 Versuche inkl.
+  Momentum-Gegenprobe): Non-Commercials-Aufbau als C2-Filter IS +0,38 R vs. Basis +0,21, OOS +0,18 vs.
+  +0,13, verworfen; Retail-Bedingung schadet. Neue COT-Daten mit Non-Reportables in
+  `data_cache/smh/cot_legacy_nr.parquet`. B/E/F/D nicht getestet (Definition offen bzw. keine Daten).
+  Keine Bot-Änderung.
+
 - **2026-11-10** [Research / Elite-Coaching-Calls] Vier neue Aufnahmen transkribiert (Whisper lokal,
   Transkripte nur im Scratchpad, nicht im Repo). Dennis, drei COT-/Volumen-Calls →
   `resources/smh-dennis-cot-volumen-calls.md` (Bestandteile, Annahmen, Widersprüche, Kandidaten A′/B/E/F/D;

@@ -180,3 +180,27 @@ zweite Imbalance-Sicht folgen.
 Empfehlung unverändert: **A′ zuerst** (billig, im laufenden HTF-Projekt),
 dann B. E und F nur mit vorab festgelegten Definitionen unter der
 Overfitting-Sperre.
+
+## 9. Testergebnis A′ (2026-11-10, Sperre `dennis_cot_trend`, 7 Versuche)
+Skript `scripts/research_dennis_cot_trend.py`, Tabellen `scripts/research_dennis_cot_trend_is.csv` /
+`_oos.csv`. Basis: Daily-Edge C2 mit Gold-Zinskurvenfilter (unverändert), 6 Märkte. COT Legacy
+von der CFTC (`data_cache/smh/cot_legacy_nr.parquet`), Stand jeweils Freitag vor dem Fülltag.
+
+| Variante | IS behalten | IS raus | OOS behalten | OOS raus |
+|---|---|---|---|---|
+| Basis C2 | 254 Trades, +0,21 R | | 138 Trades, +0,13 R | |
+| N4: Non-Commercials 4 Berichte in Trade-Richtung | 159, **+0,38 R** (t 2,36, DSR 0,85) | 95, −0,07 R | 85, +0,18 R (t 0,90) | 53, +0,05 R |
+| N4 + Retail gegenläufig | 44, +0,13 R | 210, +0,23 R | 18, −0,02 R | 120, +0,15 R |
+
+- **Hedgefonds-Aufbau (NC) wirkt im IS, im OOS kaum noch.** Die Varianten N2 und N8 zeigen das
+  gleiche Bild.
+- **Retail als Gegenseite (Dennis 5.6) schadet im IS** (N2/N4/N8 + NR jeweils schlechter als
+  die Basis). Im OOS ist nur N8+NR positiv (25 Trades, +0,52 R). Das passt zum Zufall bei
+  7 Versuchen.
+- **Gegenprobe Preis-Momentum (20 Tage, als Versuch gezählt):** Im IS liefert das COT-Signal
+  mehr als Momentum (Momentum-Trades ohne COT-Signal: −0,15 R). Im OOS sind diese Trades aber
+  genauso gut wie die behaltenen (+0,19 R). Der Vorteil hält also nicht.
+
+Fazit: Kein Filter für C2. Höchstens als Beobachtungsgröße im laufenden C2-Forward mitschreiben.
+B, E, F (Volumenprofil) sind nicht getestet: Dafür müssen Range und Profil erst festgelegt
+werden (Entscheidung offen). D bleibt ohne Footprint-Daten untestbar.

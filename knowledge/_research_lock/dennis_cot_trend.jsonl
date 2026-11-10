@@ -1,0 +1,4 @@
+{"ts": "2026-11-10T22:02:40+00:00", "event": "register_split", "is_start": "2016-01-01", "is_end": "2021-12-31", "oos_end": "2024-12-31", "tresor_end": null}
+{"ts": "2026-11-10T22:02:40+00:00", "event": "trials", "n": 6, "total": 6, "note": "A' N x NR, Definitionen vorab im Docstring"}
+{"ts": "2026-11-10T22:02:43+00:00", "event": "oos_view"}
+{"ts": "2026-11-10T22:02:57+00:00", "event": "trials", "n": 1, "total": 7, "note": "Gegenprobe: Preis-Momentum 20 Tage statt COT (Mechanismus-Check)"}

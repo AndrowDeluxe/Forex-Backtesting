@@ -76,17 +76,17 @@ jeweiligen Thema weiterarbeiten (Nutzerentscheid 10.11.).
   G8 für Gold/Silber = USD-Score unter 0; „bestätigt“ = Regime hält ≥ 5 Tage. [[regime-bestimmung-und-filter]]
 
 - **Dennis' COT-/Volumen-Calls (02.11., mit Ton am 10.11.):** Die drei neuen Aufnahmen bestätigen
-  meine Bild-Lesarten von 02.11. („vom Extrem zum POC“, Manipulation als Hedge). Offen: Welchen
-  Kandidaten testen? Mein Vorschlag A′ (COT-Veränderungsrate als Trendfilter), dann B. Meine
-  Annahmen: Commercials-Netto ist redundant zu den anderen beiden Gruppen; Widersprüche (Absolutwerte,
-  Footprint im LTF) habe ich gegen Dennis gelesen. [[smh-dennis-cot-volumen-calls]],
-  [[smh-volumen-delta-und-cot-calls]]
+  meine Bild-Lesarten von 02.11. („vom Extrem zum POC“, Manipulation als Hedge). **A′ getestet
+  (10.11.):** Hedgefonds-Aufbau als C2-Filter IS +0,38 R statt +0,21, im OOS nur +0,18 statt +0,13,
+  Retail-Gegenseite schadet. Kein Filter. Offen: B/E/F (Volumenprofil) brauchen erst deine
+  Festlegung von Range und Profil. Sollen wir die testen? Meine Annahmen: Testdefinitionen von A′
+  (N = 2/4/8 Berichte, Retail „nicht mitlaufend“), Commercials-Netto redundant.
+  [[smh-dennis-cot-volumen-calls]], [[smh-volumen-delta-und-cot-calls]]
 
-- **Tims CRT-Call „OC CRT“ (10.11.):** Kern: Enger Stop und früher Break-even erst, wenn der Sweep
-  schon die „Early Ones“ (das Swing-Extrem dahinter) geholt hat. Meine Annahmen: „Early Ones“ =
-  vorheriges Swing-Hoch/-Tief hinter Kerze 1; Stellen bei 12:30 und 16:00 schwer verständlich.
-  Vorschlag: T2 (Rückkehrrate hinter den Sweep-Docht, mit/ohne geholte Manipulation) zuerst, nur OHLC.
-  [[tim-oc-crt-call]]
+- **Tims CRT-Call „OC CRT“ (10.11.), getestet:** CRT ohne Edge (brutto −0,02 bis −0,07 R auf
+  M15–H4, Gold + EURUSD, IS und OOS). Die niedrigere Stopquote nach geholten „Early Ones“ ist
+  Mechanik (weiterer Stop, kleineres CRV). Meine Annahmen: „Early Ones“ = Fractal-Swing (2/2) der
+  20 Kerzen vor Kerze 1; Ziel = anderes Extrem von Kerze 1; max. 12 Kerzen. [[tim-oc-crt-call]]
 
 - **Edge Card Daily-Trade (02.11.): meine Lesarten (V) im Regel-Entwurf** (RSI 20 Tage / 70/30
   hast du bestätigt). MA-Cross bis 5 Tage nach dem Fractal; Typ-R-Einstieg beim Schluss über/unter der Fractal-Kerze;

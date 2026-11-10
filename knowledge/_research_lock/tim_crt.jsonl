@@ -1,0 +1,10 @@
+{"ts": "2026-11-10T22:01:09+00:00", "event": "register_split", "is_start": "2016-01-01", "is_end": "2021-12-31", "oos_end": "2024-12-31", "tresor_end": null}
+{"ts": "2026-11-10T22:01:27+00:00", "event": "trials", "n": 12, "total": 12, "note": "T1/T2/T3 je M15/H1/H4/D1, Definitionen vorab im Docstring"}
+{"ts": "2026-11-10T22:01:28+00:00", "event": "oos_view"}
+{"ts": "2026-11-10T22:01:28+00:00", "event": "oos_view"}
+{"ts": "2026-11-10T22:01:28+00:00", "event": "oos_view"}
+{"ts": "2026-11-10T22:01:28+00:00", "event": "oos_view"}
+{"ts": "2026-11-10T22:01:28+00:00", "event": "oos_view"}
+{"ts": "2026-11-10T22:01:28+00:00", "event": "oos_view"}
+{"ts": "2026-11-10T22:01:28+00:00", "event": "oos_view"}
+{"ts": "2026-11-10T22:01:28+00:00", "event": "oos_view"}

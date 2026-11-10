@@ -41,3 +41,14 @@ Erwartung = Live-Wissensstand (V0), nicht der Backtest. `pending.live_state_fric
 Rückstand 1/2/3 Handelstage: Ø +0,082/+0,058/+0,038 R, t höchstens 1,16
 (`scripts/research_gold_asb_stale_filter.py`). Gebaut am 01.11., am 02.11. per
 `STALE_FALLBACK_ENABLED = False` abgeschaltet (Nutzerentscheid).
+
+## Soll = Bot-Entscheidung (10.11., Nutzerentscheid)
+Die Nachrechnung kann die Live-Entscheidung nicht treffen: Der Lake-Friktionswert für D−1 entsteht um
+01:00 NY mit halbem Tag D und wird danach überarbeitet. Beleg mit heutigem Datenstand: 03.11.
+Friktion **0,0459** (Schwelle 0,018), also gefiltert. Live wurde Short gelegt (−1.274 USD / −90 EUR).
+05.11.: live 0,0314, heute 0,0062.
+- `todays_setup()` schreibt je Tag Filterwerte, `friction_date` und Entscheidung nach
+  `<Bridge>/logs/gold_asb_filter_journal.jsonl` (EK, Funded, FK; außerhalb von Git).
+- `scan_trades(journal=...)` / `soll_ist.py`: An Protokolltagen gilt die Bot-Entscheidung. Der
+  Bericht zeigt „Filter-Drift“, also die Tage, an denen die Nachrechnung anders entschieden hätte.
+- Handelslogik unverändert. Commit `4c0bcc53`. Ab KW46 vollständig, KW45 und früher weiter nachgerechnet.

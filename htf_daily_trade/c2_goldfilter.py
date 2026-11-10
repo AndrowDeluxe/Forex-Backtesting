@@ -47,7 +47,8 @@ def evaluate(start: str, end: str, warmup_start: str) -> pd.DataFrame:
             if res is None:
                 continue
             busy[en["side"]] = res["exit_k"]
-            rows.append({"markt": name, "datum": t.date(), "seite": en["side"], "r": res["r"]})
+            rows.append({"markt": name, "datum": t.date(), "seite": en["side"], "r": res["r"],
+                         "exit_datum": x.index[res["exit_k"]].date()})
     return pd.DataFrame(rows)
 
 

@@ -404,3 +404,10 @@ Basis C2 im selben Zeitraum n 596, +0,146 R, t 1,97. Der Filter verbessert die B
 Zeiträumen (×3,4 / ×3,9 / ×3,2). Jeder Prüfzeitraum für sich bleibt unter t 2, und die Markt-
 Rangfolge wechselt jedes Mal → keine Marktauswahl ableiten (Silber gesamt −0,12 R, n 22, nur als
 Forward-Beobachtung). **Stand: bester HTF-Kandidat bisher; nächster Schritt Forward-Test.**
+
+**100k-Konto ab 2015, 1 % Risiko je Trade** (`python -m htf_daily_trade.c2_konto`, 10.11.2026,
+eingefrorene Regeln, nach Kosten): 165 Trades bis 11/2026, Ø +0,48 R, t 3,09, Treffer 45 %, PF 1,92.
+Fest 1.000 $/R: Ende 179.424 $ (CAGR 5,1 %, max. DD −6,5 %). 1 % vom Kontostand: 211.556 $
+(CAGR 6,6 %, max. DD −7,6 %). Negative Jahre: 2015 (−3,8 R), 2025 (−3,8 R); 2025/26 zusammen
+(vorher ungesehen) +4,5 R. Max. 4 Trades gleichzeitig offen, längste Verlustserie 10. DD auf
+Schlusskursbasis der Trades (ohne Zwischenverluste offener Positionen).

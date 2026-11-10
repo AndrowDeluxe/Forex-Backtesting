@@ -63,6 +63,11 @@ keine Planung (dafür ist `DASHBOARD.md`).
   846 Altzeilen aus `macro.parquet` gelöscht (Sicherung `macro.parquet.bak_20261110`). TVC gegen
   amtlich abgeglichen: US/JP/CA Tages-Korrelation 0,90–0,96. 4 neue Tests. Keine Bot-Änderung.
 
+- **2026-11-10** [Dachprojekt / HTF-Edge] **C2 + Zins-Momentum + Regime-Matrix auf 100k-Konto ab 2015**
+  (Nutzerauftrag): `htf_daily_trade/c2_konto.py` (neu; `c2_goldfilter.evaluate` gibt zusätzlich
+  `exit_datum` aus, Regeln unverändert). 165 Trades, 1 % Risiko: fest +79.424 $ (CAGR 5,1 %, DD −6,5 %),
+  Zinseszins +111.556 $ (CAGR 6,6 %, DD −7,6 %). 2025/26 (ungesehen) +4,5 R. Keine Bot-Änderung.
+
 - **2026-11-10** [Dachprojekt / HTF-Edge] **C2 + Zins-Momentum + Regime-Matrix: Blind 2010–15 geöffnet**
   (Nutzerfreigabe, Lock `htf_daily_trade_c2_filter`, `aea4189b`): n 70, +0,253 R, t 1,07 (Basis +0,079 R).
   Gesamt 2010–24 n 195, +0,495 R, t 3,34, 13/15 Jahre positiv. Filter verbessert die Basis in allen drei

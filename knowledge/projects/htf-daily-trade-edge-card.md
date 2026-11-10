@@ -411,6 +411,21 @@ Fest 1.000 $/R: Ende 179.424 $ (CAGR 5,1 %, max. DD −6,5 %). 1 % vom Kontostan
 (CAGR 6,6 %, max. DD −7,6 %). Negative Jahre: 2015 (−3,8 R), 2025 (−3,8 R); 2025/26 zusammen
 (vorher ungesehen) +4,5 R. Max. 4 Trades gleichzeitig offen, längste Verlustserie 10. DD auf
 Schlusskursbasis der Trades (ohne Zwischenverluste offener Positionen).
+**Korrektur 11.11.:** Die Backtest-Tagesdaten enden bei FX am 09.10.2026, bei Gold am 12.08., bei
+Silber am 31.07. -- „bis 11/2026“ stimmte nicht. Zwei Trades (GBPUSD short, USDJPY long, Einstieg
+02.10.) wurden am Datenende zwangsweise geschlossen; zu Ende gerechnet sind es −1,02 statt +0,37 R und
++1,09 statt +1,42 R. 2026 und gesamt damit rund 1,7 R niedriger (fest ≈ 177.700 $).
+
+## Forward-Test (seit 12.11.2026, Nutzerentscheid 11.11.: nur Log + Telegram, keine Orders)
+
+Task „C2-Forward-Log“ (Di–Sa 03:30, `scripts/c2_forward_task.ps1`) → `python -m
+htf_daily_trade.c2_forward` → `htf_daily_trade/forward/c2_forward_ledger.csv`. Tageskerzen = Backtest-
+Historie + Data Lake (`htf_daily_trade/forward_data.py`; Abgleich auf 200–320 Überlappungstagen: Hoch/
+Tief/Schluss exakt gleich). Regeln unverändert (Hash `aea4189b`); jedes Signal mit Status wartet/
+verfallen/offen/geschlossen und Filterstatus, gefilterte Trades als Schatten. Rückwärtsprobe ab
+01.01.2026: dieselben 17 Trades wie der Backtest. Telegram nur bei Statuswechsel, samstags
+Wochenbericht. Lock-Regel: Auswertung ab 30 Trades oder am 12.11.2027 (~14 Trades/Jahr, bis 31.03.2027
+wären es nur ~5). Zusatzfilter der Filter-Matrix-Session kommen später als Spalten dazu.
 
 ## Filter-Matrix: alle Filter mit/gegen den Trend (10.11.2026, Lock `htf_daily_filter_matrix`)
 

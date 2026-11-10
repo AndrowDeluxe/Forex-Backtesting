@@ -140,6 +140,17 @@ keine Planung (dafür ist `DASHBOARD.md`).
   846 Altzeilen aus `macro.parquet` gelöscht (Sicherung `macro.parquet.bak_20261110`). TVC gegen
   amtlich abgeglichen: US/JP/CA Tages-Korrelation 0,90–0,96. 4 neue Tests. Keine Bot-Änderung.
 
+- **2026-11-11** [Dachprojekt / HTF-Edge / neuer Task] **Forward-Test C2 + Zins-Momentum + Regime-Matrix
+  gestartet** (Nutzerentscheid: diese Variante, nur Log + Telegram, keine Orders; Plan freigegeben). Neuer
+  Task **„C2-Forward-Log“** (Di–Sa 03:30, Akku erlaubt, `scripts/c2_forward_task.ps1`), neu
+  `htf_daily_trade/forward_data.py` (Historie + Data-Lake-Tageskerzen), `htf_daily_trade/c2_forward.py`
+  (Ledger mit Status + Schatten-Trades, Telegram bei Statuswechsel, Sa Wochenbericht),
+  `tests/test_c2_forward.py`. Lock `htf_daily_trade_c2_filter`: Forward ab 12.11.2026, Auswertung ab 30
+  Trades oder 12.11.2027. Rückwärtsprobe ab 01.01.2026 = dieselben 17 Trades wie der Backtest.
+  **Korrektur Kontorechnung 10.11.:** Tagesdaten enden FX 09.10./Gold 12.08./Silber 31.07., nicht 11/2026;
+  zwei am Datenende abgeschnittene Trades kosten zu Ende gerechnet 1,7 R (fest ≈ 177.700 statt 179.424 $).
+  Erster Lauf `87969263`. Keine Bot-Änderung.
+
 - **2026-11-11** [Dachprojekt / Makro-Filter] **C2-Filter auf ORB und CTNL: übertragen sich nicht**
   (Nutzerauftrag). Neu `skill_test/makro_filter_orb_ctnl.py`; `research_fk_gesamtportfolio_2026`
   gibt bei ORB/CTNL zusätzlich `direction` aus. ORB: Zins-Momentum/Carry/Matrix ohne Wirkung,

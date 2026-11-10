@@ -32,7 +32,8 @@ passiert, was steht an.
    Continuation). **10.11.: C2 eingefroren, OOS 2022–24 +0,127 R, t 0,88 → kein bestätigter Edge**
    (Blind versiegelt). **Mit Zins-Momentum + Regime-Matrix (F1+F3) OOS +0,50 R, t 1,68, n 45 →
    vielversprechend**; **Blind 2010–15 +0,25 R (t 1,07); gesamt 2010–24 +0,49 R, t 3,34, 13/15 Jahre
-   positiv** → bester HTF-Kandidat, nächster Schritt Forward-Test.
+   positiv** → bester HTF-Kandidat. **Forward-Test läuft seit 12.11.** (Task „C2-Forward-Log“,
+   nur Log + Telegram). C2-Filter auf ORB/CTNL übertragen sich nicht (11.11.).
    **Neu 10.11. (vor H4, Nutzerentscheid): Daily-Filter-Matrix + Indikatoren.** 14 Filter × Typ R/C2 × mit/gegen,
    9 Märkte: **C2 trägt nur gegen den HTF-Trend** (Faber gegen IS +0,36 / OOS +0,33 R, alle Jahre/Märkte positiv),
    Makro mit; Typ R ohne robusten Filter; **F1+F3 auf den 3 neuen Märkten OOS −0,71 R**. Stufe 1b (12 weitere
@@ -540,6 +541,7 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 | G8-Notion-Sync (neu)                                    | — (nur FRED/Dukascopy-Abruf + Notion-Schreiben, kein Order-Bezug)                       | Schreibt G8-Währungsstärke (Nachbau + SMH-Tabellen) in Notion-DB „💱 G8-Stärke“ (`scripts/g8_notion_sync_task.ps1`) | Ready (täglich 07:00, auch Sa/So) | — | 2026-10-12      |
 | Regime-Notion-Sync (neu)                                | — (nur FRED/ALFRED/yfinance-Abruf + Notion-Schreiben, kein Order-Bezug)                 | Regimekarte Wachstum×Inflation neu rechnen → Notion „Regime-Roadmap“ + Seite „Assets je Regime“ (`scripts/regime_notion_task.ps1`) | Ready (So 09:00, StartWhenAvailable) | — | 2026-10-28      |
 | Makro-Daten (neu)                                       | — (nur Datenabruf, kein Order-Bezug)                                                     | Makro-Agent Schicht 1: G8-Makrodaten und Kalender mit Abrufzeit nach `fusion_lab/data/macro_data/` (`scripts/macro_data_task.ps1`, Akku erlaubt) | Ready (täglich 00:50 + 07:30, auch Sa/So) | — | 2026-10-30 |
+| C2-Forward-Log (neu)                                    | — (nur Log + Telegram, keine Orders)                                                     | Forward-Test Daily-Edge C2 + Zins-Momentum + Regime-Matrix (`scripts/c2_forward_task.ps1`, Ledger `htf_daily_trade/forward/`, Akku erlaubt); Auswertung ab 30 Trades oder 12.11.2027 | Ready (Di–Sa 03:30, StartWhenAvailable) | — | 2026-11-11 |
 | Telegram-Import-SMH-Daily                               | — (nur Telegram lesen + rechnen, kein Order-Bezug)                                       | Inkrementeller Import „SMH Daily Update“ ohne Videos; seit 28.10. zusätzlich Bild-/Anweisungs-Lesung per Claude-Abo + Forward-Stand Copy Trading Stufe 2 (`scripts/telegram_smh_daily_import_task.ps1`, Akku erlaubt) | Ready (täglich 23:00, auch Sa/So) | — | 2026-10-28      |
 
 **Letzter echter Entry** (Spalte seit 2026-09-16): letzter Eröffnungs-Deal beim Broker, der **dieser Bridge zugeordnet** ist (EK über Magic, Funded/FK über die Tickets im `bridge_state`). Fremdpositionen zählen nicht mit — auf FK lagen am 14.09. zwei manuelle Positionen, die sonst wie Bridge-Aktivität ausgesehen hätten. Grund für die Spalte: der Modus LIVE hat fünf Tage lang verdeckt, dass FK nichts ausführte. Aktualisieren mit `python scripts/reports/soll_ist.py --last-entries`. Zeiten sind Broker-Serverzeit.

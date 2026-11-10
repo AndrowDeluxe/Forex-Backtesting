@@ -1,3 +1,12 @@
 2026-11-11 00:38:23 === Task gestartet ===
 2026-11-11 00:38:26 ÔÜá´©Å C2-Forward: Filterdaten alt (AU.2y 2026-11-04) -- F1 evtl. ungenau
 2026-11-11 00:38:26 0 Zeilen, Status {}
+2026-11-11 00:38:27 [main 87969263] C2-Forward: Ledger 2026-11-11
+2026-11-11 00:38:27  2 files changed, 4 insertions(+)
+2026-11-11 00:38:27  create mode 100644 htf_daily_trade/forward/c2_forward_ledger.csv
+2026-11-11 00:38:27  create mode 100644 htf_daily_trade/forward/task_run.log
+2026-11-11 00:38:27 Nichts zu mergen (0 eingehende Commits) - Stash und Merge uebersprungen.
+2026-11-11 00:38:29 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-11-11 00:38:29    8e78a60a..87969263  main -> main
+2026-11-11 00:38:29 Commit + Push erfolgreich.
+2026-11-11 00:38:29 === Task beendet ===

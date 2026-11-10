@@ -139,7 +139,8 @@ def orb_trades(rule: str = "opposite") -> pd.DataFrame:
         tr = tr[tr["entry_time"] >= Y0]
         out.append(pd.DataFrame({"leg": tr["leg"], "entry_time": tr["entry_time"], "exit_time": tr["exit_time"],
                                  "r": tr["r_multiple"], "exit_reason": tr["exit_reason"],
-                                 "stop_px": tr["initial_risk"].to_numpy(), "spread_bps": spread_bps}))
+                                 "stop_px": tr["initial_risk"].to_numpy(), "spread_bps": spread_bps,
+                                 "direction": tr["direction"].to_numpy()}))
         print(f"  ORB {inst} ({rule}): {len(tr)} Trades 2026, Spread {spread_bps:.2f} bps, {_stats(tr['r_multiple'])}")
     return pd.concat(out, ignore_index=True)
 
@@ -293,7 +294,8 @@ def ctnl_trades() -> pd.DataFrame:
     rep = _cap_concurrent(rep.sort_values("entry_time"), CTNL_LIVE_CAP)
     df = pd.DataFrame({"leg": "ctnl_reversal", "entry_time": rep["entry_time"].to_numpy(),
                        "exit_time": rep["exit_time"].to_numpy(), "r": rep["r_live"].to_numpy(),
-                       "exit_reason": rep["exit_reason"].to_numpy(), "stop_px": rep["effective_risk"].to_numpy()})
+                       "exit_reason": rep["exit_reason"].to_numpy(), "stop_px": rep["effective_risk"].to_numpy(),
+                       "direction": rep["direction"].to_numpy()})
     df = df[df["entry_time"] >= Y0].reset_index(drop=True)
     print(f"  CTNL rev: {n0} nach Kappung -> {n_gate} nach Gates -> {n_rib} nach Ribbon -> {n_spk} nach Spike "
           f"-> {len(df)} 2026 (Live-Deckel 2). Exit-Gruende {df['exit_reason'].value_counts().to_dict()}, {_stats(df['r'])}")

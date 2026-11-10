@@ -84,3 +84,21 @@ geöffnet haben. Zur Einordnung: `ny_open_orb_is_reopt_7p` hat zusätzlich 7.560
 - Die MT5-Brücke `scripts/mt5_tester_lock.py` lässt `mt5-robot-tester` nur innerhalb von
   IS laufen. Sie blockiert alle 9 Bridge-Terminals und zählt die Durchgänge per
   `log_trials`.
+
+## Makro-Filter aus dem C2-Test auf ORB und CTNL (11.11.2026, Nutzerauftrag)
+
+`python -m skill_test.makro_filter_orb_ctnl` (Trades TTP-Live-Konfiguration, neu mit Richtung:
+`research_fk_gesamtportfolio_2026.orb_trades/ctnl_trades` geben jetzt `direction` aus). Filter wie in
+[[htf-daily-trade-edge-card]]: F1 Zins-Momentum, F2 Carry/Realzins, F3 Regime-Matrix, F4 Regimekarte.
+Indizes wie Gold bzw. Matrix-Zeile „Industrie“ behandelt (Nutzer bestätigt 11.11.). IS/OOS nach den
+Sperren vom 28.10.; ORB/CTNL laufen live → nur Diagnose, Änderung erst nach Forward.
+
+- **ORB** (IS n 652, +0,56 R; OOS n 466, +0,23 R): F1–F3 verbessern nichts (im IS ist „dagegen“
+  sogar besser). F4 „wirkt“ in IS und OOS, aber nur scheinbar: Die Regimekarte zeigt für NDX in allen
+  Regimen long → F4 heißt nur „keine NASDAQ-Shorts“. NASDAQ-Shorts: IS +0,19 R (n 118), OOS −0,29 R
+  (n 91), **ab 10/2025 +0,80 R (n 44)**. Kein Makro-Effekt.
+- **CTNL** (IS n 109, +0,84 R; OOS n 57, +1,41 R): F1 trennt im IS stark (dafür +1,25 / dagegen
+  +0,11 R), kippt im OOS (dagegen +1,77 R). F3/F4 wirken nur im OOS. Kein Filter in beiden Zeiträumen.
+
+**Ergebnis: Die C2-Filter übertragen sich nicht auf ORB oder CTNL.** Sie wirken auf den Daily-
+Fortsetzungs-Einstieg (Haltedauer 10 Tage), nicht auf Intraday-Ausbrüche bzw. H4-Reversals.

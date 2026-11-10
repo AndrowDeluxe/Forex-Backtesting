@@ -9,6 +9,17 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-11** [Dachprojekt / HTF-Edge] **C2-Kandidat × Stop/Ziel/BE/Teilgewinne/Risiko** (Nutzerauftrag).
+  `htf_daily_trade/c2_exit_varianten.py`, 120 Varianten, Lock `htf_daily_filter_matrix` 568 Versuche. Basis (Strukturstop,
+  Zeitausstieg 10 Tage, kein BE) bleibt am besten (IS +0,62 / OOS +0,44 R); feste Ziele, Trail, Twin-Trade, Teilgewinne
+  und BE senken die Erwartung; Konfluenz-Staffel ohne Ordnung → festes Risiko. Konto 1 %: CAGR 11,1 %, DD −7,6 %.
+  Keine Bot-Änderung.
+
+- **2026-11-11** [Dachprojekt / HTF-Edge] **C2 + Faber gegen × Carry-/Rohstoff-Veto (Remy-King-Buch)** (Nutzerauftrag,
+  10 Parameter für diesen Test erlaubt). `htf_daily_trade/c2_veto_combos.py`, 13 Varianten, Lock `htf_daily_filter_matrix`
+  449 Versuche. IS-Bester: Faber gegen + COT-Fluss mit + Rohstoff-Veto (IS +0,62 R t 3,12, OOS +0,44 R, alle Jahre/Märkte
+  positiv); Carry-Veto hebt das OOS (+0,58 R), halbiert aber die Trades. Einfrieren nach Nutzerwahl. Keine Bot-Änderung.
+
 - **2026-11-11** [Research] **Remy-King-Filter B4–B8** ([[remy-king-trading-strategie-top1]]): B4 Exposure aus
   MT5-Abzügen W38–45 gemessen (`scripts/research_remy_b4_exposure.py`): Stapelung fast nur Gold/USD, W38/39
   bis 22 gleichgerichtete Gold-Shorts je Konto (alter CTNL-Gate-Fehler), seit W40 max. 2–4. B5/B8 aus der
@@ -122,6 +133,12 @@ keine Planung (dafür ist `DASHBOARD.md`).
   „Makro-Daten“ automatisch mit. Die monatlichen OECD-10J-Reihen (FRED, seit 09/2026 still) entfernt,
   846 Altzeilen aus `macro.parquet` gelöscht (Sicherung `macro.parquet.bak_20261110`). TVC gegen
   amtlich abgeglichen: US/JP/CA Tages-Korrelation 0,90–0,96. 4 neue Tests. Keine Bot-Änderung.
+
+- **2026-11-11** [Dachprojekt / Makro-Filter] **C2-Filter auf ORB und CTNL: übertragen sich nicht**
+  (Nutzerauftrag). Neu `skill_test/makro_filter_orb_ctnl.py`; `research_fk_gesamtportfolio_2026`
+  gibt bei ORB/CTNL zusätzlich `direction` aus. ORB: Zins-Momentum/Carry/Matrix ohne Wirkung,
+  Regimekarte = nur „keine NASDAQ-Shorts“ (IS +0,19, OOS −0,29, ab 10/2025 +0,80 R). CTNL: kein
+  Filter in IS und OOS zugleich. Nur Diagnose. [[skill-test-orb-ctnl]]. Keine Bot-Änderung.
 
 - **2026-11-10** [Dachprojekt / HTF-Edge] **C2 + Zins-Momentum + Regime-Matrix auf 100k-Konto ab 2015**
   (Nutzerauftrag): `htf_daily_trade/c2_konto.py` (neu; `c2_goldfilter.evaluate` gibt zusätzlich

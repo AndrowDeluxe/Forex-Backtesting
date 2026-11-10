@@ -105,6 +105,22 @@ anspricht.
    liest für den Abschnitt "Meine Main Erkenntnisse" im Education-Checkup
    automatisch `MEMORY.md` + verlinkte Dateien — ein Fund, der nicht in der
    Memory landet, taucht dort nicht auf.
+8. **Nach jeder Nutzerentscheidung `DASHBOARD.md` nach dem Thema
+   durchsuchen** und ALLE Stellen nachführen, nicht nur das `CHANGELOG.md`
+   (seit 2026-11-10, Nutzerentscheid). Anlass: Der Ausfall-Ersatz für den
+   Gold-ASB-Filter wurde am 02.11. entschieden und abgeschaltet, der alte
+   Vorschlag stand als Unterpunkt eines Sammeleintrags aber noch bis 10.11.
+   als „noch nicht gebaut“ im Dashboard.
+9. **Fokus-Regel fürs Dashboard** (seit 2026-11-10, Nutzerentscheid): Oben
+   („Als Nächstes“, „Braucht deine Bestätigung“, „Wartet auf Themen-Session“,
+   „Offene Aufgaben“) stehen NUR Punkte zu Inventur, Dachprojekt Quant ×
+   diskretionär und Makro-Agent. Alles andere (Bot-/Bridge-Betrieb,
+   Fehlerfunde, Forward-Termine, andere Research, Aufräumen) kommt nach
+   „🧊 Geparkt: Betrieb & Nebenthemen“. Ausnahme: akute Gefahr für echtes
+   Geld (Bot handelt falsch, Konto-Limit in Gefahr) darf oben stehen und
+   wird im Chat direkt genannt. Grund: Der Nutzer will vollen Fokus aufs
+   Dachprojekt und nicht ständig von Betriebsfehlern abgelenkt werden; der
+   tägliche Telegram-Digest liest nur die oberen Abschnitte.
 
 ## Größere neue Vorhaben: erst Plan-Modus
 

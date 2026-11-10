@@ -9,6 +9,13 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-10** [Research / Elite-Coaching-Calls] Vier neue Aufnahmen transkribiert (Whisper lokal,
+  Transkripte nur im Scratchpad, nicht im Repo). Dennis, drei COT-/Volumen-Calls →
+  `resources/smh-dennis-cot-volumen-calls.md` (Bestandteile, Annahmen, Widersprüche, Kandidaten A′/B/E/F/D;
+  bestätigt die Bild-Lesarten vom 02.11.). Tim, „OC CRT“ (Candle Range Theory, Gold M15–M1) →
+  `resources/tim-oc-crt-call.md` (Kern: Stop/Break-even je nach geholter „Early-Ones“-Manipulation,
+  Kandidaten T1–T4). Nichts getestet, keine Varianten verbraucht, keine Bot-Änderung.
+
 - **2026-11-10** [Dachprojekt / Makro-Agent] **Schritt 2: Fact Sheet** (Plan freigegeben; Nutzerentscheide:
   Daten + Gates + Zustand, 7 USD-Paare + Gold + 7 Kreuze, Ausgabe Markdown + Notion). Neues Paket
   `fusion_lab/macro_agent/` (`analytics/profiles|markets|gates|state_machine.py`, `fact_sheet.py`, `render.py`)

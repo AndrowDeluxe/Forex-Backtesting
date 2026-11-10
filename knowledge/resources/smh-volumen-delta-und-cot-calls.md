@@ -1,5 +1,7 @@
 # SMH-Calls "Volumen und Delta" + "COT Teil 1": Anwendungen, Edges, Filter
 
+> **Nachtrag 2026-11-10:** Den Ton zu „COT Teil 1“ gibt es inzwischen als „COT HTF Volume“. Die Transkripte bestätigen die Lesarten unten, die Auswertung steht in [[smh-dennis-cot-volumen-calls]].
+
 Quelle: zwei Bildschirmaufnahmen unter
 `OneDrive\...\Institutial Mandate\Calls\` (bezahlter Kursinhalt, nicht im Repo):
 - `Volumen und Delta.mp4` (53 Min., Live-Call vom 2026-11-02 ca. 20:14–21:06,

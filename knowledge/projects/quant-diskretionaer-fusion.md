@@ -188,7 +188,16 @@ Verschmelzung" (2026-09-02) ab -- der Journal-Teil ist laut Nutzer erledigt.
 - [ ] **2 Reproduzieren + Testen** -- Phasen 4-6 ([[backtest-standard-process]]).
 - [x] **Makro-Agent Schritt 1, Datenschicht A1 (30.10.):** `fusion_lab/macro_data/`, je G8-Land
   mit Abrufzeit. Abdeckung: `python -m fusion_lab.macro_data --coverage`. Quellenlage:
-  [[makro-datenquellen]]. Nächster Schritt: Analytik + Fact Sheet.
+  [[makro-datenquellen]]. 2J/10J-Renditen für alle G8 seit 10.11.
+- [x] **Makro-Agent Schritt 2, Fact Sheet (10.11.):** `python -m fusion_lab.macro_agent [--as-of DATUM]
+  [--notion]` → `fusion_lab/data/macro_agent/fact_sheet_<Datum>.json/.md` + Eintrag „Makro Fact
+  Sheet“ in der Notion-Makro-Übersicht. Inhalt: Zustand BASE/ALT/TAIL, Regimekarte + Filter,
+  Länderprofile (Zinsen mit Wochenveränderung, Pricing-Näherung, Inflation, Arbeitsmarkt), Fed-Pfad,
+  15 Märkte mit Daten-Gates R/P/B/F je Seite (M bewertet der Agent), COT, G8, Kalender 72 h,
+  Datenlücken. Zahlenregister (alle Zahlen als Pfad → Wert) = Grundlage für `validate.py`.
+  Plan `~/.claude/plans/eager-fluttering-fairy.md`. **Checkpoint:** Nutzer sieht das Fact Sheet und
+  sagt, was fehlt. Bekannte Schwäche: Leitzinsen aus BIS hinken nach (GB 3,75 statt 4,00 nach der
+  BoE-Anhebung 05.11.). Nächster Schritt danach: Wirkketten-Katalog (Schritt 3).
   - **Offen aus dem Handoff 28.10.:** SMT-Reports ab 08.10. (6641, 6673, 6693, 6694, 6749,
     6759, 6760, …) noch nicht extrahiert; das MT5-Demo-Konto für Schritt 6 stellt der Nutzer.
   - **Lehren für Agentenläufe:** höchstens 3–6 parallele Lese-Agenten (mehr liefen zweimal

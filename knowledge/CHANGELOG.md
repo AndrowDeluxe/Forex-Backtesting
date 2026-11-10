@@ -9,6 +9,23 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-10** [Dachprojekt / Makro-Agent] **Schritt 2: Fact Sheet** (Plan freigegeben; Nutzerentscheide:
+  Daten + Gates + Zustand, 7 USD-Paare + Gold + 7 Kreuze, Ausgabe Markdown + Notion). Neues Paket
+  `fusion_lab/macro_agent/` (`analytics/profiles|markets|gates|state_machine.py`, `fact_sheet.py`, `render.py`)
+  + `fusion_lab/notion/sync_fact_sheet.py`. Aufruf `python -m fusion_lab.macro_agent [--as-of] [--notion]`.
+  Daten-Gates R (2J-Spread, 1 Woche) / P (SMA20 + Woche) / B (G8-Nachbau) / F (COT 3 J, 90/10) je Markt und
+  Seite; Zustand nach §6 der Wirkketten-Regeln (OAT-Bund fehlt). Erstes Blatt 10.11.: BASE; 4/4 Daten-Gates
+  bei USDCAD long, GBPJPY long, AUDUSD/AUDNZD/AUDJPY/CADJPY short. Abgleich mit der CPI-Preview vom 09.11.
+  (DXY, EURUSD, GBPUSD, AUDUSD, Brent identisch). 10 Tests. Kein Task, keine Bot-Änderung.
+
+- **2026-11-10** [Gold ASB / Reports] **Soll folgt der Bot-Entscheidung (Filter-Protokoll)** (Nutzerentscheid,
+  Plan freigegeben). `asian_range_breakout/pending.py`: `todays_setup()` protokolliert je Tag Filterwerte,
+  `friction_date` und Entscheidung nach `<Bridge>/logs/gold_asb_filter_journal.jsonl` (nur in -Bridge-Ordnern,
+  Fehler blockieren keine Order); `scan_trades(journal=...)` + `soll_ist.py` übernehmen an Protokolltagen die
+  Bot-Entscheidung, der Bericht zeigt „Filter-Drift“. Ursache 03.11. belegt: Friktion D−1 wird nach 01:00 NY
+  überarbeitet (heute 0,0459 > Schwelle 0,018, live war erlaubt). Handelslogik unverändert, wirkt ab dem
+  nächsten Bridge-Lauf auf EK/Funded/FK. 4 neue Tests, Suite 190 grün. `4c0bcc53`.
+
 - **2026-11-10** [FK / Funded / Dashboard] **Runde 3** (Nutzeraufträge).
   - **FK gold_silver handelbar gemacht** (`ce42e5ef`): `_scan_gold_silver(forming_bar=True)` hängt die laufende
     H4-Kerze als Platzhalter an (Eröffnung = letzter Schluss, Spanne = letzte ATR → ATR unverändert). Vorher war
@@ -35,7 +52,9 @@ keine Planung (dafür ist `DASHBOARD.md`).
   A1 Zinsdifferenz-Fair-Value verworfen (IS t 1,08); A2 Carry IS Sharpe 0,47 / OOS −0,18; Kombis K1–K4
   (Typ R in Carry-Richtung, Regimekarte, COT, Zinskurve): nur COT-Crowding hebt IS (t 2,60) und senkt den
   OOS-Drawdown, OOS bleibt negativ. Neue Daten: `data_cache/remy/` (Zins-Langhistorie ab 2003, Legacy-COT
-  ab 2000, H1 FX ab 2007). A3 Konsens-Drift: ForexFactory-Historie lädt. Keine Bot-Änderung.
+  ab 2000, H1 FX ab 2007). A3 Konsens-Drift verworfen: ForexFactory-Historie 2007–2026 (87.129 Termine,
+`data_cache/remy/ff_calendar.parquet`) zeigt +14–20 bp in der ersten Stunde, danach leichten Rücklauf
+(IS/OOS t ≈ −3,2), keine Drift. Keine Bot-Änderung.
 
 - **2026-11-10** [Dashboard / Knowledge] **Abbau Runde 2** (Nutzerantworten). Gelöscht: 8 Annahmen ohne
   Einfluss aufs Urteil (K4b, Mikrostruktur ×2, Key-Level ×2, ORB-Öl, Dachprojekt, Valkyrie, FK-Gewichtung 03.10.),

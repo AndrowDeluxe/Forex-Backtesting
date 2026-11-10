@@ -60,6 +60,12 @@ Telegram. Der tägliche Digest zeigt nur die Fokus-Abschnitte.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **Makro Fact Sheet: Gate-Schwellen und ALT-Zustand sind meine Annahmen** (10.11.). R = Veränderung
+  des 2J-Spreads über 1 Woche; P = Kurs auf der richtigen Seite des SMA20 und Wochenrendite
+  gleichgerichtet; F = COT-Index 3 J ≥ 90 / ≤ 10 gilt als überlaufen; ALT = VIX < 16 und HY < 3,00 % und
+  Brent < 90 (TAIL kommt aus dem SMT-Report). Beim Fact-Sheet-Checkpoint mit prüfen.
+  Code: `fusion_lab/macro_agent/analytics/gates.py`, `state_machine.py`.
+
 ### ⏳ Wartet auf Themen-Session
 
 Lesarten und Annahmen aus laufender Research. Sie brauchen deine Bestätigung erst, wenn wir am
@@ -91,7 +97,10 @@ jeweiligen Thema weiterarbeiten (Nutzerentscheid 10.11.).
 
 - **Lücken Makro-Datenschicht für Schritt 7 (A2)** (30.10.). ~~2-jährige Renditen für GB, JP,
   CH, AU, CA, NZ~~ erledigt 10.11. (2J + 10J täglich für alle G8; CH mit ~10 Tagen Verzug).
-  Offen: aktuelle Kern-/Dienste-Inflation für JP, CH, CA; US-Dienste-Inflation.
+  Offen: aktuelle Kern-/Dienste-Inflation für JP, CH, CA; US-Dienste-Inflation. **Neu 10.11.:**
+  Leitzinsen (BIS) hinken nach Notenbank-Entscheiden nach (GB 3,75 statt 4,00 seit 05.11., AU 4,60
+  statt 4,85 seit 03.11.) und verzerren die Pricing-Näherung im Fact Sheet. Vorschlag: Leitzins aus
+  dem „Interest Rate Decision“-Ist im Kalender übernehmen.
   Stand: `python -m fusion_lab.macro_data --coverage`.
 
 ## 🧊 Geparkt: Betrieb & Nebenthemen (außerhalb des Fokus)
@@ -145,6 +154,10 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
      ins Bridge-Log schreiben, damit das kuenftig entscheidbar ist. Details KW45-Report Abschnitt 5.
      **Nutzerentscheid 10.11.: so umbauen, dass Soll und Ist auf demselben Stand sind** (in Arbeit,
      siehe [[gold-asb-liquiditaetsfilter-vorgriff]]).
+     **Umgesetzt 10.11. (`4c0bcc53`):** Die Bridges protokollieren ihre Filterentscheidung, das Soll
+     übernimmt sie, und der Bericht zeigt Filter-Drift. Ursache 03.11. belegt: Friktion D−1 wird nach 01:00 NY
+     überarbeitet (live erlaubt, heute 0,0459 > 0,018). **Prüfen:** Ab 10.11. 07:00 steht in allen drei
+     `…-Bridge/logs/gold_asb_filter_journal.jsonl` eine Zeile je Tag. Danach Punkt löschen.
 
 - **Dukascopy-Ausfall 28.10. ~22 Uhr bis 30.10. 10:55: Gold ASB verpasst, Lake verfälscht**
   (Befund 31.10., Lake behoben, Filter-Fix offen). DNS-Fehler fast nur für
@@ -593,6 +606,12 @@ Statustabellen-Zeilen, neu über der Schwelle: `G8-Notion-Sync`
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
 
+- (10.11.) **Eigenes „SMT-Terminal“ / Trading-Jarvis** (Nutzerwunsch): ein Dashboard, das alle
+  Makrodaten und alle Trade-Umsetzungen live auf einen Blick zeigt. Baut auf dem Fact Sheet
+  (`fusion_lab/macro_agent`) auf, Trades aus den Bridge-Logs. Naheliegend: neue Seite in der
+  Streamlit-App. Haken: Live-Trades liegen lokal, Cloud braucht Sync + laufenden Rechner. Nach
+  dem Fact-Sheet-Checkpoint planen.
+
 - (09.11.) **E-Book Remy King „Top 1 %" ausgewertet**: kein belegter Edge, 11 Kandidaten-Bausteine in
   [[remy-king-trading-strategie-top1]]. Vorschlag: Währungs-Netto-Exposure-Deckel über alle Beine
   (ohne Test), Zinsdifferenz-Fair-Value + Carry-Korb nach dem 2J-Loader, FVG mechanisch sofort testbar.
@@ -601,7 +620,8 @@ Statustabellen-Zeilen, neu über der Schwelle: `G8-Notion-Sync`
   Lock `remy_a2_carry`). A3 Konsens-Drift läuft (ForexFactory-Historie ab 2007 lädt).
   **Kombis K1–K4 (neue Regel, OOS frei):** Carry im OOS 2017–05/2026 negativ (Sharpe −0,18); bester Zusatz
   COT-Crowding (IS t 2,60, OOS-DD −28 → −21 %), bleibt aber negativ → Carry nur noch als Veto-Schicht
-  „nicht in überfüllten Carry-Trade“.
+  „nicht in überfüllten Carry-Trade“. **A3 verworfen:** Überraschung wird in der 1. Stunde eingepreist
+  (+14–20 bp), danach leichter Rücklauf statt Drift. Nächster Schritt: Filter B4–B8 mit dem Nutzer durchgehen.
 
 - (02.11.) **Profitables LTF-/Scalping-Edge aus dem eigenen Trading** (Nutzerwunsch).
   **Konkret seit 02.11.:** Nutzer will die Daily-Continuation (Typ C) als Validierung für einen

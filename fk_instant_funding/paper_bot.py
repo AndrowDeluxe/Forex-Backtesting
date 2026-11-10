@@ -438,7 +438,49 @@ def _scan_ctnl(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") 
     return cont_trades, rev_trades
 
 
-def _scan_gold_silver(end: pd.Timestamp, force_refresh: bool, *, source: str = "live") -> pd.DataFrame:
+_H4 = pd.Timedelta(hours=4)
+
+
+def _append_forming_h4_bar(df_xau: pd.DataFrame, df_xag: pd.DataFrame, end: pd.Timestamp):
+    """Haengt die gerade laufende H4-Kerze als Platzhalter an (Fund 2026-11-10).
+
+    Der Lake fuehrt nur ABGESCHLOSSENE H4-Kerzen, die Simulation steigt aber zur
+    Eroeffnung der Kerze NACH dem Signal ein (`next_open`). Ohne Platzhalter
+    erscheint ein Trade erst, wenn diese Einstiegskerze selbst geschlossen ist --
+    das Signal ist dann immer >= 240 Min. alt und scheitert an der 150-Min.-
+    Grenze der FK-Bridge (06.11.: 254 Min., gold_silver hat nie gehandelt).
+
+    Platzhalter: Eroeffnung = letzter Schluss, Spanne = letzte ATR. Damit bleibt
+    die ATR (ewm alpha=1/n) exakt unveraendert, der Stop liegt bei Schluss der
+    Signalkerze - 2 ATR wie beim echten MT5-Bot, und die Spanne (1 ATR) erreicht
+    weder Stop (2 ATR) noch Ziel (4 ATR). Nur wenn `end` wirklich in der
+    naechsten Kerze liegt -- am Wochenende und bei historischen Laeufen (Daten
+    reichen ueber `end` hinaus) passiert nichts."""
+    from mt5_gold_silver_divergenz.pipeline import ATR_LEN, _atr
+
+    last = df_xau.index[-1]
+    nxt = last + _H4
+    end_cmp = end
+    if last.tzinfo is not None and end.tzinfo is None:
+        end_cmp = end.tz_localize("UTC")
+    elif last.tzinfo is None and end.tzinfo is not None:
+        end_cmp = end.tz_convert("UTC").tz_localize(None)
+    if not (nxt <= end_cmp < nxt + _H4) or df_xag.index[-1] != last:
+        return df_xau, df_xag
+    c_xau = float(df_xau["close"].iloc[-1])
+    half = float(_atr(df_xau, ATR_LEN).iloc[-1]) / 2
+    row_xau = pd.DataFrame({"open": c_xau, "high": c_xau + half, "low": c_xau - half,
+                            "close": c_xau, "volume": 0.0}, index=pd.DatetimeIndex([nxt]))
+    c_xag = float(df_xag["close"].iloc[-1])
+    row_xag = pd.DataFrame({"open": c_xag, "high": c_xag, "low": c_xag,
+                            "close": c_xag, "volume": 0.0}, index=pd.DatetimeIndex([nxt]))
+    return (pd.concat([df_xau, row_xau[list(df_xau.columns)]]),
+            pd.concat([df_xag, row_xag[list(df_xag.columns)]]))
+
+
+def _scan_gold_silver(end: pd.Timestamp, force_refresh: bool, *, source: str = "live",
+                      forming_bar: bool = False) -> pd.DataFrame:
+    """`forming_bar=True` nur fuer Live-Entries (FK-Bridge), siehe _append_forming_h4_bar."""
     from combined_strategy.data import fetch_timeframe
     if source == "lake":
         import data_lake.reader as _lake
@@ -452,6 +494,8 @@ def _scan_gold_silver(end: pd.Timestamp, force_refresh: bool, *, source: str = "
     df_xag = fetch_timeframe("SILVER", "H4", start, end_str, force_refresh=force_refresh).rename(columns=_rename)
     if df_xau.empty or df_xag.empty:
         return pd.DataFrame(columns=["entry_time", "exit_time", "r_multiple", "exit_reason"])
+    if forming_bar:
+        df_xau, df_xag = _append_forming_h4_bar(df_xau, df_xag, end)
 
     signaled = run_pipeline(df_xau, df_xag, ret_len=25, band_lookback=50, band_mult=1.75, confirm_len=10)
     cfg = BacktestConfig(spread_bps=10.0, stop_atr_mult=ATR_STOP_MULT, use_vwap_target=False, take_profit_r=RR_RATIO)

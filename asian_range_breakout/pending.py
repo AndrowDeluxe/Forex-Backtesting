@@ -27,6 +27,10 @@ Zug angeglichen, damit Paper-Simulation und Live dieselbe Entscheidung treffen.
 """
 from __future__ import annotations
 
+import json
+import sys
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 
@@ -149,14 +153,44 @@ def live_state_friction(gold_m15: pd.DataFrame, d1: pd.DataFrame) -> pd.Series:
     return s
 
 
+def _trade_day(trades: pd.DataFrame) -> pd.Series:
+    return trades["entry_time"].dt.tz_localize(None).dt.normalize().dt.strftime("%Y-%m-%d")
+
+
+def _apply_journal(raw: pd.DataFrame, filtered: pd.DataFrame, journal: dict) -> tuple[pd.DataFrame, list[str]]:
+    """Tage mit Bot-Protokoll: Trend/Silber/Liquiditaet/ADX wie der Bot entschieden hat, nur
+    die Einstiegs-Verzoegerung bleibt Sim. Uebrige Tage behalten die Filterkette. Drift = Tage,
+    an denen die Nachrechnung (`filtered`) anders entschieden haette als der Bot."""
+    from asian_range_breakout.filters import apply_entry_delay_filter
+
+    in_j_raw = _trade_day(raw).isin(journal.keys())
+    jt = apply_entry_delay_filter(raw[in_j_raw], max_delay_bars=MAX_DELAY_BARS)
+    if not jt.empty:
+        days = _trade_day(jt)
+        sign = jt["direction"].map({"long": 1, "short": -1})
+        keep = [journal[d]["filter_direction"] == s and (journal[d]["adx"] is None or journal[d]["adx"] >= ADX_MIN)
+                for d, s in zip(days, sign)]
+        jt = jt[keep]
+    rest = filtered[~_trade_day(filtered).isin(journal.keys())] if not filtered.empty else filtered
+    bot_days = set(_trade_day(jt)) if not jt.empty else set()
+    sim_days = set(_trade_day(filtered)) & set(journal.keys()) if not filtered.empty else set()
+    drift = sorted(bot_days ^ sim_days)
+    out = pd.concat([rest, jt]).sort_values("entry_time") if not jt.empty else rest
+    return out, drift
+
+
 def scan_trades(end: pd.Timestamp, force_refresh: bool, *, source: str = "live", utc_naive=None,
-                liquidity: str = "backtest") -> pd.DataFrame:
+                liquidity: str = "backtest", journal: dict | None = None) -> pd.DataFrame:
     """Simulierte Trades mit der Produktions-Filterkette -- frueher der Rumpf von
     _scan_gold_asb in allen drei Paper-Bots. Dient Paper-Simulation, Soll/Ist und
     Reports; die Bridges handeln NICHT mehr daraus, sondern ueber todays_setup().
 
     liquidity="live" (seit 2026-11-02, fuer Soll/Ist): Friktionswert auf dem
-    Wissensstand 01:00 NY statt mit vollem Folgetag, Schwelle unveraendert."""
+    Wissensstand 01:00 NY statt mit vollem Folgetag, Schwelle unveraendert.
+
+    journal (seit 2026-11-10, read_journal()): an protokollierten Tagen gilt die Filter-
+    Entscheidung des Bots; `trades.attrs["journal_drift"]` listet die Tage, an denen die
+    Nachrechnung anders entschieden haette."""
     from asian_range_breakout.engine import simulate_asian_breakout
     from asian_range_breakout.filters import (
         apply_adx_filter, apply_entry_delay_filter, apply_gold_liquidity_filter_causal,
@@ -172,6 +206,7 @@ def scan_trades(end: pd.Timestamp, force_refresh: bool, *, source: str = "live",
                                      exit_time=EXIT_TIME, stop_frac=STOP_FRAC)
     if trades.empty:
         return trades
+    raw = trades
     trades = apply_adx_filter(trades, adx_min=ADX_MIN)
     trades = apply_trend_bias_filter(trades, inp["daily_close"], sma_window=TREND_SMA_WINDOW)
     trades = apply_entry_delay_filter(trades, max_delay_bars=MAX_DELAY_BARS)
@@ -197,9 +232,14 @@ def scan_trades(end: pd.Timestamp, force_refresh: bool, *, source: str = "live",
     else:
         trades = apply_gold_liquidity_filter_causal(trades, inp["friction"], quantile=LIQUIDITY_QUANTILE,
                                                     min_periods=LIQUIDITY_MIN_PERIODS)
+    drift: list[str] = []
+    if journal:
+        trades, drift = _apply_journal(raw, trades, journal)
     if trades.empty:
+        trades.attrs["journal_drift"] = drift
         return trades
     trades = simulate_equity(trades, starting_equity=100_000.0, risk_pct=0.005)
+    trades.attrs["journal_drift"] = drift
     if utc_naive is not None:
         trades = trades[utc_naive(trades["entry_time"]) <= end]
     return trades
@@ -224,6 +264,13 @@ def prior_day_filters(inputs: dict, day: pd.Timestamp) -> dict:
     vals = {k: (None if pd.isna(r[k]) else float(r[k]))
             for k in ("gold_close_prior", "gold_sma_prior", "silver_chg", "friction_prior", "friction_thr")}
     vals["day"] = pd.Timestamp(day).date().isoformat()
+    # Datum des verwendeten Friktionswerts (2026-11-10): zeigt im Filter-Protokoll, ob der
+    # Vortag (mit halbem Handelstag) oder ein aelterer Tag den Ausschlag gab.
+    fr_idx = inputs["friction"].dropna().sort_index().index
+    if getattr(fr_idx, "tz", None) is not None:
+        fr_idx = fr_idx.tz_localize(None)
+    pos = fr_idx.searchsorted(pd.Timestamp(day).normalize(), side="left") - 1
+    vals["friction_date"] = fr_idx[pos].date().isoformat() if pos >= 0 else None
     if inputs.get("stale"):
         # Ausfall-Ersatz: aelterer Tagesstand von Gold/Silber, Tagesgrenze wie beim Filter. Friktion zaehlt
         # nicht mit: ihr Wert von t braucht Tag t+1 und hinkt deshalb immer einen Tag hinterher.
@@ -268,7 +315,80 @@ def _adx_at(m15: pd.DataFrame, label: pd.Timestamp) -> float | None:
     return None if pd.isna(v) else float(v)
 
 
+JOURNAL_NAME = "gold_asb_filter_journal.jsonl"
+_JOURNAL_KEYS = ("gold_close_prior", "gold_sma_prior", "silver_chg", "friction_prior", "friction_thr",
+                 "friction_date", "stale")
+
+
+def journal_path() -> Path | None:
+    """Protokolldatei der laufenden Bridge (`<…-Bridge>/logs/`), sonst None -- Research-
+    Skripte und Tests schreiben nichts. Liegt ausserhalb von Git (kein Push-Stau)."""
+    try:
+        root = Path(sys.argv[0]).resolve().parent
+    except (OSError, IndexError):
+        return None
+    return root / "logs" / JOURNAL_NAME if root.name.endswith("-Bridge") else None
+
+
+def _journal(setup: dict, filters: dict, path: Path | None = None) -> None:
+    """Filter-Entscheidung des Bots je Tag protokollieren (Nutzerentscheid 2026-11-10: Soll/Ist
+    uebernimmt diese Entscheidung, statt sie mit spaeter ueberarbeiteten Daten nachzurechnen;
+    knowledge/projects/gold-asb-liquiditaetsfilter-vorgriff.md). Nur ab Range-Ende, eine Zeile
+    je Aenderung. Darf nie eine Order verhindern: Fehler werden nur ausgegeben."""
+    if setup.get("status") in ("range_not_ready", "window_over"):
+        return
+    path = path or journal_path()
+    if path is None:
+        return
+    try:
+        direction, why = allowed_direction(filters)
+        row = {"logged_at": pd.Timestamp.now(tz="UTC").isoformat(), "day": setup.get("day"),
+               "status": setup.get("status"), "filter_direction": direction, "filter_detail": why,
+               "adx": setup.get("adx"), "detail": setup.get("detail"),
+               **{k: filters.get(k) for k in _JOURNAL_KEYS}}
+        sig = (row["day"], row["status"], direction, row["friction_prior"], row["adx"] is None)
+        if path.exists():
+            with path.open(encoding="utf-8") as fh:
+                lines = fh.readlines()[-20:]
+            for ln in reversed(lines):
+                prev = json.loads(ln)
+                if prev.get("day") == row["day"]:
+                    if (prev.get("day"), prev.get("status"), prev.get("filter_direction"),
+                            prev.get("friction_prior"), prev.get("adx") is None) == sig:
+                        return
+                    break
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(row, ensure_ascii=False) + "\n")
+    except Exception as exc:  # noqa: BLE001 -- Protokoll ist Beiwerk
+        print(f"Gold-ASB-Filterprotokoll nicht geschrieben: {type(exc).__name__}: {exc}")
+
+
+def read_journal(path: Path) -> dict[str, dict]:
+    """Je Tag die Bot-Entscheidung: Filterrichtung aus der ersten Zeile ab Range-Ende, ADX aus
+    der ersten Zeile, die ihn kennt. {"2026-11-03": {"filter_direction": -1, "adx": 22.1}}"""
+    out: dict[str, dict] = {}
+    if not path.exists():
+        return out
+    with path.open(encoding="utf-8") as fh:
+        for ln in fh:
+            try:
+                r = json.loads(ln)
+            except json.JSONDecodeError:
+                continue
+            d = out.setdefault(r["day"], {"filter_direction": r.get("filter_direction"), "adx": None})
+            if d["adx"] is None and r.get("adx") is not None:
+                d["adx"] = r["adx"]
+    return out
+
+
 def todays_setup(m15_broker: pd.DataFrame, now_utc, filters: dict) -> dict:
+    setup = _todays_setup(m15_broker, now_utc, filters)
+    _journal(setup, filters)
+    return setup
+
+
+def _todays_setup(m15_broker: pd.DataFrame, now_utc, filters: dict) -> dict:
     """Entscheidung fuer den Handelstag, in dessen Platzierungsfenster `now_utc` liegt.
 
     m15_broker: Broker-M15 (Spalten open/high/low/close, Index tz-aware NY), mind.

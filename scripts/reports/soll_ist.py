@@ -143,7 +143,7 @@ def week_window(iso_week: str) -> tuple[pd.Timestamp, pd.Timestamp]:
 
 
 # --------------------------------------------------------------- Soll (Backtest)
-def _scan_all(pb, end: pd.Timestamp) -> dict[str, pd.DataFrame]:
+def _scan_all(pb, end: pd.Timestamp, gold_asb_journal: dict | None = None) -> dict[str, pd.DataFrame]:
     """Ruft jede im jeweiligen paper_bot vorhandene _scan_*()-Funktion auf.
 
     Die drei Bots haben unterschiedliche Bein-Mengen (EK 8 + ORB, Challenge 6
@@ -166,11 +166,13 @@ def _scan_all(pb, end: pd.Timestamp) -> dict[str, pd.DataFrame]:
     # Gold ASB (2026-11-02): Soll auf dem Live-Wissensstand der Liquiditaets-Friktion
     # (01:00 NY), nicht mit vollem Folgetag -- sonst liegt das Soll ~0,14 R/Trade zu hoch.
     # knowledge/projects/gold-asb-liquiditaetsfilter-vorgriff.md
+    # Seit 2026-11-10: an Tagen mit Bridge-Filterprotokoll gilt die Entscheidung des Bots.
     if hasattr(pb, "_scan_gold_asb"):
         from asian_range_breakout import pending as _gold_asb_pending
         try:
             out["gold_asb"] = pb._retry(lambda: _gold_asb_pending.scan_trades(
-                end, False, source="lake", utc_naive=pb._utc_naive, liquidity="live"))
+                end, False, source="lake", utc_naive=pb._utc_naive, liquidity="live",
+                journal=gold_asb_journal))
         except Exception as exc:  # noqa: BLE001
             print(f"    ! gold_asb: {type(exc).__name__}: {exc}")
 
@@ -238,7 +240,14 @@ def build_soll(spec: BridgeSpec, start: pd.Timestamp, end: pd.Timestamp) -> dict
     """Backtest-Trades im Fenster + Soll-Rendite nach der Sizing-Formel der Bridge."""
     pb = __import__(spec.module, fromlist=["*"])
     print(f"  Scans {spec.label} bis {end} ...")
-    scans = _scan_all(pb, end)
+    from asian_range_breakout import pending as _gold_asb_pending
+    journal = _gold_asb_pending.read_journal(
+        Path(r"C:\Users\andre") / spec.label / "logs" / _gold_asb_pending.JOURNAL_NAME)
+    scans = _scan_all(pb, end, gold_asb_journal=journal)
+    in_window = [d for d in journal if start.date().isoformat() <= d <= end.date().isoformat()]
+    asb = scans.get("gold_asb")
+    drift = [d for d in (asb.attrs.get("journal_drift", []) if asb is not None else []) if d in in_window]
+    gold_asb_filter = {"protokolltage": len(in_window), "drift_tage": drift}
 
     state = {"trades": {}}
     per_leg: dict[str, dict] = {}
@@ -285,6 +294,7 @@ def build_soll(spec: BridgeSpec, start: pd.Timestamp, end: pd.Timestamp) -> dict
         "per_leg": per_leg,
         "n_trades": len(state["trades"]),
         "rel_return": round(rel_return, 6),
+        "gold_asb_filter": gold_asb_filter,
     }
 
 
@@ -524,6 +534,11 @@ def print_summary(result: dict) -> None:
         soll, ist, z = b["soll"], b["ist"], b["zerlegung"]
         print(f"\n{b['label']}  [Kosten {b['kosten_pips']} Pips, {b['kosten_quelle']}]")
         print(f"  SOLL : {soll['n_trades']:>3} Trades   Rendite {soll['rel_return']:+.2%}")
+        gf = soll.get("gold_asb_filter") or {}
+        if gf.get("protokolltage"):
+            print(f"  Gold ASB: Soll folgt der Bot-Entscheidung an {gf['protokolltage']} Protokolltagen; "
+                  f"Filter-Drift (Nachrechnung haette anders entschieden): {len(gf['drift_tage'])}"
+                  + (f" ({', '.join(gf['drift_tage'])})" if gf["drift_tage"] else ""))
         print(f"  IST  : {sum(v['deals'] for v in ist['per_leg'].values()):>3} Deals    "
               f"P&L {ist['total_pnl']:+,.2f}  ({ist['rel_return']:+.2%})")
         if ist["unattributed"]["deals"]:

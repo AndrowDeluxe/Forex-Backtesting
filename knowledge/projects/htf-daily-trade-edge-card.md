@@ -675,7 +675,7 @@ Der Broker schließt den Tag um 17:00 New York (Server NY+7). Gegenprobe mit neu
 143 Trades identisch, 35 nur UTC, 25 nur NY. Der Edge hängt nicht an der Kerzengrenze. Live gilt die Broker-Kerze.
 
 **Forward-Fund:** Der Task „C2-Forward-Log“ rechnete nur den alten Kandidaten `aea4189b` (Zins-Momentum + Regime-Matrix,
-6 Märkte, UTC). Seit 11.11. läuft zusätzlich W50 + Referenz EL (siehe unten).
+6 Märkte, UTC). Seit 11.11. läuft nur noch W50 + Referenz EL (Nutzerentscheid, alter Forward abgeschaltet).
 
 ## TRESOR 2025–2026 + Gesamtbild 2016 bis heute (11.11.2026, Nutzerauftrag, einmal geöffnet)
 

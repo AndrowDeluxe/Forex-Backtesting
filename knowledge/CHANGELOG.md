@@ -9,6 +9,10 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-11** [Dachprojekt / HTF-Edge] **Alter Daily-Forward `aea4189b` abgeschaltet** (Nutzerentscheid). Task „C2-Forward-Log“
+  rechnet nur noch `htf_daily_trade.c2_forward_w50` (W50 + Referenz EL); `scripts/c2_forward_task.ps1` angepasst, altes Ledger
+  bleibt liegen. Nur Log, kein echtes Geld.
+
 - **2026-11-11** [Dachprojekt / HTF-Edge] **Tresor 2025–26 des Daily-Kandidaten geöffnet: nicht bestanden; W50 als Forward**
   (Nutzerauftrag). `htf_daily_trade/c2_bis_heute.py` (Tageskerzen bis 10.11. aus H1-Dateien/Data Lake, Überlappung exakt
   gleich). Lock `htf_daily_filter_matrix` Tresor ab 2025 geöffnet; Lock `htf_daily_twin`: W50 V10 SA eingefroren (`5c82f5d4`,

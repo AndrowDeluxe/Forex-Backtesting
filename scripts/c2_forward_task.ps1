@@ -1,7 +1,8 @@
 # Runs daily via Windows Task Scheduler ("C2-Forward-Log", Di-Sa 03:30) - Forward-Test der
-# Daily-Edge C2 + Zins-Momentum + Regime-Matrix (Lock htf_daily_trade_c2_filter, eingefroren
-# aea4189b). NUR Log + Telegram, keine Orders (Nutzerentscheid 2026-11-11).
-# Rechnet htf_daily_trade/forward/c2_forward_ledger.csv neu, meldet Aenderungen per Telegram
+# Daily-Edge W50 Vorwochen-Mitte (Lock htf_daily_twin, 5c82f5d4) + Referenz EL 6c55e525.
+# NUR Log + Telegram, keine Orders. Seit 2026-11-11 (Nutzerentscheid) nur noch dieser Forward;
+# der alte Forward aea4189b (htf_daily_trade.c2_forward) laeuft nicht mehr, sein Ledger bleibt liegen.
+# Rechnet htf_daily_trade/forward/c2_w50_forward_ledger.csv neu, meldet Aenderungen per Telegram
 # (samstags mit Wochenbericht) und committet das Ledger. Mirrors daily_orb_forward_test_task.ps1.
 
 $repo = "C:\Users\andre\Forex-Backtesting"
@@ -19,17 +20,7 @@ Set-Location $repo
 Log "=== Task gestartet ==="
 $env:PYTHONIOENCODING = "utf-8"
 
-$args_py = @("-m", "htf_daily_trade.c2_forward")
-if ((Get-Date).DayOfWeek -eq "Saturday") { $args_py += "--wochenbericht" }
-try {
-    $out = & python @args_py 2>&1
-    $out | ForEach-Object { Log $_ }
-    if ($LASTEXITCODE -ne 0) { Log "Scanner-Exitcode $LASTEXITCODE" }
-} catch {
-    Log "Scanner-Fehler: $_"
-}
-
-# Zweiter Forward (Nutzerauftrag 2026-11-11): Daily W50 Vorwochen-Mitte (Lock htf_daily_twin, 5c82f5d4)
+# Forward (Nutzerauftrag 2026-11-11): Daily W50 Vorwochen-Mitte (Lock htf_daily_twin, 5c82f5d4)
 # + Referenz EL 6c55e525. Ledger htf_daily_trade/forward/c2_w50_forward_ledger.csv. Nur Log + Telegram.
 $args_w50 = @("-m", "htf_daily_trade.c2_forward_w50")
 if ((Get-Date).DayOfWeek -eq "Saturday") { $args_w50 += "--wochenbericht" }

@@ -9,6 +9,13 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-11** [Dachprojekt / HTF-Edge] **Limit-Leiter + Gegenprobe NY-Tagesschluss** (Nutzerauftrag).
+  `htf_daily_trade/c2_ladder.py`, Lock `htf_daily_twin` jetzt 332 Versuche (+104: 13 Leitern × 3/10 Tage × Stop S1/SA ×
+  Risiko). Stärkste Zone Vorwochen-Mitte (W50 V10 SA: IS +0,39 / OOS +0,26 R, t 3,2, DSR 0,61); EL + W50 OOS t 2,2;
+  78,6 % allein ohne Edge. Nichts eingefroren. NY-17:00-Kerzen (Broker NY+7) statt UTC: eingefrorener Kandidat
+  IS +0,61 / OOS +0,35 R (UTC +0,55 / +0,40), Konto 1 % CAGR 9,7 %, DD −6,3 %. Fund: Task „C2-Forward-Log“ prüft den
+  alten Kandidaten `aea4189b`, nicht `6c55e525` (→ Dashboard „Braucht deine Bestätigung“). Keine Bot-Änderung.
+
 - **2026-11-11** [Dachprojekt / HTF-Edge] **Twin-Trade (Daily direkt + Limit-Beine) getestet** (Nutzerauftrag, Plan freigegeben).
   `htf_daily_trade/twin_trade.py` + `tests/test_twin_trade.py`, Lock `htf_daily_twin` 228 Varianten. Kernbefund: Daily-Order direkt
   (Eröffnung) ohne Edge (IS +0,03 / OOS +0,01 R); der Edge liegt im Limit-Preis (eingefroren EL +0,55/+0,40, Vorwochen-50 %

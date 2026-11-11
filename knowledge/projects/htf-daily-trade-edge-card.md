@@ -635,3 +635,45 @@ rund 15.000 $. Entscheidung: weiter testen (Twin-Trade nach Plan), der Kandidat 
 - **Folgerung:** Nicht „Daily direkt + Limit“, sondern **nur Limit**. Der eingefrorene EL bleibt der beste Einstieg;
   P4 (Vorwochen-Mitte) ist die stärkste zusätzliche Limit-Zone. Kandidat für einen späteren Test: EL + P4 als
   Zwei-Limit-Leiter ohne Market-Order (neue gezählte Variante).
+
+## Limit-Leiter + Tagesschluss NY 17:00 (11.11.2026, Lock `htf_daily_twin` jetzt 332 Versuche)
+
+`python -m htf_daily_trade.c2_ladder` → `c2_ladder_varianten.csv`, `c2_ladder_ideen.csv`. Nur Limits, keine Market-Order.
+Punkte: Z38/Z50/Z62/Z79 = 38,2/50/61,8/78,6 % der Zone Auslöse-Schluss → Strukturstop (Z50 = eingefrorener EL),
+W50 = Vorwochen-Mitte. 13 Leitern × Gültigkeit 3 Tage (V3) / bis Ideen-Ende (V10) × Stop Struktur (S1) / Struktur
++ 0,5 ATR (SA) × Risiko 1 % gesamt aufgeteilt (RA) / 1 % je Limit (RB). Jedes Bein wie der eingefrorene Trade
+(10 Tage ab Füllung), nach Spread, Kommission, TTP-Swap. R = Einheiten von 1 % je Idee.
+
+| Variante | IS Ø (n) | IS t | OOS Ø (n) | OOS t | Konto 1 % CAGR / DD |
+|---|---|---|---|---|---|
+| Z50 V3 S1 (eingefroren, Ideen-Rahmen) | +0,51 (83) | 2,13 | +0,37 (42) | 1,15 | 6,2 % / −8,5 % |
+| W50 V10 SA | +0,39 (145) | 3,22 | +0,26 (73) | 1,73 | 8,4 % / −6,1 % |
+| W50 V3 SA | +0,43 (94) | 2,95 | +0,38 (44) | 1,91 | 6,3 % / −4,2 % |
+| Z50+W50 V3 SA, 1 % aufgeteilt | +0,33 (108) | 2,75 | +0,35 (52) | 2,16 | 6,0 % / −5,2 % |
+| Z50+W50 V10 SA, 1 % je Limit | +0,58 (163) | 3,03 | +0,63 (78) | 2,26 | 15,8 % / −15,0 % |
+| Z38+Z50 V3 SA, 1 % je Limit | +0,60 (107) | 2,41 | +0,67 (63) | 2,42 | 11,7 % / −10,1 % |
+| Z79 V3 S1 | −0,18 (35) | −0,41 | | | −2,1 % / −19,4 % |
+
+- Vorwochen-Mitte ist die stärkste einzelne Zone; Stop + 0,5 ATR senkt den Drawdown und hält im OOS besser
+  (Ø OOS SA +0,54 vs. S1 +0,37). Tiefe Limits (78,6 %) bringen nichts, sie erhöhen nur den Drawdown.
+- Mehr Limits = mehr Trades und mehr Gesamt-R, aber der Drawdown wächst etwa im selben Maß (Calmar ≈ 1).
+- DSR höchstens 0,61 bei 332 Versuchen → **keine Variante gesichert**. Nichts eingefroren. Übernahme wäre ein
+  neues Einfrieren mit 12 Parametern (über dem Richtwert); Empfehlung: im Forward als Schatten mitloggen.
+- Der Ideen-Rahmen (`daily_ideas`) sperrt 10 Tage je Seite nach einem Signal, der eingefrorene Backtest nur
+  während eines offenen Trades → hier weniger Z50-Trades (125 statt 178); Vergleich nur innerhalb der Tabelle.
+
+**Tagesschluss:** Alle bisherigen Daily-Tests laufen auf Dukascopy-Tageskerzen nach UTC (00:00–24:00 UTC, Sonntag in
+den Montag, `ipda_cycles.load_daily`). Signal = Schlusskurs des Tages, Einstieg frühestens am Folgetag → kein Vorgriff.
+Der Broker schließt den Tag um 17:00 New York (Server NY+7). Gegenprobe mit neu gebündelten Kerzen aus H1
+(`python -m htf_daily_trade.c2_ladder --ny`, keine gezählte Variante, reine Datentreue):
+
+| Kerzen | IS Ø R (n) | IS t | OOS Ø R (n) | OOS t | Konto 1 % CAGR / DD |
+|---|---|---|---|---|---|
+| UTC (bisher) | +0,55 (120) | 2,81 | +0,40 (58) | 1,55 | 9,8 % / −8,2 % |
+| NY 17:00 (Broker) | +0,61 (109) | 2,90 | +0,35 (59) | 1,62 | 9,7 % / −6,3 % |
+
+143 Trades identisch, 35 nur UTC, 25 nur NY. Der Edge hängt nicht an der Kerzengrenze. Live gilt die Broker-Kerze.
+
+**Forward-Fund:** Der Task „C2-Forward-Log“ rechnet den alten Kandidaten `aea4189b` (Zins-Momentum + Regime-Matrix,
+6 Märkte, UTC), nicht `6c55e525`. Entscheidung offen (Dashboard).
+

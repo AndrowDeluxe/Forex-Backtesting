@@ -45,6 +45,12 @@ passiert, was steht an.
    **11.11.: Blind 2010–15 NICHT bestanden** (+0,07 R, t 0,36, DD 1 %-Konto −25 %; 2010/11 stark negativ) → Forward-Kandidat
    (Nutzerentscheid). Nutzer akzeptiert den Blind (anderes Regime 2010–12). **Twin-Trade (11.11.): Daily direkt ohne Edge, Edge
    liegt im Limit-Preis**; eingefrorener EL bleibt bester Einstieg, Vorwochen-50 % stärkste Zusatz-Zone.
+   **Limit-Leiter (11.11., 104 Varianten):** stärkste Zone ist die Vorwochen-Mitte (W50, Stop Struktur + 0,5 ATR:
+   IS +0,39 / OOS +0,26 R, DD 1 %-Konto −6 %); Leiter EL + W50 OOS t 2,2. DSR max. 0,61 → nicht gesichert, nicht
+   eingefroren. 78,6 %-Limit allein ohne Edge. **NY-17:00-Tageskerzen (Broker):** eingefrorener Kandidat hält
+   (IS +0,61 / OOS +0,35 R, 143 von ~170 Trades gleich).
+   **Ziel (Nutzer 11.11.): Portfolio aus den händischen Edges, getrennt vom Quant-Portfolio**, am Ende alle Edges
+   gemeinsam testen und vergleichen.
    **Morgen (12.11.): H4-Edge** (A6, Phase 0 Fragen stehen im Chat 10.11.). Wartet auf deine
    Kandidatenwahl (≤ 9 Parameter). Parallel: Indikatoren einzeln durchgehen (Steckbriefe, dann Edge-Test je
    Indikator), Reihenfolge RSI → Multi Length → Stoch RSI → MACD → BB → NW → MA-Cross → Fractals → Pivots →
@@ -75,6 +81,14 @@ Telegram. Der tägliche Digest zeigt nur die Fokus-Abschnitte.
 
 
 ### 🔍 Braucht deine Bestätigung
+
+- **Forward-Test prüft den alten Daily-Kandidaten** (gefunden 11.11.). Task „C2-Forward-Log“ (ab 12.11.)
+  rechnet `aea4189b` (C2 + Zins-Momentum + Regime-Matrix, 6 Märkte), nicht den neu eingefrorenen
+  `6c55e525` (Faber gegen + COT-Fluss + Rohstoff-Veto, 9 Märkte). Umstellen, beide parallel loggen
+  oder so lassen? Nichts geändert, nur Log, kein echtes Geld. [[htf-daily-trade-edge-card]]
+- **Limit-Leiter: Übernahme offen** (11.11.). Mögliche Erweiterung des eingefrorenen Kandidaten um die
+  Vorwochen-Mitte (W50) und Stop + 0,5 ATR; das wären 12 statt 10 Parameter und ein neues Einfrieren.
+  Meine Empfehlung: nicht übernehmen, nur im Forward als Schatten mitloggen.
 
 - **Makro Fact Sheet: Gate-Schwellen und ALT-Zustand sind meine Annahmen** (10.11.). R = Veränderung
   des 2J-Spreads über 1 Woche; P = Kurs auf der richtigen Seite des SMA20 und Wochenrendite

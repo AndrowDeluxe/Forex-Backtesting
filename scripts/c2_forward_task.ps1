@@ -29,6 +29,18 @@ try {
     Log "Scanner-Fehler: $_"
 }
 
+# Zweiter Forward (Nutzerauftrag 2026-11-11): Daily W50 Vorwochen-Mitte (Lock htf_daily_twin, 5c82f5d4)
+# + Referenz EL 6c55e525. Ledger htf_daily_trade/forward/c2_w50_forward_ledger.csv. Nur Log + Telegram.
+$args_w50 = @("-m", "htf_daily_trade.c2_forward_w50")
+if ((Get-Date).DayOfWeek -eq "Saturday") { $args_w50 += "--wochenbericht" }
+try {
+    $out = & python @args_w50 2>&1
+    $out | ForEach-Object { Log $_ }
+    if ($LASTEXITCODE -ne 0) { Log "W50-Forward-Exitcode $LASTEXITCODE" }
+} catch {
+    Log "W50-Forward-Fehler: $_"
+}
+
 & git add htf_daily_trade\forward\ 2>&1 | ForEach-Object { Log $_ }
 
 & git diff --cached --quiet

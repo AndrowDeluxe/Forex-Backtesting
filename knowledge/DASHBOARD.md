@@ -49,6 +49,10 @@ passiert, was steht an.
    IS +0,39 / OOS +0,26 R, DD 1 %-Konto −6 %); Leiter EL + W50 OOS t 2,2. DSR max. 0,61 → nicht gesichert, nicht
    eingefroren. 78,6 %-Limit allein ohne Edge. **NY-17:00-Tageskerzen (Broker):** eingefrorener Kandidat hält
    (IS +0,61 / OOS +0,35 R, 143 von ~170 Trades gleich).
+   **Tresor 2025–26 geöffnet (11.11., Nutzerauftrag): NICHT bestanden.** EL 2025 −0,22 R, 2026 −0,48 R (n 44,
+   t −1,7); W50 2025 −0,25, 2026 −0,19 R. Schon brutto negativ → Edge zerfällt seit 2023 (2023 +0,20, 2024 +0,02).
+   2016–heute: EL Ø +0,33 R, Sharpe 0,67, CAGR 6,5 %, DD −19 %; W50 Ø +0,23 R, Sharpe 0,71, CAGR 5,6 %, DD −17 %.
+   W50 läuft auf deinen Wunsch als Forward mit (nur Log, Task „C2-Forward-Log“). Kein Live-Kandidat.
    **Ziel (Nutzer 11.11.): Portfolio aus den händischen Edges, getrennt vom Quant-Portfolio**, am Ende alle Edges
    gemeinsam testen und vergleichen.
    **Morgen (12.11.): H4-Edge** (A6, Phase 0 Fragen stehen im Chat 10.11.). Wartet auf deine
@@ -82,19 +86,28 @@ Telegram. Der tägliche Digest zeigt nur die Fokus-Abschnitte.
 
 ### 🔍 Braucht deine Bestätigung
 
-- **Forward-Test prüft den alten Daily-Kandidaten** (gefunden 11.11.). Task „C2-Forward-Log“ (ab 12.11.)
-  rechnet `aea4189b` (C2 + Zins-Momentum + Regime-Matrix, 6 Märkte), nicht den neu eingefrorenen
-  `6c55e525` (Faber gegen + COT-Fluss + Rohstoff-Veto, 9 Märkte). Umstellen, beide parallel loggen
-  oder so lassen? Nichts geändert, nur Log, kein echtes Geld. [[htf-daily-trade-edge-card]]
-- **Limit-Leiter: Übernahme offen** (11.11.). Mögliche Erweiterung des eingefrorenen Kandidaten um die
-  Vorwochen-Mitte (W50) und Stop + 0,5 ATR; das wären 12 statt 10 Parameter und ein neues Einfrieren.
-  Meine Empfehlung: nicht übernehmen, nur im Forward als Schatten mitloggen.
+- **Alter Daily-Forward `aea4189b` weiterlaufen lassen?** (11.11.) Auf deinen Auftrag läuft jetzt zusätzlich W50
+  (Vorwochen-Mitte) + Referenz EL `6c55e525` im selben Task. Der alte Forward (Zins-Momentum + Regime-Matrix,
+  6 Märkte) läuft unverändert weiter — meine Annahme, dass du ihn nicht abschalten willst.
 
 - **Makro Fact Sheet: Gate-Schwellen und ALT-Zustand sind meine Annahmen** (10.11.). R = Veränderung
   des 2J-Spreads über 1 Woche; P = Kurs auf der richtigen Seite des SMA20 und Wochenrendite
   gleichgerichtet; F = COT-Index 3 J ≥ 90 / ≤ 10 gilt als überlaufen; ALT = VIX < 16 und HY < 3,00 % und
   Brent < 90 (TAIL kommt aus dem SMT-Report). Beim Fact-Sheet-Checkpoint mit prüfen.
   Code: `fusion_lab/macro_agent/analytics/gates.py`, `state_machine.py`.
+  **Recherche 11.11.** ([[makro-gates-evidenz]]): Gates selbst stammen aus den SMT-Reports, keines ist
+  getestet. P und B messen beide Momentum, R auf 1 Woche ebenfalls → „4/4“ zählt teils dasselbe dreimal.
+  Forschung stützt Zins-Änderungen und Momentum auf 1–12 Monaten, nicht 1 Woche; COT erklärt dieselbe
+  Woche, sagt aber nichts voraus (nur Veto). Carry und Value fehlen. **Deine Entscheidung offen:**
+  Gates umbauen (längere Horizonte, P/B zusammenlegen, Carry/Value dazu) und auf Historie testen,
+  bevor „4/4“ als Signal gilt? Dazu Datenfehler beheben: Leitzinsen (BoE 4,00, RBA 4,85), US-2J
+  tagesaktuell, Fed-Wahrscheinlichkeit je Sitzung für die 75-%-Regel.
+  **Test 11.11. (Stand 11.11.):** 10/10 Tests grün, Lauf 11 s. P und B zeigen heute in allen 9 Märkten,
+  in denen P eine Richtung hat, dasselbe; F fällt nur bei EUR-Beinen (COT 0) → die sechs „4/4“ sind ein
+  Thema (AUD schwach / USD stark). Neu gefunden: (a) GB-Leitzins 3,75 widerspricht dem BoE-Ist 4,00 im
+  eigenen Kalenderteil; (b) `--as-of` vor 30.10. bricht ab (Datenschicht beginnt erst dort); (c) Regimekarte
+  ignoriert `--as-of` und stammt vom Print 14.10. (US-CPI 10.11. noch nicht drin, nicht unter Datenlücken);
+  (d) Gates nutzen alte Reihen ohne Markierung (USDCHF-R mit CH-2J vom 30.10.).
 
 ### ⏳ Wartet auf Themen-Session
 
@@ -560,7 +573,7 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 | G8-Notion-Sync (neu)                                    | — (nur FRED/Dukascopy-Abruf + Notion-Schreiben, kein Order-Bezug)                       | Schreibt G8-Währungsstärke (Nachbau + SMH-Tabellen) in Notion-DB „💱 G8-Stärke“ (`scripts/g8_notion_sync_task.ps1`) | Ready (täglich 07:00, auch Sa/So) | — | 2026-10-12      |
 | Regime-Notion-Sync (neu)                                | — (nur FRED/ALFRED/yfinance-Abruf + Notion-Schreiben, kein Order-Bezug)                 | Regimekarte Wachstum×Inflation neu rechnen → Notion „Regime-Roadmap“ + Seite „Assets je Regime“ (`scripts/regime_notion_task.ps1`) | Ready (So 09:00, StartWhenAvailable) | — | 2026-10-28      |
 | Makro-Daten (neu)                                       | — (nur Datenabruf, kein Order-Bezug)                                                     | Makro-Agent Schicht 1: G8-Makrodaten und Kalender mit Abrufzeit nach `fusion_lab/data/macro_data/` (`scripts/macro_data_task.ps1`, Akku erlaubt) | Ready (täglich 00:50 + 07:30, auch Sa/So) | — | 2026-10-30 |
-| C2-Forward-Log (neu)                                    | — (nur Log + Telegram, keine Orders)                                                     | Forward-Test Daily-Edge C2 + Zins-Momentum + Regime-Matrix (`scripts/c2_forward_task.ps1`, Ledger `htf_daily_trade/forward/`, Akku erlaubt); Auswertung ab 30 Trades oder 12.11.2027 | Ready (Di–Sa 03:30, StartWhenAvailable) | — | 2026-11-11 |
+| C2-Forward-Log (neu)                                    | — (nur Log + Telegram, keine Orders)                                                     | Forward-Test Daily-Edge: (1) C2 + Zins-Momentum + Regime-Matrix `aea4189b`, (2) seit 11.11. W50 Vorwochen-Mitte `5c82f5d4` + Referenz EL `6c55e525`, 9 Märkte (`scripts/c2_forward_task.ps1`, Ledger `htf_daily_trade/forward/`, Akku erlaubt); Auswertung ab 30 Trades oder 12.11.2027 | Ready (Di–Sa 03:30, StartWhenAvailable) | — | 2026-11-11 |
 | Telegram-Import-SMH-Daily                               | — (nur Telegram lesen + rechnen, kein Order-Bezug)                                       | Inkrementeller Import „SMH Daily Update“ ohne Videos; seit 28.10. zusätzlich Bild-/Anweisungs-Lesung per Claude-Abo + Forward-Stand Copy Trading Stufe 2 (`scripts/telegram_smh_daily_import_task.ps1`, Akku erlaubt) | Ready (täglich 23:00, auch Sa/So) | — | 2026-10-28      |
 
 **Letzter echter Entry** (Spalte seit 2026-09-16): letzter Eröffnungs-Deal beim Broker, der **dieser Bridge zugeordnet** ist (EK über Magic, Funded/FK über die Tickets im `bridge_state`). Fremdpositionen zählen nicht mit — auf FK lagen am 14.09. zwei manuelle Positionen, die sonst wie Bridge-Aktivität ausgesehen hätten. Grund für die Spalte: der Modus LIVE hat fünf Tage lang verdeckt, dass FK nichts ausführte. Aktualisieren mit `python scripts/reports/soll_ist.py --last-entries`. Zeiten sind Broker-Serverzeit.

@@ -9,6 +9,20 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-11** [Dachprojekt / HTF-Edge] **Tresor 2025–26 des Daily-Kandidaten geöffnet: nicht bestanden; W50 als Forward**
+  (Nutzerauftrag). `htf_daily_trade/c2_bis_heute.py` (Tageskerzen bis 10.11. aus H1-Dateien/Data Lake, Überlappung exakt
+  gleich). Lock `htf_daily_filter_matrix` Tresor ab 2025 geöffnet; Lock `htf_daily_twin`: W50 V10 SA eingefroren (`5c82f5d4`,
+  12 Parameter), Tresor 2026 geöffnet, Forward registriert (ab 12.11., 30 Trades oder 12.11.2027). EL Tresor n 44, Ø −0,33 R
+  (2025 −0,22, 2026 −0,48, schon brutto negativ); W50 n 50, Ø −0,23 R. 2016–heute: EL Sharpe 0,67, CAGR 6,5 %, DD −19 %;
+  W50 Sharpe 0,71, CAGR 5,6 %, DD −17 %. Neu `htf_daily_trade/c2_forward_w50.py`, im Task „C2-Forward-Log“ nach dem alten
+  Forward (nur Log + Telegram, keine Orders). Keine Bot-Änderung.
+
+- **2026-11-11** [Dachprojekt / Makro-Agent] **Gates und Fact Sheet gegen Forschung und Marktquellen
+  geprüft** (Nutzerauftrag). Neue Notiz [[makro-gates-evidenz]]: Herkunft (SMT bzw. eigene Annahmen,
+  nichts getestet), Befund je Gate (R/P/B überlappen als Momentum, Horizonte zu kurz, COT nur Veto, Carry/
+  Value fehlen), Faktencheck (Leitzinsen BoE/RBA falsch, Fed-Pfad stimmt mit FedWatch, US-2J hinkt),
+  CPI-Tag-Check der 4/4-Märkte (2 richtig, 1 flach, 2 falsch). Kein Code geändert.
+
 - **2026-11-11** [Dachprojekt / HTF-Edge] **Limit-Leiter + Gegenprobe NY-Tagesschluss** (Nutzerauftrag).
   `htf_daily_trade/c2_ladder.py`, Lock `htf_daily_twin` jetzt 332 Versuche (+104: 13 Leitern × 3/10 Tage × Stop S1/SA ×
   Risiko). Stärkste Zone Vorwochen-Mitte (W50 V10 SA: IS +0,39 / OOS +0,26 R, t 3,2, DSR 0,61); EL + W50 OOS t 2,2;

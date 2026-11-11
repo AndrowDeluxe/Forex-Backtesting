@@ -8,7 +8,43 @@
   },
   "registered": "2026-11-11T00:00:04+00:00",
   "trials": 332,
-  "frozen": null,
-  "unsealed": {},
-  "forward": null
+  "frozen": {
+    "hash": "5c82f5d4aca491b3d9f3f2794a6c6e2d201f8c4dcb51e0aa210baf9801466103",
+    "config": {
+      "basis": "Ideen des eingefrorenen Kandidaten 6c55e525 (ltf_entry.daily_ideas: C2-Signal, Faber 10M gegen, COT-Fluss 4 Berichte mit, Rohstoff-Veto 20 Tage, 10 Tage Sperre je Seite)",
+      "einstieg": "Limit 50 % der Vorwochen-Range (W50), gueltig bis Ideen-Ende (10 Handelstage)",
+      "stop": "Strukturstop + 0,5 x Daily-ATR",
+      "ausstieg": "10 Handelstage nach Fuellung",
+      "be": null,
+      "risiko": "1 % je Trade",
+      "kosten": "Spread+Kommission (filter_matrix.MARKETS) + TTP-Swap",
+      "maerkte": [
+        "AUDUSD",
+        "EURUSD",
+        "GBPUSD",
+        "NZDUSD",
+        "USDCAD",
+        "USDCHF",
+        "USDJPY",
+        "XAGUSD",
+        "XAUUSD"
+      ],
+      "parameter": 12,
+      "variante": "W50 V10 SA",
+      "code": [
+        "htf_daily_trade/c2_ladder.py",
+        "htf_daily_trade/ltf_entry.py",
+        "htf_daily_trade/c2_bis_heute.py"
+      ]
+    },
+    "ts": "2026-11-11T20:48:34+00:00"
+  },
+  "unsealed": {
+    "tresor": "2026-11-11T20:48:34+00:00"
+  },
+  "forward": {
+    "start": "2026-11-12",
+    "eval_date": "2027-11-12",
+    "min_trades": 30
+  }
 }

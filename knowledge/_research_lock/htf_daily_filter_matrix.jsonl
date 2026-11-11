@@ -8,3 +8,4 @@
 {"ts": "2026-11-10T23:16:22+00:00", "event": "trials", "n": 119, "total": 568, "note": "Kandidat C2+Faber gegen+COT mit+Rohstoff-Veto: Stop x Ausstieg/Teilgewinne x BE (11.11.)"}
 {"ts": "2026-11-10T23:27:50+00:00", "event": "freeze", "hash": "6c55e525f093389e1a1f61f862b350b8477909e96e64431719a83050c9543f4b"}
 {"ts": "2026-11-10T23:54:03+00:00", "event": "unseal", "stage": "blind", "hash": "6c55e525f093389e1a1f61f862b350b8477909e96e64431719a83050c9543f4b"}
+{"ts": "2026-11-11T20:48:34+00:00", "event": "unseal", "stage": "tresor", "hash": "6c55e525f093389e1a1f61f862b350b8477909e96e64431719a83050c9543f4b"}

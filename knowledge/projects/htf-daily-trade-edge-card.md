@@ -674,6 +674,45 @@ Der Broker schließt den Tag um 17:00 New York (Server NY+7). Gegenprobe mit neu
 
 143 Trades identisch, 35 nur UTC, 25 nur NY. Der Edge hängt nicht an der Kerzengrenze. Live gilt die Broker-Kerze.
 
-**Forward-Fund:** Der Task „C2-Forward-Log“ rechnet den alten Kandidaten `aea4189b` (Zins-Momentum + Regime-Matrix,
-6 Märkte, UTC), nicht `6c55e525`. Entscheidung offen (Dashboard).
+**Forward-Fund:** Der Task „C2-Forward-Log“ rechnete nur den alten Kandidaten `aea4189b` (Zins-Momentum + Regime-Matrix,
+6 Märkte, UTC). Seit 11.11. läuft zusätzlich W50 + Referenz EL (siehe unten).
+
+## TRESOR 2025–2026 + Gesamtbild 2016 bis heute (11.11.2026, Nutzerauftrag, einmal geöffnet)
+
+`python -m htf_daily_trade.c2_bis_heute` → `c2_bis_heute_report.md`, `c2_bis_heute_trades.csv`. Tageskerzen UTC bis 10.11.2026
+(nach den Backtest-Dateien aus H1-Dateien bzw. Data Lake gebündelt; 411–463 Überlappungstage exakt gleich; NZDUSD nur bis 06.11.).
+EL = eingefrorener Kandidat `6c55e525` (Tresor ab 2025-01-01, Lock `htf_daily_filter_matrix`). W50 = Vorwochen-Mitte, Stop
+Struktur + 0,5 ATR, bis Ideen-Ende gültig — vor dem Öffnen eingefroren (`5c82f5d4`, Lock `htf_daily_twin`, 12 Parameter,
+Tresor 2026-01-01 bis 07-28). Kosten Spread + Kommission + TTP-Swap, Konto 1 %, Zinseszins.
+
+| Kennzahl 2016–10.11.2026 | EL | W50 |
+|---|---|---|
+| Trades (je Jahr) | 222 (20,4) | 268 (24,7) |
+| Ø R / t | +0,33 / 2,51 | +0,23 / 2,78 |
+| Trefferquote / PF | 40,5 % / 1,55 | 51,5 % / 1,54 |
+| Ø Gewinn / Ø Verlust | +2,29 / −1,01 R | +1,30 / −0,89 R |
+| max. Verlustserie / max. DD in R | 10 / −21,6 R | 8 / −8,2 R |
+| Endkapital (100.000 $) / CAGR | 197.382 $ / 6,5 % | 180.473 $ / 5,6 % |
+| max. DD Konto / längste Unterwasserphase | −19,0 % / 713 Tage | −16,6 % / 705 Tage |
+| Sharpe / Sortino (Monate, annualisiert) | 0,67 / 1,59 | 0,71 / 1,45 |
+| Calmar / positive Monate | 0,34 / 43 % | 0,34 / 51 % |
+
+| Periode | EL n / Ø R / t | W50 n / Ø R / t |
+|---|---|---|
+| IS 2016–21 | 120 / +0,55 / 2,81 | 143 / +0,39 / 3,18 |
+| OOS 2022–24 | 58 / +0,38 / 1,49 | 75 / +0,25 / 1,70 |
+| **Tresor 2025–26** | **44 / −0,33 / −1,71** | **50 / −0,23 / −1,35** |
+
+Je Jahr EL (Ø R / Konto): 2016 +0,75 / +15,5 % · 2017 +1,06 / +16,5 % · 2018 +0,31 / +4,9 % · 2019 −0,04 / −0,2 % ·
+2020 +0,26 / +5,6 % · 2021 +0,91 / +27,0 % · 2022 +0,93 / +16,8 % · 2023 +0,20 / +3,1 % · 2024 +0,02 / +1,6 % ·
+**2025 −0,22 / −6,8 %** · **2026 −0,48 / −8,4 %** (18 Trades, 4 Gewinner; GBPUSD long offen).
+W50 2025 −0,25 / −7,7 %, 2026 −0,19 / −4,8 % (19 Trades, 6 Gewinner; USDCHF short + GBPUSD long offen).
+
+- **Tresor nicht bestanden.** Zusammen mit dem Blind 2010–15 (+0,07 R) trägt der Edge nur 2016–2022. Seit 2023 fällt er
+  Jahr für Jahr (+0,20 → +0,02 → −0,22 → −0,48 R).
+- Brutto (ohne alle Kosten) EL 2025 −0,15 R, 2026 −0,38 R → nicht Kosten oder Swap, der Mechanismus selbst verliert.
+  Stoppquote unverändert ~61–67 %; es fehlen die großen Gewinner (2016–22 Ø Gewinn > 2 R).
+- 2025 verlieren vor allem die Longs (n 14, −0,49 R), 2026 beide Seiten.
+- Status: **kein Live-Kandidat.** W50 läuft auf Nutzerwunsch als Forward mit (`c2_forward_w50.py`, ab 12.11., Auswertung
+  ab 30 Trades oder 12.11.2027), EL als Referenz im selben Ledger.
 

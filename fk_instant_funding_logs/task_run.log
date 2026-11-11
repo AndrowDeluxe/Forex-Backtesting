@@ -75167,3 +75167,23 @@
 2026-11-11 00:55:33    d9f5ac1c..c2c22bf6  main -> main
 2026-11-11 00:55:33 Commit + Push erfolgreich.
 2026-11-11 00:55:33 === FK-Instant-Funding-Task beendet ===
+2026-11-11 01:55:23 === FK-Instant-Funding-Task gestartet ===
+2026-11-11 01:55:29 INFO:DUKASCRIPT:current timestamp :2026-11-10T01:00:00
+2026-11-11 01:55:29 INFO:DUKASCRIPT:current timestamp :2026-11-11T00:00:00
+2026-11-11 01:55:29 INFO:DUKASCRIPT:current timestamp :2026-11-11T00:00:00
+2026-11-11 01:55:29 INFO:DUKASCRIPT:current timestamp :2026-11-11T00:00:00
+2026-11-11 01:55:29 INFO:DUKASCRIPT:current timestamp :2026-11-10T21:00:00
+2026-11-11 01:55:29 INFO:DUKASCRIPT:current timestamp :2026-11-10T21:00:00
+2026-11-11 01:55:29 INFO:DUKASCRIPT:current timestamp :2026-11-10T21:00:00
+2026-11-11 01:55:29 INFO:DUKASCRIPT:current timestamp :2026-11-10T21:00:00
+2026-11-11 01:55:29 {
+2026-11-11 01:55:29   "date": "2026-11-11 00:55:23.864770",
+2026-11-11 01:55:29   "equity": 98646.78107704355,
+2026-11-11 01:55:29   "current_dd": -0.013532189229564562,
+2026-11-11 01:55:29   "consistency_ratio": 0.0,
+2026-11-11 01:55:29   "payout_safe": false,
+2026-11-11 01:55:29   "cum_profit": -1353.2189229564515,
+2026-11-11 01:55:29   "kill_switch_active": false,
+2026-11-11 01:55:29   "ctnl_kill_switch_active": false,
+2026-11-11 01:55:29   "n_trades": 26
+2026-11-11 01:55:29 }

@@ -198,6 +198,10 @@ Verschmelzung" (2026-09-02) ab -- der Journal-Teil ist laut Nutzer erledigt.
   Plan `~/.claude/plans/eager-fluttering-fairy.md`. **Checkpoint:** Nutzer sieht das Fact Sheet und
   sagt, was fehlt. Bekannte Schwäche: Leitzinsen aus BIS hinken nach (GB 3,75 statt 4,00 nach der
   BoE-Anhebung 05.11.). Nächster Schritt danach: Wirkketten-Katalog (Schritt 3).
+- [x] **Makro-Agent v2 (11.11.):** Gates-Recherche ([[makro-gates-evidenz]]) → Umbau zur 5-Faktor-
+  Scorecard + taktische Ebene + Risiko-Budget, Ersatzquellen für alle Datenlücken ([[makro-scorecard-v2]]).
+  Scorecard im Backtest ohne Edge (IS/OOS negativ) → nur Kontext. Offen: Scorecard als C2-Filter prüfen;
+  Wirkketten-Katalog (Schritt 3).
   - **Offen aus dem Handoff 28.10.:** SMT-Reports ab 08.10. (6641, 6673, 6693, 6694, 6749,
     6759, 6760, …) noch nicht extrahiert; das MT5-Demo-Konto für Schritt 6 stellt der Nutzer.
   - **Lehren für Agentenläufe:** höchstens 3–6 parallele Lese-Agenten (mehr liefen zweimal

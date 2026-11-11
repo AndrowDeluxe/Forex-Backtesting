@@ -89,6 +89,23 @@ def f_result(c: dict, side: int) -> str:
     return "FAIL" if crowded else "PASS"
 
 
+def scorecard_view(diffs: dict, veto_long: bool, veto_short: bool) -> dict:
+    """Gates als Ansicht der Scorecard (Nutzerentscheid 11.11.): R = Carry + Zins-Momentum,
+    P = Preis-Momentum (ersetzt P und B), F = COT-Veto. M bewertet der Agent.
+    diffs: Faktor -> z(Basis) - z(Quote)."""
+    get = lambda k: diffs.get(k)
+    r = None if get("carry") is None or get("zins_momentum") is None else get("carry") + get("zins_momentum")
+    inputs = {"R": {"dir": _sign(r), "wert": None if r is None else round(r, 2)},
+              "P": {"dir": _sign(get("preis_momentum")), "wert": get("preis_momentum")}}
+    sides = {}
+    for name, side in SIDES.items():
+        res = {g: _result(inputs[g]["dir"] if inputs[g]["wert"] is not None else None, side) for g in ("R", "P")}
+        res["F"] = "FAIL" if (veto_long if side == 1 else veto_short) else "PASS"
+        sides[name] = {**res, "pass": sum(v == "PASS" for v in res.values()),
+                       "verfuegbar": sum(v != "n.v." for v in res.values())}
+    return {"inputs": inputs, **sides}
+
+
 def evaluate(market: str, st: dict | None, macro_w: pd.DataFrame, g8: pd.Series | None, pos: dict) -> dict:
     inputs = {"R": rates_direction(market, macro_w), "P": price_direction(st), "B": g8_direction(market, g8),
               "F": crowding(market, pos)}

@@ -11,9 +11,9 @@ import pandas as pd
 from fusion_lab.macro_data.__main__ import COVERAGE
 from fusion_lab.macro_data.sources import G8, cot_index
 
-QUANTITIES = ["policy_rate", "2y", "10y", "cpi_yoy", "core_yoy", "services_yoy", "unemployment",
+QUANTITIES = ["policy_rate", "1y", "2y", "10y", "cpi_yoy", "core_yoy", "services_yoy", "unemployment",
               "gdp_qoq", "trade_balance"]
-DAILY = {"policy_rate", "2y", "10y"}
+DAILY = {"policy_rate", "1y", "2y", "10y"}
 FED_MONTHS = 8
 # CFTC-Schluessel -> Netto-Spalte; Gold ueber Managed Money, Waehrungen ueber Leveraged Funds
 POSITIONING = {**{c: f"{c}.lev_net" for c in ["USD", "EUR", "GBP", "JPY", "CHF", "AUD", "CAD", "NZD"]},
@@ -55,16 +55,17 @@ def country_profile(w: pd.DataFrame, land: str, as_of: pd.Timestamp) -> dict:
             node["chg_5d_bp"] = _bp(change(s, 5))
             node["chg_20d_bp"] = _bp(change(s, 20))
         out[q] = node
-    y2, y10, policy = (series(w, f"{land}.{q}") for q in ("2y", "10y", "policy_rate"))
+    y1, y2, y10, policy = (series(w, f"{land}.{q}") for q in ("1y", "2y", "10y", "policy_rate"))
     if len(y2) and len(y10):
         curve = (y10 - y2).dropna()
         out["curve_10y_2y"] = {"value": _r(curve.iloc[-1]), "chg_5d_bp": _bp(change(curve, 5)),
                                "date": curve.index[-1].date().isoformat()} if len(curve) else None
-    if len(y2) and len(policy):
-        # Naeherung fuers Zinspricing: 2J ueber dem Leitzins = Anhebungen gepreist
-        spread = (y2 - policy.reindex(y2.index, method="ffill")).dropna()
-        out["pricing_2y_minus_policy"] = {"value": _r(spread.iloc[-1]), "chg_5d_bp": _bp(change(spread, 5)),
-                                          "date": spread.index[-1].date().isoformat()} if len(spread) else None
+    short, basis = (y1, "1J") if len(y1) else (y2, "2J")
+    if len(short) and len(policy):
+        # Naeherung fuers Zinspricing ohne OIS: 1J (sonst 2J) ueber dem Leitzins = Anhebungen gepreist
+        spread = (short - policy.reindex(short.index, method="ffill")).dropna()
+        out["pricing"] = {"value": _r(spread.iloc[-1]), "chg_5d_bp": _bp(change(spread, 5)), "basis": basis,
+                          "date": spread.index[-1].date().isoformat()} if len(spread) else None
     return out
 
 

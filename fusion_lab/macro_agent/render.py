@@ -1,4 +1,5 @@
-"""Lesbare Fassung des Fact Sheets (Markdown), Reihenfolge wie ein SMT-Report.
+"""Lesbare Fassung des Fact Sheets v2 (Markdown): Zustand → Regime → Scorecard → taktische Ebene →
+Märkte/Gates → Risiko-Budget → Länderprofile → Positionierung → G8 → Kalender → Datenlücken.
 
 Jede Zahl kommt unveraendert aus dem Fact Sheet, nur formatiert (deutsches Komma);
 tests/test_macro_agent.py prueft, dass jede Tabellenzahl im Zahlenregister steht.
@@ -9,14 +10,15 @@ from __future__ import annotations
 from fusion_lab.macro_data.sources import G8
 
 from .analytics.markets import MARKETS
+from .factors import FACTORS
 
 MARK = {"PASS": "✓", "FAIL": "✗", "n.v.": "–"}
-SIDE_LABEL = {"long": "long", "short": "short"}
-PROFILE_ROWS = [("Leitzins", "policy_rate", "value", 2), ("2J", "2y", "value", 2),
+FACTOR_LABEL = {"carry": "Carry", "zins_momentum": "Zins-Mom.", "preis_momentum": "Preis-Mom.",
+                "value": "Value", "ueberraschung": "Überr."}
+PROFILE_ROWS = [("Leitzins", "policy_rate", "value", 2), ("1J", "1y", "value", 2), ("2J", "2y", "value", 2),
                 ("Δ 2J 1W (bp)", "2y", "chg_5d_bp", 1), ("10J", "10y", "value", 2),
                 ("Δ 10J 1W (bp)", "10y", "chg_5d_bp", 1), ("Kurve 10J−2J", "curve_10y_2y", "value", 2),
-                ("Pricing 2J−Leitzins", "pricing_2y_minus_policy", "value", 2),
-                ("Δ Pricing 1W (bp)", "pricing_2y_minus_policy", "chg_5d_bp", 1),
+                ("Pricing kurz−Leitzins", "pricing", "value", 2), ("Δ Pricing 1W (bp)", "pricing", "chg_5d_bp", 1),
                 ("Inflation j/j", "cpi_yoy", "value", 1), ("Kern j/j", "core_yoy", "value", 1),
                 ("Dienste j/j", "services_yoy", "value", 1), ("Arbeitslosigkeit", "unemployment", "value", 1),
                 ("BIP q/q", "gdp_qoq", "value", 2)]
@@ -41,8 +43,9 @@ def _state(z: dict) -> list[str]:
             rows.append([kind, c["name"], fmt(c["value"]), f"{c['op']} {fmt(c['threshold'])}", hit])
     lines += _table(["Zustand", "Bedingung", "Ist", "Schwelle", "erfüllt"], rows)
     lv = z["levels"]
-    lines += ["", f"DXY {fmt(lv['dxy'])} · S&P 500 {fmt(lv['spx'])} · Gold (Future) {fmt(lv['gold'])} · "
-                  f"Brent {fmt(lv['brent'])}",
+    lines += ["", "TAIL bei 2 Treffern unter VIX/HY/Brent/OAT-Bund oder Stressindex (STLFSI) > 1.",
+              f"DXY {fmt(lv['dxy'])} · S&P 500 {fmt(lv['spx'])} · Gold (Future) {fmt(lv['gold'])} · "
+              f"Brent {fmt(lv['brent'])}",
               f"Dollar als Hafen (letzte 5 Tage): {', '.join(z['dollar_haven_days']) or 'kein Tag'}", ""]
     return lines
 
@@ -69,6 +72,84 @@ def _regime(sheet: dict) -> list[str]:
     return lines + [""]
 
 
+def _scorecard(sc: dict) -> list[str]:
+    rows = []
+    ranked = sorted(sc["waehrungen"].items(), key=lambda kv: (kv[1]["rang"] is None, kv[1]["rang"] or 0))
+    for ccy, v in ranked:
+        veto = "long gesperrt" if v["veto_long"] else ("short gesperrt" if v["veto_short"] else "–")
+        rows.append([ccy, *[fmt(v[f]) for f in FACTORS], f"**{fmt(v['score'])}**",
+                     "–" if v["rang"] is None else str(v["rang"]), fmt(v["cot_3y"], 1), veto])
+    lines = [f"## 3. Scorecard (strategisch, 1–3 Monate, Stand {sc['tag']})", "",
+             *_table(["Währung", *[FACTOR_LABEL[f] for f in FACTORS], "Score", "Rang", "COT 3J", "Veto"], rows), "",
+             "Faktoren als Querschnitts-z-Werte, gleich gewichtet; Veto = Positionierung überlaufen (COT ≥ 90 / ≤ 10).",
+             "COT 3J hier = Legacy Non-Commercials (wie im Backtest, Historie ab 2000). Abschnitt 8 zeigt nur "
+             "Leveraged Funds; beide können stark abweichen (andere Gruppen, z. B. Asset Manager)."]
+    t = sc.get("test")
+    if t:
+        key = t["kandidat"]
+        is_, oos = t["is"][key], t.get("oos", {}).get(key)
+        line = (f"**Backtest ({t['lock']}, {t['versuche']} Versuche):** IS 2007–2016 Sharpe {fmt(is_['sharpe'])}, "
+                f"t {fmt(is_['t'])}")
+        if oos:
+            line += f"; OOS 2017–05/2026 Sharpe {fmt(oos['sharpe'])}, t {fmt(oos['t'])}"
+        lines += ["", line + f". Einsatz: {sc['einsatz']}."]
+    return lines + [""]
+
+
+def _tactical(tk: dict) -> list[str]:
+    fed = tk["fed"]
+    rows = [[s["sitzung"], fmt(s["bp"], 1), fmt(s["pct"], 1), fmt(s.get("pct_vor_1w"), 1),
+             "ja" if s["bezahlt"] else "nein"] for s in fed["sitzungen"]]
+    lines = [f"## 4. Taktische Ebene", "", f"**Fed je Sitzung** (Futures, effektiv {fmt(fed['effektiv'])}; "
+             "100 % = ein Schritt von 25 bp)", "",
+             *_table(["Sitzung", "Δ bp", "Wahrsch. %", "vor 1W %", "≥ 75 % bezahlt"], rows), ""]
+    rows = [[land, fmt(v["leitzins"]), v["leitzins_datum"], fmt(v["1y"]), fmt(v["gepreist_12m_bp"], 1),
+             fmt(v["chg_1w_bp"], 1)] for land, v in tk["notenbanken"].items() if v]
+    lines += ["**Andere Notenbanken** (Näherung 1J − Leitzins, kein OIS)", "",
+              *_table(["", "Leitzins", "seit/Stand", "1J", "gepreist 12M (bp)", "Δ 1W (bp)"], rows), ""]
+    rows = [[ccy, v["rohstoff"], fmt(v["kurs"]), fmt(v["ret_20d_pct"]), fmt(v["ret_60d_pct"]), v["trend"],
+             "–" if "schwelle" not in v else f"{fmt(v['schwelle'], 0)} ({fmt(v['abstand_pct'])} %)"]
+            for ccy, v in tk["rohstoffe"].items() if v]
+    lines += ["**Rohstoff-Schalter**", "",
+              *_table(["Währung", "Rohstoff", "Kurs", "20T %", "60T %", "Trend", "Schwelle (Abstand)"], rows), ""]
+    return lines
+
+
+def _gate_cell(g: dict | None) -> str:
+    if not g:
+        return "–"
+    return " ".join(f"{k}{MARK[g[k]]}" for k in ("R", "P", "F")) + f" ({g['pass']}/{g['verfuegbar']})"
+
+
+def _markets(mk: dict) -> list[str]:
+    rows = []
+    for m in MARKETS:
+        st, g, sc = mk[m]["kurs"], mk[m]["gates"], mk[m].get("scorecard")
+        diff = "–" if not sc else fmt(sc["diff"])
+        if st is None:
+            rows.append([m, "–", "–", fmt(mk[m]["vol_20d_pct"]), diff, _gate_cell(g and g["long"]),
+                         _gate_cell(g and g["short"])])
+            continue
+        digits = 5 if st["close"] < 20 else 2
+        rows.append([m, fmt(st["close"], digits), fmt(st["ret_5d_pct"]), fmt(mk[m]["vol_20d_pct"]), diff,
+                     _gate_cell(g and g["long"]), _gate_cell(g and g["short"])])
+    return ["## 5. Märkte und Gates (Ansicht der Scorecard; M bewertet der Agent)", "",
+            *_table(["Markt", "Kurs", "1W %", "Vol 20T %", "Score Basis−Quote", "long", "short"], rows), "",
+            "R = Carry + Zins-Momentum, P = Preis-Momentum, F = COT-Veto. Gold: R = US-Realzins, "
+            "P = Kurs/SMA20, F = Managed Money.", ""]
+
+
+def _risk(rk: dict) -> list[str]:
+    rows = [[i["markt"], i["seite"], fmt(i["diff"]), fmt(i["vol_pct"]), fmt(i["groesse_rel"])] for i in rk["ideen"]]
+    b = rk["buendel"]
+    net = ", ".join(f"{c} {fmt(v, 2)}" for c, v in b["netto"].items()) or "–"
+    over = ", ".join(f"{c} {fmt(v, 2)}" for c, v in b["ueber_deckel"].items()) or "keine"
+    return [f"## 6. Risiko-Budget (Ideen ab Score-Differenz {fmt(rk['schwelle_diff'])}, ohne Veto)", "",
+            *(_table(["Markt", "Seite", "Score-Diff", "Vol 20T %", "Größe rel."], rows) if rows else ["keine"]), "",
+            f"Netto-Exposure je Währung (Einheiten): {net}",
+            f"Über dem Deckel {fmt(b['deckel'], 1)}: {over} · Haupttreiber: {b['haupttreiber'] or '–'}", ""]
+
+
 def _profiles(laender: dict) -> list[str]:
     rows = []
     for label, q, field, digits in PROFILE_ROWS:
@@ -78,61 +159,33 @@ def _profiles(laender: dict) -> list[str]:
             v = None if not node else node.get(field)
             cells.append(fmt(v, digits) + ("*" if node and node.get("stale") else ""))
         rows.append(cells)
-    return ["## 3. Länderprofile", "", *_table(["", *G8], rows), "", "\\* = älter als erlaubt (siehe Datenlücken)", ""]
-
-
-def _fed(fp: dict) -> list[str]:
-    rows = [[m, fmt(v["implied"], 3), fmt(v["priced_bp"], 1), fmt(v["chg_5d_bp"], 1)] for m, v in fp["months"].items()]
-    return [f"## 4. Fed-Pfad (Fed-Funds-Futures, effektiv {fmt(fp['effective'])})", "",
-            *_table(["Liefermonat", "impliziert", "gepreist (bp)", "Δ 1W (bp)"], rows), ""]
-
-
-def _gate_cell(g: dict) -> str:
-    return " ".join(f"{k}{MARK[g[k]]}" for k in ("R", "P", "B", "F")) + f" ({g['pass']}/{g['verfuegbar']})"
-
-
-def _markets(mk: dict) -> list[str]:
-    rows, inputs = [], []
-    for m in MARKETS:
-        st, g = mk[m]["kurs"], mk[m]["gates"]
-        if st is None:
-            rows.append([m, "–", "–", "–", "–", "–", _gate_cell(g["long"]), _gate_cell(g["short"])])
-            continue
-        digits = 5 if st["close"] < 20 else 2
-        rows.append([m, fmt(st["close"], digits), fmt(st["ret_5d_pct"]), fmt(st["ret_20d_pct"]),
-                     fmt(st["dist_sma20_pct"]), fmt(st["atr14"], digits), _gate_cell(g["long"]), _gate_cell(g["short"])])
-        i = g["inputs"]
-        inputs.append([m, i["R"]["basis"], fmt(i["R"]["chg_bp"], 1), fmt(i["B"].get("diff")),
-                       fmt(i["F"]["base"], 1), fmt(i["F"]["quote"], 1)])
-    return ["## 5. Märkte und Daten-Gates (R/P/B/F; M bewertet der Agent)", "",
-            *_table(["Markt", "Kurs", "1W %", "20T %", "zu SMA20 %", "ATR14", "long", "short"], rows), "",
-            "Gate-Grundlagen:", "",
-            *_table(["Markt", "R-Basis", "Δ 1W (bp)", "G8 Basis−Quote", "COT 3J Basis", "COT 3J Quote"], inputs), ""]
+    return ["## 7. Länderprofile", "", *_table(["", *G8], rows), "",
+            "\\* = älter als erlaubt (siehe Datenlücken). Leitzins/Kern-Inflation teils aus Kalender bzw. SNB.", ""]
 
 
 def _positioning(pos: dict) -> list[str]:
     rows = [[k, fmt(v["net"], 0), fmt(v["chg_1w"], 0), fmt(v["cot_26w"], 1), fmt(v["cot_3y"], 1), v["date"]]
             for k, v in pos.items() if v]
-    return ["## 6. Positionierung (CFTC, Leveraged Funds; Gold Managed Money)", "",
+    return ["## 8. Positionierung (CFTC TFF, Leveraged Funds; Gold Managed Money)", "",
             *_table(["", "Netto", "Δ 1W", "COT 26W", "COT 3J", "veröffentlicht"], rows), ""]
 
 
 def _g8(sheet: dict) -> list[str]:
     if not sheet["g8"]:
-        return ["## 7. G8-Stärke", "", f"n.v. ({sheet['g8_stand']})", ""]
+        return ["## 9. G8-Stärke (Vergleich mit SMT)", "", f"n.v. ({sheet['g8_stand']})", ""]
     ranked = sorted(sheet["g8"].items(), key=lambda kv: -kv[1])
-    return [f"## 7. G8-Stärke (Nachbau, Stand {sheet['g8_stand']})", "",
+    return [f"## 9. G8-Stärke (Nachbau, Vergleich mit SMT, Stand {sheet['g8_stand']})", "",
             *_table(["Rang", "Währung", "Score"], [[str(i + 1), c, fmt(v)] for i, (c, v) in enumerate(ranked)]), ""]
 
 
 def _calendar(k: dict) -> list[str]:
-    up = [[e["zeit_utc"], e["waehrung"], e["titel"], e["impact"], e["konsens"] or "–", e["vorwert"] or "–"]
-          for e in k["naechste_72h"]]
+    up = [[e["zeit_utc"], e["waehrung"], e["titel"], e["konsens"] or "–", e["vorwert"] or "–"]
+          for e in k["naechste_7t"]]
     su = [[e["zeit_utc"], e["waehrung"], e["titel"], fmt(e["konsens"]), fmt(e["ist"]), fmt(e["ueberraschung"])]
-          for e in k["ueberraschungen_7t"]]
-    return [f"## 8. Kalender (Referenz {k.get('referenz_utc', '–')} UTC)", "", "**Nächste 72 h (High/Medium)**", "",
-            *(_table(["Zeit UTC", "Währung", "Termin", "Impact", "Konsens", "Vorwert"], up) if up else ["keine"]), "",
-            "**Überraschungen letzte 7 Tage (Ist − Konsens)**", "",
+          for e in k["ueberraschungen_14t"]]
+    return [f"## 10. Kalender (Referenz {k.get('referenz_utc', '–')} UTC)", "", "**Nächste 7 Tage (High)**", "",
+            *(_table(["Zeit UTC", "Währung", "Termin", "Konsens", "Vorwert"], up) if up else ["keine"]), "",
+            "**Überraschungen letzte 14 Tage (High, Ist − Konsens)**", "",
             *(_table(["Zeit UTC", "Währung", "Termin", "Konsens", "Ist", "Überraschung"], su) if su else ["keine"]), ""]
 
 
@@ -140,8 +193,9 @@ def markdown(sheet: dict) -> str:
     lines = [f"# Makro Fact Sheet – Stand {sheet['stand']}", "",
              f"Erzeugt {sheet['erzeugt']} · {len(sheet['register'])} Zahlen im Register · "
              "Quelle: fusion_lab/macro_data + Dukascopy", ""]
-    lines += _state(sheet["zustand"]) + _regime(sheet) + _profiles(sheet["laender"]) + _fed(sheet["fed_pfad"])
-    lines += _markets(sheet["maerkte"]) + _positioning(sheet["positionierung"]) + _g8(sheet)
+    lines += _state(sheet["zustand"]) + _regime(sheet) + _scorecard(sheet["scorecard"])
+    lines += _tactical(sheet["taktisch"]) + _markets(sheet["maerkte"]) + _risk(sheet["risiko"])
+    lines += _profiles(sheet["laender"]) + _positioning(sheet["positionierung"]) + _g8(sheet)
     lines += _calendar(sheet["kalender"])
-    lines += ["## 9. Datenlücken", "", *[f"- {g}" for g in sheet["datenluecken"]], ""]
+    lines += ["## 11. Datenlücken", "", *[f"- {g}" for g in sheet["datenluecken"]], ""]
     return "\n".join(lines)

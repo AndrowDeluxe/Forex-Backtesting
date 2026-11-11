@@ -1,7 +1,8 @@
-"""Fact Sheet: buendelt Datenschicht, Profile, Kurse, Gates, Zustand, Regime und Kalender.
+"""Fact Sheet v2: Scorecard (strategisch), taktische Ebene, Risiko-Budget, Zustand, Profile, Kalender.
 
 Point-in-time: Stand = as_of (Tag). Makrowerte zaehlen, wenn sie bis Ende des Tages abgerufen
-waren (store.latest as_of) und ihr Datum <= as_of ist; Kurse bis einschliesslich as_of.
+waren (store.latest as_of) und ihr Datum <= as_of ist; Kurse bis einschliesslich as_of. Ersatzwerte
+(Kalender-Leitzins, TradingView-2J usw.) haengt calendar_values.extend an die Hauptreihen.
 Das flache Zahlenregister (Pfad -> Wert) ist die Liste der Zahlen, die der Agent nennen darf.
 """
 
@@ -12,17 +13,20 @@ from pathlib import Path
 
 import pandas as pd
 
-from fusion_lab.macro_data import calendar, store
+from fusion_lab.macro_data import calendar, calendar_values, store
 from fusion_lab.macro_data.__main__ import coverage
 from fusion_lab.macro_data.sources import G8
 
+from . import factors, panels, risk, tactical
 from .analytics import gates, markets, profiles, state_machine
 
 OUT_DIR = Path(__file__).resolve().parents[1] / "data" / "macro_agent"
-CALENDAR_HOURS = 72
-SURPRISE_DAYS = 7
+TEST_FILE = OUT_DIR / "scorecard_test.json"
+CALENDAR_HOURS = 7 * 24
+SURPRISE_DAYS = 14
 G8_CCY = set(gates.CCY_COUNTRY)
 ZINS_FX_MARKETS = ["EURUSD", "GBPUSD", "AUDUSD", "USDJPY", "XAUUSD"]
+SCORE_DAYS = 600  # Kalendertage Vorlauf: 12-Monats-Momentum braucht 252 Handelstage
 
 
 def _stored(area: str, as_of: pd.Timestamp) -> pd.DataFrame:
@@ -37,9 +41,13 @@ def _last(s: pd.Series):
 def state_block(macro_w: pd.DataFrame, mkt_w: pd.DataFrame, as_of: pd.Timestamp) -> dict:
     def values(day):
         cut = lambda s: s[s.index <= day]
+        fr, de = cut(profiles.series(macro_w, "FR.10y")), cut(profiles.series(macro_w, "DE.10y"))
+        oat = (fr - de).dropna()
         return {"vix": _last(cut(profiles.series(macro_w, "MKT.vix"))),
                 "hy_spread": _last(cut(profiles.series(macro_w, "MKT.hy_spread"))),
-                "brent": _last(cut(profiles.series(mkt_w, "MKT.brent"))), "oat_bund_bp": None}
+                "brent": _last(cut(profiles.series(mkt_w, "MKT.brent"))),
+                "oat_bund_bp": None if oat.empty else round(float(oat.iloc[-1]) * 100, 1),
+                "stlfsi": _last(cut(profiles.series(macro_w, "MKT.stlfsi")))}
     now = state_machine.evaluate(values(as_of))
     week_ago = state_machine.evaluate(values(as_of - pd.Timedelta(days=7)))
     haven = state_machine.safe_haven_days(profiles.series(mkt_w, "MKT.dxy"), profiles.series(mkt_w, "MKT.spx"),
@@ -49,6 +57,7 @@ def state_block(macro_w: pd.DataFrame, mkt_w: pd.DataFrame, as_of: pd.Timestamp)
 
 
 def g8_scores(as_of: pd.Timestamp) -> tuple[pd.Series | None, str]:
+    """Dennis' G8-Staerke (Nachbau) nur noch als Vergleich, kein Gate mehr (steckt in Preis-Momentum)."""
     from fusion_lab.g8.data import log_values, usd_value_panel
     from fusion_lab.g8.model import DEFAULT_NORM, score
     try:
@@ -59,7 +68,7 @@ def g8_scores(as_of: pd.Timestamp) -> tuple[pd.Series | None, str]:
         s, _ = score(log_values(panel), DEFAULT_NORM)
         s = s.dropna()
         return s.iloc[-1].round(2), s.index[-1].date().isoformat()
-    except Exception as e:  # G8 fehlt -> Gate B n.v., steht unter Datenluecken
+    except Exception as e:
         return None, f"Fehler: {type(e).__name__}: {e}"[:200]
 
 
@@ -100,22 +109,58 @@ def calendar_block(as_of: pd.Timestamp) -> dict:
     path = store.DATA_DIR / "calendar.parquet"
     ref = min(pd.Timestamp.now("UTC").tz_localize(None), as_of + pd.Timedelta(days=1))
     if not path.exists():
-        return {"referenz_utc": ref.strftime("%Y-%m-%d %H:%M"), "naechste_72h": [], "ueberraschungen_7t": []}
+        return {"referenz_utc": ref.strftime("%Y-%m-%d %H:%M"), "naechste_7t": [], "ueberraschungen_14t": []}
     ev = pd.read_parquet(path)
     ev = ev[(ev["fetched_at"] <= ref) & ev["currency"].isin(G8_CCY)]
     last = ev.sort_values("fetched_at").drop_duplicates(calendar.KEY, keep="last")
     nxt = last[(last["event_time"] > ref) & (last["event_time"] <= ref + pd.Timedelta(hours=CALENDAR_HOURS))
-               & last["impact"].isin(["High", "Medium"])]
+               & (last["impact"] == "High")]
     nxt = nxt.sort_values("event_time").drop_duplicates(["currency", "title", "event_time"])
     upcoming = [{"zeit_utc": r.event_time.strftime("%Y-%m-%d %H:%M"), "waehrung": r.currency, "titel": r.title,
-                 "impact": r.impact, "konsens": r.forecast, "vorwert": r.previous} for r in nxt.itertuples()]
+                 "konsens": r.forecast, "vorwert": r.previous} for r in nxt.itertuples()]
     sur = calendar.surprises(ev)
     sur = sur[(sur["event_time"] > ref - pd.Timedelta(days=SURPRISE_DAYS)) & (sur["event_time"] <= ref)
-              & (sur["impact"] == "High")].sort_values("event_time")
+              & (sur["impact"] == "High") & (sur["surprise"] != 0)].sort_values("event_time")
     surprises = [{"zeit_utc": r.event_time.strftime("%Y-%m-%d %H:%M"), "waehrung": r.currency, "titel": r.title,
                   "konsens": round(r.forecast, 4), "ist": round(r.actual, 4), "ueberraschung": round(r.surprise, 4)}
                  for r in sur.itertuples()]
-    return {"referenz_utc": ref.strftime("%Y-%m-%d %H:%M"), "naechste_72h": upcoming, "ueberraschungen_7t": surprises}
+    return {"referenz_utc": ref.strftime("%Y-%m-%d %H:%M"), "naechste_7t": upcoming, "ueberraschungen_14t": surprises}
+
+
+def scorecard_block(as_of: pd.Timestamp) -> tuple[dict, dict]:
+    """Scorecard je Waehrung am letzten Handelstag <= as_of; zweiter Wert = Rohdaten fuer die Paare."""
+    p = panels.build(as_of)
+    days = pd.bdate_range(as_of - pd.Timedelta(days=SCORE_DAYS), as_of)
+    sc = factors.scorecard(p, days)
+    day = days[-1]
+    score = sc["score"].loc[day]
+    rank = score.rank(ascending=False)
+    out = {}
+    for land in panels.LANDS:
+        node = {f: (None if pd.isna(sc[f].loc[day, land]) else round(float(sc[f].loc[day, land]), 2))
+                for f in factors.FACTORS}
+        node["score"] = None if pd.isna(score[land]) else round(float(score[land]), 2)
+        node["rang"] = None if pd.isna(rank[land]) else int(rank[land])
+        cot = sc["cot_3y"].loc[day, land]
+        node["cot_3y"] = None if pd.isna(cot) else round(float(cot), 1)
+        node["veto_long"] = bool(sc["veto_long"].loc[day, land]) if pd.notna(cot) else False
+        node["veto_short"] = bool(sc["veto_short"].loc[day, land]) if pd.notna(cot) else False
+        out[panels.LAND_CCY[land]] = node
+    test = json.loads(TEST_FILE.read_text(encoding="utf-8")) if TEST_FILE.exists() else None
+    return {"tag": day.date().isoformat(), "waehrungen": out, "test": test,
+            "einsatz": "Kontext, kein Richtungsgeber (Backtest IS/OOS ohne Edge)" if test else "ungetestet"}, out
+
+
+def pair_block(market: str, cards: dict) -> dict | None:
+    base, quote = market[:3], market[3:6]
+    if base not in cards or quote not in cards:
+        return None
+    b, q = cards[base], cards[quote]
+    diffs = {f: (None if b[f] is None or q[f] is None else round(b[f] - q[f], 2)) for f in factors.FACTORS}
+    diff = None if b["score"] is None or q["score"] is None else round(b["score"] - q["score"], 2)
+    vl, vs = b["veto_long"] or q["veto_short"], b["veto_short"] or q["veto_long"]
+    return {"diff": diff, "faktoren": diffs, "veto_long": vl, "veto_short": vs,
+            "gates": gates.scorecard_view(diffs, vl, vs)}
 
 
 def gaps(sheet: dict, as_of: pd.Timestamp) -> list[str]:
@@ -131,8 +176,8 @@ def gaps(sheet: dict, as_of: pd.Timestamp) -> list[str]:
     for name, f in sheet["filter"].items():
         if "fehler" in f:
             out.append(f"Filter {name}: {f['fehler']}")
-    out.append("OAT-Bund-Spread fehlt (TAIL-Bedingung n.v.)")
-    out.append("Zinspricing ausser Fed nur als Naeherung 2J minus Leitzins (kein OIS)")
+    out.append("Notenbank-Pricing ausser Fed nur als Naeherung 1J minus Leitzins (kein OIS)")
+    out.append("COT-Veto ohne USD (Legacy-Historie kennt den Dollar-Index-Kontrakt nicht)")
     return out
 
 
@@ -152,23 +197,45 @@ def flatten(node, path: str = "") -> dict:
 
 def build(as_of: pd.Timestamp | None = None, with_filters: bool = True) -> dict:
     as_of = (as_of or pd.Timestamp.now()).normalize()
-    macro = _stored("macro", as_of)
+    macro_raw = _stored("macro", as_of)
+    macro = calendar_values.extend(macro_raw)
     macro_w, mkt_w = profiles.wide(macro), profiles.wide(_stored("markets", as_of))
     pos = profiles.positioning(profiles.wide(_stored("positioning", as_of)))
     prices = markets.load(as_of)
     g8, g8_stand = g8_scores(as_of)
-    mk = {}
+    score_sheet, cards = scorecard_block(as_of)
+
+    mk, pair_views, vols = {}, {}, {}
     for m in markets.MARKETS:
         st = markets.stats(prices[m])
-        mk[m] = {"kurs": st, "gates": gates.evaluate(m, st, macro_w, g8, pos)}
+        node = {"kurs": st}
+        vols[m] = risk.realized_vol(prices[m]["Close"])
+        node["vol_20d_pct"] = None if vols[m] is None else round(vols[m], 2)
+        if m == "XAUUSD":  # Gold ist keine Scorecard-Waehrung: eigene Gates (Realzins, Kurs, Managed Money)
+            g = gates.evaluate(m, st, macro_w, None, pos)
+            node["gates"] = {"inputs": g["inputs"], **{s: {k: g[s][k] for k in ("R", "P", "F")} | {
+                "pass": sum(g[s][k] == "PASS" for k in ("R", "P", "F")),
+                "verfuegbar": sum(g[s][k] != "n.v." for k in ("R", "P", "F"))} for s in ("long", "short")}}
+        else:
+            view = pair_block(m, cards)
+            node["scorecard"] = view
+            node["gates"] = view["gates"] if view else None
+            if view:
+                pair_views[m] = view
+        mk[m] = node
+    idea_list = risk.ideas(pair_views, vols)
+
     sheet = {
         "stand": as_of.date().isoformat(),
         "erzeugt": pd.Timestamp.now().isoformat(timespec="seconds"),
         "zustand": state_block(macro_w, mkt_w, as_of),
         "regime": regime_block(),
-        "filter": filter_block(macro, as_of) if with_filters else {},
+        "filter": filter_block(macro_raw, as_of) if with_filters else {},
+        "scorecard": score_sheet,
+        "taktisch": {"fed": tactical.fed(mkt_w, macro_w, as_of), "notenbanken": tactical.other_pricing(macro_w),
+                     "rohstoffe": tactical.commodities(mkt_w)},
+        "risiko": {"ideen": idea_list, "buendel": risk.bundle(idea_list), "schwelle_diff": risk.IDEA_MIN},
         "laender": profiles.profiles(macro_w, as_of),
-        "fed_pfad": profiles.fed_path(mkt_w, macro_w, as_of),
         "positionierung": pos,
         "g8": None if g8 is None else g8.to_dict(),
         "g8_stand": g8_stand,

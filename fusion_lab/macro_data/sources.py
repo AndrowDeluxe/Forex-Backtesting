@@ -43,20 +43,28 @@ FRED = {
     "CA.trade_balance": "XTNTVA01CAM667S", "NZ.trade_balance": "XTNTVA01NZM667S",
     "MKT.vix": "VIXCLS", "MKT.hy_spread": "BAMLH0A0HYM2", "MKT.ig_spread": "BAMLC0A0CM",
     "MKT.nfci": "NFCI", "MKT.usd_broad": "DTWEXBGS", "MKT.wti": "DCOILWTICO",
+    # Ersatz fuer die seit 2024 stillstehende OECD-Dienste-Inflation (Jahresrate rechnet die Analytik)
+    "MKT.stlfsi": "STLFSI4", "US.services_index": "CUSR0000SASLE",
 }
-ECB_YIELDS = {"EA.2y": "SR_2Y", "EA.10y": "SR_10Y"}
+ECB_YIELDS = {"EA.1y": "SR_1Y", "EA.2y": "SR_2Y", "EA.10y": "SR_10Y"}
 # Staatsanleihen-Renditen je Land, gepruefter Stand 10.11.2026 (Verzug in Klammern):
 # MoF Japan (1-3 Tage), BoC Valet (1 Tag), SNB rendeiduebd (woechentlich, ~10 Tage),
 # RBA F2 ueber DBnomics (RBA selbst blockt mit 403, ~4 Tage). GB/NZ ueber TradingView:
 # BoE hat 2y nur als Excel-Kurve, RBNZ blockt automatisierte Abrufe.
 MOF_URL = "https://www.mof.go.jp/english/policy/jgbs/reference/interest_rate"
-MOF_YIELDS = {"JP.2y": "2Y", "JP.10y": "10Y"}
+MOF_YIELDS = {"JP.1y": "1Y", "JP.2y": "2Y", "JP.10y": "10Y"}
 BOC_YIELDS = {"CA.2y": "BD.CDN.2YR.DQ.YLD", "CA.10y": "BD.CDN.10YR.DQ.YLD"}
-SNB_YIELDS = {"CH.2y": "2J", "CH.10y": "10J"}
+SNB_YIELDS = {"CH.1y": "1J", "CH.2y": "2J", "CH.10y": "10J"}
 RBA_YIELDS = {"AU.2y": "FCMYGBAG2D", "AU.10y": "FCMYGBAG10D"}
 TVC_YIELDS = {"GB.2y": "GB02Y", "GB.10y": "GB10Y", "NZ.2y": "NZ02Y", "NZ.10y": "NZ10Y",
               # RBA (auch DBnomics F2.1) erst ab 2013; eigene Reihe als Historie, kein Ersatz fuer AU.2y
-              "AU.2y_tvc": "AU02Y"}
+              "AU.2y_tvc": "AU02Y",
+              # 1J fuer die Pricing-Naeherung (1J minus Leitzins ~ naechste 12 Monate), wo keine Amtsquelle
+              "US.1y": "US01Y", "GB.1y": "GB01Y", "AU.1y": "AU01Y", "NZ.1y": "NZ01Y", "CA.1y": "CA01Y",
+              # FRED-DGS2 hinkt 1-2 Tage; @tvc verlaengert US.2y nur ueber dessen letztes Datum hinaus
+              "US.2y@tvc": "US02Y",
+              # Euro-Peripherie fuer die TAIL-Bedingung OAT-Bund (Spread rechnet die Analytik)
+              "FR.10y": "FR10Y", "DE.10y": "DE10Y", "IT.10y": "IT10Y"}
 EUROSTAT_API = "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data"
 # Zusammensetzung aendert sich: une_rt_m fuehrt EA21 (EA/EA20 leer), prc_hicp_manr endet 2025
 # und wird von prc_hicp_minr abgeloest. Reihenfolge wichtig: das Spaetere gewinnt bei Ueberlappung.
@@ -77,7 +85,10 @@ CFTC_DISAGG = {"088691": "GOLD", "084691": "SILVER", "067651": "WTI", "085692": 
 CFTC_LAG_DAYS = 3  # Berichtsdatum Dienstag, veroeffentlicht Freitag
 
 YF_MARKETS = {"MKT.gold": "GC=F", "MKT.silver": "SI=F", "MKT.brent": "BZ=F", "MKT.dxy": "DX-Y.NYB",
-              "MKT.spx": "^GSPC", "MKT.ndx": "^NDX", "MKT.dax": "^GDAXI", "MKT.nikkei": "^N225"}
+              "MKT.spx": "^GSPC", "MKT.ndx": "^NDX", "MKT.dax": "^GDAXI", "MKT.nikkei": "^N225",
+              # Rohstoff-Schalter: AUD ~ Kupfer, NZD ~ Milch (Class III als frei verfuegbarer GDT-Ersatz)
+              "MKT.copper": "HG=F", "MKT.milk": "DC=F"}
+BIS_REER = "M.R.B"  # Realer effektiver Wechselkurs, breiter Korb (64 Laender), monatlich
 DUKA_FX = ["EURUSD", "GBPUSD", "USDJPY", "USDCHF", "AUDUSD", "USDCAD", "NZDUSD", "EURGBP", "EURJPY"]
 MONTH_CODES = "FGHJKMNQUVXZ"
 
@@ -130,6 +141,15 @@ def fetch_bis() -> pd.DataFrame:
         parts.append(parse_bis(r.text, quantity))
     out = pd.concat(parts, ignore_index=True)
     return out[out["key"] != "AU.cpi_yoy"]  # BIS nur quartalsweise, Australien kommt monatlich von der OECD
+
+
+def fetch_bis_reer() -> pd.DataFrame:
+    """Value-Faktor: realer effektiver Wechselkurs je Waehrung. Ab 2000, weil das 10-J-Mittel
+    sonst erst spaet beginnt."""
+    r = requests.get(f"{BIS_API}/WS_EER/{BIS_REER}.{'+'.join(BIS_AREA)}/all",
+                     params={"startPeriod": "2000-01", "format": "csv"}, timeout=TIMEOUT)
+    r.raise_for_status()
+    return parse_bis(r.text, "reer")
 
 
 def _oecd(query: str, start: str) -> pd.DataFrame:
@@ -236,10 +256,28 @@ def parse_snb(text: str) -> pd.DataFrame:
 
 
 def fetch_yields_snb() -> pd.DataFrame:
-    r = requests.get("https://data.snb.ch/api/cube/rendeiduebd/data/csv/en", params={"fromDate": START},
-                     timeout=TIMEOUT)
+    # Ohne dimSel liefert der Wuerfel alle Segmente (4 MB, brach am 11.11. zweimal ab)
+    tenors = ",".join(SNB_YIELDS.values())
+    r = requests.get("https://data.snb.ch/api/cube/rendeiduebd/data/csv/en",
+                     params={"fromDate": START, "dimSel": f"D0(CHF),D1({tenors})"}, timeout=TIMEOUT)
     r.raise_for_status()
     return parse_snb(r.content.decode("utf-8-sig"))
+
+
+def parse_snb_core(text: str) -> pd.DataFrame:
+    """SNB-Wuerfel plkoprinfla: Date (YYYY-MM);D0;Value, K1 = Kerninflation 1 des BFS (j/j)."""
+    df = pd.read_csv(io.StringIO(text), sep=";", skiprows=3)
+    df = df[df["D0"] == "K1"]
+    return pd.DataFrame({"key": "CH.core_yoy@snb", "date": period_start(df["Date"]),
+                         "value": pd.to_numeric(df["Value"], errors="coerce")}).dropna()
+
+
+def fetch_snb_core() -> pd.DataFrame:
+    """Ersatz fuer die OECD-Kern-Inflation der Schweiz (dort seit 12/2025 still)."""
+    r = requests.get("https://data.snb.ch/api/cube/plkoprinfla/data/csv/en", params={"fromDate": START[:7]},
+                     timeout=TIMEOUT)
+    r.raise_for_status()
+    return parse_snb_core(r.content.decode("utf-8-sig"))
 
 
 def fetch_yields_rba() -> pd.DataFrame:
@@ -330,7 +368,14 @@ def fetch_cftc() -> pd.DataFrame:
     disagg = {"mm": ("m_money_positions_long_all", "m_money_positions_short_all")}
     fin = _cftc_rows("gpe5-46if", list(CFTC_TFF), ["open_interest_all", *[c for p in tff.values() for c in p]])
     com = _cftc_rows("72hh-3qpy", list(CFTC_DISAGG), ["open_interest_all", *[c for p in disagg.values() for c in p]])
-    return pd.concat([cftc_long(fin, CFTC_TFF, tff), cftc_long(com, CFTC_DISAGG, disagg)], ignore_index=True)
+    # Legacy Non-Commercials: dieselbe Reihe wie die Langhistorie ab 2000 im Scorecard-Backtest
+    legacy = {"noncomm": ("noncomm_positions_long_all", "noncomm_positions_short_all")}
+    fx = {c: n for c, n in CFTC_TFF.items() if len(n) == 3 and n not in ("SPX", "NDX")}
+    leg = _cftc_rows("6dca-aqww", list(fx), [*legacy["noncomm"], "open_interest_all"])
+    leg_long = cftc_long(leg, fx, legacy)
+    leg_long = leg_long[~leg_long["key"].str.endswith(".open_interest")]  # OI kommt schon aus TFF
+    return pd.concat([cftc_long(fin, CFTC_TFF, tff), cftc_long(com, CFTC_DISAGG, disagg), leg_long],
+                     ignore_index=True)
 
 
 def cot_index(net: pd.Series, weeks: int) -> pd.Series:

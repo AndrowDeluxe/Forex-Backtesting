@@ -73,26 +73,38 @@ def test_flatten_skips_bools_and_text():
 
 
 def _mini_sheet() -> dict:
-    gate = {"R": "PASS", "P": "FAIL", "B": "n.v.", "F": "PASS", "pass": 2, "verfuegbar": 3}
+    gate = {"R": "PASS", "P": "FAIL", "F": "PASS", "pass": 2, "verfuegbar": 3}
     st = {"close": 1.12345, "date": "2026-11-09", "ret_5d_pct": 0.27, "ret_20d_pct": -0.56, "sma20": 1.12,
           "sma50": 1.11, "dist_sma20_pct": 0.22, "atr14": 0.00653}
-    inputs = {"R": {"basis": "2J-Spread", "chg_bp": -2.5}, "P": {}, "B": {"diff": -0.33},
-              "F": {"base": 12.5, "quote": None}}
     land = {"policy_rate": {"value": 3.88, "stale": False}, "2y": {"value": 4.51, "chg_5d_bp": -5.0},
-            "cpi_yoy": {"value": 3.7, "stale": True}}
+            "cpi_yoy": {"value": 3.7, "stale": True}, "pricing": {"value": 0.68, "chg_5d_bp": 14.6}}
+    card = {"carry": 0.74, "zins_momentum": 1.6, "preis_momentum": 0.52, "value": -0.45, "ueberraschung": 2.14,
+            "score": 0.91, "rang": 1, "cot_3y": 18.9, "veto_long": False, "veto_short": False}
     sheet = {
         "stand": "2026-11-09", "erzeugt": "x",
         "zustand": {"state": "BASE", "state_week_ago": "BASE", "dollar_haven_days": [],
                     "tail": [{"name": "vix", "op": ">", "threshold": 28.0, "value": 25.64, "hit": False}],
                     "alt": [], "levels": {"dxy": 101.68, "spx": 7549.94, "gold": 4147.1, "brent": 92.31}},
         "regime": {"fehler": "x"}, "filter": {},
+        "scorecard": {"tag": "2026-11-09", "waehrungen": {"USD": card}, "einsatz": "Kontext",
+                      "test": {"lock": "x", "versuche": 8, "kandidat": "V3",
+                               "is": {"V3": {"sharpe": -0.27, "t": -0.86}}, "oos": {"V3": {"sharpe": -0.21, "t": -0.65}}}},
+        "taktisch": {"fed": {"effektiv": 3.88, "sitzungen": [{"sitzung": "2026-12-09", "bp": 28.2, "pct": 112.7,
+                                                              "pct_vor_1w": 81.7, "bezahlt": True}]},
+                     "notenbanken": {"GB": {"leitzins": 4.0, "leitzins_datum": "2026-11-05", "1y": 4.68,
+                                            "gepreist_12m_bp": 68.5, "chg_1w_bp": -8.5}},
+                     "rohstoffe": {"CAD": {"rohstoff": "brent", "kurs": 92.51, "ret_20d_pct": -15.79,
+                                           "ret_60d_pct": -1.35, "trend": "faellt", "schwelle": 105.0,
+                                           "abstand_pct": -11.9}}},
+        "risiko": {"ideen": [{"markt": "USDCAD", "seite": "long", "diff": 1.26, "vol_pct": 4.8, "groesse_rel": 1.25}],
+                   "buendel": {"netto": {"USD": 1.0}, "ueber_deckel": {}, "deckel": 1.5, "haupttreiber": "USD"},
+                   "schwelle_diff": 0.75},
         "laender": {l: land for l in ["US", "EA", "GB", "JP", "CH", "AU", "CA", "NZ"]},
-        "fed_pfad": {"effective": 3.88, "months": {"2026-12": {"implied": 4.025, "priced_bp": 14.5, "chg_5d_bp": 0.5}}},
         "positionierung": {"EUR": {"net": -78559, "chg_1w": -6985, "cot_26w": 0.0, "cot_3y": 0.0, "date": "2026-11-06"}},
         "g8": {"GBP": 0.91, "AUD": -1.3}, "g8_stand": "2026-11-09",
-        "maerkte": {m: {"kurs": st, "gates": {"inputs": inputs, "long": gate, "short": gate}}
-                    for m in render.MARKETS},
-        "kalender": {"referenz_utc": "x", "naechste_72h": [], "ueberraschungen_7t": []},
+        "maerkte": {m: {"kurs": st, "vol_20d_pct": 5.44, "gates": {"long": gate, "short": gate},
+                        "scorecard": {"diff": -1.27}} for m in render.MARKETS},
+        "kalender": {"referenz_utc": "x", "naechste_7t": [], "ueberraschungen_14t": []},
         "datenluecken": [],
     }
     sheet["register"] = fact_sheet.flatten(sheet)

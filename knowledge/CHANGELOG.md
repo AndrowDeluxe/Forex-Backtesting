@@ -9,6 +9,16 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-11** [Dachprojekt / Makro-Agent] **Makro-Agent v2: Scorecard, taktische Ebene, Risiko-Budget,
+  Ersatzquellen** (Nutzerauftrag, Plan freigegeben). [[makro-scorecard-v2]]. Datenschicht: Leitzins aus
+  Kalender-Entscheiden (BoE 4,00, RBA 4,85), US-2J tagesaktuell, 1J-Renditen, Kern-Inflation JP/CA/CH,
+  US-Dienste, Stressindex, OAT-Bund, Kupfer/Milch, BIS-REER, Legacy-COT, FF-Historie als Tagesjob
+  (`calendar_values.py`, neue Jobs im Task „Makro-Daten“). Fact Sheet: 5-Faktor-Scorecard je Währung,
+  Fed je Sitzung (deckt sich mit CME FedWatch), Rohstoff-Schalter, Risiko-Budget mit Bündel-Deckel,
+  Gates als Ansicht (R/P/F). Backtest Lock `macro_scorecard_v1`: **kein Edge** (IS −0,27, OOS −0,21),
+  Scorecard nur als Kontext; Tresor zu. Fehler unterwegs behoben: Abdeckungsprüfung hatte 2J/10J/CPI/
+  Kern auskommentiert; Backtest schloss neu geladene Reihen aus. 45 Tests. Keine Bot-Änderung.
+
 - **2026-11-11** [Dachprojekt / HTF-Edge] **Alter Daily-Forward `aea4189b` abgeschaltet** (Nutzerentscheid). Task „C2-Forward-Log“
   rechnet nur noch `htf_daily_trade.c2_forward_w50` (W50 + Referenz EL); `scripts/c2_forward_task.ps1` angepasst, altes Ledger
   bleibt liegen. Nur Log, kein echtes Geld.

@@ -1,0 +1,19 @@
+{"ts": "2026-11-11T21:44:34+00:00", "event": "register_split", "is_start": "2007-01-01", "is_end": "2016-12-31", "oos_end": "2026-05-10", "tresor_end": "2026-11-10"}
+{"ts": "2026-11-11T21:46:01+00:00", "event": "trials", "n": 8, "total": 8, "note": "V1-V3 + 5 Einzelfaktoren, Kandidat V3 vorab festgelegt"}
+{"ts": "2026-11-11T21:47:21+00:00", "event": "freeze", "hash": "8d56df6f3726ed70792bcc81ec72ef1392ed88356b7835e3c46e527111c6c053"}
+{"ts": "2026-11-11T21:47:21+00:00", "event": "oos_view"}
+{"ts": "2026-11-11T21:47:21+00:00", "event": "oos_view"}
+{"ts": "2026-11-11T21:47:21+00:00", "event": "oos_view"}
+{"ts": "2026-11-11T21:47:21+00:00", "event": "oos_view"}
+{"ts": "2026-11-11T21:47:21+00:00", "event": "oos_view"}
+{"ts": "2026-11-11T21:47:21+00:00", "event": "oos_view"}
+{"ts": "2026-11-11T21:47:21+00:00", "event": "oos_view"}
+{"ts": "2026-11-11T21:47:21+00:00", "event": "oos_view"}
+{"ts": "2026-11-11T21:51:20+00:00", "event": "oos_view"}
+{"ts": "2026-11-11T21:51:20+00:00", "event": "oos_view"}
+{"ts": "2026-11-11T21:51:20+00:00", "event": "oos_view"}
+{"ts": "2026-11-11T21:51:20+00:00", "event": "oos_view"}
+{"ts": "2026-11-11T21:51:20+00:00", "event": "oos_view"}
+{"ts": "2026-11-11T21:51:20+00:00", "event": "oos_view"}
+{"ts": "2026-11-11T21:51:20+00:00", "event": "oos_view"}
+{"ts": "2026-11-11T21:51:20+00:00", "event": "oos_view"}

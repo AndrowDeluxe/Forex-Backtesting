@@ -10,13 +10,17 @@ import threading
 
 import pandas as pd
 
-from . import calendar, sources, store
+from . import calendar, calendar_values, sources, store
 
 SOURCE_TIMEOUT_S = 300
 JOBS = {
     "kalender": None,
+    "ff_historie": None,  # Ist-Werte fuer Ueberraschungs-Faktor und Kalender-Ersatzwerte
+    "kalender_werte": ("macro", calendar_values.fetch_calendar_values),  # nach "kalender", liest dessen Archiv
     "fred": ("macro", sources.fetch_fred),
     "bis": ("macro", sources.fetch_bis),
+    "bis_reer": ("macro", sources.fetch_bis_reer),
+    "snb_kern": ("macro", sources.fetch_snb_core),
     "oecd": ("macro", sources.fetch_oecd),
     "ecb": ("macro", sources.fetch_ecb),
     "eurostat": ("macro", sources.fetch_eurostat),
@@ -32,13 +36,24 @@ JOBS = {
 }
 # Soll je Land: fehlt oder ist alt -> Luecke im Abdeckungsbericht. Tage = erlaubtes Alter.
 # Datum = Periodenbeginn, darum grosszuegig: Q2 hat Datum 01.04. und ist im Oktober aktuell.
-COVERAGE = {"policy_rate": 10, "2y": 10, "10y": 75, "cpi_yoy": 75, "core_yoy": 135, "services_yoy": 135,
-            "unemployment": 135, "gdp_qoq": 230, "exports": 135, "trade_balance": 135}
+# Leitzins 45 Tage: er gilt bis zur naechsten Sitzung (~6 Wochen), Entscheide kommen aus dem Kalender.
+COVERAGE = {"policy_rate": 45, "1y": 10, "2y": 10, "10y": 75, "cpi_yoy": 75, "core_yoy": 135,
+            "services_yoy": 135, "unemployment": 135, "gdp_qoq": 230, "exports": 135, "trade_balance": 135,
+            "reer": 75}
+FF_WEEKS_BACK = 5  # FF-Historie: nur abgeschlossene Wochen, schon geladene ueberspringt das Skript
 
 
 def run_job(name: str) -> dict:
     if name == "kalender":
         return {"neu": calendar.append_events(calendar.fetch_events())}
+    if name == "ff_historie":
+        import subprocess
+        start = (pd.Timestamp.today() - pd.Timedelta(weeks=FF_WEEKS_BACK)).strftime("%Y-%m-%d")
+        done = subprocess.run([sys.executable, "-m", "scripts.remy_ff_history", "--start", start],
+                              cwd=calendar_values.ROOT, capture_output=True, text=True, timeout=SOURCE_TIMEOUT_S - 10)
+        if done.returncode:
+            raise RuntimeError(done.stderr.strip()[-300:])
+        return {"ausgabe": done.stdout.strip().splitlines()[-1] if done.stdout.strip() else ""}
     area, fetch = JOBS[name]
     df = fetch()
     return {"neu": store.append(area, df), "reihen": int(df["key"].nunique())}
@@ -62,9 +77,10 @@ def run_with_timeout(name: str) -> dict:
 
 
 def coverage(today: pd.Timestamp | None = None) -> pd.DataFrame:
-    """Letztes Datum je Land und Groesse; Luecken und ueberalterte Werte sind markiert."""
+    """Letztes Datum je Land und Groesse (Hauptreihe samt Ersatzwerten, siehe calendar_values);
+    Luecken und ueberalterte Werte sind markiert."""
     today = today if today is not None else pd.Timestamp.now().normalize()
-    known = pd.concat([store.latest("macro")], ignore_index=True)
+    known = calendar_values.extend(store.latest("macro"))
     last = known.groupby("key")["date"].max() if len(known) else pd.Series(dtype="datetime64[ns]")
     rows = {}
     for quantity, max_age in COVERAGE.items():

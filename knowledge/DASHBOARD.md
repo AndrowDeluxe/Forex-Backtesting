@@ -87,24 +87,16 @@ Telegram. Der tägliche Digest zeigt nur die Fokus-Abschnitte.
 ### 🔍 Braucht deine Bestätigung
 
 
-- **Makro Fact Sheet: Gate-Schwellen und ALT-Zustand sind meine Annahmen** (10.11.). R = Veränderung
-  des 2J-Spreads über 1 Woche; P = Kurs auf der richtigen Seite des SMA20 und Wochenrendite
-  gleichgerichtet; F = COT-Index 3 J ≥ 90 / ≤ 10 gilt als überlaufen; ALT = VIX < 16 und HY < 3,00 % und
-  Brent < 90 (TAIL kommt aus dem SMT-Report). Beim Fact-Sheet-Checkpoint mit prüfen.
-  Code: `fusion_lab/macro_agent/analytics/gates.py`, `state_machine.py`.
-  **Recherche 11.11.** ([[makro-gates-evidenz]]): Gates selbst stammen aus den SMT-Reports, keines ist
-  getestet. P und B messen beide Momentum, R auf 1 Woche ebenfalls → „4/4“ zählt teils dasselbe dreimal.
-  Forschung stützt Zins-Änderungen und Momentum auf 1–12 Monaten, nicht 1 Woche; COT erklärt dieselbe
-  Woche, sagt aber nichts voraus (nur Veto). Carry und Value fehlen. **Deine Entscheidung offen:**
-  Gates umbauen (längere Horizonte, P/B zusammenlegen, Carry/Value dazu) und auf Historie testen,
-  bevor „4/4“ als Signal gilt? Dazu Datenfehler beheben: Leitzinsen (BoE 4,00, RBA 4,85), US-2J
-  tagesaktuell, Fed-Wahrscheinlichkeit je Sitzung für die 75-%-Regel.
-  **Test 11.11. (Stand 11.11.):** 10/10 Tests grün, Lauf 11 s. P und B zeigen heute in allen 9 Märkten,
-  in denen P eine Richtung hat, dasselbe; F fällt nur bei EUR-Beinen (COT 0) → die sechs „4/4“ sind ein
-  Thema (AUD schwach / USD stark). Neu gefunden: (a) GB-Leitzins 3,75 widerspricht dem BoE-Ist 4,00 im
-  eigenen Kalenderteil; (b) `--as-of` vor 30.10. bricht ab (Datenschicht beginnt erst dort); (c) Regimekarte
-  ignoriert `--as-of` und stammt vom Print 14.10. (US-CPI 10.11. noch nicht drin, nicht unter Datenlücken);
-  (d) Gates nutzen alte Reihen ohne Markierung (USDCHF-R mit CH-2J vom 30.10.).
+- **Makro-Agent v2 (Scorecard): meine Annahmen beim Umbau** (11.11., nach deinem Auftrag „Banken-
+  Niveau“, Plan freigegeben). Deine Entscheide (zwei Ebenen, gleiche Gewichte, Gates als Ansicht,
+  vier Extras, Ersatzquellen) sind umgesetzt. Von mir gesetzt: Portfolio long Top-2 / short Bottom-2;
+  Faktor-Fenster (Zins-Momentum 3 M, Preis-Momentum 12-1 M + 3 M, Value 10 J, Überraschungen 60 T);
+  Regime halbiert bei TAIL oder Stressindex > 1; Milch-Future als GDT-Ersatz für NZD; Idee ab Score-
+  Differenz 0,75; Bündel-Deckel 1,5; COT-Veto auf Legacy Non-Commercials (ohne USD), damit Backtest
+  und Live gleich messen; Leitzins US/EA nicht aus dem Kalender (andere Definition). **Ergebnis:**
+  Scorecard ohne Edge (IS Sharpe −0,27, OOS −0,21), läuft im Fact Sheet nur als Kontext
+  ([[makro-scorecard-v2]]). Noch offen aus dem Test vom 11.11.: `--as-of` vor 30.10. bricht ab;
+  Regimekarte ignoriert `--as-of` (Print 14.10.).
 
 ### ⏳ Wartet auf Themen-Session
 
@@ -146,10 +138,9 @@ jeweiligen Thema weiterarbeiten (Nutzerentscheid 10.11.).
 
 - **Lücken Makro-Datenschicht für Schritt 7 (A2)** (30.10.). ~~2-jährige Renditen für GB, JP,
   CH, AU, CA, NZ~~ erledigt 10.11. (2J + 10J täglich für alle G8; CH mit ~10 Tagen Verzug).
-  Offen: aktuelle Kern-/Dienste-Inflation für JP, CH, CA; US-Dienste-Inflation. **Neu 10.11.:**
-  Leitzinsen (BIS) hinken nach Notenbank-Entscheiden nach (GB 3,75 statt 4,00 seit 05.11., AU 4,60
-  statt 4,85 seit 03.11.) und verzerren die Pricing-Näherung im Fact Sheet. Vorschlag: Leitzins aus
-  dem „Interest Rate Decision“-Ist im Kalender übernehmen.
+  ~~Kern-Inflation JP/CH/CA, US-Dienste, Leitzins-Nachlauf (BoE/RBA)~~ erledigt 11.11. über
+  Ersatzquellen (Kalender-Ist, SNB, FRED; `fusion_lab/macro_data/calendar_values.py`).
+  Offen: Dienste-Inflation JP/CH/CA, CH-Arbeitslosigkeit, Exporte US/EA, CH-Renditen ~10 Tage Verzug.
   Stand: `python -m fusion_lab.macro_data --coverage`.
 
 ## 🧊 Geparkt: Betrieb & Nebenthemen (außerhalb des Fokus)

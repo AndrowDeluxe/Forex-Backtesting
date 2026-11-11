@@ -1,0 +1,35 @@
+{
+  "strategy": "macro_scorecard_v1",
+  "split": {
+    "is_start": "2007-01-01",
+    "is_end": "2016-12-31",
+    "oos_end": "2026-05-10",
+    "tresor_end": "2026-11-10"
+  },
+  "registered": "2026-11-11T21:44:34+00:00",
+  "trials": 8,
+  "frozen": {
+    "hash": "8d56df6f3726ed70792bcc81ec72ef1392ed88356b7835e3c46e527111c6c053",
+    "config": {
+      "modell": "scorecard_v1",
+      "faktoren": [
+        "carry",
+        "zins_momentum",
+        "preis_momentum",
+        "value",
+        "ueberraschung"
+      ],
+      "gewichte": "gleich",
+      "k": 2,
+      "veto": [
+        90.0,
+        10.0
+      ],
+      "regime": "TAIL oder STLFSI > 1 -> halb",
+      "stlfsi_cut": 1.0
+    },
+    "ts": "2026-11-11T21:47:21+00:00"
+  },
+  "unsealed": {},
+  "forward": null
+}

@@ -72,8 +72,8 @@ def base_trades() -> pd.DataFrame:
     return pd.DataFrame(rows).sort_values("einstieg").reset_index(drop=True)
 
 
-def add_swap(t: pd.DataFrame) -> pd.DataFrame:
-    rt = rates()
+def add_swap(t: pd.DataFrame, rt: pd.DataFrame | None = None) -> pd.DataFrame:
+    rt = rates() if rt is None else rt
     t = t.copy()
     t["tage"] = (t["ausstieg"] - t["einstieg"]).dt.days.clip(lower=1)
     for broker, (m_fx, m_met) in AUFSCHLAG.items():

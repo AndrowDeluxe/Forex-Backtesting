@@ -40,7 +40,12 @@ passiert, was steht an.
    Repo-Filter): nichts schlägt Faber gegen; bester Zusatz DXY 20T mit (zusammen OOS +0,51 R).
    **11.11.: EINGEFROREN** C2 + Faber gegen + COT-Fluss mit + Rohstoff-Veto (Hash `6c55e525`): mit TTP-Swap
    IS +0,55 / OOS +0,40 R, Konto 1 % CAGR 9,8 %, DD −8,2 %. Blind 2010–15 noch zu. Nächster Schritt:
-   LTF-Bestätigungen für den Einstieg (neuer Lock). Wartet auf deine
+   LTF-Bestätigungen für den Einstieg (neuer Lock).
+   **11.11.: LTF-Einstieg verworfen** (96 Varianten H1/M15, alle netto negativ; enger Stop schneidet den Daily-Edge ab).
+   **11.11.: Blind 2010–15 NICHT bestanden** (+0,07 R, t 0,36, DD 1 %-Konto −25 %; 2010/11 stark negativ) → Forward-Kandidat
+   (Nutzerentscheid). Nutzer akzeptiert den Blind (anderes Regime 2010–12). **Twin-Trade (11.11.): Daily direkt ohne Edge, Edge
+   liegt im Limit-Preis**; eingefrorener EL bleibt bester Einstieg, Vorwochen-50 % stärkste Zusatz-Zone.
+   **Morgen (12.11.): H4-Edge** (A6, Phase 0 Fragen stehen im Chat 10.11.). Wartet auf deine
    Kandidatenwahl (≤ 9 Parameter). Parallel: Indikatoren einzeln durchgehen (Steckbriefe, dann Edge-Test je
    Indikator), Reihenfolge RSI → Multi Length → Stoch RSI → MACD → BB → NW → MA-Cross → Fractals → Pivots →
    Volumen → SVP/VRVP → Money Flow Profile → COT. H4 zurückgestellt.

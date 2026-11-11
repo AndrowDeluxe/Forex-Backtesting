@@ -557,3 +557,81 @@ max. DD −9,0 R. Jahre: 2019 −0,04 R, sonst positiv (2024 nur +0,07). Märkte
 Drawdown nur auf Schlusskursbasis der Trades. Bei 4 offenen Trades liegt das offene Risiko beim 4-Fachen des
 Risikos je Trade. Funded-Limit 10 % → schon 1 % je Trade liegt mit −8,2 % nahe an der Grenze.
 Nächster Schritt (Nutzer 11.11.): Stand sichern, dann LTF-Bestätigungen für den Einstieg prüfen (neuer Lock, da eingefroren).
+
+## LTF-Einstieg für den eingefrorenen Kandidaten (11.11.2026, Lock `htf_daily_ltf_entry`, 96 Versuche)
+
+Nutzeridee: Daily = Bestätigung, Einstieg im LTF mit kleinerem SL und Tagesziel. `python -m htf_daily_trade.ltf_entry`
+→ `ltf_entry_is_oos.csv`, `ltf_entry_trades.csv`; Tests `tests/test_ltf_entry.py`. 358 Daily-Ideen (Faber gegen, COT mit,
+Rohstoff-Veto, 10 Tage gültig; 156/178 eingefrorene Trades liegen in einem Ideen-Fenster). H1 + M15 × L1 Sweep+CHoCH /
+L2 Doppel-BOS / L3 FVG-Limit / L5 CRT (Tim), je mit/ohne Session-Fenster × Z1 Ideen-Ende / Z2 Tages-Liquidität / Z3 ADR
+× 1/3 Versuche. Kosten Spread+Kommission + TTP-Swap. 2025 und Tresor 01–07/2026 zu.
+
+**Ergebnis: kein einziger LTF-Einstieg trägt.** Ø über alle Varianten IS −0,16 R, OOS −0,24 R. Keine Variante mit
+IS t > 2; die IS-Beste (M15 FVG-Limit + Session, ADR-Ziel, IS +0,36 R) fällt im OOS auf −0,58 R (t −3,6).
+Daily-Referenz im selben Zeitraum: IS +0,55 / OOS +0,40 R, Konto 1 % CAGR 9,8 %.
+
+| Trigger | H1 brutto / Kosten / netto (R) | M15 brutto / Kosten / netto (R) |
+|---|---|---|
+| L1 Sweep + CHoCH | −0,10 / 0,06 / −0,16 | −0,11 / 0,12 / −0,23 |
+| L2 Doppel-BOS | −0,08 / 0,06 / −0,14 | −0,10 / 0,12 / −0,22 |
+| L3 FVG-Limit | **+0,05** / 0,19 / −0,14 | **+0,15** / 0,24 / −0,09 |
+| L5 CRT (Tim) | −0,05 / 0,15 / −0,20 | −0,10 / 0,21 / −0,31 |
+
+- Der LTF-Stop ist nur 5–23 % des Daily-Stops. Selbst beim Halten bis zum Ideen-Ende (Z1) werden **83 % (H1) bzw.
+  91 % (M15)** der Trades ausgestoppt. Der Edge lebt im Daily-Rauschen; ein enger Stop schneidet ihn ab.
+- Struktur-Trigger (CHoCH, BOS, CRT) sind schon **brutto negativ**: LTF-Timing verschlechtert den Einstieg.
+- Nur das FVG-Limit ist brutto positiv, die Kosten (0,19–0,24 R bei engem Stop) fressen es.
+- Offen als Idee: LTF nur für den **Einstiegspreis** nutzen, Stop und Ausstieg bleiben Daily (dann wiegen Kosten
+  kaum). Nicht getestet.
+
+## BLINDTEST 2010–2015 des eingefrorenen Kandidaten (11.11.2026, einmal geöffnet, Hash `6c55e525`)
+
+Nutzerauftrag. `python -m htf_daily_trade.c2_blind` → `c2_blind_report.md`, `c2_blind_trades.csv`. Code vorher auf
+IS 2016–17 geprüft: 35/35 Trades und Ø R identisch mit dem eingefrorenen Stand. Swap vor 2015 mit 2J-Satz statt
+Leitzins (Näherung).
+
+| | n | Ø R | t | Treffer | PF | max. Verlustserie | max. DD |
+|---|---|---|---|---|---|---|---|
+| ohne Swap | 116 | +0,13 | 0,63 | 29 % | 1,19 | 15 | −26,7 R |
+| **Swap TTP** | 116 | **+0,07** | **0,36** | 28 % | 1,10 | 15 | −28,5 R |
+| Stress | 116 | +0,05 | 0,27 | 28 % | 1,08 | 15 | −29,2 R |
+
+Jahre: **2010 −0,53, 2011 −0,65**, 2012 +0,54, 2013 +0,76, 2014 +0,17, 2015 +0,01 R. Märkte: AUD +0,51, NZD +0,31,
+EUR +0,30, CHF +0,17; GBP −0,17, CAD −0,35, JPY −0,23, Gold −0,13. Long −0,03 R, Short +0,15 R (im IS/OOS umgekehrt).
+Konto 1 %: CAGR +0,7 %, **max. DD −25,2 %**.
+
+**Bewertung: Blindtest nicht bestanden.** Positiv, aber weit unter IS (+0,55) und OOS (+0,40), t 0,36, und eine
+Drawdown-Phase 2010–11, die jedes Funded-Konto gesprengt hätte. Der Edge ist 2016–24 real gemessen, aber nicht
+zeitstabil; das Muster „C2 gegen den HTF-Trend“ hängt vermutlich am Regime 2016–24. Kein Live-Kandidat; Forward-
+Beobachtung (bereits gebaut) bleibt sinnvoll, mit kleinem Risiko oder nur Paper.
+
+**Nutzereinordnung 11.11.:** Ein schwächerer Zeitraum in einem anderen Regime ist für den Nutzer in Ordnung;
+2010–2012 liefen viele Marktmechanismen anders als heute. Sein händischer Edge brachte damals in 2 Jahren Backtest
+rund 15.000 $. Entscheidung: weiter testen (Twin-Trade nach Plan), der Kandidat bleibt Forward-Kandidat.
+
+## Twin-Trade: Daily-Order direkt + Limit-Beine (11.11.2026, Lock `htf_daily_twin`, 228 Versuche)
+
+`python -m htf_daily_trade.twin_trade` → `twin_trade_varianten.csv`, `twin_trade_ideen.csv`; Tests `tests/test_twin_trade.py`.
+358 Ideen 2016–24; 19 Limit-Einstiege (P1–P7 Preiszonen/Leitern, L1/L2/L3/L5 M15, CTNL, H1-Spike→M5) × 3 Stops × 2 Ausstiege
+× 2 Risiko-Regeln; nach Spread, Kommission und TTP-Swap.
+
+**Kernbefund: Die Daily-Order „direkt“ (Eröffnung nach dem Signal) hat keinen Edge** — IS +0,03 R, OOS +0,01 R
+(n 358, Konto 1 % CAGR 0,5 %, DD −12 %). **Der Edge steckt im Limit-Einstieg zum besseren Preis**:
+
+| Einstieg (je Bein, gefüllte Ideen) | IS Ø R | OOS Ø R | Füllquote |
+|---|---|---|---|
+| eingefroren C2 EL (50 % Auslöse-Schluss↔Strukturstop, 3 Tage) | **+0,55** | **+0,40** | ~50 % |
+| P4 50 % Vorwochen-Range, Stop 1,5 ATR | +0,35 | +0,28 | 62 % |
+| P4 50 % Vorwochen-Range, Stop Daily + 0,5 ATR | +0,31 | +0,27 | 61 % |
+| P3 Fib 78,6 % Signalkerze | +0,17 | +0,27 | 46 % |
+| P1 50 % Signalkerze | +0,12 | +0,16 | 54 % |
+| Daily direkt (EO) | +0,03 | +0,01 | 100 % |
+
+- Twin-Kombinationen (Daily direkt + Limit) liegen alle unter dem eingefrorenen EL: beste nach IS P4 SC XA mit 1 % je
+  Bein CAGR 8,4 %, DD −13,4 % (EL allein: 9,8 % / −8,2 %). Die Leiter P7 mit 1 % je Bein: CAGR 12,9 %, aber DD −33,8 %.
+- LTF-Limits (CHoCH, BOS, FVG, CRT, CTNL, M5) bringen je Bein nur −0,00…+0,18 R; am besten Doppel-BOS bis 3 Einstiege
+  (+0,18 R je Bein), im OOS uneinheitlich.
+- Stop: Daily + 0,5 ATR (SA) im Schnitt am besten; Ausstieg Ideen-Ende (XA) schlägt Tagesziel (XB) wie im Daily-Test.
+- **Folgerung:** Nicht „Daily direkt + Limit“, sondern **nur Limit**. Der eingefrorene EL bleibt der beste Einstieg;
+  P4 (Vorwochen-Mitte) ist die stärkste zusätzliche Limit-Zone. Kandidat für einen späteren Test: EL + P4 als
+  Zwei-Limit-Leiter ohne Market-Order (neue gezählte Variante).

@@ -9,6 +9,24 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-11** [Dachprojekt / HTF-Edge] **Twin-Trade (Daily direkt + Limit-Beine) getestet** (Nutzerauftrag, Plan freigegeben).
+  `htf_daily_trade/twin_trade.py` + `tests/test_twin_trade.py`, Lock `htf_daily_twin` 228 Varianten. Kernbefund: Daily-Order direkt
+  (Eröffnung) ohne Edge (IS +0,03 / OOS +0,01 R); der Edge liegt im Limit-Preis (eingefroren EL +0,55/+0,40, Vorwochen-50 %
+  +0,31/+0,27 R je Bein). Keine Twin-Variante schlägt den eingefrorenen EL risikobereinigt. Nutzer akzeptiert Blind 2010–15
+  (anderes Regime), Kandidat bleibt Forward-Kandidat. Keine Bot-Änderung.
+
+- **2026-11-11** [Dachprojekt / HTF-Edge] **Blindtest 2010–15 des eingefrorenen C2-Kandidaten: nicht bestanden**
+  (Nutzerauftrag, einmal geöffnet). `htf_daily_trade/c2_blind.py` (vorher auf IS 2016–17 exakt geprüft). n 116,
+  mit TTP-Swap Ø +0,07 R (t 0,36), PF 1,10, Verlustserie 15; 2010/11 je ~−0,6 R; Konto 1 %: CAGR +0,7 %, DD −25 %.
+  Kein Live-Kandidat. `c2_veto_combos.commodity_state` und `c2_kandidat_report.add_swap` um Start/Zinsreihe ergänzt.
+  [[htf-daily-trade-edge-card]]. Keine Bot-Änderung.
+
+- **2026-11-11** [Dachprojekt / HTF-Edge] **LTF-Einstieg für den eingefrorenen Daily-Kandidaten verworfen** (Nutzerauftrag,
+  Plan freigegeben). `htf_daily_trade/ltf_entry.py` + `tests/test_ltf_entry.py`, Lock `htf_daily_ltf_entry` (96 Varianten:
+  H1/M15 × Sweep+CHoCH / Doppel-BOS / FVG-Limit / CRT × Session × 3 Ziele × 1/3 Versuche). Alle Varianten netto negativ
+  (Ø IS −0,16 / OOS −0,24 R; Daily +0,55 / +0,40 R). Enger Stop wird 83–91 % ausgestoppt; Struktur-Trigger schon brutto
+  negativ, FVG-Limit brutto +0,05/+0,15 R, aber Kosten 0,19–0,24 R. [[htf-daily-trade-edge-card]]. Keine Bot-Änderung.
+
 - **2026-11-11** [Dachprojekt / HTF-Edge] **C2-Kandidat eingefroren** (Nutzerentscheid): C2 + Faber gegen + COT-Fluss mit
   + Rohstoff-Veto, Stop Struktur, 10 Tage, kein BE, festes Risiko; Lock `htf_daily_filter_matrix` Hash `6c55e525`,
   568 Versuche, 10 Parameter. Neu Swap-Modell (Leitzinsdifferenz + an MT5 kalibrierter Aufschlag) in

@@ -29,11 +29,11 @@ PARAMS = {"T6": 1, "X2": 1, "X5": 1, "M7": 1, "M2": 1, "RS": 1}
 MAX_PARAMS = 10
 
 
-def commodity_state(t: pd.DataFrame) -> pd.Series:
+def commodity_state(t: pd.DataFrame, start: str = "2014-01-01", end: str = "2025-01-31") -> pd.Series:
     import yfinance as yf
     px = {}
     for m, (sym, _) in COMMODITY.items():
-        d = yf.download(sym, start="2014-01-01", end="2025-01-31", progress=False, auto_adjust=True)
+        d = yf.download(sym, start=start, end=end, progress=False, auto_adjust=True)
         s = d["Close"].squeeze().dropna()
         s.index = pd.to_datetime(s.index).tz_localize(None).normalize()
         px[m] = s

@@ -207,6 +207,14 @@
       "exit_reason": "stop",
       "r_multiple": -1.0253050473160765,
       "notified_exit": true
+    },
+    "trend_pullback_XPTUSD_2026-11-12T01:00:00_1": {
+      "leg": "trend_pullback",
+      "entry_time": "2026-11-12T01:00:00",
+      "exit_time": "2026-11-12T01:00:00",
+      "exit_reason": "data_end",
+      "r_multiple": -0.1293626139154895,
+      "notified_exit": false
     }
   },
   "kill_switch_active": false,
@@ -275,7 +283,7 @@
     "2026-11-09T00:00:00": 98879.72687772474,
     "2026-11-10T00:00:00": 98624.15641459337,
     "2026-11-11T00:00:00": 98565.80281251986,
-    "2026-11-12T00:00:00": 98565.80281251986
+    "2026-11-12T00:00:00": 98561.93934136182
   },
   "account_start": "2026-08-27T20:58:06.914380",
   "scan_errors_today": {

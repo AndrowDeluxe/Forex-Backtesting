@@ -59,6 +59,8 @@ passiert, was steht an.
    Kandidatenwahl (≤ 9 Parameter). Parallel: Indikatoren einzeln durchgehen (Steckbriefe, dann Edge-Test je
    Indikator), Reihenfolge RSI → Multi Length → Stoch RSI → MACD → BB → NW → MA-Cross → Fractals → Pivots →
    Volumen → SVP/VRVP → Money Flow Profile → COT. H4 zurückgestellt.
+   **12.11.: Steckbriefe gestartet** [[indikator-steckbriefe]] – RSI + RSI Multi Length als Entwurf, warten auf
+   deine Antworten (Daily-Länge 20/14, LuxAlgo 25/75 = Einstellung oder Lesart?). Rest folgt.
    Inventur-Entwurf bestätigt (10.11.). Reihenfolge (Nutzer 10.11., „stabiles Fundament“):
    (1) Inventur: die ~15 Strategien aus „Meine Trading Edges“ einzeln aufnehmen + Makro-Quellen
    (SMH Calls, Zusatzeducation, Makro Education, Elite, Incentive) sichten, (2) FX-Zinsdaten-Loader

@@ -17,8 +17,8 @@ from fusion_lab.macro_data import calendar, calendar_values, store
 from fusion_lab.macro_data.__main__ import coverage
 from fusion_lab.macro_data.sources import G8
 
-from . import factors, geo_framework, panels, risk, tactical
-from .analytics import gates, markets, profiles, state_machine
+from . import factors, geo_framework, ledger, manifest, panels, risk, tactical
+from .analytics import dollar_factor, gates, markets, overlap, profiles, state_machine
 
 OUT_DIR = Path(__file__).resolve().parents[1] / "data" / "macro_agent"
 TEST_FILE = OUT_DIR / "scorecard_test.json"
@@ -72,10 +72,10 @@ def g8_scores(as_of: pd.Timestamp) -> tuple[pd.Series | None, str]:
         return None, f"Fehler: {type(e).__name__}: {e}"[:200]
 
 
-def regime_block() -> dict:
+def regime_block(as_of: pd.Timestamp | None = None) -> dict:
     try:
         from fusion_lab.macro_regime.__main__ import current_state
-        return current_state(refresh=False)
+        return current_state(refresh=False, as_of=as_of)
     except Exception as e:
         return {"fehler": f"{type(e).__name__}: {e}"[:200]}
 
@@ -147,7 +147,11 @@ def scorecard_block(as_of: pd.Timestamp) -> tuple[dict, dict]:
         node["veto_short"] = bool(sc["veto_short"].loc[day, land]) if pd.notna(cot) else False
         out[panels.LAND_CCY[land]] = node
     test = json.loads(TEST_FILE.read_text(encoding="utf-8")) if TEST_FILE.exists() else None
-    return {"tag": day.date().isoformat(), "waehrungen": out, "test": test,
+    corr = overlap.factor_corr(sc, factors.FACTORS)
+    indep = {"korrelation": {a: {b: (None if pd.isna(corr.at[a, b]) else round(float(corr.at[a, b]), 2))
+                                 for b in corr.columns} for a in corr.index},
+             "n_eff_faktoren": overlap.score_n_eff(corr), "faktoren": len(factors.FACTORS)}
+    return {"tag": day.date().isoformat(), "waehrungen": out, "test": test, "unabhaengigkeit": indep,
             "einsatz": "Kontext, kein Richtungsgeber (Backtest IS/OOS ohne Edge)" if test else "ungetestet"}, out
 
 
@@ -161,6 +165,15 @@ def pair_block(market: str, cards: dict) -> dict | None:
     vl, vs = b["veto_long"] or q["veto_short"], b["veto_short"] or q["veto_long"]
     return {"diff": diff, "faktoren": diffs, "veto_long": vl, "veto_short": vs,
             "gates": gates.scorecard_view(diffs, vl, vs)}
+
+
+def ledger_block(as_of: pd.Timestamp) -> dict:
+    """Faellige Aussagen auswerten, dann Trefferquote je Art (Stand vor dem heutigen Anhaengen)."""
+    try:
+        done = ledger.evaluate(geo_framework.history(), as_of)
+        return {"neu_ausgewertet": done, **ledger.summary()}
+    except Exception as e:
+        return {"fehler": f"{type(e).__name__}: {e}"[:200]}
 
 
 def geo_block(macro_w: pd.DataFrame, as_of: pd.Timestamp) -> dict:
@@ -239,12 +252,19 @@ def build(as_of: pd.Timestamp | None = None, with_filters: bool = True) -> dict:
                 pair_views[m] = view
         mk[m] = node
     idea_list = risk.ideas(pair_views, vols)
+    corr = pd.DataFrame(score_sheet["unabhaengigkeit"]["korrelation"]).astype(float)
+    for i in idea_list:
+        i["gruende"] = overlap.reasons(pair_views[i["markt"]]["faktoren"], i["seite"], corr)
+    usd = dollar_factor.usd_factor(prices)
+    decomp = dollar_factor.decompose(prices, usd)
+    dollar = {"fenster_tage": dollar_factor.WINDOW, "zerlegung": decomp,
+              "ideen": dollar_factor.idea_bundle(prices, idea_list, decomp)}
 
     sheet = {
         "stand": as_of.date().isoformat(),
         "erzeugt": pd.Timestamp.now().isoformat(timespec="seconds"),
         "zustand": state_block(macro_w, mkt_w, as_of),
-        "regime": regime_block(),
+        "regime": regime_block(as_of),
         "filter": filter_block(macro_raw, as_of) if with_filters else {},
         "scorecard": score_sheet,
         "taktisch": {"fed": tactical.fed(mkt_w, macro_w, as_of), "notenbanken": tactical.other_pricing(macro_w),
@@ -257,8 +277,14 @@ def build(as_of: pd.Timestamp | None = None, with_filters: bool = True) -> dict:
         "maerkte": mk,
         "kalender": calendar_block(as_of),
         "geopolitik": geo_block(macro_w, as_of),
+        "dollar": dollar,
+        "ledger": ledger_block(as_of),
     }
     sheet["datenluecken"] = gaps(sheet, as_of)
+    viol = manifest.asof_violations(sheet, as_of)
+    sheet["asof_pruefung"] = {"ok": not viol, "verstoesse": viol[:20]}
+    if viol:
+        sheet["datenluecken"].append(f"As-of-Prüfung: {len(viol)} Werte nach dem Stichtag, z. B. {viol[0]}")
     sheet["register"] = flatten({k: v for k, v in sheet.items() if k != "register"})
     return sheet
 

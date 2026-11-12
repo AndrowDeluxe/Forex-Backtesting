@@ -25,7 +25,8 @@ def wide(long: pd.DataFrame) -> pd.DataFrame:
 
 
 def series(w: pd.DataFrame, key: str) -> pd.Series:
-    return w[key].dropna() if key in w else pd.Series(dtype=float)
+    # leere Reihe mit Datumsindex: Vergleiche wie s.index <= Tag duerfen nicht scheitern (--as-of vor 30.10.)
+    return w[key].dropna() if key in w else pd.Series(dtype=float, index=pd.DatetimeIndex([]))
 
 
 def change(s: pd.Series, n: int) -> float | None:

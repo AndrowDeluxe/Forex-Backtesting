@@ -12,7 +12,7 @@ import sys
 
 import pandas as pd
 
-from . import fact_sheet, render
+from . import fact_sheet, ledger, manifest, render
 
 
 def main() -> int:
@@ -23,6 +23,10 @@ def main() -> int:
     sys.stdout.reconfigure(encoding="utf-8")
     sheet = fact_sheet.build(pd.Timestamp(args.as_of) if args.as_of else None)
     j, m = fact_sheet.write(sheet, render.markdown(sheet))
+    if not args.as_of or pd.Timestamp(args.as_of).normalize() == pd.Timestamp.today().normalize():
+        n = ledger.append(sheet)  # nur Laeufe am Tag selbst: rueckwirkende Prognosen waeren keine
+        print(f"Ledger: {n} neue Aussagen")
+    manifest.write(manifest.record(sheet))
     print(f"Fact Sheet {sheet['stand']}: Zustand {sheet['zustand']['state']}, {len(sheet['register'])} Zahlen\n{j}\n{m}")
     if args.notion:
         from fusion_lab.notion.sync_fact_sheet import sync

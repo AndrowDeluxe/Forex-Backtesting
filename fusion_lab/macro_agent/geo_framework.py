@@ -345,6 +345,10 @@ def sheet_block(macro_w: pd.DataFrame, as_of: pd.Timestamp) -> dict:
                        "assets": {label(a): {"heute": _r(sub.at[a, "wirkung_heute"]), "oos": _r(sub.at[a, "wirkung_oos"]),
                                              "status": sub.at[a, "status"]} for a in SHOW if a in sub.index}}
     season = json.loads(SEASON_FILE.read_text(encoding="utf-8")) if SEASON_FILE.exists() else None
+    if season and pd.Timestamp(season.get("stand", "2100-01-01")) > as_of:
+        season = None  # Handdatei kennt nur den neuesten Stand
+    er = earnings.load()
+    mega = er.get("werte", []) if er and pd.Timestamp(er["stand"][:10]) <= as_of else []  # nur Lauf bis Stichtag
     return {
         "realzins": real_rates(macro_w),
         "zinsregime": current_regime(daily, as_of),
@@ -355,5 +359,5 @@ def sheet_block(macro_w: pd.DataFrame, as_of: pd.Timestamp) -> dict:
         "news_stand": news.get("datum"),
         "themen": theme_cards(expo, news),
         "exposure": matrix,
-        "earnings": {"megacaps": earnings.load().get("werte", []), "saison": season},
+        "earnings": {"megacaps": mega, "saison": season},
     }

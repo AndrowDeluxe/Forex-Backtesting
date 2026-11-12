@@ -93,6 +93,14 @@ def _scorecard(sc: dict) -> list[str]:
         if oos:
             line += f"; OOS 2017–05/2026 Sharpe {fmt(oos['sharpe'])}, t {fmt(oos['t'])}"
         lines += ["", line + f". Einsatz: {sc['einsatz']}."]
+    ind = sc.get("unabhaengigkeit")
+    if ind:
+        corr = ind["korrelation"]
+        pairs = sorted(((a, b, corr[a][b]) for i, a in enumerate(FACTORS) for b in FACTORS[i + 1:]
+                        if corr.get(a, {}).get(b) is not None), key=lambda x: -abs(x[2]))[:3]
+        lines += ["", f"**Unabhängigkeit:** {ind['faktoren']} Faktoren = {fmt(ind['n_eff_faktoren'])} unabhängige "
+                  "(Korrelation der z-Werte an Monatsenden). Stärkste Überschneidungen: "
+                  + ", ".join(f"{FACTOR_LABEL[a]}–{FACTOR_LABEL[b]} {fmt(c)}" for a, b, c in pairs) + "."]
     return lines + [""]
 
 
@@ -140,12 +148,15 @@ def _markets(mk: dict) -> list[str]:
 
 
 def _risk(rk: dict) -> list[str]:
-    rows = [[i["markt"], i["seite"], fmt(i["diff"]), fmt(i["vol_pct"]), fmt(i["groesse_rel"])] for i in rk["ideen"]]
+    rows = [[i["markt"], i["seite"], fmt(i["diff"]), fmt(i["vol_pct"]), fmt(i["groesse_rel"]),
+             f"{i['gruende']['anzahl']} → {fmt(i['gruende']['n_eff'])}" if i.get("gruende") else "–"]
+            for i in rk["ideen"]]
     b = rk["buendel"]
     net = ", ".join(f"{c} {fmt(v, 2)}" for c, v in b["netto"].items()) or "–"
     over = ", ".join(f"{c} {fmt(v, 2)}" for c, v in b["ueber_deckel"].items()) or "keine"
     return [f"## 7. Risiko-Budget (Ideen ab Score-Differenz {fmt(rk['schwelle_diff'])}, ohne Veto)", "",
-            *(_table(["Markt", "Seite", "Score-Diff", "Vol 20T %", "Größe rel."], rows) if rows else ["keine"]), "",
+            *(_table(["Markt", "Seite", "Score-Diff", "Vol 20T %", "Größe rel.", "Gründe → unabhängig"], rows)
+              if rows else ["keine"]), "",
             f"Netto-Exposure je Währung (Einheiten): {net}",
             f"Über dem Deckel {fmt(b['deckel'], 1)}: {over} · Haupttreiber: {b['haupttreiber'] or '–'}", ""]
 
@@ -279,14 +290,43 @@ def _geo(geo: dict | None) -> list[str]:
     return lines
 
 
+def _dollar(d: dict | None) -> list[str]:
+    if not d:
+        return []
+    rows = [[m, fmt(v["beta"]), fmt(v["dollar_anteil_pct"], 0)] for m, v in d["zerlegung"].items() if v]
+    return [f"**Dollar-Faktor** (einmal gerechnet: Ø USD gegen 7 Währungen, {d['fenster_tage']} Tage): "
+            + (f"{d['ideen']['ideen']} Ideen = {fmt(d['ideen']['n_eff'], 1)} unabhängige Wetten, Dollar-Netto "
+             f"{_pct(d['ideen']['dollar_netto'])} Einheiten." if d["ideen"]["ideen"] else "keine Ideen."), "",
+            *_table(["Markt", "Beta zum Dollar", "Dollar-Anteil an der Schwankung %"], rows), ""]
+
+
+def _ledger(lg: dict | None) -> list[str]:
+    head = ["## 13. Forecast-Ledger (vorwärts geprüfte Aussagen)", ""]
+    if not lg or "fehler" in lg:
+        return head + [f"n.v. ({(lg or {}).get('fehler', 'kein Block')})", ""]
+    lines = head + [f"{lg['eintraege']} Aussagen im Ledger, {lg['ausgewertet']} ausgewertet "
+                    f"({lg['neu_ausgewertet']} in diesem Lauf)."]
+    if lg["je_art"]:
+        lines += ["", *_table(["Art", "n", "Trefferquote %", "Ø Ergebnis"],
+                              [[k, str(v["n"]), fmt(v["trefferquote_pct"], 0), fmt(v["mittel"], 3)]
+                               for k, v in lg["je_art"].items()])]
+    else:
+        lines += ["Noch nichts fällig (Horizont 5 und 20 Handelstage)."]
+    return lines + [""]
+
+
 def markdown(sheet: dict) -> str:
     lines = [f"# Makro Fact Sheet – Stand {sheet['stand']}", "",
              f"Erzeugt {sheet['erzeugt']} · {len(sheet['register'])} Zahlen im Register · "
              "Quelle: fusion_lab/macro_data + Dukascopy", ""]
     lines += _state(sheet["zustand"]) + _regime(sheet) + _scorecard(sheet["scorecard"])
     lines += _tactical(sheet["taktisch"]) + _geo(sheet.get("geopolitik")) + _markets(sheet["maerkte"])
-    lines += _risk(sheet["risiko"])
+    lines += _risk(sheet["risiko"]) + _dollar(sheet.get("dollar"))
     lines += _profiles(sheet["laender"]) + _positioning(sheet["positionierung"]) + _g8(sheet)
     lines += _calendar(sheet["kalender"])
     lines += ["## 12. Datenlücken", "", *[f"- {g}" for g in sheet["datenluecken"]], ""]
+    lines += _ledger(sheet.get("ledger"))
+    ap = sheet.get("asof_pruefung")
+    if ap:
+        lines += [f"As-of-Prüfung: {'bestanden' if ap['ok'] else 'VERSTOSS: ' + '; '.join(ap['verstoesse'][:3])}.", ""]
     return "\n".join(lines)

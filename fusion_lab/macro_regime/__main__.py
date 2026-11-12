@@ -42,11 +42,15 @@ LENS_TITLE = {"joint": "Gemeinsame Sicht (bevorzugt)", "change": "Beschleunigt v
               "signs": "Nur Vorzeichen"}
 
 
-def current_state(refresh: bool) -> dict:
-    """Zustand nach dem letzten Print (gilt ab der naechsten Sitzung)."""
+def current_state(refresh: bool, as_of: pd.Timestamp | None = None) -> dict:
+    """Zustand nach dem letzten Print (gilt ab der naechsten Sitzung); as_of = nur Prints, die bis
+    dahin veroeffentlicht waren (Makro-Agent --as-of, 12.11.2026)."""
     state = {}
     for kind in ("growth", "inflation"):
-        p = m.classify(m.prints(kind, refresh)).iloc[-1]
+        c = m.classify(m.prints(kind, refresh))
+        if as_of is not None:
+            c = c[c["release"] <= as_of]
+        p = c.iloc[-1]
         state[kind] = {"release": p["release"].date().isoformat(), "period": p["period"].date().isoformat(),
                        "yoy": round(p["yoy"], 2), "yoy_prev_period": round(p["yoy_prev_period"], 2),
                        "up": bool(p["up"]), "accel": bool(p["accel"])}

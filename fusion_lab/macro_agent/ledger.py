@@ -55,6 +55,14 @@ def records(sheet: dict) -> list[dict]:
             out.append({"erstellt": day, "art": "thema", "objekt": card["thema"], "richtung": direction,
                         "messgroesse": col, "einheit": unit, "horizont": h, "faellig": _due(day, h),
                         "begruendung": f"{card['lage']}: {card['kernaussage'][:160]}"})
+    ket = sheet.get("ketten")
+    for c in ket if isinstance(ket, list) else []:
+        if c["status"] != "aktiv":
+            continue
+        for asset, sign in c["ledger_assets"].items():
+            out.append({"erstellt": day, "art": "kette", "objekt": f"{c['id']}:{asset}", "richtung": sign,
+                        "messgroesse": MARKET_MEASURE.get(asset, asset), "einheit": "pct", "horizont": HORIZONS[1],
+                        "faellig": _due(day, HORIZONS[1]), "begruendung": c["name"]})
     return out
 
 

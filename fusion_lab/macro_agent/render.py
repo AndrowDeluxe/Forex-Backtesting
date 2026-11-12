@@ -82,7 +82,7 @@ def _scorecard(sc: dict) -> list[str]:
     lines = [f"## 3. Scorecard (strategisch, 1–3 Monate, Stand {sc['tag']})", "",
              *_table(["Währung", *[FACTOR_LABEL[f] for f in FACTORS], "Score", "Rang", "COT 3J", "Veto"], rows), "",
              "Faktoren als Querschnitts-z-Werte, gleich gewichtet; Veto = Positionierung überlaufen (COT ≥ 90 / ≤ 10).",
-             "COT 3J hier = Legacy Non-Commercials (wie im Backtest, Historie ab 2000). Abschnitt 8 zeigt nur "
+             "COT 3J hier = Legacy Non-Commercials (wie im Backtest, Historie ab 2000). Abschnitt 10 zeigt nur "
              "Leveraged Funds; beide können stark abweichen (andere Gruppen, z. B. Asset Manager)."]
     t = sc.get("test")
     if t:
@@ -141,7 +141,7 @@ def _markets(mk: dict) -> list[str]:
         digits = 5 if st["close"] < 20 else 2
         rows.append([m, fmt(st["close"], digits), fmt(st["ret_5d_pct"]), fmt(mk[m]["vol_20d_pct"]), diff,
                      _gate_cell(g and g["long"]), _gate_cell(g and g["short"])])
-    return ["## 6. Märkte und Gates (Ansicht der Scorecard; M bewertet der Agent)", "",
+    return ["## 7. Märkte und Gates (Ansicht der Scorecard; M bewertet der Agent)", "",
             *_table(["Markt", "Kurs", "1W %", "Vol 20T %", "Score Basis−Quote", "long", "short"], rows), "",
             "R = Carry + Zins-Momentum, P = Preis-Momentum, F = COT-Veto. Gold: R = US-Realzins, "
             "P = Kurs/SMA20, F = Managed Money.", ""]
@@ -154,7 +154,7 @@ def _risk(rk: dict) -> list[str]:
     b = rk["buendel"]
     net = ", ".join(f"{c} {fmt(v, 2)}" for c, v in b["netto"].items()) or "–"
     over = ", ".join(f"{c} {fmt(v, 2)}" for c, v in b["ueber_deckel"].items()) or "keine"
-    return [f"## 7. Risiko-Budget (Ideen ab Score-Differenz {fmt(rk['schwelle_diff'])}, ohne Veto)", "",
+    return [f"## 8. Risiko-Budget (Ideen ab Score-Differenz {fmt(rk['schwelle_diff'])}, ohne Veto)", "",
             *(_table(["Markt", "Seite", "Score-Diff", "Vol 20T %", "Größe rel.", "Gründe → unabhängig"], rows)
               if rows else ["keine"]), "",
             f"Netto-Exposure je Währung (Einheiten): {net}",
@@ -170,22 +170,22 @@ def _profiles(laender: dict) -> list[str]:
             v = None if not node else node.get(field)
             cells.append(fmt(v, digits) + ("*" if node and node.get("stale") else ""))
         rows.append(cells)
-    return ["## 8. Länderprofile", "", *_table(["", *G8], rows), "",
+    return ["## 9. Länderprofile", "", *_table(["", *G8], rows), "",
             "\\* = älter als erlaubt (siehe Datenlücken). Leitzins/Kern-Inflation teils aus Kalender bzw. SNB.", ""]
 
 
 def _positioning(pos: dict) -> list[str]:
     rows = [[k, fmt(v["net"], 0), fmt(v["chg_1w"], 0), fmt(v["cot_26w"], 1), fmt(v["cot_3y"], 1), v["date"]]
             for k, v in pos.items() if v]
-    return ["## 9. Positionierung (CFTC TFF, Leveraged Funds; Gold Managed Money)", "",
+    return ["## 10. Positionierung (CFTC TFF, Leveraged Funds; Gold Managed Money)", "",
             *_table(["", "Netto", "Δ 1W", "COT 26W", "COT 3J", "veröffentlicht"], rows), ""]
 
 
 def _g8(sheet: dict) -> list[str]:
     if not sheet["g8"]:
-        return ["## 10. G8-Stärke (Vergleich mit SMT)", "", f"n.v. ({sheet['g8_stand']})", ""]
+        return ["## 11. G8-Stärke (Vergleich mit SMT)", "", f"n.v. ({sheet['g8_stand']})", ""]
     ranked = sorted(sheet["g8"].items(), key=lambda kv: -kv[1])
-    return [f"## 10. G8-Stärke (Nachbau, Vergleich mit SMT, Stand {sheet['g8_stand']})", "",
+    return [f"## 11. G8-Stärke (Nachbau, Vergleich mit SMT, Stand {sheet['g8_stand']})", "",
             *_table(["Rang", "Währung", "Score"], [[str(i + 1), c, fmt(v)] for i, (c, v) in enumerate(ranked)]), ""]
 
 
@@ -194,7 +194,7 @@ def _calendar(k: dict) -> list[str]:
           for e in k["naechste_7t"]]
     su = [[e["zeit_utc"], e["waehrung"], e["titel"], fmt(e["konsens"]), fmt(e["ist"]), fmt(e["ueberraschung"])]
           for e in k["ueberraschungen_14t"]]
-    return [f"## 11. Kalender (Referenz {k.get('referenz_utc', '–')} UTC)", "", "**Nächste 7 Tage (High)**", "",
+    return [f"## 12. Kalender (Referenz {k.get('referenz_utc', '–')} UTC)", "", "**Nächste 7 Tage (High)**", "",
             *(_table(["Zeit UTC", "Währung", "Termin", "Konsens", "Vorwert"], up) if up else ["keine"]), "",
             "**Überraschungen letzte 14 Tage (High, Ist − Konsens)**", "",
             *(_table(["Zeit UTC", "Währung", "Termin", "Konsens", "Ist", "Überraschung"], su) if su else ["keine"]), ""]
@@ -301,7 +301,7 @@ def _dollar(d: dict | None) -> list[str]:
 
 
 def _ledger(lg: dict | None) -> list[str]:
-    head = ["## 13. Forecast-Ledger (vorwärts geprüfte Aussagen)", ""]
+    head = ["## 14. Forecast-Ledger (vorwärts geprüfte Aussagen)", ""]
     if not lg or "fehler" in lg:
         return head + [f"n.v. ({(lg or {}).get('fehler', 'kein Block')})", ""]
     lines = head + [f"{lg['eintraege']} Aussagen im Ledger, {lg['ausgewertet']} ausgewertet "
@@ -315,16 +315,36 @@ def _ledger(lg: dict | None) -> list[str]:
     return lines + [""]
 
 
+MARK_STEP = {True: "✓", False: "✗", None: "–"}
+
+
+def _chains(ket) -> list[str]:
+    head = ["## 6. Wirkketten (Katalog, Status aus Live-Messwerten)", ""]
+    if not isinstance(ket, list):
+        return head + [f"n.v. ({(ket or {}).get('fehler', 'kein Block')})", ""]
+    order = {"aktiv": 0, "anlaufend": 1, "gestoppt": 2, "ruhend": 3}
+    rows = []
+    for c in sorted(ket, key=lambda c: order[c["status"]]):
+        steps = " → ".join(f"{MARK_STEP[s['erfuellt']]} {s['text']} [{s['wert']}]" for s in c["schritte"])
+        assets = ", ".join(f"{a} {d}" for a, d in c["assets"].items())
+        rows.append([f"**{c['status']}**", c["name"], steps, assets, c["beleg"]])
+    lines = head + _table(["Status", "Kette", "Schritte [Messwert]", "Wirkung, wenn sie läuft", "Beleg"], rows)
+    notes = [f"- {c['name']}: {c['hinweis']}" for c in ket if c["hinweis"] and c["status"] in ("aktiv", "anlaufend")]
+    return lines + ([""] + notes if notes else []) + ["", "Beleg = letzter Schritt in der Exposure-Matrix stabil; "
+                                                     "frühere Schritte sind Annahmen. Aktive Ketten gehen ins Ledger (20 T).", ""]
+
+
 def markdown(sheet: dict) -> str:
     lines = [f"# Makro Fact Sheet – Stand {sheet['stand']}", "",
              f"Erzeugt {sheet['erzeugt']} · {len(sheet['register'])} Zahlen im Register · "
              "Quelle: fusion_lab/macro_data + Dukascopy", ""]
     lines += _state(sheet["zustand"]) + _regime(sheet) + _scorecard(sheet["scorecard"])
-    lines += _tactical(sheet["taktisch"]) + _geo(sheet.get("geopolitik")) + _markets(sheet["maerkte"])
+    lines += _tactical(sheet["taktisch"]) + _geo(sheet.get("geopolitik")) + _chains(sheet.get("ketten"))
+    lines += _markets(sheet["maerkte"])
     lines += _risk(sheet["risiko"]) + _dollar(sheet.get("dollar"))
     lines += _profiles(sheet["laender"]) + _positioning(sheet["positionierung"]) + _g8(sheet)
     lines += _calendar(sheet["kalender"])
-    lines += ["## 12. Datenlücken", "", *[f"- {g}" for g in sheet["datenluecken"]], ""]
+    lines += ["## 13. Datenlücken", "", *[f"- {g}" for g in sheet["datenluecken"]], ""]
     lines += _ledger(sheet.get("ledger"))
     ap = sheet.get("asof_pruefung")
     if ap:

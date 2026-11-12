@@ -17,7 +17,7 @@ from fusion_lab.macro_data import calendar, calendar_values, store
 from fusion_lab.macro_data.__main__ import coverage
 from fusion_lab.macro_data.sources import G8
 
-from . import factors, geo_framework, ledger, manifest, panels, risk, tactical
+from . import chains, factors, geo_framework, ledger, manifest, panels, risk, tactical
 from .analytics import dollar_factor, gates, markets, overlap, profiles, state_machine
 
 OUT_DIR = Path(__file__).resolve().parents[1] / "data" / "macro_agent"
@@ -167,6 +167,14 @@ def pair_block(market: str, cards: dict) -> dict | None:
             "gates": gates.scorecard_view(diffs, vl, vs)}
 
 
+def chains_block(sheet: dict, macro_w: pd.DataFrame, as_of: pd.Timestamp) -> list | dict:
+    try:
+        m = chains.measures(geo_framework.history().loc[:as_of], macro_w, sheet)
+        return chains.evaluate(m, (sheet.get("geopolitik") or {}).get("exposure"))
+    except Exception as e:
+        return {"fehler": f"{type(e).__name__}: {e}"[:200]}
+
+
 def ledger_block(as_of: pd.Timestamp) -> dict:
     """Faellige Aussagen auswerten, dann Trefferquote je Art (Stand vor dem heutigen Anhaengen)."""
     try:
@@ -280,6 +288,7 @@ def build(as_of: pd.Timestamp | None = None, with_filters: bool = True) -> dict:
         "dollar": dollar,
         "ledger": ledger_block(as_of),
     }
+    sheet["ketten"] = chains_block(sheet, macro_w, as_of)
     sheet["datenluecken"] = gaps(sheet, as_of)
     viol = manifest.asof_violations(sheet, as_of)
     sheet["asof_pruefung"] = {"ok": not viol, "verstoesse": viol[:20]}

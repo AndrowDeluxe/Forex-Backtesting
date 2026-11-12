@@ -41,6 +41,8 @@ Idee mit genau diesen vier Feldern begründen.
 
 ### 2. Beispielketten (Stand 21.10.2026)
 
+Seit 12.11.2026 als programmierter Katalog mit Live-Status: [[makro-wirkketten-katalog]].
+
 | Kette | Läuft, sichtbar an | Stoppt bei |
 |---|---|---|
 | Öl + Inflation → BoC-Erwartung → CAD stärker | USD/CAD fällt, CAD-10Y steigt, SMT-CAD vorn, BoC-Pricing springt | Brent < 105 (Iran-Einigung), BoC hebt nicht oder signalisiert Ende |

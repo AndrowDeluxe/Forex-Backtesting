@@ -59,6 +59,15 @@ def geo_blocks(geo: dict | None) -> list[dict]:
     return out
 
 
+def chain_blocks(ket) -> list[dict]:
+    if not isinstance(ket, list):
+        return []
+    order = {"aktiv": 0, "anlaufend": 1, "gestoppt": 2, "ruhend": 3}
+    rows = [_cells([c["status"], c["name"], ", ".join(f"{a} {d}" for a, d in c["assets"].items()), c["beleg"]])
+            for c in sorted(ket, key=lambda c: order[c["status"]])]
+    return [_block("heading_2", "Wirkketten"), _table(["Status", "Kette", "Wirkung, wenn sie läuft", "Beleg"], rows)]
+
+
 def build_blocks(sheet: dict) -> list[dict]:
     z = sheet["zustand"]
     blocks = [_block("callout", f"Zustand {z['state']} (vor einer Woche {z['state_week_ago']}) · Stand {sheet['stand']} "
@@ -99,6 +108,7 @@ def build_blocks(sheet: dict) -> list[dict]:
                           for c, v in tk["rohstoffe"].items() if v])]
 
     blocks += geo_blocks(sheet.get("geopolitik"))
+    blocks += chain_blocks(sheet.get("ketten"))
 
     rows = []
     for m in MARKETS:
@@ -117,6 +127,10 @@ def build_blocks(sheet: dict) -> list[dict]:
                           for i in rk["ideen"]] or ["keine Idee über der Schwelle"]),
                _block("paragraph", "Netto je Währung: " + (", ".join(f"{c} {fmt(v)}" for c, v in b["netto"].items()) or "–")
                       + f" · über Deckel {fmt(b['deckel'], 1)}: " + (", ".join(b["ueber_deckel"]) or "keine"))]
+    d = sheet.get("dollar")
+    if d and d["ideen"]["ideen"]:
+        blocks += [_block("paragraph", f"Dollar-Faktor: {d['ideen']['ideen']} Ideen = {fmt(d['ideen']['n_eff'], 1)} "
+                                       f"unabhängige Wetten, Dollar-Netto {fmt(d['ideen']['dollar_netto'], 1)} Einheiten")]
 
     rows = []
     for label, q, field, digits in PROFILE_ROWS:
@@ -128,6 +142,12 @@ def build_blocks(sheet: dict) -> list[dict]:
                *_bullets([f"{e['zeit_utc']} UTC {e['waehrung']} {e['titel']} (Konsens {e['konsens'] or '–'})"
                           for e in k["naechste_7t"]] or ["keine"]),
                _block("heading_2", "Datenlücken"), *_bullets(sheet["datenluecken"])]
+    lg = sheet.get("ledger") or {}
+    if "fehler" not in lg and lg:
+        blocks += [_block("heading_2", "Forecast-Ledger"),
+                   *_bullets([f"{lg['eintraege']} Aussagen, {lg['ausgewertet']} ausgewertet"]
+                             + [f"{k}: n {v['n']}, Treffer {fmt(v['trefferquote_pct'], 0)} %, Ø {fmt(v['mittel'], 3)}"
+                                for k, v in lg["je_art"].items()])]
     return blocks
 
 

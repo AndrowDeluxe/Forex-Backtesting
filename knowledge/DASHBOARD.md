@@ -647,6 +647,12 @@ Statustabellen-Zeilen, neu über der Schwelle: `G8-Notion-Sync`
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
 
+- (12.11.) **TradingAgents (TauricResearch) getestet: Workflow-Bausteine für den Makro-Agenten**
+  (Vorschlag, nicht entschieden). Als Signalquelle ungeeignet (Aktien-Fokus, nicht rückwirkend
+  testbar). Kandidaten: Entscheidungs-Log mit automatischer Abrechnung + Lektion (Point-in-time),
+  Pflicht-Gegenposition vor dem Gewichten, zwei Modellstufen, Trade-Tabelle als JSON-Schema.
+  [[tradingagents-tauric]]
+
 - (10.11.) **CRT (Tim) und COT-Fluss (Dennis) als Bausteine geparkt** (Nutzerentscheid): allein ohne
   Edge, aber evtl. in anderem Kontext nutzbar. CRT als Einstiegs-Timing an HTF-/Makro-Levels,
   COT-Fluss als Positionierungs-Schicht. Code: `fusion_lab/patterns/crt.py`,
@@ -669,9 +675,9 @@ Statustabellen-Zeilen, neu über der Schwelle: `G8-Notion-Sync`
   „nicht in überfüllten Carry-Trade“. **A3 verworfen:** Überraschung wird in der 1. Stunde eingepreist
   (+14–20 bp), danach leichter Rücklauf statt Drift. **11.11. Filter:** B5/B8 aus der Filter-Matrix
   übernommen (B5 allein instabil, B8 n zu klein); B6 Rohstoff-Veto auf C2 in allen Zellen „mit“ > „gegen“,
-  OOS n 47 → Kandidat für C2-Stufe 2, ebenso Carry-Veto auf C2 (OOS +0,39 R, t 2,2). B4 gemessen: Stapelung
-  fast nur Gold/USD, W38/39 bis 22 Gold-Shorts je Konto (alter CTNL-Fehler), seit W40 max. 2–4 → Gold-Deckel
-  je Konto wäre ein Live-Eingriff, offen für Nutzerentscheid.
+  OOS n 47; beide Vetos sind in der C2-Filter-Matrix (`c2_veto_combos.py`, 11.11.), Rohstoff-Veto steckt im
+  eingefrorenen Kandidaten. B4 gemessen: Stapelung fast nur Gold/USD, W38/39 bis 22 Gold-Shorts je Konto
+  (alter CTNL-Fehler), seit W40 max. 2–4. **Gold-Deckel je Konto verworfen (Nutzer 12.11.)**, keine Bridge-Änderung.
 
 - (02.11.) **Profitables LTF-/Scalping-Edge aus dem eigenen Trading** (Nutzerwunsch).
   **Konkret seit 02.11.:** Nutzer will die Daily-Continuation (Typ C) als Validierung für einen

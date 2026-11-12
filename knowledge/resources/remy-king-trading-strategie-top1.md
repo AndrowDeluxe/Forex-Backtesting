@@ -280,7 +280,7 @@ Setups C2 und Typ R, 9 Märkte, IS 2016–21 / OOS 2022–24) – übernommen st
   der bekannte Sim-Filter-≠-Live-Gate-Fehler, inzwischen behoben). Seit W40 max. 2–4
   (TTP W42: 4), W45: 1. FX-Beine überschneiden sich kaum. → Ein Deckel wäre heute ein
   **Gold-Deckel je Konto** (z. B. max. 2 gleichgerichtete Gold-Positionen über alle Beine);
-  Eingriff in Live-Bridges = Nutzerentscheid, nicht umgesetzt.
+  **Verworfen (Nutzer 12.11.2026)**, nicht umgesetzt.
 - **B5 2J-Differenz-Veto** (Matrix M1 Zins-Momentum): C2 „mit“ IS +0,39 R (t 2,8), OOS nur
   +0,06; „gegen“ OOS +0,32 → allein **nicht stabil**. Trägt nur zusammen mit der
   Regime-Matrix (C2 + F1 + F3, OOS +0,50 R, siehe Memory `c2_zins_momentum_regime_filter.md`).
@@ -307,6 +307,8 @@ Setups C2 und Typ R, 9 Märkte, IS 2016–21 / OOS 2022–24) – übernommen st
 10.11.2026: A1 verworfen, A2 nur als Veto-/Crowding-Schicht, A3 verworfen.
 11.11.2026: B4 gemessen (Gold-Stapelung, Deckel = Nutzerentscheid), B5/B8 aus der
 Filter-Matrix übernommen, B6 als C2-Veto-Kandidat; Carry-Veto auf C2 der stärkste Fund.
+12.11.2026: Gold-Deckel verworfen (Nutzer). Carry- und Rohstoff-Veto liefen schon am 11.11. in der
+C2-Filter-Matrix (`htf_daily_trade/c2_veto_combos.py`), Rohstoff-Veto im eingefrorenen Kandidaten.
 Ursprüngliche Planung (09.11.2026): Die Reihenfolge, wenn der Nutzer zustimmt:
 zuerst 4 (Exposure-Deckel, ohne Test machbar), dann 1/2/5 (warten auf den
 2J-Loader), dann 9 (FVG, mit vorhandenen Daten sofort testbar).

@@ -9,6 +9,11 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-12** [Research / Remy-King] **Gold-Deckel je Konto (B4) verworfen** (Nutzerentscheid), keine Bridge-Änderung.
+  Carry- und Rohstoff-Veto für die C2-Filter-Matrix: waren schon am 11.11. in `htf_daily_trade/c2_veto_combos.py`
+  getestet (Rohstoff-Veto im eingefrorenen Kandidaten), nichts neu zu bauen. Handoff `2026-11-11_remy-king-filter.md`
+  abgearbeitet und gelöscht.
+
 - **2026-11-11** [Dachprojekt / Makro-Agent] **Makro-Agent v2: Scorecard, taktische Ebene, Risiko-Budget,
   Ersatzquellen** (Nutzerauftrag, Plan freigegeben). [[makro-scorecard-v2]]. Datenschicht: Leitzins aus
   Kalender-Entscheiden (BoE 4,00, RBA 4,85), US-2J tagesaktuell, 1J-Renditen, Kern-Inflation JP/CA/CH,

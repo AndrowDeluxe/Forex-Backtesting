@@ -9,6 +9,12 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-12** [Dachprojekt / Inventur A6] **H4-Edge Test 2: nur Einstieg 15:00 (NY 09:00)** (Nutzerauftrag). `htf_daily_trade/h4_ny15.py`,
+  Lock `h4_manip` jetzt 2.733 Versuche. Körper muss zurück, Sweep 2/3/4 Kerzen, Docht ≥ 0–70 %, Market/Limit 50 % Docht/Limit an
+  der Marke, 3 Stops, 5 Ziele, FX/Metalle getrennt, 21 Filter. Längerer Docht = besser (brutto stetig steigend). Beste FX-Variante
+  N4 W70 Limit an der Marke, Stop +0,5 ATR, 3R: IS +0,15 / OOS +0,12 R (t 1,4 / 0,9); mit MA 12/20 gegen IS +0,35 / OOS +0,22 R
+  (OOS n 85). Metalle OOS negativ. Nichts eingefroren. Keine Bot-Änderung.
+
 - **2026-11-12** [Dachprojekt / Inventur A6] **H4-Edge „Final H4 HTF Entry Model“: mechanischer Test ohne Edge** (Plan freigegeben).
   Phase 0 geklärt, Edge Card [[h4-htf-entry-edge-card]]. `htf_daily_trade/h4_manip.py` + `tests/test_h4_manip.py`, Lock `h4_manip`
   (IS 2016–21, OOS bis 11.05.2026, Tresor 6 Monate + Blind 2010–15 zu), 456 Varianten. Alle 24 Grundvarianten IS/OOS negativ

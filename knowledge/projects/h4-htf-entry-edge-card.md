@@ -1,6 +1,6 @@
 # Project: Edge Card „Final H4 HTF Entry Model“ (A6)
 
-**Status (12.11.2026):** Phase 0 abgeschlossen. **Mechanischer Test (456 Varianten): kein Edge, brutto ≈ 0.** Offen: was deine Auswahl von der Regel unterscheidet. Prozess: [[edge-card-workflow]]. Teil der Inventur (Strang 0) im
+**Status (12.11.2026):** Phase 0 abgeschlossen. **Test 1 (alle Kerzen): kein Edge. Test 2 (nur 15:00, Körper zurück, langer Docht): FX knapp positiv IS+OOS, nicht gesichert.** Prozess: [[edge-card-workflow]]. Teil der Inventur (Strang 0) im
 [[quant-diskretionaer-fusion]], Eintrag A6 in [[persoenlicher-tradingplan-validierung]]. Ziel (Nutzer 11.11.):
 Bestandteil eines Portfolios aus den händischen Edges, getrennt vom Quant-Portfolio.
 
@@ -81,4 +81,31 @@ H4 zur Broker-Serverzeit (NY+7), IS 2016–21, OOS 2022 bis 11.05.2026 (Tresor l
   Manipulation (welche Liquidität, Key Level, Session), Kontext oder Rückblick-Effekt beim händischen Backtest.
   Nächster sinnvoller Schritt nur mit Nutzerinput: Merkmale benennen, die deine 30 Beispiele von den übrigen
   ~155 Signalen 2023 trennen, oder echte H4-Trades aus dem Journal 2025 nehmen.
+
+## Test 2: nur Einstieg 15:00 deutsch (NY 09:00), Körper zurück, Docht-Länge, Limits (12.11.2026, Lock `h4_manip` jetzt 2.733 Versuche)
+
+Nutzerauftrag 12.11. `python -m htf_daily_trade.h4_ny15` → `h4_ny15_varianten.csv`, `h4_ny15_filter.csv`.
+Annahme: 15:00 Uhr = deutsche Zeit = 09:00 NY = Beginn der H4-Kerze 16 Uhr Serverzeit; Signal = H4-Kerze davor (NY 05–09).
+Signal: Docht über/unter Hoch/Tief der 2/3/4 Vorkerzen, **Körper (Open und Close) wieder innerhalb**. Docht-Anteil ≥ 0/40/50/
+60/70 %. Einstieg Market 15:00 | Limit 50 % Docht | Limit an der gesweepten Marke (24 h). Stop Docht | + 0,2 ATR | + 0,5 ATR.
+Ziel 2R | 3R | H4-Swing | Vortag/Vorwoche | Tagesende. 675 Grundvarianten × gesamt/FX/Metalle, Filter (21) für die Top 3 je Klasse.
+
+| Variante | Universum | IS n / Ø R / t | OOS n / Ø R / t | Jahre+ |
+|---|---|---|---|---|
+| N4 W70 Limit Marke, Stop +0,5 ATR, 3R | FX | 309 / +0,15 / 1,41 | 194 / +0,12 / 0,90 | 7/11 |
+| N4 W70 Market, Stop +0,5 ATR, 2R | FX | 407 / +0,10 / 1,45 | 257 / +0,06 / 0,65 | 5/11 |
+| bestes Metall (N4 W60 Limit Marke, H4-Swing) | Metalle | 224 / +0,04 / 0,31 | 162 / −0,14 / −1,20 | 5/11 |
+| + MA 12/20 gegen (Limit Marke, 3R) | FX | 146 / +0,35 / 2,22 | 85 / +0,22 / 1,07 | 10/11 |
+| + DXY 20T gegen (Limit Marke, 3R) | FX | 146 / +0,49 / 3,09 | 104 / +0,16 / 0,91 | 10/11 |
+| + Zins-Momentum gegen (Market, 3R) | FX | 204 / +0,30 / 2,35 | 117 / +0,20 / 1,17 | 9/11 |
+| + DXY gegen (Market, 2R; bestes IS, DSR 0,65) | FX | 195 / +0,42 / 3,92 | 129 / −0,05 / −0,40 | 7/11 |
+
+- **Docht-Länge wirkt wie vom Nutzer erwartet:** Ø R brutto steigt fast stetig mit dem Docht-Anteil (Quintile IS −0,11 →
+  −0,05 → −0,03 → +0,01 → +0,03; Mittel W00 −0,06 bis W70 0,00). Im OOS schwächer, aber unterstes Quintil klar am schlechtesten.
+- 4 gesweepte Kerzen leicht besser als 2. Weiterer Stop (+0,5 ATR) deutlich besser (Kosten je R sinken).
+  Market im Schnitt besser als Limit; die beste FX-Variante ist aber das Limit an der gesweepten Marke.
+- **FX vs. Metalle:** FX knapp positiv, Metalle im OOS durchgehend negativ.
+- **Filter:** wieder „gegen den Trend“ vorn (MA 12/20, DXY, Zins-Momentum, Realzins). Kombinationen mit IS t > 2 und
+  positivem OOS: MA 12/20 gegen, DXY gegen (Limit), Zins-Momentum gegen — OOS n 85–117, t ≤ 1,2, DSR ≤ 0,33 → nicht gesichert.
+- **Status:** Kein bestätigter Edge, aber erstmals FX-Varianten mit IS und OOS positiv. Nichts eingefroren.
 

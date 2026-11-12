@@ -57,8 +57,9 @@ passiert, was steht an.
    gemeinsam testen und vergleichen.
    **12.11.: H4-Edge gestartet** [[h4-htf-entry-edge-card]] -- Phase 0 geklärt (Sweep über ≥ 2 Vorkerzen, BIAS Daily/H4 +
    Trendfilter mit/gegen, 9 Märkte, BE nach neuer Struktur, 3 Ziele). **Mechanischer Test: kein Edge** (456 Varianten,
-   brutto ≈ 0, Zufall gleich gut; EURUSD 2023 185 Signale statt deiner 30). Wartet auf dich: was trennt deine 30 Beispiele
-   von den übrigen Signalen (Ort/Liquidität/Session) -- oder echte H4-Journal-Trades 2025 nehmen? Wartet auf deine
+   brutto ≈ 0, Zufall gleich gut). **Test 2 nur 15:00 (NY 09:00), Körper zurück, langer Docht:** FX knapp positiv
+   (beste IS +0,15 / OOS +0,12 R; mit MA 12/20 gegen +0,35 / +0,22 R, OOS n 85), Metalle negativ, nicht gesichert.
+   Wartet auf dich: Kandidat wählen/einfrieren oder weitere Merkmale (Ort/Liquidität) einbauen. Wartet auf deine
    Kandidatenwahl (≤ 9 Parameter). Parallel: Indikatoren einzeln durchgehen (Steckbriefe, dann Edge-Test je
    Indikator), Reihenfolge RSI → Multi Length → Stoch RSI → MACD → BB → NW → MA-Cross → Fractals → Pivots →
    Volumen → SVP/VRVP → Money Flow Profile → COT. H4 zurückgestellt.
@@ -90,6 +91,9 @@ Telegram. Der tägliche Digest zeigt nur die Fokus-Abschnitte.
 
 
 ### 🔍 Braucht deine Bestätigung
+
+- **H4 „15:00 Uhr“ = deutsche Zeit (NY 09:00)** angenommen (12.11.): Signal = H4-Kerze 11–15 Uhr deutsch, Einstieg zum Start
+  der Kerze 15–19 Uhr. Falls du 15:00 New York meintest, ändert sich der ganze Test. [[h4-htf-entry-edge-card]]
 
 
 - **Makro-Agent v2 (Scorecard): meine Annahmen beim Umbau** (11.11., nach deinem Auftrag „Banken-

@@ -76230,3 +76230,42 @@
 2026-11-12 17:57:33   "ctnl_kill_switch_active": false,
 2026-11-12 17:57:33   "n_trades": 27
 2026-11-12 17:57:33 }
+2026-11-12 17:57:34 [main 02fa0f22] FK Instant Funding Bot: Snapshot 2026-11-12 17:57
+2026-11-12 17:57:34  1 file changed, 27 insertions(+)
+2026-11-12 17:57:34 Nichts zu mergen (0 eingehende Commits) - Stash und Merge uebersprungen.
+2026-11-12 17:57:37 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-11-12 17:57:37    910cc27f..02fa0f22  main -> main
+2026-11-12 17:57:37 Commit + Push erfolgreich.
+2026-11-12 17:57:37 === FK-Instant-Funding-Task beendet ===
+2026-11-12 18:55:24 === FK-Instant-Funding-Task gestartet ===
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-11T01:00:00
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-12T17:00:00
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-11T01:00:00
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-12T17:00:00
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-12T17:00:00
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-12T17:00:00
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-11T01:00:00
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-12T17:00:00
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-11T01:00:00
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-12T18:00:00
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-12T18:00:00
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-12T18:00:00
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-12T18:00:00
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-12T13:00:00
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-12T18:00:00
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-12T13:00:00
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-12T13:00:00
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-12T13:00:00
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-12T13:00:00
+2026-11-12 19:01:59 INFO:DUKASCRIPT:current timestamp :2026-11-12T13:00:00
+2026-11-12 19:01:59 {
+2026-11-12 19:01:59   "date": "2026-11-12 17:55:25.257896",
+2026-11-12 19:01:59   "equity": 98546.77567371169,
+2026-11-12 19:01:59   "current_dd": -0.01453224326288316,
+2026-11-12 19:01:59   "consistency_ratio": 0.0,
+2026-11-12 19:01:59   "payout_safe": false,
+2026-11-12 19:01:59   "cum_profit": -1453.2243262883137,
+2026-11-12 19:01:59   "kill_switch_active": false,
+2026-11-12 19:01:59   "ctnl_kill_switch_active": false,
+2026-11-12 19:01:59   "n_trades": 27
+2026-11-12 19:01:59 }

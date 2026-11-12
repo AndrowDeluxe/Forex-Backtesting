@@ -17,7 +17,7 @@ from fusion_lab.macro_data import calendar, calendar_values, store
 from fusion_lab.macro_data.__main__ import coverage
 from fusion_lab.macro_data.sources import G8
 
-from . import factors, panels, risk, tactical
+from . import factors, geo_framework, panels, risk, tactical
 from .analytics import gates, markets, profiles, state_machine
 
 OUT_DIR = Path(__file__).resolve().parents[1] / "data" / "macro_agent"
@@ -163,6 +163,13 @@ def pair_block(market: str, cards: dict) -> dict | None:
             "gates": gates.scorecard_view(diffs, vl, vs)}
 
 
+def geo_block(macro_w: pd.DataFrame, as_of: pd.Timestamp) -> dict:
+    try:
+        return geo_framework.sheet_block(macro_w, as_of)
+    except Exception as e:  # Geopolitik darf das Fact Sheet nicht mitreissen
+        return {"fehler": f"{type(e).__name__}: {e}"[:200]}
+
+
 def gaps(sheet: dict, as_of: pd.Timestamp) -> list[str]:
     out = []
     for q, row in coverage(as_of).iterrows():
@@ -176,6 +183,14 @@ def gaps(sheet: dict, as_of: pd.Timestamp) -> list[str]:
     for name, f in sheet["filter"].items():
         if "fehler" in f:
             out.append(f"Filter {name}: {f['fehler']}")
+    geo = sheet.get("geopolitik", {})
+    if "fehler" in geo:
+        out.append(f"Geopolitik: {geo['fehler']}")
+    elif geo.get("news_stand") != sheet["stand"]:
+        out.append(f"News-Einordnung vom {geo.get('news_stand') or 'n.v.'} (nicht vom Stichtag)")
+    out.append("Europa-Gas (TTF) ohne freie Historie: nur Tageswert ab 12.11.2026, kein Exposure")
+    out.append("GDELT-Nachrichtenvolumen gesperrt (429); Intensitaet nur als Schlagzeilen-Zahl ab 12.11.2026")
+    out.append("Realzins ausser USA nur als Naeherung 2J minus Kern-Inflation (ex post)")
     out.append("Notenbank-Pricing ausser Fed nur als Naeherung 1J minus Leitzins (kein OIS)")
     out.append("COT-Veto ohne USD (Legacy-Historie kennt den Dollar-Index-Kontrakt nicht)")
     return out
@@ -241,6 +256,7 @@ def build(as_of: pd.Timestamp | None = None, with_filters: bool = True) -> dict:
         "g8_stand": g8_stand,
         "maerkte": mk,
         "kalender": calendar_block(as_of),
+        "geopolitik": geo_block(macro_w, as_of),
     }
     sheet["datenluecken"] = gaps(sheet, as_of)
     sheet["register"] = flatten({k: v for k, v in sheet.items() if k != "register"})

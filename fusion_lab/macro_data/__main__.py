@@ -10,7 +10,7 @@ import threading
 
 import pandas as pd
 
-from . import calendar, calendar_values, sources, store
+from . import calendar, calendar_values, earnings, geo, sources, store
 
 SOURCE_TIMEOUT_S = 300
 JOBS = {
@@ -33,6 +33,12 @@ JOBS = {
     "fed_futures": ("markets", sources.fetch_fed_futures),
     "maerkte": ("markets", sources.fetch_yf_markets),
     "fx": ("markets", sources.fetch_duka_fx),
+    # Geopolitik und News (v3): GPR ~10 Tage Verzug, Earnings als JSON. GDELT (geo.fetch_gdelt) sperrt
+    # unsere IP seit 12.11. dauerhaft (429 auch nach Pause) -> nicht im Tageslauf, Intensitaet ueber
+    # die Schlagzeilen-Zahl in news_digest.
+    "gpr": ("markets", geo.fetch_gpr),
+    "earnings": None,
+    "news": None,  # Schlagzeilen + Einordnung durch lokalen Claude Code (fusion_lab.macro_agent.news_digest)
 }
 # Soll je Land: fehlt oder ist alt -> Luecke im Abdeckungsbericht. Tage = erlaubtes Alter.
 # Datum = Periodenbeginn, darum grosszuegig: Q2 hat Datum 01.04. und ist im Oktober aktuell.
@@ -54,6 +60,14 @@ def run_job(name: str) -> dict:
         if done.returncode:
             raise RuntimeError(done.stderr.strip()[-300:])
         return {"ausgabe": done.stdout.strip().splitlines()[-1] if done.stdout.strip() else ""}
+    if name == "earnings":
+        return earnings.run()
+    if name == "news":
+        from fusion_lab.macro_agent import news_digest
+        r = news_digest.run()
+        if r.get("fehler"):
+            raise RuntimeError(r["fehler"])
+        return {"themen": len(r["einordnung"]), "treffer": sum(r["treffer"].values())}
     area, fetch = JOBS[name]
     df = fetch()
     return {"neu": store.append(area, df), "reihen": int(df["key"].nunique())}

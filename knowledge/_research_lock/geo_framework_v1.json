@@ -1,0 +1,14 @@
+{
+  "strategy": "geo_framework_v1",
+  "split": {
+    "is_start": "2007-01-01",
+    "is_end": "2016-12-31",
+    "oos_end": "2026-05-10",
+    "tresor_end": "2026-11-10"
+  },
+  "registered": "2026-11-12T00:57:37+00:00",
+  "trials": 1,
+  "frozen": null,
+  "unsealed": {},
+  "forward": null
+}

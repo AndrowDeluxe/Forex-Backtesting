@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from fusion_lab.macro_agent.analytics.markets import MARKETS
 from fusion_lab.macro_agent.factors import FACTORS
-from fusion_lab.macro_agent.render import FACTOR_LABEL, MARK, PROFILE_ROWS, fmt
+from fusion_lab.macro_agent.render import FACTOR_LABEL, MARK, PROFILE_ROWS, STATUS, _pct, fmt
 from fusion_lab.macro_data.sources import G8
 from fusion_lab.notion.client import Notion, date, load_ids, multi, rich, select, title
 from fusion_lab.notion.sync_regime import _block, _bullets, _rt, _table
@@ -25,6 +25,38 @@ def _gate_text(g: dict | None) -> str:
     if not g:
         return "–"
     return " ".join(f"{k}{MARK[g[k]]}" for k in ("R", "P", "F")) + f" {g['pass']}/{g['verfuegbar']}"
+
+
+def geo_blocks(geo: dict | None) -> list[dict]:
+    if not geo or "fehler" in geo:
+        return [_block("heading_2", "Geopolitik, News und Realzinsen"),
+                _block("paragraph", f"n.v. ({(geo or {}).get('fehler', 'kein Block')})")]
+    us = geo["realzins"]["us"]
+    od = geo["oel_durchgriff"]
+    out = [_block("heading_2", "Geopolitik, News und Realzinsen"),
+           *_bullets([f"US-Realzins 10J {fmt((us['real_10y'] or {}).get('wert'))} % "
+                      f"(Δ 1W {fmt((us['real_10y'] or {}).get('chg_5d_bp'), 1)} bp), Inflationserwartung 10J "
+                      f"{fmt((us['breakeven_10y'] or {}).get('wert'))} %, 5J in 5J {fmt((us['fwd_5y5y'] or {}).get('wert'))} %",
+                      f"Öl-Durchgriff: Brent +10 % → US-2J {_pct(od['us_2y']['heute']['bp'])} bp (früher "
+                      f"{_pct(od['us_2y']['is']['bp'])}), Gold {_pct(od['gold_heute_pct'])} % → {od['kanal']}"])]
+    for c in geo["themen"]:
+        eff = [e for e in c["einfluss"] if e["status"] != "schwach" or e["asset"] == "Gold"]
+        txt = ", ".join(f"{e['asset']} {_pct(e['wirkung_heute'])} % ({STATUS[e['status']]})" for e in eff) or "kein belastbarer Effekt"
+        out += [_block("heading_3", f"{c['name']}: {c['lage']}"),
+                _block("paragraph", (c["kernaussage"] or "–")[:1800]),
+                _block("paragraph", f"Weg (Annahme): {c['weg']}. Je {c['treiber']}: {txt}"[:1900])]
+    rows = []
+    drivers = list(geo["exposure"])
+    for a in next(iter(geo["exposure"].values()))["assets"]:
+        cells = [a]
+        for d in drivers:
+            x = geo["exposure"][d]["assets"].get(a)
+            cells.append("–" if not x else f"{_pct(x['heute'])} / {_pct(x['oos'])}"
+                         + ("" if x["status"] == "belegt" else f" ({STATUS[x['status']]})"))
+        rows.append(_cells(cells))
+    out += [_block("heading_3", "Exposure-Matrix (% je Schock: letzte 26 Wochen / 2017–26)"),
+            _table(["Asset", *[geo["exposure"][d]["schock"] for d in drivers]], rows)]
+    return out
 
 
 def build_blocks(sheet: dict) -> list[dict]:
@@ -65,6 +97,8 @@ def build_blocks(sheet: dict) -> list[dict]:
                *_bullets([f"{c}: {v['rohstoff']} {fmt(v['kurs'])}, 60T {fmt(v['ret_60d_pct'])} % ({v['trend']})"
                           + (f", Schwelle {fmt(v['schwelle'], 0)} ({fmt(v['abstand_pct'])} %)" if "schwelle" in v else "")
                           for c, v in tk["rohstoffe"].items() if v])]
+
+    blocks += geo_blocks(sheet.get("geopolitik"))
 
     rows = []
     for m in MARKETS:

@@ -1,5 +1,5 @@
 """Lesbare Fassung des Fact Sheets v2 (Markdown): Zustand → Regime → Scorecard → taktische Ebene →
-Märkte/Gates → Risiko-Budget → Länderprofile → Positionierung → G8 → Kalender → Datenlücken.
+Geopolitik/Realzinsen → Märkte/Gates → Risiko-Budget → Länderprofile → Positionierung → G8 → Kalender → Datenlücken.
 
 Jede Zahl kommt unveraendert aus dem Fact Sheet, nur formatiert (deutsches Komma);
 tests/test_macro_agent.py prueft, dass jede Tabellenzahl im Zahlenregister steht.
@@ -133,7 +133,7 @@ def _markets(mk: dict) -> list[str]:
         digits = 5 if st["close"] < 20 else 2
         rows.append([m, fmt(st["close"], digits), fmt(st["ret_5d_pct"]), fmt(mk[m]["vol_20d_pct"]), diff,
                      _gate_cell(g and g["long"]), _gate_cell(g and g["short"])])
-    return ["## 5. Märkte und Gates (Ansicht der Scorecard; M bewertet der Agent)", "",
+    return ["## 6. Märkte und Gates (Ansicht der Scorecard; M bewertet der Agent)", "",
             *_table(["Markt", "Kurs", "1W %", "Vol 20T %", "Score Basis−Quote", "long", "short"], rows), "",
             "R = Carry + Zins-Momentum, P = Preis-Momentum, F = COT-Veto. Gold: R = US-Realzins, "
             "P = Kurs/SMA20, F = Managed Money.", ""]
@@ -144,7 +144,7 @@ def _risk(rk: dict) -> list[str]:
     b = rk["buendel"]
     net = ", ".join(f"{c} {fmt(v, 2)}" for c, v in b["netto"].items()) or "–"
     over = ", ".join(f"{c} {fmt(v, 2)}" for c, v in b["ueber_deckel"].items()) or "keine"
-    return [f"## 6. Risiko-Budget (Ideen ab Score-Differenz {fmt(rk['schwelle_diff'])}, ohne Veto)", "",
+    return [f"## 7. Risiko-Budget (Ideen ab Score-Differenz {fmt(rk['schwelle_diff'])}, ohne Veto)", "",
             *(_table(["Markt", "Seite", "Score-Diff", "Vol 20T %", "Größe rel."], rows) if rows else ["keine"]), "",
             f"Netto-Exposure je Währung (Einheiten): {net}",
             f"Über dem Deckel {fmt(b['deckel'], 1)}: {over} · Haupttreiber: {b['haupttreiber'] or '–'}", ""]
@@ -159,22 +159,22 @@ def _profiles(laender: dict) -> list[str]:
             v = None if not node else node.get(field)
             cells.append(fmt(v, digits) + ("*" if node and node.get("stale") else ""))
         rows.append(cells)
-    return ["## 7. Länderprofile", "", *_table(["", *G8], rows), "",
+    return ["## 8. Länderprofile", "", *_table(["", *G8], rows), "",
             "\\* = älter als erlaubt (siehe Datenlücken). Leitzins/Kern-Inflation teils aus Kalender bzw. SNB.", ""]
 
 
 def _positioning(pos: dict) -> list[str]:
     rows = [[k, fmt(v["net"], 0), fmt(v["chg_1w"], 0), fmt(v["cot_26w"], 1), fmt(v["cot_3y"], 1), v["date"]]
             for k, v in pos.items() if v]
-    return ["## 8. Positionierung (CFTC TFF, Leveraged Funds; Gold Managed Money)", "",
+    return ["## 9. Positionierung (CFTC TFF, Leveraged Funds; Gold Managed Money)", "",
             *_table(["", "Netto", "Δ 1W", "COT 26W", "COT 3J", "veröffentlicht"], rows), ""]
 
 
 def _g8(sheet: dict) -> list[str]:
     if not sheet["g8"]:
-        return ["## 9. G8-Stärke (Vergleich mit SMT)", "", f"n.v. ({sheet['g8_stand']})", ""]
+        return ["## 10. G8-Stärke (Vergleich mit SMT)", "", f"n.v. ({sheet['g8_stand']})", ""]
     ranked = sorted(sheet["g8"].items(), key=lambda kv: -kv[1])
-    return [f"## 9. G8-Stärke (Nachbau, Vergleich mit SMT, Stand {sheet['g8_stand']})", "",
+    return [f"## 10. G8-Stärke (Nachbau, Vergleich mit SMT, Stand {sheet['g8_stand']})", "",
             *_table(["Rang", "Währung", "Score"], [[str(i + 1), c, fmt(v)] for i, (c, v) in enumerate(ranked)]), ""]
 
 
@@ -183,10 +183,100 @@ def _calendar(k: dict) -> list[str]:
           for e in k["naechste_7t"]]
     su = [[e["zeit_utc"], e["waehrung"], e["titel"], fmt(e["konsens"]), fmt(e["ist"]), fmt(e["ueberraschung"])]
           for e in k["ueberraschungen_14t"]]
-    return [f"## 10. Kalender (Referenz {k.get('referenz_utc', '–')} UTC)", "", "**Nächste 7 Tage (High)**", "",
+    return [f"## 11. Kalender (Referenz {k.get('referenz_utc', '–')} UTC)", "", "**Nächste 7 Tage (High)**", "",
             *(_table(["Zeit UTC", "Währung", "Termin", "Konsens", "Vorwert"], up) if up else ["keine"]), "",
             "**Überraschungen letzte 14 Tage (High, Ist − Konsens)**", "",
             *(_table(["Zeit UTC", "Währung", "Termin", "Konsens", "Ist", "Überraschung"], su) if su else ["keine"]), ""]
+
+
+STATUS = {"belegt": "belegt", "gekippt": "gekippt", "regime": "nur heute", "schwach": "–"}
+
+
+def _pct(v) -> str:
+    return "–" if v is None else ("+" if v > 0 else "") + fmt(v)
+
+
+def _geo(geo: dict | None) -> list[str]:
+    head = ["## 5. Geopolitik, News und Realzinsen", ""]
+    if not geo or "fehler" in geo:
+        return head + [f"n.v. ({(geo or {}).get('fehler', 'kein Block')})", ""]
+    us = geo["realzins"]["us"]
+    rows = []
+    for name, k in (("Realzins 10J (TIPS)", "real_10y"), ("Realzins 5J", "real_5y"),
+                    ("Inflationserwartung 10J", "breakeven_10y"), ("Inflationserwartung 5J", "breakeven_5y"),
+                    ("5J in 5J (Glaubwürdigkeit Fed-Ziel)", "fwd_5y5y")):
+        x = us.get(k) or {}
+        rows.append([name, fmt(x.get("wert")), fmt(x.get("chg_5d_bp"), 1), x.get("datum", "–")])
+    lines = head + ["**US-Realzinsen**", "", *_table(["", "%", "Δ 1W (bp)", "Datum"], rows), ""]
+    prox = geo["realzins"]["naeherung_2j_minus_kern"]
+    lines += ["Näherung je Land (2J minus Kern-Inflation, ex post): "
+              + " · ".join(f"{k} {fmt(v)}" for k, v in prox.items()), ""]
+
+    od = geo["oel_durchgriff"]
+    rows = [[n, *[f"{_pct(od[k][s]['bp'])} (t {fmt(od[k][s]['t'], 1)})" for s in ("is", "oos", "heute")]]
+            for n, k in (("US-2J", "us_2y"), ("US-Realzins", "realzins"), ("Inflationserwartung", "breakeven"))]
+    gor = geo["gold_oel_regime"]
+    lines += [f"**Öl-Durchgriff** (Brent +10 % → bp; Markt preist zurzeit: {geo['zinsregime']})", "",
+              *_table(["", "2007–16", "2017–05/26", "letzte 26 Wochen"], rows), "",
+              f"→ **{od['kanal']}**. Gold je Brent +10 %: letzte 26 Wochen {_pct(od['gold_heute_pct'])} %; "
+              f"2007–05/26 in Anhebungsphasen {_pct(gor['anhebungen']['wirkung'])} %, in Senkungsphasen "
+              f"{_pct(gor['senkungen']['wirkung'])} %. Öl drückt Gold nur, wenn es die Fed-Erwartung hebt.", ""]
+
+    gpr, ev = geo.get("gpr"), geo.get("ereignisstudie")
+    if gpr:
+        lines += [f"**Geopolitik-Index (GPR)** {fmt(gpr['wert'], 0)} am {gpr['datum']} (30-Tage-Mittel "
+                  f"{fmt(gpr['mittel_30t'], 0)}, {fmt(gpr['perzentil_1j'], 0)}. Perzentil im Jahr).", ""]
+    if ev:
+        lines += ["Ereignisstudie Geopolitik-Spitzen: " + "; ".join(
+            f"{s.upper()} {e['ereignisse']} Spitzen, {e['signifikant']} signifikante Reaktionen "
+            f"(max. |t| {fmt(e['max_abs_t'])}, {e['bei']})" for s, e in ev.items())
+            + ". Geopolitik wirkt nur über Kanäle (Öl, Zinsen), nicht als Angst an sich.", ""]
+
+    lines += [f"**Themen** (Einordnung durch Claude aus den Schlagzeilen vom {geo.get('news_stand') or 'n.v.'}; "
+              "Wirkung je Schock aus der Exposure-Matrix, nur belastbare Einträge)", ""]
+    for c in geo["themen"]:
+        n = f" ({c['treffer_24h']} Meldungen/24 h)" if c.get("treffer_24h") else ""
+        lines += [f"*{c['name']}*: **{c['lage']}**{n}"]
+        if c["kernaussage"]:
+            lines += [c["kernaussage"]]
+        lines += [f"Weg (Annahme): {c['weg']}. Treiber: {c['treiber']}.", ""]
+        eff = [e for e in c["einfluss"] if e["status"] != "schwach" or e["asset"] == "Gold"]  # Gold immer zeigen
+        if eff:
+            lines += _table(["Asset", "Wirkung heute %", "2017–26 %", "Status"],
+                            [[e["asset"], _pct(e["wirkung_heute"]), _pct(e["wirkung_oos"]), STATUS[e["status"]]]
+                             for e in eff]) + [""]
+
+    lines += ["**Exposure-Matrix** (Wirkung in % je Schock: letzte 26 Wochen / 2017–26; ohne Zusatz = belegt, "
+              "also gleiches Vorzeichen 2007–16, 2017–26 und heute)", ""]
+    drivers = list(geo["exposure"])
+    assets = list(next(iter(geo["exposure"].values()))["assets"])
+    rows = []
+    for a in assets:
+        row = [a]
+        for d in drivers:
+            x = geo["exposure"][d]["assets"].get(a)
+            if not x:
+                row.append("–")
+                continue
+            extra = "" if x["status"] == "belegt" else f" ({STATUS[x['status']]})"
+            row.append(f"{_pct(x['heute'])} / {_pct(x['oos'])}{extra}")
+        rows.append(row)
+    lines += _table(["Asset", *[geo["exposure"][d]["schock"] for d in drivers]], rows) + [""]
+
+    er = geo.get("earnings") or {}
+    mc = [m for m in er.get("megacaps", []) if "fehler" not in m]
+    if mc:
+        lines += ["**S&P-Megacaps (Earnings, Yahoo; Überraschung auf Yahoo-EPS, Sondereffekte wie Steuern "
+                  "können große Abweichungen erzeugen)**", "",
+                  *_table(["Wert", "Nächster Termin", "EPS erwartet", "Letzte Überraschung %", "Beats letzte 4"],
+                          [[m["symbol"], m["naechster_termin"] or "–", fmt(m["erwartung_eps"]),
+                            _pct(m["letzte_ueberraschung_pct"]), str(m["beats_letzte_4"])] for m in mc]), ""]
+    if er.get("saison"):
+        s = er["saison"]
+        lines += [f"Saison {s.get('quartal')}: Gewinnwachstum {fmt(s.get('wachstum_pct'), 1)} %, "
+                  f"Beat-Quote {fmt(s.get('beat_quote_pct'), 0)} %, berichtet {fmt(s.get('berichtet_pct'), 0)} % "
+                  f"(FactSet, Stand {s.get('stand')}). {s.get('hinweis', '')}", ""]
+    return lines
 
 
 def markdown(sheet: dict) -> str:
@@ -194,8 +284,9 @@ def markdown(sheet: dict) -> str:
              f"Erzeugt {sheet['erzeugt']} · {len(sheet['register'])} Zahlen im Register · "
              "Quelle: fusion_lab/macro_data + Dukascopy", ""]
     lines += _state(sheet["zustand"]) + _regime(sheet) + _scorecard(sheet["scorecard"])
-    lines += _tactical(sheet["taktisch"]) + _markets(sheet["maerkte"]) + _risk(sheet["risiko"])
+    lines += _tactical(sheet["taktisch"]) + _geo(sheet.get("geopolitik")) + _markets(sheet["maerkte"])
+    lines += _risk(sheet["risiko"])
     lines += _profiles(sheet["laender"]) + _positioning(sheet["positionierung"]) + _g8(sheet)
     lines += _calendar(sheet["kalender"])
-    lines += ["## 11. Datenlücken", "", *[f"- {g}" for g in sheet["datenluecken"]], ""]
+    lines += ["## 12. Datenlücken", "", *[f"- {g}" for g in sheet["datenluecken"]], ""]
     return "\n".join(lines)

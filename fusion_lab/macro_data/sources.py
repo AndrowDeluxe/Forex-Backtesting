@@ -45,6 +45,9 @@ FRED = {
     "MKT.nfci": "NFCI", "MKT.usd_broad": "DTWEXBGS", "MKT.wti": "DCOILWTICO",
     # Ersatz fuer die seit 2024 stillstehende OECD-Dienste-Inflation (Jahresrate rechnet die Analytik)
     "MKT.stlfsi": "STLFSI4", "US.services_index": "CUSR0000SASLE",
+    # Realzinsen und Inflationserwartung (Makro-Agent v3, 12.11.2026); EPU = Unsicherheit aus Zeitungen, taeglich
+    "US.real_10y": "DFII10", "US.real_5y": "DFII5", "US.breakeven_5y": "T5YIE", "US.fwd_5y5y": "T5YIFR",
+    "MKT.epu_us": "USEPUINDXD",
 }
 ECB_YIELDS = {"EA.1y": "SR_1Y", "EA.2y": "SR_2Y", "EA.10y": "SR_10Y"}
 # Staatsanleihen-Renditen je Land, gepruefter Stand 10.11.2026 (Verzug in Klammern):
@@ -87,7 +90,9 @@ CFTC_LAG_DAYS = 3  # Berichtsdatum Dienstag, veroeffentlicht Freitag
 YF_MARKETS = {"MKT.gold": "GC=F", "MKT.silver": "SI=F", "MKT.brent": "BZ=F", "MKT.dxy": "DX-Y.NYB",
               "MKT.spx": "^GSPC", "MKT.ndx": "^NDX", "MKT.dax": "^GDAXI", "MKT.nikkei": "^N225",
               # Rohstoff-Schalter: AUD ~ Kupfer, NZD ~ Milch (Class III als frei verfuegbarer GDT-Ersatz)
-              "MKT.copper": "HG=F", "MKT.milk": "DC=F"}
+              "MKT.copper": "HG=F", "MKT.milk": "DC=F",
+              # Geopolitik-Proxys (v3): Europa-Gas (Ukraine/Russland), WTI taeglich (FRED hinkt)
+              "MKT.ttf_gas": "TTF=F", "MKT.wti_fut": "CL=F"}
 BIS_REER = "M.R.B"  # Realer effektiver Wechselkurs, breiter Korb (64 Laender), monatlich
 DUKA_FX = ["EURUSD", "GBPUSD", "USDJPY", "USDCHF", "AUDUSD", "USDCAD", "NZDUSD", "EURGBP", "EURJPY"]
 MONTH_CODES = "FGHJKMNQUVXZ"
@@ -413,7 +418,8 @@ def fetch_yf_markets() -> pd.DataFrame:
     for key, symbol in YF_MARKETS.items():
         d = yf.download(symbol, start=START, progress=False, auto_adjust=True)
         if len(d):
-            s = d["Close"].squeeze().dropna()
+            c = d["Close"]
+            s = (c.iloc[:, 0] if isinstance(c, pd.DataFrame) else c).dropna()  # squeeze() macht 1 Zeile zum Skalar
             s.index = pd.to_datetime(s.index).tz_localize(None).normalize()
             out.append(_long(key, s))
     return pd.concat(out, ignore_index=True)

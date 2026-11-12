@@ -9,6 +9,12 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-12** [Dachprojekt / Inventur A6] **H4-Edge „Final H4 HTF Entry Model“: mechanischer Test ohne Edge** (Plan freigegeben).
+  Phase 0 geklärt, Edge Card [[h4-htf-entry-edge-card]]. `htf_daily_trade/h4_manip.py` + `tests/test_h4_manip.py`, Lock `h4_manip`
+  (IS 2016–21, OOS bis 11.05.2026, Tresor 6 Monate + Blind 2010–15 zu), 456 Varianten. Alle 24 Grundvarianten IS/OOS negativ
+  (−0,06 bis −0,23 R), brutto ≈ 0, Zufallseinstieg gleich gut; kein BIAS-Filter dreht ins Plus. EURUSD 2023: 185 Signale statt
+  30 Beispiele. Keine Bot-Änderung.
+
 - **2026-11-12** [Research / Remy-King] **Gold-Deckel je Konto (B4) verworfen** (Nutzerentscheid), keine Bridge-Änderung.
   Carry- und Rohstoff-Veto für die C2-Filter-Matrix: waren schon am 11.11. in `htf_daily_trade/c2_veto_combos.py`
   getestet (Rohstoff-Veto im eingefrorenen Kandidaten), nichts neu zu bauen. Handoff `2026-11-11_remy-king-filter.md`

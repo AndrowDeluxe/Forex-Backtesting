@@ -1,0 +1,18 @@
+{
+  "strategy": "h4_manip",
+  "split": {
+    "is_start": "2016-01-01",
+    "is_end": "2021-12-31",
+    "oos_end": "2026-05-11",
+    "tresor_end": "2026-11-11"
+  },
+  "registered": "2026-11-12T00:49:24+00:00",
+  "trials": 456,
+  "frozen": null,
+  "unsealed": {},
+  "forward": null,
+  "blind": {
+    "start": "2010-01-01",
+    "end": "2015-12-31"
+  }
+}

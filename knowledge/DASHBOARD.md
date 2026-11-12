@@ -55,7 +55,10 @@ passiert, was steht an.
    W50 ist jetzt der einzige Daily-Forward (nur Log, Task „C2-Forward-Log“; alter `aea4189b` raus, 11.11.). Kein Live-Kandidat.
    **Ziel (Nutzer 11.11.): Portfolio aus den händischen Edges, getrennt vom Quant-Portfolio**, am Ende alle Edges
    gemeinsam testen und vergleichen.
-   **Morgen (12.11.): H4-Edge** (A6, Phase 0 Fragen stehen im Chat 10.11.). Wartet auf deine
+   **12.11.: H4-Edge gestartet** [[h4-htf-entry-edge-card]] -- Phase 0 geklärt (Sweep über ≥ 2 Vorkerzen, BIAS Daily/H4 +
+   Trendfilter mit/gegen, 9 Märkte, BE nach neuer Struktur, 3 Ziele). **Mechanischer Test: kein Edge** (456 Varianten,
+   brutto ≈ 0, Zufall gleich gut; EURUSD 2023 185 Signale statt deiner 30). Wartet auf dich: was trennt deine 30 Beispiele
+   von den übrigen Signalen (Ort/Liquidität/Session) -- oder echte H4-Journal-Trades 2025 nehmen? Wartet auf deine
    Kandidatenwahl (≤ 9 Parameter). Parallel: Indikatoren einzeln durchgehen (Steckbriefe, dann Edge-Test je
    Indikator), Reihenfolge RSI → Multi Length → Stoch RSI → MACD → BB → NW → MA-Cross → Fractals → Pivots →
    Volumen → SVP/VRVP → Money Flow Profile → COT. H4 zurückgestellt.

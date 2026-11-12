@@ -19,7 +19,7 @@ keine Planung (dafür ist `DASHBOARD.md`).
   vorwärts geprüft), Lauf-Protokoll + As-of-Prüfung. Behoben: `--as-of` vor 30.10., Regimekarte ignorierte
   `--as-of`, Earnings-Vorgriff. **Befunde:** Öl drückt Gold nur über den Fed-Kanal (2026: Brent +10 % → 2J +5,4 bp
   statt 2,3); Geopolitik-Spitzen ohne Marktreaktion (Lock `geo_framework_v1`); Makro-Filter (Stress, Realzins,
-  Scorecard) verbessern Gold ASB, C2, ORB nicht (Lock `macro_filter_v1`, IS-Vorteil kippt im OOS). 63 Tests.
+  Scorecard) verbessern Gold ASB, C2, ORB nicht (Lock `macro_filter_v1`, IS-Vorteil kippt im OOS). 54 Makro-Tests grün.
   Keine Bot-Änderung.
 
 - **2026-11-12** [Dachprojekt / Inventur A6] **H4-Edge Test 2: nur Einstieg 15:00 (NY 09:00)** (Nutzerauftrag). `htf_daily_trade/h4_ny15.py`,

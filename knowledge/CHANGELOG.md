@@ -9,6 +9,19 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-12** [Dachprojekt / Makro-Agent] **Makro-Agent v3: Geopolitik-Framework, Meridian-Bausteine, Wirkketten,
+  Makro-Filter-Test** (Nutzerauftrag, Plan freigegeben). [[makro-wirkketten-katalog]]. Commits `9b482ee3`, `55a2515a`,
+  `8acb2caf` + Phase 5. Daten: TIPS-Realzinsen, Breakevens, 5J-in-5J, Unsicherheitsindex (FRED), Geopolitical Risk
+  Index, Megacap-Earnings (Yahoo), FactSet-Saison von Hand; Schlagzeilen je Thema mit Einordnung durch den lokalen
+  Claude Code (neue Jobs `gpr`, `earnings`, `news` im Task „Makro-Daten“). GDELT gebaut, aber IP gesperrt.
+  Fact Sheet §5 Geopolitik/Realzinsen (Exposure-Matrix, Öl-Durchgriff, Themen-Karten), §6 Wirkketten (13 Ketten mit
+  Live-Status), Dollar-Faktor, Unabhängigkeit der Gründe, **Forecast-Ledger** (`fusion_lab/macro_agent/ledger/`,
+  vorwärts geprüft), Lauf-Protokoll + As-of-Prüfung. Behoben: `--as-of` vor 30.10., Regimekarte ignorierte
+  `--as-of`, Earnings-Vorgriff. **Befunde:** Öl drückt Gold nur über den Fed-Kanal (2026: Brent +10 % → 2J +5,4 bp
+  statt 2,3); Geopolitik-Spitzen ohne Marktreaktion (Lock `geo_framework_v1`); Makro-Filter (Stress, Realzins,
+  Scorecard) verbessern Gold ASB, C2, ORB nicht (Lock `macro_filter_v1`, IS-Vorteil kippt im OOS). 63 Tests.
+  Keine Bot-Änderung.
+
 - **2026-11-12** [Dachprojekt / Inventur A6] **H4-Edge Test 2: nur Einstieg 15:00 (NY 09:00)** (Nutzerauftrag). `htf_daily_trade/h4_ny15.py`,
   Lock `h4_manip` jetzt 2.733 Versuche. Körper muss zurück, Sweep 2/3/4 Kerzen, Docht ≥ 0–70 %, Market/Limit 50 % Docht/Limit an
   der Marke, 3 Stops, 5 Ziele, FX/Metalle getrennt, 21 Filter. Längerer Docht = besser (brutto stetig steigend). Beste FX-Variante

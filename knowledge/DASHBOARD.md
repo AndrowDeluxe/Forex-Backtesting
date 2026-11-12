@@ -104,8 +104,16 @@ Telegram. Der tägliche Digest zeigt nur die Fokus-Abschnitte.
   Differenz 0,75; Bündel-Deckel 1,5; COT-Veto auf Legacy Non-Commercials (ohne USD), damit Backtest
   und Live gleich messen; Leitzins US/EA nicht aus dem Kalender (andere Definition). **Ergebnis:**
   Scorecard ohne Edge (IS Sharpe −0,27, OOS −0,21), läuft im Fact Sheet nur als Kontext
-  ([[makro-scorecard-v2]]). Noch offen aus dem Test vom 11.11.: `--as-of` vor 30.10. bricht ab;
-  Regimekarte ignoriert `--as-of` (Print 14.10.).
+  ([[makro-scorecard-v2]]). ~~`--as-of` vor 30.10. bricht ab; Regimekarte ignoriert `--as-of`~~ behoben 12.11.
+
+- **Makro-Agent v3 (Geopolitik, Wirkketten, Ledger): meine Annahmen** (12.11., Plan freigegeben).
+  Deine Entscheide (News messbar + Claude-Einordnung, Earnings Megacaps über Yahoo) sind umgesetzt. Von mir
+  gesetzt: die 5 Themen (Iran/Hormuz, Zölle, Ukraine, China/Taiwan, Druck auf die Fed) und je Thema der
+  Kanal-Treiber (Iran → Brent, Zölle und Fed-Druck → Inflationserwartung, Ukraine → Geopolitik-Index,
+  China → VIX); Schwellen der 13 Wirkketten (z. B. Brent 20 T > +5 %, US-2J > +10/15 bp, VIX > 24,
+  OAT-Bund > 80 bp); „Fed-Kanal“ = Öl-Durchgriff auf die 2J ≥ 1,5× früher; Geopolitik-Spitze = 95.
+  Perzentil; Ledger-Horizonte 5/20 Tage; Filter-Varianten V1–V3 im Test. Ergebnis: Makro-Filter helfen
+  den Edges nicht ([[makro-wirkketten-katalog]]).
 
 ### ⏳ Wartet auf Themen-Session
 
@@ -150,6 +158,8 @@ jeweiligen Thema weiterarbeiten (Nutzerentscheid 10.11.).
   ~~Kern-Inflation JP/CH/CA, US-Dienste, Leitzins-Nachlauf (BoE/RBA)~~ erledigt 11.11. über
   Ersatzquellen (Kalender-Ist, SNB, FRED; `fusion_lab/macro_data/calendar_values.py`).
   Offen: Dienste-Inflation JP/CH/CA, CH-Arbeitslosigkeit, Exporte US/EA, CH-Renditen ~10 Tage Verzug.
+  Neu 12.11.: Europa-Gas (TTF) ohne freie Historie, GDELT-Nachrichtenvolumen gesperrt (429), Realzins
+  außer USA nur als Näherung 2J minus Kern-Inflation.
   Stand: `python -m fusion_lab.macro_data --coverage`.
 
 ## 🧊 Geparkt: Betrieb & Nebenthemen (außerhalb des Fokus)
@@ -569,7 +579,7 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 | Dashboard-Telegram-Digest (neu)                         | — (nur Lesezugriff auf DASHBOARD.md, kein Order-Bezug)                                   | Schickt offene Punkte aus DASHBOARD.md per Telegram                                          | Ready (täglich 8:00, auch Sa/So — bewusst) | — | 2026-09-13      |
 | G8-Notion-Sync (neu)                                    | — (nur FRED/Dukascopy-Abruf + Notion-Schreiben, kein Order-Bezug)                       | Schreibt G8-Währungsstärke (Nachbau + SMH-Tabellen) in Notion-DB „💱 G8-Stärke“ (`scripts/g8_notion_sync_task.ps1`) | Ready (täglich 07:00, auch Sa/So) | — | 2026-10-12      |
 | Regime-Notion-Sync (neu)                                | — (nur FRED/ALFRED/yfinance-Abruf + Notion-Schreiben, kein Order-Bezug)                 | Regimekarte Wachstum×Inflation neu rechnen → Notion „Regime-Roadmap“ + Seite „Assets je Regime“ (`scripts/regime_notion_task.ps1`) | Ready (So 09:00, StartWhenAvailable) | — | 2026-10-28      |
-| Makro-Daten (neu)                                       | — (nur Datenabruf, kein Order-Bezug)                                                     | Makro-Agent Schicht 1: G8-Makrodaten und Kalender mit Abrufzeit nach `fusion_lab/data/macro_data/` (`scripts/macro_data_task.ps1`, Akku erlaubt) | Ready (täglich 00:50 + 07:30, auch Sa/So) | — | 2026-10-30 |
+| Makro-Daten (neu)                                       | — (nur Datenabruf, kein Order-Bezug)                                                     | Makro-Agent Schicht 1: G8-Makrodaten und Kalender mit Abrufzeit nach `fusion_lab/data/macro_data/` (`scripts/macro_data_task.ps1`, Akku erlaubt); seit 12.11. auch Geopolitik-Index, Megacap-Earnings und Schlagzeilen mit Einordnung durch lokalen `claude.exe` | Ready (täglich 00:50 + 07:30, auch Sa/So) | — | 2026-11-12 |
 | C2-Forward-Log (neu)                                    | — (nur Log + Telegram, keine Orders)                                                     | Forward-Test Daily-Edge: seit 11.11. nur noch W50 Vorwochen-Mitte `5c82f5d4` + Referenz EL `6c55e525`, 9 Märkte (alter Forward `aea4189b` raus, Nutzerentscheid) (`scripts/c2_forward_task.ps1`, Ledger `htf_daily_trade/forward/`, Akku erlaubt); Auswertung ab 30 Trades oder 12.11.2027 | Ready (Di–Sa 03:30, StartWhenAvailable) | — | 2026-11-11 |
 | Telegram-Import-SMH-Daily                               | — (nur Telegram lesen + rechnen, kein Order-Bezug)                                       | Inkrementeller Import „SMH Daily Update“ ohne Videos; seit 28.10. zusätzlich Bild-/Anweisungs-Lesung per Claude-Abo + Forward-Stand Copy Trading Stufe 2 (`scripts/telegram_smh_daily_import_task.ps1`, Akku erlaubt) | Ready (täglich 23:00, auch Sa/So) | — | 2026-10-28      |
 

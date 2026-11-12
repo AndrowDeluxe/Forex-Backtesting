@@ -200,6 +200,9 @@ Verschmelzung" (2026-09-02) ab -- der Journal-Teil ist laut Nutzer erledigt.
   BoE-Anhebung 05.11.). Nächster Schritt danach: Wirkketten-Katalog (Schritt 3).
 - [x] **Makro-Agent v2 (11.11.):** Gates-Recherche ([[makro-gates-evidenz]]) → Umbau zur 5-Faktor-
   Scorecard + taktische Ebene + Risiko-Budget, Ersatzquellen für alle Datenlücken ([[makro-scorecard-v2]]).
+  **v3 (12.11.):** Geopolitik-Framework (Exposure-Matrix, Öl-Durchgriff, Schlagzeilen-Einordnung), 13 Wirkketten mit
+  Live-Status, Dollar-Faktor, Forecast-Ledger (vorwärts), As-of-Prüfung; Makro-Filter über Gold ASB/C2/ORB ohne Nutzen
+  ([[makro-wirkketten-katalog]]).
   Scorecard im Backtest ohne Edge (IS/OOS negativ) → nur Kontext. Offen: Scorecard als C2-Filter prüfen;
   Wirkketten-Katalog (Schritt 3).
   - **Offen aus dem Handoff 28.10.:** SMT-Reports ab 08.10. (6641, 6673, 6693, 6694, 6749,

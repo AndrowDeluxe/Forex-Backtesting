@@ -1,0 +1,14 @@
+{
+  "strategy": "macro_filter_v1",
+  "split": {
+    "is_start": "2010-01-01",
+    "is_end": "2018-12-31",
+    "oos_end": "2026-05-10",
+    "tresor_end": "2026-11-10"
+  },
+  "registered": "2026-11-12T01:52:56+00:00",
+  "trials": 6,
+  "frozen": null,
+  "unsealed": {},
+  "forward": null
+}

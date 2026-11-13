@@ -43,3 +43,33 @@
 2026-11-12 03:30:07 KeyError: 'T6'
 2026-11-12 03:30:07 COT: 0 neue Berichte
 2026-11-12 03:30:07 W50-Forward-Exitcode 1
+2026-11-12 03:30:07 [main 3297ba63] C2-Forward: Ledger 2026-11-12
+2026-11-12 03:30:07  1 file changed, 30 insertions(+)
+2026-11-12 03:30:07 Nichts zu mergen (0 eingehende Commits) - Stash und Merge uebersprungen.
+2026-11-12 03:30:10 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-11-12 03:30:10    e9ea0db7..3297ba63  main -> main
+2026-11-12 03:30:10 Commit + Push erfolgreich.
+2026-11-12 03:30:10 === Task beendet ===
+2026-11-13 03:30:01 === Task gestartet ===
+2026-11-13 03:30:08 Traceback (most recent call last):
+2026-11-13 03:30:08   File "<frozen runpy>", line 203, in _run_module_as_main
+2026-11-13 03:30:08   File "<frozen runpy>", line 88, in _run_code
+2026-11-13 03:30:08   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_forward_w50.py", line 147, in <module>
+2026-11-13 03:30:08     raise SystemExit(main())
+2026-11-13 03:30:08                      ~~~~^^
+2026-11-13 03:30:08   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_forward_w50.py", line 125, in main
+2026-11-13 03:30:08     t = scan(a.start)
+2026-11-13 03:30:08   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_forward_w50.py", line 77, in scan
+2026-11-13 03:30:08     el = el_trades(start, end)
+2026-11-13 03:30:08   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_bis_heute.py", line 79, in el_trades
+2026-11-13 03:30:08     t = cb.trades(start, end.strftime("%Y-%m-%d"))
+2026-11-13 03:30:08   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_blind.py", line 67, in trades
+2026-11-13 03:30:08     t = t[(t["T6"] < 0) & (t["M7"] > 0)].copy()
+2026-11-13 03:30:08            ~^^^^^^
+2026-11-13 03:30:08   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+2026-11-13 03:30:08     indexer = self.columns.get_loc(key)
+2026-11-13 03:30:08   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\range.py", line 525, in get_loc
+2026-11-13 03:30:08     raise KeyError(key)
+2026-11-13 03:30:08 KeyError: 'T6'
+2026-11-13 03:30:08 COT: 0 neue Berichte
+2026-11-13 03:30:08 W50-Forward-Exitcode 1

@@ -21,6 +21,10 @@ Code in [[overfitting-sperre]] (`research_lock.py`). Grund: die ORB-Strategie
 wurde ab Stage 2 direkt auf OOS ausgewählt, weil der OOS-Split bisher nur in
 Phase 6 als Prüfung stand.
 
+**Vorgriff-Wächter (seit 2026-11-15)**: In Phase 4 vor der ersten IS-Auswertung
+`lookahead_guard.check_truncation` auf die fertige Signalfunktion anwenden, bei
+neuer Engine zusätzlich `engine_selftest`. Siehe [[vorgriff-waechter]].
+
 **Vier-Fragen-Check (seit 2026-10-18)**: jedes neue Paper/Edge bekommt je
 einen Satz zu Warum Geld / Wo Verlust / Was dort anders / Welche eine Regel,
 siehe [[vier-fragen-check]].

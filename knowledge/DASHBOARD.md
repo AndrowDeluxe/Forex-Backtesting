@@ -212,6 +212,11 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 
 ### Bestätigungen (Betrieb/Research)
 
+- **Vorgriff-Wächter (15.11.): Pflichtschritt in Phase 4 war meine Annahme.** Gebaut hast du ihn beauftragt;
+     dass er im [[backtest-standard-process]] als Pflicht vor jeder IS-Auswertung steht (bei neuer Engine
+     plus Selbsttest), habe ich selbst so eingetragen. Bestätigen oder auf „freiwillig“ zurückstufen.
+     [[vorgriff-waechter]]
+
 - **Prosper-Bot-Test (12.11.): ATR-Variante war meine Annahme.** Stop 2 × ATR14, Ziel 2 × Stopweite (hält das 1:2 des
      Bots). Ändert das Fazit nicht (beide Stops verworfen). Bestätigen oder andere Faktoren nennen.
      [[prosper-bot-trendregel-echtdaten]]
@@ -674,6 +679,12 @@ Statustabellen-Zeilen, neu über der Schwelle: `G8-Notion-Sync`
 | EK-Portfolio-Paper                                      | —                                                                                        | pausiert (Paper-Zwilling von EK-Portfolio-Bridge, gehört zum Portfolio)                        | Disabled       | 2026-09-01      |
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
+
+- (15.11.) **Zwei Prozess-Ideen aus dem AI-Pathways-Kurs** (YouTube-Sichtung „AI Trading Bot“; der
+  Vorgriff-Wächter daraus ist gebaut, [[vorgriff-waechter]]): (a) die Auswahl-Routine selbst
+  walk-forward testen (Neuwahl je Quartal nur mit Daten bis dahin), nicht nur die gewählten Beine;
+  (b) Makro-Agent: jede KI-Einschätzung vor Marktöffnung mit Zeitstempel versiegeln, Einschaltregel
+  vorab festlegen (passt zum TradingAgents-Punkt 12.11.).
 
 - (12.11.) **TradingAgents (TauricResearch) getestet: Workflow-Bausteine für den Makro-Agenten**
   (Vorschlag, nicht entschieden). Als Signalquelle ungeeignet (Aktien-Fokus, nicht rückwirkend

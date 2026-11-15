@@ -9,6 +9,19 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-15** [Research-Prozess] **Vorgriff-Wächter gebaut** (Nutzerauftrag, Anstoß: YouTube-Sichtung
+  „AI Trading Bot“, AI-Pathways-Kurs). [[vorgriff-waechter]]
+  - `lookahead_guard.py`: `check_truncation` (Daten an 30 Zufalls-Stichtagen abschneiden, neu rechnen,
+    vergleichen; mehrere Zeitebenen, Trade-Listen) und `engine_selftest` (eingepflanzter Edge / Rauschen /
+    Bewegung auf dem Signal-Balken).
+  - `tests/test_lookahead_guard.py`, 14 Tests grün. Die drei alten Vorgriffe (ASB-Friktion an echter
+    `corwin_schultz_spread`, Lake-H4-Duplikate an echter `_merge_asof_shifted`, CTNL-Halbierung) werden
+    gefangen, die korrigierten Fassungen gehen durch.
+  - Erster Einsatz: CTNL `run_pipeline` (Standardparameter, Lake-Gold 24.08.–13.11.) sauber, 12 Stichtage,
+    31.195 Zeilen.
+  - Als Pflicht in Phase 4 in `areas/backtest-standard-process.md` eingetragen (meine Annahme, im Dashboard
+    zur Bestätigung). Inbox-Eintrag entfernt.
+
 - **2026-11-12** [Research / Nebenthema] **Prosper-AI-„Grok Trading Team“-Bot auf echten Daten: kein Edge, verworfen**
   (Nutzerauftrag, Plan freigegeben). Lernprojekt eingerichtet unter `C:\Users\andre\prosper-ai-grok-trading-team`
   (nur Simulation, außerhalb des Repos, 10/10 Tests). Trendregel 1:1 nachgebaut in `prosper_bot_realdata/`

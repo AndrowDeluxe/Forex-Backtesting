@@ -110,7 +110,7 @@ Telegram. Der tägliche Digest zeigt nur die Fokus-Abschnitte.
   - Fail-safe **durchlassen** (wie Kill-Switch, nicht sperren wie Spike), wenn MACRO-Daten fehlen oder > 5 Tage alt.
   - Neuer Task `Forex-Gold-Makro-Gate-Refresh` täglich 07:15 (FRED + yfinance → `score_frame.parquet`).
   - EK prüft mit dem aktuellen Zeitpunkt, Funded/FK mit der Entry-Zeit des Signals (gleiches Ergebnis am selben Tag).
-  - Kill-Switch steckt nicht im Backtest (Live-Set = Ribbon + Spike + Kosten + Lag).
+  - CTNL-Backtest: Swap 1,5 bps je Nacht angenommen (nicht gemessen); 0–3 bps verschieben Sharpe 1,25–1,10.
 
 - **Gold Confirmation Framework: meine Annahmen beim Nachbau** (14.11., Ergebnis: kein Edge,
   [[gold-confirmation-score]]). Vorgaben aus dem Plan nicht mehr abgefragt:
@@ -199,6 +199,12 @@ Bewusst aus dem Blick genommen (Nutzerentscheid 10.11.), nicht gelöscht. Neue B
 landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 
 ### Weitere Projekte
+
+- **📈 NASDAQ-ORB aus der Vorbörsen-Range 09:00–09:30 (15.11.): im Backtest stark, Kosten offen.** Ohne
+   Trendfilter OOS +0,28 R/Trade (t 2,7, ~248 Trades/Jahr), mit EMA-Filter nur +0,06. Hängt an der
+   Eröffnungs-Slippage (Stop ~24 Punkte). Filter (VIX, Stress, Makro, Regime) helfen nicht. Offen: echte
+   09:30-Fills messen, erst dann Tresor. Nichts live. Runde 2: Trendfilter nur mit Storno sinnvoll (EMA50/200 M15
+   halbiert Trades + IS-DD, kostenrobuster), OOS bleibt ungefiltert vorn; Puffer bringt nichts. [[nasdaq-orb-vorboersen-range]]
 
 - **🎓 Prosper-AI-„Grok Trading Team“ (12.11.): eingerichtet, Regel auf echten Daten getestet, kein Edge.**
    Lernprojekt läuft lokal (`C:\Users\andre\prosper-ai-grok-trading-team`, nur Simulation). D1 sieht positiv aus,

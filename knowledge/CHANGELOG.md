@@ -9,6 +9,12 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-15** [Dachprojekt / CTNL] **CTNL-Backtest live-getreu mit Kill-Switch + Swap** (Nutzerauftrag).
+  `scripts/research_ctnl_macro_live.py --killswitch --swap-bps 1.5`. Live-Variante (Ribbon, Spike, Kill-Switch,
+  Makro-Sperre, 2,01 bps, Swap 1,5 bps/Nacht), 1 % Risiko 2016–10/26: 239 Trades, CAGR 21,6 %, Sharpe 1,18,
+  MaxDD −19,9 %, MC-DD95 29,7 %. Kill-Switch greift einmal (2020, 6 Trades). Swap-Annahme ungemessen (Dashboard).
+  [[gold-confirmation-score]]
+
 - **2026-11-15** [Dachprojekt / Makro-Agent] **Danske-KI-Ketten: Vorschläge bestätigt und umgesetzt**
   (Nutzerentscheid: „bestätige alle offenen Punkte“).
   - `chains.py`: `ki_schulden_hy` nutzt HYG/IEF und gilt nur bei ruhigem VIX. `risiko_an_ki` misst KOSPI statt Nasdaq.
@@ -36,6 +42,15 @@ keine Planung (dafür ist `DASHBOARD.md`).
   Abgelegt in [[danske-ai-investment-tracker]], [[makro-wirkketten-katalog]] und der Leitlinie in
   [[makro-agent-report-pruefung]]. Der Eintrag in der Ideen-Inbox ist erledigt. Drei Code-Vorschläge stehen
   unter „Braucht deine Bestätigung“. Nichts live geändert.
+
+- **2026-11-15** [Research / ORB] **NASDAQ-ORB aus der Vorbörsen-Range 09:00–09:30 NY** (Nutzerauftrag).
+  `scripts/research_nasdaq_orb_premarket.py`, Lock `nasdaq_orb_premarket_20261115` (Tresor 15.05.–14.11.2026 zu),
+  648 IS-Varianten + M1-Gegenprobe. Nutzer-Spec mit EMA50/200 schwach (OOS +0,06 R); ohne Trendfilter
+  IS +0,17 / OOS +0,28 R (t 2,7), aber kostenempfindlich (+5 Pkt Eröffnungs-Slippage → IS −0,28). VIX, Stress,
+  Realzins, Regime und EMA taugen nicht als Richtungsfilter. Nichts live geändert. [[nasdaq-orb-vorboersen-range]]
+  Runde 2 (`research_nasdaq_orb_premarket_v2.py`, M1, 680 Varianten): Puffer-Stop bringt nichts; Trendfilter nur mit
+  Storno bei Gegenausbruch sinnvoll (IS-Bester EMA50/200 M15: IS Sharpe 1,15 / OOS 1,07), OOS schlägt aber keiner die
+  ungefilterte Version (1,50); Filter macht kostenrobuster (×3 Kosten noch +0,11 R OOS).
 
 - **2026-11-15** [Dachprojekt / Makro-Agent] **SMT-Reports KW47 geprüft + Gegenwährungs-Backtest**
   (Nutzerauftrag). Beispiel 3 in [[makro-agent-report-pruefung]]: Faktencheck, 6 Widersprüche, Trades, Alarme,

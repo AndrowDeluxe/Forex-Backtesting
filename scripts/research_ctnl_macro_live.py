@@ -1,6 +1,13 @@
 """CTNL-Reversal Live-Set (Ribbon + Spike >= 0,75 ATR, Lag-Replay) mit/ohne Makro-Sperre, 2016-heute,
 1 % Risiko je Trade auf das Konto (taeglich verzinst). 15.11.2026, Nutzerauftrag.
 
+Kosten: 2,01 bps Round-Trip (TTP gemessen inkl. Spread, Slippage, Kommission; teuerster Broker),
+Einstieg 1 M15-Bar spaeter, R-Detektor 0,50 R. Swap: --swap-bps je Nacht (NY 17:00, Mittwoch 3x),
+Annahme 1,5 bps (nicht gemessen).
+Kill-Switch (--killswitch): wie gold_smc_htf_ltf/ctnl_kill_switch._dd_gehandelt -- Schatten-Trades Cont+Rev
+aus der Scan-Konfiguration (8 bps), nur Ribbon-konform (beide) + Spike (Rev), 90-Tage-Fenster, 100k-Konto mit FK-Risiken 0,5 %/0,15 %, aktiv bei
+DD <= -6,6 %, aufgehoben ab -3,3 %. Eingabe results/ctnl_ks_shadow.pkl.
+
 Eingabe: fusion_lab/data/gold_confirm/results/ctnl_live_set.pkl (research_ctnl_confirm_wf.trades)
 Aufruf:  python scripts/research_ctnl_macro_live.py [--equity 99650]
 """
@@ -34,6 +41,51 @@ def load() -> pd.DataFrame:
     gegen = ((d.direction > 0) & (d.macro <= macro_gate.SHORT_MAX)) | ((d.direction < 0) & (d.macro >= macro_gate.LONG_MIN))
     d["gesperrt"] = gegen
     return d.reset_index(drop=True)
+
+
+def swap_r(d: pd.DataFrame, bps: float) -> pd.Series:
+    """Swap in R: bps je Rollover (NY 17:00) x Einstiegskurs / Risiko-Distanz; Mittwoch zaehlt dreifach."""
+    if bps <= 0:
+        return pd.Series(0.0, index=d.index)
+    et = d["et"].dt.tz_localize("UTC").dt.tz_convert("America/New_York")
+    xt = d["xt"].dt.tz_localize("UTC").dt.tz_convert("America/New_York")
+    nights = []
+    for a, b in zip(et, xt):
+        rolls = pd.date_range(a.normalize() + pd.Timedelta(hours=17), b, freq="D")
+        rolls = rolls[(rolls > a) & (rolls.dayofweek < 5)]
+        nights.append(sum(3 if x.dayofweek == 2 else 1 for x in rolls))
+    price = d["entry_live"] if "entry_live" in d else d["entry_backtest"]
+    return pd.Series(np.array(nights) * bps / 1e4 * price.values / d["effective_risk"].values, index=d.index)
+
+
+def kill_switch_mask(d: pd.DataFrame, shadow_path: Path) -> pd.Series:
+    """True = Trade waere wegen aktivem CTNL-Kill-Switch NICHT eroeffnet worden."""
+    from gold_smc_htf_ltf.live_signal import CTNL_KILL_SWITCH_DD_THRESHOLD as THR, FK_RISK_CONT, FK_RISK_REV
+    sh = pd.read_pickle(shadow_path)
+    sh = sh[sh["gehandelt"]]  # live seit 30.09.: nur der gehandelte Satz (Ribbon beide Beine, Spike auf Rev)
+    for c in ("entry_time", "exit_time"):
+        t = pd.to_datetime(sh[c], utc=True)
+        sh[c] = t.dt.tz_localize(None)
+    sh["risk"] = np.where(sh["leg"] == "cont", FK_RISK_CONT, FK_RISK_REV)
+    sh = sh.dropna(subset=["r"]).sort_values("exit_time")
+    en, ex, rr = sh["entry_time"].values, sh["exit_time"].values, (sh["r"] * sh["risk"]).values
+    grid = pd.DatetimeIndex(sorted(set(pd.date_range(d.et.min().normalize(), d.et.max(), freq="D")) | set(d.et)))
+    active, state = {}, False
+    for t in grid:
+        tv = np.datetime64(t)
+        w = (en >= np.datetime64(t - pd.Timedelta(days=90))) & (ex <= tv)
+        if w.any():
+            eq = np.cumprod(1 + rr[w])
+            dd = float((eq / np.maximum.accumulate(np.maximum(eq, 1.0)) - 1).min())
+            dd = min(dd, 0.0)
+        else:
+            dd = 0.0
+        if not state and dd <= THR:
+            state = True
+        elif state and dd >= THR * 0.5:
+            state = False
+        active[t] = state
+    return d["et"].map(active).fillna(False).astype(bool)
 
 
 def tstat(r):
@@ -95,10 +147,21 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--equity", type=float, default=99_650.0)
     ap.add_argument("--risk", type=float, default=0.01)
+    ap.add_argument("--swap-bps", type=float, default=1.5)
+    ap.add_argument("--killswitch", action="store_true")
     a = ap.parse_args()
     d = load()
-    print(f"Live-Set: {len(d)} Trades {d.et.min():%Y-%m-%d} .. {d.et.max():%Y-%m-%d}, ohne MACRO-Wert: {d.macro.isna().sum()}")
-    print("\n1) Sperre auf dem Live-Set (gesperrte gegen behaltene Trades)")
+    d["r_brutto_swap"] = d["r"]
+    d["swap_R"] = swap_r(d, a.swap_bps)
+    print(f"Live-Set: {len(d)} Trades {d.et.min():%Y-%m-%d} .. {d.et.max():%Y-%m-%d}, ohne MACRO-Wert: "
+          f"{d.macro.isna().sum()}; Swap {a.swap_bps} bps/Nacht = Ø {d.swap_R.mean():.3f} R je Trade")
+    d["ks"] = kill_switch_mask(d, OUT / "ctnl_ks_shadow.pkl") if a.killswitch else False
+    if a.killswitch:
+        k = d[d.ks]
+        print(f"Kill-Switch sperrt {len(k)} Trades (Ø {k.r.mean():+.2f} R, Summe {k.r.sum():+.1f} R), "
+              f"davon {int(k.gesperrt.sum())} auch makro-gesperrt")
+        print(k.groupby(k.et.dt.year).r.agg(["count", "sum"]).round(1).T.to_string())
+    print("\n1) Sperre auf dem Live-Set (gesperrte gegen behaltene Trades, vor Swap)")
     rows = []
     for name, (a_, b_) in PER.items():
         x = d[(d.et >= a_) & (d.et <= b_ + " 23:59")]
@@ -111,16 +174,22 @@ def main() -> None:
     t1 = pd.DataFrame(rows)
     print(t1.to_string(index=False))
     t1.to_csv(OUT / "ctnl_live_macro_veto.csv", index=False)
-    print(f"\n2) Backtest 2016-heute, {a.risk:.0%} Risiko je Trade, Startkapital {a.equity:,.0f}")
-    res = {"Basis (Ribbon+Spike)": backtest(d, a.risk, a.equity),
-           "mit Makro-Sperre": backtest(d[~d.gesperrt], a.risk, a.equity)}
+    net = d.assign(r=d["r"] - d["swap_R"])
+    print(f"\n2) Backtest 2016-heute, {a.risk:.0%} Risiko je Trade, Startkapital {a.equity:,.0f}, "
+          f"Kosten 2,01 bps + Swap {a.swap_bps} bps/Nacht")
+    var = {"Basis (Ribbon+Spike)": pd.Series(True, index=net.index), "mit Makro-Sperre": ~net.gesperrt}
+    if a.killswitch:
+        var = {"Basis": pd.Series(True, index=net.index), "+ Kill-Switch": ~net.ks,
+               "+ Makro-Sperre": ~net.gesperrt, "+ Kill-Switch + Makro (LIVE)": ~net.ks & ~net.gesperrt}
+    res = {k: backtest(net[m], a.risk, a.equity) for k, m in var.items()}
     tab = pd.DataFrame({k: {kk: vv for kk, vv in v.items() if not kk.startswith("_")} for k, v in res.items()})
     print(tab.to_string())
     yr = pd.DataFrame({k: v["_yearly"] for k, v in res.items()})
     yr.index = yr.index.year
     print("\nJahresrendite %:\n", yr.to_string())
-    tab.to_csv(OUT / "ctnl_live_backtest_1pct.csv")
-    yr.to_csv(OUT / "ctnl_live_backtest_1pct_jahre.csv")
+    suf = "_ks" if a.killswitch else ""
+    tab.to_csv(OUT / f"ctnl_live_backtest_1pct{suf}.csv")
+    yr.to_csv(OUT / f"ctnl_live_backtest_1pct{suf}_jahre.csv")
 
 
 if __name__ == "__main__":

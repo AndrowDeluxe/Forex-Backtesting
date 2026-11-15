@@ -217,3 +217,24 @@ Backtest 1 % Risiko je Trade, täglich verzinst, Start 99.650 $:
 
 Eingebaut als `gold_smc_htf_ltf/macro_gate.py` in alle drei Bridges, Daten über Task
 `Forex-Gold-Makro-Gate-Refresh`.
+
+### Nachtrag 15.11.: mit Kill-Switch und Swap
+
+Kosten im Live-Set: 2,01 bps Round-Trip (TTP gemessen inkl. Spread, Slippage, Kommission; teuerster
+der vier Broker), 15 Min. Einstiegsverzögerung, R-Detektor 0,50 R. **Neu:** Swap 1,5 bps je Nacht
+(Mittwoch 3×, Annahme, nicht gemessen; Ø 0,08 R je Trade). **Neu:** Kill-Switch wie live seit 30.09.
+(`_dd_gehandelt`: Cont + Rev Ribbon-konform, Rev mit Spike, 8 bps, 90 Tage, 100k mit 0,5 %/0,15 %,
+−6,6 % / Aufhebung −3,3 %). Er greift 2016–10/26 einmal (2020, 6 Trades, Summe −0,6 R).
+
+| 1 % Risiko, Swap 1,5 bps | Basis | + Kill-Switch | + Makro | **Kill-Switch + Makro (live)** |
+|---|---|---|---|---|
+| Trades | 257 | 251 | 245 | **239** |
+| Ø R / PF | +0,88 / 2,15 | +0,90 / 2,19 | +0,98 / 2,32 | **+1,01 / 2,37** |
+| CAGR | 19,9 % | 20,0 % | 21,5 % | **21,6 %** |
+| Sharpe / Sortino | 1,09 / 3,08 | 1,10 / 3,13 | 1,17 / 3,45 | **1,18 / 3,51** |
+| Max DD | −19,9 % | −19,9 % | −19,9 % | **−19,9 %** |
+| MC-DD 95 % | 32,8 % | 31,9 % | 30,3 % | **29,7 %** |
+
+Swap-Empfindlichkeit (live-Variante): 0 bps Sharpe 1,25 / CAGR 23,7 %; 3 bps Sharpe 1,10 / CAGR 19,6 %.
+Falle beim Nachbau: der Kill-Switch auf ungefilterten Schattentrades (Stand vor 30.09.) wäre 2/3 der
+Zeit aktiv gewesen (173 von 257 Trades gesperrt) — live misst er seit 30.09. nur den gehandelten Satz.

@@ -1,0 +1,14 @@
+{
+  "strategy": "gegenwaehrung_angst",
+  "split": {
+    "is_start": "2004-01-01",
+    "is_end": "2017-12-31",
+    "oos_end": "2026-05-15",
+    "tresor_end": "2026-11-13"
+  },
+  "registered": "2026-11-15T21:03:42+00:00",
+  "trials": 6,
+  "frozen": null,
+  "unsealed": {},
+  "forward": null
+}

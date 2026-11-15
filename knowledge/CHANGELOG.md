@@ -9,6 +9,15 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-15** [Dachprojekt / Makro-Agent] **SMT-Reports KW47 geprüft + Gegenwährungs-Backtest**
+  (Nutzerauftrag). Beispiel 3 in [[makro-agent-report-pruefung]]: Faktencheck, 6 Widersprüche, Trades, Alarme,
+  Dennis' Charts EUR/USD, Gold, US100, USD/JPY (Nutzer ist USD/JPY short; EK-Risiko ~4–5 % geschätzt).
+  Backtest `scripts/research_gegenwaehrung_angst.py` (Lock `gegenwaehrung_angst`): Leitlinie Punkt 2
+  eingeschränkt, Hafen ist bei Zinsanstieg ohne Angst die bessere Gegenwährung. Korrektur KW46-Nachprüfung:
+  AUD −1,35 % statt −2,3 %. Nutzer bestätigt („das passt“) → als Filter-Baustein abgelegt:
+  `fusion_lab/filters/gegenwaehrung.py` + [[filter-gegenwaehrung]] (Regel, Beleg, Einschätzung), im Katalog
+  [[regime-bestimmung-und-filter]] verlinkt; Dashboard-Bestätigung erledigt.
+
 - **2026-11-15** [Reports] **Weekly Checkup KW46/2026** (geplanter Lauf). `knowledge/reports/weekly/KW46_2026_*`, PDF in
   `Documents\Trading Reports\`. Woche: 23 Trades, EK −229,75 EUR (−8,35 %, Bots −105,90), Funded +38,59 USD (+0,02 %),
   FK +141,93 USD (+0,14 %, Bots −342,57); kein Kill-Switch, keine Bot-Verletzung. Sieben Handtrades (MT5-Mobile) auf EK/FK

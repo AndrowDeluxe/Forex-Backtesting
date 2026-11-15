@@ -728,6 +728,13 @@ Statustabellen-Zeilen, neu über der Schwelle: `G8-Notion-Sync`
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
 
+- (15.11.) **Danske „AI Investment Tracker“ (19.10.2026) als Wirkketten-Quelle für den Makro-Agenten**
+  (Vorschlag, nicht entschieden). Kein Edge, keine Regeln, Marketing-Kommunikation. Kandidaten für
+  Schicht 1/Wirkketten: KI-Capex → Speicherchip-Preise → China-Exportpreise (+15 % J/J) → Inflation/
+  Zinspfad; Kredit-Spreads der Hyperscaler (ORCL, CoreWeave ~1.000 bp) als Risk-off-Frühwarnung;
+  Korea-/Taiwan-Exporte als Schalter für AUD/Nasdaq; Mega-IPOs (Anthropic, OpenAI) als Termin-Risiko
+  für die Index-Beine. Testbarkeit gering: Boom erst seit 2025, kaum Vergleichsfälle.
+
 - (15.11.) **Zwei Prozess-Ideen aus dem AI-Pathways-Kurs** (YouTube-Sichtung „AI Trading Bot“; der
   Vorgriff-Wächter daraus ist gebaut, [[vorgriff-waechter]]): (a) die Auswahl-Routine selbst
   walk-forward testen (Neuwahl je Quartal nur mit Daten bis dahin), nicht nur die gewählten Beine;

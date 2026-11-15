@@ -13,6 +13,10 @@ Bestimmung. Bezug: [[htf-daily-trade-edge-card]], [[quant-diskretionaer-fusion]]
 | Zinskurven-Regime (Angelo) | US 2y/10y (FRED), heute vs. vor 20 Tagen | Bull/Bear × Steepener/Flattener | **69 Wechsel/Jahr, Median 2 Tage**; 25 % Twist | `htf_daily_trade/macro.py` |
 | Risk Regime Matrix (Dennis) | Coaching-Tabelle | Long/Short-Präferenz je Assetklasse je Regime | -- (Zuordnung) | `REGIME_DIR` in `macro.py` |
 
+Abgeleitete Filter-Bausteine: [[filter-gold-zinskurve]] (Gold-Richtung aus der Zinskurve),
+[[filter-gegenwaehrung]] (seit 15.11.2026: Gegenwährung für Dollar-Thesen, Zinsen × Angst;
+Hafen bei Zinsanstieg ohne Angst).
+
 ## 2. Vergleich (2003–2025, rein beschreibend)
 
 - **Die beiden Erkennungen messen Verschiedenes.** Übereinstimmung der 4 Regime 26,6 % (Zufall

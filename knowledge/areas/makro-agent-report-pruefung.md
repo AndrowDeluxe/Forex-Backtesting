@@ -38,6 +38,23 @@ einen Makro Report anfertigen, den ich dann prüfe“). Regeln und Wirkketten se
 
 ## Leitlinie: Gegenwährung wählen (Rohstoff- vs. Hafenvergleich)
 
+> **Backtest 15.11.2026 (Punkt 2 eingeschränkt, Lock `gegenwaehrung_angst`, 6 Versuche,
+> `scripts/research_gegenwaehrung_angst.py`):** Wochen 2004–05/2026, Zinswoche = US-2J ≥ +10 bp,
+> Angst = VIX steigt in der Woche. Spread S = Dollar-Gewinn gegen CHF/JPY minus gegen AUD/NZD/CAD.
+> - Zinswoche **ohne** Angst: S IS +1,14 % (83 % der Wochen > 0, n 41), OOS +0,31 % (63 %, n 38).
+>   Der Hafen ist dann die bessere Gegenwährung. ✓
+> - Zinswoche **mit** Angst: S IS +0,68 % (n 10), OOS 0,00 % (n 31). Rohstoffwährungen schlagen den
+>   Hafen auch dann **nicht**. ✗ für den alten Punkt 2. Unterschied ohne/mit nicht signifikant (p 0,2).
+> - Über alle Wochen erklärt die Angst derselben Woche die Wahl stark (t 9,4 IS / 5,2 OOS), aber die
+>   Angst der **Vorwoche** sagt nichts über die Folgewoche (OOS p 0,20–0,90). Kein Sonntags-Signal.
+> - Varianten VIX > 20 (Niveau) und S&P fällt: OOS nichts.
+>
+> **Neue Lesart:** Steigt der Dollar wegen der Zinsen, ist im Schnitt der zinslose Hafen (CHF, JPY bis
+> zum Eingriff) das schwächste Glied. Die Rohstoffwährung ist nur dann besser, wenn in der Woche Angst
+> **aufkommt**, und das muss der Agent als Ereignis-Risiko vorhersagen (z. B. Nvidia-Zahlen), nicht aus der
+> Vorwoche ablesen. Punkt 2 unten gilt deshalb nur mit einem konkreten Angst-Auslöser in der Woche. Vom Nutzer bestätigt
+> 15.11.; als Filter-Baustein abgelegt: [[filter-gegenwaehrung]].
+
 Nutzer 08.11.: „Die Begründungen und die Logik dahinter gefällt mir sehr.“ Eine Währungs-These
 (z. B. „Dollar stark“) ist noch kein Trade. Der Agent wählt die **Gegenwährung, bei der alle Kräfte
 in dieselbe Richtung zeigen**, und begründet die Wahl ausdrücklich.
@@ -214,7 +231,9 @@ in derselben Kerze zählt der Stop. Offene Trades zum Schluss Fr 13.11. bewertet
 | USD/CAD (Dennis) Limit 1,4009 gefüllt / Ergebnis R | Füllung unsicher | nicht gefüllt (Tief 1,40769 Mo), Fr 1,4266 | 0 R; Richtung ✓, „Füllung unsicher“ ✓ |
 
 **Dafür/Dagegen im Rückblick:** Getragen hat die Leitlinie „Stärke aus Zinsen nur gegen
-Rohstoffwährungen“ (AUD −2,3 %, CAD −1,0 %, Euro −1,0 % gegen USD) und Dennis' DXY-Pfad. Falsch lag die
+Rohstoffwährungen“ (AUD −1,35 %, CAD −1,0 %, Euro −1,0 % gegen USD) und Dennis' DXY-Pfad. *Korrigiert 15.11.:
+hier stand zuerst „AUD −2,3 %“; −2,3 % war der Franken (Lake: USD/CHF 0,8199 → 0,8386). Damit war der
+beste Dollar-Trade der Woche ausgerechnet der gegen einen Hafen, siehe Beispiel 3.* Falsch lag die
 CPI-Schätzung und die eigene Gold-Neigung („Gold nur long“): Der Report-Satz „Gold fällt bei steigenden
 Renditen“, den die Prüfung als Widerspruch Nr. 3 abgewertet hatte, traf diese Woche zu. Die
 Invalidierung „Schluss < 4.000“ hätte den Schaden begrenzt.
@@ -267,6 +286,187 @@ heiß (≥ 0,25) ~20 %.
 
 Unklar: Die beiden Limit-Zeilen sind in Beispiel 2 weder als Agent- noch als Dennis-Trade
 markiert. In der Bilanz unten stehen sie als eigene Spalte „Kanal-Limits“.
+
+---
+
+## Beispiel 3: KW 47/2026 (Reports vom 15.11.2026)
+
+Quellen: Macro-Report 15.11. (msg 7071, 8 S.) + Sonderreport „G8 komplett“ (msg 7072, 16 S.),
+Kurse = Schluss Fr 13.11. Kanal: Dennis' USD/CAD-Live-Long Fr (msg 7069), Pro-Call So 21:00
+(Bilder 7074–7077 nur Zoom-Logos, Chart-Trades noch nicht im Kanal).
+
+### Faktencheck
+
+- ✓ Kurse vs. Dukascopy/Yahoo: EUR/USD 1,1023 (1,1022, Woche −1,04 %), AUD/USD 0,6776 (0,6769,
+  −1,35 %, tiefster Stand seit 22.01.), GBP/USD 1,3214 (1,3209), USD/CAD 1,4266 (1,4266), USD/CHF
+  0,8394 (0,8386, +2,27 %), USD/JPY 159,80 (159,69), Gold 3.886 (3.883, −4,6 %), DXY 103,41 (höchster
+  Schluss seit 02.04.2025), Brent 95,84 / WTI 88,56 (je −2,5 %), S&P 7.562, Nasdaq Comp. 25.136, VIX 19,3.
+  Kreuze passen zusammen (EUR/CHF 0,925, GBP/CHF 1,109, EUR/GBP 0,8342). EUR/USD-Schluss Mi 1,1090
+  (Report-Einstieg 1,1092). Scorecard-Arithmetik stimmt (−0,25 R in voller Größe).
+- ≈ US-2J „4,88 %“ ist der Donnerstags-Schluss, Fr 4,85 (TradingView) / 4,86 (FRED Do). 5-Tage-Sprung
+  +38 bp = gleichauf mit Okt. 2024 (+38,5 bp), also „größter seit Nov. 2022“ nur knapp. USD/JPY über 160
+  laut Dukascopy schon Do 16:30 UTC (Hoch 160,19), vorher zuletzt 02.09. ✓. Zinsabstand US–DE 2J 1,74 Pp.,
+  Jahreshoch war 1,76 am 02.10. → „so weit wie nie in diesem Jahr“ knapp falsch.
+  Gold „tiefster Stand seit Oktober 2025“ gilt für das Do-Tief 3.852, nicht für den Schluss
+  (30.10.2026 schloss tiefer, 3.875).
+- ? Zinsmarkt-Pricing, Bank-Calls, CFTC (Stichtag 03.11.), Privatanleger, NZD-Wochenwert.
+
+### Widersprüche
+
+1. **US-Einzelhandel Di:** Macro-Report „erwartet +0,3 %“, BASE „um +0,3 %“, ALT „unter +0,3 %“.
+   Sonderreport „erwartet 0,0 bis +0,2 %“. Stimmt der Sonderreport, ist das ALT-Szenario der Konsens.
+2. **Euro-Short gegen die eigene Regel:** Sonderreport 08.11., Regel 2 „Kein Euro-Short auf die
+   Dollar-These“. Jetzt ist EUR/USD Short Trade 2 im Buch, als Dollar-Trade gezählt.
+3. **„Dritter Dollar-Trade verworfen“ (USD/CAD), Dennis kauft USD/CAD aber Fr live** (1,4239, Stop 1,4225,
+   msg 7069 „2 % running, BE ziehen“). Im Kanal sind es damit drei Dollar-Longs.
+4. **BoE-Entscheid:** 08.11. „4,00 % einstimmig“, jetzt „+0,25 mit 8:1, Mann wollte 0,50“.
+5. **EUR/USD-Stop über der These:** Die These kippt bei Schluss > 1,1100, der Stop liegt bei 1,1130.
+   Sauber, wenn man den Schluss-Ausstieg ernst nimmt; sonst trägt man 30 Pips über das Kippen hinaus.
+6. **Unsere eigene Leitlinie** („Dollar-Stärke nur gegen Rohstoffwährungen, nie gegen Häfen“): Diese
+   Woche verlor der Franken am meisten (−2,3 %), mehr als AUD (−1,35 %). Der Report erklärt es selbst:
+   Zinsen ohne Angst (VIX 25,6 → 19,3, S&P +2,5 %). Die Leitlinie gilt nur für „Zinsen **plus** Angst“;
+   bei „Zinsen ohne Angst“ ist der zinslose Hafen das schwächste Glied. Vor jedem Dollar-Trade also
+   zuerst prüfen, ob Angst überhaupt da ist.
+
+### Gewichtung
+
+Fakten sauber, Logik nachrechenbar. Stärke: Buch ist diszipliniert (Deckel eine Dollar-Größe, Stops
+nachgezogen, nichts dazu). Schwäche: Die Einzelhandels-Erwartung ist uneinheitlich, und Kanal und Report
+widersprechen sich beim dritten Dollar-Trade. Report-Scorecard −0,25 R seit 23.09. passt zu unserem
+Befund (Richtung ≈ 0 R).
+Gold-Zinskurven-Filter: bestätigt Goldilocks → long erlaubt; roh am 12.11. schon „Twist“ (2J 20 T. +4 bp,
+10J −9 bp). Steigt die 10J noch ~10 bp, wird es Bear-Flattener = Inflation → Gold nur short. Makro-Veto
+(Realzins und USD steigen, [[gold-confirmation-score]]) spricht gegen Gold-Long. Deckt sich mit
+der Report-Sperre.
+Schätzung (ohne Modell): BASE „Dollar hält“ ~50 %, ALT „Luft raus“ ~30 % (2J am Widerstand 4,95,
+Positionierung voll, Crédit Agricole „überkauft“), TAIL „KI-Schock“ ~20 % (Nvidia ohne CEO, Halbleiter
+Fr −3,4 %; Kippschalter Nasdaq Comp. unter 24.262 = Tief 05.11.).
+
+### Trades KW 47
+
+| # | Trade | Wertung | Umsetzung |
+|---|---|---|---|
+| 1 | AUD/USD Short (Bestand, Agent-Einstieg 0,6905) | Halten. Stärkster Banken-Konsens, RBA-Ende im Preis | Stop auf 0,6862 (= Report-Einstieg) sichert +0,5 R; Ziel 0,6670; nichts dazu. Risiken: Löhne Mi 01:30, Jobs Do 01:30, Shenzhen-Deal |
+| 2 | GBP/CHF Long | Nur nach UK-CPI Mi > 3,8 % **und** D1-Schluss Mi > 1,1100. Ohne Dollar, gleicht den AUD-Short im TAIL aus (Franken steigt bei KI-Schock) | Danach Rücksetzer-Limit ~0,5 ATR (≈ 30 Pips) unter Schluss, halbe Größe, Stop unter 1,0950 (Wochentief). Kreuz → im Backtest schwach, darum klein |
+| 3 | EUR/GBP Short | Abwerten: Euro-Short als eigene These, bündelt mit EUR/USD | Nur eines der zwei Pfund-Setups, GBP/CHF zuerst |
+| 4 | EUR/USD Short | Auslassen für Neueinstieg: verletzt Regel 2 vom 08.11., zweiter Dollar-Trade | – |
+| 5 | USD/CAD Long | Auslassen: dritter Dollar-Trade; CAD-CPI Mo 14:30, heiß = CAD fester | Dennis' Live-Trade gehört nicht ins Agent-Buch |
+| 6 | USD/JPY, Gold | Gesperrt (Eingriffszone 160–164; Gold ohne Boden, Filter kippt) | Nur Alarme |
+| 7 | AUD/NZD Short | Nach Wahlergebnis NZ 27.11. | – |
+| – | Sperrzeiten | Mo 17:45–19:00, Di 14:15–15:30, Di 22:00–Mi 01:00, Mi 07:45–08:30 | + für AUD: Mi/Do 01:15–02:00 |
+
+Fazit: AUD-Short halten und absichern, sonst nichts Neues vor Mittwoch; der einzige neue Kandidat ist
+GBP/CHF Long nach der UK-Inflation.
+
+**Nutzer-Bestand:** USD/JPY Short FK 0,3 / EK 0,1 Lot ab 159,84, Stop 162,00 (Stand KW46-Weekly) steht
+gegen die Report-Sperre („Short: Zinsen und Trend dagegen“). Spricht dafür: Eingriffszone ab 160.
+Entscheidung beim Nutzer.
+
+### Alarme
+
+| Symbol | Bedingung | Wert | Bedeutung |
+|---|---|---|---|
+| AUDUSD | kreuzt aufwärts | 0,6862 | Stop (nachgezogen) |
+| AUDUSD | kreuzt abwärts | 0,6670 | Ziel |
+| EURUSD | Schluss über (D1) | 1,1100 | Report-These kippt |
+| TVC:US02Y | kreuzt abwärts | 4,70 | ALT greift, Dollar-These kippt |
+| TVC:US02Y | kreuzt aufwärts | 4,95 | Widerstand gebrochen, Dollar-Trigger |
+| TVC:DXY | kreuzt aufwärts | 104,0 | Report-Trigger nach oben |
+| GBPCHF | Schluss über (D1), Mi | 1,1100 | Setup aktiv (nur mit UK-CPI > 3,8 %) |
+| USDCHF | kreuzt aufwärts | 0,8400 | ING-Schlüsselmarke |
+| USDJPY | kreuzt abwärts | 157,70 | Wochentief: Eingriff oder Drehung |
+| NASDAQ:IXIC | kreuzt abwärts | 24.262 | TAIL „KI-Schock“ |
+| XAUUSD | kreuzt abwärts | 3.850 | Wochentief gebrochen |
+
+### Nachtrag: Dennis' Charts aus dem Pro-Call (15.11., 21:52–22:01, vom Nutzer geschickt)
+
+Nur EUR/USD, Gold und US100. Werte aus den Bildern abgelesen; was nicht sichtbar ist, steht als „?“.
+
+**EUR/USD Short (4h):** Verkaufszone 1,1104–1,1132, rote Linie ~1,1170 (Stop vermutlich), Zwischenmarken
+1,1100 / ~1,1073. Kurs 1,1022. Ziel nicht eingezeichnet (Report: 1,1000 / 1,0950). Risiko von der Mitte
+1,1118: ~52 Pips; bis 1,0950 ~168 Pips ≈ 3,2 R.
+- **Dafür:** Rücksetzer-Limit in Trendrichtung, die einzige Einstiegsart mit positivem Backtest. Banken
+  sehen 1,10 oder tiefer. Die Zone ist das alte Tief von Ende Oktober, jetzt als Widerstand.
+- **Dagegen:** Die Zone liegt **über** der Report-Kippmarke (Schluss > 1,1100) und am Report-Stop 1,1130.
+  Wo Dennis verkaufen will, ist der Report-Trade ausgestoppt. Hedgefonds am Extrem short → ein Anstieg in die
+  Zone wäre genau die Eindeckung (ALT-Szenario, Report-Ziel dann 1,115, knapp unter dem Stop). Regel 2.
+- **Bündelung:** Zweiter Dollar-Trade neben AUD/USD. Entweder dieser oder der Report-EUR-Short, nie beide.
+- **Timing:** Füllung realistisch nur bei weichem Warsh (Mo 18:00) oder schwachem Einzelhandel (Di 14:30),
+  beides Sperrzeiten.
+- **Wertung:** Besser als der Report-Euro-Short (der Einstieg liegt höher, der Stop sitzt hinter der
+  Kippmarke). Rang 2, halbe Größe, nur ohne Füllung in den Sperrzeiten.
+
+**Gold Short (1h):** Positionswerkzeug mit Einstieg 4.015,7 (Unterkante der roten Zone 4.016–4.068), Stop über
+der Zone (genauer Wert ?, mindestens 4.068), Ziel unter 3.810 (?). Fib-Ausdehnung der Erholung 3.942 / 3.967 /
+3.995, Widerstand 3.933–3.945. Kurs 3.884, Einstieg also +132 $ (~2 Tages-ATR) entfernt.
+- **Dafür:** Report sperrt Gold-Long („kein Boden“), Makro-Veto (Realzins + USD steigen), 4.013–4.030 war
+  letzte Woche Unterstützung (Alarm 4.030, Dennis' Long-Zone) und ist jetzt Widerstand. Dennis lag diese Woche
+  bei Gold richtig („10 von 10“).
+- **Dagegen:** Der Gold-Zinskurven-Filter steht noch bestätigt auf Goldilocks = **nur long**. Ein Anstieg
+  auf 4.016 bräuchte das ALT-Szenario (2J < 4,70); dann kippt die Short-These mit. Füllung unsicher.
+- **Bündelung:** Gold short = Dollar long über den Zins → dritter Dollar-Treiber neben AUD und EUR.
+- **Wertung:** Rang 3. Erst wenn der Filter auf Inflation kippt (roh schon Twist), sonst Viertelgröße.
+
+**US100 Long (D1, Capital.com):** Einstieg 27.003, Stop 24.500, Ziel 32.000 → Risiko 2.503 Punkte (9 %),
+Ziel 4.997 ≈ 2 R. Kurs 27.836. Einstieg = Retest der kleinen Box über dem Tief Anfang November (NDX 26.265).
+- **Dafür:** BASE des Reports: Aktien steigen trotz Zinsen, VIX 19. Rücksetzer statt Markt.
+- **Dagegen:** Das Limit füllt am ehesten nach schwachen Nvidia-Zahlen (Di 22:20), also im TAIL-Szenario
+  „KI-Schock“. US-10J 5,15 %, 30J 5,47 % drücken die Bewertung. Ein Index-Long ist vor allem Marktrisiko
+  (Memory „t > 2, aber nur Long-Beta“). Stop 9 % weit → sehr kleine Größe.
+- **Bündelung:** Risk-on. Gleicht den AUD-Short teilweise aus (bei KI-Schock gewinnt AUD-Short, verliert US100).
+- **Timing:** Limit erst **nach** den Nvidia-Zahlen legen (Sperre Di 22:00–Mi 01:00); fällt Nasdaq Comp. unter
+  24.262, gilt TAIL und der Trade ist ungültig.
+- **Wertung:** Kein Makro-Agent-Trade (kein FX), optional, kleine Größe, nicht vor Mittwoch.
+
+| Symbol | Bedingung | Wert | Bedeutung |
+|---|---|---|---|
+| EURUSD | kreuzt aufwärts | 1,1104 | Dennis-Zone erreicht (Report-Kippmarke schon überschritten) |
+| EURUSD | kreuzt aufwärts | 1,1170 | Dennis-Stop |
+| XAUUSD | kreuzt aufwärts | 3.933 | Widerstand, erste Fib-Ausdehnung |
+| XAUUSD | kreuzt aufwärts | 4.015 | Short-Limit Dennis |
+| NAS100 | kreuzt abwärts | 27.003 | Long-Limit (nur nach Nvidia) |
+| NAS100 | kreuzt abwärts | 24.500 | Stop |
+
+**USD/JPY Short (4h, Dennis; Nutzer schon drin):** Dennis' Einstieg ~160,0 (Zone 159,8–160,15), Stop ~162,4
+(Unterkante der zweiten Zone ab 162,4), Ziel unter 156,2 (genauer Wert ?) → ~240 Pips Risiko, ≥ 380 Pips Ziel
+≈ 1,6 R. Freitags-Hoch 160,2 als Linie. Nutzer: FK 0,3 / EK 0,1 Lot ab 159,84, Stop 162,00.
+- **Dafür:** Eingriffszone 160–164, Tokio warnt; im TAIL-Szenario (KI-Schock) steigt der Yen. Vermögensverwalter
+  nahe dem Halbjahres-Hoch long Yen. ING: Yen bestes Chance-Risiko 2027.
+- **Dagegen:** Report sperrt USD/JPY in beide Richtungen („Short: Zinsen und Trend dagegen“). Fed-Dezember
+  96–100 % im Preis, Zinsabstand > 2,5 Pp. Backtest von heute: In Zinswochen ohne Angst verliert der Yen eher
+  mehr. Privatanleger 65 % short → stützt USD/JPY hoch. Japan-BIP Mo 00:50 schwach = Zweifel an der BoJ.
+  Der letzte Eingriff kam erst bei 164; der Nutzer-Stop 162,00 liegt **unter** Dennis' Stop und mitten in der
+  Zone, die ein Anlauf auf den Eingriff durchläuft.
+- **Bündelung:** Dollar **short**, also Gegengewicht zu AUD/USD Short (und EUR/USD, Gold short). Im TAIL gewinnen
+  AUD-Short und USD/JPY-Short gemeinsam; in BASE trägt der AUD-Short, USD/JPY kostet.
+- **Größe (geschätzt):** EK 0,1 Lot × 216 Pips ≈ 117 EUR ≈ 4–5 % des EK-Kontos (~2.500 EUR nach KW46);
+  FK 0,3 Lot ≈ 405 USD ≈ 0,4 %. Auf EK also das Mehrfache eines üblichen 1-%-Risikos.
+- **Wertung:** Ein Trade auf Eingriff oder KI-Schock (zusammen grob 20–25 %), nicht auf das Hauptszenario.
+  Als Absicherung des Dollar-Buchs vertretbar, auf EK zu groß. Entscheidung beim Nutzer.
+
+| Symbol | Bedingung | Wert | Bedeutung |
+|---|---|---|---|
+| USDJPY | kreuzt aufwärts | 160,20 | Freitags-Hoch gebrochen |
+| USDJPY | kreuzt aufwärts | 161,50 | halbe Strecke zum Nutzer-Stop |
+| USDJPY | kreuzt abwärts | 158,50 | erster Gewinn, Stop auf Einstieg prüfen |
+
+### Nachprüfung (auszufüllen im Weekly KW47, So 22.11.)
+
+| Punkt | Erwartet | Eingetreten | Urteil |
+|---|---|---|---|
+| Szenario | BASE ~50 / ALT ~30 / TAIL ~20 | | |
+| US-Einzelhandel Di (Konsens laut Report +0,3 bzw. 0,0–0,2) | | | |
+| AUD/USD Short: Stop 0,6862 / Ziel 0,6670 / Schluss Fr, R | halten | | |
+| GBP/CHF: UK-CPI > 3,8 % + Schluss Mi > 1,1100? gefüllt? R | nur bedingt | | |
+| EUR/USD (Report-Trade): 1,1000 Teilgewinn / Stop 1,1130 / R | ausgelassen | | |
+| USD/CAD (Dennis live 1,4239): R | ausgelassen | | |
+| Gold-Filter kippt auf Inflation? | wahrscheinlich | | |
+| USD/JPY Eingriff? | Sperre | | |
+| Dennis EUR/USD 1,1104–1,1132 gefüllt / Stop 1,1170 / R | Rang 2, halb | | |
+| Dennis Gold Short 4.015,7 gefüllt / R | Rang 3, erst bei Filter-Kipp | | |
+| Dennis US100 Long 27.003 gefüllt / Stop 24.500 / R | optional, nach Nvidia | | |
+| USD/JPY Short (Dennis ~160 / Nutzer 159,84, Stop 162,00) / R | Hedge, auf EK zu groß | | |
+| Gegenwährung: Woche mit Zinsanstieg ohne Angst → CHF/JPY schwächer als AUD/NZD/CAD? | ja | | |
 
 ---
 

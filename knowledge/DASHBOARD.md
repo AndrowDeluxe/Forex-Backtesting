@@ -102,6 +102,15 @@ Telegram. Der tägliche Digest zeigt nur die Fokus-Abschnitte.
 
 ### 🔍 Braucht deine Bestätigung
 
+- **Makro-Agent: drei Änderungen aus dem Danske-KI-Ketten-Test (15.11.), noch nicht umgesetzt** (meine
+  Vorschläge). Test in [[danske-ai-investment-tracker]]: Keine Kette aus dem Report hat einen Vorlauf.
+  (a) Kette `ki_schulden_hy` in `chains.py` umstellen: Text „erst Kredit, dann Aktien“ abschwächen und
+      HYG/IEF statt FRED-HY verwenden (FRED-HY nur ab 11/2023).
+  (b) AUD-Schalter: KOSPI als Tech-Messgröße statt Nasdaq (AUD~NDX seit 2025 nur +0,21, AUD~KOSPI +0,54).
+  (c) ORCL und MU in die Megacap-Quartalszahlen (`fusion_lab/macro_data/earnings.py`).
+  Abgelegt habe ich bisher nur die Befunde (Katalog, Leitlinie Punkt 3), der Code ist unverändert.
+
+
 - **CTNL-Makro-Sperre seit 15.11. LIVE auf allen drei Bridges — meine Annahmen beim Einbau** (Nutzerentscheid
   „direkt in den Bot“). Regel: kein CTNL-Reversal-Long bei MACRO ≤ 35, kein Short bei ≥ 65 (Vortageswert).
   Auf dem Live-Set (Ribbon + Spike) 2016–10/26: 12 von 257 Trades gesperrt, alle Longs, Ø −1,13 R, p 0,0035;
@@ -727,13 +736,6 @@ Statustabellen-Zeilen, neu über der Schwelle: `G8-Notion-Sync`
 | EK-Portfolio-Paper                                      | —                                                                                        | pausiert (Paper-Zwilling von EK-Portfolio-Bridge, gehört zum Portfolio)                        | Disabled       | 2026-09-01      |
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
-
-- (15.11.) **Danske „AI Investment Tracker“ (19.10.2026) als Wirkketten-Quelle für den Makro-Agenten**
-  (Vorschlag, nicht entschieden). Kein Edge, keine Regeln, Marketing-Kommunikation. Kandidaten für
-  Schicht 1/Wirkketten: KI-Capex → Speicherchip-Preise → China-Exportpreise (+15 % J/J) → Inflation/
-  Zinspfad; Kredit-Spreads der Hyperscaler (ORCL, CoreWeave ~1.000 bp) als Risk-off-Frühwarnung;
-  Korea-/Taiwan-Exporte als Schalter für AUD/Nasdaq; Mega-IPOs (Anthropic, OpenAI) als Termin-Risiko
-  für die Index-Beine. Testbarkeit gering: Boom erst seit 2025, kaum Vergleichsfälle.
 
 - (15.11.) **Zwei Prozess-Ideen aus dem AI-Pathways-Kurs** (YouTube-Sichtung „AI Trading Bot“; der
   Vorgriff-Wächter daraus ist gebaut, [[vorgriff-waechter]]): (a) die Auswahl-Routine selbst

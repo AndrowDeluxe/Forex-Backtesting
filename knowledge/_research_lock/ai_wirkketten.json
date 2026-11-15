@@ -1,0 +1,14 @@
+{
+  "strategy": "ai_wirkketten",
+  "split": {
+    "is_start": "2004-01-01",
+    "is_end": "2017-12-31",
+    "oos_end": "2026-05-15",
+    "tresor_end": "2026-11-13"
+  },
+  "registered": "2026-11-15T22:08:05+00:00",
+  "trials": 110,
+  "frozen": null,
+  "unsealed": {},
+  "forward": null
+}

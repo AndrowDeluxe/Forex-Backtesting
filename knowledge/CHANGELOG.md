@@ -9,6 +9,24 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-15** [Dachprojekt / Makro-Agent] **Danske „AI Investment Tracker“: Wirkketten getestet**
+  (Nutzerauftrag). `scripts/research_ai_wirkketten.py`, Lock `ai_wirkketten` (Tresor zu, 20 Versuche).
+  Keine Kette hat einen Vorlauf:
+  - China-Importpreise → 2J/Gold ✗
+  - Korea-Exporte → AUD/Nasdaq ✗
+  - Kredit-Spread → Nasdaq ✗ (umgekehrt: Aktien laufen vor BAA10Y, t −3)
+  - Kupfer → AUD ✗
+  - IPO-Tage unauffällig
+
+  Befunde:
+  - AUD koppelt seit 2025 an KOSPI (+0,54), kaum noch an den Nasdaq (+0,21).
+  - Der breite Kreditspread ist enger geworden, der Stress betrifft nur einzelne KI-Firmen.
+  - `ki_schulden_hy` nur bei ruhigem VIX schwach (t −1,4/−1,2).
+
+  Abgelegt in [[danske-ai-investment-tracker]], [[makro-wirkketten-katalog]] und der Leitlinie in
+  [[makro-agent-report-pruefung]]. Der Eintrag in der Ideen-Inbox ist erledigt. Drei Code-Vorschläge stehen
+  unter „Braucht deine Bestätigung“. Nichts live geändert.
+
 - **2026-11-15** [Dachprojekt / Makro-Agent] **SMT-Reports KW47 geprüft + Gegenwährungs-Backtest**
   (Nutzerauftrag). Beispiel 3 in [[makro-agent-report-pruefung]]: Faktencheck, 6 Widersprüche, Trades, Alarme,
   Dennis' Charts EUR/USD, Gold, US100, USD/JPY (Nutzer ist USD/JPY short; EK-Risiko ~4–5 % geschätzt).

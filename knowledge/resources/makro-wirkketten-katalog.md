@@ -40,6 +40,17 @@ so.“ Ob sie läuft, entscheiden Messwerte; ob die Aussage stimmt, prüft das F
 US-Zinsen→Dollar · China→Kupfer→AUD · Fed-Druck→Gold. Status je Lauf: aktiv / anlaufend / gestoppt / ruhend;
 Beleg „belegt“ nur, wenn der letzte Schritt in der Exposure-Matrix stabil ist.
 
+## Befunde 15.11. (Danske-KI-Ketten, Lock `ai_wirkketten`)
+
+Details und Zahlen in [[danske-ai-investment-tracker]].
+- **`ki_schulden_hy`:** Bedingungslos läuft der Kredit-Spread nicht vor den Aktien. Es ist umgekehrt: Nasdaq →
+  BAA10Y in der Folgewoche, t −3,1 / −2,9. Nur bei VIX < 20 zeigt die Richtung schwach in die erwartete Richtung
+  (HYG/IEF-Ersatz, t −1,4 / −1,2). FRED-HY gibt es nur ab 11/2023.
+- **`risiko_an_ki` / AUD:** Seit 2025 liegt AUD~Nasdaq nur bei +0,21. AUD~KOSPI liegt bei +0,54. Die Tech-Kopplung des AUD
+  läuft über Asien.
+- **`china_kupfer`:** Kupfer hat keinen Vorlauf für den AUD (OOS t −1,6), der Gleichlauf schwächer (+0,34).
+- Kein Vorlauf haben außerdem: Korea-Exporte → AUD/Nasdaq und China-Importpreise → 2J/Gold.
+
 ## Daten und Lücken
 
 - Realzinsen: FRED DFII10/DFII5, T10YIE/T5YIE, T5YIFR; andere Länder nur 2J minus Kern-Inflation (ex post).

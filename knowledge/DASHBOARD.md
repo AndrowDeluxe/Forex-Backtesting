@@ -18,6 +18,15 @@ passiert, was steht an.
 
 ## ▶️ Als Nächstes
 
+- **📈 Neu im Dachprojekt (15.11.): täglicher Aktien- + Krypto-Screener mit Forward-Ledger und Cloud-Dashboard**
+  (Nutzerentscheid, Plan freigegeben). [[aktien-analyse-und-bot]]. S&P 500 + Nasdaq-100 (518) und Top-30-Krypto:
+  Score 0–100 (≥ 65 KAUFEN, ≤ 35 VERKAUFEN), Tiefen-Analyse Top 10 + NVDA bzw. Top 5 + BTC/ETH mit berechneten
+  Preisbereichen (A Rücksetzer / B Ausbruch / C Abwarten) und News-Einordnung per Claude-Abo. Telegram + Notion +
+  Dashboard (`fusion_lab/dashboard/`, Cloudflare Pages + Access). **Läuft im Probebetrieb.** Als Nächstes:
+  (1) du siehst die ersten Berichte durch → Forward-Start setzen (`FORWARD_START`), (2) Cloudflare einrichten
+  (Anleitung `fusion_lab/dashboard/README.md`, ~1 h, Domain auf Cloudflare-DNS), (3) NVDA-Analyse kommt Di 17.11.
+  23:45 per Telegram.
+
 1. **🧩 Dachprojekt Quant × diskretionäres Trading** (gestartet 2026-10-04,
    löst "Monatsjournal + Verschmelzung" ab — Journal-Teil erledigt):
    [[quant-diskretionaer-fusion]]. Eigene Analyse reproduzieren, testen,
@@ -91,6 +100,17 @@ Telegram. Der tägliche Digest zeigt nur die Fokus-Abschnitte.
 
 
 ### 🔍 Braucht deine Bestätigung
+
+- **Aktien-/Krypto-Screener: meine Annahmen** (15.11., [[aktien-analyse-und-bot]]). Vor dem Forward-Start bestätigen
+  oder ändern, danach nur noch per neuer Version:
+  - Gewichte Aktien: Trend 15, Momentum 15, Qualität 15, Wachstum 15, Bewertung 15, Bilanz 10, Analysten 15.
+    Krypto: Trend 25, rel. Stärke zu BTC 25, Liquidität 15, Verwässerung 10, Funding 10, Nähe zum Hoch 15.
+  - Gesamtscore Tiefen-Kandidaten = 70 % Kennzahlen + 30 % News-Stimmung (wie Prosper 0,3).
+  - Zonen: Rücksetzer 0,5–2,5 ATR unter Kurs, Stopp 1 ATR unter Zone; Ausbruch ≤ 3 ATR, Stopp 1,5 ATR;
+    nur Chance-Risiko ≥ 2; Zone höchstens 1 ATR breit.
+  - Zeiten: Aktien Mo–Fr 23:00, Krypto täglich 07:45. Krypto-Ausschluss: Stablecoins, Gold-/Wrapped-Token.
+  - Erfolg (`fusion_lab/screener/ledger/FORWARD.md`): Ø R > 0 **und** KAUFEN schlägt Universum + Benchmark **und**
+    VERKAUFEN liegt unter dem Universum (20 Kerzen).
 
 - **H4 „15:00 Uhr“ = deutsche Zeit (NY 09:00)** angenommen (12.11.): Signal = H4-Kerze 11–15 Uhr deutsch, Einstieg zum Start
   der Kerze 15–19 Uhr. Falls du 15:00 New York meintest, ändert sich der ganze Test. [[h4-htf-entry-edge-card]]
@@ -595,6 +615,9 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 | Regime-Notion-Sync (neu)                                | — (nur FRED/ALFRED/yfinance-Abruf + Notion-Schreiben, kein Order-Bezug)                 | Regimekarte Wachstum×Inflation neu rechnen → Notion „Regime-Roadmap“ + Seite „Assets je Regime“ (`scripts/regime_notion_task.ps1`) | Ready (So 09:00, StartWhenAvailable) | — | 2026-10-28      |
 | Makro-Daten (neu)                                       | — (nur Datenabruf, kein Order-Bezug)                                                     | Makro-Agent Schicht 1: G8-Makrodaten und Kalender mit Abrufzeit nach `fusion_lab/data/macro_data/` (`scripts/macro_data_task.ps1`, Akku erlaubt); seit 12.11. auch Geopolitik-Index, Megacap-Earnings und Schlagzeilen mit Einordnung durch lokalen `claude.exe` | Ready (täglich 00:50 + 07:30, auch Sa/So) | — | 2026-11-12 |
 | C2-Forward-Log (neu)                                    | — (nur Log + Telegram, keine Orders)                                                     | Forward-Test Daily-Edge: seit 11.11. nur noch W50 Vorwochen-Mitte `5c82f5d4` + Referenz EL `6c55e525`, 9 Märkte (alter Forward `aea4189b` raus, Nutzerentscheid) (`scripts/c2_forward_task.ps1`, Ledger `htf_daily_trade/forward/`, Akku erlaubt); Auswertung ab 30 Trades oder 12.11.2027 | Ready (Di–Sa 03:30, StartWhenAvailable) | — | 2026-11-11 |
+| Forex-Screener-Aktien (neu)                             | — (nur Analyse + Paper-Ledger, keine Orders)                                             | S&P 500 + Nasdaq-100: Score, Preisbereiche, News per `claude.exe -p` → Telegram, Notion, Dashboard, Ledger (`scripts/screener_task.ps1 aktien`, **Probebetrieb**) | Ready (Mo–Fr 23:00, StartWhenAvailable) | — | 2026-11-15 |
+| Forex-Screener-Krypto (neu)                             | — (nur Analyse + Paper-Ledger, keine Orders)                                             | Top-30-Krypto (Binance/CoinGecko): wie Aktien (`scripts/screener_task.ps1 krypto`, **Probebetrieb**) | Ready (täglich 07:45, StartWhenAvailable) | — | 2026-11-15 |
+| Forex-NVDA-Earnings-Analyse (einmalig)                  | — (nur Analyse + Telegram)                                                               | NVIDIA nach Q3-Zahlen per Telegram (`scripts/nvda_followup_task.ps1`), danach Task löschen | Ready (Di 17.11.2026 23:45) | — | 2026-11-15 |
 | Telegram-Import-SMH-Daily                               | — (nur Telegram lesen + rechnen, kein Order-Bezug)                                       | Inkrementeller Import „SMH Daily Update“ ohne Videos; seit 28.10. zusätzlich Bild-/Anweisungs-Lesung per Claude-Abo + Forward-Stand Copy Trading Stufe 2 (`scripts/telegram_smh_daily_import_task.ps1`, Akku erlaubt) | Ready (täglich 23:00, auch Sa/So) | — | 2026-10-28      |
 
 **Letzter echter Entry** (Spalte seit 2026-09-16): letzter Eröffnungs-Deal beim Broker, der **dieser Bridge zugeordnet** ist (EK über Magic, Funded/FK über die Tickets im `bridge_state`). Fremdpositionen zählen nicht mit — auf FK lagen am 14.09. zwei manuelle Positionen, die sonst wie Bridge-Aktivität ausgesehen hätten. Grund für die Spalte: der Modus LIVE hat fünf Tage lang verdeckt, dass FK nichts ausführte. Aktualisieren mit `python scripts/reports/soll_ist.py --last-entries`. Zeiten sind Broker-Serverzeit.

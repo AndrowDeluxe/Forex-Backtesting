@@ -24,7 +24,8 @@ Verschmelzung" (2026-09-02) ab -- der Journal-Teil ist laut Nutzer erledigt.
 - **Start mit Makro** als Basis für FX/Rohstoffe, übergreifend Aktien. Die
   Makro-Analyse des Mentors soll künftig automatisiert werden.
 - **Aktienanalyse + Aktienbot = eigenes Projekt** ([[aktien-analyse-und-bot]]),
-  startet erst, wenn die Makro-Basis steht.
+  startet erst, wenn die Makro-Basis steht. **Geändert 2026-11-15 (Nutzer):** jetzt zusätzlicher
+  Strang im Dachprojekt (Strang 8 unten).
 - **ELITE 3 = Haupt-Input für neues Wissen, Erkenntnisse und Aufgaben**
   (Nutzer, 2026-10-07). ELITE 3 ist die aktuelle Mentoring-Gruppe; neue
   Inhalte landet der Nutzer künftig direkt in der Notion-Datenbank
@@ -231,6 +232,10 @@ Verschmelzung" (2026-09-02) ab -- der Journal-Teil ist laut Nutzer erledigt.
   [[agentisches-research-system-und-self-learning-bot]].
 - [ ] **7 Selbstlernen** = Strang B dort; lernt aus dem Entscheidungslog,
   Änderungen laufen durch die Gates oben.
+- [ ] **8 Aktien- + Krypto-Screener** (seit 2026-11-15, Nutzerentscheid): täglicher Screener mit Score
+  (≥ 65 KAUFEN / ≤ 35 VERKAUFEN), berechneten Preisbereichen, News-Einordnung per Claude-Abo,
+  Forward-Ledger und Cloud-Dashboard (zeigt auch den Makro-Agenten). Stufe 1 gebaut, Probebetrieb.
+  [[aktien-analyse-und-bot]]
 
 Jeder Strang bekommt beim Start einen eigenen Plan-Modus-Durchlauf.
 

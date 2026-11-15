@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0d10">
+<title>Trading Cockpit</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="logo">◆</span><div><h1>Trading Cockpit</h1><p id="stand" class="muted">lädt …</p></div></div>
+  <span id="status" class="badge"></span>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button class="tab active" data-tab="uebersicht">Übersicht</button>
+  <button class="tab" data-tab="aktien">Aktien</button>
+  <button class="tab" data-tab="krypto">Krypto</button>
+  <button class="tab" data-tab="makro">Makro</button>
+  <button class="tab" data-tab="forward">Forward</button>
+</nav>
+
+<main>
+  <section id="uebersicht" class="panel active"></section>
+  <section id="aktien" class="panel"></section>
+  <section id="krypto" class="panel"></section>
+  <section id="makro" class="panel"></section>
+  <section id="forward" class="panel"></section>
+</main>
+
+<div id="detail" class="sheet hidden" role="dialog" aria-modal="true">
+  <div class="sheet-inner">
+    <button id="close" class="close" aria-label="Schließen">✕</button>
+    <div id="detail-body"></div>
+  </div>
+</div>
+
+<footer class="muted foot">Analyse, keine Anlageberatung · Kein Handel, kein Broker · Daten: Yahoo, Binance, CoinGecko, Google News</footer>
+
+<script src="vendor/lightweight-charts.js"></script>
+<script src="vendor/marked.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

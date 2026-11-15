@@ -9,6 +9,27 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-15** [Dachprojekt / Strang 8] **Aktien- + Krypto-Screener, Forward-Ledger, Cloud-Dashboard gebaut**
+  (Nutzerentscheid, Plan freigegeben). [[aktien-analyse-und-bot]].
+  - `fusion_lab/screener/`: S&P 500 + Nasdaq-100 (518) und Top-30-Krypto, Score 0–100 (≥ 65 KAUFEN / ≤ 35
+    VERKAUFEN, Nutzerwunsch Prosper-Stil), Preisbereiche A/B/C aus Swing-Marken/SMA/Volumenprofil/ATR,
+    News-Einordnung per `claude.exe -p` mit Preis-Validator, Telegram + Notion.
+  - Forward-Ledger `fusion_lab/screener/ledger/` (Regeln `FORWARD.md`, Probebetrieb bis Nutzer-Durchsicht),
+    NVDA-Handanalyse 15.11. als Referenz.
+  - Dashboard `fusion_lab/dashboard/` (statisch, Prosper-Stil, Android/PWA), Upload Cloudflare Pages + Access
+    sobald `[cloudflare]` in secrets.toml steht (Anleitung README).
+  - Tasks `Forex-Screener-Aktien` (Mo–Fr 23:00) und `Forex-Screener-Krypto` (täglich 07:45).
+  - 20 Tests (`tests/test_screener.py`); ein Test fand einen echten Bug (leere Ledger-Spalten als float). Erster
+    Lauf: 18/18 Claude-Einordnungen ok, alle Validator-Warnungen waren Fehlalarme (deutscher Tausenderpunkt,
+    Zahlen aus Schlagzeilen) → Validator korrigiert. Notion + Telegram getestet.
+  - Kein Handel, keine Bridge.
+
+- **2026-11-15** [Dachprojekt / Aktien-Screener] **Einmaliger Task `Forex-NVDA-Earnings-Analyse` (Di 17.11., 23:45)**
+  (Nutzerauftrag): NVIDIA-Analyse nach den Q3-Zahlen per Telegram, `claude.exe -p` mit Web-Zugriff,
+  Prompt `scripts/reports/nvda_followup_prompt.md`, Technik gerechnet über `scripts/reports/stock_technicals.py`,
+  Versand `scripts/reports/send_telegram_text.py` (Test-Nachricht ok). Vergleicht mit der Handanalyse vom 15.11.
+  (Szenarien A 149–158 / B > 172). Kein Handel.
+
 - **2026-11-15** [Research-Prozess] **Vorgriff-Wächter gebaut** (Nutzerauftrag, Anstoß: YouTube-Sichtung
   „AI Trading Bot“, AI-Pathways-Kurs). [[vorgriff-waechter]]
   - `lookahead_guard.py`: `check_truncation` (Daten an 30 Zufalls-Stichtagen abschneiden, neu rechnen,

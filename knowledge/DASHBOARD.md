@@ -169,6 +169,11 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 
 ### Weitere Projekte
 
+- **🎓 Prosper-AI-„Grok Trading Team“ (12.11.): eingerichtet, Regel auf echten Daten getestet, kein Edge.**
+   Lernprojekt läuft lokal (`C:\Users\andre\prosper-ai-grok-trading-team`, nur Simulation). D1 sieht positiv aus,
+   ist aber reines Long-Beta (Zufalls-Long im OOS besser), H1 ≈ 0, M15 negativ. Der Bot sperrt sich 2018 selbst ab.
+   Abgeschlossen, Tresor bleibt zu. [[prosper-bot-trendregel-echtdaten]]
+
 - **🎯 SMH-Elite-Teamaufgabe „Mikrostruktur & Liquidität“: gerechnet
    07.10., alle drei Kandidaten ehrlich gescheitert.** Tresor: K1 PF 0,65,
    K2 PF 1,31 (52 Trades), K3 (Team-Kandidat) PF 0,84. Steckbrief steht auf
@@ -206,6 +211,10 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 ---
 
 ### Bestätigungen (Betrieb/Research)
+
+- **Prosper-Bot-Test (12.11.): ATR-Variante war meine Annahme.** Stop 2 × ATR14, Ziel 2 × Stopweite (hält das 1:2 des
+     Bots). Ändert das Fazit nicht (beide Stops verworfen). Bestätigen oder andere Faktoren nennen.
+     [[prosper-bot-trendregel-echtdaten]]
 
 - **Weekly KW45 (08.11.): Gold ASB 03.11. live auf allen 4 Konten gelegt (-1.274 USD / -90 EUR), im Soll gefiltert.** Erst der
      Liquiditaetsfilter wirft den Trade beim Nachrechnen raus. Ursache offen (GOLD_D1 am 02.11. neu

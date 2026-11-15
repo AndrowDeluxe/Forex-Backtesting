@@ -43,3 +43,6 @@ fusion_lab/notion/cockpit_ids.json
 mt5_quantum_omnigold/results/ticks/
 mt5_quantum_omnigold/results/gold_m1_broker.parquet
 mt5_valkyrie/results/xau_m1_mq.parquet
+
+# Prosper-Bot-Echtdatentest: Einzeltrades (28 MB) nur lokal
+prosper_bot_realdata/results/trades.csv

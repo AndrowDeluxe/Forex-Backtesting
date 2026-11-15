@@ -9,6 +9,14 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-12** [Research / Nebenthema] **Prosper-AI-„Grok Trading Team“-Bot auf echten Daten: kein Edge, verworfen**
+  (Nutzerauftrag, Plan freigegeben). Lernprojekt eingerichtet unter `C:\Users\andre\prosper-ai-grok-trading-team`
+  (nur Simulation, außerhalb des Repos, 10/10 Tests). Trendregel 1:1 nachgebaut in `prosper_bot_realdata/`
+  (Score-Abgleich 320/320 identisch), Lock `prosper_bot_realdata` (IS 2017-09–2022, OOS bis 02/2026, Tresor zu),
+  6 Versuche (M15/H1/D1 × Stop 5 %/2×ATR), 13 Märkte. D1 OOS +0,17/+0,23 R (t 2,2/2,8), aber Zufalls-Long-Einstiege
+  +0,25/+0,33 R = reines Long-Beta. H1 ≈ 0, M15 negativ. Bot-Konto 1:1 sperrt sich 2018 dauerhaft (10-%-DD, Hoch
+  nie zurückgesetzt). [[prosper-bot-trendregel-echtdaten]]. Keine Bot-Änderung.
+
 - **2026-11-12** [Dachprojekt / Makro-Agent] **Makro-Agent v3: Geopolitik-Framework, Meridian-Bausteine, Wirkketten,
   Makro-Filter-Test** (Nutzerauftrag, Plan freigegeben). [[makro-wirkketten-katalog]]. Commits `9b482ee3`, `55a2515a`,
   `8acb2caf` + Phase 5. Daten: TIPS-Realzinsen, Breakevens, 5J-in-5J, Unsicherheitsindex (FRED), Geopolitical Risk

@@ -1,0 +1,14 @@
+{
+  "strategy": "prosper_bot_realdata",
+  "split": {
+    "is_start": "2017-09-01",
+    "is_end": "2022-12-31",
+    "oos_end": "2026-02-28",
+    "tresor_end": "2026-08-31"
+  },
+  "registered": "2026-11-12T01:02:47+00:00",
+  "trials": 6,
+  "frozen": null,
+  "unsealed": {},
+  "forward": null
+}

@@ -33,16 +33,16 @@ so.“ Ob sie läuft, entscheiden Messwerte; ob die Aussage stimmt, prüft das F
 | China / Taiwan | Exportkontrollen → Risikoappetit, Chips | VIX, Nasdaq |
 | Druck auf die Fed | Glaubwürdigkeit → Inflationserwartung, Dollar schwach | 5J-in-5J |
 
-## Katalog (13 Ketten)
+## Katalog (16 Ketten)
 
-Öl→Fed→Gold · Öl→BoC→CAD (SMT) · Öl→Importeure · Defizit→OAT-Bund→EUR (SMT) · KI-Schulden→HY→Aktien (SMT) ·
-Öl-Prämie Angriff vs. Menge (SMT) · Zölle→Inflationserwartung · Ukraine→Gas→EUR · Stress→Häfen · KI-Gewinne→AUD ·
-US-Zinsen→Dollar · China→Kupfer→AUD · Fed-Druck→Gold. Status je Lauf: aktiv / anlaufend / gestoppt / ruhend;
+Öl→Fed→Gold · Öl→BoC→CAD (SMT) · Öl→Importeure · Defizit→OAT-Bund→EUR (SMT) · KI-Schulden→HY→Aktien (SMT, seit 15.11. HYG/IEF, nur bei ruhigem VIX) ·
+Öl-Prämie Angriff vs. Menge (SMT) · Zölle→Inflationserwartung · Ukraine→Gas→EUR · Stress→Häfen · KI-Gewinne→KOSPI→AUD (seit 15.11. KOSPI statt Nasdaq) ·
+US-Zinsen→Dollar · China→Kupfer→AUD · Fed-Druck→Gold · KI-Chips→Korea-Exporte→AUD/Nasdaq · Speicherchips→China-Preise→2J→Gold · KI-Ausbau→Kupfer→AUD (die letzten drei aus Danske, ohne Vorlauf im Backtest, nur Vorwärts-Prüfung im Ledger). Status je Lauf: aktiv / anlaufend / gestoppt / ruhend;
 Beleg „belegt“ nur, wenn der letzte Schritt in der Exposure-Matrix stabil ist.
 
 ## Befunde 15.11. (Danske-KI-Ketten, Lock `ai_wirkketten`)
 
-Details und Zahlen in [[danske-ai-investment-tracker]].
+Details und Zahlen in [[danske-ai-investment-tracker]]. Vom Nutzer bestätigt und in `chains.py` umgesetzt (15.11.).
 - **`ki_schulden_hy`:** Bedingungslos läuft der Kredit-Spread nicht vor den Aktien. Es ist umgekehrt: Nasdaq →
   BAA10Y in der Folgewoche, t −3,1 / −2,9. Nur bei VIX < 20 zeigt die Richtung schwach in die erwartete Richtung
   (HYG/IEF-Ersatz, t −1,4 / −1,2). FRED-HY gibt es nur ab 11/2023.

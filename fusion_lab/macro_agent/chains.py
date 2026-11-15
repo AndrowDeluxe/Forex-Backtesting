@@ -95,12 +95,16 @@ CHAINS = [
            Step("Spread steigt (20 T > +10 bp)", _gt("oat_bund_20d_bp", 10), "oat_bund_20d_bp")],
           Step("Spread fällt (20 T < −10 bp)", _lt("oat_bund_20d_bp", -10), "oat_bund_20d_bp"),
           {"EURCHF": -1, "EURGBP": -1}, [], "Kein Treiber in der Exposure-Matrix: Hypothese."),
-    Chain("ki_schulden_hy", "KI-Schulden → Kreditaufschlag → Aktien (verzögert)", "SMT 21.10.",
-          [Step("HY-Spread steigt (20 T > +25 bp)", _gt("hy_20d_bp", 25), "hy_20d_bp"),
+    Chain("ki_schulden_hy", "KI-Schulden → Kreditaufschlag → Aktien (verzögert, nur bei ruhigem VIX)",
+          "SMT 21.10., Test 15.11.",
+          [Step("Kredit verschlechtert sich (HYG/IEF 20 T < −2 % oder HY-Spread 20 T > +25 bp)",
+                _any(_lt("hyg_ief_20d", -2), _gt("hy_20d_bp", 25)), "hyg_ief_20d"),
            Step("VIX noch ruhig (< 20)", _lt("vix", 20), "vix")],
-          Step("HY-Spread unter 3,15 %", _lt("hy", 3.15), "hy"),
+          Step("Kredit erholt (HYG/IEF 20 T > 0)", _gt("hyg_ief_20d", 0), "hyg_ief_20d"),
           {"ndx": -1, "spx": -1}, [("ndx", "vix"), ("spx", "vix")],
-          "Erst Kredit, dann Aktien: Wirkung kommt verzögert, wenn der VIX nachzieht."),
+          "Test 15.11.: Bedingungslos laufen Aktien vor dem Spread (Nasdaq → BAA10Y, t −3), nicht umgekehrt. "
+          "Nur bei VIX < 20 schwacher Vorlauf (HYG/IEF, NDX 20 T −0,6 % statt +1,0/+1,4 %, t −1,4/−1,2). "
+          "FRED-HY reicht nur bis 11/2023 zurück, daher HYG/IEF."),
     Chain("oel_praemie", "Öl-Prämie: Angriff statt Menge", "SMT 21.10.",
           [Step("Iran/Hormuz laut Schlagzeilen eskalierend", _eq("lage_iran_hormuz", "eskalation"), "lage_iran_hormuz"),
            Step("Brent über dem 20-Tage-Mittel", _gt("brent_vs_20d", 0), "brent_vs_20d")],
@@ -122,11 +126,13 @@ CHAINS = [
            Step("S&P 500 fällt (5 T < −3 %)", _lt("spx_5d", -3), "spx_5d")],
           Step("VIX unter 18", _lt("vix", 18), "vix"),
           {"AUDUSD": -1, "USDCAD": +1, "spx": -1}, [("AUDUSD", "vix"), ("USDCAD", "vix"), ("spx", "vix")]),
-    Chain("risiko_an_ki", "KI-Gewinne → Nasdaq → Risikoappetit → AUD stärker", "Geo-Framework 12.11.",
-          [Step("Nasdaq steigt (20 T > +5 %)", _gt("ndx_20d", 5), "ndx_20d"),
+    Chain("risiko_an_ki", "KI-Gewinne → Asiens Chipbörsen (KOSPI) → Risikoappetit → AUD stärker",
+          "Geo-Framework 12.11., Test 15.11.",
+          [Step("KOSPI steigt (20 T > +5 %)", _gt("kospi_20d", 5), "kospi_20d"),
            Step("VIX fällt (20 T < 0)", _lt("vix_20d", 0), "vix_20d")],
-          Step("Nasdaq fällt (20 T < −5 %)", _lt("ndx_20d", -5), "ndx_20d"),
-          {"AUDUSD": +1, "kupfer": +1}, [("AUDUSD", "vix"), ("kupfer", "vix")]),
+          Step("KOSPI fällt (20 T < −5 %)", _lt("kospi_20d", -5), "kospi_20d"),
+          {"AUDUSD": +1, "kupfer": +1}, [("AUDUSD", "vix"), ("kupfer", "vix")],
+          "Seit 15.11. KOSPI statt Nasdaq: AUD~Nasdaq 2025/26 nur +0,21, AUD~KOSPI +0,54 (Wochen, Gleichlauf)."),
     Chain("us_zins_dollar", "US-Zinsen steigen relativ → Dollar stärker (vor allem gegen JPY)", "Fed-Note 2017",
           [Step("US-2J steigt (20 T > +15 bp)", _gt("us_2y_20d_bp", 15), "us_2y_20d_bp")],
           Step("US-2J fällt (20 T < −15 bp)", _lt("us_2y_20d_bp", -15), "us_2y_20d_bp"),
@@ -135,6 +141,30 @@ CHAINS = [
           [Step("Kupfer steigt (20 T > +5 %)", _gt("kupfer_20d", 5), "kupfer_20d")],
           Step("Kupfer fällt (20 T < −5 %)", _lt("kupfer_20d", -5), "kupfer_20d"),
           {"AUDUSD": +1}, [], "Kupfer ist in der Exposure-Matrix kein Treiber: Hypothese."),
+    # Danske „AI Investment Tracker" (19.10.2026), getestet 15.11. (scripts/research_ai_wirkketten.py):
+    # kein Vorlauf im Backtest. Gespeichert auf Nutzerwunsch, damit das Ledger sie vorwärts prüft.
+    Chain("ki_chips_korea", "KI-Chipboom → Korea-Exporte → AUD/Nasdaq stärker", "Danske 19.10., Test 15.11.",
+          [Step("Korea-Exporte J/J beschleunigen (3 M > +5 Pp.)", _gt("korea_exporte_yoy_3m", 5),
+                "korea_exporte_yoy_3m"),
+           Step("KOSPI steigt (20 T > 0)", _gt("kospi_20d", 0), "kospi_20d")],
+          Step("Korea-Exporte J/J bremsen (3 M < −5 Pp.)", _lt("korea_exporte_yoy_3m", -5), "korea_exporte_yoy_3m"),
+          {"AUDUSD": +1, "ndx": +1}, [],
+          "Backtest 15.11.: kein Zusammenhang, auch gleichzeitig nicht (|t| < 1). Nur Vorwärts-Prüfung."),
+    Chain("china_preise_inflation", "Speicherchips → China-Exportpreise → US-Güterinflation → US-2J → Gold schwach",
+          "Danske 19.10., Test 15.11.",
+          [Step("US-Importpreise aus China J/J positiv", _gt("china_importpreise_yoy", 0), "china_importpreise_yoy"),
+           Step("… und steigend (3 M > +1 Pp.)", _gt("china_importpreise_yoy_3m", 1), "china_importpreise_yoy_3m"),
+           Step("US-2J steigt (20 T > +10 bp)", _gt("us_2y_20d_bp", 10), "us_2y_20d_bp")],
+          Step("Importpreise drehen (3 M < −1 Pp.)", _lt("china_importpreise_yoy_3m", -1), "china_importpreise_yoy_3m"),
+          {"gold": -1, "USDJPY": +1}, [("gold", "us_2y"), ("USDJPY", "us_2y")],
+          "Backtest 15.11.: Kern-Güter-CPI folgt nur OOS (t 2,8, ohne 2021/22 t 1,65); kein Vorlauf für 2J/Gold. "
+          "Der letzte Schritt (2J → Gold) ist belegt."),
+    Chain("kupfer_aud_ki", "KI-Ausbau → Kupfer → AUD stärker", "Danske 19.10., Test 15.11.",
+          [Step("Kupfer steigt (20 T > +5 %)", _gt("kupfer_20d", 5), "kupfer_20d"),
+           Step("KOSPI steigt (20 T > 0)", _gt("kospi_20d", 0), "kospi_20d")],
+          Step("Kupfer fällt (20 T < −5 %)", _lt("kupfer_20d", -5), "kupfer_20d"),
+          {"AUDUSD": +1}, [],
+          "Backtest 15.11.: Kupfer ohne Vorlauf für AUD (OOS t −1,6), Gleichlauf 2025/26 nur +0,34."),
     Chain("fed_druck", "Druck auf die Fed → Glaubwürdigkeit → Dollar schwach, Gold stark", "Literatur",
           [Step("Fed-Druck laut Schlagzeilen eskalierend", _eq("lage_fed_unabhaengigkeit", "eskalation"),
                 "lage_fed_unabhaengigkeit"),
@@ -154,6 +184,12 @@ def _chg(s: pd.Series, n: int, scale: float = 100) -> float | None:
     return None if len(s) <= n else float(scale * (s.iloc[-1] - s.iloc[-1 - n]))
 
 
+def _yoy_monthly(s: pd.Series) -> pd.Series:
+    """Monatsreihe (in der Tagestabelle nur am Monatsersten gefüllt) -> J/J-Rate in %."""
+    s = s.dropna()
+    return (100 * (s / s.shift(12) - 1)).dropna()
+
+
 def measures(daily: pd.DataFrame, macro_w: pd.DataFrame, sheet: dict) -> M:
     d = daily
     col = lambda c: d[c] if c in d else pd.Series(dtype=float)
@@ -164,10 +200,15 @@ def measures(daily: pd.DataFrame, macro_w: pd.DataFrame, sheet: dict) -> M:
         "us_2y_20d_bp": _chg(col("us_2y"), 20), "breakeven_20d_bp": _chg(col("breakeven_10y"), 20),
         "vix": None if col("vix").dropna().empty else float(col("vix").dropna().iloc[-1]),
         "vix_20d": _chg(col("vix"), 20, 1), "spx_5d": _ret(col("spx"), 5), "ndx_20d": _ret(col("ndx"), 20),
-        "kupfer_20d": _ret(col("kupfer"), 20),
+        "kupfer_20d": _ret(col("kupfer"), 20), "kospi_20d": _ret(col("kospi"), 20),
+        "hyg_ief_20d": _ret((col("hyg") / col("ief")).dropna(), 20) if "hyg" in d and "ief" in d else None,
         "hy": None if mw("MKT.hy_spread").dropna().empty else float(mw("MKT.hy_spread").dropna().iloc[-1]),
         "hy_20d_bp": _chg(mw("MKT.hy_spread"), 20), "fwd_5y5y_1w_bp": _chg(mw("US.fwd_5y5y"), 5),
     }
+    for name in ("korea_exporte", "china_importpreise"):
+        yoy = _yoy_monthly(col(name))
+        m[f"{name}_yoy"] = None if yoy.empty else float(yoy.iloc[-1])
+        m[f"{name}_yoy_3m"] = _chg(yoy, 3, 1)
     fr, de = mw("FR.10y").dropna(), mw("DE.10y").dropna()
     spread = (fr - de).dropna() * 100
     m["oat_bund_bp"] = None if spread.empty else float(spread.iloc[-1])

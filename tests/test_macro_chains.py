@@ -39,3 +39,22 @@ def test_active_chain_goes_to_ledger():
     rec = [r for r in ledger.records(sheet) if r["art"] == "kette"]
     objs = {r["objekt"]: (r["richtung"], r["messgroesse"]) for r in rec}
     assert objs["oel_fed_gold:gold"] == (-1, "gold") and all(r["horizont"] == 20 for r in rec)
+
+
+def test_ki_ketten_15_11():
+    """Danske-KI-Ketten (15.11.): KOSPI treibt risiko_an_ki, HYG/IEF ersetzt FRED-HY."""
+    m = {"kospi_20d": 7.0, "vix_20d": -2.0, "hyg_ief_20d": -3.0, "vix": 15.0,
+         "korea_exporte_yoy_3m": 8.0, "china_importpreise_yoy": 3.2, "china_importpreise_yoy_3m": 2.0,
+         "us_2y_20d_bp": 15.0, "kupfer_20d": 6.0}
+    out = _by_id(chains.evaluate(m, None))
+    for cid in ["risiko_an_ki", "ki_schulden_hy", "ki_chips_korea", "china_preise_inflation", "kupfer_aud_ki"]:
+        assert out[cid]["status"] == "aktiv", cid
+    m["hyg_ief_20d"] = 0.5
+    assert _by_id(chains.evaluate(m, None))["ki_schulden_hy"]["status"] == "gestoppt"
+
+
+def test_yoy_monthly_ignores_daily_gaps():
+    idx = pd.date_range("2025-01-01", periods=15, freq="MS")
+    s = pd.Series(range(100, 115), index=idx, dtype=float).reindex(pd.date_range("2025-01-01", "2026-03-01"))
+    yoy = chains._yoy_monthly(s)
+    assert len(yoy) == 3 and abs(yoy.iloc[0] - 12.0) < 1e-9

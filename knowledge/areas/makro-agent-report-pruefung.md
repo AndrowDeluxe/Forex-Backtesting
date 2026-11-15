@@ -67,9 +67,9 @@ in dieselbe Richtung zeigen**, und begründet die Wahl ausdrücklich.
    kämpft die Angst gegen den Trade. Beleg 08.11.: Wochenbewegung USD +2,4 % gegen AUD, +1,6 % NZD,
    +1,1 % CAD, aber −0,5 % gegen CHF.
 3. **Je Rohstoffwährung den eigenen Schalter nennen:** CAD ↔ Brent (über 105 stärkt den CAD,
-   Hormus), AUD ↔ Tech-/China-Risiko und Metalle, NZD ↔ Innenpolitik/Milch. Kippt der Rohstoff,
+   Hormus), AUD ↔ Tech-/China-Risiko (gemessen am KOSPI, nicht am Nasdaq) und Metalle, NZD ↔ Innenpolitik/Milch. Kippt der Rohstoff,
    kippt der Trade, auch wenn die Dollar-These hält.
-   *Befund 15.11. (Gleichlauf, kein Signal):* Die Tech-Seite des AUD läuft seit 2025 über Asien
+   *Befund 15.11. (Gleichlauf, kein Signal; vom Nutzer bestätigt):* Die Tech-Seite des AUD läuft seit 2025 über Asien
    (AUD~KOSPI +0,54), kaum noch über den Nasdaq (+0,21). Kupfer +0,34. [[danske-ai-investment-tracker]]
 4. **Währung mit eigenem Problem nicht als Vehikel:** Der Euro hat Frankreich; ein Euro-Short ist
    eine eigene These (dann gegen CHF), keine Dollar-These.

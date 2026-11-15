@@ -277,11 +277,14 @@ def _geo(geo: dict | None) -> list[str]:
     er = geo.get("earnings") or {}
     mc = [m for m in er.get("megacaps", []) if "fehler" not in m]
     if mc:
-        lines += ["**S&P-Megacaps (Earnings, Yahoo; Überraschung auf Yahoo-EPS, Sondereffekte wie Steuern "
-                  "können große Abweichungen erzeugen)**", "",
-                  *_table(["Wert", "Nächster Termin", "EPS erwartet", "Letzte Überraschung %", "Beats letzte 4"],
-                          [[m["symbol"], m["naechster_termin"] or "–", fmt(m["erwartung_eps"]),
-                            _pct(m["letzte_ueberraschung_pct"]), str(m["beats_letzte_4"])] for m in mc]), ""]
+        mc = sorted(mc, key=lambda m: m.get("naechster_termin") or "9999")
+        lines += ["**Earnings wichtiger Werte (Megacaps, Index-Schwergewichte, KI-Lieferkette; Yahoo; "
+                  "Überraschung auf Yahoo-EPS, Sondereffekte wie Steuern können große Abweichungen erzeugen)**", "",
+                  *_table(["Wert", "Gruppe", "Nächster Termin", "EPS erwartet", "Letzte Überraschung %",
+                           "Beats letzte 4"],
+                          [[m["symbol"], m.get("gruppe", "Megacap"), m["naechster_termin"] or "–",
+                            fmt(m["erwartung_eps"]), _pct(m["letzte_ueberraschung_pct"]), str(m["beats_letzte_4"])]
+                           for m in mc]), ""]
     if er.get("saison"):
         s = er["saison"]
         lines += [f"Saison {s.get('quartal')}: Gewinnwachstum {fmt(s.get('wachstum_pct'), 1)} %, "

@@ -102,15 +102,6 @@ Telegram. Der tägliche Digest zeigt nur die Fokus-Abschnitte.
 
 ### 🔍 Braucht deine Bestätigung
 
-- **Makro-Agent: drei Änderungen aus dem Danske-KI-Ketten-Test (15.11.), noch nicht umgesetzt** (meine
-  Vorschläge). Test in [[danske-ai-investment-tracker]]: Keine Kette aus dem Report hat einen Vorlauf.
-  (a) Kette `ki_schulden_hy` in `chains.py` umstellen: Text „erst Kredit, dann Aktien“ abschwächen und
-      HYG/IEF statt FRED-HY verwenden (FRED-HY nur ab 11/2023).
-  (b) AUD-Schalter: KOSPI als Tech-Messgröße statt Nasdaq (AUD~NDX seit 2025 nur +0,21, AUD~KOSPI +0,54).
-  (c) ORCL und MU in die Megacap-Quartalszahlen (`fusion_lab/macro_data/earnings.py`).
-  Abgelegt habe ich bisher nur die Befunde (Katalog, Leitlinie Punkt 3), der Code ist unverändert.
-
-
 - **CTNL-Makro-Sperre seit 15.11. LIVE auf allen drei Bridges — meine Annahmen beim Einbau** (Nutzerentscheid
   „direkt in den Bot“). Regel: kein CTNL-Reversal-Long bei MACRO ≤ 35, kein Short bei ≥ 65 (Vortageswert).
   Auf dem Live-Set (Ribbon + Spike) 2016–10/26: 12 von 257 Trades gesperrt, alle Longs, Ø −1,13 R, p 0,0035;

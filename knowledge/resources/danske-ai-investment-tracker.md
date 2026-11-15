@@ -77,6 +77,10 @@ Das ist nur Gleichlauf, kein Signal.
 
 ## Was uns weiterbringt
 
+Status 15.11.: Der Nutzer hat 1, 2 und 5 bestätigt, alles ist in `chains.py` und `earnings.py` umgesetzt.
+Die Danske-Ketten sind trotz fehlendem Vorlauf als eigene Ketten gespeichert (`ki_chips_korea`,
+`china_preise_inflation`, `kupfer_aud_ki`). Werden sie aktiv, schreibt das Forecast-Ledger sie vorwärts mit.
+
 1. **AUD-Schalter genauer:** Für die Tech-Seite des AUD auf KOSPI und Speicherchip-Werte schauen, nicht auf den
    Nasdaq. Das ist eine Ergänzung zur Leitlinie in [[makro-agent-report-pruefung]] Punkt 3.
 2. **Kette `ki_schulden_hy` abschwächen:** Bedingungslos läuft Kredit nicht vor den Aktien, eher umgekehrt.
@@ -85,7 +89,8 @@ Das ist nur Gleichlauf, kein Signal.
 3. **Mega-IPOs sind kein Pausengrund für ORB:** Kein historischer Ereignistag war auffällig.
 4. **Inflationsseite:** Die US-Importpreise aus China sind von −2,4 auf +3,2 % gedreht. Das ist Kontext für die
    Zins- und Güterinflations-These, kein Handelssignal (Vorlauf für 2J und Gold fehlt).
-5. **Kalender-Lücke:** ORCL und MU fehlen in der Megacap-Liste.
+5. **Kalender-Lücke:** ORCL und MU fehlten. Der Kalender ist jetzt auf 25 Werte erweitert: 10 Megacaps, 8 Index-
+   Schwergewichte und 7 Werte der KI-Lieferkette (ORCL, MU, AMD, TSM, ASML, PLTR, CRWV), mit Gruppe je Wert.
 
 Nicht weiter verfolgen: Korea-Exporte als Schalter, Kupfer-Vorlauf für AUD, Kredit-Spread als
 bedingungslose Frühwarnung, IPO-Tage als Risiko für die Index-Beine.

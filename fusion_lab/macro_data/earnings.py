@@ -1,7 +1,10 @@
-"""S&P-Earnings der Megacaps (Makro-Agent v3, 12.11.2026, Nutzerentscheid: Yahoo statt FMP).
+"""S&P-Earnings der wichtigen Werte (Makro-Agent v3, 12.11.2026, Nutzerentscheid: Yahoo statt FMP).
 
-Die zehn groessten Werte tragen den Index (Q3 2026: ohne Nvidia/Micron faellt das Gewinnwachstum
+Die groessten Werte tragen den Index (Q3 2026: ohne Nvidia/Micron faellt das Gewinnwachstum
 laut FactSet von 29 auf 20 %). Je Wert: naechster Termin, Erwartung, letzte Ueberraschung.
+Erweitert 15.11.2026 (Nutzerentscheid nach dem Danske-KI-Tracker): weitere Index-Schwergewichte und die
+KI-Lieferkette (Speicher, Foundry, Lithografie, KI-Cloud mit Kreditbedarf), damit Differenzen,
+Divergenzen und Ueberraschungen zwischen den Gruppen sichtbar werden.
 Saisonzahlen (Wachstum, Beat-Quote) traegt man woechentlich aus FactSet Earnings Insight in
 `fusion_lab/data/macro_agent/earnings_season.json` nach.
 """
@@ -15,6 +18,10 @@ import pandas as pd
 from . import store
 
 MEGACAPS = ["NVDA", "MSFT", "AAPL", "AMZN", "GOOGL", "META", "AVGO", "TSLA", "BRK-B", "JPM"]
+SCHWERGEWICHTE = ["LLY", "V", "MA", "WMT", "COST", "XOM", "NFLX", "UNH"]
+KI_KETTE = ["ORCL", "MU", "AMD", "TSM", "ASML", "PLTR", "CRWV"]  # CRWV = CoreWeave (Kreditstress-Bellwether)
+GRUPPEN = {**{t: "Megacap" for t in MEGACAPS}, **{t: "Index-Schwergewicht" for t in SCHWERGEWICHTE},
+           **{t: "KI-Lieferkette" for t in KI_KETTE}}
 OUT = store.DATA_DIR / "earnings.json"
 
 
@@ -27,6 +34,7 @@ def summarize(symbol: str, dates: pd.DataFrame, today: pd.Timestamp) -> dict:
     last = past.iloc[-1] if len(past) else None
     return {
         "symbol": symbol,
+        "gruppe": GRUPPEN.get(symbol, "–"),
         "naechster_termin": future.index[0].strftime("%Y-%m-%d") if len(future) else None,
         "erwartung_eps": float(future["EPS Estimate"].iloc[0]) if len(future) and pd.notna(future["EPS Estimate"].iloc[0]) else None,
         "letzter_termin": past.index[-1].strftime("%Y-%m-%d") if last is not None else None,
@@ -39,7 +47,7 @@ def fetch_megacaps(today: pd.Timestamp | None = None) -> list[dict]:
     import yfinance as yf
     today = today if today is not None else pd.Timestamp.today().normalize()
     out = []
-    for symbol in MEGACAPS:
+    for symbol in GRUPPEN:
         try:
             dates = yf.Ticker(symbol).get_earnings_dates(limit=8)
             if dates is not None and len(dates):

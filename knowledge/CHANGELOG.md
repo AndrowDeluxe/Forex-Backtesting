@@ -9,6 +9,16 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-15** [Dachprojekt / Makro-Agent] **Danske-KI-Ketten: Vorschläge bestätigt und umgesetzt**
+  (Nutzerentscheid: „bestätige alle offenen Punkte“).
+  - `chains.py`: `ki_schulden_hy` nutzt HYG/IEF und gilt nur bei ruhigem VIX. `risiko_an_ki` misst KOSPI statt Nasdaq.
+  - Neue Ketten `ki_chips_korea`, `china_preise_inflation` und `kupfer_aud_ki`. Im Backtest ohne Vorlauf, auf
+    Nutzerwunsch trotzdem gespeichert, damit das Ledger sie vorwärts prüft.
+  - Datenquellen in `geo_framework.py`: KOSPI, HYG, IEF, Korea-Exporte, US-Importpreise aus China.
+  - Earnings-Kalender (`earnings.py`): 10 → 25 Werte (Megacaps, Index-Schwergewichte, KI-Lieferkette)
+    mit Gruppenspalte im Report.
+  - AUD-Leitlinie auf KOSPI umgestellt. Dashboard für das Thema leer. Tests 50/50 grün.
+
 - **2026-11-15** [Dachprojekt / Makro-Agent] **Danske „AI Investment Tracker“: Wirkketten getestet**
   (Nutzerauftrag). `scripts/research_ai_wirkketten.py`, Lock `ai_wirkketten` (Tresor zu, 20 Versuche).
   Keine Kette hat einen Vorlauf:

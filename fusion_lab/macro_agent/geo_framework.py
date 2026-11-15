@@ -32,9 +32,13 @@ NOW_WEEKS = 26
 T_MIN = 2.0
 
 YF = {"gold": "GC=F", "silber": "SI=F", "kupfer": "HG=F", "brent": "BZ=F", "spx": "^GSPC", "ndx": "^NDX",
-      "dax": "^GDAXI", "nikkei": "^N225", "dxy": "DX-Y.NYB"}
+      "dax": "^GDAXI", "nikkei": "^N225", "dxy": "DX-Y.NYB",
+      # 15.11.2026, Danske-KI-Ketten: KOSPI = Tech-Seite des AUD, HYG/IEF = Kredit-Spread mit langer Historie
+      "kospi": "^KS11", "hyg": "HYG", "ief": "IEF"}
 FRED = {"real_10y": "DFII10", "us_2y": "DGS2", "breakeven_10y": "T10YIE", "vix": "VIXCLS", "fed_funds": "DFF",
-        "epu": "USEPUINDXD"}
+        "epu": "USEPUINDXD",
+        # Monatsreihen (15.11.2026, Danske-KI-Ketten): Korea-Exporte, US-Importpreise mit Ursprung China
+        "korea_exporte": "XTEXVA01KRM667S", "china_importpreise": "CHNTOT"}
 CROSSES = {"EURJPY": ("EURUSD", "USDJPY", "*"), "GBPJPY": ("GBPUSD", "USDJPY", "*"),
            "AUDJPY": ("AUDUSD", "USDJPY", "*"), "CADJPY": ("USDJPY", "USDCAD", "/"),
            "EURGBP": ("EURUSD", "GBPUSD", "/"), "EURCHF": ("EURUSD", "USDCHF", "*"),

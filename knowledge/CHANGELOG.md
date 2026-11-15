@@ -9,6 +9,14 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-15** [Reports] **Weekly Checkup KW46/2026** (geplanter Lauf). `knowledge/reports/weekly/KW46_2026_*`, PDF in
+  `Documents\Trading Reports\`. Woche: 23 Trades, EK −229,75 EUR (−8,35 %, Bots −105,90), Funded +38,59 USD (+0,02 %),
+  FK +141,93 USD (+0,14 %, Bots −342,57); kein Kill-Switch, keine Bot-Verletzung. Sieben Handtrades (MT5-Mobile) auf EK/FK
+  (EUR/USD-Short +631 USD, 3× Gold-Long, 2× USD/JPY-Short offen) → Dashboard (Geparkt, Bestätigungen). Soll/Ist-Lücke ≈ ORB
+  erste Kerze (NASDAQ-Gewinner verpasst, SP500-Fill-Kerzen-Stop) + US30-Werkzeugfehler. Erster MT5-Abzug lieferte bei kalten
+  Terminals 0 Deals (TTP/IQ) und FK IPC-Timeout, zweiter Abzug centgenau. Makro-Nachprüfung KW46 in
+  [[makro-agent-report-pruefung]] eingetragen (Agent +1,60 R, Dennis −1 R). STT auf TTP weiter offen. Edge-Ampel zum vierten Mal nicht aktualisiert (Dukascopy-Abruf hing, abgebrochen). Keine Bot-Änderung.
+
 - **2026-11-15** [Bots LIVE: EK / Funded (TTP+IQ) / FK] **CTNL-Makro-Sperre live eingebaut** (Nutzerentscheid
   „direkt in den Bot“). Kein ctnl_reversal-Long bei Gold-MACRO ≤ 35, kein Short bei ≥ 65 (Vortageswert).
   - Gemeinsames Modul `gold_smc_htf_ltf/macro_gate.py` (wie spike_gate: nur neue Entries, getrackte bleiben;

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weekly Checkup KW46</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --paper: #EDEEE7;
+    --paper-raised: #F6F6F1;
+    --ink: #1B2129;
+    --ink-soft: #4B5259;
+    --rule: #C9CCC2;
+    --accent: #2B6E6B;
+    --accent-soft: #E3ECEA;
+    --flag: #B23A2E;
+    --flag-soft: #F5E6E2;
+    --ok: #3F6B4F;
+    --ok-soft: #E5EEE6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12181A;
+      --paper-raised: #182022;
+      --ink: #E7E4DA;
+      --ink-soft: #A9B0AC;
+      --rule: #333B3A;
+      --accent: #5FB3AC;
+      --accent-soft: #1B2E2C;
+      --flag: #E2695A;
+      --flag-soft: #33201C;
+      --ok: #7CB78A;
+      --ok-soft: #1D2B20;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12181A;
+    --paper-raised: #182022;
+    --ink: #E7E4DA;
+    --ink-soft: #A9B0AC;
+    --rule: #333B3A;
+    --accent: #5FB3AC;
+    --accent-soft: #1B2E2C;
+    --flag: #E2695A;
+    --flag-soft: #33201C;
+    --ok: #7CB78A;
+    --ok-soft: #1D2B20;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    margin: 0;
+    padding: 3.5rem 1.25rem 6rem;
+    -webkit-font-smoothing: antialiased;
+  }
+  .sheet {
+    max-width: 760px;
+    margin: 0 auto;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    padding: 3rem 3.25rem 3.5rem;
+  }
+  @media (max-width: 640px) {
+    .sheet { padding: 2rem 1.25rem 2.5rem; }
+  }
+
+  /* masthead */
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.6rem;
+  }
+  h1.title {
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 2.35rem;
+    line-height: 1.1;
+    margin: 0 0 0.5rem;
+    text-wrap: balance;
+  }
+  .subtitle {
+    font-size: 1.02rem;
+    color: var(--ink-soft);
+    margin: 0 0 1.6rem;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.6rem;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--rule);
+  }
+  .meta-row span b { color: var(--ink); font-weight: 600; }
+
+  .note {
+    margin-top: 1.4rem;
+    padding: 0.9rem 1.1rem;
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+  .note b { color: var(--ink); }
+
+  /* part dividers */
+  .part {
+    margin-top: 3.2rem;
+    padding-top: 0.4rem;
+  }
+  .part-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+  .part-label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+  h2.part-title {
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.7rem;
+    margin: 0.1rem 0 0;
+  }
+
+  /* sections */
+  section.block { margin-top: 2.1rem; }
+  h3.sec {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    font-family: "Spectral", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.18rem;
+    margin: 0 0 0.85rem;
+    color: var(--ink);
+  }
+  h3.sec .num {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  p { margin: 0 0 0.9rem; }
+  ul.plain { margin: 0 0 0.9rem; padding-left: 1.2rem; }
+  ul.plain li { margin-bottom: 0.55rem; }
+  ul.plain li b { color: var(--ink); }
+
+  /* status chips */
+  .chip {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    padding: 0.1rem 0.45rem;
+    border-radius: 2px;
+    margin-right: 0.3rem;
+  }
+  .chip.live { background: var(--ok-soft); color: var(--ok); }
+  .chip.dry { background: var(--accent-soft); color: var(--accent); }
+  .chip.dead { background: var(--flag-soft); color: var(--flag); }
+
+  /* tables */
+  .table-wrap { overflow-x: auto; margin-bottom: 1rem; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.55rem 0.7rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  th {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  td.num, th.num {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  tr.sum td { font-weight: 600; border-top: 1px solid var(--ink-soft); background: var(--accent-soft); }
+  td.neg { color: var(--flag); }
+  td.pos { color: var(--ok); }
+  td.status-flag { color: var(--flag); }
+  td.status-ok { color: var(--ok); }
+
+  /* flag callouts */
+  .flag {
+    border-left: 3px solid var(--flag);
+    background: var(--flag-soft);
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 0.9rem;
+  }
+  .flag .flag-head {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--flag);
+    margin-bottom: 0.3rem;
+  }
+  .flag p { margin: 0; font-size: 0.92rem; }
+
+  /* activity bars */
+  .bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.55rem;
+    height: 90px;
+    margin: 0.4rem 0 0.6rem;
+    padding-top: 0.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+  .bar {
+    width: 100%;
+    max-width: 34px;
+    background: var(--accent);
+    opacity: 0.55;
+  }
+  .bar-col.peak .bar { opacity: 1; }
+  .bar-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+    margin-top: 0.4rem;
+  }
+  .bar-count {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+    margin-bottom: 0.2rem;
+  }
+
+  footer.colophon {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+  }
+
+  @media print {
+    body { padding: 0; background: var(--paper); }
+    .sheet { border: none; max-width: 100%; padding: 0.5in; }
+    section.block, .flag, .table-wrap { page-break-inside: avoid; }
+    .part { page-break-before: always; }
+    .part:first-of-type { page-break-before: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <p class="eyebrow">Weekly Checkup · Andre&nbsp;/&nbsp;Forex-Backtesting</p>
+  <h1 class="title">KW46 · 2026</h1>
+  <p class="subtitle">Trading-Bot-Flotte &amp; Baustelle — Performance und Education, Montag 09.11. bis Sonntag 15.11.2026</p>
+  <div class="meta-row"><span>Erzeugt: <b>So, 15.11.2026</b></span><span>Erfasst: <b>3 Bridges / 4 Konten</b></span><span>Lauf: <b>planmäßig</b></span></div>
+  <div class="note"><b>Zum Abzug - der erste war falsch, der zweite stimmt:</b><ul class="plain"><li>Der erste Abzug um 18:00 meldete <b>TTP und IQ mit 0 Deals</b>, EK mit 4 und FK mit <code>IPC timeout</code>. Grund: Am Sonntag lief kein Terminal. <code>mt5_pull.py</code> hat alle vier erst gestartet, die Deal-Historie war noch nicht geladen (siehe Memory: <code>mt5_kaltes_terminal_leere_historie</code>), und FK startete ohne <code>/portable</code> (siehe Memory: <code>fk_terminal_braucht_portable</code>).</li><li>FK-Terminal beendet, mit <code>/portable</code> neu gestartet, 90 s gewartet, zweiter Abzug: <b>EK 16, TTP 7, IQ 8, FK 16 Deals</b>. Endstand minus Wochen-P&amp;L trifft den KW45-Endstand jetzt <b>auf allen vier Konten auf den Cent</b> (EK 2.750,19 EUR, TTP 99.675,45, IQ 97.666,89, FK 99.519,78 USD).</li><li>Soll/Ist wurde danach auf dem korrekten Abzug neu gerechnet. Die vier Terminals hat dieser Lauf gestartet; alle vier wurden danach wieder geschlossen (kein Fenster offen).</li></ul></div>
+  <div class="part"><p class="part-label">Teil I</p><h2 class="part-title">Performance</h2></div>
+<section class="block"><h3 class="sec"><span class="num">01</span> Wochenkontext</h3>
+<p>Alle drei Portfolio-Bridges liefen mit echtem Geld: <b>EK-Portfolio-Bridge</b> (Tickmill 55918977), <b>Funded-Portfolio-Bridge</b> (TTP Konto 2 504072729 + IQ Markets 16054) und <b>FK Instant Funding</b> (BeyondIQCapital 17764). Alle sechs Bridge-Tasks stehen auf <code>Bereit</code>, die Einzel-Bots bleiben <code>Deaktiviert</code>. Keine neuen <code>*-Bridge</code>/<code>*-Bot</code>-Ordner.</p>
+<p><b>Live-Änderungen in der Woche:</b></p>
+<ul class="plain"><li><b>Di 10.11. ca. 01:49, FK:</b> Bein <code>gold_silver</code> hängt die laufende H4-Kerze als Platzhalter an (<code>ce42e5ef</code>). Vorher war jedes Signal ≥ 240 Min. alt und das Bein konnte seit 04.10. nie einsteigen (siehe Memory: <code>fk_gold_silver_strukturell_zu_alt</code>). In KW46 kam auf FK kein neues Signal; der Fix ist also live noch nicht erprobt.</li><li><b>Di 10.11. 02:19, alle drei Bridges:</b> Gold ASB schreibt je Tag ein Filter-Protokoll (<code>gold_asb_filter_journal.jsonl</code>); Soll/Ist übernimmt dort die Bot-Entscheidung (<code>4c0bcc53</code>). Die Handelslogik bleibt gleich. Die Ursache des KW45-Rätsels (Gold ASB 03.11.) ist damit belegt: Die Friktion des Vortags wird nach 01:00 NY überarbeitet.</li><li><b>Di 10.11.:</b> 37 verwaiste <code>placed</code>-Einträge (FK 24, IQ 6, TTP 7) per Broker-Abgleich auf <code>closed</code> gesetzt. Nur Buchführung.</li><li><b>So 15.11. (nach Handelsschluss), alle drei Bridges:</b> <b>CTNL-Makro-Sperre live</b> - kein CTNL-Reversal-Long bei Gold-MACRO ≤ 35, kein Short bei ≥ 65. Neuer Task <code>Forex-Gold-Makro-Gate-Refresh</code> (täglich 07:15). Wirkt erst ab Mo 16.11.; Stand 15.11.: MACRO 30, <b>CTNL-Longs gesperrt</b>.</li></ul>
+<p><b>Störungen:</b> Zwei Tracebacks auf FK in der Nacht auf Di 10.11. (01:16 Verbindungsaufbau, 03:18 <code>.state.lock</code> existiert). Beides fällt in die nächtliche Arbeitssession an FK, danach lief FK normal (89 Läufe Di bis Fr). Kein Neustart- oder Standby-Befund. Der Watchdog-Push läuft wieder: <code>main</code> ist synchron mit <code>origin</code> (der KW45-Stau ist mit dem Commit vom 08.11. aufgelöst).</p>
+</section>
+<section class="block"><h3 class="sec"><span class="num">02</span> Risk-Management-Compliance</h3>
+<p><b>Keine Regelverletzung der Bots. Kein Kill-Switch, kein Drawdown-Halt.</b> In den Logs aller drei Bridges keine Kill-/Halt-Meldung. Einzige Kill-Switch-Zeile: FK-Fast Di 03:21 "Scan ohne Trades (Datenlücke?) - kein Urteil, Zustand bleibt aus" (nachts, folgenlos).</p>
+<div class="table-wrap"><table><thead><tr><th>Bridge / Konto</th><th class="num">Mechanismus</th><th class="num">Diese Woche</th></tr></thead><tbody><tr><td>EK-Portfolio</td><td class="num">Trailing-DD-Kill-Switch 45 %</td><td class="num neg">nicht ausgelöst; Balance <b>2.520,44 EUR (−8,35 % in der Woche)</b>, davon −4,50 % aus einem Handtrade</td></tr><tr><td>EK-Portfolio</td><td class="num">Gesamtrisiko-Deckel 30 %</td><td class="num">Bot-Risiko eingehalten. <b>Offen über das Wochenende: manueller USD/JPY-Short 0,1 Lot, Stop 162,00 = ca. 116 EUR Risiko (4,6 %)</b></td></tr><tr><td>EK-Portfolio</td><td class="num">Einzeltrade-Deckel 5 %</td><td class="num neg">Bot eingehalten (größter Bot-Verlust Gold-Silber −70,14 EUR = 2,6 %). <b>Handtrade Gold Long 11.11.: −123,85 EUR = 4,5 %</b> (gilt nicht als Bot-Regel, siehe Abschnitt 6)</td></tr><tr><td>EK-Portfolio</td><td class="num">CTNL-Kill-Switch</td><td class="num">nie ausgelöst (CTNL hat nicht gehandelt)</td></tr><tr><td>Funded / TTP</td><td class="num">7-%-DD-Cap, offenes Risiko 3,5 %</td><td class="num neg">inaktiv; schlechtester Tag Do 12.11. −85,50 USD; Balance 99.759,42 = −0,24 % seit Start</td></tr><tr><td>Funded / IQ</td><td class="num">6 % Gesamt-DD / 1 % je Position</td><td class="num neg">inaktiv; schlechtester Tag Do 12.11. −113,40 USD. Balance <b>97.621,51 USD = −2,38 % seit Start, ca. 3.622 USD Abstand</b> zur 6-%-Grenze (KW45: 3.667)</td></tr><tr><td>Funded (beide)</td><td class="num">CTNL-Kill-Switch</td><td class="num">nie ausgelöst</td></tr><tr><td>FK Instant Funding</td><td class="num">5-%-EOD-Trailing-DD</td><td class="num neg">inaktiv; schlechtester Tag Do 12.11. −272,52 USD (davon −145 aus Handtrades); Balance 99.661,71 USD (−0,34 % seit Start)</td></tr><tr><td>FK Instant Funding</td><td class="num">CTNL-Kill-Switch</td><td class="num">nicht ausgelöst</td></tr></tbody></table></div>
+<p><b>Zur Kenntnis:</b> Auf EK und FK liegen diese Woche <b>sieben Handtrades</b> (MT5 <code>reason</code> 1 = Mobile, Magic 0) neben den Bots. Kein Bot-Limit wurde dadurch verletzt, aber auf EK haben zwei davon je ca. 4,5 % Risiko, also mehr als jedes Bot-Bein. Details in Abschnitt 6, Punkt 1.</p>
+</section>
+<section class="block"><h3 class="sec"><span class="num">03</span> Was hat gut / nicht gut funktioniert</h3>
+<ul class="plain"><li><b>EK-Portfolio-Bridge (Tickmill): −229,75 EUR (−8,35 %) bei 8 Trades, davon Bots −105,90 EUR (−3,85 %).</b> Die Bot-Verluste kommen aus Gold-Silber (Long 09.11. bei 4.123, am 10.11. ausgestoppt, −70,14), Trend-Pullback CHF/JPY (−52,47) und drei kleinen SP500-ORB-Stopps (je ca. −10). Gold ASB (+34,94) und OU QCOM (+10,96) dagegen. Der größte Einzelposten ist <b>kein Bot</b>: ein Gold-Long per Handy am 11.11. (−123,85).</li><li><b>Funded-Portfolio-Bridge (TTP + IQ): +38,59 USD (+0,02 %) bei 8 Trades.</b> Flach. Gold ASB (Short 13.11., TTP +243, IQ +292) gleicht die SP500-ORB-Stopps aus (TTP 2 x ca. −83, IQ 3 x ca. −112). NASDAQ-ORB kam auf keinem Konto zum Zug (Abschnitt 5). OU: QCOM auf TTP per Modell geschlossen (+6,94).</li><li><b>FK Instant Funding: +141,93 USD (+0,14 %) bei 7 Trades, davon Bots −342,57 USD (−0,34 %).</b> Bots: drei SP500-ORB-Stopps (je ca. −128) und Gold ASB +40,82. Das Plus kommt aus <b>Handtrades</b>: EUR/USD-Short +631,42, zwei Gold-Longs −145,42.</li></ul>
+<p><b>Muster der Woche:</b> <b>Die Bots verlieren leise, das Ergebnis machen die Handtrades.</b> Bot-Seite über alle Konten: 19 Trades, 6 Gewinner, −304 USD und −106 EUR. Davon sind 9 Trades SP500-ORB-Stopps (je ca. −1 R). Gold fiel in der Woche um 7 % (4.148 → 3.852); Gold ASB hat das am Freitag als Short mitgenommen, CTNL hatte kein Signal.</p>
+</section>
+<section class="block"><h3 class="sec"><span class="num">04</span> Trades, Winrate, Gewinn - Summary</h3>
+<p>Gezählt sind geschlossene Positionen (Ausstiegs-Deal in der Woche), netto inkl. Kommission und Swap. Eine Teilschließung zählt nicht als eigener Trade. Die Prozentwerte beziehen sich auf den Kontostand zu Wochenbeginn. Handtrades sind enthalten (wie in KW45), die Spalte "davon Bots" zeigt den Bot-Anteil.</p>
+<div class="table-wrap"><table><thead><tr><th>Bridge</th><th class="num">Trades</th><th class="num">Winrate</th><th class="num">P&amp;L</th><th class="num">%</th><th class="num">davon Bots</th></tr></thead><tbody><tr><td>EK-Portfolio (Tickmill, echtes Geld)</td><td class="num">8</td><td class="num">25,0 %</td><td class="num"><b>−229,75 EUR</b></td><td class="num"><b>−8,35 %</b></td><td class="num neg">7 Trades, −105,90 EUR (−3,85 %)</td></tr><tr><td>Funded-Portfolio (TTP + IQ, echtes Geld)</td><td class="num">8</td><td class="num">37,5 %</td><td class="num"><b>+38,59 USD</b></td><td class="num"><b>+0,02 %</b></td><td class="num">alle 8</td></tr><tr><td>FK Instant Funding (LIVE, echtes Geld)</td><td class="num">7</td><td class="num">28,6 %</td><td class="num"><b>+141,93 USD</b></td><td class="num"><b>+0,14 %</b></td><td class="num neg">4 Trades, −342,57 USD (−0,34 %)</td></tr><tr class="sum"><td><b>Gesamt (alle 3, echtes Geld)</b></td><td class="num"><b>23</b></td><td class="num"><b>30,4 %</b></td><td class="num"><b>−229,75 EUR / +180,52 USD</b></td><td class="num neg"><b>ca. −0,02 %</b></td><td class="num neg">19 Trades, −105,90 EUR / −303,98 USD</td></tr></tbody></table></div>
+<ul class="plain"><li><b>Keine Summe über beide Währungen.</b> Für die Gesamt-Prozentzahl ist EK mit ca. 3.064 USD (Kurs 1,114 zu Wochenbeginn) in ein Buch von ca. 299.900 USD eingerechnet, der EK-Verlust mit 1,10 (Wochenschluss).</li><li>Je Konto: TTP 4 Trades <b>+83,97 USD (+0,08 %)</b>, IQ 4 Trades <b>−45,38 USD (−0,05 %)</b>.</li><li><b>Noch offen:</b> EK SYY/OXY (OU) + USD/JPY-Short (Hand); TTP STT (seit 16.10.), SYY, OXY (OU); FK USD/JPY-Short (Hand). IQ flach.</li><li><b>TTP Konto 2</b> steht weiter auf <code>trade_mode = 0</code> (Demo-Server), das IQ-Konto heißt "BeyondIQCapital <b>Demo</b> Challenge". Die Einordnung als "echtes Geld" übernehme ich unverändert aus <code>CLAUDE.md</code>.</li></ul>
+</section>
+<section class="block"><h3 class="sec"><span class="num">05</span> Soll/Ist je Bridge</h3>
+<p><b>Soll</b> ist ein Backtest über das Fenster 09.11. 00:00 bis 13.11. 21:00 (UTC) mit Sizing und Kostenannahme der jeweiligen Bridge und der Konfiguration von HEUTE.</p>
+<div class="table-wrap"><table><thead><tr><th>Bridge</th><th class="num">Soll</th><th class="num">Ist (nur Bot)</th><th class="num">platziert</th><th class="num">nicht platziert</th><th class="num">nie gesehen</th></tr></thead><tbody><tr><td>EK-Portfolio</td><td class="num">10 Trades / <b>−0,33 %</b></td><td class="num neg">−105,90 EUR (−3,85 %)</td><td class="num">-</td><td class="num">-</td><td class="num">- (<b>10 nicht_ermittelbar, +18,05 R</b>)</td></tr><tr><td>Funded-Portfolio</td><td class="num">10 Trades / <b>+1,19 %</b></td><td class="num">+38,59 USD (+0,02 %)</td><td class="num">0</td><td class="num neg">1 (−1,04 R)</td><td class="num">9 (+21,55 R)</td></tr><tr><td>FK Instant Funding</td><td class="num">10 Trades / <b>+2,67 %</b></td><td class="num neg">−342,57 USD (−0,34 %)</td><td class="num">0</td><td class="num neg">1 (−1,04 R)</td><td class="num">9 (+21,55 R)</td></tr></tbody></table></div>
+<p>(Das Werkzeug weist für FK als Ist "+146,43 USD" aus, seine Bein-Summe ergibt aber −342,47 USD; die Kopfzeile scheint einen Teil der Handtrades mitzuzählen. Ich nehme die Bein-Summe. Die EK-Kopfzeile "−9,10 %" enthält den Handtrade und rechnet auf den heutigen Kontostand.)</p>
+<p><b>Hauptaussage: Ist liegt auf Funded ca. 1,2 und auf FK ca. 3 Prozentpunkte unter dem Soll. Die Lücke besteht aus drei bekannten Posten: verpasste NASDAQ-Gewinner (Erste-Bar-Problem, ca. 12,9 R), ein zu optimistisches SP500-Soll (Stop in der Fill-Kerze, ca. 7 R) und US30 im Soll trotz Pause (4,5 R).</b></p>
+<p><b>Pflicht-Vorbehalte:</b></p>
+<ul class="plain"><li><b>Konfiguration:</b> Soll rechnet mit dem Stand von heute. Die einzige Änderung mit Wirkung auf die Signale ist die CTNL-Makro-Sperre vom 15.11. Sie ändert hier nichts: CTNL hat weder im Soll noch im Ist einen Trade. Der FK-Fix für <code>gold_silver</code> (10.11.) gilt im Soll für die ganze Woche, live erst ab Dienstag; ein Signal gab es in keinem von beiden.</li><li><b>EK lässt sich nur grob zerlegen</b> (SQLite statt Signal-Ledger). "10 nicht_ermittelbar" heißt genau das, nicht "nie gesehen".</li><li><b>EKs Kostenannahme ist geschätzt</b> (0,50 Pips), Funded (2,05) und FK (1,30) sind gemessen. EK-Zahlen deshalb nicht gegen die anderen beiden stellen.</li></ul>
+<p><b>Was hinter den Posten steckt:</b></p>
+<ul class="plain"><li><b>NASDAQ-ORB: Soll 4 Trades, +12,85 R (EK +10,39 R), live auf keinem Konto ein Fill.</b> Soll-Trades und Logs je Tag (TTP/IQ, FK gleich): - <b>Mo 09.11., Soll Long +6,42 R (Sessionende):</b> <code>breakout_passed (hoch=True)</code>. Der Kurs stand beim Platzierungslauf um 14:45 UTC schon über dem Auslöser. Auf TTP vorher einmal <code>10015 Invalid price</code>. <b>Verpasst.</b> - <b>Di 10.11. und Do 12.11., Soll je −1,01 R (Stop):</b> TTP platziert, beide Seiten nach 3 Min. storniert ("Kurs erreichte den geplanten SL vor dem Einstieg (wie im Backtest)"); IQ <code>breakout_passed</code>. <b>Gespart.</b> Widerspruch fürs Protokoll: Das Log sagt "wie im Backtest", das Soll zählt aber einen Stop. - <b>Mi 11.11.:</b> <code>filtered_out (Wednesday)</code>, im Soll nicht enthalten. Stimmig. - <b>Fr 13.11., Soll Short +8,46 R (Sessionende):</b> <code>breakout_passed (tief=True)</code>. <b>Verpasst.</b> - Das ist das Erste-Bar-Problem (siehe Memory: <code>orb_first_bar_and_polled_exits</code>): Der Backtest steigt in der ersten Kerze nach der Range ein, live kommt der Platzierungslauf zu spät. Verpasst sind <b>+14,88 R</b>, netto <b>+12,85 R</b>, grob <b>1.250-1.650 USD je Funded-/FK-Konto</b> (ca. 99 USD je R auf TTP, ca. 128 USD auf FK). <b>Größter Einzelposten der Woche.</b> Ob die beiden Gewinner live die Fill-Kerze überlebt hätten (siehe nächster Punkt), ist nicht prüfbar.</li><li><b>SP500-ORB: Soll 3 Trades +3,93 R, live je Konto bis zu 3 Stopps.</b> Am <b>Mo 09.11.</b> steigen Soll und live <b>denselben</b> Long ein (14:45 UTC, IQ/FK bei 7.491,3). Live wird er nach 69 Sekunden bei 7.482 gestoppt, danach läuft der Kurs bis zum Ziel. Das Soll zählt <b>+5,98 R</b>, weil der Backtest den Stop in der Fill-Kerze nicht prüft (siehe Memory: <code>orb_fill_bar_stop_and_live_order_gap</code>). Das ist hier also <b>ein zu optimistisches Soll, kein Ausführungsfehler</b>: ca. 7 R der Lücke. Di 10.11. und Do 12.11. (je ca. −1 R) sind in Soll und Ist gleich. TTP hatte am 09.11. wegen des <code>Invalid price</code>-Fehlversuchs keinen Fill und sparte den Verlierer. Das Werkzeug führt alle ORB-Trades als "nie gesehen", obwohl sie platziert wurden (Zuordnungslücke, bekannt).</li><li><b><code>orb_us30</code> zählt mit +4,47 R im Soll</b>, obwohl US30 seit 04.10. pausiert ist. Werkzeugfehler, bekannt seit KW44, noch offen.</li><li><b>Gold ASB 13.11.: stimmig.</b> Short auf allen vier Konten, wie im Soll (+0,28 R, Zeitausstieg). Das neue Filter-Protokoll meldet <b>Filter-Drift an 2 von 3 Tagen</b> (12.11., 13.11.): Die Nachrechnung hätte anders entschieden als der Bot. Seit dem 10.11. folgt das Soll dem Bot, deshalb erscheint das nicht mehr als Lücke. Wie oft das passiert, siehe Abschnitt 6, Punkt 4.</li><li><b>Trend-Pullback CHF/JPY 12.11.:</b> auf EK gehandelt und wie im Soll ausgestoppt (−1,04 R). Auf Funded/FK "nicht platziert": dort ist das Bein nicht live. Stimmig.</li></ul>
+</section>
+<section class="block"><h3 class="sec"><span class="num">5b</span> Edge-Warnstufen je Live-Bein</h3>
+<p><b>Zum vierten Mal in Folge NICHT frisch.</b> <code>research_live_legs.py tickmill --ampel</code> lief ab ca. 17:55, kam bis zu einem Instrument bei <b>2018-02-28 14:30</b> und stand dort über 12 Minuten still (Dukascopy-Abruf ohne Timeout, wie am 18.10., 01.11. und 08.11.). Ich habe den Lauf abgebrochen; <code>status.csv</code> wurde deshalb nicht neu gerechnet. Die Liste <code>live_trades_tickmill_ampel.csv</code> stammt weiter vom <b>27.10., letzter Trade 25.10.</b>; KW44 bis KW46 fehlen. Die Tabelle ist der Stand vom 08.11. (inhaltlich gleich wie 30.10.):</p>
+<div class="table-wrap"><table><thead><tr><th>Bein</th><th class="num">Warnstufe</th><th class="num">Drawdown R / Schwelle R</th><th class="num">Signal</th></tr></thead><tbody><tr><td>orb_sp500</td><td class="num"><b>ROT</b></td><td class="num"><b>23,2</b> / 15,2</td><td class="num">alle fünf rot</td></tr><tr><td>orb_us30</td><td class="num"><b>ROT</b> (pausiert)</td><td class="num">24,5 / 13,2</td><td class="num">alle fünf rot</td></tr><tr><td>btc_ema_cross</td><td class="num">GELB</td><td class="num">2,0 / 5,4</td><td class="num">roll_mean, cusum, sprt streng rot</td></tr><tr><td>gold_silver</td><td class="num">GELB</td><td class="num">1,7 / 4,9</td><td class="num">roll_mean streng rot</td></tr><tr><td>gold_asb, ctnl_reversal, cls_practical, orb_nasdaq, ou_modell, trend_pullback</td><td class="num">grün</td><td class="num">-</td><td class="num">-</td></tr></tbody></table></div>
+<ul class="plain"><li><b>orb_sp500 (ROT):</b> gegenüber KW45 unverändert (gleiche Liste). Live kamen in KW46 je Konto bis zu drei Stopps dazu, das Soll zählt dagegen +3,93 R (Fill-Kerze, Abschnitt 5). Die echte Lage ist also eher schlechter als die Tabelle. Entschieden ("ORB bleibt erstmal so", 16.10.), kein neuer Dashboard-Eintrag.</li><li><b>orb_us30 (ROT):</b> pausiert seit 04.10., unverändert.</li><li><b>btc_ema_cross, gold_silver (GELB):</b> unverändert, beobachten. gold_silver verlor live auf EK −70,14 EUR.</li><li><b>Werkzeug:</b> Vier Wochen ohne frische Ampel. Solange der Abruf kein Timeout hat, ist diese Tabelle für Wochenaussagen wertlos (Dashboard-Punkt "Report-Werkzeuge härten" besteht). Eine Warnung ist ein Grund hinzusehen, kein Grund, einen Bot zu ändern.</li></ul>
+</section>
+<section class="block"><h3 class="sec"><span class="num">06</span> Auffälligkeiten / offene Punkte</h3>
+<div class="flag"><p class="flag-head">Sieben Handtrades auf den Bot-Konten EK und FK, Ergebnis +360 USD / −124 EUR.</p><p>Alle mit MT5 <code>reason</code> 1 (Mobile), Magic 0, ohne Bot-Kommentar:</p></div>
+<div class="table-wrap"><table><thead><tr><th>Konto</th><th class="num">Trade</th><th class="num">Eröffnet (Serverzeit)</th><th class="num">Ergebnis</th></tr></thead><tbody><tr><td>FK</td><td class="num">EUR/USD Short 0,56 Lot bei 1,12268</td><td class="num">Di 10.11. 11:58</td><td class="num">Teil 0,25 bei 1,11388 (+220,72), Rest Ziel 1,10937 (+413,50) = <b>+631,42 USD</b></td></tr><tr><td>FK</td><td class="num">Gold Long 0,01 bei 4.029,70</td><td class="num">Di 10.11. 18:21</td><td class="num neg">Stop 3.980 → −54,80 USD</td></tr><tr><td>FK</td><td class="num">Gold Long 0,01 bei 4.008,33</td><td class="num">Mi 11.11. 17:28</td><td class="num neg">Stop 3.921,60 → −90,62 USD</td></tr><tr><td>EK</td><td class="num">Gold Long 0,01 bei 4.006,21</td><td class="num">Mi 11.11. 17:29</td><td class="num">Stop 3.870 → <b>−123,85 EUR (4,5 % des Kontos)</b></td></tr><tr><td>FK</td><td class="num">USD/JPY Short 0,3 Lot bei 159,844</td><td class="num">Mi 11.11. 23:24</td><td class="num">offen, Stop 162,00 (+22 USD)</td></tr><tr><td>EK</td><td class="num">USD/JPY Short 0,1 Lot bei 159,837</td><td class="num">Mi 11.11. 23:23</td><td class="num">offen, Stop 162,00 (+6 EUR), <b>Risiko ca. 4,6 %</b></td></tr></tbody></table></div>
+<ul class="plain"><li>Die Trades passen zu den Makro-Ideen der Woche (Education-Report 4c): EUR/USD-Short nach Dennis' Stop wieder eröffnet, Gold-Long genau am Alarm 4.030, USD/JPY-Short.</li><li><b>Kein Regelverstoß der Bots.</b> Aber: (a) Auf EK übersteigt das Risiko je Handtrade jedes Bot-Bein (Bot max. ca. 3 %), und EK hat in zwei Wochen ca. 10 % verloren (2.811 → 2.520 EUR). (b) Soll/Ist und Ampel kennen diese Trades nicht. (c) Offen ist, ob der EK-Gesamtrisiko-Deckel (30 %) offene Handpositionen mitzählt; nicht geprüft.</li><li>Die NASDAQ-Teilschließung vom 05.11. hattest du am 10.11. als "händisch, emotional, Einzelfall" eingeordnet. Diese Woche ist es ein Muster. <b>Im Dashboard (Geparkt, Betrieb) zur Bestätigung eingetragen:</b> Sind Handtrades auf EK/FK gewollt, und mit welcher Größe?</li></ul>
+<div class="flag"><p class="flag-head">ORB: Erste Kerze in beide Richtungen.</p><p>Siehe Abschnitt 5. NASDAQ verpasst zwei große Gewinner, weil die Order zu spät kommt (+14,9 R); SP500 trifft denselben Einstieg wie der Backtest und wird in der Fill-Kerze gestoppt, die der Backtest nicht prüft (ca. 7 R). Beides ist bekannt, die ORB-Entscheidung vom 16.10. ("bleibt erstmal so") gilt. Neu ist nur das Ausmaß: ca. 20 R Soll-Differenz in einer Woche an der ersten Kerze. Keine neue Dashboard-Frage, nur die Zahl fürs Protokoll.</p></div>
+<div class="flag"><p class="flag-head">TTP-OU: STT ist weiter offen, obwohl am 10.11. "bei US-Börsenöffnung schließen" entschieden wurde.</p><p>Seit 16.10. in der Position (30 Tage, +9,09 USD, Stop 123,69). Laut CHANGELOG 10.11. ist die Schließung "noch nicht ausgeführt"; FLEX und UAL waren schon zu. Die Entscheidung ist also da, nur die Ausführung fehlt.</p></div>
+<div class="flag"><p class="flag-head">Gold-ASB-Filter-Drift an 2 von 3 Protokolltagen.</p><p>Das neue Filter-Protokoll zeigt am 12. und 13.11., dass die Nachrechnung des Liquiditätsfilters anders ausfiele als die Live-Entscheidung (Friktion des Vortags wird nachträglich überarbeitet, siehe Memory: <code>gold_asb_friktion_vorgriff</code>). Das Soll ist dagegen jetzt geschützt. Für den Backtest heißt es: Die historischen Gold-ASB-Zahlen enthalten Tage, die live anders entschieden worden wären. Beobachten, wie oft das in den nächsten Wochen vorkommt.</p></div>
+<div class="flag"><p class="flag-head"><code>mt5_pull.py</code> am Sonntag liefert still falsche Zahlen.</p><p>Zum dritten Mal (KW39, KW42, KW46) war der erste Abzug unvollständig, weil die Terminals erst gestartet wurden. Diesmal ohne jeden Fehler bei TTP/IQ: "0 Deals". Ohne den Saldenabgleich hätte der Report "Funded: 0 Trades" gemeldet. Vorschlag (nicht umgesetzt): <code>mt5_pull.py</code> wartet nach dem Start eines Terminals, bis die Historie steht, und startet FK mit <code>/portable</code>.</p></div>
+<div class="flag"><p class="flag-head">Kleineres.</p><ul class="plain"><li>Soll/Ist-Werkzeug: FK-Kopfzeile passt nicht zur Bein-Summe (Abschnitt 5); <code>orb_us30</code> zählt weiter im Soll.</li><li>FK warnt weiter in jedem Lauf "Kontostand weicht von STARTING_EQUITY=100.000 ab" (bekannt).</li><li>Dieser Report committet nur <code>knowledge/reports/</code> und die Makro-Notiz (Pflicht aus 4c); Dashboard und CHANGELOG ebenfalls (Report-Pflichten).</li></ul></div>
+</section>
+  <div class="part"><p class="part-label">Teil II</p><h2 class="part-title">Education</h2></div>
+<section class="block"><h3 class="sec"><span class="num">01</span> Was stand die Woche an / Hauptfokus</h3>
+<p>Die bisher <b>dichteste Research-Woche</b>: gut 30 eigene Commits, 13 neue PARA-Notizen, rund 18 neue oder ergänzte Memory-Einträge. Der Handoff vom 02.11. ist abgearbeitet (am 08.11. committet, Ordner <code>_handoff/</code> leer). Der Fokus lag ganz auf dem Dachprojekt, wie am 10.11. entschieden:</p>
+<ul class="plain"><li><b>Daily-Edge C2 bis zum Ende durchgeprüft</b> (<span class="chip">htf-daily-trade-edge-card</span>): Filter-Matrix (14 + 12 Filter), Kandidat eingefroren (<code>6c55e525</code>), LTF-Einstieg verworfen, Blindtest 2010-15 und Tresor 2025-26 <b>nicht bestanden</b>. Übrig bleibt die Variante W50 (Vorwochen-Mitte) als reiner Forward-Log.</li><li><b>Makro-Agent v2 und v3</b> (<span class="chip">makro-scorecard-v2</span>, <span class="chip">makro-gates-evidenz</span>, <span class="chip">makro-wirkketten-katalog</span>): Scorecard, Geopolitik, Wirkketten, Forecast-Ledger, 2J/10J-Renditen für alle G8. Befund: Makro-Filter verbessern die Live-Edges nicht.</li><li><b>Gold Confirmation Framework</b> (PDF einer Bekannten, <span class="chip">gold-confirmation-score</span>): nachgebaut, kein Edge, aber ein Nebenfund. <b>Daraus ging am So 15.11. die CTNL-Makro-Sperre live</b>, die einzige Bot-Änderung aus der Research dieser Woche.</li><li><b>Mentor- und Fremdmaterial geprüft:</b> Tims CRT-Call, Dennis' COT-Calls, Remy-King-Buch, H4-„Final Entry Model“ (<span class="chip">h4-htf-entry-edge-card</span>), Prosper-AI-Bot. Alles ohne Edge.</li><li><b>Werkzeuge:</b> Vorgriff-Wächter (<span class="chip">vorgriff-waechter</span>), Aktien- + Krypto-Screener mit Forward-Ledger (Strang 8, <span class="chip">aktien-analyse-und-bot</span>), Overfitting-Sperre gelockert (OOS frei, Tresor einmalig).</li></ul>
+<p><b>Was liegen blieb:</b> Die Indikator-Steckbriefe (RSI) und der H4-Kandidat warten auf deine Antworten (Dashboard). <code>scripts/research_ctnl_macro_live.py</code> (die Gegenprobe hinter der Live-Sperre) ist geändert, aber nicht committet; <code>knowledge/resources/tradingagents-tauric.md</code> ist ungetrackt.</p>
+</section>
+<section class="block"><h3 class="sec"><span class="num">02</span> Aktive Zeiten</h3>
+<div class="bars"><div class="bar-col"><span class="bar-count">0</span><div class="bar" style="height:2%"></div><span class="bar-label">Mo</span></div><div class="bar-col peak"><span class="bar-count">12</span><div class="bar" style="height:100%"></div><span class="bar-label">Di</span></div><div class="bar-col"><span class="bar-count">9</span><div class="bar" style="height:75%"></div><span class="bar-label">Mi</span></div><div class="bar-col"><span class="bar-count">9</span><div class="bar" style="height:75%"></div><span class="bar-label">Do</span></div><div class="bar-col"><span class="bar-count">0</span><div class="bar" style="height:2%"></div><span class="bar-label">Fr</span></div><div class="bar-col"><span class="bar-count">0</span><div class="bar" style="height:2%"></div><span class="bar-label">Sa</span></div><div class="bar-col"><span class="bar-count">5</span><div class="bar" style="height:42%"></div><span class="bar-label">So</span></div></div><p style="font-size:0.8rem;color:var(--ink-soft)">Gezählt: eigene Commits je Kalendertag (ohne Automatik). Die Nacht-Sessions laufen über Mitternacht, deshalb fallen Mo-Abend und Sa-Abend auf Di bzw. So.</p>
+<ul class="plain"><li><b>Fünf Nacht-Sessions:</b> Mo/Di ca. 00:30-02:20, Di/Mi ca. 22:50-01:00, Mi ca. 21:30-23:00, Mi/Do ca. 01:30-03:00, Sa/So ca. 01:45-02:35 (Commit- und Memory-Zeitstempel). Fast alles nach 22 Uhr.</li><li><b>Tagsüber am Handy:</b> Di 10.11. ca. 11 Uhr (EUR/USD-Short auf FK), Di ca. 17:20 und Mi ca. 16:30 (Gold-Longs auf FK und EK in derselben Minute), Mi ca. 22:20 (USD/JPY-Short auf FK und EK). Details im Performance-Report, Abschnitt 6.</li><li><b>Fr 13.11.:</b> nur Automatik.</li></ul>
+<p>Muster: Research nachts, Handel tagsüber per Handy. Neu ist, dass beides in derselben Woche stark ist.</p>
+</section>
+<section class="block"><h3 class="sec"><span class="num">03</span> Meine Main Erkenntnisse</h3>
+<h4 style="font-family:Spectral,serif;font-size:1.05rem;margin:1.1em 0 .3em">3.1 Makro als Veto funktioniert - aber nur an einer Stelle, und nur auf dem Live-Set gemessen</h4>
+<ul class="plain"><li><b>Befund:</b> Von 17 Bausteinen des Gold Confirmation Frameworks hat keiner im IS |t| ≥ 2. Die eine Ausnahme ist der Makro-Block (Realzins + Dollar) als <b>Veto auf CTNL-Reversal</b>: Die gesperrten Trades verlieren IS −0,69 R (n 109) und OOS −0,75 R (n 69), p ≈ 0,0004. Im Tresor verloren alle 5 gesperrten Longs (p 0,06). Auf dem echten Live-Set sperrt die Regel nur 12 von 257 Trades, alle Longs, Ø −1,13 R.</li><li><b>Mechanismus / Warum:</b> CTNL-Reversal kauft Rücksetzer. Steigen gleichzeitig Realzins und Dollar, drückt ein fundamentaler Strom gegen Gold; der Rücksetzer ist dann oft der Anfang einer Bewegung. Shorts gegen das Makro filtert der Ribbon-Filter schon heraus, deshalb trifft die Sperre live nur Longs.</li><li><b>Wie es aufgefallen ist:</b> Als Nebenbefund eines Tests, der eigentlich einen Score-Edge suchte. Die Veto-Tests liefen erst auf dem Rohset aller CTNL-Signale. Erst die Gegenprobe auf dem Live-Set (Ribbon + Spike) zeigte, wie klein die Wirkung live ist: 12 statt ~180 Trades. Die naheliegende Erweiterung „doppeltes Risiko bei Trades mit dem Makro“ sah im Tresor gut aus (+1,24 R), kippte im IS aber auf −0,45 R und wurde verworfen.</li><li><b>Lehre:</b> Einen Filter für ein Live-Bein immer auf den Trades messen, die das Bein live wirklich nimmt, nicht auf seinen Rohsignalen. Und: Ein Veto ist billiger zu belegen als eine Skalierung, weil es nur die schlechten Fälle braucht (siehe Memory: <code>gold_confirmation_score_momentum</code>).</li></ul>
+<h4 style="font-family:Spectral,serif;font-size:1.05rem;margin:1.1em 0 .3em">3.2 t &gt; 2 ist kein Edge, wenn der Markt sowieso steigt</h4>
+<ul class="plain"><li><b>Befund:</b> Die Prosper-Bot-Trendregel erfüllt auf D1 das vorab gesetzte Kriterium (OOS +0,17 / +0,23 R, t 2,2 / 2,8 über 13 Märkte). Zufällige Long-Einstiege mit gleicher Anzahl, Haltedauer und Kosten liegen aber höher: +0,25 / +0,33 R. Beim Gold-Score dasselbe: Score-Long +0,36 R gegen „immer long, gleiche Mechanik“ +0,43 R.</li><li><b>Mechanismus / Warum:</b> Ein t-Test gegen null fragt: „Verdient die Regel Geld?“ In einer Hausse (Krypto, Indizes, Gold 2023-26) verdient jede Long-Regel Geld. Die richtige Frage lautet: „Verdient sie mehr als zufällige Longs?“ Erst diese Differenz ist das Timing.</li><li><b>Wie es aufgefallen ist:</b> Die Kontrolle „Zufalls-Long“ lief beim Prosper-Test von Anfang an mit, weil dasselbe Muster schon beim K4b-Nachtest (Dollar-Drift) aufgetaucht war. Ohne sie wäre die Regel nach den eigenen Kriterien durchgegangen.</li><li><b>Lehre:</b> Bei jeder Long-only- oder Short-only-Regel gehört die Zufallseinstiegs-Kontrolle <b>in das Bestehenskriterium</b>, nicht in die Zusatzinfo (siehe Memory: <code>t_wert_besteht_aber_nur_long_beta</code>).</li></ul>
+<h4 style="font-family:Spectral,serif;font-size:1.05rem;margin:1.1em 0 .3em">3.3 Der Daily-Edge lag im Limit-Preis und in den Jahren 2016-22</h4>
+<ul class="plain"><li><b>Befund:</b> Dieselben Daily-Ideen per Market-Order bringen IS +0,03 / OOS +0,01 R, mit Limit-Einstieg +0,55 / +0,40 R. Der eingefrorene Kandidat fällt dann im Tresor durch (2025 −0,22 R, 2026 −0,48 R) und im Blindtest 2010-15 (+0,07 R, t 0,36). Jahresreihe: 2016-22 meist +0,3 bis +1,0 R, 2023 +0,20, 2024 +0,02.</li><li><b>Mechanismus / Warum:</b> Das Limit wählt aus. Nur Ideen mit Rücksetzer werden gefüllt (Füllquote ca. 50-60 %), und diese bekommen zudem einen besseren Preis. IS (2016-21) und OOS (2022-24) lagen beide im selben Marktumfeld, deshalb hat das OOS den Zerfall nicht gezeigt. Ein enger LTF-Stop schneidet genau das Tagesrauschen ab, das der Trade aushalten muss: 83-91 % Stopquote.</li><li><b>Wie es aufgefallen ist:</b> Durch den Twin-Trade-Test (Market gegen Limit, gleiche Ideen) und dann durch zwei unabhängige Prüfungen außerhalb 2016-24. Beide fielen durch, obwohl IS und OOS gut aussahen.</li><li><b>Lehre:</b> HTF-Ideen immer mit Limit in eine Rücksetzzone testen. Bei jedem Kandidaten die Jahresreihe der letzten 3-4 Jahre zeigen, nicht nur IS/OOS. Teilen IS und OOS dasselbe Regime, prüft das OOS wenig (siehe Memory: <code>c2_edge_liegt_im_limitpreis</code>, <code>daily_c2_tresor_durchgefallen</code>).</li></ul>
+<h4 style="font-family:Spectral,serif;font-size:1.05rem;margin:1.1em 0 .3em">3.4 Makro ist Kontext, kein Schalter - und vier Gates sind kein Vierfach-Signal</h4>
+<ul class="plain"><li><b>Befund:</b> Die Banken-Scorecard (5 Faktoren, G8) hat keinen Edge: IS Sharpe −0,27, OOS −0,21. Makro-Filter (Stress, Realzins, Scorecard) verbessern Gold ASB, C2 und ORB nicht; der IS-Vorteil kippt im OOS. Die SMT-Gates P, B und R messen zum großen Teil dasselbe Momentum. Beim CPI 10.11. lagen von fünf „4/4“-Märkten zwei richtig und zwei falsch.</li><li><b>Mechanismus / Warum:</b> Die Live-Edges leben von Intraday- und Preisstruktur, nicht von der Makrolage. Flows und Positionierung laufen gleichzeitig mit dem Preis, nicht vorher. Drei Gates, die alle Momentum messen, ergeben ein Signal, das dreimal gezählt wird.</li><li><b>Wie es aufgefallen ist:</b> Beim Faktencheck der Gates gegen Literatur und Marktquellen. Ein Zwischenfehler hätte fast getäuscht: Der point-in-time-Backtest schloss frisch geladene Reihen aus, Value fehlte stillschweigend. Nebenbei: Öl drückt Gold 2026 nur über den Fed-Kanal (Brent +10 % hebt die US-2J um 5,4 bp statt früher 2,3 bp).</li><li><b>Lehre:</b> Neue Gates erst auf Überschneidung mit bestehenden prüfen, dann historisch testen. Makro bleibt im Fact Sheet als Erklärung; als Filter nur mit Forward-Test (siehe Memory: <code>makro_scorecard_ohne_edge</code>, <code>makro_gates_zaehlen_momentum_dreifach</code>, <code>makro_filter_hilft_edges_nicht</code>, <code>oel_gold_ueber_fed_kanal</code>).</li></ul>
+<h4 style="font-family:Spectral,serif;font-size:1.05rem;margin:1.1em 0 .3em">3.5 „Der Sweep hat die Stops geholt“ ist eine Stopweiten-Regel</h4>
+<ul class="plain"><li><b>Befund:</b> Tims CRT verliert schon brutto (−0,02 bis −0,07 R). Seine Kernregel scheint roh zu stimmen (Stopquote 50 % statt 60 %). Bei gleicher Stopweite und gleichem CRV verschwindet der Unterschied (−1,5 bis +3,7 Pp). Das H4-„Final Entry Model“ (456 Varianten) ist brutto ≈ 0 und nicht besser als Zufall.</li><li><b>Mechanismus / Warum:</b> Ein langer Docht bedeutet einen weiteren Stop. Ein weiterer Stop wird seltener getroffen, dafür ist das CRV kleiner. Die Regel misst also Mechanik, nicht Marktpsychologie.</li><li><b>Wie es aufgefallen ist:</b> Durch den Vergleich innerhalb gleicher Stopweiten-Klassen. Die händischen Beispiele (30 von 185 Signalen EURUSD 2023) waren Auswahl, nicht die Regel.</li><li><b>Lehre:</b> Jede Sweep- oder Manipulations-Regel nur innerhalb gleicher Stopweite und gleichem CRV vergleichen (siehe Memory: <code>crt_manipulation_ist_stopweiten_mechanik</code>).</li></ul>
+</section>
+<section class="block"><h3 class="sec"><span class="num">04</span> Neues Wissen diese Woche (Papers/Ideen)</h3>
+<ul class="plain"><li><b>Gold Confirmation Framework (PDF)</b> (<span class="chip">gold-confirmation-framework-pdf</span>, <span class="chip">gold-confirmation-score</span>). (a) Aussage: Gold-Longs nur, wenn Flows, physische Nachfrage, Preisreaktion und Makro bestätigen; keine Zahlen. (b) Getestet: 17 Bausteine aus 7 freien Quellen (GLD-Bestand ab 2004, CFTC, IMF, SGE), IS 2010-19. (c) Urteil: Score-Edge OOS +0,03 R; Long schlägt „immer long“ nicht. (d) <b>Verworfen als Signal; der Makro-Block als CTNL-Veto ist seit 15.11. live</b>, die übrigen Bausteine sind gespeichert (<span class="chip">gold-bausteine-fuer-andere-edges</span>).</li><li><b>Remy King „Top 1 %“ (E-Book)</b> (<span class="chip">remy-king-trading-strategie-top1</span>). (a) Aussage: Zinsdifferenz, Carry und Konsens-Drift treiben FX. (b) Getestet: Fair Value, Carry, Konsens-Drift auf ForexFactory-Historie 2007-26, Vetos B4-B8. (c) Fair Value IS t 1,08; Carry OOS Sharpe −0,18; nach Daten keine Drift, sondern Rücklauf (t ≈ −3,2). (d) <b>Verworfen</b>; Carry und Rohstoff-Veto als Bausteine, das Rohstoff-Veto steckt im C2-Kandidaten.</li><li><b>Tim, „OC CRT“</b> (<span class="chip">tim-oc-crt-call</span>) und <b>Dennis, COT-/Volumen-Calls</b> (<span class="chip">smh-dennis-cot-volumen-calls</span>). (a) CRT: Stop/Break-even nach geholter „Early Ones“-Manipulation; Dennis: Hedgefonds-Aufbau als Filter. (b) Gold + EURUSD M15-H4 bzw. C2-Filter. (c) CRT brutto negativ; COT-Filter OOS +0,18 statt +0,13 R. (d) <b>Als Bausteine geparkt</b>; Volumen/Delta (B/E/F/D) warten auf Daten.</li><li><b>H4 „Final H4 HTF Entry Model“</b> (<span class="chip">h4-htf-entry-edge-card</span>). (a) Sweep über ≥ 2 Vorkerzen + BIAS. (b) 9 Märkte, 2.733 Varianten. (c) Grundvarianten IS/OOS −0,06 bis −0,23 R; nur 15:00-Einstieg auf FX knapp positiv (OOS +0,12 R, t 0,9). (d) <b>Wartet auf deine Kandidatenwahl.</b></li><li><b>Prosper-AI „Grok Trading Team“</b> (<span class="chip">prosper-bot-trendregel-echtdaten</span>). (a) Trendregel eines KI-Bots. (b) 1:1 nachgebaut, 13 Märkte. (c) D1 t 2,2-2,8, aber Zufalls-Long besser. (d) <b>Verworfen</b> (3.2).</li><li><b>Makro-Agent: Scorecard, Gates-Evidenz, Wirkketten</b> (<span class="chip">makro-scorecard-v2</span>, <span class="chip">makro-gates-evidenz</span>, <span class="chip">makro-wirkketten-katalog</span>). Siehe 3.4. Status: <b>im Fact Sheet als Kontext</b>, kein Filter.</li><li><b>TradingAgents (Tauric Research)</b> (<code>knowledge/resources/tradingagents-tauric.md</code>, ungetrackt). Als Signalquelle ungeeignet; Workflow-Bausteine (Entscheidungs-Log, Pflicht-Gegenposition) für den Makro-Agenten. <b>Vorschlag, nicht entschieden.</b></li><li><b>Indikator-Steckbriefe</b> (<span class="chip">indikator-steckbriefe</span>): RSI + RSI Multi Length als Entwurf, <b>warten auf dich.</b></li></ul>
+<p><b>Ideen-Inbox, neu seit KW45:</b></p>
+<ul class="plain"><li>(09.11.) Remy-King-Bausteine: abgearbeitet (siehe oben).</li><li>(10.11.) Eigenes „SMT-Terminal“ / Trading-Jarvis: noch nicht einsortiert, nach dem Fact-Sheet-Checkpoint.</li><li>(10.11.) CRT + COT-Fluss als Bausteine: einsortiert (geparkt).</li><li>(12.11.) TradingAgents-Workflow für den Makro-Agenten: noch nicht entschieden.</li><li>(15.11.) AI-Pathways: Auswahl-Routine walk-forward testen; KI-Einschätzungen vor Marktöffnung versiegeln. Noch nicht einsortiert; der Vorgriff-Wächter aus derselben Quelle ist gebaut.</li></ul>
+</section>
+<section class="block"><h3 class="sec"><span class="num">4b</span> Vertiefung: Der Abschneide-Test - wie man einen Vorgriff findet, bevor er Geld kostet</h3>
+<p><b>Was es ist.</b> Ein Vorgriff (Lookahead) liegt vor, wenn ein Backtest an Tag t eine Information benutzt, die es an Tag t noch nicht gab. Der Abschneide-Test prüft das mechanisch: Man rechnet das Signal einmal auf den vollen Daten. Dann schneidet man die Daten an einem zufälligen Stichtag ab und rechnet neu. Alles, was bis zum Stichtag schon feststand, muss in beiden Rechnungen gleich sein. Ändert sich ein Signal der Vergangenheit, sobald man die Zukunft wegnimmt, hat es in die Zukunft geschaut. <code>lookahead_guard.check_truncation</code> macht das an 30 Stichtagen.</p>
+<p><b>Beispiel mit unseren Zahlen.</b> Der Gold-ASB-Liquiditätsfilter rechnete die Friktion im Backtest über das Fenster t bis t+1, sah also den ganzen Handelstag. Der Test fängt genau das: Das Signal für Tag t ändert sich, wenn Tag t+1 fehlt. Wie teuer so etwas ist, zeigte der 02.11.: Mit dem Live-Wissensstand fiel das Gold-ASB-Soll von +0,308 R auf +0,168 R. Die beiden anderen alten Vorgriffe (Lake-H4-Duplikate, CTNL-Halbierung) fängt der Test ebenfalls. Der CTNL-Signalweg ist sauber (12 Stichtage, 31.195 Zeilen).</p>
+<p><b>Warum das für uns wichtig ist.</b> Alle drei bisherigen Vorgriffe wurden spät und von Hand gefunden, einer erst Wochen nach dem Livegang. Diese Woche zeigt das Filter-Protokoll an 2 von 3 Tagen, dass die Friktion des Vortags nachträglich überarbeitet wird. Die Datenquelle selbst ändert also die Vergangenheit. Grenzen: Der Test gehört auf die fertige Signalfunktion, nicht auf Bausteine wie Fraktale, die absichtlich nach vorn datieren. Bei Kerzen mit Eröffnungs-Stempel muss <code>known_after</code> die Balkenlänge sein, sonst gibt es Fehlalarme. Seit 15.11. ist der Test Pflicht in Phase 4 (deine Bestätigung steht im Dashboard noch aus).</p>
+</section>
+<section class="block"><h3 class="sec"><span class="num">4c</span> Makro-Wochenprüfung</h3>
+<p><b>Die Vorgehensweise kurz</b> (<span class="chip">makro-agent-report-pruefung</span>): (1) Report ganz lesen, auch die Kanal- Nachrichten. (2) Jede prüfbare Zahl gegen eigene Daten. (3) Widersprüche suchen. (4) Gegen die eigene Evidenz gewichten (Richtung allein ≈ 0 R, Rücksetzer-Limit positiv). (5) Trade-Tabelle inkl. „auslassen“. (6) Mentor-Chart einarbeiten, Alarmliste. <b>Gegenwährung wählen:</b> Stärke aus Zinsen + Angst nur gegen Rohstoffwährungen (AUD/NZD/CAD), nie gegen CHF/JPY; jede Rohstoffwährung hat ihren eigenen Rohstoff-Schalter (CAD: Brent über 105); Trades mit demselben Treiber zählen als ein Risiko.</p>
+<p><b>Nachprüfung KW46</b> (Lake-Kurse M15/M5, EUR/CHF und DXY über yfinance; in die Notiz zurückgeschrieben):</p>
+<div class="table-wrap"><table><thead><tr><th>Trade</th><th class="num">Sicht</th><th class="num">Ergebnis</th></tr></thead><tbody><tr><td>AUD/USD Short, Limit 0,6905</td><td class="num">Agent (Rang 1)</td><td class="num">gefüllt Mo, Fr-Schluss 0,6769 → <b>+1,60 R offen</b> (halbe Größe), Ziel 0,6670 noch offen</td></tr><tr><td>EUR/USD Short, Limit 1,1192</td><td class="num">Dennis</td><td class="num neg">gefüllt Mo, <b>Stop Di 08:00 UTC (−1 R)</b>, danach Fall bis 1,1020</td></tr><tr><td>USD/CAD Long, Limit 1,4009</td><td class="num">Dennis</td><td class="num">nicht gefüllt (Tief 1,4077), Kurs danach 1,4266</td></tr><tr><td>Gold Long, Limit 4.045 (CPI-Notiz)</td><td class="num">Kanal-Limit, Zuordnung offen</td><td class="num">gefüllt in der CPI-Minute, Stop → <b>−1 R</b></td></tr><tr><td>AUD/USD Short, Limit 0,6968</td><td class="num">Kanal-Limit</td><td class="num">nicht gefüllt</td></tr><tr><td>Gold &gt; 4.150 / USD/JPY &lt; 157,40 (nur bei weicher Zahl)</td><td class="num">Agent</td><td class="num">nicht ausgelöst, richtig so</td></tr></tbody></table></div>
+<p><b>Was hielt:</b> Die Gegenwährungs-Leitlinie (AUD −2,3 %, CAD −1,0 %, Euro −1,0 % gegen USD) und Dennis' DXY-Pfad (C-Welle bis 101,49, dann über 102,6 bis 103,4). Die Warnung der Prüfung, Dennis' EUR/USD-Stop liege unter dem Hoch vom 04./05.11. und könne abgefischt werden, traf ein: 7 Pips über dem Stop drehte der Kurs. „Füllung unsicher“ bei USD/CAD stimmte ebenfalls. <b>Was nicht hielt:</b> Die CPI-Schätzung (Kern 0,296 % statt 0,1-0,2; „heiß“ hatten wir mit ~20 % bewertet) und die eigene Gold-Neigung. Der Report-Satz „Gold fällt bei steigenden Renditen“, den wir als Widerspruch abgewertet hatten, traf zu (Gold −4,6 %). Die Invalidierung „Schluss &lt; 4.000“ hätte geschützt.</p>
+<p><b>Laufende Bilanz:</b> Agent 1 Trade, 1 Treffer, <b>+1,60 R</b> · Dennis 1 Trade, 0 Treffer, <b>−1,0 R</b> · Kanal-Limits 1 Trade, −1,0 R. Nach einer Woche ist das kein Urteil, nur der Start der Zählung. <b>Nebenbefund:</b> Du hast die Ideen real per Handy umgesetzt. Der EUR/USD-Wiedereinstieg nach Dennis' Stop brachte +631 USD auf FK, drei Gold-Longs am 4.030-Alarm −145 USD / −124 EUR. Die Spalte „Nutzer real“ steht jetzt mit in der Notiz.</p>
+<p><b>Für KW47 gibt es noch kein Beispiel</b> in der Notiz (keine Report-Prüfung vom 15.11.).</p>
+</section>
+<section class="block"><h3 class="sec"><span class="num">05</span> Verbesserungen</h3>
+<ul class="plain"><li><b>CTNL-Makro-Sperre live</b> (15.11.) mit eigenem Daten-Task, fail-safe „durchlassen“ bei alten Daten.</li><li><b>Gold ASB: Filter-Protokoll je Tag, Soll folgt der Bot-Entscheidung</b> (<code>4c0bcc53</code>). Die KW45-Frage (03.11.) ist damit beantwortet.</li><li><b>FK <code>gold_silver</code> kann wieder einsteigen</b> (laufende H4-Kerze als Platzhalter, <code>ce42e5ef</code>).</li><li><b>Vorgriff-Wächter</b> mit 14 Tests, als Pflicht in Phase 4 eingetragen.</li><li><b>Makro-Datenschicht:</b> 2J/10J-Renditen für alle G8, Kern-Inflation und Leitzinsen aus Ersatzquellen, Realzinsen, Geopolitik-Index, Forecast-Ledger.</li><li><b>Screener (Strang 8)</b> mit Forward-Ledger und Archiv; <b>C2-Forward-Log</b> (W50) läuft.</li><li><b>Prozess:</b> Overfitting-Sperre gelockert (OOS frei, Tresor einmalig), Dashboard-Fokusregel, 37 verwaiste Bot-Einträge bereinigt, Watchdog-Push läuft wieder.</li></ul>
+</section>
+<section class="block"><h3 class="sec"><span class="num">06</span> Verschlechterungen / offene Probleme</h3>
+<ul class="plain"><li><b>Handtrades auf EK und FK</b> mit bis zu 4,5 % Risiko je Trade auf EK; EK −8,35 % in der Woche (Performance-Report 6.1).</li><li><b>ORB an der ersten Kerze: ca. 20 R Soll-Differenz in einer Woche</b> (verpasste NASDAQ-Gewinner + Fill-Kerzen-Stop bei SP500).</li><li><b>Dachprojekt ohne Live-Kandidat:</b> Daily-C2 im Tresor und Blindtest durchgefallen, H4 ohne Edge.</li><li><b>STT auf TTP noch offen</b>, obwohl am 10.11. „schließen“ entschieden.</li><li><b><code>mt5_pull.py</code> meldet bei kalten Terminals still 0 Deals</b> (dritter Fall); Soll/Ist zählt <code>orb_us30</code> weiter und die FK-Kopfzeile passt nicht zur Bein-Summe.</li><li><b>Edge-Ampel zum vierten Mal nicht aktualisiert</b> (Dukascopy-Abruf hängt, Stand 25.10.).</li><li><b>Gegenprobe-Skript der Live-Sperre nicht committet</b> (<code>scripts/research_ctnl_macro_live.py</code>).</li></ul>
+</section>
+<section class="block"><h3 class="sec"><span class="num">07</span> Optimierungsmöglichkeiten</h3>
+<ul class="plain"><li><b>Regel für Handtrades auf Bot-Konten</b> festlegen (erlaubt? Größe? eigenes Konto?). Eine Zeile im Dashboard reicht für die Entscheidung.</li><li><b><code>mt5_pull.py</code> härten:</b> nach dem Terminal-Start warten, bis die Historie geladen ist, FK mit <code>/portable</code> starten, und bei 0 Deals mit Saldoänderung einen Fehler statt einer leeren Liste melden.</li><li><b>Soll/Ist-Werkzeug:</b> <code>orb_us30</code> aus dem Soll nehmen, ORB-Fills zuordnen, FK-Kopfzeile korrigieren.</li><li><b>ORB-Fill-Kerze im Backtest prüfen</b> (Stop in der Fill-Kerze). Dann sind Soll und Ampel für SP500 ehrlich, unabhängig davon, ob am Erste-Bar-Problem live etwas geändert wird.</li><li><b>Makro-Agent: CPI-Schätzung als Forecast-Ledger-Eintrag führen</b>, damit die Trefferquote solcher Schätzungen mitgezählt wird, nicht nur die Trades.</li></ul>
+</section>
+</div>
+</body>
+</html>

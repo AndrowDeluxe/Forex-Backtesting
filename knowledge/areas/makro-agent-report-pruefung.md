@@ -197,17 +197,27 @@ Long-Limit 1,4009 · Stop 1,3951 · Ziel 1,4300 (Oktober-Hochs) → 58 Pips Risi
 | USDCAD | kreuzt aufwärts | 1,4300 | Ziel |
 | UKOIL | kreuzt aufwärts | 105 | Report-Schalter: CAD-Stärke, Long prüfen |
 
-### Nachprüfung (nach Fr 13.11. ausfüllen)
+### Nachprüfung (ausgefüllt im Weekly KW46, So 15.11.)
+
+Kurse: Data Lake Dukascopy M15/M5 (AUDUSD, EURUSD, USDCAD, Gold, USDJPY), EUR/CHF und DXY über
+yfinance (nicht im Lake). Füllung = erste Berührung des Limits ab So 08.11. 22:00 UTC; bei Stop und Ziel
+in derselben Kerze zählt der Stop. Offene Trades zum Schluss Fr 13.11. bewertet.
 
 | Punkt | Erwartet | Eingetreten | Urteil |
 |---|---|---|---|
-| CPI Kern Di 10.11. | 0,1–0,2 % | | |
-| DXY-Pfad Dennis (Zone 101,55–101,82, dann > 102,6) | ja | | |
-| AUD/USD Limit 0,6905 gefüllt / Ergebnis R | | | |
-| Gold 4.030 erreicht, Schluss < 4.000? | | | |
-| EUR/CHF 0,910 erreicht | | | |
-| EUR/USD (Dennis) Limit 1,1192 gefüllt / Ergebnis R | | | |
-| USD/CAD (Dennis) Limit 1,4009 gefüllt / Ergebnis R | | | |
+| CPI Kern Di 10.11. | 0,1–0,2 % | **0,3 %** (ungerundet 0,296 %, aus dem Kernindex 338,896 → 339,9); Gesamt 0,4 % (0,350 %) | ✗ heiß; BASE-Schätzung (55–60 %) lag falsch |
+| DXY-Pfad Dennis (Zone 101,55–101,82, dann > 102,6) | ja | Di-Tief 101,49 (knapp unter der Zone, kein D1-Schluss < 101,50), ab Mi > 102,6, Fr Hoch 103,44 / Schluss 103,41 | ✓ voll eingetreten, Ziel ~103 erreicht |
+| AUD/USD Limit 0,6905 gefüllt / Ergebnis R | gefüllt, Ziel 0,6670 | gefüllt Mo 09:45 UTC; Wochenhoch danach 0,69307 (Stop 0,6990 nie nah); Fr-Schluss 0,67693 | ✓ **offen +1,60 R** (halbe Größe), Ziel 99 Pips entfernt |
+| Gold 4.030 erreicht, Schluss < 4.000? | Alarm, Long nur bei DXY < 102,6 | 4.030 Di erreicht (Tief 4.013); D1-Schluss Mi 3.978,5 → Long ungültig; Fr 3.883 (Woche −4,6 %) | Alarm ✓, Invalidierung ✓ (hätte geschützt); Long-Neigung ✗ |
+| EUR/CHF 0,910 erreicht | Gewinne sichern | nein: Tief 0,9134 (Mo), danach bis 0,9267 (Fr) | Short lief gegen; „abwerten“ ✓ |
+| EUR/USD (Dennis) Limit 1,1192 gefüllt / Ergebnis R | Rang 2, halbe Größe | gefüllt Mo 09:55 UTC, Stop 1,12439 Di 08:00 UTC (Hoch 1,12513) → **−1 R**; danach Fall bis 1,1020 | ✗ −1 R; die Prüfungs-Warnung „Stop unter dem Hoch 04./05.11., kann abgefischt werden“ ✓ |
+| USD/CAD (Dennis) Limit 1,4009 gefüllt / Ergebnis R | Füllung unsicher | nicht gefüllt (Tief 1,40769 Mo), Fr 1,4266 | 0 R; Richtung ✓, „Füllung unsicher“ ✓ |
+
+**Dafür/Dagegen im Rückblick:** Getragen hat die Leitlinie „Stärke aus Zinsen nur gegen
+Rohstoffwährungen“ (AUD −2,3 %, CAD −1,0 %, Euro −1,0 % gegen USD) und Dennis' DXY-Pfad. Falsch lag die
+CPI-Schätzung und die eigene Gold-Neigung („Gold nur long“): Der Report-Satz „Gold fällt bei steigenden
+Renditen“, den die Prüfung als Widerspruch Nr. 3 abgewertet hatte, traf diese Woche zu. Die
+Invalidierung „Schluss < 4.000“ hätte den Schaden begrenzt.
 
 ---
 
@@ -243,14 +253,32 @@ heiß (≥ 0,25) ~20 %.
 | 4 | EUR/USD short | heiß + Schluss < 1,1100 | Report-Variante; den Chart-Short vor 14:15 halbieren/schließen |
 | – | NZD, USD/CAD, GBP/USD, EUR/CHF | – | auslassen (ausgestoppt / nicht gefüllt / Cluster / Kreuz) |
 
-### Nachprüfung CPI (nach Mi 11.11. ausfüllen)
+### Nachprüfung CPI (ausgefüllt im Weekly KW46, So 15.11.)
 
 | Punkt | Erwartet | Eingetreten | Urteil |
 |---|---|---|---|
-| Kern ungerundet | 0,20–0,24 (Basis) | | |
-| DXY-Schluss Di | 101,5–103 | | |
-| Dollar-Cluster (EU/GU/AU) bei weicher Zahl ausgestoppt? | ja | | |
-| Gold-Schluss > 4.150 / Long gefüllt / R | | | |
-| USD/JPY-Schluss < 157,40 | | | |
-| Limit Gold long 4.045 (SL 3.970, TP 4.150/4.220) gefüllt / R | | | |
-| Limit AUD/USD short 0,6968 (SL 0,7030, TP 0,6900/0,6835) gefüllt / R | | | |
+| Kern ungerundet | 0,20–0,24 (Basis) | 0,296 % | ✗ heiß (Schätzung „heiß“ ~20 %) |
+| DXY-Schluss Di | 101,5–103 | 102,23 | ✓ |
+| Dollar-Cluster (EU/GU/AU) bei weicher Zahl ausgestoppt? | ja | Zahl heiß → Bedingung nicht eingetreten. EU (Dennis) war schon **vor** der Zahl ausgestoppt (Di 08:00 UTC); AU lief ins Plus. GU nicht geprüft | n/a |
+| Gold-Schluss > 4.150 / Long gefüllt / R | nur bei weich | Di-Schluss 4.038,7 → keine Auslösung | ✓ richtig nicht gehandelt |
+| USD/JPY-Schluss < 157,40 | nur bei weich | Di-Schluss 158,71 → keine Auslösung (Fr 159,69) | ✓ richtig nicht gehandelt |
+| Limit Gold long 4.045 (SL 3.970, TP 4.150/4.220) gefüllt / R | | gefüllt Di 13:30 UTC (Minute der CPI-Zahl), Stop Mi/Do um Mitternacht UTC → **−1 R** | ✗ |
+| Limit AUD/USD short 0,6968 (SL 0,7030, TP 0,6900/0,6835) gefüllt / R | | nicht gefüllt (Hoch ab Di 0,6927) | 0 R |
+
+Unklar: Die beiden Limit-Zeilen sind in Beispiel 2 weder als Agent- noch als Dennis-Trade
+markiert. In der Bilanz unten stehen sie als eigene Spalte „Kanal-Limits“.
+
+---
+
+## Laufende Bilanz (nur vorwärts, nie rückwirkend nachjustieren)
+
+| Woche | Agent-Sicht: Trades / Treffer / Σ R | Dennis-Sicht: Trades / Treffer / Σ R | Kanal-Limits (Zuordnung offen) | Nutzer real (Handtrades auf FK/EK) |
+|---|---|---|---|---|
+| KW46 | 1 / 1 / **+1,60 R** (AUD/USD, offen, halbe Größe) | 2 Ideen, 1 gefüllt (EUR/USD; USD/CAD nicht) → 1 / 0 / **−1,0 R** | 1 / 0 / −1,0 R (Gold 4.045) | EUR/USD Short +631 USD; 3× Gold Long −145 USD / −124 EUR; USD/JPY Short offen |
+| **Summe** | **1 / 100 % / +1,60 R** | **1 / 0 % / −1,0 R** | **1 / 0 % / −1,0 R** | – |
+
+Nutzer-Spalte aus dem MT5-Abzug (`reason` 1 = Mobile, Magic 0): EUR/USD Short FK 0,56 Lot bei
+1,12268 (Di, nach Dennis' Stop wieder eingestiegen), Teil 1,11388 und Ziel 1,10937. Gold Long FK
+bei 4.029,7 (= Alarm 4.030) und 4.008, EK bei 4.006, alle ausgestoppt. USD/JPY Short FK 0,3 Lot und
+EK 0,1 Lot bei 159,84 (Mi 23:23 Serverzeit), Stop 162,00, noch offen. Die Agent-Prüfung sagte zu
+USD/JPY „erst nach Fed 09.12.“.

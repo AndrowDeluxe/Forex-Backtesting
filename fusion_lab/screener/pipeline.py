@@ -21,6 +21,11 @@ def _tech(d: pd.DataFrame) -> dict:
     return t
 
 
+def _today() -> str:
+    """Forward-Status richtet sich nach dem LAUF-Datum (Krypto-Lauf 07:45 hat Datenstand = Vortag)."""
+    return datetime.now().date().isoformat()
+
+
 def _next(day: str | None, stand: str) -> str | None:
     """Nur kuenftige Quartalszahlen-Termine (Yahoo liefert nach dem Termin noch eine Weile den alten)."""
     return day if day and day >= stand else None
@@ -62,7 +67,7 @@ def _finish(kind: str, stand: str, table: pd.DataFrame, deep: list[dict], contex
             panel: dict, bench: str, write_ledger: bool) -> dict:
     table = table.sort_values("gesamt", ascending=False)
     report = {"screener": kind, "stand": stand, "erzeugt": datetime.now().isoformat(timespec="seconds"),
-              "version": C.VERSION, "status": ledger.status(stand), "llm": use_llm,
+              "version": C.VERSION, "status": ledger.status(_today()), "llm": use_llm,
               "schwellen": {"kaufen": C.BUY_THRESHOLD, "verkaufen": C.SELL_THRESHOLD,
                             "sentiment_gewicht": C.SENTIMENT_WEIGHT},
               "kontext": context, "anzahl": int(len(table)),
@@ -77,7 +82,7 @@ def _finish(kind: str, stand: str, table: pd.DataFrame, deep: list[dict], contex
                     continue
                 llm = c.get("llm") or {}
                 rows.append({"erstellt": datetime.now().date().isoformat(), "stand": stand, "screener": kind,
-                             "version": C.VERSION, "status": ledger.status(stand), "art": "szenario",
+                             "version": C.VERSION, "status": ledger.status(_today()), "art": "szenario",
                              "objekt": c["objekt"], "szenario": sz, "gewaehlt": llm.get("szenario") == sz if llm and
                              "szenario" in llm else None, "score": c["gesamt"], "signal": c["signal"],
                              "sentiment": llm.get("sentiment"), "einstieg": s["einstieg"], "zone_lo": s.get("zone_lo"),
@@ -88,7 +93,7 @@ def _finish(kind: str, stand: str, table: pd.DataFrame, deep: list[dict], contex
         for name, members in groups.items():
             for h in C.RANK_HORIZONS:
                 rows.append({"erstellt": datetime.now().date().isoformat(), "stand": stand, "screener": kind,
-                             "version": C.VERSION, "status": ledger.status(stand), "art": "gruppe", "objekt": name,
+                             "version": C.VERSION, "status": ledger.status(_today()), "art": "gruppe", "objekt": name,
                              "horizont": h, "titel": ";".join(members)})
         report["ledger_neu"] = ledger.append(rows)
     report["ledger_ausgewertet"] = ledger.evaluate(panel, kind, bench)

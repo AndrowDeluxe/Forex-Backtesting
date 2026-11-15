@@ -9,6 +9,12 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-15** [Dachprojekt / Strang 8] **Screener: Forward-Test gestartet (Version 1.0), Archiv**
+  (Nutzerbestätigung aller 11 Annahmen). `FORWARD_START = 2026-11-15`, Status richtet sich nach dem Lauf-Datum
+  (Krypto-Lauf 07:45 hat Datenstand = Vortag). Jeder Lauf als gzip in `fusion_lab/screener/archive/` (+ Wochenstand
+  Fundamentaldaten), `screener_task.ps1` committet Ledger + Archiv. Probe-Zeilen blockieren Forward-Zeilen nicht.
+  Annahmen-Punkt aus dem Dashboard entfernt. Nächster Schritt: Backtest der prüfbaren Teile parallel.
+
 - **2026-11-15** [Dachprojekt / Strang 8] **Aktien- + Krypto-Screener, Forward-Ledger, Cloud-Dashboard gebaut**
   (Nutzerentscheid, Plan freigegeben). [[aktien-analyse-und-bot]].
   - `fusion_lab/screener/`: S&P 500 + Nasdaq-100 (518) und Top-30-Krypto, Score 0–100 (≥ 65 KAUFEN / ≤ 35

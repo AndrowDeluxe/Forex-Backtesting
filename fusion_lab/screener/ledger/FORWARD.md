@@ -1,5 +1,9 @@
 # Forward-Regel Aktien- + Krypto-Screener (festgelegt 15.11.2026, Version 1.0)
 
+**Forward-Start: 15.11.2026** (Nutzerbestätigung aller Annahmen am 15.11.). Maßgeblich ist das Lauf-Datum,
+nicht der Datenstand. Parallel läuft ein Backtest der prüfbaren Teile (Zonen, Kurs-Score); bessere Werte
+kommen als Version 1.1 mit eigener Forward-Auswertung, Version 1.0 läuft unverändert weiter.
+
 Vorab festgelegt, bevor ein einziges Ergebnis ausgewertet ist. Nach dem Forward-Start nicht mehr ändern;
 jede Änderung an Gewichten, Schwellen oder Zonenregeln = neue `VERSION` in `config.py` und eigene Auswertung.
 
@@ -9,7 +13,7 @@ jede Änderung an Gewichten, Schwellen oder Zonenregeln = neue `VERSION` in `con
 2. Der Nutzer sieht die ersten Berichte durch. Danach wird `FORWARD_START` in `config.py` gesetzt (Datum).
    Ab da `status = forward`.
 3. **Auswertung frühestens**, wenn eine der beiden Bedingungen erfüllt ist (je Screener getrennt):
-   - 3 Monate nach `FORWARD_START`
+   - 3 Monate nach `FORWARD_START` (frühestens 15.02.2027)
    - 50 gefüllte Szenarien
 
 ## Was gemessen wird

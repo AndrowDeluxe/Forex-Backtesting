@@ -7,7 +7,14 @@ später ein Aktienbot mit Ausführung.
 **Status**: **Aktiv seit 2026-11-15, Teil des Dachprojekts** [[quant-diskretionaer-fusion]]
 (Nutzerentscheid 15.11., vorher „geparkt bis die Makro-Basis steht“; der Makro-Agent läuft inzwischen).
 Auslöser: Prosper-AI-Kurs „Grok Trading Team“ ([[prosper-bot-trendregel-echtdaten]]) und eine
-NVIDIA-Handanalyse am 15.11. Stufe 1 (Screener + Forward-Ledger + Dashboard) gebaut, **Probebetrieb**.
+NVIDIA-Handanalyse am 15.11. Stufe 1 (Screener + Forward-Ledger + Dashboard) gebaut. **Forward-Test seit
+15.11.2026** (Version 1.0, alle Annahmen vom Nutzer bestätigt). Jeder Lauf wird in `fusion_lab/screener/archive/`
+protokolliert und committet.
+
+**Woher die Werte kommen:** Gewichte, ATR-Abstände und CRV ≥ 2 sind gängige Startwerte (gleich gewichtet =
+neutral), 65/35 ist Nutzerwunsch. Nichts davon ist getestet. Backtestbar sind die Preiszonen und die Kurs-Teile
+des Scores (Survivorship-Bias der heutigen Indexliste beachten); Fundamentaldaten nur mit SEC-EDGAR-Historie;
+News/Analystenziele nur vorwärts. Backtest der prüfbaren Teile läuft parallel, Ergebnisse höchstens als Version 1.1.
 
 ## Stufe 1: täglicher Aktien- + Krypto-Screener (gebaut 15.11.2026)
 

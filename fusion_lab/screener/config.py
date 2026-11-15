@@ -16,7 +16,7 @@ NASDAQ100_CSV = REPO / "ou_paper_backtest" / "nasdaq100_wiki.csv"
 
 # Forward-Start: None = Probebetrieb (Ledger-Zeilen mit status "probe"). Wird erst nach Durchsicht der
 # ersten Berichte durch den Nutzer gesetzt (Datum "YYYY-MM-DD"), danach nicht mehr aendern.
-FORWARD_START: str | None = None
+FORWARD_START: str | None = "2026-11-15"   # Nutzerbestaetigung 15.11.2026 (Version 1.0), nicht mehr aendern
 
 # --- Universum ---------------------------------------------------------------------------------------
 WATCHLIST_STOCKS = ["NVDA"]

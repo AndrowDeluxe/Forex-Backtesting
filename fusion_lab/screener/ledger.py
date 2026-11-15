@@ -30,8 +30,9 @@ TEXT_COLUMNS = ["erstellt", "stand", "screener", "version", "status", "art", "ob
                 "signal", "titel", "fill_datum", "exit_datum", "exit_grund", "ausgewertet"]
 
 
-def status(day: str) -> str:
-    return "forward" if C.FORWARD_START and day >= C.FORWARD_START else "probe"
+def status(run_day: str) -> str:
+    """run_day = Datum des Laufs (nicht Datenstand)."""
+    return "forward" if C.FORWARD_START and run_day >= C.FORWARD_START else "probe"
 
 
 def read(path: Path = LEDGER) -> pd.DataFrame:
@@ -52,9 +53,10 @@ def write(df: pd.DataFrame, path: Path = LEDGER) -> None:
     tmp.replace(path)
 
 
-def _open(df: pd.DataFrame, screener: str, objekt: str, szenario: str, art: str) -> bool:
+def _open(df: pd.DataFrame, screener: str, objekt: str, szenario: str, art: str, status_: str) -> bool:
+    """Offene Zeile mit gleichem Titel/Szenario/Art UND gleichem Status (Probe-Zeilen blockieren Forward nicht)."""
     m = (df["screener"] == screener) & (df["objekt"] == objekt) & (df["szenario"] == szenario) & \
-        (df["art"] == art) & (df["ausgewertet"].astype(str) != "True")  # noqa: E712
+        (df["art"] == art) & (df["status"] == status_) & (df["ausgewertet"].astype(str) != "True")
     return bool(m.any())
 
 
@@ -64,10 +66,10 @@ def append(rows: list[dict], path: Path = LEDGER) -> int:
     df = read(path)
     new = []
     for r in rows:
-        if r["art"] in ("szenario", "referenz") and _open(df, r["screener"], r["objekt"], r["szenario"], r["art"]):
+        if r["art"] in ("szenario", "referenz") and _open(df, r["screener"], r["objekt"], r["szenario"], r["art"], r["status"]):
             continue
         if r["art"] == "gruppe" and ((df["art"] == "gruppe") & (df["screener"] == r["screener"]) &
-                                     (df["stand"] == r["stand"]) & (df["objekt"] == r["objekt"]) &
+                                     (df["stand"] == r["stand"]) & (df["objekt"] == r["objekt"]) & (df["status"] == r["status"]) &
                                      (df["horizont"] == r["horizont"])).any():
             continue
         new.append({c: r.get(c, np.nan) for c in COLUMNS} | {"ausgewertet": False})

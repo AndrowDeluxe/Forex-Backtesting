@@ -1,0 +1,14 @@
+{
+  "strategy": "gold_confirm_v2_sizing",
+  "split": {
+    "is_start": "2010-01-01",
+    "is_end": "2019-12-31",
+    "oos_end": "2026-05-10",
+    "tresor_end": "2026-11-10"
+  },
+  "registered": "2026-11-15T01:17:52+00:00",
+  "trials": 12,
+  "frozen": null,
+  "unsealed": {},
+  "forward": null
+}

@@ -9,11 +9,38 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-15** [Bots LIVE: EK / Funded (TTP+IQ) / FK] **CTNL-Makro-Sperre live eingebaut** (Nutzerentscheid
+  „direkt in den Bot“). Kein ctnl_reversal-Long bei Gold-MACRO ≤ 35, kein Short bei ≥ 65 (Vortageswert).
+  - Gemeinsames Modul `gold_smc_htf_ltf/macro_gate.py` (wie spike_gate: nur neue Entries, getrackte bleiben;
+    fail-safe durchlassen bei Daten > 5 Tage alt). Tests `tests/test_macro_gate.py` (4) grün.
+  - Eingehängt nach dem Spike-Filter in `FKInstantFunding-MT5-Bridge/run_once.py` (gilt auch für Fast über
+    `slow._process_leg`), `Funded-Portfolio-Bridge/run_once.py`, `EK-Portfolio-Bridge/legs/ctnl_edge/signal_source.py`.
+    Bridges nicht in Git: Sicherung je `_backup_20261115_macro_gate/`.
+  - Neuer Task `Forex-Gold-Makro-Gate-Refresh` (täglich 07:15, `fusion_lab.gold_confirm.refresh`); `_days()` im
+    Gold-Score läuft jetzt über den Dukascopy-Cache hinaus bis zum jüngsten FRED/yfinance-Tag (Historie unverändert).
+  - Gegenprobe auf dem Live-Set (Ribbon + Spike, `scripts/research_ctnl_macro_live.py`): 12 von 257 Trades gesperrt
+    (alle Long, Ø −1,13 R, p 0,0035). 1 % Risiko 2016–10/26: CAGR 22,1 → 23,6 %, Sharpe 1,17 → 1,24, MaxDD −19,4 % gleich.
+
 - **2026-11-15** [Dachprojekt / Strang 8] **Screener: Forward-Test gestartet (Version 1.0), Archiv**
   (Nutzerbestätigung aller 11 Annahmen). `FORWARD_START = 2026-11-15`, Status richtet sich nach dem Lauf-Datum
   (Krypto-Lauf 07:45 hat Datenstand = Vortag). Jeder Lauf als gzip in `fusion_lab/screener/archive/` (+ Wochenstand
   Fundamentaldaten), `screener_task.ps1` committet Ledger + Archiv. Probe-Zeilen blockieren Forward-Zeilen nicht.
   Annahmen-Punkt aus dem Dashboard entfernt. Nächster Schritt: Backtest der prüfbaren Teile parallel.
+
+- **2026-11-15** [Dachprojekt / Makro-Agent] **CTNL: Risikoskalierung nach Makro getestet, verworfen** (Nutzerauftrag).
+  Neue Sperre `gold_confirm_v2_sizing`, 6 Varianten, `research_gold_confirm.py --stage sizing`. 2× bei Trades mit
+  Makro: Shorts IS schlechter (−0,45 R je Short mit Makro), Longs OOS je Risikoeinheit +0,387 statt +0,370 R bei
+  +18 % Drawdown. „Nur mit Makro“ verliert den Großteil der Summe. Veto bleibt Kandidat, keine Bot-Änderung.
+  [[gold-confirmation-score]]
+
+- **2026-11-15** [Dachprojekt / Makro-Agent] **Gold-Bausteine gespeichert, Nebenbefunde verworfen** (Nutzerentscheid).
+  [[gold-bausteine-fuer-andere-edges]]
+  - `fusion_lab/filters/gold_macro_veto.py`: `GoldMacroVetoFilter` (kein Long bei MACRO ≤ 35, kein Short ≥ 65,
+    Vortageswert, `explain()`), nicht live. Short-Seite nachgerechnet: gesperrte Shorts IS −1,02 R (n 32),
+    OOS −0,65 R (n 35).
+  - `fusion_lab/gold_confirm/context.py`: Lagebild GLD-Tonnen, China-Prämie, Zentralbanken, MACRO fürs Fact-Sheet.
+  - 4 Tests grün. Ideen-Inbox: „Gold long am Limit-Rücksetzer“, „Gold ASB + Trendfilter“ verworfen,
+    „GLD/China-Prämie als Kontext“ erledigt (context.py).
 
 - **2026-11-15** [Dachprojekt / Strang 8] **Aktien- + Krypto-Screener, Forward-Ledger, Cloud-Dashboard gebaut**
   (Nutzerentscheid, Plan freigegeben). [[aktien-analyse-und-bot]].
@@ -30,14 +57,13 @@ keine Planung (dafür ist `DASHBOARD.md`).
     Zahlen aus Schlagzeilen) → Validator korrigiert. Notion + Telegram getestet.
   - Kein Handel, keine Bridge.
 
-- **2026-11-15** [Dachprojekt / Aktien-Screener] **Einmaliger Task `Forex-NVDA-Earnings-Analyse` (Di 17.11., 23:45)**
-  (Nutzerauftrag): NVIDIA-Analyse nach den Q3-Zahlen per Telegram, `claude.exe -p` mit Web-Zugriff,
-  Prompt `scripts/reports/nvda_followup_prompt.md`, Technik gerechnet über `scripts/reports/stock_technicals.py`,
-  Versand `scripts/reports/send_telegram_text.py` (Test-Nachricht ok). Vergleicht mit der Handanalyse vom 15.11.
-  (Szenarien A 149–158 / B > 172). Kein Handel.
+- **2026-11-15** [Dachprojekt / Makro-Agent] **CTNL-Makro-Veto: Tresor geöffnet** (Nutzerentscheid). Lock
+  `gold_confirm_v1` eingefroren (CTNL-Reversal live + kein Trade gegen MACRO-Block ≥65/≤35), `unseal("tresor")`.
+  Tresor 11.05.–30.10.2026: CTNL 47 Trades +0,31 R → mit Veto 42 Trades +0,48 R; 5 gesperrte Longs alle Verlust
+  (Ø −1,16 R), p 0,06. Richtung wie IS/OOS, Stichprobe dünn. Keine Bot-Änderung. [[gold-confirmation-score]]
 
 - **2026-11-15** [Research-Prozess] **Vorgriff-Wächter gebaut** (Nutzerauftrag, Anstoß: YouTube-Sichtung
-  „AI Trading Bot“, AI-Pathways-Kurs). [[vorgriff-waechter]]
+  „AI Trading Bot“, AI-Pathways-Kurs), Commit `87f42176`. [[vorgriff-waechter]]
   - `lookahead_guard.py`: `check_truncation` (Daten an 30 Zufalls-Stichtagen abschneiden, neu rechnen,
     vergleichen; mehrere Zeitebenen, Trade-Listen) und `engine_selftest` (eingepflanzter Edge / Rauschen /
     Bewegung auf dem Signal-Balken).
@@ -48,6 +74,32 @@ keine Planung (dafür ist `DASHBOARD.md`).
     31.195 Zeilen.
   - Als Pflicht in Phase 4 in `areas/backtest-standard-process.md` eingetragen (meine Annahme, im Dashboard
     zur Bestätigung). Inbox-Eintrag entfernt.
+
+- **2026-11-15** [Dachprojekt / Aktien-Screener] **Einmaliger Task `Forex-NVDA-Earnings-Analyse` (Di 17.11., 23:45)**
+  (Nutzerauftrag): NVIDIA-Analyse nach den Q3-Zahlen per Telegram, `claude.exe -p` mit Web-Zugriff,
+  Prompt `scripts/reports/nvda_followup_prompt.md`, Technik gerechnet über `scripts/reports/stock_technicals.py`,
+  Versand `scripts/reports/send_telegram_text.py` (Test-Nachricht ok). Vergleicht mit der Handanalyse vom 15.11.
+  (Szenarien A 149–158 / B > 172). Kein Handel.
+
+- **2026-11-14** [Dachprojekt / Makro-Agent] **Gold Confirmation Framework (PDF einer Bekannten) nachgebaut und
+  getestet: kein Edge** (Nutzerauftrag, Plan freigegeben). [[gold-confirmation-framework-pdf]],
+  [[gold-confirmation-score]].
+  - Paket `fusion_lab/gold_confirm/`: 7 freie Quellen, u. a. GLD-Bestand täglich ab 2004 (SPDR-Archiv),
+    CFTC Disaggregated ab 2006, IMF-Goldreserven, SGE-Benchmark ab 2016 (China-Prämie), GVZ, GDX/Kupfer.
+    Daraus 17 Bausteine, Score 0–100, `GoldScoreFilter`.
+  - Skript `scripts/research_gold_confirm.py`, Lock `gold_confirm_v1` (IS 2010–19, OOS bis 05/2026, Tresor zu).
+    3 Tests grün (u. a. kein Vorgriff).
+  - Befunde:
+    - Viele Bausteine messen nur das Gold-Momentum.
+    - Kein Baustein hat im IS |t| ≥ 2.
+    - Score-Edge (32 Varianten) bestes IS +0,34 R, OOS +0,03. Short verliert durchgehend. Long schlägt
+      „immer long mit derselben Limit-Mechanik“ im OOS nicht (+0,36 gegen +0,43 R).
+    - Score-Veto auf Gold ASB wirkungslos (16/13 Trades gesperrt).
+    - Kombinationen mit Zins/Trend/COT/Silber: kein Kandidat schlägt seine Kontrolle.
+    - **Einziger Fund:** Makro-Block als Veto auf CTNL-Reversal (Realzins + USD). Die gesperrten Trades
+      verlieren IS −0,69 R (n 109) und OOS −0,75 R (n 69), p ≈ 0,0004. CTNL OOS steigt damit von +0,21 auf
+      +0,37 R.
+  - Kein Freeze, Tresor zu (CTNL ist live → Entscheidung beim Nutzer), keine Bot-Änderung.
 
 - **2026-11-12** [Research / Nebenthema] **Prosper-AI-„Grok Trading Team“-Bot auf echten Daten: kein Edge, verworfen**
   (Nutzerauftrag, Plan freigegeben). Lernprojekt eingerichtet unter `C:\Users\andre\prosper-ai-grok-trading-team`

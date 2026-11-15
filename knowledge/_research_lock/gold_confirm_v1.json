@@ -1,0 +1,26 @@
+{
+  "strategy": "gold_confirm_v1",
+  "split": {
+    "is_start": "2010-01-01",
+    "is_end": "2019-12-31",
+    "oos_end": "2026-05-10",
+    "tresor_end": "2026-11-10"
+  },
+  "registered": "2026-11-14T21:32:47+00:00",
+  "trials": 181,
+  "frozen": {
+    "hash": "6b20a8ccc4f7415140be88e481d9496904475cc32f7dfb217168f1199207bd5a",
+    "config": {
+      "kandidat": "CTNL-Reversal + Makro-Veto",
+      "basis": "ctnl_reversal live (tp_r=5.0, REV_KWARGS)",
+      "veto": "kein Trade gegen MACRO-Block (Vortag): MACRO>=65 -> kein Short, MACRO<=35 -> kein Long",
+      "macro": "Mittel aus m_real, m_usd, m_infl, m_geo; 3J-Perzentil",
+      "score_lib": "fusion_lab/gold_confirm v1"
+    },
+    "ts": "2026-11-15T01:03:09+00:00"
+  },
+  "unsealed": {
+    "tresor": "2026-11-15T01:03:09+00:00"
+  },
+  "forward": null
+}

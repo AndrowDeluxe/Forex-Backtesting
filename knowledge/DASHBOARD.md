@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-11-11** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-11-14** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -101,6 +101,27 @@ Telegram. Der tägliche Digest zeigt nur die Fokus-Abschnitte.
 
 
 ### 🔍 Braucht deine Bestätigung
+
+- **CTNL-Makro-Sperre seit 15.11. LIVE auf allen drei Bridges — meine Annahmen beim Einbau** (Nutzerentscheid
+  „direkt in den Bot“). Regel: kein CTNL-Reversal-Long bei MACRO ≤ 35, kein Short bei ≥ 65 (Vortageswert).
+  Auf dem Live-Set (Ribbon + Spike) 2016–10/26: 12 von 257 Trades gesperrt, alle Longs, Ø −1,13 R, p 0,0035;
+  Sharpe (1 % Risiko) 1,17 → 1,24. Stand 15.11.: MACRO 30 → **Longs derzeit gesperrt**. [[gold-confirmation-score]]
+  Ohne Rückfrage entschieden:
+  - Fail-safe **durchlassen** (wie Kill-Switch, nicht sperren wie Spike), wenn MACRO-Daten fehlen oder > 5 Tage alt.
+  - Neuer Task `Forex-Gold-Makro-Gate-Refresh` täglich 07:15 (FRED + yfinance → `score_frame.parquet`).
+  - EK prüft mit dem aktuellen Zeitpunkt, Funded/FK mit der Entry-Zeit des Signals (gleiches Ergebnis am selben Tag).
+  - Kill-Switch steckt nicht im Backtest (Live-Set = Ribbon + Spike + Kosten + Lag).
+
+- **Gold Confirmation Framework: meine Annahmen beim Nachbau** (14.11., Ergebnis: kein Edge,
+  [[gold-confirmation-score]]). Vorgaben aus dem Plan nicht mehr abgefragt:
+  - Proxys: GVZ statt Optionen-Skew, CFTC-OI wöchentlich statt COMEX täglich, IMF statt WGC für Zentralbanken.
+  - Futures-Basis gestrichen.
+  - „News-Reaktion“ = Zins-Schocktage statt Kalender.
+  - LTF-Trigger (E3) = H1-Bruch der Asia-Range 00–07 UTC.
+  - Haltekosten 3 % p. a.
+  - IMF-Lag 2 Monate.
+
+  Ändert eine davon für dich das Bild?
 
 - **H4 „15:00 Uhr“ = deutsche Zeit (NY 09:00)** angenommen (12.11.): Signal = H4-Kerze 11–15 Uhr deutsch, Einstieg zum Start
   der Kerze 15–19 Uhr. Falls du 15:00 New York meintest, ändert sich der ganze Test. [[h4-htf-entry-edge-card]]
@@ -608,6 +629,7 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 | Forex-Screener-Aktien (neu)                             | — (nur Analyse + Paper-Ledger, keine Orders)                                             | S&P 500 + Nasdaq-100: Score, Preisbereiche, News per `claude.exe -p` → Telegram, Notion, Dashboard, Ledger (`scripts/screener_task.ps1 aktien`, **Forward seit 15.11.**, committet Ledger + Archiv) | Ready (Mo–Fr 23:00, StartWhenAvailable) | — | 2026-11-15 |
 | Forex-Screener-Krypto (neu)                             | — (nur Analyse + Paper-Ledger, keine Orders)                                             | Top-30-Krypto (Binance/CoinGecko): wie Aktien (`scripts/screener_task.ps1 krypto`, **Forward seit 15.11.**, committet Ledger + Archiv) | Ready (täglich 07:45, StartWhenAvailable) | — | 2026-11-15 |
 | Forex-NVDA-Earnings-Analyse (einmalig)                  | — (nur Analyse + Telegram)                                                               | NVIDIA nach Q3-Zahlen per Telegram (`scripts/nvda_followup_task.ps1`), danach Task löschen | Ready (Di 17.11.2026 23:45) | — | 2026-11-15 |
+| Forex-Gold-Makro-Gate-Refresh (neu)                     | — (nur FRED/yfinance-Abruf, kein Order-Bezug)                                            | Daten für die CTNL-Makro-Sperre (`scripts/gold_macro_gate_refresh_task.ps1` → `fusion_lab/data/gold_confirm/score_frame.parquet`), seit 15.11. | Ready (täglich 07:15) | — | 2026-11-15 |
 | Telegram-Import-SMH-Daily                               | — (nur Telegram lesen + rechnen, kein Order-Bezug)                                       | Inkrementeller Import „SMH Daily Update“ ohne Videos; seit 28.10. zusätzlich Bild-/Anweisungs-Lesung per Claude-Abo + Forward-Stand Copy Trading Stufe 2 (`scripts/telegram_smh_daily_import_task.ps1`, Akku erlaubt) | Ready (täglich 23:00, auch Sa/So) | — | 2026-10-28      |
 
 **Letzter echter Entry** (Spalte seit 2026-09-16): letzter Eröffnungs-Deal beim Broker, der **dieser Bridge zugeordnet** ist (EK über Magic, Funded/FK über die Tickets im `bridge_state`). Fremdpositionen zählen nicht mit — auf FK lagen am 14.09. zwei manuelle Positionen, die sonst wie Bridge-Aktivität ausgesehen hätten. Grund für die Spalte: der Modus LIVE hat fünf Tage lang verdeckt, dass FK nichts ausführte. Aktualisieren mit `python scripts/reports/soll_ist.py --last-entries`. Zeiten sind Broker-Serverzeit.

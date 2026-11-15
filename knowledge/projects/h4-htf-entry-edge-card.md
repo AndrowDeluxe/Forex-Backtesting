@@ -109,3 +109,40 @@ Ziel 2R | 3R | H4-Swing | Vortag/Vorwoche | Tagesende. 675 Grundvarianten × ges
   positivem OOS: MA 12/20 gegen, DXY gegen (Limit), Zins-Momentum gegen — OOS n 85–117, t ≤ 1,2, DSR ≤ 0,33 → nicht gesichert.
 - **Status:** Kein bestätigter Edge, aber erstmals FX-Varianten mit IS und OOS positiv. Nichts eingefroren.
 
+## Abgleich mit Nutzer-Trades + Präzisierung (15.11.2026)
+
+- EURUSD 10.11. (Einstieg 11:00, Stop 1,12529) und 12.11. (Einstieg 15:00, 1,10889) von der Regel exakt gefunden; Gold
+  16.10. (19:00, 4161,96/4200,11) exakt. Gold 25.09./30.09./02.10.: Zeit passt, Stop laut Nutzer am Docht der Signalkerze.
+- Nutzer 15.11.: nur H4-Kerzen mit ausreichender Größe/Volatilität (10.11. war zu klein); Sweep über ein vorheriges
+  H4-Swing macht den Trade valider; Stop immer am Docht der Signalkerze; je weiter der Schluss vom Docht-Extrem und unter
+  den gesweepten Kerzen, desto besser; Trend ist für ihn „mit dem übergeordneten Trend“ → Daily-Trend/Swing-Struktur testen.
+  „15:00 only“ war zu eng (seine Einstiege 07/11/15/19 Uhr). TP: 2R/3R/Swing/Zeit, BE 0,5R/1R, Makro inkl. VIX.
+
+## Test 3: Ursprungsregel, beschreibende IS-Statistik (15.11.2026, Lock `h4_manip` jetzt 2.793 Versuche)
+
+`python -m htf_daily_trade.h4_v3` (Signale `h4_v3_signale.parquet`, lokal). Sweep ≥ 2 Kerzen, Körper zurück, Einstieg
+Folgekerze, Stop am Docht, alle Uhrzeiten, Signale unabhängig. Nur IS 2016–21 ausgewertet (30.862 Signale; FX 23.952,
+Metalle 6.910). Basis 3R ohne BE: FX netto −0,21 / brutto −0,05 R; Metalle −0,40 / −0,03 R.
+
+| Merkmal (Quintile, FX) | schwächstes → stärkstes Quintil, Ø R netto (brutto) |
+|---|---|
+| Kerzengröße Spanne/ATR | −0,37 (−0,12) → −0,13 (−0,03) |
+| Docht in ATR | −0,43 (−0,12) → −0,12 (−0,03) |
+| Sweep-Tiefe über die Marke | −0,35 (−0,10) → −0,12 (−0,03) |
+| Schluss unter der Marke | −0,48 (−0,18) → −0,11 (−0,02); Mitte +0,00 brutto |
+| Schluss vom Docht-Extrem | −0,52 (−0,17) → −0,07 (+0,01) |
+| unberührtes H4-Swing geholt | nein −0,23 (−0,06) / ja −0,13 (−0,02) |
+| Anzahl gesweepter Kerzen | 2: −0,27 → 10–20: −0,18 |
+
+- Alle Qualitätsmerkmale des Nutzers wirken in die erwartete Richtung, vor allem über kleinere Kosten je R; brutto heben
+  sie das Signal nur bis ≈ 0. Kombination (Swing geholt + Spanne ≥ 0,86 ATR + Docht ≥ 40 %, EURUSD+Gold): n 517,
+  brutto +0,05, netto −0,04 R.
+- Stunden (Einstieg Berlin): kein Fenster klar positiv; schlechteste 23:00 und 07:00 (FX netto −0,40/−0,31), beste
+  03:00/11:00/15:00 (FX brutto +0,01/−0,01/−0,01). Metalle brutto 03:00 +0,14.
+- Trend: Daily-Swing-Struktur (LH+LL) mit dem Trend nicht besser als gegen (FX brutto −0,07 vs. −0,03); kein Trendfilter
+  trennt. Makro mit dem Trade besser: Zins-Momentum (FX brutto −0,01 vs. −0,10), Regime-Matrix, Carry, COT-Index
+  (FX mit +0,03 brutto), Gold-Makro-Veto (mit +0,04 brutto).
+- Ausstiege: Zeitausstieg 24/48 h am besten (FX −0,13), BE bei 0,5R leicht besser, 2R am schlechtesten.
+- Nächster Schritt mit Nutzer: Handprüfung von 16 IS-Trades (Liste im Chat 15.11.), dann Kombination der Merkmale
+  als gezählte Varianten auf IS, OOS zum Vergleich.
+

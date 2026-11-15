@@ -9,6 +9,12 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-15** [Dachprojekt / Inventur A6] **H4-Edge Test 3: Ursprungsregel + beschreibende IS-Statistik** (Nutzerauftrag).
+  `htf_daily_trade/h4_v3.py`. Nutzer-Trades EURUSD 10./12.11. und Gold 16.10. von der Regel exakt gefunden. 30.862 IS-Signale:
+  größere Kerze, längerer Docht, tieferer Sweep, Schluss weiter unter der Marke und geholtes H4-Swing verbessern jeweils
+  (netto −0,4 → −0,1 R), brutto aber nur bis ≈ 0. Keine Uhrzeit klar positiv; Trend (auch Daily-LH/LL) trennt nicht; Makro mit
+  dem Trade (Zins-Momentum, Regime, COT-Index, Gold-Veto) leicht besser. Keine Auswahl, nichts eingefroren. Keine Bot-Änderung.
+
 - **2026-11-15** [Dachprojekt / CTNL] **CTNL-Backtest live-getreu mit Kill-Switch + Swap** (Nutzerauftrag).
   `scripts/research_ctnl_macro_live.py --killswitch --swap-bps 1.5`. Live-Variante (Ribbon, Spike, Kill-Switch,
   Makro-Sperre, 2,01 bps, Swap 1,5 bps/Nacht), 1 % Risiko 2016–10/26: 239 Trades, CAGR 21,6 %, Sharpe 1,18,

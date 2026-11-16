@@ -200,3 +200,27 @@ def test_validator_german_thousands_and_headline_numbers():
     out = analyst.validate(_raw(szenario_grund="Kursziel $168, Bitcoin bei 65.000 Dollar"), pack, allowed)
     assert out["warnungen"] == []
     assert analyst._num("65.000") == 65000 and analyst._num("170,41") == 170.41
+
+
+def test_deploy_kv_only_uploads_feeds(tmp_path, monkeypatch):
+    """Lebensjournal-Modus: nur die vier Daten-Dateien in KV, nie die ganze Seite."""
+    from fusion_lab.dashboard import deploy as D
+    (tmp_path / "data").mkdir()
+    for n in ("aktien.json", "krypto.json", "meta.json"):
+        (tmp_path / "data" / n).write_text("{}", encoding="utf-8")
+    (tmp_path / "index.html").write_text("<html>", encoding="utf-8")
+    calls = []
+
+    class R:
+        ok, status_code = True, 200
+        def json(self):
+            return {"success": True}
+
+    monkeypatch.setattr(D.requests, "put", lambda url, **kw: calls.append(url) or R())
+    monkeypatch.setattr(D.requests, "Session", lambda: (_ for _ in ()).throw(AssertionError("Seiten-Upload!")))
+    c = {"api_token": "t", "account_id": "a", "project": "p", "kv_namespace_id": "ns", "url": "https://x.pages.dev"}
+    monkeypatch.setattr(D, "config", lambda: c)
+    msg = D.deploy(tmp_path)
+    assert [u.rsplit("/", 1)[1] for u in calls] == ["aktien.json", "krypto.json", "meta.json"]
+    assert all("/storage/kv/namespaces/ns/values/" in u for u in calls)
+    assert "/trading/" in msg

@@ -64,10 +64,34 @@ def _files(dist: Path) -> dict[str, Path]:
     return out
 
 
+FEED_FILES = ("aktien.json", "krypto.json", "makro.json", "meta.json")
+
+
+def deploy_kv(dist: Path, c: dict) -> str:
+    """Lebensjournal-Modus (seit 16.11.2026): Die Seite gehoert dem Lebensjournal (C:\\Users\\andre\\Lebensjournal,
+    Cockpit unter /trading/, Daten per Pages Function aus Workers KV). Hier nur die vier Daten-Dateien in KV
+    schreiben -- NIE die ganze Seite hochladen, sonst waere das Journal ueberschrieben.
+    Token braucht zusaetzlich das Recht "Workers KV Storage: Edit"."""
+    url = f"{API}/accounts/{c['account_id']}/storage/kv/namespaces/{c['kv_namespace_id']}/values"
+    auth = {"Authorization": f"Bearer {c['api_token']}"}
+    done = []
+    for name in FEED_FILES:
+        p = dist / "data" / name
+        if not p.exists():
+            continue
+        _check(requests.put(f"{url}/{name}", headers=auth, files={"value": (None, p.read_bytes()),
+                                                                     "metadata": (None, "{}")}, timeout=120),
+               f"KV {name}")
+        done.append(name)
+    return f"KV aktualisiert ({', '.join(done)}) · Lebensjournal unter {c.get('url', '')}/trading/"
+
+
 def deploy(dist: Path) -> str:
     c = config()
     if not c:
         return "Upload übersprungen: kein vollständiger [cloudflare]-Abschnitt in .streamlit/secrets.toml"
+    if c.get("kv_namespace_id"):
+        return deploy_kv(dist, c)
     acc, proj = c["account_id"], c["project"]
     auth = {"Authorization": f"Bearer {c['api_token']}"}
     s = requests.Session()

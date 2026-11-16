@@ -23,8 +23,10 @@ def main() -> int:
     print(f"Bericht: {m}\nDaten: {j}\nLedger neu: {r.get('ledger_neu', 0)}, ausgewertet: {r['ledger_ausgewertet']}")
     if a.telegram:
         try:
-            from fusion_lab.dashboard.deploy import public_url
+            from fusion_lab.dashboard.deploy import config, public_url
             url = public_url()
+            if url and (config() or {}).get("kv_namespace_id"):
+                url = url.rstrip("/") + "/trading/"      # Cockpit liegt im Lebensjournal unter /trading/
         except Exception:
             url = None
         sys.path.insert(0, str(report.C.REPO / "scripts" / "reports"))

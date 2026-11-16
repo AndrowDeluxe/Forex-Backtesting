@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-11-16T23:31:25",
+  "generated_at": "2026-11-17T00:01:24",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-11-16T23:29:02",
+      "last_run": "2026-11-16T23:59:02",
       "minutes_since_last_run": 2.4,
       "status": "ok",
       "last_equity_line": "2026-11-16 22:59:06 2026-11-16 22:59:02,566 INFO run_once: Konto-Equity 2540.27 EUR | Aggregiertes offenes Risiko (ganzes Konto): 123.37 (Deckel dieser Bridge: 762.08, 30%)",
@@ -11,16 +11,16 @@
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-11-16T23:28:15",
+      "last_run": "2026-11-16T23:58:14",
       "minutes_since_last_run": 3.2,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-11-16 23:28:15 Verbunden: Login 504072729, Equity $99,653.46 USD",
+          "last_equity_line": "2026-11-16 23:58:14 Verbunden: Login 504072729, Equity $99,653.46 USD",
           "recent_events": []
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-11-16 23:28:15 Verbunden: Login 16054, Equity $97,503.98 USD",
+          "last_equity_line": "2026-11-16 23:58:14 Verbunden: Login 16054, Equity $97,503.98 USD",
           "recent_events": []
         }
       }
@@ -28,7 +28,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-11-16T23:14:02",
-      "minutes_since_last_run": 17.4,
+      "minutes_since_last_run": 47.4,
       "status": "ok",
       "last_equity_line": "2026-11-16 22:14:13 Verbunden: Login 17764, Equity $99,568.62",
       "last_error_line": "2026-11-02 02:08:37 cls_practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",

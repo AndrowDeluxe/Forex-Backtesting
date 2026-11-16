@@ -9,6 +9,18 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-16** [Dachprojekt / Inventur A6] **H4-Edge Test 4: Nutzer-Kriterien aus der Handprüfung als Regeln** (Plan freigegeben).
+  `htf_daily_trade/h4_v4.py` + `tests/test_h4_v4.py`, Lock `h4_manip` jetzt 3.913 Versuche. 1.080 Varianten (Lage in HTF-Range,
+  Trend oder Erschöpfung, Makro-Punkte, Uhrzeit, 9 Ausstiege inkl. BE/Partials/Zeit-BE). IS-Beste FX +0,47 R → OOS −0,08 R,
+  Metalle +0,66 → −0,07 R; Qualitätsregeln allein FX −0,09/−0,10 R. Stabil nur Makro-Veto (≥ 5 Punkte gegen: −0,26 R IS und OOS).
+  50 % Teilgewinn bei 1R schadet. Kein Edge, nichts eingefroren. Keine Bot-Änderung.
+
+- **2026-11-16** [Betrieb / ORB, LIVE] **ORB-SP500 auf allen drei Bridges pausiert, nur noch Forward-Test** (Nutzerentscheid
+  nach dem NASDAQ-Vorbörsen-Tresor). `ORB_PAUSED_INSTRUMENTS = {"US30", "SP500"}` in `Funded-Portfolio-Bridge/orb_pending.py`,
+  `FKInstantFunding-MT5-Bridge/orb_pending.py` und `EK-Portfolio-Bridge/legs/ny_open_orb/pending_source.py` (Backups
+  `*.bak_20261116_orb_sp500_pause`). Keine neuen SP500-Orders mehr, offene Positionen laufen normal aus; die Simulation rechnet
+  die Signale weiter (gleiches Muster wie US30 seit 04.10.). NASDAQ-ORB unverändert live. Bridges nicht in Git, kein Commit.
+
 - **2026-11-15** [Dachprojekt / Inventur A6] **H4-Edge Test 3: Ursprungsregel + beschreibende IS-Statistik** (Nutzerauftrag).
   `htf_daily_trade/h4_v3.py`. Nutzer-Trades EURUSD 10./12.11. und Gold 16.10. von der Regel exakt gefunden. 30.862 IS-Signale:
   größere Kerze, längerer Docht, tieferer Sweep, Schluss weiter unter der Marke und geholtes H4-Swing verbessern jeweils
@@ -57,6 +69,10 @@ keine Planung (dafür ist `DASHBOARD.md`).
   Runde 2 (`research_nasdaq_orb_premarket_v2.py`, M1, 680 Varianten): Puffer-Stop bringt nichts; Trendfilter nur mit
   Storno bei Gegenausbruch sinnvoll (IS-Bester EMA50/200 M15: IS Sharpe 1,15 / OOS 1,07), OOS schlägt aber keiner die
   ungefilterte Version (1,50); Filter macht kostenrobuster (×3 Kosten noch +0,11 R OOS).
+  Tresor (Nutzerauftrag): Kandidaten A–F eingefroren (Hash 53908ff0…), Tresor 15.05.–14.11. einmal geöffnet, gerechnet auf
+  echten Broker-Ticks TTP/Tickmill/IQ (`pull_broker_ticks_nasdaq.py`, nur lesend). Fill-Messung: 09:30-Stop 1,1 + 0,6 Pkt
+  = 1,04 bps, Kommission 0. A +0,23 R (Sharpe 1,0), B ungefiltert +0,37 R (1,9), C Kurs vs. EMA200 D1 +0,66 R (2,0),
+  Nutzer-Original ≈ 0; Live-NASDAQ-ORB +1,62 R (2,1, Σ 57 R) bleibt vorn. Nichts live geändert.
 
 - **2026-11-15** [Dachprojekt / Makro-Agent] **SMT-Reports KW47 geprüft + Gegenwährungs-Backtest**
   (Nutzerauftrag). Beispiel 3 in [[makro-agent-report-pruefung]]: Faktencheck, 6 Widersprüche, Trades, Alarme,

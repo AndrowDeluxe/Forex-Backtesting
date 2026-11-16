@@ -1,6 +1,6 @@
 # Project: Edge Card „Final H4 HTF Entry Model“ (A6)
 
-**Status (12.11.2026):** Phase 0 abgeschlossen. **Test 1 (alle Kerzen): kein Edge. Test 2 (nur 15:00, Körper zurück, langer Docht): FX knapp positiv IS+OOS, nicht gesichert.** Prozess: [[edge-card-workflow]]. Teil der Inventur (Strang 0) im
+**Status (12.11.2026):** Phase 0 abgeschlossen. **Tests 1–4 (3.913 Varianten): kein mechanisch reproduzierbarer Edge; IS-Beste kippen im OOS. Nur Makro-Veto (≥ 5 Punkte gegen) stabil.** Prozess: [[edge-card-workflow]]. Teil der Inventur (Strang 0) im
 [[quant-diskretionaer-fusion]], Eintrag A6 in [[persoenlicher-tradingplan-validierung]]. Ziel (Nutzer 11.11.):
 Bestandteil eines Portfolios aus den händischen Edges, getrennt vom Quant-Portfolio.
 
@@ -145,4 +145,28 @@ Metalle 6.910). Basis 3R ohne BE: FX netto −0,21 / brutto −0,05 R; Metalle �
 - Ausstiege: Zeitausstieg 24/48 h am besten (FX −0,13), BE bei 0,5R leicht besser, 2R am schlechtesten.
 - Nächster Schritt mit Nutzer: Handprüfung von 16 IS-Trades (Liste im Chat 15.11.), dann Kombination der Merkmale
   als gezählte Varianten auf IS, OOS zum Vergleich.
+
+## Handprüfung 16 IS-Trades + Test 4: Nutzer-Kriterien als Regeln (16.11.2026, Lock `h4_manip` jetzt 3.913 Versuche)
+
+Nutzerbewertung (Chat 16.11.): ungültig 4/16 (Gold 01.12.2016 nahe Low ohne finalen Spike; EURUSD 20.04.2018 Seitwärtsrange;
+Gold 26.05.2020 Körper/Kerze + Trendlinien-Liquidität; EURUSD 08.09.2020 kleine Kerzen, Labor Day). Gültig: Rest, teils mit
+BE/Partials; Weihnachten (23.12.2020) handelt er nicht. Trade Gold 01.05.2019 im Chart des Nutzers im falschen Jahr (2015) geprüft.
+
+`python -m htf_daily_trade.h4_v4` (Plan freigegeben 16.11.). Neue Merkmale: Körperanteil, Zahl geholter Swings, Aktivität,
+Gegendruck, ADX, RSI/RSI Multi Length/Stoch RSI, Bollinger, Lage in 4 HTF-Ranges, Daily-Swing-Struktur, Makro-Punkte gegen,
+G8-Abstand, Feiertage. Varianten: Q+A fest × Lage × Trend/Erschöpfung × Makro × Uhrzeit × 9 Ausstiege, je FX/Metalle,
+eine Position je Markt.
+
+- **Beschreibung IS:** Kein neues Merkmal trennt deutlich. Am klarsten: Makro-Punkte gegen den Trade (FX: 0 → brutto +0,13,
+  6–7 → −0,22/−0,48); im OOS hält nur das Veto (≥ 5 gegen: IS −0,26 / OOS −0,26 R netto; ≤ 1 gegen: −0,16 / −0,16),
+  „0 gegen“ kippt (OOS −0,16). Feiertage leicht schlechter (−0,25 vs. −0,21). RSI Multi Length, ADX, Bollinger, Lage: kaum.
+- **Ausstiege:** 50 % bei 1R + BE schlechter als ohne (FX −0,25 vs. −0,21); BE nach 1R leicht besser; Zeit-BE ohne Wirkung.
+- **Varianten:** IS-Beste FX (Vormonats-Lage + Trend/Erschöpfung + Makro ≤ 3 + ohne 23/07 Uhr + BE 1R): IS +0,47 R (n 87,
+  t 2,5) → **OOS −0,08 R**; Metalle IS +0,66 → OOS −0,07. Alle IS-Top-20 im OOS ≈ 0 oder negativ; DSR ≤ 0,15.
+  Q+A (Qualitätsregeln des Nutzers) FX IS −0,09 / OOS −0,10 R; Metalle brutto IS +0,14 → OOS netto −0,42.
+- **Nutzer-Etiketten:** Die Merkmale trennen gültig/ungültig in den 16 Beispielen nicht erkennbar.
+- **Nutzer-Alternativen** (Gold 07.12.2016 15:00, Gold 07.10.2020 03/15:00 – beide +2,9 R) fängt die Grundregel, aber Q
+  verwirft sie, weil kein „unberührtes H4-Swing (k=2)“ im Docht liegt → die Swing-Definition passt nicht zu seiner Sicht.
+- **Folgerung:** Nach 4 Runden (3.913 Versuche) kein mechanisch reproduzierbarer H4-Edge; das IS-Beste kippt jedes Mal im OOS.
+  Der Edge liegt (falls vorhanden) in der diskretionären Auswahl, die sich mit diesen Merkmalen nicht abbilden lässt.
 

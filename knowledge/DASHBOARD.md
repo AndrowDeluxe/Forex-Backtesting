@@ -69,8 +69,9 @@ passiert, was steht an.
    Trendfilter mit/gegen, 9 Märkte, BE nach neuer Struktur, 3 Ziele). **Mechanischer Test: kein Edge** (456 Varianten,
    brutto ≈ 0, Zufall gleich gut). **Test 2 nur 15:00 (NY 09:00), Körper zurück, langer Docht:** FX knapp positiv
    (beste IS +0,15 / OOS +0,12 R; mit MA 12/20 gegen +0,35 / +0,22 R, OOS n 85), Metalle negativ, nicht gesichert.
-   **Test 3 (15.11.):** deine Qualitätsmerkmale wirken alle in die richtige Richtung, heben aber brutto nur bis ≈ 0.
-   Wartet auf dich: 16 IS-Trades von Hand prüfen (Liste im Chat 15.11.), dann Merkmale kombinieren. Wartet auf deine
+   **Test 3/4 (15./16.11.):** deine Kriterien als Regeln (1.080 Varianten): IS-Beste kippen im OOS, kein mechanischer Edge;
+   nur Makro-Veto (≥ 5 Punkte gegen) stabil. Wartet auf dich: H4 als diskretionäres Setup weiterführen (Journal mit
+   Merkmalen, Forward) oder nächste Edge der Inventur. Trade Gold 01.05.2019 bitte im Jahr 2019 prüfen (Screenshot zeigte 2015). Wartet auf deine
    Kandidatenwahl (≤ 9 Parameter). Parallel: Indikatoren einzeln durchgehen (Steckbriefe, dann Edge-Test je
    Indikator), Reihenfolge RSI → Multi Length → Stoch RSI → MACD → BB → NW → MA-Cross → Fractals → Pivots →
    Volumen → SVP/VRVP → Money Flow Profile → COT. H4 zurückgestellt.
@@ -203,7 +204,9 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
    Trendfilter OOS +0,28 R/Trade (t 2,7, ~248 Trades/Jahr), mit EMA-Filter nur +0,06. Hängt an der
    Eröffnungs-Slippage (Stop ~24 Punkte). Filter (VIX, Stress, Makro, Regime) helfen nicht. Offen: echte
    09:30-Fills messen, erst dann Tresor. Nichts live. Runde 2: Trendfilter nur mit Storno sinnvoll (EMA50/200 M15
-   halbiert Trades + IS-DD, kostenrobuster), OOS bleibt ungefiltert vorn; Puffer bringt nichts. [[nasdaq-orb-vorboersen-range]]
+   halbiert Trades + IS-DD, kostenrobuster), OOS bleibt ungefiltert vorn; Puffer bringt nichts. **Tresor 15.11. (echte Ticks): Kosten 1,04 bps, kein Problem;
+   A +0,23 R, ungefiltert +0,37, C (Kurs vs. EMA200 D1) +0,66, aber Live-ORB +1,62 R bleibt vorn.** Offen: Entscheidung,
+   ob B/C als zweites NASDAQ-Bein in den Forward-Test geht. [[nasdaq-orb-vorboersen-range]]
 
 - **🎓 Prosper-AI-„Grok Trading Team“ (12.11.): eingerichtet, Regel auf echten Daten getestet, kein Edge.**
    Lernprojekt läuft lokal (`C:\Users\andre\prosper-ai-grok-trading-team`, nur Simulation). D1 sieht positiv aus,
@@ -247,6 +250,10 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 ---
 
 ### Bestätigungen (Betrieb/Research)
+
+- **NASDAQ-ORB Vorbörse (15.11.): Annahmen im Tresor-Lauf - passt das?** „Weitere Filter“ habe ich als Kandidaten C–F
+     ausgelegt (C/D/E = nächstbeste Filterfamilien aus Runde 2, F = deine Originalspec), A als Hauptkandidat. Tick-Sim des
+     Live-ORB storniert sofort bei SL-Berührung (live: gepollt). [[nasdaq-orb-vorboersen-range]]
 
 - **Weekly KW46 (15.11.): Sieben Handtrades auf den Bot-Konten EK und FK - gewollt, und mit welcher Größe?**
      Per MT5-Mobile (`reason` 1, Magic 0): FK EUR/USD-Short +631 USD, FK 2x Gold-Long −145 USD, **EK Gold-Long
@@ -627,15 +634,15 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 | Bot/Bridge                                              | Konto/Broker                                                                             | Modus                                                                                        | Task Scheduler                  | Letzter echter Entry | Zuletzt geprüft |
 | ------------------------------------------------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------- | --- | --------------- |
 | EK-Portfolio-Bridge                                     | Tickmill Live (55918977)                                                                 | **LIVE — echtes Geld** (btc/ou_modell weiterhin direkt Dukascopy/yfinance; gold_asb/cls_practical/ctnl_reversal jetzt `source="lake"`; ctnl_continuation am 01.10. stillgelegt) | Ready (alle 15 Min, Mo–Fr)      | **16.09.** ou_modell (IVZ) | 2026-11-15      |
-| EK-Portfolio-Bridge-Fast                                | Tickmill Live (55918977, geteiltes Terminal)                                             | **LIVE — echtes Geld** (3 MT5-native Beine: ORB/Gold-Silber/Trend-Pullback, kein Dukascopy; **ORB-US30 seit 04.10. pausiert**)  | Ready (alle 2 Min, Mo–Fr)       | ↑ gleiches Konto | 2026-11-15      |
-| FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | **LIVE — echtes Geld** (6 Beine via `LIVE_LEGS`: orb_sp500/us30/nasdaq + gold_asb [**orb_us30 seit 04.10. pausiert**, `orb_pending.ORB_PAUSED_INSTRUMENTS`]/cls_practical/ctnl_reversal; ctnl_continuation am 01.10. stillgelegt, ctnl_reversal seit 30.09. auf der 5-Min-Lane; **gold_silver seit 04.10. LIVE** (0,20 %/Trade, Altersgrenze 150 Min.); trend_pullback bleibt geplant/geloggt) | Ready (stündlich, Mo–Fr)        | **14.09.** orb_nasdaq — erster echter Entry seit Livegang | 2026-11-15      |
-| FKInstantFunding-MT5-Bridge-Fast                        | BeyondIQCapital (17764, geteiltes Terminal)                                              | **LIVE — echtes Geld** (ctnl_continuation + orb_sp500/nasdaq + cls_practical, `source="lake"`, analog Funded-Fast; **orb_us30 seit 04.10. pausiert**) | Ready (alle 5 Min, Mo–Fr)       | ↑ gleiches Konto | 2026-11-15      |
+| EK-Portfolio-Bridge-Fast                                | Tickmill Live (55918977, geteiltes Terminal)                                             | **LIVE — echtes Geld** (3 MT5-native Beine: ORB/Gold-Silber/Trend-Pullback, kein Dukascopy; **ORB-US30 seit 04.10., ORB-SP500 seit 16.11. pausiert** — SP500 nur Forward-Test)  | Ready (alle 2 Min, Mo–Fr)       | ↑ gleiches Konto | 2026-11-15      |
+| FKInstantFunding-MT5-Bridge                             | BeyondIQCapital (17764)                                                                  | **LIVE — echtes Geld** (6 Beine via `LIVE_LEGS`: orb_sp500/us30/nasdaq + gold_asb [**orb_us30 seit 04.10., orb_sp500 seit 16.11. pausiert** (SP500 nur Forward-Test), `orb_pending.ORB_PAUSED_INSTRUMENTS`]/cls_practical/ctnl_reversal; ctnl_continuation am 01.10. stillgelegt, ctnl_reversal seit 30.09. auf der 5-Min-Lane; **gold_silver seit 04.10. LIVE** (0,20 %/Trade, Altersgrenze 150 Min.); trend_pullback bleibt geplant/geloggt) | Ready (stündlich, Mo–Fr)        | **14.09.** orb_nasdaq — erster echter Entry seit Livegang | 2026-11-15      |
+| FKInstantFunding-MT5-Bridge-Fast                        | BeyondIQCapital (17764, geteiltes Terminal)                                              | **LIVE — echtes Geld** (ctnl_continuation + orb_sp500/nasdaq + cls_practical, `source="lake"`, analog Funded-Fast; **orb_us30 seit 04.10., orb_sp500 seit 16.11. pausiert** — SP500 nur Forward-Test) | Ready (alle 5 Min, Mo–Fr)       | ↑ gleiches Konto | 2026-11-15      |
 | FK-Instant-Funding-Paper                                | — (reine Simulation)                                                                     | Paper + Telegram, **nur noch trend_pullback/gold_silver** (die anderen 7 Beine laufen live über die Bridge, seit 09-09 hier entfernt) | Ready (stündlich, Mo–Fr)        | — | 2026-09-13      |
 | OU-Modell-ScannerHourly                                 | — (nur Signal-Scan, kein Order-Versand)                                                  | Scanner + Telegram (3x täglich: 15:35/18:35/21:35)                                           | Ready (Mo–Fr, US-Handelszeiten) | — | 2026-09-02      |
 | Forex-Weekly-Report                                     | —                                                                                        | Report-Generator (seit 09-15: Zeitlimit 4h statt 1h, Vollständigkeitsprüfung + 3x Wiederholung alle 4h bei unvollständigem Lauf) | Ready (So 18:00 — läuft am Wochenende bewusst weiter) | — | 2026-09-15      |
 | Bridge-Watchdog                                         | — (nur Log-Frische, kein Order-Bezug)                                                    | Heartbeat-Alarm + Status-Snapshot ins Repo                                                   | Ready (alle 30 Min, Mo–Fr)      | — | 2026-09-13      |
 | Funded-Portfolio-Bridge (TTP 6 Beine @1/6, IQ 5 Beine @1/3) | TTP Konto 2 (504072729) + BeyondIQCapital (16054) — **2 Konten** (IQ 15514 am 2026-09-07 entfernt, **TTP Konto 1 / ttp1 am 2026-09-23 vollstaendig ausgebaut**) | **LIVE — DRY_RUN=False** (alle 6 Beine `source="lake"`; **seit 09-13 kontospezifisch: IQ ohne `ou_modell`, Kapitalanteil 1/3 statt 1/6 — IQ handelt keine Aktien**; IPC-Timeouts 09-08 09:52-12:24 Uhr, seither stabil, siehe 🔍 Bestätigung) | Ready (alle 15 Min, Mo–Fr)      | **16.09.** orb_sp500 (TTP1) | 2026-11-15      |
-| Funded-Portfolio-Bridge-Fast                            | Gleiche 3 Konten (geteilte Terminals)                                                    | **LIVE — DRY_RUN=False** (ctnl_continuation + orb_sp500/nasdaq + cls_practical, `source="lake"`; **orb_us30 seit 04.10. pausiert**) | Ready (alle 5 Min, Mo–Fr)       | ↑ gleiche Konten | 2026-11-15      |
+| Funded-Portfolio-Bridge-Fast                            | Gleiche 3 Konten (geteilte Terminals)                                                    | **LIVE — DRY_RUN=False** (ctnl_continuation + orb_sp500/nasdaq + cls_practical, `source="lake"`; **orb_us30 seit 04.10., orb_sp500 seit 16.11. pausiert** — SP500 nur Forward-Test) | Ready (alle 5 Min, Mo–Fr)       | ↑ gleiche Konten | 2026-11-15      |
 | DataLake-Ingest-Fast                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt `data_lake_store/` für Funded-Portfolio-Bridge (19 Keys, 15-Min-Kadenz)                | Ready (alle 15 Min, Mo–Fr)      | — | 2026-09-13      |
 | DataLake-Ingest-Fast5                                   | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt 8 M5/M15-Timing-kritische Keys für ctnl_continuation/orb/cls_practical (EURUSD M5 seit 2026-09-07) | Ready (alle 5 Min, Mo–Fr)       | — | 2026-09-13      |
 | DataLake-Ingest-Slow                                    | — (nur Datenabruf, kein Order-Bezug)                                                     | Füllt OU-Modell-Universum (~59 Ticker) via yfinance                                          | Ready (stündlich, Mo–Fr)        | — | 2026-09-13      |
@@ -833,7 +840,7 @@ Statustabellen-Zeilen, neu über der Schwelle: `G8-Notion-Sync`
   Gemeinsames Modul nach dem Muster `gold_smc_htf_ltf/ctnl_kill_switch.py`
   (Schattenkonto, Hysterese, fail-open), Schwelle je Bein per Bootstrap aus
   `edge_monitor/`. Wirkt auf echtes Geld in allen drei Bridges → eigener Plan +
-  Freigabe. Würde heute orb_sp500 pausieren. [[edge-fruehwarnung-kill-switch]]
+  Freigabe. Würde heute orb_sp500 pausieren (seit 16.11. per Nutzerentscheid händisch pausiert). [[edge-fruehwarnung-kill-switch]]
 - (09.10.) **Sechs-Bot-Architektur als Zielbild für den Makro-Agenten**
   (Vorlage „Six-Bot AI Trading Team With Grok“: Scout/News/Sentiment/
   Charts/Risk/Decision, JSON je Bot, Risk-Gate nur verschärfend). Eigene

@@ -59,3 +59,14 @@ erstellt,stand,screener,version,status,art,objekt,szenario,gewaehlt,score,signal
 2026-11-15,2026-11-14,krypto,1.0,forward,gruppe,TOP10,,,,,,,,,,,,5.0,PEPE;QNT;LTC;AVAX;SUI;AAVE;HYPE;TRX;ZEC;BNB,,,,,,,,,,False
 2026-11-15,2026-11-14,krypto,1.0,forward,gruppe,TOP10,,,,,,,,,,,,20.0,PEPE;QNT;LTC;AVAX;SUI;AAVE;HYPE;TRX;ZEC;BNB,,,,,,,,,,False
 2026-11-15,2026-11-14,krypto,1.0,forward,gruppe,TOP10,,,,,,,,,,,,60.0,PEPE;QNT;LTC;AVAX;SUI;AAVE;HYPE;TRX;ZEC;BNB,,,,,,,,,,False
+2026-11-16,2026-11-15,krypto,1.0,forward,szenario,AAVE,A,False,47.2,HALTEN,-1.0,102.38,100.94,103.82,91.44,140.19,3.458,,,,,,,,,,,,False
+2026-11-16,2026-11-15,krypto,1.0,forward,szenario,AAVE,B,False,47.2,HALTEN,-1.0,119.82,,,105.58,186.17,4.658,,,,,,,,,,,,False
+2026-11-16,2026-11-15,krypto,1.0,forward,gruppe,KAUFEN,,,,,,,,,,,,5.0,,,,,,,,,,,False
+2026-11-16,2026-11-15,krypto,1.0,forward,gruppe,KAUFEN,,,,,,,,,,,,20.0,,,,,,,,,,,False
+2026-11-16,2026-11-15,krypto,1.0,forward,gruppe,KAUFEN,,,,,,,,,,,,60.0,,,,,,,,,,,False
+2026-11-16,2026-11-15,krypto,1.0,forward,gruppe,VERKAUFEN,,,,,,,,,,,,5.0,GRAM;DOGE;SHIB;WLFI,,,,,,,,,,False
+2026-11-16,2026-11-15,krypto,1.0,forward,gruppe,VERKAUFEN,,,,,,,,,,,,20.0,GRAM;DOGE;SHIB;WLFI,,,,,,,,,,False
+2026-11-16,2026-11-15,krypto,1.0,forward,gruppe,VERKAUFEN,,,,,,,,,,,,60.0,GRAM;DOGE;SHIB;WLFI,,,,,,,,,,False
+2026-11-16,2026-11-15,krypto,1.0,forward,gruppe,TOP10,,,,,,,,,,,,5.0,PEPE;QNT;NEAR;HYPE;SUI;ZEC;AVAX;LTC;TRX;AAVE,,,,,,,,,,False
+2026-11-16,2026-11-15,krypto,1.0,forward,gruppe,TOP10,,,,,,,,,,,,20.0,PEPE;QNT;NEAR;HYPE;SUI;ZEC;AVAX;LTC;TRX;AAVE,,,,,,,,,,False
+2026-11-16,2026-11-15,krypto,1.0,forward,gruppe,TOP10,,,,,,,,,,,,60.0,PEPE;QNT;NEAR;HYPE;SUI;ZEC;AVAX;LTC;TRX;AAVE,,,,,,,,,,False

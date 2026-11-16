@@ -25,7 +25,7 @@ passiert, was steht an.
   Jeder Lauf wird archiviert und committet. Als Nächstes:
   (1) **Backtest der prüfbaren Teile parallel** (Preiszonen A/B, Kurs-Score; eigener Plan-Modus, IS/OOS/Tresor,
   Survivorship-Bias ausweisen, Zufalls-Long als Kontrolle) → bessere Werte nur als Version 1.1,
-  (2) Cloudflare einrichten (Strato → Cloudflare-Nameserver, Anleitung `fusion_lab/dashboard/README.md`),
+  (2) ✅ Cockpit online seit 16.11.: https://next-level-journal.pages.dev (Login per E-Mail-Code),
   (3) NVDA-Analyse kommt Di 17.11. 23:45 per Telegram.
 
 1. **🧩 Dachprojekt Quant × diskretionäres Trading** (gestartet 2026-10-04,

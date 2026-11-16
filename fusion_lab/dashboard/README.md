@@ -1,54 +1,45 @@
-# Trading Cockpit: Einrichtung Cloudflare (einmalig, ca. 1 Stunde)
+# Trading Cockpit: Cloudflare (eingerichtet 16.11.2026)
 
-Das Dashboard ist eine statische Seite. Der PC baut sie nach jedem Screener-Lauf und lädt sie zu Cloudflare
-Pages hoch. Cloudflare Access schützt sie mit einem Login (Code per E-Mail). Der PC muss nur zur Rechenzeit
-an sein; ansehen geht jederzeit, auch am Handy. Kostenlos (Pages + Access bis 50 Nutzer).
+**Adresse:** https://next-level-journal.pages.dev (Login per E-Mail-Code, Cloudflare Access)
 
-Bis die Schritte erledigt sind, läuft alles lokal: `fusion_lab/data/dashboard_dist/index.html`.
-Zum lokalen Ansehen: `python -m http.server 8765 -d fusion_lab/data/dashboard_dist`, dann
-http://127.0.0.1:8765 öffnen.
+Das Dashboard ist eine statische Seite. Nach jedem Screener-Lauf baut der PC sie neu und lädt sie über die
+Pages-Direct-Upload-API hoch (`fusion_lab/dashboard/deploy.py`, reines Python). Der PC muss nur zur Rechenzeit
+an sein; ansehen geht jederzeit, auch am Handy.
 
-## 1. Domain zu Cloudflare (ca. 15 Min. + Wartezeit)
+## Wie es eingerichtet ist
 
-1. Konto auf https://dash.cloudflare.com anlegen (kostenlos).
-2. „Add a domain“ → deine Domain eingeben → Plan **Free**.
-3. Cloudflare zeigt zwei Nameserver an. Beim Domain-Anbieter die Nameserver auf diese zwei ändern.
-4. Warten, bis Cloudflare „Active“ meldet (Minuten bis einige Stunden).
-
-## 2. Pages-Projekt anlegen
-
-1. Workers & Pages → Create → **Pages** → „Upload assets“ (Direct Upload).
-2. Projektname z. B. `trading-cockpit`. Einen beliebigen Ordner hochladen, z. B.
-   `fusion_lab/data/dashboard_dist` (wird später automatisch ersetzt).
-3. Im Projekt → Custom domains → z. B. `cockpit.<deine-domain>` hinzufügen.
-
-## 3. Zugang schützen (Cloudflare Access)
-
-1. Zero Trust (linkes Menü) → beim ersten Mal ein Team-Namen wählen, Plan **Free**.
-2. Access → Applications → Add → **Self-hosted**.
-3. Domain: `cockpit.<deine-domain>` **und** `trading-cockpit.pages.dev` (beide Adressen schützen,
-   sonst ist die pages.dev-Adresse offen).
-4. Policy: Action **Allow**, Include → **Emails** → deine E-Mail-Adresse.
-5. Login-Methode: „One-time PIN“ (Code per E-Mail) ist voreingestellt. Optional Google-Login.
-6. Session-Dauer z. B. 1 Monat, damit du dich am Handy nicht ständig neu anmelden musst.
-
-## 4. Token für den automatischen Upload
-
-1. Profil → API Tokens → Create Token → Vorlage **„Edit Cloudflare Workers“** oder eigenes Token mit
-   Recht *Account → Cloudflare Pages → Edit*.
-2. Account-ID steht rechts unten auf der Übersicht deiner Domain.
-3. In `.streamlit/secrets.toml` (git-ignoriert) eintragen:
+- **Pages-Projekt** `next-level-journal` (Direct Upload, kein Git). Konto-ID steht in `secrets.toml`.
+- **Zero Trust Free** (0 $, bis 50 Nutzer; Zahlungsmethode nur zur Prüfung hinterlegt).
+- **Access-Anwendung** `next-level-journal`, Ziele `next-level-journal.pages.dev` und
+  `*.next-level-journal.pages.dev` (Vorschau-Adressen), Regel **„Nur Ich“** (Allow, nur die eigene E-Mail).
+- **Token** „Cockpit Upload“, nur Recht *Account → Cloudflare Pages → Edit*, in `.streamlit/secrets.toml`:
 
 ```toml
 [cloudflare]
 api_token = "..."
 account_id = "..."
-project = "trading-cockpit"
-url = "https://cockpit.<deine-domain>"
+project = "next-level-journal"
+url = "https://next-level-journal.pages.dev"
 ```
 
-4. Test: `python -m fusion_lab.dashboard` → meldet „Hochgeladen“.
+## Bewusst nicht gemacht
+
+- **Eigene Domain** `andre-gierhold.de`: nicht auf Cloudflare umgestellt. Strato schaltet bei eigenen
+  Nameservern die Strato-E-Mail ab, und die wird genutzt. Die angefangene Domain-Einrichtung bei Cloudflare
+  ist ungenutzt („pending“).
+- **wrangler**: läuft auf Windows-ARM64 nicht (`workerd` „Unsupported platform: win32 arm64“). Deshalb
+  eigener Upload über die API.
+
+## Weitere Bereiche (Journal, persönliches Dashboard)
+
+Kommen als eigene Bereiche in dieselbe App und liegen damit automatisch hinter demselben Login. Für
+Schreibzugriff (Journal): Pages Functions + D1 im selben Projekt.
 
 ## Am Handy (Android)
 
-Seite in Chrome öffnen, anmelden, Menü ⋮ → **„Zum Startbildschirm hinzufügen“**. Startet dann wie eine App.
+Seite in Chrome öffnen, anmelden, Menü ⋮ → **„Zum Startbildschirm hinzufügen“**.
+
+## Prüfen
+
+`python -m fusion_lab.dashboard` → „Hochgeladen … Deployment …“. Ohne Login muss jede Adresse auf
+`…cloudflareaccess.com` umleiten (HTTP 302).

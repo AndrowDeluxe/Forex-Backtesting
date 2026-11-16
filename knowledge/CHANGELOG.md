@@ -9,6 +9,12 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-16** [Dachprojekt / Strang 8] **Cockpit online: https://next-level-journal.pages.dev hinter Cloudflare Access**
+  (Nutzer richtete Pages-Projekt, Zero Trust Free und Access-Regel „Nur Ich“ ein). Eigene Domain bewusst nicht
+  umgestellt (Strato-Mail fiele weg). wrangler läuft auf Windows-ARM64 nicht → `fusion_lab/dashboard/deploy.py`
+  lädt jetzt über die Pages-Direct-Upload-API (nur geänderte Dateien). Geprüft: Deployment erfolgreich, Haupt-,
+  Daten- und Vorschau-Adressen leiten ohne Login auf die Anmeldung um. Upload läuft nach jedem Screener-Lauf.
+
 - **2026-11-16** [Dachprojekt / Inventur A6] **H4-Edge Test 4: Nutzer-Kriterien aus der Handprüfung als Regeln** (Plan freigegeben).
   `htf_daily_trade/h4_v4.py` + `tests/test_h4_v4.py`, Lock `h4_manip` jetzt 3.913 Versuche. 1.080 Varianten (Lage in HTF-Range,
   Trend oder Erschöpfung, Makro-Punkte, Uhrzeit, 9 Ausstiege inkl. BE/Partials/Zeit-BE). IS-Beste FX +0,47 R → OOS −0,08 R,

@@ -9,11 +9,28 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-16** [Portfolio / alle Konten] **Gesamtportfolio-Backtest 2016–10/2026 je Konto und je Bein**
+  (Nutzerauftrag, Plan freigegeben). `scripts/research_portfolio_live_2016.py`, reale Kosten je Broker, Live-Risiken,
+  Swap-Annahme 1,5 bps/Nacht. Sharpe EK 1,52 / FK 1,44 / TTP 1,50 / IQ 1,78; Max DD −58,8 / −10,6 / −6,2 / −7,3 %;
+  P(Kontogrenze binnen 12 M) 5 / 9 / 3 / 15 %. USTBOND-M5-Cache 2016–11/2026 aus zwei vorhandenen Dateien
+  zusammengesetzt (Daten ab 12/2018). [[gesamtportfolio-backtest-2016]]
+
 - **2026-11-16** [Dachprojekt / Strang 8] **Cockpit online: https://next-level-journal.pages.dev hinter Cloudflare Access**
   (Nutzer richtete Pages-Projekt, Zero Trust Free und Access-Regel „Nur Ich“ ein). Eigene Domain bewusst nicht
   umgestellt (Strato-Mail fiele weg). wrangler läuft auf Windows-ARM64 nicht → `fusion_lab/dashboard/deploy.py`
   lädt jetzt über die Pages-Direct-Upload-API (nur geänderte Dateien). Geprüft: Deployment erfolgreich, Haupt-,
   Daten- und Vorschau-Adressen leiten ohne Login auf die Anmeldung um. Upload läuft nach jedem Screener-Lauf.
+
+- **2026-11-16 22:50** [Lebensjournal / Cloudflare] D1 `lebensjournal` und KV `FEEDS` angelegt, Online-Tabelle
+  migriert, Cockpit-Daten in KV. `kv_namespace_id` in `.streamlit/secrets.toml` `[cloudflare]` eingetragen → `deploy.py`
+  schreibt ab jetzt nur noch KV (Token braucht noch „Workers KV Storage: Edit“). Journal-Deploy nach
+  `next-level-journal` wartet auf den Access-AUD-Tag.
+
+- **2026-11-16** [Neues Projekt / Lebensjournal] Eigenes Repo `C:\Users\andre\Lebensjournal\` angelegt
+  (Plan freigegeben, Konzept „Stufe 1“). Gebaut: Grundgerüst (PWA, lokal-first, Sync-Endpunkt D1, Access-JWT-
+  Prüfung, Export), Heute, Ideen-Inbox mit 3-Projekte-Limit. Das Trading-Cockpit wird beim Build unverändert
+  nach `/trading/` kopiert, die Daten kommen aus KV. Im Forex-Repo ist noch nichts umgestellt. Fund: wrangler/workerd
+  läuft auf diesem ARM64-PC nicht (betrifft auch `fusion_lab/dashboard/deploy.py`).
 
 - **2026-11-16** [Dachprojekt / Inventur A6] **H4-Edge Test 4: Nutzer-Kriterien aus der Handprüfung als Regeln** (Plan freigegeben).
   `htf_daily_trade/h4_v4.py` + `tests/test_h4_v4.py`, Lock `h4_manip` jetzt 3.913 Versuche. 1.080 Varianten (Lage in HTF-Range,

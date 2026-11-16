@@ -113,6 +113,8 @@ Telegram. Der tägliche Digest zeigt nur die Fokus-Abschnitte.
   - Neuer Task `Forex-Gold-Makro-Gate-Refresh` täglich 07:15 (FRED + yfinance → `score_frame.parquet`).
   - EK prüft mit dem aktuellen Zeitpunkt, Funded/FK mit der Entry-Zeit des Signals (gleiches Ergebnis am selben Tag).
   - CTNL-Backtest: Swap 1,5 bps je Nacht angenommen (nicht gemessen); 0–3 bps verschieben Sharpe 1,25–1,10.
+  - Gesamtportfolio-Backtest: gleiche Swap-Annahme für Gold-Silber/Trend Pullback, EURUSD 1,08 für EKs Mindestlot,
+    Tickmill-Gold ganztägig 1,07 bps statt 0,38 [[gesamtportfolio-backtest-2016]].
 
 - **Gold Confirmation Framework: meine Annahmen beim Nachbau** (14.11., Ergebnis: kein Edge,
   [[gold-confirmation-score]]). Vorgaben aus dem Plan nicht mehr abgefragt:
@@ -199,6 +201,13 @@ Bewusst aus dem Blick genommen (Nutzerentscheid 10.11.), nicht gelöscht. Neue B
 landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 
 ### Weitere Projekte
+
+- **🌱 Lebensjournal / Lebens-App (seit 16.11.): eigenes Repo `C:\Users\andre\Lebensjournal\`**, eigene
+  `STATUS.md`/`CHANGELOG.md` dort (bewusst getrennt vom Trading). Startseite → Bereiche „Persönlich“ (Heute,
+  Inbox, …) und „Trading“ (das Cockpit aus `fusion_lab/dashboard/`, unverändert eingebunden, Daten über
+  Cloudflare KV). Schritt 0–2 gebaut und lokal getestet. wrangler läuft auf dem ARM-PC nur über x64-Node
+  (`C:\Users\andre\tools\node-x64` + `tools\wrangler`, Starter `scripts/wr.mjs` im Journal-Repo). `fusion_lab/dashboard/deploy.py`
+  (npx wrangler) scheitert so weiterhin und muss beim Umstellen auf KV mit umziehen.
 
 - **📈 NASDAQ-ORB aus der Vorbörsen-Range 09:00–09:30 (15.11.): im Backtest stark, Kosten offen.** Ohne
    Trendfilter OOS +0,28 R/Trade (t 2,7, ~248 Trades/Jahr), mit EMA-Filter nur +0,06. Hängt an der
@@ -515,6 +524,13 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 
 ### Aufgaben (Betrieb)
 
+- **(16.11.) Funded-Fast-Lane umgeht den Offenes-Risiko-Deckel** — `Funded-Portfolio-Bridge/run_once_fast.py`
+  ruft nur `_check_risk_gate`, nicht `_check_aggregate_open_risk_gate` (FK macht beides). ORB, Gold ASB und CLS aus
+  der Fast-Lane ignorieren damit den 3,5-%/3-%-Deckel. IQ steht bei −3,3 % von 6 %. Fix nur nach deinem OK.
+- **(16.11.) Dashboard-Statuszeilen veraltet**: FK-Fast/Funded-Fast nennen noch ctnl_continuation (stillgelegt),
+  EK-Fast ohne gold_asb, „Letzter echter Entry“ bei allen Bridges Mitte September, Funded „TTP 6 Beine @1/6“
+  (seit 04.10. Overrides). Gefunden beim Gesamtportfolio-Backtest [[gesamtportfolio-backtest-2016]].
+
 - **EK-CTNL: Live-Trades ohne Gegenstück in der Simulation** (gefunden 28.10., geprüft 30.10.).
   01.–23.10.: 7 echte Trades, 3 in der neu gerechneten Tickmill-Simulation, nur 1 gemeinsam.
   Gates und Deckel (1) sind in Bridge und Simulation gleich. Wahrscheinlichste Ursache: Live
@@ -740,6 +756,10 @@ Statustabellen-Zeilen, neu über der Schwelle: `G8-Notion-Sync`
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
 
+- (16.11.) **Persönliches Dashboard + Trading-Journal in das Cockpit integrieren** (Nutzeridee): eine App, mehrere
+  Bereiche (Screener, Makro, Forward, persönliches Dashboard, Journal) hinter demselben Cloudflare-Access-Login.
+  Journal braucht Schreibzugriff → Cloudflare Pages Functions + D1 (kostenlos), Trades evtl. aus
+  `fusion_lab/trades/` vorbefüllen. Nach der Cloudflare-Einrichtung im Plan-Modus angehen. [[aktien-analyse-und-bot]]
 - (15.11.) **Zwei Prozess-Ideen aus dem AI-Pathways-Kurs** (YouTube-Sichtung „AI Trading Bot“; der
   Vorgriff-Wächter daraus ist gebaut, [[vorgriff-waechter]]): (a) die Auswahl-Routine selbst
   walk-forward testen (Neuwahl je Quartal nur mit Daten bis dahin), nicht nur die gewählten Beine;

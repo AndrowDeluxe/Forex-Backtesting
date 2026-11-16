@@ -513,6 +513,16 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
   `NAS100.gbe` (Risiko je Seite ca. 107 USD). Ob Kosten und Haltedauer bis 16:00 für K60
   passen, ist damit nicht geprüft.
 
+- **Lint 16.11.: fehlende Notiz `nasdaq-orb-vorboersen-range`.** 3 tote Wikilinks
+  (`CHANGELOG.md:68`, `DASHBOARD.md:209`, `DASHBOARD.md:256`) zeigen alle auf dieselbe
+  noch nicht angelegte Notiz zum NASDAQ-ORB-Vorbörsen-Research (15.11., siehe „Weitere
+  Projekte“ oben). Anlegen (und wohin einordnen — `projects/` oder `resources/`?) oder
+  bewusst offenlassen, solange das Thema noch läuft?
+
+- **Lint 16.11.: fehlende Notiz `tradingagents-tauric`.** 2 tote Wikilinks
+  (`DASHBOARD.md:753`, `resources/prosper-bot-trendregel-echtdaten.md:7`) zeigen auf
+  dieselbe fehlende Notiz zum TradingAgents(TauricResearch)-Test (12.11.). Anlegen?
+
 ### Aufgaben (Betrieb)
 
 - **EK-CTNL: Live-Trades ohne Gegenstück in der Simulation** (gefunden 28.10., geprüft 30.10.).
@@ -610,7 +620,7 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
   Vorschlag: Der Watchdog committet `bridge_status/` auch bei offenem Tree auf einen eigenen Branch,
   oder der Monitor prüft den Zeitstempel im Snapshot statt den Commit. Mittel.
 
-- **14 unverarbeitete Clippings** in `knowledge/Clippings/` (Lint 02.11.,
+- **14 unverarbeitete Clippings** in `knowledge/Clippings/` (Lint 16.11.,
   unveraendert seit 2026-09-09) — u.a. Edge-Genesis/-Decay,
   Risk-Factor-Investing, Sektor-Rotation, "Six Repos One System", "How
   system works" — noch nicht durch den CODE-Prozess.
@@ -618,16 +628,20 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 **Niedrig**
 
 - **Statustabelle: 9 "Zuletzt geprüft"-Zeilen über 21 Tage alt** (Lint
-  09.11., Schwelle 21 Tage): `FK-Instant-Funding-Paper` (57 Tage),
-  `OU-Modell-ScannerHourly` (68 Tage), `Forex-Weekly-Report` (55 Tage),
-  `Bridge-Watchdog` (57 Tage), `DataLake-Ingest-Fast` (57 Tage),
-  `DataLake-Ingest-Fast5` (57 Tage), `DataLake-Ingest-Slow` (57 Tage),
-  `Dashboard-Telegram-Digest` (57 Tage) — alle zuletzt am 2026-09-02/-13/-15
-  geprüft, unverändert seit dem letzten Lint. **Neu über der Schwelle:**
-  `G8-Notion-Sync` (zuletzt 2026-10-12, 28 Tage). Reiner Alters-Hinweis aus
+  16.11., Schwelle 21 Tage): `FK-Instant-Funding-Paper` (64 Tage),
+  `OU-Modell-ScannerHourly` (75 Tage), `Forex-Weekly-Report` (62 Tage),
+  `Bridge-Watchdog` (64 Tage), `DataLake-Ingest-Fast` (64 Tage),
+  `DataLake-Ingest-Fast5` (64 Tage), `DataLake-Ingest-Slow` (64 Tage),
+  `Dashboard-Telegram-Digest` (64 Tage) — alle zuletzt am 2026-09-02/-13/-15
+  geprüft, unverändert seit dem letzten Lint. `G8-Notion-Sync` (zuletzt
+  2026-10-12, 35 Tage) weiterhin über der Schwelle. Reiner Alters-Hinweis aus
   dem Lint-Skript, kein inhaltlicher Befund — Zeilen bei Gelegenheit gegen
   den echten Task-Scheduler-/Scanner-Status nachprüfen und Datum auffrischen
   (CLAUDE.md Punkt 4).
+
+- **Lint 16.11.: toter Wikilink** `projects/h4-htf-entry-edge-card.md:60` →
+  `[[crt-manipulation-ist-stopweiten-mechanik]]`, isoliert, keine andere Notiz
+  verweist auf dasselbe Ziel. Keine angelegte Notiz dazu.
 
 ## Status — was läuft gerade wirklich
 
@@ -706,24 +720,18 @@ Live-Status aller drei Portfolio-Bridges jetzt auch als Streamlit-Seiten
 („Portfolio-Bridges" in der Sidebar) — lesen `bridge_status/snapshot.json`,
 das der Bridge-Watchdog alle 30 Min. committet.
 
-_Letzter Lint-Durchlauf: **2026-11-09** (geplant, `second-brain-lint`).
-Ergebnis: 10 tote Wikilink-Fundstellen — die beiden 02.11.-Funde
-(`orb-ribbon-filter-kippt-2026` in jetzt 2 Notizen + DASHBOARD,
-`ctnl-serienstopp-vs-risikohalbierung`) unverändert offen in
-Braucht-Bestätigung, dazu neu 2 Unterstrich-Wikilinks nach demselben
-Memory-Slug-Muster (`regime_richtung_je_asset_ueberangepasst`,
-`oecd_reihen_auf_fred_tot` in `resources/regime-bestimmung-und-filter.md`)
-→ Braucht-Bestätigung; 2 neue isolierte tote Links ohne Entscheidungsbedarf
-(`residual-edge-gold-traegt-orb-ou-nicht`, `daily-edge-typ-r-ohne-makro-kein-edge`,
-selbe Notiz) → Offene Aufgaben; 1 `[[...]]` in DASHBOARD.md:161 war literaler
-Text (kein echter Link), ignoriert; der 02.11.-Fund
-`eurusd-lower-high-limit-edge-card` ist erledigt (Notiz existiert jetzt) und
-aus Offene Aufgaben entfernt. 1 neue verwaiste Seite
-(`gold-asb-liquiditaetsfilter-vorgriff.md`) → Offene Aufgaben. 9 veraltete
-Statustabellen-Zeilen, neu über der Schwelle: `G8-Notion-Sync`
-(→ Offene Aufgaben, Niedrig). 14 unverarbeitete Clippings unverändert seit
-09-09. Verweise nach außerhalb von `knowledge/` als Pfad in Backticks
-(siehe `README.md`)._
+_Letzter Lint-Durchlauf: **2026-11-16** (geplant, `second-brain-lint`).
+Ergebnis: 7 tote Wikilink-Fundstellen — davon 2 Inhaltslücken (dasselbe
+fehlende Ziel mehrfach referenziert): `nasdaq-orb-vorboersen-range` (3×:
+CHANGELOG + DASHBOARD zweimal) und `tradingagents-tauric` (2×: DASHBOARD +
+`resources/prosper-bot-trendregel-echtdaten.md`) → Braucht-Bestätigung; 1
+isolierter toter Link (`crt-manipulation-ist-stopweiten-mechanik` in
+`projects/h4-htf-entry-edge-card.md`) → Offene Aufgaben; 1 `[[...]]` war
+literaler Text im vorigen Lint-Eintrag selbst (kein echter Link), ignoriert.
+0 verwaiste Seiten. 9 veraltete Statustabellen-Zeilen, `G8-Notion-Sync`
+weiterhin über der Schwelle (jetzt 35 Tage) → Offene Aufgaben, Niedrig. 14
+unverarbeitete Clippings unverändert seit 09-09. Verweise nach außerhalb von
+`knowledge/` als Pfad in Backticks (siehe `README.md`)._
 
 ## Status — aktuell nicht aktiv
 

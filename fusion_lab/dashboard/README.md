@@ -1,18 +1,24 @@
 # Trading Cockpit: Cloudflare (eingerichtet 16.11.2026)
 
-**Adresse:** https://next-level-journal.pages.dev (Login per E-Mail-Code, Cloudflare Access)
+**Adresse:** https://next-level-journal.pages.dev/trading/ (Login per E-Mail-Code, Cloudflare Access)
 
-Das Dashboard ist eine statische Seite. Nach jedem Screener-Lauf baut der PC sie neu und lädt sie über die
-Pages-Direct-Upload-API hoch (`fusion_lab/dashboard/deploy.py`, reines Python). Der PC muss nur zur Rechenzeit
-an sein; ansehen geht jederzeit, auch am Handy.
+Seit 16.11.2026 23:00 gehört die Seite dem **Lebensjournal** (`C:\Users\andre\Lebensjournal\`). Dessen Build kopiert
+`fusion_lab/dashboard/static/` nach `/trading/`, die Daten liefert eine Pages Function aus Workers KV
+(`functions/trading/data/[name].ts`).
+
+Nach jedem Screener-Lauf baut der PC die Daten neu (`python -m fusion_lab.dashboard`) und schreibt **nur die vier
+Daten-Dateien** (`aktien.json`, `krypto.json`, `makro.json`, `meta.json`) per REST-API in KV
+(`deploy.py::deploy_kv`). Die Seite selbst wird dabei nie hochgeladen, sonst wäre das Journal überschrieben.
+Änderungen am Cockpit-Code (`static/`) erscheinen erst nach dem nächsten Journal-Build + Deploy.
 
 ## Wie es eingerichtet ist
 
-- **Pages-Projekt** `next-level-journal` (Direct Upload, kein Git). Konto-ID steht in `secrets.toml`.
+- **Pages-Projekt** `next-level-journal` (Direct Upload, kein Git), Deploy aus dem Journal-Repo.
 - **Zero Trust Free** (0 $, bis 50 Nutzer; Zahlungsmethode nur zur Prüfung hinterlegt).
 - **Access-Anwendung** `next-level-journal`, Ziele `next-level-journal.pages.dev` und
-  `*.next-level-journal.pages.dev` (Vorschau-Adressen), Regel **„Nur Ich“** (Allow, nur die eigene E-Mail).
-- **Token** „Cockpit Upload“, nur Recht *Account → Cloudflare Pages → Edit*, in `.streamlit/secrets.toml`:
+  `*.next-level-journal.pages.dev`, Regel **„Nur Ich“** (Allow, nur die eigene E-Mail).
+- **Token** „Cockpit Upload“, Rechte *Cloudflare Pages: Edit* + *Workers KV Storage: Edit*, in
+  `.streamlit/secrets.toml` (git-ignoriert):
 
 ```toml
 [cloudflare]
@@ -20,20 +26,15 @@ api_token = "..."
 account_id = "..."
 project = "next-level-journal"
 url = "https://next-level-journal.pages.dev"
+kv_namespace_id = "..."   # gesetzt -> nur KV-Upload; fehlt -> ganze Seite per Direct Upload (alter Modus)
 ```
 
 ## Bewusst nicht gemacht
 
-- **Eigene Domain** `andre-gierhold.de`: nicht auf Cloudflare umgestellt. Strato schaltet bei eigenen
-  Nameservern die Strato-E-Mail ab, und die wird genutzt. Die angefangene Domain-Einrichtung bei Cloudflare
-  ist ungenutzt („pending“).
-- **wrangler**: läuft auf Windows-ARM64 nicht (`workerd` „Unsupported platform: win32 arm64“). Deshalb
-  eigener Upload über die API.
-
-## Weitere Bereiche (Journal, persönliches Dashboard)
-
-Kommen als eigene Bereiche in dieselbe App und liegen damit automatisch hinter demselben Login. Für
-Schreibzugriff (Journal): Pages Functions + D1 im selben Projekt.
+- **Eigene Domain:** nicht auf Cloudflare umgestellt. Strato schaltet bei eigenen Nameservern die Strato-E-Mail ab,
+  und die wird genutzt. Die angefangene Domain-Einrichtung bei Cloudflare ist ungenutzt („pending“).
+- **wrangler**: läuft auf Windows-ARM64 nicht (`workerd` „Unsupported platform: win32 arm64“). Deshalb eigener
+  Upload über die API.
 
 ## Am Handy (Android)
 
@@ -41,5 +42,5 @@ Seite in Chrome öffnen, anmelden, Menü ⋮ → **„Zum Startbildschirm hinzuf
 
 ## Prüfen
 
-`python -m fusion_lab.dashboard` → „Hochgeladen … Deployment …“. Ohne Login muss jede Adresse auf
-`…cloudflareaccess.com` umleiten (HTTP 302).
+`python -m fusion_lab.dashboard` → „KV aktualisiert (aktien.json, …)“. Ohne Login muss jede Adresse auf
+`…cloudflareaccess.com` umleiten (HTTP 302). Lokal ansehen: `python -m fusion_lab.dashboard --local`.

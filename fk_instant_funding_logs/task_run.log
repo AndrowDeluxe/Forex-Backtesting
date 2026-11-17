@@ -78314,3 +78314,36 @@
 2026-11-17 16:59:36   "ctnl_kill_switch_active": false,
 2026-11-17 16:59:36   "n_trades": 27
 2026-11-17 16:59:36 }
+2026-11-17 16:59:36 [main cc17c33c] FK Instant Funding Bot: Snapshot 2026-11-17 16:59
+2026-11-17 16:59:36  1 file changed, 39 insertions(+)
+2026-11-17 16:59:37 Nichts zu mergen (0 eingehende Commits) - Stash und Merge uebersprungen.
+2026-11-17 16:59:39 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-11-17 16:59:39    f6c846e9..cc17c33c  main -> main
+2026-11-17 16:59:39 Commit + Push erfolgreich.
+2026-11-17 16:59:39 === FK-Instant-Funding-Task beendet ===
+2026-11-17 17:55:23 === FK-Instant-Funding-Task gestartet ===
+2026-11-17 17:57:04 INFO:DUKASCRIPT:current timestamp :2026-11-16T01:00:00
+2026-11-17 17:57:04 INFO:DUKASCRIPT:current timestamp :2026-11-17T16:00:00
+2026-11-17 17:57:04 INFO:DUKASCRIPT:current timestamp :2026-11-17T16:00:00
+2026-11-17 17:57:04 INFO:DUKASCRIPT:current timestamp :2026-11-17T16:00:00
+2026-11-17 17:57:04 INFO:DUKASCRIPT:current timestamp :2026-11-17T13:00:00
+2026-11-17 17:57:04 INFO:DUKASCRIPT:current timestamp :2026-11-17T13:00:00
+2026-11-17 17:57:04 INFO:DUKASCRIPT:current timestamp :2026-11-16T01:00:00
+2026-11-17 17:57:04 INFO:DUKASCRIPT:current timestamp :2026-11-17T16:00:00
+2026-11-17 17:57:04 INFO:DUKASCRIPT:current timestamp :2026-11-17T16:00:00
+2026-11-17 17:57:04 INFO:DUKASCRIPT:current timestamp :2026-11-17T16:00:00
+2026-11-17 17:57:04 INFO:DUKASCRIPT:current timestamp :2026-11-17T13:00:00
+2026-11-17 17:57:04 INFO:DUKASCRIPT:current timestamp :2026-11-17T13:00:00
+2026-11-17 17:57:04 INFO:DUKASCRIPT:current timestamp :2026-11-17T13:00:00
+2026-11-17 17:57:04 INFO:DUKASCRIPT:current timestamp :2026-11-17T13:00:00
+2026-11-17 17:57:04 {
+2026-11-17 17:57:04   "date": "2026-11-17 16:55:24.645877",
+2026-11-17 17:57:04   "equity": 98534.86478019471,
+2026-11-17 17:57:04   "current_dd": -0.014651352198052914,
+2026-11-17 17:57:04   "consistency_ratio": 0.0,
+2026-11-17 17:57:04   "payout_safe": false,
+2026-11-17 17:57:04   "cum_profit": -1465.1352198052984,
+2026-11-17 17:57:04   "kill_switch_active": false,
+2026-11-17 17:57:04   "ctnl_kill_switch_active": false,
+2026-11-17 17:57:04   "n_trades": 27
+2026-11-17 17:57:04 }

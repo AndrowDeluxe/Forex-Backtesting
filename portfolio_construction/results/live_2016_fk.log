@@ -1,0 +1,70 @@
+=== fk: Beine ['cls_practical', 'ctnl_reversal', 'gold_asb', 'gold_silver', 'orb_nasdaq', 'orb_sp500']
+  ORB SP500 (opposite): 464 Trades 2026, Spread 0.54 bps, {'n': 464, 'avg_r': 0.343256421562776, 'pf': 1.406151209408302, 'win_pct': 21.120689655172413, 'sum_r': 159.27097960512808}
+  ORB US30 (opposite): 509 Trades 2026, Spread 0.62 bps, {'n': 509, 'avg_r': 0.23394607135723608, 'pf': 1.3127857227756896, 'win_pct': 30.844793713163064, 'sum_r': 119.07855032083316}
+  ORB NASDAQ (opposite): 744 Trades 2026, Spread 0.34 bps, {'n': 744, 'avg_r': 0.27039522883527206, 'pf': 1.2978720362931593, 'win_pct': 13.978494623655912, 'sum_r': 201.17405025344243}
+  Gold ASB (stoporder): 421 Trades 2026, Status {'filled': 421}, {'n': 421, 'avg_r': 0.18466172008920653, 'pf': 1.4825030416418117, 'win_pct': 50.5938242280285, 'sum_r': 77.74258415755595}
+  CLS (Lag 1): 186 Trades 2026, verworfen {'sl_touched': 16, 'gate': 6}, Exit-Gruende {'stop': 101, 'take_profit': 85}, {'n': 186, 'avg_r': 0.21110595323557738, 'pf': 1.3630963717303077, 'win_pct': 45.16129032258064, 'sum_r': 39.26570730181739}
+
+######## Konto FK (USD) ########
+trades                         2189
+trades_pro_jahr               195.2
+trefferquote_%                 30.9
+avg_R                         0.375
+avg_gewinn_R                   3.56
+avg_verlust_R                 -1.05
+profit_factor                  1.52
+summe_R                       820.6
+t_wert                         5.89
+startkapital                99649.0
+endkapital                 243950.0
+rendite_gesamt_%              144.8
+CAGR_%                         8.31
+sharpe                         1.44
+sortino                        4.26
+max_DD_%                     -10.59
+calmar                         0.78
+laengste_DD_tage                894
+schlechtester_tag_%           -0.94
+schlechtester_monat_%         -2.44
+bester_monat_%                 5.26
+monate_positiv_%                 58
+jahre_positiv                  8/11
+MC_DD_median_%                 6.03
+MC_DD_95_%                     9.41
+kontogrenze_DD_%                5.0
+MC_P(Bruch)                   0.791
+erster_Bruch_hist        2017-01-25
+Tageslimit_verletzt               -
+blockiert_deckel                  0
+mindestlot_angehoben              0
+
+Je Bein:
+          bein         ab  risiko_%  trades  trefferquote_%  avg_R  summe_R     pnl  anteil_%  sharpe_bein
+   orb_nasdaq 2016-08-04     0.125     744            14.0  0.270    201.2 42478.0      28.7         0.55
+  gold_silver 2016-01-27     0.200     136            58.1  0.693     94.2 28734.0      19.4         1.12
+    orb_sp500 2016-07-29     0.125     464            21.1  0.343    159.3 28615.0      19.4         0.79
+cls_practical 2016-06-03     0.288     185            45.4  0.213     39.4 20126.0      13.6         0.45
+ctnl_reversal 2016-01-19     0.038     239            41.4  1.041    248.8 15308.0      10.4         1.21
+     gold_asb 2016-11-02     0.121     421            50.6  0.185     77.7 12608.0       8.5         0.92
+
+Jahresrendite %:
+ 2016    -3.82
+2017    -1.87
+2018    -1.76
+2019    12.76
+2020    19.70
+2021    11.54
+2022    18.29
+2023     5.32
+2024     9.50
+2025    18.00
+2026     8.95
+
+Korrelation Tages-PnL:
+                cls_practical  ctnl_reversal  gold_asb  gold_silver  orb_nasdaq  orb_sp500
+cls_practical            1.0          -0.00      0.00        -0.00        0.00      -0.00
+ctnl_reversal           -0.0           1.00      0.05         0.22       -0.02      -0.00
+gold_asb                 0.0           0.05      1.00         0.08        0.03      -0.00
+gold_silver             -0.0           0.22      0.08         1.00       -0.02      -0.01
+orb_nasdaq               0.0          -0.02      0.03        -0.02        1.00       0.10
+orb_sp500               -0.0          -0.00     -0.00        -0.01        0.10       1.00

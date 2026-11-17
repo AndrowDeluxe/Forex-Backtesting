@@ -25,8 +25,11 @@ passiert, was steht an.
   Jeder Lauf wird archiviert und committet. Als Nächstes:
   (1) **Backtest der prüfbaren Teile parallel** (Preiszonen A/B, Kurs-Score; eigener Plan-Modus, IS/OOS/Tresor,
   Survivorship-Bias ausweisen, Zufalls-Long als Kontrolle) → bessere Werte nur als Version 1.1,
-  (2) ✅ Cockpit online seit 16.11.: https://next-level-journal.pages.dev (Login per E-Mail-Code),
-  (3) NVDA-Analyse kommt Di 17.11. 23:45 per Telegram.
+  (2) ✅ Cockpit online seit 16.11. im Lebensjournal unter https://next-level-journal.pages.dev/trading/
+  (Login per E-Mail-Code; Daten per KV, am 17.11. von außen geprüft: alle Pfade 302 zum Login),
+  (3) NVDA-Analyse kommt Di 17.11. 23:45 per Telegram,
+  (4) Aktien- + Makro-Dashboard später in einer eigenen Session weiterbauen (Nutzerentscheid 17.11.), dabei das
+  **Fact Sheet grafisch im Terminal-Stil** darstellen (Nutzerwunsch 17.11.).
 
 1. **🧩 Dachprojekt Quant × diskretionäres Trading** (gestartet 2026-10-04,
    löst "Monatsjournal + Verschmelzung" ab — Journal-Teil erledigt):
@@ -205,9 +208,10 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 - **🌱 Lebensjournal / Lebens-App (seit 16.11.): eigenes Repo `C:\Users\andre\Lebensjournal\`**, eigene
   `STATUS.md`/`CHANGELOG.md` dort (bewusst getrennt vom Trading). Startseite → Bereiche „Persönlich“ (Heute,
   Inbox, …) und „Trading“ (das Cockpit aus `fusion_lab/dashboard/`, unverändert eingebunden, Daten über
-  Cloudflare KV). Schritt 0–2 gebaut und lokal getestet. wrangler läuft auf dem ARM-PC nur über x64-Node
-  (`C:\Users\andre\tools\node-x64` + `tools\wrangler`, Starter `scripts/wr.mjs` im Journal-Repo). `fusion_lab/dashboard/deploy.py`
-  (npx wrangler) scheitert so weiterhin und muss beim Umstellen auf KV mit umziehen.
+  Cloudflare KV). **Online seit 16.11. 23:00: https://next-level-journal.pages.dev** (Access „Nur Ich“).
+  `deploy.py` schreibt nur noch KV (`kv_namespace_id` in secrets), am 16.11. getestet („KV aktualisiert“),
+  Login + Abgleich am PC grün. wrangler läuft auf dem ARM-PC nur über x64-Node (`C:\Users\andre\tools\`,
+  Starter `scripts/wr.mjs` im Journal-Repo).
 
 - **📈 NASDAQ-ORB aus der Vorbörsen-Range 09:00–09:30 (15.11.): im Backtest stark, Kosten offen.** Ohne
    Trendfilter OOS +0,28 R/Trade (t 2,7, ~248 Trades/Jahr), mit EMA-Filter nur +0,06. Hängt an der

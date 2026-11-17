@@ -9,6 +9,17 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-17** [Notion-Cockpit] **Neue Reiterseite „🤖 BOT“** im Trading-Fusion-Cockpit (Nutzerwunsch), darunter
+  „Gesamtportfolio-Backtest 2016–2026“ (Ergebnisse aus `research_portfolio_live_2016.py`). Seiten-ID als `bot_folder`
+  in `fusion_lab/notion/cockpit_ids.json`. Kopie zusätzlich als Claude-Doc.
+
+- **2026-11-17** [Dachprojekt / Strang 8] **Cockpit-Daten laufen über KV, Login geprüft.** `deploy.py` schreibt nur
+  noch die 4 Daten-Dateien in Workers KV (Token um „Workers KV Storage: Edit“ ergänzt, `5a846dbf`). Von außen geprüft:
+  `/`, `/trading/`, `/trading/data/…`, `/api/…` leiten ohne Login per 302 zu Access um. Aktien-Lauf 16.11. 23:00
+  bricht nach dem Bericht ab (Code 0xC000013A, 2-h-Limit; vermutlich Standby um 23:03). Ledger und Archiv sind nicht
+  verloren, der Krypto-Lauf 17.11. hat sie mit committet (`08bd107a`). Notion braucht beim Nachtest 11 s.
+  Hintergrund-Server (Prosper :8000, Cockpit lokal :8765) beendet.
+
 - **2026-11-16** [Portfolio / alle Konten] **Gesamtportfolio-Backtest 2016–10/2026 je Konto und je Bein**
   (Nutzerauftrag, Plan freigegeben). `scripts/research_portfolio_live_2016.py`, reale Kosten je Broker, Live-Risiken,
   Swap-Annahme 1,5 bps/Nacht. Sharpe EK 1,52 / FK 1,44 / TTP 1,50 / IQ 1,78; Max DD −58,8 / −10,6 / −6,2 / −7,3 %;
@@ -20,6 +31,10 @@ keine Planung (dafür ist `DASHBOARD.md`).
   umgestellt (Strato-Mail fiele weg). wrangler läuft auf Windows-ARM64 nicht → `fusion_lab/dashboard/deploy.py`
   lädt jetzt über die Pages-Direct-Upload-API (nur geänderte Dateien). Geprüft: Deployment erfolgreich, Haupt-,
   Daten- und Vorschau-Adressen leiten ohne Login auf die Anmeldung um. Upload läuft nach jedem Screener-Lauf.
+
+- **2026-11-16 23:00** [Lebensjournal / Cloudflare] Journal nach `next-level-journal` deployt (Production `ce832ed`),
+  ersetzt das reine Cockpit an der Wurzel. Das Cockpit liegt jetzt unter `/trading/`. Access-AUD eingetragen. Ohne Login gehen alle
+  Pfade per 302 zur Access-Anmeldung (geprüft). Cockpit-Code-Änderungen erscheinen erst nach dem nächsten Journal-Build + Deploy.
 
 - **2026-11-16 22:50** [Lebensjournal / Cloudflare] D1 `lebensjournal` und KV `FEEDS` angelegt, Online-Tabelle
   migriert, Cockpit-Daten in KV. `kv_namespace_id` in `.streamlit/secrets.toml` `[cloudflare]` eingetragen → `deploy.py`

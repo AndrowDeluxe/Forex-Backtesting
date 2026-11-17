@@ -1,0 +1,7 @@
+,cls_practical,ctnl_reversal,gold_asb,orb_nasdaq,orb_sp500,trend_pullback
+cls_practical,1.0,-0.01,0.01,-0.0,0.0,-0.01
+ctnl_reversal,-0.01,1.0,0.05,-0.04,0.0,0.15
+gold_asb,0.01,0.05,1.0,0.05,-0.0,0.12
+orb_nasdaq,-0.0,-0.04,0.05,1.0,0.08,0.0
+orb_sp500,0.0,0.0,-0.0,0.08,1.0,-0.03
+trend_pullback,-0.01,0.15,0.12,0.0,-0.03,1.0

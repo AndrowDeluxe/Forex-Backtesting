@@ -1,0 +1,322 @@
+
+######## Konto EK (EUR) ########
+trades                                3131
+trades_pro_jahr                      279.2
+trefferquote_%                        37.7
+avg_R                                0.289
+avg_gewinn_R                          2.29
+avg_verlust_R                        -0.92
+profit_factor                          1.5
+summe_R                              905.5
+t_wert                                 6.2
+startkapital                        2521.0
+endkapital                      65072895.0
+rendite_gesamt_%                 2581307.5
+CAGR_%                              147.41
+sharpe                                1.52
+sortino                               4.41
+max_DD_%                            -58.83
+calmar                                2.51
+laengste_DD_tage                       329
+schlechtester_tag_%                 -16.72
+schlechtester_monat_%               -37.15
+bester_monat_%                      114.37
+monate_positiv_%                        72
+jahre_positiv                         9/11
+MC_DD_median_%                       46.47
+MC_DD_95_%                           63.17
+rendite_pa_ohne_zinseszins_%        113.04
+kontogrenze_DD_%                      45.0
+MC_P(Bruch_12M)                      0.052
+MC_P(Bruch_ueber_11J)                0.567
+erster_Bruch_hist               2018-10-12
+Tageslimit_verletzt                      -
+blockiert_deckel                         0
+mindestlot_angehoben                    73
+
+Je Bein:
+           bein         ab  risiko_%  trades  trefferquote_%  avg_R  summe_R        pnl  anteil_%  sharpe_bein
+trend_pullback 2016-02-10     2.200     268            47.4  0.285     76.3 24512285.0      34.0         0.63
+   gold_silver 2016-01-27     3.520     136            58.1  0.699     95.1 13780838.0      19.1         1.13
+      gold_asb 2016-11-02     3.520     421            50.6  0.194     81.6 13302585.0      18.5         0.99
+    orb_nasdaq 2016-08-04     0.360     744            14.0  0.275    204.7 11219568.0      15.6         0.58
+ btc_ema_cross 2017-10-01     3.520      66            30.3  1.313     86.6  4552012.0       6.3         0.44
+ cls_practical 2016-06-03     0.660     183            45.9  0.285     52.1  3577268.0       5.0         0.59
+     ou_modell 2018-06-06     0.370     707            56.3  0.014     10.1   648130.0       0.9         0.26
+ ctnl_reversal 2016-01-19     0.019     142            40.8  0.956    135.8   290020.0       0.4         0.49
+     orb_sp500 2016-07-29     0.360     464            21.1  0.352    163.2   187495.0       0.3         0.76
+
+Jahresrendite %:
+ 2016     -8.13
+2017     56.71
+2018    -18.86
+2019    230.45
+2020    362.94
+2021    404.22
+2022    141.05
+2023    129.41
+2024    318.39
+2025    490.54
+2026    109.69
+
+Korrelation Tages-PnL:
+                 btc_ema_cross  cls_practical  ctnl_reversal  gold_asb  gold_silver  orb_nasdaq  orb_sp500  ou_modell  trend_pullback
+btc_ema_cross            1.00          -0.00           0.00     -0.00        -0.00       -0.05      -0.01      -0.00           -0.01
+cls_practical           -0.00           1.00          -0.00     -0.02        -0.05       -0.01       0.03       0.06           -0.01
+ctnl_reversal            0.00          -0.00           1.00      0.05         0.06       -0.10       0.05      -0.01            0.07
+gold_asb                -0.00          -0.02           0.05      1.00         0.06        0.21       0.02       0.03            0.12
+gold_silver             -0.00          -0.05           0.06      0.06         1.00       -0.08      -0.02      -0.05            0.18
+orb_nasdaq              -0.05          -0.01          -0.10      0.21        -0.08        1.00       0.01       0.03           -0.01
+orb_sp500               -0.01           0.03           0.05      0.02        -0.02        0.01       1.00       0.02           -0.02
+ou_modell               -0.00           0.06          -0.01      0.03        -0.05        0.03       0.02       1.00            0.00
+trend_pullback          -0.01          -0.01           0.07      0.12         0.18       -0.01      -0.02       0.00            1.00
+
+######## Konto FK (USD) ########
+trades                                2189
+trades_pro_jahr                      195.2
+trefferquote_%                        30.9
+avg_R                                0.375
+avg_gewinn_R                          3.56
+avg_verlust_R                        -1.05
+profit_factor                         1.52
+summe_R                              820.6
+t_wert                                5.89
+startkapital                       99649.0
+endkapital                        243950.0
+rendite_gesamt_%                     144.8
+CAGR_%                                8.31
+sharpe                                1.44
+sortino                               4.26
+max_DD_%                            -10.59
+calmar                                0.78
+laengste_DD_tage                       894
+schlechtester_tag_%                  -0.94
+schlechtester_monat_%                -2.44
+bester_monat_%                        5.26
+monate_positiv_%                        58
+jahre_positiv                         8/11
+MC_DD_median_%                        6.03
+MC_DD_95_%                            9.41
+rendite_pa_ohne_zinseszins_%          8.39
+kontogrenze_DD_%                       5.0
+MC_P(Bruch_12M)                      0.088
+MC_P(Bruch_ueber_11J)                0.791
+erster_Bruch_hist               2017-01-25
+Tageslimit_verletzt                      -
+blockiert_deckel                         0
+mindestlot_angehoben                     0
+
+Je Bein:
+          bein         ab  risiko_%  trades  trefferquote_%  avg_R  summe_R     pnl  anteil_%  sharpe_bein
+   orb_nasdaq 2016-08-04     0.125     744            14.0  0.270    201.2 42478.0      28.7         0.55
+  gold_silver 2016-01-27     0.200     136            58.1  0.693     94.2 28734.0      19.4         1.12
+    orb_sp500 2016-07-29     0.125     464            21.1  0.343    159.3 28615.0      19.4         0.79
+cls_practical 2016-06-03     0.288     185            45.4  0.213     39.4 20126.0      13.6         0.45
+ctnl_reversal 2016-01-19     0.038     239            41.4  1.041    248.8 15308.0      10.4         1.21
+     gold_asb 2016-11-02     0.121     421            50.6  0.185     77.7 12608.0       8.5         0.92
+
+Jahresrendite %:
+ 2016    -3.82
+2017    -1.87
+2018    -1.76
+2019    12.76
+2020    19.70
+2021    11.54
+2022    18.29
+2023     5.32
+2024     9.50
+2025    18.00
+2026     8.95
+
+Korrelation Tages-PnL:
+                cls_practical  ctnl_reversal  gold_asb  gold_silver  orb_nasdaq  orb_sp500
+cls_practical            1.0          -0.00      0.00        -0.00        0.00      -0.00
+ctnl_reversal           -0.0           1.00      0.05         0.22       -0.02      -0.00
+gold_asb                 0.0           0.05      1.00         0.08        0.03      -0.00
+gold_silver             -0.0           0.22      0.08         1.00       -0.02      -0.01
+orb_nasdaq               0.0          -0.02      0.03        -0.02        1.00       0.10
+orb_sp500               -0.0          -0.00     -0.00        -0.01        0.10       1.00
+
+######## Konto TTP (USD) ########
+trades                              3029
+trades_pro_jahr                    270.1
+trefferquote_%                      37.0
+avg_R                              0.248
+avg_gewinn_R                        2.27
+avg_verlust_R                      -0.94
+profit_factor                       1.42
+summe_R                            750.6
+t_wert                              5.35
+startkapital                     99770.0
+endkapital                      291192.0
+rendite_gesamt_%                   191.9
+CAGR_%                             10.02
+sharpe                               1.5
+sortino                             3.51
+max_DD_%                            -6.2
+calmar                              1.62
+laengste_DD_tage                     208
+schlechtester_tag_%                -0.95
+schlechtester_monat_%              -2.78
+bester_monat_%                      6.03
+monate_positiv_%                      68
+jahre_positiv                      11/11
+MC_DD_median_%                      6.69
+MC_DD_95_%                          10.4
+rendite_pa_ohne_zinseszins_%        9.87
+kontogrenze_DD_%                     7.0
+MC_P(Bruch_12M)                    0.028
+MC_P(Bruch_ueber_11J)              0.417
+erster_Bruch_hist                    nie
+Tageslimit_verletzt                  nie
+blockiert_deckel                       0
+mindestlot_angehoben                   0
+
+Je Bein:
+           bein         ab  risiko_%  trades  trefferquote_%  avg_R  summe_R     pnl  anteil_%  sharpe_bein
+      gold_asb 2016-11-02     0.600     421            50.4  0.156     65.7 57794.0      29.7         0.78
+ ctnl_reversal 2016-01-19     0.100     239            41.0  1.008    240.9 44126.0      22.6         1.17
+    orb_nasdaq 2016-08-04     0.100     744            14.0  0.256    190.5 37943.0      19.5         0.52
+ cls_practical 2016-06-03     0.150     186            45.2  0.127     23.6 19360.0       9.9         0.52
+     orb_sp500 2016-07-29     0.075     464            21.1  0.323    149.8 18287.0       9.4         0.74
+trend_pullback 2016-02-10     0.100     268            47.4  0.275     73.6 16561.0       8.5         0.70
+     ou_modell 2018-06-06     0.050     707            56.2  0.009      6.5   824.0       0.4         0.20
+
+Jahresrendite %:
+ 2016     0.99
+2017     6.44
+2018     3.94
+2019    10.00
+2020    16.89
+2021     7.38
+2022    18.32
+2023     5.91
+2024     8.93
+2025    21.78
+2026    13.81
+
+Korrelation Tages-PnL:
+                 cls_practical  ctnl_reversal  gold_asb  orb_nasdaq  orb_sp500  ou_modell  trend_pullback
+cls_practical            1.00          -0.00      0.01       -0.01      -0.00       0.01           -0.01
+ctnl_reversal           -0.00           1.00      0.05       -0.02      -0.00       0.02            0.14
+gold_asb                 0.01           0.05      1.00        0.03      -0.00       0.03            0.10
+orb_nasdaq              -0.01          -0.02      0.03        1.00       0.10       0.01            0.01
+orb_sp500               -0.00          -0.00     -0.00        0.10       1.00       0.02           -0.03
+ou_modell                0.01           0.02      0.03        0.01       0.02       1.00            0.04
+trend_pullback          -0.01           0.14      0.10        0.01      -0.03       0.04            1.00
+
+######## Konto IQ (USD) ########
+trades                                2321
+trades_pro_jahr                      207.0
+trefferquote_%                        31.2
+avg_R                                0.345
+avg_gewinn_R                          3.43
+avg_verlust_R                        -1.06
+profit_factor                         1.47
+summe_R                              800.8
+t_wert                                5.71
+startkapital                       97622.0
+endkapital                        504696.0
+rendite_gesamt_%                     417.0
+CAGR_%                               15.78
+sharpe                                1.78
+sortino                               4.36
+max_DD_%                              -7.3
+calmar                                2.16
+laengste_DD_tage                       208
+schlechtester_tag_%                  -1.39
+schlechtester_monat_%                -3.43
+bester_monat_%                        7.74
+monate_positiv_%                        71
+jahre_positiv                        11/11
+MC_DD_median_%                        7.82
+MC_DD_95_%                           11.97
+rendite_pa_ohne_zinseszins_%         15.19
+kontogrenze_DD_%                       6.0
+MC_P(Bruch_12M)                      0.153
+MC_P(Bruch_ueber_11J)                0.895
+erster_Bruch_hist               2017-05-11
+Tageslimit_verletzt                      -
+blockiert_deckel                         0
+mindestlot_angehoben                     0
+
+Je Bein:
+           bein         ab  risiko_%  trades  trefferquote_%  avg_R  summe_R     pnl  anteil_%  sharpe_bein
+ ctnl_reversal 2016-01-19     0.154     239            41.4  1.039    248.3 98166.0      23.6         1.20
+      gold_asb 2016-11-02     0.667     421            50.6  0.183     77.1 96232.0      23.1         0.92
+ cls_practical 2016-06-03     0.333     185            45.4  0.213     39.4 78716.0      18.9         0.67
+    orb_nasdaq 2016-08-04     0.111     744            14.0  0.270    201.2 63738.0      15.3         0.55
+trend_pullback 2016-02-10     0.167     268            47.4  0.282     75.5 42903.0      10.3         0.72
+     orb_sp500 2016-07-29     0.111     464            21.1  0.343    159.3 36591.0       8.8         0.79
+
+Jahresrendite %:
+ 2016     1.72
+2017     7.77
+2018     4.30
+2019    15.78
+2020    30.56
+2021     8.30
+2022    30.20
+2023    10.52
+2024    16.34
+2025    38.77
+2026    18.88
+
+Korrelation Tages-PnL:
+                 cls_practical  ctnl_reversal  gold_asb  orb_nasdaq  orb_sp500  trend_pullback
+cls_practical            1.00          -0.01      0.01       -0.00       0.00           -0.01
+ctnl_reversal           -0.01           1.00      0.05       -0.04       0.00            0.15
+gold_asb                 0.01           0.05      1.00        0.05      -0.00            0.12
+orb_nasdaq              -0.00          -0.04      0.05        1.00       0.08            0.00
+orb_sp500                0.00           0.00     -0.00        0.08       1.00           -0.03
+trend_pullback          -0.01           0.15      0.12        0.00      -0.03            1.00
+
+######## Alle Konten ########
+                                       EK          FK       TTP          IQ
+trades                              3131        2189      3029        2321
+trades_pro_jahr                    279.2       195.2     270.1       207.0
+trefferquote_%                      37.7        30.9      37.0        31.2
+avg_R                              0.289       0.375     0.248       0.345
+avg_gewinn_R                        2.29        3.56      2.27        3.43
+avg_verlust_R                      -0.92       -1.05     -0.94       -1.06
+profit_factor                        1.5        1.52      1.42        1.47
+summe_R                            905.5       820.6     750.6       800.8
+t_wert                               6.2        5.89      5.35        5.71
+startkapital                      2521.0     99649.0   99770.0     97622.0
+endkapital                    65072895.0    243950.0  291192.0    504696.0
+rendite_gesamt_%               2581307.5       144.8     191.9       417.0
+CAGR_%                            147.41        8.31     10.02       15.78
+sharpe                              1.52        1.44       1.5        1.78
+sortino                             4.41        4.26      3.51        4.36
+max_DD_%                          -58.83      -10.59      -6.2        -7.3
+calmar                              2.51        0.78      1.62        2.16
+laengste_DD_tage                     329         894       208         208
+schlechtester_tag_%               -16.72       -0.94     -0.95       -1.39
+schlechtester_monat_%             -37.15       -2.44     -2.78       -3.43
+bester_monat_%                    114.37        5.26      6.03        7.74
+monate_positiv_%                      72          58        68          71
+jahre_positiv                       9/11        8/11     11/11       11/11
+MC_DD_median_%                     46.47        6.03      6.69        7.82
+MC_DD_95_%                         63.17        9.41      10.4       11.97
+rendite_pa_ohne_zinseszins_%      113.04        8.39      9.87       15.19
+kontogrenze_DD_%                    45.0         5.0       7.0         6.0
+MC_P(Bruch_12M)                    0.052       0.088     0.028       0.153
+MC_P(Bruch_ueber_11J)              0.567       0.791     0.417       0.895
+erster_Bruch_hist             2018-10-12  2017-01-25       nie  2017-05-11
+Tageslimit_verletzt                    -           -       nie           -
+blockiert_deckel                       0           0         0           0
+mindestlot_angehoben                  73           0         0           0 
+
+Jahresrendite %:
+           EK     FK    TTP     IQ
+2016   -8.13  -3.82   0.99   1.72
+2017   56.71  -1.87   6.44   7.77
+2018  -18.86  -1.76   3.94   4.30
+2019  230.45  12.76  10.00  15.78
+2020  362.94  19.70  16.89  30.56
+2021  404.22  11.54   7.38   8.30
+2022  141.05  18.29  18.32  30.20
+2023  129.41   5.32   5.91  10.52
+2024  318.39   9.50   8.93  16.34
+2025  490.54  18.00  21.78  38.77
+2026  109.69   8.95  13.81  18.88

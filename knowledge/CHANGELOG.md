@@ -9,6 +9,14 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-18** [Dachprojekt / Rohstoffe] **Handy-Branch übernommen, Rohstoff-Screener 1.1 live im Probebetrieb**
+  (Nutzerentscheide). Merge `388ba2fa` (Kupfer-Analyse, Screener, Handoff Edelmetalle HTF). Geprüft: Tests grün,
+  Probelauf mit allen 10 Märkten. Kupfer-Technik nachgerechnet: SMA200 6,23 statt 6,12, Abstand −9 % statt −6 %,
+  RSI 24, ATR 0,138. Änderungen `fb895b59`: COT-Gewicht 0 (nur Info; Contrarian unbelegt, Erdgas-KAUFEN kam
+  fast nur daher), Wochenanalyse nur Gold/Silber/Kupfer. Lebensjournal: `rohstoffe.json` freigegeben + deployt
+  (`913ac3c`). Neue Tasks `Forex-Screener-Rohstoffe` (Mo–Fr 23:15) und `Forex-Rohstoff-Tiefenanalyse` (So 18:00).
+  Kosten für den Edelmetall-Test bestätigt: Gold 5, Silber 10, Platin 15 bps je Seite.
+
 - **2026-11-18** [Dachprojekt / Aktien-Screener] **Rohstoff-Screener + Cockpit-Tab „Rohstoffe“** (Nutzerauftrag,
   Plan freigegeben). Kern-10 (Gold, Silber, Platin, Kupfer, WTI, Brent, Erdgas, Weizen, Mais, Soja):
   `python -m fusion_lab.screener rohstoffe` (Yahoo-Futures, CFTC-COT Managed Money, absoluter Score, Szenarien A/B/C,

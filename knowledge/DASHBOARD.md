@@ -30,12 +30,13 @@ passiert, was steht an.
   (3) NVDA-Analyse kommt Di 17.11. 23:45 per Telegram,
   (4) Aktien- + Makro-Dashboard später in einer eigenen Session weiterbauen (Nutzerentscheid 17.11.), dabei das
   **Fact Sheet grafisch im Terminal-Stil** darstellen (Nutzerwunsch 17.11.).
-  (5) **🛢️ Rohstoffe neu (18.11., Plan freigegeben):** Kern-10 (Gold, Silber, Platin, Kupfer, WTI, Brent, Erdgas,
-  Weizen, Mais, Soja) mit Tageslauf Mo–Fr 23:15 (`screener_task.ps1 rohstoffe`, Score inkl. COT, eigenes Ledger im
-  **Probebetrieb**) und Wochen-Tiefenanalyse So 18:00 im Stil der Kupfer-Analyse vom 18.11.
-  (`scripts/commodity_deep_task.ps1`), Cockpit-Tab „Rohstoffe“. **Noch auf dem PC zu tun:** 2 Tasks anlegen,
-  Lebensjournal-Build + ggf. `rohstoffe` in `functions/trading/data/[name].ts` erlauben, ersten Lauf ansehen,
-  dann `FORWARD_START_COMMODITIES` setzen (siehe „Braucht deine Bestätigung“).
+  (5) **🛢️ Rohstoffe (18.11., läuft seit 18.11. 23:15 im Probebetrieb):** Kern-10 (Gold, Silber, Platin, Kupfer,
+  WTI, Brent, Erdgas, Weizen, Mais, Soja), Tageslauf Mo–Fr 23:15 (`screener_task.ps1 rohstoffe`, Version **1.1**:
+  COT-Gewicht 0, nur Info), Wochen-Tiefenanalyse So 18:00 nur **Gold, Silber, Kupfer**
+  (`scripts/commodity_deep_task.ps1`), Cockpit-Tab „Rohstoffe“ online. Nutzerentscheide 18.11.: COT neutral bis
+  zum Edelmetall-Backtest, Wochenanalyse auf 3 beschränkt. Score-Gewichte (Trend 30, Momentum 25, rel. Stärke 15,
+  52-W-Lage 10) bleiben ungeprüft, bis (6) Ergebnisse hat. **Offen:** ersten Bericht ansehen, dann
+  `FORWARD_START_COMMODITIES` setzen.
   (6) **🥇 Edelmetalle HTF-Backtest (18.11., Plan freigegeben, Umsetzung am PC):** Score-Bausteine + Makro-Indikatoren
   (Realzins, Dollar, Breakeven, Kurve, ETF-Flüsse, Zentralbanken, COT, Ratios) für Gold/Silber/Platin auf 4–26 Wochen,
   Long/Short, als Bias und als Filter auf ASB/CTNL/C2. Plan + Startpunkt: `knowledge/_handoff/2026-11-18_1630_edelmetalle-htf-backtest.md`.
@@ -115,18 +116,6 @@ Telegram. Der tägliche Digest zeigt nur die Fokus-Abschnitte.
 
 
 ### 🔍 Braucht deine Bestätigung
-
-- **Rohstoff-Screener (18.11.): meine Annahmen beim Bau** [[aktien-analyse-und-bot]]. Deine Vorgaben: Kern-10,
-  täglich + wöchentlich, Signale + eigenes Ledger, Mo–Fr 23:15. Ohne Rückfrage festgelegt:
-  - Score-Gewichte (Startwert, nicht optimiert): Trend 30, Momentum 25, rel. Stärke 15, COT 20, Lage in der
-    52-Wochen-Spanne 10. Alle Bausteine **absolut** statt Querschnitt (nur 10 Titel).
-  - **COT contrarian:** 100 − COT-Index Managed Money über 3 Jahre (Fonds extrem long = wenig Punkte; Lehre aus
-    dem Kupfer-Rekord-Long im August).
-  - Benchmark **DBC** (Rohstoff-ETF), Kosten 5 bps, Kurse = Yahoo-Front-Monat (Roll-Sprünge = Näherung).
-  - CFTC-Code Brent `06765T` ungeprüft (fehlt er, bekommt Brent COT neutral 50).
-  - Wochen-Tiefenanalyse **So 18:00** (gleiche Zeit wie Weekly-Report, ggf. verschieben), Telegram nur als
-    Sammel-Kurzfassung. Die Kupfer-Analyse vom 18.11. ist als erste Wochenanalyse eingespielt.
-  - Rohstoffe starten im **Probebetrieb** (`FORWARD_START_COMMODITIES = None`), bis du den ersten Bericht gesehen hast.
 
 - **CTNL-Makro-Sperre seit 15.11. LIVE auf allen drei Bridges — meine Annahmen beim Einbau** (Nutzerentscheid
   „direkt in den Bot“). Regel: kein CTNL-Reversal-Long bei MACRO ≤ 35, kein Short bei ≥ 65 (Vortageswert).
@@ -708,8 +697,8 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 | C2-Forward-Log (neu)                                    | — (nur Log + Telegram, keine Orders)                                                     | Forward-Test Daily-Edge: seit 11.11. nur noch W50 Vorwochen-Mitte `5c82f5d4` + Referenz EL `6c55e525`, 9 Märkte (alter Forward `aea4189b` raus, Nutzerentscheid) (`scripts/c2_forward_task.ps1`, Ledger `htf_daily_trade/forward/`, Akku erlaubt); Auswertung ab 30 Trades oder 12.11.2027 | Ready (Di–Sa 03:30, StartWhenAvailable) | — | 2026-11-11 |
 | Forex-Screener-Aktien (neu)                             | — (nur Analyse + Paper-Ledger, keine Orders)                                             | S&P 500 + Nasdaq-100: Score, Preisbereiche, News per `claude.exe -p` → Telegram, Notion, Dashboard, Ledger (`scripts/screener_task.ps1 aktien`, **Forward seit 15.11.**, committet Ledger + Archiv) | Ready (Mo–Fr 23:00, StartWhenAvailable) | — | 2026-11-15 |
 | Forex-Screener-Krypto (neu)                             | — (nur Analyse + Paper-Ledger, keine Orders)                                             | Top-30-Krypto (Binance/CoinGecko): wie Aktien (`scripts/screener_task.ps1 krypto`, **Forward seit 15.11.**, committet Ledger + Archiv) | Ready (täglich 07:45, StartWhenAvailable) | — | 2026-11-15 |
-| Forex-Screener-Rohstoffe (neu, **noch anzulegen**)       | — (nur Analyse + Paper-Ledger, keine Orders)                                             | Kern-10-Rohstoffe (Yahoo-Futures + CFTC-COT): wie Aktien (`scripts/screener_task.ps1 rohstoffe`, **Probebetrieb**, committet Ledger + Archiv) | geplant Mo–Fr 23:15, StartWhenAvailable | — | 2026-11-18 |
-| Forex-Rohstoff-Tiefenanalyse (neu, **noch anzulegen**)   | — (nur Analyse + Telegram)                                                               | Wochen-Tiefenanalyse je Rohstoff per `claude.exe -p` mit Web (`scripts/commodity_deep_task.ps1`, committet `archive/rohstoffe_tief/`) | geplant So 18:00 | — | 2026-11-18 |
+| Forex-Screener-Rohstoffe (neu)                          | — (nur Analyse + Paper-Ledger, keine Orders)                                             | Kern-10-Rohstoffe (Yahoo-Futures + CFTC-COT): wie Aktien (`scripts/screener_task.ps1 rohstoffe`, **Probebetrieb**, Version 1.1 COT-Gewicht 0, committet Ledger + Archiv) | Ready (Mo–Fr 23:15, StartWhenAvailable, Akku erlaubt) | — | 2026-11-18 |
+| Forex-Rohstoff-Tiefenanalyse (neu)                      | — (nur Analyse + Telegram)                                                               | Wochen-Tiefenanalyse Gold/Silber/Kupfer per `claude.exe -p` mit Web (`scripts/commodity_deep_task.ps1`, committet `archive/rohstoffe_tief/`) | Ready (So 18:00, StartWhenAvailable) | — | 2026-11-18 |
 | Forex-NVDA-Earnings-Analyse (einmalig)                  | — (nur Analyse + Telegram)                                                               | NVIDIA nach Q3-Zahlen per Telegram (`scripts/nvda_followup_task.ps1`), danach Task löschen | Ready (Di 17.11.2026 23:45) | — | 2026-11-15 |
 | Forex-Gold-Makro-Gate-Refresh (neu)                     | — (nur FRED/yfinance-Abruf, kein Order-Bezug)                                            | Daten für die CTNL-Makro-Sperre (`scripts/gold_macro_gate_refresh_task.ps1` → `fusion_lab/data/gold_confirm/score_frame.parquet`), seit 15.11. | Ready (täglich 07:15) | — | 2026-11-15 |
 | Telegram-Import-SMH-Daily                               | — (nur Telegram lesen + rechnen, kein Order-Bezug)                                       | Inkrementeller Import „SMH Daily Update“ ohne Videos; seit 28.10. zusätzlich Bild-/Anweisungs-Lesung per Claude-Abo + Forward-Stand Copy Trading Stufe 2 (`scripts/telegram_smh_daily_import_task.ps1`, Akku erlaubt) | Ready (täglich 23:00, auch Sa/So) | — | 2026-10-28      |

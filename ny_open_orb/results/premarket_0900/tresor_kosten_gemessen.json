@@ -1,0 +1,10 @@
+{
+ "neu_bps": 1.0415273467178605,
+ "live_bps": 0.6592012908714049,
+ "neu_entry_pts_median": 1.1000000000021828,
+ "neu_exit_pts_median": 0.6100000000005821,
+ "live_entry_pts_median": 0.8000000000029104,
+ "live_exit_pts_median": 0.5,
+ "spread_0930_pts_median": 1.0,
+ "spread_0945_pts_median": 1.0
+}

@@ -1,0 +1,18 @@
+{
+  "strategy": "gold_richtung_komposition",
+  "split": {
+    "is_start": "2010-01-01",
+    "is_end": "2019-12-31",
+    "oos_end": "2026-05-18",
+    "tresor_end": "2026-11-18"
+  },
+  "registered": "2026-11-18T22:03:48+00:00",
+  "trials": 53,
+  "frozen": null,
+  "unsealed": {},
+  "forward": null,
+  "blind": {
+    "start": "2006-01-01",
+    "end": "2009-12-31"
+  }
+}

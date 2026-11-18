@@ -291,3 +291,31 @@
 2026-11-08 21:21:09 That notification is only my own helper that was waiting for the Edge-Ampel job. It hit its time limit and was stopped. The Ampel job itself had already stalled and been stopped before that, and I've covered that in the report. Nothing else is affected: the KW45 Weekly Checkup is finished and committed locally (`64e2258f`), and the PDF has been sent.
 2026-11-08 21:21:09 Vollstaendigkeitspruefung OK: KW45_2026_checkup.pdf (347.085 Bytes)
 2026-11-08 21:21:09 === Weekly-Report-Task beendet ===
+2026-11-15 18:00:02 === Weekly-Report-Task gestartet ===
+2026-11-15 18:00:02 Nutze Claude Code: C:\Users\andre\.vscode\extensions\anthropic.claude-code-2.1.325-win32-arm64\resources\native-binary\claude.exe
+2026-11-15 18:28:21 Warning: this sign-in can end at any time from now until 2026-11-17. Renewing it does not move that date. Run claude auth login now, or use claude setup-token for unattended jobs.
+2026-11-15 18:28:21 Warte auf die Benachrichtigung.
+2026-11-15 18:28:21 
+2026-11-15 18:28:21 Der Weekly Checkup KW46 (09.‘«Ù15.11.) ist fertig und lokal committet (`9a34558c`, nicht gepusht). Das PDF liegt in `Documents\Trading Reports\KW46_2026_checkup.pdf` und ist per Telegram rausgegangen. Ein Monatsreport war nicht f+Òllig.
+2026-11-15 18:28:21 
+2026-11-15 18:28:21 **Die Woche:**
+2026-11-15 18:28:21 - **Kein Kill-Switch und kein Drawdown-Halt, die Bots haben ihre Limits eingehalten.**
+2026-11-15 18:28:21 - **EK: ‘Í∆229,75 EUR (‘Í∆8,35 %).** Davon kommen ‘Í∆105,90 EUR von den Bots, der Rest ist ein Handtrade.
+2026-11-15 18:28:21 - **Funded: +38,59 USD (+0,02 %).**
+2026-11-15 18:28:21 - **FK: +141,93 USD (+0,14 %).** Die Bots allein lagen bei ‘Í∆342,57 USD; das Plus kommt aus den Handtrades.
+2026-11-15 18:28:21 - **Sieben Handtrades per Handy auf EK und FK:** ein EUR/USD-Short mit +631 USD, drei Gold-Longs mit Verlust, dazu zwei USD/JPY-Shorts, die noch offen sind. Der offene Short auf EK riskiert ca. 4,6 % des Kontos, mehr als jedes Bot-Bein. Die Frage, ob Handtrades auf den Bot-Konten gewollt sind und mit welcher Gr+¬+Ée, steht im Dashboard bei den Best+Òtigungen (Bereich ‘«◊Geparkt‘«£).
+2026-11-15 18:28:21 - **Soll/Ist:** Die L++cke ist fast ganz die erste ORB-Kerze. Zwei gro+Ée NASDAQ-Gewinner wurden verpasst, und beim SP500 rechnet der Backtest zu optimistisch, weil er den Stop in der Fill-Kerze nicht pr++ft. Dazu kommt ein bekannter Werkzeugfehler: US30 z+Òhlt im Soll mit, obwohl es pausiert ist.
+2026-11-15 18:28:21 - **STT auf TTP ist weiter offen**, obwohl du am 10.11. entschieden hast, ihn zu schlie+Éen.
+2026-11-15 18:28:21 
+2026-11-15 18:28:21 **Was beim Lauf schiefging:**
+2026-11-15 18:28:21 - **Der erste MT5-Abzug war falsch.** Am Sonntag lief kein Terminal, das Skript hat sie selbst gestartet und bekam noch keine Historie: TTP und IQ meldeten 0 Deals, ohne Fehlermeldung, und FK brach mit ‘«◊IPC timeout‘«£ ab. Nach einem Neustart von FK mit `/portable` war der zweite Abzug vollst+Òndig. Endstand minus Wochenergebnis trifft jetzt auf allen vier Konten den Vorwochenstand auf den Cent. Alle vier Terminals, die der Lauf gestartet hat, sind wieder geschlossen.
+2026-11-15 18:28:21 - **Die Edge-Ampel ist zum vierten Mal nicht aktualisiert.** Der Dukascopy-Abruf stand ++ber 12 Minuten still, ich habe abgebrochen. Im Report steht deshalb die Tabelle vom 08.11.; ihre Trade-Liste endet am 25.10.
+2026-11-15 18:28:21 
+2026-11-15 18:28:21 **Zus+Òtzlich ge+Òndert:**
+2026-11-15 18:28:21 - **Makro-Nachpr++fung KW46** in `knowledge/areas/makro-agent-report-pruefung.md` eingetragen, mit laufender Bilanz: Agent +1,60 R (AUD/USD-Short, noch offen), Dennis ‘Í∆1 R (EUR/USD ausgestoppt). F++r KW47 gibt es noch kein Beispiel in der Notiz.
+2026-11-15 18:28:21 - **Dashboard** auf den 15.11. gesetzt und **CHANGELOG** erg+Ònzt. Den alten Punkt zum Gold-ASB-Filter-Protokoll habe ich als gepr++ft markiert (Eintr+Òge vom 11. bis 13.11. sind da, der 10.11. fehlt); l+¬schen kannst nur du.
+2026-11-15 18:28:21 - **Memory** `mt5_kaltes_terminal_leere_historie` um diesen Fall erg+Ònzt: Nicht nur nach einem Neustart, sondern jeder Sonntagslauf ist betroffen.
+2026-11-15 18:28:21 
+2026-11-15 18:28:21 `scripts/research_ctnl_macro_live.py` habe ich nicht mitcommittet. Das ist die Gegenprobe hinter der seit 15.11. aktiven CTNL-Makro-Sperre, und sie ist ge+Òndert, aber noch nicht gesichert.
+2026-11-15 18:28:21 Vollstaendigkeitspruefung OK: KW46_2026_checkup.pdf (604.450 Bytes)
+2026-11-15 18:28:21 === Weekly-Report-Task beendet ===

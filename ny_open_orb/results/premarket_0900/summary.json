@@ -1,0 +1,15 @@
+{
+ "winner": {
+  "range": [
+   "08:00",
+   "09:30"
+  ],
+  "sl": 1.0,
+  "tp": null,
+  "trend": "keiner"
+ },
+ "dsr": 8.833015560628174e-309,
+ "versuche": 668,
+ "n_is_zellen": 648,
+ "n_eligible": 20
+}

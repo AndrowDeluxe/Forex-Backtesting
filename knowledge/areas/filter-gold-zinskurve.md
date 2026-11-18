@@ -26,6 +26,18 @@ separat festgehalten, damit er an anderen Edges geprüft werden kann (Nutzerauft
    ohne Filter +0,35 R. DSR 0,12–0,16 (Locks mit 154 Versuchen).
 3. Daily-Edge Typ R (Reversal), nur Gold: **keine** klare Wirkung (einmal besser, einmal schlechter).
 
+4. **Live-Beobachtung KW46–47/2026 (gegen den Filter):** Bestätigt „Goldilocks“ seit 04.11., Gold fiel
+   von 4.070 (06.11.) auf 3.720 (18.11.). Roh ab 13.11. „Inflation“, aber nur 2 Tage, dann Twist (17.11.).
+   Ein Twist setzt die 5-Tage-Bestätigung zurück, sie kam deshalb nie. Lag 5/10 hätte ab 10./12.11.
+   „Inflation“ (short) gezeigt. Das wäre eine neue, gezählte Variante, die nicht aus diesen zwei Wochen
+   ausgewählt werden darf. Gold fiel aber schon Ende Oktober bei *fallenden* Renditen. Es ist also nicht
+   nur Verzögerung: Der Dollar-Treiber (DXY-Hoch seit 04/2025) wird vom Filter nicht erfasst.
+   Cache: `fetch_fred` lud ohne `refresh=True` den alten Parquet-Stand (am 18.11. nur bis 12.11.);
+   seit 18.11. automatisch neu nach 20 h.
+5. **Lag-Test 18.11.2026 (Lock `gold_richtung_komposition`, IS 2010–2019):** Lag 5/10 und die
+   Twist-Variante bringen nichts Messbares. Die Zinskurve allein hat in diesem IS **keinen** Richtungswert
+   (−0,1 bp/Tag gegen „immer long“ +1,3, p 0,71). Details: [[filter-gold-komposition]].
+
 Lesart: Der Filter passt zu Strategien **in Trendrichtung** (Continuation, Breakout, Trendfolge),
 nicht zu Gegentrend-Einstiegen. Stichproben noch klein -- Beleg steht aus.
 

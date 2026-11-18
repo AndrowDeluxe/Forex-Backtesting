@@ -45,8 +45,15 @@ def regime_series(lag: int = 20, refresh: bool = False) -> pd.Series:
     return reg.dropna()
 
 
-def confirmed(reg: pd.Series, confirm: int = 5) -> pd.Series:
-    """Regime erst nach `confirm` Tagen Bestand; Twist zählt nie als Bestätigung."""
+def confirmed(reg: pd.Series, confirm: int = 5, twist_resets: bool = True) -> pd.Series:
+    """Regime erst nach `confirm` Tagen Bestand; Twist zählt nie als Bestätigung.
+
+    `twist_resets=False` (Variante 18.11.2026): Twist-Tage unterbrechen die Zählung nicht, sie werden
+    übersprungen. Anlass: KW46–47/2026 pendelte das Roh-Regime Twist/Inflation, die Bestätigung kam nie."""
+    if not twist_resets:
+        core = reg[reg != "Twist"]
+        out = confirmed(core, confirm, twist_resets=True)
+        return out.reindex(reg.index).ffill()
     runs = (reg != reg.shift()).cumsum()
     age = reg.groupby(runs).cumcount() + 1
     ok = (age >= confirm) & (reg != "Twist")
@@ -56,8 +63,8 @@ def confirmed(reg: pd.Series, confirm: int = 5) -> pd.Series:
 class GoldZinskurvenFilter:
     """Erlaubte Gold-Richtung je Datum: +1 nur long, −1 nur short, 0 beide."""
 
-    def __init__(self, lag: int = 20, confirm: int = 5, refresh: bool = False):
-        self.regime = confirmed(regime_series(lag, refresh), confirm)
+    def __init__(self, lag: int = 20, confirm: int = 5, refresh: bool = False, twist_resets: bool = True):
+        self.regime = confirmed(regime_series(lag, refresh), confirm, twist_resets)
 
     def regime_at(self, date) -> str | None:
         i = self.regime.index.searchsorted(pd.Timestamp(date), side="left") - 1

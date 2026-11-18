@@ -31,12 +31,25 @@ DUKA_PAIRS = {
 }
 
 
-def fetch_fred(series: str, force_refresh: bool = False) -> pd.Series:
+def fetch_fred(series: str, force_refresh: bool = False, max_age_hours: float = 20.0) -> pd.Series:
+    """FRED-Serie aus dem Cache; älter als `max_age_hours` -> neu laden (18.11.2026: der Cache stand
+    sonst unbemerkt Tage zurück). Schlägt der Download fehl, wird der alte Cache mit Warnung genutzt."""
+    import time
+    import warnings
+
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     path = CACHE_DIR / f"{series}.parquet"
-    if path.exists() and not force_refresh:
+    fresh = path.exists() and (time.time() - path.stat().st_mtime) < max_age_hours * 3600
+    if path.exists() and not force_refresh and fresh:
         return pd.read_parquet(path)[series]
-    df = pd.read_csv(FRED_CSV_URL.format(series=series))
+    try:
+        df = pd.read_csv(FRED_CSV_URL.format(series=series))
+    except Exception as exc:  # Netz/FRED weg: lieber alter Stand als Abbruch, aber laut
+        if not path.exists():
+            raise
+        cached = pd.read_parquet(path)[series]
+        warnings.warn(f"FRED {series}: Download fehlgeschlagen ({exc}), nutze Cache bis {cached.index[-1].date()}")
+        return cached
     df.columns = ["date", series]
     df["date"] = pd.to_datetime(df["date"])
     df[series] = pd.to_numeric(df[series], errors="coerce")

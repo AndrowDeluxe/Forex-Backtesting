@@ -472,6 +472,102 @@ Ziel 4.997 ≈ 2 R. Kurs 27.836. Einstieg = Retest der kleinen Box über dem Tie
 
 ---
 
+## Beispiel 4: Mittwochsreport 18.11.2026 (Zwischenstand KW 47)
+
+Quellen: Macro-Report 18.11. (msg 7111, 8 S.) + Sonderreport „G8 komplett“ (msg 7110, 16 S.),
+Kanal 15.–18.11. (Dennis-Charts 7090–7093, 7101, 7109; 7102–7107 = timothyespagnole8, nicht Dennis).
+Eigene Kurse: Dukascopy M5/M15, Renditen TradingView US02Y/DE02Y. Fed-Protokoll (20:00) lag bei
+Report-Schluss noch nicht vor.
+
+### Faktencheck
+
+- ✓ Kurse: EUR/USD 1,0969 (1,0969, Tief 1,0953 = 1,09531), GBP/USD 1,3165 (1,3163), USD/CHF 0,8425
+  (0,8425), USD/CAD 1,4310 (1,4309), AUD/USD 0,6732 (0,6732), USD/JPY 159,37 (159,38), Gold ~3.780 (3.782).
+  „Zwei Schlusskurse unter 1,10“ ✓, aber knapp: Mo 1,0996, Di 1,0998. Seit Juli 2025 (Lake-Beginn) kein
+  Schluss darunter ✓. AUD „sechs Verlusttage in Folge“ ✓ (11.–18.11.). Gold < 3.800 zuletzt 28.09.2025 ✓,
+  1 Monat −8 % ✓. US-2J Fr 4,85 → Di 4,81 (−2,5 bp) ✓. S&P −2,9 % in zwei Tagen ✓.
+- ✓ Scorecard: −0,25 R + 0,21 R = −0,04 R. Das R bezieht sich auf den Anfangsstop (EUR/USD ~1,12,
+  AUD/USD ~0,6994), darum +0,85 R bei 1,1000 statt +2,4 R gegen den Stop 1,1130. Passt zum 15.11.
+- ≈ **Zeitstempel:** „FX 16:17 MEZ“, die Kurse passen aber zu 14:30–15:00 MEZ (13:30–14:00 UTC). Gold
+  stand um 16:17 MEZ schon bei 3.757, nicht 3.780. Wochenwerte gegen USD (AUD −1,8, CAD −0,5) je nach
+  Bezugszeit ±0,1–0,2 Pp. AUD „über 0,70 zu Monatsbeginn“: Hoch 0,7068 am 29.10.
+- ? Zinsmarkt-Pricing, CFTC (Stichtag 10.11.), Privatanleger, Bank-Calls, Nvidia/Anthropic-Zahlen.
+
+### Widersprüche
+
+1. **Fed-Dezember 91 % und „laut Terminmarkt weiter 100 %“** stehen auf derselben Seite (Macro S. 2,
+   Sonder S. 3). Für dieselbe Frage gibt es zwei Zahlen, die ganze „Tempo raus“-Lesart hängt an der 91.
+2. **„Dollar und Yen vorn = Stress-Muster“** stützt sich auf den Yen-Sprung Δ +0,89. Der Report selbst
+   sagt, der Sprung sei „vor allem beim Yen methodisch“ (andere Datenquelle für 1M/3M/12M). Gegen den Dollar
+   steht der Yen nur +0,3 % in der Woche, in der eigenen Tabelle „Erwartet/Passiert“ heißt es „Yen
+   seitwärts“. Die Schlagzeile beruht also zum Teil auf einem Methodeneffekt.
+3. **CAD:** „Hedgefonds decken Shorts ein“ steht im Macro-Report unter *Dagegen*, im Sonderreport unter
+   *Spricht für*.
+4. **GBP/CHF:** Der Report hat das Setup richtig verworfen (UK-CPI 3,6 statt > 3,8, Mi-Schluss ~1,109
+   < 1,1100). Dennis handelt GBP/CHF im Kanal trotzdem long („rasiert“, 16. und 18.11.). Report und Mentor
+   laufen hier wieder auseinander, wie beim USD/CAD letzte Woche.
+5. **Dennis-Zonen über den Kippmarken:** Die EUR/USD-Verkaufszone vom 16.11. (1,1037–1,1050) liegt über der
+   Report-Kippmarke 1,1040, wie schon die Zone vom 15.11. (1,1104–1,1132 über 1,1100).
+6. **Eigene Leitlinie:** Diese Woche gab es Angst ohne Zinsanstieg (VIX 19 → 26, 2J −5 bp), also
+   keine Zinswoche. [[filter-gegenwaehrung]] trifft darum nicht zu. Von den Häfen hielt nur der Yen (+0,3 %),
+   der Franken fiel (−1,2 %). Die Report-These „als Hafen zählt nur, was Zinsen zahlt“ passt nicht recht zum
+   Yen (BoJ 1,25 %). Eher zählt die erwartete *Zinsänderung* (BoJ 75 % Dezember, SNB 24 %).
+
+### Gewichtung
+
+Fakten sauber, Buch diszipliniert (Deckel 0,75 Größe, Stops in den Gewinn, nichts Neues). Report-Scorecard
+−0,04 R seit 23.09.: Die Richtung bleibt ≈ 0 R, wie in unserem Backtest. Gold-Zinskurven-Filter steht
+bestätigt weiter auf **Goldilocks = nur long**, während Gold seit dem 13.11. von 3.883 auf 3.720 fiel. Das ist
+die zweite Woche in Folge, in der die Filter-Richtung bei Gold gegen den Markt steht; Makro-Veto (USD steigt)
+und Report-Sperre lagen richtig. Erste Reaktion auf das Fed-Protokoll (19:00 UTC): Gold 3.757 → 3.720,
+EUR/USD unverändert ~1,097 → Zeile „wie die Reden seither, kein Signal“.
+Schätzung (ohne Modell), bis So 22.11.: BASE ~50 %, ALT „Tech zieht Zinsen runter“ ~30 %, TAIL ~20 %.
+
+### Trades Do/Fr (KW 47)
+
+| # | Trade | Wertung | Umsetzung |
+|---|---|---|---|
+| 1 | AUD/USD Short (Agent 0,6905) | Halten; Kurs 0,6715 ≈ +2,2 R | Stop 0,6862 → **0,6800** (sichert +1,2 R); Ziel 0,6670. Risiko: Arbeitsmarkt Do 01:30 nach Löhnen +1,1 % und Verwalter am Extrem short. Optional die Hälfte vor 01:15 sichern (Schätzung) |
+| 2 | EUR/GBP Short | Watch, wie Report | Erst nach UK-Einzelhandel Fr 08:00 und D1-Schluss < 0,8320; Euro-Short als eigene These, nicht als Dollar-Trade |
+| 3 | EUR/USD Short neu | Auslassen | Report-Rest nicht im Agent-Buch (Regel 2). Dennis-Zone 1,1037–1,1050 = über der Kippmarke, also kein Neueinstieg |
+| 4 | GBP/CHF Long | Auslassen (Agent) | Bedingung nicht erfüllt; Dennis' Trade gehört in die Dennis-Spalte |
+| 5 | Gold | Gesperrt, auch long | Filter sagt long, Markt + Veto dagegen → kein Trade, bis der Filter kippt oder D1-Schluss > 3.850 |
+| 6 | AUD/JPY · NZD/JPY Short | Auslassen | Stress-Trade nach sechs Verlusttagen, spät (wie Report). Privatanleger 88/92 % long nur als Bestätigung |
+| 7 | USD/JPY Short (Nutzer 159,84) | Bestand, Entscheidung beim Nutzer | Kurs 159,3, kleines Plus. Japan-Kern-CPI Fr 00:30. Option: Stop von 162,00 auf ~160,50 (über dem Fr-Hoch 160,19) senkt das zu große EK-Risiko |
+| – | Sperrzeiten | Do 01:15–02:00, Do 14:15–15:00, Fr 00:15–00:45, Fr 07:45–08:15, Fr 14:15–14:45 | Erster Anthropic-Handel Do |
+
+Fazit: Nichts Neues, nur AUD-Short absichern. Gold bleibt trotz Filter-Long gesperrt.
+
+### Dennis-Charts 15.–17.11.: Richtung ja, Füllung nein
+
+| Chart | Plan | Eingetreten (Lake) | Urteil |
+|---|---|---|---|
+| EUR/USD 4h (15.11.) | Short 1,1104–1,1132 | Hoch ab 13.11. 1,1073 | nicht gefüllt, Richtung ✓ |
+| Gold 1h/4h (15./16.11.) | Short 4.015,7 · SL 4.124 · TP 3.752 | Hoch ab 16.11. 3.891, Tief 3.720 | nicht gefüllt, Ziel erreicht |
+| EUR/USD 30m (16.11.) | Anstieg in 1,1037–1,1050, dann Short | Hoch 1,1024, dann 1,0953 | nicht gefüllt, Richtung ✓ |
+| GBP/USD 30m (16.11.) | Anstieg an 1,3285, dann bis ~1,3145 | Hoch 1,3228, Tief 1,3136 | nicht gefüllt, Ziel erreicht |
+| GBP/CHF 1h (17.11.) | Long 1,10673 · SL 1,10446 | laut Chart gefüllt, Hoch ~1,1115 (18.11.), Re-Entry 1,1062–1,1071 | ✓ (TP-Wert nicht sichtbar) |
+| US100 D1 (15.11.) | Long 27.003 · SL 24.500 | Tief 26.841 Mi 16:15 UTC (nach Nvidia) → gefüllt, Kurs 27.086 | offen ≈ +0,03 R |
+
+Mit USD/CAD aus KW46 kommen 5 von 7 Rücksetzer-Limits nicht zur Füllung, obwohl in 4 Fällen das Ziel
+erreicht wurde. Die Zonen liegen im Mittel ~1–2 Tages-ATR vom Kurs, in einem Trend kommt der Rücksetzer
+so weit oft nicht. Das ist noch kein Befund (n 7), nur eine Beobachtung für die Bilanz.
+
+### Nachprüfung (auszufüllen im Weekly KW47, So 22.11.)
+
+| Punkt | Erwartet | Eingetreten | Urteil |
+|---|---|---|---|
+| Szenario bis 22.11. | BASE ~50 / ALT ~30 / TAIL ~20 | | |
+| AUD/USD: Stop 0,6800 / Ziel 0,6670 / R (Agent 0,6905) | halten | | |
+| EUR/GBP: Schluss < 0,8320 nach UK-Einzelhandel? | Watch | | |
+| Gold: Filter-Kipp oder Schluss > 3.850? | gesperrt | | |
+| Dennis GBP/CHF 1,10673 / SL 1,10446 / R | Dennis-Spalte | | |
+| Dennis US100 27.003 / SL 24.500 / R | Dennis-Spalte | | |
+| USD/JPY Nutzer: Stop angepasst? R | Entscheidung Nutzer | | |
+| Dennis-Limits gefüllt (laufende Zählung) | 2 von 7 | | |
+
+---
+
 ## Laufende Bilanz (nur vorwärts, nie rückwirkend nachjustieren)
 
 | Woche | Agent-Sicht: Trades / Treffer / Σ R | Dennis-Sicht: Trades / Treffer / Σ R | Kanal-Limits (Zuordnung offen) | Nutzer real (Handtrades auf FK/EK) |

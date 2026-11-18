@@ -1,0 +1,68 @@
+{
+  "strategy": "nasdaq_orb_premarket_20261115",
+  "split": {
+    "is_start": "2016-07-28",
+    "is_end": "2022-12-31",
+    "oos_end": "2026-05-14",
+    "tresor_end": "2026-11-14"
+  },
+  "registered": "2026-11-15T22:05:44+00:00",
+  "trials": 1448,
+  "frozen": {
+    "hash": "53908ff0f0e6eb903e2b22d5c0af654df2ec36ca0e29d0980c226cb20bf1fb99",
+    "config": {
+      "range": "09:00-09:30 NY",
+      "einstieg": "Stop-Order vor 09:30 beim Broker, bis 11:59, SL anderes Range-Ende",
+      "ausstieg": "Tagesschluss 15:59",
+      "kandidaten": {
+        "A_haupt": {
+          "filter": "EMA50/200 M15",
+          "modus": "Storno",
+          "puffer": 0.2,
+          "tp": "EOD"
+        },
+        "B_ungefiltert": {
+          "filter": "keiner",
+          "modus": "-",
+          "puffer": 0.0,
+          "tp": "EOD"
+        },
+        "C": {
+          "filter": "Kurs vs EMA200 D1",
+          "modus": "Storno",
+          "puffer": 0.0,
+          "tp": "EOD"
+        },
+        "D": {
+          "filter": "EMA9/21 H1",
+          "modus": "Storno",
+          "puffer": 0.2,
+          "tp": "EOD"
+        },
+        "E": {
+          "filter": "EMA20/50 H1",
+          "modus": "Storno",
+          "puffer": 0.0,
+          "tp": "EOD"
+        },
+        "F_nutzer_original": {
+          "filter": "EMA50/200 M5",
+          "modus": "einseitig",
+          "puffer": 0.0,
+          "tp": "EOD"
+        }
+      },
+      "vergleich": "NASDAQ-ORB live: Range 09:30-09:45 (M15), Stop 0,6 ATR(M15 Wilder 14), Storno am SL, ohne Mittwoch, Tagesschluss",
+      "kosten": {
+        "primaer": "Tick-Simulation auf echten Broker-Bid/Ask (TTP USTEC, Tickmill USTEC, IQ NAS100.gbe): Buy-Stop loest bei Ask>=Level aus, Sell-Stop bei Bid<=Level, Fuellung am ausloesenden Tick, SL ebenso, Ausstieg letzter Tick vor 16:00; R auf geplantes Risiko; Kommission aus echten Deals",
+        "sekundaer": "Dukascopy-M1 mit Standardkosten 1,29 bps und mit gemessenen Tick-Kosten"
+      },
+      "erfolgskriterium": "A Tresor Ø R > 0 nach echten Kosten auf TTP und Tickmill; Vergleich Σ R und Sharpe zu live"
+    },
+    "ts": "2026-11-15T22:39:20+00:00"
+  },
+  "unsealed": {
+    "tresor": "2026-11-15T22:45:16+00:00"
+  },
+  "forward": null
+}

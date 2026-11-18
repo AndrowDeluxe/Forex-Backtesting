@@ -36,6 +36,9 @@ passiert, was steht an.
   (`scripts/commodity_deep_task.ps1`), Cockpit-Tab „Rohstoffe“. **Noch auf dem PC zu tun:** 2 Tasks anlegen,
   Lebensjournal-Build + ggf. `rohstoffe` in `functions/trading/data/[name].ts` erlauben, ersten Lauf ansehen,
   dann `FORWARD_START_COMMODITIES` setzen (siehe „Braucht deine Bestätigung“).
+  (6) **🥇 Edelmetalle HTF-Backtest (18.11., Plan freigegeben, Umsetzung am PC):** Score-Bausteine + Makro-Indikatoren
+  (Realzins, Dollar, Breakeven, Kurve, ETF-Flüsse, Zentralbanken, COT, Ratios) für Gold/Silber/Platin auf 4–26 Wochen,
+  Long/Short, als Bias und als Filter auf ASB/CTNL/C2. Plan + Startpunkt: `knowledge/_handoff/2026-11-18_1630_edelmetalle-htf-backtest.md`.
 
 1. **🧩 Dachprojekt Quant × diskretionäres Trading** (gestartet 2026-10-04,
    löst "Monatsjournal + Verschmelzung" ab — Journal-Teil erledigt):

@@ -1,0 +1,29 @@
+{
+  "strategy": "nasdaq_orb_kerzen_sl_20261118",
+  "split": {
+    "is_start": "2016-07-28",
+    "is_end": "2022-12-31",
+    "oos_end": "2026-05-17",
+    "tresor_end": "2026-11-17"
+  },
+  "registered": "2026-11-18T21:47:25+00:00",
+  "trials": 48,
+  "frozen": {
+    "hash": "859efcbabb144d52c214dcf697716cd44c24b565507857fc0dd34044df534834",
+    "config": {
+      "instrument": "NASDAQ",
+      "sl": "kerze",
+      "storno": true,
+      "einstieg": "m_inf",
+      "ziel_r": 3.0,
+      "range": "M15 09:30-09:45 NY",
+      "exit": "16:00 NY",
+      "ohne": "Mittwoch"
+    },
+    "ts": "2026-11-18T21:58:51+00:00"
+  },
+  "unsealed": {
+    "tresor": "2026-11-18T21:58:51+00:00"
+  },
+  "forward": null
+}

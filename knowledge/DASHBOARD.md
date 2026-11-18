@@ -222,7 +222,10 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
   Cloudflare KV). **Online seit 16.11. 23:00: https://next-level-journal.pages.dev** (Access „Nur Ich“).
   `deploy.py` schreibt nur noch KV (`kv_namespace_id` in secrets), am 16.11. getestet („KV aktualisiert“),
   Login + Abgleich am PC grün. wrangler läuft auf dem ARM-PC nur über x64-Node (`C:\Users\andre\tools\`,
-  Starter `scripts/wr.mjs` im Journal-Repo).
+  Starter `scripts/wr.mjs` im Journal-Repo). 18.11.: Stufe A online und von André getestet (Lebenslage,
+  Tagesziele mit Kategorie/Prio, Zeitplan, Morgen planen), plus Check-in Ort/Umfeld und Papierkorb per Doppeltipp.
+  Stufe B (Wochenplanung, Kette Woche → Tag, Wochenreflexion) online, Test über eine Woche läuft. Offene Annahmen
+  stehen in `STATUS.md` des Journal-Repos.
 
 - **📈 NASDAQ-ORB aus der Vorbörsen-Range 09:00–09:30 (15.11.): im Backtest stark, Kosten offen.** Ohne
    Trendfilter OOS +0,28 R/Trade (t 2,7, ~248 Trades/Jahr), mit EMA-Filter nur +0,06. Hängt an der
@@ -780,6 +783,15 @@ unverarbeitete Clippings unverändert seit 09-09. Verweise nach außerhalb von
 | EK-Portfolio-Paper                                      | —                                                                                        | pausiert (Paper-Zwilling von EK-Portfolio-Bridge, gehört zum Portfolio)                        | Disabled       | 2026-09-01      |
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
+
+- (18.11.) **Screener-Pipeline der Aktien/Rohstoffe für Forex nutzen** (Nutzerfrage). Modus `devisen` wie `rohstoffe`
+  (`fusion_lab/screener/`): Score aus Makro-Agent-Bausteinen (Zinsdifferenz, Carry, COT, G8, Gold-Komposition), Preis-Zonen
+  aus `levels.py`, News-LLM, eigenes Forward-Ledger. Aufwand mittel (~1 Session). Erst nach Stufe A/B der Gold-Komposition.
+
+- (18.11.) **ORB NASDAQ: Market-Einstieg, wenn der Ausbruch der ersten Minute vor der Platzierung kam?** Soll/Ist
+  05.10.–17.11. ist geprüft: Die Bridge trifft 5 von 9 Ausbrüchen, wenn sie läuft. Verpasst sind 4 Tage, netto ≈ +3,2 R,
+  fast nur der 09.11. Das ist eine neue Variante, nur vorwärts testbar. Kerze-SL ist im Tresor durchgefallen.
+  [[orb-nasdaq-kerzen-sl-market]]
 
 - (16.11.) **Persönliches Dashboard + Trading-Journal in das Cockpit integrieren** (Nutzeridee): eine App, mehrere
   Bereiche (Screener, Makro, Forward, persönliches Dashboard, Journal) hinter demselben Cloudflare-Access-Login.

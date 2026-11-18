@@ -43,6 +43,12 @@ ist und ob es seinen Vorstellungen entspricht. Deshalb:
    deine Bestätigung" in `knowledge/DASHBOARD.md` ergänzen. Erst entfernen,
    wenn der Nutzer es explizit bestätigt hat — nicht stillschweigend als
    erledigt behandeln.
+   **Kleine, zügige Fragen NICHT ins Dashboard, sondern direkt in der
+   Session klären** (seit 2026-11-18, Nutzerentscheid: "generell weniger
+   Bestätigung im Dashboard"). Ist der Nutzer in der Session und die Frage in
+   einem Satz beantwortbar, im Chat fragen und die Antwort direkt umsetzen.
+   Das Dashboard bekommt nur Annahmen, die ohne den Nutzer entstehen (Auto-
+   Tasks, Nutzer nicht erreichbar) oder die echte Themen-Arbeit brauchen.
 3. **Bot-Status-Änderungen** (Task aktiviert/deaktiviert, DRY_RUN geändert,
    neuer Bot/neue Bridge) in der Status-Tabelle in `knowledge/DASHBOARD.md`
    nachführen.

@@ -16,6 +16,13 @@ keine Planung (dafür ist `DASHBOARD.md`).
   signifikant (Gewicht 0 bleibt). Platin erst ab 2010 (Yahoo-Lücken). Kein Bot-/Screener-Eingriff.
   [[edelmetalle-htf-makro]]
 
+- **2026-11-18** [Dachprojekt / Makro, Gold-Filter] **Gold-Richtungs-Komposition gebaut und getestet** (Nutzerauftrag,
+  Plan freigegeben). `fetch_fred` lädt nach 20 h automatisch neu (vorher veralteter Cache). Zinskurve mit Option
+  `twist_resets`. Neues Modul `fusion_lab/filters/gold_komposition.py` (Z, M, R2, RR, C; Regeln K1/K2/K3), Tests
+  `tests/test_gold_komposition.py` (6), Skript `scripts/research_gold_komposition.py`, Lock `gold_richtung_komposition`
+  (17 Versuche). Ergebnis Stufe A: **keine Variante schlägt „immer long“ in IS und OOS**; kürzere Zinskurven-Lags
+  helfen nicht, nur M allein zeigt IS-Signal. Notiz `areas/filter-gold-komposition.md`. Nichts live.
+
 - **2026-11-18** [Dachprojekt / Rohstoffe] **Handy-Branch übernommen, Rohstoff-Screener 1.1 live im Probebetrieb**
   (Nutzerentscheide). Merge `388ba2fa` (Kupfer-Analyse, Screener, Handoff Edelmetalle HTF). Geprüft: Tests grün,
   Probelauf mit allen 10 Märkten. Kupfer-Technik nachgerechnet: SMA200 6,23 statt 6,12, Abstand −9 % statt −6 %,
@@ -31,6 +38,32 @@ keine Planung (dafür ist `DASHBOARD.md`).
   Prompt `scripts/reports/commodity_deep_prompt.md`, Cockpit liest zusätzlich `rohstoffe.json`. Tests 21 → 27.
   Tasks noch nicht angelegt (PC). Vorher am selben Tag: **Kupfer-Analyse** mit 5 Recherche-Agenten
   (`fusion_lab/screener/archive/kupfer_analyse_2026-11-18.md`, `9b91445`).
+
+- **2026-11-18** [ORB NASDAQ / Research] **SL an der 15:30-Kerze + Market-Einstieg mit Versatz** (Nutzerauftrag)
+  [[orb-nasdaq-kerzen-sl-market]]. Skript `scripts/research_orb_nasdaq_kerzen_sl_market.py`, Lock
+  `nasdaq_orb_kerzen_sl_20261118`, 48 Versuche, Tresor zu. Befunde:
+  - Die live-Regel (0,6 ATR + Storno) handelt fast nur Ausbrüche der ersten Minute (655 von 702 Trades). Genau die
+    verpasst die Bridge teils.
+  - Kerze-SL + Market ohne Grenze: IS 0,08 / OOS 0,09 R, ~200 Trades/Jahr, MaxDD ein Drittel. Nicht signifikant
+    (DSR ~0,5). Das Storno ist dabei wirkungslos.
+
+  **Soll/Ist erste Minute 05.10.–17.11. (Nutzerauftrag):** Im Backtest gab es 11 Trades, alle in der 09:45-Minute,
+  zusammen ≈ +13,5 R. Die Bridge (TTP) traf 5 davon, darunter den +16,6-R-Tag 05.11. Wegen Ausbruch vor der
+  Platzierung verpasst: 4 Tage, ≈ +3,2 R (davon 09.11. +6,3 R, Order „Invalid price“). An 2 Tagen lief die Bridge nicht.
+  **Tresor (Nutzerfreigabe, einmal geöffnet): durchgefallen.** Kandidat Kerze-SL + Market + Storno + 3R:
+  102 Trades, Ø −0,16 R, Σ −16,6 R, PF 0,69. Er wird nicht live geschaltet. Keine Bot-Änderung.
+
+- **2026-11-18** [Prozess] **Weniger Bestätigungen im Dashboard** (Nutzerentscheid). Kleine,
+  zügige Fragen klärt Claude direkt in der Session statt unter „🔍 Braucht deine Bestätigung“.
+  `CLAUDE.md` Punkt 2 ergänzt. Anlass war die ORB-NASDAQ-Prüfung 13./16./17.11.: Alle drei Tage
+  liefen regelkonform, am 13.11. war der Ausbruch aber schon vor der Platzierung passiert. Seit
+  dem Präzise-Pass (16.09.) ist das an ~5–6 Handelstagen passiert. Keine Bot-Änderung.
+
+- **2026-11-18** [Dachprojekt / Strang 3, Makro-Agent] **Mittwochsreport 18.11. geprüft** (Macro-Report msg 7111 +
+  G8-Sonderreport msg 7110), Ergebnis als Beispiel 4 in `areas/makro-agent-report-pruefung.md`. Die Kurse stimmen
+  auf 1–2 Pips, gehören aber zu ~14:30 MEZ statt dem angegebenen „16:17“. 6 Widersprüche gefunden, u. a. Fed 91 % neben
+  100 % und ein Yen-Sprung, der laut Report selbst methodisch ist. Gold-Zinskurven-Filter zeigt die 2. Woche in
+  Folge „long“ gegen den Markt. Dennis-Charts: 5 von 7 Rücksetzer-Limits seit KW46 nicht gefüllt, Richtung meist ✓.
 
 - **2026-11-17** [Notion-Cockpit] **Neue Reiterseite „🤖 BOT“** im Trading-Fusion-Cockpit (Nutzerwunsch), darunter
   „Gesamtportfolio-Backtest 2016–2026“ (Ergebnisse aus `research_portfolio_live_2016.py`). Seiten-ID als `bot_folder`

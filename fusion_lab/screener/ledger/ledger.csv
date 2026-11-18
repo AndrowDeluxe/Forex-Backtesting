@@ -112,3 +112,12 @@ erstellt,stand,screener,version,status,art,objekt,szenario,gewaehlt,score,signal
 2026-11-17,2026-11-17,aktien,1.0,forward,gruppe,TOP10,,,,,,,,,,,,5.0,REGN;META;EOG;ABBV;BLK;PLTR;CPAY;ANET;VLO;MPC,,,,,,,,,,False
 2026-11-17,2026-11-17,aktien,1.0,forward,gruppe,TOP10,,,,,,,,,,,,20.0,REGN;META;EOG;ABBV;BLK;PLTR;CPAY;ANET;VLO;MPC,,,,,,,,,,False
 2026-11-17,2026-11-17,aktien,1.0,forward,gruppe,TOP10,,,,,,,,,,,,60.0,REGN;META;EOG;ABBV;BLK;PLTR;CPAY;ANET;VLO;MPC,,,,,,,,,,False
+2026-11-18,2026-11-17,krypto,1.0,forward,gruppe,KAUFEN,,,,,,,,,,,,5.0,AAVE,,,,,,,,,,False
+2026-11-18,2026-11-17,krypto,1.0,forward,gruppe,KAUFEN,,,,,,,,,,,,20.0,AAVE,,,,,,,,,,False
+2026-11-18,2026-11-17,krypto,1.0,forward,gruppe,KAUFEN,,,,,,,,,,,,60.0,AAVE,,,,,,,,,,False
+2026-11-18,2026-11-17,krypto,1.0,forward,gruppe,VERKAUFEN,,,,,,,,,,,,5.0,HBAR;DOGE;GRAM;ADA;SHIB;WLFI,,,,,,,,,,False
+2026-11-18,2026-11-17,krypto,1.0,forward,gruppe,VERKAUFEN,,,,,,,,,,,,20.0,HBAR;DOGE;GRAM;ADA;SHIB;WLFI,,,,,,,,,,False
+2026-11-18,2026-11-17,krypto,1.0,forward,gruppe,VERKAUFEN,,,,,,,,,,,,60.0,HBAR;DOGE;GRAM;ADA;SHIB;WLFI,,,,,,,,,,False
+2026-11-18,2026-11-17,krypto,1.0,forward,gruppe,TOP10,,,,,,,,,,,,5.0,AAVE;PEPE;NEAR;TRX;ASTER;QNT;SUI;HYPE;ZEC;UNI,,,,,,,,,,False
+2026-11-18,2026-11-17,krypto,1.0,forward,gruppe,TOP10,,,,,,,,,,,,20.0,AAVE;PEPE;NEAR;TRX;ASTER;QNT;SUI;HYPE;ZEC;UNI,,,,,,,,,,False
+2026-11-18,2026-11-17,krypto,1.0,forward,gruppe,TOP10,,,,,,,,,,,,60.0,AAVE;PEPE;NEAR;TRX;ASTER;QNT;SUI;HYPE;ZEC;UNI,,,,,,,,,,False

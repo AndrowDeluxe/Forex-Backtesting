@@ -87,4 +87,4 @@ eine Live-Config wandert — siehe Memory `backtest_zahlen_gegen_szenario_pruefe
 
 ## Verwandt
 
-[[mt5-bot-deployment]] · [[edge-card-workflow]] · [[paper-bot-architecture]] · [[dashboard]]
+[[mt5-bot-deployment]] · [[edge-card-workflow]] · [[paper-bot-architecture]] · [[dashboard]] · [[live-abgleich-fehlerklassen]]

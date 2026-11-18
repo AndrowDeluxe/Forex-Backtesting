@@ -196,6 +196,27 @@ reporting for it.
      dort als `nicht_ermittelbar` steht, ist genau das - nicht "nie gesehen".
    - **EKs Kostenannahme ist geschätzt** (0,50 Pips), Funded/FK sind
      gemessen. EK-Zahlen deshalb nicht gegen die anderen beiden stellen.
+   - **`⚠️ ZUORDNUNG`-Zeilen zuerst lesen** (seit 2026-11-18, Nutzerauftrag).
+     Sie bedeuten: Ein Bein hat Soll-Trades und Ist-Deals, aber kein einziger
+     Trade wurde als `platziert` erkannt. Dann ist der Abgleich kaputt, nicht
+     die Bridge. Typische Ursache ist ein neues State-Key-Format. Unter
+     „Auffälligkeiten“ melden und die Lücke dieses Beins NICHT als
+     Ausführungsfehler deuten. Hintergrund: Von 09/2026 bis 18.11. stand jeder
+     ORB-Trade als „nie gesehen“, auch die gehandelten. Dadurch fielen die
+     echten Verpasser (09.11. +6 R, 13.11.) wochenlang nicht auf.
+
+5a. **ORB je Tag** (seit 2026-11-18). `soll_ist.py` druckt je ORB-Soll-Trade
+   den Grund laut Bridge-State: „Stop-Order gefuellt“, „Market-Einstieg“,
+   `sl_touched_before_fill`, „Gegenseite zuerst gefuellt“ oder „keine
+   ORB-Order an diesem Tag“. Im Report je Bridge eine kurze Liste der Tage mit
+   Soll-R ≥ +2 R, die NICHT `platziert` sind, jeweils mit Grund. Steht dort
+   „keine ORB-Order“, das Bridge-Log prüfen
+   (`Funded-Portfolio-Bridge/logs/task_run_fast.log`, Zeilen `ORB ohne Order`
+   um 15:45 MEZ). `breakout_passed` heißt: Der Ausbruch kam vor der
+   Platzierung. Seit 18.11. sollte die Bridge dann per Market einsteigen,
+   meldet sie trotzdem `breakout_passed`, ist das eine Auffälligkeit. Zweck:
+   Verpasste große Tage müssen jede Woche sichtbar sein. Eine Lücke, die jede
+   Woche gleich aussieht, liest niemand mehr.
 5b. **Edge-Warnstufen je Live-Bein** (seit 2026-10-14, Warnstufen seit
    2026-10-16, Nutzerentscheid; reine Anzeige, KEIN Eingriff in Bots).
    Run in this order (the first command re-simulates all 10 legs up to

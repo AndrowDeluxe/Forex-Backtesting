@@ -9,6 +9,17 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-18** [Reporting / Prozess] **Soll/Ist-Bericht repariert + Fehlerklasse festgehalten** (Nutzerauftrag)
+  [[live-abgleich-fehlerklassen]]. Ursache, warum die verpassten ORB-Tage nicht auffielen: `soll_ist.py` matchte über
+  die Einstiegsminute, die ORB-Pending-Keys (seit 17.09.) haben nur ein Datum. Jeder ORB-Trade stand deshalb als
+  „nie gesehen“, auch der gehandelte 05.11. Änderungen:
+  - `soll_ist.py`: ORB-Zuordnung über Bein, Datum und Richtung, mit Grund aus dem Bridge-State; Liste „ORB je Tag“;
+    `matching_warnings()` (≥ 3 Soll, Ist-Deals, 0 Treffer → `⚠️ ZUORDNUNG`). Getestet an KW45/46: 05.11. platziert,
+    09.11. „Platzierung gescheitert“, 13.11. „keine ORB-Order“.
+  - `weekly_report_prompt.md`: Zuordnungswarnung als Pflicht-Caveat; neuer Schritt 5a „ORB je Tag“ (verpasste
+    Tage ≥ +2 R mit Grund).
+  - `CLAUDE.md`: neuer Abschnitt „Live-Abgleich absichern“. Neue Notiz `areas/live-abgleich-fehlerklassen.md`.
+
 - **2026-11-18** [Dachprojekt / Rohstoffe] **Rohstoff-Screener 1.2 + Forward ab 19.11., Rohstoff-Dashboard
   abgeschlossen** (Nutzerentscheide). VERKAUFEN bei Gold/Silber/Platin nur als Warnung (HALTEN + ⚠️, nicht in der
   Ledger-Gruppe VERKAUFEN; Grund Backtest `metals_htf_v1`), `FORWARD_START_COMMODITIES = 2026-11-19` (`11cbb167`).

@@ -84,6 +84,16 @@ EURUSD_PIP = 0.0001
 # ISO-Zeitstempel innerhalb eines State-Keys (leg_markt_ZEIT_richtung)
 _ISO_TS = re.compile(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}")
 
+# ORB-Pending-Keys (seit 2026-09-17) tragen KEINE Uhrzeit, nur das Session-Datum:
+#   orb_nasdaq_NASDAQ_PENDING_2026-11-17          (Gruppen-Marker)
+#   orb_nasdaq_NASDAQ_PENDING_2026-11-17_L_F      (Order/Position je Richtung + Scheibe)
+# Bis 2026-11-18 fiel deshalb JEDER ORB-Soll-Trade in "nie_gesehen", auch die real
+# gehandelten -- die echten Verpasser (09./13.11.) waren so unsichtbar.
+_ORB_PENDING_KEY = re.compile(r"^(orb_[a-z0-9]+)_[A-Z0-9]+_PENDING_(\d{4}-\d{2}-\d{2})(?:_([LS])_([PRF]))?$")
+# Ab so vielen Soll-Trades eines Beins ohne einen einzigen Treffer bei gleichzeitigen
+# Ist-Deals warnt der Bericht: dann ist die Zuordnung kaputt, nicht die Bridge.
+MATCH_WARN_MIN_SOLL = 3
+
 
 @dataclass
 class BridgeSpec:
@@ -461,6 +471,7 @@ def decompose(spec: BridgeSpec, soll: dict, start: pd.Timestamp) -> dict:
 
     by_key: dict[str, str] = {}
     by_leg_time: dict[str, str] = {}
+    orb_days: dict[tuple[str, str], dict] = {}   # (Bein, Session-Datum) -> gefuellte Richtungen + Gruende
 
     def _record(target: dict, marker: str, status: str) -> None:
         # platziert gewinnt: dasselbe Signal kann auf 3 Konten unterschiedlich enden
@@ -478,20 +489,76 @@ def decompose(spec: BridgeSpec, soll: dict, start: pd.Timestamp) -> dict:
             match = _ISO_TS.search(key)
             if match:
                 _record(by_leg_time, f"{leg}|{match.group(0)[:16]}", status)
+            om = _ORB_PENDING_KEY.match(key)
+            if om:
+                g = orb_days.setdefault((om.group(1), om.group(2)),
+                                        {"filled": set(), "gruende": {1: set(), -1: set()}, "gruppe": set()})
+                if om.group(3):
+                    d = 1 if om.group(3) == "L" else -1
+                    st = pos.get("status")
+                    if st in ("placed", "closed") and (pos.get("pending_origin") or pos.get("market_fallback")
+                                                       or pos.get("fill_time_msc") or pos.get("exit_reason")):
+                        g["filled"].add(d)
+                        g["gruende"][d].add("Market-Einstieg (Ausbruch vor Platzierung)" if pos.get("market_fallback")
+                                            else "Stop-Order gefuellt"
+                                            + (f", danach {pos['exit_reason']}" if pos.get("exit_reason") else ""))
+                    else:
+                        g["gruende"][d].add(str(pos.get("cancel_reason") or pos.get("exit_reason") or st))
+                elif pos.get("status") == "place_failed":
+                    g["gruppe"].add(f"Platzierung gescheitert: {str(pos.get('reason'))[:80]}")
+
+    def _orb_bucket(key: str, t: dict) -> tuple[str, str] | None:
+        """ORB-Pending-Zuordnung ueber (Bein, Session-Datum, Richtung). None = kein ORB-Bein."""
+        if not str(t["leg"]).startswith("orb_"):
+            return None
+        d = -1 if key.endswith("_-1") else 1
+        g = orb_days.get((t["leg"], t["entry_time"][:10]))
+        if g is None:
+            return "nie_gesehen", ("keine ORB-Order an diesem Tag (Ausbruch vor Platzierung, Filter, Pause "
+                                   "oder Bridge aus) -- Bridge-Log `ORB ohne Order` pruefen")
+        if d in g["filled"]:
+            return "platziert", "; ".join(sorted(g["gruende"][d]))
+        if -d in g["filled"]:
+            return "nicht_platziert", "Gegenseite zuerst gefuellt (OCO/Feed-Unterschied)"
+        return "nicht_platziert", "; ".join(sorted(g["gruende"][d] | g["gruppe"])) or "Order lag, nicht gefuellt"
 
     buckets = {"nie_gesehen": [], "nicht_platziert": [], "platziert": []}
     for key, t in soll["trades"].items():
-        bucket = by_key.get(key)
+        bucket, grund = by_key.get(key), None
         if bucket is None:
-            bucket = by_leg_time.get(f"{t['leg']}|{t['entry_time'][:16]}", "nie_gesehen")
+            orb = _orb_bucket(key, t)
+            if orb is not None:
+                bucket, grund = orb
+            else:
+                bucket = by_leg_time.get(f"{t['leg']}|{t['entry_time'][:16]}", "nie_gesehen")
         buckets[bucket].append({"leg": t["leg"], "entry_time": t["entry_time"],
                                 "r": round(float(t["r_multiple"]), 2),
-                                "exit_reason": t.get("exit_reason")})
+                                "exit_reason": t.get("exit_reason"), "grund": grund})
 
     return {
         name: {"n": len(rows), "sum_r": round(sum(r["r"] for r in rows), 2), "trades": rows}
         for name, rows in buckets.items()
     }
+
+
+def matching_warnings(soll: dict, ist: dict, zerlegung: dict) -> list[str]:
+    """Selbstkontrolle der Zuordnung (2026-11-18, Nutzerauftrag nach dem ORB-Fund):
+    hat ein Bein mehrere Soll-Trades, KEINEN davon als platziert erkannt, aber
+    Ist-Deals im selben Fenster, dann ist mit hoher Wahrscheinlichkeit der
+    Abgleich kaputt (z.B. neues State-Key-Format), nicht die Bridge. Genau so
+    stand ORB von 09/2026 bis 18.11. jede Woche komplett unter "nie_gesehen"."""
+    if "platziert" not in zerlegung:
+        return []   # EK: keine Zuordnung je Trade moeglich
+    hits: dict[str, int] = {}
+    for t in zerlegung["platziert"]["trades"]:
+        hits[t["leg"]] = hits.get(t["leg"], 0) + 1
+    out = []
+    for leg, v in soll["per_leg"].items():
+        deals = ist["per_leg"].get(leg, {}).get("deals", 0)
+        if v["trades"] >= MATCH_WARN_MIN_SOLL and deals > 0 and hits.get(leg, 0) == 0:
+            out.append(f"{leg}: {v['trades']} Soll-Trades, {deals} Ist-Deals, aber 0 als platziert erkannt "
+                       f"-- Zuordnung pruefen (State-Key-Format?), bevor die Luecke als Ausfuehrungsfehler gilt.")
+    return out
 
 
 # -------------------------------------------------------------------- CLI
@@ -515,11 +582,13 @@ def run(iso_week: str, bridge_keys: list[str], mt5_path: Path | None) -> dict:
         print(f"\n=== {spec.label} ===")
         soll = build_soll(spec, start, end)
         ist = build_ist(spec, mt5_data)
+        zerlegung = decompose(spec, soll, start)
         result["bridges"][key] = {
             "label": spec.label,
             "soll": soll,
             "ist": ist,
-            "zerlegung": decompose(spec, soll, start),
+            "zerlegung": zerlegung,
+            "zuordnungs_warnungen": matching_warnings(soll, ist, zerlegung),
             "kosten_pips": COST_ROUNDTRIP_PIPS[key],
             "kosten_quelle": COST_PROVENANCE[key],
         }
@@ -553,6 +622,14 @@ def print_summary(result: dict) -> None:
         if z.get("nicht_ermittelbar", {}).get("n"):
             print("      (EK fuehrt keinen Signal-Ledger je Scan -- 'nie gesehen' und")
             print("       'gesehen, still uebersprungen' sind dort nicht unterscheidbar.)")
+        orb_rows = [t for name in ("platziert", "nicht_platziert", "nie_gesehen")
+                    for t in (z.get(name) or {}).get("trades", []) if t.get("grund")]
+        if orb_rows:
+            print("  ORB je Tag (Soll R | Grund laut Bridge-State):")
+            for t in sorted(orb_rows, key=lambda r: r["entry_time"]):
+                print(f"    {t['entry_time'][:10]} {t['leg']:<12} {t['r']:+6.2f}  {t['grund']}")
+        for w in b.get("zuordnungs_warnungen", []):
+            print(f"  ⚠️ ZUORDNUNG: {w}")
 
         legs = sorted(set(soll["per_leg"]) | set(ist["per_leg"]))
         if legs:

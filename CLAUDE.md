@@ -175,6 +175,18 @@ Neue Strategien durchlaufen den 8-Phasen-Prozess aus
 `app_pages/education_gold_intraday.py`. Phase 6 (Robustheit/Monte-Carlo)
 läuft VOR jeder Portfolio-/Risiko-Arbeit, nicht danach.
 
+## Live-Abgleich absichern
+
+Seit 2026-11-18 (Nutzerauftrag, nach dem ORB-Fund). Gilt bei jeder Live-Regel und jeder Bridge-Änderung:
+
+1. **Füll-Zeitpunkt gegen Order-Zeitpunkt.** Bevor eine Regel live geht: In welcher Minute füllt der Backtest, und liegt die
+   Live-Order dann schon? Einmal mit „erste Minute blind“ rechnen.
+2. **Zuordnung mitziehen.** Wer State-Keys oder den Order-Pfad einer Bridge ändert, prüft im selben Zug, ob
+   `scripts/reports/soll_ist.py` die Trades noch zuordnet. Die Warnung `⚠️ ZUORDNUNG` ernst nehmen.
+3. **Konstante Lücken misstrauen.** Sieht eine Lücke im Soll/Ist jede Woche gleich aus, ist zuerst das Messwerkzeug verdächtig.
+
+Details: `knowledge/areas/live-abgleich-fehlerklassen.md`.
+
 ## Overfitting-Sperre
 
 Seit 2026-10-05 (Nutzerentscheid, nachdem die ORB-Konfiguration ab Stage 2

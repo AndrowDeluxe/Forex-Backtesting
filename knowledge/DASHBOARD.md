@@ -37,9 +37,10 @@ passiert, was steht an.
   zum Edelmetall-Backtest, Wochenanalyse auf 3 beschränkt. Score-Gewichte (Trend 30, Momentum 25, rel. Stärke 15,
   52-W-Lage 10) bleiben ungeprüft, bis (6) Ergebnisse hat. **Offen:** ersten Bericht ansehen, dann
   `FORWARD_START_COMMODITIES` setzen.
-  (6) **🥇 Edelmetalle HTF-Backtest (18.11., Plan freigegeben, Umsetzung am PC):** Score-Bausteine + Makro-Indikatoren
-  (Realzins, Dollar, Breakeven, Kurve, ETF-Flüsse, Zentralbanken, COT, Ratios) für Gold/Silber/Platin auf 4–26 Wochen,
-  Long/Short, als Bias und als Filter auf ASB/CTNL/C2. Plan + Startpunkt: `knowledge/_handoff/2026-11-18_1630_edelmetalle-htf-backtest.md`.
+  (6) **🥇 Edelmetalle HTF-Backtest (18.11., erledigt):** kein Merkmal trägt Gold/Silber/Platin auf 4–26 Wochen
+  (0 von 285 Varianten bestehen die Vorab-Regel), keine Screener-Variante schlägt „immer long“, Shorts verlieren
+  OOS überall; Makro-Vorzeichen kippt zwischen 2004–17 und 2018–26; als Filter auf ASB/C2/CTNL nichts Neues
+  (CTNL-Effekt steckt schon im Ribbon). Tresor zu. [[edelmetalle-htf-makro]]
 
 1. **🧩 Dachprojekt Quant × diskretionäres Trading** (gestartet 2026-10-04,
    löst "Monatsjournal + Verschmelzung" ab — Journal-Teil erledigt):

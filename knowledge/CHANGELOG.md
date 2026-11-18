@@ -9,6 +9,13 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-18** [Dachprojekt / Edelmetalle HTF] **Backtest Score-Bausteine + Makro auf 4–26 Wochen: kein Edge**
+  (Plan vom Handy, Nutzerfreigabe). Lock `metals_htf_v1` (IS 2004–17, OOS bis 10.05.26, Tresor zu), Vorab-Registrierung
+  `56a49a99`, 336 Versuche. 0 Kandidaten; Screener 1.0/1.1/nur Trend schlagen „immer long“ bei keinem Metall,
+  Short-Seite OOS überall negativ; Bias als Veto auf ASB/C2/CTNL ohne neuen Nutzen. COT: weder „mit“ noch „contra“
+  signifikant (Gewicht 0 bleibt). Platin erst ab 2010 (Yahoo-Lücken). Kein Bot-/Screener-Eingriff.
+  [[edelmetalle-htf-makro]]
+
 - **2026-11-18** [Dachprojekt / Rohstoffe] **Handy-Branch übernommen, Rohstoff-Screener 1.1 live im Probebetrieb**
   (Nutzerentscheide). Merge `388ba2fa` (Kupfer-Analyse, Screener, Handoff Edelmetalle HTF). Geprüft: Tests grün,
   Probelauf mit allen 10 Märkten. Kupfer-Technik nachgerechnet: SMA200 6,23 statt 6,12, Abstand −9 % statt −6 %,

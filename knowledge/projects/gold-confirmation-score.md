@@ -238,3 +238,7 @@ der vier Broker), 15 Min. Einstiegsverzögerung, R-Detektor 0,50 R. **Neu:** Swa
 Swap-Empfindlichkeit (live-Variante): 0 bps Sharpe 1,25 / CAGR 23,7 %; 3 bps Sharpe 1,10 / CAGR 19,6 %.
 Falle beim Nachbau: der Kill-Switch auf ungefilterten Schattentrades (Stand vor 30.09.) wäre 2/3 der
 Zeit aktiv gewesen (173 von 257 Trades gesperrt) — live misst er seit 30.09. nur den gehandelten Satz.
+
+## Fortsetzung auf Wochen (18.11.2026)
+
+Gleiche Bausteine plus Screener-Teile auf 4–26 Wochen, Gold/Silber/Platin: kein Kandidat, Makro-Vorzeichen kippt zwischen 2004–17 und 2018–26 → [[edelmetalle-htf-makro]].

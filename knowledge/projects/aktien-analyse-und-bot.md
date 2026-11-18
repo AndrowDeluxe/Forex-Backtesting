@@ -52,7 +52,8 @@ Ledger, Mo–Fr 23:15.
   `scripts/reports/commodity_deep_prompt.md` + Branchen-Checkliste aus `scripts/reports/commodity_deep.py`, Ausgabe
   `fusion_lab/screener/archive/rohstoffe_tief/`.
 - **Cockpit:** Tab „Rohstoffe“, KPIs Gold/WTI/Kupfer in der Übersicht, Wochenanalyse aufklappbar.
-- Offene Annahmen: [[DASHBOARD]] „Braucht deine Bestätigung“.
+- 18.11.: Version 1.1 (COT-Gewicht 0), Wochenanalyse nur Gold/Silber/Kupfer (Nutzerentscheide).
+- Backtest der Bausteine für Edelmetalle auf 4–26 Wochen: kein Baustein trägt, keine Variante schlägt „immer long“, Shorts verlieren OOS → [[edelmetalle-htf-makro]].
 
 ## Bekannte Grenzen
 

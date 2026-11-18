@@ -30,7 +30,7 @@ function card(c, kind) {
     : ch === "B" && s ? `B Ausbruch über ${px(s.trigger)}` : ch === "C" ? "C Abwarten" : "Einordnung n.v.";
   return `<div class="card" data-kind="${kind}" data-obj="${esc(c.objekt)}">
     <div class="row"><div><div class="t">${esc(c.objekt)}</div><div class="n">${esc(c.name)}</div></div>${ring(c.gesamt, c.signal)}</div>
-    <div class="row sc"><span class="sig ${c.signal}">${c.signal}</span><span class="muted">${px(c.kurs)}</span></div>
+    <div class="row sc"><span class="sig ${c.signal}">${c.signal}${c.warnung ? " ⚠️" : ""}</span><span class="muted">${px(c.kurs)}</span></div>
     <div class="sc">${esc(line)}${llmOk(c) ? ` · Stimmung ${c.llm.sentiment > 0 ? "+" : ""}${c.llm.sentiment}` : ""}</div></div>`;
 }
 

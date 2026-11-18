@@ -56,3 +56,7 @@ Empfehlung, die nur den Markt mitnimmt, besteht nicht.
 - **Version Rohstoffe 1.1 (18.11.2026, Nutzerentscheid):** COT-Gewicht 0 (nur noch Info). Grund: In `gold_confirm`
   lief Managed Money mit dem Preis, die Contrarian-Wertung ist unbelegt. Klärung im Edelmetall-HTF-Backtest
   (Lock `metals_htf_v1`). Wochen-Tiefenanalyse nur noch Gold, Silber, Kupfer (`DEEP_WEEKLY_COMMODITIES`).
+- **Version Rohstoffe 1.2 + Forward-Start 19.11.2026 (Nutzerentscheid 18.11.):** VERKAUFEN bei Gold/Silber/Platin nur
+  als Warnung (Signal HALTEN, `warnung`), nicht in der Ledger-Gruppe VERKAUFEN (`WARN_ONLY_COMMODITIES`). Grund:
+  Backtest `metals_htf_v1`, Short-Seite OOS bei allen drei Metallen negativ. Ab 19.11. zählt der Rohstoff-Teil als
+  Forward; erste Auswertung in ein paar Monaten (Richtwert Ende Februar 2027).

@@ -36,8 +36,8 @@ CRYPTO_EXCLUDE = {
 
 # --- Rohstoffe (Nutzerentscheid 18.11.2026: Kern-10, Signale + eigenes Ledger, Mo-Fr 23:15) ----------
 # Eigene Version + eigener Forward-Start: der Rohstoff-Teil startet im Probebetrieb, unabhaengig von Aktien/Krypto.
-VERSION_COMMODITIES = "1.1"   # 1.1 (18.11.2026): COT-Gewicht 0, Nutzerentscheid
-FORWARD_START_COMMODITIES: str | None = None     # setzt der Nutzer nach Durchsicht der ersten Berichte
+VERSION_COMMODITIES = "1.2"   # 1.1 (18.11.2026): COT-Gewicht 0; 1.2 (18.11.): Edelmetalle ohne VERKAUFEN
+FORWARD_START_COMMODITIES: str | None = "2026-11-19"   # Nutzer 18.11.: Dashboard abgeschlossen, Forward ab 19.11.
 COMMODITY_BENCHMARK = "DBC"                       # breiter Rohstoff-ETF
 # Schluessel -> (Yahoo-Future, Name, Gruppe, CFTC-Code Disaggregated, News-Suchbegriff)
 COMMODITIES = {
@@ -60,6 +60,9 @@ COT_INDEX_WEEKS = 156       # COT-Index ueber 3 Jahre
 WEIGHTS_COMMODITIES = {"trend": 30, "momentum": 25, "rel_staerke": 15, "cot": 0, "abstand_hoch": 10}
 # Woechentliche Tiefenanalyse nur fuer diese Rohstoffe (Nutzerentscheid 18.11.2026, Abo-Kontingent)
 DEEP_WEEKLY_COMMODITIES = ("GOLD", "SILBER", "KUPFER")
+# Version 1.2 (Nutzerentscheid 18.11.2026): VERKAUFEN bei Edelmetallen nur als Warnung -> Signal HALTEN, nicht in
+# der Ledger-Gruppe VERKAUFEN. Grund: Backtest metals_htf_v1, Short-Seite OOS bei allen drei Metallen negativ.
+WARN_ONLY_COMMODITIES = ("GOLD", "SILBER", "PLATIN")
 
 # --- Punktwert (0-100 je Baustein, Querschnitts-Perzentile) -------------------------------------------
 WEIGHTS_STOCKS = {"trend": 15, "momentum": 15, "qualitaet": 15, "wachstum": 15, "bewertung": 15,

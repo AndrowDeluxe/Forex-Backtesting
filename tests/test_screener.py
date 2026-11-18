@@ -309,3 +309,19 @@ def test_commodity_cot_weight_zero_and_deep_list():
     b = scoring.commodities({"GOLD": _ctech()}, {"GOLD": {"cot_index": 100.0}}, bench_ret63=0.0)
     assert a.loc["GOLD", "kennzahlen_score"] == b.loc["GOLD", "kennzahlen_score"]
     assert set(C.DEEP_WEEKLY_COMMODITIES) == {"GOLD", "SILBER", "KUPFER"} <= set(C.COMMODITIES)
+
+
+def test_commodity_precious_metals_sell_is_warning_only():
+    """Version 1.2: VERKAUFEN bei Gold/Silber/Platin -> HALTEN + Warnung; Kupfer bleibt VERKAUFEN."""
+    from fusion_lab.screener import pipeline
+    comp = pd.DataFrame({"signal": ["VERKAUFEN", "VERKAUFEN", "KAUFEN"]}, index=["GOLD", "KUPFER", "SILBER"])
+    deep = [{"objekt": "GOLD", "signal": "VERKAUFEN"}, {"objekt": "KUPFER", "signal": "VERKAUFEN"}]
+    pipeline.warn_only(comp, deep)
+    assert comp.loc["GOLD", "signal"] == "HALTEN" and comp.loc["GOLD", "warnung"]
+    assert comp.loc["KUPFER", "signal"] == "VERKAUFEN" and not comp.loc["KUPFER", "warnung"]
+    assert deep[0]["signal"] == "HALTEN" and deep[0]["warnung"] and "warnung" not in deep[1]
+    assert C.VERSION_COMMODITIES == "1.2"
+    r = _commodity_report()
+    r["tief"][0].update({"objekt": "GOLD", "signal": "HALTEN", "warnung": True})
+    from fusion_lab.screener import report
+    assert "⚠️ Warnung" in report.markdown(r) and "🟡⚠️ GOLD" in report.telegram(r)

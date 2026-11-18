@@ -236,6 +236,17 @@ def run_crypto(use_llm: bool = True, write_ledger: bool = True, log=print) -> di
 
 # ------------------------------------------------------------------ Rohstoffe
 
+def warn_only(comp: pd.DataFrame, deep: list[dict]) -> None:
+    """Version 1.2: VERKAUFEN bei Edelmetallen -> HALTEN + Warnung (kein Short-Signal, nicht in Ledger-Gruppe)."""
+    comp["warnung"] = False
+    for k in C.WARN_ONLY_COMMODITIES:
+        if k in comp.index and comp.at[k, "signal"] == "VERKAUFEN":
+            comp.at[k, "signal"], comp.at[k, "warnung"] = "HALTEN", True
+    for e in deep:
+        if e["objekt"] in C.WARN_ONLY_COMMODITIES and e["signal"] == "VERKAUFEN":
+            e["signal"], e["warnung"] = "HALTEN", True
+
+
 def run_commodities(use_llm: bool = True, write_ledger: bool = True, log=print) -> dict:
     """Kern-10-Rohstoffe (config.COMMODITIES): alle sind Tiefen-Kandidaten (Szenarien + News + LLM)."""
     t0 = time.time()
@@ -276,6 +287,7 @@ def run_commodities(use_llm: bool = True, write_ledger: bool = True, log=print) 
         e["gruppe"] = meta[k][2]
         deep.append(e)
         log(f"  {k}: Score {e['gesamt']} {e['signal']}, LLM {'ok' if e['llm'] and 'fehler' not in e['llm'] else 'n.v.'}")
+    warn_only(comp, deep)
     lead = {k: {"kurs": tech[k]["close"], "ret_21d": tech[k].get("ret_21d"),
                 "trend": "über SMA200" if tech[k].get("sma200") and tech[k]["close"] > tech[k]["sma200"] else "unter SMA200"}
             for k in ("GOLD", "WTI", "KUPFER") if k in tech}

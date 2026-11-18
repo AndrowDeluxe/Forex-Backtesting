@@ -63,7 +63,8 @@ def markdown(r: dict) -> str:
     for c in r["tief"]:
         llm = c.get("llm") or {}
         ok = llm and "fehler" not in llm
-        L.append(f"### {ICON[c['signal']]} {c['objekt']} · {c['name']} · Score {fmt(c['gesamt'], 0)} → {c['signal']}")
+        L.append(f"### {ICON[c['signal']]} {c['objekt']} · {c['name']} · Score {fmt(c['gesamt'], 0)} → {c['signal']}"
+                 + (" · ⚠️ Warnung (Score im Verkaufsbereich, bei Edelmetallen kein Short-Signal)" if c.get("warnung") else ""))
         L.append("")
         pw = c["punktwerte"]
         L.append("Kurs " + price(c["kurs"]) + " · " + " · ".join(f"{k} {fmt(v, 0)}" for k, v in pw.items()))
@@ -114,7 +115,7 @@ def telegram(r: dict, url: str | None = None) -> str:
         llm = c.get("llm") or {}
         ok = llm and "fehler" not in llm
         sz = llm.get("szenario") if ok else None
-        L.append(f"{ICON[c['signal']]} {c['objekt']} {fmt(c['gesamt'], 0)} · {price(c['kurs'])}"
+        L.append(f"{ICON[c['signal']]}{'⚠️' if c.get('warnung') else ''} {c['objekt']} {fmt(c['gesamt'], 0)} · {price(c['kurs'])}"
                  + (f" · Stimmung {llm['sentiment']:+d}" if ok else ""))
         if sz in ("A", "B"):
             L.append("   " + scenario_line(sz, c["szenarien"][sz]))

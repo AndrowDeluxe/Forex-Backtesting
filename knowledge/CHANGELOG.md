@@ -47,6 +47,9 @@ keine Planung (dafür ist `DASHBOARD.md`).
   - Kerze-SL + Market ohne Grenze: IS 0,08 / OOS 0,09 R, ~200 Trades/Jahr, MaxDD ein Drittel. Nicht signifikant
     (DSR ~0,5). Das Storno ist dabei wirkungslos.
 
+  **Kontrolle Market-Einstieg für die live-Regel** (`research_orb_nasdaq_market_einstieg_check.py`, nur Überprüfung):
+  Market ohne Grenze statt `breakout_passed` erzielt IS +88 R, OOS +7 R, Tresor +36 R und 05.10.–17.11. +19,8 R.
+  Überspringen bringt in denselben Perioden ~0 R. Ein enger Versatz ist im OOS negativ. Keine Bot-Änderung.
   **Soll/Ist erste Minute 05.10.–17.11. (Nutzerauftrag):** Im Backtest gab es 11 Trades, alle in der 09:45-Minute,
   zusammen ≈ +13,5 R. Die Bridge (TTP) traf 5 davon, darunter den +16,6-R-Tag 05.11. Wegen Ausbruch vor der
   Platzierung verpasst: 4 Tage, ≈ +3,2 R (davon 09.11. +6,3 R, Order „Invalid price“). An 2 Tagen lief die Bridge nicht.

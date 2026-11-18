@@ -102,8 +102,27 @@ Trade (Storno).
 Die Bridge trifft also ~5 von 9 Ausbrüchen, wenn sie läuft. Der netto verpasste Wert ist mit +3,2 R klein und hängt an einem Tag (09.11.).
 Den großen Gewinner (05.11.) hat sie getroffen. Die Stichprobe ist zu klein für eine Aussage über den Wert eines Market-Einstiegs.
 
+## Kontrolle: live-Regel mit Market-Einstieg (18.11., nur Überprüfung)
+
+Skript `scripts/research_orb_nasdaq_market_einstieg_check.py`, Ergebnis `market_einstieg_check.csv`. Die live-Regel ist
+0,6 ATR + Storno + Ausstieg 16:00. Für sie sind Tresor und Herbst 2026 nicht unberührt (Wahl am 04.10.). Σ R je Periode:
+
+| Einstieg | IS 16–22 | OOS 23–05/26 | Tresor 05–11/26 | 05.10.–17.11. |
+|---|---|---|---|---|
+| ideal (bisheriger Backtest) | +105 (0,24) | +40 (0,15) | +61 (1,32) | +13,5 (11 Tr.) |
+| live, erste Minute verpasst | +0,5 | −2,3 | 0 Trades | 0 Trades |
+| Market ≤ 0,1 ATR | +40 | −14 | +11 | +20,8 (4 Tr.) |
+| **Market ohne Grenze** | **+88 (0,33)** | **+7 (0,04)** | **+36 (1,33)** | **+19,8 (5 Tr.)** |
+
+- **Market statt Überspringen:** Auf Tagen, an denen der Ausbruch vor der Order kam, ist Market ohne Grenze in allen vier Perioden
+  besser als Überspringen. Die Erste-Minute-Market-Trades bringen IS +88, OOS +9, Tresor +36 R.
+- **Grenze:** Ein enger Versatz (≤ 0,05–0,2 ATR) ist im OOS negativ. Gerade die weiten Ausbrüche tragen.
+- **Gesamtbild:** Der Edge der ganzen Regel ist dünn und hängt an wenigen großen Tagen. 2024 hat −12 R, OOS t 0,2.
+- **Modell:** Market-Kurs = Schluss der 09:45-Minute. Live liegt die Order nach ~3 s und füllt viele Tage direkt per Stop. Die
+  Wirklichkeit liegt zwischen „ideal“ und „Market ohne Grenze“.
+
 ## Offen
 
-- Market-Einstieg für die 0,6-ATR-Regel (holt die 4 verpassten Tage) wäre eine neue Variante, nur vorwärts testbar (Ideen-Inbox).
+- Entscheidung des Nutzers: Market-Einstieg ohne Grenze als Ersatz für `breakout_passed` in der Funded-Bridge (echtes Geld)?
 
 Verwandt: [[orb-order-storno-und-haltedauer]], [[nasdaq-orb-vorboersen-range]], [[ny-open-orb-sp500]].

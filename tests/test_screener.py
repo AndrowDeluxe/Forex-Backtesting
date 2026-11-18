@@ -300,3 +300,12 @@ def test_commodity_deep_prompt_and_parse(tmp_path):
     f.write_text('<!-- {"schluessel": "WTI", "urteil_kurz": "neutral"} -->\n# WTI\nText', encoding="utf-8")
     x = CD.parse(f)
     assert x["kopf"]["urteil_kurz"] == "neutral" and x["markdown"].startswith("# WTI")
+
+
+def test_commodity_cot_weight_zero_and_deep_list():
+    """Version 1.1: COT zaehlt nicht mit; Wochenanalyse nur Gold/Silber/Kupfer."""
+    assert C.WEIGHTS_COMMODITIES["cot"] == 0
+    a = scoring.commodities({"GOLD": _ctech()}, {"GOLD": {"cot_index": 0.0}}, bench_ret63=0.0)
+    b = scoring.commodities({"GOLD": _ctech()}, {"GOLD": {"cot_index": 100.0}}, bench_ret63=0.0)
+    assert a.loc["GOLD", "kennzahlen_score"] == b.loc["GOLD", "kennzahlen_score"]
+    assert set(C.DEEP_WEEKLY_COMMODITIES) == {"GOLD", "SILBER", "KUPFER"} <= set(C.COMMODITIES)

@@ -3,7 +3,7 @@ const D = {};
 const SZ = { A: "Rücksetzer", B: "Ausbruch", C: "Abwarten" };
 const PW_LABEL = { trend: "Trend", momentum: "Momentum", qualitaet: "Qualität", wachstum: "Wachstum",
   bewertung: "Bewertung", bilanz: "Bilanz", analysten: "Analysten", rel_staerke: "Rel. Stärke",
-  liquiditaet: "Liquidität", verwaesserung: "Verwässerung", funding: "Funding", abstand_hoch: "Nähe Hoch", cot: "COT (contra)",
+  liquiditaet: "Liquidität", verwaesserung: "Verwässerung", funding: "Funding", abstand_hoch: "Nähe Hoch", cot: "COT (nur Info)",
   kennzahlen_score: "Kennzahlen" };
 
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));

@@ -53,3 +53,6 @@ Empfehlung, die nur den Markt mitnimmt, besteht nicht.
 - Score absolut statt Querschnitt (nur 10 Titel); Gewichte `WEIGHTS_COMMODITIES` sind vorab festgelegt. Jede
   Änderung → `VERSION_COMMODITIES` hochzählen.
 - Grenze: Yahoo-Front-Monat-Reihen haben Roll-Sprünge, Ergebnisse um Rolltermine sind verrauscht.
+- **Version Rohstoffe 1.1 (18.11.2026, Nutzerentscheid):** COT-Gewicht 0 (nur noch Info). Grund: In `gold_confirm`
+  lief Managed Money mit dem Preis, die Contrarian-Wertung ist unbelegt. Klärung im Edelmetall-HTF-Backtest
+  (Lock `metals_htf_v1`). Wochen-Tiefenanalyse nur noch Gold, Silber, Kupfer (`DEEP_WEEKLY_COMMODITIES`).

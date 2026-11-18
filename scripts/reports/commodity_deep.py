@@ -1,7 +1,7 @@
 """Wochen-Tiefenanalyse je Rohstoff (Kupfer-Stil): baut den Prompt je Rohstoff und liest die Ergebnisse.
 
     python scripts/reports/commodity_deep.py prompt KUPFER     -> Prompt auf stdout (fuer claude.exe -p)
-    python scripts/reports/commodity_deep.py liste             -> Schluessel der Kern-10, eine Zeile je Rohstoff
+    python scripts/reports/commodity_deep.py liste             -> Schluessel aus config.DEEP_WEEKLY_COMMODITIES, eine Zeile je Rohstoff
     python scripts/reports/commodity_deep.py telegram          -> Sammel-Kurzfassung der neuesten Analysen
 
 Der Task scripts/commodity_deep_task.ps1 ruft das nacheinander je Rohstoff auf (So 18:00).
@@ -105,7 +105,7 @@ def main() -> int:
     if cmd == "prompt":
         print(prompt(sys.argv[2]))
     elif cmd == "liste":
-        print("\n".join(C.COMMODITIES))
+        print("\n".join(C.DEEP_WEEKLY_COMMODITIES))
     elif cmd == "telegram":
         print(telegram())
     else:

@@ -36,7 +36,7 @@ CRYPTO_EXCLUDE = {
 
 # --- Rohstoffe (Nutzerentscheid 18.11.2026: Kern-10, Signale + eigenes Ledger, Mo-Fr 23:15) ----------
 # Eigene Version + eigener Forward-Start: der Rohstoff-Teil startet im Probebetrieb, unabhaengig von Aktien/Krypto.
-VERSION_COMMODITIES = "1.0"
+VERSION_COMMODITIES = "1.1"   # 1.1 (18.11.2026): COT-Gewicht 0, Nutzerentscheid
 FORWARD_START_COMMODITIES: str | None = None     # setzt der Nutzer nach Durchsicht der ersten Berichte
 COMMODITY_BENCHMARK = "DBC"                       # breiter Rohstoff-ETF
 # Schluessel -> (Yahoo-Future, Name, Gruppe, CFTC-Code Disaggregated, News-Suchbegriff)
@@ -54,8 +54,12 @@ COMMODITIES = {
 }
 COT_INDEX_WEEKS = 156       # COT-Index ueber 3 Jahre
 # Absolute Punkte (nur 10 Titel -> kein Querschnitt). Vorab festgelegter Startwert, NICHT optimiert.
-# cot ist contrarian: 100 - COT-Index (extremes Netto-Long der Fonds = Risiko).
-WEIGHTS_COMMODITIES = {"trend": 30, "momentum": 25, "rel_staerke": 15, "cot": 20, "abstand_hoch": 10}
+# cot wird contrarian gerechnet (100 - COT-Index), zaehlt seit Version 1.1 aber NICHT mit (Gewicht 0, Nutzerentscheid
+# 18.11.2026): gold_confirm zeigte, dass Managed Money MIT dem Preis laeuft. Nur noch Info, bis der Edelmetall-HTF-
+# Backtest (Lock metals_htf_v1) das Vorzeichen geklaert hat.
+WEIGHTS_COMMODITIES = {"trend": 30, "momentum": 25, "rel_staerke": 15, "cot": 0, "abstand_hoch": 10}
+# Woechentliche Tiefenanalyse nur fuer diese Rohstoffe (Nutzerentscheid 18.11.2026, Abo-Kontingent)
+DEEP_WEEKLY_COMMODITIES = ("GOLD", "SILBER", "KUPFER")
 
 # --- Punktwert (0-100 je Baustein, Querschnitts-Perzentile) -------------------------------------------
 WEIGHTS_STOCKS = {"trend": 15, "momentum": 15, "qualitaet": 15, "wachstum": 15, "bewertung": 15,

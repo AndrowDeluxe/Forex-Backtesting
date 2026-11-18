@@ -30,17 +30,21 @@ passiert, was steht an.
   (3) NVDA-Analyse kommt Di 17.11. 23:45 per Telegram,
   (4) Aktien- + Makro-Dashboard später in einer eigenen Session weiterbauen (Nutzerentscheid 17.11.), dabei das
   **Fact Sheet grafisch im Terminal-Stil** darstellen (Nutzerwunsch 17.11.).
-  (5) **🛢️ Rohstoffe (18.11., läuft seit 18.11. 23:15 im Probebetrieb):** Kern-10 (Gold, Silber, Platin, Kupfer,
-  WTI, Brent, Erdgas, Weizen, Mais, Soja), Tageslauf Mo–Fr 23:15 (`screener_task.ps1 rohstoffe`, Version **1.1**:
-  COT-Gewicht 0, nur Info), Wochen-Tiefenanalyse So 18:00 nur **Gold, Silber, Kupfer**
-  (`scripts/commodity_deep_task.ps1`), Cockpit-Tab „Rohstoffe“ online. Nutzerentscheide 18.11.: COT neutral bis
-  zum Edelmetall-Backtest, Wochenanalyse auf 3 beschränkt. Score-Gewichte (Trend 30, Momentum 25, rel. Stärke 15,
-  52-W-Lage 10) bleiben ungeprüft, bis (6) Ergebnisse hat. **Offen:** ersten Bericht ansehen, dann
-  `FORWARD_START_COMMODITIES` setzen.
+  (5) **🛢️ Rohstoffe (18.11., ✅ abgeschlossen, Forward seit 19.11.):** Kern-10 (Gold, Silber, Platin, Kupfer,
+  WTI, Brent, Erdgas, Weizen, Mais, Soja), Tageslauf Mo–Fr 23:15 (`screener_task.ps1 rohstoffe`, Version **1.2**:
+  COT-Gewicht 0, VERKAUFEN bei Gold/Silber/Platin nur als ⚠️ Warnung), Wochen-Tiefenanalyse So 18:00 nur
+  **Gold, Silber, Kupfer** (`scripts/commodity_deep_task.ps1`), Cockpit-Tab „Rohstoffe“ online. Nutzerentscheid
+  18.11.: läuft jetzt einfach mit, **Prüfung „trägt das automatisierte Dashboard?“ in ein paar Monaten
+  (Richtwert Ende Februar 2027, zusammen mit der Aktien/Krypto-Auswertung ab 15.02.2027)**.
   (6) **🥇 Edelmetalle HTF-Backtest (18.11., erledigt):** kein Merkmal trägt Gold/Silber/Platin auf 4–26 Wochen
   (0 von 285 Varianten bestehen die Vorab-Regel), keine Screener-Variante schlägt „immer long“, Shorts verlieren
   OOS überall; Makro-Vorzeichen kippt zwischen 2004–17 und 2018–26; als Filter auf ASB/C2/CTNL nichts Neues
   (CTNL-Effekt steckt schon im Ribbon). Tresor zu. [[edelmetalle-htf-makro]]
+  (7) **🎯 NÄCHSTES THEMA (Nutzerwunsch 18.11., „sehr spannend“): aus den Screenern profitable Edges bauen**,
+  auch wenn es nur 2–3 Trades im Jahr langfristig nebenbei sind. Eigene Session mit Plan-Modus. Ausgangslage:
+  Score allein schlägt bei Edelmetallen „immer long“ nicht, Edge muss also aus seltenen, scharfen Setups kommen
+  (z. B. Preiszonen A/B, Extreme, Kombination mit Makro-Regime), immer gegen Zufalls-Long + „immer long“ prüfen.
+  Knüpft an (1) „Backtest der prüfbaren Teile“ an.
 
 1. **🧩 Dachprojekt Quant × diskretionäres Trading** (gestartet 2026-10-04,
    löst "Monatsjournal + Verschmelzung" ab — Journal-Teil erledigt):

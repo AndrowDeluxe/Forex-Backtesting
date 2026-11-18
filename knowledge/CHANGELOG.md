@@ -9,6 +9,13 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-18** [Dachprojekt / Rohstoffe] **Rohstoff-Screener 1.2 + Forward ab 19.11., Rohstoff-Dashboard
+  abgeschlossen** (Nutzerentscheide). VERKAUFEN bei Gold/Silber/Platin nur als Warnung (HALTEN + ⚠️, nicht in der
+  Ledger-Gruppe VERKAUFEN; Grund Backtest `metals_htf_v1`), `FORWARD_START_COMMODITIES = 2026-11-19` (`11cbb167`).
+  Prüfung in ein paar Monaten (Richtwert Ende Februar 2027). Nächstes Thema: aus den Screenern seltene, profitable
+  Langfrist-Edges bauen. Außerdem auf Nutzerwunsch alle offenen Stände paralleler Sessions committet (`ac3a8671`),
+  ohne ~125 MB H4-Zwischendaten (`htf_daily_trade/h4_*` csv/parquet, neu erzeugbar).
+
 - **2026-11-18** [Funded-Bridge, FK, EK / ORB NASDAQ] **Market-Einstieg statt „breakout_passed“** (Nutzerentscheid)
   [[orb-nasdaq-kerzen-sl-market]]. Die Regel greift unter diesen Bedingungen:
   - Bei der Platzierung ist genau eine Seite schon gebrochen.

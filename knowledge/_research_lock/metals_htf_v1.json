@@ -1,0 +1,14 @@
+{
+  "strategy": "metals_htf_v1",
+  "split": {
+    "is_start": "2004-01-01",
+    "is_end": "2017-12-31",
+    "oos_end": "2026-05-10",
+    "tresor_end": "2026-11-13"
+  },
+  "registered": "2026-11-18T21:58:38+00:00",
+  "trials": 0,
+  "frozen": null,
+  "unsealed": {},
+  "forward": null
+}

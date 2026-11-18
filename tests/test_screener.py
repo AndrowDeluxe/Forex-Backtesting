@@ -221,6 +221,82 @@ def test_deploy_kv_only_uploads_feeds(tmp_path, monkeypatch):
     c = {"api_token": "t", "account_id": "a", "project": "p", "kv_namespace_id": "ns", "url": "https://x.pages.dev"}
     monkeypatch.setattr(D, "config", lambda: c)
     msg = D.deploy(tmp_path)
-    assert [u.rsplit("/", 1)[1] for u in calls] == ["aktien.json", "krypto.json", "meta.json"]
+    assert [u.rsplit("/", 1)[1] for u in calls] == ["aktien.json", "krypto.json", "meta.json"]  # rohstoffe.json fehlt -> uebersprungen
     assert all("/storage/kv/namespaces/ns/values/" in u for u in calls)
     assert "/trading/" in msg
+
+
+# ------------------------------------------------------------------ Rohstoffe (seit 18.11.2026)
+
+def _ctech(close=100.0, sma50=95.0, sma200=90.0, slope=1.0, r126=20.0, r21=2.0, r63=10.0, atr_pct=1.5, hi=110.0, lo=70.0):
+    return {"close": close, "sma50": sma50, "sma200": sma200, "sma50_steigung": slope, "ret_126d": r126, "ret_21d": r21,
+            "ret_63d": r63, "atr_pct": atr_pct, "hoch_52w": hi, "tief_52w": lo}
+
+
+def test_commodity_score_absolute_and_cot_contrarian():
+    tech = {"GOLD": _ctech(), "KUPFER": _ctech(close=60, sma50=70, sma200=80, slope=-1, r126=-20, r21=-5, r63=-15, hi=110, lo=55)}
+    cot = {"GOLD": {"cot_index": 90.0}, "KUPFER": {"cot_index": 10.0}}
+    s = scoring.commodities(tech, cot, bench_ret63=0.0)
+    assert s.loc["GOLD", "trend"] == 100 and s.loc["KUPFER", "trend"] == 0
+    assert s.loc["GOLD", "cot"] == 10 and s.loc["KUPFER", "cot"] == 90          # Fonds extrem long = wenig Punkte
+    assert s.loc["GOLD", "momentum"] > 50 > s.loc["KUPFER", "momentum"]
+    assert ((s[list(C.WEIGHTS_COMMODITIES)] >= 0) & (s[list(C.WEIGHTS_COMMODITIES)] <= 100)).all().all()
+    assert s.loc["GOLD", "kennzahlen_score"] > s.loc["KUPFER", "kennzahlen_score"]
+
+
+def test_commodity_score_missing_cot_is_neutral():
+    s = scoring.commodities({"GOLD": _ctech()}, {"GOLD": None}, bench_ret63=None)
+    assert s.loc["GOLD", "cot"] == 50 and s.loc["GOLD", "fehlend"] == 1
+
+
+def test_cot_summary_index_and_change():
+    from fusion_lab.screener import data_commodities as DC
+    days = pd.date_range("2024-01-02", periods=60, freq="7D")
+    net = np.r_[np.linspace(-100, 100, 59), 50.0]
+    rows = pd.DataFrame({"cftc_contract_market_code": "085692", "datum": days, "netto": net, "oi": 1000.0})
+    x = DC.cot_summary(rows, "085692")
+    assert x["netto"] == 50 and x["veraenderung_1w"] == -50 and x["cot_index"] == 75.0 and x["netto_pct_oi"] == 5.0
+    assert DC.cot_summary(rows, "000000") is None and DC.cot_summary(pd.DataFrame(), "085692") is None
+
+
+def test_ledger_status_commodities_own_start(monkeypatch):
+    monkeypatch.setattr(C, "FORWARD_START", "2026-11-15")
+    monkeypatch.setattr(C, "FORWARD_START_COMMODITIES", None)
+    assert ledger.status("2026-11-20") == "forward" and ledger.status("2026-11-20", "rohstoffe") == "probe"
+    monkeypatch.setattr(C, "FORWARD_START_COMMODITIES", "2026-11-25")
+    assert ledger.status("2026-11-25", "rohstoffe") == "forward"
+
+
+def _commodity_report():
+    sc = {"A": {"zone_lo": 5.30, "zone_hi": 5.45, "einstieg": 5.38, "stopp": 5.15, "ziel": 5.95, "rr": 2.5},
+          "B": None, "C": {"text": "abwarten"}}
+    deep = {"objekt": "KUPFER", "name": "Kupfer", "kurs": 5.73, "gesamt": 30.0, "signal": "VERKAUFEN",
+            "punktwerte": {"trend": 0.0, "cot": 60.0}, "szenarien": sc, "llm": None,
+            "kennzahlen": {"cot_managed_money": {"bericht": "2026-11-10", "netto": 34444, "veraenderung_1w": -5000,
+                                                 "cot_index": 40.0, "netto_pct_oi": 15.0}}}
+    return {"screener": "rohstoffe", "stand": "2026-11-18", "version": "1.0", "status": "probe", "erzeugt": "2026-11-18T23:15:00",
+            "llm": False, "schwellen": {"kaufen": 65, "verkaufen": 35, "sentiment_gewicht": 0.3},
+            "kontext": {"dbc": {"kurs": 22.1, "trend": "unter SMA200", "ret_21d": -3.0, "rsi14": 35.0}},
+            "signale": {"VERKAUFEN": 1}, "anzahl": 1, "tief": [deep],
+            "tabelle": [{"index": "KUPFER", "name": "Kupfer", "gesamt": 30.0, "signal": "VERKAUFEN", "kurs": 5.73, "ret_21d": -8.0}]}
+
+
+def test_report_commodities():
+    from fusion_lab.screener import report
+    r = _commodity_report()
+    md, tg = report.markdown(r), report.telegram(r)
+    assert md.startswith("# Rohstoff-Screener 2026-11-18") and "DBC" in md and "COT Managed Money" in md
+    assert tg.startswith("🛢️ Rohstoff-Screener") and "KUPFER" in tg
+
+
+def test_commodity_deep_prompt_and_parse(tmp_path):
+    import sys
+    sys.path.insert(0, str(C.REPO / "scripts" / "reports"))
+    import commodity_deep as CD
+    p = CD.prompt("WTI", "2026-11-22")
+    assert "CL=F" in p and "OPEC+" in p and "{" + "CHECKLISTE}" not in p and "2026-11-22_WTI.md" in p
+    assert set(CD.CHECK) == set(C.COMMODITIES)
+    f = tmp_path / "2026-11-22_WTI.md"
+    f.write_text('<!-- {"schluessel": "WTI", "urteil_kurz": "neutral"} -->\n# WTI\nText', encoding="utf-8")
+    x = CD.parse(f)
+    assert x["kopf"]["urteil_kurz"] == "neutral" and x["markdown"].startswith("# WTI")

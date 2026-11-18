@@ -39,6 +39,21 @@ Code `fusion_lab/screener/`, Dashboard `fusion_lab/dashboard/`, Tests `tests/tes
 - **Referenzfall:** NVDA-Handanalyse 15.11. (A 149–158 / B > 172) im Ledger. Folge-Analyse nach den
   Q3-Zahlen per Telegram am 17.11., 23:45 (`Forex-NVDA-Earnings-Analyse`, einmalig).
 
+## Rohstoffe (gebaut 18.11.2026)
+
+Auslöser: Kupfer-Analyse vom 18.11. mit 5 Recherche-Agenten (`fusion_lab/screener/archive/kupfer_analyse_2026-11-18.md`).
+Nutzerentscheid: Kern-10 (Gold, Silber, Platin, Kupfer, WTI, Brent, Erdgas, Weizen, Mais, Soja), zwei Stufen, Signale +
+Ledger, Mo–Fr 23:15.
+
+- **Täglich** `python -m fusion_lab.screener rohstoffe` (`data_commodities.py`, `scoring.commodities`,
+  `pipeline.run_commodities`): Yahoo-Futures + CFTC-COT; Score absolut (Trend 30, Momentum 25, rel. Stärke gg. DBC 15,
+  COT contrarian 20, 52-W-Lage 10); alle zehn mit Szenarien A/B/C und News-LLM; eigenes Ledger, Probebetrieb.
+- **Wöchentlich** `scripts/commodity_deep_task.ps1` (So 18:00): je Rohstoff `claude.exe -p` mit Web, Prompt
+  `scripts/reports/commodity_deep_prompt.md` + Branchen-Checkliste aus `scripts/reports/commodity_deep.py`, Ausgabe
+  `fusion_lab/screener/archive/rohstoffe_tief/`.
+- **Cockpit:** Tab „Rohstoffe“, KPIs Gold/WTI/Kupfer in der Übersicht, Wochenanalyse aufklappbar.
+- Offene Annahmen: [[DASHBOARD]] „Braucht deine Bestätigung“.
+
 ## Bekannte Grenzen
 
 - Yahoo-Fundamentaldaten sind nicht historisch → kein ehrlicher Backtest des Scores, nur Forward.

@@ -43,3 +43,13 @@ Empfehlung, die nur den Markt mitnimmt, besteht nicht.
   Scores, nur diesen Forward-Test.
 - Die LLM-Einordnung ist nur vorwärts prüfbar (Memory „LLM-Agent nur vorwärts testbar“).
 - Neue Szenarien für denselben Titel werden erst angelegt, wenn das vorige abgeschlossen ist.
+
+## Rohstoffe (seit 18.11.2026, Version Rohstoffe 1.0)
+
+- Eigener Screener `rohstoffe` im selben Ledger, Kern-10 aus `config.COMMODITIES`, alle zehn sind Tiefen-Kandidaten.
+- **Eigener Forward-Start** `FORWARD_START_COMMODITIES` (anfangs `None` = Probebetrieb). Setzt der Nutzer nach
+  Durchsicht der ersten Berichte, danach nicht mehr ändern.
+- Gleiche Szenario-Regeln und Erfolgskriterien wie oben. Benchmark **DBC**, Kosten 5 bps Round-Trip.
+- Score absolut statt Querschnitt (nur 10 Titel); Gewichte `WEIGHTS_COMMODITIES` sind vorab festgelegt. Jede
+  Änderung → `VERSION_COMMODITIES` hochzählen.
+- Grenze: Yahoo-Front-Monat-Reihen haben Roll-Sprünge, Ergebnisse um Rolltermine sind verrauscht.

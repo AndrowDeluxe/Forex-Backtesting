@@ -8,6 +8,8 @@ from pathlib import Path
 from fusion_lab.screener import config as C
 
 ICON = {"KAUFEN": "🟢", "HALTEN": "🟡", "VERKAUFEN": "🔴"}
+KIND_NAME = {"aktien": "Aktien", "krypto": "Krypto", "rohstoffe": "Rohstoff"}
+KIND_ICON = {"aktien": "📈 Aktien", "krypto": "🪙 Krypto", "rohstoffe": "🛢️ Rohstoff"}
 SZ_NAME = {"A": "Rücksetzer", "B": "Ausbruch", "C": "Abwarten"}
 
 
@@ -37,7 +39,7 @@ def scenario_line(k: str, s: dict | None) -> str:
 
 
 def markdown(r: dict) -> str:
-    kind = "Aktien" if r["screener"] == "aktien" else "Krypto"
+    kind = KIND_NAME[r["screener"]]
     L = [f"# {kind}-Screener {r['stand']}", "",
          f"Version {r['version']} · Status **{r['status']}** · erzeugt {r['erzeugt']} · "
          f"LLM {'an' if r['llm'] else 'aus'} · Signal: ≥ {fmt(r['schwellen']['kaufen'], 0)} KAUFEN, "
@@ -46,6 +48,9 @@ def markdown(r: dict) -> str:
     if r["screener"] == "aktien":
         s = k["spy"]
         L.append(f"**Markt:** SPY {price(s['kurs'])} ({s['trend']}, 21 T {fmt(s['ret_21d'], 1, True)}, RSI {fmt(s['rsi14'], 0)})")
+    elif r["screener"] == "rohstoffe":
+        b = k["dbc"]
+        L.append(f"**Markt:** DBC {price(b['kurs'])} ({b['trend']}, 21 T {fmt(b['ret_21d'], 1, True)}, RSI {fmt(b['rsi14'], 0)})")
     else:
         b, f = k["btc"], k.get("fear_greed") or {}
         L.append(f"**Markt:** BTC {price(b['kurs'])} ({b['trend']}, 21 T {fmt(b['ret_21d'], 1, True)}, RSI {fmt(b['rsi14'], 0)}) · "
@@ -62,6 +67,10 @@ def markdown(r: dict) -> str:
         L.append("")
         pw = c["punktwerte"]
         L.append("Kurs " + price(c["kurs"]) + " · " + " · ".join(f"{k} {fmt(v, 0)}" for k, v in pw.items()))
+        cot = (c.get("kennzahlen") or {}).get("cot_managed_money")
+        if cot:
+            L.append(f"COT Managed Money (Bericht {cot['bericht']}): netto {cot['netto']:+,} Kontrakte, "
+                     f"Vorwoche {cot['veraenderung_1w']:+,}, COT-Index {fmt(cot['cot_index'], 0)} (3 Jahre)")
         sc = c["szenarien"]
         for key in ("A", "B"):
             L.append(f"- {scenario_line(key, sc.get(key))}")
@@ -88,11 +97,13 @@ def markdown(r: dict) -> str:
 
 
 def telegram(r: dict, url: str | None = None) -> str:
-    kind = "📈 Aktien" if r["screener"] == "aktien" else "🪙 Krypto"
+    kind = KIND_ICON[r["screener"]]
     k = r["kontext"]
     L = [f"{kind}-Screener {r['stand']} ({r['status']})"]
     if r["screener"] == "aktien":
         L.append(f"SPY {price(k['spy']['kurs'])} · {k['spy']['trend']}")
+    elif r["screener"] == "rohstoffe":
+        L.append(f"DBC {price(k['dbc']['kurs'])} · {k['dbc']['trend']}")
     else:
         f = k.get("fear_greed") or {}
         L.append(f"BTC {price(k['btc']['kurs'])} · {k['btc']['trend']} · F&G {f.get('wert', '–')}")

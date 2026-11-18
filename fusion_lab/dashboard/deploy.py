@@ -64,12 +64,12 @@ def _files(dist: Path) -> dict[str, Path]:
     return out
 
 
-FEED_FILES = ("aktien.json", "krypto.json", "makro.json", "meta.json")
+FEED_FILES = ("aktien.json", "krypto.json", "rohstoffe.json", "makro.json", "meta.json")
 
 
 def deploy_kv(dist: Path, c: dict) -> str:
     """Lebensjournal-Modus (seit 16.11.2026): Die Seite gehoert dem Lebensjournal (C:\\Users\\andre\\Lebensjournal,
-    Cockpit unter /trading/, Daten per Pages Function aus Workers KV). Hier nur die vier Daten-Dateien in KV
+    Cockpit unter /trading/, Daten per Pages Function aus Workers KV). Hier nur die Daten-Dateien (FEED_FILES) in KV
     schreiben -- NIE die ganze Seite hochladen, sonst waere das Journal ueberschrieben.
     Token braucht zusaetzlich das Recht "Workers KV Storage: Edit"."""
     url = f"{API}/accounts/{c['account_id']}/storage/kv/namespaces/{c['kv_namespace_id']}/values"

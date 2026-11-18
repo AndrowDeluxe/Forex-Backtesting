@@ -27,6 +27,11 @@ def query_crypto(symbol: str, name: str) -> str:
     return f'("{clean_name(name)}" OR {symbol}) crypto'
 
 
+def query_commodity(term: str) -> str:
+    """term aus config.COMMODITIES, z. B. '"copper price" OR "copper prices"'."""
+    return f"({term})"
+
+
 def headlines(query: str, hours: int = C.NEWS_HOURS, limit: int = C.NEWS_LIMIT) -> list[dict]:
     q = f"{query} when:{max(1, hours // 24)}d"
     try:

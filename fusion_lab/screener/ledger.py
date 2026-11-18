@@ -30,9 +30,10 @@ TEXT_COLUMNS = ["erstellt", "stand", "screener", "version", "status", "art", "ob
                 "signal", "titel", "fill_datum", "exit_datum", "exit_grund", "ausgewertet"]
 
 
-def status(run_day: str) -> str:
-    """run_day = Datum des Laufs (nicht Datenstand)."""
-    return "forward" if C.FORWARD_START and run_day >= C.FORWARD_START else "probe"
+def status(run_day: str, screener: str | None = None) -> str:
+    """run_day = Datum des Laufs (nicht Datenstand). Rohstoffe haben einen eigenen Forward-Start."""
+    start = C.FORWARD_START_COMMODITIES if screener == "rohstoffe" else C.FORWARD_START
+    return "forward" if start and run_day >= start else "probe"
 
 
 def read(path: Path = LEDGER) -> pd.DataFrame:

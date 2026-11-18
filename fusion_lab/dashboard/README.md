@@ -6,8 +6,8 @@ Seit 16.11.2026 23:00 gehört die Seite dem **Lebensjournal** (`C:\Users\andre\L
 `fusion_lab/dashboard/static/` nach `/trading/`, die Daten liefert eine Pages Function aus Workers KV
 (`functions/trading/data/[name].ts`).
 
-Nach jedem Screener-Lauf baut der PC die Daten neu (`python -m fusion_lab.dashboard`) und schreibt **nur die vier
-Daten-Dateien** (`aktien.json`, `krypto.json`, `makro.json`, `meta.json`) per REST-API in KV
+Nach jedem Screener-Lauf baut der PC die Daten neu (`python -m fusion_lab.dashboard`) und schreibt **nur die
+Daten-Dateien** (`aktien.json`, `krypto.json`, `rohstoffe.json` (seit 18.11.), `makro.json`, `meta.json`) per REST-API in KV
 (`deploy.py::deploy_kv`). Die Seite selbst wird dabei nie hochgeladen, sonst wäre das Journal überschrieben.
 Änderungen am Cockpit-Code (`static/`) erscheinen erst nach dem nächsten Journal-Build + Deploy.
 
@@ -44,3 +44,13 @@ Seite in Chrome öffnen, anmelden, Menü ⋮ → **„Zum Startbildschirm hinzuf
 
 `python -m fusion_lab.dashboard` → „KV aktualisiert (aktien.json, …)“. Ohne Login muss jede Adresse auf
 `…cloudflareaccess.com` umleiten (HTTP 302). Lokal ansehen: `python -m fusion_lab.dashboard --local`.
+
+## Rohstoffe (seit 18.11.2026)
+
+Der Tab „Rohstoffe“ liest `data/rohstoffe.json` (Tageslauf + neueste Wochen-Tiefenanalyse je Rohstoff). Einmalig im
+**Lebensjournal** nötig: Falls `functions/trading/data/[name].ts` erlaubte Namen prüft, `rohstoffe` ergänzen; danach
+Journal-Build + Deploy, damit der neue Tab (`static/`) erscheint.
+
+Tasks auf dem PC anlegen (Muster wie `Forex-Screener-Aktien`, StartWhenAvailable):
+- `Forex-Screener-Rohstoffe`: Mo–Fr 23:15, `powershell -File scripts\screener_task.ps1 rohstoffe`
+- `Forex-Rohstoff-Tiefenanalyse`: So 18:00, `powershell -File scripts\commodity_deep_task.ps1`

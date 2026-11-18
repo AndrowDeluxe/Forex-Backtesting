@@ -1,10 +1,11 @@
 # Windows Task Scheduler: taeglicher Aktien- bzw. Krypto-Screener + Dashboard (Dachprojekt, 15.11.2026).
 #   -File screener_task.ps1 aktien   (Mo-Fr 23:00, nach US-Schluss)
 #   -File screener_task.ps1 krypto   (taeglich 07:45, nach den Makro-Daten 07:30)
+#   -File screener_task.ps1 rohstoffe (Mo-Fr 23:15, Kern-10-Rohstoffe, seit 18.11.2026)
 # Reiner Analyse-Task: kein Handel, keine Bridge. Claude-Einordnung ueber claude.exe -p (Abo).
 # Committet NUR Ledger + Archiv (fusion_lab/screener/ledger, archive) -- Protokoll, wann was empfohlen wurde
 # (Nutzerwunsch 15.11.2026). Muster scripts/c2_forward_task.ps1.
-param([Parameter(Mandatory = $true)][ValidateSet("aktien", "krypto")][string]$Art)
+param([Parameter(Mandatory = $true)][ValidateSet("aktien", "krypto", "rohstoffe")][string]$Art)
 
 $repo = "C:\Users\andre\Forex-Backtesting"
 . (Join-Path $repo "scripts\lib\git_sync_push.ps1")

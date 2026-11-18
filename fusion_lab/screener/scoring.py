@@ -111,6 +111,48 @@ def crypto(tech: dict[str, dict], cg: pd.DataFrame, fund_rates: dict[str, float]
     return filled.round(1)
 
 
+def _logistic(z: float | None, scale: float = 1.0) -> float | None:
+    """z -> 0..100 (z = 0 -> 50)."""
+    if z is None or pd.isna(z):
+        return None
+    return float(100.0 / (1.0 + np.exp(-float(z) / scale)))
+
+
+def commodities(tech: dict[str, dict], cot: dict[str, dict | None], bench_ret63: float | None) -> pd.DataFrame:
+    """Rohstoffe: ABSOLUTE Punkte je Baustein (nur ~10 Titel, Perzentile waeren zu grob).
+
+    trend         trend_points (wie Aktien/Krypto)
+    momentum      (Rendite 126 T - 21 T) / Vola ueber den Zeitraum, logistisch auf 0..100 (0 Sigma = 50)
+    rel_staerke   Rendite 63 T minus Benchmark (DBC), je 10 Prozentpunkte ~ 1 Einheit, logistisch
+    cot           contrarian: 100 - COT-Index Managed Money (Fonds extrem long = wenig Punkte)
+    abstand_hoch  Lage in der 52-Wochen-Spanne (0 = am Tief, 100 = am Hoch)
+    """
+    comp = pd.DataFrame(index=list(tech))
+    comp["trend"] = pd.Series({k: trend_points(v) for k, v in tech.items()})
+    mom, rel, rng = {}, {}, {}
+    for k, t in tech.items():
+        r126, r21, atr_pct = t.get("ret_126d"), t.get("ret_21d"), t.get("atr_pct")
+        if r126 is not None and r21 is not None and atr_pct:
+            sigma = atr_pct * np.sqrt(105)              # ATR% als Tages-Vola-Naeherung, 105 Handelstage
+            mom[k] = _logistic((r126 - r21) / sigma, scale=0.5)
+        r63 = t.get("ret_63d")
+        if r63 is not None:
+            rel[k] = _logistic((r63 - (bench_ret63 or 0.0)) / 10.0)
+        hi, lo, c = t.get("hoch_52w"), t.get("tief_52w"), t.get("close")
+        if hi is not None and lo is not None and hi > lo:
+            rng[k] = (c - lo) / (hi - lo) * 100
+    comp["momentum"] = pd.Series(mom, dtype=float)
+    comp["rel_staerke"] = pd.Series(rel, dtype=float)
+    comp["cot"] = pd.Series({k: (100.0 - x["cot_index"]) if x else np.nan for k, x in cot.items()}, dtype=float)
+    comp["abstand_hoch"] = pd.Series(rng, dtype=float)
+    comp = comp.reindex(columns=list(C.WEIGHTS_COMMODITIES)).astype(float).clip(0, 100)
+    filled, missing = _fill(comp)
+    w = pd.Series(C.WEIGHTS_COMMODITIES)
+    filled["kennzahlen_score"] = (filled[w.index] * w).sum(axis=1) / w.sum()
+    filled["fehlend"] = missing
+    return filled.round(1)
+
+
 def sentiment_points(sentiment: int | None) -> float | None:
     """-2..+2 -> 0..100."""
     return None if sentiment is None else 50.0 + 25.0 * max(-2, min(2, int(sentiment)))

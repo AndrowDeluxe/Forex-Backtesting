@@ -1,4 +1,4 @@
-"""Schreibt den Tagesbericht des Aktien- bzw. Krypto-Screeners auf eine eigene Seite im Trading Fusion Cockpit.
+"""Schreibt den Tagesbericht des Aktien-, Krypto- bzw. Rohstoff-Screeners auf eine eigene Seite im Trading Fusion Cockpit.
 Seite wird beim ersten Lauf unter der Cockpit-Startseite angelegt (ID in cockpit_ids.json), danach jeden Tag
 geleert und neu befuellt.
 
@@ -13,7 +13,8 @@ from fusion_lab.notion.client import IDS_FILE, Notion, load_ids, load_notion_con
 from fusion_lab.notion.sync_regime import _block, _bullets, _rt, _table
 from fusion_lab.screener.report import ICON, SZ_NAME, fmt, price, scenario_line
 
-PAGES = {"aktien": ("screener_aktien", "📈 Aktien-Screener"), "krypto": ("screener_krypto", "🪙 Krypto-Screener")}
+PAGES = {"aktien": ("screener_aktien", "📈 Aktien-Screener"), "krypto": ("screener_krypto", "🪙 Krypto-Screener"),
+         "rohstoffe": ("screener_rohstoffe", "🛢️ Rohstoff-Screener")}
 
 
 def _page(n: Notion, kind: str) -> str:
@@ -34,6 +35,8 @@ def blocks(r: dict) -> list[dict]:
     out = [_block("heading_2", f"Stand {r['stand']} · {r['status']} · Version {r['version']}")]
     if r["screener"] == "aktien":
         out.append(_block("paragraph", f"SPY {price(k['spy']['kurs'])} ({k['spy']['trend']})"))
+    elif r["screener"] == "rohstoffe":
+        out.append(_block("paragraph", f"DBC {price(k['dbc']['kurs'])} ({k['dbc']['trend']})"))
     else:
         f = k.get("fear_greed") or {}
         out.append(_block("paragraph", f"BTC {price(k['btc']['kurs'])} ({k['btc']['trend']}) · Fear & Greed "

@@ -9,6 +9,14 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-18** [Dachprojekt / Aktien-Screener] **Rohstoff-Screener + Cockpit-Tab „Rohstoffe“** (Nutzerauftrag,
+  Plan freigegeben). Kern-10 (Gold, Silber, Platin, Kupfer, WTI, Brent, Erdgas, Weizen, Mais, Soja):
+  `python -m fusion_lab.screener rohstoffe` (Yahoo-Futures, CFTC-COT Managed Money, absoluter Score, Szenarien A/B/C,
+  News-LLM, eigenes Ledger im Probebetrieb), Wochen-Tiefenanalyse `scripts/commodity_deep_task.ps1` (So 18:00) mit
+  Prompt `scripts/reports/commodity_deep_prompt.md`, Cockpit liest zusätzlich `rohstoffe.json`. Tests 21 → 27.
+  Tasks noch nicht angelegt (PC). Vorher am selben Tag: **Kupfer-Analyse** mit 5 Recherche-Agenten
+  (`fusion_lab/screener/archive/kupfer_analyse_2026-11-18.md`, `9b91445`).
+
 - **2026-11-17** [Notion-Cockpit] **Neue Reiterseite „🤖 BOT“** im Trading-Fusion-Cockpit (Nutzerwunsch), darunter
   „Gesamtportfolio-Backtest 2016–2026“ (Ergebnisse aus `research_portfolio_live_2016.py`). Seiten-ID als `bot_folder`
   in `fusion_lab/notion/cockpit_ids.json`. Kopie zusätzlich als Claude-Doc.

@@ -3,7 +3,7 @@ const D = {};
 const SZ = { A: "Rücksetzer", B: "Ausbruch", C: "Abwarten" };
 const PW_LABEL = { trend: "Trend", momentum: "Momentum", qualitaet: "Qualität", wachstum: "Wachstum",
   bewertung: "Bewertung", bilanz: "Bilanz", analysten: "Analysten", rel_staerke: "Rel. Stärke",
-  liquiditaet: "Liquidität", verwaesserung: "Verwässerung", funding: "Funding", abstand_hoch: "Nähe Hoch",
+  liquiditaet: "Liquidität", verwaesserung: "Verwässerung", funding: "Funding", abstand_hoch: "Nähe Hoch", cot: "COT (contra)",
   kennzahlen_score: "Kennzahlen" };
 
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -13,6 +13,8 @@ const pct = (x, d = 1) => x == null || isNaN(x) ? "–" : `<span class="${x >= 0
 const sigColor = s => s === "KAUFEN" ? "var(--green)" : s === "VERKAUFEN" ? "var(--red)" : "var(--yellow)";
 const ring = (score, signal) => `<div class="ring" style="--p:${Math.round(score)};--c:${sigColor(signal)}"><span>${Math.round(score)}</span></div>`;
 const llmOk = c => c.llm && !c.llm.fehler;
+const KIND = { aktien: "Aktien", krypto: "Krypto", rohstoffe: "Rohstoff" };
+const URTEIL = { bullisch: "KAUFEN", neutral: "HALTEN", "bärisch": "VERKAUFEN" };
 
 async function load(name) {
   try { const r = await fetch(`data/${name}.json`, { cache: "no-store" }); return r.ok ? await r.json() : null; }
@@ -40,9 +42,14 @@ function marketKpis() {
     const f = k.kontext.fear_greed;
     if (f) out.push(kpi("Fear & Greed", f.wert, `${esc(f.einstufung)} · vor 7 T ${f.vor_7_tagen}`));
   }
-  const m = (a || k)?.kontext?.makro;
+  const ro = D.rohstoffe;
+  if (ro?.kontext) {
+    const lw = ro.kontext.leitwerte || {}, NAMES = { GOLD: "Gold", WTI: "WTI-Öl", KUPFER: "Kupfer" };
+    for (const [key, n] of Object.entries(NAMES)) if (lw[key]) out.push(kpi(n, px(lw[key].kurs), `${esc(lw[key].trend)} · 21 T ${pct(lw[key].ret_21d)}`));
+  }
+  const m = (a || k || ro)?.kontext?.makro;
   if (m) out.push(kpi("Makro-Zustand", esc(m.zustand), `Fact Sheet ${esc(m.stand)}`));
-  for (const [n, r] of [["Aktien", a], ["Krypto", k]]) if (r)
+  for (const [n, r] of [["Aktien", a], ["Krypto", k], ["Rohstoffe", ro?.stand ? ro : null]]) if (r)
     out.push(kpi(`Signale ${n}`, `<span class="pos">${r.signale.KAUFEN || 0}</span> · <span style="color:var(--yellow)">${r.signale.HALTEN || 0}</span> · <span class="neg">${r.signale.VERKAUFEN || 0}</span>`, `von ${r.anzahl} · Stand ${r.stand}`));
   return `<div class="kpis">${out.join("")}</div>`;
 }
@@ -50,8 +57,9 @@ function marketKpis() {
 function renderOverview() {
   const el = document.getElementById("uebersicht");
   let h = marketKpis();
-  for (const [kind, title] of [["aktien", "Aktien – Tiefen-Analyse"], ["krypto", "Krypto – Tiefen-Analyse"]]) {
+  for (const [kind, title] of [["aktien", "Aktien – Tiefen-Analyse"], ["krypto", "Krypto – Tiefen-Analyse"], ["rohstoffe", "Rohstoffe – Tiefen-Analyse"]]) {
     const r = D[kind];
+    if (kind === "rohstoffe" && r && !r.tief.length) { h += `<h2>${title}</h2>${wocheGrid(r)}`; continue; }
     h += `<h2>${title}</h2>` + (r ? `<div class="grid">${[...r.tief].sort((x, y) => y.gesamt - x.gesamt).map(c => card(c, kind)).join("")}</div>`
       : `<div class="empty">Noch kein Lauf</div>`);
   }
@@ -60,13 +68,15 @@ function renderOverview() {
 
 function renderScreener(kind) {
   const r = D[kind], el = document.getElementById(kind);
-  if (!r) { el.innerHTML = `<div class="empty">Noch kein ${kind === "aktien" ? "Aktien" : "Krypto"}-Lauf</div>`; return; }
+  const woche = kind === "rohstoffe" && r ? `<h2>Wochen-Tiefenanalyse</h2><div class="note">1× pro Woche je Rohstoff (News, Sentiment, Makro, Angebot/Nachfrage, Technik). Tippen öffnet die ganze Analyse.</div>${wocheGrid(r)}` : "";
+  if (!r || !r.tabelle.length) { el.innerHTML = `<div class="empty">Noch kein ${KIND[kind]}-Lauf</div>${woche}`; return; }
   const cols = Object.keys(r.tabelle[0] || {}).filter(k => PW_LABEL[k] && k !== "kennzahlen_score");
   el.innerHTML = `<div class="note">Score 0–100 · <b>≥ ${r.schwellen.kaufen} KAUFEN</b> · <b>≤ ${r.schwellen.verkaufen} VERKAUFEN</b>.
       Tiefen-Kandidaten: ${Math.round((1 - r.schwellen.sentiment_gewicht) * 100)} % Kennzahlen + ${Math.round(r.schwellen.sentiment_gewicht * 100)} % News-Stimmung.
       Der Score ist eine Bewertung, keine geprüfte Trefferwahrscheinlichkeit – das misst der Forward-Test.</div>
     <h2>Tiefen-Analyse · Stand ${r.stand}</h2><div class="grid">${r.tief.map(c => card(c, kind)).join("")}</div>
-    <h2>Alle ${r.anzahl} Titel</h2>
+    ${woche}
+    <h2>Alle ${r.anzahl} ${kind === "rohstoffe" ? "Rohstoffe" : "Titel"}</h2>
     <div class="toolbar"><input type="search" placeholder="Suchen …" data-k="${kind}">
       ${["ALLE", "KAUFEN", "HALTEN", "VERKAUFEN"].map((s, i) => `<button class="chip${i ? "" : " on"}" data-f="${s}" data-k="${kind}">${s === "ALLE" ? "Alle" : s}</button>`).join("")}</div>
     <div class="tablewrap"><table data-k="${kind}"><thead><tr>
@@ -88,6 +98,36 @@ function renderScreener(kind) {
   draw();
 }
 
+function wocheGrid(r) {
+  const w = Object.entries(r.tief_woche || {});
+  if (!w.length) return `<div class="empty">Noch keine Wochenanalyse</div>`;
+  return `<div class="grid">${w.map(([key, x]) => {
+    const h = x.kopf || {}, sig = URTEIL[h.urteil_kurz] || "HALTEN";
+    return `<div class="card" data-kind="woche" data-obj="${esc(key)}">
+      <div class="row"><div><div class="t">${esc(key)}</div><div class="n">Wochenanalyse ${esc(x.datum)}</div></div><span class="sig ${sig}">${esc(h.urteil_kurz || "–")}</span></div>
+      <div class="sc">kurzfristig <b>${esc(h.urteil_kurz || "–")}</b> · strukturell <b>${esc(h.urteil_struktur || "–")}</b> · Szenario ${esc(h.szenario || "–")}</div>
+      <div class="sc muted">${esc(h.fazit || "")}</div></div>`;
+  }).join("")}</div>`;
+}
+
+function wocheHtml(key) {
+  const x = D.rohstoffe?.tief_woche?.[key];
+  if (!x) return "";
+  const h = x.kopf || {};
+  const md = window.marked ? marked.parse(x.markdown) : `<pre>${esc(x.markdown)}</pre>`;
+  return `<div class="note"><b>Treiber:</b> ${esc((h.treiber || []).join(" · "))}<br><b>Termine:</b> ${esc((h.termine || []).join(" · "))}</div>
+    <div class="card md" style="cursor:default">${md}</div>`;
+}
+
+function openWoche(key) {
+  const x = D.rohstoffe?.tief_woche?.[key];
+  if (!x) return;
+  document.getElementById("detail-body").innerHTML = `<h2 style="margin-top:0">${esc(key)} · Wochen-Tiefenanalyse ${esc(x.datum)}</h2>${wocheHtml(key)}`;
+  document.querySelectorAll("#detail-body .md a").forEach(a => { a.target = "_blank"; a.rel = "noopener"; });
+  document.getElementById("detail").classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+}
+
 function scenCard(k, s, chosen) {
   if (!s) return `<div class="card"><b>${k} ${SZ[k]}</b><div class="muted sc">nicht gültig (kein Chance-Risiko ≥ 2)</div></div>`;
   const rows = k === "A" ? [["Zone", `${px(s.zone_lo)} – ${px(s.zone_hi)}`], ["Einstieg (Limit)", px(s.einstieg)]] : [["Trigger (Stop-Kauf)", px(s.trigger)]];
@@ -98,6 +138,7 @@ function scenCard(k, s, chosen) {
 }
 
 function openDetail(kind, obj) {
+  if (kind === "woche") return openWoche(obj);
   const r = D[kind]; if (!r) return;
   const c = r.tief.find(x => x.objekt === obj);
   const row = r.tabelle.find(x => x.index === obj);
@@ -132,6 +173,10 @@ function openDetail(kind, obj) {
         .map(([a, b]) => `<div><span>${a}</span>${b}</div>`).join("")}</div>
       <h2>Kennzahlen</h2><div class="kv">${Object.entries(c.kennzahlen || {}).filter(([, v]) => v != null && typeof v !== "object")
         .map(([k, v]) => `<div><span>${esc(k)}</span>${typeof v === "number" ? (Math.abs(v) > 1e6 ? num(v / 1e9, 1) + " Mrd." : num(v, Math.abs(v) < 10 ? 3 : 1)) : esc(v)}</div>`).join("")}</div>
+      ${kind === "rohstoffe" && c.kennzahlen?.cot_managed_money ? (() => { const k = c.kennzahlen.cot_managed_money;
+        return `<h2>COT Managed Money</h2><div class="kv">${[["Bericht", esc(k.bericht)], ["Netto", num(k.netto, 0)], ["Vorwoche", num(k.veraenderung_1w, 0)],
+          ["% Open Interest", num(k.netto_pct_oi, 1)], ["COT-Index 3 J.", num(k.cot_index, 0)]].map(([a, b]) => `<div><span>${a}</span>${b}</div>`).join("")}</div>`; })() : ""}
+      ${kind === "rohstoffe" && D.rohstoffe?.tief_woche?.[obj] ? `<h2>Wochen-Tiefenanalyse (${esc(D.rohstoffe.tief_woche[obj].datum)})</h2><details><summary>aufklappen</summary>${wocheHtml(obj)}</details>` : ""}
       <h2>Schlagzeilen</h2><ul class="clean news">${(c.schlagzeilen || []).map(n => `<li><a href="${esc(n.link)}" target="_blank" rel="noopener">${esc(n.titel)}</a> <span class="muted">· ${esc(n.quelle)} · ${esc(n.zeit)}</span></li>`).join("") || "<li class='muted'>keine</li>"}</ul>`;
     drawChart(c);
   }
@@ -170,7 +215,7 @@ function renderMakro() {
 
 function renderForward() {
   const el = document.getElementById("forward");
-  const b = (D.aktien || D.krypto)?.bilanz || {};
+  const b = (D.aktien || D.krypto || D.rohstoffe)?.bilanz || {};
   const blocks = Object.entries(b).map(([k, v]) => {
     const g = Object.entries(v.gruppen || {}).map(([gk, gv]) => `<tr><td class="l">${esc(gk.replace("_", " · "))} T</td><td>${gv.n}</td>
       <td>${pct(gv.rendite, 2)}</td><td>${pct(gv.minus_univ, 2)}</td><td>${pct(gv.minus_bench, 2)}</td></tr>`).join("");
@@ -204,9 +249,9 @@ function bind() {
 }
 
 (async () => {
-  [D.aktien, D.krypto, D.makro, D.meta] = await Promise.all(["aktien", "krypto", "makro", "meta"].map(load));
-  document.getElementById("stand").textContent = `Aktien ${D.aktien?.stand ?? "–"} · Krypto ${D.krypto?.stand ?? "–"} · gebaut ${D.meta?.gebaut ?? "–"}`;
+  [D.aktien, D.krypto, D.rohstoffe, D.makro, D.meta] = await Promise.all(["aktien", "krypto", "rohstoffe", "makro", "meta"].map(load));
+  document.getElementById("stand").textContent = `Aktien ${D.aktien?.stand ?? "–"} · Krypto ${D.krypto?.stand ?? "–"} · Rohstoffe ${D.rohstoffe?.stand ?? "–"} · gebaut ${D.meta?.gebaut ?? "–"}`;
   const st = D.aktien?.status || D.krypto?.status || "–";
   document.getElementById("status").textContent = st === "probe" ? "Probebetrieb" : st;
-  renderOverview(); renderScreener("aktien"); renderScreener("krypto"); renderMakro(); renderForward(); bind();
+  renderOverview(); renderScreener("aktien"); renderScreener("krypto"); renderScreener("rohstoffe"); renderMakro(); renderForward(); bind();
 })();

@@ -9,7 +9,8 @@ from datetime import datetime
 
 import pandas as pd
 
-from fusion_lab.screener import analyst, config as C, data_crypto, data_stocks, ledger, levels, news, scoring, universe
+from fusion_lab.screener import (analyst, config as C, data_commodities, data_crypto, data_stocks, ledger, levels, news,
+                                 scoring, universe)
 
 CHART_BARS = 180
 
@@ -66,8 +67,10 @@ def _clean(x):
 def _finish(kind: str, stand: str, table: pd.DataFrame, deep: list[dict], context: dict, use_llm: bool,
             panel: dict, bench: str, write_ledger: bool) -> dict:
     table = table.sort_values("gesamt", ascending=False)
+    version = C.VERSION_COMMODITIES if kind == "rohstoffe" else C.VERSION
+    st = ledger.status(_today(), kind)
     report = {"screener": kind, "stand": stand, "erzeugt": datetime.now().isoformat(timespec="seconds"),
-              "version": C.VERSION, "status": ledger.status(_today()), "llm": use_llm,
+              "version": version, "status": st, "llm": use_llm,
               "schwellen": {"kaufen": C.BUY_THRESHOLD, "verkaufen": C.SELL_THRESHOLD,
                             "sentiment_gewicht": C.SENTIMENT_WEIGHT},
               "kontext": context, "anzahl": int(len(table)),
@@ -82,7 +85,7 @@ def _finish(kind: str, stand: str, table: pd.DataFrame, deep: list[dict], contex
                     continue
                 llm = c.get("llm") or {}
                 rows.append({"erstellt": datetime.now().date().isoformat(), "stand": stand, "screener": kind,
-                             "version": C.VERSION, "status": ledger.status(_today()), "art": "szenario",
+                             "version": version, "status": st, "art": "szenario",
                              "objekt": c["objekt"], "szenario": sz, "gewaehlt": llm.get("szenario") == sz if llm and
                              "szenario" in llm else None, "score": c["gesamt"], "signal": c["signal"],
                              "sentiment": llm.get("sentiment"), "einstieg": s["einstieg"], "zone_lo": s.get("zone_lo"),
@@ -93,7 +96,7 @@ def _finish(kind: str, stand: str, table: pd.DataFrame, deep: list[dict], contex
         for name, members in groups.items():
             for h in C.RANK_HORIZONS:
                 rows.append({"erstellt": datetime.now().date().isoformat(), "stand": stand, "screener": kind,
-                             "version": C.VERSION, "status": ledger.status(_today()), "art": "gruppe", "objekt": name,
+                             "version": version, "status": st, "art": "gruppe", "objekt": name,
                              "horizont": h, "titel": ";".join(members)})
         report["ledger_neu"] = ledger.append(rows)
     report["ledger_ausgewertet"] = ledger.evaluate(panel, kind, bench)
@@ -107,7 +110,8 @@ def _deep_entry(objekt: str, name: str, d: pd.DataFrame, tech: dict, comp: pd.Se
     pack = {"titel": objekt, "name": name, "stand": tech["datum"],
             "technik": {k: (round(v, 4) if isinstance(v, float) else v) for k, v in tech.items()},
             "punktwerte": {k: comp[k] for k in comp.index
-                           if k in C.WEIGHTS_STOCKS or k in C.WEIGHTS_CRYPTO or k == "kennzahlen_score"},
+                           if k in C.WEIGHTS_STOCKS or k in C.WEIGHTS_CRYPTO or k in C.WEIGHTS_COMMODITIES
+                           or k == "kennzahlen_score"},
             "kennzahlen": extra,
             "szenarien": {k: sc[k] for k in ("A", "B", "C")}, "schlagzeilen": heads, "markt": context_small}
     llm = analyst.analyse(pack) if use_llm else None
@@ -228,3 +232,54 @@ def run_crypto(use_llm: bool = True, write_ledger: bool = True, log=print) -> di
                                                         "ret_21d": bt.get("ret_21d"), "rsi14": bt.get("rsi14")},
                "fear_greed": fng, "makro": mc}
     return _finish("krypto", stand, comp, deep, context, use_llm, panel, C.CRYPTO_BENCHMARK, write_ledger)
+
+
+# ------------------------------------------------------------------ Rohstoffe
+
+def run_commodities(use_llm: bool = True, write_ledger: bool = True, log=print) -> dict:
+    """Kern-10-Rohstoffe (config.COMMODITIES): alle sind Tiefen-Kandidaten (Szenarien + News + LLM)."""
+    t0 = time.time()
+    panel = data_commodities.prices()
+    bench = panel.get(C.COMMODITY_BENCHMARK)
+    if bench is None:
+        raise RuntimeError(f"Keine Kurse fuer Benchmark {C.COMMODITY_BENCHMARK}")
+    stand = str(bench.index[-1].date())
+    log(f"Rohstoffe: {len(panel)} Reihen, Stand {stand} ({time.time() - t0:.0f} s)")
+    tech = {k: _tech(d) for k, d in panel.items() if k != C.COMMODITY_BENCHMARK and len(d) >= 210}
+    cot = data_commodities.cot()
+    log(f"COT: {sum(1 for v in cot.values() if v)} von {len(cot)} Maerkten")
+    bt = levels.technicals(bench)
+    comp = scoring.commodities(tech, cot, bt.get("ret_63d"))
+    meta = C.COMMODITIES
+    comp["name"] = [meta[k][1] for k in comp.index]
+    comp["gruppe"] = [meta[k][2] for k in comp.index]
+    comp["future"] = [meta[k][0] for k in comp.index]
+    comp["kurs"] = [tech[k]["close"] for k in comp.index]
+    comp["ret_21d"] = [tech[k].get("ret_21d") for k in comp.index]
+    comp["cot_index"] = [(cot.get(k) or {}).get("cot_index") for k in comp.index]
+    comp["gesamt"] = comp["kennzahlen_score"]
+    comp["signal"] = comp["gesamt"].map(scoring.signal)
+
+    mc = macro_context()
+    bench_trend = "über SMA200" if bt["sma200"] and bt["close"] > bt["sma200"] else "unter SMA200"
+    ctx_small = {"rohstoff_index_trend": bench_trend, "rohstoff_index_ret_21d": bt.get("ret_21d"),
+                 "makro_zustand": mc["zustand"] if mc else None,
+                 "makro_indikatoren": (mc or {}).get("indikatoren")}
+    deep = []
+    for k in comp.sort_values("kennzahlen_score", ascending=False).index:
+        extra = {"future": meta[k][0], "gruppe": meta[k][2], "cot_managed_money": cot.get(k),
+                 "hoch_52w": tech[k].get("hoch_52w"), "tief_52w": tech[k].get("tief_52w"),
+                 "abstand_hoch_pct": tech[k].get("abstand_hoch_pct")}
+        heads = news.headlines(news.query_commodity(meta[k][4]))
+        e = _deep_entry(k, meta[k][1], panel[k], tech[k], comp.loc[k], extra, heads, ctx_small, use_llm)
+        comp.at[k, "gesamt"], comp.at[k, "signal"] = e["gesamt"], e["signal"]
+        e["gruppe"] = meta[k][2]
+        deep.append(e)
+        log(f"  {k}: Score {e['gesamt']} {e['signal']}, LLM {'ok' if e['llm'] and 'fehler' not in e['llm'] else 'n.v.'}")
+    lead = {k: {"kurs": tech[k]["close"], "ret_21d": tech[k].get("ret_21d"),
+                "trend": "über SMA200" if tech[k].get("sma200") and tech[k]["close"] > tech[k]["sma200"] else "unter SMA200"}
+            for k in ("GOLD", "WTI", "KUPFER") if k in tech}
+    context = {"benchmark": C.COMMODITY_BENCHMARK,
+               "dbc": {"kurs": bt["close"], "trend": bench_trend, "ret_21d": bt.get("ret_21d"), "rsi14": bt.get("rsi14")},
+               "leitwerte": lead, "makro": mc}
+    return _finish("rohstoffe", stand, comp, deep, context, use_llm, panel, C.COMMODITY_BENCHMARK, write_ledger)

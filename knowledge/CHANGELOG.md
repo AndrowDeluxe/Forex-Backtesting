@@ -9,6 +9,25 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-18** [Funded-Bridge, FK, EK / ORB NASDAQ] **Market-Einstieg statt „breakout_passed“** (Nutzerentscheid)
+  [[orb-nasdaq-kerzen-sl-market]]. Die Regel greift unter diesen Bedingungen:
+  - Bei der Platzierung ist genau eine Seite schon gebrochen.
+  - Ihr geplanter SL ist noch unberührt.
+  - Range-Ende liegt höchstens 120 s zurück.
+
+  Steht der Kurs dann noch jenseits des Levels, wird sofort per Market eingestiegen. SL wie geplant (0,6 ATR),
+  ohne Abstandsgrenze, Risiko gegen den echten Einstieg gerechnet. Ist der Kurs zurück in der Range, werden die
+  normalen Stop-Orders gelegt. Nur NASDAQ, Storno/OCO/Ausstieg 16:00 unverändert. Der Rückfall greift nur im
+  Präzise-Pass, spätere Läufe melden weiter `breakout_passed`. Grundlage: Market statt Auslassen IS +88 R,
+  OOS +7 R, Tresor +36 R. Geänderte Dateien:
+  - Funded: `orb_pending.py`, `run_once.py`
+  - FK: `orb_pending.py`, `run_once.py`
+  - EK: `legs/ny_open_orb/pending_source.py`, `legs/ny_open_orb/pending_executor.py`
+
+  Backups liegen je Bridge in `_backup_20261118_orb_market/`. Lesend getestet gegen die Terminals mit historischer
+  Uhrzeit: 05.11./09.11. → Market-Fall, 17.11. → Stop-Orders, 09:48 NY → `breakout_passed`. Der Market-Zweig selbst
+  ist erst beim ersten echten Fall geprüft.
+
 - **2026-11-18** [Dachprojekt / Edelmetalle HTF] **Backtest Score-Bausteine + Makro auf 4–26 Wochen: kein Edge**
   (Plan vom Handy, Nutzerfreigabe). Lock `metals_htf_v1` (IS 2004–17, OOS bis 10.05.26, Tresor zu), Vorab-Registrierung
   `56a49a99`, 336 Versuche. 0 Kandidaten; Screener 1.0/1.1/nur Trend schlagen „immer long“ bei keinem Metall,
@@ -21,7 +40,9 @@ keine Planung (dafür ist `DASHBOARD.md`).
   `twist_resets`. Neues Modul `fusion_lab/filters/gold_komposition.py` (Z, M, R2, RR, C; Regeln K1/K2/K3), Tests
   `tests/test_gold_komposition.py` (6), Skript `scripts/research_gold_komposition.py`, Lock `gold_richtung_komposition`
   (17 Versuche). Ergebnis Stufe A: **keine Variante schlägt „immer long“ in IS und OOS**; kürzere Zinskurven-Lags
-  helfen nicht, nur M allein zeigt IS-Signal. Notiz `areas/filter-gold-komposition.md`. Nichts live.
+  helfen nicht, nur M allein zeigt IS-Signal. Stufe B (Veto auf CTNL live, Gold ASB, Daily-C2): keine Komposition
+  schlägt das reine Makro-Veto; auf CTNL sperrt sie Gewinner (OOS +1,0…+1,7 R). 53 Versuche, nicht eingefroren.
+  Notiz `areas/filter-gold-komposition.md`. Nichts live.
 
 - **2026-11-18** [Dachprojekt / Rohstoffe] **Handy-Branch übernommen, Rohstoff-Screener 1.1 live im Probebetrieb**
   (Nutzerentscheide). Merge `388ba2fa` (Kupfer-Analyse, Screener, Handoff Edelmetalle HTF). Geprüft: Tests grün,

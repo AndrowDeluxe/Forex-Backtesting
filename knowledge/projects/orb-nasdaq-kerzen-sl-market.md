@@ -121,8 +121,14 @@ Skript `scripts/research_orb_nasdaq_market_einstieg_check.py`, Ergebnis `market_
 - **Modell:** Market-Kurs = Schluss der 09:45-Minute. Live liegt die Order nach ~3 s und füllt viele Tage direkt per Stop. Die
   Wirklichkeit liegt zwischen „ideal“ und „Market ohne Grenze“.
 
+## Umsetzung (18.11., Nutzerentscheid)
+
+Market-Rückfall ohne Grenze ist live auf Funded, FK und EK, nur für NASDAQ. Bedingungen: genau eine Seite gebrochen, ihr geplanter SL
+unberührt, ≤ 120 s nach Range-Ende. Sonst wird wie bisher übersprungen, und liegt der Kurs zurück in der Range, gelten die normalen
+Stop-Orders. Details stehen im CHANGELOG vom 18.11.
+
 ## Offen
 
-- Entscheidung des Nutzers: Market-Einstieg ohne Grenze als Ersatz für `breakout_passed` in der Funded-Bridge (echtes Geld)?
+- Den ersten echten Market-Rückfall prüfen: Fill, SL, Lots (Ideen-Inbox).
 
 Verwandt: [[orb-order-storno-und-haltedauer]], [[nasdaq-orb-vorboersen-range]], [[ny-open-orb-sp500]].

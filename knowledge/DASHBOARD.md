@@ -786,11 +786,12 @@ unverarbeitete Clippings unverändert seit 09-09. Verweise nach außerhalb von
 
 - (18.11.) **Screener-Pipeline der Aktien/Rohstoffe für Forex nutzen** (Nutzerfrage). Modus `devisen` wie `rohstoffe`
   (`fusion_lab/screener/`): Score aus Makro-Agent-Bausteinen (Zinsdifferenz, Carry, COT, G8, Gold-Komposition), Preis-Zonen
-  aus `levels.py`, News-LLM, eigenes Forward-Ledger. Aufwand mittel (~1 Session). Erst nach Stufe A/B der Gold-Komposition.
+  aus `levels.py`, News-LLM, eigenes Forward-Ledger. Aufwand mittel (~1 Session). Gold-Komposition (Stufe A/B) erledigt,
+  ohne Edge; Nutzer will als Nächstes sehen, wie sich Claude-Makro-Agenten auf Gold/Forex schlagen (nur vorwärts messbar).
 
-- (18.11.) **ORB NASDAQ: Market-Einstieg, wenn der Ausbruch der ersten Minute vor der Platzierung kam?** Soll/Ist
-  05.10.–17.11. ist geprüft: Die Bridge trifft 5 von 9 Ausbrüchen, wenn sie läuft. Verpasst sind 4 Tage, netto ≈ +3,2 R,
-  fast nur der 09.11. Das ist eine neue Variante, nur vorwärts testbar. Kerze-SL ist im Tresor durchgefallen.
+- (18.11.) **ORB NASDAQ Market-Rückfall: erster echter Fall beobachten.** Seit 18.11. live auf Funded, FK und EK
+  (siehe CHANGELOG). Getestet ist bisher nur die Erkennung, nicht der Market-Zweig selbst. Beim ersten Telegram
+  „Ausbruch … kam vor der Platzierung -- Market-Einstieg“ den Fill, den SL und die Lots gegen das Level prüfen.
   [[orb-nasdaq-kerzen-sl-market]]
 
 - (16.11.) **Persönliches Dashboard + Trading-Journal in das Cockpit integrieren** (Nutzeridee): eine App, mehrere

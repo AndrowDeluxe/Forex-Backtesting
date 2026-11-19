@@ -1,11 +1,11 @@
 {
- "stand": "2026-11-19 18:01:02.482134+00:00",
+ "stand": "2026-11-19 19:01:02.495338+00:00",
  "statistik": {
   "signale": 1,
   "ja": 1,
   "nein": 0,
   "verfallen": 0,
-  "r_bestaetigt": -0.4675675675675795,
+  "r_bestaetigt": -0.635135135135138,
   "r_alle_signale": -0.1151079136690645
  },
  "signale": [
@@ -25,7 +25,7 @@
    "p_sig_status": "geschlossen",
    "p_sig_r": -0.1151079137,
    "p_conf_status": "offen",
-   "p_conf_r": -0.4675675676
+   "p_conf_r": -0.6351351351
   }
  ]
 }

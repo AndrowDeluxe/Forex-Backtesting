@@ -18153,3 +18153,20 @@
 2026-11-18 21:35:17    52ab4ade..b068eebc  main -> main
 2026-11-18 21:35:17 Commit + Push erfolgreich.
 2026-11-18 21:35:17 === Scanner-Task beendet ===
+2026-11-19 14:30:01 === Scanner-Task gestartet ===
+2026-11-19 14:30:14 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-11-19 14:30:14 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-11-19 14:30:14 [sp500] 4 raw signal(s) as of 2026-11-18, regime_ok=False, 57 Ausstiegsschwellen
+2026-11-19 14:30:14 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-11-19 14:30:14 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-11-19 14:30:14 [nasdaq100] 0 raw signal(s) as of 2026-11-18, regime_ok=False, 7 Ausstiegsschwellen
+2026-11-19 14:30:14 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-11-19 14:30:14 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-11-19 14:30:14 64 Ausstiegsschwellen geschrieben (23 davon 'Mean Reversion erreicht')
+2026-11-19 14:30:14 
+2026-11-19 14:30:14 Saved 4 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-11-19T14:30:13)
+2026-11-19 14:30:14                                 market ticker  scan_date  close  lower_band  entry     sl                      tp  tp_price  risk_pct_price  position_size_pct   ma20  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
+2026-11-19 14:30:14 S&P 500 (volles Universum, 420 Ticker)    ACN 2026-11-18 227.49      229.38 227.49 149.50 kein TP (finale Config)       0.0           34.28               2.92 251.31      False      False                            12.5 2026-11-19T14:30:13
+2026-11-19 14:30:14 S&P 500 (volles Universum, 420 Ticker)    IBM 2026-11-18 228.53      231.00 228.53 172.01 kein TP (finale Config)       0.0           24.73               4.04 246.90      False      False                            12.5 2026-11-19T14:30:13
+2026-11-19 14:30:14 S&P 500 (volles Universum, 420 Ticker)    JPM 2026-11-18 324.11      324.59 324.11 274.79 kein TP (finale Config)       0.0           15.22               6.57 338.46      False      False                            12.5 2026-11-19T14:30:13
+2026-11-19 14:30:14 S&P 500 (volles Universum, 420 Ticker)    MRK 2026-11-18 137.78      138.24 137.78 111.42 kein TP (finale Config)       0.0           19.13               5.23 145.65      False      False                            12.5 2026-11-19T14:30:13

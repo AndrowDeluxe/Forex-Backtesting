@@ -129,119 +129,144 @@ def simulate(m: Market, k: int, sign: int, stop: float, spec, end_idx: int, cost
 
 
 # --------------------------------------------------------------------------- Merkmale
-def run_market(name: str, md: MacroDirs, gv, blocked: set) -> pd.DataFrame:
-    m = Market(name, OOS_END)
+class Ctx:
+    """Vorberechnete Arrays je Markt (H4 + Daily) fuer features_at -- gemeinsam fuer Backtest und Live-Scanner."""
+
+    def __init__(self, m: Market, end=OOS_END):
+        self.m = m
+        name = m.name
+        h, l, c = m.h, m.l, m.c
+        atr = h4_atr(m)
+        self.atr_prev = np.r_[np.nan, atr[:-1]]
+        atr_med = pd.Series(self.atr_prev).rolling(120, min_periods=60).median().to_numpy()
+        rng_all = h - l
+        self.act6 = pd.Series(rng_all).shift(1).rolling(6).mean().to_numpy() / atr_med
+        self.act12 = pd.Series(rng_all).shift(1).rolling(12).mean().to_numpy() / atr_med
+        cs = pd.Series(c)
+        self.rsi_h4 = rsi(cs, 14).to_numpy()
+        self.rsiml_h4 = rsi_multi_length(cs).to_numpy()
+        r14 = rsi(cs, 14)
+        self.stoch = ((r14 - r14.rolling(14).min()) / (r14.rolling(14).max() - r14.rolling(14).min())).to_numpy()
+        bb_mid = cs.rolling(20).mean()
+        bb_sd = cs.rolling(20).std(ddof=0)
+        self.bb_up, self.bb_lo = (bb_mid + 2 * bb_sd).to_numpy(), (bb_mid - 2 * bb_sd).to_numpy()
+        adx_h4, _ = _adx(m.x)
+        self.adx_h4 = adx_h4.to_numpy()
+        self.hs = swing_structure(m.x)
+        d = daily(name).loc[:pd.Timestamp(end)]
+        fx = features(d, MARKETS[name][1])
+        self.ds = swing_structure(d)
+        self.adx_d, _ = _adx(d)
+        self.rsi_d, self.rsiml_d = rsi(d["Close"], 14).to_numpy(), rsi_multi_length(d["Close"]).to_numpy()
+        sw = detect_fractal_swings(d.rename(columns=str.lower), k=2)
+        self.last_sh = sw["swing_high_price"].where(sw["swing_high_confirmed"]).ffill().to_numpy()
+        self.last_sl = sw["swing_low_price"].where(sw["swing_low_confirmed"]).ffill().to_numpy()
+        self.hi20, self.lo20 = d["High"].rolling(20).max().to_numpy(), d["Low"].rolling(20).min().to_numpy()
+        self.atr_d = fx["atr"].to_numpy()
+        self.wk = d.resample("W-FRI").agg({"High": "max", "Low": "min"})
+        self.mo = d.resample("ME").agg({"High": "max", "Low": "min"})
+        self.pos = d.index.searchsorted(m.day) - 1
+        self.wpos = self.wk.index.searchsorted(m.day - pd.to_timedelta(m.day.dayofweek, unit="D")) - 1
+        self.mpos = self.mo.index.searchsorted(m.day.to_period("M").to_timestamp()) - 1
+
+
+def features_at(ctx: Ctx, k: int, side: str, md: MacroDirs, gv, blocked: set) -> dict | None:
+    """Merkmale des Grundsignals an H4-Kerze k (abgeschlossen) fuer eine Seite; None ohne Grundsignal."""
+    m = ctx.m
+    name = m.name
     o, h, l, c = m.o, m.h, m.l, m.c
     n = len(m.x)
-    atr = h4_atr(m)
-    atr_prev = np.r_[np.nan, atr[:-1]]
-    atr_med = pd.Series(atr_prev).rolling(120, min_periods=60).median().to_numpy()
-    rng_all = h - l
-    act6 = pd.Series(rng_all).shift(1).rolling(6).mean().to_numpy() / atr_med
-    act12 = pd.Series(rng_all).shift(1).rolling(12).mean().to_numpy() / atr_med
-    cs = pd.Series(c)
-    rsi_h4 = rsi(cs, 14).to_numpy()
-    rsiml_h4 = rsi_multi_length(cs).to_numpy()
-    r14 = rsi(cs, 14)
-    stoch = ((r14 - r14.rolling(14).min()) / (r14.rolling(14).max() - r14.rolling(14).min())).to_numpy()
-    bb_mid = cs.rolling(20).mean()
-    bb_sd = cs.rolling(20).std(ddof=0)
-    bb_up, bb_lo = (bb_mid + 2 * bb_sd).to_numpy(), (bb_mid - 2 * bb_sd).to_numpy()
-    adx_h4, _ = _adx(m.x)
-    adx_h4 = adx_h4.to_numpy()
-    hs = swing_structure(m.x)
-    d = daily(name).loc[:pd.Timestamp(OOS_END)]
-    fx = features(d, MARKETS[name][1])
-    ds = swing_structure(d)
-    adx_d, _ = _adx(d)
-    rsi_d, rsiml_d = rsi(d["Close"], 14).to_numpy(), rsi_multi_length(d["Close"]).to_numpy()
-    sw = detect_fractal_swings(d.rename(columns=str.lower), k=2)
-    last_sh = sw["swing_high_price"].where(sw["swing_high_confirmed"]).ffill().to_numpy()
-    last_sl = sw["swing_low_price"].where(sw["swing_low_confirmed"]).ffill().to_numpy()
-    hi20, lo20 = d["High"].rolling(20).max().to_numpy(), d["Low"].rolling(20).min().to_numpy()
-    atr_d = fx["atr"].to_numpy()
-    wk = d.resample("W-FRI").agg({"High": "max", "Low": "min"})
-    mo = d.resample("ME").agg({"High": "max", "Low": "min"})
-    pos = d.index.searchsorted(m.day) - 1
-    wpos = wk.index.searchsorted(m.day - pd.to_timedelta(m.day.dayofweek, unit="D")) - 1
-    mpos = mo.index.searchsorted(m.day.to_period("M").to_timestamp()) - 1
+    sign = 1 if side == "long" else -1
+    rng = h[k] - l[k]
+    if k < MAX_N + 1 or rng <= 0 or not np.isfinite(ctx.atr_prev[k]) or ctx.pos[k] < 25:
+        return None
+    p = ctx.pos[k]
+    if sign == 1:
+        ok = lambda q: l[k] < l[k - q:k].min() and min(o[k], c[k]) > l[k - q:k].min()
+    else:
+        ok = lambda q: h[k] > h[k - q:k].max() and max(o[k], c[k]) < h[k - q:k].max()
+    if not ok(2):
+        return None
+    n_max = max(q for q in range(2, MAX_N + 1) if ok(q))
+    lvl = l[k - 2:k].min() if sign == 1 else h[k - 2:k].max()
+    ext = l[k] if sign == 1 else h[k]
+    body = min(o[k], c[k]) if sign == 1 else max(o[k], c[k])
+    swl = m.sw_lo if sign == 1 else m.sw_hi
+    taken = 0
+    for ci, bi, pr in reversed(swl):
+        if ci > k - 1:
+            continue
+        if bi < k - 120:
+            break
+        if not ((ext < pr < body) if sign == 1 else (body < pr < ext)):
+            continue
+        seg = l[bi + 1:k] if sign == 1 else h[bi + 1:k]
+        if len(seg) == 0 or (seg.min() > pr if sign == 1 else seg.max() < pr):
+            taken += 1
+
+    def lage(hi_, lo_):
+        return (c[k] - lo_) / (hi_ - lo_) if np.isfinite(hi_) and np.isfinite(lo_) and hi_ > lo_ else np.nan
+
+    last6 = slice(k - 6, k)
+    gegen = (c[last6] < o[last6]) if sign == 1 else (c[last6] > o[last6])
+    brueche = (c[k - 6:k] < l[k - 7:k - 1]) if sign == 1 else (c[k - 6:k] > h[k - 7:k - 1])
+    day = m.day[k]
+    sig_t = m.x.index[k]
+    ein_t = m.x.index[k + 1] if k + 1 < n else sig_t + pd.Timedelta(hours=4)
+    wk, mo, wpos, mpos = ctx.wk, ctx.mo, ctx.wpos, ctx.mpos
+    r = {"markt": name, "klasse": "Metalle" if name in METALS else "FX", "seite": side, "k": k,
+         "signal": sig_t.tz_convert(TZ), "einstieg": ein_t.tz_convert(TZ), "stunde": ein_t.tz_convert(TZ).hour,
+         "kurs": o[k + 1] if k + 1 < n else c[k], "stop": ext, "marke": lvl,
+         "spanne_atr": rng / ctx.atr_prev[k], "docht_anteil": sign * (body - ext) / rng,
+         "koerper_anteil": abs(c[k] - o[k]) / rng, "n_sweep": n_max, "swings_geholt": taken,
+         "schluss_unter_marke_atr": sign * (c[k] - lvl) / ctx.atr_prev[k],
+         "akt6": ctx.act6[k], "akt12": ctx.act12[k], "gegendruck6": gegen.mean(), "brueche6": int(brueche.sum()),
+         "adx_h4": ctx.adx_h4[k], "adx_d": ctx.adx_d.iat[p], "rsi_h4": ctx.rsi_h4[k], "rsiml_h4": ctx.rsiml_h4[k],
+         "stochrsi_h4": ctx.stoch[k], "rsi_d": ctx.rsi_d[p], "rsiml_d": ctx.rsiml_d[p],
+         "bb_aussen": bool(l[k] < ctx.bb_lo[k]) if sign == 1 else bool(h[k] > ctx.bb_up[k]),
+         "lage_DS": lage(ctx.last_sh[p], ctx.last_sl[p]), "lage_20T": lage(ctx.hi20[p], ctx.lo20[p]),
+         "lage_VW": lage(wk["High"].iat[wpos[k]], wk["Low"].iat[wpos[k]]) if wpos[k] >= 0 else np.nan,
+         "lage_VM": lage(mo["High"].iat[mpos[k]], mo["Low"].iat[mpos[k]]) if mpos[k] >= 0 else np.nan,
+         "range20_atr": (ctx.hi20[p] - ctx.lo20[p]) / ctx.atr_d[p] if ctx.atr_d[p] > 0 else np.nan,
+         "feiertag": day.normalize() in blocked or christmas(day)}
+    for f, v in (("DS", ctx.ds[p]), ("HS", ctx.hs[k - 1])):
+        r[f] = "mit" if v * sign > 0 else "gegen" if v * sign < 0 else "neutral"
+    mac = md.dirs(name, day)
+    ex = md.extra(name, day)
+    mac.update({"X3": ex["X3"], "X4": ex["X4"]})
+    if name == "XAUUSD" and gv is not None:
+        try:
+            mac["GV"] = gv.direction(day)
+        except Exception:
+            mac["GV"] = 0
+    for f, v in mac.items():
+        v = int(np.sign(v or 0)) * sign
+        r[f] = "mit" if v > 0 else "gegen" if v < 0 else "neutral"
+    r["X1"] = ex["X1"]
+    r["makro_gegen"] = sum(r[f] == "gegen" for f in FX_MACRO)
     g8 = md.g8
-    end_idx = n - 1
+    gi = g8.index.searchsorted(day) - 1
+    if gi >= 0:
+        row = g8.iloc[gi]
+        diff = (row[G8_BASE[name][0]] - row[G8_BASE[name][1]]) if name in G8_BASE else -row["USD"]
+        r["g8_abstand"] = float(diff) * sign
+    return r
+
+
+def run_market(name: str, md: MacroDirs, gv, blocked: set) -> pd.DataFrame:
+    m = Market(name, OOS_END)
+    ctx = Ctx(m)
+    end_idx = len(m.x) - 1
     start = int(m.x.index.searchsorted(pd.Timestamp(IS_START, tz="UTC")))
     rows = []
     for k in range(max(start, MAX_N + 1), end_idx):
-        rng = h[k] - l[k]
-        if rng <= 0 or not np.isfinite(atr_prev[k]) or pos[k] < 25:
-            continue
-        p = pos[k]
-        for side, sign in (("long", 1), ("short", -1)):
-            if sign == 1:
-                ok = lambda q: l[k] < l[k - q:k].min() and min(o[k], c[k]) > l[k - q:k].min()
-            else:
-                ok = lambda q: h[k] > h[k - q:k].max() and max(o[k], c[k]) < h[k - q:k].max()
-            if not ok(2):
+        for side in ("long", "short"):
+            r = features_at(ctx, k, side, md, gv, blocked)
+            if r is None:
                 continue
-            n_max = max(q for q in range(2, MAX_N + 1) if ok(q))
-            lvl = l[k - 2:k].min() if sign == 1 else h[k - 2:k].max()
-            ext = l[k] if sign == 1 else h[k]
-            body = min(o[k], c[k]) if sign == 1 else max(o[k], c[k])
-            swl = m.sw_lo if sign == 1 else m.sw_hi
-            taken = 0
-            for ci, bi, pr in reversed(swl):
-                if ci > k - 1:
-                    continue
-                if bi < k - 120:
-                    break
-                if not ((ext < pr < body) if sign == 1 else (body < pr < ext)):
-                    continue
-                seg = l[bi + 1:k] if sign == 1 else h[bi + 1:k]
-                if len(seg) == 0 or (seg.min() > pr if sign == 1 else seg.max() < pr):
-                    taken += 1
-
-            def lage(hi_, lo_):
-                return (c[k] - lo_) / (hi_ - lo_) if np.isfinite(hi_) and np.isfinite(lo_) and hi_ > lo_ else np.nan
-
-            last6 = slice(k - 6, k)
-            gegen = (c[last6] < o[last6]) if sign == 1 else (c[last6] > o[last6])
-            brueche = (c[k - 6:k] < l[k - 7:k - 1]) if sign == 1 else (c[k - 6:k] > h[k - 7:k - 1])
-            day = m.day[k]
-            r = {"markt": name, "klasse": "Metalle" if name in METALS else "FX", "seite": side, "k": k,
-                 "signal": m.x.index[k].tz_convert(TZ), "einstieg": m.x.index[k + 1].tz_convert(TZ),
-                 "stunde": m.x.index[k + 1].tz_convert(TZ).hour, "kurs": o[k + 1], "stop": ext,
-                 "spanne_atr": rng / atr_prev[k], "docht_anteil": sign * (body - ext) / rng,
-                 "koerper_anteil": abs(c[k] - o[k]) / rng, "n_sweep": n_max, "swings_geholt": taken,
-                 "schluss_unter_marke_atr": sign * (c[k] - lvl) / atr_prev[k],
-                 "akt6": act6[k], "akt12": act12[k], "gegendruck6": gegen.mean(), "brueche6": int(brueche.sum()),
-                 "adx_h4": adx_h4[k], "adx_d": adx_d.iat[p], "rsi_h4": rsi_h4[k], "rsiml_h4": rsiml_h4[k],
-                 "stochrsi_h4": stoch[k], "rsi_d": rsi_d[p], "rsiml_d": rsiml_d[p],
-                 "bb_aussen": bool(l[k] < bb_lo[k]) if sign == 1 else bool(h[k] > bb_up[k]),
-                 "lage_DS": lage(last_sh[p], last_sl[p]), "lage_20T": lage(hi20[p], lo20[p]),
-                 "lage_VW": lage(wk["High"].iat[wpos[k]], wk["Low"].iat[wpos[k]]) if wpos[k] >= 0 else np.nan,
-                 "lage_VM": lage(mo["High"].iat[mpos[k]], mo["Low"].iat[mpos[k]]) if mpos[k] >= 0 else np.nan,
-                 "range20_atr": (hi20[p] - lo20[p]) / atr_d[p] if atr_d[p] > 0 else np.nan,
-                 "feiertag": day.normalize() in blocked or christmas(day)}
-            for f, v in (("DS", ds[p]), ("HS", hs[k - 1])):
-                r[f] = "mit" if v * sign > 0 else "gegen" if v * sign < 0 else "neutral"
-            mac = md.dirs(name, day)
-            ex = md.extra(name, day)
-            mac.update({"X3": ex["X3"], "X4": ex["X4"]})
-            if name == "XAUUSD" and gv is not None:
-                try:
-                    mac["GV"] = gv.direction(day)
-                except Exception:
-                    mac["GV"] = 0
-            for f, v in mac.items():
-                v = int(np.sign(v or 0)) * sign
-                r[f] = "mit" if v > 0 else "gegen" if v < 0 else "neutral"
-            r["X1"] = ex["X1"]
-            r["makro_gegen"] = sum(r[f] == "gegen" for f in FX_MACRO)
-            gi = g8.index.searchsorted(day) - 1
-            if gi >= 0:
-                row = g8.iloc[gi]
-                diff = (row[G8_BASE[name][0]] - row[G8_BASE[name][1]]) if name in G8_BASE else -row["USD"]
-                r["g8_abstand"] = float(diff) * sign
+            sign = 1 if side == "long" else -1
             for ek, spec in EXITS.items():
-                res = simulate(m, k, sign, ext, spec, end_idx, m.cost)
+                res = simulate(m, k, sign, r["stop"], spec, end_idx, m.cost)
                 if res is not None:
                     r[f"g_{ek}"], r[f"r_{ek}"], r[f"j_{ek}"] = res
                     r[f"t_{ek}"] = m.x.index[res[2]].tz_convert(TZ)

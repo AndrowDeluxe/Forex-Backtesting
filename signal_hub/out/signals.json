@@ -1,0 +1,28 @@
+{
+ "stand": "2026-11-19 14:29:02.767895+00:00",
+ "statistik": {
+  "signale": 1,
+  "ja": 0,
+  "nein": 0,
+  "verfallen": 0,
+  "r_bestaetigt": 0.0,
+  "r_alle_signale": 2.1294964028776673
+ },
+ "signale": [
+  {
+   "id": "NZDUSD_2026111903_l_TEST",
+   "setup": "TEST",
+   "markt": "NZDUSD",
+   "seite": "long",
+   "einstieg": "2026-11-19T06:00:00.000Z",
+   "kurs": 0.54967,
+   "stop": 0.54827,
+   "ziel_3r": 0.55387,
+   "stern": false,
+   "ampel": "rot",
+   "status": "offen",
+   "p_sig_status": "offen",
+   "p_sig_r": 2.1294964029
+  }
+ ]
+}

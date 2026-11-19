@@ -44,6 +44,10 @@ SRC = {"XAUUSD": ["GOLD_M15_2009-01-01_2016-01-01.parquet", "GOLD_H1_2016-01-01_
                   "GOLD_H1_2018-01-01_2026-11-10.parquet"],
        "XAGUSD": ["SILVER_M15_2009-01-01_2016-01-01.parquet", "SILVER_H1_2016-01-01_2026-08-01.parquet"]}
 LAKE = {"XAUUSD": ("GOLD", "H1"), "XAGUSD": ("SILVER", "H1")}
+# FX-Lake (Signal-Hub 19.11.): nur Bars NACH dem Ende der H1-Datei anhaengen (keine M15/H1-Mischung in der Ueberlappung)
+LAKE_FX = {"EURUSD": ("EURUSD", "M5"), "GBPUSD": ("GBPUSD", "M15"), "AUDUSD": ("AUDUSD", "M15"),
+           "NZDUSD": ("NZDUSD", "M15"), "USDJPY": ("USDJPY", "M15"), "USDCAD": ("USDCAD", "M15"),
+           "USDCHF": ("USDCHF", "M15")}
 
 
 # --------------------------------------------------------------------------- Daten
@@ -58,7 +62,16 @@ def intraday(name: str) -> pd.DataFrame:
             parts.append(lk[["Open", "High", "Low", "Close"]])
     b = pd.concat(parts)
     b.index = b.index.tz_localize("UTC") if b.index.tz is None else b.index.tz_convert("UTC")
-    return b[~b.index.duplicated(keep="first")].sort_index()
+    b = b[~b.index.duplicated(keep="first")].sort_index()
+    if name in LAKE_FX:
+        from data_lake.storage import read_bars
+        lk = read_bars("dukascopy", *LAKE_FX[name])
+        if lk is not None and len(lk):
+            lk = lk[["Open", "High", "Low", "Close"]].copy()
+            lk.index = lk.index.tz_localize("UTC") if lk.index.tz is None else lk.index.tz_convert("UTC")
+            # erst ab der naechsten vollen Stunde nach der letzten H1-Datei-Kerze
+            b = pd.concat([b, lk[lk.index >= b.index.max() + pd.Timedelta(hours=1)]]).sort_index()
+    return b
 
 
 def server_time(idx: pd.DatetimeIndex) -> pd.DatetimeIndex:
@@ -103,11 +116,14 @@ def manipulations(x: pd.DataFrame) -> list[dict]:
 class Market:
     """Alle Arrays eines Marktes fuer Simulation, Ziele und BIAS."""
 
-    def __init__(self, name: str, end: str = OOS_END):
+    def __init__(self, name: str, end: str = OOS_END, cut: pd.Timestamp | None = None):
+        """cut (UTC): nur H4-Kerzen, die bis zu diesem Zeitpunkt abgeschlossen sind (Live-Scanner)."""
         self.name = name
         _, grid, self.cost = MARKETS[name]
         x = h4(name)
         x = x[(x.index >= pd.Timestamp(WARMUP, tz="UTC")) & (x.index <= pd.Timestamp(end, tz="UTC") + pd.Timedelta(hours=23))]
+        if cut is not None:
+            x = x[x.index + pd.Timedelta(hours=4) <= cut]
         self.x = x
         self.o, self.h, self.l, self.c = (x[k].to_numpy() for k in ("Open", "High", "Low", "Close"))
         self.srv = server_time(x.index)

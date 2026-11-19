@@ -9,6 +9,13 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-19** [Dachprojekt / Signal-Hub] **Signal-Hub Stufe 1 live: Hybrid-Bestätigungssystem** (Nutzerentscheid, Plan freigegeben).
+  Neues Paket `signal_hub/` (Scan, Telegram-Alarm mit Chart + Ja/Nein/Später/Nein-Grund, Listener über `getUpdates`, Journal,
+  Paper-Simulation, Risiko-Sperre EK/Funded), Tasks „Signal-Hub-Scan“ (Mo–Fr alle 10 Min.) und „Signal-Hub-Listener“
+  (Mo–Sa alle 2 Min.). `h4_v4.features_at`/`Ctx` ausgelagert (Backtest unverändert, EURUSD 5.993 Signale identisch);
+  `h4_manip.intraday` hängt FX-Lake-Daten nach der H1-Datei an, `Market(cut=)`; Data-Lake-Key NZDUSD M15 neu
+  (`data_lake/sources.py`). Keine Orders, kein echtes Geld, keine Bridge-Änderung. [[signal-hub]]
+
 - **2026-11-18** [Reporting / Prozess] **Soll/Ist-Bericht repariert + Fehlerklasse festgehalten** (Nutzerauftrag)
   [[live-abgleich-fehlerklassen]]. Ursache, warum die verpassten ORB-Tage nicht auffielen: `soll_ist.py` matchte über
   die Einstiegsminute, die ORB-Pending-Keys (seit 17.09.) haben nur ein Datum. Jeder ORB-Trade stand deshalb als

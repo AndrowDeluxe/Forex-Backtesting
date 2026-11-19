@@ -18,6 +18,12 @@ passiert, was steht an.
 
 ## ▶️ Als Nächstes
 
+- **🎯 NEU 19.11.: Signal-Hub (Hybrid-Bestätigung) – neue Hauptrichtung im Dachprojekt** [[signal-hub]].
+  Stufe 1 live: H4-Spike-Scanner (9 Märkte) → Telegram-Alarm mit Chart, Merkmalen, Makro-Ampel und Ja/Nein/Später →
+  Journal + Paper-Simulation (keine Orders). Risiko-Sperre gegen Overtrading (EK 1 %/3 Trades/−5 % Woche, Funded FK-Regeln).
+  **Wartet auf dich:** Test-Alarm (NZDUSD, TEST) in Telegram anklicken; MT5-Demokonto (Login/Server) für Stufe 2 nennen.
+  Nächste Stufen: MT5-Demo, Makro-Agent täglich, Daily-Setups nach Handprüfung, App-Dashboard.
+
 - **📈 Neu im Dachprojekt (15.11.): täglicher Aktien- + Krypto-Screener, Forward-Test läuft seit 15.11.**
   [[aktien-analyse-und-bot]]. S&P 500 + Nasdaq-100 (518) und Top-30-Krypto: Score 0–100 (≥ 65 KAUFEN,
   ≤ 35 VERKAUFEN), Preisbereiche A/B/C, News per Claude-Abo, Telegram + Notion + Dashboard. Alle 11 Annahmen am
@@ -703,6 +709,8 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 | Regime-Notion-Sync (neu)                                | — (nur FRED/ALFRED/yfinance-Abruf + Notion-Schreiben, kein Order-Bezug)                 | Regimekarte Wachstum×Inflation neu rechnen → Notion „Regime-Roadmap“ + Seite „Assets je Regime“ (`scripts/regime_notion_task.ps1`) | Ready (So 09:00, StartWhenAvailable) | — | 2026-10-28      |
 | Makro-Daten (neu)                                       | — (nur Datenabruf, kein Order-Bezug)                                                     | Makro-Agent Schicht 1: G8-Makrodaten und Kalender mit Abrufzeit nach `fusion_lab/data/macro_data/` (`scripts/macro_data_task.ps1`, Akku erlaubt); seit 12.11. auch Geopolitik-Index, Megacap-Earnings und Schlagzeilen mit Einordnung durch lokalen `claude.exe` | Ready (täglich 00:50 + 07:30, auch Sa/So) | — | 2026-11-12 |
 | C2-Forward-Log (neu)                                    | — (nur Log + Telegram, keine Orders)                                                     | Forward-Test Daily-Edge: seit 11.11. nur noch W50 Vorwochen-Mitte `5c82f5d4` + Referenz EL `6c55e525`, 9 Märkte (alter Forward `aea4189b` raus, Nutzerentscheid) (`scripts/c2_forward_task.ps1`, Ledger `htf_daily_trade/forward/`, Akku erlaubt); Auswertung ab 30 Trades oder 12.11.2027 | Ready (Di–Sa 03:30, StartWhenAvailable) | — | 2026-11-11 |
+| Signal-Hub-Scan (neu)                                   | — (nur Telegram-Alarm + Journal, keine Orders)                                           | H4-Spike-Scanner 9 Märkte, Alarm bei Qualität + Aktivität (`scripts/signal_hub_scan_task.ps1`, `signal_hub/`), Journal-Commit stündlich | Ready (Mo–Fr alle 10 Min., Akku erlaubt) | — | 2026-11-19 |
+| Signal-Hub-Listener (neu)                               | — (Paper-Simulation, keine Orders)                                                       | Telegram-Knöpfe Ja/Nein/Später, Verfall, Erinnerungen, Paper-Update (`scripts/signal_hub_listener_task.ps1`) | Ready (Mo–Sa alle 2 Min., Akku erlaubt) | — | 2026-11-19 |
 | Forex-Screener-Aktien (neu)                             | — (nur Analyse + Paper-Ledger, keine Orders)                                             | S&P 500 + Nasdaq-100: Score, Preisbereiche, News per `claude.exe -p` → Telegram, Notion, Dashboard, Ledger (`scripts/screener_task.ps1 aktien`, **Forward seit 15.11.**, committet Ledger + Archiv) | Ready (Mo–Fr 23:00, StartWhenAvailable) | — | 2026-11-15 |
 | Forex-Screener-Krypto (neu)                             | — (nur Analyse + Paper-Ledger, keine Orders)                                             | Top-30-Krypto (Binance/CoinGecko): wie Aktien (`scripts/screener_task.ps1 krypto`, **Forward seit 15.11.**, committet Ledger + Archiv) | Ready (täglich 07:45, StartWhenAvailable) | — | 2026-11-15 |
 | Forex-Screener-Rohstoffe (neu)                          | — (nur Analyse + Paper-Ledger, keine Orders)                                             | Kern-10-Rohstoffe (Yahoo-Futures + CFTC-COT): wie Aktien (`scripts/screener_task.ps1 rohstoffe`, **Probebetrieb**, Version 1.1 COT-Gewicht 0, committet Ledger + Archiv) | Ready (Mo–Fr 23:15, StartWhenAvailable, Akku erlaubt) | — | 2026-11-18 |

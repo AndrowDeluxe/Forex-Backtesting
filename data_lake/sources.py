@@ -92,6 +92,8 @@ FAST_SOURCES: list[LakeSource] = [
     LakeSource("dukascopy", "USDCHF", "M15", _dukascopy("USDCHF", "M15"), "fast", 410),
     LakeSource("dukascopy", "AUDUSD", "M15", _dukascopy("AUDUSD", "M15"), "fast", 410),
     LakeSource("dukascopy", "USDCAD", "M15", _dukascopy("USDCAD", "M15"), "fast", 410),
+    # Signal-Hub (2026-11-19): NZDUSD fuer den H4-Scanner (9 Maerkte); vorher kein Lake-Key.
+    LakeSource("dukascopy", "NZDUSD", "M15", _dukascopy("NZDUSD", "M15"), "fast", 410),
     LakeSource("dukascopy", "BUND", "M5", _rate_instrument("BUND"), "fast", 410),
     LakeSource("dukascopy", "USTBOND", "M5", _rate_instrument("USTBOND"), "fast", 410),
     LakeSource("tradingview", "DE02Y", "D1", _tvc_yield("DE02Y"), "fast", 0),

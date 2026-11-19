@@ -273,3 +273,7 @@ Jeder Strang bekommt beim Start einen eigenen Plan-Modus-Durchlauf.
 Strang 0: Nutzer legt die Zugänge an (Anleitung in `fusion_lab/README.md`):
 Azure-App für OneNote, Telegram-API-Zugang, Notion-Connector in claude.ai.
 Danach Vollimport, dann Inventur.
+
+## Neue Hauptrichtung (19.11.2026): Signal-Hub
+
+Hybrid-Bestätigungssystem: Maschine findet und bewertet Setups, Nutzer bestätigt, Maschine führt aus. Roadmap und Stand: [[signal-hub]].

@@ -18170,3 +18170,45 @@
 2026-11-19 14:30:14 S&P 500 (volles Universum, 420 Ticker)    IBM 2026-11-18 228.53      231.00 228.53 172.01 kein TP (finale Config)       0.0           24.73               4.04 246.90      False      False                            12.5 2026-11-19T14:30:13
 2026-11-19 14:30:14 S&P 500 (volles Universum, 420 Ticker)    JPM 2026-11-18 324.11      324.59 324.11 274.79 kein TP (finale Config)       0.0           15.22               6.57 338.46      False      False                            12.5 2026-11-19T14:30:13
 2026-11-19 14:30:14 S&P 500 (volles Universum, 420 Ticker)    MRK 2026-11-18 137.78      138.24 137.78 111.42 kein TP (finale Config)       0.0           19.13               5.23 145.65      False      False                            12.5 2026-11-19T14:30:13
+2026-11-19 14:30:14 [main b695f2f5] OU-Modell Scanner: Snapshot 2026-11-19 14:30
+2026-11-19 14:30:14  2 files changed, 21 insertions(+), 2 deletions(-)
+2026-11-19 14:30:15 Nichts zu mergen (0 eingehende Commits) - Stash und Merge uebersprungen.
+2026-11-19 14:30:17 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-11-19 14:30:17    8a2b8d2b..b695f2f5  main -> main
+2026-11-19 14:30:17 Commit + Push erfolgreich.
+2026-11-19 14:30:17 === Scanner-Task beendet ===
+2026-11-19 15:35:01 === Scanner-Task gestartet ===
+2026-11-19 15:35:18 $WBD: possibly delisted; no price data found  (1d 2025-10-15 -> 2026-11-19)
+2026-11-19 15:35:18 System.Management.Automation.RemoteException
+2026-11-19 15:35:18 1 Failed download:
+2026-11-19 15:35:18 ['WBD']: possibly delisted; no price data found  (1d 2025-10-15 -> 2026-11-19)
+2026-11-19 15:35:18 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-11-19 15:35:18 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-11-19 15:35:18 WARNUNG: nur 57/58 Ticker mit Kursen (98%). Ohne Kurse: WBD
+2026-11-19 15:35:18 Traceback (most recent call last):
+2026-11-19 15:35:18   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3641, in get_loc
+2026-11-19 15:35:18     return self._engine.get_loc(casted_key)
+2026-11-19 15:35:18            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+2026-11-19 15:35:18   File "pandas/_libs/index.pyx", line 168, in pandas._libs.index.IndexEngine.get_loc
+2026-11-19 15:35:18   File "pandas/_libs/index.pyx", line 197, in pandas._libs.index.IndexEngine.get_loc
+2026-11-19 15:35:18   File "pandas/_libs/hashtable_class_helper.pxi", line 7668, in pandas._libs.hashtable.PyObjectHashTable.get_item
+2026-11-19 15:35:18   File "pandas/_libs/hashtable_class_helper.pxi", line 7676, in pandas._libs.hashtable.PyObjectHashTable.get_item
+2026-11-19 15:35:18 KeyError: 'WBD'
+2026-11-19 15:35:18 System.Management.Automation.RemoteException
+2026-11-19 15:35:18 The above exception was the direct cause of the following exception:
+2026-11-19 15:35:18 System.Management.Automation.RemoteException
+2026-11-19 15:35:18 Traceback (most recent call last):
+2026-11-19 15:35:18   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 346, in <module>
+2026-11-19 15:35:18     main()
+2026-11-19 15:35:18     ~~~~^^
+2026-11-19 15:35:18   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 305, in main
+2026-11-19 15:35:18     all_signals.append(scan_market(market_key))
+2026-11-19 15:35:18                        ~~~~~~~~~~~^^^^^^^^^^^^
+2026-11-19 15:35:18   File "C:\Users\andre\Forex-Backtesting\ou_paper_backtest\scanner.py", line 172, in scan_market
+2026-11-19 15:35:18     price = panel[t].dropna()
+2026-11-19 15:35:18             ~~~~~^^^
+2026-11-19 15:35:18   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+2026-11-19 15:35:18     indexer = self.columns.get_loc(key)
+2026-11-19 15:35:18   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
+2026-11-19 15:35:18     raise KeyError(key) from err
+2026-11-19 15:35:18 KeyError: 'WBD'

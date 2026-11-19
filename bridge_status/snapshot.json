@@ -1,36 +1,36 @@
 {
-  "generated_at": "2026-11-19T22:01:25",
+  "generated_at": "2026-11-19T22:31:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-11-19T21:59:06",
+      "last_run": "2026-11-19T22:29:06",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-11-19 21:59:06 2026-11-19 21:59:02,024 INFO run_once: Konto-Equity 2451.99 EUR | Aggregiertes offenes Risiko (ganzes Konto): 123.42 (Deckel dieser Bridge: 735.60, 30%)",
+      "last_equity_line": "2026-11-19 22:29:06 2026-11-19 22:29:01,936 INFO run_once: Konto-Equity 2449.82 EUR | Aggregiertes offenes Risiko (ganzes Konto): 123.48 (Deckel dieser Bridge: 734.95, 30%)",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-11-19T21:58:17",
+      "last_run": "2026-11-19T22:28:17",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-11-19 21:58:17 Verbunden: Login 504072729, Equity $99,632.53 USD",
+          "last_equity_line": "2026-11-19 22:28:17 Verbunden: Login 504072729, Equity $99,632.53 USD",
           "recent_events": []
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-11-19 21:58:17 Verbunden: Login 16054, Equity $97,503.98 USD",
+          "last_equity_line": "2026-11-19 22:28:17 Verbunden: Login 16054, Equity $97,503.98 USD",
           "recent_events": []
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-11-19T21:14:10",
-      "minutes_since_last_run": 47.2,
+      "last_run": "2026-11-19T22:14:10",
+      "minutes_since_last_run": 17.2,
       "status": "ok",
-      "last_equity_line": "2026-11-19 21:14:10 Verbunden: Login 17764, Equity $99,005.04",
+      "last_equity_line": "2026-11-19 22:14:10 Verbunden: Login 17764, Equity $99,001.09",
       "last_error_line": "2026-11-02 02:08:37 cls_practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
       "recent_events": [
         "2026-11-12 03:14:11  LIVE ᴩ trend_pullback XPTUSD.gbe Signal zu alt fuer Live-Entry (74 Min., Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",

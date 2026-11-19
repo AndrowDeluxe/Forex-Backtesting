@@ -175,3 +175,26 @@
 2026-11-18 03:30:11    ff0e744d..82f653e2  main -> main
 2026-11-18 03:30:11 Commit + Push erfolgreich.
 2026-11-18 03:30:11 === Task beendet ===
+2026-11-19 03:30:01 === Task gestartet ===
+2026-11-19 03:30:05 Traceback (most recent call last):
+2026-11-19 03:30:05   File "<frozen runpy>", line 203, in _run_module_as_main
+2026-11-19 03:30:05   File "<frozen runpy>", line 88, in _run_code
+2026-11-19 03:30:05   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_forward_w50.py", line 147, in <module>
+2026-11-19 03:30:05     raise SystemExit(main())
+2026-11-19 03:30:05                      ~~~~^^
+2026-11-19 03:30:05   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_forward_w50.py", line 125, in main
+2026-11-19 03:30:05     t = scan(a.start)
+2026-11-19 03:30:05   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_forward_w50.py", line 77, in scan
+2026-11-19 03:30:05     el = el_trades(start, end)
+2026-11-19 03:30:05   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_bis_heute.py", line 79, in el_trades
+2026-11-19 03:30:05     t = cb.trades(start, end.strftime("%Y-%m-%d"))
+2026-11-19 03:30:05   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_blind.py", line 67, in trades
+2026-11-19 03:30:05     t = t[(t["T6"] < 0) & (t["M7"] > 0)].copy()
+2026-11-19 03:30:05            ~^^^^^^
+2026-11-19 03:30:05   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+2026-11-19 03:30:05     indexer = self.columns.get_loc(key)
+2026-11-19 03:30:05   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\range.py", line 525, in get_loc
+2026-11-19 03:30:05     raise KeyError(key)
+2026-11-19 03:30:05 KeyError: 'T6'
+2026-11-19 03:30:05 COT: 0 neue Berichte
+2026-11-19 03:30:05 W50-Forward-Exitcode 1

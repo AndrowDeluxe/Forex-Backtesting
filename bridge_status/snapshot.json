@@ -1,36 +1,36 @@
 {
-  "generated_at": "2026-11-20T10:01:25",
+  "generated_at": "2026-11-20T10:31:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-11-20T09:59:05",
+      "last_run": "2026-11-20T10:29:06",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-11-20 09:59:05 2026-11-20 09:59:01,947 INFO run_once: Konto-Equity 2424.76 EUR | Aggregiertes offenes Risiko (ganzes Konto): 578.26 (Deckel dieser Bridge: 727.43, 30%)",
+      "last_equity_line": "2026-11-20 10:29:06 2026-11-20 10:29:02,003 INFO run_once: Konto-Equity 2406.69 EUR | Aggregiertes offenes Risiko (ganzes Konto): 578.28 (Deckel dieser Bridge: 722.01, 30%)",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-11-20T09:58:16",
+      "last_run": "2026-11-20T10:28:16",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-11-20 09:58:16 Verbunden: Login 504072729, Equity $99,632.50 USD",
+          "last_equity_line": "2026-11-20 10:28:16 Verbunden: Login 504072729, Equity $99,632.50 USD",
           "recent_events": []
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-11-20 09:58:16 Verbunden: Login 16054, Equity $97,503.98 USD",
+          "last_equity_line": "2026-11-20 10:28:16 Verbunden: Login 16054, Equity $97,503.98 USD",
           "recent_events": []
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-11-20T09:14:11",
-      "minutes_since_last_run": 47.2,
+      "last_run": "2026-11-20T10:14:12",
+      "minutes_since_last_run": 17.2,
       "status": "ok",
-      "last_equity_line": "2026-11-20 09:14:11 Verbunden: Login 17764, Equity $99,093.57",
+      "last_equity_line": "2026-11-20 10:14:12 Verbunden: Login 17764, Equity $99,133.93",
       "last_error_line": "2026-11-02 02:08:37 cls_practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",
       "recent_events": [
         "2026-11-12 03:14:11  LIVE ᴩ trend_pullback XPTUSD.gbe Signal zu alt fuer Live-Entry (74 Min., Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
@@ -41,10 +41,7 @@
         "2026-10-30 10:19:25 ctnl-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
         "2026-10-30 10:19:25 trend_pullback-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
         "2026-10-30 10:19:25 cls_practical-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-        "2026-10-30 10:19:25 gold_asb-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-        "2026-10-30 09:19:36  LIVE CTNL-Kill-Switch: Scan ohne Trades (Datenluecke?) -- kein Urteil, Zustand bleibt aus.",
-        "2026-10-30 09:19:36 gold_silver-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)",
-        "2026-10-30 09:19:36 ctnl-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)"
+        "2026-10-30 10:19:25 gold_asb-Scan fehlgeschlagen: Aufruf haengt noch nach 20s (dukascopy_python-Hang, siehe DASHBOARD.md)"
       ]
     }
   }

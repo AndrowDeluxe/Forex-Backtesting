@@ -18464,3 +18464,30 @@
 2026-11-19 21:35:12   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\base.py", line 3648, in get_loc
 2026-11-19 21:35:12     raise KeyError(key) from err
 2026-11-19 21:35:12 KeyError: 'WBD'
+2026-11-19 21:35:12 [main 2a34daf5] OU-Modell Scanner: Snapshot 2026-11-19 21:35
+2026-11-19 21:35:12  1 file changed, 42 insertions(+)
+2026-11-19 21:35:13 Nichts zu mergen (0 eingehende Commits) - Stash und Merge uebersprungen.
+2026-11-19 21:35:15 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-11-19 21:35:15    98f8fad8..2a34daf5  main -> main
+2026-11-19 21:35:15 Commit + Push erfolgreich.
+2026-11-19 21:35:15 === Scanner-Task beendet ===
+2026-11-20 14:30:01 === Scanner-Task gestartet ===
+2026-11-20 14:30:13 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-11-20 14:30:13 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-11-20 14:30:13 [sp500] 7 raw signal(s) as of 2026-11-19, regime_ok=False, 57 Ausstiegsschwellen
+2026-11-20 14:30:13 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-11-20 14:30:13 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-11-20 14:30:13 [nasdaq100] 0 raw signal(s) as of 2026-11-19, regime_ok=False, 7 Ausstiegsschwellen
+2026-11-20 14:30:13 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-11-20 14:30:13 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-11-20 14:30:13 64 Ausstiegsschwellen geschrieben (12 davon 'Mean Reversion erreicht')
+2026-11-20 14:30:13 
+2026-11-20 14:30:13 Saved 7 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-11-20T14:30:13)
+2026-11-20 14:30:13                                 market ticker  scan_date  close  lower_band  entry     sl                      tp  tp_price  risk_pct_price  position_size_pct   ma20  regime_ok  tradeable  position_size_concentrated_pct          scanned_at
+2026-11-20 14:30:13 S&P 500 (volles Universum, 420 Ticker)    ACN 2026-11-19 218.58      222.28 218.58 122.49 kein TP (finale Config)       0.0           43.96               2.27 249.30      False      False                            12.5 2026-11-20T14:30:13
+2026-11-20 14:30:13 S&P 500 (volles Universum, 420 Ticker)      C 2026-11-19 115.28      115.68 115.28  94.37 kein TP (finale Config)       0.0           18.14               5.51 121.56      False      False                            12.5 2026-11-20T14:30:13
+2026-11-20 14:30:13 S&P 500 (volles Universum, 420 Ticker)   CTSH 2026-11-19  56.31       56.59  56.31  30.43 kein TP (finale Config)       0.0           45.96               2.18  63.87      False      False                            12.5 2026-11-20T14:30:13
+2026-11-20 14:30:13 S&P 500 (volles Universum, 420 Ticker)    IBM 2026-11-19 223.88      226.05 223.88 154.45 kein TP (finale Config)       0.0           31.01               3.22 245.57      False      False                            12.5 2026-11-20T14:30:13
+2026-11-20 14:30:13 S&P 500 (volles Universum, 420 Ticker)    JPM 2026-11-19 320.22      321.01 320.22 261.09 kein TP (finale Config)       0.0           18.46               5.42 337.64      False      False                            12.5 2026-11-20T14:30:13
+2026-11-20 14:30:13 S&P 500 (volles Universum, 420 Ticker)    MRK 2026-11-19 132.81      135.16 132.81  98.07 kein TP (finale Config)       0.0           26.16               3.82 144.93      False      False                            12.5 2026-11-20T14:30:13
+2026-11-20 14:30:13 S&P 500 (volles Universum, 420 Ticker)    STT 2026-11-19 161.23      161.82 161.23 132.78 kein TP (finale Config)       0.0           17.65               5.67 169.82      False      False                            12.5 2026-11-20T14:30:13

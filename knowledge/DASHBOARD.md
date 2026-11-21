@@ -235,6 +235,14 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 
 ### Weitere Projekte
 
+- **🤖 TradingAgents-Forward (seit 21.11., Nutzerentscheid, Plan freigegeben): Agenten-Team gegen Kontrollen.**
+  Multi-Agenten-Framework (TauricResearch) über das Claude-Abo (`claude.exe -p`, kein API-Key; Haiku für Analysten/
+  Debatten, Sonnet für die Manager), Korb NVDA/JPM/XOM/UNH/WMT, Mo–Fr 22:15 nach US-Schluss. Gemessen: 5-Tage-Alpha
+  gegen SPY je Entscheid, verglichen mit immer Buy / Zufall / Momentum 20 T. Erster offizieller Tag **23.11.**,
+  **Auswertung ab 15.02.2027**: Erfolg = schlägt alle drei Kontrollen und t > 2 auf Wochenbasis. Ergebnis im
+  Cockpit-Tab „Agenten“. Zweck: erst messen, dann Bausteine (Entscheidungs-Log + Lektion, Gegenposition, zwei
+  Modellstufen) für den Makro-Agenten übernehmen. Code `fusion_lab/agent_forward/`. [[tradingagents-tauric]]
+
 - **🌱 Lebensjournal / Lebens-App (seit 16.11.): eigenes Repo `C:\Users\andre\Lebensjournal\`**, eigene
   `STATUS.md`/`CHANGELOG.md` dort (bewusst getrennt vom Trading). Startseite → Bereiche „Persönlich“ (Heute,
   Inbox, …) und „Trading“ (das Cockpit aus `fusion_lab/dashboard/`, unverändert eingebunden, Daten über
@@ -565,10 +573,6 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
   Projekte“ oben). Anlegen (und wohin einordnen — `projects/` oder `resources/`?) oder
   bewusst offenlassen, solange das Thema noch läuft?
 
-- **Lint 16.11.: fehlende Notiz `tradingagents-tauric`.** 2 tote Wikilinks
-  (`DASHBOARD.md:753`, `resources/prosper-bot-trendregel-echtdaten.md:7`) zeigen auf
-  dieselbe fehlende Notiz zum TradingAgents(TauricResearch)-Test (12.11.). Anlegen?
-
 ### Aufgaben (Betrieb)
 
 - **(21.11.) Gratis-Keys für die News-Quellen registrieren (du).** Finnhub (finnhub.io), Alpha Vantage
@@ -727,6 +731,7 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 | News-Sources-Ledger (neu)                               | — (nur Research + Ledger, keine Orders)                                                  | 15 Märkte (Kurs-Watchlist + FX-Kern + Gold): Google News, Zentralbank-RSS, SEC EDGAR, StockTwits, CNN/Krypto Fear & Greed (+ Finnhub/Alpha Vantage/Reddit nach Key), Einordnung per `claude.exe -p` → Forward-Ledger je Quelle (`scripts/news_sources_task.ps1`, `fusion_lab/news_sources/`, committet Ledger); speist das Prosper-Kursprojekt | Ready (täglich 22:30, Akku erlaubt) | — | 2026-11-21 |
 | Signal-Hub-Listener (neu)                               | — (Paper-Simulation, keine Orders)                                                       | Telegram-Knöpfe Ja/Nein/Später, Verfall, Erinnerungen, Paper-Update (`scripts/signal_hub_listener_task.ps1`) | Ready (Mo–Sa alle 2 Min., Akku erlaubt) | — | 2026-11-19 |
 | Forex-Screener-Aktien (neu)                             | — (nur Analyse + Paper-Ledger, keine Orders)                                             | S&P 500 + Nasdaq-100: Score, Preisbereiche, News per `claude.exe -p` → Telegram, Notion, Dashboard, Ledger (`scripts/screener_task.ps1 aktien`, **Forward seit 15.11.**, committet Ledger + Archiv) | Ready (Mo–Fr 23:00, StartWhenAvailable) | — | 2026-11-15 |
+| Forex-TradingAgents-Forward (neu)                       | — (nur Analyse + Ledger, keine Orders)                                                   | TradingAgents-Team (Claude-Abo, Haiku/Sonnet) für NVDA/JPM/XOM/UNH/WMT + 3 Kontrollen, 5-Tage-Alpha gegen SPY → Ledger + Cockpit-Tab „Agenten“ (`scripts/agent_forward_task.ps1`, venv `C:\Users\andre\TradingAgents\`, **Forward ab 23.11.**, Auswertung ab 15.02.2027, committet nur Ledger) | Ready (Mo–Fr 22:15, StartWhenAvailable, Akku erlaubt) | — | 2026-11-21 |
 | Forex-Screener-Krypto (neu)                             | — (nur Analyse + Paper-Ledger, keine Orders)                                             | Top-30-Krypto (Binance/CoinGecko): wie Aktien (`scripts/screener_task.ps1 krypto`, **Forward seit 15.11.**, committet Ledger + Archiv) | Ready (täglich 07:45, StartWhenAvailable) | — | 2026-11-15 |
 | Forex-Screener-Rohstoffe (neu)                          | — (nur Analyse + Paper-Ledger, keine Orders)                                             | Kern-10-Rohstoffe (Yahoo-Futures + CFTC-COT): wie Aktien (`scripts/screener_task.ps1 rohstoffe`, **Probebetrieb**, Version 1.1 COT-Gewicht 0, committet Ledger + Archiv) | Ready (Mo–Fr 23:15, StartWhenAvailable, Akku erlaubt) | — | 2026-11-18 |
 | Forex-Rohstoff-Tiefenanalyse (neu)                      | — (nur Analyse + Telegram)                                                               | Wochen-Tiefenanalyse Gold/Silber/Kupfer per `claude.exe -p` mit Web (`scripts/commodity_deep_task.ps1`, committet `archive/rohstoffe_tief/`) | Ready (So 18:00, StartWhenAvailable) | — | 2026-11-18 |
@@ -834,10 +839,10 @@ unverarbeitete Clippings unverändert seit 09-09. Verweise nach außerhalb von
   (b) Makro-Agent: jede KI-Einschätzung vor Marktöffnung mit Zeitstempel versiegeln, Einschaltregel
   vorab festlegen (passt zum TradingAgents-Punkt 12.11.).
 
-- (12.11.) **TradingAgents (TauricResearch) getestet: Workflow-Bausteine für den Makro-Agenten**
-  (Vorschlag, nicht entschieden). Als Signalquelle ungeeignet (Aktien-Fokus, nicht rückwirkend
-  testbar). Kandidaten: Entscheidungs-Log mit automatischer Abrechnung + Lektion (Point-in-time),
-  Pflicht-Gegenposition vor dem Gewichten, zwei Modellstufen, Trade-Tabelle als JSON-Schema.
+- (12.11.) **TradingAgents (TauricResearch): Workflow-Bausteine für den Makro-Agenten** (Vorschlag, nicht
+  entschieden). Kandidaten: Entscheidungs-Log mit automatischer Abrechnung + Lektion (Point-in-time),
+  Pflicht-Gegenposition vor dem Gewichten, zwei Modellstufen, Trade-Tabelle als JSON-Schema. Seit 21.11. läuft
+  das Framework selbst im Forward (siehe „Weitere Projekte“); Übernahme erst nach dessen Auswertung entscheiden.
   [[tradingagents-tauric]]
 
 - (10.11.) **CRT (Tim) und COT-Fluss (Dennis) als Bausteine geparkt** (Nutzerentscheid): allein ohne

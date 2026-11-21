@@ -58,6 +58,9 @@ def build(dist: Path = DIST) -> Path:
     roh = commodities()
     if roh:
         (data / "rohstoffe.json").write_text(json.dumps(roh, ensure_ascii=False, default=str), encoding="utf-8")
+    agenten = C.REPO / "fusion_lab" / "agent_forward" / "ledger" / "summary.json"   # TradingAgents-Forward
+    if agenten.exists():
+        shutil.copy(agenten, data / "agenten.json")
     mc = macro_context()
     if mc:
         (data / "makro.json").write_text(json.dumps(mc, ensure_ascii=False, default=str), encoding="utf-8")

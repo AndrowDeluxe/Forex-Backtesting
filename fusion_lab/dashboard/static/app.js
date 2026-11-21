@@ -230,6 +230,67 @@ function renderForward() {
     ${blocks || '<div class="empty">Noch keine ausgewerteten Einträge</div>'}`;
 }
 
+const AG_COL = { agent: "#d4af37", always_buy: "#5aa2ff", random: "#8b919a", momentum: "#b48cff" };
+const AG_SIG = { Buy: "KAUFEN", Overweight: "KAUFEN", Hold: "HALTEN", Underweight: "VERKAUFEN", Sell: "VERKAUFEN" };
+let agChartDone = false;
+
+function renderAgenten() {
+  const el = document.getElementById("agenten"), a = D.agenten;
+  if (!a) { el.innerHTML = `<div class="empty">Noch keine Daten vom TradingAgents-Forward</div>`; return; }
+  const Q = a.quellen, ag = Q.agent, zs = a.zwischenstand;
+  const fmtP = (x, d = 2) => x == null ? "–" : pct(x, d);
+  const rows = Object.entries(Q).map(([k, q]) => `<tr><td class="l"><b style="color:${AG_COL[k]}">●</b> ${esc(q.label)}</td>
+      <td>${q.abgerechnet}</td><td>${q.offen}</td><td>${fmtP(q.richtungs_alpha)}</td><td>${fmtP(q.summe, 1)}</td>
+      <td>${q.trefferquote == null ? "–" : num(q.trefferquote, 0) + " %"}</td><td>${q.wochen}</td>
+      <td>${q.t_woche == null ? "–" : num(q.t_woche, 2)}</td></tr>`).join("");
+  const jr = Object.entries(ag.je_rating).map(([r, v]) => `<tr><td class="l"><span class="sig ${AG_SIG[r]}">${esc(r)}</span></td>
+      <td>${v.n}</td><td>${fmtP(v.alpha)}</td></tr>`).join("");
+  const last = a.letzte.map(d => `<details class="card" style="cursor:default;margin:8px 0"><summary class="row" style="cursor:pointer">
+      <span><b>${esc(d.ticker)}</b> <span class="muted">${esc(d.datum)}${d.probe ? " · Probe" : ""}</span></span>
+      <span>${d.fehler ? `<span class="sig VERKAUFEN">Fehler</span>` : `<span class="sig ${AG_SIG[d.rating] || "HALTEN"}">${esc(d.rating)}</span>`}
+      ${d.alpha == null ? `<span class="muted">offen</span>` : `α ${pct(d.alpha, 2)}`}</span></summary>
+      <div class="sc">${esc(d.fehler || d.begruendung || "keine Begründung")}</div>
+      ${d.rendite == null ? "" : `<div class="sc muted">Rendite ${a.haltedauer} T ${pct(d.rendite, 2)} · Alpha gegen ${esc(a.benchmark)} ${pct(d.alpha, 2)}</div>`}</details>`).join("");
+  const runs = (a.laeufe || []).slice(0, 5).map(r => `<tr><td class="l">${esc(r.lauf)}</td><td>${esc(r.datum || "–")}</td>
+      <td>${r.titel_ok}</td><td>${r.titel_fehler}</td><td>${r.llm_aufrufe}</td><td>${Math.round(r.sekunden / 60)} min</td>
+      <td class="l muted">${esc(r.hinweis || "")}</td></tr>`).join("");
+  el.innerHTML = `<div class="note"><b>TradingAgents</b> (Multi-Agenten-Team mit Debatte, über das Claude-Abo) entscheidet jeden US-Handelstag
+      nach Schluss für ${a.korb.map(esc).join(", ")}. Gemessen wird das ${a.haltedauer}-Tage-Alpha gegen ${esc(a.benchmark)}, Long bei Buy/Overweight,
+      Short bei Underweight/Sell, Hold = 0. Start ${esc(a.start)}, Auswertung ab ${esc(a.auswertung_ab)}.<br>${esc(a.huerde)}</div>
+    <div class="kpis">${kpi("Richtungs-Alpha Agent", fmtP(ag.richtungs_alpha), `Ø je Entscheid · n ${ag.abgerechnet}`)}
+      ${kpi("Trefferquote", ag.trefferquote == null ? "–" : num(ag.trefferquote, 0) + " %", "ohne Hold")}
+      ${kpi("t (Wochen)", ag.t_woche == null ? "–" : num(ag.t_woche, 2), `${ag.wochen} Wochen · Ziel > 2`)}
+      ${kpi("Schlägt Kontrollen", zs.schlaegt_kontrollen ? `<span class="pos">ja</span>` : `<span class="neg">nein</span>`, "alle drei")}
+      ${kpi("Offen", ag.offen, `${a.probe_eintraege} Probe-Einträge`)}</div>
+    <h2>Vergleich mit Kontrollen</h2>
+    <div class="tablewrap"><table><thead><tr><th class="l">Quelle</th><th>abgerechnet</th><th>offen</th><th>Ø Richtungs-α</th>
+      <th>Summe</th><th>Treffer</th><th>Wochen</th><th>t</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <h2>Kumuliertes Richtungs-Alpha (Wochenmittel, %)</h2>
+    ${a.wochen.length ? `<div id="agchart" class="chart"></div><div class="legend">${Object.entries(Q).map(([k, q]) => `<span><b style="background:${AG_COL[k]}"></b>${esc(q.label)}</span>`).join("")}</div>`
+      : `<div class="empty">Erste Abrechnung ${a.haltedauer} Handelstage nach dem ersten Entscheid</div>`}
+    <h2>Agent: Alpha je Rating</h2>
+    <div class="tablewrap"><table><thead><tr><th class="l">Rating</th><th>n</th><th>Ø Alpha</th></tr></thead><tbody>${jr}</tbody></table></div>
+    <h2>Letzte Entscheide</h2>${last || '<div class="empty">Noch keine Entscheide</div>'}
+    <h2>Läufe</h2>
+    <div class="tablewrap"><table><thead><tr><th class="l">Lauf</th><th>Datum</th><th>ok</th><th>Fehler</th><th>Aufrufe</th><th>Dauer</th><th class="l">Hinweis</th></tr></thead>
+      <tbody>${runs || '<tr><td class="l" colspan="7">–</td></tr>'}</tbody></table></div>`;
+  document.querySelector('.tab[data-tab="agenten"]').addEventListener("click", () => requestAnimationFrame(drawAgentChart));
+}
+
+function drawAgentChart() {
+  const el = document.getElementById("agchart"), a = D.agenten;
+  if (agChartDone || !el || !window.LightweightCharts || !a?.wochen_start?.length) return;
+  agChartDone = true;
+  const chart = LightweightCharts.createChart(el, { autoSize: true, layout: { background: { color: "transparent" }, textColor: "#8b919a" },
+    grid: { vertLines: { color: "#1b2027" }, horzLines: { color: "#1b2027" } }, rightPriceScale: { borderColor: "#262b33" },
+    timeScale: { borderColor: "#262b33" } });
+  for (const [k, vals] of Object.entries(a.kurve)) {
+    const s = chart.addLineSeries({ color: AG_COL[k], lineWidth: k === "agent" ? 3 : 2, priceLineVisible: false });
+    s.setData(a.wochen_start.map((t, i) => ({ time: t, value: vals[i] })));
+  }
+  chart.timeScale().fitContent();
+}
+
 function bind() {
   document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
     document.querySelectorAll(".tab").forEach(x => x.classList.toggle("active", x === t));
@@ -249,9 +310,9 @@ function bind() {
 }
 
 (async () => {
-  [D.aktien, D.krypto, D.rohstoffe, D.makro, D.meta] = await Promise.all(["aktien", "krypto", "rohstoffe", "makro", "meta"].map(load));
+  [D.aktien, D.krypto, D.rohstoffe, D.makro, D.meta, D.agenten] = await Promise.all(["aktien", "krypto", "rohstoffe", "makro", "meta", "agenten"].map(load));
   document.getElementById("stand").textContent = `Aktien ${D.aktien?.stand ?? "–"} · Krypto ${D.krypto?.stand ?? "–"} · Rohstoffe ${D.rohstoffe?.stand ?? "–"} · gebaut ${D.meta?.gebaut ?? "–"}`;
   const st = D.aktien?.status || D.krypto?.status || "–";
   document.getElementById("status").textContent = st === "probe" ? "Probebetrieb" : st;
-  renderOverview(); renderScreener("aktien"); renderScreener("krypto"); renderScreener("rohstoffe"); renderMakro(); renderForward(); bind();
+  renderOverview(); renderScreener("aktien"); renderScreener("krypto"); renderScreener("rohstoffe"); renderMakro(); renderForward(); renderAgenten(); bind();
 })();

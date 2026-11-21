@@ -9,6 +9,16 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-21** [Nebenthema / Cockpit] **TradingAgents-Forward über das Claude-Abo + Cockpit-Tab „Agenten“**
+  (Nutzerentscheid, Plan freigegeben). TradingAgents (TauricResearch, Commit `9fa1196`) fest installiert unter
+  `C:\Users\andre\TradingAgents\` (eigene venv). Neues Paket `fusion_lab/agent_forward/`: Abo-Adapter (`claude.exe -p`,
+  Tool-Calls als JSON nachgebildet, Haiku/Sonnet), Korb NVDA/JPM/XOM/UNH/WMT, Kontrollen immer Buy/Zufall/Momentum,
+  5-Tage-Alpha gegen SPY, Hürde vorab (ab 15.02.2027: schlägt alle Kontrollen + t > 2 auf Wochenbasis). Tests 5/5,
+  echter Probelauf NVDA (15 Aufrufe, 4 Min., in Scratch, zählt nicht). Neuer Task „Forex-TradingAgents-Forward“
+  Mo–Fr 22:15 (erster Lauf 23.11.). Cockpit: Tab „Agenten“ (`static/`, `build.py`, `deploy.py`), Lebensjournal gibt
+  `agenten.json` frei (`[name].ts`, `feeds.mjs`), Journal deployt. Fallstrick: Analyse-Datum vor heute → TradingAgents
+  hält Fundamentaldaten zurück, daher Lauf am selben Abend. [[tradingagents-tauric]]
+
 - **2026-11-21** [Signal-Hub] **Bugfix Journal-Zeitformate + Erinnerung Handbacktest.** `journal.load` las
   Zeitspalten mit gemischtem Format (mit/ohne Mikrosekunden) als NaT; dadurch fehlte beim ersten echten Alarm
   (Gold-Long 20.11., vom Nutzer mit Ja bestätigt) die Gültigkeit. Jetzt `format="ISO8601"`, Wert wiederhergestellt,

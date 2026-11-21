@@ -54,3 +54,10 @@ Journal-Build + Deploy, damit der neue Tab (`static/`) erscheint.
 Tasks auf dem PC anlegen (Muster wie `Forex-Screener-Aktien`, StartWhenAvailable):
 - `Forex-Screener-Rohstoffe`: Mo–Fr 23:15, `powershell -File scripts\screener_task.ps1 rohstoffe`
 - `Forex-Rohstoff-Tiefenanalyse`: So 18:00, `powershell -File scripts\commodity_deep_task.ps1`
+
+## Agenten (seit 21.11.2026)
+
+Der Tab „Agenten“ liest `data/agenten.json` = `fusion_lab/agent_forward/ledger/summary.json` (TradingAgents-Forward,
+Task `Forex-TradingAgents-Forward` Mo–Fr 22:15, `scripts/agent_forward_task.ps1`). Im **Lebensjournal** ist
+`agenten.json` in `functions/trading/data/[name].ts` (ERLAUBT) und `scripts/feeds.mjs` freigegeben; nach Änderungen
+an `static/` Journal-Build + Deploy (`npm run deploy`).

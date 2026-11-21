@@ -4,6 +4,30 @@ Am 2026-11-12 installiert und getestet (Nutzerauftrag: „was können wir vom Wo
 Ziel ist der Makro-Agent (Dachprojekt [[quant-diskretionaer-fusion]], Strang 3,
 Ablauf [[makro-agent-report-pruefung]]), nicht der Einsatz des Frameworks selbst.
 
+## Forward-Test (seit 21.11.2026, erster offizieller Tag 23.11.)
+
+Nutzerentscheid 21.11.: das Framework selbst auf seinen eigenen Daten (US-Aktien) vorwärts testen, als
+Vergleichswert, bevor Bausteine in den Makro-Agenten wandern.
+
+- **Ohne API-Key:** Adapter `fusion_lab/agent_forward/claude_llm.py` ruft `claude.exe -p` über das Abo auf
+  (eingebaute Claude-Code-Tools aus, `--tools ""`). Datenabrufe werden nachgebildet: Das Modell antwortet mit
+  `{"tool_calls": [...]}`, die Tools selbst führt TradingAgents aus. Haiku für Analysten/Debatten/Trader,
+  Sonnet für Research- und Portfolio-Manager. Installation `C:\Users\andre\TradingAgents\` (Commit `9fa1196`,
+  eigene venv).
+- **Korb:** NVDA, JPM, XOM, UNH, WMT (fünf Sektoren). Analysten Markt, News, Fundamentaldaten; der
+  Sentiment-Analyst fällt weg (Reddit 403). Je 1 Debatten- und Risikorunde, max. 2 Tool-Runden.
+- **Takt:** Mo–Fr 22:15 nach US-Schluss, Analyse-Datum = heute. **Fallstrick:** Ein Datum vor dem heutigen
+  behandelt TradingAgents als historisch und hält dann Fundamentaldaten zurück (Vorgriff-Schutz). Ein Lauf am
+  nächsten Morgen für den Vortag wäre also ein anderer Test, deshalb kein Nachholen.
+- **Messung:** 5-Tage-Alpha gegen SPY ab dem ersten Schluss nach dem Analyse-Tag (eingebautes
+  `fetch_returns`, für alle Quellen gleich). Richtungs-Alpha = Alpha × Vorzeichen des Ratings (Hold = 0).
+  Kontrollen je Titel und Tag: immer Buy, Zufall (Seed Datum+Titel), Momentum 20 T.
+- **Hürde (vorab):** Auswertung ab 15.02.2027. Erfolg = Agent schlägt alle drei Kontrollen beim
+  Richtungs-Alpha **und** t > 2 über Wochenmittel (die fünf Titel hängen am selben Markt, deshalb zählt die
+  Woche als Einheit).
+- **Ablage:** Ledger `fusion_lab/agent_forward/ledger/` (decisions.csv, runs.csv, summary.json, memory.md mit
+  den Lektionen, reports/ je Entscheid). Cockpit-Tab „Agenten“. Task-Skript `scripts/agent_forward_task.ps1`.
+
 ## Was es ist
 
 Open-Source-Multi-Agenten-Framework (LangGraph, v0.7.1, Stand 04.11.2026). Ein Lauf = ein Ticker an
@@ -35,8 +59,11 @@ wählbar (Anthropic, OpenAI, Google, Bedrock, lokale Endpunkte).
 - Echte Daten: XAUUSD wird auf **GC=F (Future)** umgemappt, EURUSD auf EURUSD=X. Kurse kamen sauber.
   Yahoo-News nur für die letzten Tage, Reddit-RSS mit HTTP 403 → historische Läufe haben praktisch
   keine News.
-- **Echter Lauf mit LLM noch nicht gemacht** – braucht einen API-Key (z. B. Anthropic) und kostet je
-  Lauf geschätzt einige Cent bis ~1 USD, je nach Modell.
+- **Echter Lauf (21.11., über das Abo statt API-Key):** NVDA, Datum 20.11. → Hold. 15 Claude-Aufrufe,
+  235 s, Abo-Gegenwert 0,28 USD. Die Tool-Nachbildung trägt (Markt-Analyst: Kurse, 8 Indikatoren,
+  Snapshot), News aktuell und echt, SEC-Bilanzen da. Firmenprofil und Insider fehlten, weil das Datum
+  in der Vergangenheit lag (historischer Modus, siehe Forward-Abschnitt oben). Macro über FRED fehlt
+  ohne `FRED_API_KEY` (optional).
 
 ## Bewertung
 

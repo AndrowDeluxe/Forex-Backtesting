@@ -1,0 +1,168 @@
+{
+ "stand": null,
+ "start": "2026-11-23",
+ "auswertung_ab": "2027-02-15",
+ "huerde": "Frühestens nach 12 Wochen auswerten. Erfolg = der Agent schlägt beim Richtungs-Alpha alle drei Kontrollen (immer Buy, Zufall, Momentum) und t > 2 über Wochenmittel.",
+ "korb": [
+  "NVDA",
+  "JPM",
+  "XOM",
+  "UNH",
+  "WMT"
+ ],
+ "haltedauer": 5,
+ "benchmark": "SPY",
+ "modelle": {
+  "schnell": "haiku",
+  "tief": "sonnet"
+ },
+ "quellen": {
+  "agent": {
+   "label": "Agenten-Team",
+   "n": 0,
+   "offen": 0,
+   "abgerechnet": 0,
+   "richtungs_alpha": null,
+   "summe": null,
+   "trefferquote": null,
+   "wochen": 0,
+   "t_woche": null,
+   "je_rating": {
+    "Buy": {
+     "n": 0,
+     "alpha": null
+    },
+    "Overweight": {
+     "n": 0,
+     "alpha": null
+    },
+    "Hold": {
+     "n": 0,
+     "alpha": null
+    },
+    "Underweight": {
+     "n": 0,
+     "alpha": null
+    },
+    "Sell": {
+     "n": 0,
+     "alpha": null
+    }
+   }
+  },
+  "always_buy": {
+   "label": "Immer Buy",
+   "n": 0,
+   "offen": 0,
+   "abgerechnet": 0,
+   "richtungs_alpha": null,
+   "summe": null,
+   "trefferquote": null,
+   "wochen": 0,
+   "t_woche": null,
+   "je_rating": {
+    "Buy": {
+     "n": 0,
+     "alpha": null
+    },
+    "Overweight": {
+     "n": 0,
+     "alpha": null
+    },
+    "Hold": {
+     "n": 0,
+     "alpha": null
+    },
+    "Underweight": {
+     "n": 0,
+     "alpha": null
+    },
+    "Sell": {
+     "n": 0,
+     "alpha": null
+    }
+   }
+  },
+  "random": {
+   "label": "Zufall",
+   "n": 0,
+   "offen": 0,
+   "abgerechnet": 0,
+   "richtungs_alpha": null,
+   "summe": null,
+   "trefferquote": null,
+   "wochen": 0,
+   "t_woche": null,
+   "je_rating": {
+    "Buy": {
+     "n": 0,
+     "alpha": null
+    },
+    "Overweight": {
+     "n": 0,
+     "alpha": null
+    },
+    "Hold": {
+     "n": 0,
+     "alpha": null
+    },
+    "Underweight": {
+     "n": 0,
+     "alpha": null
+    },
+    "Sell": {
+     "n": 0,
+     "alpha": null
+    }
+   }
+  },
+  "momentum": {
+   "label": "Momentum 20 T",
+   "n": 0,
+   "offen": 0,
+   "abgerechnet": 0,
+   "richtungs_alpha": null,
+   "summe": null,
+   "trefferquote": null,
+   "wochen": 0,
+   "t_woche": null,
+   "je_rating": {
+    "Buy": {
+     "n": 0,
+     "alpha": null
+    },
+    "Overweight": {
+     "n": 0,
+     "alpha": null
+    },
+    "Hold": {
+     "n": 0,
+     "alpha": null
+    },
+    "Underweight": {
+     "n": 0,
+     "alpha": null
+    },
+    "Sell": {
+     "n": 0,
+     "alpha": null
+    }
+   }
+  }
+ },
+ "wochen": [],
+ "kurve": {
+  "agent": [],
+  "always_buy": [],
+  "random": [],
+  "momentum": []
+ },
+ "wochen_start": [],
+ "zwischenstand": {
+  "schlaegt_kontrollen": false,
+  "t_ok": false
+ },
+ "probe_eintraege": 0,
+ "letzte": [],
+ "laeufe": []
+}

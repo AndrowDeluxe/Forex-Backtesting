@@ -64,7 +64,7 @@ def _files(dist: Path) -> dict[str, Path]:
     return out
 
 
-FEED_FILES = ("aktien.json", "krypto.json", "rohstoffe.json", "makro.json", "meta.json")
+FEED_FILES = ("aktien.json", "krypto.json", "rohstoffe.json", "makro.json", "meta.json", "agenten.json")
 
 
 def deploy_kv(dist: Path, c: dict) -> str:

@@ -9,6 +9,13 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-21** [Signal-Hub] **Bugfix Journal-Zeitformate + Erinnerung Handbacktest.** `journal.load` las
+  Zeitspalten mit gemischtem Format (mit/ohne Mikrosekunden) als NaT; dadurch fehlte beim ersten echten Alarm
+  (Gold-Long 20.11., vom Nutzer mit Ja bestätigt) die Gültigkeit. Jetzt `format="ISO8601"`, Wert wiederhergestellt,
+  Regressionstest (9/9). Einmaliger Task „Erinnerung-SignalHub-Handbacktest“ (Sa 28.11. 10:00, Telegram): Woche
+  23.–27.11. händisch backtesten, gegen die Alarme halten, ggf. Signalquelle lockern. Dashboard: Aufgabe Inventur +
+  Daily-Trades-Prüfung für den Screener.
+
 - **2026-11-19** [Dachprojekt / Signal-Hub] **Signal-Hub Stufe 1 live: Hybrid-Bestätigungssystem** (Nutzerentscheid, Plan freigegeben).
   Neues Paket `signal_hub/` (Scan, Telegram-Alarm mit Chart + Ja/Nein/Später/Nein-Grund, Listener über `getUpdates`, Journal,
   Paper-Simulation, Risiko-Sperre EK/Funded), Tasks „Signal-Hub-Scan“ (Mo–Fr alle 10 Min.) und „Signal-Hub-Listener“

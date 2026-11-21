@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-11-15** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-11-21** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -21,8 +21,17 @@ passiert, was steht an.
 - **🎯 NEU 19.11.: Signal-Hub (Hybrid-Bestätigung) – neue Hauptrichtung im Dachprojekt** [[signal-hub]].
   Stufe 1 live: H4-Spike-Scanner (9 Märkte) → Telegram-Alarm mit Chart, Merkmalen, Makro-Ampel und Ja/Nein/Später →
   Journal + Paper-Simulation (keine Orders). Risiko-Sperre gegen Overtrading (EK 1 %/3 Trades/−5 % Woche, Funded FK-Regeln).
-  **Wartet auf dich:** Test-Alarm (NZDUSD, TEST) in Telegram anklicken; MT5-Demokonto (Login/Server) für Stufe 2 nennen.
+  Erste echte Entscheidung: Gold-Long 20.11. 23:11 mit ✅ Ja (Paper füllt erst Mo-Öffnung, Freitagsschluss-Kerze).
+  **Wartet auf dich:** MT5-Demokonto (Login/Server) für Stufe 2 nennen.
+  **⏰ Woche 23.–27.11. händisch backtesten** (welche H4-Trades hättest du genommen?), dann gegen die Alarme im
+  Journal halten und ggf. die Signalquelle lockern (Q-Regel verpasste EURUSD 10./12.11.). Telegram-Erinnerung
+  Sa 28.11. 10:00 (Task „Erinnerung-SignalHub-Handbacktest“, einmalig).
   Nächste Stufen: MT5-Demo, Makro-Agent täglich, Daily-Setups nach Handprüfung, App-Dashboard.
+
+- **📋 Aufgabe für die nächsten Tage (Nutzerentscheid 21.11.): Inventur weiterführen + Daily-Trades nochmal prüfen.**
+  Daily-Setups (C2/W50, Typ R) wie beim H4 an einzelnen Trades „auf deine Sichtweise“ durchgehen, damit sie als
+  Stufe 4 in den Signal-Hub-Scanner können ([[htf-daily-trade-edge-card]]). Danach weitere Inventur-Edges je mit
+  2 Fragen (findet die Regel deine Trades? brutto > 0?).
 
 - **📈 Neu im Dachprojekt (15.11.): täglicher Aktien- + Krypto-Screener, Forward-Test läuft seit 15.11.**
   [[aktien-analyse-und-bot]]. S&P 500 + Nasdaq-100 (518) und Top-30-Krypto: Score 0–100 (≥ 65 KAUFEN,

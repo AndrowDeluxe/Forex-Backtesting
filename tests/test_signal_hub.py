@@ -87,3 +87,12 @@ def test_journal_sperre_und_rundreise(tmp_path, monkeypatch):
         journal.save(_journal(), p)
     j = journal.load(p)
     assert j["gueltig_bis"].iat[0] == pd.Timestamp("2026-11-12 19:00", tz=TZ)
+
+
+def test_journal_gemischte_zeitformate_gehen_nicht_verloren(tmp_path):
+    # 20.11.: Zeile mit Mikrosekunden + Zeile ohne -> pandas leitete das Format aus Zeile 1 ab und machte Zeile 2 zu NaT
+    p = tmp_path / "j.csv"
+    j = pd.concat([_journal(id="A", gueltig_bis=pd.Timestamp("2026-11-19 16:28:24.640954", tz=TZ)),
+                   _journal(id="B", gueltig_bis=pd.Timestamp("2026-11-21 03:00", tz=TZ))], ignore_index=True)
+    journal.save(j, p)
+    assert journal.load(p)["gueltig_bis"].notna().all()

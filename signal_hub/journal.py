@@ -47,7 +47,7 @@ def load(path=None) -> pd.DataFrame:
     df = pd.read_csv(path, dtype={"id": str, "status": str})
     for c in TIME_COLS:
         if c in df:
-            df[c] = pd.to_datetime(df[c], utc=True, errors="coerce").dt.tz_convert(config.TZ)
+            df[c] = pd.to_datetime(df[c], utc=True, errors="coerce", format="ISO8601").dt.tz_convert(config.TZ)
     return df
 
 

@@ -1,6 +1,6 @@
 # Project: Signal-Hub – Hybrid-Bestätigungssystem
 
-**Status (19.11.2026):** Stufe 1 live (nur Paper/Journal, keine Orders). Plan freigegeben 19.11. Teil des
+**Status (21.11.2026):** Stufe 1 live (nur Paper/Journal, keine Orders). Plan freigegeben 19.11. Teil des
 [[quant-diskretionaer-fusion]] (neue Hauptrichtung). Code `signal_hub/`, Tasks „Signal-Hub-Scan“ (alle 10 Min., Mo–Fr)
 und „Signal-Hub-Listener“ (alle 2 Min., Mo–Sa).
 
@@ -73,4 +73,13 @@ und „Signal-Hub-Listener“ (alle 2 Min., Mo–Sa).
   nicht alarmiert** (12.11.: Docht 30 %, kein Swing nach k=2-Definition). Nach ~1 Woche Signalmenge und Treffer
   der Auswahl prüfen, ggf. Schwelle lockern.
 - Lake-Key NZDUSD M15 neu (19.11.) für den Scanner.
-- Test-Alarm 19.11. (`…_TEST`) im Journal, nicht in die Auswertung zählen.
+- Test-Alarm 19.11. (`…_TEST`) im Journal, nicht in die Auswertung zählen (angeklickt: Ja, Paper −1,04 R).
+- **Nutzerauftrag 21.11.:** Woche 23.–27.11. händisch backtesten und gegen die Alarme halten, dann Schwelle prüfen.
+  Telegram-Erinnerung Sa 28.11. 10:00.
+- **Telegram-Knopf zeigt kurz Fehler/Ladekreis:** Der Listener läuft nur alle 2 Min., Telegram erlaubt die
+  Klick-Quittung aber nur wenige Sekunden. Die Entscheidung kommt trotzdem an (Text unter dem Alarm ändert sich
+  beim nächsten Lauf). Mehrfaches Klicken ist unnötig.
+- **Freitagsschluss-Kerze (19–23 Uhr):** Alarm kommt nach Marktschluss, Paper füllt erst zur Montagsöffnung
+  (Wochenend-Gap). Erstes Beispiel Gold 20.11. Offen: solche Alarme sperren oder bis Mo-Öffnung gültig lassen.
+- **Behoben 21.11.:** Journal verlor `gueltig_bis` bei gemischten Zeitformaten (pandas-Formaterkennung). Folge: der
+  Gold-Alarm wäre nie verfallen. Jetzt `format="ISO8601"`, Test ergänzt.

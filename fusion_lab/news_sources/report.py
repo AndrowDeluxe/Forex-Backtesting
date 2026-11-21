@@ -7,7 +7,8 @@ Je Quelle x Klasse x Horizont:
 - spread:         Oe Rendite bei positivem Wert minus Oe Rendite bei negativem Wert (in %)
 - ic:             Rang-Korrelation Wert <-> Folgerendite
 - aussagekraeftig: n >= MIN_OBS
-Startkurs = erster Schlusskurs mit Datum NACH dem Aufzeichnungstag (kein Vorgriff).
+Startkurs = erster Schlusskurs mit Datum NACH dem Aufzeichnungstag (kein Vorgriff). Teilen sich mehrere
+Aufzeichnungen denselben Startkurs (Sa/So bei Aktien/FX), zaehlt nur die letzte (Sonntag = Stand vor Wochenstart).
 """
 
 from __future__ import annotations
@@ -31,6 +32,7 @@ def load_prices(tickers: list[str], start: str) -> pd.DataFrame:
 def forward_returns(led: pd.DataFrame, prices: pd.DataFrame) -> pd.DataFrame:
     """Haengt ret_<h> (Folgerendite in %) an; NaN, solange der Horizont nicht erreicht ist."""
     out = led.copy()
+    out["start"] = pd.NaT
     for h in C.HORIZONS:
         out[f"ret_{h}"] = np.nan
     for i, r in out.iterrows():
@@ -42,6 +44,7 @@ def forward_returns(led: pd.DataFrame, prices: pd.DataFrame) -> pd.DataFrame:
         if not len(after):
             continue
         k = s.index.get_loc(after[0])
+        out.at[i, "start"] = after[0]
         for h in C.HORIZONS:
             if k + h < len(s):
                 out.at[i, f"ret_{h}"] = (s.iloc[k + h] / s.iloc[k] - 1) * 100
@@ -52,6 +55,11 @@ def evaluate(df: pd.DataFrame) -> pd.DataFrame:
     rows = []
     d = df[df["status"] == "ok"].copy()
     d["wert"] = pd.to_numeric(d["wert"], errors="coerce")
+    if {"start", "symbol", "datum"} <= set(d.columns):
+        # Wochenende/Feiertag: mehrere Aufzeichnungen messen dieselbe Folgerendite (gleicher Startkurs).
+        # Nur die letzte vor dem Start zaehlt, sonst blaeht die doppelte Zaehlung die Trefferquote auf.
+        has = d["start"].notna()
+        d = pd.concat([d[~has], d[has].sort_values("datum").drop_duplicates(["quelle", "symbol", "start"], keep="last")])
     for (q, kl), g in d.groupby(["quelle", "klasse"]):
         for h in C.HORIZONS:
             x = g.dropna(subset=["wert", f"ret_{h}"])

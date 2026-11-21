@@ -119,6 +119,16 @@ def test_forward_returns_start_after_record_day_no_lookahead():
     assert out["ret_3"].isna().iat[0]                          # Horizont noch nicht erreicht
 
 
+def test_weekend_records_sharing_monday_start_count_once():
+    led = pd.DataFrame([{"datum": d, "symbol": "EURUSD", "klasse": "fx", "quelle": "claude_news", "wert": 1.0,
+                         "status": "ok"} for d in ("2026-11-21", "2026-11-22")])     # Sa + So
+    idx = pd.to_datetime(["2026-11-20", "2026-11-23", "2026-11-24"])
+    out = report.forward_returns(led, pd.DataFrame({"EURUSD=X": [1.0, 1.10, 1.21]}, index=idx))
+    assert out["start"].nunique() == 1                                             # beide starten Montag
+    ev = report.evaluate(out)
+    assert ev.loc[ev["horizont"] == 1, "n"].iat[0] == 1                            # nur einmal gezaehlt
+
+
 def test_evaluate_reports_edge_over_market_direction():
     rows = []
     for i in range(80):

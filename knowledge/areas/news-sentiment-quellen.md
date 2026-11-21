@@ -34,6 +34,10 @@ Reddit sind der freie, gröbere Ersatz. Ziel: messen, **welche Quelle trägt und
   Märkte und warnt bei Zahlen, die nicht in den zitierten Quellen stehen.
 - **Ledger nur anhängen**, erster Lauf je Tag zählt (`ledger/werte.csv`, Status je Lauf in `ledger/laeufe.csv`).
 - **Kein Vorgriff:** Folgerendite ab dem ersten Schlusskurs NACH dem Aufzeichnungstag, Horizonte 1/3/5/10 Tage.
+- **Wochenende läuft mit** (Task täglich, auch Sa/So): Krypto handelt durch, der Sonntagslauf 22:30 ist der Stand
+  kurz vor der FX-Eröffnung. Bei Aktien/FX teilen sich Sa und So denselben Montags-Startkurs; die Auswertung
+  zählt dann nur den letzten Wert (Sonntag), sonst würde die Trefferquote doppelt gezählt.
+- Reddit: Nutzer versucht die App-Anlage in ein paar Tagen erneut (Stand 21.11.).
 - **Kontrolle gegen die Marktrichtung:** „vorsprung“ = Trefferquote minus bester Wert aus immer long/immer short.
   Eine Quelle trägt nur, wenn der Vorsprung über Monate positiv bleibt (ab ~60 Beobachtungen je Quelle).
 - **LLM-Einordnung ist nur vorwärts testbar** (Memory „LLM-Agent nur vorwärts testbar“).

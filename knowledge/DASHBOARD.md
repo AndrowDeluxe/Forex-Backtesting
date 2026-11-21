@@ -571,6 +571,11 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 
 ### Aufgaben (Betrieb)
 
+- **(21.11.) Gratis-Keys für die News-Quellen registrieren (du).** Finnhub (finnhub.io), Alpha Vantage
+  (alphavantage.co) und eine Reddit-„script“-App (reddit.com/prefs/apps). Eintragen in `.streamlit/secrets.toml`
+  unter `[news_sources]`: `finnhub_key`, `alphavantage_key`, `reddit_client_id`, `reddit_client_secret`. Bis dahin
+  stehen die drei Quellen als „nicht konfiguriert“ im Ledger. [[news-sentiment-quellen]]
+
 - **(16.11.) Funded-Fast-Lane umgeht den Offenes-Risiko-Deckel** — `Funded-Portfolio-Bridge/run_once_fast.py`
   ruft nur `_check_risk_gate`, nicht `_check_aggregate_open_risk_gate` (FK macht beides). ORB, Gold ASB und CLS aus
   der Fast-Lane ignorieren damit den 3,5-%/3-%-Deckel. IQ steht bei −3,3 % von 6 %. Fix nur nach deinem OK.
@@ -719,6 +724,7 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 | Makro-Daten (neu)                                       | — (nur Datenabruf, kein Order-Bezug)                                                     | Makro-Agent Schicht 1: G8-Makrodaten und Kalender mit Abrufzeit nach `fusion_lab/data/macro_data/` (`scripts/macro_data_task.ps1`, Akku erlaubt); seit 12.11. auch Geopolitik-Index, Megacap-Earnings und Schlagzeilen mit Einordnung durch lokalen `claude.exe` | Ready (täglich 00:50 + 07:30, auch Sa/So) | — | 2026-11-12 |
 | C2-Forward-Log (neu)                                    | — (nur Log + Telegram, keine Orders)                                                     | Forward-Test Daily-Edge: seit 11.11. nur noch W50 Vorwochen-Mitte `5c82f5d4` + Referenz EL `6c55e525`, 9 Märkte (alter Forward `aea4189b` raus, Nutzerentscheid) (`scripts/c2_forward_task.ps1`, Ledger `htf_daily_trade/forward/`, Akku erlaubt); Auswertung ab 30 Trades oder 12.11.2027 | Ready (Di–Sa 03:30, StartWhenAvailable) | — | 2026-11-11 |
 | Signal-Hub-Scan (neu)                                   | — (nur Telegram-Alarm + Journal, keine Orders)                                           | H4-Spike-Scanner 9 Märkte, Alarm bei Qualität + Aktivität (`scripts/signal_hub_scan_task.ps1`, `signal_hub/`), Journal-Commit stündlich | Ready (Mo–Fr alle 10 Min., Akku erlaubt) | — | 2026-11-19 |
+| News-Sources-Ledger (neu)                               | — (nur Research + Ledger, keine Orders)                                                  | 15 Märkte (Kurs-Watchlist + FX-Kern + Gold): Google News, Zentralbank-RSS, SEC EDGAR, StockTwits, CNN/Krypto Fear & Greed (+ Finnhub/Alpha Vantage/Reddit nach Key), Einordnung per `claude.exe -p` → Forward-Ledger je Quelle (`scripts/news_sources_task.ps1`, `fusion_lab/news_sources/`, committet Ledger); speist das Prosper-Kursprojekt | Ready (täglich 22:30, Akku erlaubt) | — | 2026-11-21 |
 | Signal-Hub-Listener (neu)                               | — (Paper-Simulation, keine Orders)                                                       | Telegram-Knöpfe Ja/Nein/Später, Verfall, Erinnerungen, Paper-Update (`scripts/signal_hub_listener_task.ps1`) | Ready (Mo–Sa alle 2 Min., Akku erlaubt) | — | 2026-11-19 |
 | Forex-Screener-Aktien (neu)                             | — (nur Analyse + Paper-Ledger, keine Orders)                                             | S&P 500 + Nasdaq-100: Score, Preisbereiche, News per `claude.exe -p` → Telegram, Notion, Dashboard, Ledger (`scripts/screener_task.ps1 aktien`, **Forward seit 15.11.**, committet Ledger + Archiv) | Ready (Mo–Fr 23:00, StartWhenAvailable) | — | 2026-11-15 |
 | Forex-Screener-Krypto (neu)                             | — (nur Analyse + Paper-Ledger, keine Orders)                                             | Top-30-Krypto (Binance/CoinGecko): wie Aktien (`scripts/screener_task.ps1 krypto`, **Forward seit 15.11.**, committet Ledger + Archiv) | Ready (täglich 07:45, StartWhenAvailable) | — | 2026-11-15 |
@@ -804,6 +810,9 @@ unverarbeitete Clippings unverändert seit 09-09. Verweise nach außerhalb von
 | EK-Portfolio-Paper                                      | —                                                                                        | pausiert (Paper-Zwilling von EK-Portfolio-Bridge, gehört zum Portfolio)                        | Disabled       | 2026-09-01      |
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
+
+- (21.11.) **Prosper-Dashboard als Vorlage für Makro-Agent/Trading-System** → eingeordnet in den Plan
+  [[prosper-education-uebernahme]] (3 feste Planpunkte, Umsetzung erst nach Ende der Education).
 
 - (18.11.) **Screener-Pipeline der Aktien/Rohstoffe für Forex nutzen** (Nutzerfrage). Modus `devisen` wie `rohstoffe`
   (`fusion_lab/screener/`): Score aus Makro-Agent-Bausteinen (Zinsdifferenz, Carry, COT, G8, Gold-Komposition), Preis-Zonen

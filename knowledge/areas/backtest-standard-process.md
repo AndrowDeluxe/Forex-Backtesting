@@ -47,7 +47,12 @@ siehe [[vier-fragen-check]].
    (`strategy/kalman_filter.py`), ADX-/VWAP-Deviation-Filter
    (`strategy/indicators.py`), EMA200-Regimefilter (`ou_paper_backtest/`),
    Session-/Uhrzeit-Filter (Muster: CLS-Squeeze, Asian-Range-Breakout) je
-   einzeln testen -- hilft/schadet?
+   einzeln testen -- hilft/schadet? **Seit 2026-11-20 fester Schritt für jeden
+   neuen Edge (Nutzerentscheid):** Risk-Management-Bausteine prüfen, also
+   Diagnose (Ø R nach 1/2/3 Verlusten in Folge) plus Serienpause,
+   Risikosenkung nach Serie und Tageslimit gegen „pauschal weniger Risiko“.
+   Code: `diagnose()`/`run()` aus `scripts/research_risk_bausteine.py`.
+   Siehe [[risk-management-bausteine]].
 6. **Robustheit** -- Walk-Forward/echter Out-of-Sample-Split (anderer
    Zeitraum als beim Fitting; seit 2026-10-05: der VORHER registrierte OOS,
    erst nach `freeze`, genau einmal, siehe [[overfitting-sperre]]), Monte-Carlo-Bootstrap der Trade-Sequenz

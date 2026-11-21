@@ -16,6 +16,39 @@ keine Planung (dafür ist `DASHBOARD.md`).
   23.–27.11. händisch backtesten, gegen die Alarme halten, ggf. Signalquelle lockern. Dashboard: Aufgabe Inventur +
   Daily-Trades-Prüfung für den Screener.
 
+- **2026-11-21** [Education / Research] **News-/Sentiment-Quellen + Quellen-Ledger; Prosper Lektion 5 mit Claude statt
+  Grok** (Nutzerentscheid, Plan freigegeben). Neues Paket `fusion_lab/news_sources/` (Sammler Google News, Zentralbank-
+  RSS, SEC EDGAR, StockTwits, CNN/Krypto Fear & Greed, Finnhub/Alpha Vantage/Reddit nach Key; Claude-Einordnung je
+  Quellgruppe mit Validator; Forward-Ledger je Quelle mit Kontrolle gegen die Marktrichtung). Neuer Task
+  „News-Sources-Ledger“ täglich 22:30 (erster Lauf 21.11., 52 Zeilen, Ledger-Commit `10be818f`). Tests 11/11.
+  Kursprojekt: `app/research_provider.py` (echter Status connected/offline/error), News Analyst nutzt die Werte,
+  Dashboard-Panel „Research provider“ + Schlagzeilen mit Links; Tests 27/27, echter Verbindungstest 21.11. 01:07
+  „connected“, Fehlertest „error“ mit Grund. Keys für Finnhub/Alpha Vantage/Reddit fehlen noch (Nutzer).
+  [[news-sentiment-quellen]]
+
+- **2026-11-21** [Education] **Prosper-Lektion 4 umgesetzt: Dashboard als Kommandozentrale** (Nutzerauftrag, Kursprojekt
+  `C:\Users\andre\prosper-ai-grok-trading-team`, außerhalb des Repos, kein Git, Backup `_backup_vor_lektion4/`, nur
+  Simulation). Sechs Bereiche mit echten Backend-Daten, Fehlendes beschriftet; 19/19 Tests, Browser-Check 21/21.
+  Panne: ein Probelauf hat das simulierte Demo-Konto (`data/paper_account.json`) zurückgesetzt. [[prosper-education-uebernahme]]
+
+- **2026-11-21** [Education / Planung] **Plan „Prosper-Education → Übernahme“ angelegt** (Nutzerentscheid).
+  Neue Notiz `projects/prosper-education-uebernahme.md`: erst die ganze Education durchgehen, dann mit unserem Stand
+  vergleichen und übernehmen/optimieren. Drei feste Planpunkte aus Lektion 4 (Dashboard): zentraler Zustand fürs
+  Dashboard, Freigabe im Dashboard, Fehlendes beschriften statt erfinden; Prosper-Dashboard als Vorlage für
+  Makro-Agent/Trading-System. Lektionen-Log je Lektion. Nichts gebaut. [[prosper-education-uebernahme]]
+
+- **2026-11-20** [Prozess / Research] **Risk-Management-Bausteine als optionale Backtest-Ergänzung festgehalten**
+  (Nutzerauftrag, Anlass: Prosper-Kurs Lektion 4). Neue Notiz `areas/risk-management-bausteine.md`: Tageslimit,
+  Serienpause, Risikosenkung nach Serie, bleibender Kill-Switch, Risiko-/Positionsdeckel, Datenprüfung, mit Testregeln
+  und Stand je Bein (nur CTNL durchgetestet). Verlinkt aus Phase 5 von [[backtest-standard-process]]. Keine Bot-Änderung.
+  [[risk-management-bausteine]]
+  Nachtrag gleicher Tag: alle Edges + H4-Spike + Daily-C2 durchgerechnet (`scripts/research_risk_bausteine.py`, Lock
+  `risk_bausteine_20261120`, 69 Varianten). Serienpause/Halbierung/Tageslimit helfen fast nirgends, Trades nach Verlusten
+  sind meist gleich gut oder besser. Einziger Kandidat: ORB S&P Pause nach 3 Verlusten (Sharpe OOS 1,07 → 1,32), nur
+  per Forward-Schatten prüfbar. TTP-Tageslimit greift im Backtest nie (schlechtester Tag −0,95 %). Keine Bot-Änderung.
+  Nutzerentscheid danach: Bausteine sind ab jetzt fester Prüfschritt für jeden neuen Edge (Phase 5 in
+  [[backtest-standard-process]]); Live-Beine bleiben, ORB-S&P-P3 vorerst nicht weiterverfolgt (kein Schattenlauf).
+
 - **2026-11-19** [Dachprojekt / Signal-Hub] **Signal-Hub Stufe 1 live: Hybrid-Bestätigungssystem** (Nutzerentscheid, Plan freigegeben).
   Neues Paket `signal_hub/` (Scan, Telegram-Alarm mit Chart + Ja/Nein/Später/Nein-Grund, Listener über `getUpdates`, Journal,
   Paper-Simulation, Risiko-Sperre EK/Funded), Tasks „Signal-Hub-Scan“ (Mo–Fr alle 10 Min.) und „Signal-Hub-Listener“

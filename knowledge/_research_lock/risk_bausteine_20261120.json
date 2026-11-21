@@ -1,0 +1,14 @@
+{
+  "strategy": "risk_bausteine_20261120",
+  "split": {
+    "is_start": "2016-01-01",
+    "is_end": "2022-12-31",
+    "oos_end": "2026-05-19",
+    "tresor_end": "2026-11-20"
+  },
+  "registered": "2026-11-20T22:51:57+00:00",
+  "trials": 69,
+  "frozen": null,
+  "unsealed": {},
+  "forward": null
+}

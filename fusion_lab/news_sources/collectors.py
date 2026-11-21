@@ -239,7 +239,11 @@ def alphavantage(symbols: list[str]) -> dict:
             notes.append(f"{s}: {_fail(e)['grund']}")
             continue
         if "feed" not in d:  # Limit erreicht oder Fehlermeldung im JSON
-            notes.append(f"{s}: {str(d.get('Information') or d.get('Note') or d)[:80]}")
+            msg = str(d.get("Information") or d.get("Note") or d)
+            if "premium" in msg.lower():  # seit 2026 fuer Gratis-Keys kostenpflichtig (geprueft 21.11.)
+                return _result("kostenpflichtig", "NEWS_SENTIMENT ist ein Premium-Endpunkt (Gratis-Key reicht nicht)",
+                               werte=[])
+            notes.append(f"{s}: {msg[:80]}")
             if "rate limit" in str(d).lower() or "25 requests" in str(d).lower():
                 break
             continue

@@ -575,10 +575,10 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 
 ### Aufgaben (Betrieb)
 
-- **(21.11.) Gratis-Keys für die News-Quellen registrieren (du).** Finnhub (finnhub.io), Alpha Vantage
-  (alphavantage.co) und eine Reddit-„script“-App (reddit.com/prefs/apps). Eintragen in `.streamlit/secrets.toml`
-  unter `[news_sources]`: `finnhub_key`, `alphavantage_key`, `reddit_client_id`, `reddit_client_secret`. Bis dahin
-  stehen die drei Quellen als „nicht konfiguriert“ im Ledger. [[news-sentiment-quellen]]
+- **(21.11.) News-Quellen-Keys: erledigt bis auf Reddit.** Finnhub läuft. Alpha Vantage: News-Sentiment ist für
+  Gratis-Keys kostenpflichtig, Quelle steht auf „kostenpflichtig“. Reddit: App-Anlage scheitert („Max clients have
+  been reached“), vorerst weggelassen (StockTwits deckt Social ab); bei Bedarf später erneut versuchen. Niedrig.
+  [[news-sentiment-quellen]]
 
 - **(16.11.) Funded-Fast-Lane umgeht den Offenes-Risiko-Deckel** — `Funded-Portfolio-Bridge/run_once_fast.py`
   ruft nur `_check_risk_gate`, nicht `_check_aggregate_open_risk_gate` (FK macht beides). ORB, Gold ASB und CLS aus

@@ -21,9 +21,9 @@ Reddit sind der freie, gröbere Ersatz. Ziel: messen, **welche Quelle trägt und
 | StockTwits | social (Text + Zahl) | ok | Bull/Bear-Anteil der letzten 30 Nachrichten, auch FX/Gold; gelegentlich 403 (Rate-Limit) |
 | CNN Fear & Greed + Put/Call-Teilwert | Zahl (auf SPY) | ok | inoffizieller Endpunkt |
 | Krypto Fear & Greed (alternative.me) | Zahl (auf BTC) | ok | |
-| Finnhub Company News | news (Text) | Key fehlt | Sentiment-Endpunkt kostet, nur News gratis |
-| Alpha Vantage News-Sentiment | Zahl | Key fehlt | 25 Abfragen/Tag → nur Tageslauf |
-| Reddit | social (Text) | Key fehlt | ohne Login 403/429 |
+| Finnhub Company News | news (Text) | ok (Key seit 21.11.) | Sentiment-Endpunkt kostet, nur News gratis |
+| Alpha Vantage News-Sentiment | Zahl | kostenpflichtig | Gratis-Key bekommt „premium endpoint“ (21.11.); Sammler bricht nach der ersten Antwort ab |
+| Reddit | social (Text) | nicht konfiguriert | ohne Login 403/429; App-Anlage scheitert mit „Max clients have been reached“ (21.11.) |
 | AAII-Umfrage | – | blockiert (403) | nicht eingebaut |
 | GDELT | – | für unsere IP gesperrt seit 12.11. | nicht eingebaut |
 

@@ -53,6 +53,9 @@ Abläufe und Werkzeuge dürfen direkt übernommen werden.
    „Profitabel“ heißt dabei: jede Handelslogik besteht vorher den [[backtest-standard-process]]; echte Daten
    allein machen eine Regel nicht profitabel (siehe [[prosper-bot-trendregel-echtdaten]]).
 
+5. **Prosper-Dashboard als eigener Bereich „Trading“ in die App** (Nutzerfrage 21.11.). Empfehlung Claude, noch
+   offen: erst, wenn es echte Kurse und echte (Paper-)Trades testet, nicht mit Demo-Kursen neben den Live-Bridges.
+
 Dazu der Wunsch des Nutzers: **das Prosper-Dashboard als Vorlage** für Makro-Agent und Trading-System
 (schwarz-gold, sechs Bereiche: Übersicht, Agenten-Zentrale, Markt-Intelligenz, Portfolio, Performance,
 Risiko & Freigaben; „SIMULATION ONLY“-Hinweis wird bei uns zur Anzeige Live/Paper je Konto).

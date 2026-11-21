@@ -51,3 +51,9 @@ datum,zeit,symbol,klasse,quelle,roh,wert,n,status
 2026-11-21,2026-11-21T01:03:14+01:00,USDCHF,fx,claude_social,1,0.5,2,ok
 2026-11-21,2026-11-21T01:03:14+01:00,XAUUSD,fx,claude_news,-2,-1.0,5,ok
 2026-11-21,2026-11-21T01:03:14+01:00,XAUUSD,fx,claude_social,-1,-0.5,2,ok
+2026-11-21,2026-11-21T22:30:03+01:00,BTC,krypto,stocktwits,7/7,0.0,14,ok
+2026-11-21,2026-11-21T22:30:03+01:00,BTC,krypto,claude_social,1,0.5,4,ok
+2026-11-21,2026-11-21T22:30:03+01:00,AUDUSD,fx,claude_offiziell,0,0.0,3,ok
+2026-11-21,2026-11-21T22:30:03+01:00,USDCAD,fx,claude_offiziell,0,0.0,3,ok
+2026-11-21,2026-11-21T22:30:03+01:00,USDCHF,fx,claude_offiziell,0,0.0,3,ok
+2026-11-21,2026-11-21T22:30:03+01:00,XAUUSD,fx,claude_offiziell,0,0.0,3,ok

@@ -251,8 +251,14 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
   Login + Abgleich am PC grün. wrangler läuft auf dem ARM-PC nur über x64-Node (`C:\Users\andre\tools\`,
   Starter `scripts/wr.mjs` im Journal-Repo). 18.11.: Stufe A online und von André getestet (Lebenslage,
   Tagesziele mit Kategorie/Prio, Zeitplan, Morgen planen), plus Check-in Ort/Umfeld und Papierkorb per Doppeltipp.
-  Stufe B (Wochenplanung, Kette Woche → Tag, Wochenreflexion) online, Test über eine Woche läuft. Offene Annahmen
-  stehen in `STATUS.md` des Journal-Repos.
+  Stufe B (Wochenplanung, Kette Woche → Tag, Wochenreflexion) getestet, André zufrieden (21.11.). 21.11.: Stufe C1
+  online (Aufgabenmodell mit Status, Zeitschätzung, Zeitbudget je Lage, Termine/Aufgaben im Zeitplan, Aufgaben-Tab),
+  direkt danach C2 online (Projekte mit Steps, Wochenbericht, Abendlisten, Werte-Anker, Reminder-Import; Push nur
+  geprüft). André hat C1 + C2 getestet (Reflexion und Projekte passen, Planung zu kompliziert) → abends Stufe C3
+  online: Tagesziele abgeschafft (★ Fokus), Aufgaben mit Tageszeit/Uhrzeit, Zeitplan mit verdecktem +, Tagesabschluss,
+  Wochenlage mit Richtwert für Wochenziele. 22.11.: Stufe D1 online (Monatsplanung: bis 6 Monatsziele mit Etappen,
+  „→ KW“ zieht sie als Wochenziel in eine Woche, Haken wirkt bis zum Monat, Kalender mit Auslastung). André testet C3
+  und D1. Stand und offene Annahmen in `STATUS.md` des Journal-Repos.
 
 - **📈 NASDAQ-ORB aus der Vorbörsen-Range 09:00–09:30 (15.11.): im Backtest stark, Kosten offen.** Ohne
    Trendfilter OOS +0,28 R/Trade (t 2,7, ~248 Trades/Jahr), mit EMA-Filter nur +0,06. Hängt an der
@@ -316,6 +322,10 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
      EK steht in zwei Wochen bei ca. −10 % (2.811 → 2.520 EUR). Soll/Ist und Ampel sehen die Trades nicht; ob
      der EK-Gesamtrisiko-Deckel offene Handpositionen mitzählt, ist nicht geprüft. Die NASDAQ-Teilschließung
      05.11. war laut dir ein Einzelfall; diese Woche ist es ein Muster. Details KW46-Performance Abschnitt 6.1.
+     **Update Weekly KW47 (22.11.):** Weitere 10 Handpositionen (EUR/USD Long 3x, Gold Long 2x gestoppt: −510 USD /
+     −71 EUR). **Auf EK offen: Gold Long 3.626 (Stop 3.405) + Silber Long 42,94 (Stop 38,50), je ca. 8 %, zusammen
+     ca. 16 % Kontorisiko auf einem Treiber.** EK-USD/JPY-Stop wurde auf 159,716 nachgezogen (Risiko weg). EK in
+     drei Wochen ca. −13 % (2.811 → 2.451 EUR). Details KW47-Performance Abschnitt 6.1.
 
 - **Vorgriff-Wächter (15.11.): Pflichtschritt in Phase 4 war meine Annahme.** Gebaut hast du ihn beauftragt;
      dass er im [[backtest-standard-process]] als Pflicht vor jeder IS-Auswertung steht (bei neuer Engine

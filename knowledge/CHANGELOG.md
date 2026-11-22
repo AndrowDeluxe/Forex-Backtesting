@@ -9,6 +9,24 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-22** [Reporting / Weekly] **Weekly Checkup KW47/2026** (geplanter Task). Bots: 7 Trades, +1,41 EUR /
+  −374,98 USD. Inkl. Handtrades: EK −2,74 %, Funded −0,12 %, FK −0,67 %. Kein Kill-Switch. Soll/Ist: Ist über Soll
+  (pausierte Beine + Storno-Tage im Soll). `⚠️ ZUORDNUNG` orb_nasdaq = Fehlalarm (Gegenseite gefüllt). Makro-Notiz:
+  Nachprüfung Beispiele 3+4 ausgefüllt, Bilanz Agent +2,64 R / Dennis −2,0 R. Dashboard: Handtrade-Eintrag um die
+  offenen EK-Metall-Longs (ca. 16 % Risiko) ergänzt. Edge-Ampel erstmals seit 5 Wochen frisch (Liste bis 17.11.):
+  ROT orb_sp500 25,6 R / orb_us30 26,3 R (beide pausiert), GELB gold_silver + btc_ema_cross; Gold ASB in der Liste nur
+  bis 30.09. Keine Bot-Änderung.
+
+- **2026-11-22** [Nebenthema / Lebensjournal] **Stufe D1 Monatsplanung online** (Repo `Lebensjournal`, Commit
+  `51cd2f8`). Monatsziele (bis 6) mit Etappen. Eine Etappe wird per Tipp zum Wochenziel einer Woche, und der Haken
+  wirkt nach oben (Aufgabe → Wochenziel → Etappe → Monatsziel). Dazu Kalender mit Auslastung je Tag und ein Umschalter
+  Woche | Monat. Nutzerentscheide: erst Planung, Reflexion später; „in Woche ziehen“; bis 6 Ziele wie im Journal.
+
+- **2026-11-21** [Nebenthema / Lebensjournal] **Stufen C2 und C3 online** (eigenes Repo `Lebensjournal`, Commits
+  8df31df, 76c5735). C2: Projekte mit Steps, Wochenbericht, Abendlisten, Werte-Anker, Reminder-Import. C3 nach Andrés
+  Test: Planung vereinfacht (Tagesziele → ★ Fokus, Aufgaben mit Tageszeit/Uhrzeit, Tagesabschluss, Wochenlage mit
+  Richtwert). Details im `CHANGELOG.md` des Journal-Repos.
+
 - **2026-11-21** [Nebenthema / Cockpit] **TradingAgents-Forward über das Claude-Abo + Cockpit-Tab „Agenten“**
   (Nutzerentscheid, Plan freigegeben). TradingAgents (TauricResearch, Commit `9fa1196`) fest installiert unter
   `C:\Users\andre\TradingAgents\` (eigene venv). Neues Paket `fusion_lab/agent_forward/`: Abo-Adapter (`claude.exe -p`,

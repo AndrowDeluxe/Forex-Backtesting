@@ -452,23 +452,26 @@ Ziel 4.997 ≈ 2 R. Kurs 27.836. Einstieg = Retest der kleinen Box über dem Tie
 | USDJPY | kreuzt aufwärts | 161,50 | halbe Strecke zum Nutzer-Stop |
 | USDJPY | kreuzt abwärts | 158,50 | erster Gewinn, Stop auf Einstieg prüfen |
 
-### Nachprüfung (auszufüllen im Weekly KW47, So 22.11.)
+### Nachprüfung (ausgefüllt im Weekly KW47, So 22.11.)
+
+Kurse: Lake Dukascopy M5/M15 (Schluss Fr 20.11. ~21:45 UTC), GBP/CHF und EUR/GBP aus den USD-Paaren
+gekreuzt (Näherung). VIX, Einzelhandel und Renditen ab Mi nicht im Lake → „?“.
 
 | Punkt | Erwartet | Eingetreten | Urteil |
 |---|---|---|---|
-| Szenario | BASE ~50 / ALT ~30 / TAIL ~20 | | |
-| US-Einzelhandel Di (Konsens laut Report +0,3 bzw. 0,0–0,2) | | | |
-| AUD/USD Short: Stop 0,6862 / Ziel 0,6670 / Schluss Fr, R | halten | | |
-| GBP/CHF: UK-CPI > 3,8 % + Schluss Mi > 1,1100? gefüllt? R | nur bedingt | | |
-| EUR/USD (Report-Trade): 1,1000 Teilgewinn / Stop 1,1130 / R | ausgelassen | | |
-| USD/CAD (Dennis live 1,4239): R | ausgelassen | | |
-| Gold-Filter kippt auf Inflation? | wahrscheinlich | | |
-| USD/JPY Eingriff? | Sperre | | |
-| Dennis EUR/USD 1,1104–1,1132 gefüllt / Stop 1,1170 / R | Rang 2, halb | | |
-| Dennis Gold Short 4.015,7 gefüllt / R | Rang 3, erst bei Filter-Kipp | | |
-| Dennis US100 Long 27.003 gefüllt / Stop 24.500 / R | optional, nach Nvidia | | |
-| USD/JPY Short (Dennis ~160 / Nutzer 159,84, Stop 162,00) / R | Hedge, auf EK zu groß | | |
-| Gegenwährung: Woche mit Zinsanstieg ohne Angst → CHF/JPY schwächer als AUD/NZD/CAD? | ja | | |
+| Szenario | BASE ~50 / ALT ~30 / TAIL ~20 | **TAIL „KI-Schock“**: NAS100 27.859 → 25.181 (−9,6 %), VIX bis Mi 26 (Beispiel 4), 2J bis Di −5 bp; Gold −8,9 % | ✗ BASE, TAIL (20 %) eingetreten |
+| US-Einzelhandel Di (Konsens laut Report +0,3 bzw. 0,0–0,2) | | ? (keine Quelle im Lake, nicht geprüft) | offen |
+| AUD/USD Short: Stop 0,6862 / Ziel 0,6670 / Schluss Fr, R | halten | **Ziel 0,6670 Do 19.11. ~02:00 UTC** (Tief 0,6648), Stop nie berührt (Hoch 0,6780) | ✓ **+2,64 R** (Anfangsstop 0,6994, halbe Größe) |
+| GBP/CHF: UK-CPI > 3,8 % + Schluss Mi > 1,1100? gefüllt? R | nur bedingt | UK-CPI 3,6 %, Mi-Schluss ~1,1088 → nicht aktiv; Fr ~1,0978 | ✓ richtig ausgelassen (Long hätte verloren) |
+| EUR/USD (Report-Trade): 1,1000 Teilgewinn / Stop 1,1130 / R | ausgelassen | 1,1000 Mo erreicht (Tief 1,0991), Hoch der Woche 1,1031, Fr 1,0966 | Report-Trade ✓ (≈ +1,2 R auf Anfangsstop ~1,12); Auslassen (Regel 2) kostete diesen Gewinn |
+| USD/CAD (Dennis live 1,4239): R | ausgelassen | Wochentief 1,4266 (> BE), Fr 1,4340 | Dennis ✓ (+~100 Pips); R nicht gezählt (Stop 14 Pips, Größe unklar) |
+| Gold-Filter kippt auf Inflation? | wahrscheinlich | **nein**: bestätigt Goldilocks bis 19.11., roh Inflation 13./16.11., Twist 17./18.11., Goldilocks 19.11. | ✗ Filter 3. Woche gegen den Markt |
+| USD/JPY Eingriff? | Sperre | kein Eingriff; Spanne 158,42–159,97, Fr 158,52 | ✓ Sperre unnötig, kein Schaden |
+| Dennis EUR/USD 1,1104–1,1132 gefüllt / Stop 1,1170 / R | Rang 2, halb | nicht gefüllt (Hoch 1,1031) | Richtung ✓, Füllung ✗ |
+| Dennis Gold Short 4.015,7 gefüllt / R | Rang 3, erst bei Filter-Kipp | nicht gefüllt (Hoch 3.900); Ziel 3.752 Mi erreicht | Richtung ✓, Füllung ✗ |
+| Dennis US100 Long 27.003 gefüllt / Stop 24.500 / R | optional, nach Nvidia | gefüllt Mi nach Nvidia (Tief 26.841); Tief Fr 24.912, Schluss 25.181 | offen **−0,73 R**; TAIL-Kippmarke (Comp. < 24.262) nicht im Lake prüfbar |
+| USD/JPY Short (Dennis ~160 / Nutzer 159,84, Stop 162,00) / R | Hedge, auf EK zu groß | Fr 158,52; EK-Stop auf 159,716 nachgezogen (Gewinn gesichert), FK-Stop weiter 162,00 | offen **+0,61 R** (auf 216 Pips); EK-Risiko behoben |
+| Gegenwährung: Woche mit Zinsanstieg ohne Angst → CHF/JPY schwächer als AUD/NZD/CAD? | ja | **Keine Zinswoche, sondern Angst ohne Zinsanstieg.** Gegen USD: JPY +0,7 %, CHF −0,1 %, CAD −0,5 %, EUR −0,5 %, GBP −1,0 %, AUD −2,2 % | Frage nicht anwendbar; in der Angstwoche hielten die Häfen, AUD verlor am meisten = Grundregel „Zinsen + Angst → nur gegen Rohstoffwährungen“ bestätigt |
 
 ---
 
@@ -553,18 +556,24 @@ Mit USD/CAD aus KW46 kommen 5 von 7 Rücksetzer-Limits nicht zur Füllung, obwoh
 erreicht wurde. Die Zonen liegen im Mittel ~1–2 Tages-ATR vom Kurs, in einem Trend kommt der Rücksetzer
 so weit oft nicht. Das ist noch kein Befund (n 7), nur eine Beobachtung für die Bilanz.
 
-### Nachprüfung (auszufüllen im Weekly KW47, So 22.11.)
+### Nachprüfung (ausgefüllt im Weekly KW47, So 22.11.)
 
 | Punkt | Erwartet | Eingetreten | Urteil |
 |---|---|---|---|
-| Szenario bis 22.11. | BASE ~50 / ALT ~30 / TAIL ~20 | | |
-| AUD/USD: Stop 0,6800 / Ziel 0,6670 / R (Agent 0,6905) | halten | | |
-| EUR/GBP: Schluss < 0,8320 nach UK-Einzelhandel? | Watch | | |
-| Gold: Filter-Kipp oder Schluss > 3.850? | gesperrt | | |
-| Dennis GBP/CHF 1,10673 / SL 1,10446 / R | Dennis-Spalte | | |
-| Dennis US100 27.003 / SL 24.500 / R | Dennis-Spalte | | |
-| USD/JPY Nutzer: Stop angepasst? R | Entscheidung Nutzer | | |
-| Dennis-Limits gefüllt (laufende Zählung) | 2 von 7 | | |
+| Szenario bis 22.11. | BASE ~50 / ALT ~30 / TAIL ~20 | TAIL: NAS100 Do/Fr 27.342 → 25.181 (−7,9 %, Tief 24.912), Gold Do/Fr −5,4 % | ✗ BASE; TAIL eingetreten |
+| AUD/USD: Stop 0,6800 / Ziel 0,6670 / R (Agent 0,6905) | halten | Ziel Do 19.11. ~02:00 UTC, nach den Arbeitsmarktdaten (01:30). Stop 0,6800 nie berührt (Hoch danach 0,6720) | ✓ **+2,64 R**. Hälfte vor 01:15 sichern hätte gekostet |
+| EUR/GBP: Schluss < 0,8320 nach UK-Einzelhandel? | Watch | Schluss Fr ~0,8386 (Mi 0,8346), Pfund schwächer | ✓ Watch richtig, Short wäre falsch gewesen |
+| Gold: Filter-Kipp oder Schluss > 3.850? | gesperrt | kein Kipp, Schlüsse 3.740 / 3.607 / 3.538 | ✓ Sperre richtig (Long hätte verloren) |
+| Dennis GBP/CHF 1,10673 / SL 1,10446 / R | Dennis-Spalte | Hoch ~1,1115 (17./18.11.), SL ca. Do 19.11. nachmittags berührt (Kreuz-Näherung), Fr ~1,0978 | **−1,0 R** (TP-Wert unbekannt, Teilgewinn nicht prüfbar) |
+| Dennis US100 27.003 / SL 24.500 / R | Dennis-Spalte | gefüllt Mi, Fr-Tief 24.912 (SL nicht berührt), Schluss 25.181 | offen −0,73 R |
+| USD/JPY Nutzer: Stop angepasst? R | Entscheidung Nutzer | **EK: ja**, Stop 159,716 (knapp im Gewinn); FK: nein, 162,00. Kurs Fr 158,52 | offen +0,61 R; EK-Risiko von ~4,6 % auf 0 |
+| Dennis-Limits gefüllt (laufende Zählung) | 2 von 7 | keine neuen Dennis-Charts dokumentiert | weiter **2 von 7** (GBP/CHF, US100), beide im Minus |
+
+**Nutzer real KW47** (MT5, `reason` 1): EUR/USD **Long** FK 4 + 2 Lot (Di 1,0994 / 1,0988) und EK 0,5 Lot
+(1,0989), alle gestoppt (−272 / −218 USD, −51 EUR). Gold Long FK + EK bei 3.851 (Di), gestoppt bei 3.832
+(−20 USD / −19 EUR). FK MU-Long und SPX500-Long (Fr), teils geschlossen, Rest offen. EK Gold Long 3.626 + Silber
+Long 42,94 (Do 23:53), offen, Stops 3.405 / 38,50 (je ca. 8 % des EK-Kontos). Damit lag der Nutzer bei EUR/USD
+und Gold gegen die Agent-Sicht (EUR/USD short, Gold gesperrt).
 
 ---
 
@@ -573,7 +582,12 @@ so weit oft nicht. Das ist noch kein Befund (n 7), nur eine Beobachtung für die
 | Woche | Agent-Sicht: Trades / Treffer / Σ R | Dennis-Sicht: Trades / Treffer / Σ R | Kanal-Limits (Zuordnung offen) | Nutzer real (Handtrades auf FK/EK) |
 |---|---|---|---|---|
 | KW46 | 1 / 1 / **+1,60 R** (AUD/USD, offen, halbe Größe) | 2 Ideen, 1 gefüllt (EUR/USD; USD/CAD nicht) → 1 / 0 / **−1,0 R** | 1 / 0 / −1,0 R (Gold 4.045) | EUR/USD Short +631 USD; 3× Gold Long −145 USD / −124 EUR; USD/JPY Short offen |
-| **Summe** | **1 / 100 % / +1,60 R** | **1 / 0 % / −1,0 R** | **1 / 0 % / −1,0 R** | – |
+| KW47 | keine neuen Trades (alles ausgelassen/gesperrt); AUD/USD am Ziel geschlossen: Endwert **+2,64 R** statt +1,60 offen (Δ +1,04) | 5 Ideen, 2 gefüllt: GBP/CHF **−1,0 R**, US100 offen −0,73 R; EUR/USD- und Gold-Short nicht gefüllt (Richtung ✓) | – | EUR/USD Long 3× −490 USD / −51 EUR; Gold Long 2× −20 USD / −19 EUR; EK Gold + Silber Long offen; USD/JPY Short offen (+0,61 R) |
+| **Summe** | **1 / 100 % / +2,64 R** (geschlossen) | **2 geschlossen / 0 % / −2,0 R** (+ US100 offen −0,73) | **1 / 0 % / −1,0 R** | – |
+
+Beobachtung KW47: Die Agent-Auslassungen waren in 4 von 5 Fällen richtig (GBP/CHF, EUR/GBP, Gold, USD/JPY ohne
+Eingriff). Einmal kostete die Auslassung Gewinn: Der Report-EUR/USD-Short (Regel 2) lief ins Ziel. Eine Woche ist
+kein Befund.
 
 Nutzer-Spalte aus dem MT5-Abzug (`reason` 1 = Mobile, Magic 0): EUR/USD Short FK 0,56 Lot bei
 1,12268 (Di, nach Dennis' Stop wieder eingestiegen), Teil 1,11388 und Ziel 1,10937. Gold Long FK

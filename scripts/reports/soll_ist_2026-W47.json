@@ -1,0 +1,529 @@
+{
+ "week": "2026-W47",
+ "window": [
+  "2026-11-16T00:00:00",
+  "2026-11-20T21:00:00"
+ ],
+ "bridges": {
+  "ek": {
+   "label": "EK-Portfolio-Bridge",
+   "soll": {
+    "trades": {
+     "orb_nasdaq_NASDAQ_2026-11-16T15:00:00_-1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-11-16T15:00:00",
+      "exit_time": "2026-11-16T15:50:00",
+      "exit_reason": "stop",
+      "r_multiple": 0.9851333374609698,
+      "notified_exit": true
+     },
+     "orb_nasdaq_NASDAQ_2026-11-17T14:50:00_-1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-11-17T14:50:00",
+      "exit_time": "2026-11-17T14:55:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0160778485522126,
+      "notified_exit": true
+     },
+     "orb_nasdaq_NASDAQ_2026-11-19T14:50:00_1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-11-19T14:50:00",
+      "exit_time": "2026-11-19T14:55:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0167268081989318,
+      "notified_exit": true
+     },
+     "orb_nasdaq_NASDAQ_2026-11-20T14:50:00_1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-11-20T14:50:00",
+      "exit_time": "2026-11-20T15:10:00",
+      "exit_reason": "stop",
+      "r_multiple": 0.9885400745541851,
+      "notified_exit": true
+     },
+     "orb_sp500_SP500_2026-11-17T14:55:00_1": {
+      "leg": "orb_sp500",
+      "entry_time": "2026-11-17T14:55:00",
+      "exit_time": "2026-11-17T15:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0279109488662919,
+      "notified_exit": true
+     },
+     "orb_us30_US30_2026-11-17T14:45:00_1": {
+      "leg": "orb_us30",
+      "entry_time": "2026-11-17T14:45:00",
+      "exit_time": "2026-11-17T15:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0286635773844761,
+      "notified_exit": true
+     }
+    },
+    "per_leg": {
+     "orb_nasdaq": {
+      "trades": 4,
+      "sum_r_brutto": -0.059,
+      "sum_r_netto": -0.059,
+      "kosten_r": 0.0,
+      "kosten_quelle": "Engine-Annahme",
+      "live_bein": true
+     },
+     "orb_sp500": {
+      "trades": 1,
+      "sum_r_brutto": -1.028,
+      "sum_r_netto": -1.028,
+      "kosten_r": 0.0,
+      "kosten_quelle": "Engine-Annahme",
+      "live_bein": true
+     },
+     "orb_us30": {
+      "trades": 1,
+      "sum_r_brutto": -1.029,
+      "sum_r_netto": -1.029,
+      "kosten_r": 0.0,
+      "kosten_quelle": "Engine-Annahme",
+      "live_bein": true
+     }
+    },
+    "n_trades": 6,
+    "rel_return": -0.000882,
+    "gold_asb_filter": {
+     "protokolltage": 5,
+     "drift_tage": [
+      "2026-11-18"
+     ]
+    }
+   },
+   "ist": {
+    "per_leg": {
+     "ou_modell": {
+      "deals": 2,
+      "pnl": 1.41
+     }
+    },
+    "unattributed": {
+     "deals": 2,
+     "pnl": -70.58
+    },
+    "total_pnl": -69.17,
+    "equity_bei_abzug": 2351.45,
+    "rel_return": -0.029416,
+    "accounts": [
+     "EK-Portfolio-Bridge / Tickmill"
+    ]
+   },
+   "zerlegung": {
+    "nie_gesehen": {
+     "n": 0,
+     "sum_r": 0,
+     "trades": []
+    },
+    "nicht_platziert": {
+     "n": 0,
+     "sum_r": 0,
+     "trades": []
+    },
+    "platziert": {
+     "n": 0,
+     "sum_r": 0,
+     "trades": []
+    },
+    "nicht_ermittelbar": {
+     "n": 6,
+     "sum_r": -2.12,
+     "trades": [
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-11-16T15:00:00",
+       "r": 0.99,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-11-17T14:50:00",
+       "r": -1.02,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-11-19T14:50:00",
+       "r": -1.02,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-11-20T14:50:00",
+       "r": 0.99,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_sp500",
+       "entry_time": "2026-11-17T14:55:00",
+       "r": -1.03,
+       "exit_reason": "stop"
+      },
+      {
+       "leg": "orb_us30",
+       "entry_time": "2026-11-17T14:45:00",
+       "r": -1.03,
+       "exit_reason": "stop"
+      }
+     ]
+    }
+   },
+   "zuordnungs_warnungen": [],
+   "kosten_pips": 0.5,
+   "kosten_quelle": "geschaetzt"
+  },
+  "funded": {
+   "label": "Funded-Portfolio-Bridge",
+   "soll": {
+    "trades": {
+     "orb_nasdaq_NASDAQ_2026-11-16T15:00:00_-1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-11-16T15:00:00",
+      "exit_time": "2026-11-16T15:50:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0149166625390376,
+      "notified_exit": true
+     },
+     "orb_nasdaq_NASDAQ_2026-11-17T14:50:00_-1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-11-17T14:50:00",
+      "exit_time": "2026-11-17T14:55:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0160778485522126,
+      "notified_exit": true
+     },
+     "orb_nasdaq_NASDAQ_2026-11-19T14:50:00_1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-11-19T14:50:00",
+      "exit_time": "2026-11-19T14:55:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0167268081989318,
+      "notified_exit": true
+     },
+     "orb_nasdaq_NASDAQ_2026-11-20T14:50:00_1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-11-20T14:50:00",
+      "exit_time": "2026-11-20T15:10:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0114099254458024,
+      "notified_exit": true
+     },
+     "orb_sp500_SP500_2026-11-17T14:55:00_1": {
+      "leg": "orb_sp500",
+      "entry_time": "2026-11-17T14:55:00",
+      "exit_time": "2026-11-17T15:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0279109488662919,
+      "notified_exit": true
+     },
+     "orb_us30_US30_2026-11-17T14:45:00_1": {
+      "leg": "orb_us30",
+      "entry_time": "2026-11-17T14:45:00",
+      "exit_time": "2026-11-17T15:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0286635773844761,
+      "notified_exit": true
+     }
+    },
+    "per_leg": {
+     "orb_nasdaq": {
+      "trades": 4,
+      "sum_r_brutto": -4.059,
+      "sum_r_netto": -4.059,
+      "kosten_r": 0.0,
+      "kosten_quelle": "Engine-Annahme",
+      "live_bein": true
+     },
+     "orb_sp500": {
+      "trades": 1,
+      "sum_r_brutto": -1.028,
+      "sum_r_netto": -1.028,
+      "kosten_r": 0.0,
+      "kosten_quelle": "Engine-Annahme",
+      "live_bein": true
+     },
+     "orb_us30": {
+      "trades": 1,
+      "sum_r_brutto": -1.029,
+      "sum_r_netto": -1.029,
+      "kosten_r": 0.0,
+      "kosten_quelle": "Engine-Annahme",
+      "live_bein": true
+     }
+    },
+    "n_trades": 6,
+    "rel_return": -0.003393,
+    "gold_asb_filter": {
+     "protokolltage": 5,
+     "drift_tage": [
+      "2026-11-18"
+     ]
+    }
+   },
+   "ist": {
+    "per_leg": {
+     "orb_nasdaq": {
+      "deals": 2,
+      "pnl": -229.22
+     },
+     "ou_modell": {
+      "deals": 2,
+      "pnl": -11.3
+     }
+    },
+    "unattributed": {
+     "deals": 0,
+     "pnl": 0.0
+    },
+    "total_pnl": -240.52,
+    "equity_bei_abzug": 197130.24,
+    "rel_return": -0.00122,
+    "accounts": [
+     "Funded / TTP Challenge (ttp)",
+     "Funded / IQ Challenge (iqmarkets)"
+    ]
+   },
+   "zerlegung": {
+    "nie_gesehen": {
+     "n": 2,
+     "sum_r": -2.06,
+     "trades": [
+      {
+       "leg": "orb_sp500",
+       "entry_time": "2026-11-17T14:55:00",
+       "r": -1.03,
+       "exit_reason": "stop",
+       "grund": "keine ORB-Order an diesem Tag (Ausbruch vor Platzierung, Filter, Pause oder Bridge aus) -- Bridge-Log `ORB ohne Order` pruefen"
+      },
+      {
+       "leg": "orb_us30",
+       "entry_time": "2026-11-17T14:45:00",
+       "r": -1.03,
+       "exit_reason": "stop",
+       "grund": "keine ORB-Order an diesem Tag (Ausbruch vor Platzierung, Filter, Pause oder Bridge aus) -- Bridge-Log `ORB ohne Order` pruefen"
+      }
+     ]
+    },
+    "nicht_platziert": {
+     "n": 4,
+     "sum_r": -4.06,
+     "trades": [
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-11-16T15:00:00",
+       "r": -1.01,
+       "exit_reason": "stop",
+       "grund": "Gegenseite zuerst gefuellt (OCO/Feed-Unterschied)"
+      },
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-11-17T14:50:00",
+       "r": -1.02,
+       "exit_reason": "stop",
+       "grund": "sl_touched_before_fill"
+      },
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-11-19T14:50:00",
+       "r": -1.02,
+       "exit_reason": "stop",
+       "grund": "sl_touched_before_fill"
+      },
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-11-20T14:50:00",
+       "r": -1.01,
+       "exit_reason": "stop",
+       "grund": "sl_touched_before_fill"
+      }
+     ]
+    },
+    "platziert": {
+     "n": 0,
+     "sum_r": 0,
+     "trades": []
+    }
+   },
+   "zuordnungs_warnungen": [
+    "orb_nasdaq: 4 Soll-Trades, 2 Ist-Deals, aber 0 als platziert erkannt -- Zuordnung pruefen (State-Key-Format?), bevor die Luecke als Ausfuehrungsfehler gilt."
+   ],
+   "kosten_pips": 2.05,
+   "kosten_quelle": "gemessen"
+  },
+  "fk": {
+   "label": "FKInstantFunding-MT5-Bridge",
+   "soll": {
+    "trades": {
+     "orb_nasdaq_NASDAQ_2026-11-16T15:00:00_-1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-11-16T15:00:00",
+      "exit_time": "2026-11-16T15:50:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0149166625390376,
+      "notified_exit": true
+     },
+     "orb_nasdaq_NASDAQ_2026-11-17T14:50:00_-1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-11-17T14:50:00",
+      "exit_time": "2026-11-17T14:55:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0160778485522126,
+      "notified_exit": true
+     },
+     "orb_nasdaq_NASDAQ_2026-11-19T14:50:00_1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-11-19T14:50:00",
+      "exit_time": "2026-11-19T14:55:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0167268081989318,
+      "notified_exit": true
+     },
+     "orb_nasdaq_NASDAQ_2026-11-20T14:50:00_1": {
+      "leg": "orb_nasdaq",
+      "entry_time": "2026-11-20T14:50:00",
+      "exit_time": "2026-11-20T15:10:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0114099254458024,
+      "notified_exit": true
+     },
+     "orb_sp500_SP500_2026-11-17T14:55:00_1": {
+      "leg": "orb_sp500",
+      "entry_time": "2026-11-17T14:55:00",
+      "exit_time": "2026-11-17T15:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0279109488662919,
+      "notified_exit": true
+     },
+     "orb_us30_US30_2026-11-17T14:45:00_1": {
+      "leg": "orb_us30",
+      "entry_time": "2026-11-17T14:45:00",
+      "exit_time": "2026-11-17T15:00:00",
+      "exit_reason": "stop",
+      "r_multiple": -1.0286635773844761,
+      "notified_exit": true
+     }
+    },
+    "per_leg": {
+     "orb_nasdaq": {
+      "trades": 4,
+      "sum_r_brutto": -4.059,
+      "sum_r_netto": -4.059,
+      "kosten_r": 0.0,
+      "kosten_quelle": "Engine-Annahme",
+      "live_bein": true
+     },
+     "orb_sp500": {
+      "trades": 1,
+      "sum_r_brutto": -1.028,
+      "sum_r_netto": -1.028,
+      "kosten_r": 0.0,
+      "kosten_quelle": "Engine-Annahme",
+      "live_bein": true
+     },
+     "orb_us30": {
+      "trades": 1,
+      "sum_r_brutto": -1.029,
+      "sum_r_netto": -1.029,
+      "kosten_r": 0.0,
+      "kosten_quelle": "Engine-Annahme",
+      "live_bein": true
+     }
+    },
+    "n_trades": 6,
+    "rel_return": -0.007594,
+    "gold_asb_filter": {
+     "protokolltage": 5,
+     "drift_tage": [
+      "2026-11-18"
+     ]
+    }
+   },
+   "ist": {
+    "per_leg": {
+     "orb_nasdaq": {
+      "deals": 1,
+      "pnl": -134.46
+     }
+    },
+    "unattributed": {
+     "deals": 5,
+     "pnl": -507.21
+    },
+    "total_pnl": -641.67,
+    "equity_bei_abzug": 98945.84,
+    "rel_return": -0.006485,
+    "accounts": [
+     "FK Instant Funding"
+    ]
+   },
+   "zerlegung": {
+    "nie_gesehen": {
+     "n": 2,
+     "sum_r": -2.06,
+     "trades": [
+      {
+       "leg": "orb_sp500",
+       "entry_time": "2026-11-17T14:55:00",
+       "r": -1.03,
+       "exit_reason": "stop",
+       "grund": "keine ORB-Order an diesem Tag (Ausbruch vor Platzierung, Filter, Pause oder Bridge aus) -- Bridge-Log `ORB ohne Order` pruefen"
+      },
+      {
+       "leg": "orb_us30",
+       "entry_time": "2026-11-17T14:45:00",
+       "r": -1.03,
+       "exit_reason": "stop",
+       "grund": "keine ORB-Order an diesem Tag (Ausbruch vor Platzierung, Filter, Pause oder Bridge aus) -- Bridge-Log `ORB ohne Order` pruefen"
+      }
+     ]
+    },
+    "nicht_platziert": {
+     "n": 4,
+     "sum_r": -4.06,
+     "trades": [
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-11-16T15:00:00",
+       "r": -1.01,
+       "exit_reason": "stop",
+       "grund": "Gegenseite zuerst gefuellt (OCO/Feed-Unterschied)"
+      },
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-11-17T14:50:00",
+       "r": -1.02,
+       "exit_reason": "stop",
+       "grund": "sl_touched_before_fill"
+      },
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-11-19T14:50:00",
+       "r": -1.02,
+       "exit_reason": "stop",
+       "grund": "sl_touched_before_fill"
+      },
+      {
+       "leg": "orb_nasdaq",
+       "entry_time": "2026-11-20T14:50:00",
+       "r": -1.01,
+       "exit_reason": "stop",
+       "grund": "sl_touched_before_fill"
+      }
+     ]
+    },
+    "platziert": {
+     "n": 0,
+     "sum_r": 0,
+     "trades": []
+    }
+   },
+   "zuordnungs_warnungen": [
+    "orb_nasdaq: 4 Soll-Trades, 1 Ist-Deals, aber 0 als platziert erkannt -- Zuordnung pruefen (State-Key-Format?), bevor die Luecke als Ausfuehrungsfehler gilt."
+   ],
+   "kosten_pips": 1.3,
+   "kosten_quelle": "gemessen"
+  }
+ }
+}

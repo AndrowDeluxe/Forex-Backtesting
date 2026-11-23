@@ -1,12 +1,12 @@
 {
- "stand": "2026-11-23 02:01:07.644542+00:00",
+ "stand": "2026-11-23 03:01:08.255152+00:00",
  "statistik": {
   "signale": 2,
   "ja": 2,
   "nein": 0,
   "verfallen": 0,
-  "r_bestaetigt": -0.2942667641551777,
-  "r_alle_signale": 0.6338685654190017
+  "r_bestaetigt": -0.7584234631998903,
+  "r_alle_signale": 0.16971186637428906
  },
  "signale": [
   {
@@ -43,9 +43,9 @@
    "grund": null,
    "entschieden_um": "2026-11-20T22:13:03.473Z",
    "p_sig_status": "offen",
-   "p_sig_r": 0.7489764791,
+   "p_sig_r": 0.28481978,
    "p_conf_status": "offen",
-   "p_conf_r": 0.7489764791
+   "p_conf_r": 0.28481978
   }
  ]
 }

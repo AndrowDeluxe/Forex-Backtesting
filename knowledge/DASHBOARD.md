@@ -577,11 +577,15 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
   `NAS100.gbe` (Risiko je Seite ca. 107 USD). Ob Kosten und Haltedauer bis 16:00 für K60
   passen, ist damit nicht geprüft.
 
-- **Lint 16.11.: fehlende Notiz `nasdaq-orb-vorboersen-range`.** 3 tote Wikilinks
-  (`CHANGELOG.md:68`, `DASHBOARD.md:209`, `DASHBOARD.md:256`) zeigen alle auf dieselbe
-  noch nicht angelegte Notiz zum NASDAQ-ORB-Vorbörsen-Research (15.11., siehe „Weitere
-  Projekte“ oben). Anlegen (und wohin einordnen — `projects/` oder `resources/`?) oder
-  bewusst offenlassen, solange das Thema noch läuft?
+- **Lint 23.11.: erledigt — `nasdaq-orb-vorboersen-range` ist jetzt angelegt** (die 3 im
+  Lint 16.11. gefundenen toten Wikilinks darauf sind weg). Die neue Notiz selbst verweist
+  jetzt auf zwei noch fehlende Ziele, siehe die beiden neuen Punkte unten.
+
+- **Lint 23.11.: fehlende Notiz `makro-filter-hilft-edges-nicht`.** 3 tote Wikilinks auf
+  dieselbe noch nicht angelegte Notiz: `areas/filter-gold-komposition.md:39` + `:59` und
+  `projects/nasdaq-orb-vorboersen-range.md:68`. Geht es um einen wiederkehrenden Befund
+  (Makro-Filter helfen bestimmten Edges nicht), der eine eigene Notiz verdient, oder reicht
+  der Kontext in den bestehenden Notizen? Falls ja: `areas/` oder `resources/`?
 
 ### Aufgaben (Betrieb)
 
@@ -692,28 +696,38 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
   Vorschlag: Der Watchdog committet `bridge_status/` auch bei offenem Tree auf einen eigenen Branch,
   oder der Monitor prüft den Zeitstempel im Snapshot statt den Commit. Mittel.
 
-- **14 unverarbeitete Clippings** in `knowledge/Clippings/` (Lint 16.11.,
+- **14 unverarbeitete Clippings** in `knowledge/Clippings/` (Lint 23.11.,
   unveraendert seit 2026-09-09) — u.a. Edge-Genesis/-Decay,
   Risk-Factor-Investing, Sektor-Rotation, "Six Repos One System", "How
-  system works" — noch nicht durch den CODE-Prozess.
+  system works" — noch nicht durch den CODE-Prozess. (`.gitkeep` im selben
+  Ordner ist kein echtes Clipping, ignoriert.)
 
 **Niedrig**
 
-- **Statustabelle: 9 "Zuletzt geprüft"-Zeilen über 21 Tage alt** (Lint
-  16.11., Schwelle 21 Tage): `FK-Instant-Funding-Paper` (64 Tage),
-  `OU-Modell-ScannerHourly` (75 Tage), `Forex-Weekly-Report` (62 Tage),
-  `Bridge-Watchdog` (64 Tage), `DataLake-Ingest-Fast` (64 Tage),
-  `DataLake-Ingest-Fast5` (64 Tage), `DataLake-Ingest-Slow` (64 Tage),
-  `Dashboard-Telegram-Digest` (64 Tage) — alle zuletzt am 2026-09-02/-13/-15
+- **Statustabelle: 11 "Zuletzt geprüft"-Zeilen über 21 Tage alt** (Lint
+  23.11., Schwelle 21 Tage): `FK-Instant-Funding-Paper` (71 Tage),
+  `OU-Modell-ScannerHourly` (82 Tage), `Forex-Weekly-Report` (69 Tage),
+  `Bridge-Watchdog` (71 Tage), `DataLake-Ingest-Fast` (71 Tage),
+  `DataLake-Ingest-Fast5` (71 Tage), `DataLake-Ingest-Slow` (71 Tage),
+  `Dashboard-Telegram-Digest` (71 Tage) — alle zuletzt am 2026-09-02/-13/-15
   geprüft, unverändert seit dem letzten Lint. `G8-Notion-Sync` (zuletzt
-  2026-10-12, 35 Tage) weiterhin über der Schwelle. Reiner Alters-Hinweis aus
-  dem Lint-Skript, kein inhaltlicher Befund — Zeilen bei Gelegenheit gegen
-  den echten Task-Scheduler-/Scanner-Status nachprüfen und Datum auffrischen
-  (CLAUDE.md Punkt 4).
+  2026-10-12, 42 Tage) weiterhin über der Schwelle. **Neu über der Schwelle
+  seit dem letzten Lint:** `Regime-Notion-Sync` (zuletzt 2026-10-28, 26 Tage)
+  und `Telegram-Import-SMH-Daily` (zuletzt 2026-10-28, 26 Tage). Reiner
+  Alters-Hinweis aus dem Lint-Skript, kein inhaltlicher Befund — Zeilen bei
+  Gelegenheit gegen den echten Task-Scheduler-/Scanner-Status nachprüfen und
+  Datum auffrischen (CLAUDE.md Punkt 4).
 
-- **Lint 16.11.: toter Wikilink** `projects/h4-htf-entry-edge-card.md:60` →
-  `[[crt-manipulation-ist-stopweiten-mechanik]]`, isoliert, keine andere Notiz
-  verweist auf dasselbe Ziel. Keine angelegte Notiz dazu.
+- **Lint 16.11., unverändert 23.11.: toter Wikilink** `projects/h4-htf-entry-edge-card.md:60` →
+  `[[crt-manipulation-ist-stopweiten-mechanik]]`, isoliert, keine andere
+  Notiz verweist auf dasselbe Ziel (die Fundstelle `DASHBOARD.md:715`, die
+  der Lint seit 16.11. zusätzlich meldet, ist nur dieser eigene Eintrag
+  hier, der das Ziel zur Doku zitiert — kein zweiter echter Verweis). Keine
+  angelegte Notiz dazu.
+
+- **Lint 23.11.: fehlende Notiz `orb-first-bar-and-polled-exits`.** 1 toter
+  Wikilink, isoliert: `projects/nasdaq-orb-vorboersen-range.md:53`. Keine
+  angelegte Notiz dazu.
 
 ## Status — was läuft gerade wirklich
 
@@ -798,18 +812,23 @@ Live-Status aller drei Portfolio-Bridges jetzt auch als Streamlit-Seiten
 („Portfolio-Bridges" in der Sidebar) — lesen `bridge_status/snapshot.json`,
 das der Bridge-Watchdog alle 30 Min. committet.
 
-_Letzter Lint-Durchlauf: **2026-11-16** (geplant, `second-brain-lint`).
-Ergebnis: 7 tote Wikilink-Fundstellen — davon 2 Inhaltslücken (dasselbe
-fehlende Ziel mehrfach referenziert): `nasdaq-orb-vorboersen-range` (3×:
-CHANGELOG + DASHBOARD zweimal) und `tradingagents-tauric` (2×: DASHBOARD +
-`resources/prosper-bot-trendregel-echtdaten.md`) → Braucht-Bestätigung; 1
-isolierter toter Link (`crt-manipulation-ist-stopweiten-mechanik` in
-`projects/h4-htf-entry-edge-card.md`) → Offene Aufgaben; 1 `[[...]]` war
-literaler Text im vorigen Lint-Eintrag selbst (kein echter Link), ignoriert.
-0 verwaiste Seiten. 9 veraltete Statustabellen-Zeilen, `G8-Notion-Sync`
-weiterhin über der Schwelle (jetzt 35 Tage) → Offene Aufgaben, Niedrig. 14
-unverarbeitete Clippings unverändert seit 09-09. Verweise nach außerhalb von
-`knowledge/` als Pfad in Backticks (siehe `README.md`)._
+_Letzter Lint-Durchlauf: **2026-11-23** (geplant, `second-brain-lint`).
+Ergebnis: `nasdaq-orb-vorboersen-range` und `tradingagents-tauric` (beide
+16.11. als fehlende Notiz gemeldet) sind jetzt angelegt, die alten
+Bestätigungspunkte dafür entfernt. 7 tote Wikilink-Fundstellen neu — davon
+1 Inhaltslücke (dasselbe fehlende Ziel 3×, aus zwei verschiedenen Notizen
+referenziert): `makro-filter-hilft-edges-nicht` (`areas/filter-gold-
+komposition.md` 2×, `projects/nasdaq-orb-vorboersen-range.md` 1×) →
+Braucht-Bestätigung; 2 isolierte tote Links (`crt-manipulation-ist-
+stopweiten-mechanik` in `projects/h4-htf-entry-edge-card.md`, unverändert
+seit 16.11.; neu `orb-first-bar-and-polled-exits` in `projects/nasdaq-orb-
+vorboersen-range.md`) → Offene Aufgaben; 2 Fundstellen waren Selbstzitate
+eigener Lint-Einträge in `DASHBOARD.md` (literale `[[...]]`-Doku, kein
+echter Link), ignoriert. 0 verwaiste Seiten. 11 veraltete
+Statustabellen-Zeilen (neu über der Schwelle: `Regime-Notion-Sync`,
+`Telegram-Import-SMH-Daily`) → Offene Aufgaben, Niedrig. 14 unverarbeitete
+Clippings unverändert seit 09-09 (`.gitkeep` darin ignoriert). Verweise nach
+außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
 
 ## Status — aktuell nicht aktiv
 

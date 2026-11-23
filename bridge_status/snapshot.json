@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-11-23T03:31:27",
+  "generated_at": "2026-11-23T04:01:26",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-11-23T03:29:15",
+      "last_run": "2026-11-23T03:59:14",
       "minutes_since_last_run": 2.2,
       "status": "ok",
-      "last_equity_line": "2026-11-23 03:29:15 2026-11-23 03:29:07,642 INFO run_once: Konto-Equity 2405.77 EUR | Aggregiertes offenes Risiko (ganzes Konto): 410.50 (Deckel dieser Bridge: 721.73, 30%)",
+      "last_equity_line": "2026-11-23 03:59:14 2026-11-23 03:59:06,341 INFO run_once: Konto-Equity 2401.77 EUR | Aggregiertes offenes Risiko (ganzes Konto): 410.63 (Deckel dieser Bridge: 720.53, 30%)",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-11-23T03:28:38",
-      "minutes_since_last_run": 2.8,
+      "last_run": "2026-11-23T03:58:31",
+      "minutes_since_last_run": 2.9,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-11-23 03:28:38 Verbunden: Login 504072729, Equity $99,626.26 USD",
+          "last_equity_line": "2026-11-23 03:58:31 Verbunden: Login 504072729, Equity $99,626.26 USD",
           "recent_events": []
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-11-23 03:28:38 Verbunden: Login 16054, Equity $97,503.98 USD",
+          "last_equity_line": "2026-11-23 03:58:31 Verbunden: Login 16054, Equity $97,503.98 USD",
           "recent_events": []
         }
       }
@@ -28,7 +28,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-11-23T03:14:21",
-      "minutes_since_last_run": 17.1,
+      "minutes_since_last_run": 47.1,
       "status": "ok",
       "last_equity_line": "2026-11-23 03:14:21 Verbunden: Login 17764, Equity $99,054.26",
       "last_error_line": "2026-11-02 02:08:37 cls_practical-Scan fehlgeschlagen: '>' not supported between instances of 'str' and 'float'",

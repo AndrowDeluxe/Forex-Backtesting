@@ -1,12 +1,12 @@
 {
- "stand": "2026-11-23 10:01:10.753679+00:00",
+ "stand": "2026-11-23 11:01:09.851442+00:00",
  "statistik": {
-  "signale": 2,
+  "signale": 4,
   "ja": 2,
   "nein": 0,
   "verfallen": 0,
-  "r_bestaetigt": -0.20066477330665977,
-  "r_alle_signale": 0.7274705562675197
+  "r_bestaetigt": -0.15506792013173565,
+  "r_alle_signale": 0.8719732545332244
  },
  "signale": [
   {
@@ -43,9 +43,47 @@
    "grund": null,
    "entschieden_um": "2026-11-20T22:13:03.473Z",
    "p_sig_status": "offen",
-   "p_sig_r": 0.8425784699,
+   "p_sig_r": 0.8881753231,
    "p_conf_status": "offen",
-   "p_conf_r": 0.8425784699
+   "p_conf_r": 0.8881753231
+  },
+  {
+   "id": "GBPUSD_2026112307_s",
+   "setup": "H4-Spike",
+   "markt": "GBPUSD",
+   "seite": "short",
+   "einstieg": "2026-11-23T10:00:00.000Z",
+   "kurs": 1.31135,
+   "stop": 1.31435,
+   "ziel_3r": 1.30235,
+   "stern": false,
+   "ampel": "gelb",
+   "status": "offen",
+   "grund": null,
+   "entschieden_um": null,
+   "p_sig_status": "offen",
+   "p_sig_r": 0.142384106,
+   "p_conf_status": null,
+   "p_conf_r": null
+  },
+  {
+   "id": "USDCHF_2026112307_l",
+   "setup": "H4-Spike",
+   "markt": "USDCHF",
+   "seite": "long",
+   "einstieg": "2026-11-23T10:00:00.000Z",
+   "kurs": 0.83913,
+   "stop": 0.83662,
+   "ziel_3r": 0.84666,
+   "stern": false,
+   "ampel": "gelb",
+   "status": "offen",
+   "grund": null,
+   "entschieden_um": null,
+   "p_sig_status": "offen",
+   "p_sig_r": -0.0434782609,
+   "p_conf_status": null,
+   "p_conf_r": null
   }
  ]
 }

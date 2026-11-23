@@ -29,3 +29,13 @@ datum,zeit,quelle,status,grund,eintraege
 2026-11-22,2026-11-22T22:30:10+01:00,krypto_fear_greed,ok,,1
 2026-11-22,2026-11-22T22:30:10+01:00,alphavantage,kostenpflichtig,NEWS_SENTIMENT ist ein Premium-Endpunkt (Gratis-Key reicht nicht),0
 2026-11-22,2026-11-22T22:30:10+01:00,claude,ok,,40
+2026-11-23,2026-11-23T22:30:03+01:00,google_news,ok,,120
+2026-11-23,2026-11-23T22:30:03+01:00,finnhub,ok,,24
+2026-11-23,2026-11-23T22:30:03+01:00,zentralbanken,ok,,3
+2026-11-23,2026-11-23T22:30:03+01:00,sec_edgar,ok,,1
+2026-11-23,2026-11-23T22:30:03+01:00,stocktwits,ok,NVDA: HTTP 403,154
+2026-11-23,2026-11-23T22:30:03+01:00,reddit,nicht konfiguriert,reddit_client_id/secret fehlen (ohne Login blockt Reddit mit 403),0
+2026-11-23,2026-11-23T22:30:03+01:00,cnn_fear_greed,ok,extreme fear (17),2
+2026-11-23,2026-11-23T22:30:03+01:00,krypto_fear_greed,ok,,1
+2026-11-23,2026-11-23T22:30:03+01:00,alphavantage,kostenpflichtig,NEWS_SENTIMENT ist ein Premium-Endpunkt (Gratis-Key reicht nicht),0
+2026-11-23,2026-11-23T22:30:03+01:00,claude,ok,USDJPY/news: Zahl(en) 159 nicht in den Quellen,32

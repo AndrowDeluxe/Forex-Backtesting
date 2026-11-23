@@ -1,12 +1,12 @@
 {
- "stand": "2026-11-23 13:01:09.193327+00:00",
+ "stand": "2026-11-23 15:01:11.023624+00:00",
  "statistik": {
   "signale": 4,
   "ja": 2,
   "nein": 0,
-  "verfallen": 0,
-  "r_bestaetigt": -0.19087108301204425,
-  "r_alle_signale": 1.4901894095075683
+  "verfallen": 2,
+  "r_bestaetigt": 0.5582659483759298,
+  "r_alle_signale": 4.116377981350563
  },
  "signale": [
   {
@@ -43,9 +43,9 @@
    "grund": null,
    "entschieden_um": "2026-11-20T22:13:03.473Z",
    "p_sig_status": "offen",
-   "p_sig_r": 0.8523721602,
+   "p_sig_r": 1.6015091916,
    "p_conf_status": "offen",
-   "p_conf_r": 0.8523721602
+   "p_conf_r": 1.6015091916
   },
   {
    "id": "GBPUSD_2026112307_s",
@@ -58,11 +58,11 @@
    "ziel_3r": 1.30235,
    "stern": false,
    "ampel": "gelb",
-   "status": "offen",
+   "status": "verfallen",
    "grund": null,
    "entschieden_um": null,
    "p_sig_status": "offen",
-   "p_sig_r": 0.8675496689,
+   "p_sig_r": 1.7880794702,
    "p_conf_status": null,
    "p_conf_r": null
   },
@@ -77,11 +77,11 @@
    "ziel_3r": 0.84666,
    "stern": false,
    "ampel": "gelb",
-   "status": "offen",
+   "status": "verfallen",
    "grund": null,
    "entschieden_um": null,
    "p_sig_status": "offen",
-   "p_sig_r": -0.1146245059,
+   "p_sig_r": 0.8418972332,
    "p_conf_status": null,
    "p_conf_r": null
   }

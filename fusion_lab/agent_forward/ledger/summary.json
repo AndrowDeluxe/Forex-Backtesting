@@ -1,5 +1,5 @@
 {
- "stand": null,
+ "stand": "2026-11-23",
  "start": "2026-11-23",
  "auswertung_ab": "2027-02-15",
  "huerde": "Frühestens nach 12 Wochen auswerten. Erfolg = der Agent schlägt beim Richtungs-Alpha alle drei Kontrollen (immer Buy, Zufall, Momentum) und t > 2 über Wochenmittel.",
@@ -19,8 +19,8 @@
  "quellen": {
   "agent": {
    "label": "Agenten-Team",
-   "n": 0,
-   "offen": 0,
+   "n": 5,
+   "offen": 5,
    "abgerechnet": 0,
    "richtungs_alpha": null,
    "summe": null,
@@ -52,8 +52,8 @@
   },
   "always_buy": {
    "label": "Immer Buy",
-   "n": 0,
-   "offen": 0,
+   "n": 5,
+   "offen": 5,
    "abgerechnet": 0,
    "richtungs_alpha": null,
    "summe": null,
@@ -85,8 +85,8 @@
   },
   "random": {
    "label": "Zufall",
-   "n": 0,
-   "offen": 0,
+   "n": 5,
+   "offen": 5,
    "abgerechnet": 0,
    "richtungs_alpha": null,
    "summe": null,
@@ -118,8 +118,8 @@
   },
   "momentum": {
    "label": "Momentum 20 T",
-   "n": 0,
-   "offen": 0,
+   "n": 5,
+   "offen": 5,
    "abgerechnet": 0,
    "richtungs_alpha": null,
    "summe": null,
@@ -163,6 +163,69 @@
   "t_ok": false
  },
  "probe_eintraege": 0,
- "letzte": [],
- "laeufe": []
+ "letzte": [
+  {
+   "datum": "2026-11-23",
+   "ticker": "XOM",
+   "rating": "Underweight",
+   "alpha": null,
+   "rendite": null,
+   "begruendung": "Reduce `XOM` to about 60-70% of a standard allocation now. Apply this to whatever the current holding is, since portfolio context was not provided. Do not exit fully. The Research Manager's Underweight stands. The trader's \"Sell\" label is a partial reduction, and the rating scale's Underweight is the accurate description of it.",
+   "fehler": "",
+   "probe": false
+  },
+  {
+   "datum": "2026-11-23",
+   "ticker": "WMT",
+   "rating": "Underweight",
+   "alpha": null,
+   "rendite": null,
+   "begruendung": "For WMT, reduce exposure to a partial trim, not an exit. Portfolio holdings were not provided, so the sizing below is relative to the caller's standard allocation, with a 4% weight used as the example.",
+   "fehler": "",
+   "probe": false
+  },
+  {
+   "datum": "2026-11-23",
+   "ticker": "UNH",
+   "rating": "Hold",
+   "alpha": null,
+   "rendite": null,
+   "begruendung": "Hold `UNH`. The stronger arguments in the debate are the conservative and neutral ones. Together they lead to the Research Manager's plan with sharper sizing rules. The aggressive case for a starter position now does not outweigh them.",
+   "fehler": "",
+   "probe": false
+  },
+  {
+   "datum": "2026-11-23",
+   "ticker": "NVDA",
+   "rating": "Hold",
+   "alpha": null,
+   "rendite": null,
+   "begruendung": "Hold NVDA. This is a call made after weighing the debate, not a split-the-difference default. If you hold a position, keep it at or below standard weight and add nothing now. If you have no position, do not start one yet. A starter of at most one-quarter to one-third of a standard allocation is defensible only after the confirmation conditions below. Your portfolio holdings were not provided, so all sizing is expressed relative to your own standard allocation.",
+   "fehler": "",
+   "probe": false
+  },
+  {
+   "datum": "2026-11-23",
+   "ticker": "JPM",
+   "rating": "Hold",
+   "alpha": null,
+   "rendite": null,
+   "begruendung": "For JPM, keep the existing position at its standard allocation. Do not add or trim now. Since the caller's holdings are unknown, apply this to whatever position you already hold. If you have none, do not initiate yet. The call is a Hold, but it comes with a defined path: a staged add on confirmation, and a trim if the 310.53 low breaks.",
+   "fehler": "",
+   "probe": false
+  }
+ ],
+ "laeufe": [
+  {
+   "lauf": "2026-11-23 22:36",
+   "datum": "2026-11-23",
+   "titel_ok": "5",
+   "titel_fehler": "0",
+   "abgerechnet": "0",
+   "sekunden": "1294",
+   "llm_aufrufe": "75",
+   "kosten_usd": "1.3661",
+   "hinweis": ""
+  }
+ ]
 }

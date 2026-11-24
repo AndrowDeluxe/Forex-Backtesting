@@ -333,6 +333,11 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
      unten, 10.11.). Von hier aus (nur dieses Repo, kein Zugriff auf Windows-Ereignisprotokoll oder lokale Logs)
      ist das nicht zu unterscheiden. Da die Lücke über den ganzen Handelstag Mo 23.11. hinausgeht: Lief der
      Rechner, und falls ja, wurde gestern überhaupt gehandelt?
+     **Aufgelöst 24.11. ~22:55 (Session Makro-Agent): Fall (b).** Der Rechner lief, lokal lagen 178 Auto-Commits
+     seit 23.11. (Watchdog, Signal-Hub, FK-Snapshots). Der Remote hatte den Lint-Commit `89f64f73` bekommen, die
+     Auto-Tasks konnten danach nicht mehr pushen (nicht vorspulbar). Per Merge zusammengeführt und gepusht.
+     Ursache bleibt: Cloud-Routinen, die direkt auf den Remote committen, blockieren die lokalen Auto-Pushes,
+     bis jemand merged.
 
 - **NASDAQ-ORB Vorbörse (15.11.): Annahmen im Tresor-Lauf - passt das?** „Weitere Filter“ habe ich als Kandidaten C–F
      ausgelegt (C/D/E = nächstbeste Filterfamilien aus Runde 2, F = deine Originalspec), A als Hauptkandidat. Tick-Sim des

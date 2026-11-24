@@ -1,12 +1,12 @@
 {
- "stand": "2026-11-24 07:01:03.346354+00:00",
+ "stand": "2026-11-24 08:01:03.355822+00:00",
  "statistik": {
   "signale": 4,
   "ja": 2,
   "nein": 0,
   "verfallen": 2,
-  "r_bestaetigt": -0.09343189219563619,
-  "r_alle_signale": 4.859492066543862
+  "r_bestaetigt": -0.09903516746255703,
+  "r_alle_signale": 4.992228712225547
  },
  "signale": [
   {
@@ -43,9 +43,9 @@
    "grund": null,
    "entschieden_um": "2026-11-20T22:13:03.473Z",
    "p_sig_status": "offen",
-   "p_sig_r": 0.949811351,
+   "p_sig_r": 0.9442080758,
    "p_conf_status": "offen",
-   "p_conf_r": 0.949811351
+   "p_conf_r": 0.9442080758
   },
   {
    "id": "GBPUSD_2026112307_s",
@@ -81,7 +81,7 @@
    "grund": null,
    "entschieden_um": null,
    "p_sig_status": "offen",
-   "p_sig_r": 1.0711462451,
+   "p_sig_r": 1.209486166,
    "p_conf_status": null,
    "p_conf_r": null
   }

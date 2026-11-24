@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-11-24T00:31:24",
+  "generated_at": "2026-11-24T01:01:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-11-24T00:29:06",
+      "last_run": "2026-11-24T00:59:07",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-11-24 00:29:06 2026-11-24 00:29:01,981 INFO run_once: Konto-Equity 2504.28 EUR | Aggregiertes offenes Risiko (ganzes Konto): 413.52 (Deckel dieser Bridge: 751.28, 30%)",
+      "last_equity_line": "2026-11-24 00:59:07 2026-11-24 00:59:03,528 INFO run_once: Konto-Equity 2497.07 EUR | Aggregiertes offenes Risiko (ganzes Konto): 413.48 (Deckel dieser Bridge: 749.12, 30%)",
       "recent_events": []
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-11-24T00:28:16",
+      "last_run": "2026-11-24T00:58:17",
       "minutes_since_last_run": 3.1,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-11-24 00:28:16 Verbunden: Login 504072729, Equity $99,632.46 USD",
+          "last_equity_line": "2026-11-24 00:58:17 Verbunden: Login 504072729, Equity $99,632.46 USD",
           "recent_events": []
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-11-24 00:28:16 Verbunden: Login 16054, Equity $97,503.98 USD",
+          "last_equity_line": "2026-11-24 00:58:17 Verbunden: Login 16054, Equity $97,503.98 USD",
           "last_error_line": "2026-11-23 21:06:09 Fatal Python error: tstate_delete_common: NULL interpreter",
           "recent_events": []
         }
@@ -29,7 +29,7 @@
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
       "last_run": "2026-11-24T00:14:11",
-      "minutes_since_last_run": 17.2,
+      "minutes_since_last_run": 47.2,
       "status": "ok",
       "last_equity_line": "2026-11-24 00:14:11 Verbunden: Login 17764, Equity $98,917.40",
       "recent_events": [

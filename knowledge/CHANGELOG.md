@@ -9,6 +9,13 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-24 (nachts)** [Research / Elite-Coaching-Calls, Test] Dennis' Volumen-Bausteine als Filter auf die
+  Live-Beine (Nutzerauftrag): `scripts/research_volumen_kontext_beine.py`, Sperre `volumen_kontext_beine` (42 Versuche),
+  ASB/CTNL/ORB NASDAQ+S&P/CLS/Trend-Pullback. Kein Baustein verbessert ein Bein stabil (18/42 gleichgerichtet = Zufall).
+  ORB-NASDAQ-„Delta“-Effekt zerlegt: steckt nur in der Range-Kerze 09:30–09:45 (Fill gegen ihren Körper −0,7/−1,0 R,
+  n 26/17), kein Volumen → Ideen-Inbox. Vorgriff im ersten Lauf (Einstiegskerze im Kontext) gefunden und korrigiert.
+  Keine Bot-Änderung.
+
 - **2026-11-24 (spät)** [Research / Elite-Coaching-Calls, Test] Dennis' Volumen-Bausteine als Filter auf den
   H4-Manipulations-Edge (Nutzerauftrag): `scripts/research_volumen_kontext_h4.py`, Sperre `volumen_kontext_h4`
   (30 Versuche), 47.601 H4-Signale, 8 Märkte. Kein Baustein macht H4 netto positiv. Stabil in IS+OOS nur: Sweep in

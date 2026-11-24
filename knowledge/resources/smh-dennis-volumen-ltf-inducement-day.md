@@ -150,3 +150,24 @@ Code `scripts/research_volumen_kontext_h4.py`, Tabellen `scripts/research_volume
   ~0,05–0,08 R, und das reicht nicht gegen die Kosten. Lehre: Dennis' Divergenz („Sweep ohne Volumen“) zeigt
   in zwei unabhängigen Tests (D1 + H4) in die falsche Richtung. Als Baustein bleibt nur „Sweep reicht bis in
   die Value von T−2“, als schwacher Kontext.
+
+## 8. Bausteine als Filter auf die Live-Beine (2026-11-24, Sperre `volumen_kontext_beine`, 42 Versuche)
+Nutzerauftrag: „teste auf die anderen Edges“. Trades aus denselben Generatoren wie der Gesamtportfolio-Backtest
+2016 (Kosten TTP), ergänzt um Richtung und Markt: Gold ASB 421, CTNL-Reversal 239, ORB NASDAQ 744, ORB S&P 463,
+CLS 184, Trend-Pullback Gold/Silber/USDJPY 237. Sieben Merkmale je Bein, Kontext aus Kerzen, die **vor** dem
+Einstieg schließen. Ein erster Lauf ließ bei ORB/ASB/CLS die Einstiegskerze in den Kontext laufen (Vorgriff), das
+ist korrigiert. Code `scripts/research_volumen_kontext_beine.py`, Tabellen `scripts/research_volumen_kontext_beine_{is,oos}.csv`.
+
+- **Kein Volumen-Baustein hilft einem Bein stabil.** 18 von 42 Merkmal-Bein-Paaren zeigen in IS und OOS
+  dieselbe Richtung, das entspricht dem Zufall (~50 %). CTNL und ASB kippen fast überall das Vorzeichen.
+- **Einziger kräftiger Befund war ORB NASDAQ „Delta der letzten 4 h in Trade-Richtung“** (IS +0,31 vs. −0,32 R,
+  OOS +0,38 vs. −0,18 R). Die Zerlegung zeigt: Delta ohne die letzte Kerze und die Kursrichtung der Vorbörse haben
+  keinen Effekt. Der ganze Effekt sitzt in der **Range-Kerze 09:30–09:45**. Ein ORB-Fill gegen ihre
+  Körperrichtung verliert −0,68 R (IS, n 26) bzw. −0,98 R (OOS, n 17). Das ist Price Action, kein Volumen. ORB S&P
+  zeigt den Effekt nicht. Ausnahmefall, als Idee notiert, nicht umgesetzt (Live-Bein → nur Forward, Sperre Regel 5).
+- Kleine, in beiden Perioden gleichgerichtete Werte (ORB NASDAQ „Value-Trend mit“ +0,34/+0,22 R, CLS „starkes
+  Volumen“ +0,10/+0,42 R) haben t ≈ 1 und liegen im Rauschen der 42 Versuche.
+
+**Gesamtfazit Abschnitte 6–8:** Dennis' Volumenprofil- und Delta-Bausteine liefern mit Dukascopy-Tick-Volumen
+weder ein eigenes Setup noch einen Filter, der einen bestehenden Edge stabil verbessert. Geparkt als Baustein
+(`fusion_lab/patterns/volume_profile.py`). Offen bleibt nur, ob echtes Futures-Volumen anders aussieht.

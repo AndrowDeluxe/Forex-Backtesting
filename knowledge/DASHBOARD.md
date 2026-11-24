@@ -200,6 +200,8 @@ jeweiligen Thema weiterarbeiten (Nutzerentscheid 10.11.).
   **24.11. getestet:** als Setup kein Edge; Volumenbedingungen heben die nackte CRT im LTF-Einstieg um
   ~+0,15 R brutto (IS + OOS, ungesichert), allein um null. Als Filter auf H4 (24.11. spät): brutto
   höchstens +0,08 R, netto weiter −0,12 R; Dennis' Volumen-Divergenz zeigt zweimal falsch herum.
+  Als Filter auf die Live-Beine (ASB/CTNL/ORB/CLS/TP): kein stabiler Effekt → Volumen-Bausteine geparkt,
+  offen nur echtes Futures-Volumen.
   [[smh-dennis-volumen-ltf-inducement-day]]
   Meine Annahmen: Testdefinitionen von A′
   (N = 2/4/8 Berichte, Retail „nicht mitlaufend“), Commercials-Netto redundant.
@@ -831,6 +833,10 @@ unverarbeitete Clippings unverändert seit 09-09. Verweise nach außerhalb von
 | EK-Portfolio-Paper                                      | —                                                                                        | pausiert (Paper-Zwilling von EK-Portfolio-Bridge, gehört zum Portfolio)                        | Disabled       | 2026-09-01      |
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
+
+- (24.11.) **ORB NASDAQ: Fill gegen die Range-Kerze 09:30–09:45** (Fill gegen ihren Körper) verliert im Backtest
+  −0,68 R (IS, n 26) / −0,98 R (OOS, n 17), S&P nicht. Nebenfund aus dem Volumen-Test, kleines n, Live-Bein → nur
+  Forward beobachten. [[smh-dennis-volumen-ltf-inducement-day]] Abschnitt 8.
 
 - (21.11.) **Prosper-Dashboard als Vorlage für Makro-Agent/Trading-System** → eingeordnet in den Plan
   [[prosper-education-uebernahme]] (3 feste Planpunkte, Umsetzung erst nach Ende der Education).

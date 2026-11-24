@@ -195,7 +195,11 @@ jeweiligen Thema weiterarbeiten (Nutzerentscheid 10.11.).
   (10.11.):** Hedgefonds-Aufbau als C2-Filter IS +0,38 R statt +0,21, im OOS nur +0,18 statt +0,13,
   Retail-Gegenseite schadet. Kein Filter, als Baustein geparkt. **Nächster Schritt (Nutzerauftrag
   10.11.):** B/E/F (Volumenprofil) und D (Delta) mit Ersatzdaten testen. Du lieferst Daten und
-  Festlegungen (Liste im Chat vom 10.11.). Meine Annahmen: Testdefinitionen von A′
+  Festlegungen (Liste im Chat vom 10.11.). **23.11.: Call „Volumen LTF“ ausgewertet**, enthält das
+  regelbasierte Setup „Daily Inducement Day“ (D1-CRT + POC/VA-Bedingungen, Ziel T−2-POC, Fib 1,11).
+  **24.11. getestet:** als Setup kein Edge; Volumenbedingungen heben die nackte CRT im LTF-Einstieg um
+  ~+0,15 R brutto (IS + OOS, ungesichert), allein um null. [[smh-dennis-volumen-ltf-inducement-day]]
+  Meine Annahmen: Testdefinitionen von A′
   (N = 2/4/8 Berichte, Retail „nicht mitlaufend“), Commercials-Netto redundant.
   [[smh-dennis-cot-volumen-calls]], [[smh-volumen-delta-und-cot-calls]]
 

@@ -9,6 +9,20 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-24** [Research / Elite-Coaching-Calls, Test] Dennis' „Daily Inducement Day“ getestet (Plan
+  freigegeben, Festlegungen des Nutzers 24.11.). Neue Bausteine `fusion_lab/patterns/volume_profile.py`
+  (CME-Tagesprofile POC/VA aus Tick-Volumen, Delta-Näherung) und `fusion_lab/patterns/inducement_day.py`;
+  Test `scripts/research_dennis_inducement_day.py`, Sperre `dennis_inducement_day` (20 Versuche). Ergebnis: als Setup
+  kein Edge (IS/OOS netto um null oder negativ, FVG-Beste IS +0,41 → OOS −0,28 R, OB-Definition greift kaum,
+  Delta-Filter schadet). Ungesicherter Hinweis: Volumenbedingungen heben die nackte Intraday-CRT im LTF-Einstieg
+  bei gleicher Stopweite um ~+0,12–0,21 R brutto (IS und OOS). Futures-Daten nicht ausgelöst. Keine Bot-Änderung.
+
+- **2026-11-23** [Research / Elite-Coaching-Calls] Dennis' Call „Volumen LTF“ (38 Min.) transkribiert
+  (Whisper lokal, nach Abbruch bei 14:39 fortgesetzt; Transkript nur im Scratchpad) und ausgewertet →
+  `resources/smh-dennis-volumen-ltf-inducement-day.md`: Setup „Daily Inducement Day“ als Checkliste,
+  Volumen-Divergenz/Delta als Auslöser, T+1-Begründung sachlich fraglich, 6 kombinierbare Bausteine
+  (I1–I6). Nichts getestet, keine Bot-Änderung.
+
 - **2026-11-22** [Reporting / Weekly] **Weekly Checkup KW47/2026** (geplanter Task). Bots: 7 Trades, +1,41 EUR /
   −374,98 USD. Inkl. Handtrades: EK −2,74 %, Funded −0,12 %, FK −0,67 %. Kein Kill-Switch. Soll/Ist: Ist über Soll
   (pausierte Beine + Storno-Tage im Soll). `⚠️ ZUORDNUNG` orb_nasdaq = Fehlalarm (Gegenseite gefüllt). Makro-Notiz:

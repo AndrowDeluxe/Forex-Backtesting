@@ -1,0 +1,14 @@
+{
+  "strategy": "dennis_inducement_day",
+  "split": {
+    "is_start": "2016-01-01",
+    "is_end": "2021-12-31",
+    "oos_end": "2026-04-30",
+    "tresor_end": "2026-10-31"
+  },
+  "registered": "2026-11-24T08:49:55+00:00",
+  "trials": 20,
+  "frozen": null,
+  "unsealed": {},
+  "forward": null
+}

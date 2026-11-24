@@ -163,7 +163,7 @@ Telegram. Der tägliche Digest zeigt nur die Fokus-Abschnitte.
 
 
 
-- **Makro-Agent v2 (Scorecard): meine Annahmen beim Umbau** (11.11., nach deinem Auftrag „Banken-
+- ~~**Makro-Agent v2 (Scorecard): meine Annahmen beim Umbau**~~ ✅ bestätigt 24.11. (11.11., nach deinem Auftrag „Banken-
   Niveau“, Plan freigegeben). Deine Entscheide (zwei Ebenen, gleiche Gewichte, Gates als Ansicht,
   vier Extras, Ersatzquellen) sind umgesetzt. Von mir gesetzt: Portfolio long Top-2 / short Bottom-2;
   Faktor-Fenster (Zins-Momentum 3 M, Preis-Momentum 12-1 M + 3 M, Value 10 J, Überraschungen 60 T);
@@ -173,7 +173,7 @@ Telegram. Der tägliche Digest zeigt nur die Fokus-Abschnitte.
   Scorecard ohne Edge (IS Sharpe −0,27, OOS −0,21), läuft im Fact Sheet nur als Kontext
   ([[makro-scorecard-v2]]). ~~`--as-of` vor 30.10. bricht ab; Regimekarte ignoriert `--as-of`~~ behoben 12.11.
 
-- **Makro-Agent v3 (Geopolitik, Wirkketten, Ledger): meine Annahmen** (12.11., Plan freigegeben).
+- ~~**Makro-Agent v3 (Geopolitik, Wirkketten, Ledger): meine Annahmen**~~ ✅ bestätigt 24.11. „Schwellen passen so“ (12.11., Plan freigegeben).
   Deine Entscheide (News messbar + Claude-Einordnung, Earnings Megacaps über Yahoo) sind umgesetzt. Von mir
   gesetzt: die 5 Themen (Iran/Hormuz, Zölle, Ukraine, China/Taiwan, Druck auf die Fed) und je Thema der
   Kanal-Treiber (Iran → Brent, Zölle und Fed-Druck → Inflationserwartung, Ukraine → Geopolitik-Index,

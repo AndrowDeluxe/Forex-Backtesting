@@ -33,6 +33,10 @@ SURPRISE_MIN_OBS = 8                    # Streuung je Indikator erst ab 8 fruehe
 SURPRISE_CLIP = 3.0
 # Hoeher = schlechter fuer die Waehrung (Vorzeichen der Ueberraschung drehen)
 INVERSE = ("Unemployment Rate", "Unemployment Claims", "Jobless Claims", "Claimant Count", "Unemployment Change")
+# Kernindikatoren unabhaengig von der FF-Einstufung (Nutzerentscheid 24.11.2026): FF fuehrt JP-Daten seit
+# 10/2023 nur noch als "low", CHF-CPI ab 2026 als "medium" -> ohne Liste fehlen JPY/CHF im Faktor.
+CORE_EXTRA = {"JPY": {"National Core CPI y/y", "Tokyo Core CPI y/y", "Prelim GDP q/q", "Unemployment Rate"},
+              "CHF": {"CPI m/m", "GDP q/q", "Unemployment Rate"}}
 
 
 @dataclass
@@ -91,7 +95,9 @@ def fx_values(days_end: pd.Timestamp) -> pd.DataFrame:
 def surprise_events(ff: pd.DataFrame) -> pd.DataFrame:
     """High-Impact-Ueberraschungen (Ist - Konsens), je Indikator durch die Streuung der FRUEHEREN
     Ueberraschungen geteilt (kein Vorgriff), Vorzeichen fuer Arbeitslosigkeit gedreht."""
-    ff = ff[(ff["impact"] == "high") & ff["currency"].isin(CCY_LAND)].copy()
+    extra = pd.Series([(c, nm) in {(k, x) for k, v in CORE_EXTRA.items() for x in v}
+                       for c, nm in zip(ff["currency"], ff["name"])], index=ff.index)
+    ff = ff[((ff["impact"] == "high") | extra) & ff["currency"].isin(CCY_LAND)].copy()
     a = ff["actual"].map(calendar.parse_number)
     f = ff["forecast"].map(calendar.parse_number)
     ff["actual_v"], ff["forecast_v"] = a.str[0], f.str[0]

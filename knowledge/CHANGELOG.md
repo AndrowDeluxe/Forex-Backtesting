@@ -20,6 +20,13 @@ keine Planung (dafür ist `DASHBOARD.md`).
   Aktien-Detail mit Tageschart, Indikatoren, Datenprüfung, Research-Text. 39/39 Tests, Browser-Check Desktop + Handy
   (isolierte Kopie, Test-CSV). **Offen:** Alpha-Vantage-Key in die Kurs-`.env` (Kopieren aus den Repo-Secrets wurde
   vom Auto-Modus blockiert), danach echter SPY-Test (Schritt 6). [[prosper-education-uebernahme]]
+- **2026-11-24 (nachts)** [Makro-Agent / Scorecard] Nutzerentscheid: Überraschungs-Faktor für **JPY und CHF** zählt
+  jetzt feste Kernindikatoren unabhängig von der Forex-Factory-Einstufung (JPY: National/Tokio Core CPI, Prelim BIP,
+  Arbeitslosigkeit; CHF: CPI, BIP, Arbeitslosigkeit), `panels.CORE_EXTRA`. Scorecard-Backtest neu (Lock
+  `macro_scorecard_v1`, Kandidat unverändert): IS Sharpe −0,30 (vorher −0,27), OOS −0,18 (vorher −0,21); nur
+  Überraschung OOS +0,14 (vorher +0,22). Datenlücke geschlossen, weiter kein Edge. Schwellen der 9 neuen Ketten und
+  die v2/v3-Annahmen vom Nutzer bestätigt („Schwellen passen so“).
+
 - **2026-11-24 (spätabends)** [Makro-Agent / Wirkketten] Nutzerauftrag „Ketten rückwärts erkennen, fehlende
   Ketten aus der Education, beste Ketten recherchieren“. Neuer Status **„umgekehrt“** (21 von 25 Ketten haben
   Umkehr-Schritte; Wirkung gedreht, Ledger prüft gedrehte Richtung). **9 neue Ketten** aus der OneNote-Education

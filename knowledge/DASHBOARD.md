@@ -878,6 +878,10 @@ außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
   −0,68 R (IS, n 26) / −0,98 R (OOS, n 17), S&P nicht. Nebenfund aus dem Volumen-Test, kleines n, Live-Bein → nur
   Forward beobachten. [[smh-dennis-volumen-ltf-inducement-day]] Abschnitt 8.
 
+- (24.11.) **Risk-on-Schub kehrt bei AUD/Kupfer um?** Wirkketten-Rangliste: steigen USDJPY (20 T > +2 %) und S&P
+  (> +3 %), fallen AUDUSD und Kupfer in den 20 Tagen danach (IS t −2,4/−3,6, OOS t −2,3/−2,1) – Gegenrichtung zu
+  Education-Regel 20. Nicht vorab als Richtung getestet → eigener Test unter Overfitting-Sperre.
+  [[makro-wirkketten-katalog]]
 - (24.11.) **Makro-Agent später:** (a) alle Tabellen im Dashboard/Fact Sheet als Grafiken statt Tabellen (passt zu
   „Fact Sheet grafisch im Terminal-Stil“, 17.11.); (b) Auswahl der größten geopolitischen Treiber mit ihrer
   Marktreaktion (Ereignis → Brent/Gold/Indizes/FX). Erst nach dem Fundament (Fact Sheet + Wirkketten).

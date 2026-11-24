@@ -415,16 +415,24 @@ def _chains(ket) -> list[str]:
     head = ["## 6. Wirkketten (Katalog, Status aus Live-Messwerten)", ""]
     if not isinstance(ket, list):
         return head + [f"n.v. ({(ket or {}).get('fehler', 'kein Block')})", ""]
-    order = {"aktiv": 0, "anlaufend": 1, "gestoppt": 2, "ruhend": 3}
+    order = {"aktiv": 0, "umgekehrt": 1, "anlaufend": 2, "gestoppt": 3, "ruhend": 4}
     rows = []
     for c in sorted(ket, key=lambda c: order[c["status"]]):
-        steps = " → ".join(f"{MARK_STEP[s['erfuellt']]} {s['text']} [{s['wert']}]" for s in c["schritte"])
+        shown = c.get("umkehr") if c["status"] == "umgekehrt" else c["schritte"]
+        steps = " → ".join(f"{MARK_STEP[s['erfuellt']]} {s['text']} [{s['wert']}]" for s in shown)
         assets = ", ".join(f"{a} {d}" for a, d in c["assets"].items())
-        rows.append([f"**{c['status']}**", c["name"], steps, assets, c["beleg"]])
-    lines = head + _table(["Status", "Kette", "Schritte [Messwert]", "Wirkung, wenn sie läuft", "Beleg"], rows)
-    notes = [f"- {c['name']}: {c['hinweis']}" for c in ket if c["hinweis"] and c["status"] in ("aktiv", "anlaufend")]
+        if c["status"] == "umgekehrt":
+            assets = "rückwärts: " + ", ".join(f"{a} {'fällt' if d == 'steigt' else 'steigt'}"
+                                               for a, d in c["assets"].items())
+        rows.append([f"**{c['status']}**", c["name"], steps, assets, c["beleg"], c.get("test", "–")])
+    lines = head + _table(["Status", "Kette", "Schritte [Messwert]", "Wirkung, wenn sie läuft", "Beleg",
+                           "Test 2007–26"], rows)
+    notes = [f"- {c['name']}: {c['hinweis']}" for c in ket if c["hinweis"] and c["status"] in ("aktiv", "umgekehrt", "anlaufend")]
     return lines + ([""] + notes if notes else []) + ["", "Beleg = letzter Schritt in der Exposure-Matrix stabil; "
-                                                     "frühere Schritte sind Annahmen. Aktive Ketten gehen ins Ledger (20 T).", ""]
+                                                     "frühere Schritte sind Annahmen. Umgekehrt = Kette läuft rückwärts (Umkehr-Schritte gezeigt), Wirkung "
+                                                     "gedreht. Aktive und umgekehrte Ketten gehen ins Ledger (20 T). Test 2007–26 (24.11., Lock "
+                                                     "wirkketten_ranking_v1): Vorlauf 20 T bzw. Gleichlauf, IS und OOS; "
+                                                     "keine Kette hat Vorlauf, die Ketten erklären, sie sagen nicht voraus.", ""]
 
 
 def markdown(sheet: dict) -> str:

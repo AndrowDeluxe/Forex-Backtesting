@@ -9,6 +9,27 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-24 (spät)** [Education] **Prosper-Lektion 6 umgesetzt: echte Aktien-Tageskurse für den Market Analyst**
+  (Nutzerauftrag, Kursprojekt `C:\Users\andre\prosper-ai-grok-trading-team`, außerhalb des Repos, kein Git, Backup
+  `_backup_vor_lektion6/`, nur Simulation). Neu: `app/stock_data.py` (Alpha Vantage TIME_SERIES_DAILY, 100 Tagesbars,
+  12-h-Cache; CSV-Fallback `data/stocks/`; Prüfung auf fehlende Werte, ungültige Preise, doppelte Daten; Quelle und
+  Zeitstempel je Bar), `app/stock_research.py` (optionale Einordnung der Indikatoren über Claude-Abo oder Grok, nur bei
+  neuem Datentag, Antwort validiert). Market Analyst rechnet auf Tageskursen SMA 20/50, 20-Tage-Momentum und Volatilität.
+  Eine Aktie ohne geprüfte Daten zeigt DATA UNAVAILABLE, bekommt keinen Preis und wird nicht gehandelt. Positionen zu
+  Demo-Kursen sind als „DEMO ENTRY“ markiert und von Auto-Stops ausgenommen. Dashboard: Kopf-Anzeige je Datenstand,
+  Aktien-Detail mit Tageschart, Indikatoren, Datenprüfung, Research-Text. 39/39 Tests, Browser-Check Desktop + Handy
+  (isolierte Kopie, Test-CSV). **Offen:** Alpha-Vantage-Key in die Kurs-`.env` (Kopieren aus den Repo-Secrets wurde
+  vom Auto-Modus blockiert), danach echter SPY-Test (Schritt 6). [[prosper-education-uebernahme]]
+- **2026-11-24 (spätabends)** [Makro-Agent / Wirkketten] Nutzerauftrag „Ketten rückwärts erkennen, fehlende
+  Ketten aus der Education, beste Ketten recherchieren“. Neuer Status **„umgekehrt“** (21 von 25 Ketten haben
+  Umkehr-Schritte; Wirkung gedreht, Ledger prüft gedrehte Richtung). **9 neue Ketten** aus der OneNote-Education
+  (Liquidität, Realzins, Bull-Steepener, Funding-Stress, Arbeitsmarkt/Sahm, Daten-Überraschung, UST-JGB,
+  Laufzeitprämie, USDJPY + Aktien) → 25 Ketten. **Rangliste 2007–26** (`scripts/research_wirkketten_ranking.py`, Lock
+  `wirkketten_ranking_v1`, 176 Versuche, Tresor zu): **keine Kette mit Vorlauf**, 12 Arme mit Gleichlauf (IS+OOS),
+  Rest trägt nicht. Auffällig: USDJPY + Aktien hoch → AUD/Kupfer danach schwächer (Gegenrichtung, IS+OOS t ≤ −2,1)
+  → Ideen-Inbox. Fact Sheet zeigt Urteil je Kette (Spalte „Test 2007–26“). 3 Tests neu, 80 Makro-Tests grün.
+  Notiz [[makro-wirkketten-katalog]] Abschnitt 24.11.
+
 - **2026-11-24 (abends)** [Makro-Agent / Fact Sheet v4 + neuer Task] Abgleich mit Macro-Desk-Standard (Plan
   freigegeben): neue Blöcke **Liquidität/Funding** (Net Liquidity = Fed-Bilanz − TGA − Reverse Repo, Reserven,
   SOFR − IORB), **Zins-Vol + Laufzeitprämie** (MOVE, NY-Fed-ACM 10J, Kurvenform 2s10s je G8), **Wachstum jetzt**

@@ -1,0 +1,14 @@
+{
+  "strategy": "wirkketten_ranking_v1",
+  "split": {
+    "is_start": "2007-01-01",
+    "is_end": "2016-12-31",
+    "oos_end": "2026-05-24",
+    "tresor_end": "2026-11-24"
+  },
+  "registered": "2026-11-24T21:47:51+00:00",
+  "trials": 352,
+  "frozen": null,
+  "unsealed": {},
+  "forward": null
+}

@@ -1,0 +1,14 @@
+{
+  "strategy": "vix_zins_wirkkette",
+  "split": {
+    "is_start": "2005-01-01",
+    "is_end": "2017-12-31",
+    "oos_end": "2026-05-21",
+    "tresor_end": "2026-11-20"
+  },
+  "registered": "2026-11-22T21:11:38+00:00",
+  "trials": 50,
+  "frozen": null,
+  "unsealed": {},
+  "forward": null
+}

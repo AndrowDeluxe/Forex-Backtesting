@@ -57,12 +57,13 @@ def records(sheet: dict) -> list[dict]:
                         "begruendung": f"{card['lage']}: {card['kernaussage'][:160]}"})
     ket = sheet.get("ketten")
     for c in ket if isinstance(ket, list) else []:
-        if c["status"] != "aktiv":
+        if c["status"] not in ("aktiv", "umgekehrt"):  # umgekehrt: ledger_assets tragen schon das gedrehte Vorzeichen
             continue
         for asset, sign in c["ledger_assets"].items():
             out.append({"erstellt": day, "art": "kette", "objekt": f"{c['id']}:{asset}", "richtung": sign,
                         "messgroesse": MARKET_MEASURE.get(asset, asset), "einheit": "pct", "horizont": HORIZONS[1],
-                        "faellig": _due(day, HORIZONS[1]), "begruendung": c["name"]})
+                        "faellig": _due(day, HORIZONS[1]),
+                        "begruendung": c["name"] if c["status"] == "aktiv" else f"umgekehrt: {c['name']}"})
     return out
 
 

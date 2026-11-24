@@ -62,10 +62,13 @@ def geo_blocks(geo: dict | None) -> list[dict]:
 def chain_blocks(ket) -> list[dict]:
     if not isinstance(ket, list):
         return []
-    order = {"aktiv": 0, "anlaufend": 1, "gestoppt": 2, "ruhend": 3}
-    rows = [_cells([c["status"], c["name"], ", ".join(f"{a} {d}" for a, d in c["assets"].items()), c["beleg"]])
+    order = {"aktiv": 0, "umgekehrt": 1, "anlaufend": 2, "gestoppt": 3, "ruhend": 4}
+    flip = {"steigt": "fällt", "fällt": "steigt"}
+    rows = [_cells([c["status"], c["name"],
+                    ", ".join(f"{a} {flip[d] if c['status'] == 'umgekehrt' else d}" for a, d in c["assets"].items()),
+                    c["beleg"], c.get("test", "–")])
             for c in sorted(ket, key=lambda c: order[c["status"]])]
-    return [_block("heading_2", "Wirkketten"), _table(["Status", "Kette", "Wirkung, wenn sie läuft", "Beleg"], rows)]
+    return [_block("heading_2", "Wirkketten"), _table(["Status", "Kette", "Wirkung (umgekehrt: gedreht)", "Beleg", "Test 2007–26"], rows)]
 
 
 def md_blocks(lines: list[str]) -> list[dict]:

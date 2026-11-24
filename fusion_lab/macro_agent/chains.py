@@ -6,17 +6,22 @@ Stopp-Bedingung und der Beleg-Status. Quelle der ersten vier Ketten: SMT-Report 
 
 Status je Lauf:
 - "aktiv":     alle Schritte erfuellt, Stopp nicht erfuellt
+- "umgekehrt": alle Umkehr-Schritte erfuellt: die Kette laeuft rueckwaerts (z. B. Brent faellt, 2J faellt ->
+               Gold-Rueckenwind); Wirkung mit umgedrehtem Vorzeichen (seit 24.11.2026, Nutzerentscheid)
 - "anlaufend": erster Schritt erfuellt, spaetere noch nicht
-- "gestoppt":  Stopp-Bedingung erfuellt
+- "gestoppt":  Stopp-Bedingung erfuellt, ohne dass die Kette rueckwaerts laeuft
 - "ruhend":    sonst
 Beleg: "belegt" heisst, der letzte Schritt (Treiber -> Asset) ist in der Exposure-Matrix stabil
 (gleiches Vorzeichen 2007-16, 2017-26, heute); die frueheren Schritte sind Annahmen, solange nicht anders
-vermerkt. Aktive Ketten gehen als Aussage ins Forecast-Ledger (Asset-Richtung, 20 Handelstage).
+vermerkt. Aktive und umgekehrte Ketten gehen als Aussage ins Forecast-Ledger (Asset-Richtung, 20 Handelstage).
+Ketten seit 24.11. aus der OneNote-"Makro Education" (knowledge/resources/makro-faktoren-katalog.md, Regeln
+1-25 und Testkandidaten); Rangliste "welche Kette traegt" in scripts/research_wirkketten_ranking.py.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Callable
 
 import numpy as np
@@ -42,6 +47,7 @@ class Chain:
     assets: dict[str, int]                      # Asset -> erwartete Richtung, wenn die Kette laeuft
     beleg: list[tuple[str, str]] = field(default_factory=list)  # (Asset, Treiber) in der Exposure-Matrix
     hinweis: str = ""
+    umkehr: list[Step] | None = None            # Rueckwaerts-Lauf: alle erfuellt -> Wirkung umgedreht
 
 
 def _gt(name, x):
@@ -125,7 +131,10 @@ CHAINS = [
           [Step("VIX über 24", _gt("vix", 24), "vix"),
            Step("S&P 500 fällt (5 T < −3 %)", _lt("spx_5d", -3), "spx_5d")],
           Step("VIX unter 18", _lt("vix", 18), "vix"),
-          {"AUDUSD": -1, "USDCAD": +1, "spx": -1}, [("AUDUSD", "vix"), ("USDCAD", "vix"), ("spx", "vix")]),
+          {"AUDUSD": -1, "USDCAD": +1, "spx": -1}, [("AUDUSD", "vix"), ("USDCAD", "vix"), ("spx", "vix")],
+          "Test 22.11. (Lock vix_zins_wirkkette): VIX > 30 ist kein Kaufsignal. S&P danach nur 2018–26 im Plus "
+          "(+5 % in 20 T), 2005–17 im Minus (2008 −5 %): Regime-Frage (hilft die Fed schnell?). Gold reagiert nicht "
+          "auf den VIX (Korrelation ≈ 0, Vorzeichen wechselt je Jahr)."),
     Chain("risiko_an_ki", "KI-Gewinne → Asiens Chipbörsen (KOSPI) → Risikoappetit → AUD stärker",
           "Geo-Framework 12.11., Test 15.11.",
           [Step("KOSPI steigt (20 T > +5 %)", _gt("kospi_20d", 5), "kospi_20d"),
@@ -136,7 +145,10 @@ CHAINS = [
     Chain("us_zins_dollar", "US-Zinsen steigen relativ → Dollar stärker (vor allem gegen JPY)", "Fed-Note 2017",
           [Step("US-2J steigt (20 T > +15 bp)", _gt("us_2y_20d_bp", 15), "us_2y_20d_bp")],
           Step("US-2J fällt (20 T < −15 bp)", _lt("us_2y_20d_bp", -15), "us_2y_20d_bp"),
-          {"USDJPY": +1, "EURUSD": -1, "gold": -1}, [("USDJPY", "us_2y"), ("EURUSD", "us_2y"), ("gold", "us_2y")]),
+          {"USDJPY": +1, "EURUSD": -1, "gold": -1}, [("USDJPY", "us_2y"), ("EURUSD", "us_2y"), ("gold", "us_2y")],
+          "Test 22.11.: Gold folgt 2J und Dollar nur im Gleichlauf (Woche: Gold~2J −0,2, Gold~DXY −0,47), kein "
+          "Vorlauf. „VIX und Zinsen fallen“ hebt Gold nur über die Zinsen; der Gewinn liegt in der Prognose des "
+          "2J-Pfads, nicht im Nachlaufen."),
     Chain("china_kupfer", "China-Nachfrage → Kupfer → AUD stärker", "Lehrbuch",
           [Step("Kupfer steigt (20 T > +5 %)", _gt("kupfer_20d", 5), "kupfer_20d")],
           Step("Kupfer fällt (20 T < −5 %)", _lt("kupfer_20d", -5), "kupfer_20d"),
@@ -171,7 +183,109 @@ CHAINS = [
            Step("5J-in-5J-Inflationserwartung steigt (Woche > +5 bp)", _gt("fwd_5y5y_1w_bp", 5), "fwd_5y5y_1w_bp")],
           Step("Entspannung gemeldet", _eq("lage_fed_unabhaengigkeit", "entspannung"), "lage_fed_unabhaengigkeit"),
           {"gold": +1, "EURUSD": +1}, [("gold", "dollar")]),
+    # OneNote-"Makro Education" (24.11.2026, Nutzerauftrag "fehlende Wirkketten"); Schwellen von Claude gesetzt,
+    # vor dem Ranking-Test festgelegt (Lock wirkketten_ranking_v1), nicht optimiert.
+    Chain("liquiditaet_risiko", "Liquidität (Fed-Bilanz − TGA − Reverse Repo) steigt → Aktien und Gold getragen",
+          "Education Regel 19, Testkandidat 4",
+          [Step("Net Liquidity steigt (13 W > +150 Mrd.)", _gt("net_liq_13w", 150), "net_liq_13w")],
+          Step("Net Liquidity fällt (13 W < −150 Mrd.)", _lt("net_liq_13w", -150), "net_liq_13w"),
+          {"spx": +1, "ndx": +1, "gold": +1}, [],
+          umkehr=[Step("Net Liquidity fällt (13 W < −150 Mrd.)", _lt("net_liq_13w", -150), "net_liq_13w")]),
+    Chain("realzins_risiko", "Realzins steigt und ist positiv → Risiko-Assets und Gold fallen",
+          "Education Regel 18, Testkandidat 10",
+          [Step("US-Realzins 10J positiv", _gt("real_10y", 0), "real_10y"),
+           Step("Realzins steigt (20 T > +20 bp)", _gt("real_10y_20d_bp", 20), "real_10y_20d_bp")],
+          Step("Realzins fällt (20 T < −20 bp)", _lt("real_10y_20d_bp", -20), "real_10y_20d_bp"),
+          {"ndx": -1, "gold": -1}, [("gold", "realzins"), ("ndx", "realzins")],
+          umkehr=[Step("Realzins fällt (20 T < −20 bp)", _lt("real_10y_20d_bp", -20), "real_10y_20d_bp")]),
+    Chain("kurve_dollar", "Bull-Steepener (2J fällt, Kurve steiler) → Fed-Senkungen eingepreist → Dollar schwach",
+          "Education Regel 15 (Hausaufgabe 2)",
+          [Step("US-2J fällt (20 T < −10 bp)", _lt("us_2y_20d_bp", -10), "us_2y_20d_bp"),
+           Step("Kurve 10J−2J steiler (20 T > +5 bp)", _gt("us_kurve_20d_bp", 5), "us_kurve_20d_bp")],
+          Step("US-2J steigt (20 T > +10 bp)", _gt("us_2y_20d_bp", 10), "us_2y_20d_bp"),
+          {"EURUSD": +1, "AUDUSD": +1, "USDJPY": -1, "USDCHF": -1}, [("EURUSD", "us_2y"), ("USDJPY", "us_2y")],
+          umkehr=[Step("US-2J steigt (20 T > +10 bp)", _gt("us_2y_20d_bp", 10), "us_2y_20d_bp"),
+                  Step("Kurve flacher (20 T < −5 bp)", _lt("us_kurve_20d_bp", -5), "us_kurve_20d_bp")]),
+    Chain("funding_stress", "Liquiditätsengpass (SOFR über IORB, MOVE hoch) → Risikoprämien steigen → JPY als Hafen",
+          "Education Regel 21 (Bonds Liq 1)",
+          [Step("Funding angespannt (SOFR − IORB > 5 bp) oder MOVE > 120",
+                _any(_gt("sofr_iorb_bp", 5), _gt("move", 120)), "sofr_iorb_bp"),
+           Step("VIX über 20", _gt("vix", 20), "vix")],
+          Step("SOFR − IORB < 2 bp und MOVE < 100", _all(_lt("sofr_iorb_bp", 2), _lt("move", 100)), "move"),
+          {"USDJPY": -1, "AUDJPY": -1, "spx": -1}, [("USDJPY", "vix"), ("spx", "vix")]),
+    Chain("arbeitsmarkt_abschwung",
+          "Nachfrage ↓ → Entlassungen (Erstanträge) ↑ → Fed lockert → 2J, Dollar, Aktien runter, Gold rauf",
+          "Education Regeln 5, 8, 23; Testkandidat 5 (Sahm)",
+          [Step("Erstanträge 4W > 15 % über 52W-Tief", _gt("erstantraege_vs_tief_pct", 15), "erstantraege_vs_tief_pct"),
+           Step("Sahm-Regel ≥ 0,3 (Warnzone)", _gt("sahm", 0.29), "sahm")],
+          Step("Erstanträge zurück (< 5 % über Tief)", _lt("erstantraege_vs_tief_pct", 5), "erstantraege_vs_tief_pct"),
+          {"USDJPY": -1, "spx": -1, "gold": +1}, [("USDJPY", "us_2y"), ("gold", "us_2y")]),
+    Chain("daten_ueberraschung_usd", "US-Daten über Konsens (ohne Wachstumsschwäche) → weniger Senkungen → Dollar stark",
+          "Education Regeln 1, 5, 6",
+          [Step("US-Überraschungen 60 T > +2", _gt("usd_ueberraschung", 2), "usd_ueberraschung"),
+           Step("GDPNow > 1 % (keine Schwäche)", _gt("gdpnow", 1), "gdpnow")],
+          Step("US-Überraschungen 60 T < 0", _lt("usd_ueberraschung", 0), "usd_ueberraschung"),
+          {"EURUSD": -1, "USDJPY": +1, "gold": -1}, [("EURUSD", "us_2y"), ("USDJPY", "us_2y")],
+          umkehr=[Step("US-Überraschungen 60 T < −2", _lt("usd_ueberraschung", -2), "usd_ueberraschung")]),
+    Chain("ust_jgb_usdjpy", "Zinsabstand USA − Japan (10J) wächst → USDJPY steigt", "Education Testkandidat 7 (Bankreport)",
+          [Step("UST−JGB 10J steigt (20 T > +15 bp)", _gt("ust_jgb_20d_bp", 15), "ust_jgb_20d_bp")],
+          Step("UST−JGB 10J fällt (20 T < −15 bp)", _lt("ust_jgb_20d_bp", -15), "ust_jgb_20d_bp"),
+          {"USDJPY": +1}, [("USDJPY", "us_2y")],
+          "Bank: ~90 % Korrelation im Niveau; Niveau-Korrelation täglich kann Scheinkorrelation sein (Katalog).",
+          umkehr=[Step("UST−JGB 10J fällt (20 T < −15 bp)", _lt("ust_jgb_20d_bp", -15), "ust_jgb_20d_bp")]),
+    Chain("laufzeitpraemie_gold", "Laufzeitprämie steigt (Haushalt/Fed-Zweifel) → Dollar schwach, Gold stark",
+          "Desk-Abgleich 24.11. (Graham/BIS 2026), Hypothese",
+          [Step("ACM-Prämie 10J steigt (20 T > +15 bp)", _gt("praemie_20d_bp", 15), "praemie_20d_bp"),
+           Step("… stärker als die Zinserwartung", _gt("praemie_minus_erwartung_bp", 0), "praemie_minus_erwartung_bp")],
+          Step("Prämie fällt (20 T < −15 bp)", _lt("praemie_20d_bp", -15), "praemie_20d_bp"),
+          {"gold": +1, "EURUSD": +1}, [],
+          umkehr=[Step("Prämie fällt (20 T < −15 bp)", _lt("praemie_20d_bp", -15), "praemie_20d_bp")]),
+    Chain("carry_risiko", "USDJPY und Aktien steigen → Risikoappetit (Carry) → AUD, Kupfer stärker",
+          "Education Regel 20 (BTC-Dynamik)",
+          [Step("USDJPY steigt (20 T > +2 %)", _gt("usdjpy_20d", 2), "usdjpy_20d"),
+           Step("S&P 500 steigt (20 T > +3 %)", _gt("spx_20d", 3), "spx_20d")],
+          Step("USDJPY fällt (20 T < −2 %)", _lt("usdjpy_20d", -2), "usdjpy_20d"),
+          {"AUDUSD": +1, "kupfer": +1}, [("AUDUSD", "vix")],
+          umkehr=[Step("USDJPY fällt (20 T < −2 %)", _lt("usdjpy_20d", -2), "usdjpy_20d"),
+                  Step("S&P 500 fällt (20 T < −3 %)", _lt("spx_20d", -3), "spx_20d")]),
 ]
+
+# Rueckwaerts-Lauf der bestehenden Ketten (24.11.2026): meist der gespiegelte Ausloeser. Keine Umkehr fuer
+# Ketten, deren Gegenteil der Normalzustand ist (KI-Schulden, Fed-Druck).
+UMKEHR = {
+    "oel_fed_gold": [Step("Brent fällt (20 T < −5 %)", _lt("brent_20d", -5), "brent_20d"),
+                     Step("US-2J fällt (20 T < −10 bp)", _lt("us_2y_20d_bp", -10), "us_2y_20d_bp")],
+    "oel_cad": [Step("Brent fällt (20 T < −3 %)", _lt("brent_20d", -3), "brent_20d"),
+                Step("CA-Pricing fällt (Woche < 0)", _lt("ca_pricing_1w_bp", 0), "ca_pricing_1w_bp")],
+    "oel_importeure": [Step("Brent fällt (20 T < −5 %)", _lt("brent_20d", -5), "brent_20d")],
+    "defizit_oat": [Step("Spread fällt (20 T < −10 bp)", _lt("oat_bund_20d_bp", -10), "oat_bund_20d_bp")],
+    "oel_praemie": [Step("Iran/Hormuz laut Schlagzeilen entspannt", _eq("lage_iran_hormuz", "entspannung"),
+                         "lage_iran_hormuz"),
+                    Step("Brent unter dem 20-Tage-Mittel", _lt("brent_vs_20d", 0), "brent_vs_20d")],
+    "zoelle_inflation": [Step("Zölle laut Schlagzeilen entspannt", _eq("lage_zoelle_trump", "entspannung"),
+                              "lage_zoelle_trump"),
+                         Step("Inflationserwartung fällt (20 T < −10 bp)", _lt("breakeven_20d_bp", -10),
+                              "breakeven_20d_bp")],
+    "ukraine_gas": [Step("Ukraine/Russland laut Schlagzeilen entspannt", _eq("lage_ukraine_russland", "entspannung"),
+                         "lage_ukraine_russland")],
+    "risiko_aus_hafen": [Step("VIX fällt (20 T < −5 Punkte)", _lt("vix_20d", -5), "vix_20d"),
+                         Step("S&P 500 steigt (5 T > +2 %)", _gt("spx_5d", 2), "spx_5d")],
+    "risiko_an_ki": [Step("KOSPI fällt (20 T < −5 %)", _lt("kospi_20d", -5), "kospi_20d"),
+                     Step("VIX steigt (20 T > 0)", _gt("vix_20d", 0), "vix_20d")],
+    "us_zins_dollar": [Step("US-2J fällt (20 T < −15 bp)", _lt("us_2y_20d_bp", -15), "us_2y_20d_bp")],
+    "china_kupfer": [Step("Kupfer fällt (20 T < −5 %)", _lt("kupfer_20d", -5), "kupfer_20d")],
+    "ki_chips_korea": [Step("Korea-Exporte J/J bremsen (3 M < −5 Pp.)", _lt("korea_exporte_yoy_3m", -5),
+                            "korea_exporte_yoy_3m"),
+                       Step("KOSPI fällt (20 T < 0)", _lt("kospi_20d", 0), "kospi_20d")],
+    "china_preise_inflation": [Step("Importpreise drehen (3 M < −1 Pp.)", _lt("china_importpreise_yoy_3m", -1),
+                                    "china_importpreise_yoy_3m"),
+                               Step("US-2J fällt (20 T < −10 bp)", _lt("us_2y_20d_bp", -10), "us_2y_20d_bp")],
+    "kupfer_aud_ki": [Step("Kupfer fällt (20 T < −5 %)", _lt("kupfer_20d", -5), "kupfer_20d"),
+                      Step("KOSPI fällt (20 T < 0)", _lt("kospi_20d", 0), "kospi_20d")],
+}
+for _c in CHAINS:
+    if _c.umkehr is None and _c.id in UMKEHR:
+        _c.umkehr = UMKEHR[_c.id]
 
 
 def _ret(s: pd.Series, n: int) -> float | None:
@@ -219,6 +333,25 @@ def measures(daily: pd.DataFrame, macro_w: pd.DataFrame, sheet: dict) -> M:
         m[f"lage_{card['thema']}"] = card["lage"] if card["lage"] != "n.v." else None
     ca = ((sheet.get("taktisch") or {}).get("notenbanken") or {}).get("CA") or {}
     m["ca_pricing_1w_bp"] = ca.get("chg_1w_bp")
+    # Education-Ketten (24.11.2026): Realzins, Kurve, UST-JGB, USDJPY/Aktien aus Tagesreihen ...
+    real = col("real_10y").dropna()
+    m["real_10y"] = None if real.empty else float(real.iloc[-1])
+    m["real_10y_20d_bp"] = _chg(real, 20)
+    m["usdjpy_20d"], m["spx_20d"] = _ret(col("USDJPY"), 20), _ret(col("spx"), 20)
+    m["us_kurve_20d_bp"] = _chg((mw("US.10y") - mw("US.2y")).dropna(), 20)
+    m["ust_jgb_20d_bp"] = _chg((mw("US.10y") - mw("JP.10y")).dropna(), 20)
+    tp, ex = _chg(mw("US.term_premium_10y"), 20), _chg(mw("US.expected_10y"), 20)
+    m["praemie_20d_bp"] = tp
+    m["praemie_minus_erwartung_bp"] = None if tp is None or ex is None else tp - ex
+    # ... und aus den v4-Bloecken des Fact Sheets
+    desk = sheet.get("desk") or {}
+    lq, zv, wa = (desk.get(k) or {} for k in ("liquiditaet", "zinsvol", "wachstum"))
+    m["net_liq_13w"], m["sofr_iorb_bp"], m["move"] = lq.get("chg_13w_mrd"), lq.get("sofr_iorb_bp"), zv.get("move")
+    m["gdpnow"], m["sahm"] = wa.get("gdpnow"), wa.get("sahm")
+    c4, low = wa.get("erstantraege_4w_tsd"), wa.get("erstantraege_52w_tief_tsd")
+    m["erstantraege_vs_tief_pct"] = None if not c4 or not low else 100 * (c4 / low - 1)
+    usd = ((sheet.get("scorecard") or {}).get("waehrungen") or {}).get("USD") or {}
+    m["usd_ueberraschung"] = usd.get("ueberr_60t")
     return {k: (None if isinstance(v, float) and not np.isfinite(v) else v) for k, v in m.items()}
 
 
@@ -230,13 +363,28 @@ def _fmt_measure(v):
     return f"{v:.1f}".replace(".", ",") if isinstance(v, float) else str(v)
 
 
-def evaluate(m: M, exposure: dict | None) -> list[dict]:
+RANKING = Path(__file__).resolve().parents[1] / "data" / "macro_agent" / "wirkketten_ranking.csv"
+
+
+def ranking(path: Path = RANKING) -> dict[tuple[str, str], str]:
+    """Urteil aus scripts/research_wirkketten_ranking.py je (Kette, Arm); fehlt die Datei: leer."""
+    if not path.exists():
+        return {}
+    df = pd.read_csv(path)
+    return {(k, a): u for (k, a), u in df.groupby(["kette", "arm"])["urteil"].first().items()}
+
+
+def evaluate(m: M, exposure: dict | None, tests: dict | None = None) -> list[dict]:
     from .geo_framework import label
+    tests = ranking() if tests is None else tests
     out = []
     for c in CHAINS:
         steps = [s.check(m) for s in c.schritte]
         stop = c.stopp.check(m)
-        if stop:
+        rev = [s.check(m) for s in c.umkehr or []]
+        if rev and all(v is True for v in rev):
+            status = "umgekehrt"
+        elif stop:
             status = "gestoppt"
         elif steps and all(v is True for v in steps):
             status = "aktiv"
@@ -257,6 +405,11 @@ def evaluate(m: M, exposure: dict | None) -> list[dict]:
             "assets": {label(a): ("steigt" if s > 0 else "fällt") for a, s in c.assets.items()},
             "beleg": "belegt" if stable and len(stable) == len(c.beleg) else ("teilweise" if stable else "Hypothese"),
             "beleg_details": beleg, "hinweis": c.hinweis,
-            "ledger_assets": c.assets,
+            "test": tests.get((c.id, "umgekehrt" if status == "umgekehrt" else "aktiv"),
+                              tests.get((c.id, "–"), "ungetestet")),
+            "umkehr": [{"text": s.text, "erfuellt": v, "wert": _fmt_measure(m.get(s.zeigt))}
+                       for s, v in zip(c.umkehr or [], rev)],
+            # Richtung, die das Ledger prueft: umgekehrte Kette = umgedrehtes Vorzeichen
+            "ledger_assets": {a: (-s if status == "umgekehrt" else s) for a, s in c.assets.items()},
         })
     return out

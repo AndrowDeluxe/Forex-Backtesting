@@ -58,3 +58,41 @@ def test_yoy_monthly_ignores_daily_gaps():
     s = pd.Series(range(100, 115), index=idx, dtype=float).reindex(pd.date_range("2025-01-01", "2026-03-01"))
     yoy = chains._yoy_monthly(s)
     assert len(yoy) == 3 and abs(yoy.iloc[0] - 12.0) < 1e-9
+
+
+def test_umgekehrt_dreht_wirkung_und_geht_ins_ledger():
+    """24.11.: Brent −13 %, 2J −24 bp -> Oel-Fed-Gold-Kette laeuft rueckwaerts (Gold-Rueckenwind)."""
+    m = {"brent_20d": -13.0, "fed_kanal": True, "us_2y_20d_bp": -24.0}
+    c = _by_id(chains.evaluate(m, None))["oel_fed_gold"]
+    assert c["status"] == "umgekehrt" and c["ledger_assets"]["gold"] == +1
+    rec = [r for r in ledger.records({"stand": "2026-11-24", "ketten": [c]}) if r["art"] == "kette"]
+    gold = [r for r in rec if r["objekt"] == "oel_fed_gold:gold"][0]
+    assert gold["richtung"] == +1 and gold["begruendung"].startswith("umgekehrt")
+    m["us_2y_20d_bp"] = 0.0  # Brent faellt, aber kein Zins-Durchgriff -> nur gestoppt
+    assert _by_id(chains.evaluate(m, None))["oel_fed_gold"]["status"] == "gestoppt"
+
+
+def test_education_ketten_24_11():
+    m = {"net_liq_13w": 200.0, "real_10y": 1.8, "real_10y_20d_bp": 25.0, "us_2y_20d_bp": -15.0,
+         "us_kurve_20d_bp": 8.0, "usdjpy_20d": 3.0, "spx_20d": 4.0, "ust_jgb_20d_bp": 20.0,
+         "erstantraege_vs_tief_pct": 20.0, "sahm": 0.35, "usd_ueberraschung": 3.0, "gdpnow": 2.0}
+    out = _by_id(chains.evaluate(m, None))
+    for cid in ["liquiditaet_risiko", "realzins_risiko", "kurve_dollar", "carry_risiko", "ust_jgb_usdjpy",
+                "arbeitsmarkt_abschwung", "daten_ueberraschung_usd"]:
+        assert out[cid]["status"] == "aktiv", cid
+    m.update(net_liq_13w=-200.0, usdjpy_20d=-3.0, spx_20d=-4.0)
+    out = _by_id(chains.evaluate(m, None))
+    assert out["liquiditaet_risiko"]["status"] == "umgekehrt"
+    assert out["liquiditaet_risiko"]["ledger_assets"] == {"spx": -1, "ndx": -1, "gold": -1}
+    assert out["carry_risiko"]["status"] == "umgekehrt"
+
+
+def test_measures_from_desk_blocks():
+    sheet = {"desk": {"liquiditaet": {"chg_13w_mrd": 32.7, "sofr_iorb_bp": 2.0},
+                      "zinsvol": {"move": 98.9},
+                      "wachstum": {"gdpnow": 3.2, "sahm": 0.0, "erstantraege_4w_tsd": 198.0,
+                                   "erstantraege_52w_tief_tsd": 180.0}},
+             "scorecard": {"waehrungen": {"USD": {"ueberr_60t": 9.0}}}}
+    m = chains.measures(pd.DataFrame(), pd.DataFrame(), sheet)
+    assert m["net_liq_13w"] == 32.7 and m["move"] == 98.9 and m["usd_ueberraschung"] == 9.0
+    assert abs(m["erstantraege_vs_tief_pct"] - 10.0) < 1e-9

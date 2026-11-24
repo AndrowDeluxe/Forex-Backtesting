@@ -311,6 +311,19 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 
 ### Bestätigungen (Betrieb/Research)
 
+- **Kompletter Autocommit-Stillstand seit Mo 23.11. 07:01 — Rechner aus oder nur Push blockiert?** Letzter
+     `bridge_status/snapshot.json`-Commit `generated_at: 2026-11-23T07:01:27`, davor den ganzen Tag regelmäßiger
+     30-Min-Takt. Seitdem (Stand dieser Routine: Di 24.11. ca. 10:11 CET, über 26 h) **kein einziger** Commit mehr
+     im Repo — weder Bridge-Watchdog noch Signal-Hub-Journal noch FK-Instant-Funding-Bot-Snapshot, die bis dahin
+     alle im 30–60-Min-Takt liefen. Alle Felder im letzten Snapshot standen auf `"status": "ok"` (EK Equity
+     2.466,61 EUR, Funded TTP 99.626,26 USD, Funded IQ Markets 97.503,98 USD, FK 99.057,15 USD). Zwei bekannte
+     Erklärungen passen: (a) der Rechner war im Standby/aus (wie 20.10./12.10., damals aber nur Stunden, nicht
+     über einen ganzen Tag), oder (b) nur der gemeinsame Git-Push war blockiert (offener Working Tree), während
+     lokal alles normal weiterlief (wie beim KW45-Fehlalarm, siehe Eintrag „Watchdog-Push-Stau ≠ Rechner aus"
+     unten, 10.11.). Von hier aus (nur dieses Repo, kein Zugriff auf Windows-Ereignisprotokoll oder lokale Logs)
+     ist das nicht zu unterscheiden. Da die Lücke über den ganzen Handelstag Mo 23.11. hinausgeht: Lief der
+     Rechner, und falls ja, wurde gestern überhaupt gehandelt?
+
 - **NASDAQ-ORB Vorbörse (15.11.): Annahmen im Tresor-Lauf - passt das?** „Weitere Filter“ habe ich als Kandidaten C–F
      ausgelegt (C/D/E = nächstbeste Filterfamilien aus Runde 2, F = deine Originalspec), A als Hauptkandidat. Tick-Sim des
      Live-ORB storniert sofort bei SL-Berührung (live: gepollt). [[nasdaq-orb-vorboersen-range]]

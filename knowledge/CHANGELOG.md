@@ -9,6 +9,19 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-24 (abends)** [Makro-Agent / Fact Sheet v4 + neuer Task] Abgleich mit Macro-Desk-Standard (Plan
+  freigegeben): neue Blöcke **Liquidität/Funding** (Net Liquidity = Fed-Bilanz − TGA − Reverse Repo, Reserven,
+  SOFR − IORB), **Zins-Vol + Laufzeitprämie** (MOVE, NY-Fed-ACM 10J, Kurvenform 2s10s je G8), **Wachstum jetzt**
+  (GDPNow, Erstanträge, Sahm), **Marktverfassung** (VIX/VIX3M, Aktien-Anleihen-Korrelation 60 T, RSP/SPY,
+  Brent Front − 6 M), **FX-Bewertung/Carry je Vol/Trendfolger-Schätzung**. Code `analytics/plumbing.py`,
+  `analytics/positioning_value.py`, Quellen in `macro_data/sources.py` (Jobs `acm`, `brent_kurve`), Abschnitte
+  im Markdown fortlaufend nummeriert, Notion gespiegelt, 8 Tests (`tests/test_macro_v4.py`, 77 Makro-Tests grün).
+  Kostenpflichtige Lücken (FX-Optionen, OIS ohne Fed, PMIs, Cross-Currency-Basis) als Datenlücke im Blatt.
+  **Befund:** Überraschungs-Faktor der Scorecard hat für **JPY seit 31.10.2023 keinen Termin** (Forex Factory stuft
+  JP-Daten nur noch als „low“ ein, Faktor zählt nur „high“) → jetzt als Datenlücke markiert statt 0,00.
+  **Neuer Task „Makro-Fact-Sheet“** werktags 07:45 (`scripts/macro_fact_sheet_task.ps1`, Datei + Notion + Ledger,
+  kein Handel). Erstes v4-Blatt 24.11., Ledger +6 Aussagen.
+
 - **2026-11-24 (nachts)** [Research / Elite-Coaching-Calls, Test] Dennis' Volumen-Bausteine als Filter auf die
   Live-Beine (Nutzerauftrag): `scripts/research_volumen_kontext_beine.py`, Sperre `volumen_kontext_beine` (42 Versuche),
   ASB/CTNL/ORB NASDAQ+S&P/CLS/Trend-Pullback. Kein Baustein verbessert ein Bein stabil (18/42 gleichgerichtet = Zufall).
@@ -36,6 +49,32 @@ keine Planung (dafür ist `DASHBOARD.md`).
   Volumen-Divergenz/Delta als Auslöser, T+1-Begründung sachlich fraglich, 6 kombinierbare Bausteine
   (I1–I6). Nichts getestet, keine Bot-Änderung.
 
+- **2026-11-23** [Research / Edge Card] EURUSD-Lower-High-Limit-Edge-Card vorerst verworfen (Nutzerentscheid), nach Feld 01/02 abgebrochen, ohne Test und ohne Lock. Notiz nach `archive/eurusd-lower-high-limit-edge-card.md` verschoben, Dashboard-Eintrag entfernt.
+- **2026-11-23** [Betrieb / ORB-Bridges] **ORB-Storno-Meldung umformuliert** (Nutzerauftrag). Anlass: NASDAQ-Orders heute
+  15:49 auf IQ beidseitig storniert, obwohl am Chart „kein SL gebrochen“. Geprüft: kein Bug. Die Range-Kerze wird nicht
+  mitgeprüft (Bars ab 09:45 NY), live = Backtest. Beide SLs (0,6 ATR) liegen an 99 % der Tage innerhalb der Range
+  (Median Range = 4,8 Stops), also storniert jeder Rücklauf in die Range-Mitte beide Seiten. Meldung jetzt
+  „kein Sofort-Ausbruch, Kurs lief zurück in die Range bis X (Storno-Linie = geplanter SL)“ statt „Kurs erreichte den
+  geplanten SL“. Nur Text, Logik unverändert, in Funded-, FK- und EK-Bridge (außerhalb Git, Backups
+  `*.bak_20261123_orb_msg`). Nebenbefund: TTP-Präzisions-Pass 15:45 mit Timeout der Terminal-Prüfung abgebrochen,
+  Orders erst 15:49 gelegt.
+
+- **2026-11-22 (spätabends)** [Dachprojekt / Makro-Agent] **VIX/Zinsen/DXY-Wirkkette + Gold-Bodensignal getestet**
+  (Nutzerauftrag, Anlass Call 22.11.). Lock `vix_zins_wirkkette`, `scripts/research_vix_zins_wirkkette.py`. Gleichlauf
+  stabil (Gold ↔ Zinsen/DXY, S&P ↔ VIX), Gold ↔ VIX kein Zusammenhang, kein Vorlauf. VIX > 30 und „VIX + Zinsen fallen“
+  nur 2018+ positiv für den S&P, 2008–11 negativ. Gold-Stresstag: nicht belegt (n zu klein). Befunde in
+  [[makro-wirkketten-katalog]]. Auf Nutzerwunsch als Hinweistexte in `fusion_lab/macro_agent/chains.py` eingebaut
+  (`risiko_aus_hafen`: VIX > 30 kein Kaufsignal, Gold ignoriert VIX; `us_zins_dollar`: Gold nur Gleichlauf mit 2J/DXY),
+  Ketten-Logik unverändert. OneNote-Call 22.11. per Ingest geholt (Filter greift
+  nur auf oberster Ebene → `--section "Smart Money Trading"`).
+
+- **2026-11-22 (abends)** [Dachprojekt / Makro-Agent] **SMT-Reports 22.11. geprüft** (Nutzerauftrag, Routine).
+  Beispiel 5 in [[makro-agent-report-pruefung]]: Macro-Report + G8-Sonderreport + Gold-Sonderreport Teil 2.
+  Fakten überwiegend ✓ (S&P, Nasdaq, NVDA, VIX, HY, Realzins exakt); FX-„Schluss“ = Fr ~15:00 UTC statt NY-Schluss,
+  Brent 92,57 ≠ Fr-Settle 89,95, Gold/Silber-Tageswerte aus Futures. 7 Widersprüche (u. a. EUR/USD- und USD/JPY-Short
+  als „ein Dollar-Faktor“ gezählt, obwohl gegenläufig). Agent-Trade KW48: USD/JPY Short per Limit nach PCE (Nutzer
+  schon drin). Gold-Zinskurven-Filter 4. Woche gegen den Markt. Keine Bot-Änderung.
+
 - **2026-11-22** [Reporting / Weekly] **Weekly Checkup KW47/2026** (geplanter Task). Bots: 7 Trades, +1,41 EUR /
   −374,98 USD. Inkl. Handtrades: EK −2,74 %, Funded −0,12 %, FK −0,67 %. Kein Kill-Switch. Soll/Ist: Ist über Soll
   (pausierte Beine + Storno-Tage im Soll). `⚠️ ZUORDNUNG` orb_nasdaq = Fehlalarm (Gegenseite gefüllt). Makro-Notiz:
@@ -43,6 +82,30 @@ keine Planung (dafür ist `DASHBOARD.md`).
   offenen EK-Metall-Longs (ca. 16 % Risiko) ergänzt. Edge-Ampel erstmals seit 5 Wochen frisch (Liste bis 17.11.):
   ROT orb_sp500 25,6 R / orb_us30 26,3 R (beide pausiert), GELB gold_silver + btc_ema_cross; Gold ASB in der Liste nur
   bis 30.09. Keine Bot-Änderung.
+
+- **2026-11-23 (spät)** [Nebenthema / Lebensjournal] **Projekt-Favoriten**: ★ markiert mehrere Steps. Alle offenen erscheinen in Tag und Woche
+  unter „Aus Projekten holen“ und lassen sich zusammen übernehmen (Nutzerwunsch).
+
+- **2026-11-23 (abends)** [Nebenthema / Lebensjournal] **Reiter „Bereiche“ online**: offene Aufgaben ohne Projekt je Lebens- und
+  Unterbereich, unter Aufgaben (Nutzerwunsch).
+
+- **2026-11-23** [Nebenthema / Lebensjournal] **C4 online** (Commit `d364a38`, Plan freigegeben):
+  - Antippen zeigt die ganze Aufgabe, „⋯ Bearbeiten“ öffnet das Menü.
+  - Wochenabschluss in der Reflexion, dazu eine Erinnerung in der Planung. Behebt die verschwundene Unteraufgabe beim Übernehmen der Wochenziele.
+  - Vorschläge erscheinen als Auswahlliste mit Häkchen.
+  - Die C3-Annahmen hat André bestätigt, D1c bleibt offen.
+
+- **2026-11-22 (nachts)** [Nebenthema / Lebensjournal] **D1c Projekt-Etappen online** (Commit `aa8b748`, Plan von
+  André freigegeben). Projekte haben Etappen mit Zeitrahmen, im Alltag erscheint nur die aktuelle Etappe. Eine Etappe wird
+  per Tipp zum Monatsziel und zeigt dort ihre Steps mit „→ KW“. Jedes Monatsziel kann einen Zeitrahmen bekommen, der im Kalender als grünes Band erscheint.
+
+- **2026-11-22 (spät)** [Nebenthema / Lebensjournal] **Projektlimits geändert** (Commit `a34af48`, Nutzerwunsch): bis
+  5 aktive Projekte statt 3. Je Tag stehen Schritte aus höchstens 4 Projekten. „Holen“ schlägt dann keine weiteren Projekte vor, darüber erscheint ein Hinweis.
+
+- **2026-11-22 (abends)** [Nebenthema / Lebensjournal] **D1b online** (Commit `3a55207`): Im Monat einen Tag antippen
+  und dort Aufgabe, Termin oder Zeitraum von–bis eintragen. Zeiträume (Veranstaltung, Reise, längere Aufgabe) setzen die
+  Lage ihrer Tage, solange keine eigene gewählt ist (Nutzerentscheid). Ein Tipp auf eine Aufgabe zeigt sie am Handy
+  vollständig. Die D1-Annahmen hat André bestätigt.
 
 - **2026-11-22** [Nebenthema / Lebensjournal] **Stufe D1 Monatsplanung online** (Repo `Lebensjournal`, Commit
   `51cd2f8`). Monatsziele (bis 6) mit Etappen. Eine Etappe wird per Tipp zum Wochenziel einer Woche, und der Haken

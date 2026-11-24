@@ -48,6 +48,12 @@ FRED = {
     # Realzinsen und Inflationserwartung (Makro-Agent v3, 12.11.2026); EPU = Unsicherheit aus Zeitungen, taeglich
     "US.real_10y": "DFII10", "US.real_5y": "DFII5", "US.breakeven_5y": "T5YIE", "US.fwd_5y5y": "T5YIFR",
     "MKT.epu_us": "USEPUINDXD",
+    # Fact Sheet v4 (24.11.2026, Desk-Abgleich): Liquiditaet/Funding, Wachstum jetzt, Arbeitsmarkt-Wende.
+    # Einheiten: WALCL/WTREGEN/WRESBAL Mio. USD, RRPONTSYD Mrd. USD; GDPNOW = laufendes Quartal (Revisionen
+    # landen ueber fetched_at im Speicher, darum as-of-sicher).
+    "US.fed_assets": "WALCL", "US.tga": "WTREGEN", "US.rrp": "RRPONTSYD", "US.reserves": "WRESBAL",
+    "US.sofr": "SOFR", "US.iorb": "IORB", "US.gdpnow": "GDPNOW", "US.claims": "ICSA",
+    "US.sahm": "SAHMREALTIME",
 }
 ECB_YIELDS = {"EA.1y": "SR_1Y", "EA.2y": "SR_2Y", "EA.10y": "SR_10Y"}
 # Staatsanleihen-Renditen je Land, gepruefter Stand 10.11.2026 (Verzug in Klammern):
@@ -92,7 +98,12 @@ YF_MARKETS = {"MKT.gold": "GC=F", "MKT.silver": "SI=F", "MKT.brent": "BZ=F", "MK
               # Rohstoff-Schalter: AUD ~ Kupfer, NZD ~ Milch (Class III als frei verfuegbarer GDT-Ersatz)
               "MKT.copper": "HG=F", "MKT.milk": "DC=F",
               # Geopolitik-Proxys (v3): Europa-Gas (Ukraine/Russland), WTI taeglich (FRED hinkt)
-              "MKT.ttf_gas": "TTF=F", "MKT.wti_fut": "CL=F"}
+              "MKT.ttf_gas": "TTF=F", "MKT.wti_fut": "CL=F",
+              # Fact Sheet v4: Zins-Vol, VIX-Struktur, Aktien-Anleihen-Korrelation, Marktbreite
+              "MKT.move": "^MOVE", "MKT.vix_yf": "^VIX", "MKT.vix9d": "^VIX9D", "MKT.vix3m": "^VIX3M",
+              "MKT.spy": "SPY", "MKT.rsp": "RSP", "MKT.tlt": "TLT"}
+ACM_URL = "https://www.newyorkfed.org/medialibrary/media/research/data_indicators/ACMTermPremium.xls"
+BRENT_MONTHS_AHEAD = 6
 BIS_REER = "M.R.B"  # Realer effektiver Wechselkurs, breiter Korb (64 Laender), monatlich
 DUKA_FX = ["EURUSD", "GBPUSD", "USDJPY", "USDCHF", "AUDUSD", "USDCAD", "NZDUSD", "EURGBP", "EURJPY"]
 MONTH_CODES = "FGHJKMNQUVXZ"
@@ -423,6 +434,47 @@ def fetch_yf_markets() -> pd.DataFrame:
             s.index = pd.to_datetime(s.index).tz_localize(None).normalize()
             out.append(_long(key, s))
     return pd.concat(out, ignore_index=True)
+
+
+def parse_acm(raw: bytes) -> pd.DataFrame:
+    """NY-Fed-ACM-Modell (Adrian/Crump/Moench), Blatt 'ACM Daily': 10J-Laufzeitpraemie und
+    risikoneutrale 10J-Rendite (= erwarteter Kurzzinspfad). Rendite 10J = beide zusammen."""
+    d = pd.read_excel(io.BytesIO(raw), sheet_name="ACM Daily")
+    d.index = pd.to_datetime(d["DATE"], format="%d-%b-%Y")
+    d = d[d.index >= START]
+    return pd.concat([_long("US.term_premium_10y", d["ACMTP10"].dropna()),
+                      _long("US.expected_10y", d["ACMRNY10"].dropna())], ignore_index=True)
+
+
+def fetch_acm() -> pd.DataFrame:
+    r = requests.get(ACM_URL, timeout=TIMEOUT, headers={"User-Agent": "Mozilla/5.0"})
+    r.raise_for_status()
+    return parse_acm(r.content)
+
+
+def brent_contract(front_expiry_month: pd.Period, months_ahead: int) -> str:
+    """Yahoo-Ticker des Brent-Kontrakts n Monate nach dem Front-Kontrakt, z. B. BZN27.NYM."""
+    m = front_expiry_month + months_ahead
+    return f"BZ{MONTH_CODES[m.month - 1]}{m.year % 100:02d}.NYM"
+
+
+def fetch_brent_curve(today: pd.Timestamp | None = None) -> pd.DataFrame:
+    """Front (BZ=F) gegen den Kontrakt 6 Monate spaeter: Spanne in % des Front-Preises
+    (> 0 = Backwardation = Knappheit jetzt). Nur Werte ab heute aufwaerts sauber; die Rueckrechnung
+    nutzt denselben Kontrakt fuer alle Tage und gilt nur fuer die letzten ~20 Tage."""
+    import yfinance as yf
+    today = today or pd.Timestamp.today().normalize()
+    # Brent-Front laeuft zwei Monate vor dem Liefermonat aus: im November handelt Januar
+    front_month = pd.Period(today, "M") + 2
+    ticker = brent_contract(front_month, BRENT_MONTHS_AHEAD)
+    start = (today - pd.Timedelta(days=40)).strftime("%Y-%m-%d")
+    f = yf.download("BZ=F", start=start, progress=False, auto_adjust=True)["Close"]
+    b = yf.download(ticker, start=start, progress=False, auto_adjust=True)["Close"]
+    f = (f.iloc[:, 0] if isinstance(f, pd.DataFrame) else f).dropna()
+    b = (b.iloc[:, 0] if isinstance(b, pd.DataFrame) else b).dropna()
+    s = ((f - b) / f * 100).dropna().iloc[-20:]
+    s.index = pd.to_datetime(s.index).tz_localize(None).normalize()
+    return _long("MKT.brent_spread_6m", s)
 
 
 def fetch_duka_fx() -> pd.DataFrame:

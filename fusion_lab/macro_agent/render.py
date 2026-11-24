@@ -7,6 +7,8 @@ tests/test_macro_agent.py prueft, dass jede Tabellenzahl im Zahlenregister steht
 
 from __future__ import annotations
 
+import re
+
 from fusion_lab.macro_data.sources import G8
 
 from .analytics.markets import MARKETS
@@ -120,6 +122,94 @@ def _tactical(tk: dict) -> list[str]:
             for ccy, v in tk["rohstoffe"].items() if v]
     lines += ["**Rohstoff-Schalter**", "",
               *_table(["Währung", "Rohstoff", "Kurs", "20T %", "60T %", "Trend", "Schwelle (Abstand)"], rows), ""]
+    return lines
+
+
+def _err(node) -> str | None:
+    return node["fehler"] if isinstance(node, dict) and "fehler" in node else None
+
+
+def _desk(d: dict | None) -> list[str]:
+    """v4: Liquiditaet/Funding, Zins-Vol + Laufzeitpraemie, Wachstum jetzt, Marktverfassung."""
+    if not d:
+        return []
+    lines = ["## 5. Liquidität, Zinsen, Wachstum, Marktverfassung (Kontext, kein Signal)", ""]
+    lq = d["liquiditaet"]
+    if _err(lq):
+        lines += [f"Liquidität: n.v. ({_err(lq)})", ""]
+    else:
+        lines += [f"**Liquidität:** {lq['lesart']}. Net Liquidity (Fed-Bilanz − Treasury-Konto − Reverse Repo) "
+                  f"{fmt(lq['net_mrd'], 0)} Mrd. $ am {lq['datum']}, Δ 4W {fmt(lq['chg_4w_mrd'], 1)} / "
+                  f"Δ 13W {fmt(lq['chg_13w_mrd'], 1)} Mrd. Bankreserven {fmt(lq['reserven_mrd'], 0)} Mrd. "
+                  f"(Δ 13W {fmt(lq['reserven_chg_13w_mrd'], 1)}). Funding {lq['funding']}: SOFR − IORB "
+                  f"{fmt(lq['sofr_iorb_bp'], 1)} bp, Max. 20 T {fmt(lq['sofr_iorb_max_20t_bp'], 1)} bp.", ""]
+    zv = d["zinsvol"]
+    if _err(zv):
+        lines += [f"Zinsen: n.v. ({_err(zv)})", ""]
+    else:
+        lines += [f"**Zins-Vol und Laufzeitprämie:** MOVE {fmt(zv['move'], 1)} (Perzentil seit 2015: "
+                  f"{fmt(zv['move_perzentil'], 0)}, Δ 20 T {fmt(zv['move_chg_20t'], 1)}). US-10J-Prämie (ACM) "
+                  f"{fmt(zv['praemie_10j'])} % (Perzentil {fmt(zv['praemie_perzentil'], 0)}); Δ 20 T: Prämie "
+                  f"{fmt(zv['praemie_chg_20t_bp'], 1)} bp, Zinserwartung {fmt(zv['erwartung_chg_20t_bp'], 1)} bp "
+                  f"→ {zv['lesart_10j']}.", ""]
+        rows = [[land, fmt(k["kurve"]), fmt(k["d2j_bp"], 1), fmt(k["d10j_bp"], 1), k["form"]]
+                for land, k in zv["kurven"].items()]
+        lines += _table(["", "10J − 2J", f"Δ 2J {zv['kurven_tage']} T (bp)", f"Δ 10J {zv['kurven_tage']} T (bp)",
+                         "Form"], rows) + [""]
+    wa = d["wachstum"]
+    if _err(wa):
+        lines += [f"Wachstum: n.v. ({_err(wa)})", ""]
+    else:
+        lines += [f"**Wachstum jetzt (USA):** GDPNow {wa['gdpnow_quartal']} {fmt(wa['gdpnow'], 1)} % "
+                  f"(annualisiert). Erstanträge {fmt(wa['erstantraege_tsd'], 0)} Tsd. ({wa['erstantraege_datum']}), "
+                  f"4W-Mittel {fmt(wa['erstantraege_4w_tsd'], 0)}, 52W-Tief {fmt(wa['erstantraege_52w_tief_tsd'], 0)}. "
+                  f"Sahm-Regel {fmt(wa['sahm'])} → {wa['sahm_lesart']}.", ""]
+    mv = d["marktverfassung"]
+    if _err(mv):
+        lines += [f"Marktverfassung: n.v. ({_err(mv)})", ""]
+    else:
+        parts = []
+        if "vix_vix3m" in mv:
+            parts.append(f"VIX {fmt(mv['vix'], 1)}, VIX/VIX3M {fmt(mv['vix_vix3m'])} → {mv['vix_struktur']}")
+        if "aktien_anleihen_korr" in mv:
+            parts.append(f"Aktien-Anleihen-Korrelation 60 T {fmt(mv['aktien_anleihen_korr'])} "
+                         f"(vor 60 T {fmt(mv['aktien_anleihen_korr_vor_60t'])}) → {mv['aktien_anleihen_lesart']}")
+        if "breite_chg_20t_pct" in mv:
+            parts.append(f"Marktbreite RSP/SPY Δ 20 T {fmt(mv['breite_chg_20t_pct'])} %, Δ 60 T "
+                         f"{fmt(mv['breite_chg_60t_pct'])} %")
+        if "brent_m1_m6_pct" in mv:
+            parts.append(f"Brent Front − 6 Monate {fmt(mv['brent_m1_m6_pct'])} % → {mv['brent_kurve']}")
+        lines += ["**Marktverfassung:** " + ". ".join(parts) + ".", ""]
+    return lines
+
+
+def _fx_value(d: dict | None, sc: dict) -> list[str]:
+    """v4: REER-Abstand, Ueberraschungen roh, Carry je Vol, Trendfolger-Schaetzung."""
+    if not d:
+        return []
+    lines = ["## 11. FX-Bewertung, Carry und Trendfolger", ""]
+    rows = [[c, fmt(v.get("reer_abw_pct"), 1), fmt(v.get("ueberr_60t"))] for c, v in sc["waehrungen"].items()]
+    lines += ["**Bewertung und Daten-Überraschungen** (REER = realer Außenwert gegen eigenes 10-J-Mittel; "
+              "Überraschungen = Summe normierter Ist − Konsens, 60 T)", "",
+              *_table(["Währung", "REER-Abstand %", "Überraschungen 60 T"], rows), ""]
+    cv = d["carry_vol"]
+    if _err(cv):
+        lines += [f"Carry je Vol: n.v. ({_err(cv)})", ""]
+    else:
+        rows = [[r["markt"], fmt(r["carry_pct"]), fmt(r["vol_pct"], 1), fmt(r["carry_je_vol"])] for r in cv]
+        lines += ["**Carry je Risiko** (2J-Differenz Basis − Quote ÷ 20-T-Vol)", "",
+                  *_table(["Markt", "Carry % p.a.", "Vol %", "Carry/Vol"], rows), ""]
+    tf = d["trendfolger"]
+    if _err(tf):
+        lines += [f"Trendfolger: n.v. ({_err(tf)})", ""]
+    else:
+        rows = [[m, fmt(s["signal"]), " ".join(f"{h}{'+' if v > 0 else '−'}" for h, v in s["teile"].items()),
+                 s["naechste_wende"], fmt(s["abstand_pct"]), fmt(s["abstand_tagesvol"], 1)]
+                for m, s in tf["maerkte"].items()]
+        lines += ["**Trendfolger-Schätzung** (Signal = Mittel der Vorzeichen 1M/3M/12M; Wende = Kurs, bei dem "
+                  "der nächste Horizont kippt)", "",
+                  *_table(["Markt", "Signal", "Trends", "nächste Wende", "Abstand %", "in Tages-Vol"], rows), "",
+                  "Voller Trend und Wende binnen einer Tagesschwankung: " + (", ".join(tf["kipp_nah"]) or "keiner"), ""]
     return lines
 
 
@@ -342,14 +432,28 @@ def markdown(sheet: dict) -> str:
              f"Erzeugt {sheet['erzeugt']} · {len(sheet['register'])} Zahlen im Register · "
              "Quelle: fusion_lab/macro_data + Dukascopy", ""]
     lines += _state(sheet["zustand"]) + _regime(sheet) + _scorecard(sheet["scorecard"])
-    lines += _tactical(sheet["taktisch"]) + _geo(sheet.get("geopolitik")) + _chains(sheet.get("ketten"))
+    lines += _tactical(sheet["taktisch"]) + _desk(sheet.get("desk"))
+    lines += _geo(sheet.get("geopolitik")) + _chains(sheet.get("ketten"))
     lines += _markets(sheet["maerkte"])
     lines += _risk(sheet["risiko"]) + _dollar(sheet.get("dollar"))
-    lines += _profiles(sheet["laender"]) + _positioning(sheet["positionierung"]) + _g8(sheet)
+    lines += _profiles(sheet["laender"]) + _positioning(sheet["positionierung"])
+    lines += _fx_value(sheet.get("desk"), sheet["scorecard"]) + _g8(sheet)
     lines += _calendar(sheet["kalender"])
     lines += ["## 13. Datenlücken", "", *[f"- {g}" for g in sheet["datenluecken"]], ""]
     lines += _ledger(sheet.get("ledger"))
     ap = sheet.get("asof_pruefung")
     if ap:
         lines += [f"As-of-Prüfung: {'bestanden' if ap['ok'] else 'VERSTOSS: ' + '; '.join(ap['verstoesse'][:3])}.", ""]
-    return "\n".join(lines)
+    return "\n".join(renumber(lines))
+
+
+def renumber(lines: list[str]) -> list[str]:
+    """Abschnittsnummern fortlaufend vergeben (neue Bloecke verschieben sonst jede Zahl von Hand)."""
+    out, n = [], 0
+    for line in lines:
+        m = re.match(r"^## \d+\. ", line)
+        if m:
+            n += 1
+            line = f"## {n}. " + line[m.end():]
+        out.append(line)
+    return out

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from fusion_lab.macro_agent.analytics.markets import MARKETS
 from fusion_lab.macro_agent.factors import FACTORS
-from fusion_lab.macro_agent.render import FACTOR_LABEL, MARK, PROFILE_ROWS, STATUS, _pct, fmt
+from fusion_lab.macro_agent.render import FACTOR_LABEL, MARK, PROFILE_ROWS, STATUS, _desk, _fx_value, _pct, fmt
 from fusion_lab.macro_data.sources import G8
 from fusion_lab.notion.client import Notion, date, load_ids, multi, rich, select, title
 from fusion_lab.notion.sync_regime import _block, _bullets, _rt, _table
@@ -68,6 +68,30 @@ def chain_blocks(ket) -> list[dict]:
     return [_block("heading_2", "Wirkketten"), _table(["Status", "Kette", "Wirkung, wenn sie läuft", "Beleg"], rows)]
 
 
+def md_blocks(lines: list[str]) -> list[dict]:
+    """Markdown-Zeilen aus render (v4-Abschnitte) in Notion-Bloecke: ## -> Ueberschrift, |..| -> Tabelle."""
+    out, table = [], []
+
+    def flush():
+        if table:
+            head = [c.strip() for c in table[0].strip("|").split("|")]
+            body = [_cells([c.strip() for c in r.strip("|").split("|")]) for r in table[2:]]
+            out.append(_table(head, body))
+            table.clear()
+
+    for line in lines:
+        if line.startswith("|"):
+            table.append(line)
+            continue
+        flush()
+        if line.startswith("## "):
+            out.append(_block("heading_2", line[3:].split(". ", 1)[-1]))
+        elif line.strip():
+            out.append(_block("paragraph", line.replace("**", "")[:1900]))
+    flush()
+    return out
+
+
 def build_blocks(sheet: dict) -> list[dict]:
     z = sheet["zustand"]
     blocks = [_block("callout", f"Zustand {z['state']} (vor einer Woche {z['state_week_ago']}) · Stand {sheet['stand']} "
@@ -107,6 +131,7 @@ def build_blocks(sheet: dict) -> list[dict]:
                           + (f", Schwelle {fmt(v['schwelle'], 0)} ({fmt(v['abstand_pct'])} %)" if "schwelle" in v else "")
                           for c, v in tk["rohstoffe"].items() if v])]
 
+    blocks += md_blocks(_desk(sheet.get("desk")))
     blocks += geo_blocks(sheet.get("geopolitik"))
     blocks += chain_blocks(sheet.get("ketten"))
 
@@ -136,6 +161,7 @@ def build_blocks(sheet: dict) -> list[dict]:
     for label, q, field, digits in PROFILE_ROWS:
         rows.append(_cells([label] + [fmt((sheet["laender"][l].get(q) or {}).get(field), digits) for l in G8]))
     blocks += [_block("heading_2", "Länderprofile"), _table(["", *G8], rows)]
+    blocks += md_blocks(_fx_value(sheet.get("desk"), sheet["scorecard"]))
 
     k = sheet["kalender"]
     blocks += [_block("heading_2", "Kalender nächste 7 Tage (High)"),

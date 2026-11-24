@@ -12,7 +12,7 @@ USD_PAIRS = ["EURUSD", "GBPUSD", "USDJPY", "USDCHF", "AUDUSD", "USDCAD", "NZDUSD
 CROSSES = ["EURGBP", "EURJPY", "EURCHF", "AUDNZD", "GBPJPY", "AUDJPY", "CADJPY"]
 MARKETS = USD_PAIRS + ["XAUUSD"] + CROSSES
 DUKA_KEY = {"XAUUSD": "GOLD"}
-LOOKBACK_DAYS = 120
+LOOKBACK_DAYS = 400  # v4: Trendfolger-Schaetzung braucht 12 Monate
 
 
 def _fetch(key: str, as_of: pd.Timestamp) -> pd.DataFrame:

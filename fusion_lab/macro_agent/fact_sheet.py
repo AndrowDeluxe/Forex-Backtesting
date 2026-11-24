@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 from fusion_lab.macro_data import calendar, calendar_values, store
@@ -18,7 +19,7 @@ from fusion_lab.macro_data.__main__ import coverage
 from fusion_lab.macro_data.sources import G8
 
 from . import chains, factors, geo_framework, ledger, manifest, panels, risk, tactical
-from .analytics import dollar_factor, gates, markets, overlap, profiles, state_machine
+from .analytics import dollar_factor, gates, markets, overlap, plumbing, positioning_value, profiles, state_machine
 
 OUT_DIR = Path(__file__).resolve().parents[1] / "data" / "macro_agent"
 TEST_FILE = OUT_DIR / "scorecard_test.json"
@@ -27,6 +28,10 @@ SURPRISE_DAYS = 14
 G8_CCY = set(gates.CCY_COUNTRY)
 ZINS_FX_MARKETS = ["EURUSD", "GBPUSD", "AUDUSD", "USDJPY", "XAUUSD"]
 SCORE_DAYS = 600  # Kalendertage Vorlauf: 12-Monats-Momentum braucht 252 Handelstage
+# Trendfolger-Schaetzung ausser FX/Gold (Schluessel im Markt-Speicher, Yahoo)
+SURPRISE_STALE_DAYS = 90
+TREND_EXTRA = {"S&P 500": "MKT.spx", "Nasdaq 100": "MKT.ndx", "DAX": "MKT.dax", "Nikkei": "MKT.nikkei",
+               "Brent": "MKT.brent", "Kupfer": "MKT.copper", "US-Anleihen (TLT)": "MKT.tlt"}
 
 
 def _stored(area: str, as_of: pd.Timestamp) -> pd.DataFrame:
@@ -132,6 +137,7 @@ def scorecard_block(as_of: pd.Timestamp) -> tuple[dict, dict]:
     p = panels.build(as_of)
     days = pd.bdate_range(as_of - pd.Timedelta(days=SCORE_DAYS), as_of)
     sc = factors.scorecard(p, days)
+    raw = factors.raw_factors(p, days)
     day = days[-1]
     score = sc["score"].loc[day]
     rank = score.rank(ascending=False)
@@ -145,6 +151,16 @@ def scorecard_block(as_of: pd.Timestamp) -> tuple[dict, dict]:
         node["cot_3y"] = None if pd.isna(cot) else round(float(cot), 1)
         node["veto_long"] = bool(sc["veto_long"].loc[day, land]) if pd.notna(cot) else False
         node["veto_short"] = bool(sc["veto_short"].loc[day, land]) if pd.notna(cot) else False
+        # v4: Rohwerte hinter Value und Ueberraschung (REER-Abstand zum 10-J-Mittel, Summe 60 T)
+        gap = -raw["value"].loc[day, land] if land in raw["value"] else float("nan")
+        node["reer_abw_pct"] = None if pd.isna(gap) else round(float(np.expm1(gap) * 100), 1)
+        sur = raw["ueberraschung"].loc[day, land] if land in raw["ueberraschung"] else float("nan")
+        last_ev = p.surprise[land].last_valid_index() if land in p.surprise else None
+        node["ueberr_letzter_termin"] = None if last_ev is None else last_ev.date().isoformat()
+        # Kein Termin seit > 90 T heisst Datenluecke, nicht "keine Ueberraschung" (FF stuft JPY-Daten
+        # seit 2023 als "low" ein, der Faktor zaehlt nur "high"; Befund 24.11.2026)
+        stale = last_ev is None or (day - last_ev).days > SURPRISE_STALE_DAYS
+        node["ueberr_60t"] = None if pd.isna(sur) or stale else round(float(sur), 2)
         out[panels.LAND_CCY[land]] = node
     test = json.loads(TEST_FILE.read_text(encoding="utf-8")) if TEST_FILE.exists() else None
     corr = overlap.factor_corr(sc, factors.FACTORS)
@@ -191,6 +207,27 @@ def geo_block(macro_w: pd.DataFrame, as_of: pd.Timestamp) -> dict:
         return {"fehler": f"{type(e).__name__}: {e}"[:200]}
 
 
+def _safe(fn, *args):
+    try:
+        return fn(*args)
+    except Exception as e:  # ein v4-Block darf das Fact Sheet nicht mitreissen
+        return {"fehler": f"{type(e).__name__}: {e}"[:200]}
+
+
+def desk_blocks(macro_w: pd.DataFrame, mkt_w: pd.DataFrame, prices: dict) -> dict:
+    """v4 (24.11.2026, Desk-Abgleich): Liquiditaet, Zins-Vol/Praemie, Wachstum, Marktverfassung,
+    Carry je Risiko, Trendfolger-Schaetzung."""
+    tf = _safe(positioning_value.trend_followers, prices, mkt_w, TREND_EXTRA)
+    return {
+        "liquiditaet": _safe(plumbing.liquidity, macro_w),
+        "zinsvol": _safe(plumbing.rates_vol, macro_w, mkt_w),
+        "wachstum": _safe(plumbing.growth, macro_w),
+        "marktverfassung": _safe(plumbing.internals, mkt_w),
+        "carry_vol": _safe(positioning_value.carry_vol, prices, macro_w),
+        "trendfolger": {"maerkte": tf, "kipp_nah": positioning_value.crowded(tf)} if "fehler" not in tf else tf,
+    }
+
+
 def gaps(sheet: dict, as_of: pd.Timestamp) -> list[str]:
     out = []
     for q, row in coverage(as_of).iterrows():
@@ -214,6 +251,16 @@ def gaps(sheet: dict, as_of: pd.Timestamp) -> list[str]:
     out.append("Realzins ausser USA nur als Naeherung 2J minus Kern-Inflation (ex post)")
     out.append("Notenbank-Pricing ausser Fed nur als Naeherung 1J minus Leitzins (kein OIS)")
     out.append("COT-Veto ohne USD (Legacy-Historie kennt den Dollar-Index-Kontrakt nicht)")
+    for ccy, v in sheet["scorecard"]["waehrungen"].items():
+        if v.get("ueberr_60t") is None:
+            out.append(f"Überraschungs-Faktor {ccy}: letzter High-Impact-Termin mit Konsens "
+                       f"{v.get('ueberr_letzter_termin') or 'nie'} (Faktor zählt 0)")
+    for k, v in (sheet.get("desk") or {}).items():
+        if isinstance(v, dict) and "fehler" in v:
+            out.append(f"{k}: {v['fehler']}")
+    out.append("Kostenpflichtig, nicht im Blatt: FX-Optionen (implizite Vol, Risk Reversals), OIS-Kurven "
+               "ausser Fed, PMIs (S&P Global/ISM), Cross-Currency-Basis, Citi-Ueberraschungsindex")
+    out.append("Trendfolger-Position ist eine Schaetzung aus Kurs-Trends, keine Positionsdaten")
     return out
 
 
@@ -286,6 +333,7 @@ def build(as_of: pd.Timestamp | None = None, with_filters: bool = True) -> dict:
         "kalender": calendar_block(as_of),
         "geopolitik": geo_block(macro_w, as_of),
         "dollar": dollar,
+        "desk": desk_blocks(macro_w, mkt_w, prices),
         "ledger": ledger_block(as_of),
     }
     sheet["ketten"] = chains_block(sheet, macro_w, as_of)

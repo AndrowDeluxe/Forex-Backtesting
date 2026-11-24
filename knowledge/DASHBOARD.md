@@ -26,7 +26,8 @@ passiert, was steht an.
   **⏰ Woche 23.–27.11. händisch backtesten** (welche H4-Trades hättest du genommen?), dann gegen die Alarme im
   Journal halten und ggf. die Signalquelle lockern (Q-Regel verpasste EURUSD 10./12.11.). Telegram-Erinnerung
   Sa 28.11. 10:00 (Task „Erinnerung-SignalHub-Handbacktest“, einmalig).
-  Nächste Stufen: MT5-Demo, Makro-Agent täglich, Daily-Setups nach Handprüfung, App-Dashboard.
+  Nächste Stufen: MT5-Demo, Makro-Agent täglich (✅ Fact Sheet v4 läuft seit 24.11. werktags 07:45), Daily-Setups
+  nach Handprüfung, App-Dashboard.
 
 - **📋 Aufgabe für die nächsten Tage (Nutzerentscheid 21.11.): Inventur weiterführen + Daily-Trades nochmal prüfen.**
   Daily-Setups (C2/W50, Typ R) wie beim H4 an einzelnen Trades „auf deine Sichtweise“ durchgehen, damit sie als
@@ -216,8 +217,6 @@ jeweiligen Thema weiterarbeiten (Nutzerentscheid 10.11.).
   hast du bestätigt). MA-Cross bis 5 Tage nach dem Fractal; Typ-R-Einstieg beim Schluss über/unter der Fractal-Kerze;
   IPDA-Nullpunkt = 40-Tage-Extrem, bei zwei Kandidaten das spätere. [[htf-daily-trade-edge-card]]
 
-- **EURUSD-Limit-Edge-Card, Feld 01/02 (02.11.):** Phase 0 bestätigt, Limit lag vor 11:00. Offen: Fragenkatalog und 8 IS-Beispiele beurteilen ([[eurusd-lower-high-limit-edge-card]]). Detektor-Parameter sind weiter meine Annahmen.
-
 - **Trade-Inventur 2025 (18.10.): zwei eigene Festlegungen.** (a) Axi-Buchung
   „Data Truncation DDMMYYYY“ wird als Startsaldo zum Datum im Text gewertet, nicht
   zum Buchungsdatum (bei 4667999/4690858 erst im August gebucht). Davon hängt das
@@ -265,8 +264,11 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
   geprüft). André hat C1 + C2 getestet (Reflexion und Projekte passen, Planung zu kompliziert) → abends Stufe C3
   online: Tagesziele abgeschafft (★ Fokus), Aufgaben mit Tageszeit/Uhrzeit, Zeitplan mit verdecktem +, Tagesabschluss,
   Wochenlage mit Richtwert für Wochenziele. 22.11.: Stufe D1 online (Monatsplanung: bis 6 Monatsziele mit Etappen,
-  „→ KW“ zieht sie als Wochenziel in eine Woche, Haken wirkt bis zum Monat, Kalender mit Auslastung). André testet C3
-  und D1. Stand und offene Annahmen in `STATUS.md` des Journal-Repos.
+  „→ KW“ zieht sie als Wochenziel in eine Woche, Haken wirkt bis zum Monat, Kalender mit Auslastung), D1-Annahmen von
+  André bestätigt. Abends D1b: im Monat direkt eintragen, Zeiträume von–bis (Kirmes, Reise) setzen die Lage ihrer
+  Tage, ganze Aufgabe am Handy per Tipp. Projekte bis 5 aktiv, max. 4 je Tag. D1c: Projekt-Etappen (Anlass
+  Schießbude 2027), Etappe → Monatsziel mit Steps, Zeitrahmen als Band im Monatskalender. 23.11.: André hat getestet: C3 bestätigt, D1b bleibt, D1c (Etappen) überdenkt er noch. Daraufhin C4 online: Antippen zeigt die
+  ganze Aufgabe, ⋯ öffnet das Menü. Wochenabschluss samt Erinnerung (Fix: verschwundene Unteraufgabe). Vorschläge als Auswahlliste. Abends: Reiter „🧭 Bereiche“ (offene Aufgaben ohne Projekt je Lebensbereich), ★ mehrere Projekt-Favoriten. André testet weiter. Stand und offene Annahmen in `STATUS.md` des Journal-Repos.
 
 - **📈 NASDAQ-ORB aus der Vorbörsen-Range 09:00–09:30 (15.11.): im Backtest stark, Kosten offen.** Ohne
    Trendfilter OOS +0,28 R/Trade (t 2,7, ~248 Trades/Jahr), mit EMA-Filter nur +0,06. Hängt an der
@@ -743,7 +745,8 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 | Dashboard-Telegram-Digest (neu)                         | — (nur Lesezugriff auf DASHBOARD.md, kein Order-Bezug)                                   | Schickt offene Punkte aus DASHBOARD.md per Telegram                                          | Ready (täglich 8:00, auch Sa/So — bewusst) | — | 2026-09-13      |
 | G8-Notion-Sync (neu)                                    | — (nur FRED/Dukascopy-Abruf + Notion-Schreiben, kein Order-Bezug)                       | Schreibt G8-Währungsstärke (Nachbau + SMH-Tabellen) in Notion-DB „💱 G8-Stärke“ (`scripts/g8_notion_sync_task.ps1`) | Ready (täglich 07:00, auch Sa/So) | — | 2026-10-12      |
 | Regime-Notion-Sync (neu)                                | — (nur FRED/ALFRED/yfinance-Abruf + Notion-Schreiben, kein Order-Bezug)                 | Regimekarte Wachstum×Inflation neu rechnen → Notion „Regime-Roadmap“ + Seite „Assets je Regime“ (`scripts/regime_notion_task.ps1`) | Ready (So 09:00, StartWhenAvailable) | — | 2026-10-28      |
-| Makro-Daten (neu)                                       | — (nur Datenabruf, kein Order-Bezug)                                                     | Makro-Agent Schicht 1: G8-Makrodaten und Kalender mit Abrufzeit nach `fusion_lab/data/macro_data/` (`scripts/macro_data_task.ps1`, Akku erlaubt); seit 12.11. auch Geopolitik-Index, Megacap-Earnings und Schlagzeilen mit Einordnung durch lokalen `claude.exe` | Ready (täglich 00:50 + 07:30, auch Sa/So) | — | 2026-11-12 |
+| Makro-Daten (neu)                                       | — (nur Datenabruf, kein Order-Bezug)                                                     | Makro-Agent Schicht 1: G8-Makrodaten und Kalender mit Abrufzeit nach `fusion_lab/data/macro_data/` (`scripts/macro_data_task.ps1`, Akku erlaubt); seit 12.11. auch Geopolitik-Index, Megacap-Earnings und Schlagzeilen mit Einordnung durch lokalen `claude.exe` | Ready (täglich 00:50 + 07:30, auch Sa/So) | — | 2026-11-24 |
+| Makro-Fact-Sheet (neu)                                  | — (nur Analyse + Notion, keine Orders)                                                   | Makro-Agent Fact Sheet v4 (16 Abschnitte inkl. Liquidität, Zins-Vol, Wachstum, Marktverfassung, Trendfolger) → Datei + Notion „Makro Fact Sheet“ + Forecast-Ledger (`scripts/macro_fact_sheet_task.ps1`, Akku erlaubt) | Ready (Mo–Fr 07:45, StartWhenAvailable) | — | 2026-11-24 |
 | C2-Forward-Log (neu)                                    | — (nur Log + Telegram, keine Orders)                                                     | Forward-Test Daily-Edge: seit 11.11. nur noch W50 Vorwochen-Mitte `5c82f5d4` + Referenz EL `6c55e525`, 9 Märkte (alter Forward `aea4189b` raus, Nutzerentscheid) (`scripts/c2_forward_task.ps1`, Ledger `htf_daily_trade/forward/`, Akku erlaubt); Auswertung ab 30 Trades oder 12.11.2027 | Ready (Di–Sa 03:30, StartWhenAvailable) | — | 2026-11-11 |
 | Signal-Hub-Scan (neu)                                   | — (nur Telegram-Alarm + Journal, keine Orders)                                           | H4-Spike-Scanner 9 Märkte, Alarm bei Qualität + Aktivität (`scripts/signal_hub_scan_task.ps1`, `signal_hub/`), Journal-Commit stündlich | Ready (Mo–Fr alle 10 Min., Akku erlaubt) | — | 2026-11-19 |
 | News-Sources-Ledger (neu)                               | — (nur Research + Ledger, keine Orders)                                                  | 15 Märkte (Kurs-Watchlist + FX-Kern + Gold): Google News, Zentralbank-RSS, SEC EDGAR, StockTwits, CNN/Krypto Fear & Greed (+ Finnhub/Alpha Vantage/Reddit nach Key), Einordnung per `claude.exe -p` → Forward-Ledger je Quelle (`scripts/news_sources_task.ps1`, `fusion_lab/news_sources/`, committet Ledger); speist das Prosper-Kursprojekt | Ready (täglich 22:30, Akku erlaubt) | — | 2026-11-21 |
@@ -837,6 +840,13 @@ unverarbeitete Clippings unverändert seit 09-09. Verweise nach außerhalb von
 - (24.11.) **ORB NASDAQ: Fill gegen die Range-Kerze 09:30–09:45** (Fill gegen ihren Körper) verliert im Backtest
   −0,68 R (IS, n 26) / −0,98 R (OOS, n 17), S&P nicht. Nebenfund aus dem Volumen-Test, kleines n, Live-Bein → nur
   Forward beobachten. [[smh-dennis-volumen-ltf-inducement-day]] Abschnitt 8.
+
+- (24.11.) **Makro-Agent später:** (a) alle Tabellen im Dashboard/Fact Sheet als Grafiken statt Tabellen (passt zu
+  „Fact Sheet grafisch im Terminal-Stil“, 17.11.); (b) Auswahl der größten geopolitischen Treiber mit ihrer
+  Marktreaktion (Ereignis → Brent/Gold/Indizes/FX). Erst nach dem Fundament (Fact Sheet + Wirkketten).
+
+- (22.11.) ~~Gold-Boden-Signal „Stresstag“ testen~~ → **am 22.11. getestet**: nicht belegt (nur 2008 + 2013/14 bei
+  Drawdown ≥ 20 %, ohne Drawdown kein Edge). Bleibt Vorwärts-Beobachtung, siehe [[makro-wirkketten-katalog]] Befunde 22.11.
 
 - (21.11.) **Prosper-Dashboard als Vorlage für Makro-Agent/Trading-System** → eingeordnet in den Plan
   [[prosper-education-uebernahme]] (3 feste Planpunkte, Umsetzung erst nach Ende der Education).

@@ -37,6 +37,8 @@ JOBS = {
     # unsere IP seit 12.11. dauerhaft (429 auch nach Pause) -> nicht im Tageslauf, Intensitaet ueber
     # die Schlagzeilen-Zahl in news_digest.
     "gpr": ("markets", geo.fetch_gpr),
+    "acm": ("macro", sources.fetch_acm),            # Fact Sheet v4: Laufzeitpraemie NY Fed
+    "brent_kurve": ("markets", sources.fetch_brent_curve),
     "earnings": None,
     "news": None,  # Schlagzeilen + Einordnung durch lokalen Claude Code (fusion_lab.macro_agent.news_digest)
 }

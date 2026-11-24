@@ -21,7 +21,10 @@ import pandas as pd
 from fusion_lab.macro_data import store
 
 MANIFEST = Path(__file__).resolve().parent / "ledger" / "manifest.jsonl"
-DATED_KEYS = {"datum", "date", "tag", "stand", "news_stand", "letzter_termin"}
+DATED_KEYS = {"datum", "date", "tag", "stand", "news_stand", "letzter_termin",
+              # v4-Bloecke (24.11.2026)
+              "sofr_datum", "move_datum", "praemie_datum", "erstantraege_datum", "vix_datum", "breite_datum",
+              "ueberr_letzter_termin"}
 ISO = re.compile(r"^\d{4}-\d{2}-\d{2}")
 
 

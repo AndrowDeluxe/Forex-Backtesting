@@ -198,7 +198,9 @@ jeweiligen Thema weiterarbeiten (Nutzerentscheid 10.11.).
   Festlegungen (Liste im Chat vom 10.11.). **23.11.: Call „Volumen LTF“ ausgewertet**, enthält das
   regelbasierte Setup „Daily Inducement Day“ (D1-CRT + POC/VA-Bedingungen, Ziel T−2-POC, Fib 1,11).
   **24.11. getestet:** als Setup kein Edge; Volumenbedingungen heben die nackte CRT im LTF-Einstieg um
-  ~+0,15 R brutto (IS + OOS, ungesichert), allein um null. [[smh-dennis-volumen-ltf-inducement-day]]
+  ~+0,15 R brutto (IS + OOS, ungesichert), allein um null. Als Filter auf H4 (24.11. spät): brutto
+  höchstens +0,08 R, netto weiter −0,12 R; Dennis' Volumen-Divergenz zeigt zweimal falsch herum.
+  [[smh-dennis-volumen-ltf-inducement-day]]
   Meine Annahmen: Testdefinitionen von A′
   (N = 2/4/8 Berichte, Retail „nicht mitlaufend“), Commercials-Netto redundant.
   [[smh-dennis-cot-volumen-calls]], [[smh-volumen-delta-und-cot-calls]]

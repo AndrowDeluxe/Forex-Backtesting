@@ -122,3 +122,31 @@ Vortages-POC, auf seinem Futures-Chart offenbar nicht.
   Zeiträumen. Absolut bleibt es um null. Als Filter für einen anderen Einstieg denkbar, allein nicht handelbar.
 - **Nicht geklärt:** ob echtes Futures-Volumen (6B/6E/GC) andere Tage auswählt (siehe 17.11.). Laut Festlegung
   „Futures erst bei vielversprechendem Ergebnis“ ist das hier nicht ausgelöst.
+
+## 7. Bausteine als Filter auf den H4-Manipulations-Edge (2026-11-24, Sperre `volumen_kontext_h4`, 30 Versuche)
+Nutzerauftrag 24.11.: „wie helfen uns die Bestandteile dennoch, evtl. mit der CRT auf dem H4-Edge?“ Grundlage
+sind alle 47.601 H4-Manipulationssignale (A6, `htf_daily_trade/h4_v4_signale.parquet`, 8 Märkte ohne NZDUSD).
+Nichts wurde neu simuliert. Jedes Signal bekam den Volumenkontext zum Schluss der Signalkerze (M15-Tick-Volumen,
+kein Vorgriff). Merkmale: V1 Value-Trend mit, V2 Inducement, V3 Sweep reicht in VA(T−2), V4 Einstieg außerhalb
+VA(T−1) auf der teuren Seite, V5 Delta der Signalkerze kippt, V6 schwaches Volumen im Sweep, K = V1 & V2 & V3.
+Ausstiege: 3 R und Zeitausstieg 12 Kerzen. Vergleich innerhalb Markt × Stopweiten-Quartil.
+Code `scripts/research_volumen_kontext_h4.py`, Tabellen `scripts/research_volumen_kontext_h4_{is,oos}.csv`.
+
+| Baustein | IS (Δ brutto, gleiche Zelle) | OOS | Lesart |
+|---|---|---|---|
+| V3 Sweep in VA(T−2) | +0,02 / +0,04 R | +0,07 / +0,06 R | in beiden Perioden leicht besser, filtert die schwächsten 20 % |
+| V5 Delta kippt | +0,08 R (8/8 Märkte) / +0,02 | +0,05 R (7/8) / −0,05 | nur mit 3-R-Ziel; vermutlich ≈ Schlussrichtung der Signalkerze |
+| V6 schwaches Volumen | −0,04 / −0,14 R | −0,04 / −0,03 R | **umgekehrt zu Dennis:** Sweep mit viel Volumen ist besser |
+| K Dennis-Kontext | +0,02 / +0,08 R | −0,03 / ±0 R | trägt nicht |
+| V1, V2, V4 | gemischt | gemischt | kein Befund |
+
+(Werte: Ziel 3 R / Zeitausstieg.)
+
+- **Kombination V3 & V5 & nicht V6** (25 % der Signale, 2 Versuche): 3 R brutto +0,01 statt −0,07 R (IS) und −0,01
+  statt −0,07 R (OOS), 7/8 bzw. 6/8 Märkte besser. **Netto aber −0,12 R** (Kosten ~0,13–0,2 R je Trade). Mit
+  Zeitausstieg kippt sie im OOS (2/8 Märkte).
+- **Mit Makro-Veto (≤ 2 Punkte gegen):** keine stabile Verbesserung, Vorzeichen wechseln zwischen IS und OOS.
+- **Fazit:** Die Volumenbausteine machen den H4-Edge nicht handelbar. Sie verbessern ihn brutto um höchstens
+  ~0,05–0,08 R, und das reicht nicht gegen die Kosten. Lehre: Dennis' Divergenz („Sweep ohne Volumen“) zeigt
+  in zwei unabhängigen Tests (D1 + H4) in die falsche Richtung. Als Baustein bleibt nur „Sweep reicht bis in
+  die Value von T−2“, als schwacher Kontext.

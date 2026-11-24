@@ -9,6 +9,12 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-24 (spät)** [Research / Elite-Coaching-Calls, Test] Dennis' Volumen-Bausteine als Filter auf den
+  H4-Manipulations-Edge (Nutzerauftrag): `scripts/research_volumen_kontext_h4.py`, Sperre `volumen_kontext_h4`
+  (30 Versuche), 47.601 H4-Signale, 8 Märkte. Kein Baustein macht H4 netto positiv. Stabil in IS+OOS nur: Sweep in
+  VA(T−2) leicht besser, starkes (nicht schwaches) Sweep-Volumen besser, Delta-Kipp nur mit 3-R-Ziel. Kombination
+  brutto +0,06–0,08 R, netto −0,12 R. Notiz Abschnitt 7. Commit `fc2bb5b8` (Inducement-Day-Test). Keine Bot-Änderung.
+
 - **2026-11-24** [Research / Elite-Coaching-Calls, Test] Dennis' „Daily Inducement Day“ getestet (Plan
   freigegeben, Festlegungen des Nutzers 24.11.). Neue Bausteine `fusion_lab/patterns/volume_profile.py`
   (CME-Tagesprofile POC/VA aus Tick-Volumen, Delta-Näherung) und `fusion_lab/patterns/inducement_day.py`;

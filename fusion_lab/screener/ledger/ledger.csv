@@ -1,7 +1,7 @@
 erstellt,stand,screener,version,status,art,objekt,szenario,gewaehlt,score,signal,sentiment,einstieg,zone_lo,zone_hi,stopp,ziel,rr,horizont,titel,fill_datum,fill_preis,exit_datum,exit_preis,exit_grund,ergebnis_r,ergebnis_pct,bench_pct,univ_pct,ausgewertet
 2026-11-15,2026-11-13,aktien,hand,referenz,referenz,NVDA,A,,,,,153.5,149.0,158.0,145.0,180.0,3.12,,,2026-11-17,153.5,2026-11-20,143.57000732421875,stopp_luecke,-1.177,-6.519,,,True
 2026-11-15,2026-11-13,aktien,hand,referenz,referenz,NVDA,B,,,,,172.0,,,158.0,180.0,0.57,,,,,,,,,,,,False
-2026-11-15,2026-11-13,aktien,1.0,probe,szenario,MU,A,True,79.5,KAUFEN,1.0,651.0,641.27,660.73,576.41,803.87,2.049,,,,,,,,,,,,False
+2026-11-15,2026-11-13,aktien,1.0,probe,szenario,MU,A,True,79.5,KAUFEN,1.0,651.0,641.27,660.73,576.41,803.87,2.049,,,2026-11-20,651.0,2026-11-25,574.9600219726562,stopp_luecke,-1.024,-11.73,,,True
 2026-11-15,2026-11-13,aktien,1.0,probe,szenario,META,A,True,68.5,KAUFEN,0.0,605.73,598.46,613.0,577.5,671.04,2.314,,,2026-11-19,605.73,2026-11-20,577.5,stopp,-1.011,-4.71,,,True
 2026-11-15,2026-11-13,aktien,1.0,probe,szenario,SNDK,A,True,66.9,KAUFEN,0.0,790.78,773.69,807.88,659.76,1107.26,2.415,,,2026-11-16,103.5281219482422,2026-11-16,103.5281219482422,stopp,,-0.05,,,True
 2026-11-15,2026-11-13,aktien,1.0,probe,szenario,SNDK,B,False,66.9,KAUFEN,0.0,1010.08,,,839.17,1416.56,2.378,,,,,,,,,,,,False
@@ -70,7 +70,7 @@ erstellt,stand,screener,version,status,art,objekt,szenario,gewaehlt,score,signal
 2026-11-16,2026-11-15,krypto,1.0,forward,gruppe,TOP10,,,,,,,,,,,,5.0,PEPE;QNT;NEAR;HYPE;SUI;ZEC;AVAX;LTC;TRX;AAVE,,,,,,,-10.566,-9.793,-9.359,True
 2026-11-16,2026-11-15,krypto,1.0,forward,gruppe,TOP10,,,,,,,,,,,,20.0,PEPE;QNT;NEAR;HYPE;SUI;ZEC;AVAX;LTC;TRX;AAVE,,,,,,,,,,False
 2026-11-16,2026-11-15,krypto,1.0,forward,gruppe,TOP10,,,,,,,,,,,,60.0,PEPE;QNT;NEAR;HYPE;SUI;ZEC;AVAX;LTC;TRX;AAVE,,,,,,,,,,False
-2026-11-16,2026-11-16,aktien,1.0,forward,szenario,MU,A,True,62.0,HALTEN,-1.0,651.0,640.96,661.05,573.97,887.47,3.07,,,,,,,,,,,,False
+2026-11-16,2026-11-16,aktien,1.0,forward,szenario,MU,A,True,62.0,HALTEN,-1.0,651.0,640.96,661.05,573.97,887.47,3.07,,,2026-11-20,651.0,2026-11-25,573.97,stopp,-1.004,-11.883,,,True
 2026-11-16,2026-11-16,aktien,1.0,forward,szenario,MU,B,False,62.0,HALTEN,-1.0,773.64,,,673.16,975.11,2.005,,,,,,,,,,,,False
 2026-11-16,2026-11-16,aktien,1.0,forward,szenario,REGN,A,True,67.1,KAUFEN,0.0,887.4,881.53,893.27,842.37,985.86,2.186,,,,,,,,,,,,False
 2026-11-16,2026-11-16,aktien,1.0,forward,szenario,REGN,B,False,67.1,KAUFEN,0.0,1001.52,,,942.78,1118.99,2.0,,,,,,,,,,,,False
@@ -126,13 +126,13 @@ erstellt,stand,screener,version,status,art,objekt,szenario,gewaehlt,score,signal
 2026-11-18,2026-11-18,aktien,1.0,forward,szenario,BLK,A,True,65.0,KAUFEN,0.0,1123.42,1113.37,1133.47,1078.83,1236.94,2.546,,,,,,,,,,,,False
 2026-11-18,2026-11-18,aktien,1.0,forward,szenario,BLK,B,False,65.0,KAUFEN,0.0,1250.75,,,1198.95,1354.37,2.0,,,,,,,,,,,,False
 2026-11-18,2026-11-18,aktien,1.0,forward,szenario,PLTR,A,True,64.9,HALTEN,0.0,138.9,137.43,140.37,127.62,175.4,3.235,,,,,,,,,,,,False
-2026-11-18,2026-11-18,aktien,1.0,forward,gruppe,KAUFEN,,,,,,,,,,,,5.0,ANET;REGN;ABBV;AMD;CPAY;VLO;ADSK;APA;NUE;MPC;EOG;CVX;VEEV;MU;ADI;V;PSX;MA;COP;MSFT;TXN;LLY;AIG;RL;WST;APH;MET;APP;NXPI;META;MDT;RMD;DHR;NEM;SHOP;FOXA;BLK,,,,,,,,,,False
+2026-11-18,2026-11-18,aktien,1.0,forward,gruppe,KAUFEN,,,,,,,,,,,,5.0,ANET;REGN;ABBV;AMD;CPAY;VLO;ADSK;APA;NUE;MPC;EOG;CVX;VEEV;MU;ADI;V;PSX;MA;COP;MSFT;TXN;LLY;AIG;RL;WST;APH;MET;APP;NXPI;META;MDT;RMD;DHR;NEM;SHOP;FOXA;BLK,,,,,,,-3.074,-1.849,-0.256,True
 2026-11-18,2026-11-18,aktien,1.0,forward,gruppe,KAUFEN,,,,,,,,,,,,20.0,ANET;REGN;ABBV;AMD;CPAY;VLO;ADSK;APA;NUE;MPC;EOG;CVX;VEEV;MU;ADI;V;PSX;MA;COP;MSFT;TXN;LLY;AIG;RL;WST;APH;MET;APP;NXPI;META;MDT;RMD;DHR;NEM;SHOP;FOXA;BLK,,,,,,,,,,False
 2026-11-18,2026-11-18,aktien,1.0,forward,gruppe,KAUFEN,,,,,,,,,,,,60.0,ANET;REGN;ABBV;AMD;CPAY;VLO;ADSK;APA;NUE;MPC;EOG;CVX;VEEV;MU;ADI;V;PSX;MA;COP;MSFT;TXN;LLY;AIG;RL;WST;APH;MET;APP;NXPI;META;MDT;RMD;DHR;NEM;SHOP;FOXA;BLK,,,,,,,,,,False
-2026-11-18,2026-11-18,aktien,1.0,forward,gruppe,VERKAUFEN,,,,,,,,,,,,5.0,ROL;INVH;MKC;MTB;CHTR;CMS;INTC;RF;NVR;CRWV;ES;PEG;DTE;TFC;AKAM;CPT;APO;LII;TTWO;GIS;TAP;MAA;WY;LEN;FER;MGM;EIX;ARE;NKE;BA;F;BLDR;MOS,,,,,,,,,,False
+2026-11-18,2026-11-18,aktien,1.0,forward,gruppe,VERKAUFEN,,,,,,,,,,,,5.0,ROL;INVH;MKC;MTB;CHTR;CMS;INTC;RF;NVR;CRWV;ES;PEG;DTE;TFC;AKAM;CPT;APO;LII;TTWO;GIS;TAP;MAA;WY;LEN;FER;MGM;EIX;ARE;NKE;BA;F;BLDR;MOS,,,,,,,1.876,-1.849,-0.256,True
 2026-11-18,2026-11-18,aktien,1.0,forward,gruppe,VERKAUFEN,,,,,,,,,,,,20.0,ROL;INVH;MKC;MTB;CHTR;CMS;INTC;RF;NVR;CRWV;ES;PEG;DTE;TFC;AKAM;CPT;APO;LII;TTWO;GIS;TAP;MAA;WY;LEN;FER;MGM;EIX;ARE;NKE;BA;F;BLDR;MOS,,,,,,,,,,False
 2026-11-18,2026-11-18,aktien,1.0,forward,gruppe,VERKAUFEN,,,,,,,,,,,,60.0,ROL;INVH;MKC;MTB;CHTR;CMS;INTC;RF;NVR;CRWV;ES;PEG;DTE;TFC;AKAM;CPT;APO;LII;TTWO;GIS;TAP;MAA;WY;LEN;FER;MGM;EIX;ARE;NKE;BA;F;BLDR;MOS,,,,,,,,,,False
-2026-11-18,2026-11-18,aktien,1.0,forward,gruppe,TOP10,,,,,,,,,,,,5.0,ANET;REGN;ABBV;AMD;CPAY;VLO;ADSK;APA;NUE;MPC,,,,,,,,,,False
+2026-11-18,2026-11-18,aktien,1.0,forward,gruppe,TOP10,,,,,,,,,,,,5.0,ANET;REGN;ABBV;AMD;CPAY;VLO;ADSK;APA;NUE;MPC,,,,,,,-4.857,-1.849,-0.256,True
 2026-11-18,2026-11-18,aktien,1.0,forward,gruppe,TOP10,,,,,,,,,,,,20.0,ANET;REGN;ABBV;AMD;CPAY;VLO;ADSK;APA;NUE;MPC,,,,,,,,,,False
 2026-11-18,2026-11-18,aktien,1.0,forward,gruppe,TOP10,,,,,,,,,,,,60.0,ANET;REGN;ABBV;AMD;CPAY;VLO;ADSK;APA;NUE;MPC,,,,,,,,,,False
 2026-11-18,2026-11-18,rohstoffe,1.1,probe,szenario,ERDGAS,A,True,65.8,KAUFEN,0.0,3.09,3.066,3.113,2.908,3.47,2.097,,,,,,,,,,,,False
@@ -317,3 +317,12 @@ erstellt,stand,screener,version,status,art,objekt,szenario,gewaehlt,score,signal
 2026-11-25,2026-11-24,krypto,1.0,forward,gruppe,TOP10,,,,,,,,,,,,5.0,JST;QNT;PEPE;AAVE;BNB;NEAR;TAO;LINK;TRX;SOL,,,,,,,,,,False
 2026-11-25,2026-11-24,krypto,1.0,forward,gruppe,TOP10,,,,,,,,,,,,20.0,JST;QNT;PEPE;AAVE;BNB;NEAR;TAO;LINK;TRX;SOL,,,,,,,,,,False
 2026-11-25,2026-11-24,krypto,1.0,forward,gruppe,TOP10,,,,,,,,,,,,60.0,JST;QNT;PEPE;AAVE;BNB;NEAR;TAO;LINK;TRX;SOL,,,,,,,,,,False
+2026-11-25,2026-11-25,aktien,1.0,forward,gruppe,KAUFEN,,,,,,,,,,,,5.0,REGN;ABBV;EOG;COP;META;PSX;V;MA;APP;MPC;NUE;ADSK;LLY;MDT;HAS;AIG;RL;PLTR;VEEV;MSFT;CTSH;MET;DHR;RMD;VLO;OMC;NEM,,,,,,,,,,False
+2026-11-25,2026-11-25,aktien,1.0,forward,gruppe,KAUFEN,,,,,,,,,,,,20.0,REGN;ABBV;EOG;COP;META;PSX;V;MA;APP;MPC;NUE;ADSK;LLY;MDT;HAS;AIG;RL;PLTR;VEEV;MSFT;CTSH;MET;DHR;RMD;VLO;OMC;NEM,,,,,,,,,,False
+2026-11-25,2026-11-25,aktien,1.0,forward,gruppe,KAUFEN,,,,,,,,,,,,60.0,REGN;ABBV;EOG;COP;META;PSX;V;MA;APP;MPC;NUE;ADSK;LLY;MDT;HAS;AIG;RL;PLTR;VEEV;MSFT;CTSH;MET;DHR;RMD;VLO;OMC;NEM,,,,,,,,,,False
+2026-11-25,2026-11-25,aktien,1.0,forward,gruppe,VERKAUFEN,,,,,,,,,,,,5.0,ROL;TAP;RF;MTB;SBAC;MAA;CHTR;GIS;CRWV;TFC;PEG;WY;LII;TSLA;AKAM;LEN;NKE;EIX;MGM;F;BLDR;ARE;BA;MOS,,,,,,,,,,False
+2026-11-25,2026-11-25,aktien,1.0,forward,gruppe,VERKAUFEN,,,,,,,,,,,,20.0,ROL;TAP;RF;MTB;SBAC;MAA;CHTR;GIS;CRWV;TFC;PEG;WY;LII;TSLA;AKAM;LEN;NKE;EIX;MGM;F;BLDR;ARE;BA;MOS,,,,,,,,,,False
+2026-11-25,2026-11-25,aktien,1.0,forward,gruppe,VERKAUFEN,,,,,,,,,,,,60.0,ROL;TAP;RF;MTB;SBAC;MAA;CHTR;GIS;CRWV;TFC;PEG;WY;LII;TSLA;AKAM;LEN;NKE;EIX;MGM;F;BLDR;ARE;BA;MOS,,,,,,,,,,False
+2026-11-25,2026-11-25,aktien,1.0,forward,gruppe,TOP10,,,,,,,,,,,,5.0,REGN;ABBV;EOG;COP;META;PSX;V;MA;APP;MPC,,,,,,,,,,False
+2026-11-25,2026-11-25,aktien,1.0,forward,gruppe,TOP10,,,,,,,,,,,,20.0,REGN;ABBV;EOG;COP;META;PSX;V;MA;APP;MPC,,,,,,,,,,False
+2026-11-25,2026-11-25,aktien,1.0,forward,gruppe,TOP10,,,,,,,,,,,,60.0,REGN;ABBV;EOG;COP;META;PSX;V;MA;APP;MPC,,,,,,,,,,False

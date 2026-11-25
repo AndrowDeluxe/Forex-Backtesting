@@ -18,8 +18,20 @@ keine Planung (dafür ist `DASHBOARD.md`).
   Eine Aktie ohne geprüfte Daten zeigt DATA UNAVAILABLE, bekommt keinen Preis und wird nicht gehandelt. Positionen zu
   Demo-Kursen sind als „DEMO ENTRY“ markiert und von Auto-Stops ausgenommen. Dashboard: Kopf-Anzeige je Datenstand,
   Aktien-Detail mit Tageschart, Indikatoren, Datenprüfung, Research-Text. 39/39 Tests, Browser-Check Desktop + Handy
-  (isolierte Kopie, Test-CSV). **Offen:** Alpha-Vantage-Key in die Kurs-`.env` (Kopieren aus den Repo-Secrets wurde
-  vom Auto-Modus blockiert), danach echter SPY-Test (Schritt 6). [[prosper-education-uebernahme]]
+  (isolierte Kopie, Test-CSV). Alpha-Vantage-Key mit Nutzererlaubnis aus den Repo-Secrets in die Kurs-`.env` übernommen.
+  **Echter Test bestanden:** SPY 100 Bars (07.07.–24.11.), Prüfung PASSED, alle 5 Symbole REAL HISTORICAL, Gegencheck mit
+  yfinance passt (SPY 718,58 vs. 718,78, Tagesbar kurz nach Schluss abgerufen; NVDA-Tagessprung +31 % echt, NVDA-Bar vom
+  24.11. fehlte bei Alpha Vantage noch). Claude-Research für alle 5 Symbole validiert. Demo-Positionen TSLA/BTC bleiben
+  als „DEMO ENTRY“ markiert (Nutzerentscheid). [[prosper-education-uebernahme]]
+- **2026-11-25** [Makro-Agent / Education-Import] OneNote-Abschnitt „Makro Education“ neu über Graph geladen,
+  Import lädt jetzt auch **PDF-Anhänge** (`fusion_lab/ingest/onenote.py`; Blueprint 2024, Haushaltsdesaster, USA
+  Finish). Neues Auslese-Skript `fusion_lab/inventory/makro_education_extract.py` (Text + Bilder + PDF je Seite über
+  lokalen `claude.exe`, Ausgabe JSON mit Wirkketten/Regeln): Abschnitte Makro Education (38 S., 548 Bilder), Makro
+  Angelo (7/111), Incentive Nacharbeitung 2026 (33/321), eigene GS-Aufarbeitung + Journal „Gatekeeping“. **Nach 1
+  Seite (How To NFP) Abo-Nutzungsgrenze erreicht** → Skript bricht jetzt dort sauber ab, setzt beim nächsten Lauf
+  fort. Eigene Recherche statt leerer Kursseiten: [[endogen-exogen-gatekeeping]] (Makro sagt Währungen im
+  Querschnitt voraus, nicht in der Zeit; Netto-Auslandsvermögen fehlt bei uns als Faktor).
+
 - **2026-11-24 (nachts)** [Makro-Agent / Scorecard] Nutzerentscheid: Überraschungs-Faktor für **JPY und CHF** zählt
   jetzt feste Kernindikatoren unabhängig von der Forex-Factory-Einstufung (JPY: National/Tokio Core CPI, Prelim BIP,
   Arbeitslosigkeit; CHF: CPI, BIP, Arbeitslosigkeit), `panels.CORE_EXTRA`. Scorecard-Backtest neu (Lock

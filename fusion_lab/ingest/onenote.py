@@ -219,6 +219,19 @@ def save_page(g: Graph, page: dict, folder) -> int:
         except requests.HTTPError as e:
             print(f"    Bild {i} nicht ladbar: {e}", flush=True)
 
+    # Datei-Anhaenge (z. B. PDFs, 24.11.2026): OneNote zeigt sie als Ausdruck-Bilder, der Text steckt
+    # nur im Anhang selbst -> mitladen, lokal verlinken
+    for obj in soup.find_all("object"):
+        src, name = obj.get("data"), obj.get("data-attachment")
+        if not src or not name or not src.startswith("https://graph.microsoft.com"):
+            continue
+        local = folder / f"{stem}_att_{safe_name(name)}"
+        try:
+            local.write_bytes(g.get(src).content)
+            obj["data"] = local.name
+        except requests.HTTPError as e:
+            print(f"    Anhang {name} nicht ladbar: {e}", flush=True)
+
     (folder / f"{stem}.html").write_text(str(soup), encoding="utf-8")
     header = (f"# {page.get('title') or 'ohne Titel'}\n\n"
               f"_erstellt {page.get('createdDateTime')}, geaendert "

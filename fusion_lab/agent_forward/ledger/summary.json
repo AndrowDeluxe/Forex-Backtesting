@@ -1,5 +1,5 @@
 {
- "stand": "2026-11-23",
+ "stand": "2026-11-25",
  "start": "2026-11-23",
  "auswertung_ab": "2027-02-15",
  "huerde": "Frühestens nach 12 Wochen auswerten. Erfolg = der Agent schlägt beim Richtungs-Alpha alle drei Kontrollen (immer Buy, Zufall, Momentum) und t > 2 über Wochenmittel.",
@@ -19,8 +19,8 @@
  "quellen": {
   "agent": {
    "label": "Agenten-Team",
-   "n": 5,
-   "offen": 5,
+   "n": 14,
+   "offen": 14,
    "abgerechnet": 0,
    "richtungs_alpha": null,
    "summe": null,
@@ -52,8 +52,8 @@
   },
   "always_buy": {
    "label": "Immer Buy",
-   "n": 5,
-   "offen": 5,
+   "n": 14,
+   "offen": 14,
    "abgerechnet": 0,
    "richtungs_alpha": null,
    "summe": null,
@@ -85,8 +85,8 @@
   },
   "random": {
    "label": "Zufall",
-   "n": 5,
-   "offen": 5,
+   "n": 14,
+   "offen": 14,
    "abgerechnet": 0,
    "richtungs_alpha": null,
    "summe": null,
@@ -118,8 +118,8 @@
   },
   "momentum": {
    "label": "Momentum 20 T",
-   "n": 5,
-   "offen": 5,
+   "n": 14,
+   "offen": 14,
    "abgerechnet": 0,
    "richtungs_alpha": null,
    "summe": null,
@@ -164,6 +164,96 @@
  },
  "probe_eintraege": 0,
  "letzte": [
+  {
+   "datum": "2026-11-25",
+   "ticker": "XOM",
+   "rating": "Hold",
+   "alpha": null,
+   "rendite": null,
+   "begruendung": "Hold `XOM` at the standard allocation. Do not add before confirmation and do not trim into support. Price (158.08) sits on the rising 200 SMA (about 155.05) and the 156.90 closing low. The two variables that decide the direction, the oil path and forward EPS, cannot be observed today. Portfolio holdings were not provided, so apply these rules to your own book.",
+   "fehler": "",
+   "probe": false
+  },
+  {
+   "datum": "2026-11-25",
+   "ticker": "WMT",
+   "rating": "Underweight",
+   "alpha": null,
+   "rendite": null,
+   "begruendung": "For `WMT` (Walmart Inc.), reduce exposure modestly and keep a core position. Trim roughly a quarter to a third of the current holding, scaled to your own position, ideally into strength near 132–135 (last close 131.94). Do not add or initiate at current levels, and do not short. If you hold nothing, don't open a position here. Rebuild toward full weight only after the forward EPS is verified, and then in stages at about 117–122. Portfolio holdings were not provided, so apply these fractions to your own exposure.",
+   "fehler": "",
+   "probe": false
+  },
+  {
+   "datum": "2026-11-25",
+   "ticker": "UNH",
+   "rating": "Underweight",
+   "alpha": null,
+   "rendite": null,
+   "begruendung": "Keep the bearish direction on UNH but size it moderately. If you hold UNH, trim to roughly 50–70% of your standard allocation, in tranches. Sell the first tranche on a bounce toward the 10 EMA (~359.55, roughly 355–360) and the second near the 200 SMA (~366.92). Do not chase the sale at the current ~346.19 close. Do not average down before the next earnings report.",
+   "fehler": "",
+   "probe": false
+  },
+  {
+   "datum": "2026-11-25",
+   "ticker": "NVDA",
+   "rating": "Hold",
+   "alpha": null,
+   "rendite": null,
+   "begruendung": "Hold on `NVDA`. Do not open a new position now, and keep any existing position at or below your standard allocation with no adds. The Hold comes from weighing the three analysts, not from the mere presence of conflict. Neither the bullish nor the bearish read clears the bar today. The sequence of gates below decides when that changes. Your holdings and cash were not provided, so apply this to your own book.",
+   "fehler": "",
+   "probe": false
+  },
+  {
+   "datum": "2026-11-25",
+   "ticker": "JPM",
+   "rating": "Underweight",
+   "alpha": null,
+   "rendite": null,
+   "begruendung": "Reduce JPM modestly and do not exit. The Research Manager's Underweight stands. The Trader mapped it to Sell, but the evidence supports a partial trim, so Underweight is the correct rating. Portfolio context was not provided, so all sizing is relative to the caller's own JPM position and standard allocation.",
+   "fehler": "",
+   "probe": false
+  },
+  {
+   "datum": "2026-11-24",
+   "ticker": "XOM",
+   "rating": "Underweight",
+   "alpha": null,
+   "rendite": null,
+   "begruendung": "For `XOM`, trim the position instead of exiting it. A holder at full standard weight should sell roughly one-quarter to one-third now, using the 158.23 close as the reference. The Research Manager and Trader proposed one-third to one-half, and the Neutral analyst proposed about one-quarter. I land at the lower end of the proposed range because the bear case wins only modestly. Do not add. Portfolio context was not provided, so apply this to your own weight and to any other oil exposure you hold.",
+   "fehler": "",
+   "probe": false
+  },
+  {
+   "datum": "2026-11-24",
+   "ticker": "UNH",
+   "rating": "Hold",
+   "alpha": null,
+   "rendite": null,
+   "begruendung": "Hold UNH at the standard allocation you already have. Do not add at 341.88 and do not trim. If you are flat, do not initiate a full position yet. A starter of about one-third of standard size is reasonable only after a daily close at or above roughly 362–367 (the 10-EMA / 200-SMA zone) on rising volume. Treat a daily close below 319.13 as the trigger to cut to about half the standard allocation. Use closes rather than intraday prints, and size the position so a gap through the level (the January reset gapped 56 points overnight) is survivable. No portfolio context was provided, so all sizing i",
+   "fehler": "",
+   "probe": false
+  },
+  {
+   "datum": "2026-11-24",
+   "ticker": "NVDA",
+   "rating": "Hold",
+   "alpha": null,
+   "rendite": null,
+   "begruendung": "Hold on NVDA. Do not add and do not initiate now. If you already hold, keep the position at standard size or smaller. Trimming into a rally toward 158–165 is a reasonable way to lower risk if your position is large relative to what a gap through the stop could absorb. If you are flat, wait for the triggers below. Portfolio holdings and cash were not provided, so I give the sizing in relative terms only.",
+   "fehler": "",
+   "probe": false
+  },
+  {
+   "datum": "2026-11-24",
+   "ticker": "JPM",
+   "rating": "Hold",
+   "alpha": null,
+   "rendite": null,
+   "begruendung": "Hold JPM. Keep the existing position at its standard weight, add nothing now, and do not trim on valuation or fundamentals alone. Portfolio holdings were not provided, so this is guidance on direction and relative sizing, not dollar amounts.",
+   "fehler": "",
+   "probe": false
+  },
   {
    "datum": "2026-11-23",
    "ticker": "XOM",
@@ -216,6 +306,17 @@
   }
  ],
  "laeufe": [
+  {
+   "lauf": "2026-11-25 22:35",
+   "datum": "2026-11-25",
+   "titel_ok": "5",
+   "titel_fehler": "0",
+   "abgerechnet": "0",
+   "sekunden": "1246",
+   "llm_aufrufe": "75",
+   "kosten_usd": "1.3974",
+   "hinweis": ""
+  },
   {
    "lauf": "2026-11-23 22:36",
    "datum": "2026-11-23",

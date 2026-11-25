@@ -213,3 +213,347 @@ For WMT, reduce exposure to a partial trim, not an exit. Portfolio holdings were
 
 <!-- ENTRY_END -->
 
+[2026-11-24 | NVDA | Hold | pending]
+
+DECISION:
+**Rating**: Hold
+
+**Executive Summary**
+
+Hold on NVDA. Do not add and do not initiate now. If you already hold, keep the position at standard size or smaller. Trimming into a rally toward 158–165 is a reasonable way to lower risk if your position is large relative to what a gap through the stop could absorb. If you are flat, wait for the triggers below. Portfolio holdings and cash were not provided, so I give the sizing in relative terms only.
+
+**Investment Thesis**
+
+The debate is genuinely balanced, and the Neutral analyst's synthesis comes closest to the evidence. I weighed the two extremes as follows.
+
+Why the Aggressive case fails as a call to buy now:
+- Its arithmetic assumes a 124.50 stop caps the loss. That level is an intraday low. The Conservative and Neutral analysts both noted that daily ranges are 9–19 points and the beta is 2.25, so an overnight gap could fill well below it.
+- The 2.8:1 reward figure depends on a return to the 243 high. The Aggressive analyst itself concedes the honest target, the 204 SMA cluster, offers only about 1.6:1 against a roughly 20% first-tranche risk.
+- The reading of the 11-23 move as "bottom buying" is undercut by the next session. NVDA closed at 155.38, down about 5.9% on 379 million shares, after failing at 165. That is the same level the Aggressive analyst proposes as a later add.
+- The "benign working-capital build" and "benign purchase commitments" explanations are unverifiable. Operating cash flow fell to about 40% of net income, and non-current liabilities rose about 140%, with no receivables or inventory detail to separate timing from collection risk.
+
+Why the Conservative case does not justify Underweight or Sell:
+- Most of its points are open questions, not confirmed deterioration. The forward EPS of about $16.60 is unverified, but the 16.7x trailing P/E on 106% revenue growth and a 66% operating margin does not depend on that estimate. The Neutral analyst's point about this stands.
+- The January quarter gap and the liability composition could resolve in either direction. Selling into them would be acting on technicals alone.
+
+Where the evidence leans: the Conservative analyst is somewhat stronger on near-term risk. The price is below the 10 EMA, 50 SMA and 200 SMA, MACD is bearish, ATR has more than doubled, and the CEO status conflict is unresolved. The insider selling of about $1.4 billion with no buying adds a mild negative. The Aggressive analyst is stronger on valuation and operating quality. These do not offset cleanly, so the evidence does not support a directional call. The checks that would settle it are cheap to run.
+
+**Execution guidance**
+
+- **If flat:** Wait. The Neutral analyst's probe is the right entry form. Start only after a daily close above the 10 EMA (about 158), and size it at roughly a quarter to a third of a normal risk budget. Add only on a volume-confirmed close above 165, and do not add into a rally that is failing there.
+- **If holding:** Do not add. Trim toward a size whose stop-and-gap loss you can absorb, especially into strength near 158–165.
+- **Stops:** Use closing-basis levels, not intraday levels. Avoid stops tighter than about 1 ATR (13.3). Allow for gap risk in sizing, because a stop does not guarantee the fill price.
+
+**What would change the call**
+
+- **Toward Overweight:** The January quarter reconciles with trailing figures and confirms growth. July-quarter operating cash flow recovers toward net income. The liability growth is shown to be non-debt. Price closes above 158 and then above 165 on volume. The CEO status is confirmed from filings.
+- **Toward Underweight or Sell:** A second quarter of weak cash conversion. The January data shows a sequential revenue decline. The liabilities prove to be debt-funded. A close below about 124.50, or a death cross with continued sector selling.
+
+**Missing evidence:** January-quarter figures, composition of non-current liabilities, the equity reconciliation, verification of the forward EPS, confirmed leadership status, the next earnings date, and receivables and inventory detail. The quote currency is also not stated, and USD is assumed from the NMS listing. Review after the filing checks or the next earnings release, whichever comes first.
+
+<!-- ENTRY_END -->
+
+[2026-11-24 | JPM | Hold | pending]
+
+DECISION:
+**Rating**: Hold
+
+**Executive Summary**
+
+Hold JPM. Keep the existing position at its standard weight, add nothing now, and do not trim on valuation or fundamentals alone. Portfolio holdings were not provided, so this is guidance on direction and relative sizing, not dollar amounts.
+
+Act on closes, not intraday prints:
+- **Trim:** if JPM closes below 310.53, cut about a third at the next open. Escalate toward a half on a volume-backed break of about 309.
+- **Add:** only after a close above 322.87 (200 SMA) with the MACD histogram turning up. Add in thirds. The Neutral analyst's cleaner signal is a close above the 10 EMA (325.21) as well.
+- **Position size:** size the holding so a fall to the 52-week low of 279.10 (about 12% below) is a loss you can absorb.
+- **Before acting:** confirm the live quote, because 317.10 is derived from ratios. Also check the PCE release date.
+
+**Investment Thesis**
+
+The Conservative analyst's argument beat the Aggressive analyst's on the specific question of adding now, but not by enough to justify a cut.
+
+*Why not add now (Aggressive rejected):*
+- The 2.3:1 reward-to-risk to the 50 SMA depends on a 309 stop. The Neutral analyst showed that the stop sits 18 cents below the 309.18 intraday low, so a retest would wick through it. The Conservative analyst showed that nothing in the data supports price between 309 and 279.
+- The reward to the 50 SMA is about 5.8%, against about 12% of downside. That needs roughly a two-in-three hit rate to break even.
+- "Selling is absorbed" is not supported. The MACD histogram kept widening (−4.83 to −5.38) on a flat day, and VWMA (331.51) above price points to heavy-volume decline. The stock also trades below the 10 EMA, 50 SMA and 200 SMA.
+- The rates argument leans on a 98% prediction-market reading while the 10-year headline is unverified. The report does not show earnings sensitivity to rates.
+
+*Why not trim or sell (Conservative's fundamental case overreached):*
+- The Neutral analyst corrected the earnings point. Ex-Q2, growth is still about 9.5%, and Q1 was +12.6%. That is a slowdown, not a collapse.
+- Forward EPS of 25.57 is about 6.39 a quarter, which needs a recovery from Q3's 5.57, not a repeat of Q2's 7.70.
+- No credit deterioration is shown. The absence of credit data is a gap, not evidence of stress. The franchise (about $5.09T in assets, covered dividend near a 28% payout, about 14x run-rate earnings) does not justify cutting on technicals alone.
+- The leverage drift (equity-to-assets 7.9% to 7.3%) and the one-directional insider selling (about $126M, no buys, data ending in September) are worth monitoring but are too thinly evidenced to size.
+
+*Net:* The evidence leans against adding but does not support exiting. Hold with pre-committed trim rules is the position that survives both critiques.
+
+*What would change the call:*
+- **Toward Overweight:** a close above 322.87 and 325.21, a histogram that stops widening and turns up, and CET1 or provisions data showing stable capital and benign credit.
+- **Toward Underweight or Sell:** a close below 310.53, then a volume-backed break of 309. Also Q4 net income below the Q3 level of $15.3B, or rising provisions with a confirmed 10-year yield above 5%.
+
+*Data gaps:* CET1, provisions, NII, deposit mix, an explanation of Q2's $21.2B, and the October–November Form 4 filings are all missing. A live price check is also outstanding.
+
+<!-- ENTRY_END -->
+
+[2026-11-24 | XOM | Underweight | pending]
+
+DECISION:
+**Rating**: Underweight
+
+**Executive Summary**
+
+For `XOM`, trim the position instead of exiting it. A holder at full standard weight should sell roughly one-quarter to one-third now, using the 158.23 close as the reference. The Research Manager and Trader proposed one-third to one-half, and the Neutral analyst proposed about one-quarter. I land at the lower end of the proposed range because the bear case wins only modestly. Do not add. Portfolio context was not provided, so apply this to your own weight and to any other oil exposure you hold.
+
+Execution:
+- **Thesis stop:** a daily close, not an intraday print, below 154.997 (the 200 SMA). On a close below it, cut a second tranche to minimal weight. The next reference is about 151.5 (lower band, snapshot-only).
+- **Rebuild:** first tranche on a close above the 10 EMA (162.25) with the MACD histogram turning up. Second tranche on a close above the 50 SMA (168.04). Treat RSI above 50 as a confirming signal, not a gate, since RSI is at 36.
+- **Keep the core position** for the dividend (2.73%) and balance-sheet quality (debt-to-equity about 0.13x), not for appreciation.
+
+**Investment Thesis**
+
+*What decided it.* The Conservative and Neutral analysts won on the main point. The Aggressive case rests on earnings that "doubled," but the Neutral and Conservative analysts showed that those earnings share a driver with the risk. Revenue growth of 33–42% points to oil prices, and the oil premium is what is unwinding. Q4 2025 and Q1 2026 are also missing, and trailing figures imply they contributed only about $10.7B of net income combined, which is about $1.26 EPS per quarter, below the year-earlier quarters. The 12.7x forward multiple depends on $12.49 forward EPS, which assumes high oil persists. The Aggressive analyst did not rebut this and conceded that the Iran deal is "the real threat" while still recommending full weight, which names the risk without sizing for it.
+
+The technicals agree. Price is below the 10 EMA and 50 SMA. MACD (−3.38) is at its window low. The RSI rebounds failed at 45–48. The Conservative analyst also showed that the November 13 reclaim of both averages (169.52) failed the next session, which undercuts the Aggressive plan to add on a reclaim of 162.
+
+*Where the Aggressive and Neutral analysts were right, and why I trim less.*
+- A 14% monthly drop with no company-specific negative is, as the Aggressive analyst says, a commodity repricing. That is a reason not to exit, not a reason to hold full size.
+- The Neutral analyst's arithmetic is correct. With the stop at 155, risk is about 3.2 points against about 10 points to the 50 SMA, which is roughly 3:1 for a long. This undercuts the Conservative claim of symmetric reward-to-risk, but only if the stop holds. The stop is inside one ATR (4.0), so noise can trigger it. That supports using a closing-basis stop and a staged cut rather than an all-at-once exit.
+- Volume (10.2M against about 13.5M average) shows no capitulation, so this is not a clear bottom. It also shows no heavy distribution, so a partial trim is better than a deep one.
+- The $339.56M legal judgment is about 0.13% of equity and is immaterial by itself. The risk is a pipeline of similar suits, which is unquantified.
+- The balance sheet is sound, and the 200 SMA (154.997) has held on every close in the window. Both limit the downside and rule out Sell.
+
+*Data gaps (not resolved by the debate).* The crude price conflicts between $97 and below $90. FCF conflicts between $28.3B TTM and $37.7B over nine months, and nine-month financing outflows ($37.4B) nearly match that FCF. Q4 2025 and Q1 2026 EPS and FCF are unreconstructed. Bollinger and MACD signal values are snapshot-only. The Trefis ~$59 breakeven is an estimate and should not be treated as a cushion. The Libya and Iraq supply upside rests on a single article.
+
+*What would change the call.*
+- **Toward Overweight or Hold:**
+  - Verified Q4 2025 and Q1 2026 earnings show a baseline well above about $1.26 per quarter.
+  - Verified crude stabilizes while the stock holds above the 200 SMA.
+  - A close above 162.25, then 168.04, with MACD turning up.
+- **Toward Sell:**
+  - A daily close below 154.997.
+  - Forward EPS estimates being cut ahead of the Q4 report, expected early February.
+  - Verified Brent below about $90.
+
+This is analysis based only on the evidence provided and not personalized financial advice.
+
+<!-- ENTRY_END -->
+
+[2026-11-24 | UNH | Hold | pending]
+
+DECISION:
+**Rating**: Hold
+
+**Executive Summary**
+
+Hold UNH at the standard allocation you already have. Do not add at 341.88 and do not trim. If you are flat, do not initiate a full position yet. A starter of about one-third of standard size is reasonable only after a daily close at or above roughly 362–367 (the 10-EMA / 200-SMA zone) on rising volume. Treat a daily close below 319.13 as the trigger to cut to about half the standard allocation. Use closes rather than intraday prints, and size the position so a gap through the level (the January reset gapped 56 points overnight) is survivable. No portfolio context was provided, so all sizing is a fraction of whatever standard allocation applies.
+
+**Investment Thesis**
+
+The debate was weighed on merits, not forced into a direction. Each side has a decisive weakness, and what is left is balanced and too thin for a directional call.
+
+Why not Buy or Overweight (the Aggressive case):
+- The "sellers exhausted" argument rests on one session. Volume fell from 19.8M to 7.6M, RSI recovered from 24.23 to 32.23, and the MACD histogram narrowed. The technical report itself says one day does not confirm fading downside momentum. On that same day the 10-EMA crossed below the 200-SMA, and price sits below the 10-EMA, 50-SMA, 200-SMA and VWMA.
+- The valuation argument (14.6x forward, PEG 0.85) depends on forward EPS of $23.47. Nine-month EPS is $17.50, so that figure implies about $5.97 in Q4 against Q3's $4.56, while operating margin has fallen three straight quarters (8.0%, 7.1%, 5.8%). The cash-flow claim is also weaker than presented: Q3 operating cash flow fell 14% and free cash flow fell 16%, and cash dropped $2.7B in the quarter.
+- The reward ratios (2:1 to 387, 3:1 to the 420s) assume the stop holds. The Aggressive analyst himself concedes the TTM EPS is shaky and that a gap through the stop is possible.
+
+Why not Underweight or Sell (the Conservative case):
+- The Conservative analyst is right on the evidence but overreaches on conclusions. The claim that the market has already priced in much of the proposal is unsupported, since no pre-news valuation history exists in the data. The Neutral analyst correctly flagged this.
+- The $107B figure is dated far out (2031–2037, or spread over ten years). It comes from a proposed rule, not a final one, and Humana and CVS fell on the same news. The 2027 earnings hit may therefore be smaller than the 18% weekly drop implies.
+- The 1.4 ATR stop is not pure noise, as the Neutral analyst noted. A single-day range is about one ATR, so it takes more than a normal day to reach it.
+- The longer-term structure has not fully broken. The 50-SMA is still above the 200-SMA, and the 200-SMA is still rising. Selling after an 18% weekly drop, with a possible CMS softening or court outcome pending, is asymmetric against the seller.
+
+What tips it to Hold: the cheapness case and the expensive case both rest on the same missing data (Q4 2025, which may mean the TTM figures are mis-stated). The bear has the stronger near-term evidence (margins, EPS, technicals), and the bull has the stronger valuation and policy-timing evidence. Neither outweighs the other enough to commit.
+
+What would change the call:
+- Upgrade to Overweight, in stages of about one-third of the intended increase per confirmation: a Q4 print that halts the EPS decline, MLR disclosure showing easing cost pressure, a softened CMS rule or a court ruling for UNH, or a reclaim of 362–367 on rising volume.
+- Downgrade to Underweight or Sell: a daily close below 319.13, CMS finalizing close to the proposal, or Q4 EPS clearly below $4.56 with further margin compression.
+
+Missing data to obtain before the next review: medical cost ratio, segment results, the Q4 2025 income statement (to verify TTM EPS), the CMS comment deadline and final-rule date, the court schedule, and the full text of the lawsuit's star-rating claim, which is truncated in the source and unverified.
+
+<!-- ENTRY_END -->
+
+[2026-11-25 | NVDA | Hold | pending]
+
+DECISION:
+**Rating**: Hold
+
+**Executive Summary**
+
+Hold on `NVDA`. Do not open a new position now, and keep any existing position at or below your standard allocation with no adds. The Hold comes from weighing the three analysts, not from the mere presence of conflict. Neither the bullish nor the bearish read clears the bar today. The sequence of gates below decides when that changes. Your holdings and cash were not provided, so apply this to your own book.
+
+Actions:
+1. **Confirm the live quote.** The verified CSV close for 2026-11-25 is 149.30, which matches the vendor-implied $149. The ~204 moving averages are consistent with a lagging 50-day average after a fall from about 217 to 149 (Neutral). An authoritative live quote is still a required check, but it is now a small one.
+2. **No adds before the Senate testimony (week of 30 November) or the December FOMC.** Both are binary for a stock with beta of about 2.25 and ATR of 13.38 (about 9% a day).
+3. **Staged entry only after the gates.** Once the quote is confirmed, a starter tranche is acceptable only if it is sized for a gap, not a clean stop fill. Size it so that a 20%+ gap through 123 costs no more than about 2% of equity. A second tranche needs a close above the 10 EMA (156.51) held for about three sessions, plus a session holding above 124.50 without selling-dominated volume.
+4. **Treat 123 as a thesis-invalidation level, not a guaranteed risk limit.** It sits only 1.5 points below a low tested once, and ATR is far larger than that.
+5. **Downgrade to Underweight on:** a close below 124.50 or 123, single-digit sequential revenue growth, gross margin below about 70%, a 10-Q showing material receivables exposure to leveraged customers, or an S&P downgrade with governance unresolved.
+6. **Upgrade to Overweight on:** the Q3 FY27 release showing sequential growth near 15% or better with margins intact, a benign 10-Q explanation of the working-capital build, and the 10 EMA reclaimed.
+
+**Investment Thesis**
+
+*Why not Buy or Overweight.* The Aggressive case reads the 11-23 rally (782.6M shares, the largest volume in the 252-day file) as size coming in at the bottom. The Conservative and Neutral analysts rebut this: the rally reversed from 165.05 to 149.30 within two sessions, and high volume in both directions fits distribution as well as accumulation. The Aggressive claim of about 15x annualized H1 EPS ($4.85 doubled to about $9.70) is also weakened by the cash picture. Q2 operating cash flow was about $24.1B against $59.7B of net income (about 40% conversion). Current assets rose $46.4B, and non-current liabilities rose about $28B with no explanation in the feed. Q1 net income also exceeded operating income by about $4.8B. A low multiple on unverified earnings quality is not proven cheap. The forward P/E near 9 requires roughly 2.4x the H1 EPS run rate in H2, which is unproven. The price sits below the 10 EMA (156.51), 50 SMA (203.65) and 200 SMA (202.62), with RSI making lower highs (42.9, 39.5, 37.5). Aggressive's "buy before the catalyst" argument is the weakest point. The catalysts could resolve either way (Senate testimony, S&P CreditWatch Negative, Q3 10-Q), and the left tail is not priced by any level in the data.
+
+*Why not Underweight or Sell.* No analyst disputes the filed fundamentals: Q2 FY27 revenue of $96.2B (+106% YoY), about 75% gross margin, 66% operating margin, and equity-to-assets of 71.5%. The bear case rests on hypotheses (receivables from debt-funded customers, the unexplained liability build) that the 10-Q can test. The 124.50 low has held, and downside momentum is fading (MACD histogram contracting from -4.63 to -0.68). The insider-selling signal is weak. Stevens sold at $220–234, far above today's price, and the CEO made no open-market sales in 2026. The 99.95% Polymarket CEO-change market conflicts with reports of Huang's return, and its resolution wording is not in the data, so it should not drive a call. Selling into a 39% drawdown on unverified hypotheses would repeat the Aggressive error in the opposite direction.
+
+*Where the debate landed.* Neutral's critique that Conservative's confirmation requirement risks "buying the answer" has merit, which is why the plan allows a small, gap-sized starter after the quote check rather than waiting for everything. Conservative's point on gap risk through 123 has more weight than Aggressive's 1% stop math, because beta of 2.25 into a hearing can open below any stop. The result is a balanced, gated Hold rather than a directional call.
+
+*Missing or unverified:* an authoritative live quote, the 10-Q detail on receivables, customer credit quality and the $28B liability increase, the Form 4 10b5-1 status, the Polymarket resolution wording, and FRED macro data (so the rate and tariff claims are unverified). Dell's backlog is an indirect demand signal, not NVDA's own order book.
+
+*What would change this call:* a clean 10-Q plus a Q3 beat with the trend reclaimed moves it to Overweight. A break below 124.50 or a receivables or credit problem moves it to Underweight.
+
+<!-- ENTRY_END -->
+
+[2026-11-25 | JPM | Underweight | pending]
+
+DECISION:
+**Rating**: Underweight
+
+**Executive Summary**
+
+Reduce JPM modestly and do not exit. The Research Manager's Underweight stands. The Trader mapped it to Sell, but the evidence supports a partial trim, so Underweight is the correct rating. Portfolio context was not provided, so all sizing is relative to the caller's own JPM position and standard allocation.
+
+- **Now:** Sell about 20% of the current JPM position, the midpoint between the Neutral analyst's 15-20% and the plan's 20-30%. This leaves roughly 70-80% of standard weight.
+- **Second cut:** If JPM closes below the 309.18-308.73 zone on heavy volume (comparable to the 12-13M share sell days, not a quiet session), cut another 15-20% of the original position, moving toward about 50% of standard. The next references are about 310.4 (snapshot lower band, unverified) and 300.
+- **Treat 309.18 and 308.73 as one zone.** It is a daily-close trigger, not an intraday stop.
+- **Re-add in two halves:**
+  - First half: on a close above about 323 (the 10 EMA/200 SMA cluster), with the MACD histogram positive for two sessions.
+  - Second half: on a close above about 335 (50 SMA) with a MACD cross above its signal line.
+- **Timing:** Settle the sizing before the Q4 report in mid-January 2027.
+- **Verify before executing:** The $316.74 close matches the OHLCV data, but confirm the live price. FRED data, CET1 and stress-buffer data were not available.
+
+**Investment Thesis**
+
+The Conservative case is stronger, though not decisively. The Neutral analyst's refinements to sizing and re-add rules are the better execution.
+
+1. **Earnings quality.** The Aggressive analyst's 20% net income and 25% EPS growth leans on Q2 (+41% net income), and the Aggressive analyst itself calls Q2 an outlier. Q1+Q3 net income is up only about 9.5%, and Q3 alone is up 6.3%. The Neutral analyst correctly notes that Q2's cause is unknown, so it cannot be dismissed as noise or relied on. The 12.4x forward multiple is not stretched, but the $25.57 estimate needs Q4 near $6.36 against Q3's $5.57. That acceleration has not appeared, and the Aggressive analyst did not rebut it. The definition of the estimate (full year or otherwise) remains unconfirmed.
+
+2. **Leverage.** Assets-to-equity rose from 12.2x to 13.7x. Assets grew about 15% year to date against equity up 2.7%, and equity fell in Q3 from $374.6B to $372.4B. The Aggressive analyst conceded this is the biggest risk. The Neutral analyst is right that missing CET1 data means this is not proof of a capital problem, so it argues against adding rather than for a large sale. The 18% ROE and JPM's scale are real mitigants.
+
+3. **Technicals.** The facts are agreed after correction. Price is below the 10 EMA (323.67), 50 SMA (334.89) and 200 SMA (322.89). MACD (-5.78) is below its signal (-3.12), and RSI (37) has been below 50 since 11-17. The Aggressive analyst's "sellers exhausted" claim rested on errors: the 11-25 low (309.54) held above the 11-20 low (309.18) by only 0.36 points against an ATR of 8, and the histogram improved for two sessions, not three. Quiet volume (6.9M) is ambiguous, as the Neutral analyst said. The trend is broken, and the early histogram turn is not a reversal.
+
+4. **Supporting evidence for the bull is weak.** XLF's $611.7M was a single day. Broader ETF flows were about $92M net. 13F activity was balanced (12 buyers, 12 sellers). The +7% FDIC earnings is a sector aggregate that says nothing about JPM's own slowdown. The 98% no-cut reading is a rate-path bet, and the yield curve is unverified. The Conservative analyst's tail risks ($486B sector unrealized securities losses, AI-credit chain stress via Oracle and Blue Owl, the UK bank tax) come from sector-level or secondary sources, so they carry little weight. Insider selling of about $126M with no buying is a minor negative.
+
+5. **Asymmetry.** The Aggressive analyst's 5% downside to 300 versus 16% upside to 366.50 ignores the 12% downside to the 52-week low at 279.10. The upside path runs through unreclaimed resistance at about 323 and 335.
+
+**Why not Sell or Hold.** Sell is unjustified because profitability is strong, valuation is reasonable, and the capital data cuts both ways. Hold is unjustified because the trend is broken, growth is slowing, and the debate's own risk markers (rising leverage, a 309.18 low only 0.36 points from holding) are near triggering.
+
+**What would change the call**
+- **Toward Hold or Overweight:** Closes above about 323 and then 335 with a MACD cross, Q4 EPS near or above $6.36 without one-offs, CET1 and stress-buffer data showing the cushion holding, and confirmation of what drove Q2.
+- **Toward Sell:** A heavy-volume daily close below 309.18, a clear capital-ratio deterioration, or Q4 EPS materially short of $6.36.
+
+<!-- ENTRY_END -->
+
+[2026-11-25 | XOM | Hold | pending]
+
+DECISION:
+**Rating**: Hold
+
+**Executive Summary**
+
+Hold `XOM` at the standard allocation. Do not add before confirmation and do not trim into support. Price (158.08) sits on the rising 200 SMA (about 155.05) and the 156.90 closing low. The two variables that decide the direction, the oil path and forward EPS, cannot be observed today. Portfolio holdings were not provided, so apply these rules to your own book.
+
+How to act:
+- **Downside trigger:** a close below 155 on heavy volume, or two consecutive closes below it, means cutting to Underweight, roughly a third to a half below standard. Treat 155 as a review rule, not a reflex stop.
+- **Upside trigger:** move to Overweight only with at least two of these: a close above the 50 SMA (about 168) on rising volume with MACD back above zero; consensus forward EPS holding near $12 or better after oil stabilizes; Q4 2026 EPS around $3 or better.
+- **Stop:** the 150.90 protective level is a planning number. A gap through it on thin post-Thanksgiving liquidity would fill lower. Size so that a loss of about 12 points (7.5%: the 7.2-point stop distance plus a roughly 3% gap) fits your per-trade risk budget. Use limit orders rather than relying on stop fills.
+- **New exposure:** if you want it anyway, take at most a third to a half of intended size and add after the Q4 report or a 50 SMA reclaim.
+- **Before any add:** pull SEC Form 4 filings (the insider feed ends March 16) and the missing Q4 2025 and Q1 2026 quarterly figures.
+
+**Investment Thesis**
+
+*Why the Aggressive case did not win.* It argued that Hold costs a 6% move to 167.95 and that reward-to-risk is 3.9 to 1. The Conservative and Neutral analysts showed that this ratio targets the October peak of 186, which was set at the height of the war premium the research says is fading. The realistic target, the 50 SMA, gives about 1.4 to 1. The claim that support has historically held in this dataset is contradicted by the technical report, which says bounces were not verified. The 4.4% FCF yield (trailing $28.3B) was paired with a derived nine-month $37.7B that does not reconcile with it. The Aggressive analyst also conceded that the Q4 report is the true test and that the beta of 0.14 is an artifact, yet still proposed committing before that test.
+
+*Why the Conservative case did not fully win either.* Its strongest points hold up: the forward multiple of 12.7x rests on $12.49 consensus EPS against $9.72 TTM, and if consensus converges toward trailing levels the multiple is nearer 16x. Financing outflows of $37.4B nearly matched derived free cash flow, and current liabilities rose about 25%. Technicals are weak, with price below the 10 EMA and 50 SMA, MACD (-3.53) falling, and RSI at 36 without a washout. But the Neutral analyst correctly noted that "fully paid out" and "stretched payables" are hypotheses, because financing cannot be split into dividends, buybacks and debt. There is also no evidence that estimates are actually being cut or that the dividend is impaired. The dividend breakeven near $59 against Brent near $90 is a secondary-source figure (Trefis), but the cushion is wide even under Goldman's $10 decline scenario. It covers the dividend, not buybacks or capex. Waiting is also not risk-free, since Hold leaves existing exposure fully in place.
+
+*Net.* Both sides are strong on their own variable (quality and cushion versus earnings durability and timing), and neither can say whether Q4 and forward EPS hold. The Conservative recommendation, the Neutral recommendation and the trader's plan all converge on the same Hold-with-triggers structure. That convergence, plus price sitting on the key support where risk is roughly symmetric, justifies Hold rather than a forced direction.
+
+*What would change it.*
+- **Toward Underweight/Sell:** a heavy-volume close below 155 and 156.90, consensus forward EPS cuts toward $10 (which puts the multiple near 16x), further widening of current liabilities versus cash in the Q4 report, Brent moving toward $70 (earnings thesis review) or $60 (dividend test), or an adverse legal development such as more citizen suits following the Louisiana ruling.
+- **Toward Overweight/Buy:** the upside triggers above, plus Form 4 data showing no adverse insider pattern and SEC filings confirming the derived EPS and FCF figures.
+
+*Evidence gaps.* Quarterly EPS for Q4 2025 and Q1 2026, the composition of asset and liability growth, recent insider activity, macro data (FRED failed to load), the Bollinger series, and the Louisiana appeal status. Several figures are derived rather than reported. This is not investment advice.
+
+<!-- ENTRY_END -->
+
+[2026-11-25 | UNH | Underweight | pending]
+
+DECISION:
+**Rating**: Underweight
+
+**Executive Summary**
+
+Keep the bearish direction on UNH but size it moderately. If you hold UNH, trim to roughly 50–70% of your standard allocation, in tranches. Sell the first tranche on a bounce toward the 10 EMA (~359.55, roughly 355–360) and the second near the 200 SMA (~366.92). Do not chase the sale at the current ~346.19 close. Do not average down before the next earnings report.
+
+If you are flat, this does not support opening a short now. The plan never evaluated short exposure, gap risk is real, and your account's ability to carry a short is unknown. If you still want short exposure, the only version consistent with this debate is a small position taken on a rally into 359–367, sized so that a gap through the stop is a loss you have already accepted.
+
+For exits, use a close-based rule rather than an intraday one. Place the stop above the 200 SMA with a buffer, around 370–375, because the ATR of ~15.65 makes the proposed 366.92 stop too tight. If price closes back above the 200 SMA on rising volume, stop reducing and reassess. If price closes below ~325–330 on rising volume, do not add, and cut the remainder to a minimal holding.
+
+**Investment Thesis**
+
+The Neutral analyst's moderate stance carried the debate, with the Conservative analyst's mechanics sharpening it. The Aggressive analyst is right on direction but overstates the case for size.
+
+1. **Direction is bearish, and the evidence is consistent.**
+   - EPS has fallen $6.90 → $6.04 → $4.56, and operating income is down about 27% over three quarters. The Neutral analyst points out that the data-quality flags (the Q1 2024 sign and the TTM reconstruction) do not touch the 2026 quarterly prints.
+   - Price sits below the 10 EMA, 50 SMA and 200 SMA. MACD is negative at -15.02 against a signal of -7.99.
+   - The 14.7x forward P/E only looks cheap if Q4 EPS rebounds to ~$5.97, about 31% above Q3. A flat Q4 implies ~15.7x. The Conservative claim that a bad Q4 is already priced in is therefore not supported.
+   - Q3 operating cash flow was $5.1B against $11.1B in Q2. The Conservative point that nine-month cash flow is up 35% is true but does not offset a weak latest quarter, and the cause is unexplained.
+
+2. **Why not Sell and not a larger size.**
+   - The Aggressive 4.7-to-1 payoff treats 324.67 as a target, but the plan uses it as a re-evaluation trigger. The ratio is overstated.
+   - The 359.55 entry needs a ~3.9% bounce that may never come, and the 7.40-point stop sits inside roughly half of one day's ATR. Noise could trigger it, and gaps could fill it well above 367.
+   - The CMS rule is only a proposal, with timing unverified (2031–2037 versus through 2037). The star-ratings lawsuit covering 45 contracts is close to binary, and a favorable ruling or a softer final rule could squeeze the stock sharply.
+   - RSI recovered from 24.2 to 34.7 after a ~20% decline, which is squeeze-prone. The dividend yield of ~2.7% and the low beta of 0.52 cushion the downside modestly.
+   - The volume fade from 19.8M to 6.2M is ambiguous. It can mean buyers left or that sellers are exhausted. The technical report says it does not confirm a bottom, and I do not read it as confirming a sell either.
+   - The insider sales at $355–410 are weak evidence. They show timing, not the next three months.
+
+3. **Missing evidence.** The medical cost ratio, the key variable for a managed-care company, is absent. So are the next earnings date, the CMS rule timing, the lawsuit timeline, the explanation for the Q3 cash flow drop, and your actual holdings. The derived valuation figures (implied price, FCF yield) are unverified. This gap argues for a moderate size and for pulling the 10-Q before earnings.
+
+4. **What would change the call.**
+   - **Toward Hold or Overweight** (two or three together, not one alone):
+     - The medical cost ratio stabilizes for two consecutive quarters.
+     - The final CMS rule is materially softer or phased in.
+     - The star-ratings case is decided favorably.
+     - Q4 EPS comes in at or above $4.56 with operating cash flow recovering.
+     - Price holds a close above the 200 SMA with the 50 SMA flattening.
+   - **Toward Sell:** a close below ~325 on rising volume, together with a worse medical cost ratio or a harsher final rule.
+
+Monitor Humana and CVS reactions, sector guidance and Optum Rx volumes, and cut exposure further ahead of any CMS milestone or court ruling, where gap risk is largest.
+
+This is analysis of the supplied evidence, not personalized investment advice.
+
+<!-- ENTRY_END -->
+
+[2026-11-25 | WMT | Underweight | pending]
+
+DECISION:
+**Rating**: Underweight
+
+**Executive Summary**
+
+For `WMT` (Walmart Inc.), reduce exposure modestly and keep a core position. Trim roughly a quarter to a third of the current holding, scaled to your own position, ideally into strength near 132–135 (last close 131.94). Do not add or initiate at current levels, and do not short. If you hold nothing, don't open a position here. Rebuild toward full weight only after the forward EPS is verified, and then in stages at about 117–122. Portfolio holdings were not provided, so apply these fractions to your own exposure.
+
+**Investment Thesis**
+
+The business is not in dispute. All three analysts accept the high ROE (20.6%), pricing power, and low beta. The question is price against evidence quality, and the conservative case is stronger on that point.
+
+1. **Valuation relies on an unverified denominator.** WMT trades at about 41x forward and 50x trailing earnings, with a PEG of 2.18. The $3.23 forward EPS is unconfirmed and the TTM figures do not reconcile. The Aggressive analyst argues this makes "expensive" shaky. The Conservative analyst's reply is better: the same uncertainty means cheapness cannot be shown either, and the missing quarter could push the multiple higher. Uncertainty about the denominator argues for owning less, not more. The Aggressive analyst's own entry zone of 117–122 is 8–11% below the current price, which undercuts the case for holding full weight at 132.
+
+2. **"Acceleration" is not corroborated below the operating line.** Q1 operating income grew 5% and Q2 grew 29%. But H1 operating income rose 17% while net income rose only 1.6%, and Q2 net income fell 9%. The Aggressive analyst treats this as a bridge question, yet admits it is unexplained. Free cash flow fell about 20% with capex up 24% and absorbing 72% of operating cash flow. The Aggressive analyst calls this a bet whose payoff "we don't know yet." Holding that through a 41x multiple is the unverified side of the trade.
+
+3. **Technicals are fragile, not broken.** Price is above the 10 EMA, 50 SMA, and 200 SMA. But RSI peaked at 77.9 on 11-02 and is near 70–71 while price is higher, the MACD line fell from 4.38 to 3.36, and the histogram shrank from 0.795 to 0.014. The 11-25 session rejected the upper Bollinger band on roughly average volume. The Neutral analyst fairly notes that a short window makes divergence suggestive rather than confirmed. That limits the trim size but does not support adding.
+
+4. **Macro skews against a rich multiple.** A possible December hike, little pricing of 2026 cuts, and January tariff risk matter for a 41x multiple. Falling gasoline prices are a real tailwind for the core shopper. Insider signals are only mildly negative: the Walton selling has paused since June, but there have been no open-market purchases. I give this little weight.
+
+5. **Why the trim is smaller than the Conservative analyst proposed.** The Neutral analyst is right on two points. First, the 117–122 add zone sits on the proposed 118 stop, so buying and stopping out happen at about the same level. Second, a breakout above 132.31 on volume remains possible, and the thesis can still resolve in the bull's favor once the EPS is checked. A quarter to a third, not up to a half, hedges the December FOMC and January tariff window while keeping meaningful participation. This is a valuation-driven Underweight in a quality name, not a Sell.
+
+**What would change the view**
+
+- **Toward Overweight or Hold:** forward EPS is verified, the operating-to-net income bridge is explained, operating margin holds above about 5%, and free cash flow stabilizes as capex peaks. A close above 132.31 on rising volume with an expanding MACD histogram would justify pausing the trim.
+- **Toward deeper reduction:** a close below the 10 EMA (about 128.9) supports trimming further. A close below the 50 SMA (about 118) calls for reassessing the whole position.
+- **Event risks:** the December Fed decision, the January tariff outcome and any disclosure of WMT's import exposure, and any open-market insider buying.
+
+**Gaps:** There is no consensus EPS, the Q4 FY26 data are missing or inconsistent, the net income bridge is unexplained, and tariff exposure is unquantified. Macro inputs come from news and prediction markets, not verified series. The Walmart+ spending multiple, the PhonePe IPO timing, and the $875 Jefferies target are unverified and were given little weight.
+
+*This is a research-derived recommendation, not personalized financial advice. Sizing and risk decisions rest with the caller.*
+
+<!-- ENTRY_END -->
+

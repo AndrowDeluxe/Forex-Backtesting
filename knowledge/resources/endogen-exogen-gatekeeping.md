@@ -5,7 +5,7 @@ Prozess“ (3) aus dem Incentive-Kurs 2025 sind im OneNote-Import leer (keine Bi
 vermutlich Video/Ink). Nutzerauftrag: eigene Recherche statt Kursinhalt. Die eigenen Aufarbeitungen
 („Aufarbeitung GS Prozess“, Journal-Seite „Gatekeeping“) werden mit `fusion_lab/inventory/makro_education_extract.py`
 ausgelesen, sobald die Abo-Grenze es zulässt. Verwandt: [[makro-faktoren-katalog]], [[makro-wirkketten-katalog]],
-[[makro-scorecard-v2]], [[quant-diskretionaer-fusion]].
+[[makro-scorecard-v2]], [[quant-diskretionaer-fusion]], [[ereignisstudie-cpi-nfp]] (endogene Termine, 26.11.).
 
 Tags: Makro, FX, Prozess, Zahlungsbilanz, Gatekeeping.
 

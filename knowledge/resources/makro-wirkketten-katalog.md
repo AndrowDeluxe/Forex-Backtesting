@@ -111,6 +111,13 @@ Auffällig, aber kein Beleg (bei 176 Versuchen erwartbar ~1 Zufallstreffer):
 nächsten 4 Wochen voraus. Das Fact Sheet zeigt das Urteil je Kette in der Spalte „Test 2007–26“; das Ledger prüft
 weiter vorwärts.
 
+## Befunde 26.11. (CPI/NFP-Ereignisstudie, [[ereignisstudie-cpi-nfp]])
+
+- CPI gegen NFP hängt am Regime: bis 2018 bewegte NFP USD/2J 3–5× stärker, 2021–23 CPI 3–4×, seit 2024 gleich.
+  Der Markt reagiert auf die Zahl, die das aktuelle Fed-Problem misst.
+- Core schlägt Headline nur bis 2018; Inflationsüberraschung mit/ohne Wachstumsschwäche liefert keine Drift (0/6).
+- Termine sind Reaktion, keine Kette mit Vorlauf: erste Stunde mit der Überraschung, danach nichts Handelbares.
+
 ## Daten und Lücken
 
 - Realzinsen: FRED DFII10/DFII5, T10YIE/T5YIE, T5YIFR; andere Länder nur 2J minus Kern-Inflation (ex post).

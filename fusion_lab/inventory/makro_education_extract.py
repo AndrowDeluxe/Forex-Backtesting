@@ -40,6 +40,13 @@ SECTIONS = {"education": (BASE / "Makro Education", ROOT / "fusion_lab/data/onen
             "gatekeeping": (BASE.parent / "Journals und Progress/Wissensdatenbank/2025/Technische und mentale Defizite",
                             ROOT / "fusion_lab/data/onenote_macro/gs_prozess_v2")}
 SRC, OUT = SECTIONS["education"]
+# Abschnitt -> Pflichtfilter (Journal-Abschnitt hat 36 Seiten, nur "Gatekeeping" gehoert dazu)
+SECTION_FILTER = {"gatekeeping": "Gatekeeping"}
+# Reihenfolge fuer --all (gedrosselter Nachtlauf, Nutzerentscheid 25.11.)
+ALL_ORDER = ["education", "gs_exogen", "gs_endogen", "gatekeeping", "angelo", "incentive_2026"]
+# Vorrang: Seiten mit CPI/NFP-Regeln fuer die Ereignisstudie (vor allem anderen auslesen)
+PRIORITY = ["How To NFP", "Blueprint 2024", "Inflation Angelo", "Unterschiede Inflation", "Macro Report",
+            "Top Down und Macro", "Taylor Zins", "Konsumausgaben", "GDP"]
 MODEL = "sonnet"
 IMGS_PER_CALL = 14
 PDF_CHARS = 60_000
@@ -156,23 +163,41 @@ def run_page(exe: str, md: Path) -> dict:
     return rec
 
 
+def rank(md: Path) -> int:
+    for i, key in enumerate(PRIORITY):
+        if key.lower() in md.stem.lower():
+            return i
+    return len(PRIORITY)
+
+
+def open_pages(section: str, only: str | None = None) -> list[tuple[str, Path]]:
+    src, out = SECTIONS[section]
+    flt = only or SECTION_FILTER.get(section)
+    todo = [p for p in sorted(src.glob("*.md")) if not (out / f"{p.stem}.json").exists()]
+    if flt:
+        todo = [p for p in todo if flt.lower() in p.stem.lower()]
+    return [(section, p) for p in sorted(todo, key=rank)]
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int)
     ap.add_argument("--only", help="Teil des Seitennamens")
     ap.add_argument("--section", choices=list(SECTIONS), default="education")
+    ap.add_argument("--all", action="store_true", help="alle Abschnitte in ALL_ORDER, Vorrangseiten zuerst")
     args = ap.parse_args(argv)
     global SRC, OUT
-    SRC, OUT = SECTIONS[args.section]
-    OUT.mkdir(parents=True, exist_ok=True)
-    exe = claude_exe()
-    todo = [p for p in pages() if not (OUT / f"{p.stem}.json").exists()]
-    if args.only:
-        todo = [p for p in todo if args.only.lower() in p.stem.lower()]
+    sections = ALL_ORDER if args.all else [args.section]
+    todo = [t for sec in sections for t in open_pages(sec, args.only)]
     todo = todo[: args.limit] if args.limit else todo
-    print(f"{len(todo)} Seiten offen", flush=True)
+    print(f"{len(todo)} Seiten in diesem Lauf", flush=True)
+    if not todo:
+        return 0
+    exe = claude_exe()
     fails = 0
-    for md in todo:
+    for section, md in todo:
+        SRC, OUT = SECTIONS[section]
+        OUT.mkdir(parents=True, exist_ok=True)
         try:
             rec = run_page(exe, md)
             (OUT / f"{md.stem}.json").write_text(json.dumps(rec, ensure_ascii=False, indent=1), encoding="utf-8")

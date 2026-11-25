@@ -9,6 +9,18 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-26** [Makro-Agent/Research] **CPI/NFP-Ereignisstudie** (Plan freigegeben, alle 4 Regeln aus der
+  Makro Education gewählt; `scripts/research_ereignisstudie_cpi_nfp.py`, Locks `ereignis_cpi_nfp_v1` +
+  `ereignis_sperre_beine_v1`, Tresor zu). H1 „CPI stärker als NFP“ hängt am Regime (bis 2018 NFP 3–5× stärker,
+  2021–23 CPI 3–4×, seit 2024 gleich); H2 „Core vor Headline“ nur bis 2018; H3 „Inflationsüberraschung ohne
+  Wachstumsschwäche“ 0/6 Varianten; H4 Termin-Sperre: kein Bein betroffen (OU-Signal = Haltedauer-Artefakt,
+  Placebo-Tage gleich). Keine Änderung an Bots/Bridges. [[ereignisstudie-cpi-nfp]]
+
+- **2026-11-26** [Makro-Agent/Inventur] **OneNote-Makro-Education: Vorrangseiten ausgelesen + Nachtlauf** (Nutzerentscheid
+  25.11.). 11 CPI/NFP-relevante Seiten fertig (Blueprint 2024, Inflation Angelo, Macro Reports, Top Down, Taylor, GDP …).
+  `makro_education_extract.py` mit `--all` + Vorrangliste; neuer Task „Makro-Education-Auslesen“ stündlich 22–06 Uhr
+  je 3 Seiten (rund 70 Seiten offen, ~3 Nächte; danach deaktivieren). Kein Handel, keine Bridge.
+
 - **2026-11-26** [Research/Indikatoren] Steckbriefe 1–6 bestätigt (Nutzer-Antworten + TradingView-Screenshots):
   RSI 14 (nicht 20) mit MA-Cross als Auslöser, Multi Length 70/30 mit Fläche als Signal, Stoch RSI 3/3/14/14
   K/D-Cross, MACD Daily 8/20/14 Linien-Cross, BB 20/2 Berührung + Schluss außerhalb, NW live ohne Repaint.

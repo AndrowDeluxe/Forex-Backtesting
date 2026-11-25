@@ -109,8 +109,9 @@ passiert, was steht an.
    Kandidatenwahl (≤ 9 Parameter). Parallel: Indikatoren einzeln durchgehen (Steckbriefe, dann Edge-Test je
    Indikator), Reihenfolge RSI → Multi Length → Stoch RSI → MACD → BB → NW → MA-Cross → Fractals → Pivots →
    Volumen → SVP/VRVP → Money Flow Profile → COT. H4 zurückgestellt.
-   **12.11.: Steckbriefe gestartet** [[indikator-steckbriefe]] – RSI + RSI Multi Length als Entwurf, warten auf
-   deine Antworten (Daily-Länge 20/14, LuxAlgo 25/75 = Einstellung oder Lesart?). Rest folgt.
+   **Steckbriefe** [[indikator-steckbriefe]]: 1–6 (RSI, Multi Length, Stoch RSI, MACD, BB, NW) als Entwurf aus
+   OneNote (25.11.), offene Fragen im Chat. Funde: Kurs-MACD Daily 8/20/14 statt Code 12/26/9; NW im
+   Repaint-Modus; OneNote-Export ohne Handschrift. 7–13 folgen.
    Inventur-Entwurf bestätigt (10.11.). Reihenfolge (Nutzer 10.11., „stabiles Fundament“):
    (1) Inventur: die ~15 Strategien aus „Meine Trading Edges“ einzeln aufnehmen + Makro-Quellen
    (SMH Calls, Zusatzeducation, Makro Education, Elite, Incentive) sichten, (2) FX-Zinsdaten-Loader
@@ -1000,6 +1001,12 @@ außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
   verschoben** (Paket „Windows L+“ 4 vCores/8 GB, 27 € für 3 Mon., danach 42 €).
   Vorher klären: VPS/IP-Regeln bei TTP und BeyondIQ. Umzug im Plan-Modus mit
   DRY_RUN-Probebetrieb, Notebook-Tasks im selben Schritt abschalten.
+  **Nachtrag 25.11. (Black-Friday-Recherche, Nutzer will ALLE Automatisierungen
+  auslagern):** Inventur ~30 aktive Tasks, 4 MT5-Terminals laufen, ~10 GB
+  ohne `fusion_lab/raw` (66 GB Rohdaten bleiben auf dem PC). IONOS-Aktion von
+  Oktober weg (L+ jetzt dauerhaft 42 €/Mon.). Favorit: Contabo Cloud VPS 6
+  Windows (6 vCPU/12 GB) ~7,50 €/Mon. bei 24 Mon. + Windows-Aufpreis.
+  Offen: Nutzerentscheid Anbieter, Prop-IP-Regeln, was auf dem PC bleibt.
 
 - ~~**Magnet-Trade Richtung Key Level**~~ (getestet 19.10.: kein Effekt, siehe [[keylevel-edge-card]]) (18.10., aus der Key-Level-Edge-Card):
   Der Magnet wirkt an und vor der Berührung, nicht nach einer BOS-

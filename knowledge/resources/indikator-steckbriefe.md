@@ -16,13 +16,13 @@ Status: ✅ bestätigt · 📝 Entwurf, wartet auf Nutzer · ⬜ offen.
 | 4 | MACD | ✅ | `rules.py` 12/26/9, **Nutzer Daily 8/20/14** | ⬜ |
 | 5 | Bollinger Bands | ✅ | – | ⬜ |
 | 6 | Nadaraya-Watson | ✅ | – (live ohne Repaint) | ⬜ |
-| 7 | MA Cross 12/20 | händisch | `rules.py`, Filter T1 | T1 in Filter-Matrix |
-| 8 | Fractals | händisch | `rules.py` (Bill Williams 2/2) | Auslöser Typ R |
-| 9 | Pivots | händisch | – | ⬜ |
-| 10 | Volumen | händisch | – | ⬜ |
-| 11 | SVP/VRVP | händisch | Volumen-POC 20 T (Filter X11) | X11 in Filter-Matrix |
-| 12 | Money Flow Profile | händisch | – | ⬜ |
-| 13 | COT | händisch | M7 COT-Fluss, X4 COT-Index | M7/X4 in Filter-Matrix |
+| 7 | MA Cross 12/20 | ⬜ 27.11. | `rules.py`, Filter T1 | T1 in Filter-Matrix |
+| 8 | Fractals | ⬜ 27.11. | `rules.py` (Bill Williams 2/2) | Auslöser Typ R |
+| 9 | Pivots | ⬜ 27.11. | – | ⬜ |
+| 10 | Volumen | ⬜ 27.11. | – | ⬜ |
+| 11 | SVP/VRVP | ⬜ 27.11. | Volumen-POC 20 T (Filter X11) | X11 in Filter-Matrix |
+| 12 | Money Flow Profile | ⬜ 27.11. | – | ⬜ |
+| 13 | COT | ⬜ 27.11. | M7 COT-Fluss, X4 COT-Index | M7/X4 in Filter-Matrix |
 
 ## Nutzer-Antworten 26.11. (Kurzfassung)
 
@@ -117,7 +117,8 @@ Seiten bei Bedarf per Screenshot nachreichen.
   Kerzenschluss warten. Auch im **Daily** (Kurs sagte „sehr selten Daily“; der Nutzer nutzt es dort).
   Kurs-Intraday-Variante BB 34 SMA hl2 2,5 (Settlements EURUSD 10 min).
 - **Lesart (Nutzer 26.11.):** (a) **Berührung** des oberen/unteren Bands in Kombination mit den anderen
-  Indikatoren; (b) vor allem **Durchbruch mit Kerzenschluss** über/unter dem Band.
+  Indikatoren; (b) vor allem **Durchbruch mit Kerzenschluss** über/unter dem Band; (c) im **Weekly/Monthly
+  ist auch die Mittellinie** eine relevante Zone (Berührung).
   Kurs: Ziel Fib-Extension 1,272/1,618 bzw. Gegenband, Bänder validieren OBs/Breaker.
 - **Edge:** Settlements/Time-and-Price (Intraday), HTF-Daily-Trade Confi „Ausbruch in BBs oder NW“.
 - **Testhypothese:** Daily-Schluss außerhalb des Bands (± RSI/Multi-Length-Extrem) → Gegenbewegung.
@@ -132,10 +133,10 @@ Seiten bei Bedarf per Screenshot nachreichen.
   OB-Magnet“), Exit über Zeit, Fib-Extension oder Ausbruch → finaler Scalp-TP (Handschrift, siehe oben).
   Fazit des Kurses: weniger Setups, aber valider.
 
-## 7–13 händisch (Nutzer 26.11.)
+## 7–13 offen (Steckbriefe am 27.11.)
 
-MA Cross, Fractals, Pivots, Volumen, SVP/VRVP, Money Flow Profile und COT liest der Nutzer händisch:
-keine Steckbriefe, kein Nachbau, kein eigener Edge-Test. Was davon schon im Code steckt (Fractals als
-Typ-R-Auslöser, MA Cross T1, Volumen-POC X11, COT M7/X4 in der Filter-Matrix), bleibt unverändert.
-Quellen, falls später doch: „MA 8 und 14“ (Elite 1), [[htf-daily-trade-edge-card]],
+MA Cross, Fractals, Pivots, Volumen, SVP/VRVP, Money Flow Profile, COT: Steckbriefe baut der Nutzer mit Claude
+am 27.11. (zunächst hieß es „händisch“, 26.11. präzisiert). Was schon im Code steckt (Fractals als
+Typ-R-Auslöser, MA Cross T1, Volumen-POC X11, COT M7/X4), bleibt bis dahin unverändert.
+Quellen: „MA 8 und 14“ (Elite 1), [[htf-daily-trade-edge-card]],
 [[smh-volumen-delta-und-cot-calls]], [[smh-dennis-cot-volumen-calls]].

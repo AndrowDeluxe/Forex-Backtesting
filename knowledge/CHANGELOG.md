@@ -30,7 +30,7 @@ keine Planung (dafür ist `DASHBOARD.md`).
 - **2026-11-26** [Research/Indikatoren] Steckbriefe 1–6 bestätigt (Nutzer-Antworten + TradingView-Screenshots):
   RSI 14 (nicht 20) mit MA-Cross als Auslöser, Multi Length 70/30 mit Fläche als Signal, Stoch RSI 3/3/14/14
   K/D-Cross, MACD Daily 8/20/14 Linien-Cross, BB 20/2 Berührung + Schluss außerhalb, NW live ohne Repaint.
-  Indikatoren 7–13 bleiben händisch (kein Nachbau/Test). `resources/indikator-steckbriefe.md`.
+  BB im Weekly/Monthly auch Mittellinie als Zone. Steckbriefe 7–13 folgen am 27.11. `resources/indikator-steckbriefe.md`.
 
 - **2026-11-26** [Betrieb/VPS] **Nutzerentscheid: Server-Umzug auf Contabo Windows-VPS** (~27 €/Mon. inkl.
   Windows-Lizenz, 24 Monate). Ziel: alle Automatisierungen (Bridges, Ingest, Watchdog, Reports, Claude-Jobs) vom

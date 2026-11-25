@@ -110,8 +110,8 @@ passiert, was steht an.
    Indikator): RSI, Multi Length, Stoch RSI, MACD, BB, NW. H4 zurückgestellt.
    **Steckbriefe** [[indikator-steckbriefe]]: 1–6 bestätigt (26.11.). Kern: RSI(14)-MA-Cross + Multi-Length-
    Fläche (70/30, je größer desto valider), Daily/H4; Einstieg je über den Cross; MACD Daily 8/20/14 (Code
-   12/26/9 → Typ R neu rechnen); NW live ohne Repaint. 7–13 macht der Nutzer händisch (26.11.).
-   Nächster Schritt: Nachbau 1–6 im gemeinsamen Modul, gegen TradingView prüfen, dann Edge-Test.
+   12/26/9 → Typ R neu rechnen); NW live ohne Repaint. Steckbriefe 7–13 am 27.11.
+   Nächster Schritt: Nachbau 1–6 im gemeinsamen Modul, gegen TradingView-CSV-Export (Gold Daily) prüfen, dann Edge-Test.
    Inventur-Entwurf bestätigt (10.11.). Reihenfolge (Nutzer 10.11., „stabiles Fundament“):
    (1) Inventur: die ~15 Strategien aus „Meine Trading Edges“ einzeln aufnehmen + Makro-Quellen
    (SMH Calls, Zusatzeducation, Makro Education, Elite, Incentive) sichten, (2) FX-Zinsdaten-Loader

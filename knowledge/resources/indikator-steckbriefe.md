@@ -140,3 +140,24 @@ am 27.11. (zunächst hieß es „händisch“, 26.11. präzisiert). Was schon im
 Typ-R-Auslöser, MA Cross T1, Volumen-POC X11, COT M7/X4), bleibt bis dahin unverändert.
 Quellen: „MA 8 und 14“ (Elite 1), [[htf-daily-trade-edge-card]],
 [[smh-volumen-delta-und-cot-calls]], [[smh-dennis-cot-volumen-calls]].
+
+## Nachbau + Edge-Test 1–6 (26.11.)
+
+**Nachbau** `htf_daily_trade/indikatoren.py`, geprüft mit `tv_abgleich.py` gegen TradingView-Exporte (FXCM,
+XAUUSD + EURUSD, D1 + H4, `htf_daily_trade/tv_referenz/`): RSI, RSI-MA, Multi Length (Mittel, Kanäle, Flächen),
+ATR, NW-Hülle stimmen nach der Aufwärmphase auf Rundungsfehler genau. Das BB im Chart-Export hat Basis SMA 34 auf
+hl2 (anderes BB als 20/close/2 aus dem Steckbrief). Stoch RSI + MACD waren nicht im Export (Standardformel).
+
+**Eigener Edge** (`indikator_edge.py` Teil A, Lock `indikator_kombi_daily`, 54 Varianten, 9 Märkte, Daily,
+Einstieg Folgetag-Open, Stop 5-Tage-Extrem − 0,2 ATR, netto ohne Swap):
+- RSI-MA-Cross allein: ≈ 0 R (IS −0,02, OOS ±0).
+- **Cross + ML-Fläche ≥ 50 % in den letzten 3 Tagen, 10 Tage halten: IS +0,13 R (n 176), OOS +0,17 R (n 135),
+  OOS 8/9 Märkte positiv, t je ~1,3.** Die Fläche macht den Unterschied (Nutzer-Lesart bestätigt in der
+  Richtung), aber nicht signifikant → Kandidat, kein Edge. Tresor zu.
+- Beste IS-Varianten (mit NW-Bestätigung, n 36–46) fallen im OOS auf ~0.
+
+**Als Filter** (Teil B, Stand bis Vortag des Fülltags bzw. letzte geschlossene H4-Kerze):
+- Daily C2: Momentum in Trade-Richtung hilft leicht und stabil: RSI-Cross mit IS +0,45 / OOS +0,27 R (Basis
+  +0,22 / +0,16), MACD 8/20/14 mit +0,33 / +0,20.
+- Daily Typ R: ML-Fläche ≥ 50 % mit IS +0,75 / OOS +0,14 R (Basis +0,29 / −0,08, OOS n 50).
+- H4 (h4_ny15 Top-3 je Klasse): IS-Verbesserungen (ML-Fläche, MACD, RSI) kippen im OOS — kein stabiler Filter.

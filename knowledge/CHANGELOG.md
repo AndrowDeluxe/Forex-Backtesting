@@ -9,6 +9,13 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-26** [Research/Indikatoren] **Nachbau 1–6 + Edge-Test** (Nutzerauftrag). `htf_daily_trade/indikatoren.py`
+  gegen TradingView-Export (FXCM, Gold + EURUSD, D1 + H4, `tv_abgleich.py`): RSI, RSI-MA, Multi Length, ATR, NW exakt;
+  Chart-BB ist 34/hl2 statt 20/close/2. `indikator_edge.py`: Kombi-Edge Daily (Lock `indikator_kombi_daily`, 54 Var.)
+  ohne Bestätigung, bester stabiler Kandidat ML ≥ 50 % + RSI-Cross IS +0,13 / OOS +0,17 R; Filter auf C2 (Momentum
+  mit, leicht stabil), Typ R (ML ≥ 50 % mit), H4 (nichts stabil). Vorgriff im ersten Lauf (Fülltag statt Vortag)
+  gefunden und behoben.
+
 - **2026-11-26** [Makro-Agent] **Termin-Gewichte CPI/NFP im Fact Sheet** (Nutzerauftrag nach der Ereignisstudie).
   Neuer Block im Kalender-Abschnitt (Datei + Notion): Reaktion der US-2J-Rendite je 1 SD Überraschung über die letzten
   24 Monate, Anteil CPI/NFP und Regime-Label; anstehende US-CPI/NFP-Termine tragen ihr Gewicht. Streuung robust (MAD

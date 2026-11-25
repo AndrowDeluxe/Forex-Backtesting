@@ -111,7 +111,13 @@ passiert, was steht an.
    **Steckbriefe** [[indikator-steckbriefe]]: 1–6 bestätigt (26.11.). Kern: RSI(14)-MA-Cross + Multi-Length-
    Fläche (70/30, je größer desto valider), Daily/H4; Einstieg je über den Cross; MACD Daily 8/20/14 (Code
    12/26/9 → Typ R neu rechnen); NW live ohne Repaint. Steckbriefe 7–13 am 27.11.
-   Nächster Schritt: Nachbau 1–6 im gemeinsamen Modul, gegen TradingView-CSV-Export (Gold Daily) prüfen, dann Edge-Test.
+   **26.11. Nachbau + Edge-Test fertig:** RSI/RSI-MA/Multi Length/ATR/NW decken sich exakt mit TradingView
+   (Gold/EU, D1/H4). Das BB im Chart-Export ist ein anderes BB (Basis 34/hl2), nicht 20/close/2. Ergebnisse:
+   (a) **Eigener Edge (Daily, 9 Märkte, 54 Var.):** kein bestätigter. RSI-Cross allein ≈ 0 R; **mit ML-Fläche ≥ 50 %
+   IS +0,13 / OOS +0,17 R** (OOS 8/9 Märkte +, t je ~1,3) → Kandidat, die Fläche trägt, Tresor zu.
+   (b) **Filter Daily-C2:** Momentum in Trade-Richtung hilft leicht und stabil (RSI-Cross mit +0,23/+0,11 R, MACD mit
+   +0,10/+0,04). **Typ R:** ML-Fläche ≥ 50 % mit IS +0,46 / OOS +0,22 R Delta (n 50). (c) **Filter H4:** IS-Gewinne
+   kippen im OOS, kein stabiler Filter. Nächster Schritt offen: Kandidaten (a) + C2-RSI-Filter weiter?
    Inventur-Entwurf bestätigt (10.11.). Reihenfolge (Nutzer 10.11., „stabiles Fundament“):
    (1) Inventur: die ~15 Strategien aus „Meine Trading Edges“ einzeln aufnehmen + Makro-Quellen
    (SMH Calls, Zusatzeducation, Makro Education, Elite, Incentive) sichten, (2) FX-Zinsdaten-Loader

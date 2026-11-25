@@ -1,6 +1,6 @@
 # Dashboard
 
-**Stand: 2026-11-21** _(wird bei jeder Session von Claude auf das aktuelle
+**Stand: 2026-11-25** _(wird bei jeder Session von Claude auf das aktuelle
 Datum nachgeführt — "Zuletzt geprüft" in der Statustabelle unten kann davon
 abweichen und älter sein, siehe `CLAUDE.md` Punkt 4)._
 
@@ -320,6 +320,16 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 ---
 
 ### Bestätigungen (Betrieb/Research)
+
+- **Fataler Python-Fehler im Funded-Portfolio-Bridge-Log, Konto IQ Markets (23.11. abends) — einmalig oder bekannt?**
+     `bridge_status/snapshot.json` zeigt für das IQ-Markets-Konto als `last_error_line`:
+     `2026-11-23 21:06:09 Fatal Python error: tstate_delete_common: NULL interpreter`. Danach lief die Bridge wieder
+     normal: aktueller Snapshot (25.11. 10:01) meldet `status: ok`, letzte Verbindung 25.11. 09:58:16, Equity
+     $98.146,56 USD. Kein Traceback/Dateipfad im Snapshot sichtbar, daher von hier aus nicht zu sagen, ob es am
+     Bridge-Code (außerhalb des Repos) oder an der MT5-Python-Anbindung selbst liegt — ein harter Interpreter-Absturz
+     (`tstate_delete_common`) deutet eher auf ein natives Threading-Problem in der MT5-Bibliothek als auf normalen
+     Python-Code, daher nicht angefasst (Tier 2). War dir das schon bekannt/einmaliger Ausreißer, oder lohnt ein
+     Blick ins volle Bridge-Log (`C:\Users\andre\Funded-Portfolio-Bridge\logs\task_run.log`, hier nicht einsehbar)?
 
 - **Kompletter Autocommit-Stillstand seit Mo 23.11. 07:01 — Rechner aus oder nur Push blockiert?** Letzter
      `bridge_status/snapshot.json`-Commit `generated_at: 2026-11-23T07:01:27`, davor den ganzen Tag regelmäßiger

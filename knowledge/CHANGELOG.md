@@ -9,6 +9,12 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-26** [Makro-Agent] **Termin-Gewichte CPI/NFP im Fact Sheet** (Nutzerauftrag nach der Ereignisstudie).
+  Neuer Block im Kalender-Abschnitt (Datei + Notion): Reaktion der US-2J-Rendite je 1 SD Überraschung über die letzten
+  24 Monate, Anteil CPI/NFP und Regime-Label; anstehende US-CPI/NFP-Termine tragen ihr Gewicht. Streuung robust (MAD
+  der früheren Termine), weil Corona-NFP die Standardabweichung dauerhaft aufbläht. Rückprüfung: 2012/16 NFP dominiert,
+  2022/23 CPI > 80 %, 2025 ausgeglichen; heute CPI 63 %. `fusion_lab/macro_agent/analytics/event_weights.py`.
+
 - **2026-11-26** [Makro-Agent/Research] **CPI/NFP-Ereignisstudie** (Plan freigegeben, alle 4 Regeln aus der
   Makro Education gewählt; `scripts/research_ereignisstudie_cpi_nfp.py`, Locks `ereignis_cpi_nfp_v1` +
   `ereignis_sperre_beine_v1`, Tresor zu). H1 „CPI stärker als NFP“ hängt am Regime (bis 2018 NFP 3–5× stärker,

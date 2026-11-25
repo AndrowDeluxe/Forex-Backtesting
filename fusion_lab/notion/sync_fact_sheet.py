@@ -167,8 +167,12 @@ def build_blocks(sheet: dict) -> list[dict]:
     blocks += md_blocks(_fx_value(sheet.get("desk"), sheet["scorecard"]))
 
     k = sheet["kalender"]
+    w = sheet.get("termin_gewichte") or {}
     blocks += [_block("heading_2", "Kalender nächste 7 Tage (High)"),
+               *([_block("paragraph", f"Termin-Gewichte US (24 M.): {w['regime']}, CPI {w['anteil_cpi'] * 100:.0f} % "
+                                      f"/ NFP {(1 - w['anteil_cpi']) * 100:.0f} %")] if w.get("anteil_cpi") is not None else []),
                *_bullets([f"{e['zeit_utc']} UTC {e['waehrung']} {e['titel']} (Konsens {e['konsens'] or '–'})"
+                          + (f" – {e['gewicht']}" if e.get("gewicht") else "")
                           for e in k["naechste_7t"]] or ["keine"]),
                _block("heading_2", "Datenlücken"), *_bullets(sheet["datenluecken"])]
     lg = sheet.get("ledger") or {}

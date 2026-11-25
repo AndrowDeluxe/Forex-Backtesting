@@ -93,3 +93,32 @@ def test_renumber_and_asof_catches_new_dates():
     assert [l for l in render.renumber(lines) if l.startswith("##")] == ["## 1. A", "## 2. B", "## 3. C", "## 4. D"]
     sheet = {"desk": {"liquiditaet": {"datum": "2026-11-30"}}}
     assert manifest.asof_violations(sheet, pd.Timestamp("2026-11-24"))
+
+
+def test_event_weights_regime_and_no_lookahead():
+    """Termin-Gewicht CPI/NFP aus der 2J-Reaktion (26.11.): CPI-Termine bewegen die Rendite -> CPI dominiert;
+    ein Termin nach dem Stichtag zaehlt nicht."""
+    import numpy as np
+    import pandas as pd
+    from fusion_lab.macro_agent.analytics import event_weights as ew
+
+    rng = np.random.default_rng(1)
+    days = pd.bdate_range("2022-01-03", "2026-11-25")
+    rows, dy = [], pd.Series(0.0, index=days)
+    for i, mo in enumerate(pd.date_range("2022-01-01", "2026-12-01", freq="MS")):
+        for name, off, beta in (("CPI m/m", 9, 8.0), ("Core CPI m/m", 9, 8.0), ("Non-Farm Employment Change", 3, 1.0)):
+            d = days[days >= mo + pd.Timedelta(days=off)][0] if (days >= mo + pd.Timedelta(days=off)).any() else None
+            if d is None:
+                continue
+            z = rng.normal()
+            unit = "K" if "Farm" in name else "%"
+            rows.append({"currency": "USD", "name": name, "time": pd.Timestamp(d, tz="UTC") + pd.Timedelta(hours=13),
+                         "actual": f"{0.2 + 0.1 * z:.2f}{unit}", "forecast": f"0.20{unit}"})
+            dy[d] += beta * z
+    ff = pd.DataFrame(rows)
+    macro_w = pd.DataFrame({"US.2y": 4 + dy.cumsum() / 100})
+    w = ew.weights(macro_w, pd.Timestamp("2026-11-25"), ff)
+    assert w["anteil_cpi"] >= 0.6 and w["regime"].startswith("Inflation")
+    assert w["termine"]["CPI"]["letzter"] <= "2026-11-25"
+    assert ew.tag("CPI m/m", "USD", w).startswith("CPI-Gewicht")
+    assert ew.tag("ADP Non-Farm Employment Change", "USD", w) is None

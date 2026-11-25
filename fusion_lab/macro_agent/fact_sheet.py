@@ -19,7 +19,7 @@ from fusion_lab.macro_data.__main__ import coverage
 from fusion_lab.macro_data.sources import G8
 
 from . import chains, factors, geo_framework, ledger, manifest, panels, risk, tactical
-from .analytics import dollar_factor, gates, markets, overlap, plumbing, positioning_value, profiles, state_machine
+from .analytics import dollar_factor, event_weights, gates, markets, overlap, plumbing, positioning_value, profiles, state_machine
 
 OUT_DIR = Path(__file__).resolve().parents[1] / "data" / "macro_agent"
 TEST_FILE = OUT_DIR / "scorecard_test.json"
@@ -331,12 +331,15 @@ def build(as_of: pd.Timestamp | None = None, with_filters: bool = True) -> dict:
         "g8_stand": g8_stand,
         "maerkte": mk,
         "kalender": calendar_block(as_of),
+        "termin_gewichte": _safe(event_weights.weights, macro_w, as_of),
         "geopolitik": geo_block(macro_w, as_of),
         "dollar": dollar,
         "desk": desk_blocks(macro_w, mkt_w, prices),
         "ledger": ledger_block(as_of),
     }
     sheet["ketten"] = chains_block(sheet, macro_w, as_of)
+    for e in sheet["kalender"]["naechste_7t"]:  # Gewicht an anstehende US-CPI/NFP-Termine haengen
+        e["gewicht"] = event_weights.tag(e["titel"], e["waehrung"], sheet["termin_gewichte"])
     sheet["datenluecken"] = gaps(sheet, as_of)
     viol = manifest.asof_violations(sheet, as_of)
     sheet["asof_pruefung"] = {"ok": not viol, "verstoesse": viol[:20]}

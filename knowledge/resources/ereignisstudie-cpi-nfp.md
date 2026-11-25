@@ -41,7 +41,8 @@ H1 in bp je 1 SD Überraschung (+60 Min.):
 - Die Seite „Blueprint 2024“ hatte für ihre Zeit recht, die Regel ist aber nicht zeitlos: **Der Markt reagiert auf
   die Zahl, die das aktuelle Fed-Problem misst.** Kämpft die Fed gegen Inflation (2021–23), dominiert CPI; geht es
   um Arbeitsmarkt und Wachstum (bis 2018), dominiert NFP. Seit 2024 (Doppelmandat wieder ausgeglichen) sind beide gleich.
-- Für das Fact Sheet: Termin-Gewicht nicht fest einstellen, sondern nach Regime (Inflationslücke gegen Arbeitsmarktlücke).
+- **Umgesetzt 26.11.:** Das Fact Sheet (Abschnitt Kalender) misst das Termin-Gewicht laufend aus der 2J-Reaktion der
+  letzten 24 Monate (`analytics/event_weights.py`) und hängt es an anstehende US-CPI/NFP-Termine. Stand 26.11.: CPI 63 %.
 - Termine liefern Reaktion, keine Drift: Die erste Stunde läuft mit der Überraschung, danach nichts Handelbares –
   auch nicht bedingt auf die Wachstumslage. Kein Grund, die Beine um Termine zu sperren.
 

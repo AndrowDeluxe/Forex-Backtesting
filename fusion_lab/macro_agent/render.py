@@ -279,13 +279,30 @@ def _g8(sheet: dict) -> list[str]:
             *_table(["Rang", "Währung", "Score"], [[str(i + 1), c, fmt(v)] for i, (c, v) in enumerate(ranked)]), ""]
 
 
-def _calendar(k: dict) -> list[str]:
-    up = [[e["zeit_utc"], e["waehrung"], e["titel"], e["konsens"] or "–", e["vorwert"] or "–"]
+def _event_weights(w: dict | None) -> list[str]:
+    """Termin-Gewicht CPI gegen NFP aus der 2J-Reaktion der letzten 24 Monate (Ereignisstudie 26.11.)."""
+    if not w:
+        return []
+    if _err(w):
+        return [f"Termin-Gewichte: {_err(w)}", ""]
+    t = w["termine"]
+    rows = [[g, fmt(v["bp_je_sd"], 2), fmt(v["t"], 2), str(v["n"]), v["letzter"] or "–"] for g, v in t.items()]
+    share = w.get("anteil_cpi")
+    head = (f"**Termin-Gewichte US ({w['fenster_monate']} Monate): {w['regime']}"
+            + (f", CPI {share * 100:.0f} % / NFP {(1 - share) * 100:.0f} %**" if share is not None else "**"))
+    return [head, "", *_table(["Termin", "2J bp je 1 SD Überraschung", "t", "n", "letzter"], rows), "",
+            "Bis 2018 bewegte NFP die Zinsen 3–5× stärker, 2021–23 CPI 3–4×, seit 2024 etwa gleich "
+            "(Ereignisstudie 26.11.). Kontext, kein Signal.", ""]
+
+
+def _calendar(k: dict, w: dict | None = None) -> list[str]:
+    up = [[e["zeit_utc"], e["waehrung"], e["titel"], e["konsens"] or "–", e["vorwert"] or "–", e.get("gewicht") or ""]
           for e in k["naechste_7t"]]
     su = [[e["zeit_utc"], e["waehrung"], e["titel"], fmt(e["konsens"]), fmt(e["ist"]), fmt(e["ueberraschung"])]
           for e in k["ueberraschungen_14t"]]
-    return [f"## 12. Kalender (Referenz {k.get('referenz_utc', '–')} UTC)", "", "**Nächste 7 Tage (High)**", "",
-            *(_table(["Zeit UTC", "Währung", "Termin", "Konsens", "Vorwert"], up) if up else ["keine"]), "",
+    return [f"## 12. Kalender (Referenz {k.get('referenz_utc', '–')} UTC)", "", *_event_weights(w),
+            "**Nächste 7 Tage (High)**", "",
+            *(_table(["Zeit UTC", "Währung", "Termin", "Konsens", "Vorwert", "Gewicht"], up) if up else ["keine"]), "",
             "**Überraschungen letzte 14 Tage (High, Ist − Konsens)**", "",
             *(_table(["Zeit UTC", "Währung", "Termin", "Konsens", "Ist", "Überraschung"], su) if su else ["keine"]), ""]
 
@@ -446,7 +463,7 @@ def markdown(sheet: dict) -> str:
     lines += _risk(sheet["risiko"]) + _dollar(sheet.get("dollar"))
     lines += _profiles(sheet["laender"]) + _positioning(sheet["positionierung"])
     lines += _fx_value(sheet.get("desk"), sheet["scorecard"]) + _g8(sheet)
-    lines += _calendar(sheet["kalender"])
+    lines += _calendar(sheet["kalender"], sheet.get("termin_gewichte"))
     lines += ["## 13. Datenlücken", "", *[f"- {g}" for g in sheet["datenluecken"]], ""]
     lines += _ledger(sheet.get("ledger"))
     ap = sheet.get("asof_pruefung")

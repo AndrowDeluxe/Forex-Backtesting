@@ -10,54 +10,68 @@ Status: ✅ bestätigt · 📝 Entwurf, wartet auf Nutzer · ⬜ offen.
 
 | # | Indikator | Steckbrief | Code | Test |
 |---|---|---|---|---|
-| 1 | RSI | 📝 | `htf_daily_trade/rules.py` `rsi()` (Wilder) | ⬜ |
-| 2 | RSI Multi Length [LuxAlgo] | 📝 | nur Näherung (Mittel RSI 10–20), **nicht** LuxAlgo | ⬜ |
-| 3 | Stoch RSI | 📝 | – | ⬜ |
-| 4 | MACD | 📝 | `rules.py` (12/26/9, Kurs Daily 8/20/14!) | ⬜ |
-| 5 | Bollinger Bands | 📝 | – | ⬜ |
-| 6 | Nadaraya-Watson | 📝 | – (Kurs nutzt Repaint-Modus) | ⬜ |
-| 7 | MA Cross 12/20 | ⬜ | `rules.py`, Filter T1 | T1 in Filter-Matrix |
-| 8 | Fractals | ⬜ | `rules.py` (Bill Williams 2/2) | Auslöser Typ R |
-| 9 | Pivots | ⬜ | – | ⬜ |
-| 10 | Volumen | ⬜ | – | ⬜ |
-| 11 | SVP/VRVP | ⬜ | Volumen-POC 20 T (Filter X11) | X11 in Filter-Matrix |
-| 12 | Money Flow Profile | ⬜ | – | ⬜ |
-| 13 | COT | ⬜ | M7 COT-Fluss, X4 COT-Index | M7/X4 in Filter-Matrix |
+| 1 | RSI | ✅ | `htf_daily_trade/rules.py` `rsi()` (Wilder), MA-Cross fehlt | ⬜ |
+| 2 | RSI Multi Length [LuxAlgo] | ✅ | nur Näherung (Linie), Nutzer liest **Fläche** | ⬜ |
+| 3 | Stoch RSI | ✅ | – | ⬜ |
+| 4 | MACD | ✅ | `rules.py` 12/26/9, **Nutzer Daily 8/20/14** | ⬜ |
+| 5 | Bollinger Bands | ✅ | – | ⬜ |
+| 6 | Nadaraya-Watson | ✅ | – (live ohne Repaint) | ⬜ |
+| 7 | MA Cross 12/20 | händisch | `rules.py`, Filter T1 | T1 in Filter-Matrix |
+| 8 | Fractals | händisch | `rules.py` (Bill Williams 2/2) | Auslöser Typ R |
+| 9 | Pivots | händisch | – | ⬜ |
+| 10 | Volumen | händisch | – | ⬜ |
+| 11 | SVP/VRVP | händisch | Volumen-POC 20 T (Filter X11) | X11 in Filter-Matrix |
+| 12 | Money Flow Profile | händisch | – | ⬜ |
+| 13 | COT | händisch | M7 COT-Fluss, X4 COT-Index | M7/X4 in Filter-Matrix |
 
-## 1 RSI 📝
+## Nutzer-Antworten 26.11. (Kurzfassung)
+
+RSI und Multi Length sind die Kernpaarung: Im Daily und H4 „funktioniert es sehr, sehr gut“. In Gold gibt es
+fast immer eine kurzfristige Richtungsänderung, wenn der RSI seine MA kreuzt bzw. der Multi Length eine starke
+Kauf-/Verkaufszone zeigt. „Mit diesen zwei Indikatoren allein konnte man im Daily schon gute, kleine Setups
+catchen.“ Stoch RSI, MACD und BB kommen als weitere Confis dazu, Einstieg jeweils über den Cross. Alle
+Indikatoren lassen sich in Kombination auch im LTF nutzen. Einstellungen per TradingView-Screenshot belegt.
+
+**Indikatoren im Daily-Chart des Nutzers (Gold, 26.11.):** sichtbar RSI (+MA), RSI Multi Length [LuxAlgo],
+ATR, COT-NocTrading (Non-Commercials / Commercials / Retail), Volumen, Daily Range, Jon Fibs Lon & NY Open,
+Midnight Open. Ausgeblendet: SVP, VRVP, MA Cross, Fractals, BB, Sessions, LuxAlgo Money Flow Profile, Pivots,
+QuantForceX QX Intelligence Dashboard.
+
+## 1 RSI ✅
 
 - **Misst:** „Fairness des Preises“ im gewählten Timeframe. 30–70 = Fair Value, über 70 / unter 30 =
   überproportional bullish/bearish (über-/unterkauft).
-- **Einstellungen (Kurs):** Standard, Länge 14, Quelle Close, dazu MA des RSI (SMA 14).
-  **Ausnahme Daily: Länge 20** („für mögliche IPDA-Umkehrpunkte“). Unter Daily 14.
+- **Einstellungen (Nutzer 26.11.):** **Länge 14** auch im Daily (nicht die Kurs-Variante 20), Quelle Close,
+  MA des RSI (SMA 14). Haupt-Timeframes **Daily und H4**.
 - **Lesart:**
   - RSI steigt → Chart steigt (Bestätigung der Richtung).
   - **Überkauft/überverkauft ist kein valides Hoch/Tief.** Im HTF reagiert der Markt aber oft bei > 70 / < 30.
   - Nach einem IPDA-Shift gilt bullishe Stimmung, bis der RSI über 70 geht. Bei der ersten Reaktion über 70
     darf man erstmals Trades gegen den Trend suchen.
   - **Divergenz** (Preis neues Hoch, RSI tieferes Hoch) als Bestätigung.
-  - **Erst wenn die MA des RSI den RSI kreuzt, nach Sells suchen.** Das filtert Rauschen davor und verkleinert
-    die Zone (Beispiel EURUSD M1 21.04.2025: „relevanter Cross“ nach dem Hoch, nicht der davor).
+  - **Cross RSI/MA = Auslöser** (Nutzer 26.11., gilt auch auf Daily/H4): Gold dreht danach fast immer
+    kurzfristig. Kurs: erst nach dem Cross nach Sells suchen, filtert das Rauschen davor.
 - **Edge:** HTF-Daily-Trade, Confi „RSI überkauft/überverkauft und RSI-Cross“, Typ R (RSI-Extrem vor dem Fractal).
-- **Offen:** Daily-Länge 20 oder 14? Gilt der MA-Cross nur für LTF-Einstiege oder auch auf Daily?
+- **Testhypothese:** Daily/H4, RSI(14) kreuzt seine SMA(14) nach einem Extrem (> 70 / < 30) → kurzfristige
+  Gegenbewegung. Allein und zusammen mit Multi Length.
 
-## 2 RSI Multi Length [LuxAlgo] 📝
+## 2 RSI Multi Length [LuxAlgo] ✅
 
 - **Misst:** Stärke über mehrere RSI-Längen (10–20) gleichzeitig. Kurs: „Stärke/Schwäche gewinnt an
   Aussagekraft, wenn sie in mehreren Timeframes messbar ist“ → höhere Chance auf einen Umkehrpunkt.
-- **Einstellungen (Kurs):** Max. Länge 20, Min. Länge 10, Overbought 70, Oversold 30, Quelle Close.
-  **Nutzer 02.11.: orientiert sich an 25 / 75.**
+- **Einstellungen (Nutzer 26.11.):** Max. Länge 20, Min. Länge 10, **Overbought 70, Oversold 30**, Quelle Close.
+  (Die frühere Angabe 25/75 ist damit überholt.)
 - **Anzeige:** Linie = Durchschnitts-RSI. Grüne/rote Flächen = Anteil der Längen über Overbought bzw. unter
-  Oversold (0–100 %). Die Schwellenlinien im Chart sind **beweglich** (z. B. 74,7 / 29,1), nicht fix 70/30.
-- **Lesart:** Signal, wenn der normale RSI über 70 (unter 30) ist **und** gleichzeitig ein grüner (roter)
-  Ausbruch im Multi Length erscheint. Danach weitere Confis: Divergenz, IPDA-Zeit, NW/BB-Ausbruch, RSI-MA-Cross.
+  Oversold (0–100 %). Die Schwellenlinien im Chart sind **beweglich** (26.11. Gold Daily: 71,70 / 26,47).
+- **Lesart (Nutzer 26.11.):** Signal ist die **Fläche**, nicht die Linie. **Je größer die ausgebrochene
+  Fläche, desto valider das Setup.** Zusammen mit dem RSI-Cross (§1) die Kernpaarung im Daily.
   Kurs-Beispiel EURUSD H4 April 2025: zwei grüne Spikes + RSI-Divergenz → Hoch.
 - **Edge:** HTF-Daily-Trade, Typ R: „RSI Multi Length ≤ 30 in den 20 Handelstagen bis zum Fractal“.
-- **Code-Lücke:** `rules.py` mittelt RSI 10–20. Das ist nicht die LuxAlgo-Formel (andere Mittelung,
-  bewegliche Schwellen, Anteils-Flächen). Nachbau aus dem offenen Pine-Quelltext, dann an einigen
-  Daily-Kerzen gegen deine TradingView-Werte prüfen. Die Typ-R-Ergebnisse können sich dadurch verschieben.
-- **Offen:** Meinst du mit 25/75 die Einstellung im Indikator (Overbought 75 / Oversold 25) oder liest du
-  die Linie gegen 25/75? Zählt als Signal die Fläche (Spike) oder die Linie?
+- **Code-Lücke:** `rules.py` mittelt RSI 10–20 und prüft die Linie. Der Nutzer liest aber die Fläche. Nachbau
+  aus dem offenen Pine-Quelltext (Anteils-Fläche + bewegliche Schwellen), dann an einigen Daily-Kerzen gegen
+  TradingView prüfen. Typ R danach mit der Fläche statt der Linie neu rechnen.
+- **Testhypothese:** Flächengröße (Anteil der Längen jenseits 70/30, Höhe und Dauer) als Stärke-Maß:
+  größere Fläche → bessere Gegenbewegung?
 
 **Ergänzung (Seite „Multi RSI“, 25.11.):** Einsatz vor allem H4 (EURUSD April 2025): Hoch mit
 NW-Pfeil + BB-Ausbruch + grünem Multi-Length-Spike + RSI über 70. Kurs-Zitate: „Auch Target Levels mit dem
@@ -74,61 +88,54 @@ Platz mehr für Emotionen → wir gehen mit statistischer Sicherheit“). Lokal 
 Gilt vermutlich für weitere Seiten (Seite „Zusammenfassung Mon. 1“ ist lokal ganz leer) → Handschrift-
 Seiten bei Bedarf per Screenshot nachreichen.
 
-## 3 Stoch RSI 📝
+## 3 Stoch RSI ✅
 
 - **Misst:** Stochastik-Formel auf den RSI angewandt (0–100), also wo der RSI in seiner eigenen
   Spanne der letzten n Kerzen steht. Reagiert viel schneller als der RSI.
-- **Einstellungen (Kurs):** K 3, D 3, RSI-Länge 14, Stochastik-Länge 14, Quelle Close (Standard). In späteren
-  Kursbildern auch **Stochastik-Länge 8** („3 3 14 8“).
-- **Lesart (nur aus Kursbildern, kein Text auf der Seite):** Einsatz im **LTF** (5 s bis 30 min, EURUSD
-  11.04.2025). Markiert werden (a) Phasen, in denen der Stoch RSI flach am Boden (0) bzw. oben (100) klebt,
-  und (b) der folgende Kreuzungspunkt K/D, als Timing im Settlement-Fenster, zusammen mit Multi-Length-
-  Spike und RSI.
-- **Edge:** HTF-Daily-Trade nennt „Stoch-RSI-Ausschlag“ als Confi; im Chart des Nutzers als Panel.
-- **Offen:** Daily-Einstellung? Gilt ein Ausschlag (0/100) oder der K/D-Cross als Confi?
+- **Einstellungen Daily (Nutzer-Screenshot 26.11.):** **K 3, D 3, RSI-Länge 14, Stochastik-Länge 14, Close**,
+  Zeitrahmen Chart, auf Kerzenschluss warten. Im Kurs-LTF auch Stochastik-Länge 8 („3 3 14 8“).
+- **Lesart (Nutzer 26.11.):** Einstieg in Verbindung mit den anderen Indikatoren **über den Cross K/D**.
+  Kurs (LTF, EURUSD 11.04.2025): Phase flach am Boden/oben, danach der Cross als Timing im Settlement-Fenster.
+- **Edge:** HTF-Daily-Trade nennt „Stoch-RSI-Ausschlag“ als Confi.
+- **Testhypothese:** K/D-Cross (aus dem Extrembereich) als Einstiegs-Timing nach RSI-/Multi-Length-Signal.
 
-## 4 MACD 📝
+## 4 MACD ✅
 
 - **Misst:** Differenz zweier EMAs (Trend) + Signallinie; Histogramm = Abstand MACD/Signal.
-- **Einstellungen (Kurs):** Standard 12/26/9, **Daily IPDA-Einstellung 8 / 20 / 14** („MACD 8 20 close“
-  im Kurschart EURUSD 1T). **Code-Abweichung:** `rules.py` rechnet auch auf Daily mit 12/26/9.
-- **Lesart (Kurstext):**
-  - Über der 0-Linie bullish, darunter bearish (Text sagt zweimal „über“, gemeint ist über/unter).
-  - Trendindikator; Volumen bestätigt Fortsetzung. Wird der Abstand MACD–Signal größer, steigt die Trendstärke.
-  - **Divergenz** (Preis höheres Hoch, MACD tieferes Hoch bzw. umgekehrt): echte lower lows / lower highs
-    erkennen, Gewinnbereiche „callen“, Divergenz-Erweiterung im Trend.
-  - Mit klassischem SMH (Zonen, OBs) „super crazy Entries“, auch im LTF (Gold 10 min Beispiel).
-  - Daily: TP-Bestimmung in IPDA, IPDA-Shift „so vorhersehbar“ (EURUSD Mai 2025).
+- **Einstellungen Daily (Nutzer-Screenshot 26.11.):** **8 / 20 / 14**, Close, Oszillator und Signal je EMA,
+  auf Kerzenschluss warten. Standard sonst 12/26/9.
+  **⚠️ Code-Abweichung:** `rules.py` rechnet auf Daily mit 12/26/9 → Typ R mit 8/20/14 neu rechnen.
+- **Lesart (Nutzer 26.11.):** Einstieg = **Cross der zwei Linien** (MACD/Signal).
+  Kurs dazu: über/unter der 0-Linie bullish/bearish; wachsender Abstand = Trendstärke; Divergenz für echte
+  lower lows/lower highs und Gewinnbereiche; Daily für TP-Bestimmung in IPDA.
 - **Nutzer 02.11.:** MACD-Cross nach RSI-Extrem = „sehr valides Setup“ → höhere Risikostufe.
-- **Offen:** Daily wirklich 8/20/14 (dann Typ R neu rechnen)? Signal = Cross, Divergenz oder 0-Linie?
 
-## 5 Bollinger Bands 📝
+## 5 Bollinger Bands ✅
 
 - **Misst:** SMA ± k Standardabweichungen = Schwankungsbreite um den „Fair Value“ (Mittellinie).
-- **Einstellungen (Kurs):** zwei Varianten: **BB 20 SMA Close 2** (Standard) und **BB 34 SMA hl2 2,5**
-  (Intraday, Settlement-Beispiele EURUSD 10 min).
-- **Lesart:** „BBs und Nadaraya als zusätzliche Confirmation mit Noise-Filter im HTF (M30, H1, H4, sehr
-  selten Daily)“. Einstieg, wenn Preis im Settlement-Fenster (rote Linien / graue Box 08:00–09:00) das
-  untere Band berührt und dreht; Ziel Fib-Extension 1,272/1,618 bzw. oberes Band („Profit-Findung in den
-  Bollis – Thema Fair Value“). Bänder validieren OBs/Breaker („welcher OB ist wirklich valide“).
-  Ausbruch über/unter das Band = Confi für Hoch/Tief (zusammen mit RSI/Multi Length).
+- **Einstellungen (Nutzer-Screenshot 26.11.):** **20, SMA, Close, 2 Abweichungen, Offset 0**, auf
+  Kerzenschluss warten. Auch im **Daily** (Kurs sagte „sehr selten Daily“; der Nutzer nutzt es dort).
+  Kurs-Intraday-Variante BB 34 SMA hl2 2,5 (Settlements EURUSD 10 min).
+- **Lesart (Nutzer 26.11.):** (a) **Berührung** des oberen/unteren Bands in Kombination mit den anderen
+  Indikatoren; (b) vor allem **Durchbruch mit Kerzenschluss** über/unter dem Band.
+  Kurs: Ziel Fib-Extension 1,272/1,618 bzw. Gegenband, Bänder validieren OBs/Breaker.
 - **Edge:** Settlements/Time-and-Price (Intraday), HTF-Daily-Trade Confi „Ausbruch in BBs oder NW“.
-- **Offen:** Welche Variante nutzt du heute, für welchen Timeframe?
+- **Testhypothese:** Daily-Schluss außerhalb des Bands (± RSI/Multi-Length-Extrem) → Gegenbewegung.
 
-## 6 Nadaraya-Watson Envelope [LuxAlgo] 📝
+## 6 Nadaraya-Watson Envelope [LuxAlgo] ✅
 
 - **Misst:** geglättete Kurve (Kernregression) mit Hülle; Pfeile, wenn der Preis die Hülle kreuzt.
 - **Einstellungen (Kurs):** **8 / 3 / Close** (Bandbreite 8, Multiplikator 3).
-- **⚠️ Repaint:** In den Kursbildern steht „Repainting Mode Enabled“. In diesem Modus wird die Kurve
-  rückwirkend neu gezeichnet: Hoch/Tief sehen im Nachhinein perfekt getroffen aus, live nicht. Für Backtest
-  nur die nicht-repaintende Variante (Endpunkt-Schätzung) zulässig, und live solltest du dieselbe sehen.
-- **Lesart:** wie BB: Berührung/Ausbruch der Hülle + Pfeil im Settlement-Fenster als Bestätigung,
-  OB-Validierung („sehr starker OB-Magnet“), Exit über Zeit, Fib-Extension oder Ausbruch → finaler Scalp-TP
-  (Handschrift, siehe oben). Fazit des Kurses: weniger Setups, aber valider.
-- **Offen:** Hast du live „Repainting Mode“ an? Wenn ja, sind deine Treffer im Chart rückblickend geschönt.
+- **Repaint:** Die Kursbilder zeigen „Repainting Mode Enabled“. **Nutzer 26.11.: live ist Repainting aus.**
+  Nachbau und Backtest daher nur in der nicht-repaintenden Variante (Endpunkt-Schätzung), wie live.
+- **Lesart:** wie BB: Berührung/Ausbruch der Hülle + Pfeil als Bestätigung, OB-Validierung („sehr starker
+  OB-Magnet“), Exit über Zeit, Fib-Extension oder Ausbruch → finaler Scalp-TP (Handschrift, siehe oben).
+  Fazit des Kurses: weniger Setups, aber valider.
 
-## 7–13 offen
+## 7–13 händisch (Nutzer 26.11.)
 
-Quellen: „MA 8 und 14“ (Elite 1), Fractals/MA Cross aus [[htf-daily-trade-edge-card]]. Pivots, Money Flow
-Profile, SVP/VRVP: noch keine Kursseite gefunden (Pivots tauchen in Nutzer-Charts auf, Gold H4 Okt. 2023).
-Volumen und COT: [[smh-volumen-delta-und-cot-calls]], [[smh-dennis-cot-volumen-calls]].
+MA Cross, Fractals, Pivots, Volumen, SVP/VRVP, Money Flow Profile und COT liest der Nutzer händisch:
+keine Steckbriefe, kein Nachbau, kein eigener Edge-Test. Was davon schon im Code steckt (Fractals als
+Typ-R-Auslöser, MA Cross T1, Volumen-POC X11, COT M7/X4 in der Filter-Matrix), bleibt unverändert.
+Quellen, falls später doch: „MA 8 und 14“ (Elite 1), [[htf-daily-trade-edge-card]],
+[[smh-volumen-delta-und-cot-calls]], [[smh-dennis-cot-volumen-calls]].

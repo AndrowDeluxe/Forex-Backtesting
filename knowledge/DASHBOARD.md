@@ -107,11 +107,11 @@ passiert, was steht an.
    nur Makro-Veto (≥ 5 Punkte gegen) stabil. Wartet auf dich: H4 als diskretionäres Setup weiterführen (Journal mit
    Merkmalen, Forward) oder nächste Edge der Inventur. Trade Gold 01.05.2019 bitte im Jahr 2019 prüfen (Screenshot zeigte 2015). Wartet auf deine
    Kandidatenwahl (≤ 9 Parameter). Parallel: Indikatoren einzeln durchgehen (Steckbriefe, dann Edge-Test je
-   Indikator), Reihenfolge RSI → Multi Length → Stoch RSI → MACD → BB → NW → MA-Cross → Fractals → Pivots →
-   Volumen → SVP/VRVP → Money Flow Profile → COT. H4 zurückgestellt.
-   **Steckbriefe** [[indikator-steckbriefe]]: 1–6 (RSI, Multi Length, Stoch RSI, MACD, BB, NW) als Entwurf aus
-   OneNote (25.11.), offene Fragen im Chat. Funde: Kurs-MACD Daily 8/20/14 statt Code 12/26/9; NW im
-   Repaint-Modus; OneNote-Export ohne Handschrift. 7–13 folgen.
+   Indikator): RSI, Multi Length, Stoch RSI, MACD, BB, NW. H4 zurückgestellt.
+   **Steckbriefe** [[indikator-steckbriefe]]: 1–6 bestätigt (26.11.). Kern: RSI(14)-MA-Cross + Multi-Length-
+   Fläche (70/30, je größer desto valider), Daily/H4; Einstieg je über den Cross; MACD Daily 8/20/14 (Code
+   12/26/9 → Typ R neu rechnen); NW live ohne Repaint. 7–13 macht der Nutzer händisch (26.11.).
+   Nächster Schritt: Nachbau 1–6 im gemeinsamen Modul, gegen TradingView prüfen, dann Edge-Test.
    Inventur-Entwurf bestätigt (10.11.). Reihenfolge (Nutzer 10.11., „stabiles Fundament“):
    (1) Inventur: die ~15 Strategien aus „Meine Trading Edges“ einzeln aufnehmen + Makro-Quellen
    (SMH Calls, Zusatzeducation, Makro Education, Elite, Incentive) sichten, (2) FX-Zinsdaten-Loader
@@ -1006,7 +1006,8 @@ außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
   ohne `fusion_lab/raw` (66 GB Rohdaten bleiben auf dem PC). IONOS-Aktion von
   Oktober weg (L+ jetzt dauerhaft 42 €/Mon.). Favorit: Contabo Cloud VPS 6
   Windows (6 vCPU/12 GB) ~7,50 €/Mon. bei 24 Mon. + Windows-Aufpreis.
-  Offen: Nutzerentscheid Anbieter, Prop-IP-Regeln, was auf dem PC bleibt.
+  **Entschieden 26.11.: Contabo, ~27 €/Mon. inkl. Windows-Lizenz, 24 Monate.**
+  Offen: Prop-IP-Regeln, was auf dem PC bleibt, Git-Sync Server↔PC.
 
 - ~~**Magnet-Trade Richtung Key Level**~~ (getestet 19.10.: kein Effekt, siehe [[keylevel-edge-card]]) (18.10., aus der Key-Level-Edge-Card):
   Der Magnet wirkt an und vor der Berührung, nicht nach einer BOS-

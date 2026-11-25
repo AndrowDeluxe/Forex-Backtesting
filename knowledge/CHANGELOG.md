@@ -9,6 +9,15 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-26** [Research/Indikatoren] Steckbriefe 1–6 bestätigt (Nutzer-Antworten + TradingView-Screenshots):
+  RSI 14 (nicht 20) mit MA-Cross als Auslöser, Multi Length 70/30 mit Fläche als Signal, Stoch RSI 3/3/14/14
+  K/D-Cross, MACD Daily 8/20/14 Linien-Cross, BB 20/2 Berührung + Schluss außerhalb, NW live ohne Repaint.
+  Indikatoren 7–13 bleiben händisch (kein Nachbau/Test). `resources/indikator-steckbriefe.md`.
+
+- **2026-11-26** [Betrieb/VPS] **Nutzerentscheid: Server-Umzug auf Contabo Windows-VPS** (~27 €/Mon. inkl.
+  Windows-Lizenz, 24 Monate). Ziel: alle Automatisierungen (Bridges, Ingest, Watchdog, Reports, Claude-Jobs) vom
+  Notebook auslagern. Noch nichts bestellt/umgezogen; Umzug folgt im Plan-Modus mit DRY_RUN-Probebetrieb.
+
 - **2026-11-24 (spät)** [Education] **Prosper-Lektion 6 umgesetzt: echte Aktien-Tageskurse für den Market Analyst**
   (Nutzerauftrag, Kursprojekt `C:\Users\andre\prosper-ai-grok-trading-team`, außerhalb des Repos, kein Git, Backup
   `_backup_vor_lektion6/`, nur Simulation). Neu: `app/stock_data.py` (Alpha Vantage TIME_SERIES_DAILY, 100 Tagesbars,

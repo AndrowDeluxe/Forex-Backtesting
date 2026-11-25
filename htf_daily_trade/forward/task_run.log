@@ -288,3 +288,38 @@
 2026-11-24 03:30:11 KeyError: 'T6'
 2026-11-24 03:30:11 COT: 0 neue Berichte
 2026-11-24 03:30:11 W50-Forward-Exitcode 1
+2026-11-24 03:30:11 [main 7a971d83] C2-Forward: Ledger 2026-11-24
+2026-11-24 03:30:11  1 file changed, 30 insertions(+)
+2026-11-24 03:30:12 MERGE UEBERSPRUNGEN: Working Tree hat 16 offene Aenderung(en) (andere Tasks/Session). Es wird NICHT gestasht -- der lokale Commit bleibt liegen und geht beim naechsten sauberen Lauf raus.
+2026-11-24 03:30:13 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-11-24 03:30:13  ! [rejected]          main -> main (non-fast-forward)
+2026-11-24 03:30:13 error: failed to push some refs to 'https://github.com/AndrowDeluxe/Forex-Backtesting.git'
+2026-11-24 03:30:13 hint: Updates were rejected because the tip of your current branch is behind
+2026-11-24 03:30:13 hint: its remote counterpart. If you want to integrate the remote changes,
+2026-11-24 03:30:13 hint: use 'git pull' before pushing again.
+2026-11-24 03:30:13 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+2026-11-24 03:30:13 HINWEIS: Push abgelehnt (Remote ist weiter) - erwartet, solange nicht gemergt wurde. Rueckstand sichtbar ueber 'git log origin/main..HEAD'.
+2026-11-24 03:30:13 === Task beendet ===
+2026-11-25 03:30:01 === Task gestartet ===
+2026-11-25 03:30:07 Traceback (most recent call last):
+2026-11-25 03:30:07   File "<frozen runpy>", line 203, in _run_module_as_main
+2026-11-25 03:30:07   File "<frozen runpy>", line 88, in _run_code
+2026-11-25 03:30:07   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_forward_w50.py", line 147, in <module>
+2026-11-25 03:30:07     raise SystemExit(main())
+2026-11-25 03:30:07                      ~~~~^^
+2026-11-25 03:30:07   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_forward_w50.py", line 125, in main
+2026-11-25 03:30:07     t = scan(a.start)
+2026-11-25 03:30:07   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_forward_w50.py", line 77, in scan
+2026-11-25 03:30:07     el = el_trades(start, end)
+2026-11-25 03:30:07   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_bis_heute.py", line 79, in el_trades
+2026-11-25 03:30:07     t = cb.trades(start, end.strftime("%Y-%m-%d"))
+2026-11-25 03:30:07   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_blind.py", line 67, in trades
+2026-11-25 03:30:07     t = t[(t["T6"] < 0) & (t["M7"] > 0)].copy()
+2026-11-25 03:30:07            ~^^^^^^
+2026-11-25 03:30:07   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+2026-11-25 03:30:07     indexer = self.columns.get_loc(key)
+2026-11-25 03:30:07   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\range.py", line 525, in get_loc
+2026-11-25 03:30:07     raise KeyError(key)
+2026-11-25 03:30:07 KeyError: 'T6'
+2026-11-25 03:30:07 COT: 0 neue Berichte
+2026-11-25 03:30:07 W50-Forward-Exitcode 1

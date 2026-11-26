@@ -347,3 +347,7 @@ erstellt,stand,screener,version,status,art,objekt,szenario,gewaehlt,score,signal
 2026-11-26,2026-11-25,krypto,1.0,forward,gruppe,TOP10,,,,,,,,,,,,20.0,JST;QNT;NEAR;TRX;AAVE;PEPE;BTC;BNB;LINK;LTC,,,,,,,,,,False
 2026-11-26,2026-11-25,krypto,1.0,forward,gruppe,TOP10,,,,,,,,,,,,60.0,JST;QNT;NEAR;TRX;AAVE;PEPE;BTC;BNB;LINK;LTC,,,,,,,,,,False
 2026-11-26,2026-11-25,aktien,1.0,forward,szenario,MU,A,False,66.9,KAUFEN,0.0,453.78,436.57,471.0,365.58,640.36,2.115,,,,,,,,,,,,False
+2026-11-26,2026-11-25,rohstoffe,1.2,forward,szenario,KUPFER,B,False,39.0,HALTEN,0.0,5.493,,,5.282,5.929,2.06,,,,,,,,,,,,False
+2026-11-26,2026-11-25,rohstoffe,1.2,forward,szenario,SILBER,A,False,13.9,HALTEN,-1.0,40.05,39.78,40.32,37.97,47.51,3.578,,,,,,,,,,,,False
+2026-11-26,2026-11-25,rohstoffe,1.2,forward,szenario,SILBER,B,False,13.9,HALTEN,-1.0,43.6,,,40.88,49.32,2.102,,,,,,,,,,,,False
+2026-11-26,2026-11-25,rohstoffe,1.2,forward,szenario,PLATIN,A,False,13.9,HALTEN,-1.0,1241.4,1236.11,1246.69,1200.85,1342.31,2.488,,,,,,,,,,,,False

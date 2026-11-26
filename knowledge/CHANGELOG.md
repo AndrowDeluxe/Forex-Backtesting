@@ -9,6 +9,13 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-26** [Research/Indikatoren] **H1-Prüfung Fib-Limit + Steckbriefe 7–12** (Nutzerauftrag).
+  `indikator_fib_h1.py`: Füllung/Stop auf H1 bestätigt den Daily-Backtest bei UTC-Tagen (OOS +0,42 R); mit Broker-
+  Tagen NY 17:00 OOS nur +0,12 R → Tagesgrenze ist ein Fragilitätspunkt. Steckbriefe 7–12 aus den Nutzer-Antworten
+  (MA Cross 12/20 D + 8/14 H4, Fractals nur Confi/Stop, Monats-/Quartals-Pivots als Reaktionszonen, Volumen-
+  Divergenz, SVP-POC-Folge als Trendfilter, VRVP-POC als Anziehungspunkt, Money Flow als VRVP-Ergänzung); COT
+  wartet auf Dennis-Education. 20:30-Telegram-Text nachgeführt.
+
 - **2026-11-26** [Research/Indikatoren] **Nutzer-Idee Fib-Limit getestet** (`htf_daily_trade/indikator_fib_limit.py`,
   Lock `indikator_fib_limit`, 288 Varianten): ML-Fläche + Cross auf Daily, Limit am Fib der Signalkerze. Plateau-
   Variante A80 GX F0.5 V3 S2 T10 IS +0,33 / OOS +0,45 R, ohne Top-3 positiv, MC 0,4 % Ø < 0. Tresor zu. Nutzerentscheid:

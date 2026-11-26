@@ -10,19 +10,19 @@ Status: ✅ bestätigt · 📝 Entwurf, wartet auf Nutzer · ⬜ offen.
 
 | # | Indikator | Steckbrief | Code | Test |
 |---|---|---|---|---|
-| 1 | RSI | ✅ | `htf_daily_trade/rules.py` `rsi()` (Wilder), MA-Cross fehlt | ⬜ |
-| 2 | RSI Multi Length [LuxAlgo] | ✅ | nur Näherung (Linie), Nutzer liest **Fläche** | ⬜ |
-| 3 | Stoch RSI | ✅ | – | ⬜ |
-| 4 | MACD | ✅ | `rules.py` 12/26/9, **Nutzer Daily 8/20/14** | ⬜ |
-| 5 | Bollinger Bands | ✅ | – | ⬜ |
-| 6 | Nadaraya-Watson | ✅ | – (live ohne Repaint) | ⬜ |
-| 7 | MA Cross 12/20 | 📝 26.11. | `rules.py`, Filter T1 | T1 in Filter-Matrix |
-| 8 | Fractals | 📝 26.11. | `rules.py` (Bill Williams 2/2) | Auslöser Typ R |
-| 9 | Pivots | 📝 26.11. | – | ⬜ |
-| 10 | Volumen | 📝 26.11. | – | ⬜ |
-| 11 | SVP/VRVP | 📝 26.11. | Volumen-POC 20 T (Filter X11) | X11 in Filter-Matrix |
-| 12 | Money Flow Profile | 📝 26.11. | – | ⬜ |
-| 13 | COT | 📝 26.11. | M7 COT-Fluss, X4 COT-Index | M7/X4 in Filter-Matrix |
+| 1 | RSI | ✅ | `indikatoren.py`, TV-geprüft | 26.11. getestet |
+| 2 | RSI Multi Length [LuxAlgo] | ✅ | `indikatoren.py`, TV-geprüft | 26.11. getestet |
+| 3 | Stoch RSI | ✅ | `indikatoren.py`, TV-geprüft | 26.11. getestet |
+| 4 | MACD | ✅ | `indikatoren.py`, TV-geprüft | 26.11. getestet |
+| 5 | Bollinger Bands | ✅ | `indikatoren.py`, TV-geprüft | 26.11. getestet |
+| 6 | Nadaraya-Watson | ✅ | `indikatoren.py`, TV-geprüft | 26.11. getestet |
+| 7 | MA Cross 12/20 (D), 8/14 (H4) | ✅ | `rules.py`, Filter T1 | T1 in Filter-Matrix |
+| 8 | Fractals | ✅ | `rules.py` (Bill Williams 2/2) | Auslöser Typ R |
+| 9 | Pivots | ✅ | – | ⬜ |
+| 10 | Volumen | ✅ | – | ⬜ |
+| 11 | SVP/VRVP | ✅ | Volumen-POC 20 T (Filter X11) | X11 in Filter-Matrix |
+| 12 | Money Flow Profile | ✅ | – | ⬜ |
+| 13 | COT | ⏸ Dennis-Education | M7 COT-Fluss, X4 COT-Index | M7/X4 in Filter-Matrix |
 
 ## Nutzer-Antworten 26.11. (Kurzfassung)
 
@@ -133,46 +133,53 @@ Seiten bei Bedarf per Screenshot nachreichen.
   OB-Magnet“), Exit über Zeit, Fib-Extension oder Ausbruch → finaler Scalp-TP (Handschrift, siehe oben).
   Fazit des Kurses: weniger Setups, aber valider.
 
-## 7–13 Entwürfe (26.11., warten auf Nutzer)
+## 7–13 (Nutzer-Antworten 26.11. abends)
 
-Nur Belegtes (Edge Card 02.11. [[htf-daily-trade-edge-card]], Code, OneNote); offene Fragen je Punkt.
+Belegt aus Edge Card 02.11. [[htf-daily-trade-edge-card]], Code und den Nutzer-Antworten vom 26.11. mit sechs
+Chart-Beispielen (Gold D1 Pivots, EURUSD H4/H8/D1 Volumen, SVP, VRVP, Money Flow).
 
-### 7 MA Cross 📝
-- Belegt: TradingView-Standard „MA Cross“, **SMA 12/20**, Chart-Timeframe, Kerzenschluss abwarten (02.11.).
-  **Weekly MA Cross 20/50** als Zusatzbestätigung zum Hochskalieren des Risikos (02.11.). Typ R: Confi, keine
-  Pflicht (Nutzer-Long 26.06.2026 ohne Cross). Code: Filter T1 (12/20), T2 Weekly SMA 20/50.
-- Kurs: Seite „Einführung MA Cross 8 & 14“ (Elite 2) nur als Bilder exportiert; „MA 8 und 14“ (Elite 1) meint
-  die 8-/14-Tages-Kerze im IPDA, keinen gleitenden Durchschnitt.
-- Offen: Nutzt du 8/14 irgendwo als MA? Einstieg über den Cross oder nur Richtungs-Confi? Welche Timeframes?
+### 7 MA Cross ✅
+- **Einstellungen:** Daily **SMA 12/20** (TradingView „MA Cross“, Kerzenschluss abwarten) — primär genutzt.
+  **Weekly 20/50** als Zusatz zum Hochskalieren des Risikos (02.11.). **H4 8/14** als möglicher Einstiegs-Bestätiger
+  (Nutzer 26.11., Idee, bisher nicht genutzt). „MA 8 und 14“ im Kurs (Elite 1) meint die 8-/14-Tageskerze im IPDA.
+- **Lesart:** Signal-Bestätiger, kein eigener Signalgeber (Typ R: Confi, keine Pflicht).
+- **Code:** Filter T1 (12/20), T2 Weekly SMA 20/50. **Test:** H4 8/14-Cross als Einstiegs-Bestätiger nach Daily-Signal.
 
-### 8 Fractals 📝
-- Belegt: Bill-Williams-Fractal 2/2 (5 Kerzen), Skript mit ZigZag, „Filter Bill Williams Fractals“ aus,
-  Time-Fractals auf 240 (02.11.). Typ R: Daily-Fractal = Auslöser, Stop am Fractal-Extrem, Ziel gegenläufiges
-  Fractal. Code: `rules.py`.
-- Offen: Nutzt du die H4-Time-Fractals als eigenes Signal oder nur als Struktur/Stop?
+### 8 Fractals ✅
+- **Einstellungen:** Bill Williams 2/2 (5 Kerzen), Skript mit ZigZag, Time-Fractals auf 240 (02.11.).
+- **Lesart:** Confirmation, **kein einzelner Signalgeber**. Im Daily für Struktur und Stop (Stop am Fractal-Extrem),
+  im H4 selten.
+- **Code:** `rules.py`, Typ-R-Auslöser. **Test:** Stop am Daily-Fractal statt Signalkerze im Fib-Limit-Kandidaten.
 
-### 9 Pivots 📝
-- Belegt: als Take-Profit-Ziel im HTF-Daily-Trade („Profittaking an externer Liq, Pivots …“). Im Code nicht vorhanden.
-- Offen: Typ (Standard/Fibonacci/Camarilla/Woodie), Zeitraum (Tag/Woche/Monat), nur Ziel oder auch Einstieg/Reaktion?
+### 9 Pivots ✅
+- **Einstellungen:** je Timeframe umgestellt, meist **monatliche oder Quartals-Pivots** (Bild: Gold D1, P/R1–R4/S1–S4).
+- **Lesart:** **Reaktionszonen.** Höherer Zeitraum = stärkere Confi (Quartal > Monat > Woche > Tag), höhere Stufe =
+  wahrscheinlichere Reaktion (R3 > R1, S3 > S1). Auch Ziel (Edge Card).
+- **Code:** – . **Test:** Reaktion an Monats-/Quartals-Pivots je Stufe (Abprall-Quote, R3/S3 vs. R1/S1), als Ziel/Filter.
 
-### 10 Volumen 📝
-- Belegt: im Daily-Chart sichtbar (26.11.). FX/Metalle bei TradingView = Tick-Volumen.
-- Offen: Worauf schaust du (Spike beim Ausbruch, Abnahme im Rücksetzer, Divergenz)? Welche Timeframes?
+### 10 Volumen ✅
+- **Lesart:** **Divergenz als Richtungswechsel-Hinweis.** Bsp. EURUSD H4 (Bild 2): Aufwärts mit höherem Tief, aber
+  deutlich weniger Kaufvolumen → Käufer werden weniger, Abverkauf geht weiter. Umgekehrt (Bild 3): mehr
+  Verkaufsvolumen, aber kein neues signifikantes Tief → Verkäufer geben die Kontrolle ab.
+- **Daten:** FX/Metalle = Tick-Volumen. **Test:** Preis-/Volumen-Divergenz an Swings (H4/D1) → Umkehr-Quote vs. Zufall.
 
-### 11 SVP / VRVP 📝
-- Belegt: OneNote „Volumenvalidierung“ (Elite 2, 04/2025) erklärt Volume Profile vs. Market Profile; Ziel/Retrace
-  am „Daily POI/POC“ (Edge Card). Code: Filter X11 Volumenprofil-POC 20 Tage (Filter-Matrix: ohne Effekt).
-- Offen: Bereich (Session, sichtbarer Chart, feste Range?), POC/VAH/VAL — Ziel, Einstiegszone oder Bestätigung?
+### 11 SVP / VRVP ✅
+- **SVP (Session Volume Profile), Daily/H4 — Trendfolge:** POC jeder Periode konstant unter dem vorherigen → Abwärts-
+  trend intakt, weiter Sells. POC steigt gegenüber Vortag/Vorperiode → mögliches Retracement oder Richtungswechsel
+  (Bild 4). Long spiegelbildlich.
+- **VRVP (Visible Range):** immer über eine **HTF-Range** legen (Monats-/Quartals-Hoch bis -Tief oder nach einem langen
+  Trend Hoch → Tief, Bild 5). **POC = Anziehungspunkt** für das Retracement bzw. Grenze, ab der Trendfortsetzung
+  möglich ist; Hochvolumen-Knoten als Ziele (EURUSD D1: 1,12 / 1,138; H8 Range: 1,105 / 1,122).
+- Multi-Timeframe von Monthly bis H1. **Code:** X11 POC 20 T (anders gerechnet). **Test:** SVP-POC-Folge als Trendfilter;
+  Retracement bis VRVP-POC (Trefferquote, Laufweite).
 
-### 12 Money Flow Profile [LuxAlgo] 📝
-- Belegt: im Chart vorhanden, ausgeblendet (26.11.). Sonst nichts in den Notizen.
-- Offen: Einstellungen und Lesart — nutzt du es noch, oder kann es raus?
+### 12 Money Flow Profile [LuxAlgo] ✅
+- **Lesart:** Ergänzung zum VRVP — Zonen, in denen **beide übereinstimmen**, sind besonders interessant (Bild 6).
+- **Test:** erst mit 11 (Übereinstimmung VRVP-Knoten × Money-Flow-Zone).
 
-### 13 COT 📝
-- Belegt: Indikator COT-NocTrading (Non-Commercials / Commercials / Retail) im Daily-Chart. Kurs: Incentive 3
-  „Cot Analyse“, SMH-Calls [[smh-volumen-delta-und-cot-calls]], [[smh-dennis-cot-volumen-calls]]. Code: M7
-  COT-Fluss (4 Berichte), X4 COT-Index konträr; C2-Kandidat nutzt COT-Fluss „mit“.
-- Offen: Liest du die Richtung der Non-Commercials (mit dem Fluss) oder Extrempositionen (konträr)? Welche Gruppe zählt?
+### 13 COT ⏸
+- Wenig eigene Erfahrung; Nutzer orientiert sich an der **neuen Education von Dennis aus den Elite-Calls**
+  ([[smh-dennis-cot-volumen-calls]]). Steckbrief folgt daraus. Code bleibt: M7 COT-Fluss, X4 COT-Index.
 
 ## Nachbau + Edge-Test 1–6 (26.11.)
 
@@ -222,3 +229,8 @@ Limit am 0,5-Fib des Signaltags kaufen/verkaufen; SL Vortageshoch/-tief oder ATR
 - Gold-Beispiel nachgebaut: Signal 29.01., Füllung 30.01. 5438 (Open unter Limit), Stop 5595 → +4 R am 02.02.
 - **Lesart:** Die Fläche liefert die Idee, das Fib-Limit macht daraus einen tragfähigen Einstieg (Markt-Einstieg
   nur +0,13/+0,17 R). Offen: Füllreihenfolge mit H1 prüfen, dann Einfrieren + Tresor.
+
+**H1-Prüfung (26.11. abends, `indikator_fib_h1.py`):** Füllung/Stop Kerze für Kerze auf H1. Mit UTC-Tagen wie im
+Backtest: IS +0,33 / OOS +0,42 R (V3, Stop +0,25 ATR) → Füllreihenfolge sauber, Stop am Fülltag in ~22 % der Trades.
+**Mit Broker-Tagen (NY 17:00, = TradingView-FXCM-Daily):** IS +0,31 / **OOS +0,12 R (t 0,65), ohne Top-3 −0,06**,
+2025 −0,41. Der Edge hängt an der Tagesgrenze → schwächer als gedacht; vor dem Einfrieren Tagesdefinition festlegen.

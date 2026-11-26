@@ -21,10 +21,11 @@
  • Monte-Carlo: 0,4 % Chance auf Ø < 0, DD 95 %-Fall −29 % bei 1 %
  • Dein Gold-Beispiel 29./30.01. exakt nachgebaut: +4 R (Ziel 4 R) bzw. +2,5 R (10 Tage)
  • Plateau: 80 % > 50 %, 0,5 > 0,618, ATR-Puffer > nackter Stop, 10-Tage-Ausstieg > feste R-Ziele – in IS UND OOS gleich
- → Kandidat für Einfrieren + Tresor (einmal öffnen) – Entscheidung heute Abend.
+ ⚠️ H1-Prüfung (abends): Füllreihenfolge sauber (UTC-Tage: IS +0,33 / OOS +0,42 R). ABER mit Broker-Tagen (NY 17:00, wie dein FXCM-Chart): IS +0,31 / OOS nur +0,12 R, ohne Top-3 −0,06, 2025 −0,41. Der Edge hängt an der Tagesgrenze.
+ → Vor Einfrieren/Tresor: Tagesdefinition festlegen – Entscheidung heute Abend.
  Fläche ≥ 50 % als Signal-Hub-Alarm: notiert, wird gebaut.
 
 🔔 Offene Punkte für heute Abend
- 1. Steckbriefe Indikatoren 7–13 (MA Cross, Fractals, Pivots, Volumen, SVP/VRVP, Money Flow Profile, COT)
- 2. Lower-Timeframe-Entry: Fib-Limit steht (Punkt 5); offen: H1-Feinprüfung der Füll-Reihenfolge + weitere LTF-Entries ohne Indikatoren
+ 1. Steckbriefe 7–12 aus deinen Antworten geschrieben (bitte drüberschauen), COT wartet auf Dennis-Education
+ 2. Lower-Timeframe-Entry: Fib-Limit + H1-Prüfung stehen (Punkt 5); offen: weitere LTF-Entries ohne Indikatoren
  3. Daily-Trade-Varianten weiter ausführen + Entscheidung: Fib-Limit-Kandidat einfrieren/Tresor, C2-RSI-Filter

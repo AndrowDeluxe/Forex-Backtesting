@@ -127,8 +127,11 @@ passiert, was steht an.
    `indikator_fib_limit`, 288 Var.): ML-Fläche ≥ 80 % + Stoch/RSI-Cross → Limit 0,5-Fib der Signalkerze (3 T),
    Stop Signal-Extrem + 0,25 ATR, 10 Tage: **IS +0,33 R / OOS +0,45 R (t 1,8/2,0), ohne Top-3 +0,14/+0,20,
    2025 +0,02, MC 0,4 % Ø < 0** → bester Indikator-Kandidat; Plateau in IS und OOS gleich gerichtet. Gold-Beispiel
-   29./30.01. exakt +4 R. Offen: H1-Prüfung der Füllreihenfolge, dann Einfrieren + Tresor (deine Entscheidung).
-   **Heute Abend mit dir:** Steckbriefe 7–13,
+   29./30.01. exakt +4 R. **H1-Prüfung (abends):** Füllreihenfolge sauber (UTC-Tage OOS +0,42 R), aber mit
+   **Broker-Tagen (NY 17:00) OOS nur +0,12 R, ohne Top-3 −0,06** → hängt an der Tagesgrenze; vor Einfrieren +
+   Tresor Tagesdefinition festlegen (deine Entscheidung). **Steckbriefe 7–12 ✅** aus Nutzer-Antworten 26.11.,
+   13 COT wartet auf Dennis-Education.
+   **Heute Abend mit dir:** Steckbriefe 7–12 durchsehen,
    LTF-Entry ohne Indikatoren, Daily-Trade-Varianten + Forward-Entscheidung (Telegram-Erinnerung 20:30).
    Inventur-Entwurf bestätigt (10.11.). Reihenfolge (Nutzer 10.11., „stabiles Fundament“):
    (1) Inventur: die ~15 Strategien aus „Meine Trading Edges“ einzeln aufnehmen + Makro-Quellen

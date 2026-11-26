@@ -19892,3 +19892,22 @@
 2026-11-26 19:35:13 64 Ausstiegsschwellen geschrieben (30 davon 'Mean Reversion erreicht')
 2026-11-26 19:35:13 
 2026-11-26 19:35:13 Saved 0 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-11-26T19:35:13)
+2026-11-26 19:35:13 [main aee52a78] OU-Modell Scanner: Snapshot 2026-11-26 19:35
+2026-11-26 19:35:13  1 file changed, 19 insertions(+)
+2026-11-26 19:35:14 Nichts zu mergen (0 eingehende Commits) - Stash und Merge uebersprungen.
+2026-11-26 19:35:16 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-11-26 19:35:16    34d5d749..aee52a78  main -> main
+2026-11-26 19:35:16 Commit + Push erfolgreich.
+2026-11-26 19:35:16 === Scanner-Task beendet ===
+2026-11-26 20:35:01 === Scanner-Task gestartet ===
+2026-11-26 20:35:14 [sp500] TTP-Handelbarkeitsfilter: 147 -> 58 Ticker.
+2026-11-26 20:35:14 [sp500] S&P 500 (volles Universum, 420 Ticker): scanning 58 OU-selected tickers...
+2026-11-26 20:35:14 [sp500] 0 raw signal(s) as of 2026-11-25, regime_ok=False, 57 Ausstiegsschwellen
+2026-11-26 20:35:14 [nasdaq100] TTP-Handelbarkeitsfilter: 16 -> 8 Ticker.
+2026-11-26 20:35:14 [nasdaq100] Nasdaq-100 (alle ~103 Ticker): scanning 8 OU-selected tickers...
+2026-11-26 20:35:14 [nasdaq100] 0 raw signal(s) as of 2026-11-25, regime_ok=False, 7 Ausstiegsschwellen
+2026-11-26 20:35:14 [dax] TTP-Handelbarkeitsfilter: 13 -> 0 Ticker.
+2026-11-26 20:35:14 [dax] DAX (alle 40 Ticker): 0 auf TTP handelbare OU-selektierte Ticker -- kein Scan (z.B. DAX: 0/40 Ticker auf TTP handelbar).
+2026-11-26 20:35:14 64 Ausstiegsschwellen geschrieben (30 davon 'Mean Reversion erreicht')
+2026-11-26 20:35:14 
+2026-11-26 20:35:14 Saved 0 total signal(s) to C:\Users\andre\Forex-Backtesting\ou_paper_backtest\results\scanner_signals.csv (scanned_at=2026-11-26T20:35:13)

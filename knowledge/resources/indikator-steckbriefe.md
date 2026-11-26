@@ -16,13 +16,13 @@ Status: ✅ bestätigt · 📝 Entwurf, wartet auf Nutzer · ⬜ offen.
 | 4 | MACD | ✅ | `rules.py` 12/26/9, **Nutzer Daily 8/20/14** | ⬜ |
 | 5 | Bollinger Bands | ✅ | – | ⬜ |
 | 6 | Nadaraya-Watson | ✅ | – (live ohne Repaint) | ⬜ |
-| 7 | MA Cross 12/20 | ⬜ 27.11. | `rules.py`, Filter T1 | T1 in Filter-Matrix |
-| 8 | Fractals | ⬜ 27.11. | `rules.py` (Bill Williams 2/2) | Auslöser Typ R |
-| 9 | Pivots | ⬜ 27.11. | – | ⬜ |
-| 10 | Volumen | ⬜ 27.11. | – | ⬜ |
-| 11 | SVP/VRVP | ⬜ 27.11. | Volumen-POC 20 T (Filter X11) | X11 in Filter-Matrix |
-| 12 | Money Flow Profile | ⬜ 27.11. | – | ⬜ |
-| 13 | COT | ⬜ 27.11. | M7 COT-Fluss, X4 COT-Index | M7/X4 in Filter-Matrix |
+| 7 | MA Cross 12/20 | 📝 26.11. | `rules.py`, Filter T1 | T1 in Filter-Matrix |
+| 8 | Fractals | 📝 26.11. | `rules.py` (Bill Williams 2/2) | Auslöser Typ R |
+| 9 | Pivots | 📝 26.11. | – | ⬜ |
+| 10 | Volumen | 📝 26.11. | – | ⬜ |
+| 11 | SVP/VRVP | 📝 26.11. | Volumen-POC 20 T (Filter X11) | X11 in Filter-Matrix |
+| 12 | Money Flow Profile | 📝 26.11. | – | ⬜ |
+| 13 | COT | 📝 26.11. | M7 COT-Fluss, X4 COT-Index | M7/X4 in Filter-Matrix |
 
 ## Nutzer-Antworten 26.11. (Kurzfassung)
 
@@ -133,13 +133,46 @@ Seiten bei Bedarf per Screenshot nachreichen.
   OB-Magnet“), Exit über Zeit, Fib-Extension oder Ausbruch → finaler Scalp-TP (Handschrift, siehe oben).
   Fazit des Kurses: weniger Setups, aber valider.
 
-## 7–13 offen (Steckbriefe am 27.11.)
+## 7–13 Entwürfe (26.11., warten auf Nutzer)
 
-MA Cross, Fractals, Pivots, Volumen, SVP/VRVP, Money Flow Profile, COT: Steckbriefe baut der Nutzer mit Claude
-am 27.11. (zunächst hieß es „händisch“, 26.11. präzisiert). Was schon im Code steckt (Fractals als
-Typ-R-Auslöser, MA Cross T1, Volumen-POC X11, COT M7/X4), bleibt bis dahin unverändert.
-Quellen: „MA 8 und 14“ (Elite 1), [[htf-daily-trade-edge-card]],
-[[smh-volumen-delta-und-cot-calls]], [[smh-dennis-cot-volumen-calls]].
+Nur Belegtes (Edge Card 02.11. [[htf-daily-trade-edge-card]], Code, OneNote); offene Fragen je Punkt.
+
+### 7 MA Cross 📝
+- Belegt: TradingView-Standard „MA Cross“, **SMA 12/20**, Chart-Timeframe, Kerzenschluss abwarten (02.11.).
+  **Weekly MA Cross 20/50** als Zusatzbestätigung zum Hochskalieren des Risikos (02.11.). Typ R: Confi, keine
+  Pflicht (Nutzer-Long 26.06.2026 ohne Cross). Code: Filter T1 (12/20), T2 Weekly SMA 20/50.
+- Kurs: Seite „Einführung MA Cross 8 & 14“ (Elite 2) nur als Bilder exportiert; „MA 8 und 14“ (Elite 1) meint
+  die 8-/14-Tages-Kerze im IPDA, keinen gleitenden Durchschnitt.
+- Offen: Nutzt du 8/14 irgendwo als MA? Einstieg über den Cross oder nur Richtungs-Confi? Welche Timeframes?
+
+### 8 Fractals 📝
+- Belegt: Bill-Williams-Fractal 2/2 (5 Kerzen), Skript mit ZigZag, „Filter Bill Williams Fractals“ aus,
+  Time-Fractals auf 240 (02.11.). Typ R: Daily-Fractal = Auslöser, Stop am Fractal-Extrem, Ziel gegenläufiges
+  Fractal. Code: `rules.py`.
+- Offen: Nutzt du die H4-Time-Fractals als eigenes Signal oder nur als Struktur/Stop?
+
+### 9 Pivots 📝
+- Belegt: als Take-Profit-Ziel im HTF-Daily-Trade („Profittaking an externer Liq, Pivots …“). Im Code nicht vorhanden.
+- Offen: Typ (Standard/Fibonacci/Camarilla/Woodie), Zeitraum (Tag/Woche/Monat), nur Ziel oder auch Einstieg/Reaktion?
+
+### 10 Volumen 📝
+- Belegt: im Daily-Chart sichtbar (26.11.). FX/Metalle bei TradingView = Tick-Volumen.
+- Offen: Worauf schaust du (Spike beim Ausbruch, Abnahme im Rücksetzer, Divergenz)? Welche Timeframes?
+
+### 11 SVP / VRVP 📝
+- Belegt: OneNote „Volumenvalidierung“ (Elite 2, 04/2025) erklärt Volume Profile vs. Market Profile; Ziel/Retrace
+  am „Daily POI/POC“ (Edge Card). Code: Filter X11 Volumenprofil-POC 20 Tage (Filter-Matrix: ohne Effekt).
+- Offen: Bereich (Session, sichtbarer Chart, feste Range?), POC/VAH/VAL — Ziel, Einstiegszone oder Bestätigung?
+
+### 12 Money Flow Profile [LuxAlgo] 📝
+- Belegt: im Chart vorhanden, ausgeblendet (26.11.). Sonst nichts in den Notizen.
+- Offen: Einstellungen und Lesart — nutzt du es noch, oder kann es raus?
+
+### 13 COT 📝
+- Belegt: Indikator COT-NocTrading (Non-Commercials / Commercials / Retail) im Daily-Chart. Kurs: Incentive 3
+  „Cot Analyse“, SMH-Calls [[smh-volumen-delta-und-cot-calls]], [[smh-dennis-cot-volumen-calls]]. Code: M7
+  COT-Fluss (4 Berichte), X4 COT-Index konträr; C2-Kandidat nutzt COT-Fluss „mit“.
+- Offen: Liest du die Richtung der Non-Commercials (mit dem Fluss) oder Extrempositionen (konträr)? Welche Gruppe zählt?
 
 ## Nachbau + Edge-Test 1–6 (26.11.)
 

@@ -174,3 +174,18 @@ Einstieg Folgetag-Open, Stop 5-Tage-Extrem − 0,2 ATR, netto ohne Swap):
   robust. Basis mit Swap-Näherung IS +0,04 / OOS +0,09 R, ohne Top-5 ≈ 0, 2025 −0,28 / 2026 −0,29 R, MC 21 % Ø < 0,
   DD 95 % −32 % bei 1 %. Cross innerhalb der Fläche (L1) stärker, aber ~4 Trades/Jahr.
   **Lesart:** Die Fläche ist Kontext, kein eigenständiger Edge.
+
+## Fib-Limit nach Daily-Ausbruch (Nutzer-Idee 26.11. nachmittags)
+
+Nutzer: Nach dem Daily-Ausbruch (ML-Fläche extrem + Stoch-/RSI-Cross) im H1 nur die Fib-Range suchen und als
+Limit am 0,5-Fib des Signaltags kaufen/verkaufen; SL Vortageshoch/-tief oder ATR-Kombination. Beispiel Gold
+29.01.2026 → Einstieg 30.01. ~4 R. Test `htf_daily_trade/indikator_fib_limit.py` (Lock `indikator_fib_limit`,
+288 Varianten, Daily-Simulation, in der Füllkerze nur Stop):
+- Plateau (IS und OOS gleich gerichtet): Fläche ≥ 80 % > ≥ 50 %; Fib 0,5 > 0,618; Stop + 0,25/0,5 ATR > nackt;
+  10-Tage-Ausstieg > 2/3/4 R. Nur der Cross-Typ wechselt (RSI im IS, Stoch/beide im OOS) → „beide“ (GX).
+- **A80 GX F0.5 V3 S2 T10:** IS +0,33 R (n 168, t 1,8) / OOS +0,45 R (n 127, t 2,0); mit Swap +0,27 / +0,40;
+  ohne Top-3 +0,14 / +0,20; 2025 +0,02, 2026 +1,23 (n 10); Long und Short positiv; 7/9 Märkte (Gold −0,05,
+  AUD −0,10); MC 0,4 % Ø < 0, DD 95 % −29 % bei 1 %.
+- Gold-Beispiel nachgebaut: Signal 29.01., Füllung 30.01. 5438 (Open unter Limit), Stop 5595 → +4 R am 02.02.
+- **Lesart:** Die Fläche liefert die Idee, das Fib-Limit macht daraus einen tragfähigen Einstieg (Markt-Einstieg
+  nur +0,13/+0,17 R). Offen: Füllreihenfolge mit H1 prüfen, dann Einfrieren + Tresor.

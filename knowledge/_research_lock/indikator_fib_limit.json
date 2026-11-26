@@ -1,0 +1,14 @@
+{
+  "strategy": "indikator_fib_limit",
+  "split": {
+    "is_start": "2016-01-01",
+    "is_end": "2021-12-31",
+    "oos_end": "2026-05-25",
+    "tresor_end": "2026-11-25"
+  },
+  "registered": "2026-11-26T17:47:18+00:00",
+  "trials": 288,
+  "frozen": null,
+  "unsealed": {},
+  "forward": null
+}

@@ -122,7 +122,13 @@ passiert, was steht an.
    ≠ besser (Score 3+ IS bester, OOS schlechtester Topf), keine Risikoskalierung. LTF-Einstieg H1/M15 über BB/NW/RSI:
    kein robuster (enger Stop = Lotterie, ohne Top-5 negativ). Kandidat Fläche ≥ 50 %: Richtung robust (93 %/92 % der
    144 Varianten IS/OOS > 0), aber dünn (mit Swap +0,04/+0,09 R, ohne Top-5 ≈ 0, 2025/26 negativ, MC 21 % Ø < 0).
-   Vorschlag: Fläche als Kontext/Filter, kein eigener Forward-Bot. **Heute Abend mit dir:** Steckbriefe 7–13,
+   **Entschieden (Nutzer 26.11.):** Fläche ≥ 50 % als **Signal-Hub-Alarm** (neben Daily/H4-Trades, händischer
+   Kontext-Check) → noch zu bauen. **26.11. nachm.: Nutzer-Idee Fib-Limit** (`indikator_fib_limit.py`, Lock
+   `indikator_fib_limit`, 288 Var.): ML-Fläche ≥ 80 % + Stoch/RSI-Cross → Limit 0,5-Fib der Signalkerze (3 T),
+   Stop Signal-Extrem + 0,25 ATR, 10 Tage: **IS +0,33 R / OOS +0,45 R (t 1,8/2,0), ohne Top-3 +0,14/+0,20,
+   2025 +0,02, MC 0,4 % Ø < 0** → bester Indikator-Kandidat; Plateau in IS und OOS gleich gerichtet. Gold-Beispiel
+   29./30.01. exakt +4 R. Offen: H1-Prüfung der Füllreihenfolge, dann Einfrieren + Tresor (deine Entscheidung).
+   **Heute Abend mit dir:** Steckbriefe 7–13,
    LTF-Entry ohne Indikatoren, Daily-Trade-Varianten + Forward-Entscheidung (Telegram-Erinnerung 20:30).
    Inventur-Entwurf bestätigt (10.11.). Reihenfolge (Nutzer 10.11., „stabiles Fundament“):
    (1) Inventur: die ~15 Strategien aus „Meine Trading Edges“ einzeln aufnehmen + Makro-Quellen

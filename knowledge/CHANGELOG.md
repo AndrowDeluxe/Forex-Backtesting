@@ -9,6 +9,11 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-26** [Research/Indikatoren] **Nutzer-Idee Fib-Limit getestet** (`htf_daily_trade/indikator_fib_limit.py`,
+  Lock `indikator_fib_limit`, 288 Varianten): ML-Fläche + Cross auf Daily, Limit am Fib der Signalkerze. Plateau-
+  Variante A80 GX F0.5 V3 S2 T10 IS +0,33 / OOS +0,45 R, ohne Top-3 positiv, MC 0,4 % Ø < 0. Tresor zu. Nutzerentscheid:
+  Fläche ≥ 50 % wird Signal-Hub-Alarm (noch nicht gebaut). 20:30-Telegram-Text um das Ergebnis ergänzt.
+
 - **2026-11-26** [Research/Indikatoren] **Übereinanderlegen, MTF-Einstieg, Kandidat Fläche ≥ 50 %** (Nutzerauftrag).
   `indikator_mtf.py` (Lock `indikator_mtf_ltf`, 151 Var.): Bestätigungs-Score kippt IS→OOS, Skalierung schadet OOS;
   LTF H1/M15-Einstieg über BB/NW/RSI ohne robusten Vorteil (enger Stop: 8–19 % Treffer, Ergebnis = wenige 50–90-R-

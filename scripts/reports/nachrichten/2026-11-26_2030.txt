@@ -14,7 +14,17 @@
  • Cross IN der Fläche (L1) stärker (OOS +0,4 R), aber nur ~4 Trades/Jahr – zu wenig.
 → Mein Vorschlag: nicht als eigener Bot in den Forward, sondern die Fläche als Kontext/Filter (Signal-Hub-Alarm, Typ R) nutzen. Entscheidung bei dir.
 
+5) DEINE Fib-Limit-Idee (nachmittags getestet) – bester Indikator-Kandidat bisher:
+ Signal Daily: ML-Fläche ≥ 80 % (3 Tage) + Stoch- oder RSI-Cross → Limit am 0,5-Fib der Signal-Kerze (3 Tage gültig), Stop Hoch/Tief der Signal-Kerze + 0,25 ATR, 10 Tage halten.
+ • IS +0,33 R (n 168, t 1,8), OOS +0,45 R (n 127, t 2,0); mit Swap +0,27 / +0,40
+ • ohne die 3 größten Gewinner noch +0,14 / +0,20 · 2025 +0,02 · 2026 +1,23 (10 Trades) · 7/9 Märkte + · Long und Short +
+ • Monte-Carlo: 0,4 % Chance auf Ø < 0, DD 95 %-Fall −29 % bei 1 %
+ • Dein Gold-Beispiel 29./30.01. exakt nachgebaut: +4 R (Ziel 4 R) bzw. +2,5 R (10 Tage)
+ • Plateau: 80 % > 50 %, 0,5 > 0,618, ATR-Puffer > nackter Stop, 10-Tage-Ausstieg > feste R-Ziele – in IS UND OOS gleich
+ → Kandidat für Einfrieren + Tresor (einmal öffnen) – Entscheidung heute Abend.
+ Fläche ≥ 50 % als Signal-Hub-Alarm: notiert, wird gebaut.
+
 🔔 Offene Punkte für heute Abend
  1. Steckbriefe Indikatoren 7–13 (MA Cross, Fractals, Pivots, Volumen, SVP/VRVP, Money Flow Profile, COT)
- 2. Lower-Timeframe-Entry OHNE Indikatoren (deine Idee, nächster Schritt)
- 3. Daily-Trade-Varianten weiter ausführen + Entscheidung Forward (Fläche-Kandidat, C2-RSI-Filter)
+ 2. Lower-Timeframe-Entry: Fib-Limit steht (Punkt 5); offen: H1-Feinprüfung der Füll-Reihenfolge + weitere LTF-Entries ohne Indikatoren
+ 3. Daily-Trade-Varianten weiter ausführen + Entscheidung: Fib-Limit-Kandidat einfrieren/Tresor, C2-RSI-Filter

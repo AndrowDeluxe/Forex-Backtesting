@@ -307,6 +307,17 @@
  ],
  "laeufe": [
   {
+   "lauf": "2026-11-26 22:15",
+   "datum": "",
+   "titel_ok": "0",
+   "titel_fehler": "0",
+   "abgerechnet": "0",
+   "sekunden": "1",
+   "llm_aufrufe": "0",
+   "kosten_usd": "0.0000",
+   "hinweis": "kein Handelstag / vor US-Schluss"
+  },
+  {
    "lauf": "2026-11-25 22:35",
    "datum": "2026-11-25",
    "titel_ok": "5",

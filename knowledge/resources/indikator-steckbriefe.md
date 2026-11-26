@@ -161,3 +161,16 @@ Einstieg Folgetag-Open, Stop 5-Tage-Extrem − 0,2 ATR, netto ohne Swap):
   +0,22 / +0,16), MACD 8/20/14 mit +0,33 / +0,20.
 - Daily Typ R: ML-Fläche ≥ 50 % mit IS +0,75 / OOS +0,14 R (Basis +0,29 / −0,08, OOS n 50).
 - H4 (h4_ny15 Top-3 je Klasse): IS-Verbesserungen (ML-Fläche, MACD, RSI) kippen im OOS — kein stabiler Filter.
+
+## Übereinanderlegen + MTF-Einstieg (26.11. mittags)
+
+- **Übereinanderlegen/Risikoskalierung** (`indikator_mtf.py` Teil 1): Zusatz-Bestätigungen am Signaltag (MACD-,
+  Stoch-Cross, BB-Berührung, NW außerhalb) zählen. Kandidat Fläche ≥ 50 %: Score 3+ IS +0,46 R, OOS −0,19 R;
+  Score 1 IS −0,05, OOS +0,33. Kein stabiler Zusammenhang → keine Skalierung (S1 verschlechtert OOS).
+- **MTF** (Teil 2, Lock `indikator_mtf_ltf`): Setup Daily/H4 (Fläche, Kandidat, ≥ 2 von 4 Bausteinen, H4-Zählung),
+  Einstieg H1/M15 über BB-Rückkehr, NW-Rückkehr, RSI-Cross. Mit LTF-Stop: Treffer 8–19 %, Ergebnis aus 5 Ausreißern
+  (50–90 R), ohne sie negativ. Mit Daily-Stop: LTF-Timing nicht besser als der Daily-Einstieg.
+- **Kandidat Fläche ≥ 50 % + RSI-Cross** (`indikator_flaeche.py`, 144 Nachbarn): 93 % IS / 92 % OOS > 0 → Idee
+  robust. Basis mit Swap-Näherung IS +0,04 / OOS +0,09 R, ohne Top-5 ≈ 0, 2025 −0,28 / 2026 −0,29 R, MC 21 % Ø < 0,
+  DD 95 % −32 % bei 1 %. Cross innerhalb der Fläche (L1) stärker, aber ~4 Trades/Jahr.
+  **Lesart:** Die Fläche ist Kontext, kein eigenständiger Edge.

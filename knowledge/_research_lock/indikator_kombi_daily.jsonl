@@ -1,2 +1,3 @@
 {"ts": "2026-11-25T23:47:54+00:00", "event": "register_split", "is_start": "2016-01-01", "is_end": "2021-12-31", "oos_end": "2026-05-25", "tresor_end": "2026-11-25"}
 {"ts": "2026-11-25T23:47:54+00:00", "event": "trials", "n": 54, "total": 54, "note": "Kombi Z0-2 x G1-3 x C0-2 x X1-2 (26.11.)"}
+{"ts": "2026-11-26T10:40:50+00:00", "event": "trials", "n": 144, "total": 198, "note": "Flaeche-Kandidat: A x L x H x B Nachbarschaft (26.11.)"}

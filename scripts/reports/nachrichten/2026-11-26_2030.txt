@@ -1,0 +1,20 @@
+📊 Indikatoren – Ergebnisse von heute (26.11.)
+
+1) Nachbau: RSI, RSI-MA, Multi Length, ATR, NW decken sich exakt mit TradingView (Gold + EU, D1 + H4). Dein Chart-BB ist 34/hl2, nicht 20/close/2.
+
+2) Übereinanderlegen / Risikoskalierung (Daily): mehr Bestätigungen (MACD-, Stoch-Cross, BB, NW) = NICHT besser. Im IS war 3+ Bestätigungen am besten, im OOS am schlechtesten (Kandidat: +0,46 → −0,19 R). Skalierung nach Score verschlechtert OOS. → Keine Risikoskalierung.
+
+3) MTF (Setup D/H4, Einstieg H1/M15 über BB/NW/RSI-Cross): kein robuster Einstieg. Mit engem LTF-Stop nur 8–19 % Treffer, Ergebnis hängt an 5 Lotterie-Gewinnern (50–90 R); ohne sie negativ. Mit Daily-Stop ist LTF-Timing nicht besser als einfach Daily einsteigen.
+
+4) Kandidat „ML-Fläche ≥ 50 % + RSI-MA-Cross“ (Daily, 9 Märkte) weiter ausgeführt:
+ • Richtung robust: 93 % von 144 Parametervarianten IS im Plus, 92 % OOS.
+ • Aber dünn: Basis IS +0,13 / OOS +0,17 R, mit Swap +0,04 / +0,09, ohne Top-5-Gewinner ≈ 0.
+ • 2025 −0,28 R, 2026 −0,29 R (wie andere Edges zuletzt schwächer).
+ • Monte-Carlo: 21 % Chance auf Ø < 0, Drawdown 95 %-Fall −32 % bei 1 % Risiko.
+ • Cross IN der Fläche (L1) stärker (OOS +0,4 R), aber nur ~4 Trades/Jahr – zu wenig.
+→ Mein Vorschlag: nicht als eigener Bot in den Forward, sondern die Fläche als Kontext/Filter (Signal-Hub-Alarm, Typ R) nutzen. Entscheidung bei dir.
+
+🔔 Offene Punkte für heute Abend
+ 1. Steckbriefe Indikatoren 7–13 (MA Cross, Fractals, Pivots, Volumen, SVP/VRVP, Money Flow Profile, COT)
+ 2. Lower-Timeframe-Entry OHNE Indikatoren (deine Idee, nächster Schritt)
+ 3. Daily-Trade-Varianten weiter ausführen + Entscheidung Forward (Fläche-Kandidat, C2-RSI-Filter)

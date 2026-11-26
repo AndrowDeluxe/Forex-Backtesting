@@ -117,7 +117,13 @@ passiert, was steht an.
    IS +0,13 / OOS +0,17 R** (OOS 8/9 Märkte +, t je ~1,3) → Kandidat, die Fläche trägt, Tresor zu.
    (b) **Filter Daily-C2:** Momentum in Trade-Richtung hilft leicht und stabil (RSI-Cross mit +0,23/+0,11 R, MACD mit
    +0,10/+0,04). **Typ R:** ML-Fläche ≥ 50 % mit IS +0,46 / OOS +0,22 R Delta (n 50). (c) **Filter H4:** IS-Gewinne
-   kippen im OOS, kein stabiler Filter. Nächster Schritt offen: Kandidaten (a) + C2-RSI-Filter weiter?
+   kippen im OOS, kein stabiler Filter.
+   **26.11. mittags: Übereinanderlegen + MTF geprüft** (`indikator_mtf.py`, `indikator_flaeche.py`): mehr Bestätigungen
+   ≠ besser (Score 3+ IS bester, OOS schlechtester Topf), keine Risikoskalierung. LTF-Einstieg H1/M15 über BB/NW/RSI:
+   kein robuster (enger Stop = Lotterie, ohne Top-5 negativ). Kandidat Fläche ≥ 50 %: Richtung robust (93 %/92 % der
+   144 Varianten IS/OOS > 0), aber dünn (mit Swap +0,04/+0,09 R, ohne Top-5 ≈ 0, 2025/26 negativ, MC 21 % Ø < 0).
+   Vorschlag: Fläche als Kontext/Filter, kein eigener Forward-Bot. **Heute Abend mit dir:** Steckbriefe 7–13,
+   LTF-Entry ohne Indikatoren, Daily-Trade-Varianten + Forward-Entscheidung (Telegram-Erinnerung 20:30).
    Inventur-Entwurf bestätigt (10.11.). Reihenfolge (Nutzer 10.11., „stabiles Fundament“):
    (1) Inventur: die ~15 Strategien aus „Meine Trading Edges“ einzeln aufnehmen + Makro-Quellen
    (SMH Calls, Zusatzeducation, Makro Education, Elite, Incentive) sichten, (2) FX-Zinsdaten-Loader

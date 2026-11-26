@@ -9,6 +9,14 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-26** [Research/Indikatoren] **Übereinanderlegen, MTF-Einstieg, Kandidat Fläche ≥ 50 %** (Nutzerauftrag).
+  `indikator_mtf.py` (Lock `indikator_mtf_ltf`, 151 Var.): Bestätigungs-Score kippt IS→OOS, Skalierung schadet OOS;
+  LTF H1/M15-Einstieg über BB/NW/RSI ohne robusten Vorteil (enger Stop: 8–19 % Treffer, Ergebnis = wenige 50–90-R-
+  Ausreißer). `indikator_flaeche.py` (+144 Var. im Lock `indikator_kombi_daily`): Plateau breit, Betrag dünn
+  (ohne Top-5 ≈ 0, 2025/26 negativ). Tresor zu, kein Forward. Neuer **einmaliger Task**
+  „Forex-Erinnerung-Indikatoren-2026-11-26“ (20:30, Telegram-Zusammenfassung + offene Punkte,
+  `scripts/reports/einmal_nachricht.py`).
+
 - **2026-11-26** [Research/Indikatoren] **Nachbau 1–6 + Edge-Test** (Nutzerauftrag). `htf_daily_trade/indikatoren.py`
   gegen TradingView-Export (FXCM, Gold + EURUSD, D1 + H4, `tv_abgleich.py`): RSI, RSI-MA, Multi Length, ATR, NW exakt;
   Chart-BB ist 34/hl2 statt 20/close/2. `indikator_edge.py`: Kombi-Edge Daily (Lock `indikator_kombi_daily`, 54 Var.)

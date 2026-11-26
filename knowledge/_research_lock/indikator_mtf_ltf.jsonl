@@ -1,0 +1,2 @@
+{"ts": "2026-11-26T10:37:46+00:00", "event": "register_split", "is_start": "2016-01-01", "is_end": "2021-12-31", "oos_end": "2026-05-25", "tresor_end": "2026-11-25"}
+{"ts": "2026-11-26T10:37:46+00:00", "event": "trials", "n": 151, "total": 151, "note": "MTF HA-HE x H1/M15 x E0-E4 x XA-XC + Skalierung S1 (26.11.)"}

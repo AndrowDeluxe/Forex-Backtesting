@@ -59,3 +59,13 @@ datum,zeit,quelle,status,grund,eintraege
 2026-11-25,2026-11-25T22:30:04+01:00,krypto_fear_greed,ok,,1
 2026-11-25,2026-11-25T22:30:04+01:00,alphavantage,kostenpflichtig,NEWS_SENTIMENT ist ein Premium-Endpunkt (Gratis-Key reicht nicht),0
 2026-11-25,2026-11-25T22:30:04+01:00,claude,ok,QQQ/offiziell: Zahl(en) 100 nicht in den Quellen,25
+2026-11-26,2026-11-26T22:30:03+01:00,google_news,ok,,117
+2026-11-26,2026-11-26T22:30:03+01:00,finnhub,ok,,24
+2026-11-26,2026-11-26T22:30:03+01:00,zentralbanken,ok,,43
+2026-11-26,2026-11-26T22:30:03+01:00,sec_edgar,ok,,1
+2026-11-26,2026-11-26T22:30:03+01:00,stocktwits,ok,,165
+2026-11-26,2026-11-26T22:30:03+01:00,reddit,nicht konfiguriert,reddit_client_id/secret fehlen (ohne Login blockt Reddit mit 403),0
+2026-11-26,2026-11-26T22:30:03+01:00,cnn_fear_greed,ok,extreme fear (15),2
+2026-11-26,2026-11-26T22:30:03+01:00,krypto_fear_greed,ok,,1
+2026-11-26,2026-11-26T22:30:03+01:00,alphavantage,kostenpflichtig,NEWS_SENTIMENT ist ein Premium-Endpunkt (Gratis-Key reicht nicht),0
+2026-11-26,2026-11-26T22:30:03+01:00,claude,ok,"QQQ/offiziell: Zahl(en) 100 nicht in den Quellen; USDJPY/news: Zahl(en) 159, 160 nicht in den Quellen",40

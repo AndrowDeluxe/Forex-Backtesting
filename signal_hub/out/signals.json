@@ -1,12 +1,12 @@
 {
- "stand": "2026-11-27 14:01:02.575331+00:00",
+ "stand": "2026-11-27 15:01:02.568185+00:00",
  "statistik": {
-  "signale": 4,
-  "ja": 2,
+  "signale": 6,
+  "ja": 4,
   "nein": 0,
   "verfallen": 2,
-  "r_bestaetigt": -1.0727577512329203,
-  "r_alle_signale": 2.7628172037705134
+  "r_bestaetigt": 0.3921779642454508,
+  "r_alle_signale": 2.7476306376218855
  },
  "signale": [
   {
@@ -84,6 +84,44 @@
    "p_sig_r": -0.0462027587,
    "p_conf_status": null,
    "p_conf_r": null
+  },
+  {
+   "id": "USDCAD_2026112711_s",
+   "setup": "H4-Spike",
+   "markt": "USDCAD",
+   "seite": "short",
+   "einstieg": "2026-11-27T14:00:00.000Z",
+   "kurs": 1.42407,
+   "stop": 1.42611,
+   "ziel_3r": 1.41795,
+   "stern": false,
+   "ampel": "gelb",
+   "status": "ja",
+   "grund": null,
+   "entschieden_um": "2026-11-27T14:21:02.320Z",
+   "p_sig_status": "offen",
+   "p_sig_r": -0.1477832512,
+   "p_conf_status": "offen",
+   "p_conf_r": 0.5309734513
+  },
+  {
+   "id": "USDCHF_2026112711_s",
+   "setup": "H4-Spike",
+   "markt": "USDCHF",
+   "seite": "short",
+   "einstieg": "2026-11-27T14:00:00.000Z",
+   "kurs": 0.83528,
+   "stop": 0.83709,
+   "ziel_3r": 0.82985,
+   "stern": false,
+   "ampel": "gelb",
+   "status": "ja",
+   "grund": null,
+   "entschieden_um": "2026-11-27T14:21:02.320Z",
+   "p_sig_status": "offen",
+   "p_sig_r": 0.1325966851,
+   "p_conf_status": "offen",
+   "p_conf_r": 0.9339622642
   }
  ]
 }

@@ -304,3 +304,58 @@ datum,zeit,symbol,klasse,quelle,roh,wert,n,status
 2026-11-26,2026-11-26T22:30:03+01:00,XAUUSD,fx,claude_news,0,0.0,3,ok
 2026-11-26,2026-11-26T22:30:03+01:00,XAUUSD,fx,claude_offiziell,0,0.0,3,ok
 2026-11-26,2026-11-26T22:30:03+01:00,XAUUSD,fx,claude_social,1,0.5,5,ok
+2026-11-27,2026-11-27T22:30:03+01:00,SPY,aktien,stocktwits,5/2,0.429,7,ok
+2026-11-27,2026-11-27T22:30:03+01:00,QQQ,aktien,stocktwits,10/2,0.667,12,ok
+2026-11-27,2026-11-27T22:30:03+01:00,AAPL,aktien,stocktwits,7/3,0.4,10,ok
+2026-11-27,2026-11-27T22:30:03+01:00,NVDA,aktien,stocktwits,12/5,0.412,17,ok
+2026-11-27,2026-11-27T22:30:03+01:00,TSLA,aktien,stocktwits,9/4,0.385,13,ok
+2026-11-27,2026-11-27T22:30:03+01:00,BTC,krypto,stocktwits,6/7,-0.077,13,ok
+2026-11-27,2026-11-27T22:30:03+01:00,ETH,krypto,stocktwits,5/7,-0.167,12,ok
+2026-11-27,2026-11-27T22:30:03+01:00,SOL,krypto,stocktwits,16/5,0.524,21,ok
+2026-11-27,2026-11-27T22:30:03+01:00,EURUSD,fx,stocktwits,0/2,,2,zu wenig Daten
+2026-11-27,2026-11-27T22:30:03+01:00,GBPUSD,fx,stocktwits,1/1,,2,zu wenig Daten
+2026-11-27,2026-11-27T22:30:03+01:00,USDJPY,fx,stocktwits,0/3,-1.0,3,ok
+2026-11-27,2026-11-27T22:30:03+01:00,AUDUSD,fx,stocktwits,1/0,,1,zu wenig Daten
+2026-11-27,2026-11-27T22:30:03+01:00,USDCHF,fx,stocktwits,0/0,,0,zu wenig Daten
+2026-11-27,2026-11-27T22:30:03+01:00,XAUUSD,fx,stocktwits,0/0,,0,zu wenig Daten
+2026-11-27,2026-11-27T22:30:03+01:00,SPY,aktien,cnn_fear_greed,24.9,-0.502,1,ok
+2026-11-27,2026-11-27T22:30:03+01:00,SPY,aktien,cnn_put_call,19,-0.62,1,ok
+2026-11-27,2026-11-27T22:30:03+01:00,BTC,krypto,krypto_fear_greed,12,-0.76,1,ok
+2026-11-27,2026-11-27T22:30:03+01:00,SPY,aktien,claude_news,1,0.5,5,ok
+2026-11-27,2026-11-27T22:30:03+01:00,SPY,aktien,claude_social,1,0.5,4,ok
+2026-11-27,2026-11-27T22:30:03+01:00,SPY,aktien,claude_offiziell,0,0.0,2,ok
+2026-11-27,2026-11-27T22:30:03+01:00,QQQ,aktien,claude_news,1,0.5,8,ok
+2026-11-27,2026-11-27T22:30:03+01:00,QQQ,aktien,claude_social,1,0.5,3,ok
+2026-11-27,2026-11-27T22:30:03+01:00,QQQ,aktien,claude_offiziell,0,0.0,2,ok
+2026-11-27,2026-11-27T22:30:03+01:00,AAPL,aktien,claude_news,1,0.5,6,ok
+2026-11-27,2026-11-27T22:30:03+01:00,AAPL,aktien,claude_social,0,0.0,5,ok
+2026-11-27,2026-11-27T22:30:03+01:00,NVDA,aktien,claude_news,1,0.5,6,ok
+2026-11-27,2026-11-27T22:30:03+01:00,NVDA,aktien,claude_social,1,0.5,6,ok
+2026-11-27,2026-11-27T22:30:03+01:00,NVDA,aktien,claude_offiziell,0,0.0,1,ok
+2026-11-27,2026-11-27T22:30:03+01:00,TSLA,aktien,claude_news,1,0.5,6,ok
+2026-11-27,2026-11-27T22:30:03+01:00,TSLA,aktien,claude_social,1,0.5,5,ok
+2026-11-27,2026-11-27T22:30:03+01:00,BTC,krypto,claude_news,-1,-0.5,5,ok
+2026-11-27,2026-11-27T22:30:03+01:00,BTC,krypto,claude_social,-1,-0.5,5,ok
+2026-11-27,2026-11-27T22:30:03+01:00,ETH,krypto,claude_news,-1,-0.5,4,ok
+2026-11-27,2026-11-27T22:30:03+01:00,ETH,krypto,claude_social,-1,-0.5,5,ok
+2026-11-27,2026-11-27T22:30:03+01:00,SOL,krypto,claude_news,0,0.0,5,ok
+2026-11-27,2026-11-27T22:30:03+01:00,SOL,krypto,claude_social,0,0.0,5,ok
+2026-11-27,2026-11-27T22:30:03+01:00,EURUSD,fx,claude_news,-1,-0.5,6,ok
+2026-11-27,2026-11-27T22:30:03+01:00,EURUSD,fx,claude_social,0,0.0,3,ok
+2026-11-27,2026-11-27T22:30:03+01:00,EURUSD,fx,claude_offiziell,0,0.0,4,ok
+2026-11-27,2026-11-27T22:30:03+01:00,GBPUSD,fx,claude_news,1,0.5,5,ok
+2026-11-27,2026-11-27T22:30:03+01:00,GBPUSD,fx,claude_social,0,0.0,3,ok
+2026-11-27,2026-11-27T22:30:03+01:00,GBPUSD,fx,claude_offiziell,0,0.0,4,ok
+2026-11-27,2026-11-27T22:30:03+01:00,USDJPY,fx,claude_news,1,0.5,5,ok
+2026-11-27,2026-11-27T22:30:03+01:00,USDJPY,fx,claude_social,0,0.0,3,ok
+2026-11-27,2026-11-27T22:30:03+01:00,USDJPY,fx,claude_offiziell,0,0.0,4,ok
+2026-11-27,2026-11-27T22:30:03+01:00,AUDUSD,fx,claude_news,-1,-0.5,4,ok
+2026-11-27,2026-11-27T22:30:03+01:00,AUDUSD,fx,claude_social,0,0.0,3,ok
+2026-11-27,2026-11-27T22:30:03+01:00,USDCAD,fx,claude_news,0,0.0,5,ok
+2026-11-27,2026-11-27T22:30:03+01:00,USDCAD,fx,claude_offiziell,0,0.0,2,ok
+2026-11-27,2026-11-27T22:30:03+01:00,USDCHF,fx,claude_news,0,0.0,5,ok
+2026-11-27,2026-11-27T22:30:03+01:00,USDCHF,fx,claude_social,1,0.5,4,ok
+2026-11-27,2026-11-27T22:30:03+01:00,USDCHF,fx,claude_offiziell,0,0.0,2,ok
+2026-11-27,2026-11-27T22:30:03+01:00,XAUUSD,fx,claude_news,0,0.0,6,ok
+2026-11-27,2026-11-27T22:30:03+01:00,XAUUSD,fx,claude_social,0,0.0,4,ok
+2026-11-27,2026-11-27T22:30:03+01:00,XAUUSD,fx,claude_offiziell,0,0.0,2,ok

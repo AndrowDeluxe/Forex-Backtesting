@@ -1,5 +1,5 @@
 {
- "stand": "2026-11-25",
+ "stand": "2026-11-27",
  "start": "2026-11-23",
  "auswertung_ab": "2027-02-15",
  "huerde": "Frühestens nach 12 Wochen auswerten. Erfolg = der Agent schlägt beim Richtungs-Alpha alle drei Kontrollen (immer Buy, Zufall, Momentum) und t > 2 über Wochenmittel.",
@@ -19,8 +19,8 @@
  "quellen": {
   "agent": {
    "label": "Agenten-Team",
-   "n": 14,
-   "offen": 14,
+   "n": 19,
+   "offen": 19,
    "abgerechnet": 0,
    "richtungs_alpha": null,
    "summe": null,
@@ -52,8 +52,8 @@
   },
   "always_buy": {
    "label": "Immer Buy",
-   "n": 14,
-   "offen": 14,
+   "n": 19,
+   "offen": 19,
    "abgerechnet": 0,
    "richtungs_alpha": null,
    "summe": null,
@@ -85,8 +85,8 @@
   },
   "random": {
    "label": "Zufall",
-   "n": 14,
-   "offen": 14,
+   "n": 19,
+   "offen": 19,
    "abgerechnet": 0,
    "richtungs_alpha": null,
    "summe": null,
@@ -118,8 +118,8 @@
   },
   "momentum": {
    "label": "Momentum 20 T",
-   "n": 14,
-   "offen": 14,
+   "n": 19,
+   "offen": 19,
    "abgerechnet": 0,
    "richtungs_alpha": null,
    "summe": null,
@@ -164,6 +164,56 @@
  },
  "probe_eintraege": 0,
  "letzte": [
+  {
+   "datum": "2026-11-27",
+   "ticker": "XOM",
+   "rating": "Underweight",
+   "alpha": null,
+   "rendite": null,
+   "begruendung": "Reduce `XOM` exposure in stages and do not exit. Sell about one-third of your current `XOM` position now, using limit orders in the 160–162 band rather than a market order. That band covers the two quoted prices (158.23 and the inferred 160.18 close), so you avoid paying for a roughly 1% disagreement between sources. If you hold a full standard weight, this takes you to about two-thirds of standard. Make the second cut conditional: a daily close below 155.09 (the 200 SMA, which would also break the 156.90 closing low) should reduce the position toward a minimal size. Do not add between 155 and",
+   "fehler": "",
+   "probe": false
+  },
+  {
+   "datum": "2026-11-27",
+   "ticker": "WMT",
+   "rating": "Underweight",
+   "alpha": null,
+   "rendite": null,
+   "begruendung": "Trim WMT moderately and in stages; do not exit. The business is healthy, but the price (about 133.13, roughly 41x forward earnings, FCF yield about 0.6%) leaves little room for error, and the rally is not backed by a verified new quarterly print. Portfolio context was not provided, so apply this to your own weight: cut roughly a quarter to a third of the position, and up to a half only if you are already above your standard allocation or Q3 verification fails.",
+   "fehler": "",
+   "probe": false
+  },
+  {
+   "datum": "2026-11-27",
+   "ticker": "UNH",
+   "rating": "Underweight",
+   "alpha": null,
+   "rendite": null,
+   "begruendung": "Reduce UNH exposure to about 60–65% of a standard allocation. Do not exit fully. Portfolio holdings were not provided, so apply these percentages to your own standard position size.",
+   "fehler": "",
+   "probe": false
+  },
+  {
+   "datum": "2026-11-27",
+   "ticker": "NVDA",
+   "rating": "Hold",
+   "alpha": null,
+   "rendite": null,
+   "begruendung": "Hold NVDA. Keep the existing position at its standard allocation, and do not add before the December 1 and 3 hearings. Portfolio holdings and cash were not provided, so apply this to your own book: the call is \"no change\", not a statement about a specific share count. Size for volatility by holding the same dollar risk budget per position, which now means fewer shares because ATR (12.9, about 8.6% of price) has roughly doubled. Add no leverage or options through the event window. If you want catalyst exposure, the most the evidence supports is a small starter tranche, about 3% of account notio",
+   "fehler": "",
+   "probe": false
+  },
+  {
+   "datum": "2026-11-27",
+   "ticker": "JPM",
+   "rating": "Hold",
+   "alpha": null,
+   "rendite": null,
+   "begruendung": "Hold JPM. The existing position stays at its current size. Do not add at the 322.96 close (2026-11-27), and do not trim while price holds above 310.5. No portfolio context was provided, so everything below is relative to the caller's own holding.",
+   "fehler": "",
+   "probe": false
+  },
   {
    "datum": "2026-11-25",
    "ticker": "XOM",
@@ -306,6 +356,17 @@
   }
  ],
  "laeufe": [
+  {
+   "lauf": "2026-11-27 22:34",
+   "datum": "2026-11-27",
+   "titel_ok": "5",
+   "titel_fehler": "0",
+   "abgerechnet": "0",
+   "sekunden": "1182",
+   "llm_aufrufe": "75",
+   "kosten_usd": "1.4115",
+   "hinweis": ""
+  },
   {
    "lauf": "2026-11-26 22:15",
    "datum": "",

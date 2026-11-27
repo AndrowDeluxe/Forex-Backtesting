@@ -1,38 +1,38 @@
 {
-  "generated_at": "2026-11-27T17:01:25",
+  "generated_at": "2026-11-27T17:31:25",
   "bridges": {
     "EK-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\EK-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-11-27T16:59:06",
+      "last_run": "2026-11-27T17:29:06",
       "minutes_since_last_run": 2.3,
       "status": "ok",
-      "last_equity_line": "2026-11-27 16:59:06 2026-11-27 16:59:02,860 INFO run_once: Konto-Equity 2801.91 EUR | Aggregiertes offenes Risiko (ganzes Konto): 524.32 (Deckel dieser Bridge: 840.57, 30%)",
+      "last_equity_line": "2026-11-27 17:29:06 2026-11-27 17:29:02,831 INFO run_once: Konto-Equity 2786.13 EUR | Aggregiertes offenes Risiko (ganzes Konto): 524.41 (Deckel dieser Bridge: 835.84, 30%)",
       "recent_events": [
         "2026-11-26 10:14:07 2026-11-26 10:14:07,244 INFO run_once: cls_practical: {'status': 'entry_too_far_against_signal', 'consumed_r': 0.637, 'detail': 'Kurs bereits 0.64R gegen das Signal gelaufen (Grenze 0.50R) -- ein Entry haette die Position um das 2.8-fache aufgeblaeht.'}"
       ]
     },
     "Funded-Portfolio-Bridge": {
       "log_path": "C:\\Users\\andre\\Funded-Portfolio-Bridge\\logs\\task_run.log",
-      "last_run": "2026-11-27T16:58:16",
-      "minutes_since_last_run": 3.1,
+      "last_run": "2026-11-27T17:28:15",
+      "minutes_since_last_run": 3.2,
       "status": "ok",
       "accounts": {
         "Funded Portfolio - TTP (Konto 2, Demo) (ttp)": {
-          "last_equity_line": "2026-11-27 16:58:16 Verbunden: Login 504072729, Equity $99,887.56 USD",
+          "last_equity_line": "2026-11-27 17:28:15 Verbunden: Login 504072729, Equity $99,887.07 USD",
           "recent_events": []
         },
         "Funded Portfolio - IQ Markets (BeyondIQCapital Demo Challenge IQCEV100K-130835) (iqmarkets)": {
-          "last_equity_line": "2026-11-27 16:58:16 Verbunden: Login 16054, Equity $97,443.13 USD",
+          "last_equity_line": "2026-11-27 17:28:15 Verbunden: Login 16054, Equity $97,443.13 USD",
           "recent_events": []
         }
       }
     },
     "FKInstantFunding-MT5-Bridge": {
       "log_path": "C:\\Users\\andre\\FKInstantFunding-MT5-Bridge\\logs\\task_run.log",
-      "last_run": "2026-11-27T16:14:10",
-      "minutes_since_last_run": 47.2,
+      "last_run": "2026-11-27T17:14:10",
+      "minutes_since_last_run": 17.2,
       "status": "ok",
-      "last_equity_line": "2026-11-27 16:14:10 Verbunden: Login 17764, Equity $98,851.44",
+      "last_equity_line": "2026-11-27 17:14:10 Verbunden: Login 17764, Equity $98,945.35",
       "recent_events": [
         "2026-11-12 03:14:11  LIVE ᴩ trend_pullback XPTUSD.gbe Signal zu alt fuer Live-Entry (74 Min., Grenze 60 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen.",
         "2026-11-06 05:14:12  LIVE ᴩ gold_silver XAUUSD.gbe Signal zu alt fuer Live-Entry (254 Min., Grenze 150 Min.) -- uebersprungen, um nicht zu einem laengst gelaufenen Kurs zu jagen."

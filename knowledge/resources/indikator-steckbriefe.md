@@ -22,7 +22,7 @@ Status: ✅ bestätigt · 📝 Entwurf, wartet auf Nutzer · ⬜ offen.
 | 10 | Volumen | ✅ | – | ⬜ |
 | 11 | SVP/VRVP | ✅ | Volumen-POC 20 T (Filter X11) | X11 in Filter-Matrix |
 | 12 | Money Flow Profile | ✅ | – | ⬜ |
-| 13 | COT | ⏸ Dennis-Education | M7 COT-Fluss, X4 COT-Index | M7/X4 in Filter-Matrix |
+| 13 | COT | ✅ aus Dennis-Calls 27.11. | M7 COT-Fluss, X4 COT-Index | Veränderungsrate HF vs. Retail ungetestet |
 
 ## Nutzer-Antworten 26.11. (Kurzfassung)
 
@@ -177,9 +177,25 @@ Chart-Beispielen (Gold D1 Pivots, EURUSD H4/H8/D1 Volumen, SVP, VRVP, Money Flow
 - **Lesart:** Ergänzung zum VRVP — Zonen, in denen **beide übereinstimmen**, sind besonders interessant (Bild 6).
 - **Test:** erst mit 11 (Übereinstimmung VRVP-Knoten × Money-Flow-Zone).
 
-### 13 COT ⏸
-- Wenig eigene Erfahrung; Nutzer orientiert sich an der **neuen Education von Dennis aus den Elite-Calls**
-  ([[smh-dennis-cot-volumen-calls]]). Steckbrief folgt daraus. Code bleibt: M7 COT-Fluss, X4 COT-Index.
+### 13 COT ✅ (27.11., aus den Elite-Calls)
+- **Quelle:** [[smh-dennis-cot-volumen-calls]] Abschnitt 5 — der Nutzer übernimmt Dennis' Lesart.
+- **Lesart:** Nur die **Veränderungsrate** zählt, nicht der absolute Stand. Hedgefonds (Non-Commercials) bauen auf =
+  Erwartung in diese Richtung; HF bauen ab, während Retail kauft = Retracement wird vom Retail getragen (Falle).
+  Trendwechsel erst nach **mehreren Wochen** Auf-/Abbau **plus finalem BOS** im Preis. Datierung: Dienstag-Stand,
+  Freitag veröffentlicht → frühestens ab Freitagabend nutzbar.
+- **Rolle:** HTF-Kontext/Filter (Daily/Weekly), kein Einstiegssignal. Volumen nur zusammen mit COT.
+- **Was schon getestet ist:** COT als Kontra-Extrem (X4) zweimal ohne Wert. M7 COT-Fluss existiert in der Filter-Matrix.
+- **Test (offen):** Filter „HF-Netto 2–4 Wochen in Trade-Richtung aufgebaut UND Retail gegenläufig" auf C2/Typ R
+  und das H4-Edge; Kontrolle: nur HF-Veränderung ohne Retail-Bedingung.
+
+## LTF-Einstieg ohne Indikatoren: CHoCH + 2 BOS (Nutzer 27.11.)
+- **Ablauf (M15, auch M5):** Nach Daily-Bestätigung (Wendepunkt) im LTF ein **CHoCH** abwarten, danach **zwei BOS**
+  der internen Struktur in die neue Richtung. Einstieg am **Hoch (short) bzw. Tief (long), das den zweiten BOS
+  ausgelöst hat** — das ist das Inducement, Limit dort (Beispiel EURUSD M15 21.–22.04.2025, Short).
+- **Voraussetzung:** rein mechanisch, trägt nur mit **solidem Trendumkehr-Filter** im HTF (z. B. Daily-Reversal Typ R).
+  Ohne Wendepunkt-Filter nicht testen.
+- **Für den Test noch zu klären:** Swing-Definition (Fractal-Länge) für CHoCH/BOS, Stop (über dem Swing-Hoch des
+  CHoCH?), Ziel/Haltedauer, Gültigkeit des Limits.
 
 ## Nachbau + Edge-Test 1–6 (26.11.)
 
@@ -234,3 +250,8 @@ Limit am 0,5-Fib des Signaltags kaufen/verkaufen; SL Vortageshoch/-tief oder ATR
 Backtest: IS +0,33 / OOS +0,42 R (V3, Stop +0,25 ATR) → Füllreihenfolge sauber, Stop am Fülltag in ~22 % der Trades.
 **Mit Broker-Tagen (NY 17:00, = TradingView-FXCM-Daily):** IS +0,31 / **OOS +0,12 R (t 0,65), ohne Top-3 −0,06**,
 2025 −0,41. Der Edge hängt an der Tagesgrenze → schwächer als gedacht; vor dem Einfrieren Tagesdefinition festlegen.
+
+**Tagesgrenzen-Test (27.11., `indikator_fib_h1.py --tagesgrenzen`):** Gleiche Regel (V3, Stop +0,25 ATR) mit sechs
+Tagesgrenzen. OOS: UTC +0,42 · LDN7 +0,22 · NY0 +0,22 · SERVER +0,12 · UTC22 +0,12 · FFM0 +0,09 R; ohne Top-3 nur UTC
+positiv (+0,16), alle anderen ≈ 0 oder negativ. IS 0,05–0,33. → **Nur die UTC-Einteilung trägt, das ist Zufall der
+Kerzeneinteilung, kein Mechanismus.** Der Kandidat ist kein Bot; als Kontext-Alarm (Signal-Hub) zusammen mit der Fläche.

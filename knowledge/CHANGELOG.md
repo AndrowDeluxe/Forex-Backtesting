@@ -9,6 +9,37 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-27** [Research / Indikatoren] **Fib-Limit-Kandidat: Tagesgrenzen-Test durchgefallen** (Nutzerauftrag).
+  `indikator_fib_h1.py --tagesgrenzen` → `indikator_fib_tagesgrenzen.csv`: OOS UTC +0,42 · London 07:00 +0,22 ·
+  NY 0:00 +0,22 · Broker NY 17:00 +0,12 · 22:00 UTC +0,12 · Frankfurt 0:00 +0,09 R; ohne Top-3 nur UTC positiv. Edge =
+  Zufall der Kerzeneinteilung, kein Bot. Nicht eingefroren, Tresor zu (Rückfrage beim Nutzer). Steckbrief 13 COT aus
+  [[smh-dennis-cot-volumen-calls]] geschrieben, LTF-Einstieg CHoCH + 2 BOS (Nutzer) als Spezifikation in
+  [[indikator-steckbriefe]].
+- **2026-11-27/28** [Education] **Prosper-Lektion 8 umgesetzt: echte Prediction Markets (Polymarket, öffentlich)**
+  (Nutzerauftrag, Kursprojekt außerhalb des Repos, Backup `_backup_vor_lektion8/`, nur Research, keine Wallet, keine
+  Orders). Neu `app/prediction_data.py` (Gamma-API: Frage, Regeln, Auflösungsquelle, YES/NO-Preise, Enddatum, Liquidität,
+  Volumen, Geld/Brief; CLOB `prices-history` Tagesverlauf; Google-News-Schlagzeilen je Frage; Prüfung Regeln/Preise 0–100 ¢/
+  Daten/offen, abgelaufene Märkte = „awaiting resolution“, Lücken markiert; klar markierte FICTIONAL-FIXTURE-Märkte als
+  Fallback). Market Analyst rechnet in Prozentpunkten (Wahrscheinlichkeit, Änderung 1/7/30 T, Schwankung), News Analyst
+  trennt OBSERVED (Schlagzeilen) / FACTS (nur mit Schlagzeilen-Beleg) / SPECULATION, Strategy Agent erzeugt nur
+  HYPOTHESIS (nie BUY/SELL auf PM). Zuordnung: PM-FED-CUT-DEC → Fed −25 bp Dez. 2026, PM-BTC-100K-EOY → BTC $100k bis
+  31.12.2026. 55/55 Tests, Browser-Check (Handy-Kopfzeile umbrechbar gemacht). **Echter Test bestanden:** Fed −25 bp YES
+  0,25 ¢, Liquidität $1,38 Mio., 110 Tagespunkte (1 Doppelpunkt, 10 Lücken markiert); BTC $100k YES 1,15 ¢, 340 Punkte,
+  28 Lücken. Claude-Einordnung: Fed 1,0 % vs. Markt 0,25 %, BTC 1,0 % vs. 1,15 %, je „kein nennenswerter Unterschied“.
+  Fund: BTC-Markt löst über Binance BTC/USDT 1-Min-Hoch aus, nicht über einen Tagesschluss. [[prosper-education-uebernahme]]
+- **2026-11-27** [Research / News-Quellen] **Reddit als Quelle verworfen** (Nutzerentscheid): App-Anlage scheitert
+  auch im zweiten Versuch mit „Max clients have been reached“. StockTwits deckt Social ab, Sammler bleibt ungenutzt
+  drin. Offene Betriebs-Aufgabe im Dashboard entfernt. [[news-sentiment-quellen]]
+- **2026-11-27** [Education] **Prosper-Lektion 7 umgesetzt: echte Krypto-Tageskerzen (Kraken, öffentlich)**
+  (Nutzerauftrag, Kursprojekt außerhalb des Repos, Backup `_backup_vor_lektion7/`, nur Simulation, kein Key, kein Konto,
+  keine Wallet). Neu `app/crypto_data.py`: Kraken `/0/public/OHLC` Tageskerzen, nur abgeschlossene Kerzen (laufender Tag
+  wird verworfen), letzte 200 behalten, Börse + Paar + UTC-Zeitstempel je Kerze; Prüfung wie bei Aktien plus Lücken
+  (markiert, nie aufgefüllt) und veraltete Daten (> 2 Tage = FAILED, nicht als aktuell gezeigt); CSV-Fallback
+  `data/crypto/`. Engine auf beide Datenquellen verallgemeinert, Claude-Einordnung deckt jetzt Aktien + Krypto ab,
+  Dashboard mit Krypto-Detail (Chart, Indikatoren, Börse, letzte Kerze, Lücken, Alter). 45/45 Tests. **Echter Test
+  bestanden:** BTC/USD 720 abgeschlossene Kerzen geladen, 200 behalten (11.05.–26.11.), Prüfung PASSED, 0 Lücken, Alter 1
+  Tag; Gegencheck Yahoo 0,02 % Abweichung (Yahoo fehlt der 26.11., Kraken hat ihn). Alter Kursserver vom 24.11. auf
+  Port 8000 beendet und neu gestartet. [[prosper-education-uebernahme]]
 - **2026-11-26** [Research/Indikatoren] **H1-Prüfung Fib-Limit + Steckbriefe 7–12** (Nutzerauftrag).
   `indikator_fib_h1.py`: Füllung/Stop auf H1 bestätigt den Daily-Backtest bei UTC-Tagen (OOS +0,42 R); mit Broker-
   Tagen NY 17:00 OOS nur +0,12 R → Tagesgrenze ist ein Fragilitätspunkt. Steckbriefe 7–12 aus den Nutzer-Antworten

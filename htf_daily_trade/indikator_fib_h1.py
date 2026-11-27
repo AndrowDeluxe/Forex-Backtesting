@@ -9,6 +9,10 @@ H1-Daten, zwei Tagesdefinitionen:
   SERVER  Broker-Tag New York 17:00 (= TradingView FXCM/OANDA-Daily, Serverzeit NY+7)
 In der Fuellkerze zaehlt ein Stop-Treffer als Verlust (konservativ). Gilt fuer V1 und V3, S2 und S3.
 Kein neuer Parameter -> keine neuen Trials im Lock `indikator_fib_limit` (nur Ausfuehrungspruefung).
+
+Robustheit Tagesgrenze (27.11.): `--tagesgrenzen` rechnet zusaetzlich NY0 (Mitternacht New York), UTC22
+(22:00 UTC = FX-Wochenstart), FFM0 (Mitternacht Frankfurt), LDN7 (07:00 London). Traegt der Edge nur auf einer
+Grenze, ist er Zufall der Kerzeneinteilung.
 """
 from __future__ import annotations
 
@@ -23,6 +27,9 @@ from htf_daily_trade.indikator_fib_limit import IS_END, IS_START, OOS_END
 
 A, F, HOLD = 80, 0.5, 10
 VARS = [(1, 0.25), (3, 0.25), (3, 0.5)]
+# Tagesgrenze: (Zeitzone, Verschiebung in h) -> Tag = Datum von (Ortszeit + Verschiebung)
+MODES = {"SERVER": ("America/New_York", 7), "NY0": ("America/New_York", 0), "UTC22": ("UTC", 2),
+         "FFM0": ("Europe/Berlin", 0), "LDN7": ("Europe/London", -7)}
 
 
 def days_from_h1(b: pd.DataFrame, mode: str) -> tuple[pd.DataFrame, np.ndarray]:
@@ -30,8 +37,8 @@ def days_from_h1(b: pd.DataFrame, mode: str) -> tuple[pd.DataFrame, np.ndarray]:
     if mode == "UTC":
         key = b.index.tz_convert("UTC").tz_localize(None).normalize()
     else:
-        srv = hm.server_time(b.index)
-        key = srv.normalize()
+        tz, shift = MODES[mode]
+        key = (b.index.tz_convert(tz).tz_localize(None) + pd.Timedelta(hours=shift)).normalize()
         key = key.where(key.dayofweek != 6, key + pd.Timedelta(days=1)).where(key.dayofweek != 5, key - pd.Timedelta(days=1))
     key = pd.DatetimeIndex(key)
     g = b.groupby(key)
@@ -103,10 +110,13 @@ def run(name: str, mode: str) -> list[dict]:
 
 
 if __name__ == "__main__":
+    import sys
     pd.set_option("display.width", 200)
-    t = pd.DataFrame([r for mode in ("UTC", "SERVER") for name in MARKETS for r in run(name, mode)])
+    alle = "--tagesgrenzen" in sys.argv
+    modes = ["UTC", *MODES] if alle else ["UTC", "SERVER"]
+    t = pd.DataFrame([r for mode in modes for name in MARKETS for r in run(name, mode)])
     t["periode"] = np.where(t["signal"] <= pd.Timestamp(IS_END), "IS", "OOS")
-    t.to_parquet("htf_daily_trade/indikator_fib_h1_trades.parquet")
+    t.to_parquet("htf_daily_trade/indikator_fib_h1_trades.parquet" if not alle else "htf_daily_trade/indikator_fib_tagesgrenzen_trades.parquet")
     rows = []
     for (m, v, p), g in t.groupby(["modus", "variante", "periode"]):
         st = stats(g["r"])
@@ -115,9 +125,10 @@ if __name__ == "__main__":
                      "ohne_top3": top.iloc[3:].mean(), "fuelltag_stop": g["fuell_tag_stop"].mean(),
                      "luecke_stop": g["luecke_stop"].mean()})
     res = pd.DataFrame(rows)
-    res.to_csv("htf_daily_trade/indikator_fib_h1.csv", index=False)
+    res.to_csv("htf_daily_trade/indikator_fib_tagesgrenzen.csv" if alle else "htf_daily_trade/indikator_fib_h1.csv",
+               index=False)
     print(res.round(3).to_string(index=False))
-    for m in ("UTC", "SERVER"):
+    for m in modes:
         g = t[(t["modus"] == m) & (t["variante"] == "V3 S+0.25")].copy()
         g["jahr"] = g["signal"].dt.year
         print(m, g.groupby("jahr")["r"].mean().round(2).to_dict())

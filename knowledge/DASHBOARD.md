@@ -127,12 +127,12 @@ passiert, was steht an.
    `indikator_fib_limit`, 288 Var.): ML-Fläche ≥ 80 % + Stoch/RSI-Cross → Limit 0,5-Fib der Signalkerze (3 T),
    Stop Signal-Extrem + 0,25 ATR, 10 Tage: **IS +0,33 R / OOS +0,45 R (t 1,8/2,0), ohne Top-3 +0,14/+0,20,
    2025 +0,02, MC 0,4 % Ø < 0** → bester Indikator-Kandidat; Plateau in IS und OOS gleich gerichtet. Gold-Beispiel
-   29./30.01. exakt +4 R. **H1-Prüfung (abends):** Füllreihenfolge sauber (UTC-Tage OOS +0,42 R), aber mit
-   **Broker-Tagen (NY 17:00) OOS nur +0,12 R, ohne Top-3 −0,06** → hängt an der Tagesgrenze; vor Einfrieren +
-   Tresor Tagesdefinition festlegen (deine Entscheidung). **Steckbriefe 7–12 ✅** aus Nutzer-Antworten 26.11.,
-   13 COT wartet auf Dennis-Education.
-   **Heute Abend mit dir:** Steckbriefe 7–12 durchsehen,
-   LTF-Entry ohne Indikatoren, Daily-Trade-Varianten + Forward-Entscheidung (Telegram-Erinnerung 20:30).
+   29./30.01. exakt +4 R. **H1-Prüfung:** Füllreihenfolge sauber. **Tagesgrenzen-Test (27.11.):** OOS nur mit UTC-Tagen
+   +0,42 R, mit 5 anderen Grenzen (Broker NY 17:00, NY 0:00, 22:00 UTC, Frankfurt 0:00, London 07:00) +0,09 bis
+   +0,22 R und ohne Top-3 ≈ 0 → **Zufall der Kerzeneinteilung, kein Bot.** Einfrieren/Tresor: Nutzer wollte einfrieren
+   (vor dem Ergebnis) → **Rückfrage im Chat offen**. **Steckbriefe 7–13 ✅** (13 COT aus den Dennis-Calls,
+   27.11.). LTF-Einstieg CHoCH + 2 BOS (Nutzer 27.11.) als Spezifikation im Steckbrief-File, Test erst mit solidem
+   Wendepunkt-Filter. **Als Nächstes:** Daily-Edge-Varianten weiter auswerten (Nutzer 27.11.), C2-RSI-Filter offen.
    Inventur-Entwurf bestätigt (10.11.). Reihenfolge (Nutzer 10.11., „stabiles Fundament“):
    (1) Inventur: die ~15 Strategien aus „Meine Trading Edges“ einzeln aufnehmen + Makro-Quellen
    (SMH Calls, Zusatzeducation, Makro Education, Elite, Incentive) sichten, (2) FX-Zinsdaten-Loader
@@ -649,10 +649,6 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 
 ### Aufgaben (Betrieb)
 
-- **(21.11.) News-Quellen-Keys: erledigt bis auf Reddit.** Finnhub läuft. Alpha Vantage: News-Sentiment ist für
-  Gratis-Keys kostenpflichtig, Quelle steht auf „kostenpflichtig“. Reddit: App-Anlage scheitert („Max clients have
-  been reached“), vorerst weggelassen (StockTwits deckt Social ab); bei Bedarf später erneut versuchen. Niedrig.
-  [[news-sentiment-quellen]]
 
 - **(16.11.) Funded-Fast-Lane umgeht den Offenes-Risiko-Deckel** — `Funded-Portfolio-Bridge/run_once_fast.py`
   ruft nur `_check_risk_gate`, nicht `_check_aggregate_open_risk_gate` (FK macht beides). ORB, Gold ASB und CLS aus
@@ -814,7 +810,7 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 | Makro-Education-Auslesen (neu)                          | — (nur Lesen, keine Orders)                                                              | OneNote „Makro Education“, Angelo, GS-Prozess, Gatekeeping, Incentive 2026 per lokalem `claude.exe` (Abo) auslesen, 3 Seiten/Stunde (`scripts/makro_education_extract_task.ps1`, Akku erlaubt); nach Abschluss deaktivieren | Ready (täglich 22–06 Uhr stündlich) | — | 2026-11-26 |
 | C2-Forward-Log (neu)                                    | — (nur Log + Telegram, keine Orders)                                                     | Forward-Test Daily-Edge: seit 11.11. nur noch W50 Vorwochen-Mitte `5c82f5d4` + Referenz EL `6c55e525`, 9 Märkte (alter Forward `aea4189b` raus, Nutzerentscheid) (`scripts/c2_forward_task.ps1`, Ledger `htf_daily_trade/forward/`, Akku erlaubt); Auswertung ab 30 Trades oder 12.11.2027 | Ready (Di–Sa 03:30, StartWhenAvailable) | — | 2026-11-11 |
 | Signal-Hub-Scan (neu)                                   | — (nur Telegram-Alarm + Journal, keine Orders)                                           | H4-Spike-Scanner 9 Märkte, Alarm bei Qualität + Aktivität (`scripts/signal_hub_scan_task.ps1`, `signal_hub/`), Journal-Commit stündlich | Ready (Mo–Fr alle 10 Min., Akku erlaubt) | — | 2026-11-19 |
-| News-Sources-Ledger (neu)                               | — (nur Research + Ledger, keine Orders)                                                  | 15 Märkte (Kurs-Watchlist + FX-Kern + Gold): Google News, Zentralbank-RSS, SEC EDGAR, StockTwits, CNN/Krypto Fear & Greed (+ Finnhub/Alpha Vantage/Reddit nach Key), Einordnung per `claude.exe -p` → Forward-Ledger je Quelle (`scripts/news_sources_task.ps1`, `fusion_lab/news_sources/`, committet Ledger); speist das Prosper-Kursprojekt | Ready (täglich 22:30, Akku erlaubt) | — | 2026-11-21 |
+| News-Sources-Ledger (neu)                               | — (nur Research + Ledger, keine Orders)                                                  | 15 Märkte (Kurs-Watchlist + FX-Kern + Gold): Google News, Zentralbank-RSS, SEC EDGAR, StockTwits, CNN/Krypto Fear & Greed (+ Finnhub; Alpha Vantage News kostenpflichtig, Reddit verworfen 27.11.), Einordnung per `claude.exe -p` → Forward-Ledger je Quelle (`scripts/news_sources_task.ps1`, `fusion_lab/news_sources/`, committet Ledger); speist das Prosper-Kursprojekt | Ready (täglich 22:30, Akku erlaubt) | — | 2026-11-21 |
 | Signal-Hub-Listener (neu)                               | — (Paper-Simulation, keine Orders)                                                       | Telegram-Knöpfe Ja/Nein/Später, Verfall, Erinnerungen, Paper-Update (`scripts/signal_hub_listener_task.ps1`) | Ready (Mo–Sa alle 2 Min., Akku erlaubt) | — | 2026-11-19 |
 | Forex-Screener-Aktien (neu)                             | — (nur Analyse + Paper-Ledger, keine Orders)                                             | S&P 500 + Nasdaq-100: Score, Preisbereiche, News per `claude.exe -p` → Telegram, Notion, Dashboard, Ledger (`scripts/screener_task.ps1 aktien`, **Forward seit 15.11.**, committet Ledger + Archiv) | Ready (Mo–Fr 23:00, StartWhenAvailable) | — | 2026-11-15 |
 | Forex-TradingAgents-Forward (neu)                       | — (nur Analyse + Ledger, keine Orders)                                                   | TradingAgents-Team (Claude-Abo, Haiku/Sonnet) für NVDA/JPM/XOM/UNH/WMT + 3 Kontrollen, 5-Tage-Alpha gegen SPY → Ledger + Cockpit-Tab „Agenten“ (`scripts/agent_forward_task.ps1`, venv `C:\Users\andre\TradingAgents\`, **Forward ab 23.11.**, Auswertung ab 15.02.2027, committet nur Ledger) | Ready (Mo–Fr 22:15, StartWhenAvailable, Akku erlaubt) | — | 2026-11-21 |
@@ -906,6 +902,11 @@ außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
 | EK-Portfolio-Paper                                      | —                                                                                        | pausiert (Paper-Zwilling von EK-Portfolio-Bridge, gehört zum Portfolio)                        | Disabled       | 2026-09-01      |
 
 ## 💡 Ideen-Inbox (unsortiert, später einordnen)
+
+- (28.11.) **Polymarket als Erwartungsgröße für den Makro-Agenten?** Öffentliche Markt-Wahrscheinlichkeiten (z. B.
+  Fed Dez. 2026: Erhöhung 25 bp 93,5 %, Senkung 0,25 %) ohne Key abrufbar, Regeln + Zeitstempel je Markt. Zusätzlich
+  „Fakt nur mit Schlagzeilen-Beleg“ als Prüfregel für Makro-Reports. Aus Prosper-Lektion 8.
+  [[prosper-education-uebernahme]]
 
 - (24.11.) **ORB NASDAQ: Fill gegen die Range-Kerze 09:30–09:45** (Fill gegen ihren Körper) verliert im Backtest
   −0,68 R (IS, n 26) / −0,98 R (OOS, n 17), S&P nicht. Nebenfund aus dem Volumen-Test, kleines n, Live-Bein → nur
@@ -1028,7 +1029,8 @@ außerhalb von `knowledge/` als Pfad in Backticks (siehe `README.md`)._
   ohne `fusion_lab/raw` (66 GB Rohdaten bleiben auf dem PC). IONOS-Aktion von
   Oktober weg (L+ jetzt dauerhaft 42 €/Mon.). Favorit: Contabo Cloud VPS 6
   Windows (6 vCPU/12 GB) ~7,50 €/Mon. bei 24 Mon. + Windows-Aufpreis.
-  **Entschieden 26.11.: Contabo, ~27 €/Mon. inkl. Windows-Lizenz, 24 Monate.**
+  **Entschieden 26./27.11.: Contabo Cloud VPS 6 Windows (6 vCPU/12 GB),
+  27,37 €/Mon. inkl. MwSt. für 24 Monate.**
   Offen: Prop-IP-Regeln, was auf dem PC bleibt, Git-Sync Server↔PC.
 
 - ~~**Magnet-Trade Richtung Key Level**~~ (getestet 19.10.: kein Effekt, siehe [[keylevel-edge-card]]) (18.10., aus der Key-Level-Edge-Card):

@@ -1,12 +1,12 @@
 {
- "stand": "2026-11-27 19:01:02.534249+00:00",
+ "stand": "2026-11-27 20:01:02.456192+00:00",
  "statistik": {
   "signale": 6,
   "ja": 4,
   "nein": 0,
   "verfallen": 2,
-  "r_bestaetigt": -1.0113117669283673,
-  "r_alle_signale": 1.3492962610059582
+  "r_bestaetigt": -1.3652940678133152,
+  "r_alle_signale": 1.3345179358827084
  },
  "signale": [
   {
@@ -100,9 +100,9 @@
    "grund": null,
    "entschieden_um": "2026-11-27T14:21:02.320Z",
    "p_sig_status": "offen",
-   "p_sig_r": -0.3251231527,
-   "p_conf_status": "offen",
-   "p_conf_r": 0.2123893805
+   "p_sig_r": -0.3399014778,
+   "p_conf_status": "geschlossen",
+   "p_conf_r": -0.1415929204
   },
   {
    "id": "USDCHF_2026112711_s",

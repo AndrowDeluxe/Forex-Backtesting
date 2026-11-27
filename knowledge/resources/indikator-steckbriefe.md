@@ -194,8 +194,9 @@ Chart-Beispielen (Gold D1 Pivots, EURUSD H4/H8/D1 Volumen, SVP, VRVP, Money Flow
   ausgelöst hat** — das ist das Inducement, Limit dort (Beispiel EURUSD M15 21.–22.04.2025, Short).
 - **Voraussetzung:** rein mechanisch, trägt nur mit **solidem Trendumkehr-Filter** im HTF (z. B. Daily-Reversal Typ R).
   Ohne Wendepunkt-Filter nicht testen.
-- **Für den Test noch zu klären:** Swing-Definition (Fractal-Länge) für CHoCH/BOS, Stop (über dem Swing-Hoch des
-  CHoCH?), Ziel/Haltedauer, Gültigkeit des Limits.
+- **Nutzer-Präzisierung 27.11.:** Swing = Marktstruktur, keine feste Kerzenzahl: ein M15-Tief entsteht, wenn eine
+  Gegenbewegung eingeleitet wird; wird diese Gegenbewegung wieder gebrochen, ist das der BOS. Stop am Swing-Hoch/-Tief,
+  alternativ ATR-Varianten. Ziel feste CRV oder Zeit. Limit zunächst 3 Tage gültig, längere Gültigkeit später testen.
 
 ## Nachbau + Edge-Test 1–6 (26.11.)
 
@@ -255,3 +256,8 @@ Backtest: IS +0,33 / OOS +0,42 R (V3, Stop +0,25 ATR) → Füllreihenfolge saube
 Tagesgrenzen. OOS: UTC +0,42 · LDN7 +0,22 · NY0 +0,22 · SERVER +0,12 · UTC22 +0,12 · FFM0 +0,09 R; ohne Top-3 nur UTC
 positiv (+0,16), alle anderen ≈ 0 oder negativ. IS 0,05–0,33. → **Nur die UTC-Einteilung trägt, das ist Zufall der
 Kerzeneinteilung, kein Mechanismus.** Der Kandidat ist kein Bot; als Kontext-Alarm (Signal-Hub) zusammen mit der Fläche.
+
+**Eingefroren + Tresor (27.11., Nutzerauftrag „interessehalber“, `indikator_fib_tresor.py`):** Konfiguration UTC-Tage,
+Lock `indikator_fib_limit` eingefroren, Tresor 26.05.–25.11.2026 einmal geöffnet (auf H1-Tageskerzen, D1-Dateien enden
+früher): **n 15, Ø −0,44 R (t −1,3), 3 Gewinner / 12 Stopps**; Broker-Tage −0,45 R (n 13). **Durchgefallen** — bestätigt
+den Tagesgrenzen-Befund. Bleibt nur als Kontext-Alarm.

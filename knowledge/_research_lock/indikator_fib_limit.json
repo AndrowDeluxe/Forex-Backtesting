@@ -8,7 +8,30 @@
   },
   "registered": "2026-11-26T17:47:18+00:00",
   "trials": 288,
-  "frozen": null,
-  "unsealed": {},
+  "frozen": {
+    "hash": "73afeac8497398855f3776ff80e6e6d93de70974b42db2570ffd868ba1ff9c26",
+    "config": {
+      "signal": "ML-Flaeche >= 80 % (3 T) + Stoch- oder RSI-MA-Cross",
+      "limit": "0,5-Fib Signalkerze, 3 Tage",
+      "stop": "Signal-Extrem +/- 0,25 ATR",
+      "exit": "10 Tage Zeit",
+      "tage": "UTC",
+      "maerkte": [
+        "EURUSD",
+        "GBPUSD",
+        "AUDUSD",
+        "NZDUSD",
+        "USDJPY",
+        "USDCAD",
+        "USDCHF",
+        "XAUUSD",
+        "XAGUSD"
+      ]
+    },
+    "ts": "2026-11-27T00:58:19+00:00"
+  },
+  "unsealed": {
+    "tresor": "2026-11-27T00:58:19+00:00"
+  },
   "forward": null
 }

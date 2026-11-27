@@ -129,8 +129,8 @@ passiert, was steht an.
    2025 +0,02, MC 0,4 % Ø < 0** → bester Indikator-Kandidat; Plateau in IS und OOS gleich gerichtet. Gold-Beispiel
    29./30.01. exakt +4 R. **H1-Prüfung:** Füllreihenfolge sauber. **Tagesgrenzen-Test (27.11.):** OOS nur mit UTC-Tagen
    +0,42 R, mit 5 anderen Grenzen (Broker NY 17:00, NY 0:00, 22:00 UTC, Frankfurt 0:00, London 07:00) +0,09 bis
-   +0,22 R und ohne Top-3 ≈ 0 → **Zufall der Kerzeneinteilung, kein Bot.** Einfrieren/Tresor: Nutzer wollte einfrieren
-   (vor dem Ergebnis) → **Rückfrage im Chat offen**. **Steckbriefe 7–13 ✅** (13 COT aus den Dennis-Calls,
+   +0,22 R und ohne Top-3 ≈ 0 → **Zufall der Kerzeneinteilung, kein Bot.** Eingefroren + Tresor einmal geöffnet (27.11.,
+   Nutzerauftrag): **n 15, −0,44 R → durchgefallen**, nur Kontext-Alarm. **Steckbriefe 7–13 ✅** (13 COT aus den Dennis-Calls,
    27.11.). LTF-Einstieg CHoCH + 2 BOS (Nutzer 27.11.) als Spezifikation im Steckbrief-File, Test erst mit solidem
    Wendepunkt-Filter. **Als Nächstes:** Daily-Edge-Varianten weiter auswerten (Nutzer 27.11.), C2-RSI-Filter offen.
    Inventur-Entwurf bestätigt (10.11.). Reihenfolge (Nutzer 10.11., „stabiles Fundament“):

@@ -48,9 +48,9 @@ def days_from_h1(b: pd.DataFrame, mode: str) -> tuple[pd.DataFrame, np.ndarray]:
     return d, day_no
 
 
-def run(name: str, mode: str) -> list[dict]:
+def run(name: str, mode: str, start_d: str = IS_START, end: str = OOS_END, vars_=None) -> list[dict]:
     b = hm.intraday(name)
-    b = b[(b.index >= pd.Timestamp("2014-01-01", tz="UTC")) & (b.index <= pd.Timestamp(OOS_END, tz="UTC") + pd.Timedelta(days=20))]
+    b = b[(b.index >= pd.Timestamp("2014-01-01", tz="UTC")) & (b.index <= pd.Timestamp(end, tz="UTC") + pd.Timedelta(days=20))]
     d, day_no = days_from_h1(b, mode)
     a = ind.alle(d)
     o1, h1, l1, c1 = (b[k].to_numpy() for k in ("Open", "High", "Low", "Close"))
@@ -60,9 +60,9 @@ def run(name: str, mode: str) -> list[dict]:
     atr = a["atr"].to_numpy()
     w3 = lambda x: x.astype(float).rolling(3, min_periods=1).max().fillna(0).astype(bool).to_numpy()
     n = len(d)
-    start, stop_i = d.index.searchsorted(pd.Timestamp(IS_START)), d.index.searchsorted(pd.Timestamp(OOS_END))
+    start, stop_i = d.index.searchsorted(pd.Timestamp(start_d)), d.index.searchsorted(pd.Timestamp(end) + pd.Timedelta(days=1))
     out = []
-    for V, buf in VARS:
+    for V, buf in (vars_ or VARS):
         for sg in (1, -1):
             zone = w3(a["rsi_ml_os_area"] >= A) if sg == 1 else w3(a["rsi_ml_ob_area"] >= A)
             cr = (a["stoch_cross_up"] | a["rsi_cross_up"]) if sg == 1 else (a["stoch_cross_dn"] | a["rsi_cross_dn"])

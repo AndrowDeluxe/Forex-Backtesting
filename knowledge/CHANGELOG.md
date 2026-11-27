@@ -9,6 +9,12 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-27** [Research / Daily-Edge] **Daily-Edge × neue Filter × Einstiege, nur IS** (Nutzerauftrag, Plan
+  freigegeben). `htf_daily_trade/daily_neu_is.py`, Lock `htf_daily_neu` (286 Versuche), Tests `tests/test_daily_neu_is.py`.
+  C2/R × EO/EL/W50/F50/M15 CHoCH+2BOS × F0–F6 + Paare: 7/234 Zellen erfüllen das IS-Kriterium, DSR ≤ 0,33. C2 EL + Makro-
+  Veto IS +0,45 R (2025/26 −0,35), R EO + ML-Fläche + kein News-Tag IS +0,32 R (2025/26 +0,21). M15-Einstieg in allen 36
+  Zellen negativ. Reproduktion: R exakt, C2 112/120 Trades — Ablesetag der Filter verschiebt C2 IS von +0,62 auf +0,47 R
+  (ohne Swap). Nichts eingefroren. [[htf-daily-trade-edge-card]]
 - **2026-11-27** [Research / Indikatoren] **Fib-Limit eingefroren, Tresor einmal geöffnet: durchgefallen**
   (Nutzerauftrag „interessehalber“). `indikator_fib_tresor.py`, Lock `indikator_fib_limit` (UTC-Konfiguration):
   26.05.–25.11.2026 n 15, Ø −0,44 R, 3 Gewinner; Broker-Tage −0,45 R. Bleibt Kontext-Alarm. M15-Einstieg CHoCH + 2 BOS
@@ -23,7 +29,9 @@ keine Planung (dafür ist `DASHBOARD.md`).
   BLOCKED). Dashboard „7 Decision Center“ (Karten mit Research/Risiko/Approve, Entscheidungsprotokoll). 65/65 Tests,
   Offline-Vorführung `scripts/demo_decision_engine.py` (SPY BUY $25k angefragt → $15k erlaubt → freigegeben → 26 Stk.
   gebucht; $90k-Vorschlag REJECTED, erreicht die Freigabe nie). Echte Daten: AAPL BUY NEEDS REVIEW wartet. Fund: Demo-
-  Konto hat $203k Cash bei $100k Start (Demo-Gewinne), Limits rechnen davon. [[prosper-education-uebernahme]]
+  Konto hatte $203k Cash bei $100k Start (Demo-Gewinne), Limits rechneten davon → **Konto auf $100k zurückgesetzt**
+  (Nutzerentscheid 28.11.; alter Stand gesichert in `_backup_vor_lektion9/data/`, Demo-Positionen TSLA/PM-FED damit
+  geschlossen). [[prosper-education-uebernahme]]
 - **2026-11-27** [Research / Indikatoren] **Fib-Limit-Kandidat: Tagesgrenzen-Test durchgefallen** (Nutzerauftrag).
   `indikator_fib_h1.py --tagesgrenzen` → `indikator_fib_tagesgrenzen.csv`: OOS UTC +0,42 · London 07:00 +0,22 ·
   NY 0:00 +0,22 · Broker NY 17:00 +0,12 · 22:00 UTC +0,12 · Frankfurt 0:00 +0,09 R; ohne Top-3 nur UTC positiv. Edge =

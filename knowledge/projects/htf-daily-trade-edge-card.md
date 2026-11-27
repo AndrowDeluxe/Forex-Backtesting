@@ -716,3 +716,41 @@ W50 2025 −0,25 / −7,7 %, 2026 −0,19 / −4,8 % (19 Trades, 6 Gewinner; USD
 - Status: **kein Live-Kandidat.** W50 läuft auf Nutzerwunsch als Forward mit (`c2_forward_w50.py`, ab 12.11., Auswertung
   ab 30 Trades oder 12.11.2027), EL als Referenz im selben Ledger.
 
+
+## Neue Filter × Einstiege, nur IS (27.11.2026, Lock `htf_daily_neu`, 286 Versuche)
+
+Nutzerauftrag 27.11. (Plan freigegeben): Daily-Edge C2 (eingefrorene Filter) und Typ R mit den neuen Bausteinen, Auswahl
+**nur auf IS 2016–21**. OOS 2022–24 und 2025/26 waren schon geöffnet → nur Info, Bestätigung nur im Forward.
+`python -m htf_daily_trade.daily_neu_is` → `daily_neu_is.csv`, Tests `tests/test_daily_neu_is.py`. Kosten + TTP-Swap.
+Einstiege EO (Markt) · EL (eingefroren) · W50 (Vorwochen-Mitte) · F50 (0,5-Fib Signalkerze) · **M15 CHoCH + 2 BOS**
+(Nutzerregel: Limit am Swing, aus dem der BOS2-Schenkel startete, 3 Tage; Stop SA Umkehr-Extrem / SB 1 ATR M15 /
+SC 0,25 Daily-ATR, Mindeststop 0,1 Daily-ATR; Ziel 2R/3R/Ideen-Ende). Filter F1 RSI-MA-Cross mit · F2 ML-Fläche ≥ 50 % ·
+F3 Makro-Veto (≥ 5 gegen / Gold-Veto) · F4 kein News-Tag · F5 DXY mit · F6 Carry-Veto, einzeln + 2 Paare je Basis.
+Vorab-Kriterium: IS t > 2, n ≥ 40, ohne Top-3 > 0, ≥ 6/9 Märkte.
+
+**Reproduktion:** R EL exakt (n 395, +0,291 R ohne Swap). C2 EL: 112/120 Trades gleich, aber IS +0,47 statt +0,62 R
+ohne Swap — hier werden Faber/COT einheitlich am **Signaltag** gelesen, im eingefrorenen Stand am Tag vor der Füllung.
+Die 8 abweichenden Trades tragen Ø +1,6 R (einer +7,4 R) → **der eingefrorene Wert hängt auch am Ablesetag der Filter.**
+
+| Kriterium erfüllt (7 von 234) | IS n / Ø R / t | ohne Top-3 | DSR | OOS 22–24 (Info) | 2025+ (Info) |
+|---|---|---|---|---|---|
+| C2 EL + F3 Makro-Veto | 121 / +0,45 / 2,44 | +0,29 | 0,33 | +0,34 | −0,35 |
+| C2 EL + F6 + F3 | 72 / +0,56 / 2,30 | +0,31 | 0,29 | +0,50 | −0,47 |
+| C2 EL (ohne neuen Filter) | 123 / +0,41 / 2,28 | +0,25 | 0,28 | +0,30 | −0,37 |
+| C2 EL + F6 Carry-Veto | 73 / +0,54 / 2,23 | +0,29 | 0,26 | +0,47 | −0,47 |
+| C2 W50 + F3 | 174 / +0,22 / 2,16 | +0,14 | 0,24 | +0,12 | −0,18 |
+| C2 W50 | 175 / +0,21 / 2,10 | +0,14 | 0,22 | +0,12 | −0,20 |
+| R EO + F2 ML-Fläche + F4 kein News-Tag | 195 / +0,32 / 2,19 | +0,15 | 0,25 | +0,09 | +0,21 |
+
+- **Keine neue Filter bringt C2 zurück:** Makro-Veto +0,04 R, Carry-Veto +0,13 R bei halber Tradezahl; RSI-Cross nur
+  46 Trades. 2025/26 bleibt in jeder C2-Zelle negativ (−0,18 bis −0,47 R). DSR höchstens 0,33 → nichts gesichert.
+- **ML-Fläche ≥ 50 % ist der einzige Filter, der Typ R hebt** (Ø +0,16 R über alle Einstiege; R EL + F2 IS +0,61 R, n 138,
+  t 1,76). Typ R ist 2025/26 positiv (+0,15 bis +0,42 R), wo C2 verliert — nur Beobachtung auf gesehenen Daten.
+- **F50 (0,5-Fib der Signalkerze) trägt auf dem Daily-Edge nicht** (C2 −0,03, R +0,08 R); C2 und ML-Fläche schließen
+  sich aus (F2 bei C2 n = 0).
+- **M15 CHoCH + 2 BOS: alle 36 Zellen im IS negativ** (C2 −0,10 bis −0,48 R, R −0,14 bis −0,34 R), schon ohne Swap
+  negativ, Trefferquote bei 2 R 30–33 %. Gleiches Bild wie der LTF-Test vom 11.11.: ein enger LTF-Stop schneidet den
+  Daily-Edge ab. Mit Typ R als Wendepunkt-Filter nicht besser als mit C2.
+- Nutzer-Beispiel EURUSD 21./22.04.2025: mechanisch drei R-Shorts (07., 15. 04.) im laufenden Aufwärtstrend ausgestoppt,
+  erst die Idee vom 23.04. lief (+7,8 R über M15). Der händische Vorteil liegt im Abwarten der Erschöpfung.
+- Status: nichts eingefroren. Kandidaten für den Forward-Schatten (Nutzerentscheid offen): C2 EL + F3, R EO/EL + F2 + F4.

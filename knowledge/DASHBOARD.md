@@ -132,7 +132,11 @@ passiert, was steht an.
    +0,22 R und ohne Top-3 ≈ 0 → **Zufall der Kerzeneinteilung, kein Bot.** Eingefroren + Tresor einmal geöffnet (27.11.,
    Nutzerauftrag): **n 15, −0,44 R → durchgefallen**, nur Kontext-Alarm. **Steckbriefe 7–13 ✅** (13 COT aus den Dennis-Calls,
    27.11.). LTF-Einstieg CHoCH + 2 BOS (Nutzer 27.11.) als Spezifikation im Steckbrief-File, Test erst mit solidem
-   Wendepunkt-Filter. **Als Nächstes:** Daily-Edge-Varianten weiter auswerten (Nutzer 27.11.), C2-RSI-Filter offen.
+   Wendepunkt-Filter. **Daily-Edge × neue Filter/Einstiege (IS, 27.11., `daily_neu_is.py`):** 7/234 Zellen erfüllen das IS-
+   Kriterium, keine gesichert (DSR ≤ 0,33). C2 bleibt 2025/26 überall negativ; RSI-Cross-Filter (C2) nur 46 Trades →
+   **erledigt, kein Zugewinn**. Typ R + ML-Fläche ≥ 50 % + kein News-Tag IS +0,32 R (t 2,2), 2025/26 positiv.
+   M15 CHoCH + 2 BOS in allen 36 Zellen negativ. **Deine Entscheidung:** C2 EL + Makro-Veto und/oder R + ML-Fläche als
+   Forward-Schatten mitloggen?
    Inventur-Entwurf bestätigt (10.11.). Reihenfolge (Nutzer 10.11., „stabiles Fundament“):
    (1) Inventur: die ~15 Strategien aus „Meine Trading Edges“ einzeln aufnehmen + Makro-Quellen
    (SMH Calls, Zusatzeducation, Makro Education, Elite, Incentive) sichten, (2) FX-Zinsdaten-Loader

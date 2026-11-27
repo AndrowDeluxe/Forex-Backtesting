@@ -1,0 +1,4 @@
+{"ts": "2026-11-27T01:05:29+00:00", "event": "register_split", "is_start": "2016-01-01", "is_end": "2021-12-31", "oos_end": "2024-12-31", "tresor_end": "2026-11-25"}
+{"ts": "2026-11-27T01:05:29+00:00", "event": "trials", "n": 182, "total": 182, "note": "C2/R x 13 Einstiege x F0-F6 einzeln (27.11.); OOS 2022-24 + 2025/26 schon gesehen (Lock htf_daily_filter_matrix), nur Info"}
+{"ts": "2026-11-27T01:06:39+00:00", "event": "trials", "n": 52, "total": 234, "note": "Paare je Basis aus 3 besten Einzelfiltern: {'C2': [('F6', 'F1'), ('F6', 'F3')], 'R': [('F2', 'F6'), ('F2', 'F4')]} (27.11.)"}
+{"ts": "2026-11-27T01:09:08+00:00", "event": "trials", "n": 52, "total": 286, "note": "Paare je Basis aus 3 besten Einzelfiltern: {'C2': [('F6', 'F1'), ('F6', 'F3')], 'R': [('F2', 'F4'), ('F2', 'F6')]} (27.11.)"}

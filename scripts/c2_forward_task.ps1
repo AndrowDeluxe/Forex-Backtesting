@@ -32,6 +32,18 @@ try {
     Log "W50-Forward-Fehler: $_"
 }
 
+# Forward-Schatten (Nutzerauftrag 2026-11-27): C2 Limit + Makro-Veto und Typ R + ML-Flaeche + kein News-Tag
+# (Lock htf_daily_neu). Ledger htf_daily_trade/forward/daily_neu_forward_ledger.csv. Nur Log + Telegram.
+$args_neu = @("-m", "htf_daily_trade.daily_neu_forward")
+if ((Get-Date).DayOfWeek -eq "Saturday") { $args_neu += "--wochenbericht" }
+try {
+    $out = & python @args_neu 2>&1
+    $out | ForEach-Object { Log $_ }
+    if ($LASTEXITCODE -ne 0) { Log "Daily-Schatten-Exitcode $LASTEXITCODE" }
+} catch {
+    Log "Daily-Schatten-Fehler: $_"
+}
+
 & git add htf_daily_trade\forward\ 2>&1 | ForEach-Object { Log $_ }
 
 & git diff --cached --quiet

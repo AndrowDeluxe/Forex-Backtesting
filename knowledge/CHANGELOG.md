@@ -9,6 +9,25 @@ keine Planung (dafür ist `DASHBOARD.md`).
 
 ---
 
+- **2026-11-27** [Forward / Daily-Edge] **Zwei Daily-Forward-Schatten gestartet** (Nutzerentscheid). Neu
+  `htf_daily_trade/daily_neu_forward.py`, Lock `htf_daily_neu` eingefroren (Hash `5aca06fc`), Forward ab 27.11.2026,
+  Auswertung ab 30 Trades oder 27.11.2027: C2 Limit + Makro-Veto (C2EL_F3) und Typ R Eröffnung + ML-Fläche ≥ 50 % +
+  kein News-Tag (R_EO_F2F4). Läuft im Task „C2-Forward-Log“ (`scripts/c2_forward_task.ps1`) nach dem W50-Forward,
+  Ledger `htf_daily_trade/forward/daily_neu_forward_ledger.csv`, nur Log + Telegram, keine Orders. Probelauf ab 01.06.
+  deckt sich mit dem Backtest (C2 6/6, R 16/21 Signale; Rest = spätere Daten).
+- **2026-11-28** [Education] **Prosper-Lektion 10 umgesetzt: Risk-Management-System** (Nutzerauftrag, Kursprojekt
+  außerhalb des Repos, Backup `_backup_vor_lektion10/`, nur Simulation). Neu `app/risk_state.py` (gespeichert in
+  `data/risk_state.json`: UTC-Tagesstart, Höchststand, **Kill-Switch verriegelt** über Neustart und Erholung, Reset nur
+  mit schriftlicher Prüfnotiz, Verlustserien-Pause, Risiko-Ereignisprotokoll). Risk Manager neu: 7 Kontrollen, erlaubte
+  Größe = **kleinste** aller Grenzen (Position, Risiko je Trade, Marktlimit, Gesamtlimit, Cash), ungültige Daten werden
+  abgelehnt, Stop-Loss füllt zum letzten verfügbaren Kurs mit Lückenangabe, Ausstiege immer erlaubt. Behebt die drei
+  Kursfunde aus Lektion 4 (Kill-Switch hebt sich selbst auf, Tageslimit ab App-Start, Höchststand nur im Speicher).
+  Dashboard „6 Risk Control“. 82/82 Tests, `scripts/demo_risk_scenarios.py` 8/8 Szenarien wie erwartet. **Zwei Funde
+  beim Durchlauf, behoben (Annahme Claude):** Restplatz $100 wurde als Mini-Position genehmigt → Mindestgröße 1 % des
+  Kontos (`MIN_POSITION_PCT`); `submit()` hat einen NaN-Preis still durch den Marktkurs ersetzt → wird jetzt geprüft statt
+  repariert. [[prosper-education-uebernahme]]
+- **2026-11-28** [Planung / EK] **Offener Punkt angelegt: EK-Kill-Switch auf Selbst-Aufhebung prüfen** (Nutzerentscheid,
+  aus Prosper-Lektion 10). DASHBOARD „Aufgaben (Betrieb)“, nur prüfen, keine Änderung am Live-Bot ohne OK.
 - **2026-11-27** [Research / Daily-Edge] **Daily-Edge × neue Filter × Einstiege, nur IS** (Nutzerauftrag, Plan
   freigegeben). `htf_daily_trade/daily_neu_is.py`, Lock `htf_daily_neu` (286 Versuche), Tests `tests/test_daily_neu_is.py`.
   C2/R × EO/EL/W50/F50/M15 CHoCH+2BOS × F0–F6 + Paare: 7/234 Zellen erfüllen das IS-Kriterium, DSR ≤ 0,33. C2 EL + Makro-

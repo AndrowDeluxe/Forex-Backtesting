@@ -135,8 +135,13 @@ passiert, was steht an.
    Wendepunkt-Filter. **Daily-Edge × neue Filter/Einstiege (IS, 27.11., `daily_neu_is.py`):** 7/234 Zellen erfüllen das IS-
    Kriterium, keine gesichert (DSR ≤ 0,33). C2 bleibt 2025/26 überall negativ; RSI-Cross-Filter (C2) nur 46 Trades →
    **erledigt, kein Zugewinn**. Typ R + ML-Fläche ≥ 50 % + kein News-Tag IS +0,32 R (t 2,2), 2025/26 positiv.
-   M15 CHoCH + 2 BOS in allen 36 Zellen negativ. **Deine Entscheidung:** C2 EL + Makro-Veto und/oder R + ML-Fläche als
-   Forward-Schatten mitloggen?
+   M15 CHoCH + 2 BOS in allen 36 Zellen negativ (auch mit Typ R als Wendepunkt-Filter). **Entschieden (Nutzer 27.11.):**
+   beide als **Forward-Schatten** (`daily_neu_forward.py`, Lock `htf_daily_neu` Hash `5aca06fc`, ab 27.11., Auswertung
+   ab 30 Trades oder 27.11.2027, im Task „C2-Forward-Log“, nur Log + Telegram).
+   **Noch offen aus der Indikator-Inventur (Steckbriefe alle 13 erfasst):** (a) Signal-Hub-Alarm Fläche ≥ 50 % bauen
+   (entschieden 26.11.); (b) Edge-Tests der Steckbrief-Hypothesen 7–13: H4-MA 8/14 als Einstiegs-Bestätiger, Fractal-Stop,
+   Monats-/Quartals-Pivots je Stufe, Volumen-Divergenz, SVP-POC-Folge als Trendfilter, VRVP-POC-Rücklauf, Money Flow ×
+   VRVP, COT-Veränderungsrate HF gegen Retail.
    Inventur-Entwurf bestätigt (10.11.). Reihenfolge (Nutzer 10.11., „stabiles Fundament“):
    (1) Inventur: die ~15 Strategien aus „Meine Trading Edges“ einzeln aufnehmen + Makro-Quellen
    (SMH Calls, Zusatzeducation, Makro Education, Elite, Incentive) sichten, (2) FX-Zinsdaten-Loader
@@ -653,6 +658,12 @@ landen hier, nicht oben. Wird bei Bedarf oder im Weekly-Report angesehen.
 
 ### Aufgaben (Betrieb)
 
+
+- **(28.11.) EK-Kill-Switch hebt sich selbst auf? prüfen** — Fund aus Prosper-Lektion 4 (21.11.): Der Kurs-Kill-Switch
+  löst sich von allein, sobald sich das Konto erholt, wie es dort hieß „wie EK“. In Lektion 10 im Kursprojekt behoben
+  (verriegelt, übersteht Neustart, Reset nur mit Prüfnotiz). Offen: ob der EK-Bot (`EK-Portfolio-Bridge`, echtes Geld)
+  dasselbe Verhalten hat und ob er verriegelt werden soll. Nur prüfen, nichts ändern ohne dein OK. Spätestens beim
+  Abschlussvergleich der Education. [[prosper-education-uebernahme]]
 
 - **(16.11.) Funded-Fast-Lane umgeht den Offenes-Risiko-Deckel** — `Funded-Portfolio-Bridge/run_once_fast.py`
   ruft nur `_check_risk_gate`, nicht `_check_aggregate_open_risk_gate` (FK macht beides). ORB, Gold ASB und CLS aus

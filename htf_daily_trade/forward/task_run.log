@@ -384,3 +384,38 @@
 2026-11-27 03:30:06 COT: 0 neue Berichte
 2026-11-27 03:30:06 W50-Forward-Exitcode 1
 2026-11-27 03:30:18 0 Zeilen, Stand -
+2026-11-27 03:30:18 [main a4d9c52f] C2-Forward: Ledger 2026-11-27
+2026-11-27 03:30:18  1 file changed, 31 insertions(+)
+2026-11-27 03:30:18 Nichts zu mergen (0 eingehende Commits) - Stash und Merge uebersprungen.
+2026-11-27 03:30:21 To https://github.com/AndrowDeluxe/Forex-Backtesting.git
+2026-11-27 03:30:21    725c6a9d..a4d9c52f  main -> main
+2026-11-27 03:30:21 Commit + Push erfolgreich.
+2026-11-27 03:30:21 === Task beendet ===
+2026-11-28 03:30:01 === Task gestartet ===
+2026-11-28 03:30:06 Traceback (most recent call last):
+2026-11-28 03:30:06   File "<frozen runpy>", line 203, in _run_module_as_main
+2026-11-28 03:30:06   File "<frozen runpy>", line 88, in _run_code
+2026-11-28 03:30:06   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_forward_w50.py", line 147, in <module>
+2026-11-28 03:30:06     raise SystemExit(main())
+2026-11-28 03:30:06                      ~~~~^^
+2026-11-28 03:30:06   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_forward_w50.py", line 125, in main
+2026-11-28 03:30:06     t = scan(a.start)
+2026-11-28 03:30:06   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_forward_w50.py", line 77, in scan
+2026-11-28 03:30:06     el = el_trades(start, end)
+2026-11-28 03:30:06   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_bis_heute.py", line 79, in el_trades
+2026-11-28 03:30:06     t = cb.trades(start, end.strftime("%Y-%m-%d"))
+2026-11-28 03:30:06   File "C:\Users\andre\Forex-Backtesting\htf_daily_trade\c2_blind.py", line 67, in trades
+2026-11-28 03:30:06     t = t[(t["T6"] < 0) & (t["M7"] > 0)].copy()
+2026-11-28 03:30:06            ~^^^^^^
+2026-11-28 03:30:06   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+2026-11-28 03:30:06     indexer = self.columns.get_loc(key)
+2026-11-28 03:30:06   File "C:\Users\andre\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\indexes\range.py", line 525, in get_loc
+2026-11-28 03:30:06     raise KeyError(key)
+2026-11-28 03:30:06 KeyError: 'T6'
+2026-11-28 03:30:06 COT: 0 neue Berichte
+2026-11-28 03:30:06 W50-Forward-Exitcode 1
+2026-11-28 03:30:22 2 Zeilen, Stand 2026-11-27
+2026-11-28 03:30:22 ­ƒåò Daily-Schatten Typ R + ML-Fl+ñche: AUDUSD LONG Er+Âffnung, Stop 0.65585
+2026-11-28 03:30:22 ­ƒåò Daily-Schatten Typ R + ML-Fl+ñche: XAGUSD LONG Er+Âffnung, Stop 38.169
+2026-11-28 03:30:22 ­ƒôè Daily-Schatten C2EL_F3 seit 2026-11-27: 0 Trades, +ú +0.00 R, offen 0
+2026-11-28 03:30:22 ­ƒôè Daily-Schatten R_EO_F2F4 seit 2026-11-27: 0 Trades, +ú +0.00 R, offen 0

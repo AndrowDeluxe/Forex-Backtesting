@@ -1,1 +1,3 @@
-variante,markt,seite,signal,status,limit,stop,einstieg_tag,exit_tag,r,stand
+variante,markt,seite,signal,status,limit,stop,einstieg_tag,exit_tag,r,makro_gegen,stand
+R_EO_F2F4,AUDUSD,long,2026-11-27,wartet,,0.65585,,,,4,2026-11-27
+R_EO_F2F4,XAGUSD,long,2026-11-27,wartet,,38.169,,,,4,2026-11-27
